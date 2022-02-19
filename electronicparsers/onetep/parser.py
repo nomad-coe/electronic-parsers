@@ -22,7 +22,6 @@ import numpy as np
 from datetime import datetime
 
 from nomad.units import ureg
-from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import (
     Run, Program, TimeRun)
@@ -271,12 +270,8 @@ class OutParser(TextParser):
         ]
 
 
-class OnetepParser(FairdiParser):
+class OnetepParser:
     def __init__(self):
-        super().__init__(
-            name='parsers/onetep', code_name='ONETEP', code_homepage='https://www.onetep.org/',
-            domain='dft', mainfile_contents_re=r'####### #     # ####### ####### ####### ######'
-        )
         self.out_parser = OutParser()
         self.input_parser = InputParser()
         self._xc_map = {

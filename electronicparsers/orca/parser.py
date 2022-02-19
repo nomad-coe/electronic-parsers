@@ -21,7 +21,6 @@ import logging
 import numpy as np
 
 from nomad.units import ureg
-from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity
 
 from nomad.datamodel.metainfo.simulation.run import Run, Program
@@ -527,17 +526,8 @@ class OutParser(TextParser):
         ]
 
 
-class OrcaParser(FairdiParser):
+class OrcaParser:
     def __init__(self):
-        super().__init__(
-            name='parsers/orca', code_name='ORCA', code_homepage='https://orcaforum.kofo.mpg.de/',
-            mainfile_contents_re=(
-                r'\s+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\**\s*'
-                r'\s+\* O   R   C   A \*\s*'
-                r'\s+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\**\s*'
-                r'\s*'
-                r'\s*--- An Ab Initio, DFT and Semiempirical electronic structure package ---\s*'))
-
         self.out_parser = OutParser()
 
         # TODO list adapted from old parser, is incomplete and entries may be incorrect

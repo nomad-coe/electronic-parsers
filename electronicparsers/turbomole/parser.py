@@ -24,7 +24,6 @@ from datetime import datetime
 from ase.data import atomic_numbers
 
 from nomad.units import ureg
-from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity, FileParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
@@ -703,12 +702,8 @@ class OutParser(TextParser):
             repeats=True, sub_parser=TextParser(quantities=run_quantities))]
 
 
-class TurbomoleParser(FairdiParser):
+class TurbomoleParser:
     def __init__(self):
-        super().__init__(
-            name='parsers/turbomole', code_name='turbomole',
-            code_homepage='https://www.turbomole.org/',
-            mainfile_contents_re=(r'Copyright \(C\) [0-9]+ TURBOMOLE GmbH, Karlsruhe'))
         self.out_parser = OutParser()
         self.matrix_parser = AuxiliaryOutParser(r' *(\d+\s+\d+\s+[\d\.\- ]+)\n', 2)
         self.vibrational_parser = AuxiliaryOutParser(
