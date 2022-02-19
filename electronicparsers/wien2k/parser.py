@@ -25,6 +25,7 @@ from ase.io import read as ioread
 from ase import Atoms
 
 from nomad.units import ureg
+from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
@@ -362,8 +363,14 @@ class OutParser(TextParser):
                 repeats=True, sub_parser=TextParser(quantities=iteration_quantities))]
 
 
-class Wien2kParser:
+class Wien2kParser(FairdiParser):
     def __init__(self):
+        super().__init__(
+            name='parsers/wien2k', code_name='WIEN2k', code_homepage='http://www.wien2k.at/',
+            mainfile_name_re=r'.*\.scf$',
+            mainfile_alternative=True,
+            mainfile_contents_re=r'\s*---------\s*:ITE[0-9]+:\s*[0-9]+\.\s*ITERATION\s*---------')
+
         # TODO complete list and verify if consistent with current implementation
         # http://www.wien2k.at/reg_user/textbooks/usersguide.pdf
         # implement libxc compatibility

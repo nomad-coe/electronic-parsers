@@ -22,6 +22,7 @@ import logging
 from ase.data import chemical_symbols
 
 from nomad.units import ureg
+from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity
 
 from nomad.datamodel.metainfo.simulation.run import Run, Program
@@ -225,8 +226,16 @@ class OutParser(TextParser):
         ] + calc_quantities
 
 
-class GamessParser:
+class GamessParser(FairdiParser):
     def __init__(self):
+        super().__init__(
+            name='parsers/gamess', code_name='GAMESS',
+            code_homepage='https://www.msg.chem.iastate.edu/gamess/versions.html',
+            mainfile_contents_re=(
+                r'\s*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\**\s*'
+                r'\s*\*\s*GAMESS VERSION =\s*(.*)\*\s*'
+                r'\s*\*\s*FROM IOWA STATE UNIVERSITY\s*\*\s*')
+        )
         self._nspin = None
         self._units = {'ANGS': ureg.angstrom, 'BOHR': ureg.bohr}
         self._xc_map = {

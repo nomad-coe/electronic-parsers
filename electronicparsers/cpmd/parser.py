@@ -21,11 +21,14 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import BasicParser
 
 
-class CPMDParser:
+class CPMDParser(BasicParser):
     def __init__(self):
         re_f = r'\-*\d+\.\d+E*\-*\+*\d*'
-        self._parser = BasicParser(
-            'CPMD',
+        super().__init__(
+            specifications=dict(
+                name='parsers/cpmd', code_name='CPMD',
+                code_homepage='https://www.lcrc.anl.gov/for-users/software/available-software/cpmd/',
+                mainfile_contents_re=(r'\*\*\*       \*\*   \*\*\*  \*\* \*\*\*\* \*\*  \*\*   \*\*\*')),
             units_mapping=dict(length=ureg.bohr, energy=ureg.hartree),
             program_version=r'\*\s*VERSION\s*(\d+\.\d+.+)',
             atom_labels_atom_positions_atom_forces=r'ATOM\s*COORDINATES\s*GRADIENTS([\s\S]+?)(?:\*{50}|\n *\n)',
@@ -37,8 +40,4 @@ class CPMDParser:
             energy_total=rf' ETOT\s*\=\s*({re_f})|\(K\+E1\+L\+N\+X\)\s*TOTAL ENERGY\s*\=\s*({re_f})',
             energy_kinetic_electronic=rf'\(K\)\s*KINETIC ENERGY\s*=\s*({re_f})',
             energy_electrostatic=rf'\(E1\=A\-S\+R\)\s*ELECTROSTATIC ENERGY\s*=\s*({re_f})',
-            energy_XC=rf'\(X\)\s*EXCHANGE\-CORRELATION ENERGY\s*=\s*({re_f})'
-        )
-
-    def parse(self, mainfile, archive, logger=None):
-        self._parser.parse(mainfile, archive, logger=None)
+            energy_XC=rf'\(X\)\s*EXCHANGE\-CORRELATION ENERGY\s*=\s*({re_f})')

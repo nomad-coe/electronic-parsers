@@ -22,6 +22,7 @@ import numpy as np
 from datetime import datetime
 
 from nomad.units import ureg
+from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import (
     Run, Program, TimeRun
@@ -270,8 +271,14 @@ class OutParser(TextParser):
         ] + calc_quantities
 
 
-class SiestaParser:
+class SiestaParser(FairdiParser):
     def __init__(self):
+        super().__init__(
+            name='parsers/siesta', code_name='Siesta',
+            code_homepage='https://departments.icmab.es/leem/siesta/',
+            mainfile_contents_re=(
+                r'(Siesta Version: siesta-|SIESTA [0-9]\.[0-9]\.[0-9])|'
+                r'(\*\s*WELCOME TO SIESTA\s*\*)'))
         self.out_parser = OutParser()
         self.fdf_parser = FDFParser()
         self._xc_map = {

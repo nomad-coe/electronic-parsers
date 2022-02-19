@@ -7,6 +7,7 @@ from ase import units as ase_units
 
 from .metainfo import m_env
 from nomad.units import ureg
+from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
@@ -427,8 +428,12 @@ class OutParser(TextParser):
         return {k: v for k, v in self.get('header', {}).get('options', [])}
 
 
-class OctopusParser:
+class OctopusParser(FairdiParser):
     def __init__(self):
+        super().__init__(
+            name='parsers/octopus', code_name='Octopus', code_homepage='https://octopus-code.org/',
+            mainfile_contents_re=(r'\|0\) ~ \(0\) \|'))
+
         self.out_parser = OutParser()
         self.log_parser = LogParser()
         self.info_parser = InfoParser()

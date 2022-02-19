@@ -26,6 +26,7 @@ from ase import lattice as aselattice, Atoms
 from ase import Atoms as aseAtoms
 
 from nomad.units import ureg
+from nomad.parsing.parser import FairdiParser
 from nomad.parsing.file_parser import FileParser, TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
@@ -181,8 +182,12 @@ class CalculatorParser(TextParser):
         ]
 
 
-class ATKParser:
+class ATKParser(FairdiParser):
     def __init__(self):
+        super().__init__(
+            name='parsers/atk', code_name='AtomistixToolKit',
+            code_homepage='https://www.synopsys.com/silicon/quantumatk.html',
+            mainfile_name_re=r'^.*\.nc', mainfile_mime_re=r'application/octet-stream')
         self.nc_parser = NCParser()
         self.calculator_parser = CalculatorParser()
 

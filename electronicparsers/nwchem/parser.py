@@ -22,6 +22,7 @@ import logging
 import re
 
 from nomad.units import ureg
+from nomad.parsing.parser import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
@@ -233,8 +234,13 @@ class OutParser(TextParser):
         ]
 
 
-class NWChemParser:
+class NWChemParser(FairdiParser):
     def __init__(self):
+        super().__init__(
+            name='parsers/nwchem', code_name='NWChem', code_homepage='http://www.nwchem-sw.org/',
+            mainfile_contents_re=(
+                r'Northwest Computational Chemistry Package \(NWChem\) (\d+\.)+\d+'))
+
         self.out_parser = OutParser()
 
         self._metainfo_map = {

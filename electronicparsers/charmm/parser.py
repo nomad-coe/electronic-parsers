@@ -24,7 +24,7 @@ from nomad.parsing.file_parser import BasicParser
 from nomad.units import ureg
 
 
-class CharmmParser:
+class CharmmParser(BasicParser):
     def __init__(self):
         re_f = r'\-*\d+\.\d+E*e*\-*\+*\d*'
 
@@ -38,8 +38,11 @@ class CharmmParser:
                 pass
             return res
 
-        self._parser = BasicParser(
-            'Charmm',
+        super().__init__(
+            specifications=dict(
+                name='parsers/charmm', code_name='Charmm', domain='dft',
+                mainfile_contents_re=r'\s*Chemistry\s*at\s*HARvard\s*Macromolecular\s*Mechanics\s*',
+                mainfile_mime_re=r'text/.*'),
             units_mapping=dict(length=ureg.angstrom, energy=ureg.kcal / 6.02214076e+23),
             auxilliary_files=r'\/*([a-z][\w\-]+.crd)',
             program_version=r'\(CHARMM\) \- (.+Version[\w \,]+?\d\d\d\d)',
@@ -47,6 +50,3 @@ class CharmmParser:
                 rf'(\*.*\s*\*.*\s*\*.*\s*\d+\n +\d+ +\d+ +\w+ +[A-Z]\w* +{re_f} +{re_f} +{re_f}[\s\S]+)(?:\>|\Z|\n *\n)',
                 get_positions),
             energy_total=rf'\n *[A-Z]+\> +\d* +({re_f})')
-
-    def parse(self, mainfile, archive, logger=None):
-        self._parser.parse(mainfile, archive, logger=None)

@@ -23,6 +23,7 @@ import numpy as np
 from datetime import datetime
 
 from nomad.units import ureg
+from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.system import (
@@ -194,8 +195,13 @@ class QboxXMLParser(TextParser):
         ]
 
 
-class QboxParser:
+class QboxParser(FairdiParser):
     def __init__(self):
+        super().__init__(
+            name='parsers/qbox', code_name='qbox', code_homepage='http://qboxcode.org/',
+            domain='dft', mainfile_mime_re=r'(application/xml)|(text/.*)',
+            mainfile_contents_re=(r'http://qboxcode.org')
+        )
         self.out_parser = QboxXMLParser()
         self._xc_map = {
             'LDA': ['LDA_X', 'LDA_C_PZ'],

@@ -23,6 +23,7 @@ import re
 from datetime import datetime
 
 from nomad.units import ureg
+from nomad.parsing.parser import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
@@ -561,8 +562,11 @@ class OutParser(TextParser):
                 dtype=np.float64, repeats=True)]
 
 
-class CastepParser:
+class CastepParser(FairdiParser):
     def __init__(self):
+        super().__init__(
+            name='parsers/castep', code_name='CASTEP', code_homepage='http://www.castep.org/',
+            mainfile_contents_re=(r'\s\|\s*CCC\s*AA\s*SSS\s*TTTTT\s*EEEEE\s*PPPP\s*\|\s*'))
         self.out_parser = OutParser()
         self.cell_parser = CellParser()
         self.bands_parser = BandsParser()

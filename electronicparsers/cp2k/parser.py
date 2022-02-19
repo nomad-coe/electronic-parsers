@@ -25,6 +25,7 @@ from ase import io as aseio
 
 from .metainfo import m_env
 from nomad.units import ureg
+from nomad.parsing.parser import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity, FileParser, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import (
     Run, Program)
@@ -669,8 +670,17 @@ class CP2KOutParser(TextParser):
         ]
 
 
-class CP2KParser:
+class CP2KParser(FairdiParser):
     def __init__(self):
+        super().__init__(
+            name='parsers/cp2k', code_name='CP2K', code_homepage='https://www.cp2k.org/',
+            mainfile_contents_re=(
+                r'\*\*\*\* \*\*\*\* \*\*\*\*\*\*  \*\*  PROGRAM STARTED AT\s.*\n'
+                r' \*\*\*\*\* \*\* \*\*\*  \*\*\* \*\*   PROGRAM STARTED ON\s*.*\n'
+                r' \*\*    \*\*\*\*   \*\*\*\*\*\*    PROGRAM STARTED BY .*\n'
+                r' \*\*\*\*\* \*\*    \*\* \*\* \*\*   PROGRAM PROCESS ID .*\n'
+                r'  \*\*\*\* \*\*  \*\*\*\*\*\*\*  \*\*  PROGRAM STARTED IN .*\n')
+        )
         self.out_parser = CP2KOutParser()
         self.inp_parser = InpParser()
         # use a custom xyz parser as the output of cp2k is sometimes not up to standard

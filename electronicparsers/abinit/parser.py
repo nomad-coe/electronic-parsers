@@ -24,6 +24,7 @@ from datetime import datetime
 from ase.data import chemical_symbols
 
 from nomad.units import ureg
+from nomad.parsing.parser import FairdiParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
@@ -701,8 +702,12 @@ class AbinitOutParser(TextParser):
         return [chemical_symbols[int(znucl[n_at - 1])] for n_at in typat]
 
 
-class AbinitParser:
+class AbinitParser(FairdiParser):
     def __init__(self):
+        super().__init__(
+            name='parsers/abinit', code_name='ABINIT', code_homepage='https://www.abinit.org/',
+            mainfile_contents_re=(r'^\n*\.Version\s*[0-9.]*\s*of ABINIT\s*'))
+        # self._metainfo_env = m_env
         self.out_parser = AbinitOutParser()
         self.dos_parser = DataTextParser()
 

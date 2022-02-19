@@ -23,6 +23,7 @@ from datetime import datetime
 from netCDF4 import Dataset  # pylint: disable=no-name-in-module
 from ase.data import chemical_symbols
 
+from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity, FileParser
 from nomad.units import ureg
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
@@ -442,8 +443,11 @@ class InputParser(TextParser):
             Quantity('key_block', r'\n *\% *(\w+)([\s\S]+?)\%', repeats=True, str_operation=str_to_key_block)]
 
 
-class YamboParser:
+class YamboParser(FairdiParser):
     def __init__(self):
+        super().__init__(
+            name='parsers/yambo', code_name='YAMBO', code_homepage='https://yambo-code.org/',
+            mainfile_contents_re=(r'Build.+\s+http://www\.yambo-code\.org'))
         self.mainfile_parser = MainfileParser()
         self.input_parser = InputParser()
         self.netcdf_parser = NetCDFParser()

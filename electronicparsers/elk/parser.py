@@ -23,7 +23,7 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import BasicParser
 
 
-class ElkParser:
+class ElkParser(BasicParser):
     def __init__(self):
         re_f = r'\-*\d+\.\d+E*\-*\+*\d*'
 
@@ -40,8 +40,10 @@ class ElkParser:
                     positions.append([float(v) for v in position.group(1).split()])
             return dict(atom_labels=labels, atom_positions_scaled=positions)
 
-        self._parser = BasicParser(
-            'elk',
+        super().__init__(
+            specifications=dict(
+                name='parsers/elk', code_name='elk', code_homepage='http://elk.sourceforge.net/',
+                mainfile_contents_re=r'\| Elk version [0-9.a-zA-Z]+ started \|'),
             units_mapping=dict(length=ureg.bohr, energy=ureg.hartree),
             program_version=r'Elk version ([\d\.]+) started',
             lattice_vectors=r'Lattice vectors\s*\:\s*([\s\S]+?)\n *\n',
@@ -56,8 +58,4 @@ class ElkParser:
             energy_kinetic_electronic=rf'\n *electron kinetic\s*\:\s*({re_f})',
             energy_correction_hartree=rf'\n *Hartree\s*\:\s*({re_f})',
             energy_correlation=rf'\n *correlation\s*\:\s*({re_f})',
-            energy_exchange=rf'\n *exchange\s*\:\s*({re_f})'
-        )
-
-    def parse(self, mainfile, archive, logger=None):
-        self._parser.parse(mainfile, archive, logger=None)
+            energy_exchange=rf'\n *exchange\s*\:\s*({re_f})')

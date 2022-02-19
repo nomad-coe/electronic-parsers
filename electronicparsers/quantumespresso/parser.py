@@ -23,6 +23,7 @@ from datetime import datetime
 import os
 
 from nomad.units import ureg
+from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
@@ -2125,8 +2126,12 @@ class QuantumEspressoOutParser(TextParser):
             sub_parser=QuantumEspressoRunParser(quantities=run_quantities), repeats=True)]
 
 
-class QuantumEspressoParser:
+class QuantumEspressoParser(FairdiParser):
     def __init__(self):
+        super().__init__(
+            name='parsers/quantumespresso', code_name='Quantum Espresso',
+            code_homepage='https://www.quantum-espresso.org/',
+            mainfile_contents_re=(r'(Program PWSCF.*starts)|(Current dimensions of program PWSCF are)'))
         self.out_parser = QuantumEspressoOutParser()
         self.dos_parser = DataTextParser()
         self.smearing_map = {

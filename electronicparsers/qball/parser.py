@@ -29,6 +29,7 @@ from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.method import Method, BasisSet
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Forces, ForcesEntry
+from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser import Quantity, TextParser
 
 import xml.etree.ElementTree as ElementTree
@@ -38,7 +39,7 @@ def str_to_timestamp(s: str):
     return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ").timestamp()
 
 
-class QBallParser:
+class QBallParser(FairdiParser):
 
     mainfile_parser = TextParser(
         quantities=[
@@ -61,7 +62,11 @@ class QBallParser:
     )
 
     def __init__(self):
-        pass
+        super().__init__(
+            name="parsers/qball",
+            code_name="qball",
+            mainfile_contents_re="qball",
+            supported_compressions=["gz", "bz2", "xz"])
 
     def parse(self, mainfile, archive, logger=None):
         logger = logger if logger is not None else logging.getLogger('__name__')
