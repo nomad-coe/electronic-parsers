@@ -33,8 +33,8 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, ScfIteration, BandEnergies,
     Multipoles, MultipolesEntry, Charges, ChargesValue)
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
-from psi4parser.metainfo.psi4 import x_psi4_root_information
-from psi4parser.metainfo import m_env
+from .metainfo.psi4 import x_psi4_root_information
+from .metainfo import m_env
 
 
 class OutParser(TextParser):

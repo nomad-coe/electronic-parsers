@@ -36,7 +36,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, MolecularDynamics
 
-from nwchemparser.metainfo.nwchem import (
+from .metainfo.nwchem import (
     x_nwchem_section_start_information, x_nwchem_section_qmd_step)
 
 

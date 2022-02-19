@@ -18,7 +18,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, BandEnergies, BandStructure,
     Density, Potential, PotentialValue
 )
-import gpawparser.metainfo.gpaw  # pylint: disable=unused-import
+from .metainfo import gpaw  # pylint: disable=unused-import
 
 
 class GPWParser(TarParser):
