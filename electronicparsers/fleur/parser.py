@@ -312,7 +312,8 @@ class FleurParser(FairdiParser):
         if input is not None:
             for key in ['parameters', 'input_parameters']:
                 setattr(sec_method, f'x_fleur_{key}', {
-                    key: val for key, val in input.get(key, {}).get('key_val', [])})
+                    key: list([float(v) for v in val]) if isinstance(
+                        val, np.ndarray) else val for key, val in input.get(key, {}).get('key_val', [])})
 
         electronic = self.out_parser.electronic
         if electronic is not None:
