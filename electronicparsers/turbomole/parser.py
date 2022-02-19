@@ -39,7 +39,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Thermodynamics, BandEnergies, GW, GWBandEnergies, ScfIteration
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
-import turbomoleparser.metainfo.turbomole  # pylint: disable=unused-import
+from .metainfo import turbomole  # pylint: disable=unused-import
 
 
 MOL = 6.02214076E23

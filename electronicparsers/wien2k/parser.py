@@ -39,7 +39,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     DosValues
 )
 from nomad.datamodel.metainfo.workflow import Workflow
-from wien2kparser.metainfo.wien2k import x_wien2k_section_equiv_atoms
+from .metainfo.wien2k import x_wien2k_section_equiv_atoms
 
 
 class In0Parser(TextParser):

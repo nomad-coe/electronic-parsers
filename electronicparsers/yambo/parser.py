@@ -31,7 +31,7 @@ from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.method import Method
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, BandEnergies, GW, GWBandEnergies)
-from yamboparser.metainfo.yambo import (
+from .metainfo.yambo import (
     x_yambo_dipoles, x_yambo_dynamic_dielectric_matrix_fragment, x_yambo_io,
     x_yambo_dynamic_dielectric_matrix, x_yambo_local_xc_nonlocal_fock,
     x_yambo_dyson, x_yambo_local_xc_nonlocal_fock_bandenergies, x_yambo_bare_xc,
