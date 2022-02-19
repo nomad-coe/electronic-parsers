@@ -17,7 +17,6 @@
 #
 
 import pytest
-import numpy as np
 
 from nomad.datamodel import EntryArchive
 from electronicparsers.dmol3 import Dmol3Parser

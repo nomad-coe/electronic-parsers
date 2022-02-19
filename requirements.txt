@@ -8,3 +8,4 @@ pytest-cov==2.7.1
 lxml
 pyscf
 matid
+netCDF4
