@@ -53,4 +53,4 @@ TAGS
 lib/
 env/
 
-*parser.egg-info/
+*parsers.egg-info/
