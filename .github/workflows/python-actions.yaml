@@ -19,7 +19,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: pycodestyle
       run: |
-        python -m pycodestyle --ignore=E501,E701,E731,E1136 *parsers tests
+        python -m pycodestyle --ignore=E501,E701,E731 *parsers tests
     - name: pylint
       run: |
         python -m pylint --load-plugins=nomad.metainfo.pylint_plugin *parsers tests

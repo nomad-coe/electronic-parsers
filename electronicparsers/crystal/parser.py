@@ -627,15 +627,15 @@ class CrystalParser(FairdiParser):
             None: "scaled",
         }.get(material_type)
         if labels_positions is not None:
-            atomic_numbers = labels_positions[:, 2]
-            atom_labels = labels_positions[:, 3]
-            atom_pos = labels_positions[:, 4:7]
+            atomic_numbers = labels_positions[:, 2]  # pylint: disable=E1136
+            atom_labels = labels_positions[:, 3]  # pylint: disable=E1136
+            atom_pos = labels_positions[:, 4:7]  # pylint: disable=E1136
             lattice = out["lattice_parameters"]
         elif lattice_vectors_restart is not None:
             labels_positions = out["labels_positions_restart"]
-            atomic_numbers = labels_positions[:, 1]
-            atom_labels = labels_positions[:, 2]
-            atom_pos = labels_positions[:, 4:7]
+            atomic_numbers = labels_positions[:, 1]  # pylint: disable=E1136
+            atom_labels = labels_positions[:, 2]  # pylint: disable=E1136
+            atom_pos = labels_positions[:, 4:7]  # pylint: disable=E1136
             lattice = lattice_vectors_restart
             pos_type = "cartesian"
 
@@ -643,18 +643,18 @@ class CrystalParser(FairdiParser):
         # deformations, nanotube construction, etc.) are done on top of the
         # original system, they override the original system.
         if system_edited is not None:
-            if system_edited["labels_positions_nanotube"] is not None:
+            if system_edited["labels_positions_nanotube"] is not None:  # pylint: disable=E1136
                 pos_type = "nanotube"
-                labels_positions = system_edited["labels_positions_nanotube"]
+                labels_positions = system_edited["labels_positions_nanotube"]  # pylint: disable=E1136
             else:
-                labels_positions = system_edited["labels_positions"]
+                labels_positions = system_edited["labels_positions"]  # pylint: disable=E1136
             # TODO adjust re pattern for other formats e.g. with R(ANGS)
             if labels_positions is not None:
-                atomic_numbers = labels_positions[:, 2]
-                atom_labels = labels_positions[:, 3]
-                atom_pos = labels_positions[:, 4:7]
-            if system_edited["lattice_parameters"] is not None:
-                lattice = system_edited["lattice_parameters"]
+                atomic_numbers = labels_positions[:, 2]  # pylint: disable=E1136
+                atom_labels = labels_positions[:, 3]  # pylint: disable=E1136
+                atom_pos = labels_positions[:, 4:7]  # pylint: disable=E1136
+            if system_edited["lattice_parameters"] is not None:  # pylint: disable=E1136
+                lattice = system_edited["lattice_parameters"]  # pylint: disable=E1136
 
         if atomic_numbers is None:
             # TODO define regex pattern for labels_positions to capture other versions
@@ -693,7 +693,7 @@ class CrystalParser(FairdiParser):
             threshold_energy_change=out["scf_threshold_energy_change"])
         dftd3 = out["dftd3"]
         if dftd3:
-            if dftd3["version"] == "VERSION 2":
+            if dftd3["version"] == "VERSION 2":  # pylint: disable=E1136
                 method.electronic.van_der_waals_method = "G06"
             else:
                 method.electronic.van_der_waals_method = "DFT-D3"
@@ -715,9 +715,9 @@ class CrystalParser(FairdiParser):
         method.dft = DFT(xc_functional=XCFunctional())
         dft = out["dft"]
         if dft:
-            exchange = dft["exchange"]
-            correlation = dft["correlation"]
-            exchange_correlation = dft["exchange_correlation"]
+            exchange = dft["exchange"]  # pylint: disable=E1136
+            correlation = dft["correlation"]  # pylint: disable=E1136
+            exchange_correlation = dft["exchange_correlation"]  # pylint: disable=E1136
             functionals = to_libxc(exchange, correlation, exchange_correlation)
             if functionals:
                 add_functionals(functionals)
@@ -757,12 +757,12 @@ class CrystalParser(FairdiParser):
         method.x_crystal_type_of_calculation = out["calculation_type"]
         cappa = out["cappa"]
         if cappa is not None:
-            method.x_crystal_is1 = cappa[0]
-            method.x_crystal_is2 = cappa[1]
-            method.x_crystal_is3 = cappa[2]
-            method.x_crystal_k_pts_monk_net = cappa[3]
-            method.x_crystal_symmops_k = cappa[4]
-            method.x_crystal_symmops_g = cappa[5]
+            method.x_crystal_is1 = cappa[0]  # pylint: disable=E1136
+            method.x_crystal_is2 = cappa[1]  # pylint: disable=E1136
+            method.x_crystal_is3 = cappa[2]  # pylint: disable=E1136
+            method.x_crystal_k_pts_monk_net = cappa[3]  # pylint: disable=E1136
+            method.x_crystal_symmops_k = cappa[4]  # pylint: disable=E1136
+            method.x_crystal_symmops_g = cappa[5]  # pylint: disable=E1136
         method.x_crystal_weight_f = out["weight_f"]
         method.x_crystal_shrink = out["shrink"]
         method.x_crystal_shrink_gilat = out["shrink_gilat"]
@@ -772,7 +772,7 @@ class CrystalParser(FairdiParser):
         basis_set = out["basis_set"]
         covered_species = set()
         if basis_set is not None:
-            for bs in basis_set["basis_sets"]:
+            for bs in basis_set["basis_sets"]:  # pylint: disable=E1136
                 atomic_number = label_to_atomic_number(bs["species"][1])
                 shells = bs["shells"]
                 if atomic_number != covered_species and shells is not None:
@@ -791,7 +791,7 @@ class CrystalParser(FairdiParser):
         if scf_block is not None:
             number_of_scf_iterations = out["number_of_scf_iterations"]
             scc.calculation_converged = number_of_scf_iterations is not None
-            for scf in scf_block["scf_iterations"]:
+            for scf in scf_block["scf_iterations"]:  # pylint: disable=E1136
                 energies = scf["energies"]
                 section_scf = scc.m_create(ScfIteration)
                 section_scf.energy = Energy()
@@ -818,7 +818,7 @@ class CrystalParser(FairdiParser):
             scc.energy = Energy(total=EnergyEntry(value=out["energy_total"]))
         forces = out["forces"]
         if forces is not None:
-            scc.forces = Forces(total=ForcesEntry(value=forces[:, 2:].astype(float) * ureg.hartree / ureg.bohr))
+            scc.forces = Forces(total=ForcesEntry(value=forces[:, 2:].astype(float) * ureg.hartree / ureg.bohr))  # pylint: disable=E1136
         scc.system_ref = system
         scc.method_ref = method
 
@@ -827,7 +827,7 @@ class CrystalParser(FairdiParser):
         if band_structure is not None:
             section_band = scc.m_create(BandStructure, Calculation.band_structure_electronic)
             section_band.reciprocal_cell = atomutils.reciprocal_cell(system.atoms.lattice_vectors.magnitude) * 1 / ureg.meter
-            segments = band_structure["segments"]
+            segments = band_structure["segments"]  # pylint: disable=E1136
             k_points = to_k_points(segments)
             for i_seg, segment in enumerate(segments):
                 section_segment = section_band.m_create(BandEnergies)
@@ -901,7 +901,7 @@ class CrystalParser(FairdiParser):
         # Sampling
         geo_opt = out["geo_opt"]
         if geo_opt is not None:
-            steps = geo_opt["geo_opt_step"]
+            steps = geo_opt["geo_opt_step"]  # pylint: disable=E1136
             if steps is not None:
                 workflow = archive.m_create(Workflow)
                 workflow.type = "geometry_optimization"
@@ -945,7 +945,7 @@ class CrystalParser(FairdiParser):
 
                     frames.append(i_scc)
                 workflow.calculations_ref = frames
-                geometry_opt.is_converged_geometry = geo_opt["converged"] == "CONVERGED"
+                geometry_opt.is_converged_geometry = geo_opt["converged"] == "CONVERGED"  # pylint: disable=E1136
 
         # Remove ghost atom information. The metainfo does not provide a very
         # good way to deal with them currently so they are simply removed.
