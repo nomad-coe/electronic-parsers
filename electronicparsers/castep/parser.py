@@ -42,7 +42,7 @@ from nomad.datamodel.metainfo.workflow import (
     Workflow, GeometryOptimization, MolecularDynamics
 )
 
-from castepparser.metainfo.castep import x_castep_section_phonons, x_castep_section_scf_parameters,\
+from .metainfo.castep import x_castep_section_phonons, x_castep_section_scf_parameters,\
     x_castep_section_density_mixing_parameters, x_castep_section_population_analysis_parameters,\
     x_castep_section_core_parameters, x_castep_section_band_parameters,\
     x_castep_section_ts_parameters, x_castep_section_optics_parameters,\

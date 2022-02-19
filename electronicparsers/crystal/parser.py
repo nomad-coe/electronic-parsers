@@ -39,7 +39,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     BandEnergies, Dos, DosValues
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
-from crystalparser.metainfo.crystal import x_crystal_section_shell
+from .metainfo.crystal import x_crystal_section_shell
 
 
 def capture(regex):

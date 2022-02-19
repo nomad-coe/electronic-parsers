@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 from .abinit.parser import AbinitParser
+from .atk.parser import ATKParser
 from .band.parser import BandParser
 from .bigdft.parser import BigDFTParser
 from .castep.parser import CastepParser
