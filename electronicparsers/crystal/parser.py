@@ -26,7 +26,6 @@ import numpy as np
 
 from nomad.units import ureg
 from nomad import atomutils
-from nomad.parsing.parser import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.system import (
@@ -57,18 +56,11 @@ word_c = capture(word)                             # Captures a single alphanume
 br = r'\r?\n'                                      # Newline that works for both Windows and Unix. Crystal can be run on a Windows machine as well.
 
 
-class CrystalParser(FairdiParser):
+class CrystalParser:
     """NOMAD-lab parser for Crystal.
     """
     def __init__(self):
-        super().__init__(
-            name='parsers/crystal',
-            code_name='Crystal',
-            code_homepage='https://www.crystal.unito.it/',
-            mainfile_contents_re=(
-                fr'({br} \*\s+CRYSTAL[\d]+\s+\*{br} \*\s*{word} : \d+[\.\d+]*)'
-            )
-        )
+        pass
 
     def parse_output(self, filepath):
         """Reads the calculation output.

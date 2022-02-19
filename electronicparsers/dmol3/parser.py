@@ -21,17 +21,16 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import BasicParser
 
 
-class Dmol3Parser(BasicParser):
+class Dmol3Parser:
     def __init__(self):
         re_f = r'\-*\d+\.\d+E*\-*\+*\d*'
 
-        super().__init__(
-            specifications=dict(
-                name='parsers/dmol', code_name='DMol3',
-                code_homepage='http://dmol3.web.psi.ch/dmol3.html', domain='dft',
-                mainfile_name_re=r'.*\.outmol',
-                mainfile_contents_re=r'Materials Studio DMol\^3'),
+        self._parser = BasicParser(
+            'DMol3',
             units_mapping=dict(length=ureg.bohr, energy=ureg.hartree),
             program_version=r'Materials Studio DMol\^3 (version \S+)',
             atom_labels_atom_positions=r'ATOMIC  COORDINATES \(au\) +DERIVATIVES \(au\)([\s\S]+?)\n *\n',
             energy_total=rf'Total E \(au\).+\s*\-+\s*Ef +({re_f}).+\s*\-+')
+
+    def parse(self, mainfile, archive, logger=None):
+        self._parser.parse(mainfile, archive, logger=None)

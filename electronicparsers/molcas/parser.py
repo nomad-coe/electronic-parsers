@@ -24,7 +24,7 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import BasicParser
 
 
-class MolcasParser(BasicParser):
+class MolcasParser:
     def __init__(self):
         re_f = r'\-*\d+\.\d+E*e*\-*\+*\d*'
 
@@ -36,12 +36,14 @@ class MolcasParser(BasicParser):
                 labels, positions = [], []
             return dict(atom_labels=labels, atom_positions=positions)
 
-        super().__init__(
-            specifications=dict(
-                name='parsers/molcas', code_name='MOLCAS', code_homepage='http://www.molcas.org/',
-                domain='dft', mainfile_contents_re=r'M O L C A S'),
+        self._parser = BasicParser(
+            'MOLCAS',
             units_mapping=dict(length=ureg.bohr, energy=ureg.hartree),
             # include code name to distinguish gamess and firefly
             program_version=r'version ([\d\.]+ patchlevel \d+)',
             atom_labels_atom_positions=(r'No\. +Label +X +Y +Z\s*([\s\S]+?)\n *\n', get_positions),
-            energy_total=rf'Total.* energy *\:*\=* *({re_f})')
+            energy_total=rf'Total.* energy *\:*\=* *({re_f})'
+        )
+
+    def parse(self, mainfile, archive, logger=None):
+        self._parser.parse(mainfile, archive, logger=None)

@@ -22,7 +22,6 @@ from datetime import datetime
 import numpy as np
 
 from nomad.units import ureg
-from nomad.parsing.parser import FairdiParser
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
@@ -557,11 +556,8 @@ class OutParser(TextParser):
         ]
 
 
-class Psi4Parser(FairdiParser):
+class Psi4Parser:
     def __init__(self):
-        super().__init__(
-            name='parsers/psi4', code_name='Psi4', code_homepage='https://psicode.org/',
-            mainfile_contents_re=(r'Psi4: An Open-Source Ab Initio Electronic Structure Package'))
         self.m_env = m_env
         self.out_parser = OutParser()
         self._xc_map = {

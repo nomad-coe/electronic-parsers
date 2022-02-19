@@ -39,7 +39,6 @@ import re
 from xml.sax import ContentHandler, make_parser  # type: ignore
 
 from nomad.units import ureg
-from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
@@ -1118,20 +1117,8 @@ class RunContentParser(ContentParser):
         return dos, fields
 
 
-class VASPParser(FairdiParser):
+class VASPParser:
     def __init__(self):
-        super().__init__(
-            name='parsers/vasp', code_name='VASP', code_homepage='https://www.vasp.at/',
-            mainfile_mime_re=r'(application/.*)|(text/.*)',
-            mainfile_name_re=r'.*[^/]*xml[^/]*',  # only the alternative mainfile name should match
-            mainfile_contents_re=(
-                r'^\s*<\?xml version="1\.0" encoding="ISO-8859-1"\?>\s*'
-                r'?\s*<modeling>'
-                r'?\s*<generator>'
-                r'?\s*<i name="program" type="string">\s*vasp\s*</i>'
-                r'?|^\svasp[\.\d]+.+?(?:\(build|complex)[\s\S]+?executed on'),
-            supported_compressions=['gz', 'bz2', 'xz'], mainfile_alternative=True)
-
         self._vasprun_parser = RunContentParser()
         self._outcar_parser = OutcarContentParser()
 

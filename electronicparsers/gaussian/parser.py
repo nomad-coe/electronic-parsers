@@ -6,7 +6,6 @@ import ase
 from .metainfo import m_env
 
 from nomad.units import ureg
-from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
@@ -360,14 +359,8 @@ class GaussianOutParser(TextParser):
         ]
 
 
-class GaussianParser(FairdiParser):
+class GaussianParser:
     def __init__(self):
-        super().__init__(
-            name='parsers/gaussian', code_name='Gaussian', code_homepage='http://gaussian.com/',
-            mainfile_mime_re=r'.*', mainfile_contents_re=(
-                r'\s*Cite this work as:'
-                r'\s*Gaussian [0-9]+, Revision [A-Za-z0-9\.]*,'))
-
         self._metainfo_env = m_env
         self.out_parser = GaussianOutParser()
 

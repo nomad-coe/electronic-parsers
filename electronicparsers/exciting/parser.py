@@ -21,8 +21,6 @@ import os
 import re
 import logging
 
-from nomad.parsing.parser import FairdiParser
-
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program
@@ -1066,11 +1064,8 @@ class ExcitingInfoParser(TextParser):
         return self.get('initialization', {}).get(key, default)
 
 
-class ExcitingParser(FairdiParser):
+class ExcitingParser:
     def __init__(self):
-        super().__init__(
-            name='parsers/exciting', code_name='exciting', code_homepage='http://exciting-code.org/',
-            mainfile_name_re=r'^.*.OUT(\.[^/]*)?$', mainfile_contents_re=(r'EXCITING.*started'))
         self.info_parser = ExcitingInfoParser()
         self.dos_parser = DOSXMLParser(energy_unit=ureg.hartree)
         self.bandstructure_parser = BandstructureXMLParser(energy_unit=ureg.hartree)
