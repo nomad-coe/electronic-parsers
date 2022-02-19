@@ -1,0 +1,1725 @@
+1
+                 Chemistry at HARvard Macromolecular Mechanics
+                (CHARMM) - Free Version 41b2   February 15, 2017                
+                                      605                                       
+       Copyright(c) 1984-2014  President and Fellows of Harvard College
+                              All Rights Reserved
+         Current operating system: Darwin-16.7.0(x86_64)@imacberk.local         
+                 Created on  2/2/18 at 16:42:55 by user: bonat       
+
+            Maximum number of ATOMS:    360720, and RESidues:      120240
+ RDTITL> *  H2O TEST RUN FOR NOSE-HOOVER DYNAMICS
+ RDTITL> *  PART I (SINGLE THERMOBATH)
+ RDTITL> *
+  
+ CHARMM>     
+  
+ CHARMM>    if ?NUMNODE .gt. 1 then
+ RDCMND substituted energy or value "?NUMNODE" to "1"
+ Comparing "1" and "1".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>    if ?olddyn .ne. 1 then
+ RDCMND substituted energy or value "?OLDDYN" to "1"
+ Comparing "1" and "1".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>     
+  
+ CHARMM>    stream datadir.def
+ VOPEN> Attempting to open::DATADIR.DEF::
+ OPNLGU> Unit 99 opened for READONLY access to DATADIR.DEF
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * CHARMM TESTCASE DATA DIRECTORY ASSIGNMENT
+ RDTITL> *
+ Parameter: IN1 <- "" <empty>
+  
+ CHARMM>    faster on
+ MISCOM> FAST option: EXPANDED (limited fast routines)
+  
+ CHARMM>    set pnode =
+ Parameter: PNODE <- "" <empty>
+  
+ CHARMM>    if ?numnode .gt. 1 set pnode = node 0
+ RDCMND substituted energy or value "?NUMNODE" to "1"
+ Comparing "1" and "1".
+ IF test evaluated as false.  Skipping command
+  
+ CHARMM>    set 0 ./     ! input data directory
+ Parameter: 0 <- "./"
+  
+ CHARMM>    set 9 ./  ! scratch directory
+ Parameter: 9 <- "./"
+  
+ CHARMM>    set testcheck stream @0/test.str
+ Parameter: 0 -> "./"
+ Parameter: TESTCHECK <- "STREAM .//TEST.STR"
+  
+ CHARMM>    set qcheck stream @0/qtest.str
+ Parameter: 0 -> "./"
+ Parameter: QCHECK <- "STREAM .//QTEST.STR"
+  
+ CHARMM>    set testfail 0
+ Parameter: TESTFAIL <- "0"
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>    WRNLEV 4
+  
+ CHARMM>    BOMBLEV -2
+  
+ CHARMM>     
+  
+ CHARMM>    OPEN READ FORM UNIT 1 NAME  @0toph8.rtf
+ Parameter: 0 -> "./"
+ VOPEN> Attempting to open::./TOPH8.RTF::
+ OPNLGU> Unit  1 opened for READONLY access to ./TOPH8.RTF
+  
+ CHARMM>    READ RTF  CARD UNIT 1
+ MAINIO> Residue topology file being read from unit   1.
+ TITLE> * TOPOLOGY FILE FOR PROTEINS USING EXPLICIT HYDROGEN ATOMS: VERSION 8
+ TITLE> *
+ **** WARNING from RTFRDR **** The total charge of the residue, PROP,   0.5410000,
+ does not equal the expected charge,   0.7310000.
+          PRES CTER   -0.73000
+ There were   1 warning(s) from RTFRDR.
+  
+ CHARMM>    OPEN READ FORM UNIT 2 NAME  @0param3.prm
+ Parameter: 0 -> "./"
+ VOPEN> Attempting to open::./PARAM3.PRM::
+ OPNLGU> Unit  2 opened for READONLY access to ./PARAM3.PRM
+  
+ CHARMM>    READ PARAMETER CARD UNIT 2
+
+          PARAMETER FILE BEING READ FROM UNIT  2
+ TITLE> * PARAMETER FILE PARAM3.INP
+ TITLE> *
+ PARMIO> NONBOND, HBOND lists and IMAGE atoms cleared.
+  
+ CHARMM>    READ SEQUENCE WATER 125
+  
+ CHARMM>    GENERATE
+ NO PATCHING WILL BE DONE ON THE FIRST RESIDUE
+ NO PATCHING WILL BE DONE ON THE LAST  RESIDUE
+ GENPSF> Segment   1 has been generated. Its identifier is 1.
+ PSFSUM> PSF modified: NONBOND lists and IMAGE atoms cleared.
+ PSFSUM> Summary of the structure file counters :
+         Number of segments      =        1   Number of residues   =      125
+         Number of atoms         =      375   Number of groups     =      125
+         Number of bonds         =      250   Number of angles     =      125
+         Number of dihedrals     =        0   Number of impropers  =        0
+         Number of cross-terms   =        0
+         Number of HB acceptors  =      125   Number of HB donors  =      250
+         Number of NB exclusions =        0   Total charge =    0.00000
+  
+ CHARMM>     
+  
+ CHARMM>    SET 6 15.517182
+ Parameter: 6 <- "15.517182"
+  
+ CHARMM>    SET 7 15.517182
+ Parameter: 7 <- "15.517182"
+  
+ CHARMM>    SET 8 15.517182
+ Parameter: 8 <- "15.517182"
+  
+ CHARMM>    OPEN UNIT 8 READ CARD NAME @0cubic.img
+ Parameter: 0 -> "./"
+ VOPEN> Attempting to open::./CUBIC.IMG::
+ OPNLGU> Unit  8 opened for READONLY access to ./CUBIC.IMG
+  
+ CHARMM>    READ IMAG UNIT 8
+ TITLE> * IMAGE FILE FOR CUBIC TRANSFORMATION
+ TITLE> * BOX SIZE IS 15.517182 X 15.517182 X 15.517182 ANGSTROMS
+ TITLE> *
+
+             READING IMAGE FILE FROM UNIT    8
+
+
+    26  TRANSFORMATIONS HAVE BEEN READ
+
+                     THERE ARE NO ROTATIONS FOR THIS TRANSFORMATION SET
+  
+ CHARMM>    PRINT IMAGES TRAN
+ TITLE>  *  H2O TEST RUN FOR NOSE-HOOVER DYNAMICS
+ TITLE>  *  PART I (SINGLE THERMOBATH)
+ TITLE>  *
+
+ NUMBER OF TRANSFORMATIONS IS  26
+
+ TRANSFORMATION   1  NAME:    X     INVERSE   2
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                     15.517182  0.000000  0.000000
+
+ TRANSFORMATION   2  NAME:    A     INVERSE   1
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                    -15.517182  0.000000  0.000000
+
+ TRANSFORMATION   3  NAME:    XY    INVERSE   8
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                     15.517182 15.517182  0.000000
+
+ TRANSFORMATION   4  NAME:    Y     INVERSE   7
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                      0.000000 15.517182  0.000000
+
+ TRANSFORMATION   5  NAME:    AY    INVERSE   6
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                    -15.517182 15.517182  0.000000
+
+ TRANSFORMATION   6  NAME:    XB    INVERSE   5
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                     15.517182-15.517182  0.000000
+
+ TRANSFORMATION   7  NAME:    B     INVERSE   4
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                      0.000000-15.517182  0.000000
+
+ TRANSFORMATION   8  NAME:    AB    INVERSE   3
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                    -15.517182-15.517182  0.000000
+
+ TRANSFORMATION   9  NAME:    XZ    INVERSE  20
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                     15.517182  0.000000 15.517182
+
+ TRANSFORMATION  10  NAME:    Z     INVERSE  19
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                      0.000000  0.000000 15.517182
+
+ TRANSFORMATION  11  NAME:    AZ    INVERSE  18
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                    -15.517182  0.000000 15.517182
+
+ TRANSFORMATION  12  NAME:    XYZ   INVERSE  26
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                     15.517182 15.517182 15.517182
+
+ TRANSFORMATION  13  NAME:    YZ    INVERSE  25
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                      0.000000 15.517182 15.517182
+
+ TRANSFORMATION  14  NAME:    AYZ   INVERSE  24
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                    -15.517182 15.517182 15.517182
+
+ TRANSFORMATION  15  NAME:    XBZ   INVERSE  23
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                     15.517182-15.517182 15.517182
+
+ TRANSFORMATION  16  NAME:    BZ    INVERSE  22
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                      0.000000-15.517182 15.517182
+
+ TRANSFORMATION  17  NAME:    ABZ   INVERSE  21
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                    -15.517182-15.517182 15.517182
+
+ TRANSFORMATION  18  NAME:    XC    INVERSE  11
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                     15.517182  0.000000-15.517182
+
+ TRANSFORMATION  19  NAME:    C     INVERSE  10
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                      0.000000  0.000000-15.517182
+
+ TRANSFORMATION  20  NAME:    AC    INVERSE   9
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                    -15.517182  0.000000-15.517182
+
+ TRANSFORMATION  21  NAME:    XYC   INVERSE  17
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                     15.517182 15.517182-15.517182
+
+ TRANSFORMATION  22  NAME:    YC    INVERSE  16
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                      0.000000 15.517182-15.517182
+
+ TRANSFORMATION  23  NAME:    AYC   INVERSE  15
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                    -15.517182 15.517182-15.517182
+
+ TRANSFORMATION  24  NAME:    XBC   INVERSE  14
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                     15.517182-15.517182-15.517182
+
+ TRANSFORMATION  25  NAME:    BC    INVERSE  13
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                      0.000000-15.517182-15.517182
+
+ TRANSFORMATION  26  NAME:    ABC   INVERSE  12
+                      1.000000  0.000000  0.000000
+                      0.000000  1.000000  0.000000
+                      0.000000  0.000000  1.000000
+                    -15.517182-15.517182-15.517182
+  
+ CHARMM>     
+  
+ CHARMM>    OPEN UNIT 3 READ CARD NAME @0wat125.crd
+ Parameter: 0 -> "./"
+ VOPEN> Attempting to open::./WAT125.CRD::
+ OPNLGU> Unit  3 opened for READONLY access to ./WAT125.CRD
+  
+ CHARMM>    READ COORD CARD UNIT 3
+          SPATIAL COORDINATES BEING READ FROM UNIT  3
+ TITLE> * 125 WATERS - INTERMEDIATE DYNAMICS RESULTS
+ TITLE> * MODIFIED RTF - OXYGEN CHARGE=-.4, HYDROGEN CHARGE=+.2
+ TITLE> *
+  
+ CHARMM>     
+  
+ CHARMM>    IMAGE BYGROUPS XCEN 0.0 YCEN 0.0 ZCEN 0.0 SELE ALL END
+ SELRPN>    375 atoms have been selected out of    375
+ IMAGE CENTERING ON FOR SOME ATOMS
+  
+ CHARMM>     
+  
+ CHARMM>    SHAKE BOND ANGLE TOL 1.0D-9
+ SHKCOM> SHAKE parameters: TOL =   0.1000D-08 MXITer =    500
+
+             375 constraints will held by SHAKE.
+  
+ CHARMM>     
+  
+ CHARMM>    UPDATE INBFRQ 5 IHBFRQ 0  -
+ CHARMM>           CUTIM 8.0  IMGFRQ 5 -
+ CHARMM>           ATOM SHIFT VATOM VSWITCH -
+ CHARMM>           CUTNB 8.0  CTOFNB 7.5   CTONNB 6.5  EPS 1.0 CDIE
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ GROUP    7 OPERATED ON BY TRANSFORMATION C   
+ GROUP    8 OPERATED ON BY TRANSFORMATION A   
+ GROUP   18 OPERATED ON BY TRANSFORMATION Y   
+ GROUP   21 OPERATED ON BY TRANSFORMATION Y   
+ GROUP   22 OPERATED ON BY TRANSFORMATION A   
+ GROUP   25 OPERATED ON BY TRANSFORMATION B   
+ GROUP   37 OPERATED ON BY TRANSFORMATION X   
+ GROUP   39 OPERATED ON BY TRANSFORMATION Z   
+ GROUP   44 OPERATED ON BY TRANSFORMATION Y   
+ GROUP   47 OPERATED ON BY TRANSFORMATION XY  
+ GROUP   49 OPERATED ON BY TRANSFORMATION X   
+ GROUP   59 OPERATED ON BY TRANSFORMATION Z   
+ GROUP   61 OPERATED ON BY TRANSFORMATION A   
+ GROUP   62 OPERATED ON BY TRANSFORMATION X   
+ GROUP   67 OPERATED ON BY TRANSFORMATION A   
+ GROUP   77 OPERATED ON BY TRANSFORMATION B   
+ GROUP   87 OPERATED ON BY TRANSFORMATION B   
+ GROUP   94 OPERATED ON BY TRANSFORMATION X   
+ GROUP   99 OPERATED ON BY TRANSFORMATION X   
+ GROUP  108 OPERATED ON BY TRANSFORMATION B   
+ GROUP  111 OPERATED ON BY TRANSFORMATION AC  
+ GROUP  113 OPERATED ON BY TRANSFORMATION X   
+ GROUP  116 OPERATED ON BY TRANSFORMATION C   
+ GROUP  120 OPERATED ON BY TRANSFORMATION Z   
+ GROUP  123 OPERATED ON BY TRANSFORMATION X   
+ GROUP  124 OPERATED ON BY TRANSFORMATION B   
+
+ <MKIMAT2>: updating the image atom lists and remapping
+ Transformation   Atoms  Groups  Residues  Min-Distance
+    1  X    has     192      64      64        0.00
+    3  XY   has      75      25      25        0.00
+    4  Y    has     183      61      61        0.00
+    5  AY   has      63      21      21        0.00
+    9  XZ   has      51      17      17        0.09
+   10  Z    has     204      68      68        0.00
+   11  AZ   has      78      26      26        0.22
+   12  XYZ  has      18       6       6        2.61
+   13  YZ   has      66      22      22        0.00
+   14  AYZ  has      24       8       8        0.22
+   15  XBZ  has      12       4       4        2.84
+   16  BZ   has      54      18      18        0.72
+   17  ABZ  has      21       7       7        2.10
+ Total of 1416 atoms and  472 groups and  472 residues were included
+
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      ATOMs    CDIElec  SHIFt    VATOm    VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  =  8.000 CTEXNB =999.000 CTONNB =  6.500 CTOFNB =  7.500
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are        0 atom  pairs and        0 atom  exclusions.
+ There are        0 group pairs and        0 group exclusions.
+ <MAKINB> with mode   5 found    375 exclusions and      0 interactions(1-4)
+ <MAKGRP> found      0 group exclusions.
+ <MAKGRP> found      0 image group exclusions.
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR    20106 ATOM PAIRS AND        0 GROUP PAIRS
+ == PRIMARY == SPACE FOR    30179 ATOM PAIRS AND        0 GROUP PAIRS
+
+ General atom nonbond list generation found:
+    20223 ATOM PAIRS WERE FOUND FOR ATOM LIST
+     1610 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+ SPACE FOR    57500 ATOM PAIRS AND        0 GROUP PAIRS
+
+ Image nonbond list generation found:
+    19362 ATOM PAIRS WERE FOUND FOR ATOM LIST
+        0 ATOM PAIRS WERE FOUND FOR ATOM SELF LIST
+     2647 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+  
+ CHARMM>     
+  
+ CHARMM>    OPEN WRITE UNIT 31 CARD NAME @9FOR015.RST
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::./for015.rst::
+ OPNLGU> Unit 31 opened for WRITE access to ./for015.rst
+  
+ CHARMM>     
+  
+ CHARMM>    DYNA NOSE QREF 50.0 TREF 300.0 NCYC 5 FIRSTT 100 -
+ CHARMM>         STRT NSTEP 100  TIME 0.001 NPRINT 10 IPRFRQ 100 -
+ CHARMM>         IUNREA -1 IUNWRI 31  IUNCRD -1  IUNVEL  -1 -
+ CHARMM>         KUNIT  -1  NSAVC 50  NSAVV  50  ISVFRQ 1000
+  IUNREA = -1         IUNWRI = 31          IUNOS = -1
+  IUNCRD = -1         IUNVEL = -1          KUNIT = -1
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      ATOMs    CDIElec  SHIFt    VATOm    VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  =  8.000 CTEXNB =999.000 CTONNB =  6.500 CTOFNB =  7.500
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are    20223 atom  pairs and      375 atom  exclusions.
+ There are        0 group pairs and        0 group exclusions.
+ DCNTRL> Nose-Hoover dynamcs requested.
+         Reference temperature         =  300.0000000 K.
+         Temperature coupling constant =   50.0000000Kcal sec**2
+         Cycles of convergence         =     5
+
+   NSTEP =      100    NSAVC =       50    NSAVV =       50
+  ISCALE =        0   ISCVEL =        0   IASORS =        0
+  IASVEL =        1   ICHECW =        1   NTRFRQ =        0
+  IHTFRQ =        0   IEQFRQ =        0   NPRINT =       10
+  INBFRQ =        5   IHBFRQ =        0   IPRFRQ =      100
+  ILBFRQ =       50   IMGFRQ =        5
+  ISVFRQ =     1000   NCYCLE =        5    NSNOS =       10
+  FIRSTT =   100.000  TEMINC =     5.000  TSTRUC =  -999.000
+  FINALT =   298.150  TWINDH =    10.000  TWINDL =   -10.000
+
+  TIME STEP =  2.04548E-02 AKMA       1.00000E-03 PS
+
+  RANDOM NUM. GEN. SEED(S) = 1466319695 1466319695 1466319695 1466319695
+
+           SHAKE TOLERANCE =     0.10000E-08
+ BLOCK   1 # OF DEGREES OF FREEDOM =    747
+ NUMBER OF DEGREES OF FREEDOM =    747
+
+          GAUSSIAN OPTION                  IS            1
+          VELOCITIES ASSIGNED AT TEMPERATURE =    125.0000
+          SEED FOR RANDOM NUMBER GENERATOR IS:
+          SEEDS> 1466319695 1466319695 1466319695 1466319695
+
+     DETAILS ABOUT CENTRE OF MASS
+     POSITION          :  -2.22763190E-02  -0.16775935       3.21630263E-02
+     VELOCITY          :  -1.83456586E-02   4.41685653E-03   5.39975272E-04
+     ANGULAR MOMENTUM  :   -70.631068        168.26942        34.536710    
+     KINETIC ENERGY    :   0.40125181    
+DYNA DYN: Step         Time      TOTEner        TOTKe       ENERgy  TEMPerature
+DYNA PROP:             GRMS      HFCTote        HFCKe       EHFCor        VIRKe
+DYNA INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+DYNA EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+DYNA IMAGES:        IMNBvdw       IMELec       IMHBnd       RXNField    EXTElec
+DYNA PRESS:            VIRE         VIRI       PRESSE       PRESSI       VOLUme
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>        0      0.00000   -185.51527    147.54770   -333.06296    198.79352
+DYNA PROP>          3.03211   -185.51527      0.00000      0.00000    -30.25208
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -76.22682   -159.16963      0.00000      0.00000      0.00000
+DYNA IMAGES>      -40.78528    -56.88126      0.00000      0.00000      0.00000
+DYNA PRESS>      -141.22553    161.39359      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step         5
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step         5
+DYNA>       10      0.01000   -231.44676    132.77792   -343.84297    178.89395
+DYNA PROP>          2.90087   -211.06504      0.00000    -20.38172    -74.40233
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -80.24097   -163.23551      0.00000      0.00000      0.00000
+DYNA IMAGES>      -42.44943    -57.91708      0.00000      0.00000      0.00000
+DYNA PRESS>       -80.55092    130.15248      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        10
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        10
+ UPDECI: Image update at step        15
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        15
+DYNA>       20      0.02000   -231.62448    227.17120   -357.10833    306.07162
+DYNA PROP>          2.80537   -129.93713      0.00000   -101.68735   -190.45428
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -83.85990   -164.01936      0.00000      0.00000      0.00000
+DYNA IMAGES>      -45.40880    -63.82029      0.00000      0.00000      0.00000
+DYNA PRESS>        38.50779     88.46173      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        20
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        20
+ UPDECI: Image update at step        25
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        25
+DYNA>       30      0.03000   -231.84305    338.75580   -346.37873    456.41143
+DYNA PROP>          2.93858     -7.62294      0.00000   -224.22011   -233.56117
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -84.53901   -150.26715      0.00000      0.00000      0.00000
+DYNA IMAGES>      -47.16833    -64.40427      0.00000      0.00000      0.00000
+DYNA PRESS>        77.77961     77.92783      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        30
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        30
+ UPDECI: Image update at step        35
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        35
+DYNA>       40      0.04000   -231.78741    335.16744   -314.22031    451.57678
+DYNA PROP>          3.20795     20.94713      0.00000   -252.73454   -224.61583
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -83.87784   -127.77341      0.00000      0.00000      0.00000
+DYNA IMAGES>      -46.71933    -55.84975      0.00000      0.00000      0.00000
+DYNA PRESS>        54.63260     95.11129      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        40
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        40
+ UPDECI: Image update at step        45
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        45
+DYNA>       50      0.05000   -231.55688    235.37346   -288.89909    317.12266
+DYNA PROP>          3.48988    -53.52563      0.00000   -178.03124   -202.63237
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -77.11283   -119.25418      0.00000      0.00000      0.00000
+DYNA IMAGES>      -44.68499    -47.84712      0.00000      0.00000      0.00000
+DYNA PRESS>        -8.87186    143.96011      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        50
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        50
+ UPDECI: Image update at step        55
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        55
+DYNA>       60      0.06000   -231.44373    167.61403   -284.68361    225.82922
+DYNA PROP>          3.71055   -117.06958      0.00000   -114.37415   -240.72457
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -72.11898   -121.20246      0.00000      0.00000      0.00000
+DYNA IMAGES>      -42.03525    -49.32694      0.00000      0.00000      0.00000
+DYNA PRESS>       -19.50282    179.98587      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        60
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        60
+ UPDECI: Image update at step        65
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        65
+DYNA>       70      0.07000   -231.44705    158.60646   -300.18915    213.69318
+DYNA PROP>          3.27190   -141.58269      0.00000    -89.86437   -238.63325
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -77.09533   -129.15939      0.00000      0.00000      0.00000
+DYNA IMAGES>      -42.15648    -51.77797      0.00000      0.00000      0.00000
+DYNA PRESS>         1.66716    157.42168      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        70
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        70
+ UPDECI: Image update at step        75
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        75
+DYNA>       80      0.08000   -231.48121    180.85057   -313.18781    243.66304
+DYNA PROP>          2.97347   -132.33723      0.00000    -99.14397   -228.45009
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -80.16933   -136.76794      0.00000      0.00000      0.00000
+DYNA IMAGES>      -44.20939    -52.04116      0.00000      0.00000      0.00000
+DYNA PRESS>        21.74871    130.55135      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        80
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        80
+ UPDECI: Image update at step        85
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        85
+DYNA>       90      0.09000   -231.53806    218.25566   -312.95184    294.05955
+DYNA PROP>          3.06793    -94.69618      0.00000   -136.84187   -180.62102
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -81.22348   -136.70943      0.00000      0.00000      0.00000
+DYNA IMAGES>      -43.38528    -51.63367      0.00000      0.00000      0.00000
+DYNA PRESS>        -9.58449    129.99850      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        90
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        90
+ UPDECI: Image update at step        95
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        95
+DYNA>      100      0.10000   -231.61109    260.31032   -306.86608    350.72051
+DYNA PROP>          3.17798    -46.55576      0.00000   -185.05532   -187.38652
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -79.06143   -134.39991      0.00000      0.00000      0.00000
+DYNA IMAGES>      -42.85454    -50.55022      0.00000      0.00000      0.00000
+DYNA PRESS>       -17.67664    142.60098      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ * * * AVERAGES FOR THE LAST      100 STEPS
+AVER DYN: Step         Time      TOTEner        TOTKe       ENERgy  TEMPerature
+AVER PROP:             GRMS      HFCTote        HFCKe       EHFCor        VIRKe
+AVER INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+AVER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+AVER IMAGES:        IMNBvdw       IMELec       IMHBnd       RXNField    EXTElec
+AVER PRESS:            VIRE         VIRI       PRESSE       PRESSI       VOLUme
+ ----------       ---------    ---------    ---------    ---------    ---------
+AVER>      100      0.10000   -231.56645    218.04169   -318.07308    293.77127
+AVER PROP>          3.14961   -100.03139      0.00000   -131.53507   -190.26378
+AVER INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+AVER EXTERN>      -79.86297   -139.43343      0.00000      0.00000      0.00000
+AVER IMAGES>      -44.01658    -54.76011      0.00000      0.00000      0.00000
+AVER PRESS>        -1.42817    128.27069      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ * * * RMS FLUCTUATIONS FOR      100 STEPS
+FLUC>      100      0.10000      0.14157     70.90231     23.46379     95.52788
+FLUC PROP>          0.27502     71.17741      0.00000     71.29795     58.48810
+FLUC EXTERN>        3.68645     15.39567      0.00000      0.00000      0.00000
+FLUC IMAGES>        1.88165      5.82583      0.00000      0.00000      0.00000
+FLUC PRESS>        50.77518     30.94988      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+
+     DRIFT/STEP (LAST-TOTAL):    8.32589246E-04   8.32589246E-04
+     EPROP(EPOT) AT STEP 0  :    -231.60850       -231.60850    
+     CORR. COEFFICIENT      :    0.16976565       0.16976565    
+ WRIDYN: RESTart file was written at step     100
+ VCLOSE: Closing unit   31 with status "KEEP"
+
+     DETAILS ABOUT CENTRE OF MASS
+     POSITION          :  -0.14641377      -4.36218943E-02   3.21630263E-02
+     VELOCITY          :  -1.44280851E-13   9.19353456E-14   1.18129501E-13
+     ANGULAR MOMENTUM  :    350.99991        308.84964       -288.35407    
+     KINETIC ENERGY    :   4.86682097E-23
+  
+ CHARMM>     
+  
+ CHARMM>    @testcheck ?tote -243.82431 0.0001 nose1_1_tot
+ Parameter: TESTCHECK -> "STREAM .//TEST.STR"
+ RDCMND substituted energy or value "?TOTE" to "-231.611086"
+ VOPEN> Attempting to open::.//TEST.STR::
+ OPNLGU> Unit 99 opened for READONLY access to .//TEST.STR
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * TESTING AGAINST REFERENCE VALUE
+ RDTITL> *
+ Parameter: IN1 <- "-231.611086"
+ Parameter: IN2 <- "-243.82431"
+ Parameter: IN3 <- "0.0001"
+ Parameter: IN4 <- "NOSE1_1_TOT"
+  
+ CHARMM>    ! stream @0test.str VAL REF TOL TESTID ! All arguments required
+ CHARMM>    ! checks if |val-ref| > tol*|ref|
+ CHARMM>    ! if tol < 0 or ref=0 an absolute test is performed vs |tol|
+ CHARMM>    ! sets teststat to pass or fail and increments testfail by 1 if test not passed
+ CHARMM>    ! echo @tstid  testcase result: @teststat
+ CHARMM>     
+  
+ CHARMM>    ! LNilsson, March 2011, September 2014
+ CHARMM>     
+  
+ CHARMM>    calc tst01 = abs( @IN1 - @IN2 )
+ Parameter: IN1 -> "-231.611086"
+ Parameter: IN2 -> "-243.82431"
+Evaluating: ABS(-231.611086--243.82431)
+ Parameter: TST01 <- "12.213224"
+  
+ CHARMM>    if @IN3 gt 0 then
+ Parameter: IN3 -> "0.0001"
+ Comparing "0.0001" and "0".
+ IF test evaluated as true.  Performing command
+  
+ CHARMM>       calc bogus = abs( @in2 )
+ Parameter: IN2 -> "-243.82431"
+Evaluating: ABS(-243.82431)
+ Parameter: BOGUS <- "243.82431"
+  
+ CHARMM>       if @bogus le 0 then
+ Parameter: BOGUS -> "243.82431"
+ Comparing "243.82431" and "0".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>         calc tst02 = abs( @IN2 * @IN3 )
+ Parameter: IN2 -> "-243.82431"
+ Parameter: IN3 -> "0.0001"
+Evaluating: ABS(-243.82431*0.0001)
+ Parameter: TST02 <- "2.4382431E-02"
+  
+ CHARMM>       endif
+  
+ CHARMM>    else
+ Skip commands until next ENDIF
+  
+ CHARMM>    set xxxprnl ?prnlev
+ RDCMND substituted energy or value "?PRNLEV" to "5"
+ Parameter: XXXPRNL <- "5"
+  
+ CHARMM>    prnlev 2 @pnode
+ Parameter: PNODE -> "" <empty>
+ Comparing "12.213224" and "2.4382431E-02".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+ Parameter: TESTSTAT <- "FAIL"
+ Parameter: TESTFAIL <- "1"
+NOSE1_1_TOT TESTCASE RESULT: FAIL
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>     
+  
+ CHARMM>    energy
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ GROUP   99 OPERATED ON BY TRANSFORMATION Y   
+
+ <MKIMAT2>: updating the image atom lists and remapping
+ Transformation   Atoms  Groups  Residues  Min-Distance
+    1  X    has     198      66      66        0.00
+    3  XY   has      72      24      24        0.00
+    4  Y    has     198      66      66        0.00
+    5  AY   has      57      19      19        1.08
+    9  XZ   has      60      20      20        0.00
+   10  Z    has     186      62      62        0.00
+   11  AZ   has      66      22      22        0.18
+   12  XYZ  has       9       3       3        2.30
+   13  YZ   has      51      17      17        0.56
+   14  AYZ  has      15       5       5        2.44
+   15  XBZ  has      12       4       4        2.17
+   16  BZ   has      72      24      24        0.00
+   17  ABZ  has      24       8       8        0.18
+ Total of 1395 atoms and  465 groups and  465 residues were included
+
+ <MAKGRP> found      0 image group exclusions.
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      ATOMs    CDIElec  SHIFt    VATOm    VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  =  8.000 CTEXNB =999.000 CTONNB =  6.500 CTOFNB =  7.500
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are    20403 atom  pairs and      375 atom  exclusions.
+ There are        0 group pairs and        0 group exclusions.
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR    30179 ATOM PAIRS AND        0 GROUP PAIRS
+
+ General atom nonbond list generation found:
+    20416 ATOM PAIRS WERE FOUND FOR ATOM LIST
+     1636 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+ SPACE FOR    57500 ATOM PAIRS AND        0 GROUP PAIRS
+
+ Image nonbond list generation found:
+    19348 ATOM PAIRS WERE FOUND FOR ATOM LIST
+        0 ATOM PAIRS WERE FOUND FOR ATOM SELF LIST
+     2646 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+ENER ENR:  Eval#     ENERgy      Delta-E         GRMS
+ENER INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+ENER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ENER IMAGES:        IMNBvdw       IMELec       IMHBnd       RXNField    EXTElec
+ ----------       ---------    ---------    ---------    ---------    ---------
+ENER>        0   -306.86608      0.00000      1.63834
+ENER INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+ENER EXTERN>      -79.31144   -133.74224      0.00000      0.00000      0.00000
+ENER IMAGES>      -42.60453    -51.20789      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>     
+  
+ CHARMM>    @testcheck ?ener -301.10282 0.0001 nose1_1_ener
+ Parameter: TESTCHECK -> "STREAM .//TEST.STR"
+ RDCMND substituted energy or value "?ENER" to "-306.866078"
+ VOPEN> Attempting to open::.//TEST.STR::
+ OPNLGU> Unit 99 opened for READONLY access to .//TEST.STR
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * TESTING AGAINST REFERENCE VALUE
+ RDTITL> *
+ Parameter: IN1 <- "-306.866078"
+ Parameter: IN2 <- "-301.10282"
+ Parameter: IN3 <- "0.0001"
+ Parameter: IN4 <- "NOSE1_1_ENER"
+  
+ CHARMM>    ! stream @0test.str VAL REF TOL TESTID ! All arguments required
+ CHARMM>    ! checks if |val-ref| > tol*|ref|
+ CHARMM>    ! if tol < 0 or ref=0 an absolute test is performed vs |tol|
+ CHARMM>    ! sets teststat to pass or fail and increments testfail by 1 if test not passed
+ CHARMM>    ! echo @tstid  testcase result: @teststat
+ CHARMM>     
+  
+ CHARMM>    ! LNilsson, March 2011, September 2014
+ CHARMM>     
+  
+ CHARMM>    calc tst01 = abs( @IN1 - @IN2 )
+ Parameter: IN1 -> "-306.866078"
+ Parameter: IN2 -> "-301.10282"
+Evaluating: ABS(-306.866078--301.10282)
+ Parameter: TST01 <- "5.763258"
+  
+ CHARMM>    if @IN3 gt 0 then
+ Parameter: IN3 -> "0.0001"
+ Comparing "0.0001" and "0".
+ IF test evaluated as true.  Performing command
+  
+ CHARMM>       calc bogus = abs( @in2 )
+ Parameter: IN2 -> "-301.10282"
+Evaluating: ABS(-301.10282)
+ Parameter: BOGUS <- "301.10282"
+  
+ CHARMM>       if @bogus le 0 then
+ Parameter: BOGUS -> "301.10282"
+ Comparing "301.10282" and "0".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>         calc tst02 = abs( @IN2 * @IN3 )
+ Parameter: IN2 -> "-301.10282"
+ Parameter: IN3 -> "0.0001"
+Evaluating: ABS(-301.10282*0.0001)
+ Parameter: TST02 <- "3.0110282E-02"
+  
+ CHARMM>       endif
+  
+ CHARMM>    else
+ Skip commands until next ENDIF
+  
+ CHARMM>    set xxxprnl ?prnlev
+ RDCMND substituted energy or value "?PRNLEV" to "5"
+ Parameter: XXXPRNL <- "5"
+  
+ CHARMM>    prnlev 2 @pnode
+ Parameter: PNODE -> "" <empty>
+ Comparing "5.763258" and "3.0110282E-02".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+ Parameter: TESTSTAT <- "FAIL"
+ Parameter: TESTFAIL <- "2"
+NOSE1_1_ENER TESTCASE RESULT: FAIL
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>    @testcheck ?elec -121.87805 0.00001 nose1_1_elec
+ Parameter: TESTCHECK -> "STREAM .//TEST.STR"
+ RDCMND substituted energy or value "?ELEC" to "-133.742242"
+ VOPEN> Attempting to open::.//TEST.STR::
+ OPNLGU> Unit 99 opened for READONLY access to .//TEST.STR
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * TESTING AGAINST REFERENCE VALUE
+ RDTITL> *
+ Parameter: IN1 <- "-133.742242"
+ Parameter: IN2 <- "-121.87805"
+ Parameter: IN3 <- "0.00001"
+ Parameter: IN4 <- "NOSE1_1_ELEC"
+  
+ CHARMM>    ! stream @0test.str VAL REF TOL TESTID ! All arguments required
+ CHARMM>    ! checks if |val-ref| > tol*|ref|
+ CHARMM>    ! if tol < 0 or ref=0 an absolute test is performed vs |tol|
+ CHARMM>    ! sets teststat to pass or fail and increments testfail by 1 if test not passed
+ CHARMM>    ! echo @tstid  testcase result: @teststat
+ CHARMM>     
+  
+ CHARMM>    ! LNilsson, March 2011, September 2014
+ CHARMM>     
+  
+ CHARMM>    calc tst01 = abs( @IN1 - @IN2 )
+ Parameter: IN1 -> "-133.742242"
+ Parameter: IN2 -> "-121.87805"
+Evaluating: ABS(-133.742242--121.87805)
+ Parameter: TST01 <- "11.864192"
+  
+ CHARMM>    if @IN3 gt 0 then
+ Parameter: IN3 -> "0.00001"
+ Comparing "0.00001" and "0".
+ IF test evaluated as true.  Performing command
+  
+ CHARMM>       calc bogus = abs( @in2 )
+ Parameter: IN2 -> "-121.87805"
+Evaluating: ABS(-121.87805)
+ Parameter: BOGUS <- "121.87805"
+  
+ CHARMM>       if @bogus le 0 then
+ Parameter: BOGUS -> "121.87805"
+ Comparing "121.87805" and "0".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>         calc tst02 = abs( @IN2 * @IN3 )
+ Parameter: IN2 -> "-121.87805"
+ Parameter: IN3 -> "0.00001"
+Evaluating: ABS(-121.87805*0.00001)
+ Parameter: TST02 <- "1.2187805E-03"
+  
+ CHARMM>       endif
+  
+ CHARMM>    else
+ Skip commands until next ENDIF
+  
+ CHARMM>    set xxxprnl ?prnlev
+ RDCMND substituted energy or value "?PRNLEV" to "5"
+ Parameter: XXXPRNL <- "5"
+  
+ CHARMM>    prnlev 2 @pnode
+ Parameter: PNODE -> "" <empty>
+ Comparing "11.864192" and "1.2187805E-03".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+ Parameter: TESTSTAT <- "FAIL"
+ Parameter: TESTFAIL <- "3"
+NOSE1_1_ELEC TESTCASE RESULT: FAIL
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>    @testcheck ?vdw   -77.94733 0.00001 nose1_1_vdw
+ Parameter: TESTCHECK -> "STREAM .//TEST.STR"
+ RDCMND substituted energy or value "?VDW" to "-79.3114385"
+ VOPEN> Attempting to open::.//TEST.STR::
+ OPNLGU> Unit 99 opened for READONLY access to .//TEST.STR
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * TESTING AGAINST REFERENCE VALUE
+ RDTITL> *
+ Parameter: IN1 <- "-79.3114385"
+ Parameter: IN2 <- "-77.94733"
+ Parameter: IN3 <- "0.00001"
+ Parameter: IN4 <- "NOSE1_1_VDW"
+  
+ CHARMM>    ! stream @0test.str VAL REF TOL TESTID ! All arguments required
+ CHARMM>    ! checks if |val-ref| > tol*|ref|
+ CHARMM>    ! if tol < 0 or ref=0 an absolute test is performed vs |tol|
+ CHARMM>    ! sets teststat to pass or fail and increments testfail by 1 if test not passed
+ CHARMM>    ! echo @tstid  testcase result: @teststat
+ CHARMM>     
+  
+ CHARMM>    ! LNilsson, March 2011, September 2014
+ CHARMM>     
+  
+ CHARMM>    calc tst01 = abs( @IN1 - @IN2 )
+ Parameter: IN1 -> "-79.3114385"
+ Parameter: IN2 -> "-77.94733"
+Evaluating: ABS(-79.3114385--77.94733)
+ Parameter: TST01 <- "1.3641085"
+  
+ CHARMM>    if @IN3 gt 0 then
+ Parameter: IN3 -> "0.00001"
+ Comparing "0.00001" and "0".
+ IF test evaluated as true.  Performing command
+  
+ CHARMM>       calc bogus = abs( @in2 )
+ Parameter: IN2 -> "-77.94733"
+Evaluating: ABS(-77.94733)
+ Parameter: BOGUS <- "77.94733"
+  
+ CHARMM>       if @bogus le 0 then
+ Parameter: BOGUS -> "77.94733"
+ Comparing "77.94733" and "0".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>         calc tst02 = abs( @IN2 * @IN3 )
+ Parameter: IN2 -> "-77.94733"
+ Parameter: IN3 -> "0.00001"
+Evaluating: ABS(-77.94733*0.00001)
+ Parameter: TST02 <- "7.794733E-04"
+  
+ CHARMM>       endif
+  
+ CHARMM>    else
+ Skip commands until next ENDIF
+  
+ CHARMM>    set xxxprnl ?prnlev
+ RDCMND substituted energy or value "?PRNLEV" to "5"
+ Parameter: XXXPRNL <- "5"
+  
+ CHARMM>    prnlev 2 @pnode
+ Parameter: PNODE -> "" <empty>
+ Comparing "1.3641085" and "7.794733E-04".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+ Parameter: TESTSTAT <- "FAIL"
+ Parameter: TESTFAIL <- "4"
+NOSE1_1_VDW TESTCASE RESULT: FAIL
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>     
+  
+ CHARMM>    OPEN WRITE UNIT 31 CARD NAME @9FOR016.RST
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::./for016.rst::
+ OPNLGU> Unit 31 opened for WRITE access to ./for016.rst
+  
+ CHARMM>    OPEN READ  UNIT 30 CARD NAME @9FOR015.RST
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::./FOR015.RST::
+ OPNLGU> Unit 30 opened for READONLY access to ./FOR015.RST
+  
+ CHARMM>    OPEN WRITE UNIT 42 CARD NAME @9FOR017.SS
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::./for017.ss::
+ OPNLGU> Unit 42 opened for WRITE access to ./for017.ss
+  
+ CHARMM>     
+  
+ CHARMM>    DYNA NOSE QREF 50.0 TREF 300.0 NCYC 5 -
+ CHARMM>         REST NSTEP 100  TIME 0.001 NPRINT 10 IPRFRQ 100 -
+ CHARMM>         IUNREA 30 IUNWRI 31  IUNCRD -1  IUNVEL  -1 -
+ CHARMM>         KUNIT  -1  NSAVC 50  NSAVV  50  ISVFRQ 100 -
+ CHARMM>         IUNOS  42  NSNOS 10
+  IUNREA = 30         IUNWRI = 31          IUNOS = 42
+  IUNCRD = -1         IUNVEL = -1          KUNIT = -1
+ TITLE>  *  H2O TEST RUN FOR NOSE-HOOVER DYNAMICS
+ TITLE>  *  PART I (SINGLE THERMOBATH)
+ TITLE>  *  DATE:     2/ 2/18     16:42:55      CREATED BY USER: bonat
+ TITLE>  *
+ READYN> dynamics restart file was read. Current step=     100
+ NSTEP  =   100  JHSTRT =   100
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      ATOMs    CDIElec  SHIFt    VATOm    VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  =  8.000 CTEXNB =999.000 CTONNB =  6.500 CTOFNB =  7.500
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are    20416 atom  pairs and      375 atom  exclusions.
+ There are        0 group pairs and        0 group exclusions.
+ PRNHBD: CUToff Hydrogen Bond  distance =    4.5000   Angle =   90.0000
+         CuT switching ON HB dist. =     3.5000  OFf HB dist. =    4.0000
+         CuT switching ON Hb Angle =    50.0000  OFf Hb Angle =   70.0000
+         ACCEptor antecedents included
+         All hydrogen bonds for each hydrogen will be found
+         Hydrogen bonds between excluded atoms will be kept
+
+ DCNTRL> Nose-Hoover dynamcs requested.
+         Reference temperature         =  300.0000000 K.
+         Temperature coupling constant =   50.0000000Kcal sec**2
+         Cycles of convergence         =     5
+
+   NSTEP =      100    NSAVC =       50    NSAVV =       50
+  ISCALE =        0   ISCVEL =        0   IASORS =        0
+  IASVEL =        1   ICHECW =        1   NTRFRQ =        0
+  IHTFRQ =        0   IEQFRQ =        0   NPRINT =       10
+  INBFRQ =        5   IHBFRQ =        0   IPRFRQ =      100
+  ILBFRQ =       50   IMGFRQ =        5
+  ISVFRQ =      100   NCYCLE =        5    NSNOS =       10
+  FIRSTT =   100.000  TEMINC =     5.000  TSTRUC =  -999.000
+  FINALT =   298.150  TWINDH =    10.000  TWINDL =   -10.000
+
+  TIME STEP =  2.04548E-02 AKMA       1.00000E-03 PS
+
+  RANDOM NUM. GEN. SEED(S) = 1375511074 1943228530 576535771 1516671055
+
+           SHAKE TOLERANCE =     0.10000E-08
+ BLOCK   1 # OF DEGREES OF FREEDOM =    747
+ NUMBER OF DEGREES OF FREEDOM =    747
+DYNA DYN: Step         Time      TOTEner        TOTKe       ENERgy  TEMPerature
+DYNA PROP:             GRMS      HFCTote        HFCKe       EHFCor        VIRKe
+DYNA INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+DYNA EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+DYNA IMAGES:        IMNBvdw       IMELec       IMHBnd       RXNField    EXTElec
+DYNA PRESS:            VIRE         VIRI       PRESSE       PRESSI       VOLUme
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>        0      0.10000   -231.61109    260.31032   -306.86608    350.72051
+DYNA PROP>          3.17798    -46.55576      0.00000   -185.05532   -164.81969
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -80.00050   -135.48783      0.00000      0.00000      0.00000
+DYNA IMAGES>      -41.91547    -49.46230      0.00000      0.00000      0.00000
+DYNA PRESS>       -32.72119    142.60098      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step         5
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step         5
+DYNA>       10      0.11000   -231.63644    276.13331   -300.25478    372.03910
+DYNA PROP>          3.43435    -24.12147      0.00000   -207.51497   -202.61105
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -73.64933   -129.12896      0.00000      0.00000      0.00000
+DYNA IMAGES>      -40.11097    -57.36555      0.00000      0.00000      0.00000
+DYNA PRESS>       -46.06809    181.14213      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        10
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        10
+ UPDECI: Image update at step        15
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        15
+DYNA>       20      0.12000   -231.59211    247.64179   -293.33578    333.65199
+DYNA PROP>          3.57057    -45.69399      0.00000   -185.89812   -199.60128
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -68.36725   -125.97219      0.00000      0.00000      0.00000
+DYNA IMAGES>      -36.54943    -62.44694      0.00000      0.00000      0.00000
+DYNA PRESS>       -87.57667    220.64420      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        20
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        20
+ UPDECI: Image update at step        25
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        25
+DYNA>       30      0.13000   -231.49832    205.44910   -287.25919    276.80507
+DYNA PROP>          3.95617    -81.81009      0.00000   -149.68823   -214.25766
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -65.48881   -121.58156      0.00000      0.00000      0.00000
+DYNA IMAGES>      -35.56844    -64.62041      0.00000      0.00000      0.00000
+DYNA PRESS>       -91.74088    234.57932      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        30
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        30
+ UPDECI: Image update at step        35
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        35
+DYNA>       40      0.14000   -231.48660    191.33744   -295.42774    257.79219
+DYNA PROP>          3.47737   -104.09030      0.00000   -127.39630   -232.33223
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -72.13005   -122.82835      0.00000      0.00000      0.00000
+DYNA IMAGES>      -38.33457    -62.13479      0.00000      0.00000      0.00000
+DYNA PRESS>       -33.95493    188.84308      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        40
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        40
+ UPDECI: Image update at step        45
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        45
+DYNA>       50      0.15000   -231.48768    195.75110   -302.24979    263.73878
+DYNA PROP>          3.34147   -106.49869      0.00000   -124.98898   -180.02249
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -76.18831   -126.88228      0.00000      0.00000      0.00000
+DYNA IMAGES>      -37.97120    -61.20802      0.00000      0.00000      0.00000
+DYNA PRESS>       -51.73819    171.75318      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        50
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        50
+ UPDECI: Image update at step        55
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        55
+DYNA>       60      0.16000   -231.53087    218.91049   -310.53827    294.94182
+DYNA PROP>          3.28919    -91.62778      0.00000   -139.90309   -172.22942
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -79.25631   -130.34791      0.00000      0.00000      0.00000
+DYNA IMAGES>      -38.94724    -61.98682      0.00000      0.00000      0.00000
+DYNA PRESS>       -36.32908    151.14870      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        60
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        60
+ UPDECI: Image update at step        65
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        65
+DYNA>       70      0.17000   -231.57878    243.27400   -315.56350    327.76719
+DYNA PROP>          3.36257    -72.28950      0.00000   -159.28928   -128.60467
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -82.01520   -132.55143      0.00000      0.00000      0.00000
+DYNA IMAGES>      -38.78869    -62.20820      0.00000      0.00000      0.00000
+DYNA PRESS>       -48.90876    134.64520      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        70
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        70
+ UPDECI: Image update at step        75
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        75
+DYNA>       80      0.18000   -231.58886    247.33210   -314.53728    333.23474
+DYNA PROP>          3.23328    -67.20517      0.00000   -164.38369   -150.74314
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -83.46847   -130.64994      0.00000      0.00000      0.00000
+DYNA IMAGES>      -39.88760    -60.53129      0.00000      0.00000      0.00000
+DYNA PRESS>       -20.65183    121.14725      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        80
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        80
+ UPDECI: Image update at step        85
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        85
+DYNA>       90      0.19000   -231.54076    226.85527   -306.87512    305.64595
+DYNA PROP>          3.18892    -80.01985      0.00000   -151.52091   -131.27156
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -83.64277   -120.79140      0.00000      0.00000      0.00000
+DYNA IMAGES>      -39.73706    -62.70391      0.00000      0.00000      0.00000
+DYNA PRESS>       -30.61021    118.12458      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        90
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        90
+ UPDECI: Image update at step        95
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        95
+DYNA>      100      0.20000   -231.49516    206.06984   -300.81876    277.64139
+DYNA PROP>          3.17014    -94.74892      0.00000   -136.74624   -202.21244
+DYNA INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+DYNA EXTERN>      -81.33780   -113.16474      0.00000      0.00000      0.00000
+DYNA IMAGES>      -40.83342    -65.48282      0.00000      0.00000      0.00000
+DYNA PRESS>        11.34580    123.46250      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ * * * AVERAGES FOR THE LAST      100 STEPS
+AVER DYN: Step         Time      TOTEner        TOTKe       ENERgy  TEMPerature
+AVER PROP:             GRMS      HFCTote        HFCKe       EHFCor        VIRKe
+AVER INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+AVER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+AVER IMAGES:        IMNBvdw       IMELec       IMHBnd       RXNField    EXTElec
+AVER PRESS:            VIRE         VIRI       PRESSE       PRESSI       VOLUme
+ ----------       ---------    ---------    ---------    ---------    ---------
+AVER>      100      0.20000   -231.54908    228.69490   -302.89976    308.12452
+AVER PROP>          3.40884    -74.20487      0.00000   -157.34421   -176.08813
+AVER INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+AVER EXTERN>      -76.40109   -126.46687      0.00000      0.00000      0.00000
+AVER IMAGES>      -38.76801    -61.26381      0.00000      0.00000      0.00000
+AVER PRESS>       -48.23398    165.62607      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ * * * RMS FLUCTUATIONS FOR      100 STEPS
+FLUC>      100      0.20000      0.05098     26.76394      8.81139     36.05951
+FLUC PROP>          0.23247     25.39895      0.00000     25.44644     37.14629
+FLUC EXTERN>        6.09778      5.27058      0.00000      0.00000      0.00000
+FLUC IMAGES>        1.63020      3.11217      0.00000      0.00000      0.00000
+FLUC PRESS>        24.51590     39.03440      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ * * * AVERAGES FOR THE LAST      200 STEPS
+LAVE>      200      0.20000   -231.55777    223.36829   -310.48642    300.94789
+LAVE PROP>          3.27922    -87.11813      0.00000   -144.43964   -183.17595
+LAVE INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+LAVE EXTERN>      -78.13203   -132.95015      0.00000      0.00000      0.00000
+LAVE IMAGES>      -41.39230    -58.01196      0.00000      0.00000      0.00000
+LAVE PRESS>       -24.83108    146.94838      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ * * * RMS FLUCTUATIONS FOR      200 STEPS
+LFLC>      200      0.20000      0.10675     53.85254     19.27829     72.55644
+LFLC PROP>          0.28572     54.97652      0.00000     55.06349     49.50343
+LFLC EXTERN>        5.32753     13.20741      0.00000      0.00000      0.00000
+LFLC IMAGES>        3.16006      5.69100      0.00000      0.00000      0.00000
+LFLC PRESS>        46.23062     39.87036      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+
+     DRIFT/STEP (LAST-TOTAL):    5.70939635E-04   3.05728250E-04
+     EPROP(EPOT) AT STEP 0  :    -231.57791       -231.58849    
+     CORR. COEFFICIENT      :    0.32328452       0.16534725    
+ WRIDYN: RESTart file was written at step     200
+ VCLOSE: Closing unit   31 with status "KEEP"
+
+     DETAILS ABOUT CENTRE OF MASS
+     POSITION          :  -0.14641377      -4.36218943E-02   0.15630048    
+     VELOCITY          :  -3.24334949E-14   1.08754799E-13   7.49518926E-14
+     ANGULAR MOMENTUM  :    316.95349        267.00443        309.95237    
+     KINETIC ENERGY    :   2.08272932E-23
+  
+ CHARMM>     
+  
+ CHARMM>    @testcheck ?tote -243.68987 0.0001 nose1_2_tot
+ Parameter: TESTCHECK -> "STREAM .//TEST.STR"
+ RDCMND substituted energy or value "?TOTE" to "-231.495158"
+ VOPEN> Attempting to open::.//TEST.STR::
+ OPNLGU> Unit 99 opened for READONLY access to .//TEST.STR
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * TESTING AGAINST REFERENCE VALUE
+ RDTITL> *
+ Parameter: IN1 <- "-231.495158"
+ Parameter: IN2 <- "-243.68987"
+ Parameter: IN3 <- "0.0001"
+ Parameter: IN4 <- "NOSE1_2_TOT"
+  
+ CHARMM>    ! stream @0test.str VAL REF TOL TESTID ! All arguments required
+ CHARMM>    ! checks if |val-ref| > tol*|ref|
+ CHARMM>    ! if tol < 0 or ref=0 an absolute test is performed vs |tol|
+ CHARMM>    ! sets teststat to pass or fail and increments testfail by 1 if test not passed
+ CHARMM>    ! echo @tstid  testcase result: @teststat
+ CHARMM>     
+  
+ CHARMM>    ! LNilsson, March 2011, September 2014
+ CHARMM>     
+  
+ CHARMM>    calc tst01 = abs( @IN1 - @IN2 )
+ Parameter: IN1 -> "-231.495158"
+ Parameter: IN2 -> "-243.68987"
+Evaluating: ABS(-231.495158--243.68987)
+ Parameter: TST01 <- "12.194712"
+  
+ CHARMM>    if @IN3 gt 0 then
+ Parameter: IN3 -> "0.0001"
+ Comparing "0.0001" and "0".
+ IF test evaluated as true.  Performing command
+  
+ CHARMM>       calc bogus = abs( @in2 )
+ Parameter: IN2 -> "-243.68987"
+Evaluating: ABS(-243.68987)
+ Parameter: BOGUS <- "243.68987"
+  
+ CHARMM>       if @bogus le 0 then
+ Parameter: BOGUS -> "243.68987"
+ Comparing "243.68987" and "0".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>         calc tst02 = abs( @IN2 * @IN3 )
+ Parameter: IN2 -> "-243.68987"
+ Parameter: IN3 -> "0.0001"
+Evaluating: ABS(-243.68987*0.0001)
+ Parameter: TST02 <- "2.4368987E-02"
+  
+ CHARMM>       endif
+  
+ CHARMM>    else
+ Skip commands until next ENDIF
+  
+ CHARMM>    set xxxprnl ?prnlev
+ RDCMND substituted energy or value "?PRNLEV" to "5"
+ Parameter: XXXPRNL <- "5"
+  
+ CHARMM>    prnlev 2 @pnode
+ Parameter: PNODE -> "" <empty>
+ Comparing "12.194712" and "2.4368987E-02".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+ Parameter: TESTSTAT <- "FAIL"
+ Parameter: TESTFAIL <- "5"
+NOSE1_2_TOT TESTCASE RESULT: FAIL
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>     
+  
+ CHARMM>    energy
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+
+ <MKIMAT2>: updating the image atom lists and remapping
+ Transformation   Atoms  Groups  Residues  Min-Distance
+    1  X    has     204      68      68        0.00
+    3  XY   has      69      23      23        0.00
+    4  Y    has     189      63      63        0.00
+    5  AY   has      69      23      23        0.49
+    9  XZ   has      45      15      15        0.93
+   10  Z    has     192      64      64        0.00
+   11  AZ   has      81      27      27        0.66
+   12  XYZ  has       9       3       3        1.97
+   13  YZ   has      63      21      21        0.00
+   14  AYZ  has      21       7       7        2.07
+   15  XBZ  has       9       3       3        1.96
+   16  BZ   has      60      20      20        0.46
+   17  ABZ  has      21       7       7        0.66
+ Total of 1407 atoms and  469 groups and  469 residues were included
+
+ <MAKGRP> found      0 image group exclusions.
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      ATOMs    CDIElec  SHIFt    VATOm    VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  =  8.000 CTEXNB =999.000 CTONNB =  6.500 CTOFNB =  7.500
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are    20514 atom  pairs and      375 atom  exclusions.
+ There are        0 group pairs and        0 group exclusions.
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR    30179 ATOM PAIRS AND        0 GROUP PAIRS
+
+ General atom nonbond list generation found:
+    20516 ATOM PAIRS WERE FOUND FOR ATOM LIST
+     1638 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+ SPACE FOR    57500 ATOM PAIRS AND        0 GROUP PAIRS
+
+ Image nonbond list generation found:
+    19229 ATOM PAIRS WERE FOUND FOR ATOM LIST
+        0 ATOM PAIRS WERE FOUND FOR ATOM SELF LIST
+     2676 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+ENER ENR:  Eval#     ENERgy      Delta-E         GRMS
+ENER INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+ENER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ENER IMAGES:        IMNBvdw       IMELec       IMHBnd       RXNField    EXTElec
+ ----------       ---------    ---------    ---------    ---------    ---------
+ENER>        0   -300.81876      0.00000      1.56013
+ENER INTERN>        0.00001      0.00001      0.00000      0.00000      0.00000
+ENER EXTERN>      -81.33780   -113.16474      0.00000      0.00000      0.00000
+ENER IMAGES>      -40.83342    -65.48282      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>     
+  
+ CHARMM>    @testcheck ?ener -280.70678 0.00001 nose1_2_ener
+ Parameter: TESTCHECK -> "STREAM .//TEST.STR"
+ RDCMND substituted energy or value "?ENER" to "-300.818756"
+ VOPEN> Attempting to open::.//TEST.STR::
+ OPNLGU> Unit 99 opened for READONLY access to .//TEST.STR
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * TESTING AGAINST REFERENCE VALUE
+ RDTITL> *
+ Parameter: IN1 <- "-300.818756"
+ Parameter: IN2 <- "-280.70678"
+ Parameter: IN3 <- "0.00001"
+ Parameter: IN4 <- "NOSE1_2_ENER"
+  
+ CHARMM>    ! stream @0test.str VAL REF TOL TESTID ! All arguments required
+ CHARMM>    ! checks if |val-ref| > tol*|ref|
+ CHARMM>    ! if tol < 0 or ref=0 an absolute test is performed vs |tol|
+ CHARMM>    ! sets teststat to pass or fail and increments testfail by 1 if test not passed
+ CHARMM>    ! echo @tstid  testcase result: @teststat
+ CHARMM>     
+  
+ CHARMM>    ! LNilsson, March 2011, September 2014
+ CHARMM>     
+  
+ CHARMM>    calc tst01 = abs( @IN1 - @IN2 )
+ Parameter: IN1 -> "-300.818756"
+ Parameter: IN2 -> "-280.70678"
+Evaluating: ABS(-300.818756--280.70678)
+ Parameter: TST01 <- "20.111976"
+  
+ CHARMM>    if @IN3 gt 0 then
+ Parameter: IN3 -> "0.00001"
+ Comparing "0.00001" and "0".
+ IF test evaluated as true.  Performing command
+  
+ CHARMM>       calc bogus = abs( @in2 )
+ Parameter: IN2 -> "-280.70678"
+Evaluating: ABS(-280.70678)
+ Parameter: BOGUS <- "280.70678"
+  
+ CHARMM>       if @bogus le 0 then
+ Parameter: BOGUS -> "280.70678"
+ Comparing "280.70678" and "0".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>         calc tst02 = abs( @IN2 * @IN3 )
+ Parameter: IN2 -> "-280.70678"
+ Parameter: IN3 -> "0.00001"
+Evaluating: ABS(-280.70678*0.00001)
+ Parameter: TST02 <- "2.8070678E-03"
+  
+ CHARMM>       endif
+  
+ CHARMM>    else
+ Skip commands until next ENDIF
+  
+ CHARMM>    set xxxprnl ?prnlev
+ RDCMND substituted energy or value "?PRNLEV" to "5"
+ Parameter: XXXPRNL <- "5"
+  
+ CHARMM>    prnlev 2 @pnode
+ Parameter: PNODE -> "" <empty>
+ Comparing "20.111976" and "2.8070678E-03".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+ Parameter: TESTSTAT <- "FAIL"
+ Parameter: TESTFAIL <- "6"
+NOSE1_2_ENER TESTCASE RESULT: FAIL
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>    @testcheck ?elec -114.25249 0.00001 nose1_2_elec
+ Parameter: TESTCHECK -> "STREAM .//TEST.STR"
+ RDCMND substituted energy or value "?ELEC" to "-113.164739"
+ VOPEN> Attempting to open::.//TEST.STR::
+ OPNLGU> Unit 99 opened for READONLY access to .//TEST.STR
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * TESTING AGAINST REFERENCE VALUE
+ RDTITL> *
+ Parameter: IN1 <- "-113.164739"
+ Parameter: IN2 <- "-114.25249"
+ Parameter: IN3 <- "0.00001"
+ Parameter: IN4 <- "NOSE1_2_ELEC"
+  
+ CHARMM>    ! stream @0test.str VAL REF TOL TESTID ! All arguments required
+ CHARMM>    ! checks if |val-ref| > tol*|ref|
+ CHARMM>    ! if tol < 0 or ref=0 an absolute test is performed vs |tol|
+ CHARMM>    ! sets teststat to pass or fail and increments testfail by 1 if test not passed
+ CHARMM>    ! echo @tstid  testcase result: @teststat
+ CHARMM>     
+  
+ CHARMM>    ! LNilsson, March 2011, September 2014
+ CHARMM>     
+  
+ CHARMM>    calc tst01 = abs( @IN1 - @IN2 )
+ Parameter: IN1 -> "-113.164739"
+ Parameter: IN2 -> "-114.25249"
+Evaluating: ABS(-113.164739--114.25249)
+ Parameter: TST01 <- "1.087751"
+  
+ CHARMM>    if @IN3 gt 0 then
+ Parameter: IN3 -> "0.00001"
+ Comparing "0.00001" and "0".
+ IF test evaluated as true.  Performing command
+  
+ CHARMM>       calc bogus = abs( @in2 )
+ Parameter: IN2 -> "-114.25249"
+Evaluating: ABS(-114.25249)
+ Parameter: BOGUS <- "114.25249"
+  
+ CHARMM>       if @bogus le 0 then
+ Parameter: BOGUS -> "114.25249"
+ Comparing "114.25249" and "0".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>         calc tst02 = abs( @IN2 * @IN3 )
+ Parameter: IN2 -> "-114.25249"
+ Parameter: IN3 -> "0.00001"
+Evaluating: ABS(-114.25249*0.00001)
+ Parameter: TST02 <- "1.1425249E-03"
+  
+ CHARMM>       endif
+  
+ CHARMM>    else
+ Skip commands until next ENDIF
+  
+ CHARMM>    set xxxprnl ?prnlev
+ RDCMND substituted energy or value "?PRNLEV" to "5"
+ Parameter: XXXPRNL <- "5"
+  
+ CHARMM>    prnlev 2 @pnode
+ Parameter: PNODE -> "" <empty>
+ Comparing "1.087751" and "1.1425249E-03".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+ Parameter: TESTSTAT <- "FAIL"
+ Parameter: TESTFAIL <- "7"
+NOSE1_2_ELEC TESTCASE RESULT: FAIL
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>    @testcheck ?vdw   -81.88856 0.00001 nose1_2_vdw
+ Parameter: TESTCHECK -> "STREAM .//TEST.STR"
+ RDCMND substituted energy or value "?VDW" to "-81.3378032"
+ VOPEN> Attempting to open::.//TEST.STR::
+ OPNLGU> Unit 99 opened for READONLY access to .//TEST.STR
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * TESTING AGAINST REFERENCE VALUE
+ RDTITL> *
+ Parameter: IN1 <- "-81.3378032"
+ Parameter: IN2 <- "-81.88856"
+ Parameter: IN3 <- "0.00001"
+ Parameter: IN4 <- "NOSE1_2_VDW"
+  
+ CHARMM>    ! stream @0test.str VAL REF TOL TESTID ! All arguments required
+ CHARMM>    ! checks if |val-ref| > tol*|ref|
+ CHARMM>    ! if tol < 0 or ref=0 an absolute test is performed vs |tol|
+ CHARMM>    ! sets teststat to pass or fail and increments testfail by 1 if test not passed
+ CHARMM>    ! echo @tstid  testcase result: @teststat
+ CHARMM>     
+  
+ CHARMM>    ! LNilsson, March 2011, September 2014
+ CHARMM>     
+  
+ CHARMM>    calc tst01 = abs( @IN1 - @IN2 )
+ Parameter: IN1 -> "-81.3378032"
+ Parameter: IN2 -> "-81.88856"
+Evaluating: ABS(-81.3378032--81.88856)
+ Parameter: TST01 <- "0.5507568"
+  
+ CHARMM>    if @IN3 gt 0 then
+ Parameter: IN3 -> "0.00001"
+ Comparing "0.00001" and "0".
+ IF test evaluated as true.  Performing command
+  
+ CHARMM>       calc bogus = abs( @in2 )
+ Parameter: IN2 -> "-81.88856"
+Evaluating: ABS(-81.88856)
+ Parameter: BOGUS <- "81.88856"
+  
+ CHARMM>       if @bogus le 0 then
+ Parameter: BOGUS -> "81.88856"
+ Comparing "81.88856" and "0".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>         calc tst02 = abs( @IN2 * @IN3 )
+ Parameter: IN2 -> "-81.88856"
+ Parameter: IN3 -> "0.00001"
+Evaluating: ABS(-81.88856*0.00001)
+ Parameter: TST02 <- "8.188856E-04"
+  
+ CHARMM>       endif
+  
+ CHARMM>    else
+ Skip commands until next ENDIF
+  
+ CHARMM>    set xxxprnl ?prnlev
+ RDCMND substituted energy or value "?PRNLEV" to "5"
+ Parameter: XXXPRNL <- "5"
+  
+ CHARMM>    prnlev 2 @pnode
+ Parameter: PNODE -> "" <empty>
+ Comparing "0.5507568" and "8.188856E-04".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+ Parameter: TESTSTAT <- "FAIL"
+ Parameter: TESTFAIL <- "8"
+NOSE1_2_VDW TESTCASE RESULT: FAIL
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>     
+  
+ CHARMM>    STOP
+ VCLOSE: Closing unit    1 with status "KEEP"
+ VCLOSE: Closing unit    2 with status "KEEP"
+ VCLOSE: Closing unit    3 with status "KEEP"
+ VCLOSE: Closing unit    8 with status "KEEP"
+ VCLOSE: Closing unit   30 with status "KEEP"
+ VCLOSE: Closing unit   42 with status "KEEP"
+
+      $$$$$$  New timer profile Local node$$$$$
+
+   Shake Setup                     0.00 Other:            0.00
+   First List                      0.00 Other:            0.00
+   Shake time                      0.27 Other:            0.00
+   Dynamics total                  0.01 Other:            0.00
+      Image Update                    0.01 Other:            0.00
+      Heuristic check                 0.00 Other:            0.00
+      NBONDS                          0.06 Other:            0.00
+   List time                       0.07 Other:            0.00
+         Electrostatic & VDW             0.25 Other:            0.00
+      Nonbond force                   0.25 Other:            0.00
+         Bond energy                     0.00 Other:            0.00
+         Angle energy                    0.00 Other:            0.00
+         Dihedral energy                 0.00 Other:            0.00
+         Restraints energy               0.00 Other:            0.00
+      INTRNL energy                   0.01 Other:            0.00
+      Comm energy                     0.00 Other:            0.00
+      Comm force                      0.00 Other:            0.00
+   Energy time                     0.27 Other:            0.00
+ Total time                      0.69 Other:            0.08
+
+         $$$$$$  Average   profile $$$$$
+
+   Shake Setup                     0.00 Other:            0.00
+   First List                      0.00 Other:            0.00
+   Shake time                      0.27 Other:            0.00
+   Dynamics total                  0.01 Other:            0.00
+      Image Update                    0.01 Other:            0.00
+      Heuristic check                 0.00 Other:            0.00
+      NBONDS                          0.06 Other:            0.00
+   List time                       0.07 Other:            0.00
+         Electrostatic & VDW             0.25 Other:            0.00
+      Nonbond force                   0.25 Other:            0.00
+         Bond energy                     0.00 Other:            0.00
+         Angle energy                    0.00 Other:            0.00
+         Dihedral energy                 0.00 Other:            0.00
+         Restraints energy               0.00 Other:            0.00
+      INTRNL energy                   0.01 Other:            0.00
+      Comm energy                     0.00 Other:            0.00
+      Comm force                      0.00 Other:            0.00
+   Energy time                     0.27 Other:            0.00
+ Total time                      0.69 Other:            0.08
+
+                    NORMAL TERMINATION BY NORMAL STOP
+                    NO WARNINGS WERE ISSUED
+
+                    $$$$$ JOB ACCOUNTING INFORMATION $$$$$
+                     ELAPSED TIME:     0.70  SECONDS 
+                         CPU TIME:     0.69  SECONDS 

@@ -1,0 +1,1065 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+-- Copyright The NOMAD Authors.
+--
+-- This file is part of NOMAD.
+-- See https://nomad-lab.eu for further info.
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+  -->
+<cml convention="CMLComp" fileId="Al.xml" xmlns="http://www.xml-cml.org/schema" xmlns:siesta="http://www.uam.es/siesta/namespace" xmlns:siestaUnits="http://www.uam.es/siesta/namespace/units" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:fpx="http://www.uszla.me.uk/fpx" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:units="http://www.uszla.me.uk/FoX/units" xmlns:cmlUnits="http://www.xml-cml.org/units/units" xmlns:siUnits="http://www.xml-cml.org/units/siUnits" xmlns:atomicUnits="http://www.xml-cml.org/units/atomic">
+  <metadata name="UUID" content="823e3c80-442e-11e6-65a0-c572f7ef31fa"/>
+  <metadataList>
+    <metadata name="siesta:Program" content="Siesta"/>
+    <metadata name="siesta:Version" content="siesta-4.0--500"/>
+    <metadata name="siesta:Arch" content="mpiifort"/>
+    <metadata name="siesta:Flags" content="mpiifort -O2"/>
+    <metadata name="siesta:StartTime" content="2016-07-07T08-34-59"/>
+    <metadata name="siesta:Mode" content="Parallel"/>
+    <metadata name="siesta:Nodes" content="         2"/>
+    <metadata name="siesta:NetCDF" content="false"/>
+  </metadataList>
+  <module title="Initial System">
+    <molecule>
+      <atomArray>
+        <atom elementType="Al" x3="0.000000000000e0" y3="0.000000000000e0" z3="0.000000000000e0" ref="siesta:e001"/>
+      </atomArray>
+    </molecule>
+    <lattice dictRef="siesta:ucell">
+      <latticeVector units="siestaUnits:angstrom" dictRef="cml:latticeVector">3.853342076470e0 0.000000000000e0 3.853342076470e0</latticeVector>
+      <latticeVector units="siestaUnits:angstrom" dictRef="cml:latticeVector">3.853342076470e0 3.853342076470e0 0.000000000000e0</latticeVector>
+      <latticeVector units="siestaUnits:angstrom" dictRef="cml:latticeVector">0.000000000000e0 3.853342076470e0 3.853342076470e0</latticeVector>
+    </lattice>
+    <property dictRef="siesta:shape">
+      <scalar dataType="xsd:string">bulk</scalar>
+    </property>
+  </module>
+  <parameterList title="Input Parameters">
+    <parameter dictRef="siesta:sname" name="SystemName">
+      <scalar dataType="xsd:string">Al</scalar>
+    </parameter>
+    <parameter dictRef="siesta:slabel" name="SystemLabel">
+      <scalar dataType="xsd:string">Al</scalar>
+    </parameter>
+    <parameter dictRef="siesta:verbosity" name="LongOutput">
+      <scalar dataType="xsd:boolean">false</scalar>
+    </parameter>
+    <parameter title="NumberOfSpecies" dictRef="siesta:ns">
+      <scalar dataType="xsd:integer" units="cmlUnits:countable">1</scalar>
+    </parameter>
+    <parameter name="WriteDenChar">
+      <scalar dataType="xsd:boolean">false</scalar>
+    </parameter>
+    <parameter name="WriteMullikenPop">
+      <scalar dataType="xsd:integer" units="cmlUnits:dimensionless">0</scalar>
+    </parameter>
+    <parameter dictRef="siesta:g2max" name="MeshCutOff">
+      <scalar dataType="fpx:real" units="siestaUnits:Ry">3.000000000000e2</scalar>
+    </parameter>
+    <parameter dictRef="siesta:NetCharge" name="NetCharge">
+      <scalar dataType="fpx:real" units="siestaUnits:e__">0.000000000000e0</scalar>
+    </parameter>
+    <parameter dictRef="siesta:maxscf" name="MaxSCFIterations">
+      <scalar dataType="xsd:integer" units="cmlUnits:countable">500</scalar>
+    </parameter>
+    <parameter dictRef="siesta:minscf" name="MinSCFIterations">
+      <scalar dataType="xsd:integer" units="cmlUnits:countable">0</scalar>
+    </parameter>
+    <parameter dictRef="siesta:maxsav" name="DM.NumberPulay">
+      <scalar dataType="xsd:integer" units="cmlUnits:countable">5</scalar>
+    </parameter>
+    <parameter dictRef="siesta:broyden_maxit" name="DM.NumberBroyden">
+      <scalar dataType="xsd:integer" units="cmlUnits:countable">0</scalar>
+    </parameter>
+    <parameter dictRef="siesta:mix" name="DM.MixSCF1">
+      <scalar dataType="xsd:boolean">false</scalar>
+    </parameter>
+    <parameter dictRef="siesta:pulfile" name="DM.PulayOnFile">
+      <scalar dataType="xsd:boolean">false</scalar>
+    </parameter>
+    <parameter dictRef="siesta:avoid_first_after_kick" name="DM.Pulay.Avoid.First.After.Kick">
+      <scalar dataType="xsd:boolean">false</scalar>
+    </parameter>
+    <parameter dictRef="siesta:wmix" name="DM.MixingWeight">
+      <scalar dataType="fpx:real" units="cmlUnits:dimensionless">5.000000000000e-2</scalar>
+    </parameter>
+    <parameter dictRef="siesta:occtol" name="DM.OccupancyTolerance">
+      <scalar dataType="fpx:real" units="cmlUnits:dimensionless">1.000000000000e-12</scalar>
+    </parameter>
+    <parameter dictRef="siesta:nkick" name="DM.NumberKick">
+      <scalar dataType="xsd:integer" units="cmlUnits:countable">0</scalar>
+    </parameter>
+    <parameter dictRef="siesta:wmixkick" name="DM.KickMixingWeight">
+      <scalar dataType="fpx:real" units="cmlUnits:dimensionless">5.000000000000e-1</scalar>
+    </parameter>
+    <parameter dictRef="siesta:dDtol" name="DM.Tolerance">
+      <scalar dataType="fpx:real" units="siestaUnits:eAng_3">1.000000000000e-5</scalar>
+    </parameter>
+    <parameter dictRef="siesta:ReqEnergyConv" name="DM.RequireEnergyConvergence">
+      <scalar dataType="xsd:boolean">false</scalar>
+    </parameter>
+    <parameter dictRef="siesta:dEtol" name="DM.EnergyTolerance">
+      <scalar dataType="fpx:real" units="siestaUnits:eV">1.000000000000e-5</scalar>
+    </parameter>
+    <parameter dictRef="siesta:ReqHarrisConv" name="DM.RequireHarrisConvergence">
+      <scalar dataType="xsd:boolean">false</scalar>
+    </parameter>
+    <parameter dictRef="siesta:Harris_tolerance" name="DM.HarrisTolerance">
+      <scalar dataType="fpx:real" units="siestaUnits:eV">7.349806700084e-7</scalar>
+    </parameter>
+    <parameter dictRef="siesta:usesavedm" name="DM.UseSaveDM">
+      <scalar dataType="xsd:boolean">true</scalar>
+    </parameter>
+    <parameter dictRef="siesta:negl" name="NeglNonOverlapInt">
+      <scalar dataType="xsd:boolean">false</scalar>
+    </parameter>
+    <parameter dictRef="siesta:SCFmethod" name="SolutionMethod">
+      <scalar dataType="xsd:string">diagon</scalar>
+    </parameter>
+    <parameter dictRef="siesta:DaC" name="Diag.DivideAndConquer">
+      <scalar dataType="xsd:boolean">true</scalar>
+    </parameter>
+    <parameter dictRef="siesta:MemoryFactor" name="Diag.Memory">
+      <scalar dataType="fpx:real" units="cmlUnits:dimensionless">1.000000000000e0</scalar>
+    </parameter>
+    <parameter dictRef="siesta:etemp" name="ElectronicTemperature">
+      <scalar dataType="fpx:real" units="siestaUnits:Ry">1.900069268915e-3</scalar>
+    </parameter>
+    <parameter dictRef="siesta:fixspin" name="FixSpin">
+      <scalar dataType="xsd:boolean">false</scalar>
+    </parameter>
+    <parameter dictRef="siesta:ts" name="TotalSpin">
+      <scalar dataType="fpx:real" units="siestaUnits:eSpin">0.000000000000e0</scalar>
+    </parameter>
+    <parameter name="MD.TypeOfRun">
+      <scalar dataType="xsd:string">Single-Point</scalar>
+    </parameter>
+    <parameter name="MD.BulkModulus">
+      <scalar dataType="fpx:real" units="siestaUnits:Ry_Bohr__3">6.797730000000e-3</scalar>
+    </parameter>
+  </parameterList>
+  <propertyList dictRef="siesta:kpoints" title="k-points">
+    <property dictRef="siesta:nkpnt">
+      <scalar dataType="xsd:integer" units="cmlUnits:countable">132</scalar>
+    </property>
+    <kpoint coords="-5.435269075078e-1 0.000000000000e0 0.000000000000e0" weight="9.259259259259e-3"/>
+    <kpoint coords="-4.076451806308e-1 -1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.717634537539e-1 -2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 -4.076451806308e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="0.000000000000e0 -5.435269075078e-1 5.435269075078e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="1.358817268769e-1 -6.794086343847e-1 6.794086343847e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-4.076451806308e-1 1.358817268769e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.717634537539e-1 0.000000000000e0 0.000000000000e0" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 -1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="0.000000000000e0 -2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="1.358817268769e-1 -4.076451806308e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="2.717634537539e-1 -5.435269075078e-1 5.435269075078e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-2.717634537539e-1 2.717634537539e-1 -2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 1.358817268769e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="0.000000000000e0 0.000000000000e0 0.000000000000e0" weight="4.629629629630e-3"/>
+    <kpoint coords="4.076451806308e-1 -4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="5.435269075078e-1 -2.717634537539e-1 2.717634537539e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="6.794086343847e-1 -1.358817268769e-1 1.358817268769e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="1.358817268769e-1 6.794086343847e-1 -6.794086343847e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="2.717634537539e-1 5.435269075078e-1 -5.435269075078e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="4.076451806308e-1 4.076451806308e-1 -4.076451806308e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="5.435269075078e-1 2.717634537539e-1 -2.717634537539e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="6.794086343847e-1 1.358817268769e-1 -1.358817268769e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="8.152903612617e-1 0.000000000000e0 0.000000000000e0" weight="4.629629629630e-3"/>
+    <kpoint coords="-6.794086343847e-1 1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-5.435269075078e-1 0.000000000000e0 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-4.076451806308e-1 -1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.717634537539e-1 -2.717634537539e-1 5.435269075078e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 -4.076451806308e-1 6.794086343847e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.775557561563e-17 -5.435269075078e-1 8.152903612617e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-5.435269075078e-1 2.717634537539e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+    <kpoint coords="-4.076451806308e-1 1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.717634537539e-1 0.000000000000e0 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 -1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="0.000000000000e0 -2.717634537539e-1 5.435269075078e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="1.358817268769e-1 -4.076451806308e-1 6.794086343847e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-4.076451806308e-1 4.076451806308e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.717634537539e-1 2.717634537539e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="0.000000000000e0 0.000000000000e0 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="1.358817268769e-1 -1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="2.717634537539e-1 -2.717634537539e-1 5.435269075078e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.717634537539e-1 5.435269075078e-1 -2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 4.076451806308e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="0.000000000000e0 2.717634537539e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+    <kpoint coords="1.358817268769e-1 1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="2.717634537539e-1 0.000000000000e0 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="4.076451806308e-1 -1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 6.794086343847e-1 -4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="0.000000000000e0 5.435269075078e-1 -2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="1.358817268769e-1 4.076451806308e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="2.717634537539e-1 2.717634537539e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+    <kpoint coords="4.076451806308e-1 1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="5.435269075078e-1 2.775557561563e-17 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.775557561563e-17 8.152903612617e-1 -5.435269075078e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="1.358817268769e-1 6.794086343847e-1 -4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="2.717634537539e-1 5.435269075078e-1 -2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="4.076451806308e-1 4.076451806308e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="5.435269075078e-1 2.717634537539e-1 2.775557561563e-17" weight="9.259259259259e-3"/>
+    <kpoint coords="6.794086343847e-1 1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-8.152903612617e-1 2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-6.794086343847e-1 1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-5.435269075078e-1 0.000000000000e0 5.435269075078e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-4.076451806308e-1 -1.358817268769e-1 6.794086343847e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.717634537539e-1 -2.717634537539e-1 8.152903612617e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 -4.076451806308e-1 9.511720881386e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-6.794086343847e-1 4.076451806308e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-5.435269075078e-1 2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-4.076451806308e-1 1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.717634537539e-1 0.000000000000e0 5.435269075078e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 -1.358817268769e-1 6.794086343847e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-5.551115123126e-17 -2.717634537539e-1 8.152903612617e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-5.435269075078e-1 5.435269075078e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+    <kpoint coords="-4.076451806308e-1 4.076451806308e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.717634537539e-1 2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="0.000000000000e0 0.000000000000e0 5.435269075078e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="1.358817268769e-1 -1.358817268769e-1 6.794086343847e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-4.076451806308e-1 6.794086343847e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.717634537539e-1 5.435269075078e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 4.076451806308e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="0.000000000000e0 2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="1.358817268769e-1 1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="2.717634537539e-1 5.551115123126e-17 5.435269075078e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-2.717634537539e-1 8.152903612617e-1 -2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 6.794086343847e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="0.000000000000e0 5.435269075078e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+    <kpoint coords="1.358817268769e-1 4.076451806308e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="2.717634537539e-1 2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="4.076451806308e-1 1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-1.358817268769e-1 9.511720881386e-1 -4.076451806308e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-5.551115123126e-17 8.152903612617e-1 -2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="1.358817268769e-1 6.794086343847e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="2.717634537539e-1 5.435269075078e-1 5.551115123126e-17" weight="9.259259259259e-3"/>
+    <kpoint coords="4.076451806308e-1 4.076451806308e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="5.435269075078e-1 2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+    <kpoint coords="-9.511720881386e-1 4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-8.152903612617e-1 2.717634537539e-1 5.435269075078e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-6.794086343847e-1 1.358817268769e-1 6.794086343847e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-5.435269075078e-1 0.000000000000e0 8.152903612617e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-4.076451806308e-1 -1.358817268769e-1 9.511720881386e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-2.717634537539e-1 -2.717634537539e-1 1.087053815016e0" weight="4.629629629630e-3"/>
+    <kpoint coords="-8.152903612617e-1 5.435269075078e-1 2.717634537539e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-6.794086343847e-1 4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-5.435269075078e-1 2.717634537539e-1 5.435269075078e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-4.076451806308e-1 1.358817268769e-1 6.794086343847e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-2.717634537539e-1 0.000000000000e0 8.152903612617e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-1.358817268769e-1 -1.358817268769e-1 9.511720881386e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-6.794086343847e-1 6.794086343847e-1 1.358817268769e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-5.435269075078e-1 5.435269075078e-1 2.717634537539e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-4.076451806308e-1 4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-2.717634537539e-1 2.717634537539e-1 5.435269075078e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-1.358817268769e-1 1.358817268769e-1 6.794086343847e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="0.000000000000e0 0.000000000000e0 8.152903612617e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-5.435269075078e-1 8.152903612617e-1 0.000000000000e0" weight="4.629629629630e-3"/>
+    <kpoint coords="-4.076451806308e-1 6.794086343847e-1 1.358817268769e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-2.717634537539e-1 5.435269075078e-1 2.717634537539e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-1.358817268769e-1 4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="0.000000000000e0 2.717634537539e-1 5.435269075078e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="1.358817268769e-1 1.358817268769e-1 6.794086343847e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-4.076451806308e-1 9.511720881386e-1 -1.358817268769e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-2.717634537539e-1 8.152903612617e-1 0.000000000000e0" weight="4.629629629630e-3"/>
+    <kpoint coords="-1.358817268769e-1 6.794086343847e-1 1.358817268769e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="0.000000000000e0 5.435269075078e-1 2.717634537539e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="1.358817268769e-1 4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="2.717634537539e-1 2.717634537539e-1 5.435269075078e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-2.717634537539e-1 1.087053815016e0 -2.717634537539e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="-1.358817268769e-1 9.511720881386e-1 -1.358817268769e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="0.000000000000e0 8.152903612617e-1 0.000000000000e0" weight="4.629629629630e-3"/>
+    <kpoint coords="1.358817268769e-1 6.794086343847e-1 1.358817268769e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="2.717634537539e-1 5.435269075078e-1 2.717634537539e-1" weight="4.629629629630e-3"/>
+    <kpoint coords="4.076451806308e-1 4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+    <property dictRef="siesta:kcutof">
+      <scalar dataType="fpx:real" units="siestaUnits:angstrom">8.651168625105e0</scalar>
+    </property>
+  </propertyList>
+  <property dictRef="siesta:kscell">
+    <matrix rows="3" columns="3" dataType="xsd:integer" units="siestaUnits:Ang">6 0 0 0 6 0 0 0 6</matrix>
+  </property>
+  <property dictRef="siesta:kdispl">
+    <array size="3" dataType="fpx:real" units="siestaUnits:Ang">0.000000000000e0 0.000000000000e0 0.000000000000e0</array>
+  </property>
+  <module serial="1" dictRef="Single-Point" role="step">
+    <molecule>
+      <atomArray>
+        <atom elementType="Al" x3="0.000000000000e0" y3="0.000000000000e0" z3="0.000000000000e0" ref="siesta:e001"/>
+      </atomArray>
+    </molecule>
+    <lattice dictRef="siesta:ucell">
+      <latticeVector units="siestaUnits:Ang" dictRef="cml:latticeVector">2.039100000000e0 0.000000000000e0 2.039100000000e0</latticeVector>
+      <latticeVector units="siestaUnits:Ang" dictRef="cml:latticeVector">2.039100000000e0 2.039100000000e0 0.000000000000e0</latticeVector>
+      <latticeVector units="siestaUnits:Ang" dictRef="cml:latticeVector">0.000000000000e0 2.039100000000e0 2.039100000000e0</latticeVector>
+    </lattice>
+    <crystal title="Lattice Parameters">
+      <cellParameter latticeType="real" parameterType="length" units="units:angstrom">2.883723 2.883723 2.883723</cellParameter>
+      <cellParameter latticeType="real" parameterType="angle" units="units:degree">60.000000 60.000000 60.000000</cellParameter>
+    </crystal>
+    <propertyList>
+      <property dictRef="siesta:ntm" title="Mesh">
+        <array size="3" dataType="xsd:integer" units="cmlUnits:countable">30 30 30</array>
+      </property>
+      <property dictRef="siesta:g2max" title="Requested Cut-Off">
+        <scalar dataType="fpx:real" units="siestaUnits:Ry">3.000000000000e2</scalar>
+      </property>
+      <property dictRef="siesta:g2mesh" title="Actual Cut-Off">
+        <scalar dataType="fpx:real" units="siestaUnits:Ry">4.486714018772e2</scalar>
+      </property>
+    </propertyList>
+    <module serial="1" dictRef="SCF" role="step">
+      <propertyList title="Energy Decomposition">
+        <property dictRef="siesta:Ebs">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">-25.995484</scalar>
+        </property>
+        <property dictRef="siesta:Eions">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">88.825642</scalar>
+        </property>
+        <property dictRef="siesta:Ena">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">22.190169</scalar>
+        </property>
+        <property dictRef="siesta:Ekin">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">22.301754</scalar>
+        </property>
+        <property dictRef="siesta:Enl">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">6.318600</scalar>
+        </property>
+        <property dictRef="siesta:DEna">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">2.495547</scalar>
+        </property>
+        <property dictRef="siesta:DUscf">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">0.088587 </scalar>
+        </property>
+        <property dictRef="siesta:DUext">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">0.000000</scalar>
+        </property>
+        <property dictRef="siesta:Exc">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">-21.636127</scalar>
+        </property>
+        <property dictRef="siesta:Ecorrec">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">0.000000</scalar>
+        </property>
+        <property dictRef="siesta:Emad">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">0.000000</scalar>
+        </property>
+        <property dictRef="siesta:Emeta">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">0.000000</scalar>
+        </property>
+        <property dictRef="siesta:Emm">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">0.000000</scalar>
+        </property>
+        <property dictRef="siesta:Ekinion">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">0.000000</scalar>
+        </property>
+        <property dictRef="siesta:EharrsK">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">-57.067112</scalar>
+        </property>
+        <property dictRef="siesta:EtotK">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">-57.067111</scalar>
+        </property>
+        <property dictRef="siesta:FreeEK">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">-57.069065</scalar>
+        </property>
+      </propertyList>
+      <propertyList title="SCF Cycle">
+        <property dictRef="siesta:Eharrs">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">-57.0671116</scalar>
+        </property>
+        <property dictRef="siesta:FreeE">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">-57.0690652</scalar>
+        </property>
+        <property dictRef="siesta:Ef">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">-3.9411632</scalar>
+        </property>
+      </propertyList>
+    </module>
+    <module title="SCF Finalization">
+      <propertyList title="Final KS Energy">
+        <property dictRef="siesta:E_KS">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">-57.067112</scalar>
+        </property>
+        <property dictRef="siesta:E_KS_egg">
+          <scalar dataType="fpx:real" units="siestaUnits:eV">-57.067112</scalar>
+        </property>
+      </propertyList>
+      <propertyList title="Forces">
+        <property dictRef="siesta:forces">
+          <matrix rows="3" columns="1" dataType="fpx:real" units="siestaUnits:evpa">-2.511265487526e-12 -5.503517885706e-12 -4.687124672370e-12</matrix>
+        </property>
+        <property dictRef="siesta:ftot">
+          <array size="3" dataType="fpx:real" units="siestaUnits:evpa">-2.511265487526e-12 -5.503517885706e-12 -4.687124672370e-12</array>
+        </property>
+        <property dictRef="siesta:fmax">
+          <scalar dataType="fpx:real" units="siestaUnits:evpa">5.503517885706e-12</scalar>
+        </property>
+        <property dictRef="siesta:fres">
+          <scalar dataType="fpx:real" units="siestaUnits:evpa">4.418306657588e-12</scalar>
+        </property>
+        <property dictRef="siesta:cfmax">
+          <scalar dataType="fpx:real" units="siestaUnits:evpa">5.503517885706e-12</scalar>
+        </property>
+      </propertyList>
+    </module>
+  </module>
+  <module title="Finalization">
+    <molecule>
+      <atomArray>
+        <atom elementType="Al" x3="0.000000000000e0" y3="0.000000000000e0" z3="0.000000000000e0" ref="siesta:e001"/>
+      </atomArray>
+    </molecule>
+    <lattice dictRef="siesta:ucell">
+      <latticeVector units="siestaUnits:Ang" dictRef="cml:latticeVector">2.039100000000e0 0.000000000000e0 2.039100000000e0</latticeVector>
+      <latticeVector units="siestaUnits:Ang" dictRef="cml:latticeVector">2.039100000000e0 2.039100000000e0 0.000000000000e0</latticeVector>
+      <latticeVector units="siestaUnits:Ang" dictRef="cml:latticeVector">0.000000000000e0 2.039100000000e0 2.039100000000e0</latticeVector>
+    </lattice>
+    <propertyList title="Eigenvalues">
+      <property dictRef="siesta:E_Fermi" title="Fermi Energy">
+        <scalar dataType="fpx:real" units="siestaUnits:ev">-3.94116</scalar>
+      </property>
+      <property dictRef="siesta:nkpoints" title="Number of k-points">
+        <scalar dataType="xsd:integer" units="cmlUnits:countable">132</scalar>
+      </property>
+      <propertyList dictRef="siesta:kpt_band">
+        <kpoint coords="-5.435269075078e-1 0.000000000000e0 0.000000000000e0" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.135683834723e1 6.206643356274e-2 1.971432413385e0 1.971432414893e0 2.096577415357e0 5.386363148850e0 2.155637464843e1 2.187728844062e1 2.187728865193e1 4.918159347219e1 7.064163399153e1 7.064165185225e1 7.932487179551e1</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 -1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.257143671035e1 -1.276386985942e0 3.477461231198e0 4.293165599253e0 5.453211741479e0 1.004715593821e1 1.403334955367e1 1.576152779617e1 2.113705073483e1 3.604161770054e1 5.737564404646e1 6.730188880880e1 6.820806757254e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 -2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.233233294929e1 -3.718138560236e0 6.218296417364e0 6.218296421794e0 8.921702445732e0 8.921702461656e0 1.093219650835e1 1.798338983942e1 1.798338984839e1 2.659700525388e1 5.625978998861e1 6.826508523065e1 6.826508661972e1</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 -4.076451806308e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400742e1 -4.947580757403e0 8.160054278219e-1 5.189545964857e0 7.346991839696e0 1.059517713906e1 1.383080989681e1 1.650997009540e1 1.958467010028e1 3.233601625902e1 5.232552056300e1 6.804117403429e1 9.423161855665e1</array>
+        </property>
+        <kpoint coords="0.000000000000e0 -5.435269075078e-1 5.435269075078e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-7.499955128726e0 -5.319300137601e0 -3.932452036626e0 2.825897501978e0 4.792179271936e0 1.445762515569e1 1.618070046767e1 1.737808745036e1 1.784497827898e1 4.242380045197e1 6.408208075956e1 6.448360414274e1 1.107474775231e2</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 -6.794086343847e-1 6.794086343847e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394700e0 -3.166515217300e0 -2.804198254592e0 1.751457777412e0 3.477535895137e0 8.419406235989e0 1.854725298186e1 2.175066700109e1 2.611970269862e1 4.910074617023e1 5.396654280084e1 5.668717904817e1 1.004030099275e2</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 1.358817268769e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.257143671035e1 -1.276386985899e0 3.477461231246e0 4.293165599279e0 5.453211741378e0 1.004715593824e1 1.403334955434e1 1.576152779549e1 2.113705073377e1 3.604161770066e1 5.737564404667e1 6.730188880845e1 6.820806757264e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 0.000000000000e0 0.000000000000e0" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.427979914815e1 4.604466066976e0 4.604466069637e0 5.165528419676e0 7.371810803958e0 8.736027415413e0 1.465631576805e1 1.465631579685e1 1.721522899441e1 2.799384983508e1 6.332139020666e1 6.914255262236e1 6.914255721730e1</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 -1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.452663472560e1 2.442016715071e0 6.885123755117e0 6.885123759263e0 1.111970979253e1 1.128759404319e1 1.128759405253e1 1.362578625631e1 1.362578629409e1 2.894386562610e1 5.272953499864e1 5.797099459304e1 5.797099491201e1</array>
+        </property>
+        <kpoint coords="0.000000000000e0 -2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.330453280715e1 2.284770763952e-1 1.600834234132e0 7.838314891408e0 1.028760368583e1 1.052278102602e1 1.124144184021e1 1.252605979527e1 1.702002664242e1 3.767252885827e1 4.220221751186e1 5.260124066950e1 8.758235335227e1</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 -4.076451806308e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400745e1 -4.947580757452e0 8.160054278946e-1 5.189545964840e0 7.346991839631e0 1.059517713935e1 1.383080989631e1 1.650997009508e1 1.958467010044e1 3.233601625894e1 5.232552056314e1 6.804117403451e1 9.423161855602e1</array>
+        </property>
+        <kpoint coords="2.717634537539e-1 -5.435269075078e-1 5.435269075078e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430335170e0 -6.575613685383e0 1.916737874509e0 3.702664997228e0 5.782514623748e0 1.166804904677e1 1.380102889510e1 1.692371280927e1 2.419540010508e1 2.438302570768e1 4.717107735500e1 6.186408577766e1 1.332472435558e2</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 2.717634537539e-1 -2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.233233294931e1 -3.718138560272e0 6.218296418104e0 6.218296421228e0 8.921702448638e0 8.921702459578e0 1.093219650687e1 1.798338983440e1 1.798338985282e1 2.659700525398e1 5.625978998912e1 6.826508523087e1 6.826508661892e1</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 1.358817268769e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.452663472560e1 2.442016714992e0 6.885123755913e0 6.885123758706e0 1.111970979128e1 1.128759404463e1 1.128759405315e1 1.362578625203e1 1.362578629674e1 2.894386562602e1 5.272953499844e1 5.797099459579e1 5.797099490855e1</array>
+        </property>
+        <kpoint coords="0.000000000000e0 0.000000000000e0 0.000000000000e0" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.525167186551e1 8.384894521789e0 8.384894522147e0 8.384894524283e0 9.291080816623e0 9.291080817311e0 9.291080823624e0 1.578231338649e1 1.578231346674e1 3.052945463481e1 4.466403780538e1 4.466403782034e1 4.466403782111e1</array>
+        </property>
+        <kpoint coords="4.076451806308e-1 -4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.783274260194e0 -8.639190242830e0 6.611684989108e0 6.611684999058e0 7.334211818176e0 7.334211826404e0 1.079387970850e1 1.578129172523e1 2.380483570900e1 2.380483572667e1 4.375966383637e1 4.375966410309e1 6.459515807544e1</array>
+        </property>
+        <kpoint coords="5.435269075078e-1 -2.717634537539e-1 2.717634537539e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430335170e0 -6.575613685383e0 1.916737874509e0 3.702664997228e0 5.782514623749e0 1.166804904677e1 1.380102889510e1 1.692371280927e1 2.419540010508e1 2.438302570768e1 4.717107735500e1 6.186408577765e1 1.332472435555e2</array>
+        </property>
+        <kpoint coords="6.794086343847e-1 -1.358817268769e-1 1.358817268769e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394700e0 -3.166515217300e0 -2.804198254592e0 1.751457777412e0 3.477535895137e0 8.419406235989e0 1.854725298186e1 2.175066700109e1 2.611970269862e1 4.910074617025e1 5.396654280084e1 5.668717904817e1 1.004030099274e2</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 6.794086343847e-1 -6.794086343847e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394644e0 -3.166515218108e0 -2.804198253853e0 1.751457777359e0 3.477535895123e0 8.419406235979e0 1.854725298136e1 2.175066700148e1 2.611970269938e1 4.910074617002e1 5.396654280158e1 5.668717904821e1 1.004030099274e2</array>
+        </property>
+        <kpoint coords="2.717634537539e-1 5.435269075078e-1 -5.435269075078e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430335086e0 -6.575613685458e0 1.916737874476e0 3.702664997180e0 5.782514623821e0 1.166804904644e1 1.380102889542e1 1.692371280967e1 2.419540010530e1 2.438302570836e1 4.717107735571e1 6.186408577774e1 1.332472435556e2</array>
+        </property>
+        <kpoint coords="4.076451806308e-1 4.076451806308e-1 -4.076451806308e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.783274258961e0 -8.639190244007e0 6.611684988842e0 6.611684999495e0 7.334211813617e0 7.334211830016e0 1.079387970995e1 1.578129172541e1 2.380483571178e1 2.380483572455e1 4.375966383740e1 4.375966410250e1 6.459515807582e1</array>
+        </property>
+        <kpoint coords="5.435269075078e-1 2.717634537539e-1 -2.717634537539e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430335086e0 -6.575613685458e0 1.916737874476e0 3.702664997180e0 5.782514623821e0 1.166804904644e1 1.380102889542e1 1.692371280967e1 2.419540010530e1 2.438302570836e1 4.717107735570e1 6.186408577774e1 1.332472435553e2</array>
+        </property>
+        <kpoint coords="6.794086343847e-1 1.358817268769e-1 -1.358817268769e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394644e0 -3.166515218108e0 -2.804198253853e0 1.751457777359e0 3.477535895123e0 8.419406235979e0 1.854725298136e1 2.175066700148e1 2.611970269938e1 4.910074617004e1 5.396654280157e1 5.668717904820e1 1.004030099274e2</array>
+        </property>
+        <kpoint coords="8.152903612617e-1 0.000000000000e0 0.000000000000e0" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-7.165042037676e0 -5.799068643433e0 1.104679163431e0 1.104679164612e0 1.155869457487e0 4.629314661189e0 2.603246327807e1 2.815564346281e1 2.815564347161e1 4.583747569101e1 4.583747581134e1 5.016012638727e1 6.574617723408e1</array>
+        </property>
+        <kpoint coords="-6.794086343847e-1 1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394757e0 -3.166515209262e0 -2.804198262232e0 1.751457776324e0 3.477535894643e0 8.419406237781e0 1.854725298214e1 2.175066700779e1 2.611970269534e1 4.910074617354e1 5.396654279846e1 5.668717904590e1 1.004030099302e2</array>
+        </property>
+        <kpoint coords="-5.435269075078e-1 0.000000000000e0 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905251e1 -2.545898452287e0 -1.164970919582e0 9.891827668972e-1 8.537065039674e0 9.888848609077e0 1.227520591826e1 2.041264120978e1 2.156456833483e1 3.600566729912e1 5.713819042539e1 6.258885699269e1 1.050583275692e2</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 -1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400752e1 -4.947580756788e0 8.160054274514e-1 5.189545965056e0 7.346991845354e0 1.059517713924e1 1.383080989174e1 1.650997009833e1 1.958467000060e1 3.233601671436e1 5.232552415261e1 6.804117304298e1 9.423161848058e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 -2.717634537539e-1 5.435269075078e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430335054e0 -6.575613684319e0 1.916737872800e0 3.702664997198e0 5.782514619391e0 1.166804905248e1 1.380102893406e1 1.692371286595e1 2.419539923515e1 2.438302568969e1 4.717107767105e1 6.186408866956e1 1.332472043075e2</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 -4.076451806308e-1 6.794086343847e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505677008e0 -6.739685456826e0 -1.194428757764e0 -8.958152941275e-1 9.555264296626e0 1.035481342443e1 1.478127412297e1 1.620837561996e1 2.270015901817e1 3.353142433224e1 6.161826808571e1 7.286168883756e1 8.845621277101e1</array>
+        </property>
+        <kpoint coords="-2.775557561563e-17 -5.435269075078e-1 8.152903612617e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.237639709468e0 -4.891716020630e0 -3.476907963190e0 -2.002926502856e0 7.647002802860e0 9.220181163920e0 1.651219494534e1 1.758517905852e1 2.811166288992e1 4.786656303650e1 5.720215228240e1 5.806899141577e1 8.199933832071e1</array>
+        </property>
+        <kpoint coords="-5.435269075078e-1 2.717634537539e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905233e1 -2.545898452298e0 -1.164970922708e0 9.891827690173e-1 8.537065056407e0 9.888848611037e0 1.227520592011e1 2.041264102747e1 2.156456844350e1 3.600566400589e1 5.713817631821e1 6.258885661199e1 1.050583367228e2</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.257143671029e1 -1.276386985179e0 3.477461229990e0 4.293165600734e0 5.453211738376e0 1.004715594112e1 1.403334955595e1 1.576152780037e1 2.113705072701e1 3.604161770388e1 5.737564404952e1 6.730188881273e1 6.820806757251e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 0.000000000000e0 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.330453280718e1 2.284770763188e-1 1.600834233694e0 7.838314891496e0 1.028760368899e1 1.052278102619e1 1.124144184070e1 1.252605977179e1 1.702002664294e1 3.767252979173e1 4.220221752033e1 5.260124050876e1 8.758235361410e1</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 -1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.257143671084e1 -1.276386984279e0 3.477461229490e0 4.293165596251e0 5.453211738944e0 1.004715595065e1 1.403334957067e1 1.576152783694e1 2.113705078639e1 3.604161663056e1 5.737564186566e1 6.730188832226e1 6.820806700657e1</array>
+        </property>
+        <kpoint coords="0.000000000000e0 -2.717634537539e-1 5.435269075078e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905280e1 -2.545898450204e0 -1.164970918817e0 9.891827652407e-1 8.537065050451e0 9.888848614110e0 1.227520592010e1 2.041264115047e1 2.156456846199e1 3.600566373914e1 5.713817089864e1 6.258885753230e1 1.050583326297e2</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 -4.076451806308e-1 6.794086343847e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505677712e0 -6.739685456744e0 -1.194428749231e0 -8.958153017825e-1 9.555264299113e0 1.035481342507e1 1.478127412005e1 1.620837561744e1 2.270015901539e1 3.353142433576e1 6.161826808727e1 7.286168883757e1 8.845621277447e1</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 4.076451806308e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400734e1 -4.947580757780e0 8.160054262531e-1 5.189545969737e0 7.346991830572e0 1.059517713635e1 1.383080984978e1 1.650997007957e1 1.958467014178e1 3.233601598595e1 5.232552823372e1 6.804117661384e1 9.423162321440e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 2.717634537539e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.330453280626e1 2.284770766689e-1 1.600834232028e0 7.838314900241e0 1.028760367280e1 1.052278102614e1 1.124144184241e1 1.252605972785e1 1.702002658816e1 3.767253060535e1 4.220221809951e1 5.260124057731e1 8.758235512065e1</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.452663472560e1 2.442016715020e0 6.885123756043e0 6.885123758490e0 1.111970979165e1 1.128759404442e1 1.128759405280e1 1.362578625216e1 1.362578629704e1 2.894386562604e1 5.272953499848e1 5.797099460207e1 5.797099490243e1</array>
+        </property>
+        <kpoint coords="0.000000000000e0 0.000000000000e0 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.427979914856e1 4.604466066059e0 4.604466068333e0 5.165528419642e0 7.371810802377e0 8.736027407278e0 1.465631578366e1 1.465631579166e1 1.721522905039e1 2.799384983605e1 6.332139044967e1 6.914255379746e1 6.914255668646e1</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 -1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.257143671091e1 -1.276386985098e0 3.477461231006e0 4.293165594548e0 5.453211742172e0 1.004715594759e1 1.403334956939e1 1.576152783108e1 2.113705079359e1 3.604161662682e1 5.737564186241e1 6.730188831781e1 6.820806700669e1</array>
+        </property>
+        <kpoint coords="2.717634537539e-1 -2.717634537539e-1 5.435269075078e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430335167e0 -6.575613684787e0 1.916737873014e0 3.702664998582e0 5.782514620766e0 1.166804905142e1 1.380102892855e1 1.692371286251e1 2.419539923807e1 2.438302569198e1 4.717107767333e1 6.186408866951e1 1.332472043018e2</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 5.435269075078e-1 -2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430334554e0 -6.575613684701e0 1.916737873960e0 3.702664996107e0 5.782514626121e0 1.166804905204e1 1.380102890645e1 1.692371281407e1 2.419540025871e1 2.438302573335e1 4.717107723662e1 6.186408731445e1 1.332472181085e2</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 4.076451806308e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.257143671023e1 -1.276386984940e0 3.477461229895e0 4.293165600217e0 5.453211738805e0 1.004715593818e1 1.403334956306e1 1.576152783253e1 2.113705069057e1 3.604161784283e1 5.737564264576e1 6.730189213349e1 6.820806744580e1</array>
+        </property>
+        <kpoint coords="0.000000000000e0 2.717634537539e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.427979914815e1 4.604466067103e0 4.604466068668e0 5.165528419359e0 7.371810803977e0 8.736027416312e0 1.465631578657e1 1.465631579375e1 1.721522899445e1 2.799384984211e1 6.332139034208e1 6.914255568068e1 6.914255769992e1</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.452663472558e1 2.442016716045e0 6.885123755467e0 6.885123756742e0 1.111970979931e1 1.128759403550e1 1.128759404419e1 1.362578626064e1 1.362578630254e1 2.894386562775e1 5.272953499980e1 5.797099460261e1 5.797099491363e1</array>
+        </property>
+        <kpoint coords="2.717634537539e-1 0.000000000000e0 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.330453280720e1 2.284770763778e-1 1.600834233694e0 7.838314888999e0 1.028760368494e1 1.052278102471e1 1.124144184145e1 1.252605977406e1 1.702002664883e1 3.767252978626e1 4.220221752027e1 5.260124050800e1 8.758235362149e1</array>
+        </property>
+        <kpoint coords="4.076451806308e-1 -1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400753e1 -4.947580757149e0 8.160054275513e-1 5.189545963680e0 7.346991843524e0 1.059517714063e1 1.383080989433e1 1.650997009584e1 1.958467000281e1 3.233601671224e1 5.232552415151e1 6.804117304028e1 9.423161848061e1</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 6.794086343847e-1 -4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505679210e0 -6.739685455079e0 -1.194428759068e0 -8.958152937356e-1 9.555264295668e0 1.035481343381e1 1.478127409776e1 1.620837557432e1 2.270015888123e1 3.353142816514e1 6.161826861197e1 7.286170954143e1 8.845623447250e1</array>
+        </property>
+        <kpoint coords="0.000000000000e0 5.435269075078e-1 -2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905179e1 -2.545898452275e0 -1.164970919058e0 9.891827672108e-1 8.537065053349e0 9.888848611986e0 1.227520593549e1 2.041264119655e1 2.156456844850e1 3.600566673149e1 5.713817694244e1 6.258885967220e1 1.050583115260e2</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 4.076451806308e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.257143671028e1 -1.276386985660e0 3.477461230970e0 4.293165598823e0 5.453211741858e0 1.004715593535e1 1.403334956063e1 1.576152782871e1 2.113705069822e1 3.604161783968e1 5.737564264286e1 6.730189212960e1 6.820806744581e1</array>
+        </property>
+        <kpoint coords="2.717634537539e-1 2.717634537539e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.330453280630e1 2.284770766575e-1 1.600834232037e0 7.838314896876e0 1.028760366821e1 1.052278102441e1 1.124144184351e1 1.252605973100e1 1.702002659620e1 3.767253059860e1 4.220221809935e1 5.260124057619e1 8.758235512889e1</array>
+        </property>
+        <kpoint coords="4.076451806308e-1 1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.257143671027e1 -1.276386985449e0 3.477461229580e0 4.293165600372e0 5.453211738853e0 1.004715593998e1 1.403334954882e1 1.576152780309e1 2.113705073403e1 3.604161770277e1 5.737564404701e1 6.730188881307e1 6.820806757158e1</array>
+        </property>
+        <kpoint coords="5.435269075078e-1 2.775557561563e-17 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905242e1 -2.545898452445e0 -1.164970921139e0 9.891827675868e-1 8.537065039444e0 9.888848608415e0 1.227520591648e1 2.041264121187e1 2.156456833603e1 3.600566729661e1 5.713819042308e1 6.258885699313e1 1.050583275650e2</array>
+        </property>
+        <kpoint coords="-2.775557561563e-17 8.152903612617e-1 -5.435269075078e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.237639711005e0 -4.891716021528e0 -3.476907964857e0 -2.002926499385e0 7.647002792845e0 9.220181173499e0 1.651219487843e1 1.758517903953e1 2.811166288996e1 4.786657260338e1 5.720216906098e1 5.806899120035e1 8.199937263413e1</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 6.794086343847e-1 -4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505677418e0 -6.739685457441e0 -1.194428750831e0 -8.958153012399e-1 9.555264297987e0 1.035481343475e1 1.478127409493e1 1.620837557177e1 2.270015887935e1 3.353142816857e1 6.161826861358e1 7.286170954167e1 8.845623447527e1</array>
+        </property>
+        <kpoint coords="2.717634537539e-1 5.435269075078e-1 -2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430334505e0 -6.575613685177e0 1.916737874048e0 3.702664997077e0 5.782514627722e0 1.166804905048e1 1.380102890262e1 1.692371281142e1 2.419540026159e1 2.438302573594e1 4.717107723913e1 6.186408731479e1 1.332472181035e2</array>
+        </property>
+        <kpoint coords="4.076451806308e-1 4.076451806308e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400725e1 -4.947580758162e0 8.160054261155e-1 5.189545967946e0 7.346991828862e0 1.059517713739e1 1.383080985422e1 1.650997007725e1 1.958467014498e1 3.233601598343e1 5.232552823254e1 6.804117661045e1 9.423162321461e1</array>
+        </property>
+        <kpoint coords="5.435269075078e-1 2.717634537539e-1 2.775557561563e-17" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905218e1 -2.545898452484e0 -1.164970924764e0 9.891827698999e-1 8.537065056283e0 9.888848610177e0 1.227520591836e1 2.041264103007e1 2.156456844607e1 3.600566400300e1 5.713817631534e1 6.258885661242e1 1.050583367180e2</array>
+        </property>
+        <kpoint coords="6.794086343847e-1 1.358817268769e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394515e0 -3.166515215896e0 -2.804198255825e0 1.751457775997e0 3.477535894436e0 8.419406237460e0 1.854725297870e1 2.175066700862e1 2.611970269283e1 4.910074617090e1 5.396654280249e1 5.668717904910e1 1.004030099270e2</array>
+        </property>
+        <kpoint coords="-8.152903612617e-1 2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-7.499955127636e0 -5.319300137850e0 -3.932452037770e0 2.825897500662e0 4.792179271358e0 1.445762515771e1 1.618070046807e1 1.737808744739e1 1.784497828349e1 4.242380044857e1 6.408208075663e1 6.448360414201e1 1.107474775225e2</array>
+        </property>
+        <kpoint coords="-6.794086343847e-1 1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505678895e0 -6.739685455363e0 -1.194428759378e0 -8.958152934713e-1 9.555264295561e0 1.035481343389e1 1.478127409787e1 1.620837557437e1 2.270015888130e1 3.353142816504e1 6.161826861201e1 7.286170954161e1 8.845623447235e1</array>
+        </property>
+        <kpoint coords="-5.435269075078e-1 0.000000000000e0 5.435269075078e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-7.499955128870e0 -5.319300137028e0 -3.932452037039e0 2.825897501897e0 4.792179275387e0 1.445762512615e1 1.618070046694e1 1.737808745050e1 1.784497816287e1 4.242380096150e1 6.408208049119e1 6.448362624590e1 1.107474788323e2</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 -1.358817268769e-1 6.794086343847e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505678177e0 -6.739685456360e0 -1.194428758510e0 -8.958152947208e-1 9.555264285475e0 1.035481343285e1 1.478127406363e1 1.620837556083e1 2.270015901409e1 3.353142402120e1 6.161826946913e1 7.286171635774e1 8.845623060050e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 -2.717634537539e-1 8.152903612617e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-7.499955127372e0 -5.319300138434e0 -3.932452040845e0 2.825897503207e0 4.792179270082e0 1.445762520673e1 1.618070044092e1 1.737808744729e1 1.784497790439e1 4.242379525289e1 6.408207960669e1 6.448364900879e1 1.107474843127e2</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 -4.076451806308e-1 9.511720881386e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505667471e0 -6.739685466426e0 -1.194428759310e0 -8.958152930640e-1 9.555264295837e0 1.035481342405e1 1.478127412298e1 1.620837562000e1 2.270015901804e1 3.353142433115e1 6.161826808665e1 7.286168883460e1 8.845621276870e1</array>
+        </property>
+        <kpoint coords="-6.794086343847e-1 4.076451806308e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505677910e0 -6.739685456004e0 -1.194428756889e0 -8.958152948863e-1 9.555264296834e0 1.035481342425e1 1.478127412277e1 1.620837561980e1 2.270015901795e1 3.353142433253e1 6.161826808574e1 7.286168883728e1 8.845621277158e1</array>
+        </property>
+        <kpoint coords="-5.435269075078e-1 2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430335115e0 -6.575613684962e0 1.916737874364e0 3.702664996083e0 5.782514622288e0 1.166804904793e1 1.380102889967e1 1.692371281239e1 2.419540010238e1 2.438302570565e1 4.717107735307e1 6.186408577751e1 1.332472435608e2</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400754e1 -4.947580756820e0 8.160054274976e-1 5.189545965042e0 7.346991845301e0 1.059517713945e1 1.383080989138e1 1.650997009810e1 1.958467000073e1 3.233601671433e1 5.232552415274e1 6.804117304320e1 9.423161848003e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 0.000000000000e0 5.435269075078e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905230e1 -2.545898450996e0 -1.164970918805e0 9.891827663593e-1 8.537065062238e0 9.888848616561e0 1.227520595231e1 2.041264111809e1 2.156456850625e1 3.600566306487e1 5.713816950421e1 6.258886125497e1 1.050583100735e2</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 -1.358817268769e-1 6.794086343847e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394573e0 -3.166515206661e0 -2.804198264432e0 1.751457776599e0 3.477535895710e0 8.419406243108e0 1.854725296879e1 2.175066692703e1 2.611970269334e1 4.910073970539e1 5.396654358216e1 5.668717965875e1 1.004030247108e2</array>
+        </property>
+        <kpoint coords="-5.551115123126e-17 -2.717634537539e-1 8.152903612617e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.237639710262e0 -4.891716022971e0 -3.476907956881e0 -2.002926499941e0 7.647002802408e0 9.220181166080e0 1.651219485655e1 1.758517904298e1 2.811166288991e1 4.786656348203e1 5.720214445149e1 5.806899131576e1 8.199937538407e1</array>
+        </property>
+        <kpoint coords="-5.435269075078e-1 5.435269075078e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-7.499955128696e0 -5.319300138180e0 -3.932452039426e0 2.825897504749e0 4.792179270441e0 1.445762520444e1 1.618070044043e1 1.737808745058e1 1.784497789915e1 4.242379525668e1 6.408207960995e1 6.448364900959e1 1.107474843140e2</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 4.076451806308e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400733e1 -4.947580757764e0 8.160054262291e-1 5.189545969741e0 7.346991830583e0 1.059517713627e1 1.383080984992e1 1.650997007967e1 1.958467014173e1 3.233601598598e1 5.232552823369e1 6.804117661382e1 9.423162321454e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.233233294931e1 -3.718138560258e0 6.218296418109e0 6.218296421149e0 8.921702448826e0 8.921702459159e0 1.093219650730e1 1.798338983501e1 1.798338985236e1 2.659700525396e1 5.625978998903e1 6.826508523314e1 6.826508661675e1</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.257143671091e1 -1.276386985106e0 3.477461230991e0 4.293165594538e0 5.453211742195e0 1.004715594756e1 1.403334956921e1 1.576152783130e1 2.113705079390e1 3.604161662679e1 5.737564186237e1 6.730188831790e1 6.820806700666e1</array>
+        </property>
+        <kpoint coords="0.000000000000e0 0.000000000000e0 5.435269075078e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.135683834786e1 6.206643081026e-2 1.971432412824e0 1.971432414618e0 2.096577415333e0 5.386363153227e0 2.155637468276e1 2.187728847892e1 2.187728866334e1 4.918159325572e1 7.064163683529e1 7.064164829826e1 7.932487226070e1</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 -1.358817268769e-1 6.794086343847e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394532e0 -3.166515215676e0 -2.804198255869e0 1.751457777953e0 3.477535895955e0 8.419406241284e0 1.854725296865e1 2.175066691951e1 2.611970269700e1 4.910073970182e1 5.396654358502e1 5.668717966095e1 1.004030247077e2</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 6.794086343847e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505679394e0 -6.739685455254e0 -1.194428757326e0 -8.958152957446e-1 9.555264285776e0 1.035481343261e1 1.478127406333e1 1.620837556060e1 2.270015901380e1 3.353142402158e1 6.161826946912e1 7.286171635728e1 8.845623060126e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 5.435269075078e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905212e1 -2.545898452784e0 -1.164970922086e0 9.891827676897e-1 8.537065021552e0 9.888848613414e0 1.227520591501e1 2.041264115260e1 2.156456843653e1 3.600566392862e1 5.713819570907e1 6.258885661384e1 1.050583377313e2</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 4.076451806308e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.257143671028e1 -1.276386985624e0 3.477461231005e0 4.293165598838e0 5.453211741782e0 1.004715593536e1 1.403334956113e1 1.576152782824e1 2.113705069745e1 3.604161783979e1 5.737564264302e1 6.730189212934e1 6.820806744588e1</array>
+        </property>
+        <kpoint coords="0.000000000000e0 2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.330453280718e1 2.284770764382e-1 1.600834234141e0 7.838314888646e0 1.028760368167e1 1.052278102447e1 1.124144184101e1 1.252605979777e1 1.702002664896e1 3.767252885248e1 4.220221751181e1 5.260124066862e1 8.758235335980e1</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.257143671082e1 -1.276386984514e0 3.477461229115e0 4.293165595905e0 5.453211739343e0 1.004715594952e1 1.403334956403e1 1.576152783919e1 2.113705079267e1 3.604161662954e1 5.737564186334e1 6.730188832232e1 6.820806700564e1</array>
+        </property>
+        <kpoint coords="2.717634537539e-1 5.551115123126e-17 5.435269075078e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905221e1 -2.545898451155e0 -1.164970920362e0 9.891827670491e-1 8.537065062008e0 9.888848615900e0 1.227520595053e1 2.041264112018e1 2.156456850744e1 3.600566306233e1 5.713816950189e1 6.258886125539e1 1.050583100694e2</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 8.152903612617e-1 -2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-7.499955127864e0 -5.319300137277e0 -3.932452038090e0 2.825897500701e0 4.792179274691e0 1.445762512802e1 1.618070046735e1 1.737808744766e1 1.784497816712e1 4.242380095815e1 6.408208048832e1 6.448362624506e1 1.107474788319e2</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 6.794086343847e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394231e0 -3.166515209551e0 -2.804198262699e0 1.751457776477e0 3.477535894710e0 8.419406235973e0 1.854725298625e1 2.175066703750e1 2.611970270984e1 4.910074693240e1 5.396654323571e1 5.668717937764e1 1.004030200456e2</array>
+        </property>
+        <kpoint coords="0.000000000000e0 5.435269075078e-1 0.000000000000e0" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.135683834722e1 6.206643316909e-2 1.971432413326e0 1.971432414488e0 2.096577415116e0 5.386363150050e0 2.155637464845e1 2.187728844308e1 2.187728848317e1 4.918159343548e1 7.064164674028e1 7.064165270380e1 7.932487218831e1</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 4.076451806308e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.257143671021e1 -1.276386985218e0 3.477461229471e0 4.293165599846e0 5.453211739304e0 1.004715593701e1 1.403334955575e1 1.576152783547e1 2.113705069791e1 3.604161784169e1 5.737564264321e1 6.730189213394e1 6.820806744480e1</array>
+        </property>
+        <kpoint coords="2.717634537539e-1 2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.233233294916e1 -3.718138560134e0 6.218296418132e0 6.218296419308e0 8.921702443580e0 8.921702456088e0 1.093219651660e1 1.798338983787e1 1.798338985171e1 2.659700525126e1 5.625978998324e1 6.826508523655e1 6.826508662335e1</array>
+        </property>
+        <kpoint coords="4.076451806308e-1 1.358817268769e-1 4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400731e1 -4.947580756913e0 8.160054265985e-1 5.189545963633e0 7.346991844083e0 1.059517713700e1 1.383080989688e1 1.650997009806e1 1.958467000058e1 3.233601670972e1 5.232552415145e1 6.804117303860e1 9.423161848660e1</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 9.511720881386e-1 -4.076451806308e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505668394e0 -6.739685466017e0 -1.194428759726e0 -8.958152935449e-1 9.555264295018e0 1.035481343348e1 1.478127409756e1 1.620837557411e1 2.270015888171e1 3.353142816435e1 6.161826861296e1 7.286170953829e1 8.845623447038e1</array>
+        </property>
+        <kpoint coords="-5.551115123126e-17 8.152903612617e-1 -2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.237639710302e0 -4.891716021751e0 -3.476907965145e0 -2.002926499166e0 7.647002809088e0 9.220181173690e0 1.651219469238e1 1.758517903939e1 2.811166288999e1 4.786657260337e1 5.720215199916e1 5.806899120031e1 8.199943542554e1</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 6.794086343847e-1 -1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394113e0 -3.166515218050e0 -2.804198254639e0 1.751457777374e0 3.477535895313e0 8.419406234196e0 1.854725298536e1 2.175066703151e1 2.611970271373e1 4.910074692907e1 5.396654323867e1 5.668717938001e1 1.004030200427e2</array>
+        </property>
+        <kpoint coords="2.717634537539e-1 5.435269075078e-1 5.551115123126e-17" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905197e1 -2.545898452970e0 -1.164970924142e0 9.891827685737e-1 8.537065021429e0 9.888848612560e0 1.227520591324e1 2.041264115521e1 2.156456843912e1 3.600566392574e1 5.713819570618e1 6.258885661426e1 1.050583377266e2</array>
+        </property>
+        <kpoint coords="4.076451806308e-1 4.076451806308e-1 1.358817268769e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400706e1 -4.947580757975e0 8.160054252343e-1 5.189545967882e0 7.346991829357e0 1.059517713404e1 1.383080985626e1 1.650997007914e1 1.958467014292e1 3.233601598084e1 5.232552823265e1 6.804117660898e1 9.423162322002e1</array>
+        </property>
+        <kpoint coords="5.435269075078e-1 2.717634537539e-1 2.717634537539e-1" weight="9.259259259259e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430334615e0 -6.575613685700e0 1.916737873952e0 3.702664995663e0 5.782514622864e0 1.166804904387e1 1.380102890082e1 1.692371281195e1 2.419540010282e1 2.438302570347e1 4.717107735782e1 6.186408577870e1 1.332472435595e2</array>
+        </property>
+        <kpoint coords="-9.511720881386e-1 4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400720e1 -4.947580757560e0 8.160054269517e-1 5.189545963287e0 7.346991838459e0 1.059517713685e1 1.383080990217e1 1.650997009496e1 1.958467010068e1 3.233601625425e1 5.232552056192e1 6.804117402990e1 9.423161856254e1</array>
+        </property>
+        <kpoint coords="-8.152903612617e-1 2.717634537539e-1 5.435269075078e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905169e1 -2.545898452439e0 -1.164970920740e0 9.891827679476e-1 8.537065053143e0 9.888848611242e0 1.227520593374e1 2.041264119877e1 2.156456845013e1 3.600566672888e1 5.713817693999e1 6.258885967269e1 1.050583115218e2</array>
+        </property>
+        <kpoint coords="-6.794086343847e-1 1.358817268769e-1 6.794086343847e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394153e0 -3.166515217451e0 -2.804198255186e0 1.751457777414e0 3.477535895323e0 8.419406234199e0 1.854725298572e1 2.175066703124e1 2.611970271320e1 4.910074692920e1 5.396654323809e1 5.668717938001e1 1.004030200428e2</array>
+        </property>
+        <kpoint coords="-5.435269075078e-1 0.000000000000e0 8.152903612617e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.237639709277e0 -4.891716021214e0 -3.476907965575e0 -2.002926502907e0 7.647002768306e0 9.220181165218e0 1.651219499952e1 1.758517904972e1 2.811166289028e1 4.786656249542e1 5.720217646712e1 5.806899146621e1 8.199933704425e1</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 -1.358817268769e-1 9.511720881386e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505668624e0 -6.739685466022e0 -1.194428759517e0 -8.958152941503e-1 9.555264284834e0 1.035481343239e1 1.478127406348e1 1.620837556072e1 2.270015901411e1 3.353142402029e1 6.161826947009e1 7.286171635464e1 8.845623059849e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 -2.717634537539e-1 1.087053815016e0" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430334616e0 -6.575613684999e0 1.916737872408e0 3.702664996812e0 5.782514619905e0 1.166804904865e1 1.380102893497e1 1.692371286525e1 2.419539923544e1 2.438302568706e1 4.717107767526e1 6.186408867074e1 1.332472043069e2</array>
+        </property>
+        <kpoint coords="-8.152903612617e-1 5.435269075078e-1 2.717634537539e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905269e1 -2.545898450368e0 -1.164970920499e0 9.891827659779e-1 8.537065050246e0 9.888848613368e0 1.227520591834e1 2.041264115269e1 2.156456846363e1 3.600566373654e1 5.713817089621e1 6.258885753280e1 1.050583326254e2</array>
+        </property>
+        <kpoint coords="-6.794086343847e-1 4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400741e1 -4.947580757781e0 8.160054278823e-1 5.189545963337e0 7.346991837910e0 1.059517714040e1 1.383080989978e1 1.650997009285e1 1.958467010287e1 3.233601625678e1 5.232552056193e1 6.804117403157e1 9.423161855683e1</array>
+        </property>
+        <kpoint coords="-5.435269075078e-1 2.717634537539e-1 5.435269075078e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430334566e0 -6.575613685119e0 1.916737874066e0 3.702664997112e0 5.782514627663e0 1.166804905072e1 1.380102890236e1 1.692371281118e1 2.419540026144e1 2.438302573547e1 4.717107723859e1 6.186408731477e1 1.332472181040e2</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 1.358817268769e-1 6.794086343847e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505678549e0 -6.739685456624e0 -1.194428749748e0 -8.958153026049e-1 9.555264287993e0 1.035481343351e1 1.478127406067e1 1.620837555820e1 2.270015901153e1 3.353142402480e1 6.161826947075e1 7.286171635775e1 8.845623060409e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 0.000000000000e0 8.152903612617e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.237639711440e0 -4.891716023060e0 -3.476907959724e0 -2.002926500091e0 7.647002813867e0 9.220181165422e0 1.651219449279e1 1.758517905430e1 2.811166289025e1 4.786656317545e1 5.720214324173e1 5.806899130159e1 8.199946845132e1</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 -1.358817268769e-1 9.511720881386e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394372e0 -3.166515212696e0 -2.804198258572e0 1.751457776311e0 3.477535895514e0 8.419406242789e0 1.854725296570e1 2.175066692758e1 2.611970269032e1 4.910073970289e1 5.396654358564e1 5.668717966196e1 1.004030247076e2</array>
+        </property>
+        <kpoint coords="-6.794086343847e-1 6.794086343847e-1 1.358817268769e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394518e0 -3.166515215885e0 -2.804198255677e0 1.751457777939e0 3.477535895950e0 8.419406241278e0 1.854725296851e1 2.175066691962e1 2.611970269725e1 4.910073970176e1 5.396654358518e1 5.668717966098e1 1.004030247077e2</array>
+        </property>
+        <kpoint coords="-5.435269075078e-1 5.435269075078e-1 2.717634537539e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430335144e0 -6.575613684805e0 1.916737873001e0 3.702664998567e0 5.782514620778e0 1.166804905133e1 1.380102892862e1 1.692371286265e1 2.419539923814e1 2.438302569220e1 4.717107767350e1 6.186408866959e1 1.332472043017e2</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.783274259875e0 -8.639190243132e0 6.611684988889e0 6.611684999277e0 7.334211818067e0 7.334211826264e0 1.079387970892e1 1.578129172530e1 2.380483570898e1 2.380483572690e1 4.375966383607e1 4.375966410348e1 6.459515807560e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 2.717634537539e-1 5.435269075078e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430335144e0 -6.575613684805e0 1.916737873001e0 3.702664998567e0 5.782514620778e0 1.166804905133e1 1.380102892862e1 1.692371286265e1 2.419539923814e1 2.438302569220e1 4.717107767350e1 6.186408866958e1 1.332472043018e2</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 1.358817268769e-1 6.794086343847e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394518e0 -3.166515215885e0 -2.804198255677e0 1.751457777939e0 3.477535895950e0 8.419406241278e0 1.854725296851e1 2.175066691962e1 2.611970269725e1 4.910073970177e1 5.396654358519e1 5.668717966098e1 1.004030247077e2</array>
+        </property>
+        <kpoint coords="0.000000000000e0 0.000000000000e0 8.152903612617e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-7.165042037706e0 -5.799068644569e0 1.104679163299e0 1.104679164772e0 1.155869457465e0 4.629314662551e0 2.603246327948e1 2.815564346259e1 2.815564347202e1 4.583747581135e1 4.583747605223e1 5.016012630879e1 6.574617893348e1</array>
+        </property>
+        <kpoint coords="-5.435269075078e-1 8.152903612617e-1 0.000000000000e0" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.237639711440e0 -4.891716023060e0 -3.476907959724e0 -2.002926500091e0 7.647002813867e0 9.220181165422e0 1.651219449279e1 1.758517905430e1 2.811166289025e1 4.786656317545e1 5.720214324170e1 5.806899130160e1 8.199946845130e1</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 6.794086343847e-1 1.358817268769e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505678549e0 -6.739685456624e0 -1.194428749748e0 -8.958153026049e-1 9.555264287993e0 1.035481343351e1 1.478127406067e1 1.620837555820e1 2.270015901153e1 3.353142402480e1 6.161826947075e1 7.286171635770e1 8.845623060411e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 5.435269075078e-1 2.717634537539e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430334566e0 -6.575613685119e0 1.916737874066e0 3.702664997112e0 5.782514627663e0 1.166804905072e1 1.380102890236e1 1.692371281118e1 2.419540026144e1 2.438302573547e1 4.717107723859e1 6.186408731477e1 1.332472181039e2</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400741e1 -4.947580757781e0 8.160054278823e-1 5.189545963337e0 7.346991837910e0 1.059517714040e1 1.383080989978e1 1.650997009285e1 1.958467010287e1 3.233601625679e1 5.232552056192e1 6.804117403154e1 9.423161855679e1</array>
+        </property>
+        <kpoint coords="0.000000000000e0 2.717634537539e-1 5.435269075078e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905269e1 -2.545898450368e0 -1.164970920499e0 9.891827659780e-1 8.537065050246e0 9.888848613368e0 1.227520591834e1 2.041264115269e1 2.156456846363e1 3.600566373653e1 5.713817089621e1 6.258885753279e1 1.050583326255e2</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 1.358817268769e-1 6.794086343847e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394372e0 -3.166515212696e0 -2.804198258572e0 1.751457776311e0 3.477535895514e0 8.419406242789e0 1.854725296570e1 2.175066692758e1 2.611970269032e1 4.910073970291e1 5.396654358565e1 5.668717966195e1 1.004030247076e2</array>
+        </property>
+        <kpoint coords="-4.076451806308e-1 9.511720881386e-1 -1.358817268769e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.932505668624e0 -6.739685466022e0 -1.194428759517e0 -8.958152941503e-1 9.555264284834e0 1.035481343239e1 1.478127406348e1 1.620837556072e1 2.270015901411e1 3.353142402029e1 6.161826947010e1 7.286171635462e1 8.845623059839e1</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 8.152903612617e-1 0.000000000000e0" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-6.237639709277e0 -4.891716021214e0 -3.476907965575e0 -2.002926502907e0 7.647002768306e0 9.220181165218e0 1.651219499952e1 1.758517904972e1 2.811166289028e1 4.786656249543e1 5.720217646714e1 5.806899146620e1 8.199933704424e1</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 6.794086343847e-1 1.358817268769e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338394153e0 -3.166515217451e0 -2.804198255186e0 1.751457777414e0 3.477535895323e0 8.419406234199e0 1.854725298572e1 2.175066703124e1 2.611970271320e1 4.910074692922e1 5.396654323809e1 5.668717938001e1 1.004030200428e2</array>
+        </property>
+        <kpoint coords="0.000000000000e0 5.435269075078e-1 2.717634537539e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.040456905169e1 -2.545898452439e0 -1.164970920740e0 9.891827679476e-1 8.537065053143e0 9.888848611242e0 1.227520593374e1 2.041264119877e1 2.156456845013e1 3.600566672888e1 5.713817693999e1 6.258885967269e1 1.050583115218e2</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-1.064280400720e1 -4.947580757560e0 8.160054269518e-1 5.189545963287e0 7.346991838459e0 1.059517713685e1 1.383080990217e1 1.650997009496e1 1.958467010068e1 3.233601625425e1 5.232552056192e1 6.804117402989e1 9.423161856251e1</array>
+        </property>
+        <kpoint coords="2.717634537539e-1 2.717634537539e-1 5.435269075078e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430334616e0 -6.575613684999e0 1.916737872408e0 3.702664996812e0 5.782514619905e0 1.166804904865e1 1.380102893497e1 1.692371286525e1 2.419539923544e1 2.438302568706e1 4.717107767527e1 6.186408867074e1 1.332472043066e2</array>
+        </property>
+        <kpoint coords="-2.717634537539e-1 1.087053815016e0 -2.717634537539e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430334031e0 -6.575613685456e0 1.916737873536e0 3.702664995672e0 5.782514626708e0 1.166804904789e1 1.380102890768e1 1.692371281375e1 2.419540025922e1 2.438302573140e1 4.717107724155e1 6.186408731572e1 1.332472181076e2</array>
+        </property>
+        <kpoint coords="-1.358817268769e-1 9.511720881386e-1 -1.358817268769e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338393975e0 -3.166515216394e0 -2.804198256100e0 1.751457776135e0 3.477535894498e0 8.419406235645e0 1.854725298266e1 2.175066703844e1 2.611970270760e1 4.910074692971e1 5.396654323991e1 5.668717938087e1 1.004030200423e2</array>
+        </property>
+        <kpoint coords="0.000000000000e0 8.152903612617e-1 0.000000000000e0" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-7.165042037462e0 -5.799068643662e0 1.104679163568e0 1.104679164536e0 1.155869457265e0 4.629314661429e0 2.603246327806e1 2.815564346311e1 2.815564347164e1 4.583747569086e1 4.583747605198e1 5.016012638704e1 6.574617849267e1</array>
+        </property>
+        <kpoint coords="1.358817268769e-1 6.794086343847e-1 1.358817268769e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.753338393975e0 -3.166515216394e0 -2.804198256100e0 1.751457776135e0 3.477535894498e0 8.419406235645e0 1.854725298266e1 2.175066703844e1 2.611970270760e1 4.910074692972e1 5.396654323991e1 5.668717938086e1 1.004030200422e2</array>
+        </property>
+        <kpoint coords="2.717634537539e-1 5.435269075078e-1 2.717634537539e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-9.444430334031e0 -6.575613685456e0 1.916737873536e0 3.702664995672e0 5.782514626708e0 1.166804904789e1 1.380102890768e1 1.692371281375e1 2.419540025922e1 2.438302573140e1 4.717107724153e1 6.186408731572e1 1.332472181073e2</array>
+        </property>
+        <kpoint coords="4.076451806308e-1 4.076451806308e-1 4.076451806308e-1" weight="4.629629629630e-3"/>
+        <property dictRef="siesta:eigenenergies">
+          <array size="13" dataType="fpx:real" units="siestaUnits:ev">-8.783274249824e0 -8.639190253003e0 6.611684994757e0 6.611684996000e0 7.334211813324e0 7.334211820239e0 1.079387971781e1 1.578129172580e1 2.380483570684e1 2.380483572212e1 4.375966383989e1 4.375966410574e1 6.459515807786e1</array>
+        </property>
+      </propertyList>
+    </propertyList>
+    <propertyList title="Energy Decomposition">
+      <property dictRef="siesta:Ebs">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">-25.995484</scalar>
+      </property>
+      <property dictRef="siesta:Eions">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">88.825642</scalar>
+      </property>
+      <property dictRef="siesta:Ena">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">22.190169</scalar>
+      </property>
+      <property dictRef="siesta:Ekin">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">22.301753</scalar>
+      </property>
+      <property dictRef="siesta:Enl">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">6.318602</scalar>
+      </property>
+      <property dictRef="siesta:DEna">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">2.495547</scalar>
+      </property>
+      <property dictRef="siesta:DUscf">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">0.088587 </scalar>
+      </property>
+      <property dictRef="siesta:DUext">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">0.000000</scalar>
+      </property>
+      <property dictRef="siesta:Exc">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">-21.636127</scalar>
+      </property>
+      <property dictRef="siesta:Ecorrec">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">0.000000</scalar>
+      </property>
+      <property dictRef="siesta:Emad">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">0.000000</scalar>
+      </property>
+      <property dictRef="siesta:Emeta">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">0.000000</scalar>
+      </property>
+      <property dictRef="siesta:Emm">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">0.000000</scalar>
+      </property>
+      <property dictRef="siesta:Ekinion">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">0.000000</scalar>
+      </property>
+      <property dictRef="siesta:EharrsK">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">-57.067112</scalar>
+      </property>
+      <property dictRef="siesta:EtotK">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">-57.067112</scalar>
+      </property>
+      <property dictRef="siesta:FreeEK">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">-57.069066</scalar>
+      </property>
+    </propertyList>
+    <propertyList title="Final Energy">
+      <property dictRef="siesta:Ebs">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">-25.9954837</scalar>
+      </property>
+      <property dictRef="siesta:Ekin">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">22.3017532</scalar>
+      </property>
+      <property dictRef="siesta:Uscf">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">0.0860179 </scalar>
+      </property>
+      <property dictRef="siesta:DUext">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">0.0000000</scalar>
+      </property>
+      <property dictRef="siesta:Exc">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">-21.6361273</scalar>
+      </property>
+      <property dictRef="siesta:I-e">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">-20.2819787</scalar>
+      </property>
+      <property dictRef="siesta:I-I">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">-37.5367767</scalar>
+      </property>
+      <property dictRef="siesta:Ekinion">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">0.0000000</scalar>
+      </property>
+      <property dictRef="siesta:Etot">
+        <scalar dataType="fpx:real" units="siestaUnits:eV">-57.0671116</scalar>
+      </property>
+    </propertyList>
+    <property dictRef="siesta:stress">
+      <matrix rows="3" columns="3" dataType="fpx:real" units="siestaUnits:eV_Ang__3">3.286677035441e-2 -3.152862401617e-10 -2.574233264036e-10 -3.152940297736e-10 3.286677018695e-2 -2.722345010780e-10 -2.574256110039e-10 -2.722381893413e-10 3.286676910958e-2</matrix>
+    </property>
+    <propertyList title="Final Pressure">
+      <property dictRef="siesta:cellvol" title="cell volume">
+        <scalar dataType="fpx:real" units="siestaUnits:Ang__3">1.695686527294e1</scalar>
+      </property>
+      <property dictRef="siesta:pressSol" title="Pressure of Solid">
+        <scalar dataType="fpx:real" units="siestaUnits:kbar">-5.265893992705e1</scalar>
+      </property>
+      <property dictRef="siesta:pressMol" title="Pressure of Molecule">
+        <scalar dataType="fpx:real" units="siestaUnits:kbar">-5.265893992705e1</scalar>
+      </property>
+    </propertyList>
+  </module>
+  <metadata name="siesta:EndTime" content="2016-07-07T08-35-04"/>
+  <metadata name="dc:contributor" content="FoX-4.1.0 (http://www.uszla.me.uk/FoX)"/>
+</cml>

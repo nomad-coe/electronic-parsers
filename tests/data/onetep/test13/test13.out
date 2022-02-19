@@ -1,0 +1,1094 @@
+ +---------------------------------------------------------------+
+ |                                                               |
+ |        ####### #     # ####### ####### ####### ######         |
+ |        #     # ##    # #          #    #       #     #        |
+ |        #     # # #   # #          #    #       #     #        |
+ |        #     # #  #  # #####      #    #####   ######         |
+ |        #     # #   # # #          #    #       #              |
+ |        #     # #    ## #          #    #       #              |
+ |        ####### #     # #######    #    ####### #              |
+ |                                                               |
+ |        Linear-Scaling Ab Initio Total Energy Program          |
+ |                                                               |
+ |          Release for academic collaborators of ODG            |
+ |                                             Version 4.1.6.6   |
+ |                                                               |
+ +---------------------------------------------------------------+
+ |                                                               |
+ |  Authors:                                                     |
+ |  Jacek Dziedzic, Peter D. Haynes, Nicholas D. M. Hine,        |
+ |  Arash. A. Mostofi, Mike C. Payne and Chris-Kriton Skylaris   |
+ |                                                               |
+ |  Contributors:                                                |
+ |  J. Aarons, L. Andrinopoulos, P. W. Avraam, R. A. Bell,       |
+ |  S. J. Clark, G. C. Constantinescu, F. Corsetti, N. Corsini,  |
+ |  O. Dieguez, S. M. M. Dubois,  J. M. Escartin, H. H. Helal,   |
+ |  Q. O. Hill, L. P. Lee, J.-H. Li, G. Moynihan, D. D. O`Regan, |
+ |  M. J. S. Phipps, C. J. Pickard, M. I. J. Probert,            |
+ |  L. Ratcliff, M. Robinson, A. Ruiz Serrano, J. S. Spencer,    |
+ |  G. Teobaldi, D. Turban, V. Vitale, K. A. Wilkinson and       |
+ |  T. J. Zuehlsdorff                                            |
+ |                                                               |
+ |                                   Copyright (c) 2004-2014     |
+ |                                                               |
+ |  Please cite:                                                 |
+ |  "Introducing ONETEP: Linear-scaling density functional       |
+ |   simulations on parallel computers".                         |
+ |   C.-K. Skylaris, P. D. Haynes, A. A. Mostofi, M. C. Payne.   |
+ |   J. Chem. Phys. 122 084119 (2005).                           |
+ |                                                               |
+ |          in all publications arising from your use of ONETEP. |
+ |                                                               |
+ +---------------------------------------------------------------+
+ |                                                               |
+ |   ONETEP is based on developments described in the following  |
+ |   publications:                                               |
+ |                                                               |
+ |  "Nonorthogonal generalized Wannier function pseudopotential  |
+ |   plane-wave method".                                         |
+ |   C.-K. Skylaris, A. A. Mostofi, P. D. Haynes, O. Dieguez,    |
+ |   M. C. Payne.                                                |
+ |   Phys. Rev. B 66 035119 (2002).                              |
+ |                                                               |
+ |  "Preconditioned iterative minimization for linear-scaling    |
+ |   electronic structure calculations".                         |
+ |   A. A. Mostofi, P. D. Haynes, C.-K. Skylaris, M. C. Payne.   |
+ |   J. Chem. Phys. 119(17), pp.8842-8848 (2003).                |
+ |                                                               |
+ |  "Total-energy calculations on a real space grid with         |
+ |   localized functions and a plane-wave basis".                |
+ |   A. A. Mostofi, C.-K. Skylaris, P. D. Haynes, M. C. Payne.   |
+ |   Comput. Phys. Commun. 147, pp.788-802 (2002).               |
+ |                                                               |
+ |  "Accurate kinetic energy evaluation in electronic structure  |
+ |   calculations with localized functions on real space grids"  |
+ |   C.-K. Skylaris, A. A. Mostofi, P. D. Haynes, C. J. Pickard, |
+ |   M. C. Payne.                                                |
+ |   Comput. Phys. Commun. 140, pp.315-322 (2001).               |
+ |                                                               |
+ |  "Accurate ionic forces and geometry optimization in linear-  |
+ |   scaling density-functional theory with local orbitals"      |
+ |   N. D. M. Hine, M. Robinson, P. D. Haynes, C.-K. Skylaris,   |
+ |   M. C. Payne, and A. A. Mostofi.                             |
+ |   Phys. Rev. B 83 195102 (2011).                              |
+ |                                                               |
+ +---------------------------------------------------------------+
+
+Job started: 05-11-2014 04:18 (-0000)
+ 
+If your calculation crashes here, before "Reading parameters..."
+is displayed, then your stack size is insufficient.
+If so, use "ulimit -s unlimited" at runtime.
+
+Reading parameters from file "GaAs_dimer.dat" ...... done
+
+Checking processes and threads...
+      Default threads: 4
+   Running with 4 MPI processes.
+   There are 4 MPI processes running on the same node as the root process.
+   Each MPI process is using: 
+               1 threads for simulation cell FFTs.
+               1 threads for parallel FFT box operations.
+               4 threads for loops over batched FFT box operations.
+               4 threads in other parallel regions.
+... done
+
+Basic input checks...... done
+
+Reading geometry and species blocks from file "GaAs_dimer.dat" ...
+  <species_atomic_set> block not found: NGWF initialisation set to SOLVE
+... done
+
+
+--------------------------------------------------------------------------------
+---------------------------------- INPUT FILE ----------------------------------
+--------------------------------------------------------------------------------
+
+task                     : SINGLEPOINT                                          
+cutoff_energy            : 400.000000  eV                                       
+xc_functional            : LDA                                                  
+maxit_pen                : 3                                                    
+write_denskern           : F                                                    
+write_tightbox_ngwfs     : F                                                    
+write_forces             : T                                                    
+output_detail            : NORMAL                                               
+timings_level            : 0                                                    
+print_qc                 : T                                                    
+charge                   : 0                                                    
+grd_format               : F                                                    
+cube_format              : T                                                    
+polarisation_calculate   : T                                                    
+popn_calculate           : T                                                    
+do_properties            : T                                                    
+dos_smear                : -0.1 eV                                              
+homo_plot                : -1                                                   
+lumo_plot                : -1                                                   
+coulomb_cutoff_type      : SPHERE                                               
+coulomb_cutoff_radius    : 50 bohr                                              
+coulomb_cutoff_write_int : T                                                    
+psinc_spacing            : 0.6100000000000001 0.6100000000000001 0.6100000000000
+%block lattice_cart                                                             
+27.45000000000000    0.00000000000000    0.00000000000000                       
+0.00000000000000   27.45000000000000    0.00000000000000                        
+0.00000000000000    0.00000000000000   27.45000000000000                        
+%endblock lattice_cart                                                          
+%block padded_lattice_cart                                                      
+91.50000000000000    0.00000000000000    0.00000000000000                       
+0.00000000000000   91.50000000000000    0.00000000000000                        
+0.00000000000000    0.00000000000000   91.50000000000000                        
+%endblock padded_lattice_cart                                                   
+%block species                                                                  
+Ga   Ga  31  4 10.0                                                             
+As   As  33  4 10.0                                                             
+H    H    1  1  8.0                                                             
+%endblock species                                                               
+%block species_pot                                                              
+Ga "../../pseudo/Ga_OTF.usp"                                                    
+As "../../pseudo/As_OTF.usp"                                                    
+H  "../../pseudo/H_OTF.usp"                                                     
+%endblock species_pot                                                           
+%block positions_abs                                                            
+     Hash =   000001069767554366734464
+%endblock positions_abs                                                         
+
+--------------------------------------------------------------------------------
+-------------------------------- END INPUT FILE --------------------------------
+--------------------------------------------------------------------------------
+
+
+ 
+<<<<<<<<<<<<<<<<<<<<<<<<< Pseudopotential information >>>>>>>>>>>>>>>>>>>>>>>>>
+File: ../../pseudo/Ga_OTF.usp [ 2001 points up to Gmax=  52.9 (1/bohr)]
+  Atomic number: 31;  ionic charge:  3.000000
+    Shell 1: l = 0; rc = 1.96 bohr
+    Shell 2: l = 1; rc = 1.96 bohr
+  Core charge supplied for Nonlinear Core Corrections
+File: ../../pseudo/As_OTF.usp [ 2001 points up to Gmax=  52.9 (1/bohr)]
+  Atomic number: 33;  ionic charge:  5.000000
+    Shell 1: l = 0; rc = 1.60 bohr
+    Shell 2: l = 1; rc = 1.60 bohr
+File: ../../pseudo/H_OTF.usp [ 2001 points up to Gmax=  52.9 (1/bohr)]
+  Atomic number:  1;  ionic charge:  1.000000
+    Shell 1: l = 0; rc = 1.25 bohr
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+------------------------- Atom counting information ---------------------------
+Symbol    Natoms    Nngwfs    Nprojs
+  Ga         1         4         4
+  As         1         4         4
+  H          4         4         4
+.......   ......    ......    ......
+Totals:      6        12        12
+-------------------------------------------------------------------------------
+ 
+============================== PSINC grid sizes ================================
+                      Simulation cell:   45 x  45 x  45
+                              FFT-box:   45 x  45 x  45
+                                  PPD:    5 x   5 x   1
+Grid space d1=  0.610000000000a0 (KE cutoff=  20.41476Eh = 555.51395eV)
+Grid space d2=  0.610000000000a0 (KE cutoff=  20.41476Eh = 555.51395eV)
+Grid space d3=  0.610000000000a0 (KE cutoff=  20.41476Eh = 555.51395eV)
+================================================================================
+
+********************** Fourier parallelisation information *********************
+       Coarse grid (whole simulation cell) dimensions:     45    45    45
+          Real-space ('12') slabs/node (min max mean):     11    12    11
+         Recip-space ('23') slabs/node (min max mean):      5     6     5
+********************************************************************************
+
+********************** Fourier parallelisation information *********************
+       Double grid (whole simulation cell) dimensions:     90    90    90
+          Real-space ('12') slabs/node (min max mean):     22    23    22
+         Recip-space ('23') slabs/node (min max mean):     11    12    11
+********************************************************************************
+
+********************** Fourier parallelisation information *********************
+       Padded Grid (whole simulation cell) dimensions:    300   300   300
+          Real-space ('12') slabs/node (min max mean):     75    75    75
+         Recip-space ('23') slabs/node (min max mean):     37    38    37
+********************************************************************************
+
+Calculating transform of cutoff Coulomb interaction ... done
+
+Determining parallel strategy ...... done
+Writing "GaAs_dimer_coulomb.cube" ... done
+Calculating direct Ion-Ion energy ...
+Ion-Ion Energy        :        12.78477947981485
+Basis initialisation ...... done
+Sparse matrix initialisation ... done
+
+Atom SCF Calculation for Ga : Z (AE atom) =  31 : Z (PS atom) =   3
+Config String:
+Orbitals (num,occ):  2     2.00 1.00
+Orbitals   (num,l):  2        0    1
+Atom SCF converged after  27 iterations to a total energy of     -3.95871229
+
+Atom SCF Calculation for As : Z (AE atom) =  33 : Z (PS atom) =   5
+Config String:
+Orbitals (num,occ):  2     2.00 3.00
+Orbitals   (num,l):  2        0    1
+Atom SCF converged after  21 iterations to a total energy of     -6.18460356
+
+Atom SCF Calculation for H  : Z (AE atom) =   1 : Z (PS atom) =   1
+Config String:
+Orbitals (num,occ):  1     1.00
+Orbitals   (num,l):  1        0
+Atom SCF converged after  16 iterations to a total energy of     -0.44345305
+NGWF initialisation ...... done
+Up spin density kernel initialisation ...... done
+................................................................................
+<<<<<<<<<<<<<<<< Penalty functional density kernel optimisation >>>>>>>>>>>>>>>>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+iter|       energy      |   rms grad  |  commutator |LScoef|CGcoef|      Ne    |
+ 1    -12.46693347540903 0.15097918375 0.01419363158 0.0424  0.000   12.00000000
+ 2    -12.60567324183858 0.09489522058 0.01403478680 0.4521 -0.621   12.00000000
+ 3    -12.61397435094075 0.09650859000 0.01084475313 0.0831  3.683   12.00000000
+
+======================== Penalty functional minimisation =======================
+   Final total energy     :     -12.789083168311
+   Final penalty energy   :       0.139583121517
+   RMS occupancy error    :       0.053926
+   Occupancy bounds       : [-0.077, 1.084]
+================================================================================
+
+Finished density kernel iterations (   3)
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.247412642930E+01     7.4088E-03     7.4088E-03
+    2        -1.247687260727E+01     1.8620E-03     1.8620E-03    -2.7462E-03
+    3        -1.247723273454E+01     9.5828E-04     9.5828E-04    -3.6013E-04
+    4        -1.247729314858E+01     3.9930E-04     3.9930E-04    -6.0414E-05
+    5        -1.247730347580E+01     9.2803E-05     9.2803E-05    -1.0327E-05
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.24773034758032E+01  Eh
+     RMS occupancy error         =   1.5100E-09
+     [H,K] commutator            =   9.2803E-05
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  001 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  1.7210E-03 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.25593289095214E+01 Eh
+   Predicted gain in energy  =      -8.20254337182540E-02 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.255915505463E+01     7.8410E-03     7.8410E-03
+    2        -1.256271016434E+01     1.5551E-03     1.5551E-03    -3.5551E-03
+    3        -1.256290145881E+01     7.1208E-04     7.1208E-04    -1.9129E-04
+    4        -1.256294853813E+01     2.9519E-04     2.9519E-04    -4.7079E-05
+    5        -1.256295449988E+01     9.9191E-05     9.9191E-05    -5.9617E-06
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.25629544998800E+01  Eh
+     RMS occupancy error         =   4.9761E-10
+     [H,K] commutator            =   9.9191E-05
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  002 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  1.3503E-03 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26442383231100E+01 Eh
+   Predicted gain in energy  =      -8.12838232300486E-02 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.264451167085E+01     2.6814E-03     2.6814E-03
+    2        -1.264495444891E+01     7.8269E-04     7.8269E-04    -4.4278E-04
+    3        -1.264499696472E+01     2.7345E-04     2.7345E-04    -4.2516E-05
+    4        -1.264500196781E+01     8.7300E-05     8.7300E-05    -5.0031E-06
+    5        -1.264500253096E+01     3.8566E-05     3.8566E-05    -5.6315E-07
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26450025309604E+01  Eh
+     RMS occupancy error         =   3.0086E-12
+     [H,K] commutator            =   3.8566E-05
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  003 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  6.4118E-04 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26598815482455E+01 Eh
+   Predicted gain in energy  =      -1.48790172850948E-02 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.265990026134E+01     1.0572E-03     1.0572E-03
+    2        -1.265995854940E+01     1.8494E-04     1.8494E-04    -5.8288E-05
+    3        -1.265996087470E+01     4.5521E-05     4.5521E-05    -2.3253E-06
+    4        -1.265996102702E+01     2.1287E-05     2.1287E-05    -1.5231E-07
+    5        -1.265996106151E+01     9.1634E-06     9.1634E-06    -3.4495E-08
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26599610615097E+01  Eh
+     RMS occupancy error         =   7.5481E-15
+     [H,K] commutator            =   9.1634E-06
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  004 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  4.3992E-04 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26663018120764E+01 Eh
+   Predicted gain in energy  =      -6.34075056676586E-03 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.266630667571E+01     6.7659E-04     6.7659E-04
+    2        -1.266633246758E+01     1.9701E-04     1.9701E-04    -2.5792E-05
+    3        -1.266633524758E+01     6.7704E-05     6.7704E-05    -2.7800E-06
+    4        -1.266633554809E+01     2.7333E-05     2.7333E-05    -3.0051E-07
+    5        -1.266633561725E+01     1.1777E-05     1.1777E-05    -6.9152E-08
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26663356172454E+01  Eh
+     RMS occupancy error         =   3.5583E-14
+     [H,K] commutator            =   1.1777E-05
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  005 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  2.6077E-04 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26679637004073E+01 Eh
+   Predicted gain in energy  =      -1.62808316192731E-03 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.266796369366E+01     2.1282E-04     2.1282E-04
+    2        -1.266796592537E+01     4.2213E-05     4.2213E-05    -2.2317E-06
+    3        -1.266796603670E+01     1.3600E-05     1.3600E-05    -1.1133E-07
+    4        -1.266796604921E+01     3.9637E-06     3.9637E-06    -1.2511E-08
+    5        -1.266796605033E+01     1.2020E-06     1.2020E-06    -1.1170E-09
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26679660503285E+01  Eh
+     RMS occupancy error         =   9.3598E-17
+     [H,K] commutator            =   1.2020E-06
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  006 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  1.7679E-04 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26692559262207E+01 Eh
+   Predicted gain in energy  =      -1.28987589222085E-03 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.266925560567E+01     2.2965E-04     2.2965E-04
+    2        -1.266925880051E+01     7.2298E-05     7.2298E-05    -3.1948E-06
+    3        -1.266925924259E+01     2.1466E-05     2.1466E-05    -4.4208E-07
+    4        -1.266925928104E+01     9.9150E-06     9.9150E-06    -3.8456E-08
+    5        -1.266925928834E+01     4.2125E-06     4.2125E-06    -7.2941E-09
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26692592883362E+01  Eh
+     RMS occupancy error         =   5.3650E-16
+     [H,K] commutator            =   4.2125E-06
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  007 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  1.3166E-04 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26702445117658E+01 Eh
+   Predicted gain in energy  =      -9.85223429625037E-04 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.267024197250E+01     3.8917E-04     3.8917E-04
+    2        -1.267025011516E+01     8.8535E-05     8.8535E-05    -8.1427E-06
+    3        -1.267025078671E+01     3.1981E-05     3.1981E-05    -6.7155E-07
+    4        -1.267025085080E+01     1.2107E-05     1.2107E-05    -6.4090E-08
+    5        -1.267025086389E+01     4.9983E-06     4.9983E-06    -1.3094E-08
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26702508638929E+01  Eh
+     RMS occupancy error         =   1.2632E-15
+     [H,K] commutator            =   4.9983E-06
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  008 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  8.5949E-05 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26705755721779E+01 Eh
+   Predicted gain in energy  =      -3.24708285059927E-04 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.267057444693E+01     2.3979E-04     2.3979E-04
+    2        -1.267057758610E+01     5.4039E-05     5.4039E-05    -3.1392E-06
+    3        -1.267057784291E+01     1.7302E-05     1.7302E-05    -2.5680E-07
+    4        -1.267057786121E+01     7.0190E-06     7.0190E-06    -1.8302E-08
+    5        -1.267057786605E+01     2.7245E-06     2.7245E-06    -4.8394E-09
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26705778660485E+01  Eh
+     RMS occupancy error         =   3.1228E-16
+     [H,K] commutator            =   2.7245E-06
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  009 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  7.2383E-05 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26706908499765E+01 Eh
+   Predicted gain in energy  =      -1.12983927975208E-04 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.267069080722E+01     4.7676E-05     4.7676E-05
+    2        -1.267069094670E+01     1.1614E-05     1.1614E-05    -1.3948E-07
+    3        -1.267069095634E+01     2.5659E-06     2.5659E-06    -9.6323E-09
+    4        -1.267069095687E+01     7.8898E-07     7.8898E-07    -5.3232E-10
+    5        -1.267069095691E+01     3.4691E-07     3.4691E-07    -3.9606E-11
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26706909569088E+01  Eh
+     RMS occupancy error         =   1.2561E-16
+     [H,K] commutator            =   3.4691E-07
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  010 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  4.2866E-05 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26707723625474E+01 Eh
+   Predicted gain in energy  =      -8.14056385820550E-05 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.267077195306E+01     1.4120E-04     1.4120E-04
+    2        -1.267077314411E+01     3.4154E-05     3.4154E-05    -1.1910E-06
+    3        -1.267077323487E+01     6.8449E-06     6.8449E-06    -9.0757E-08
+    4        -1.267077323856E+01     1.9010E-06     1.9010E-06    -3.6900E-09
+    5        -1.267077323878E+01     8.7198E-07     8.7198E-07    -2.2834E-10
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26707732387836E+01  Eh
+     RMS occupancy error         =   9.8541E-17
+     [H,K] commutator            =   8.7198E-07
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  011 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  3.4465E-05 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26708211730352E+01 Eh
+   Predicted gain in energy  =      -4.79342515973258E-05 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.267082045139E+01     1.7336E-04     1.7336E-04
+    2        -1.267082221370E+01     3.9442E-05     3.9442E-05    -1.7623E-06
+    3        -1.267082234107E+01     7.7167E-06     7.7167E-06    -1.2736E-07
+    4        -1.267082234590E+01     2.0125E-06     2.0125E-06    -4.8354E-09
+    5        -1.267082234619E+01     1.0552E-06     1.0552E-06    -2.8365E-10
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26708223461860E+01  Eh
+     RMS occupancy error         =   8.8987E-17
+     [H,K] commutator            =   1.0552E-06
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  012 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  2.5527E-05 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26708605220824E+01 Eh
+   Predicted gain in energy  =      -3.81758963818868E-05 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.267085882708E+01     2.4946E-04     2.4946E-04
+    2        -1.267086251101E+01     5.5820E-05     5.5820E-05    -3.6839E-06
+    3        -1.267086277115E+01     1.0356E-05     1.0356E-05    -2.6013E-07
+    4        -1.267086278003E+01     2.0143E-06     2.0143E-06    -8.8869E-09
+    5        -1.267086278037E+01     1.1268E-06     1.1268E-06    -3.3536E-10
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26708627803685E+01  Eh
+     RMS occupancy error         =   1.5195E-16
+     [H,K] commutator            =   1.1268E-06
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  013 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  2.6848E-05 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26708825255071E+01 Eh
+   Predicted gain in energy  =      -1.97451386050318E-05 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.267088242989E+01     5.5091E-05     5.5091E-05
+    2        -1.267088260714E+01     1.1467E-05     1.1467E-05    -1.7726E-07
+    3        -1.267088261811E+01     2.1202E-06     2.1202E-06    -1.0962E-08
+    4        -1.267088261848E+01     4.3333E-07     4.3333E-07    -3.7257E-10
+    5        -1.267088261849E+01     1.5497E-07     1.5497E-07    -1.2220E-11
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26708826184903E+01  Eh
+     RMS occupancy error         =   2.0930E-16
+     [H,K] commutator            =   1.5497E-07
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  014 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  1.8200E-05 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26708969703593E+01 Eh
+   Predicted gain in energy  =      -1.43518689927902E-05 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.267089649673E+01     1.1978E-04     1.1978E-04
+    2        -1.267089735156E+01     2.6017E-05     2.6017E-05    -8.5483E-07
+    3        -1.267089740735E+01     4.7469E-06     4.7469E-06    -5.5790E-08
+    4        -1.267089740917E+01     1.0142E-06     1.0142E-06    -1.8210E-09
+    5        -1.267089740923E+01     3.0918E-07     3.0918E-07    -5.8765E-11
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26708974092255E+01  Eh
+     RMS occupancy error         =   2.1031E-16
+     [H,K] commutator            =   3.0918E-07
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  015 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  1.5423E-05 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26709080050644E+01 Eh
+   Predicted gain in energy  =      -1.05958389422511E-05 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.267090704314E+01     1.6972E-04     1.6972E-04
+    2        -1.267090877337E+01     3.6413E-05     3.6413E-05    -1.7302E-06
+    3        -1.267090888260E+01     6.5953E-06     6.5953E-06    -1.0922E-07
+    4        -1.267090888623E+01     1.1140E-06     1.1140E-06    -3.6367E-09
+    5        -1.267090888632E+01     3.9506E-07     3.9506E-07    -8.6352E-11
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26709088863187E+01  Eh
+     RMS occupancy error         =   1.8936E-16
+     [H,K] commutator            =   3.9506E-07
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  016 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  1.1351E-05 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26709135266686E+01 Eh
+   Predicted gain in energy  =      -4.64034992830875E-06 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.267091291012E+01     1.3540E-04     1.3540E-04
+    2        -1.267091401974E+01     2.9019E-05     2.9019E-05    -1.1096E-06
+    3        -1.267091408876E+01     5.4246E-06     5.4246E-06    -6.9020E-08
+    4        -1.267091409116E+01     1.2467E-06     1.2467E-06    -2.3961E-09
+    5        -1.267091409125E+01     4.0181E-07     4.0181E-07    -9.2200E-11
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26709140912496E+01  Eh
+     RMS occupancy error         =   1.0504E-16
+     [H,K] commutator            =   4.0181E-07
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  017 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  6.0743E-06 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+  ========================================================================
+   Predicted total energy    =      -1.26709147985972E+01 Eh
+   Predicted gain in energy  =      -7.07347521000656E-07 Eh
+  ========================================================================
+
+
+>>> Optimising kernel for current NGWFs:
+   iter  |      energy (Eh)       | rms gradient |  commutator  |   dE (Eh)
+    1        -1.267091475373E+01     3.5792E-05     3.5792E-05
+    2        -1.267091483186E+01     7.7866E-06     7.7866E-06    -7.8127E-08
+    3        -1.267091483676E+01     1.5595E-06     1.5595E-06    -4.9060E-09
+    4        -1.267091483695E+01     4.4114E-07     4.4114E-07    -1.9269E-10
+    5        -1.267091483697E+01     1.4246E-07     1.4246E-07    -1.1688E-11
+Finished density kernel iterations (   5)
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total energy                =  -1.26709148369661E+01  Eh
+     RMS occupancy error         =   1.4657E-16
+     [H,K] commutator            =   1.4246E-07
+     Occupancy bounds            = [  0.000:  1.000]
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  018 #############################
+################################################################################
+
+>>> Checking for convergence of NGWFs: 
+           ........................................................
+           |         *** NGWF optimisation converged ***          |
+           | RMS NGWF gradient =    0.00000183388798              |
+           | Criteria satisfied:                                  |
+           | -> RMS NGWF gradient lower than set threshold.       |
+           ========================================================
+
+================================================================================
+           ---------------- ENERGY COMPONENTS (Eh) ----------------
+           | Kinetic                    :        5.09484474678816 |
+           | Pseudopotential (local)    :      -41.48887524847081 |
+           | Pseudopotential (non-local):       -3.72875347554923 |
+           | Hartree                    :       20.28662367494054 |
+           | Exchange-correlation       :       -5.61953401448957 |
+           | Ion-ion (open BC)          :       12.78477947981485 |
+           | Total                      :      -12.67091483696607 |
+           --------------------------------------------------------
+           Integrated density           :       11.99999999999995
+================================================================================
+
+
+                    <<<<< CALCULATION SUMMARY >>>>>
+|ITER|    RMS GRADIENT   |     TOTAL ENERGY    |   step   |     Epredicted      
+   0     0.00172096920358    -12.47730347580319   0.298713    -12.55932890952144
+   1     0.00135026288604    -12.56295449987997   0.474618    -12.64423832311001
+   2     0.00064118471439    -12.64500253096041   0.388664    -12.65988154824551
+   3     0.00043991851391    -12.65996106150967   0.350909    -12.66630181207644
+   4     0.00026077463764    -12.66633561724537   0.258225    -12.66796370040729
+   5     0.00017679438001    -12.66796605032851   0.444623    -12.66925592622073
+   6     0.00013166383427    -12.66925928833618   0.611450    -12.67024451176580
+   7     0.00008594945909    -12.67025086389287   0.471048    -12.67057557217793
+   8     0.00007238262686    -12.67057786604854   0.232595    -12.67069084997652
+   9     0.00004286562566    -12.67069095690880   0.477386    -12.67077236254738
+  10     0.00003446530546    -12.67077323878364   0.430442    -12.67082117303524
+  11     0.00002552697965    -12.67082234618598   0.616255    -12.67086052208236
+  12     0.00002684783431    -12.67086278036850   0.295457    -12.67088252550710
+  13     0.00001820005976    -12.67088261849027   0.465080    -12.67089697035926
+  14     0.00001542348642    -12.67089740922545   0.466024    -12.67090800506439
+  15     0.00001135131075    -12.67090888631871   0.357618    -12.67091352666863
+  16     0.00000607434666    -12.67091409124963   0.206769    -12.67091479859715
+  18     0.00000183388798    -12.67091483696607  <-- CG                         
+ 
+<QC>        [NGWF iterations]:                     18
+<QC>           [total_energy]:       -12.670914836966
+<QC>           [rms_gradient]:         0.000001833888
+
+======================== Writing density and potential =========================
+Writing "GaAs_dimer_density.cube" ... done
+Writing "GaAs_dimer_potential.cube" ... done
+WARNING: To output the pure electrostatic potential (Coulomb ions+electrons)
+please include 'is_smeared_ion_rep T' in the input file.
+================================================================================
+<QC>      [atom_1_population]:         2.562631610688
+<QC>          [atom_1_charge]:         0.437368389312
+<QC>      [atom_2_population]:         5.313184392078
+<QC>          [atom_2_charge]:        -0.313184392078
+<QC>      [atom_3_population]:         0.926462319894
+<QC>          [atom_3_charge]:         0.073537680106
+
+    Mulliken Atomic Populations
+    ---------------------------
+Species  Ion    Total   Charge (e)
+==================================
+  Ga     1       2.563      0.437
+  As     2       5.313     -0.313
+  H      3       0.926      0.074
+  H      4       0.926      0.074
+  H      5       1.135     -0.135
+  H      6       1.136     -0.136
+==================================
+
+        Bond         Population      Length (bohr)
+==================================================
+ As    2 -- H     3        0.77      2.80961
+ As    2 -- H     4        0.77      2.80961
+ Ga    1 -- H     5        0.82      2.98037
+ Ga    1 -- H     6        0.82      2.98037
+ Ga    1 -- As    2        0.83      4.09092
+ H     3 -- H     4       -0.07      4.48964
+ H     5 -- H     6       -0.04      5.33700
+==================================================
+
+
+========================== Dipole Moment Calculation ===========================
+                             Type:    Single Molecule
+ 
+Electronic dipole moment (e.bohr):    dx =        -166.598498806740
+                                      dy =        -156.000168133513
+                                      dz =        -132.000008957570
+               Magnitude (e.bohr):                 263.657191495211
+ 
+     Ionic dipole moment (e.bohr):    dx =         166.866360000000
+                                      dy =         156.000000000000
+                                      dz =         132.000000000000
+               Magnitude (e.bohr):                 263.826424187665
+ 
+     Total dipole moment (e.bohr):    dx =           0.267861193260
+                                      dy =          -0.000168133513
+                                      dz =          -0.000008957570
+               Magnitude (e.bohr):                   0.267861246177
+ 
+<QC>   [elec_polarisation_d1]:      -166.598498806740
+<QC>   [elec_polarisation_d2]:      -156.000168133513
+<QC>   [elec_polarisation_d3]:      -132.000008957570
+<QC>  [ionic_polarisation_d1]:       166.866360000000
+<QC>  [ionic_polarisation_d2]:       156.000000000000
+<QC>  [ionic_polarisation_d3]:       132.000000000000
+<QC>  [total_polarisation_d1]:         0.267861193260
+<QC>  [total_polarisation_d2]:        -0.000168133513
+<QC>  [total_polarisation_d3]:        -0.000008957570
+================================================================================
+
+=================== Orbital energy and occupancy information ===================
+
+      Total number of orbitals:      12
+   Number of occupied orbitals:       6
+                 Occupancy sum:       6.000000000
+                 HOMO-LUMO gap:       0.130608820 Eh
+                 Mid-gap level:      -0.143074006 Eh
+
+                        Orbital | Energy (Eh) | Occupancy
+                            1    -0.609494765   1.0000000
+                            2    -0.430721987   1.0000000
+                            3    -0.368830960   1.0000000
+                            4    -0.302788053   1.0000000
+                            5    -0.282714971   1.0000000
+                            6    -0.208378415   1.0000000
+                        .......   --- gap ---   .........
+                            7    -0.077769596   0.0000000
+                            8    -0.044038971   0.0000000
+                            9    -0.018610336   0.0000000
+                           10     0.017040748   0.0000000
+                           11     0.074750776   0.0000000
+                           12     0.173692774   0.0000000
+ 
+<QC>    [energy_eigenvalue_1]:        -0.609494765487
+<QC>    [energy_eigenvalue_n]:         0.173692774115
+<QC>            [occupancy_1]:         1.000000000000
+<QC>            [occupancy_n]:         0.000000000000
+
+================================================================================
+
+********************* Unconstrained **********************
+************************* Forces *************************
+*                                                        *
+* Element  Atom         Cartesian components (Eh/a)      *
+* ------------------------------------------------------ *
+*                       x            y            z      *
+*                                                        *
+*    Ga      1     -0.03278541  -0.00001950   0.00000375 *
+*    As      2      0.02350919   0.00000125  -0.00000130 *
+*    H       3     -0.00028269   0.00002524  -0.00000140 *
+*    H       4     -0.00028180  -0.00001989  -0.00000048 *
+*    H       5      0.00491801  -0.00687759   0.00000041 *
+*    H       6      0.00492270   0.00689050  -0.00000098 *
+*                                                        *
+**********************************************************
+* TOTAL:            0.00000000   0.00000000   0.00000000 *
+**********************************************************
+<QC>       [total_force(1,1)]:        -0.032785413096
+<QC>       [total_force(1,2)]:         0.023509190924
+<QC>       [total_force(1,3)]:        -0.000282685686
+<QC>       [total_force(1,4)]:        -0.000281798581
+<QC>       [total_force(1,5)]:         0.004918010557
+<QC>       [total_force(1,6)]:         0.004922695882
+<QC>       [total_force(2,1)]:        -0.000019503332
+<QC>       [total_force(2,2)]:         0.000001251266
+<QC>       [total_force(2,3)]:         0.000025236301
+<QC>       [total_force(2,4)]:        -0.000019893730
+<QC>       [total_force(2,5)]:        -0.006877589519
+<QC>       [total_force(2,6)]:         0.006890499014
+<QC>       [total_force(3,1)]:         0.000003753888
+<QC>       [total_force(3,2)]:        -0.000001299755
+<QC>       [total_force(3,3)]:        -0.000001400199
+<QC>       [total_force(3,4)]:        -0.000000483928
+<QC>       [total_force(3,5)]:         0.000000408492
+<QC>       [total_force(3,6)]:        -0.000000978499
+
+------------------------------ TIMING INFORMATION ------------------------------
+AVERAGE TIME:     111.439s on      4 node(s)                                    
+TOTAL TIME:       111.440s on      4 node(s)                                    
+
+Job completed: 05-11-2014 04:20 (-0000)
+

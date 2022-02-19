@@ -1,0 +1,77 @@
+* tip4ptest.inp
+* Author: Bernard R. Brooks
+* Files : tip4p.rtf, tip4p.prm and tip4ptest.crd
+* Tests : Lone pair facility
+*
+
+if ?lonepair .ne. 1 then
+ echo "Test NOT performed."
+ echo tip4ptest testcase result: skip
+ stop
+endif
+
+bomlev -2
+stream datadir.def
+
+open read card unit 11 name  @0tip4p.rtf
+read rtf   card   unit  11
+close unit 11
+open read card unit 12 name  @0tip4p.prm
+read parameter  card unit   12
+close unit 12
+
+read sequence    tip4 125
+generate solv setup
+
+open unit 13 read card name @0tip4ptest.crd
+read  coord  card  unit 13
+close unit 13
+
+coor copy comp
+coor stat
+
+shake bonh param tol 1.0e-12  FAST  WATER TIP4
+
+LONEpair BISEctor DIST 0.15 ANGLE 0.0 DIHE 0.0 -
+        SELE ATOM SOLV * OM  END  SELE ATOM SOLV * OH2 END - 
+        SELE ATOM SOLV * H1  END  SELE ATOM SOLV * H2  END
+scalar move show sele resid 23 end
+
+!!LONEpair print
+coor shake
+!!ic fill
+!!print ic
+
+coor stat
+
+crystal Define  cubic 15.517182  15.517182  15.517182  90.0 90.0 90.0
+crystal build   cutoff 16.0
+
+image bygroups xcen 0.0 ycen 0.0 zcen 0.0 sele all end
+update imgfrq 5
+
+energy
+
+test first step 0.0001 tol 0.0 sele resid 23 end
+
+open write card unit 15 name @9for015.dat
+open write file unit 14 name @9for014.dat
+open write file unit 13 name @9for013.dat
+open write card unit 12 name @9for012.dat
+
+DYNA  STRT  NSTEP 40 TIMESTEP 0.001  -
+  IUNWRI 15 IUNVEL 14   IUNCRD 13  KUNIT 12  -
+  NPRINT 1  NSAVV  10   NSAVC  10  INBFRQ 5  IPRFRQ  20   -
+  FIRSTT 300.0  FINALT  300.0  ISEED 439632  -
+  NTRFRQ 0  IASORS  0  ICHECW  1   IASVEL 1 -
+  atom fshift vshft cutnb 14.0 ctofnb 12.0 ctonnb 10.0
+
+coor stat comp
+coor stat comp sele type OH2 end
+coor stat comp sele type OM end
+coor stat comp sele type H1 end
+coor stat comp sele type H2 end
+
+@testcheck ?ener -875.989942 -1 tip4ptest
+
+stop

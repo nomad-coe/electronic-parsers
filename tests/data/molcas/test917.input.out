@@ -1,0 +1,2319 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test917.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test917.input.10359
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 15:09:27 2016 
+
+++ ---------   Input file   ---------
+
+ >>>>>>>>>>>>>>>>>>> DO while <<<<<<<<<<<<<<<<<<<<
+ >>export MOLCAS_MOLDEN=OFF
+ >>export MOLCAS_NOCHECK=POTNUC,SEWARD_MLTPL1X,SEWARD_KINETIC,SEWARD_ATTRACT
+  &SEWARD
+    Title
+    water, OH
+      0.972933 A, HOH
+      104.32 deg, ANO-L 3s2p1d/2s1p
+    Symmetry
+    x
+    Basis set
+    H.ANO-L...2s1p.
+    H1   0.000000        1.451990       -1.127870
+    H2   0.000000       -1.451990       -1.127870
+    End of basis
+    Basis set
+    O.ANO-L...3s2p1d.
+    O    0.000000        0.000000        0.000000
+    End of basis
+ >>export MOLCAS_NOCHECK=SCF_ITER,RASSCF_ITER,MLTPL,GRAD,E_SCF,E_RASSCF,E_CASPT2
+ >>> IF ( ITER = 1 ) <<<
+  &SCF
+ >>> ENDIF <<<
+  &RASSCF
+    Title
+    water Cs Act orb 6,2  Act el 8, energy: -76.17598395 (CASSCF)
+    NACTEL
+      8 0 0
+    Inactive
+      1 0
+    Ras2
+      6 2
+    ITER
+      100 100
+    LUMORB
+    Tight
+      1.0D-9 1.0D-5
+    Thrsh
+      1.0D-10  1.0D-2  1.0D-6
+  &CASPT2
+    MaxIterations
+      20
+  &Alaska &End
+  &Slapaf &End
+    Numerical Hessian
+    Iterations
+      0
+ >>>>>>>>>>>>> ENDDO <<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
+
+-- ----------------------------------
+
+--- Start Module: auto at Fri Oct  7 15:09:27 2016 
+--- Start Module: seward at Fri Oct  7 15:09:28 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 15:09:28 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+ Title:
+                                           water, OH                                    
+                                        0.972933 A, HOH                                 
+                                 104.32 deg, ANO-L 3s2p1d/2s1p                          
+ 
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+ 
+ 
+                    Character Table for Cs 
+ 
+                             E   s(yz)
+                    a'       1     1  y, z, yz, Rx
+                    a"       1    -1  x, xy, Rz, xz, Ry, I
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:H.ANO-L...2S1P...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       8       2        X                  
+         p       4       1        X                  
+      Basis set label:O.ANO-L...3S2P1D...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  8.000000 au
+      Associated Actual Charge     8.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s      14       3        X                  
+         p       9       2        X                  
+         d       4       1                 X         
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      H1               0.000000       1.451990      -1.127870              0.000000       0.768360      -0.596843
+        2      H2               0.000000      -1.451990      -1.127870              0.000000      -0.768360      -0.596843
+        3      O                0.000000       0.000000       0.000000              0.000000       0.000000       0.000000
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 H1            2 H2            3 O     
+    1 H1       0.000000
+    2 H2       2.903980        0.000000
+    3 O        1.838577        1.838577        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 H1            2 H2            3 O     
+    1 H1       0.000000
+    2 H2       1.536720        0.000000
+    3 O        0.972933        0.972933        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 H2       1 H1       3 O         37.84
+                      1 H1       2 H2       3 O         37.84
+                      1 H1       3 O        2 H2       104.32
+ 
+ 
+            Nuclear Potential Energy              9.04673692 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a'   a" 
+      Basis functions           18    6
+ 
+--- Stop Module:  seward at Fri Oct  7 15:09:29 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 15:09:29 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 15:09:29 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+Input section
+      Header of the integral files:
+                                     water, OH                                
+       Integrals generated by seward 4.2.0  , Fri Oct  7 15:09:28 2016        
+ 
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.76836  -0.59684
+       2   H2         0.00000  -0.76836  -0.59684
+       3   O          0.00000   0.00000   0.00000
+      --------------------------------------------
+      Nuclear repulsion energy =    9.046737
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2
+                                    a'  a"
+      Frozen orbitals                0   0
+      Occupied orbitals              4   1
+      Secondary orbitals            14   5
+      Deleted orbitals               0   0
+      Total number of orbitals      18   6
+      Number of basis functions     18   6
+ 
+      Molecular charge                           0.000
+ 
+      SCF Algorithm: Conventional
+      Minimized density differences are used
+      Number of density matrices in core              400
+      Maximum number of NDDO SCF iterations           400
+      Maximum number of HF  SCF iterations            400
+      Threshold for SCF energy change            0.10E-08
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Input vectors read from INPORB
+      Orbital file label: *Guess orbitals                         
+ 
+ 
+Convergence information
+                                   SCF        iterations: Energy and convergence statistics
+ 
+Iter     Tot. SCF       One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -75.89629945   -122.62019071     37.67715433  0.00E+00   0.21E+00*  0.14E+00*   0.42E+01   0.31E+02   NoneDa    0.
+   2    -76.04614938   -122.49839900     37.40551269 -0.15E+00*  0.43E-01*  0.35E-01*   0.10E+01   0.51E+00   Damp      0.
+   3    -76.05231275   -122.91048777     37.81143810 -0.62E-02*  0.22E-01*  0.35E-01*   0.15E+00   0.19E+00   QNRc2D    0.
+   4    -76.05321119   -122.70617368     37.60622557 -0.90E-03*  0.82E-02*  0.35E-02*   0.54E-01   0.21E-01   QNRc2D    0.
+   5    -76.05338107   -122.73358061     37.63346262 -0.17E-03*  0.32E-02*  0.10E-02*   0.18E-01   0.26E-01   QNRc2D    0.
+   6    -76.05339567   -122.74046342     37.64033083 -0.15E-04*  0.56E-03*  0.26E-03*   0.30E-02   0.27E-02   QNRc2D    0.
+   7    -76.05339627   -122.74064403     37.64051084 -0.60E-06*  0.10E-03*  0.49E-04    0.72E-03   0.94E-03   QNRc2D    0.
+   8    -76.05339629   -122.74044587     37.64031266 -0.22E-07*  0.18E-04   0.11E-04    0.64E-04   0.13E-04   QNRc2D    0.
+   9    -76.05339629   -122.74045681     37.64032360 -0.67E-09   0.33E-05   0.14E-05    0.16E-04   0.14E-04   QNRc2D    0.
+ 
+       Convergence after  9 Macro Iterations and  1 additional LS Iterations...
+ 
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total SCF energy                                -76.0533962926
+      One-electron energy                            -122.7404568061
+      Two-electron energy                              37.6403235950
+      Nuclear repulsion energy                          9.0467369185
+      Kinetic energy (interpolated)                    76.1140927435
+      Virial theorem                                    0.9992025596
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000000000
+      Max non-diagonal Fock matrix element              0.0000014055
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: SCF orbitals                                                                    
+ 
+
+      Molecular orbitals for symmetry species 1: a' 
+ 
+          Orbital        1         2         3         4         5         6         7
+          Energy      -20.5602   -1.3500   -0.7176   -0.5884    0.0846    0.1919    0.5282
+          Occ. No.      2.0000    2.0000    2.0000    2.0000    0.0000    0.0000    0.0000
+ 
+        1 H1    1s     -0.0001    0.2163    0.3744   -0.2519   -0.6752   -1.9942   -0.3064
+        2 H1    2s      0.0000   -0.0178   -0.0566    0.0176   -0.5449   -1.5881   -0.3635
+        3 H1    2py     0.0003   -0.0421   -0.0316    0.0372    0.0201    0.0818    0.3452
+        4 H1    2pz    -0.0002    0.0285    0.0402    0.0067   -0.0167   -0.0666   -0.1612
+        5 H2    1s     -0.0001    0.2163   -0.3744   -0.2519   -0.6752    1.9942   -0.3064
+        6 H2    2s      0.0000   -0.0178    0.0566    0.0176   -0.5449    1.5881   -0.3635
+        7 H2    2py    -0.0003    0.0421   -0.0316   -0.0372   -0.0201    0.0818   -0.3452
+        8 H2    2pz    -0.0002    0.0285   -0.0402    0.0067   -0.0167    0.0666   -0.1612
+        9 O     1s      1.0001   -0.0381    0.0000    0.0363    0.1058    0.0000    0.1369
+       10 O     2s      0.0012    0.7041    0.0000    0.4907    0.8777    0.0000    0.7814
+       11 O     3s     -0.0001   -0.0915    0.0000    0.1072    0.4177    0.0000    0.5761
+       12 O     2py     0.0000    0.0000    0.6517    0.0000    0.0000    1.0140    0.0000
+       13 O     3py     0.0000    0.0000   -0.0755    0.0000    0.0000    0.6211    0.0000
+       14 O     2pz    -0.0010   -0.0605    0.0000    0.7912   -0.3094    0.0000   -0.0428
+       15 O     3pz     0.0006    0.0505    0.0000   -0.0170   -0.1399    0.0000   -0.9060
+       16 O     3d1-    0.0000    0.0000   -0.0354    0.0000    0.0000   -0.0584    0.0000
+       17 O     3d0     0.0000    0.0027    0.0000   -0.0237    0.0054    0.0000    0.0068
+       18 O     3d2+    0.0000   -0.0057    0.0000    0.0072   -0.0097    0.0000   -0.0870
+
+      Molecular orbitals for symmetry species 2: a" 
+ 
+          Orbital        1
+          Energy       -0.5137
+          Occ. No.      2.0000
+ 
+        1 H1    2px     0.0419
+        2 H2    2px     0.0419
+        3 O     2px     0.9607
+        4 O     3px     0.0336
+        5 O     3d2-    0.0000
+        6 O     3d1+   -0.0229
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             H1      H2      O     
+      1s     0.7420  0.7420  2.0003
+      2s     0.0321  0.0321  1.5792
+      2px    0.0398  0.0398  1.9138
+      2pz    0.0367  0.0367  1.5293
+      2py    0.0408  0.0408  1.2272
+      3s     0.0000  0.0000 -0.0339
+      3px    0.0000  0.0000  0.0045
+      3pz    0.0000  0.0000 -0.0067
+      3py    0.0000  0.0000 -0.0189
+      3d2+   0.0000  0.0000  0.0019
+      3d1+   0.0000  0.0000  0.0020
+      3d0    0.0000  0.0000  0.0026
+      3d1-   0.0000  0.0000  0.0158
+      3d2-   0.0000  0.0000  0.0000
+      Total  0.8914  0.8914  8.2171
+ 
+      N-E    0.1086  0.1086 -0.2171
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+      LoProp Charges per center                                                                                               
+ 
+
+                   H1       H2       O     
+      Nuclear      1.0000   1.0000   8.0000
+      Electronic  -0.6630  -0.6630  -8.6739
+ 
+      Total        0.3370   0.3370  -0.6739
+ 
+      Natural Bond Order Analysis
+      Based on LoProp computed density
+      -------------------------------------------------------------------------------------
+      Atom A : Gen.  Atom B : Gen.  Bond Order | Atom A : Gen.  Atom B : Gen.  Bond Order
+         H1    :E       O     :E      0.986    |    H2    :E       O     :E      0.986
+      -------------------------------------------------------------------------------------
+      NBO located      2.000 core electrons.
+      NBO located      3.872 lone pair electrons.
+      NBO located      3.946 electrons involved in    2 bonds.
+      The remaining    0.182 electrons are to be considered as diffuse
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=   -2.0267           Total=    2.0267
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000   -0.0668
+                    XX=   -7.9199              XY=    0.0000              XZ=    0.0000              YY=   -4.3433
+                    YZ=    0.0000              ZZ=   -6.2563
+      In traceless form (Debye*Ang)
+                    XX=   -2.6200              XY=    0.0000              XZ=    0.0000              YY=    2.7447
+                    YZ=    0.0000              ZZ=   -0.1247
+--- Stop Module:  scf at Fri Oct  7 15:09:30 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 15:09:31 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module RASSCF with 2000 MB of memory
+                                              at 15:09:31 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      Header of the ONEINT file:
+      --------------------------
+      water, OH                                                                                                               
+      Integrals generated by seward 4.2.0  , Fri Oct  7 15:09:28 2016                                                         
+ 
+ 
+      OrdInt status: non-squared
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.76836  -0.59684
+       2   H2         0.00000  -0.76836  -0.59684
+       3   O          0.00000   0.00000   0.00000
+      --------------------------------------------
+      Nuclear repulsion energy =    9.046737
+ 
+ 
+ 
+      Wave function specifications:
+         -----------------------------
+ 
+      Number of closed shell electrons           2
+      Number of electrons in active shells       8
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                1
+      Number of active orbitals                  8
+      Number of secondary orbitals              15
+      Spin quantum number                      0.0
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+         -----------------------
+ 
+      Symmetry species                           1   2
+                                                a'  a"
+      Frozen orbitals                            0   0
+      Inactive orbitals                          1   0
+      Active orbitals                            6   2
+      RAS1 orbitals                              0   0
+      RAS2 orbitals                              6   2
+      RAS3 orbitals                              0   0
+      Secondary orbitals                        11   4
+      Deleted orbitals                           0   0
+      Number of basis functions                 18   6
+ 
+      CI expansion specifications:
+         ----------------------------
+ 
+      Number of configuration state fnc.       924
+      Number of determinants                  1285
+      Number of root(s) required                 1
+      Root chosen for geometry opt.              1
+      CI root used                               1
+      highest root included in the CI            1
+      max. size of the explicit Hamiltonian    200
+ 
+      Optimization specifications:
+         ----------------------------
+ 
+      RASSCF algorithm: Conventional
+      Maximum number of macro iterations       100
+      Maximum number of SX iterations          100
+      Threshold for RASSCF energy            0.100E-09
+      Threshold for max MO rotation          0.100E-01
+      Threshold for max BLB element          0.100E-05
+      Level shift parameter                  0.500E+00
+      Make Quasi-Newton update
+      The MO-coefficients are taken from the file:
+      INPORB                                                                                                                          
+      Title: SCF orbitals                                                                  
+ 
+      Total molecular charge    0.00
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                            Wave function  control section                                            *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+                          RASSCF iterations: Energy and convergence statistics
+                          ----------------------------------------------------
+ 
+      Iter CI   SX   CI       RASSCF       Energy    max ROT   max BLB   max BLB  Level Ln srch  Step   QN    Time(min)
+          iter iter root      energy       change     param    element    value    shift minimum  type update     CPU
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital   5 of symmetry 1 MO space 2  weight is    0.182404
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital   6 of symmetry 1 MO space 2  weight is    0.262625
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital   9 of symmetry 1 MO space 3  weight is    0.481802
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital  10 of symmetry 1 MO space 3  weight is    0.343485
+        1   1   35    1   -76.09891793    0.00E+00  -0.81E+00*   4  14 1  0.23E-01*  0.00   0.00     SX     NO      0.00
+        2   8   41    1   -76.16071831   -0.62E-01* -0.38E+00*   2   9 1 -0.31E-01*  0.00   0.00     SX     NO      0.00
+        3   5   10    1   -76.17517639   -0.14E-01* -0.29E-01*   2  12 1  0.17E-01*  0.00   0.00     SX     NO      0.00
+        4   4    9    1   -76.17581050   -0.63E-03*  0.14E-01*   4  14 1 -0.29E-02*  0.00   0.00     SX     NO      0.00
+        5   4    8    1   -76.17593546   -0.12E-03*  0.14E-01*   4  14 1 -0.15E-02*  0.00   2.05     LS    YES      0.00
+        6   5    8    1   -76.17597972   -0.44E-04*  0.32E-02    2  12 1 -0.12E-02*  0.00   1.06     QN    YES      0.00
+        7   4    7    1   -76.17598346   -0.37E-05*  0.12E-02    2  12 1 -0.43E-03*  0.00   1.34     QN    YES      0.00
+        8   3    6    1   -76.17598392   -0.46E-06*  0.25E-03    4   9 1 -0.80E-04*  0.00   1.10     QN    YES      0.00
+        9   3    5    1   -76.17598394   -0.23E-07*  0.13E-03    4  14 1  0.31E-04*  0.00   1.47     QN    YES      0.00
+       10   1    4    1   -76.17598395   -0.37E-08* -0.28E-04    4  14 1 -0.10E-04*  0.00   0.90     QN    YES      0.00
+       11   1    3    1   -76.17598395   -0.17E-09* -0.46E-05    4  16 1  0.99E-06   0.00   1.11     QN    YES      0.00
+       12   1    2    1   -76.17598395   -0.50E-11  -0.12E-05    4   9 1 -0.25E-06   0.00   1.15     QN    YES      0.00
+      Convergence after 12 iterations
+       13   1    2    1   -76.17598395   -0.21E-12  -0.12E-05    4  14 1  0.98E-07   0.00   1.15     QN    YES      0.00
+ 
+      ************************************************************************************************************************
+                                                      Wave function printout:
+                       occupation of active orbitals, and spin coupling of open shells (u,d: Spin up or down)
+      ************************************************************************************************************************
+ 
+      Note: transformation to natural orbitals
+      has been made, which may change the order of the CSFs.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175984
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97725 0.95501
+            15  222000 02   0.06315 0.00399
+            87  22u00d ud  -0.07199 0.00518
+            96  2u20d0 ud   0.06947 0.00483
+           285  220002 20   0.06406 0.00410
+           296  2ud0ud 20  -0.07269 0.00528
+           319  202020 20   0.06615 0.00438
+ 
+      Natural orbitals and occupation numbers for root  1
+      sym 1:   1.987241   1.972519   1.972816   0.013767   0.027326   0.027280
+      sym 2:   1.974736   0.024316
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                                    Final results                                                    *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Number of closed shell electrons           2
+      Number of electrons in active shells       8
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                1
+      Number of active orbitals                  8
+      Number of secondary orbitals              15
+      Spin quantum number                      0.0
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2
+                                                a'  a"
+      Frozen orbitals                            0   0
+      Inactive orbitals                          1   0
+      Active orbitals                            6   2
+      RAS1 orbitals                              0   0
+      RAS2 orbitals                              6   2
+      RAS3 orbitals                              0   0
+      Secondary orbitals                        11   4
+      Deleted orbitals                           0   0
+      Number of basis functions                 18   6
+ 
+ 
+      CI expansion specifications:
+      ----------------------------
+ 
+      Number of configuration state fnc.       924
+      Number of determinants                  1285
+      Number of root(s) required                 1
+      CI root used                               1
+      highest root included in the CI            1
+      Root passed to geometry opt.               1
+ 
+ 
+      Final optimization conditions:
+      ------------------------------
+ 
+      Average CI energy                             -76.17598395
+      RASSCF energy for state  1                    -76.17598395
+      Super-CI energy                                 0.00000000
+      RASSCF energy change                            0.00000000
+      Max change in MO coefficients              -0.162E-05
+      Max non-diagonal density matrix element    -0.123E-05
+      Maximum BLB matrix element                  0.980E-07
+      (orbital pair   4,  14 in symmetry   1)
+      Norm of electronic gradient            0.167E-06
+ 
+ 
+      Final state energy(ies):
+      ------------------------
+ 
+      RASSCF root number  1 Total energy =        -76.17598395
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Pseudonatural active orbitals and approximate occupation numbers
+ 
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 1: a' 
+ 
+ 
+      Orbital            1         2         3         4         5         6         7
+      Energy      -20.5827    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+      Occ. No.      2.0000    1.9872    1.9725    1.9728    0.0138    0.0273    0.0273
+ 
+    1 H1    1s      0.0003    0.1299    0.3839   -0.3041    0.0950   -0.4584    0.6486
+    2 H1    2s      0.0000   -0.0092   -0.0477    0.0226    0.2573    0.3211   -0.0734
+    3 H1    2py     0.0002   -0.0278   -0.0279    0.0430   -0.0116    0.0344   -0.1227
+    4 H1    2pz    -0.0002    0.0301    0.0365    0.0027   -0.0891   -0.0306   -0.0012
+    5 H2    1s      0.0003    0.1299   -0.3839   -0.3041    0.0950    0.4584    0.6486
+    6 H2    2s      0.0000   -0.0092    0.0477    0.0226    0.2573   -0.3211   -0.0734
+    7 H2    2py    -0.0002    0.0278   -0.0279   -0.0430    0.0116    0.0344    0.1227
+    8 H2    2pz    -0.0002    0.0301   -0.0365    0.0027   -0.0891    0.0306   -0.0012
+    9 O     1s      1.0000   -0.0253    0.0000    0.0457   -0.0096    0.0000   -0.0976
+   10 O     2s      0.0008    0.8162    0.0000    0.2186   -0.0454    0.0000   -0.7874
+   11 O     3s     -0.0004   -0.0560    0.0000    0.1310   -1.1669    0.0000   -0.1766
+   12 O     2py     0.0000    0.0000    0.6499    0.0000    0.0000    0.6991    0.0000
+   13 O     3py     0.0000    0.0000   -0.0927    0.0000    0.0000   -0.5620    0.0000
+   14 O     2pz    -0.0020    0.2060    0.0000    0.7707   -0.0384    0.0000    0.6353
+   15 O     3pz     0.0006    0.0519    0.0000   -0.0321   -0.2965    0.0000   -0.5267
+   16 O     3d1-    0.0000    0.0000   -0.0352    0.0000    0.0000   -0.0261    0.0000
+   17 O     3d0     0.0000   -0.0058    0.0000   -0.0230    0.0215    0.0000    0.0200
+   18 O     3d2+    0.0000   -0.0025    0.0000    0.0099    0.0414    0.0000    0.0286
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 2: a" 
+ 
+ 
+      Orbital            1         2
+      Energy        0.0000    0.0000
+      Occ. No.      1.9747    0.0243
+ 
+    1 H1    2px     0.0440    0.1387
+    2 H2    2px     0.0440    0.1387
+    3 O     2px     0.9577   -0.2073
+    4 O     3px     0.0465    0.8719
+    5 O     3d2-    0.0000    0.0000
+    6 O     3d1+   -0.0229   -0.0411
+
+      Von Neumann Entropy (Root  1) =  0.36237
+ 
+
+      Mulliken population Analysis for root number: 1
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             H1      H2      O     
+      1s     0.7548  0.7548  2.0003
+      2s     0.0284  0.0284  1.5536
+      2px    0.0434  0.0434  1.8819
+      2pz    0.0382  0.0382  1.5200
+      2py    0.0373  0.0373  1.2130
+      3s     0.0000  0.0000 -0.0218
+      3px    0.0000  0.0000  0.0282
+      3pz    0.0000  0.0000  0.0079
+      3py    0.0000  0.0000 -0.0093
+      3d2+   0.0000  0.0000  0.0020
+      3d1+   0.0000  0.0000  0.0022
+      3d0    0.0000  0.0000  0.0026
+      3d1-   0.0000  0.0000  0.0154
+      3d2-   0.0000  0.0000  0.0000
+      Total  0.9021  0.9021  8.1958
+ 
+      N-E    0.0979  0.0979 -0.1958
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  1
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=   -1.9803           Total=    1.9803
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000   -0.0668
+                    XX=   -8.2163              XY=    0.0000              XZ=    0.0000              YY=   -4.5401
+                    YZ=    0.0000              ZZ=   -6.5201
+      In traceless form (Debye*Ang)
+                    XX=   -2.6862              XY=    0.0000              XZ=    0.0000              YY=    2.8281
+                    YZ=    0.0000              ZZ=   -0.1419
+
+      LoProp population Analysis for root number:  1
+      -----------------------------------------------
+ 
+ 
+      LoProp Charges per center                                                                                               
+ 
+
+                   H1       H2       O     
+      Nuclear      1.0000   1.0000   8.0000
+      Electronic  -0.6728  -0.6728  -8.6545
+ 
+      Total        0.3272   0.3272  -0.6545
+ 
+      Natural Bond Order Analysis for root number:  1
+      Based on LoProp computed density
+      -------------------------------------------------------------------------------------
+      Atom A : Gen.  Atom B : Gen.  Bond Order | Atom A : Gen.  Atom B : Gen.  Bond Order
+         H1    :E       O     :E      0.975    |    H2    :E       O     :E      0.975
+      -------------------------------------------------------------------------------------
+      NBO located      2.000 core electrons.
+      NBO located      3.819 lone pair electrons.
+      NBO located      3.899 electrons involved in    2 bonds.
+      The remaining    0.282 electrons are to be considered as diffuse
+ 
+      Average orbitals are written to the RASORB           file
+      Natural orbitals for root   1 are written to the RASORB.1         file
+      Spin density orbitals for root   1 are written to the SPDORB.1         file
+ 
+--- Stop Module:  rasscf at Fri Oct  7 15:09:32 2016 /rc=0 ---
+*** 
+--- Start Module: caspt2 at Fri Oct  7 15:09:33 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module CASPT2 with 2000 MB of memory
+                                              at 15:09:33 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Number of closed shell electrons           0
+      Number of electrons in active shells       8
+      Max number of holes in RAS1 space          0
+      Max number of electrons in RAS3 space      0
+      Number of inactive orbitals                0
+      Number of active orbitals                  8
+      Number of secondary orbitals              15
+      Spin quantum number                      0.0
+      State symmetry                             1
+      Number of configuration state fnc.       924
+      Number of root(s) available                1
+      Root passed to geometry opt.               1
+      A file JOBMIX will be created.
+      This is a CASSCF reference function
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2
+                                                a'  a"
+      Frozen orbitals                            1   0
+      Inactive orbitals                          0   0
+      Active orbitals                            6   2
+      Secondary orbitals                        11   4
+      Deleted orbitals                           0   0
+      Number of basis functions                 18   6
+ 
+ 
+      Type of  Fock operator to use: STANDARD
+      Type of HZERO operator to use: STANDARD IPEA           
+      The CANONICAL keyword was not used in the RASSCF program.
+      Therefore, input orbitals should be transformed.
+      The input orbitals and the CI vector will be transformed.
+ 
+--------------------------------------------------------------------------------
+ Estimated memory requirements:
+  POLY3 :                   205826
+  MKRHS :                   148530
+  SIGMA :                   171228
+  DIADNS:                     5808
+  PRPCTL:                   178220
+ Available workspace:    262130874
+ 
+********************************************************************************
+ Multistate initialization phase begins for group   1
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+  Multi-state initialization phase finished.
+********************************************************************************
+Compute H0 matrices for state   1
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+  H0 matrices have been computed.
+ 
+********************************************************************************
+  CASPT2 EQUATION SOLUTION
+--------------------------------------------------------------------------------
+  Total nr of CASPT2 parameters:
+   Before reduction:        7920
+   After  reduction:        7846
+ 
+ The contributions to the second order correlation energy in atomic units.
+-----------------------------------------------------------------------------------------------------------------------------
+  IT.      VJTU        VJTI        ATVX        AIVX        VJAI        BVAT        BJAT        BJAI        TOTAL       RNORM  
+-----------------------------------------------------------------------------------------------------------------------------
+   1     0.000000    0.000000   -0.024733    0.000000    0.000000   -0.062756    0.000000    0.000000   -0.087489    0.006907
+   2     0.000000    0.000000   -0.025122    0.000000    0.000000   -0.062865    0.000000    0.000000   -0.087987    0.000698
+   3     0.000000    0.000000   -0.025124    0.000000    0.000000   -0.062865    0.000000    0.000000   -0.087988    0.000113
+   4     0.000000    0.000000   -0.025120    0.000000    0.000000   -0.062864    0.000000    0.000000   -0.087984    0.000016
+   5     0.000000    0.000000   -0.025120    0.000000    0.000000   -0.062864    0.000000    0.000000   -0.087984    0.000003
+-------------------------------------------------------------------------------------------------------------------
+ 
+  FINAL CASPT2 RESULT:
+ 
+      Reference energy:         -76.1759839472
+      E2 (Non-variational):      -0.0879843071
+      E2 (Variational):          -0.0879843060
+      Total energy:             -76.2639682532
+      Residual norm:              0.0000004230
+      Reference weight:           0.98082
+ 
+      Contributions to the CASPT2 correlation energy
+      Active & Virtual Only:         -0.0879843071
+      One Inactive Excited:           0.0000000000
+      Two Inactive Excited:           0.0000000000
+ 
+ 
+----------------------------------------------------------------------------------------------------
+ Report on small energy denominators, large coefficients, and large energy contributions.
+Denominators, etc.
+CASE  SYMM ACTIVE-MIX  NON-ACTIVE INDICES          DENOMINATOR     RHS VALUE       COEFFICIENT     CONTRIBUTION
+BVATM    1  Mu1.0001  Se1.011 Se1.010               2.79161866      0.06734906     -0.02551399     -0.00171834
+ 
+********************************************************************************
+  CASPT2 PROPERTY SECTION
+--------------------------------------------------------------------------------
+ 
+ 
+      Mulliken population Analysis:
+      -----------------------------
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             H1      H2      O     
+      1s     0.7545  0.7545  2.0003
+      2s     0.0270  0.0270  1.5457
+      2px    0.0441  0.0441  1.8741
+      2pz    0.0392  0.0392  1.5152
+      2py    0.0377  0.0377  1.2078
+      3s     0.0000  0.0000 -0.0218
+      3px    0.0000  0.0000  0.0284
+      3pz    0.0000  0.0000  0.0084
+      3py    0.0000  0.0000 -0.0095
+      3d2+   0.0000  0.0000  0.0069
+      3d1+   0.0000  0.0000  0.0071
+      3d0    0.0000  0.0000  0.0073
+      3d1-   0.0000  0.0000  0.0200
+      3d2-   0.0000  0.0000  0.0050
+      Total  0.9026  0.9026  8.1948
+ 
+      N-E    0.0974  0.0974 -0.1948
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+      Expectation values of various properties:
+      -----------------------------------------
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=   -1.9784           Total=    1.9784
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000   -0.0668
+                    XX=   -8.2293              XY=    0.0000              XZ=    0.0000              YY=   -4.5761
+                    YZ=    0.0000              ZZ=   -6.5476
+      In traceless form (Debye*Ang)
+                    XX=   -2.6674              XY=    0.0000              XZ=    0.0000              YY=    2.8124
+                    YZ=    0.0000              ZZ=   -0.1450
+ 
+  Total CASPT2 energies:
+      CASPT2 Root  1     Total energy:    -76.26396825
+ 
+      ********************************************************************************
+      CASPT2 TIMING INFO:             CPU(s)          I/O(s)  
+        Inizialization                    0.02            0.03
+        CASPT2 equations                  6.60            0.60
+        Properties                        0.24            0.09
+        Gradient/MS coupling              0.00            0.00
+       Total time                         6.86            0.72
+ 
+  A NEW JOBIPH FILE NAMED 'JOBMIX' IS PREPARED.
+********************************************************************************
+ 
+  The CI coefficients for the MIXED state nr.   1
+--------------------------------------------------------------------------------
+ CI COEFFICIENTS LARGER THAN 0.50D-01
+  Occupation of active orbitals, and spin coupling
+  of open shells. (u,d: Spin up or down).
+  SGUGA info is (Midvert:IsyUp:UpperWalk/LowerWalk)
+   Conf   SGUGA info Occupation       Coef       Weight                         
+  
+     13 ( 3:1:  4/  1) 222000 20        -0.977248         0.955013
+     15 ( 3:1:  6/  1) 222000 02         0.063149         0.003988
+     87 ( 5:1:  6/  1) 22u00d ud        -0.071995         0.005183
+     96 ( 5:1:  5/  2) 2u20d0 ud         0.069465         0.004825
+    285 ( 6:1:  4/  1) 220002 20         0.064058         0.004103
+    296 ( 6:1:  3/  2) 2ud0ud 20        -0.072693         0.005284
+    319 ( 6:1:  2/  4) 202020 20         0.066154         0.004376
+ 
+ 
+  Memory allocation map at Finish
+  ---------------------
+ 
+  FldNam   VarTyp            ID            Length             iPos
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+  LCI       REAL             55                924            2655329
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+--- Stop Module:  caspt2 at Fri Oct  7 15:09:34 2016 /rc=0 ---
+*** 
+--- Start Module: alaska at Fri Oct  7 15:09:35 2016 
+--- Stop Module:  alaska at Fri Oct  7 15:09:35 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: numerical_gradient at Fri Oct  7 15:09:36 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                            MOLCAS executing module NUMERICAL_GRADIENT with 2000 MB of memory
+                                              at 15:09:36 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ Root to use:                      1
+ Effective number of displacements are                     12
+ 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175982
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97717 0.95487
+            15  222000 02  -0.06317 0.00399
+            87  22u00d ud   0.06489 0.00421
+            96  2u20d0 ud  -0.06373 0.00406
+           285  220002 20  -0.06488 0.00421
+           319  202020 20  -0.06639 0.00441
+   * Points #                     1  done.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175955
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97732 0.95516
+            15  222000 02  -0.06313 0.00399
+            87  22u00d ud   0.06755 0.00456
+            96  2u20d0 ud  -0.06612 0.00437
+           285  220002 20  -0.06683 0.00447
+           319  202020 20  -0.06854 0.00470
+   * Points #                     2  done.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175969
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97731 0.95513
+            15  222000 02  -0.06314 0.00399
+            87  22u00d ud   0.06352 0.00403
+            96  2u20d0 ud  -0.06223 0.00387
+           285  220002 20  -0.06209 0.00386
+           319  202020 20  -0.06347 0.00403
+   * Points #                     3  done.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175981
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97719 0.95489
+            15  222000 02  -0.06315 0.00399
+            87  22u00d ud   0.06740 0.00454
+            96  2u20d0 ud  -0.06575 0.00432
+           285  220002 20  -0.06493 0.00422
+           319  202020 20  -0.06671 0.00445
+   * Points #                     4  done.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175955
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97732 0.95516
+            15  222000 02  -0.06313 0.00399
+            87  22u00d ud   0.06755 0.00456
+            96  2u20d0 ud  -0.06612 0.00437
+           285  220002 20  -0.06683 0.00447
+           319  202020 20  -0.06854 0.00470
+   * Points #                     5  done.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175982
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97717 0.95487
+            15  222000 02  -0.06317 0.00399
+            87  22u00d ud   0.06489 0.00421
+            96  2u20d0 ud  -0.06373 0.00406
+           285  220002 20  -0.06488 0.00421
+           319  202020 20  -0.06639 0.00441
+   * Points #                     6  done.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175969
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97731 0.95513
+            15  222000 02  -0.06314 0.00399
+            87  22u00d ud   0.06352 0.00403
+            96  2u20d0 ud  -0.06223 0.00387
+           285  220002 20  -0.06209 0.00386
+           319  202020 20  -0.06347 0.00403
+   * Points #                     7  done.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175981
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97719 0.95489
+            15  222000 02  -0.06315 0.00399
+            87  22u00d ud   0.06740 0.00454
+            96  2u20d0 ud  -0.06575 0.00432
+           285  220002 20  -0.06493 0.00422
+           319  202020 20  -0.06671 0.00445
+   * Points #                     8  done.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175955
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97725 0.95501
+            15  222000 02  -0.06315 0.00399
+            87  22u00d ud   0.06870 0.00472
+            96  2u20d0 ud  -0.06801 0.00463
+           285  220002 20  -0.07256 0.00527
+           319  202020 20  -0.07443 0.00554
+   * Points #                     9  done.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175955
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97725 0.95501
+            15  222000 02  -0.06315 0.00399
+            87  22u00d ud   0.06870 0.00472
+            96  2u20d0 ud  -0.06801 0.00463
+           285  220002 20  -0.07256 0.00527
+           319  202020 20  -0.07443 0.00554
+   * Points #                    10  done.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175977
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97712 0.95477
+            15  222000 02   0.06316 0.00399
+            87  22u00d ud  -0.07205 0.00519
+            96  2u20d0 ud   0.06963 0.00485
+           285  220002 20   0.06436 0.00414
+           296  2ud0ud 20  -0.07322 0.00536
+           319  202020 20   0.06658 0.00443
+   * Points #                    11  done.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175952
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97737 0.95525
+            15  222000 02   0.06314 0.00399
+            87  22u00d ud  -0.07194 0.00518
+            96  2u20d0 ud   0.06929 0.00480
+           285  220002 20   0.06376 0.00407
+           296  2ud0ud 20  -0.07217 0.00521
+           319  202020 20   0.06573 0.00432
+   * Points #                    12  done.
+ gradient set to Zero
+ gradient set to Zero
+ gradient set to Zero
+ 
+ Numerical gradient
+ ---------------------------------------------
+                X           Y           Z     
+ ---------------------------------------------
+  H1           0.000000    0.000134   -0.000080
+  H2           0.000000   -0.000134   -0.000080
+  O            0.000000    0.000000    0.000129
+ ---------------------------------------------
+--- Stop Module:  numerical_gradient at Fri Oct  7 15:09:57 2016 /rc=0 ---
+--- Module numerical_gradient spent 21 seconds 
+--- Module auto spent 23 seconds 
+*** 
+--- Start Module: slapaf at Fri Oct  7 15:09:59 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SLAPAF with 2000 MB of memory
+                                              at 15:10:00 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+      Slapaf input parameters:
+          ------------------------
+ 
+ 
+ 
+ Max iterations:                               0
+ Convergence test a la Schlegel.
+ Convergence criterion on gradient/para.<=: 0.3E-03
+ Convergence criterion on step/parameter<=: 0.3E-03
+ Convergence criterion on energy change <=: 0.1E-05
+ Max norm of step:     0.30E+00
+ 
+ Line search is performed
+ 
+ 
+ -Optimization for transition state.
+  Optimization method: RS-P-RFO
+  No mode to follow is specified!
+  Optimization will follow mode with the lowest eigenvalue.
+ 
+ -Initial Hessian guess is estimated with finite differences.
+    Two point symmetric formula, Delta=0.50E-01
+ 
+ -Hessian update method: Broyden-Fletcher-Goldfarb-Shanno
+  Max number of points in Hessian update:  5
+ 
+ -Relaxation will be done in nonredundant internal coordinates, based on
+  force constant weighted redundant internal coordinates.
+ 
+ 
+ ******************************************
+ * Statistics of the internal coordinates *
+ ******************************************
+ Translations and Rotations:         0
+ Bonds                     :         2
+ Angles                    :         1
+ Torsions                  :         0
+ Out-of-plane angles       :         0
+ 
+--- Stop Module:  slapaf at Fri Oct  7 15:10:00 2016 /rc= _CONTINUE_LOOP_ ---
+--- Stop Module:  auto at Fri Oct  7 15:10:00 2016 /rc= _CONTINUE_LOOP_ ---
+--- Module auto spent 25 seconds 
+--- Start Module: auto at Fri Oct  7 15:10:00 2016 
+*** 
+--- Start Module: seward at Fri Oct  7 15:10:01 2016 
+--- Stop Module:  seward at Fri Oct  7 15:10:02 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 15:10:03 2016 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175305
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97724 0.95500
+            15  222000 02   0.06314 0.00399
+            87  22u00d ud  -0.07014 0.00492
+            96  2u20d0 ud   0.07107 0.00505
+           285  220002 20   0.07581 0.00575
+           319  202020 20   0.08193 0.00671
+--- Stop Module:  rasscf at Fri Oct  7 15:10:04 2016 /rc=0 ---
+*** 
+--- Start Module: caspt2 at Fri Oct  7 15:10:06 2016 
+ 
+  Memory allocation map at Finish
+  ---------------------
+ 
+  FldNam   VarTyp            ID            Length             iPos
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+  LCI       REAL             55                924            2655329
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+--- Stop Module:  caspt2 at Fri Oct  7 15:10:07 2016 /rc=0 ---
+*** 
+--- Start Module: alaska at Fri Oct  7 15:10:08 2016 
+--- Stop Module:  alaska at Fri Oct  7 15:10:08 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: numerical_gradient at Fri Oct  7 15:10:09 2016 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175169
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97716 0.95484
+            15  222000 02  -0.06316 0.00399
+            87  22u00d ud   0.07013 0.00492
+            96  2u20d0 ud  -0.07122 0.00507
+           285  220002 20  -0.07584 0.00575
+           319  202020 20  -0.08259 0.00682
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175411
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97732 0.95515
+            15  222000 02  -0.06312 0.00398
+            87  22u00d ud   0.07014 0.00492
+            96  2u20d0 ud  -0.07091 0.00503
+           285  220002 20  -0.07575 0.00574
+           319  202020 20  -0.08128 0.00661
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175392
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97730 0.95512
+            15  222000 02  -0.06314 0.00399
+            87  22u00d ud   0.07009 0.00491
+            96  2u20d0 ud  -0.07095 0.00503
+           285  220002 20  -0.07576 0.00574
+           319  202020 20  -0.08139 0.00662
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175200
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97718 0.95487
+            15  222000 02  -0.06314 0.00399
+            87  22u00d ud   0.07017 0.00492
+            96  2u20d0 ud  -0.07118 0.00507
+           285  220002 20  -0.07585 0.00575
+           319  202020 20  -0.08248 0.00680
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175131
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97731 0.95513
+            15  222000 02   0.06312 0.00398
+            87  22u00d ud  -0.07006 0.00491
+            96  2u20d0 ud   0.07110 0.00506
+           285  220002 20   0.07531 0.00567
+           319  202020 20   0.08202 0.00673
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175446
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97717 0.95486
+            15  222000 02  -0.06316 0.00399
+            87  22u00d ud   0.07020 0.00493
+            96  2u20d0 ud  -0.07102 0.00504
+           285  220002 20  -0.07628 0.00582
+           319  202020 20  -0.08182 0.00670
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175174
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97730 0.95511
+            15  222000 02  -0.06313 0.00399
+            87  22u00d ud   0.07004 0.00491
+            96  2u20d0 ud  -0.07110 0.00506
+           285  220002 20  -0.07540 0.00569
+           319  202020 20  -0.08195 0.00672
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175416
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97718 0.95488
+            15  222000 02  -0.06315 0.00399
+            87  22u00d ud   0.07024 0.00493
+            96  2u20d0 ud  -0.07103 0.00505
+           285  220002 20  -0.07618 0.00580
+           319  202020 20  -0.08189 0.00671
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175551
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97724 0.95500
+            15  222000 02  -0.06314 0.00399
+            87  22u00d ud   0.07020 0.00493
+            96  2u20d0 ud  -0.07086 0.00502
+           285  220002 20  -0.07620 0.00581
+           319  202020 20  -0.08117 0.00659
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175003
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97723 0.95499
+            15  222000 02  -0.06313 0.00399
+            87  22u00d ud   0.07005 0.00491
+            96  2u20d0 ud  -0.07124 0.00507
+           285  220002 20  -0.07533 0.00568
+           319  202020 20  -0.08264 0.00683
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175314
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97712 0.95476
+            15  222000 02   0.06315 0.00399
+            87  22u00d ud  -0.07028 0.00494
+            96  2u20d0 ud   0.07115 0.00506
+           285  220002 20   0.07624 0.00581
+           319  202020 20   0.08243 0.00679
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175258
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97736 0.95523
+            15  222000 02   0.06313 0.00399
+            87  22u00d ud  -0.07000 0.00490
+            96  2u20d0 ud   0.07099 0.00504
+           285  220002 20   0.07536 0.00568
+           319  202020 20   0.08143 0.00663
+ gradient set to Zero
+ gradient set to Zero
+ gradient set to Zero
+--- Stop Module:  numerical_gradient at Fri Oct  7 15:10:30 2016 /rc=0 ---
+--- Module numerical_gradient spent 21 seconds 
+--- Module auto spent 23 seconds 
+*** 
+--- Start Module: slapaf at Fri Oct  7 15:10:31 2016 
+--- Stop Module:  slapaf at Fri Oct  7 15:10:31 2016 /rc= _CONTINUE_LOOP_ ---
+--- Stop Module:  auto at Fri Oct  7 15:10:32 2016 /rc= _CONTINUE_LOOP_ ---
+--- Module auto spent 24 seconds 
+--- Start Module: auto at Fri Oct  7 15:10:32 2016 
+*** 
+--- Start Module: seward at Fri Oct  7 15:10:33 2016 
+--- Stop Module:  seward at Fri Oct  7 15:10:33 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 15:10:34 2016 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175305
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97724 0.95500
+            15  222000 02  -0.06314 0.00399
+            87  22u00d ud   0.07107 0.00505
+            96  2u20d0 ud  -0.07014 0.00492
+           285  220002 20  -0.08193 0.00671
+           319  202020 20  -0.07581 0.00575
+--- Stop Module:  rasscf at Fri Oct  7 15:10:36 2016 /rc=0 ---
+*** 
+--- Start Module: caspt2 at Fri Oct  7 15:10:37 2016 
+ 
+  Memory allocation map at Finish
+  ---------------------
+ 
+  FldNam   VarTyp            ID            Length             iPos
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+  LCI       REAL             55                924            2655329
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+--- Stop Module:  caspt2 at Fri Oct  7 15:10:38 2016 /rc=0 ---
+*** 
+--- Start Module: alaska at Fri Oct  7 15:10:39 2016 
+--- Stop Module:  alaska at Fri Oct  7 15:10:39 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: numerical_gradient at Fri Oct  7 15:10:40 2016 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175446
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97717 0.95486
+            15  222000 02   0.06316 0.00399
+            87  22u00d ud  -0.07102 0.00504
+            96  2u20d0 ud   0.07020 0.00493
+           285  220002 20   0.08182 0.00670
+           319  202020 20   0.07628 0.00582
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175131
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97731 0.95513
+            15  222000 02   0.06312 0.00398
+            87  22u00d ud  -0.07110 0.00506
+            96  2u20d0 ud   0.07006 0.00491
+           285  220002 20   0.08202 0.00673
+           319  202020 20   0.07531 0.00567
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175174
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97730 0.95511
+            15  222000 02   0.06313 0.00399
+            87  22u00d ud  -0.07110 0.00506
+            96  2u20d0 ud   0.07004 0.00491
+           285  220002 20   0.08195 0.00672
+           319  202020 20   0.07540 0.00569
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175416
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97718 0.95488
+            15  222000 02   0.06315 0.00399
+            87  22u00d ud  -0.07103 0.00505
+            96  2u20d0 ud   0.07024 0.00493
+           285  220002 20   0.08189 0.00671
+           319  202020 20   0.07618 0.00580
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175411
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97732 0.95515
+            15  222000 02   0.06312 0.00398
+            87  22u00d ud  -0.07091 0.00503
+            96  2u20d0 ud   0.07014 0.00492
+           285  220002 20   0.08128 0.00661
+           319  202020 20   0.07575 0.00574
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175169
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97716 0.95484
+            15  222000 02   0.06316 0.00399
+            87  22u00d ud  -0.07122 0.00507
+            96  2u20d0 ud   0.07013 0.00492
+           285  220002 20   0.08259 0.00682
+           319  202020 20   0.07584 0.00575
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175392
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97730 0.95512
+            15  222000 02   0.06314 0.00399
+            87  22u00d ud  -0.07095 0.00503
+            96  2u20d0 ud   0.07009 0.00491
+           285  220002 20   0.08139 0.00662
+           319  202020 20   0.07576 0.00574
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175200
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97718 0.95487
+            15  222000 02   0.06314 0.00399
+            87  22u00d ud  -0.07118 0.00507
+            96  2u20d0 ud   0.07017 0.00492
+           285  220002 20   0.08248 0.00680
+           319  202020 20   0.07585 0.00575
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175003
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97723 0.95499
+            15  222000 02   0.06313 0.00399
+            87  22u00d ud  -0.07124 0.00507
+            96  2u20d0 ud   0.07005 0.00491
+           285  220002 20   0.08264 0.00683
+           319  202020 20   0.07533 0.00568
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175551
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97724 0.95500
+            15  222000 02   0.06314 0.00399
+            87  22u00d ud  -0.07086 0.00502
+            96  2u20d0 ud   0.07020 0.00493
+           285  220002 20   0.08117 0.00659
+           319  202020 20   0.07620 0.00581
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175314
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97712 0.95476
+            15  222000 02  -0.06315 0.00399
+            87  22u00d ud   0.07115 0.00506
+            96  2u20d0 ud  -0.07028 0.00494
+           285  220002 20  -0.08243 0.00679
+           319  202020 20  -0.07624 0.00581
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175258
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97736 0.95523
+            15  222000 02  -0.06313 0.00399
+            87  22u00d ud   0.07099 0.00504
+            96  2u20d0 ud  -0.07000 0.00490
+           285  220002 20  -0.08143 0.00663
+           319  202020 20  -0.07536 0.00568
+ gradient set to Zero
+ gradient set to Zero
+ gradient set to Zero
+--- Stop Module:  numerical_gradient at Fri Oct  7 15:11:01 2016 /rc=0 ---
+--- Module numerical_gradient spent 21 seconds 
+--- Module auto spent 23 seconds 
+*** 
+--- Start Module: slapaf at Fri Oct  7 15:11:02 2016 
+--- Stop Module:  slapaf at Fri Oct  7 15:11:02 2016 /rc= _CONTINUE_LOOP_ ---
+--- Stop Module:  auto at Fri Oct  7 15:11:03 2016 /rc= _CONTINUE_LOOP_ ---
+--- Module auto spent 24 seconds 
+--- Start Module: auto at Fri Oct  7 15:11:03 2016 
+*** 
+--- Start Module: seward at Fri Oct  7 15:11:03 2016 
+--- Stop Module:  seward at Fri Oct  7 15:11:04 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 15:11:05 2016 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175581
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97658 0.95371
+            15  222000 02   0.06322 0.00400
+            87  22u00d ud  -0.07028 0.00494
+            96  2u20d0 ud   0.07237 0.00524
+           285  220002 20   0.06819 0.00465
+           296  2ud0ud 20  -0.07548 0.00570
+           319  202020 20   0.06578 0.00433
+--- Stop Module:  rasscf at Fri Oct  7 15:11:06 2016 /rc=0 ---
+*** 
+--- Start Module: caspt2 at Fri Oct  7 15:11:08 2016 
+ 
+  Memory allocation map at Finish
+  ---------------------
+ 
+  FldNam   VarTyp            ID            Length             iPos
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+  LCI       REAL             55                924            2655329
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+--- Stop Module:  caspt2 at Fri Oct  7 15:11:09 2016 /rc=0 ---
+*** 
+--- Start Module: alaska at Fri Oct  7 15:11:10 2016 
+--- Stop Module:  alaska at Fri Oct  7 15:11:10 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: numerical_gradient at Fri Oct  7 15:11:11 2016 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175482
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97650 0.95355
+            15  222000 02  -0.06324 0.00400
+            87  22u00d ud   0.06880 0.00473
+            96  2u20d0 ud  -0.07042 0.00496
+           285  220002 20  -0.07047 0.00497
+           296  2ud0ud 20   0.05953 0.00354
+           319  202020 20  -0.06819 0.00465
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175652
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97666 0.95386
+            15  222000 02  -0.06320 0.00399
+            87  22u00d ud   0.06938 0.00481
+            96  2u20d0 ud  -0.07110 0.00506
+           285  220002 20  -0.07045 0.00496
+           296  2ud0ud 20   0.06344 0.00402
+           319  202020 20  -0.06803 0.00463
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175660
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97664 0.95383
+            15  222000 02   0.06322 0.00400
+            87  22u00d ud  -0.06894 0.00475
+            96  2u20d0 ud   0.07073 0.00500
+           285  220002 20   0.06941 0.00482
+           296  2ud0ud 20  -0.06262 0.00392
+           319  202020 20   0.06715 0.00451
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175485
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97651 0.95358
+            15  222000 02   0.06322 0.00400
+            87  22u00d ud  -0.06965 0.00485
+            96  2u20d0 ud   0.07143 0.00510
+           285  220002 20   0.06993 0.00489
+           296  2ud0ud 20  -0.06698 0.00449
+           319  202020 20   0.06749 0.00456
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175652
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97666 0.95386
+            15  222000 02  -0.06320 0.00399
+            87  22u00d ud   0.06938 0.00481
+            96  2u20d0 ud  -0.07110 0.00506
+           285  220002 20  -0.07045 0.00496
+           296  2ud0ud 20   0.06344 0.00402
+           319  202020 20  -0.06802 0.00463
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175482
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97650 0.95355
+            15  222000 02  -0.06324 0.00400
+            87  22u00d ud   0.06880 0.00473
+            96  2u20d0 ud  -0.07042 0.00496
+           285  220002 20  -0.07047 0.00497
+           296  2ud0ud 20   0.05952 0.00354
+           319  202020 20  -0.06819 0.00465
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175660
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97664 0.95383
+            15  222000 02   0.06322 0.00400
+            87  22u00d ud  -0.06894 0.00475
+            96  2u20d0 ud   0.07073 0.00500
+           285  220002 20   0.06941 0.00482
+           296  2ud0ud 20  -0.06263 0.00392
+           319  202020 20   0.06715 0.00451
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175485
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97651 0.95358
+            15  222000 02   0.06322 0.00400
+            87  22u00d ud  -0.06965 0.00485
+            96  2u20d0 ud   0.07143 0.00510
+           285  220002 20   0.06993 0.00489
+           296  2ud0ud 20  -0.06698 0.00449
+           319  202020 20   0.06750 0.00456
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175555
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97658 0.95371
+            15  222000 02  -0.06322 0.00400
+            87  22u00d ud   0.06925 0.00480
+            96  2u20d0 ud  -0.07038 0.00495
+           285  220002 20  -0.07489 0.00561
+           296  2ud0ud 20   0.05203 0.00271
+           319  202020 20  -0.07239 0.00524
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175555
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97658 0.95371
+            15  222000 02  -0.06322 0.00400
+            87  22u00d ud   0.06925 0.00480
+            96  2u20d0 ud  -0.07038 0.00495
+           285  220002 20  -0.07489 0.00561
+           296  2ud0ud 20   0.05203 0.00271
+           319  202020 20  -0.07239 0.00524
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175388
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97645 0.95345
+            15  222000 02   0.06323 0.00400
+            87  22u00d ud  -0.07045 0.00496
+            96  2u20d0 ud   0.07244 0.00525
+           285  220002 20   0.06863 0.00471
+           296  2ud0ud 20  -0.07603 0.00578
+           319  202020 20   0.06611 0.00437
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175737
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97671 0.95396
+            15  222000 02   0.06321 0.00400
+            87  22u00d ud  -0.07011 0.00492
+            96  2u20d0 ud   0.07231 0.00523
+           285  220002 20   0.06775 0.00459
+           296  2ud0ud 20  -0.07493 0.00561
+           319  202020 20   0.06546 0.00429
+ gradient set to Zero
+ gradient set to Zero
+ gradient set to Zero
+--- Stop Module:  numerical_gradient at Fri Oct  7 15:11:36 2016 /rc=0 ---
+--- Module numerical_gradient spent 25 seconds 
+--- Module auto spent 26 seconds 
+*** 
+--- Start Module: slapaf at Fri Oct  7 15:11:38 2016 
+--- Stop Module:  slapaf at Fri Oct  7 15:11:38 2016 /rc= _CONTINUE_LOOP_ ---
+--- Stop Module:  auto at Fri Oct  7 15:11:38 2016 /rc= _CONTINUE_LOOP_ ---
+--- Module auto spent 27 seconds 
+--- Start Module: auto at Fri Oct  7 15:11:38 2016 
+*** 
+--- Start Module: seward at Fri Oct  7 15:11:39 2016 
+--- Stop Module:  seward at Fri Oct  7 15:11:39 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 15:11:41 2016 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175388
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97789 0.95627
+            15  222000 02   0.06306 0.00398
+            87  22u00d ud  -0.06862 0.00471
+            96  2u20d0 ud   0.07165 0.00513
+           285  220002 20   0.06417 0.00412
+           296  2ud0ud 20  -0.06995 0.00489
+           319  202020 20   0.06240 0.00389
+--- Stop Module:  rasscf at Fri Oct  7 15:11:42 2016 /rc=0 ---
+*** 
+--- Start Module: caspt2 at Fri Oct  7 15:11:43 2016 
+ 
+  Memory allocation map at Finish
+  ---------------------
+ 
+  FldNam   VarTyp            ID            Length             iPos
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+  LCI       REAL             55                924            2655329
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+--- Stop Module:  caspt2 at Fri Oct  7 15:11:45 2016 /rc=0 ---
+*** 
+--- Start Module: alaska at Fri Oct  7 15:11:46 2016 
+--- Stop Module:  alaska at Fri Oct  7 15:11:46 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: numerical_gradient at Fri Oct  7 15:11:47 2016 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175494
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97782 0.95613
+            15  222000 02  -0.06308 0.00398
+            86  22u0d0 ud   0.06324 0.00400
+            97  2u200d ud   0.06248 0.00390
+           283  220020 20  -0.06476 0.00419
+           321  202002 20  -0.06460 0.00417
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175248
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97796 0.95641
+            15  222000 02   0.06303 0.00397
+            86  22u0d0 ud   0.06465 0.00418
+            97  2u200d ud   0.06415 0.00412
+           283  220020 20   0.06713 0.00451
+           321  202002 20   0.06692 0.00448
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175275
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97795 0.95638
+            15  222000 02  -0.06305 0.00398
+            86  22u0d0 ud  -0.06247 0.00390
+            97  2u200d ud  -0.06131 0.00376
+           283  220020 20  -0.06184 0.00382
+           321  202002 20  -0.06209 0.00385
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175483
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97784 0.95616
+            15  222000 02  -0.06306 0.00398
+            86  22u0d0 ud   0.05920 0.00350
+            97  2u200d ud   0.05896 0.00348
+           283  220020 20  -0.06002 0.00360
+           321  202002 20  -0.05982 0.00358
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175248
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97796 0.95641
+            15  222000 02   0.06303 0.00397
+            86  22u0d0 ud  -0.06465 0.00418
+            97  2u200d ud  -0.06415 0.00412
+           283  220020 20   0.06713 0.00451
+           321  202002 20   0.06692 0.00448
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175494
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97782 0.95613
+            15  222000 02  -0.06308 0.00398
+            86  22u0d0 ud  -0.06324 0.00400
+            97  2u200d ud  -0.06248 0.00390
+           283  220020 20  -0.06476 0.00419
+           321  202002 20  -0.06460 0.00417
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175275
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97795 0.95638
+            15  222000 02  -0.06305 0.00398
+            86  22u0d0 ud   0.06247 0.00390
+            97  2u200d ud   0.06131 0.00376
+           283  220020 20  -0.06184 0.00382
+           321  202002 20  -0.06209 0.00385
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175483
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97784 0.95616
+            15  222000 02  -0.06306 0.00398
+            86  22u0d0 ud  -0.05920 0.00350
+            97  2u200d ud  -0.05896 0.00348
+           283  220020 20  -0.06002 0.00360
+           321  202002 20  -0.05982 0.00358
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175357
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97789 0.95627
+            15  222000 02   0.06305 0.00398
+            86  22u0d0 ud   0.06851 0.00469
+            97  2u200d ud   0.06798 0.00462
+           283  220020 20   0.07365 0.00542
+           321  202002 20   0.07270 0.00529
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175357
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97789 0.95627
+            15  222000 02   0.06305 0.00398
+            86  22u0d0 ud  -0.06851 0.00469
+            97  2u200d ud  -0.06798 0.00462
+           283  220020 20   0.07365 0.00542
+           321  202002 20   0.07270 0.00529
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175576
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97778 0.95605
+            15  222000 02   0.06307 0.00398
+            87  22u00d ud  -0.06879 0.00473
+            96  2u20d0 ud   0.07169 0.00514
+           285  220002 20   0.06458 0.00417
+           296  2ud0ud 20  -0.07046 0.00496
+           319  202020 20   0.06268 0.00393
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175160
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97801 0.95649
+            15  222000 02   0.06304 0.00397
+            87  22u00d ud  -0.06845 0.00468
+            96  2u20d0 ud   0.07160 0.00513
+           285  220002 20   0.06377 0.00407
+           296  2ud0ud 20  -0.06944 0.00482
+           319  202020 20   0.06212 0.00386
+ gradient set to Zero
+ gradient set to Zero
+ gradient set to Zero
+--- Stop Module:  numerical_gradient at Fri Oct  7 15:12:11 2016 /rc=0 ---
+--- Module numerical_gradient spent 24 seconds 
+--- Module auto spent 26 seconds 
+*** 
+--- Start Module: slapaf at Fri Oct  7 15:12:12 2016 
+--- Stop Module:  slapaf at Fri Oct  7 15:12:12 2016 /rc= _CONTINUE_LOOP_ ---
+--- Stop Module:  auto at Fri Oct  7 15:12:13 2016 /rc= _CONTINUE_LOOP_ ---
+--- Module auto spent 27 seconds 
+--- Start Module: auto at Fri Oct  7 15:12:13 2016 
+*** 
+--- Start Module: seward at Fri Oct  7 15:12:13 2016 
+--- Stop Module:  seward at Fri Oct  7 15:12:14 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 15:12:15 2016 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175706
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97689 0.95431
+            15  222000 02   0.06329 0.00401
+            87  22u00d ud  -0.06965 0.00485
+            96  2u20d0 ud   0.07238 0.00524
+           285  220002 20   0.06641 0.00441
+           296  2ud0ud 20  -0.07394 0.00547
+           319  202020 20   0.06526 0.00426
+--- Stop Module:  rasscf at Fri Oct  7 15:12:16 2016 /rc=0 ---
+*** 
+--- Start Module: caspt2 at Fri Oct  7 15:12:18 2016 
+ 
+  Memory allocation map at Finish
+  ---------------------
+ 
+  FldNam   VarTyp            ID            Length             iPos
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+  LCI       REAL             55                924            2655329
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+--- Stop Module:  caspt2 at Fri Oct  7 15:12:19 2016 /rc=0 ---
+*** 
+--- Start Module: alaska at Fri Oct  7 15:12:20 2016 
+--- Stop Module:  alaska at Fri Oct  7 15:12:20 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: numerical_gradient at Fri Oct  7 15:12:21 2016 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175604
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97681 0.95416
+            15  222000 02  -0.06331 0.00401
+            86  22u0d0 ud   0.05470 0.00299
+            97  2u200d ud   0.05380 0.00289
+           283  220020 20  -0.05502 0.00303
+           321  202002 20  -0.05402 0.00292
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175778
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97697 0.95446
+            15  222000 02  -0.06327 0.00400
+            86  22u0d0 ud  -0.05529 0.00306
+            97  2u200d ud  -0.05454 0.00297
+           283  220020 20  -0.05592 0.00313
+           321  202002 20  -0.05506 0.00303
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175716
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97695 0.95443
+            15  222000 02  -0.06329 0.00401
+            86  22u0d0 ud  -0.05168 0.00267
+            96  2u20d0 ud  -0.05047 0.00255
+            97  2u200d ud  -0.05061 0.00256
+           283  220020 20  -0.05012 0.00251
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175679
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97683 0.95419
+            15  222000 02  -0.06329 0.00401
+            87  22u00d ud   0.05269 0.00278
+            96  2u20d0 ud  -0.05531 0.00306
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175778
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97697 0.95446
+            15  222000 02  -0.06327 0.00400
+            86  22u0d0 ud   0.05529 0.00306
+            97  2u200d ud   0.05454 0.00297
+           283  220020 20  -0.05592 0.00313
+           321  202002 20  -0.05506 0.00303
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175604
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97681 0.95416
+            15  222000 02  -0.06331 0.00401
+            86  22u0d0 ud  -0.05470 0.00299
+            97  2u200d ud  -0.05380 0.00289
+           283  220020 20  -0.05502 0.00303
+           321  202002 20  -0.05402 0.00292
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175716
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97695 0.95443
+            15  222000 02  -0.06329 0.00401
+            86  22u0d0 ud   0.05168 0.00267
+            96  2u20d0 ud  -0.05047 0.00255
+            97  2u200d ud   0.05061 0.00256
+           283  220020 20  -0.05012 0.00251
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175679
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97683 0.95419
+            15  222000 02  -0.06329 0.00401
+            87  22u00d ud   0.05269 0.00278
+            96  2u20d0 ud  -0.05531 0.00306
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175678
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97689 0.95431
+            15  222000 02   0.06329 0.00401
+            86  22u0d0 ud   0.06521 0.00425
+            97  2u200d ud   0.06445 0.00415
+           283  220020 20   0.07057 0.00498
+           321  202002 20   0.06920 0.00479
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175678
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97689 0.95431
+            15  222000 02   0.06329 0.00401
+            86  22u0d0 ud  -0.06521 0.00425
+            97  2u200d ud  -0.06445 0.00415
+           283  220020 20   0.07057 0.00498
+           321  202002 20   0.06920 0.00479
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175652
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97677 0.95407
+            15  222000 02   0.06330 0.00401
+            87  22u00d ud  -0.06981 0.00487
+            96  2u20d0 ud   0.07243 0.00525
+           285  220002 20   0.06683 0.00447
+           296  2ud0ud 20  -0.07447 0.00555
+           319  202020 20   0.06556 0.00430
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175725
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97701 0.95454
+            15  222000 02   0.06328 0.00400
+            87  22u00d ud  -0.06948 0.00483
+            96  2u20d0 ud   0.07233 0.00523
+           285  220002 20   0.06599 0.00436
+           296  2ud0ud 20  -0.07342 0.00539
+           319  202020 20   0.06497 0.00422
+ gradient set to Zero
+ gradient set to Zero
+ gradient set to Zero
+--- Stop Module:  numerical_gradient at Fri Oct  7 15:12:45 2016 /rc=0 ---
+--- Module numerical_gradient spent 24 seconds 
+--- Module auto spent 26 seconds 
+*** 
+--- Start Module: slapaf at Fri Oct  7 15:12:47 2016 
+--- Stop Module:  slapaf at Fri Oct  7 15:12:47 2016 /rc= _CONTINUE_LOOP_ ---
+--- Stop Module:  auto at Fri Oct  7 15:12:47 2016 /rc= _CONTINUE_LOOP_ ---
+--- Module auto spent 27 seconds 
+--- Start Module: auto at Fri Oct  7 15:12:48 2016 
+*** 
+--- Start Module: seward at Fri Oct  7 15:12:48 2016 
+--- Stop Module:  seward at Fri Oct  7 15:12:49 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 15:12:50 2016 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175526
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97760 0.95570
+            15  222000 02   0.06300 0.00397
+            87  22u00d ud  -0.06929 0.00480
+            96  2u20d0 ud   0.07160 0.00513
+           285  220002 20   0.06589 0.00434
+           296  2ud0ud 20  -0.07144 0.00510
+           319  202020 20   0.06292 0.00396
+--- Stop Module:  rasscf at Fri Oct  7 15:12:52 2016 /rc=0 ---
+*** 
+--- Start Module: caspt2 at Fri Oct  7 15:12:53 2016 
+ 
+  Memory allocation map at Finish
+  ---------------------
+ 
+  FldNam   VarTyp            ID            Length             iPos
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+  LCI       REAL             55                924            2655329
+  - - - - - - - - - - - - - - - - - - - - - - - - -
+--- Stop Module:  caspt2 at Fri Oct  7 15:12:55 2016 /rc=0 ---
+*** 
+--- Start Module: alaska at Fri Oct  7 15:12:56 2016 
+--- Stop Module:  alaska at Fri Oct  7 15:12:56 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: numerical_gradient at Fri Oct  7 15:12:57 2016 
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175628
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97753 0.95556
+            15  222000 02  -0.06302 0.00397
+            87  22u00d ud   0.06935 0.00481
+            96  2u20d0 ud  -0.07138 0.00509
+           285  220002 20  -0.06839 0.00468
+           296  2ud0ud 20   0.06597 0.00435
+           319  202020 20  -0.06554 0.00430
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175393
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97767 0.95584
+            15  222000 02   0.06298 0.00397
+            87  22u00d ud  -0.06928 0.00480
+            96  2u20d0 ud   0.07136 0.00509
+           285  220002 20   0.06789 0.00461
+           296  2ud0ud 20  -0.06641 0.00441
+           319  202020 20   0.06489 0.00421
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175480
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97766 0.95582
+            15  222000 02  -0.06300 0.00397
+            87  22u00d ud   0.06922 0.00479
+            96  2u20d0 ud  -0.07138 0.00510
+           285  220002 20  -0.06742 0.00455
+           296  2ud0ud 20   0.06705 0.00450
+           319  202020 20  -0.06456 0.00417
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175553
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97754 0.95558
+            15  222000 02  -0.06301 0.00397
+            87  22u00d ud   0.06939 0.00482
+            96  2u20d0 ud  -0.07149 0.00511
+           285  220002 20  -0.06754 0.00456
+           296  2ud0ud 20   0.06841 0.00468
+           319  202020 20  -0.06453 0.00416
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175393
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97767 0.95584
+            15  222000 02   0.06298 0.00397
+            87  22u00d ud  -0.06928 0.00480
+            96  2u20d0 ud   0.07136 0.00509
+           285  220002 20   0.06789 0.00461
+           296  2ud0ud 20  -0.06641 0.00441
+           319  202020 20   0.06489 0.00421
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175628
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97753 0.95556
+            15  222000 02  -0.06302 0.00397
+            87  22u00d ud   0.06935 0.00481
+            96  2u20d0 ud  -0.07138 0.00509
+           285  220002 20  -0.06839 0.00468
+           296  2ud0ud 20   0.06597 0.00435
+           319  202020 20  -0.06554 0.00430
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175480
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97766 0.95582
+            15  222000 02  -0.06300 0.00397
+            87  22u00d ud   0.06922 0.00479
+            96  2u20d0 ud  -0.07138 0.00510
+           285  220002 20  -0.06742 0.00455
+           296  2ud0ud 20   0.06705 0.00450
+           319  202020 20  -0.06456 0.00417
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175553
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97754 0.95558
+            15  222000 02  -0.06301 0.00397
+            87  22u00d ud   0.06939 0.00482
+            96  2u20d0 ud  -0.07149 0.00511
+           285  220002 20  -0.06754 0.00456
+           296  2ud0ud 20   0.06841 0.00468
+           319  202020 20  -0.06453 0.00416
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175497
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97760 0.95570
+            15  222000 02  -0.06300 0.00397
+            87  22u00d ud   0.06951 0.00483
+            96  2u20d0 ud  -0.07105 0.00505
+           285  220002 20  -0.07191 0.00517
+           296  2ud0ud 20   0.05828 0.00340
+           319  202020 20  -0.06896 0.00476
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175497
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20   0.97760 0.95570
+            15  222000 02  -0.06300 0.00397
+            87  22u00d ud   0.06951 0.00483
+            96  2u20d0 ud  -0.07105 0.00505
+           285  220002 20  -0.07191 0.00517
+           296  2ud0ud 20   0.05828 0.00340
+           319  202020 20  -0.06896 0.00476
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175579
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97748 0.95546
+            15  222000 02   0.06301 0.00397
+            87  22u00d ud  -0.06946 0.00482
+            96  2u20d0 ud   0.07167 0.00514
+           285  220002 20   0.06631 0.00440
+           296  2ud0ud 20  -0.07196 0.00518
+           319  202020 20   0.06322 0.00400
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.175433
+      conf/sym  111111 22     Coeff  Weight
+            13  222000 20  -0.97772 0.95594
+            15  222000 02   0.06299 0.00397
+            87  22u00d ud  -0.06911 0.00478
+            96  2u20d0 ud   0.07155 0.00512
+           285  220002 20   0.06547 0.00429
+           296  2ud0ud 20  -0.07091 0.00503
+           319  202020 20   0.06261 0.00392
+ gradient set to Zero
+ gradient set to Zero
+ gradient set to Zero
+--- Stop Module:  numerical_gradient at Fri Oct  7 15:13:17 2016 /rc=0 ---
+--- Module numerical_gradient spent 20 seconds 
+--- Module auto spent 22 seconds 
+*** 
+--- Start Module: slapaf at Fri Oct  7 15:13:18 2016 
+ 
+  Numerical differentiation is finished!
+ 
+  Observe that the harmonic oscillator analysis is only valid at stationary poin
+ ts!
+ 
+  Note that rotational and translation degrees have been automatically removed.
+ 
+ 
+  Harmonic frequencies in cm-1
+ 
+  IR Intensities in km/mol
+ 
+                1         2         3
+ 
+     Freq.    1622.52   3783.94   3915.49                                                                                    
+ 
+     Intensity:   0.706E+02 0.236E+02 0.184E+03
+ 
+     H1         y    0.41053  -0.57235   0.53561
+     H1         z    0.53937   0.38688  -0.41605
+     H2         y   -0.41053   0.57235   0.53561
+     H2         z    0.53937   0.38688   0.41604
+     O          y    0.00000   0.00000  -0.06750
+     O          z   -0.06797  -0.04875   0.00000
+ 
+ 
+ 
+--- Stop Module:  slapaf at Fri Oct  7 15:13:19 2016 /rc=0 ---
+--- Stop Module:  auto at Fri Oct  7 15:13:19 2016 /rc=0 ---
+--- Module auto spent 23 seconds 
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 15:13:19 2016 /rc=0 ---
+--- Module auto spent 23 seconds 

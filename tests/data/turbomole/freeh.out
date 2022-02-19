@@ -1,0 +1,265 @@
+Script started on Maan 29. Okt 2018 13:20:27 CET
+
+ freeh (marc2-h2) : TURBOMOLE V7.3 ( 22118 ) 1 Jul 2018 at 20:38:15
+ Copyright (C) 2018 TURBOMOLE GmbH, Karlsruhe
+
+
+    2018-10-29 13:20:27.797 
+
+
+
+                      f r e e   e n t h a l p y - program
+                            quantum chemistry group
+                            universitaet  karlsruhe
+                                     germany
+
+
+  -*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*
+ 
+   This program calculates partition sums and chemical
+   potentials for linear and non-linear molecules in
+   harmonic and ideal gas approximations.
+ 
+   Essential inputs from the control file comprise :
+   $vibrational spectrum
+   $coord
+   $atoms
+   $symmetry
+ 
+  -*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*--*
+ 
+
+
+              +--------------------------------------------------+
+              | Atomic coordinate, charge and isotop information |
+              +--------------------------------------------------+
+
+                    atomic coordinates            atom    charge  isotop
+         -1.23721106    1.49045596    2.60631264    c      6.000     0
+          0.13212777   -1.17630420    1.08020102    s     16.000     0
+          2.64000526   -1.57546509    2.11454377    o      8.000     0
+         -1.70593384   -3.20235736    0.94675939    o      8.000     0
+         -3.02663514    3.43048598   -2.83919280    f      9.000     0
+          0.05259199    3.10058204    2.43430932    h      1.000     0
+         -1.44672700    0.95257997    4.59549532    h      1.000     0
+         -3.06381570    1.90749640    1.73093951    h      1.000     0
+          2.81670557    1.09919776   -2.65695431    c      6.000     0
+          0.38767086   -0.09688303   -1.98427142    n      7.000     0
+          4.44052306   -0.13819596   -2.29447843    h      1.000     0
+          2.73704762    1.60795287   -4.66403084    h      1.000     0
+          3.03860228    2.84526925   -1.56444401    h      1.000     0
+          0.00093608   -1.64711526   -3.07877765    h      1.000     0
+         -1.85413577    2.04274381   -2.58506676    h      1.000     0
+ 
+       center of nuclear mass  :   -0.07729083   -0.06566964   -0.03248990
+       center of nuclear charge:   -0.02290316   -0.00938263   -0.04998378
+
+ symmetry group of the molecule :   c1 
+
+ the group has the following generators :
+   c1(z)
+
+    1 symmetry operations found
+
+ there are 1 real representations :   a   
+
+ maximum number of shells which are related by symmetry :  1
+
+
+   ***  vibrational spectroscopic data read from $vibrational spectrum
+        file=<vibspectrum>  ***
+
+    VIBRATIONAL SPECTRUM :
+
+   mode     symmetry     wave number     intensity     selection rules
+                          cm**(-1)         km/mol   
+     1                        0.00       0.0000000        -       - 
+     2                        0.00       0.0000000        -       - 
+     3                        0.00       0.0000000        -       - 
+     4                        0.00       0.0000000        -       - 
+     5                        0.00       0.0000000        -       - 
+     6                        0.00       0.0000000        -       - 
+     7        a              42.02      10.2927900       YES     YES
+     8        a              85.87       3.7351400       YES     YES
+     9        a             116.42       4.7460200       YES     YES
+    10        a             155.64       1.3991700       YES     YES
+    11        a             183.30       0.2311400       YES     YES
+    12        a             213.76       6.4286300       YES     YES
+    13        a             235.82       7.0513400       YES     YES
+    14        a             311.63       1.2934400       YES     YES
+    15        a             331.97       4.1420100       YES     YES
+    16        a             411.63       6.3655100       YES     YES
+    17        a             471.18      10.2461800       YES     YES
+    18        a             495.82      23.5518800       YES     YES
+    19        a             610.56     107.7249600       YES     YES
+    20        a             696.69      12.9901200       YES     YES
+    21        a             802.09      59.7763400       YES     YES
+    22        a             923.22      57.2728500       YES     YES
+    23        a             933.00      56.2317300       YES     YES
+    24        a             943.86      34.0340400       YES     YES
+    25        a             977.12      83.1031200       YES     YES
+    26        a            1022.95      51.1607900       YES     YES
+    27        a            1102.37       6.5964800       YES     YES
+    28        a            1114.44       0.7674300       YES     YES
+    29        a            1138.34     150.4566800       YES     YES
+    30        a            1297.69      16.4899700       YES     YES
+    31        a            1321.04      83.7252200       YES     YES
+    32        a            1364.14     139.9625200       YES     YES
+    33        a            1396.99       2.3917700       YES     YES
+    34        a            1399.09       5.4095400       YES     YES
+    35        a            1408.94       2.6447100       YES     YES
+    36        a            1438.81       8.6730200       YES     YES
+    37        a            1457.55      14.3715700       YES     YES
+    38        a            2986.20      29.2953700       YES     YES
+    39        a            3000.81       0.5186300       YES     YES
+    40        a            3066.72      10.3184300       YES     YES
+    41        a            3074.33       6.7092600       YES     YES
+    42        a            3100.44       1.4887200       YES     YES
+    43        a            3114.11      44.5069300       YES     YES
+    44        a            3132.66    1286.5509900       YES     YES
+    45        a            3420.29      33.6314800       YES     YES
+
+ -----------------------------------------
+ Judged from the schoenflies symbol c1  ,
+ the number of rotations in the nuclear   
+ exchange group is SIGMA=   1. SIGMA is 
+ the symmetry number entering the quasi-  
+ classical rotational partition sum.      
+ Hit RETURN to accept or enter a different
+ integer value.                           
+ -----------------------------------------
+
+1
+ 
+
+ center of mass :     0.00000000000000   -0.00000000000000    0.00000000000000
+    1 c    -1.15992022081397    1.55612560496858    2.63880254334684
+    2 s     0.20941860434781   -1.11063455563043    1.11269092048581
+    3 o     2.71729609937673   -1.50979544795027    2.14703367786856
+    4 o    -1.62864300288944   -3.13668772026271    0.97924929088083
+    5 f    -2.94934430977794    3.49615562094677   -2.80670289951313
+    6 h     0.12988282219978    3.16625167895436    2.46679922538316
+    7 h    -1.36943616432870    1.01824960904148    4.62798522231989
+    8 h    -2.98652486639483    1.97316604186158    1.76342940995945
+    9 c     2.89399640470498    1.16486739741907   -2.62446441031895
+   10 n     0.46496169421734   -0.03121338787741   -1.95178151246600
+   11 h     4.51781389571446   -0.07252631770268   -2.26198852130997
+   12 h     2.81433845875921    1.67362251206669   -4.63154093932186
+   13 h     3.11589311588261    2.91093888718539   -1.53195410343403
+   14 h     0.07822691189146   -1.58144562220620   -3.04628774408294
+   15 h    -1.77684493257450    2.10841345257183   -2.55257685352705
+ 
+      1118.60295
+       165.92606 1073.55624
+       -56.57000  310.18338 1043.95167
+ 
+          ----------------------------------------
+          eigenvalues & -vectors of inertia tensor
+          ----------------------------------------
+ 
+      1149.05072 1396.58374  690.47640
+
+ 
+         0.00000    0.00000    0.00000
+         0.00000    0.00000    0.00000
+         0.00000    0.00000    0.00000
+
+
+ wavenumbers calculated by scf theory tend to be
+ 1-10% too large and may be corrected by scaling
+ -----------------------------------------------
+ default value of scaling factor (BP/SVP):   0.9914
+ enter new value for corr, if you want to change
+ -----------------------------------------------
+
+1
+
+ enter the range of temperatures (K) and pressures (MPa)
+ at which you want to calculate partition sums and free enthalpies :
+
+ tstart=<real> tend=<real> numt=<integer> pstart=<real> pend=<real> nump=<integer>
+
+ default values are  :
+ tstart=298.15 tend=298.15 numt=1 pstart=0.1 pend=0.1 nump=1
+
+ or enter  q  or  *  to quit
+
+
+
+ 
+          ------------------
+           your wishes are :
+          ------------------
+
+  pstart=  0.1000      pend=  0.1000      nump=   1
+
+  tstart=   298.1      tend=   298.1      numt=   1
+ 
+           zero point vibrational energy
+           -----------------------------
+           zpe=   294.9     kJ/mol
+ 
+   T        p       ln(qtrans) ln(qrot) ln(qvib) chem.pot.   energy    entropy
+  (K)      (MPa)                                 (kJ/mol)   (kJ/mol) (kJ/mol/K)
+ 
+ 298.15   0.1000000      17.89    12.85     6.63    202.22    320.27   0.40426
+ 
+   T        P              Cv            Cp       enthalpy
+  (K)     (MPa)        (kJ/mol-K)    (kJ/mol-K)   (kJ/mol)
+ 298.15   0.1000000     0.1372206     0.1455349    322.75
+ 
+ ******************************************************
+ | qtrans=(m*k*T/(2*pi))^1.5*v h/(2*pi)=1a.u.(omitted)|
+ |   m=mol. mass in a.u. v=vol. per mol. of ideal gas |
+ | qvib=product(i) 1/(1-exp(-e(i)/kT)                 |
+ |   e(i)=frequency of i-th vibrational mode          |
+ | qrot=((2*pi*kT)^3*A*B*C)^0.5/(sigma*pi)            |
+ |   A,B,C=moments of inertia in a.u.                 |
+ | qrot=2*pi*kT*A/(sigma*pi) for lin. mol.            |
+ | chem.pot.=ZPE-RT*ln(qtrans*qrot*qvib)              |
+ |   ZPE=zero point vibrational energy                |
+ | energy=ZPE+3RT                                     |
+ |  +sum(i) e(i)*(1+exp(-e(i)/kT))/2*(1-exp(-e(i)/kT) |
+ |       =3/2RT for atoms etc.                        |
+ | enthalpy=energy+RT                                 |
+ | entropy=(energy+RT-chem.pot.)/T                    |
+ | const.vol.Heat Capacity : Cv=d(energy)/dT          |
+ | const.press.Heat Capacity : Cp=d(enthalpy)/dT      |
+ | These formulas are applicable only if              |
+ | * rotation can be treated classically              |
+ | * the molecule forms an ideal gas/solution         |
+ | * the harmonic approximation to vibrational        |
+ |   modes is not grossly misleading                  |
+ | Electronic (SCF or MP2) energies still have        |
+ | to be added to obtain "absolute potentials"        |
+ | for chemical equilibrium constants.                |
+ ******************************************************
+ 
+
+ enter the range of temperatures (K) and pressures (MPa)
+ at which you want to calculate partition sums and free enthalpies :
+
+ tstart=<real> tend=<real> numt=<integer> pstart=<real> pend=<real> nump=<integer>
+
+ default values are  :
+ tstart=298.15 tend=298.15 numt=1 pstart=0.1 pend=0.1 nump=1
+
+ or enter  q  or  *  to quit
+
+
+*
+
+
+    ------------------------------------------------------------------------
+         total  cpu-time :   0.05 seconds
+         total wall-time :  1 minutes and  2 seconds
+    ------------------------------------------------------------------------
+
+   ****  freeh : all done  ****
+
+
+    2018-10-29 13:21:29.631 
+
+ freeh ended normally 
+
+Script done on Maan 29. Okt 2018 13:21:29 CET

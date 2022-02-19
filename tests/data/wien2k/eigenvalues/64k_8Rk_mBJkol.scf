@@ -1,0 +1,3550 @@
+:LABEL3: using WIEN2k_14.2 (Release 15/10/2014) in /home/ondracka/WIEN2k_14.2
+
+
+            ---------
+:ITE150:150. ITERATION
+            ---------
+
+:NATO :   27 INDEPENDENT AND   48 TOTAL ATOMS IN UNITCELL
+       SUBSTANCE: blebleble                                                   
+
+       LATTICE                      = P   
+:POT  : POTENTIAL OPTION EX_LDA EC_LDA VX_MBJ VC_LDA
+:GRR28 : <grad rho/rho>, c, xca,xcb,xcp,v-mixing     2.0841    1.5301    0.4880    0.5000    1.0000    0.4000
+:LAT  : LATTICE CONSTANTS= 14.18759 14.23912 17.86220    1.571    1.571    1.571
+:VOL  : UNIT CELL VOLUME =    3608.50182
+       MODE OF CALCULATION IS       = RELA
+       NON-SPINPOLARIZED CALCULATION
+       Calculation includes Kinetic Energy Density
+:IFFT  : FFT-parameters:  120  120  144 Factor: 2.00
+       ATOMNUMBER=  1 Ge1        VCOUL-ZERO = -0.31084E+00
+:EFG001:                        EFG         =    -3.75274   *10**21  V / m**2
+                               V20  TOT/SRF=    -3.24448    -0.00527
+                               V22  TOT/SRF=    -0.35509    -0.01339
+                               V22M TOT/SRF=    -0.09030    -0.00223
+                               V21  TOT/SRF=    -0.17821    -0.00294
+                               V21M TOT/SRF=    -0.04034    -0.00166
+
+              1.51811   -0.09030   -0.17821        1.51310    0.00000    0.00000
+             -0.09030    2.22829   -0.04034        0.00000   -3.75274    0.00000
+             -0.17821   -0.04034   -3.74640        0.00000    0.00000    2.23964
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0339 -0.1244
+                                      0.1243  0.0073  1.0000
+                                     -0.0348  1.0000 -0.0030
+:ANG001:  ANGLE WITH OLD X-AXIS =         7.3
+
+:ETA001:                         ASYMM. ETA =     0.19360
+
+
+       ATOMNUMBER=  2 Ge2        VCOUL-ZERO = -0.32284E+00
+:EFG002:                        EFG         =    -1.40556   *10**21  V / m**2
+                               V20  TOT/SRF=    -1.21725    -0.03591
+                               V22  TOT/SRF=    -0.55415     0.00037
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              0.14863    0.00000    0.00000        0.14863    0.00000    0.00000
+              0.00000    1.25693    0.00000        0.00000    1.25693    0.00000
+              0.00000    0.00000   -1.40556        0.00000    0.00000   -1.40556
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG002:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA002:                         ASYMM. ETA =     0.78852
+
+
+       ATOMNUMBER=  3 Ge3        VCOUL-ZERO = -0.31156E+00
+:EFG003:                        EFG         =    -3.43023   *10**21  V / m**2
+                               V20  TOT/SRF=     1.78075     0.01407
+                               V22  TOT/SRF=    -2.33658     0.00300
+                               V22M TOT/SRF=    -0.55725    -0.02132
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -3.36470   -0.55725    0.00000       -3.43023    0.00000    0.00000
+             -0.55725    1.30847    0.00000        0.00000    1.37400    0.00000
+              0.00000    0.00000    2.05623        0.00000    0.00000    2.05623
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.1176  0.0000
+                                      0.1176  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG003:  ANGLE WITH OLD X-AXIS =         6.7
+
+:ETA003:                         ASYMM. ETA =     0.19889
+
+
+       ATOMNUMBER=  4 Ge4        VCOUL-ZERO = -0.31361E+00
+:EFG004:                        EFG         =    -3.43237   *10**21  V / m**2
+                               V20  TOT/SRF=     1.04340     0.02655
+                               V22  TOT/SRF=     2.82194     0.00882
+                               V22M TOT/SRF=     0.21295     0.00970
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              2.21953    0.21295    0.00000        2.22756    0.00000    0.00000
+              0.21295   -3.42435    0.00000        0.00000   -3.43237    0.00000
+              0.00000    0.00000    1.20482        0.00000    0.00000    1.20482
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.0377  0.0000
+                                      0.0377  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG004:  ANGLE WITH OLD X-AXIS =         2.2
+
+:ETA004:                         ASYMM. ETA =     0.29797
+
+
+       ATOMNUMBER=  5 Ge5        VCOUL-ZERO = -0.30996E+00
+:EFG005:                        EFG         =    -4.12843   *10**21  V / m**2
+                               V20  TOT/SRF=     2.11742     0.01443
+                               V22  TOT/SRF=    -2.90396     0.00140
+                               V22M TOT/SRF=    -0.10714    -0.00378
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -4.12646   -0.10714    0.00000       -4.12843    0.00000    0.00000
+             -0.10714    1.68147    0.00000        0.00000    1.68344    0.00000
+              0.00000    0.00000    2.44499        0.00000    0.00000    2.44499
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.0184  0.0000
+                                      0.0184  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG005:  ANGLE WITH OLD X-AXIS =         1.1
+
+:ETA005:                         ASYMM. ETA =     0.18446
+
+
+       ATOMNUMBER=  6 Ge6        VCOUL-ZERO = -0.31201E+00
+:EFG006:                        EFG         =    -2.36366   *10**21  V / m**2
+                               V20  TOT/SRF=    -2.04699    -0.01796
+                               V22  TOT/SRF=     0.59965     0.01790
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              1.78149    0.00000    0.00000        1.78149    0.00000    0.00000
+              0.00000    0.58218    0.00000        0.00000    0.58218    0.00000
+              0.00000    0.00000   -2.36366        0.00000    0.00000   -2.36366
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG006:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA006:                         ASYMM. ETA =     0.50739
+
+
+       ATOMNUMBER=  7 Ti1        VCOUL-ZERO = -0.23555E+00
+:EFG007:                        EFG         =    -1.21616   *10**21  V / m**2
+                               V20  TOT/SRF=    -1.05323    -0.03308
+                               V22  TOT/SRF=    -0.14562     0.00337
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              0.46246    0.00000    0.00000        0.46246    0.00000    0.00000
+              0.00000    0.75370    0.00000        0.00000    0.75370    0.00000
+              0.00000    0.00000   -1.21616        0.00000    0.00000   -1.21616
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG007:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA007:                         ASYMM. ETA =     0.23948
+
+
+       ATOMNUMBER=  8 Ti2        VCOUL-ZERO = -0.23030E+00
+:EFG008:                        EFG         =    -1.17101   *10**21  V / m**2
+                               V20  TOT/SRF=    -1.01413     0.00375
+                               V22  TOT/SRF=     0.33756     0.02331
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              0.92307    0.00000    0.00000        0.92307    0.00000    0.00000
+              0.00000    0.24794    0.00000        0.00000    0.24794    0.00000
+              0.00000    0.00000   -1.17101        0.00000    0.00000   -1.17101
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG008:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA008:                         ASYMM. ETA =     0.57654
+
+
+       ATOMNUMBER=  9 Ti3        VCOUL-ZERO = -0.23802E+00
+:EFG009:                        EFG         =    -0.74347   *10**21  V / m**2
+                               V20  TOT/SRF=     0.39302     0.01368
+                               V22  TOT/SRF=     0.21102     0.02515
+                               V22M TOT/SRF=    -0.47149    -0.02580
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -0.01589   -0.47149    0.00000        0.28965    0.00000    0.00000
+             -0.47149   -0.43793    0.00000        0.00000   -0.74347    0.00000
+              0.00000    0.00000    0.45382        0.00000    0.00000    0.45382
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.6480  0.0000
+                                     -0.6480  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG009:  ANGLE WITH OLD X-AXIS =        32.9
+
+:ETA009:                         ASYMM. ETA =     0.22082
+
+
+       ATOMNUMBER= 10 O 1        VCOUL-ZERO =  0.40699E+00
+:EFG010:                        EFG         =   -10.95586   *10**21  V / m**2
+                               V20  TOT/SRF=     3.57011     0.19644
+                               V22  TOT/SRF=    -8.89323    -1.20374
+                               V22M TOT/SRF=     0.03907     0.00526
+                               V21  TOT/SRF=     0.14247     0.01692
+                               V21M TOT/SRF=     0.12716     0.00937
+
+            -10.95444    0.03907    0.14247      -10.95586    0.00000    0.00000
+              0.03907    6.83203    0.12716        0.00000    4.11776    0.00000
+              0.14247    0.12716    4.12241        0.00000    0.00000    6.83810
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0093  0.0026
+                                     -0.0021 -0.0470  1.0000
+                                     -0.0094  1.0000  0.0470
+:ANG010:  ANGLE WITH OLD X-AXIS =         0.6
+
+:ETA010:                         ASYMM. ETA =     0.24830
+
+
+       ATOMNUMBER= 11 O 2        VCOUL-ZERO =  0.42434E+00
+:EFG011:                        EFG         =   -10.88165   *10**21  V / m**2
+                               V20  TOT/SRF=     3.68534     0.12205
+                               V22  TOT/SRF=    -8.75392    -1.15715
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+            -10.88165    0.00000    0.00000      -10.88165    0.00000    0.00000
+              0.00000    6.62618    0.00000        0.00000    6.62618    0.00000
+              0.00000    0.00000    4.25547        0.00000    0.00000    4.25547
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG011:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA011:                         ASYMM. ETA =     0.21786
+
+
+       ATOMNUMBER= 12 O 3        VCOUL-ZERO =  0.40009E+00
+:EFG012:                        EFG         =    -8.74247   *10**21  V / m**2
+                               V20  TOT/SRF=    -7.57120    -1.08022
+                               V22  TOT/SRF=    -0.77490    -0.38852
+                               V22M TOT/SRF=     2.51886     0.09900
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              3.59634    2.51886    0.00000        1.73587    0.00000    0.00000
+              2.51886    5.14613    0.00000        0.00000    7.00659    0.00000
+              0.00000    0.00000   -8.74247        0.00000    0.00000   -8.74247
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.7386  0.0000
+                                     -0.7386  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG012:  ANGLE WITH OLD X-AXIS =        36.5
+
+:ETA012:                         ASYMM. ETA =     0.60289
+
+
+       ATOMNUMBER= 13 O 4        VCOUL-ZERO =  0.41572E+00
+:EFG013:                        EFG         =   -10.96337   *10**21  V / m**2
+                               V20  TOT/SRF=     5.87606     0.92113
+                               V22  TOT/SRF=    -7.57011    -0.75795
+                               V22M TOT/SRF=    -0.10434    -0.00257
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+            -10.96265   -0.10434    0.00000      -10.96337    0.00000    0.00000
+             -0.10434    4.17756    0.00000        0.00000    4.17828    0.00000
+              0.00000    0.00000    6.78509        0.00000    0.00000    6.78509
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.0069  0.0000
+                                      0.0069  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG013:  ANGLE WITH OLD X-AXIS =         0.4
+
+:ETA013:                         ASYMM. ETA =     0.23777
+
+
+       ATOMNUMBER= 14 O 5        VCOUL-ZERO =  0.40911E+00
+:EFG014:                        EFG         =    -8.71593   *10**21  V / m**2
+                               V20  TOT/SRF=    -7.54821    -1.04194
+                               V22  TOT/SRF=     0.86853     0.35103
+                               V22M TOT/SRF=    -1.99992    -0.04984
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              5.22649   -1.99992    0.00000        6.53833    0.00000    0.00000
+             -1.99992    3.48943    0.00000        0.00000    2.17760    0.00000
+              0.00000    0.00000   -8.71593        0.00000    0.00000   -8.71593
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.6559  0.0000
+                                     -0.6559  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG014:  ANGLE WITH OLD X-AXIS =        33.3
+
+:ETA014:                         ASYMM. ETA =     0.50032
+
+
+       ATOMNUMBER= 15 O 6        VCOUL-ZERO =  0.40752E+00
+:EFG015:                        EFG         =   -10.94186   *10**21  V / m**2
+                               V20  TOT/SRF=     5.93407     0.95560
+                               V22  TOT/SRF=     7.50852     0.76305
+                               V22M TOT/SRF=     0.33127     0.02036
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              4.08248    0.33127    0.00000        4.08978    0.00000    0.00000
+              0.33127  -10.93455    0.00000        0.00000  -10.94186    0.00000
+              0.00000    0.00000    6.85208        0.00000    0.00000    6.85208
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.0220  0.0000
+                                      0.0220  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG015:  ANGLE WITH OLD X-AXIS =         1.3
+
+:ETA015:                         ASYMM. ETA =     0.25245
+
+
+       ATOMNUMBER= 16 O 7        VCOUL-ZERO =  0.41959E+00
+:EFG016:                        EFG         =   -10.90183   *10**21  V / m**2
+                               V20  TOT/SRF=     3.61561     0.08281
+                               V22  TOT/SRF=     8.81436     1.22225
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              6.72689    0.00000    0.00000        6.72689    0.00000    0.00000
+              0.00000  -10.90183    0.00000        0.00000  -10.90183    0.00000
+              0.00000    0.00000    4.17495        0.00000    0.00000    4.17495
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG016:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA016:                         ASYMM. ETA =     0.23408
+
+
+       ATOMNUMBER= 17 O 8        VCOUL-ZERO =  0.39740E+00
+:EFG017:                        EFG         =    -8.48923   *10**21  V / m**2
+                               V20  TOT/SRF=     2.85004     0.21199
+                               V22  TOT/SRF=     6.84346     1.12477
+                               V22M TOT/SRF=     0.06417     0.01120
+                               V21  TOT/SRF=    -1.43042     0.00523
+                               V21M TOT/SRF=    -0.00112     0.00115
+
+              5.19799    0.06417   -1.43042        5.96379    0.00000    0.00000
+              0.06417   -8.48893   -0.00112        0.00000    2.52544    0.00000
+             -1.43042   -0.00112    3.29094        0.00000    0.00000   -8.48923
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.5352 -0.0047
+                                      0.0045  0.0030  1.0000
+                                     -0.5352  1.0000 -0.0005
+:ANG017:  ANGLE WITH OLD X-AXIS =        28.2
+
+:ETA017:                         ASYMM. ETA =     0.40502
+
+
+       ATOMNUMBER= 18 O 9        VCOUL-ZERO =  0.43903E+00
+:EFG018:                        EFG         =    -7.70374   *10**21  V / m**2
+                               V20  TOT/SRF=     0.24036     0.01300
+                               V22  TOT/SRF=    -7.56496    -1.12881
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -7.70374    0.00000    0.00000       -7.70374    0.00000    0.00000
+              0.00000    7.42619    0.00000        0.00000    7.42619    0.00000
+              0.00000    0.00000    0.27755        0.00000    0.00000    0.27755
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG018:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA018:                         ASYMM. ETA =     0.92794
+
+
+       ATOMNUMBER= 19 O 10       VCOUL-ZERO =  0.39562E+00
+:EFG019:                        EFG         =    -8.46208   *10**21  V / m**2
+                               V20  TOT/SRF=    -7.32838    -1.08863
+                               V22  TOT/SRF=    -0.92879    -0.37114
+                               V22M TOT/SRF=    -1.34197     0.00408
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              3.30225   -1.34197    0.00000        2.59900    0.00000    0.00000
+             -1.34197    5.15983    0.00000        0.00000    5.86308    0.00000
+              0.00000    0.00000   -8.46208        0.00000    0.00000   -8.46208
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.5240  0.0000
+                                      0.5240  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG019:  ANGLE WITH OLD X-AXIS =        27.7
+
+:ETA019:                         ASYMM. ETA =     0.38573
+
+
+       ATOMNUMBER= 20 O 11       VCOUL-ZERO =  0.40654E+00
+:EFG020:                        EFG         =   -10.96877   *10**21  V / m**2
+                               V20  TOT/SRF=     5.92189     0.93324
+                               V22  TOT/SRF=     7.54932     0.78124
+                               V22M TOT/SRF=     0.08220     0.01088
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              4.13032    0.08220    0.00000        4.13077    0.00000    0.00000
+              0.08220  -10.96833    0.00000        0.00000  -10.96877    0.00000
+              0.00000    0.00000    6.83801        0.00000    0.00000    6.83801
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.0054  0.0000
+                                      0.0054  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG020:  ANGLE WITH OLD X-AXIS =         0.3
+
+:ETA020:                         ASYMM. ETA =     0.24681
+
+
+       ATOMNUMBER= 21 O 12       VCOUL-ZERO =  0.42972E+00
+:EFG021:                        EFG         =    -7.71620   *10**21  V / m**2
+                               V20  TOT/SRF=     0.48134    -0.03009
+                               V22  TOT/SRF=     7.43830     1.20966
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              7.16040    0.00000    0.00000        7.16040    0.00000    0.00000
+              0.00000   -7.71620    0.00000        0.00000   -7.71620    0.00000
+              0.00000    0.00000    0.55580        0.00000    0.00000    0.55580
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG021:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA021:                         ASYMM. ETA =     0.85594
+
+
+       ATOMNUMBER= 22 O 13       VCOUL-ZERO =  0.39394E+00
+:EFG022:                        EFG         =     4.20630   *10**21  V / m**2
+                               V20  TOT/SRF=    -0.87195     0.07044
+                               V22  TOT/SRF=    -3.70288    -1.06703
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -3.19946    0.00000    0.00000       -3.19946    0.00000    0.00000
+              0.00000    4.20630    0.00000        0.00000    4.20630    0.00000
+              0.00000    0.00000   -1.00685        0.00000    0.00000   -1.00685
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG022:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA022:                         ASYMM. ETA =     0.52127
+
+
+       ATOMNUMBER= 23 O 14       VCOUL-ZERO =  0.43083E+00
+:EFG023:                        EFG         =    -8.01781   *10**21  V / m**2
+                               V20  TOT/SRF=     6.41000     1.08526
+                               V22  TOT/SRF=    -4.31107    -0.56621
+                               V22M TOT/SRF=     0.22615     0.00714
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -8.01188    0.22615    0.00000       -8.01781    0.00000    0.00000
+              0.22615    0.61025    0.00000        0.00000    0.61618    0.00000
+              0.00000    0.00000    7.40163        0.00000    0.00000    7.40163
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0262  0.0000
+                                     -0.0262  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG023:  ANGLE WITH OLD X-AXIS =         1.5
+
+:ETA023:                         ASYMM. ETA =     0.84630
+
+
+       ATOMNUMBER= 24 O 15       VCOUL-ZERO =  0.42354E+00
+:EFG024:                        EFG         =     6.12370   *10**21  V / m**2
+                               V20  TOT/SRF=    -4.56711    -0.97158
+                               V22  TOT/SRF=     2.39175     0.59285
+                               V22M TOT/SRF=     2.53729     0.11315
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              5.02857    2.53729    0.00000        6.12370    0.00000    0.00000
+              2.53729    0.24507    0.00000        0.00000   -0.85006    0.00000
+              0.00000    0.00000   -5.27364        0.00000    0.00000   -5.27364
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.4316  0.0000
+                                      0.4316  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG024:  ANGLE WITH OLD X-AXIS =        23.3
+
+:ETA024:                         ASYMM. ETA =     0.72237
+
+
+       ATOMNUMBER= 25 O 16       VCOUL-ZERO =  0.43440E+00
+:EFG025:                        EFG         =     7.93179   *10**21  V / m**2
+                               V20  TOT/SRF=    -0.20562     0.00522
+                               V22  TOT/SRF=     7.81307     1.18229
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              7.93179    0.00000    0.00000        7.93179    0.00000    0.00000
+              0.00000   -7.69436    0.00000        0.00000   -7.69436    0.00000
+              0.00000    0.00000   -0.23743        0.00000    0.00000   -0.23743
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG025:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA025:                         ASYMM. ETA =     0.94013
+
+
+       ATOMNUMBER= 26 O 17       VCOUL-ZERO =  0.39832E+00
+:EFG026:                        EFG         =    -5.86239   *10**21  V / m**2
+                               V20  TOT/SRF=     2.31414     0.21536
+                               V22  TOT/SRF=    -4.52632    -1.04843
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -5.86239    0.00000    0.00000       -5.86239    0.00000    0.00000
+              0.00000    3.19026    0.00000        0.00000    3.19026    0.00000
+              0.00000    0.00000    2.67213        0.00000    0.00000    2.67213
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG026:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA026:                         ASYMM. ETA =     0.08838
+
+
+       ATOMNUMBER= 27 O 18       VCOUL-ZERO =  0.41345E+00
+:EFG027:                        EFG         =   -10.88531   *10**21  V / m**2
+                               V20  TOT/SRF=     3.47882     0.18041
+                               V22  TOT/SRF=     8.87681     1.19399
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              6.86831    0.00000    0.00000        6.86831    0.00000    0.00000
+              0.00000  -10.88531    0.00000        0.00000  -10.88531    0.00000
+              0.00000    0.00000    4.01699        0.00000    0.00000    4.01699
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG027:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA027:                         ASYMM. ETA =     0.26194
+
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF001:   1.ATOM    200.014460521   -128.224779454     20.387477341    152.146446291
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF002:   2.ATOM      3.307051339      0.000000000      0.000000000     -3.307051339
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF003:   3.ATOM    218.580747367   -176.624637626    128.768321039      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF004:   4.ATOM    238.611484240     32.142367511    236.436690515      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF005:   5.ATOM    185.218868803   -133.920643410    127.950344390      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF006:   6.ATOM    201.121559184      0.000000000      0.000000000   -201.121559184
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF007:   7.ATOM      0.990251245      0.000000000      0.000000000     -0.990251245
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF008:   8.ATOM     13.038714191      0.000000000      0.000000000     13.038714191
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF009:   9.ATOM     17.807470474     13.688294001     11.390198068      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF010:  10.ATOM    168.564451437      7.226614007     -3.293675246    168.377261058
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF011:  11.ATOM     81.703650619      0.000000000      0.000000000     81.703650619
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF012:  12.ATOM    232.996658227    183.287701762   -143.850829431      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF013:  13.ATOM    158.181059111      5.928899230    158.069907368      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF014:  14.ATOM    218.252807225   -129.590216280   -175.615101019      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF015:  15.ATOM    158.036028067   -158.002709938      3.244968299      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF016:  16.ATOM     58.676525548      0.000000000      0.000000000    -58.676525548
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF017:  17.ATOM    231.176622334   -121.839519775     -1.485535063   -196.457515306
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF018:  18.ATOM     27.347480676      0.000000000      0.000000000    -27.347480676
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF019:  19.ATOM    240.581283723    205.723555939    124.728395362      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF020:  20.ATOM    178.577038322   -178.527526152      4.204880722      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF021:  21.ATOM     42.183432250      0.000000000      0.000000000     42.183432250
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF022:  22.ATOM    161.885722992      0.000000000      0.000000000    161.885722992
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF023:  23.ATOM     51.956118074    -15.445944884    -49.607065948      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF024:  24.ATOM    161.254519092    147.658815970    -64.806589125      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF025:  25.ATOM      6.675499003      0.000000000      0.000000000     -6.675499003
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF026:  26.ATOM    204.230021712      0.000000000      0.000000000    204.230021712
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF027:  27.ATOM    158.075038577      0.000000000      0.000000000   -158.075038577
+
+:FIT001: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  1  0.1199839E-01
+:FIT001: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  1  0.1199839E-01
+:FIT002: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  2  0.1088359E-01
+:FIT002: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  2  0.1088359E-01
+:FIT003: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  3  0.1183143E-01
+:FIT003: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  3  0.1183143E-01
+:FIT004: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  4  0.1163751E-01
+:FIT004: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  4  0.1163751E-01
+:FIT005: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  5  0.1224104E-01
+:FIT005: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  5  0.1224104E-01
+:FIT006: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  6  0.1262917E-01
+:FIT006: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  6  0.1262917E-01
+:FIT007: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  7  0.1636740E-01
+:FIT007: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  7  0.1636740E-01
+:FIT008: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  8  0.1632545E-01
+:FIT008: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  8  0.1632545E-01
+:FIT009: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  9  0.1657886E-01
+:FIT009: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  9  0.1657886E-01
+:FIT010: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 10  0.3317810E-02
+:FIT010: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 10  0.3317810E-02
+:FIT011: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 11  0.3352939E-02
+:FIT011: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 11  0.3352939E-02
+:FIT012: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 12  0.2665814E-02
+:FIT012: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 12  0.2665814E-02
+:FIT013: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 13  0.3376256E-02
+:FIT013: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 13  0.3376256E-02
+:FIT014: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 14  0.2723738E-02
+:FIT014: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 14  0.2723738E-02
+:FIT015: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 15  0.3321707E-02
+:FIT015: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 15  0.3321707E-02
+:FIT016: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 16  0.3384990E-02
+:FIT016: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 16  0.3384990E-02
+:FIT017: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 17  0.2725955E-02
+:FIT017: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 17  0.2725955E-02
+:FIT018: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 18  0.2523782E-02
+:FIT018: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 18  0.2523782E-02
+:FIT019: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 19  0.2725749E-02
+:FIT019: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 19  0.2725749E-02
+:FIT020: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 20  0.3307395E-02
+:FIT020: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 20  0.3307395E-02
+:FIT021: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 21  0.2562271E-02
+:FIT021: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 21  0.2562271E-02
+:FIT022: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 22  0.8791623E-03
+:FIT022: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 22  0.8791623E-03
+:FIT023: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 23  0.2552422E-02
+:FIT023: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 23  0.2552422E-02
+:FIT024: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 24  0.1855009E-02
+:FIT024: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 24  0.1855009E-02
+:FIT025: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 25  0.2463268E-02
+:FIT025: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 25  0.2463268E-02
+:FIT026: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 26  0.2202110E-02
+:FIT026: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 26  0.2202110E-02
+:FIT027: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 27  0.3364991E-02
+:FIT027: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 27  0.3364991E-02
+:DEN  : DENSITY INTEGRAL  =        -26378.59813840   (Ry)
+       ELS_POTENTIAL_AT Z=0 and Z=0.5:  -0.51613  -0.50022
+       ELS_POTENTIAL_AT Y=0 and Y=0.5:  -0.66178  -0.65936
+:VZERO:v0,v0c,v0x  -1.27270  -0.51613  -0.75657 v5,v5c,v5x  -1.17881  -0.50022  -0.67859
+:VZERY:v0,v0c,v0x  -1.23900  -0.66178  -0.57722 v5,v5c,v5x  -1.23529  -0.65936  -0.57593
+:VZERX:v0,v0c,v0x  -1.23119  -0.65244  -0.57874 v5,v5c,v5x  -1.37209  -0.68983  -0.68225
+:NATO :   27 INDEPENDENT AND   48 TOTAL ATOMS IN UNITCELL
+       SUBSTANCE: blebleble                                                   
+
+       LATTICE                      = P   
+:POT  : POTENTIAL OPTION EX_GRR EC_NONE VX_GRR VC_NONE
+:LAT  : LATTICE CONSTANTS= 14.18759 14.23912 17.86220    1.571    1.571    1.571
+:VOL  : UNIT CELL VOLUME =    3608.50182
+       MODE OF CALCULATION IS       = RELA
+       NON-SPINPOLARIZED CALCULATION
+:IFFT  : FFT-parameters:  120  120  144 Factor: 2.00
+       ATOMNUMBER=  1 Ge1        VCOUL-ZERO = -0.31084E+00
+:EFG001:                        EFG         =    -3.75274   *10**21  V / m**2
+                               V20  TOT/SRF=    -3.24448    -0.00527
+                               V22  TOT/SRF=    -0.35509    -0.01339
+                               V22M TOT/SRF=    -0.09030    -0.00223
+                               V21  TOT/SRF=    -0.17821    -0.00294
+                               V21M TOT/SRF=    -0.04034    -0.00166
+
+              1.51811   -0.09030   -0.17821        1.51310    0.00000    0.00000
+             -0.09030    2.22829   -0.04034        0.00000   -3.75274    0.00000
+             -0.17821   -0.04034   -3.74640        0.00000    0.00000    2.23964
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0339 -0.1244
+                                      0.1243  0.0073  1.0000
+                                     -0.0348  1.0000 -0.0030
+:ANG001:  ANGLE WITH OLD X-AXIS =         7.3
+
+:ETA001:                         ASYMM. ETA =     0.19360
+
+
+       ATOMNUMBER=  2 Ge2        VCOUL-ZERO = -0.32284E+00
+:EFG002:                        EFG         =    -1.40556   *10**21  V / m**2
+                               V20  TOT/SRF=    -1.21725    -0.03591
+                               V22  TOT/SRF=    -0.55415     0.00037
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              0.14863    0.00000    0.00000        0.14863    0.00000    0.00000
+              0.00000    1.25693    0.00000        0.00000    1.25693    0.00000
+              0.00000    0.00000   -1.40556        0.00000    0.00000   -1.40556
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG002:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA002:                         ASYMM. ETA =     0.78852
+
+
+       ATOMNUMBER=  3 Ge3        VCOUL-ZERO = -0.31156E+00
+:EFG003:                        EFG         =    -3.43023   *10**21  V / m**2
+                               V20  TOT/SRF=     1.78075     0.01407
+                               V22  TOT/SRF=    -2.33658     0.00300
+                               V22M TOT/SRF=    -0.55725    -0.02132
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -3.36470   -0.55725    0.00000       -3.43023    0.00000    0.00000
+             -0.55725    1.30847    0.00000        0.00000    1.37400    0.00000
+              0.00000    0.00000    2.05623        0.00000    0.00000    2.05623
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.1176  0.0000
+                                      0.1176  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG003:  ANGLE WITH OLD X-AXIS =         6.7
+
+:ETA003:                         ASYMM. ETA =     0.19889
+
+
+       ATOMNUMBER=  4 Ge4        VCOUL-ZERO = -0.31361E+00
+:EFG004:                        EFG         =    -3.43237   *10**21  V / m**2
+                               V20  TOT/SRF=     1.04340     0.02655
+                               V22  TOT/SRF=     2.82194     0.00882
+                               V22M TOT/SRF=     0.21295     0.00970
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              2.21953    0.21295    0.00000        2.22756    0.00000    0.00000
+              0.21295   -3.42435    0.00000        0.00000   -3.43237    0.00000
+              0.00000    0.00000    1.20482        0.00000    0.00000    1.20482
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.0377  0.0000
+                                      0.0377  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG004:  ANGLE WITH OLD X-AXIS =         2.2
+
+:ETA004:                         ASYMM. ETA =     0.29797
+
+
+       ATOMNUMBER=  5 Ge5        VCOUL-ZERO = -0.30996E+00
+:EFG005:                        EFG         =    -4.12843   *10**21  V / m**2
+                               V20  TOT/SRF=     2.11742     0.01443
+                               V22  TOT/SRF=    -2.90396     0.00140
+                               V22M TOT/SRF=    -0.10714    -0.00378
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -4.12646   -0.10714    0.00000       -4.12843    0.00000    0.00000
+             -0.10714    1.68147    0.00000        0.00000    1.68344    0.00000
+              0.00000    0.00000    2.44499        0.00000    0.00000    2.44499
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.0184  0.0000
+                                      0.0184  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG005:  ANGLE WITH OLD X-AXIS =         1.1
+
+:ETA005:                         ASYMM. ETA =     0.18446
+
+
+       ATOMNUMBER=  6 Ge6        VCOUL-ZERO = -0.31201E+00
+:EFG006:                        EFG         =    -2.36366   *10**21  V / m**2
+                               V20  TOT/SRF=    -2.04699    -0.01796
+                               V22  TOT/SRF=     0.59965     0.01790
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              1.78149    0.00000    0.00000        1.78149    0.00000    0.00000
+              0.00000    0.58218    0.00000        0.00000    0.58218    0.00000
+              0.00000    0.00000   -2.36366        0.00000    0.00000   -2.36366
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG006:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA006:                         ASYMM. ETA =     0.50739
+
+
+       ATOMNUMBER=  7 Ti1        VCOUL-ZERO = -0.23555E+00
+:EFG007:                        EFG         =    -1.21616   *10**21  V / m**2
+                               V20  TOT/SRF=    -1.05323    -0.03308
+                               V22  TOT/SRF=    -0.14562     0.00337
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              0.46246    0.00000    0.00000        0.46246    0.00000    0.00000
+              0.00000    0.75370    0.00000        0.00000    0.75370    0.00000
+              0.00000    0.00000   -1.21616        0.00000    0.00000   -1.21616
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG007:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA007:                         ASYMM. ETA =     0.23948
+
+
+       ATOMNUMBER=  8 Ti2        VCOUL-ZERO = -0.23030E+00
+:EFG008:                        EFG         =    -1.17101   *10**21  V / m**2
+                               V20  TOT/SRF=    -1.01413     0.00375
+                               V22  TOT/SRF=     0.33756     0.02331
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              0.92307    0.00000    0.00000        0.92307    0.00000    0.00000
+              0.00000    0.24794    0.00000        0.00000    0.24794    0.00000
+              0.00000    0.00000   -1.17101        0.00000    0.00000   -1.17101
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG008:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA008:                         ASYMM. ETA =     0.57654
+
+
+       ATOMNUMBER=  9 Ti3        VCOUL-ZERO = -0.23802E+00
+:EFG009:                        EFG         =    -0.74347   *10**21  V / m**2
+                               V20  TOT/SRF=     0.39302     0.01368
+                               V22  TOT/SRF=     0.21102     0.02515
+                               V22M TOT/SRF=    -0.47149    -0.02580
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -0.01589   -0.47149    0.00000        0.28965    0.00000    0.00000
+             -0.47149   -0.43793    0.00000        0.00000   -0.74347    0.00000
+              0.00000    0.00000    0.45382        0.00000    0.00000    0.45382
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.6480  0.0000
+                                     -0.6480  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG009:  ANGLE WITH OLD X-AXIS =        32.9
+
+:ETA009:                         ASYMM. ETA =     0.22082
+
+
+       ATOMNUMBER= 10 O 1        VCOUL-ZERO =  0.40699E+00
+:EFG010:                        EFG         =   -10.95586   *10**21  V / m**2
+                               V20  TOT/SRF=     3.57011     0.19644
+                               V22  TOT/SRF=    -8.89323    -1.20374
+                               V22M TOT/SRF=     0.03907     0.00526
+                               V21  TOT/SRF=     0.14247     0.01692
+                               V21M TOT/SRF=     0.12716     0.00937
+
+            -10.95444    0.03907    0.14247      -10.95586    0.00000    0.00000
+              0.03907    6.83203    0.12716        0.00000    4.11776    0.00000
+              0.14247    0.12716    4.12241        0.00000    0.00000    6.83810
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0093  0.0026
+                                     -0.0021 -0.0470  1.0000
+                                     -0.0094  1.0000  0.0470
+:ANG010:  ANGLE WITH OLD X-AXIS =         0.6
+
+:ETA010:                         ASYMM. ETA =     0.24830
+
+
+       ATOMNUMBER= 11 O 2        VCOUL-ZERO =  0.42434E+00
+:EFG011:                        EFG         =   -10.88165   *10**21  V / m**2
+                               V20  TOT/SRF=     3.68534     0.12205
+                               V22  TOT/SRF=    -8.75392    -1.15715
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+            -10.88165    0.00000    0.00000      -10.88165    0.00000    0.00000
+              0.00000    6.62618    0.00000        0.00000    6.62618    0.00000
+              0.00000    0.00000    4.25547        0.00000    0.00000    4.25547
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG011:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA011:                         ASYMM. ETA =     0.21786
+
+
+       ATOMNUMBER= 12 O 3        VCOUL-ZERO =  0.40009E+00
+:EFG012:                        EFG         =    -8.74247   *10**21  V / m**2
+                               V20  TOT/SRF=    -7.57120    -1.08022
+                               V22  TOT/SRF=    -0.77490    -0.38852
+                               V22M TOT/SRF=     2.51886     0.09900
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              3.59634    2.51886    0.00000        1.73587    0.00000    0.00000
+              2.51886    5.14613    0.00000        0.00000    7.00659    0.00000
+              0.00000    0.00000   -8.74247        0.00000    0.00000   -8.74247
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.7386  0.0000
+                                     -0.7386  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG012:  ANGLE WITH OLD X-AXIS =        36.5
+
+:ETA012:                         ASYMM. ETA =     0.60289
+
+
+       ATOMNUMBER= 13 O 4        VCOUL-ZERO =  0.41572E+00
+:EFG013:                        EFG         =   -10.96337   *10**21  V / m**2
+                               V20  TOT/SRF=     5.87606     0.92113
+                               V22  TOT/SRF=    -7.57011    -0.75795
+                               V22M TOT/SRF=    -0.10434    -0.00257
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+            -10.96265   -0.10434    0.00000      -10.96337    0.00000    0.00000
+             -0.10434    4.17756    0.00000        0.00000    4.17828    0.00000
+              0.00000    0.00000    6.78509        0.00000    0.00000    6.78509
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.0069  0.0000
+                                      0.0069  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG013:  ANGLE WITH OLD X-AXIS =         0.4
+
+:ETA013:                         ASYMM. ETA =     0.23777
+
+
+       ATOMNUMBER= 14 O 5        VCOUL-ZERO =  0.40911E+00
+:EFG014:                        EFG         =    -8.71593   *10**21  V / m**2
+                               V20  TOT/SRF=    -7.54821    -1.04194
+                               V22  TOT/SRF=     0.86853     0.35103
+                               V22M TOT/SRF=    -1.99992    -0.04984
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              5.22649   -1.99992    0.00000        6.53833    0.00000    0.00000
+             -1.99992    3.48943    0.00000        0.00000    2.17760    0.00000
+              0.00000    0.00000   -8.71593        0.00000    0.00000   -8.71593
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.6559  0.0000
+                                     -0.6559  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG014:  ANGLE WITH OLD X-AXIS =        33.3
+
+:ETA014:                         ASYMM. ETA =     0.50032
+
+
+       ATOMNUMBER= 15 O 6        VCOUL-ZERO =  0.40752E+00
+:EFG015:                        EFG         =   -10.94186   *10**21  V / m**2
+                               V20  TOT/SRF=     5.93407     0.95560
+                               V22  TOT/SRF=     7.50852     0.76305
+                               V22M TOT/SRF=     0.33127     0.02036
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              4.08248    0.33127    0.00000        4.08978    0.00000    0.00000
+              0.33127  -10.93455    0.00000        0.00000  -10.94186    0.00000
+              0.00000    0.00000    6.85208        0.00000    0.00000    6.85208
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.0220  0.0000
+                                      0.0220  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG015:  ANGLE WITH OLD X-AXIS =         1.3
+
+:ETA015:                         ASYMM. ETA =     0.25245
+
+
+       ATOMNUMBER= 16 O 7        VCOUL-ZERO =  0.41959E+00
+:EFG016:                        EFG         =   -10.90183   *10**21  V / m**2
+                               V20  TOT/SRF=     3.61561     0.08281
+                               V22  TOT/SRF=     8.81436     1.22225
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              6.72689    0.00000    0.00000        6.72689    0.00000    0.00000
+              0.00000  -10.90183    0.00000        0.00000  -10.90183    0.00000
+              0.00000    0.00000    4.17495        0.00000    0.00000    4.17495
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG016:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA016:                         ASYMM. ETA =     0.23408
+
+
+       ATOMNUMBER= 17 O 8        VCOUL-ZERO =  0.39740E+00
+:EFG017:                        EFG         =    -8.48923   *10**21  V / m**2
+                               V20  TOT/SRF=     2.85004     0.21199
+                               V22  TOT/SRF=     6.84346     1.12477
+                               V22M TOT/SRF=     0.06417     0.01120
+                               V21  TOT/SRF=    -1.43042     0.00523
+                               V21M TOT/SRF=    -0.00112     0.00115
+
+              5.19799    0.06417   -1.43042        5.96379    0.00000    0.00000
+              0.06417   -8.48893   -0.00112        0.00000    2.52544    0.00000
+             -1.43042   -0.00112    3.29094        0.00000    0.00000   -8.48923
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.5352 -0.0047
+                                      0.0045  0.0030  1.0000
+                                     -0.5352  1.0000 -0.0005
+:ANG017:  ANGLE WITH OLD X-AXIS =        28.2
+
+:ETA017:                         ASYMM. ETA =     0.40502
+
+
+       ATOMNUMBER= 18 O 9        VCOUL-ZERO =  0.43903E+00
+:EFG018:                        EFG         =    -7.70374   *10**21  V / m**2
+                               V20  TOT/SRF=     0.24036     0.01300
+                               V22  TOT/SRF=    -7.56496    -1.12881
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -7.70374    0.00000    0.00000       -7.70374    0.00000    0.00000
+              0.00000    7.42619    0.00000        0.00000    7.42619    0.00000
+              0.00000    0.00000    0.27755        0.00000    0.00000    0.27755
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG018:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA018:                         ASYMM. ETA =     0.92794
+
+
+       ATOMNUMBER= 19 O 10       VCOUL-ZERO =  0.39562E+00
+:EFG019:                        EFG         =    -8.46208   *10**21  V / m**2
+                               V20  TOT/SRF=    -7.32838    -1.08863
+                               V22  TOT/SRF=    -0.92879    -0.37114
+                               V22M TOT/SRF=    -1.34197     0.00408
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              3.30225   -1.34197    0.00000        2.59900    0.00000    0.00000
+             -1.34197    5.15983    0.00000        0.00000    5.86308    0.00000
+              0.00000    0.00000   -8.46208        0.00000    0.00000   -8.46208
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.5240  0.0000
+                                      0.5240  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG019:  ANGLE WITH OLD X-AXIS =        27.7
+
+:ETA019:                         ASYMM. ETA =     0.38573
+
+
+       ATOMNUMBER= 20 O 11       VCOUL-ZERO =  0.40654E+00
+:EFG020:                        EFG         =   -10.96877   *10**21  V / m**2
+                               V20  TOT/SRF=     5.92189     0.93324
+                               V22  TOT/SRF=     7.54932     0.78124
+                               V22M TOT/SRF=     0.08220     0.01088
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              4.13032    0.08220    0.00000        4.13077    0.00000    0.00000
+              0.08220  -10.96833    0.00000        0.00000  -10.96877    0.00000
+              0.00000    0.00000    6.83801        0.00000    0.00000    6.83801
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.0054  0.0000
+                                      0.0054  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG020:  ANGLE WITH OLD X-AXIS =         0.3
+
+:ETA020:                         ASYMM. ETA =     0.24681
+
+
+       ATOMNUMBER= 21 O 12       VCOUL-ZERO =  0.42972E+00
+:EFG021:                        EFG         =    -7.71620   *10**21  V / m**2
+                               V20  TOT/SRF=     0.48134    -0.03009
+                               V22  TOT/SRF=     7.43830     1.20966
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              7.16040    0.00000    0.00000        7.16040    0.00000    0.00000
+              0.00000   -7.71620    0.00000        0.00000   -7.71620    0.00000
+              0.00000    0.00000    0.55580        0.00000    0.00000    0.55580
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG021:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA021:                         ASYMM. ETA =     0.85594
+
+
+       ATOMNUMBER= 22 O 13       VCOUL-ZERO =  0.39394E+00
+:EFG022:                        EFG         =     4.20630   *10**21  V / m**2
+                               V20  TOT/SRF=    -0.87195     0.07044
+                               V22  TOT/SRF=    -3.70288    -1.06703
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -3.19946    0.00000    0.00000       -3.19946    0.00000    0.00000
+              0.00000    4.20630    0.00000        0.00000    4.20630    0.00000
+              0.00000    0.00000   -1.00685        0.00000    0.00000   -1.00685
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG022:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA022:                         ASYMM. ETA =     0.52127
+
+
+       ATOMNUMBER= 23 O 14       VCOUL-ZERO =  0.43083E+00
+:EFG023:                        EFG         =    -8.01781   *10**21  V / m**2
+                               V20  TOT/SRF=     6.41000     1.08526
+                               V22  TOT/SRF=    -4.31107    -0.56621
+                               V22M TOT/SRF=     0.22615     0.00714
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -8.01188    0.22615    0.00000       -8.01781    0.00000    0.00000
+              0.22615    0.61025    0.00000        0.00000    0.61618    0.00000
+              0.00000    0.00000    7.40163        0.00000    0.00000    7.40163
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0262  0.0000
+                                     -0.0262  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG023:  ANGLE WITH OLD X-AXIS =         1.5
+
+:ETA023:                         ASYMM. ETA =     0.84630
+
+
+       ATOMNUMBER= 24 O 15       VCOUL-ZERO =  0.42354E+00
+:EFG024:                        EFG         =     6.12370   *10**21  V / m**2
+                               V20  TOT/SRF=    -4.56711    -0.97158
+                               V22  TOT/SRF=     2.39175     0.59285
+                               V22M TOT/SRF=     2.53729     0.11315
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              5.02857    2.53729    0.00000        6.12370    0.00000    0.00000
+              2.53729    0.24507    0.00000        0.00000   -0.85006    0.00000
+              0.00000    0.00000   -5.27364        0.00000    0.00000   -5.27364
+
+         MAIN DIRECTIONS OF THE EFG   1.0000 -0.4316  0.0000
+                                      0.4316  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG024:  ANGLE WITH OLD X-AXIS =        23.3
+
+:ETA024:                         ASYMM. ETA =     0.72237
+
+
+       ATOMNUMBER= 25 O 16       VCOUL-ZERO =  0.43440E+00
+:EFG025:                        EFG         =     7.93179   *10**21  V / m**2
+                               V20  TOT/SRF=    -0.20562     0.00522
+                               V22  TOT/SRF=     7.81307     1.18229
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              7.93179    0.00000    0.00000        7.93179    0.00000    0.00000
+              0.00000   -7.69436    0.00000        0.00000   -7.69436    0.00000
+              0.00000    0.00000   -0.23743        0.00000    0.00000   -0.23743
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG025:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA025:                         ASYMM. ETA =     0.94013
+
+
+       ATOMNUMBER= 26 O 17       VCOUL-ZERO =  0.39832E+00
+:EFG026:                        EFG         =    -5.86239   *10**21  V / m**2
+                               V20  TOT/SRF=     2.31414     0.21536
+                               V22  TOT/SRF=    -4.52632    -1.04843
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+             -5.86239    0.00000    0.00000       -5.86239    0.00000    0.00000
+              0.00000    3.19026    0.00000        0.00000    3.19026    0.00000
+              0.00000    0.00000    2.67213        0.00000    0.00000    2.67213
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG026:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA026:                         ASYMM. ETA =     0.08838
+
+
+       ATOMNUMBER= 27 O 18       VCOUL-ZERO =  0.41345E+00
+:EFG027:                        EFG         =   -10.88531   *10**21  V / m**2
+                               V20  TOT/SRF=     3.47882     0.18041
+                               V22  TOT/SRF=     8.87681     1.19399
+                               V22M TOT/SRF=     0.00000     0.00000
+                               V21  TOT/SRF=     0.00000     0.00000
+                               V21M TOT/SRF=     0.00000     0.00000
+
+              6.86831    0.00000    0.00000        6.86831    0.00000    0.00000
+              0.00000  -10.88531    0.00000        0.00000  -10.88531    0.00000
+              0.00000    0.00000    4.01699        0.00000    0.00000    4.01699
+
+         MAIN DIRECTIONS OF THE EFG   1.0000  0.0000  0.0000
+                                      0.0000  1.0000  0.0000
+                                      0.0000  0.0000  1.0000
+:ANG027:  ANGLE WITH OLD X-AXIS =         0.0
+
+:ETA027:                         ASYMM. ETA =     0.26194
+
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF001:   1.ATOM    200.014460521   -128.224779454     20.387477341    152.146446291
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF002:   2.ATOM      3.307051339      0.000000000      0.000000000     -3.307051339
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF003:   3.ATOM    218.580747367   -176.624637626    128.768321039      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF004:   4.ATOM    238.611484240     32.142367511    236.436690515      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF005:   5.ATOM    185.218868803   -133.920643410    127.950344390      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF006:   6.ATOM    201.121559184      0.000000000      0.000000000   -201.121559184
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF007:   7.ATOM      0.990251245      0.000000000      0.000000000     -0.990251245
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF008:   8.ATOM     13.038714191      0.000000000      0.000000000     13.038714191
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF009:   9.ATOM     17.807470474     13.688294001     11.390198068      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF010:  10.ATOM    168.564451437      7.226614007     -3.293675246    168.377261058
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF011:  11.ATOM     81.703650619      0.000000000      0.000000000     81.703650619
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF012:  12.ATOM    232.996658227    183.287701762   -143.850829431      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF013:  13.ATOM    158.181059111      5.928899230    158.069907368      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF014:  14.ATOM    218.252807225   -129.590216280   -175.615101019      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF015:  15.ATOM    158.036028067   -158.002709938      3.244968299      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF016:  16.ATOM     58.676525548      0.000000000      0.000000000    -58.676525548
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF017:  17.ATOM    231.176622334   -121.839519775     -1.485535063   -196.457515306
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF018:  18.ATOM     27.347480676      0.000000000      0.000000000    -27.347480676
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF019:  19.ATOM    240.581283723    205.723555939    124.728395362      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF020:  20.ATOM    178.577038322   -178.527526152      4.204880722      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF021:  21.ATOM     42.183432250      0.000000000      0.000000000     42.183432250
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF022:  22.ATOM    161.885722992      0.000000000      0.000000000    161.885722992
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF023:  23.ATOM     51.956118074    -15.445944884    -49.607065948      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF024:  24.ATOM    161.254519092    147.658815970    -64.806589125      0.000000000
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF025:  25.ATOM      6.675499003      0.000000000      0.000000000     -6.675499003
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF026:  26.ATOM    204.230021712      0.000000000      0.000000000    204.230021712
+
+     HELLMANN-FEYNMAN-FORCE IN mRy/a.u. = |F|  Fx       Fy             Fz
+:FHF027:  27.ATOM    158.075038577      0.000000000      0.000000000   -158.075038577
+
+:FIT001: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  1  0.1442893E+00
+:FIT001: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  1  0.1442893E+00
+:FIT002: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  2  0.1510806E+00
+:FIT002: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  2  0.1510806E+00
+:FIT003: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  3  0.1448265E+00
+:FIT003: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  3  0.1448265E+00
+:FIT004: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  4  0.1449983E+00
+:FIT004: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  4  0.1449983E+00
+:FIT005: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  5  0.1439457E+00
+:FIT005: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  5  0.1439457E+00
+:FIT006: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  6  0.1468369E+00
+:FIT006: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  6  0.1468369E+00
+:FIT007: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  7  0.2299435E+00
+:FIT007: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  7  0.2299435E+00
+:FIT008: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  8  0.2195552E+00
+:FIT008: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  8  0.2195552E+00
+:FIT009: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  9  0.2376530E+00
+:FIT009: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM  9  0.2376530E+00
+:FIT010: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 10  0.7694936E-02
+:FIT010: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 10  0.7694936E-02
+:FIT011: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 11  0.7310355E-02
+:FIT011: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 11  0.7310355E-02
+:FIT012: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 12  0.1125485E-01
+:FIT012: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 12  0.1125485E-01
+:FIT013: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 13  0.7552420E-02
+:FIT013: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 13  0.7552420E-02
+:FIT014: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 14  0.1084224E-01
+:FIT014: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 14  0.1084224E-01
+:FIT015: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 15  0.7687987E-02
+:FIT015: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 15  0.7687987E-02
+:FIT016: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 16  0.7388160E-02
+:FIT016: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 16  0.7388160E-02
+:FIT017: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 17  0.1145498E-01
+:FIT017: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 17  0.1145498E-01
+:FIT018: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 18  0.9494563E-02
+:FIT018: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 18  0.9494563E-02
+:FIT019: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 19  0.1138975E-01
+:FIT019: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 19  0.1138975E-01
+:FIT020: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 20  0.7698568E-02
+:FIT020: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 20  0.7698568E-02
+:FIT021: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 21  0.9334481E-02
+:FIT021: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 21  0.9334481E-02
+:FIT022: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 22  0.1707612E-01
+:FIT022: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 22  0.1707612E-01
+:FIT023: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 23  0.8932598E-02
+:FIT023: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 23  0.8932598E-02
+:FIT024: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 24  0.1206434E-01
+:FIT024: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 24  0.1206434E-01
+:FIT025: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 25  0.1044374E-01
+:FIT025: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 25  0.1044374E-01
+:FIT026: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 26  0.1586322E-01
+:FIT026: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 26  0.1586322E-01
+:FIT027: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 27  0.7558771E-02
+:FIT027: LUSE= 13 SIGMA OF V-XC FIT FOR ATOM 27  0.7558771E-02
+:GRR  : <AVERAGE GRAD RHO / RHO>  =             2.08412224
+       ELS_POTENTIAL_AT Z=0 and Z=0.5:  -0.51613  -0.50022
+       ELS_POTENTIAL_AT Y=0 and Y=0.5:  -0.66178  -0.65936
+:VZERO:v0,v0c,v0x   1.24445  -0.51613   1.76058 v5,v5c,v5x   1.14432  -0.50022   1.64454
+:VZERY:v0,v0c,v0x   0.90562  -0.66178   1.56739 v5,v5c,v5x   0.90780  -0.65936   1.56716
+:VZERX:v0,v0c,v0x   0.91783  -0.65244   1.57027 v5,v5c,v5x   0.94290  -0.68983   1.63273
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  Ge1       
+:e__0001: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E2_0001: E( 2)=   -1.3854   E(BOTTOM)=   -1.558   E(TOP)=   -1.213  0  1   144
+             APW+lo
+:E2_0001: E( 2)=    0.5666
+             LOCAL ORBITAL
+:E0_0001: E( 0)=    0.1666
+             APW+lo
+:E1_0001: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  Ge2       
+:e__0002: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E2_0002: E( 2)=   -1.4026   E(BOTTOM)=   -1.575   E(TOP)=   -1.230  0  1   142
+             APW+lo
+:E2_0002: E( 2)=    0.5666
+             LOCAL ORBITAL
+:E0_0002: E( 0)=    0.1666
+             APW+lo
+:E1_0002: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  Ge3       
+:e__0003: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E2_0003: E( 2)=   -1.3869   E(BOTTOM)=   -1.559   E(TOP)=   -1.214  0  1   143
+             APW+lo
+:E2_0003: E( 2)=    0.5666
+             LOCAL ORBITAL
+:E0_0003: E( 0)=    0.1666
+             APW+lo
+:E1_0003: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  Ge4       
+:e__0004: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E2_0004: E( 2)=   -1.3893   E(BOTTOM)=   -1.562   E(TOP)=   -1.217  0  1   143
+             APW+lo
+:E2_0004: E( 2)=    0.5666
+             LOCAL ORBITAL
+:E0_0004: E( 0)=    0.1666
+             APW+lo
+:E1_0004: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  Ge5       
+:e__0005: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E2_0005: E( 2)=   -1.3837   E(BOTTOM)=   -1.556   E(TOP)=   -1.211  0  1   143
+             APW+lo
+:E2_0005: E( 2)=    0.5666
+             LOCAL ORBITAL
+:E0_0005: E( 0)=    0.1666
+             APW+lo
+:E1_0005: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  Ge6       
+:e__0006: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E2_0006: E( 2)=   -1.3842   E(BOTTOM)=   -1.557   E(TOP)=   -1.211  0  1   144
+             APW+lo
+:E2_0006: E( 2)=    0.5666
+             LOCAL ORBITAL
+:E0_0006: E( 0)=    0.1666
+             APW+lo
+:E1_0006: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  Ti1       
+:e__0007: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0007: E( 0)=    0.1666
+             APW+lo
+:E0_0007: E( 0)=   -3.9910   E(BOTTOM)=   -4.364   E(TOP)=   -3.618  2  3   138
+             LOCAL ORBITAL
+:E1_0007: E( 1)=   -2.1526   E(BOTTOM)=   -2.688   E(TOP)=   -1.617  1  2   153
+             APW+lo
+:E1_0007: E( 1)=    0.5666
+             LOCAL ORBITAL
+:E2_0007: E( 2)=    0.1666   E(BOTTOM)=   -0.119   E(TOP)= -200.000  0 -1   110
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  Ti2       
+:e__0008: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0008: E( 0)=    0.1666
+             APW+lo
+:E0_0008: E( 0)=   -3.9830   E(BOTTOM)=   -4.356   E(TOP)=   -3.609  2  3   142
+             LOCAL ORBITAL
+:E1_0008: E( 1)=   -2.1446   E(BOTTOM)=   -2.680   E(TOP)=   -1.609  1  2   157
+             APW+lo
+:E1_0008: E( 1)=    0.5666
+             LOCAL ORBITAL
+:E2_0008: E( 2)=    0.1666   E(BOTTOM)=   -0.112   E(TOP)= -200.000  0 -1   106
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  Ti3       
+:e__0009: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0009: E( 0)=    0.1666
+             APW+lo
+:E0_0009: E( 0)=   -3.9912   E(BOTTOM)=   -4.365   E(TOP)=   -3.618  2  3   140
+             LOCAL ORBITAL
+:E1_0009: E( 1)=   -2.1530   E(BOTTOM)=   -2.689   E(TOP)=   -1.617  1  2   149
+             APW+lo
+:E1_0009: E( 1)=    0.5666
+             LOCAL ORBITAL
+:E2_0009: E( 2)=    0.1666   E(BOTTOM)=   -0.121   E(TOP)= -200.000  0 -1   106
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 1       
+:e__0010: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0010: E( 0)=   -0.9458   E(BOTTOM)=   -2.103   E(TOP)=    0.212  1  2   212
+             APW+lo
+:E0_0010: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0010: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 2       
+:e__0011: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0011: E( 0)=   -0.9369   E(BOTTOM)=   -2.092   E(TOP)=    0.219  1  2   216
+             APW+lo
+:E0_0011: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0011: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 3       
+:e__0012: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0012: E( 0)=   -0.9530   E(BOTTOM)=   -2.109   E(TOP)=    0.203  1  2   220
+             APW+lo
+:E0_0012: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0012: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 4       
+:e__0013: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0013: E( 0)=   -0.9396   E(BOTTOM)=   -2.096   E(TOP)=    0.217  1  2   217
+             APW+lo
+:E0_0013: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0013: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 5       
+:e__0014: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0014: E( 0)=   -0.9487   E(BOTTOM)=   -2.103   E(TOP)=    0.206  1  2   217
+             APW+lo
+:E0_0014: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0014: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 6       
+:e__0015: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0015: E( 0)=   -0.9454   E(BOTTOM)=   -2.103   E(TOP)=    0.212  1  2   215
+             APW+lo
+:E0_0015: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0015: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 7       
+:e__0016: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0016: E( 0)=   -0.9368   E(BOTTOM)=   -2.093   E(TOP)=    0.220  1  2   216
+             APW+lo
+:E0_0016: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0016: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 8       
+:e__0017: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0017: E( 0)=   -0.9549   E(BOTTOM)=   -2.111   E(TOP)=    0.201  1  2   215
+             APW+lo
+:E0_0017: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0017: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 9       
+:e__0018: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0018: E( 0)=   -0.9241   E(BOTTOM)=   -2.078   E(TOP)=    0.230  1  2   217
+             APW+lo
+:E0_0018: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0018: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 10      
+:e__0019: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0019: E( 0)=   -0.9552   E(BOTTOM)=   -2.111   E(TOP)=    0.201  1  2   216
+             APW+lo
+:E0_0019: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0019: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 11      
+:e__0020: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0020: E( 0)=   -0.9459   E(BOTTOM)=   -2.104   E(TOP)=    0.212  1  2   211
+             APW+lo
+:E0_0020: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0020: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 12      
+:e__0021: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0021: E( 0)=   -0.9267   E(BOTTOM)=   -2.082   E(TOP)=    0.229  1  2   218
+             APW+lo
+:E0_0021: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0021: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 13      
+:e__0022: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0022: E( 0)=   -0.9579   E(BOTTOM)=   -2.110   E(TOP)=    0.194  1  2   221
+             APW+lo
+:E0_0022: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0022: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 14      
+:e__0023: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0023: E( 0)=   -0.9266   E(BOTTOM)=   -2.082   E(TOP)=    0.229  1  2   216
+             APW+lo
+:E0_0023: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0023: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 15      
+:e__0024: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0024: E( 0)=   -0.9327   E(BOTTOM)=   -2.086   E(TOP)=    0.221  1  2   212
+             APW+lo
+:E0_0024: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0024: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 16      
+:e__0025: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0025: E( 0)=   -0.9244   E(BOTTOM)=   -2.079   E(TOP)=    0.231  1  2   216
+             APW+lo
+:E0_0025: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0025: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 17      
+:e__0026: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0026: E( 0)=   -0.9519   E(BOTTOM)=   -2.106   E(TOP)=    0.202  1  2   214
+             APW+lo
+:E0_0026: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0026: E( 1)=    0.1666
+             APW+lo
+
+          ATOMIC SPHERE DEPENDENT PARAMETERS FOR ATOM  O 18      
+:e__0027: OVERALL ENERGY PARAMETER IS    0.1666
+          OVERALL BASIS SET ON ATOM IS LAPW
+:E0_0027: E( 0)=   -0.9407   E(BOTTOM)=   -2.098   E(TOP)=    0.217  1  2   214
+             APW+lo
+:E0_0027: E( 0)=    0.5666
+             LOCAL ORBITAL
+:E1_0027: E( 1)=    0.1666
+             APW+lo
+
+        MPI-parallel calculation using     4 processors
+        Scalapack processors array (row,col):   2   2
+:seclit_par:  estimate of singular value, factor:   0.1587E-02  0.1000E-14
+
+       K=   0.12500   0.12500   0.16667            1
+:RKM  : MATRIX SIZE  6849LOs: 380  RKM= 8.00  WEIGHT= 8.00  PGR:    
+       EIGENVALUES ARE:
+:EIG00001:      -3.9256924   -3.9253748   -3.9252288   -3.9176228   -2.1015049
+:EIG00006:      -2.0955199   -2.0936497   -2.0934585   -2.0934320   -2.0931886
+:EIG00011:      -2.0924033   -2.0916235   -2.0908869   -2.0861922   -2.0838987
+:EIG00016:      -2.0814571   -1.3877091   -1.3854548   -1.3825535   -1.3816326
+:EIG00021:      -1.3801024   -1.3791152   -1.3754612   -1.3750885   -1.3724773
+:EIG00026:      -1.3718274   -1.3714299   -1.3705019   -1.3696522   -1.3694351
+:EIG00031:      -1.3683556   -1.3668525   -1.3658492   -1.3648625   -1.3648132
+:EIG00036:      -1.3639785   -1.3625482   -1.3621077   -1.3618744   -1.3609537
+:EIG00041:      -1.3604481   -1.3599962   -1.3587426   -1.3528637   -1.3528529
+:EIG00046:      -1.3526496   -1.3517328   -1.3514653   -1.3513421   -1.3509622
+ 
+:EIG00051:      -1.3509040   -1.3504925   -1.3493226   -1.3491414   -1.3488530
+:EIG00056:      -1.3487834   -1.3487337   -1.3486787   -1.3483353   -1.3482494
+:EIG00061:      -1.3480609   -1.3477491   -1.3476845   -1.3473060   -1.3471927
+:EIG00066:      -1.3471776   -1.3470228   -1.3466349   -1.3465942   -1.3465195
+:EIG00071:      -1.3461289   -1.3456333   -1.3452716   -1.3446178   -1.3445045
+:EIG00076:      -1.3441494   -1.1317582   -1.0952877   -1.0851398   -1.0800199
+:EIG00081:      -1.0721189   -1.0637292   -1.0382155   -1.0302783   -1.0247869
+:EIG00086:      -1.0177849   -1.0127288   -1.0113015   -1.0094169   -1.0056087
+:EIG00091:      -1.0028991   -1.0012417   -0.9971569   -0.9866249   -0.9833923
+:EIG00096:      -0.9829387   -0.9770780   -0.9726629   -0.9659315   -0.9631875
+ 
+:EIG00101:      -0.9372811   -0.9311151   -0.9255294   -0.9219465   -0.9195325
+:EIG00106:      -0.9161398   -0.9129617   -0.9096228   -0.2266985   -0.2029514
+:EIG00111:      -0.1765241   -0.1582104   -0.1424545   -0.1288020   -0.1042981
+:EIG00116:      -0.0891047   -0.0810579   -0.0656291   -0.0528859   -0.0359948
+:EIG00121:      -0.0250667   -0.0204088   -0.0090865   -0.0037907   -0.0016350
+:EIG00126:       0.0321971    0.0425060    0.0456227    0.0533119    0.0554114
+:EIG00131:       0.0628506    0.0651829    0.0724026    0.0810343    0.0858956
+:EIG00136:       0.0921355    0.1022748    0.1056621    0.1162766    0.1178552
+:EIG00141:       0.1286409    0.1341441    0.1452998    0.1485959    0.1538228
+:EIG00146:       0.1569403    0.1614395    0.1637132    0.1692581    0.1706485
+ 
+:EIG00151:       0.1754896    0.1777067    0.1811746    0.1898953    0.1944560
+:EIG00156:       0.2019843    0.2059260    0.2113520    0.2194321    0.2243041
+:EIG00161:       0.2278476    0.2391265    0.2460006    0.2480934    0.2503571
+:EIG00166:       0.2518054    0.2540926    0.2561986    0.2608615    0.2634382
+:EIG00171:       0.2649766    0.2683885    0.2704465    0.2754163    0.2768463
+:EIG00176:       0.2830431    0.2844257    0.2869161    0.2879317    0.2891737
+:EIG00181:       0.2911621    0.2919682    0.2954968    0.2972361    0.2990051
+:EIG00186:       0.3014101    0.3064265    0.3106530    0.3122596    0.3148394
+:EIG00191:       0.3177208    0.3197446    0.3223905    0.3251496    0.3261713
+:EIG00196:       0.3311513    0.3317676    0.3382439    0.3415466    0.3441225
+ 
+:EIG00201:       0.3461085    0.3531848    0.3615593    0.3666447    0.6529332
+:EIG00206:       0.6634658    0.6693153    0.6736556    0.6796898    0.6803221
+:EIG00211:       0.6839889    0.6911792    0.6941245    0.7052252    0.7081773
+:EIG00216:       0.7226476    0.7265809    0.7555969    0.7713093    0.7807764
+:EIG00221:       0.7868901    0.7939171    0.8065940    0.8209537    0.8524085
+:EIG00226:       0.8718724    0.9067301    0.9261597    0.9436548    0.9519253
+:EIG00231:       0.9786958    0.9969103    1.0220448    1.0387279    1.0884257
+:EIG00236:       1.0900637    1.1702431    1.1882989    1.2005955    1.2114314
+:EIG00241:       1.2207429    1.2254023    1.2290462    1.2475111    1.2621154
+:EIG00246:       1.2703891    1.2797875    1.2829704    1.2884351    1.2900474
+ 
+:EIG00251:       1.3023509    1.3072564    1.3212165    1.3369257    1.3624960
+:EIG00256:       1.3740929    1.3843803    1.3892987    1.3924221    1.4012035
+:EIG00261:       1.4040794    1.4161532    1.4264864    1.4535042    1.4569402
+:EIG00266:       1.4587419    1.4649946    1.4699585    1.4753732    1.4871260
+:EIG00271:       1.4886275    1.4948138    1.4964462    1.5060293    1.5151648
+:EIG00276:       1.5282194    1.5378057    1.5463461    1.5578221    1.5763045
+:EIG00281:       1.5850047    1.5877244    1.5975330    1.6100172    1.6111498
+:EIG00286:       1.6189886    1.6237874    1.6301444    1.6362138    1.6395319
+:EIG00291:       1.6441250    1.6457471    1.6493269    1.6516313    1.6565508
+:EIG00296:       1.6599124    1.6637950    1.6714872    1.6785554    1.6936150
+ 
+:EIG00301:       1.7015076    1.7082252    1.7143941    1.7305339    1.7495200
+:EIG00306:       1.7673062    1.7747634    1.7865343    1.7982427    1.8014608
+:EIG00311:       1.8117234    1.8177751    1.8217833    1.8375982    1.8560307
+       ********************************************************
+
+:seclit_par:  estimate of singular value, factor:   0.1587E-02  0.1000E-14
+:KPT   :      NUMBER OF K-POINTS:     8
+       Insulator, EF-inconsistency corrected
+:GAP  :    0.2863 Ry =     3.894 eV   (provided you have a proper k-mesh)
+         Bandranges (emin - emax) and occupancy:
+:BAN00194: 194    0.325059    0.330334  2.00000000
+:BAN00195: 195    0.326171    0.332145  2.00000000
+:BAN00196: 196    0.330713    0.336955  2.00000000
+:BAN00197: 197    0.331768    0.341529  2.00000000
+:BAN00198: 198    0.337308    0.342362  2.00000000
+:BAN00199: 199    0.338328    0.345218  2.00000000
+:BAN00200: 200    0.340257    0.347898  2.00000000
+:BAN00201: 201    0.343416    0.351199  2.00000000
+:BAN00202: 202    0.346601    0.353185  2.00000000
+:BAN00203: 203    0.351415    0.361559  2.00000000
+:BAN00204: 204    0.358131    0.366645  2.00000000
+:BAN00205: 205    0.652933    0.656993  0.00000000
+:BAN00206: 206    0.660276    0.663466  0.00000000
+:BAN00207: 207    0.665705    0.669336  0.00000000
+:BAN00208: 208    0.668220    0.673656  0.00000000
+:BAN00209: 209    0.673599    0.679749  0.00000000
+        Energy to separate low and high energystates:   -0.27670
+
+
+:NOE  : NUMBER OF ELECTRONS          = 408.000
+
+:FER  : F E R M I - ENERGY(TETRAH.M.)=   0.3666447308
+:GMA  : POTENTIAL AND CHARGE CUT-OFF  12.00 Ry**.5
+ 
+ 
+ 
+ 
+:POS001: ATOM   -1 X,Y,Z = 0.74837 0.75033 0.50074  MULT= 4  ZZ= 32.000  Ge1
+ 
+       LMMAX 49
+ 
+ 
+:CHA001: TOTAL VALENCE CHARGE INSIDE SPHERE   1 =  10.8586    (RMT=  1.8700 )
+:PCS001: PARTIAL CHARGES SPHERE =  1 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL001: 0.4201 0.4038 9.9928 0.0332 0.1291 0.1272 0.1476 2.0233 2.0169 1.9836 1.9852 1.9840
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL001:  0.0580 -1.0742    0.0526 -1.0130    9.8520 -1.3491    0.0052 -1.0007
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH001:  0.3621 -0.0963    0.3511  0.0873    0.1408  0.1934    0.0280  0.1995
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ001:             1.55565    -0.08976     2.24722    -3.80287       1.870
+ 
+ 
+ 
+ 
+:POS002: ATOM   -2 X,Y,Z = 0.00000 0.00000 0.00000  MULT= 1  ZZ= 32.000  Ge2
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA002: TOTAL VALENCE CHARGE INSIDE SPHERE   2 =  10.8384    (RMT=  1.8700 )
+:PCS002: PARTIAL CHARGES SPHERE =  2 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL002: 0.4204 0.3946 9.9848 0.0303 0.1312 0.1274 0.1360 2.0162 2.0154 1.9834 1.9852 1.9848
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL002:  0.0541 -1.0777    0.0492 -1.0163    9.8556 -1.3661    0.0048 -0.9983
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH002:  0.3664 -0.1036    0.3455  0.0906    0.1291  0.2009    0.0255  0.1993
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ002:             0.12935     1.25753    -1.38688       1.870
+ 
+ 
+ 
+ 
+:POS003: ATOM   -3 X,Y,Z = 0.75216 0.00000 0.74506  MULT= 2  ZZ= 32.000  Ge3
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA003: TOTAL VALENCE CHARGE INSIDE SPHERE   3 =  10.8549    (RMT=  1.8700 )
+:PCS003: PARTIAL CHARGES SPHERE =  3 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL003: 0.4195 0.4020 9.9920 0.0328 0.1457 0.1292 0.1272 2.0181 2.0212 1.9848 1.9840 1.9836
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL003:  0.0574 -1.0724    0.0520 -1.0117    9.8524 -1.3506    0.0052 -0.9992
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH003:  0.3620 -0.0967    0.3500  0.0872    0.1396  0.1940    0.0277  0.2002
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ003:            -3.41616    -0.54473     1.34356     2.07260       1.870
+ 
+ 
+ 
+ 
+:POS004: ATOM   -4 X,Y,Z = 0.00000 0.75090 0.25533  MULT= 2  ZZ= 32.000  Ge4
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA004: TOTAL VALENCE CHARGE INSIDE SPHERE   4 =  10.8566    (RMT=  1.8700 )
+:PCS004: PARTIAL CHARGES SPHERE =  4 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL004: 0.4219 0.4030 9.9906 0.0326 0.1266 0.1460 0.1306 2.0184 2.0196 1.9848 1.9834 1.9844
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL004:  0.0580 -1.0725    0.0525 -1.0105    9.8536 -1.3529    0.0052 -0.9970
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH004:  0.3639 -0.0955    0.3505  0.0914    0.1371  0.1997    0.0274  0.2032
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ004:             2.26442     0.20702    -3.45598     1.19156       1.870
+ 
+ 
+ 
+ 
+:POS005: ATOM   -5 X,Y,Z = 0.75143 0.50000 0.74352  MULT= 2  ZZ= 32.000  Ge5
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA005: TOTAL VALENCE CHARGE INSIDE SPHERE   5 =  10.8629    (RMT=  1.8700 )
+:PCS005: PARTIAL CHARGES SPHERE =  5 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL005: 0.4205 0.4059 9.9940 0.0336 0.1496 0.1292 0.1272 2.0187 2.0224 1.9852 1.9840 1.9836
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL005:  0.0587 -1.0750    0.0532 -1.0134    9.8518 -1.3474    0.0052 -1.0011
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH005:  0.3618 -0.0962    0.3526  0.0872    0.1421  0.1935    0.0284  0.1996
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ005:            -4.18787    -0.10503     1.72089     2.46698       1.870
+ 
+ 
+ 
+ 
+:POS006: ATOM   -6 X,Y,Z = 0.50000 0.50000 0.98753  MULT= 1  ZZ= 32.000  Ge6
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA006: TOTAL VALENCE CHARGE INSIDE SPHERE   6 =  10.8744    (RMT=  1.8700 )
+:PCS006: PARTIAL CHARGES SPHERE =  6 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL006: 0.4228 0.4122 9.9956 0.0348 0.1318 0.1352 0.1452 2.0224 2.0187 1.9839 1.9844 1.9864
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL006:  0.0636 -1.0654    0.0576 -1.0025    9.8530 -1.3477    0.0056 -0.9916
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH006:  0.3592 -0.0946    0.3545  0.0908    0.1426  0.2040    0.0292  0.2161
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ006:             1.78117     0.60169    -2.38286       1.870
+ 
+ 
+ 
+ 
+:POS007: ATOM   -7 X,Y,Z = 0.00000 0.50000 0.99939  MULT= 1  ZZ= 22.000  Ti1
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA007: TOTAL VALENCE CHARGE INSIDE SPHERE   7 =   9.0937    (RMT=  1.9100 )
+:PCS007: PARTIAL CHARGES SPHERE =  7 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL007: 2.0393 5.8899 1.1240 0.0319 1.9626 1.9619 1.9656 0.3784 0.3443 0.1362 0.1356 0.1295
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL007:  1.9730 -3.9046    5.7512 -2.0774    0.0397 -0.9815    0.0044 -1.0394
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH007:  0.0663  0.1127    0.1388  0.1762    1.0842  0.1620    0.0275  0.2055
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ007:             0.44827     0.75415    -1.20243       1.910
+ 
+ 
+ 
+ 
+:POS008: ATOM   -8 X,Y,Z = 0.50000 0.00000 0.99349  MULT= 1  ZZ= 22.000  Ti2
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA008: TOTAL VALENCE CHARGE INSIDE SPHERE   8 =   9.1109    (RMT=  1.9100 )
+:PCS008: PARTIAL CHARGES SPHERE =  8 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL008: 2.0423 5.8967 1.1271 0.0355 1.9636 1.9644 1.9686 0.3858 0.3522 0.1394 0.1189 0.1308
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL008:  1.9744 -3.8939    5.7500 -2.0696    0.0442 -0.9780    0.0052 -1.0380
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH008:  0.0679  0.1161    0.1468  0.1774    1.0829  0.1523    0.0304  0.2260
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ008:             0.92218     0.28252    -1.20470       1.910
+ 
+ 
+ 
+ 
+:POS009: ATOM   -9 X,Y,Z = 0.50000 0.74876 0.24410  MULT= 2  ZZ= 22.000  Ti3
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA009: TOTAL VALENCE CHARGE INSIDE SPHERE   9 =   9.1054    (RMT=  1.9100 )
+:PCS009: PARTIAL CHARGES SPHERE =  9 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL009: 2.0402 5.8907 1.1324 0.0330 1.9638 1.9640 1.9627 0.3532 0.3686 0.1369 0.1400 0.1336
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL009:  1.9737 -3.9033    5.7513 -2.0775    0.0424 -0.9790    0.0048 -1.0331
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH009:  0.0664  0.1130    0.1394  0.1763    1.0900  0.1557    0.0282  0.2132
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ009:            -0.03555    -0.45351    -0.41523     0.45078       1.910
+ 
+ 
+ 
+ 
+:POS010: ATOM  -10 X,Y,Z = 0.75172 0.75022 0.70160  MULT= 4  ZZ=  8.000  O 1
+ 
+       LMMAX 49
+ 
+ 
+:CHA010: TOTAL VALENCE CHARGE INSIDE SPHERE  10 =   5.7621    (RMT=  1.6900 )
+:PCS010: PARTIAL CHARGES SPHERE = 10 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL010: 1.6835 4.0551 0.0186 0.0040 1.4673 1.2854 1.3024 0.0072 0.0048 0.0016 0.0012 0.0038
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL010:  1.6190 -1.0206    0.0216 -1.2068    0.0044 -1.2717    0.0016 -1.3051
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH010:  0.0645  0.0194    4.0335  0.1830    0.0140  0.1023    0.0024  0.0836
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ010:            -9.55290     0.03320     5.64298     3.90991       1.690
+ 
+ 
+ 
+ 
+:POS011: ATOM  -11 X,Y,Z = 0.00000 0.00000 0.20674  MULT= 1  ZZ=  8.000  O 2
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA011: TOTAL VALENCE CHARGE INSIDE SPHERE  11 =   5.7366    (RMT=  1.6900 )
+:PCS011: PARTIAL CHARGES SPHERE = 11 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL011: 1.6839 4.0304 0.0178 0.0036 1.4607 1.2795 1.2903 0.0060 0.0050 0.0012 0.0008 0.0046
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL011:  1.6238 -1.0090    0.0184 -1.2056    0.0040 -1.2677    0.0012 -1.2935
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH011:  0.0600  0.0408    4.0121  0.1897    0.0139  0.1108    0.0020  0.0827
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ011:            -9.58289     5.44185     4.14105       1.690
+ 
+ 
+ 
+ 
+:POS012: ATOM  -12 X,Y,Z = 0.75364 0.00000 0.94756  MULT= 2  ZZ=  8.000  O 3
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA012: TOTAL VALENCE CHARGE INSIDE SPHERE  12 =   5.7458    (RMT=  1.6900 )
+:PCS012: PARTIAL CHARGES SPHERE = 12 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL012: 1.6885 4.0348 0.0172 0.0040 1.3054 1.2953 1.4343 0.0028 0.0080 0.0040 0.0012 0.0012
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL012:  1.6360 -1.0165    0.0210 -1.4365    0.0048 -1.6054    0.0016 -1.6373
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH012:  0.0525 -0.0078    4.0138  0.1826    0.0124  0.1082    0.0024  0.1209
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ012:             3.35832     2.42362     4.04157    -7.39989       1.690
+ 
+ 
+ 
+ 
+:POS013: ATOM  -13 X,Y,Z = 0.00000 0.75136 0.45691  MULT= 2  ZZ=  8.000  O 4
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA013: TOTAL VALENCE CHARGE INSIDE SPHERE  13 =   5.7537    (RMT=  1.6900 )
+:PCS013: PARTIAL CHARGES SPHERE = 13 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL013: 1.6840 4.0463 0.0184 0.0036 1.4654 1.2982 1.2826 0.0082 0.0040 0.0012 0.0015 0.0038
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL013:  1.6202 -1.0137    0.0208 -1.2060    0.0044 -1.2695    0.0016 -1.3012
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH013:  0.0640  0.0319    4.0255  0.1888    0.0142  0.1060    0.0024  0.0863
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ013:            -9.59300    -0.10223     3.96775     5.62525       1.690
+ 
+ 
+ 
+ 
+:POS014: ATOM  -14 X,Y,Z = 0.00000 0.75211 0.05221  MULT= 2  ZZ=  8.000  O 5
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA014: TOTAL VALENCE CHARGE INSIDE SPHERE  14 =   5.7329    (RMT=  1.6900 )
+:PCS014: PARTIAL CHARGES SPHERE = 14 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL014: 1.6884 4.0229 0.0167 0.0036 1.2892 1.3029 1.4307 0.0024 0.0076 0.0042 0.0012 0.0012
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL014:  1.6368 -1.0118    0.0198 -1.4284    0.0044 -1.6016    0.0016 -1.6295
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH014:  0.0516 -0.0093    4.0031  0.1855    0.0122  0.1117    0.0020  0.1221
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ014:             4.18954    -1.95620     3.23350    -7.42304       1.690
+ 
+ 
+ 
+ 
+:POS015: ATOM  -15 X,Y,Z = 0.74995 0.00000 0.54362  MULT= 2  ZZ=  8.000  O 6
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA015: TOTAL VALENCE CHARGE INSIDE SPHERE  15 =   5.7617    (RMT=  1.6900 )
+:PCS015: PARTIAL CHARGES SPHERE = 15 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL015: 1.6833 4.0549 0.0184 0.0040 1.3025 1.4671 1.2853 0.0082 0.0040 0.0012 0.0040 0.0016
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL015:  1.6194 -1.0201    0.0212 -1.2077    0.0044 -1.2717    0.0016 -1.3048
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH015:  0.0640  0.0205    4.0336  0.1833    0.0140  0.1028    0.0024  0.0834
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ015:             3.88691     0.31089    -9.53558     5.64869       1.690
+ 
+ 
+ 
+ 
+:POS016: ATOM  -16 X,Y,Z = 0.00000 0.00000 0.79261  MULT= 1  ZZ=  8.000  O 7
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA016: TOTAL VALENCE CHARGE INSIDE SPHERE  16 =   5.7495    (RMT=  1.6900 )
+:PCS016: PARTIAL CHARGES SPHERE = 16 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL016: 1.6842 4.0423 0.0184 0.0036 1.2837 1.4641 1.2944 0.0060 0.0052 0.0016 0.0046 0.0008
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL016:  1.6233 -1.0094    0.0192 -1.2099    0.0044 -1.2694    0.0016 -1.2960
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH016:  0.0608  0.0436    4.0232  0.1911    0.0142  0.1144    0.0024  0.0834
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ016:             5.44500    -9.55533     4.11033       1.690
+ 
+ 
+ 
+ 
+:POS017: ATOM  -17 X,Y,Z = 0.75061 0.75000 0.29895  MULT= 4  ZZ=  8.000  O 8
+ 
+       LMMAX 49
+ 
+ 
+:CHA017: TOTAL VALENCE CHARGE INSIDE SPHERE  17 =   5.7471    (RMT=  1.6900 )
+:PCS017: PARTIAL CHARGES SPHERE = 17 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL017: 1.6892 4.0354 0.0172 0.0040 1.2948 1.4308 1.3097 0.0064 0.0044 0.0012 0.0042 0.0012
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL017:  1.6361 -1.0184    0.0218 -1.4265    0.0048 -1.6056    0.0016 -1.6378
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH017:  0.0532 -0.0115    4.0135  0.1811    0.0124  0.1099    0.0024  0.1218
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ017:             4.10372     0.05179    -7.14288     3.03916       1.690
+ 
+ 
+ 
+ 
+:POS018: ATOM  -18 X,Y,Z = 0.00000 0.50000 0.20996  MULT= 1  ZZ=  8.000  O 9
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA018: TOTAL VALENCE CHARGE INSIDE SPHERE  18 =   5.7200    (RMT=  1.6900 )
+:PCS018: PARTIAL CHARGES SPHERE = 18 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL018: 1.6854 4.0149 0.0152 0.0036 1.4152 1.2681 1.3316 0.0044 0.0044 0.0012 0.0008 0.0038
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL018:  1.6402 -0.9868    0.0152 -1.4555    0.0044 -1.5241    0.0012 -1.6042
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH018:  0.0452  0.0527    3.9996  0.2078    0.0108  0.1537    0.0024  0.1105
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ018:            -6.46934     6.19550     0.27384       1.690
+ 
+ 
+ 
+ 
+:POS019: ATOM  -19 X,Y,Z = 0.74914 0.50000 0.94456  MULT= 2  ZZ=  8.000  O 10
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA019: TOTAL VALENCE CHARGE INSIDE SPHERE  19 =   5.7514    (RMT=  1.6900 )
+:PCS019: PARTIAL CHARGES SPHERE = 19 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL019: 1.6893 4.0391 0.0176 0.0040 1.3112 1.2966 1.4316 0.0028 0.0080 0.0042 0.0012 0.0012
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL019:  1.6355 -1.0190    0.0226 -1.4128    0.0048 -1.5932    0.0016 -1.6263
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH019:  0.0538 -0.0109    4.0165  0.1813    0.0126  0.1099    0.0024  0.1225
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ019:             3.03658    -1.35593     4.06834    -7.10494       1.690
+ 
+ 
+ 
+ 
+:POS020: ATOM  -20 X,Y,Z = 0.74997 0.50000 0.54320  MULT= 2  ZZ=  8.000  O 11
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA020: TOTAL VALENCE CHARGE INSIDE SPHERE  20 =   5.7629    (RMT=  1.6900 )
+:PCS020: PARTIAL CHARGES SPHERE = 20 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL020: 1.6835 4.0558 0.0188 0.0040 1.3029 1.4677 1.2853 0.0082 0.0040 0.0012 0.0036 0.0016
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL020:  1.6186 -1.0210    0.0218 -1.2065    0.0044 -1.2717    0.0016 -1.3055
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH020:  0.0649  0.0185    4.0340  0.1830    0.0142  0.1015    0.0024  0.0839
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ020:             3.90054     0.07066    -9.56356     5.66302       1.690
+ 
+ 
+ 
+ 
+:POS021: ATOM  -21 X,Y,Z = 0.00000 0.50000 0.78824  MULT= 1  ZZ=  8.000  O 12
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA021: TOTAL VALENCE CHARGE INSIDE SPHERE  21 =   5.7382    (RMT=  1.6900 )
+:PCS021: PARTIAL CHARGES SPHERE = 21 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL021: 1.6858 4.0315 0.0160 0.0040 1.2791 1.4197 1.3327 0.0044 0.0048 0.0016 0.0042 0.0008
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL021:  1.6386 -0.9905    0.0166 -1.4294    0.0048 -1.4915    0.0016 -1.5633
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH021:  0.0472  0.0516    4.0148  0.2069    0.0112  0.1560    0.0024  0.1092
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ021:             5.80818    -6.41892     0.61073       1.690
+ 
+ 
+ 
+ 
+:POS022: ATOM  -22 X,Y,Z = 0.50000 0.00000 0.19929  MULT= 1  ZZ=  8.000  O 13
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA022: TOTAL VALENCE CHARGE INSIDE SPHERE  22 =   5.7152    (RMT=  1.6900 )
+:PCS022: PARTIAL CHARGES SPHERE = 22 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL022: 1.6980 3.9969 0.0144 0.0044 1.3537 1.2948 1.3483 0.0044 0.0038 0.0012 0.0012 0.0038
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL022:  1.6842 -0.9949    0.0190 -2.0537    0.0060 -2.1760    0.0020 -2.2495
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH022:  0.0137  0.1505    3.9780  0.1930    0.0085  0.1795    0.0024  0.1606
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ022:            -1.95555     3.07211    -1.11657       1.690
+ 
+ 
+ 
+ 
+:POS023: ATOM  -23 X,Y,Z = 0.50000 0.74765 0.45645  MULT= 2  ZZ=  8.000  O 14
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA023: TOTAL VALENCE CHARGE INSIDE SPHERE  23 =   5.7366    (RMT=  1.6900 )
+:PCS023: PARTIAL CHARGES SPHERE = 23 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL023: 1.6852 4.0307 0.0156 0.0040 1.4235 1.3312 1.2760 0.0072 0.0020 0.0008 0.0016 0.0042
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL023:  1.6382 -0.9907    0.0163 -1.4195    0.0048 -1.4744    0.0016 -1.5452
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH023:  0.0470  0.0507    4.0145  0.2065    0.0112  0.1545    0.0024  0.1068
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ023:            -6.71794     0.22004     0.69544     6.02251       1.690
+ 
+ 
+ 
+ 
+:POS024: ATOM  -24 X,Y,Z = 0.50000 0.74592 0.03287  MULT= 2  ZZ=  8.000  O 15
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA024: TOTAL VALENCE CHARGE INSIDE SPHERE  24 =   5.7218    (RMT=  1.6900 )
+:PCS024: PARTIAL CHARGES SPHERE = 24 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL024: 1.6916 4.0102 0.0150 0.0040 1.2951 1.3320 1.3831 0.0024 0.0064 0.0038 0.0016 0.0008
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL024:  1.6576 -0.9848    0.0176 -1.6851    0.0048 -1.8133    0.0016 -1.8917
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH024:  0.0340  0.0535    3.9926  0.2084    0.0099  0.1620    0.0024  0.1404
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ024:             3.74655     2.42941     0.28577    -4.03231       1.690
+ 
+ 
+ 
+ 
+:POS025: ATOM  -25 X,Y,Z = 0.50000 0.00000 0.78507  MULT= 1  ZZ=  8.000  O 16
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA025: TOTAL VALENCE CHARGE INSIDE SPHERE  25 =   5.7312    (RMT=  1.6900 )
+:PCS025: PARTIAL CHARGES SPHERE = 25 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL025: 1.6853 4.0258 0.0152 0.0040 1.2668 1.4174 1.3415 0.0048 0.0044 0.0015 0.0032 0.0009
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL025:  1.6394 -0.9875    0.0164 -1.4773    0.0048 -1.5418    0.0016 -1.6399
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH025:  0.0459  0.0514    4.0094  0.2091    0.0105  0.1509    0.0024  0.1095
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ025:             6.63836    -6.40300    -0.23537       1.690
+ 
+ 
+ 
+ 
+:POS026: ATOM  -26 X,Y,Z = 0.50000 0.50000 0.19039  MULT= 1  ZZ=  8.000  O 17
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA026: TOTAL VALENCE CHARGE INSIDE SPHERE  26 =   5.7333    (RMT=  1.6900 )
+:PCS026: PARTIAL CHARGES SPHERE = 26 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL026: 1.6963 4.0152 0.0163 0.0042 1.3932 1.3084 1.3137 0.0054 0.0040 0.0012 0.0012 0.0048
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL026:  1.6578 -1.0023    0.0218 -1.6703    0.0052 -1.9111    0.0020 -1.9582
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH026:  0.0384  0.0063    3.9934  0.1926    0.0110  0.1496    0.0024  0.1568
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ026:            -4.57708     2.17568     2.40141       1.690
+ 
+ 
+ 
+ 
+:POS027: ATOM  -27 X,Y,Z = 0.50000 0.50000 0.78592  MULT= 1  ZZ=  8.000  O 18
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA027: TOTAL VALENCE CHARGE INSIDE SPHERE  27 =   5.7572    (RMT=  1.6900 )
+:PCS027: PARTIAL CHARGES SPHERE = 27 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL027: 1.6839 4.0498 0.0184 0.0040 1.2832 1.4655 1.3012 0.0072 0.0050 0.0016 0.0038 0.0012
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL027:  1.6202 -1.0150    0.0212 -1.2049    0.0044 -1.2672    0.0016 -1.3003
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH027:  0.0638  0.0317    4.0286  0.1879    0.0142  0.1056    0.0024  0.0851
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ027:             5.67947    -9.50537     3.82589       1.690
+ 
+:CHA  : TOTAL VALENCE CHARGE INSIDE UNIT CELL =     408.000000
+ 
+:SUM  : SUM OF EIGENVALUES =        -276.039982906
+ 
+ 
+ 
+ 
+ 
+:POS001: ATOM   -1 X,Y,Z = 0.74837 0.75033 0.50074  MULT= 4  ZZ= 32.000  Ge1
+ 
+       LMMAX 49
+ 
+ 
+:CHA001: TOTAL VALENCE CHARGE INSIDE SPHERE   1 =  10.8586    (RMT=  1.8700 )
+:PCS001: PARTIAL CHARGES SPHERE =  1 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL001: 0.4201 0.4038 9.9928 0.0332 0.1291 0.1272 0.1476 2.0233 2.0169 1.9836 1.9852 1.9840
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL001:  0.0580 -1.0742    0.0526 -1.0130    9.8520 -1.3491    0.0052 -1.0007
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH001:  0.3621 -0.0963    0.3511  0.0873    0.1408  0.1934    0.0280  0.1995
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ001:             1.55565    -0.08976     2.24722    -3.80287       1.870
+ 
+ 
+ 
+ 
+:POS002: ATOM   -2 X,Y,Z = 0.00000 0.00000 0.00000  MULT= 1  ZZ= 32.000  Ge2
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA002: TOTAL VALENCE CHARGE INSIDE SPHERE   2 =  10.8384    (RMT=  1.8700 )
+:PCS002: PARTIAL CHARGES SPHERE =  2 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL002: 0.4204 0.3946 9.9848 0.0303 0.1312 0.1274 0.1360 2.0162 2.0154 1.9834 1.9852 1.9848
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL002:  0.0541 -1.0777    0.0492 -1.0163    9.8556 -1.3661    0.0048 -0.9983
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH002:  0.3664 -0.1036    0.3455  0.0906    0.1291  0.2009    0.0255  0.1993
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ002:             0.12935     1.25753    -1.38688       1.870
+ 
+ 
+ 
+ 
+:POS003: ATOM   -3 X,Y,Z = 0.75216 0.00000 0.74506  MULT= 2  ZZ= 32.000  Ge3
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA003: TOTAL VALENCE CHARGE INSIDE SPHERE   3 =  10.8549    (RMT=  1.8700 )
+:PCS003: PARTIAL CHARGES SPHERE =  3 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL003: 0.4195 0.4020 9.9920 0.0328 0.1457 0.1292 0.1272 2.0181 2.0212 1.9848 1.9840 1.9836
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL003:  0.0574 -1.0724    0.0520 -1.0117    9.8524 -1.3506    0.0052 -0.9992
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH003:  0.3620 -0.0967    0.3500  0.0872    0.1396  0.1940    0.0277  0.2002
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ003:            -3.41616    -0.54473     1.34356     2.07260       1.870
+ 
+ 
+ 
+ 
+:POS004: ATOM   -4 X,Y,Z = 0.00000 0.75090 0.25533  MULT= 2  ZZ= 32.000  Ge4
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA004: TOTAL VALENCE CHARGE INSIDE SPHERE   4 =  10.8566    (RMT=  1.8700 )
+:PCS004: PARTIAL CHARGES SPHERE =  4 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL004: 0.4219 0.4030 9.9906 0.0326 0.1266 0.1460 0.1306 2.0184 2.0196 1.9848 1.9834 1.9844
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL004:  0.0580 -1.0725    0.0525 -1.0105    9.8536 -1.3529    0.0052 -0.9970
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH004:  0.3639 -0.0955    0.3505  0.0914    0.1371  0.1997    0.0274  0.2032
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ004:             2.26442     0.20702    -3.45598     1.19156       1.870
+ 
+ 
+ 
+ 
+:POS005: ATOM   -5 X,Y,Z = 0.75143 0.50000 0.74352  MULT= 2  ZZ= 32.000  Ge5
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA005: TOTAL VALENCE CHARGE INSIDE SPHERE   5 =  10.8629    (RMT=  1.8700 )
+:PCS005: PARTIAL CHARGES SPHERE =  5 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL005: 0.4205 0.4059 9.9940 0.0336 0.1496 0.1292 0.1272 2.0187 2.0224 1.9852 1.9840 1.9836
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL005:  0.0587 -1.0750    0.0532 -1.0134    9.8518 -1.3474    0.0052 -1.0011
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH005:  0.3618 -0.0962    0.3526  0.0872    0.1421  0.1935    0.0284  0.1996
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ005:            -4.18787    -0.10503     1.72089     2.46698       1.870
+ 
+ 
+ 
+ 
+:POS006: ATOM   -6 X,Y,Z = 0.50000 0.50000 0.98753  MULT= 1  ZZ= 32.000  Ge6
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA006: TOTAL VALENCE CHARGE INSIDE SPHERE   6 =  10.8744    (RMT=  1.8700 )
+:PCS006: PARTIAL CHARGES SPHERE =  6 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL006: 0.4228 0.4122 9.9956 0.0348 0.1318 0.1352 0.1452 2.0224 2.0187 1.9839 1.9844 1.9864
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL006:  0.0636 -1.0654    0.0576 -1.0025    9.8530 -1.3477    0.0056 -0.9916
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH006:  0.3592 -0.0946    0.3545  0.0908    0.1426  0.2040    0.0292  0.2161
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ006:             1.78117     0.60169    -2.38286       1.870
+ 
+ 
+ 
+ 
+:POS007: ATOM   -7 X,Y,Z = 0.00000 0.50000 0.99939  MULT= 1  ZZ= 22.000  Ti1
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA007: TOTAL VALENCE CHARGE INSIDE SPHERE   7 =   9.0937    (RMT=  1.9100 )
+:PCS007: PARTIAL CHARGES SPHERE =  7 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL007: 2.0393 5.8899 1.1240 0.0319 1.9626 1.9619 1.9656 0.3784 0.3443 0.1362 0.1356 0.1295
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL007:  1.9730 -3.9046    5.7512 -2.0774    0.0397 -0.9815    0.0044 -1.0394
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH007:  0.0663  0.1127    0.1388  0.1762    1.0842  0.1620    0.0275  0.2055
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ007:             0.44827     0.75415    -1.20243       1.910
+ 
+ 
+ 
+ 
+:POS008: ATOM   -8 X,Y,Z = 0.50000 0.00000 0.99349  MULT= 1  ZZ= 22.000  Ti2
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA008: TOTAL VALENCE CHARGE INSIDE SPHERE   8 =   9.1109    (RMT=  1.9100 )
+:PCS008: PARTIAL CHARGES SPHERE =  8 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL008: 2.0423 5.8967 1.1271 0.0355 1.9636 1.9644 1.9686 0.3858 0.3522 0.1394 0.1189 0.1308
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL008:  1.9744 -3.8939    5.7500 -2.0696    0.0442 -0.9780    0.0052 -1.0380
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH008:  0.0679  0.1161    0.1468  0.1774    1.0829  0.1523    0.0304  0.2260
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ008:             0.92218     0.28252    -1.20470       1.910
+ 
+ 
+ 
+ 
+:POS009: ATOM   -9 X,Y,Z = 0.50000 0.74876 0.24410  MULT= 2  ZZ= 22.000  Ti3
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA009: TOTAL VALENCE CHARGE INSIDE SPHERE   9 =   9.1054    (RMT=  1.9100 )
+:PCS009: PARTIAL CHARGES SPHERE =  9 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL009: 2.0402 5.8907 1.1324 0.0330 1.9638 1.9640 1.9627 0.3532 0.3686 0.1369 0.1400 0.1336
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL009:  1.9737 -3.9033    5.7513 -2.0775    0.0424 -0.9790    0.0048 -1.0331
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH009:  0.0664  0.1130    0.1394  0.1763    1.0900  0.1557    0.0282  0.2132
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ009:            -0.03555    -0.45351    -0.41523     0.45078       1.910
+ 
+ 
+ 
+ 
+:POS010: ATOM  -10 X,Y,Z = 0.75172 0.75022 0.70160  MULT= 4  ZZ=  8.000  O 1
+ 
+       LMMAX 49
+ 
+ 
+:CHA010: TOTAL VALENCE CHARGE INSIDE SPHERE  10 =   5.7621    (RMT=  1.6900 )
+:PCS010: PARTIAL CHARGES SPHERE = 10 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL010: 1.6835 4.0551 0.0186 0.0040 1.4673 1.2854 1.3024 0.0072 0.0048 0.0016 0.0012 0.0038
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL010:  1.6190 -1.0206    0.0216 -1.2068    0.0044 -1.2717    0.0016 -1.3051
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH010:  0.0645  0.0194    4.0335  0.1830    0.0140  0.1023    0.0024  0.0836
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ010:            -9.55290     0.03320     5.64298     3.90991       1.690
+ 
+ 
+ 
+ 
+:POS011: ATOM  -11 X,Y,Z = 0.00000 0.00000 0.20674  MULT= 1  ZZ=  8.000  O 2
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA011: TOTAL VALENCE CHARGE INSIDE SPHERE  11 =   5.7366    (RMT=  1.6900 )
+:PCS011: PARTIAL CHARGES SPHERE = 11 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL011: 1.6839 4.0304 0.0178 0.0036 1.4607 1.2795 1.2903 0.0060 0.0050 0.0012 0.0008 0.0046
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL011:  1.6238 -1.0090    0.0184 -1.2056    0.0040 -1.2677    0.0012 -1.2935
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH011:  0.0600  0.0408    4.0121  0.1897    0.0139  0.1108    0.0020  0.0827
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ011:            -9.58289     5.44185     4.14105       1.690
+ 
+ 
+ 
+ 
+:POS012: ATOM  -12 X,Y,Z = 0.75364 0.00000 0.94756  MULT= 2  ZZ=  8.000  O 3
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA012: TOTAL VALENCE CHARGE INSIDE SPHERE  12 =   5.7458    (RMT=  1.6900 )
+:PCS012: PARTIAL CHARGES SPHERE = 12 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL012: 1.6885 4.0348 0.0172 0.0040 1.3054 1.2953 1.4343 0.0028 0.0080 0.0040 0.0012 0.0012
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL012:  1.6360 -1.0165    0.0210 -1.4365    0.0048 -1.6054    0.0016 -1.6373
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH012:  0.0525 -0.0078    4.0138  0.1826    0.0124  0.1082    0.0024  0.1209
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ012:             3.35832     2.42362     4.04157    -7.39989       1.690
+ 
+ 
+ 
+ 
+:POS013: ATOM  -13 X,Y,Z = 0.00000 0.75136 0.45691  MULT= 2  ZZ=  8.000  O 4
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA013: TOTAL VALENCE CHARGE INSIDE SPHERE  13 =   5.7537    (RMT=  1.6900 )
+:PCS013: PARTIAL CHARGES SPHERE = 13 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL013: 1.6840 4.0463 0.0184 0.0036 1.4654 1.2982 1.2826 0.0082 0.0040 0.0012 0.0015 0.0038
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL013:  1.6202 -1.0137    0.0208 -1.2060    0.0044 -1.2695    0.0016 -1.3012
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH013:  0.0640  0.0319    4.0255  0.1888    0.0142  0.1060    0.0024  0.0863
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ013:            -9.59300    -0.10223     3.96775     5.62525       1.690
+ 
+ 
+ 
+ 
+:POS014: ATOM  -14 X,Y,Z = 0.00000 0.75211 0.05221  MULT= 2  ZZ=  8.000  O 5
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA014: TOTAL VALENCE CHARGE INSIDE SPHERE  14 =   5.7329    (RMT=  1.6900 )
+:PCS014: PARTIAL CHARGES SPHERE = 14 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL014: 1.6884 4.0229 0.0167 0.0036 1.2892 1.3029 1.4307 0.0024 0.0076 0.0042 0.0012 0.0012
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL014:  1.6368 -1.0118    0.0198 -1.4284    0.0044 -1.6016    0.0016 -1.6295
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH014:  0.0516 -0.0093    4.0031  0.1855    0.0122  0.1117    0.0020  0.1221
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ014:             4.18954    -1.95620     3.23350    -7.42304       1.690
+ 
+ 
+ 
+ 
+:POS015: ATOM  -15 X,Y,Z = 0.74995 0.00000 0.54362  MULT= 2  ZZ=  8.000  O 6
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA015: TOTAL VALENCE CHARGE INSIDE SPHERE  15 =   5.7617    (RMT=  1.6900 )
+:PCS015: PARTIAL CHARGES SPHERE = 15 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL015: 1.6833 4.0549 0.0184 0.0040 1.3025 1.4671 1.2853 0.0082 0.0040 0.0012 0.0040 0.0016
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL015:  1.6194 -1.0201    0.0212 -1.2077    0.0044 -1.2717    0.0016 -1.3048
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH015:  0.0640  0.0205    4.0336  0.1833    0.0140  0.1028    0.0024  0.0834
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ015:             3.88691     0.31089    -9.53558     5.64869       1.690
+ 
+ 
+ 
+ 
+:POS016: ATOM  -16 X,Y,Z = 0.00000 0.00000 0.79261  MULT= 1  ZZ=  8.000  O 7
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA016: TOTAL VALENCE CHARGE INSIDE SPHERE  16 =   5.7495    (RMT=  1.6900 )
+:PCS016: PARTIAL CHARGES SPHERE = 16 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL016: 1.6842 4.0423 0.0184 0.0036 1.2837 1.4641 1.2944 0.0060 0.0052 0.0016 0.0046 0.0008
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL016:  1.6233 -1.0094    0.0192 -1.2099    0.0044 -1.2694    0.0016 -1.2960
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH016:  0.0608  0.0436    4.0232  0.1911    0.0142  0.1144    0.0024  0.0834
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ016:             5.44500    -9.55533     4.11033       1.690
+ 
+ 
+ 
+ 
+:POS017: ATOM  -17 X,Y,Z = 0.75061 0.75000 0.29895  MULT= 4  ZZ=  8.000  O 8
+ 
+       LMMAX 49
+ 
+ 
+:CHA017: TOTAL VALENCE CHARGE INSIDE SPHERE  17 =   5.7471    (RMT=  1.6900 )
+:PCS017: PARTIAL CHARGES SPHERE = 17 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL017: 1.6892 4.0354 0.0172 0.0040 1.2948 1.4308 1.3097 0.0064 0.0044 0.0012 0.0042 0.0012
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL017:  1.6361 -1.0184    0.0218 -1.4265    0.0048 -1.6056    0.0016 -1.6378
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH017:  0.0532 -0.0115    4.0135  0.1811    0.0124  0.1099    0.0024  0.1218
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ017:             4.10372     0.05179    -7.14288     3.03916       1.690
+ 
+ 
+ 
+ 
+:POS018: ATOM  -18 X,Y,Z = 0.00000 0.50000 0.20996  MULT= 1  ZZ=  8.000  O 9
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA018: TOTAL VALENCE CHARGE INSIDE SPHERE  18 =   5.7200    (RMT=  1.6900 )
+:PCS018: PARTIAL CHARGES SPHERE = 18 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL018: 1.6854 4.0149 0.0152 0.0036 1.4152 1.2681 1.3316 0.0044 0.0044 0.0012 0.0008 0.0038
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL018:  1.6402 -0.9868    0.0152 -1.4555    0.0044 -1.5241    0.0012 -1.6042
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH018:  0.0452  0.0527    3.9996  0.2078    0.0108  0.1537    0.0024  0.1105
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ018:            -6.46934     6.19550     0.27384       1.690
+ 
+ 
+ 
+ 
+:POS019: ATOM  -19 X,Y,Z = 0.74914 0.50000 0.94456  MULT= 2  ZZ=  8.000  O 10
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA019: TOTAL VALENCE CHARGE INSIDE SPHERE  19 =   5.7514    (RMT=  1.6900 )
+:PCS019: PARTIAL CHARGES SPHERE = 19 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL019: 1.6893 4.0391 0.0176 0.0040 1.3112 1.2966 1.4316 0.0028 0.0080 0.0042 0.0012 0.0012
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL019:  1.6355 -1.0190    0.0226 -1.4128    0.0048 -1.5932    0.0016 -1.6263
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH019:  0.0538 -0.0109    4.0165  0.1813    0.0126  0.1099    0.0024  0.1225
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ019:             3.03658    -1.35593     4.06834    -7.10494       1.690
+ 
+ 
+ 
+ 
+:POS020: ATOM  -20 X,Y,Z = 0.74997 0.50000 0.54320  MULT= 2  ZZ=  8.000  O 11
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA020: TOTAL VALENCE CHARGE INSIDE SPHERE  20 =   5.7629    (RMT=  1.6900 )
+:PCS020: PARTIAL CHARGES SPHERE = 20 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL020: 1.6835 4.0558 0.0188 0.0040 1.3029 1.4677 1.2853 0.0082 0.0040 0.0012 0.0036 0.0016
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL020:  1.6186 -1.0210    0.0218 -1.2065    0.0044 -1.2717    0.0016 -1.3055
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH020:  0.0649  0.0185    4.0340  0.1830    0.0142  0.1015    0.0024  0.0839
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ020:             3.90054     0.07066    -9.56356     5.66302       1.690
+ 
+ 
+ 
+ 
+:POS021: ATOM  -21 X,Y,Z = 0.00000 0.50000 0.78824  MULT= 1  ZZ=  8.000  O 12
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA021: TOTAL VALENCE CHARGE INSIDE SPHERE  21 =   5.7382    (RMT=  1.6900 )
+:PCS021: PARTIAL CHARGES SPHERE = 21 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL021: 1.6858 4.0315 0.0160 0.0040 1.2791 1.4197 1.3327 0.0044 0.0048 0.0016 0.0042 0.0008
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL021:  1.6386 -0.9905    0.0166 -1.4294    0.0048 -1.4915    0.0016 -1.5633
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH021:  0.0472  0.0516    4.0148  0.2069    0.0112  0.1560    0.0024  0.1092
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ021:             5.80818    -6.41892     0.61073       1.690
+ 
+ 
+ 
+ 
+:POS022: ATOM  -22 X,Y,Z = 0.50000 0.00000 0.19929  MULT= 1  ZZ=  8.000  O 13
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA022: TOTAL VALENCE CHARGE INSIDE SPHERE  22 =   5.7152    (RMT=  1.6900 )
+:PCS022: PARTIAL CHARGES SPHERE = 22 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL022: 1.6980 3.9969 0.0144 0.0044 1.3537 1.2948 1.3483 0.0044 0.0038 0.0012 0.0012 0.0038
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL022:  1.6842 -0.9949    0.0190 -2.0537    0.0060 -2.1760    0.0020 -2.2495
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH022:  0.0137  0.1505    3.9780  0.1930    0.0085  0.1795    0.0024  0.1606
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ022:            -1.95555     3.07211    -1.11657       1.690
+ 
+ 
+ 
+ 
+:POS023: ATOM  -23 X,Y,Z = 0.50000 0.74765 0.45645  MULT= 2  ZZ=  8.000  O 14
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA023: TOTAL VALENCE CHARGE INSIDE SPHERE  23 =   5.7366    (RMT=  1.6900 )
+:PCS023: PARTIAL CHARGES SPHERE = 23 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL023: 1.6852 4.0307 0.0156 0.0040 1.4235 1.3312 1.2760 0.0072 0.0020 0.0008 0.0016 0.0042
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL023:  1.6382 -0.9907    0.0163 -1.4195    0.0048 -1.4744    0.0016 -1.5452
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH023:  0.0470  0.0507    4.0145  0.2065    0.0112  0.1545    0.0024  0.1068
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ023:            -6.71794     0.22004     0.69544     6.02251       1.690
+ 
+ 
+ 
+ 
+:POS024: ATOM  -24 X,Y,Z = 0.50000 0.74592 0.03287  MULT= 2  ZZ=  8.000  O 15
+ 
+       LMMAX 28
+       LM=   0 0  1 1 -1 1  2 0  2 2 -2 2  3 1 -3 1  3 3 -3 3  4 0  4 2 -4 2  4 4 -4 4  5 1 -5 1
+         5 3 -5 3  5 5 -5 5  6 0  6 2 -6 2  6 4 -6 4  6 6 -6 6
+ 
+:CHA024: TOTAL VALENCE CHARGE INSIDE SPHERE  24 =   5.7218    (RMT=  1.6900 )
+:PCS024: PARTIAL CHARGES SPHERE = 24 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL024: 1.6916 4.0102 0.0150 0.0040 1.2951 1.3320 1.3831 0.0024 0.0064 0.0038 0.0016 0.0008
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL024:  1.6576 -0.9848    0.0176 -1.6851    0.0048 -1.8133    0.0016 -1.8917
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH024:  0.0340  0.0535    3.9926  0.2084    0.0099  0.1620    0.0024  0.1404
+ 
+                      QXX         QXY         QYY         QZZ       UP TO R
+:VZZ024:             3.74655     2.42941     0.28577    -4.03231       1.690
+ 
+ 
+ 
+ 
+:POS025: ATOM  -25 X,Y,Z = 0.50000 0.00000 0.78507  MULT= 1  ZZ=  8.000  O 16
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA025: TOTAL VALENCE CHARGE INSIDE SPHERE  25 =   5.7312    (RMT=  1.6900 )
+:PCS025: PARTIAL CHARGES SPHERE = 25 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL025: 1.6853 4.0258 0.0152 0.0040 1.2668 1.4174 1.3415 0.0048 0.0044 0.0015 0.0032 0.0009
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL025:  1.6394 -0.9875    0.0164 -1.4773    0.0048 -1.5418    0.0016 -1.6399
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH025:  0.0459  0.0514    4.0094  0.2091    0.0105  0.1509    0.0024  0.1095
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ025:             6.63836    -6.40300    -0.23537       1.690
+ 
+ 
+ 
+ 
+:POS026: ATOM  -26 X,Y,Z = 0.50000 0.50000 0.19039  MULT= 1  ZZ=  8.000  O 17
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA026: TOTAL VALENCE CHARGE INSIDE SPHERE  26 =   5.7333    (RMT=  1.6900 )
+:PCS026: PARTIAL CHARGES SPHERE = 26 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL026: 1.6963 4.0152 0.0163 0.0042 1.3932 1.3084 1.3137 0.0054 0.0040 0.0012 0.0012 0.0048
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL026:  1.6578 -1.0023    0.0218 -1.6703    0.0052 -1.9111    0.0020 -1.9582
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH026:  0.0384  0.0063    3.9934  0.1926    0.0110  0.1496    0.0024  0.1568
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ026:            -4.57708     2.17568     2.40141       1.690
+ 
+ 
+ 
+ 
+:POS027: ATOM  -27 X,Y,Z = 0.50000 0.50000 0.78592  MULT= 1  ZZ=  8.000  O 18
+ 
+       LMMAX 16
+       LM=   0 0  1 0  2 0  2 2  3 0  3 2  4 0  4 2  4 4  5 0  5 2  5 4  6 0  6 2  6 4  6 6
+ 
+:CHA027: TOTAL VALENCE CHARGE INSIDE SPHERE  27 =   5.7572    (RMT=  1.6900 )
+:PCS027: PARTIAL CHARGES SPHERE = 27 S,P,D,F,PX,PY,PZ,D-Z2,D-X2Y2,D-XY,D-XZ,D-YZ
+:QTL027: 1.6839 4.0498 0.0184 0.0040 1.2832 1.4655 1.3012 0.0072 0.0050 0.0016 0.0038 0.0012
+        Q-s-low E-s-low   Q-p-low E-p-low   Q-d-low E-d-low   Q-f-low E-f-low
+:EPL027:  1.6202 -1.0150    0.0212 -1.2049    0.0044 -1.2672    0.0016 -1.3003
+        Q-s-hi  E-s-hi    Q-p-hi  E-p-hi    Q-d-hi  E-d-hi    Q-f-hi  E-f-hi
+:EPH027:  0.0638  0.0317    4.0286  0.1879    0.0142  0.1056    0.0024  0.0851
+ 
+                      VXX         VYY         VZZ       UP TO R
+:VZZ027:             5.67947    -9.50537     3.82589       1.690
+ 
+:CHA  : TOTAL VALENCE CHARGE INSIDE UNIT CELL =     408.000000
+ 
+:SUM  : SUM OF EIGENVALUES =        -276.039982906
+ 
+
+        1.ATOM      Ge1                   7 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO001:   1.ATOM    137.445039143     88.530109651    -14.136091839   -104.181233327
+
+:1S 001: 1S                -806.930227973 Ry
+:2S 001: 2S                -100.427274162 Ry
+:2PP001: 2P*                -88.823008005 Ry
+:2P 001: 2P                 -86.481740882 Ry
+:3S 001: 3S                 -11.901542882 Ry
+:3PP001: 3P*                 -8.064631348 Ry
+:3P 001: 3P                  -7.760796429 Ry
+
+        2.ATOM      Ge2                   7 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO002:   2.ATOM      2.335379142      0.000000000      0.000000000      2.335379142
+
+:1S 002: 1S                -806.949656392 Ry
+:2S 002: 2S                -100.446514075 Ry
+:2PP002: 2P*                -88.842299287 Ry
+:2P 002: 2P                 -86.501024980 Ry
+:3S 002: 3S                 -11.919377951 Ry
+:3PP002: 3P*                 -8.082396466 Ry
+:3P 002: 3P                  -7.778527379 Ry
+
+        3.ATOM      Ge3                   7 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO003:   3.ATOM    150.572329690    120.938951606    -89.698363712      0.000000000
+
+:1S 003: 1S                -806.932028615 Ry
+:2S 003: 2S                -100.428974533 Ry
+:2PP003: 2P*                -88.824718008 Ry
+:2P 003: 2P                 -86.483449320 Ry
+:3S 003: 3S                 -11.903128581 Ry
+:3PP003: 3P*                 -8.066203951 Ry
+:3P 003: 3P                  -7.762365165 Ry
+
+        4.ATOM      Ge4                   7 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO004:   4.ATOM    165.887063632    -23.368391308   -164.232871764      0.000000000
+
+:1S 004: 1S                -806.934523161 Ry
+:2S 004: 2S                -100.431706795 Ry
+:2PP004: 2P*                -88.827445522 Ry
+:2P 004: 2P                 -86.486178229 Ry
+:3S 004: 3S                 -11.905474804 Ry
+:3PP004: 3P*                 -8.068555773 Ry
+:3P 004: 3P                  -7.764711137 Ry
+
+        5.ATOM      Ge5                   7 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO005:   5.ATOM    126.227794191     91.534706276    -86.918660675      0.000000000
+
+:1S 005: 1S                -806.928118135 Ry
+:2S 005: 2S                -100.425255836 Ry
+:2PP005: 2P*                -88.820979053 Ry
+:2P 005: 2P                 -86.479713599 Ry
+:3S 005: 3S                 -11.899688646 Ry
+:3PP005: 3P*                 -8.062790659 Ry
+:3P 005: 3P                  -7.758960407 Ry
+
+        6.ATOM      Ge6                   7 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO006:   6.ATOM    137.189043904      0.000000000      0.000000000    137.189043904
+
+:1S 006: 1S                -806.927755209 Ry
+:2S 006: 2S                -100.425291377 Ry
+:2PP006: 2P*                -88.820985846 Ry
+:2P 006: 2P                 -86.479725421 Ry
+:3S 006: 3S                 -11.899774653 Ry
+:3PP006: 3P*                 -8.062908220 Ry
+:3P 006: 3P                  -7.759082548 Ry
+
+        7.ATOM      Ti1                   4 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO007:   7.ATOM      2.955693304      0.000000000      0.000000000     -2.955693304
+
+:1S 007: 1S                -358.691932364 Ry
+:2S 007: 2S                 -39.151962472 Ry
+:2PP007: 2P*                -32.276095242 Ry
+:2P 007: 2P                 -31.852957571 Ry
+
+        8.ATOM      Ti2                   4 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO008:   8.ATOM     30.138140600      0.000000000      0.000000000    -30.138140600
+
+:1S 008: 1S                -358.680149188 Ry
+:2S 008: 2S                 -39.142134704 Ry
+:2PP008: 2P*                -32.266133756 Ry
+:2P 008: 2P                 -31.843009310 Ry
+
+        9.ATOM      Ti3                   4 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO009:   9.ATOM     13.220965612    -13.218364421     -0.262247489      0.000000000
+
+:1S 009: 1S                -358.691364713 Ry
+:2S 009: 2S                 -39.151259280 Ry
+:2PP009: 2P*                -32.275399677 Ry
+:2P 009: 2P                 -31.852261376 Ry
+
+       10.ATOM      O 1                   1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO010:  10.ATOM    153.317445724     -6.977538759      2.688430806   -153.134990959
+
+:1S 010: 1S                 -37.299666797 Ry
+
+       11.ATOM      O 2                   1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO011:  11.ATOM     89.187453690      0.000000000      0.000000000    -89.187453690
+
+:1S 011: 1S                 -37.303522478 Ry
+
+       12.ATOM      O 3                   1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO012:  12.ATOM    206.157997910   -165.495509953    122.932324015      0.000000000
+
+:1S 012: 1S                 -37.307686258 Ry
+
+       13.ATOM      O 4                   1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO013:  13.ATOM    148.465794552     -4.888043959   -148.385306477      0.000000000
+
+:1S 013: 1S                 -37.297390598 Ry
+
+       14.ATOM      O 5                   1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO014:  14.ATOM    196.350993699    113.110679670    160.498245696      0.000000000
+
+:1S 014: 1S                 -37.310183969 Ry
+
+       15.ATOM      O 6                   1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO015:  15.ATOM    145.155681869    145.137372546     -2.305443364      0.000000000
+
+:1S 015: 1S                 -37.299545576 Ry
+
+       16.ATOM      O 7                   1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO016:  16.ATOM     72.666117509      0.000000000      0.000000000     72.666117509
+
+:1S 016: 1S                 -37.296636175 Ry
+
+       17.ATOM      O 8                   1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO017:  17.ATOM    206.135162007    106.421805173      1.268937166    176.534682706
+
+:1S 017: 1S                 -37.308533356 Ry
+
+       18.ATOM      O 9                   1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO018:  18.ATOM     11.832655919      0.000000000      0.000000000     11.832655919
+
+:1S 018: 1S                 -37.293140624 Ry
+
+       19.ATOM      O 10                  1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO019:  19.ATOM    211.317990206   -182.208378195   -107.029901898      0.000000000
+
+:1S 019: 1S                 -37.306604620 Ry
+
+       20.ATOM      O 11                  1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO020:  20.ATOM    159.783230085    159.763584058     -2.505558902      0.000000000
+
+:1S 020: 1S                 -37.299418169 Ry
+
+       21.ATOM      O 12                  1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO021:  21.ATOM     22.263469246      0.000000000      0.000000000    -22.263469246
+
+:1S 021: 1S                 -37.286249562 Ry
+
+       22.ATOM      O 13                  1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO022:  22.ATOM    150.829080498      0.000000000      0.000000000   -150.829080498
+
+:1S 022: 1S                 -37.312287968 Ry
+
+       23.ATOM      O 14                  1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO023:  23.ATOM     29.230571399     13.945562288     25.689445241      0.000000000
+
+:1S 023: 1S                 -37.287440988 Ry
+
+       24.ATOM      O 15                  1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO024:  24.ATOM    134.939769311   -112.704367607     74.205571651      0.000000000
+
+:1S 024: 1S                 -37.292592354 Ry
+
+       25.ATOM      O 16                  1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO025:  25.ATOM     22.596008954      0.000000000      0.000000000     22.596008954
+
+:1S 025: 1S                 -37.287255527 Ry
+
+       26.ATOM      O 17                  1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO026:  26.ATOM    188.038587780      0.000000000      0.000000000   -188.038587780
+
+:1S 026: 1S                 -37.303313072 Ry
+
+       27.ATOM      O 18                  1 CORE STATES
+       CORE-FORCE in mRy/a.u. = |F|      Fx             Fy             Fz
+:FCO027:  27.ATOM    149.000017962      0.000000000      0.000000000    149.000017962
+
+:1S 027: 1S                 -37.296727713 Ry
+:CINT001 Core Integral Atom   1   17.994541
+:CINT002 Core Integral Atom   2   17.994561
+:CINT003 Core Integral Atom   3   17.994545
+:CINT004 Core Integral Atom   4   17.994543
+:CINT005 Core Integral Atom   5   17.994537
+:CINT006 Core Integral Atom   6   17.994525
+:CINT007 Core Integral Atom   7   10.000000
+:CINT008 Core Integral Atom   8   10.000000
+:CINT009 Core Integral Atom   9   10.000000
+:CINT010 Core Integral Atom  10    2.000000
+:CINT011 Core Integral Atom  11    2.000000
+:CINT012 Core Integral Atom  12    2.000000
+:CINT013 Core Integral Atom  13    2.000000
+:CINT014 Core Integral Atom  14    2.000000
+:CINT015 Core Integral Atom  15    2.000000
+:CINT016 Core Integral Atom  16    2.000000
+:CINT017 Core Integral Atom  17    2.000000
+:CINT018 Core Integral Atom  18    2.000000
+:CINT019 Core Integral Atom  19    2.000000
+:CINT020 Core Integral Atom  20    2.000000
+:CINT021 Core Integral Atom  21    2.000000
+:CINT022 Core Integral Atom  22    2.000000
+:CINT023 Core Integral Atom  23    2.000000
+:CINT024 Core Integral Atom  24    2.000000
+:CINT025 Core Integral Atom  25    2.000000
+:CINT026 Core Integral Atom  26    2.000000
+:CINT027 Core Integral Atom  27    2.000000
+
+       DENSITY AT NUCLEUS
+        JATOM        VALENCE       SEMI-CORE          CORE           TOTAL
+:RTO001:   1       14.786527        0.000000    32723.693684    32738.480211
+:RTO002:   2       14.853773        0.000000    32723.736856    32738.590629
+:RTO003:   3       14.768398        0.000000    32723.698680    32738.467079
+:RTO004:   4       14.868067        0.000000    32723.705700    32738.573767
+:RTO005:   5       14.790973        0.000000    32723.687481    32738.478454
+:RTO006:   6       14.851347        0.000000    32723.679915    32738.531263
+:RTO007:   7       93.051403        0.000000     8554.200689     8647.252092
+:RTO008:   8       93.173735        0.000000     8554.174936     8647.348671
+:RTO009:   9       93.067296        0.000000     8554.202477     8647.269772
+:RTO010:  10       13.865391        0.000000      314.510969      328.376359
+:RTO011:  11       13.891217        0.000000      314.524409      328.415626
+:RTO012:  12       13.938707        0.000000      314.508145      328.446852
+:RTO013:  13       13.881786        0.000000      314.515119      328.396904
+:RTO014:  14       13.945998        0.000000      314.515643      328.461641
+:RTO015:  15       13.864187        0.000000      314.511194      328.375381
+:RTO016:  16       13.884579        0.000000      314.516781      328.401360
+:RTO017:  17       13.946788        0.000000      314.506871      328.453659
+:RTO018:  18       13.914689        0.000000      314.523077      328.437766
+:RTO019:  19       13.945507        0.000000      314.504519      328.450026
+:RTO020:  20       13.865614        0.000000      314.510549      328.376163
+:RTO021:  21       13.905865        0.000000      314.512521      328.418386
+:RTO022:  22       14.073089        0.000000      314.498790      328.571879
+:RTO023:  23       13.897965        0.000000      314.514135      328.412101
+:RTO024:  24       13.990113        0.000000      314.509251      328.499364
+:RTO025:  25       13.903989        0.000000      314.515974      328.419962
+:RTO026:  26       14.046170        0.000000      314.500074      328.546244
+:RTO027:  27       13.876554        0.000000      314.513176      328.389731
+     
+       CHARGES OF NEW CHARGE DENSITY
+:NTO   : INTERSTITIAL CHARGE =    57.436450
+:NTO001: CHARGE SPHERE  1    =    28.853236
+:NTO002: CHARGE SPHERE  2    =    28.832933
+:NTO003: CHARGE SPHERE  3    =    28.849457
+:NTO004: CHARGE SPHERE  4    =    28.851143
+:NTO005: CHARGE SPHERE  5    =    28.857321
+:NTO006: CHARGE SPHERE  6    =    28.868974
+:NTO007: CHARGE SPHERE  7    =    19.093696
+:NTO008: CHARGE SPHERE  8    =    19.110817
+:NTO009: CHARGE SPHERE  9    =    19.105385
+:NTO010: CHARGE SPHERE 10    =     7.762175
+:NTO011: CHARGE SPHERE 11    =     7.736562
+:NTO012: CHARGE SPHERE 12    =     7.745704
+:NTO013: CHARGE SPHERE 13    =     7.753645
+:NTO014: CHARGE SPHERE 14    =     7.732847
+:NTO015: CHARGE SPHERE 15    =     7.761773
+:NTO016: CHARGE SPHERE 16    =     7.749460
+:NTO017: CHARGE SPHERE 17    =     7.747120
+:NTO018: CHARGE SPHERE 18    =     7.719930
+:NTO019: CHARGE SPHERE 19    =     7.751359
+:NTO020: CHARGE SPHERE 20    =     7.762970
+:NTO021: CHARGE SPHERE 21    =     7.738212
+:NTO022: CHARGE SPHERE 22    =     7.715203
+:NTO023: CHARGE SPHERE 23    =     7.736525
+:NTO024: CHARGE SPHERE 24    =     7.721961
+:NTO025: CHARGE SPHERE 25    =     7.731214
+:NTO026: CHARGE SPHERE 26    =     7.733339
+:NTO027: CHARGE SPHERE 27    =     7.757224
+
+:NEC01: NUCLEAR AND ELECTRONIC CHARGE    728.00000   727.93432
+     
+       CHARGES OF OLD CHARGE DENSITY
+:OTO   : INTERSTITIAL CHARGE =    57.502059
+:OTO001: CHARGE SPHERE  1    =    28.853235
+:OTO002: CHARGE SPHERE  2    =    28.832932
+:OTO003: CHARGE SPHERE  3    =    28.849456
+:OTO004: CHARGE SPHERE  4    =    28.851142
+:OTO005: CHARGE SPHERE  5    =    28.857320
+:OTO006: CHARGE SPHERE  6    =    28.868973
+:OTO007: CHARGE SPHERE  7    =    19.093696
+:OTO008: CHARGE SPHERE  8    =    19.110817
+:OTO009: CHARGE SPHERE  9    =    19.105385
+:OTO010: CHARGE SPHERE 10    =     7.762177
+:OTO011: CHARGE SPHERE 11    =     7.736565
+:OTO012: CHARGE SPHERE 12    =     7.745707
+:OTO013: CHARGE SPHERE 13    =     7.753648
+:OTO014: CHARGE SPHERE 14    =     7.732850
+:OTO015: CHARGE SPHERE 15    =     7.761776
+:OTO016: CHARGE SPHERE 16    =     7.749462
+:OTO017: CHARGE SPHERE 17    =     7.747123
+:OTO018: CHARGE SPHERE 18    =     7.719933
+:OTO019: CHARGE SPHERE 19    =     7.751362
+:OTO020: CHARGE SPHERE 20    =     7.762972
+:OTO021: CHARGE SPHERE 21    =     7.738215
+:OTO022: CHARGE SPHERE 22    =     7.715206
+:OTO023: CHARGE SPHERE 23    =     7.736528
+:OTO024: CHARGE SPHERE 24    =     7.721964
+:OTO025: CHARGE SPHERE 25    =     7.731217
+:OTO026: CHARGE SPHERE 26    =     7.733341
+:OTO027: CHARGE SPHERE 27    =     7.757227
+
+:NEC02: NUCLEAR AND ELECTRONIC CHARGE    728.00000   728.00000
+     
+       CONVERGENCE TEST
+:DTO001: DIFFERENCE IN SPHERE  1 =  0.0000122
+:DTO002: DIFFERENCE IN SPHERE  2 =  0.0000122
+:DTO003: DIFFERENCE IN SPHERE  3 =  0.0000122
+:DTO004: DIFFERENCE IN SPHERE  4 =  0.0000122
+:DTO005: DIFFERENCE IN SPHERE  5 =  0.0000122
+:DTO006: DIFFERENCE IN SPHERE  6 =  0.0000122
+:DTO007: DIFFERENCE IN SPHERE  7 =  0.0000098
+:DTO008: DIFFERENCE IN SPHERE  8 =  0.0000098
+:DTO009: DIFFERENCE IN SPHERE  9 =  0.0000098
+:DTO010: DIFFERENCE IN SPHERE 10 =  0.0000066
+:DTO011: DIFFERENCE IN SPHERE 11 =  0.0000066
+:DTO012: DIFFERENCE IN SPHERE 12 =  0.0000066
+:DTO013: DIFFERENCE IN SPHERE 13 =  0.0000066
+:DTO014: DIFFERENCE IN SPHERE 14 =  0.0000066
+:DTO015: DIFFERENCE IN SPHERE 15 =  0.0000066
+:DTO016: DIFFERENCE IN SPHERE 16 =  0.0000066
+:DTO017: DIFFERENCE IN SPHERE 17 =  0.0000066
+:DTO018: DIFFERENCE IN SPHERE 18 =  0.0000066
+:DTO019: DIFFERENCE IN SPHERE 19 =  0.0000066
+:DTO020: DIFFERENCE IN SPHERE 20 =  0.0000066
+:DTO021: DIFFERENCE IN SPHERE 21 =  0.0000066
+:DTO022: DIFFERENCE IN SPHERE 22 =  0.0000067
+:DTO023: DIFFERENCE IN SPHERE 23 =  0.0000066
+:DTO024: DIFFERENCE IN SPHERE 24 =  0.0000067
+:DTO025: DIFFERENCE IN SPHERE 25 =  0.0000066
+:DTO026: DIFFERENCE IN SPHERE 26 =  0.0000067
+:DTO027: DIFFERENCE IN SPHERE 27 =  0.0000066
+
+:DIS  :  CHARGE DISTANCE       ( 0.0000122 for atom    5 spin 1)      0.0000083
+:MIX  :   PRATT  REGULARIZATION: 1.00E-04  GREED: 0.400
+     
+       CHARGES OF MIXED CHARGE DENSITY
+:CTO   : INTERSTITIAL CHARGE =    57.502087
+:CTO001: CHARGE SPHERE  1    =    28.853235
+:CTO002: CHARGE SPHERE  2    =    28.832933
+:CTO003: CHARGE SPHERE  3    =    28.849456
+:CTO004: CHARGE SPHERE  4    =    28.851143
+:CTO005: CHARGE SPHERE  5    =    28.857320
+:CTO006: CHARGE SPHERE  6    =    28.868974
+:CTO007: CHARGE SPHERE  7    =    19.093696
+:CTO008: CHARGE SPHERE  8    =    19.110817
+:CTO009: CHARGE SPHERE  9    =    19.105385
+:CTO010: CHARGE SPHERE 10    =     7.762176
+:CTO011: CHARGE SPHERE 11    =     7.736564
+:CTO012: CHARGE SPHERE 12    =     7.745706
+:CTO013: CHARGE SPHERE 13    =     7.753647
+:CTO014: CHARGE SPHERE 14    =     7.732849
+:CTO015: CHARGE SPHERE 15    =     7.761775
+:CTO016: CHARGE SPHERE 16    =     7.749461
+:CTO017: CHARGE SPHERE 17    =     7.747122
+:CTO018: CHARGE SPHERE 18    =     7.719932
+:CTO019: CHARGE SPHERE 19    =     7.751361
+:CTO020: CHARGE SPHERE 20    =     7.762971
+:CTO021: CHARGE SPHERE 21    =     7.738214
+:CTO022: CHARGE SPHERE 22    =     7.715205
+:CTO023: CHARGE SPHERE 23    =     7.736527
+:CTO024: CHARGE SPHERE 24    =     7.721963
+:CTO025: CHARGE SPHERE 25    =     7.731216
+:CTO026: CHARGE SPHERE 26    =     7.733340
+:CTO027: CHARGE SPHERE 27    =     7.757226
+
+:NEC03: NUCLEAR AND ELECTRONIC CHARGE    728.00000   728.00000
+
+PW CHANGE     H    K    L             Current                    Change               Residue
+:PTO001:      0    0    0  6.37896412E-02 0.00000000E+00  1.025E-09  0.000E+00  2.563E-09  0.000E+00
+:PTO002:      0    0   -1  1.18248896E-03 1.07292328E-03  2.065E-10  1.897E-10  5.162E-10  4.742E-10
+:PTO003:      0    0    1  1.18248896E-03-1.07292328E-03  2.065E-10 -1.897E-10  5.162E-10 -4.742E-10
+:PTO004:      0   -1    0 -1.01918841E-04 0.00000000E+00  5.561E-12  0.000E+00  1.390E-11  0.000E+00
+:PTO005:     -1    0    0 -3.15958081E-03 0.00000000E+00 -3.452E-10  0.000E+00 -8.630E-10  0.000E+00
+:PTO006:      0   -1   -1 -1.53704939E-05 6.49736765E-05  1.783E-11 -5.343E-11  4.457E-11 -1.336E-10
+:PTO007:      0   -1    1 -1.53704939E-05-6.49736765E-05  1.783E-11  5.343E-11  4.457E-11  1.336E-10
+:PTO008:     -1    0   -1 -6.56676576E-04-2.51024383E-03  7.838E-11 -4.411E-10  1.960E-10 -1.103E-09
+:PTO009:     -1    0    1 -6.56676576E-04 2.51024383E-03  7.838E-11  4.411E-10  1.960E-10  1.103E-09
+:PTO010:     -1   -1    0 -5.59255543E-03 0.00000000E+00 -6.867E-10  0.000E+00 -1.717E-09  0.000E+00
+:PTO011:      0    0   -2  1.02963013E-05 4.25691074E-05  1.918E-11  3.240E-11  4.796E-11  8.099E-11
+:PTO012:      0    0    2  1.02963013E-05-4.25691074E-05  1.918E-11 -3.240E-11  4.796E-11 -8.099E-11
+
+:ENE  : ********** TOTAL ENERGY IN Ry =       -61903.95913090
+
+       TOTAL FORCE IN mRy/a.u. = |F|     Fx             Fy             Fz     with/without FOR in case.in2
+:FOR001:   1.ATOM         62.573        -39.695          6.251         47.965 partial forces
+:FOR002:   2.ATOM          0.972          0.000          0.000         -0.972 partial forces
+:FOR003:   3.ATOM         68.025        -55.686         39.070          0.000 partial forces
+:FOR004:   4.ATOM         72.735          8.774         72.204          0.000 partial forces
+:FOR005:   5.ATOM         58.993        -42.386         41.032          0.000 partial forces
+:FOR006:   6.ATOM         63.933          0.000          0.000        -63.933 partial forces
+:FOR007:   7.ATOM          3.946          0.000          0.000         -3.946 partial forces
+:FOR008:   8.ATOM         17.099          0.000          0.000        -17.099 partial forces
+:FOR009:   9.ATOM         11.138          0.470         11.128          0.000 partial forces
+:FOR010:  10.ATOM         15.256          0.249         -0.605         15.242 partial forces
+:FOR011:  11.ATOM          7.484          0.000          0.000         -7.484 partial forces
+:FOR012:  12.ATOM         27.462         17.792        -20.919          0.000 partial forces
+:FOR013:  13.ATOM          9.740          1.041          9.685          0.000 partial forces
+:FOR014:  14.ATOM         22.363        -16.480        -15.117          0.000 partial forces
+:FOR015:  15.ATOM         12.900        -12.865          0.940          0.000 partial forces
+:FOR016:  16.ATOM         13.990          0.000          0.000         13.990 partial forces
+:FOR017:  17.ATOM         25.193        -15.418         -0.217        -19.923 partial forces
+:FOR018:  18.ATOM         15.515          0.000          0.000        -15.515 partial forces
+:FOR019:  19.ATOM         29.431         23.515         17.698          0.000 partial forces
+:FOR020:  20.ATOM         18.841        -18.764          1.699          0.000 partial forces
+:FOR021:  21.ATOM         19.920          0.000          0.000         19.920 partial forces
+:FOR022:  22.ATOM         11.057          0.000          0.000         11.057 partial forces
+:FOR023:  23.ATOM         23.965         -1.500        -23.918          0.000 partial forces
+:FOR024:  24.ATOM         36.196         34.954          9.399          0.000 partial forces
+:FOR025:  25.ATOM         15.921          0.000          0.000         15.921 partial forces
+:FOR026:  26.ATOM         16.191          0.000          0.000         16.191 partial forces
+:FOR027:  27.ATOM          9.075          0.000          0.000         -9.075 partial forces
+       TOTAL FORCE WITH RESPECT TO GLOBAL CARTESIAN COORDINATES:
+:FCA001:   1.ATOM                       -39.695          6.251         47.965 partial forces
+:FCA002:   2.ATOM                         0.000          0.000         -0.972 partial forces
+:FCA003:   3.ATOM                        39.070          0.000        -55.686 partial forces
+:FCA004:   4.ATOM                         0.000          8.774         72.204 partial forces
+:FCA005:   5.ATOM                        41.032          0.000        -42.386 partial forces
+:FCA006:   6.ATOM                         0.000          0.000        -63.933 partial forces
+:FCA007:   7.ATOM                         0.000          0.000         -3.946 partial forces
+:FCA008:   8.ATOM                         0.000          0.000        -17.099 partial forces
+:FCA009:   9.ATOM                         0.000          0.470         11.128 partial forces
+:FCA010:  10.ATOM                         0.249         -0.605         15.242 partial forces
+:FCA011:  11.ATOM                         0.000          0.000         -7.484 partial forces
+:FCA012:  12.ATOM                       -20.919          0.000         17.792 partial forces
+:FCA013:  13.ATOM                         0.000          1.041          9.685 partial forces
+:FCA014:  14.ATOM                         0.000        -16.480        -15.117 partial forces
+:FCA015:  15.ATOM                         0.940          0.000        -12.865 partial forces
+:FCA016:  16.ATOM                         0.000          0.000         13.990 partial forces
+:FCA017:  17.ATOM                       -15.418         -0.217        -19.923 partial forces
+:FCA018:  18.ATOM                         0.000          0.000        -15.515 partial forces
+:FCA019:  19.ATOM                        17.698          0.000         23.515 partial forces
+:FCA020:  20.ATOM                         1.699          0.000        -18.764 partial forces
+:FCA021:  21.ATOM                         0.000          0.000         19.920 partial forces
+:FCA022:  22.ATOM                         0.000          0.000         11.057 partial forces
+:FCA023:  23.ATOM                         0.000         -1.500        -23.918 partial forces
+:FCA024:  24.ATOM                         0.000         34.954          9.399 partial forces
+:FCA025:  25.ATOM                         0.000          0.000         15.921 partial forces
+:FCA026:  26.ATOM                         0.000          0.000         16.191 partial forces
+:FCA027:  27.ATOM                         0.000          0.000         -9.075 partial forces
+       TOTAL FORCE WITH RESPECT TO THE GLOBAL COORDINATE SYSTEM:
+:FGL001:   1.ATOM               -39.694669803     6.251385502    47.965212964 partial forces
+:FGL002:   2.ATOM                 0.000000000     0.000000000    -0.971672197 partial forces
+:FGL003:   3.ATOM                39.069957327     0.000000000   -55.685686020 partial forces
+:FGL004:   4.ATOM                 0.000000000     8.773976203    72.203818751 partial forces
+:FGL005:   5.ATOM                41.031683715     0.000000000   -42.385937134 partial forces
+:FGL006:   6.ATOM                 0.000000000     0.000000000   -63.932515280 partial forces
+:FGL007:   7.ATOM                 0.000000000     0.000000000    -3.945944549 partial forces
+:FGL008:   8.ATOM                 0.000000000     0.000000000   -17.099426409 partial forces
+:FGL009:   9.ATOM                 0.000000000     0.469929580    11.127950579 partial forces
+:FGL010:  10.ATOM                 0.249075248    -0.605244440    15.242270099 partial forces
+:FGL011:  11.ATOM                 0.000000000     0.000000000    -7.483803071 partial forces
+:FGL012:  12.ATOM               -20.918505416     0.000000000    17.792191809 partial forces
+:FGL013:  13.ATOM                 0.000000000     1.040855271     9.684600891 partial forces
+:FGL014:  14.ATOM                 0.000000000   -16.479536610   -15.116855323 partial forces
+:FGL015:  15.ATOM                 0.939524935     0.000000000   -12.865337392 partial forces
+:FGL016:  16.ATOM                 0.000000000     0.000000000    13.989591961 partial forces
+:FGL017:  17.ATOM               -15.417714602    -0.216597897   -19.922832600 partial forces
+:FGL018:  18.ATOM                 0.000000000     0.000000000   -15.514824757 partial forces
+:FGL019:  19.ATOM                17.698493464     0.000000000    23.515177744 partial forces
+:FGL020:  20.ATOM                 1.699321820     0.000000000   -18.763942094 partial forces
+:FGL021:  21.ATOM                 0.000000000     0.000000000    19.919963004 partial forces
+:FGL022:  22.ATOM                 0.000000000     0.000000000    11.056642494 partial forces
+:FGL023:  23.ATOM                 0.000000000    -1.500382596   -23.917620707 partial forces
+:FGL024:  24.ATOM                 0.000000000    34.954448363     9.398982526 partial forces
+:FGL025:  25.ATOM                 0.000000000     0.000000000    15.920509951 partial forces
+:FGL026:  26.ATOM                 0.000000000     0.000000000    16.191433932 partial forces
+:FGL027:  27.ATOM                 0.000000000     0.000000000    -9.075020615 partial forces
+:CINT001 Core Integral Atom   1 2409.218839
+:CINT002 Core Integral Atom   2 2409.554082
+:CINT003 Core Integral Atom   3 2409.248709
+:CINT004 Core Integral Atom   4 2409.294281
+:CINT005 Core Integral Atom   5 2409.183659
+:CINT006 Core Integral Atom   6 2409.183863
+:CINT007 Core Integral Atom   7  987.651804
+:CINT008 Core Integral Atom   8  987.548866
+:CINT009 Core Integral Atom   9  987.645087
+:CINT010 Core Integral Atom  10   74.599332
+:CINT011 Core Integral Atom  11   74.607044
+:CINT012 Core Integral Atom  12   74.615371
+:CINT013 Core Integral Atom  13   74.594780
+:CINT014 Core Integral Atom  14   74.620367
+:CINT015 Core Integral Atom  15   74.599090
+:CINT016 Core Integral Atom  16   74.593271
+:CINT017 Core Integral Atom  17   74.617065
+:CINT018 Core Integral Atom  18   74.586280
+:CINT019 Core Integral Atom  19   74.613208
+:CINT020 Core Integral Atom  20   74.598835
+:CINT021 Core Integral Atom  21   74.572498
+:CINT022 Core Integral Atom  22   74.624575
+:CINT023 Core Integral Atom  23   74.574881
+:CINT024 Core Integral Atom  24   74.585183
+:CINT025 Core Integral Atom  25   74.574510
+:CINT026 Core Integral Atom  26   74.606625
+:CINT027 Core Integral Atom  27   74.593454
+
+       DENSITY AT NUCLEUS
+        JATOM        VALENCE       SEMI-CORE          CORE           TOTAL
+:RTO001:   1        3.012645        0.000000 23947862.514719 23947865.527364
+:RTO002:   2        3.034218        0.000000 23948499.515107 23948502.549326
+:RTO003:   3        2.998646        0.000000 23947922.241648 23947925.240294
+:RTO004:   4        3.017332        0.000000 23948001.834914 23948004.852245
+:RTO005:   5        3.031187        0.000000 23947792.705920 23947795.737107
+:RTO006:   6        3.162007        0.000000 23947777.266751 23947780.428758
+:RTO007:   7      351.807652        0.000000  2845243.679240  2845595.486892
+:RTO008:   8      351.011597        0.000000  2845138.793932  2845489.805528
+:RTO009:   9      351.707252        0.000000  2845239.238732  2845590.945983
+:RTO010:  10       13.291582        0.000000    11731.154344    11744.445925
+:RTO011:  11       13.203454        0.000000    11732.868351    11746.071804
+:RTO012:  12       13.466556        0.000000    11733.571201    11747.037757
+:RTO013:  13       13.214530        0.000000    11730.593225    11743.807754
+:RTO014:  14       13.426066        0.000000    11734.636508    11748.062575
+:RTO015:  15       13.288094        0.000000    11731.124602    11744.412696
+:RTO016:  16       13.186352        0.000000    11730.417951    11743.604303
+:RTO017:  17       13.493550        0.000000    11733.790086    11747.283637
+:RTO018:  18       13.103496        0.000000    11729.553348    11742.656844
+:RTO019:  19       13.491832        0.000000    11733.095744    11746.587576
+:RTO020:  20       13.292199        0.000000    11731.060473    11744.352672
+:RTO021:  21       13.116199        0.000000    11726.992347    11740.108546
+:RTO022:  22       13.695582        0.000000    11734.669426    11748.365008
+:RTO023:  23       13.116225        0.000000    11727.427267    11740.543492
+:RTO024:  24       13.269831        0.000000    11728.865297    11742.135128
+:RTO025:  25       13.093199        0.000000    11727.437477    11740.530676
+:RTO026:  26       13.521568        0.000000    11731.894706    11745.416274
+:RTO027:  27       13.226762        0.000000    11730.312306    11743.539068
+     
+       CHARGES OF NEW CHARGE DENSITY
+:NTO   : INTERSTITIAL CHARGE =     7.790471
+:NTO001: CHARGE SPHERE  1    =  2422.602769
+:NTO002: CHARGE SPHERE  2    =  2423.107190
+:NTO003: CHARGE SPHERE  3    =  2422.646370
+:NTO004: CHARGE SPHERE  4    =  2422.715588
+:NTO005: CHARGE SPHERE  5    =  2422.551368
+:NTO006: CHARGE SPHERE  6    =  2422.560753
+:NTO007: CHARGE SPHERE  7    =  1007.133341
+:NTO008: CHARGE SPHERE  8    =  1006.980250
+:NTO009: CHARGE SPHERE  9    =  1007.136534
+:NTO010: CHARGE SPHERE 10    =    75.545271
+:NTO011: CHARGE SPHERE 11    =    75.509807
+:NTO012: CHARGE SPHERE 12    =    75.586195
+:NTO013: CHARGE SPHERE 13    =    75.506964
+:NTO014: CHARGE SPHERE 14    =    75.571877
+:NTO015: CHARGE SPHERE 15    =    75.543093
+:NTO016: CHARGE SPHERE 16    =    75.489722
+:NTO017: CHARGE SPHERE 17    =    75.598139
+:NTO018: CHARGE SPHERE 18    =    75.401155
+:NTO019: CHARGE SPHERE 19    =    75.594408
+:NTO020: CHARGE SPHERE 20    =    75.545544
+:NTO021: CHARGE SPHERE 21    =    75.394453
+:NTO022: CHARGE SPHERE 22    =    75.586458
+:NTO023: CHARGE SPHERE 23    =    75.397684
+:NTO024: CHARGE SPHERE 24    =    75.425019
+:NTO025: CHARGE SPHERE 25    =    75.385368
+:NTO026: CHARGE SPHERE 26    =    75.548793
+:NTO027: CHARGE SPHERE 27    =    75.510873
+
+:NEC01: NUCLEAR AND ELECTRONIC CHARGE    728.00000 35524.82464
+        Charge not renormalized due to INPUT-option
+     
+       CHARGES OF OLD CHARGE DENSITY
+:OTO   : INTERSTITIAL CHARGE =     7.790423
+:OTO001: CHARGE SPHERE  1    =  2422.602748
+:OTO002: CHARGE SPHERE  2    =  2423.107169
+:OTO003: CHARGE SPHERE  3    =  2422.646348
+:OTO004: CHARGE SPHERE  4    =  2422.715567
+:OTO005: CHARGE SPHERE  5    =  2422.551346
+:OTO006: CHARGE SPHERE  6    =  2422.560732
+:OTO007: CHARGE SPHERE  7    =  1007.133328
+:OTO008: CHARGE SPHERE  8    =  1006.980238
+:OTO009: CHARGE SPHERE  9    =  1007.136522
+:OTO010: CHARGE SPHERE 10    =    75.545265
+:OTO011: CHARGE SPHERE 11    =    75.509802
+:OTO012: CHARGE SPHERE 12    =    75.586189
+:OTO013: CHARGE SPHERE 13    =    75.506958
+:OTO014: CHARGE SPHERE 14    =    75.571871
+:OTO015: CHARGE SPHERE 15    =    75.543087
+:OTO016: CHARGE SPHERE 16    =    75.489716
+:OTO017: CHARGE SPHERE 17    =    75.598133
+:OTO018: CHARGE SPHERE 18    =    75.401149
+:OTO019: CHARGE SPHERE 19    =    75.594402
+:OTO020: CHARGE SPHERE 20    =    75.545539
+:OTO021: CHARGE SPHERE 21    =    75.394447
+:OTO022: CHARGE SPHERE 22    =    75.586452
+:OTO023: CHARGE SPHERE 23    =    75.397678
+:OTO024: CHARGE SPHERE 24    =    75.425013
+:OTO025: CHARGE SPHERE 25    =    75.385362
+:OTO026: CHARGE SPHERE 26    =    75.548787
+:OTO027: CHARGE SPHERE 27    =    75.510867
+
+:NEC02: NUCLEAR AND ELECTRONIC CHARGE    728.00000 35524.82409
+        Charge not renormalized due to INPUT-option
+     
+       CONVERGENCE TEST
+:DTO001: DIFFERENCE IN SPHERE  1 =  0.0026722
+:DTO002: DIFFERENCE IN SPHERE  2 =  0.0026765
+:DTO003: DIFFERENCE IN SPHERE  3 =  0.0026760
+:DTO004: DIFFERENCE IN SPHERE  4 =  0.0026753
+:DTO005: DIFFERENCE IN SPHERE  5 =  0.0026738
+:DTO006: DIFFERENCE IN SPHERE  6 =  0.0026730
+:DTO007: DIFFERENCE IN SPHERE  7 =  0.0009416
+:DTO008: DIFFERENCE IN SPHERE  8 =  0.0009541
+:DTO009: DIFFERENCE IN SPHERE  9 =  0.0009556
+:DTO010: DIFFERENCE IN SPHERE 10 =  0.0000476
+:DTO011: DIFFERENCE IN SPHERE 11 =  0.0000478
+:DTO012: DIFFERENCE IN SPHERE 12 =  0.0000471
+:DTO013: DIFFERENCE IN SPHERE 13 =  0.0000477
+:DTO014: DIFFERENCE IN SPHERE 14 =  0.0000471
+:DTO015: DIFFERENCE IN SPHERE 15 =  0.0000476
+:DTO016: DIFFERENCE IN SPHERE 16 =  0.0000476
+:DTO017: DIFFERENCE IN SPHERE 17 =  0.0000470
+:DTO018: DIFFERENCE IN SPHERE 18 =  0.0000468
+:DTO019: DIFFERENCE IN SPHERE 19 =  0.0000470
+:DTO020: DIFFERENCE IN SPHERE 20 =  0.0000476
+:DTO021: DIFFERENCE IN SPHERE 21 =  0.0000467
+:DTO022: DIFFERENCE IN SPHERE 22 =  0.0000453
+:DTO023: DIFFERENCE IN SPHERE 23 =  0.0000467
+:DTO024: DIFFERENCE IN SPHERE 24 =  0.0000459
+:DTO025: DIFFERENCE IN SPHERE 25 =  0.0000469
+:DTO026: DIFFERENCE IN SPHERE 26 =  0.0000464
+:DTO027: DIFFERENCE IN SPHERE 27 =  0.0000479
+
+:DIS  :  CHARGE DISTANCE       ( 0.0026765 for atom    2 spin 1)      0.0007792
+:MIX  :   PRATT  REGULARIZATION: 1.00E-04  GREED: 1.000
+     
+       CHARGES OF MIXED CHARGE DENSITY
+:CTO   : INTERSTITIAL CHARGE =     7.790471
+:CTO001: CHARGE SPHERE  1    =  2422.602769
+:CTO002: CHARGE SPHERE  2    =  2423.107190
+:CTO003: CHARGE SPHERE  3    =  2422.646370
+:CTO004: CHARGE SPHERE  4    =  2422.715588
+:CTO005: CHARGE SPHERE  5    =  2422.551368
+:CTO006: CHARGE SPHERE  6    =  2422.560753
+:CTO007: CHARGE SPHERE  7    =  1007.133341
+:CTO008: CHARGE SPHERE  8    =  1006.980250
+:CTO009: CHARGE SPHERE  9    =  1007.136534
+:CTO010: CHARGE SPHERE 10    =    75.545271
+:CTO011: CHARGE SPHERE 11    =    75.509807
+:CTO012: CHARGE SPHERE 12    =    75.586195
+:CTO013: CHARGE SPHERE 13    =    75.506964
+:CTO014: CHARGE SPHERE 14    =    75.571877
+:CTO015: CHARGE SPHERE 15    =    75.543093
+:CTO016: CHARGE SPHERE 16    =    75.489722
+:CTO017: CHARGE SPHERE 17    =    75.598139
+:CTO018: CHARGE SPHERE 18    =    75.401155
+:CTO019: CHARGE SPHERE 19    =    75.594408
+:CTO020: CHARGE SPHERE 20    =    75.545544
+:CTO021: CHARGE SPHERE 21    =    75.394453
+:CTO022: CHARGE SPHERE 22    =    75.586458
+:CTO023: CHARGE SPHERE 23    =    75.397684
+:CTO024: CHARGE SPHERE 24    =    75.425019
+:CTO025: CHARGE SPHERE 25    =    75.385368
+:CTO026: CHARGE SPHERE 26    =    75.548793
+:CTO027: CHARGE SPHERE 27    =    75.510873
+
+:NEC03: NUCLEAR AND ELECTRONIC CHARGE    728.00000 35524.82464
+        Charge not renormalized due to INPUT-option
+
+PW CHANGE     H    K    L             Current                    Change               Residue
+:PTO001:      0    0    0  2.98707161E-02 0.00000000E+00  4.810E-08  0.000E+00  4.810E-08  0.000E+00
+:PTO002:      0    0   -1  6.22640531E-03 5.88923308E-03  5.489E-10  3.673E-10  5.489E-10  3.673E-10
+:PTO003:      0    0    1  6.22640531E-03-5.88923308E-03  5.489E-10 -3.673E-10  5.489E-10 -3.673E-10
+:PTO004:      0   -1    0 -1.14493481E-04 0.00000000E+00 -1.436E-10  0.000E+00 -1.436E-10  0.000E+00
+:PTO005:     -1    0    0 -1.19741606E-02 0.00000000E+00 -1.690E-09  0.000E+00 -1.690E-09  0.000E+00
+:PTO006:      0   -1   -1 -3.22235517E-05-1.76192645E-04 -7.543E-11  1.126E-10 -7.543E-11  1.126E-10
+:PTO007:      0   -1    1 -3.22235517E-05 1.76192645E-04 -7.543E-11 -1.126E-10 -7.543E-11 -1.126E-10
+:PTO008:     -1    0   -1 -6.21578802E-04-1.14121779E-02 -5.126E-10 -1.137E-09 -5.126E-10 -1.137E-09
+:PTO009:     -1    0    1 -6.21578802E-04 1.14121779E-02 -5.126E-10  1.137E-09 -5.126E-10  1.137E-09
+:PTO010:     -1   -1    0 -2.25079158E-02 0.00000000E+00 -3.650E-09  0.000E+00 -3.650E-09  0.000E+00
+:PTO011:      0    0   -2 -1.09003535E-05 1.94818227E-04  1.695E-10  3.700E-11  1.695E-10  3.700E-11
+:PTO012:      0    0    2 -1.09003535E-05-1.94818227E-04  1.695E-10 -3.700E-11  1.695E-10 -3.700E-11
+
+:ENE  : ********** TOTAL ENERGY IN Ry =            0.00000000
+

@@ -1,0 +1,123 @@
+* ENERTEST : Using BPTI coordinates
+*
+
+stream datadir.def
+bomlev -2
+
+OPEN READ FORM UNIT 1 NAME @0toph10.rtf
+READ RTF  CARD UNIT 1
+OPEN READ FORM UNIT 2 NAME @0param8.prm
+READ PARAMETER CARD UNIT 2
+
+READ      SEQUENCE  CARDS
+*PTI SEQUENCE
+*
+   58
+ARG PRO ASP PHE CYS LEU GLU PRO PRO TYR 
+THR GLY PRO CYS LYS ALA ARG ILE ILE ARG
+TYR PHE TYR ASN ALA LYS ALA GLY LEU CYS 
+GLN THR PHE VAL TYR GLY GLY CYS ARG ALA
+LYS ARG ASN ASN PHE LYS SER ALA GLU ASP 
+CYS MET ARG THR CYS GLY GLY ALA
+GENERATE  MAIN
+
+PATCH DISU MAIN  5 MAIN 55
+PATCH DISU MAIN 14 MAIN 38
+PATCH DISU MAIN 30 MAIN 51
+
+READ      SEQUENCE            WATER    4
+GENERATE  SOLV
+
+open unit 3 read card   name @0bpti.crd
+READ COORD card  UNIT 3
+COOR COPY COMP
+
+HBONDS IHBFRQ 50 ALL
+NBONDS ATOM CDIE SHIF  VSHI VDIS
+UPDATE INBFRQ 0 IHBFRQ 0
+
+!!!!! 1 first section
+!TIMER 2
+GETE PRINT
+FASTER ON
+ENERGY
+ENERGY COMP
+FASTER OFF
+TIMER 0
+SKIP ALL EXCL DIHE
+GETE PRINT
+SKIP NONE DIHE VDW ELEC
+GETE PRINT
+
+!!!!! 2 second section
+! TEST SOME ELECTROSTATICS
+SKIP ALL EXCL ELEC
+ENERGY INBFRQ 1 ATOM  CUTNB 100.0 CTOFNB 99.0 CTONNB 98.0   CDIE SWIT VSWI
+!TEST FIRST STEP 0.005 TOL 0.0000 SELE ATOM MAIN 6 CA END
+ENERGY INBFRQ 1 GROUP CUTNB 100.0 CTOFNB 99.0 CTONNB 98.0   CDIE SWIT
+!TEST FIRST STEP 0.005 TOL 0.0000 SELE ATOM MAIN 6 CA END
+!
+!
+!!!!! 3 third section
+! test energy title printing
+FORMAT (F10.4)
+write title unit 6
+*  TOTE   ?TOTE
+*  TOTK   ?TOTK
+*  ENER   ?ENER
+*  TEMP   ?TEMP
+*  BOND   ?BOND
+*  ANGL   ?ANGL
+*  DIHE   ?DIHE
+*  IMPR   ?IMPR
+*  VDW    ?VDW
+*  ELEC   ?ELEC
+*  HBON   ?HBON
+*  ST2    ?ST2
+*  HARM   ?HARM
+*  CDIH   ?CDIH
+*  CIC    ?CIC
+*  CDRO   ?CDRO
+*  USER   ?USER
+*  RXNF   ?RXNF
+*  IMNB   ?IMNB
+*  IMEL   ?IMEL
+*  IMHB   ?IMHB
+*  IMST   ?IMST
+*  SBOU   ?SBOU
+*
+
+!!!! 4 fourth section
+GETE print
+coor force comp
+coor dist weigh comp
+scalar xcomp = wcomp
+scalar ycomp = wcomp
+scalar zcomp = wcomp
+scalar mass store 1
+coor copy
+scalar xcomp aver byseg
+scalar ycomp aver byres
+scalar zcomp aver bygrou weight 1
+open write unit 80 card name @9for080e.dat
+write coor  card comp unit 80
+* averaged forces for pti
+*
+scalar wmain = wcomp
+scalar x aver all sele type ca end
+scalar x aver all sele type cb* end
+scalar x aver all sele type cg* end
+scalar x aver all sele type cd* end
+scalar x aver all sele type c end
+scalar x aver all sele type o end
+scalar x aver all sele type n end
+scalar x aver all sele type h* end
+scalar y aver byres sele type ca .or. type c .or. type n end
+scalar z aver byseg sele type o* end
+scalar z aver byseg sele type h* end
+open write unit 81 card name @9for081e.dat
+write coor card unit 81
+* averge forces for pti
+*
+print coor sele type ca end
+stop

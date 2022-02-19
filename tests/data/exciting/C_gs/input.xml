@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<input>
+ 
+   <title>Diamond: 2nd-order elastic constants</title>
+ 
+   <structure speciespath="/home/lorenzo/work/codes/exciting//species">
+ 
+      <crystal scale="6.7165">
+         <basevect>    0.4847679857418169    0.4847679857418169    0.0000000000000000 </basevect>
+         <basevect>    0.4847679857418169    0.0000000000000000    0.5000000000000000 </basevect>
+         <basevect>    0.0000000000000000    0.4847679857418169    0.5000000000000000 </basevect>
+      </crystal>
+ 
+      <species speciesfile="C.xml" rmt="1.30">
+         <atom coord="0.00  0.00  0.00"/>
+         <atom coord="0.25  0.25  0.25"/>
+      </species>
+ 
+   </structure>
+ 
+   <groundstate xctype="GGA_PBE_SOL" ngridk="6 6 6" swidth="0.0001" gmaxvr="18">
+   </groundstate>
+ 
+   <relax/>
+ 
+</input>

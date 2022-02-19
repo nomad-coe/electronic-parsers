@@ -1,0 +1,520 @@
+
+   OpenMP run-time library returned nthreads = 40
+
+ pnoccsd (node56-030.cm.cluster) : TURBOMOLE V7.3 ( 22142 ) 4 Jul 2018 at 18:12:42
+ Copyright (C) 2018 TURBOMOLE GmbH, Karlsruhe
+
+
+    2019-08-02 05:40:10.406 
+
+
+
+                         P N O C C S D  - P R O G R A M
+
+                          the quantum chemistry groups
+                             at the universities in
+                         Bochum (Germany) & Bristol (UK)
+
+
+   *-----------------------------------------------------------------------*
+   |                     program will use 40 thread(s)                     |
+   *-----------------------------------------------------------------------*
+
+
+              +--------------------------------------------------+
+              | Atomic coordinate, charge and isotop information |
+              +--------------------------------------------------+
+
+                    atomic coordinates            atom    charge  isotop
+         10.93750540   15.98548197   15.77718595    h      1.000     0
+         10.89873138   20.45382448   15.80446374    h      1.000     0
+         16.26495845   13.73896756   29.48083133    o      8.000     0
+         21.51557521   13.92153462   33.07188672    o      8.000     0
+         17.23205338   24.44232418   26.23551434    o      8.000     0
+         22.75823741   13.14139050   29.02464444    o      8.000     0
+         14.19296631   23.15488072   29.00168830    o      8.000     0
+         19.11198917   18.23503429   31.89962118    n      7.000     0
+         17.93202002   20.18046908   31.22630273    n      7.000     0
+         20.19044993   20.18282238   27.30184831    n      7.000     0
+         21.37838243   18.26491158   27.98091018    n      7.000     0
+         15.04680100   14.29826830   31.82799632    c      6.000     0
+         17.59275955   15.69839982   28.26021281    c      6.000     0
+         16.07649057   18.06516168   27.55458971    c      6.000     0
+         13.19967082   16.70966940   23.78141748    c      6.000     0
+         13.31542768   15.17406079   21.37397911    c      6.000     0
+         10.77066241   15.21222475   19.89798500    c      6.000     0
+         10.71517742   21.15916096   19.94415798    c      6.000     0
+         10.77948379   19.50061292   17.63535135    c      6.000     0
+         10.80380778   16.91120545   17.62160999    c      6.000     0
+         13.23749897   21.17836233   21.45665916    c      6.000     0
+         15.44113715   18.17664352   24.77508103    c      6.000     0
+         13.13674244   19.57040858   23.81846660    c      6.000     0
+         22.92143163   11.71371310   33.86145376    c      6.000     0
+         12.80769768   25.44454028   28.45695660    c      6.000     0
+         21.60262744   14.39227043   30.57035723    c      6.000     0
+         16.40527821   22.91311940   27.73493704    c      6.000     0
+         19.98285237   16.64331111   29.81732666    c      6.000     0
+         17.64510604   20.41567497   28.44764547    c      6.000     0
+         18.37469957   14.79391342   26.56179073    h      1.000     0
+         14.07230799   12.55162015   32.37021952    h      1.000     0
+         13.64437642   15.83077051   31.64715957    h      1.000     0
+         16.42808515   14.82310499   33.29589250    h      1.000     0
+         14.31900660   18.11688086   28.66432691    h      1.000     0
+         11.91649833   20.35252586   25.29526654    h      1.000     0
+         12.03320901   15.83167729   25.24826546    h      1.000     0
+         17.08525653   18.24123417   23.52329682    h      1.000     0
+         14.78452389   20.54237683   20.22125079    h      1.000     0
+         13.72518596   23.12427272   22.01785260    h      1.000     0
+          9.18495452   20.54355263   21.22312799    h      1.000     0
+         10.24282831   23.09793512   19.36341958    h      1.000     0
+          9.26089366   15.80167731   21.21203999    h      1.000     0
+         10.29237407   13.28370787   19.28936518    h      1.000     0
+         13.82081097   13.21478260   21.86949273    h      1.000     0
+         14.83659745   15.87308743   20.14105926    h      1.000     0
+         24.93735705   11.95832345   33.43433979    h      1.000     0
+         22.61039290   11.57154534   35.90171756    h      1.000     0
+         22.21614019   10.02722737   32.87863461    h      1.000     0
+         11.11318725   25.35675753   29.64045411    h      1.000     0
+         12.30216629   25.51671398   26.44377472    h      1.000     0
+         13.95546880   27.10797831   28.92787144    h      1.000     0
+ 
+       center of nuclear mass  :   16.41534001   18.06523149   26.85914956
+       center of nuclear charge:   16.28938346   18.04148630   26.77573333
+
+              +--------------------------------------------------+
+              |               basis set information              |
+              +--------------------------------------------------+
+
+              we will work with the 1s 3p 5d 7f 9g ... basis set
+              ...i.e. with spherical basis functions...
+
+   type   atoms  prim   cont   basis
+   ---------------------------------------------------------------------------
+    h       24     16     14   cc-pVTZ   [3s2p1d|5s2p1d]
+    o        5     50     30   cc-pVTZ   [4s3p2d1f|18s5p2d1f]
+    n        4     50     30   cc-pVTZ   [4s3p2d1f|18s5p2d1f]
+    c       18     50     30   cc-pVTZ   [4s3p2d1f|18s5p2d1f]
+   ---------------------------------------------------------------------------
+   total:   51   1734   1146
+   ---------------------------------------------------------------------------
+
+   total number of primitive shells          :   86
+   total number of contracted shells         :  414
+   total number of cartesian basis functions : 1305
+   total number of SCF-basis functions       : 1146
+
+
+                  +------------------------------------------+
+                  |     Auxiliary basis set information      |
+                  +------------------------------------------+
+
+              we will work with the 1s 3p 5d 7f 9g ... basis set
+              ...i.e. with spherical basis functions...
+
+   type   atoms  prim   cont   basis
+   ---------------------------------------------------------------------------
+    h       24     30     30   cc-pVTZ   [4s3p2d1f|4s3p2d1f]
+    o        5     81     81   cc-pVTZ   [8s6p5d3f1g|8s6p5d3f1g]
+    n        4     81     81   cc-pVTZ   [8s6p5d3f1g|8s6p5d3f1g]
+    c       18     81     81   cc-pVTZ   [8s6p5d3f1g|8s6p5d3f1g]
+   ---------------------------------------------------------------------------
+   total:   51   2907   2907
+   ---------------------------------------------------------------------------
+
+   total number of primitive shells          :   79
+   total number of contracted shells         :  861
+   total number of cartesian basis functions : 3567
+   total number of SCF-basis functions       : 2907
+
+
+ symmetry group of the molecule :   c1 
+
+ the group has the following generators :
+   c1(z)
+
+    1 symmetry operations found
+
+ there are 1 real representations :   a   
+
+                 +--------------------------------------------+
+                 !          P N O C C S D  key words          |
+                 +--------------------------------------------+
+
+   Method  1:                                              MP2             
+   Method  2:                                              CCSD            
+   Method  3:                                              CCSD(T0)
+   Method  4:                                              CCSD(T)
+
+   Core memory limit (GB):                                       136.7
+   Localization method:                                       IBO
+   Threshold for truncation of PNOs:                          1.00E-07
+   Threshold MP2 pair correlation energy:                     4.64E-06
+        Threshold strong pairs:                          1.00E-03
+        Threshold close pairs:                           1.67E-04
+        Threshold weak pairs:                            2.78E-05
+   Threshold for truncation of OSVs:                          1.00E-08
+   Maximum dim. of reduced space in OSV gen.:                800
+   Threshold for truncation of TNOs:                          1.00E-07
+   Threshold triples correlation energies:                    1.00E-06
+   Flag using PAOs:                                                  T
+     Threshold for truncation of PAOs:                        3.16E-09
+   Flag for explicit correlation:                                    F
+   Threshold for local RI:                                    1.21E-03
+   Residual norm threshold for amplitude solver:              1.00E-03
+   Energy threshold for amplitude solver:                     1.00E-07
+   Linear dependence threshold:                               1.00E-12
+   Maximum number of iterations for amplitude solver:         25
+   Maximum dimension of the reduced space:                   100
+   Number of amplitude and update vectors to keep for DIIS:  10
+
+
+
+
+ maximum number of shells which are related by symmetry :  1
+
+  The symmetry information takes                      1  MB
+
+         -----------------
+         -S integrals
+         -----------------
+
+ 1e-integrals will be neglected if expon. factor < 0.256089E-12
+  MOs are in ASCII format !
+
+
+ reading orbital data $scfmo  from file mos
+ orbital characterization : scfconv=7
+
+ reading orbital data 1s(IAO-TZ)  from file /home/surfacechem/public/mr_soft/TM730/TURBOMOLE/basen/h
+
+ reading orbital data 2s1p(IAO-TZ)  from file /home/surfacechem/public/mr_soft/TM730/TURBOMOLE/basen/o
+
+ reading orbital data 2s1p(IAO-TZ)  from file /home/surfacechem/public/mr_soft/TM730/TURBOMOLE/basen/n
+
+ reading orbital data 2s1p(IAO-TZ)  from file /home/surfacechem/public/mr_soft/TM730/TURBOMOLE/basen/c
+
+
+
+              +--------------------------------------------+
+              | list of orbitals that will be kept frozen: |
+              +--------------------------------------------+
+              |   irrep   index      energy     occ/vir    |
+              +--------------------------------------------+
+              |   a         1      -20.6223     occupied   |
+              |   a         2      -20.6197     occupied   |
+              |   a         3      -20.5876     occupied   |
+              |   a         4      -20.5658     occupied   |
+              |   a         5      -20.5598     occupied   |
+              |   a         6      -15.6615     occupied   |
+              |   a         7      -15.6597     occupied   |
+              |   a         8      -15.6589     occupied   |
+              |   a         9      -15.6564     occupied   |
+              |   a        10      -11.4047     occupied   |
+              |   a        11      -11.4020     occupied   |
+              |   a       ...        ...        occupied   |
+              |   a        27      -11.2300     occupied   |
+              +--------------------------------------------+
+
+
+ ******************************************************************************
+
+ reading orbital data $coisaos_rhf  from file isaos
+ * Frozen occupied molecular orbitals will be transformed to IBOs             *
+   Pipek-Mezey Localization converged within    10 sweeps
+   total number of pivots:      566
+   total number of pivot tests:     3510
+ * Active occupied molecular orbitals will be transformed to IBOs             *
+   Pipek-Mezey Localization converged within    12 sweeps
+   total number of pivots:    17440
+   total number of pivot tests:    28797
+ ******************************************************************************
+
+ Save LMO -> MO transformation on file /local/94959/0/CCTRLMO2MO
+ dimension     1313316 corresponding to           11 Mbytes
+
+
+   Molecular Orbital Statistic:
+   ============================
+
+   -----------------------------
+   orbitals in total:
+   -----------------------------
+    frozen occupied :     27
+    active occupied :     73
+    active virtual  :   1046
+    frozen virtual  :      0
+    all together    :   1146
+   -----------------------------
+
+
+     time in riccmos       cpu: 45.08 sec    wall:  2.81 sec    ratio: 16.0
+
+   threshold for RMS(d[D]) in SCF was     :  0.10E-06
+   integral neglect threshold             :  0.26E-11
+   derivative integral neglect threshold  :  0.10E-07
+
+
+   =========================================================================
+
+     Energy of reference wave function is   -1287.9507561129999
+     Maximum orbital residual is             0.1159439150517E-04
+
+
+     Number of symmetry-nonredundant auxiliary basis functions:     2907
+   =========================================================================
+
+
+     time in 3idxovl       cpu:  5 min 31 s  wall:  0 min  9 s  ratio: 37.0
+
+   =========================================================================
+
+     Summary of MP2-OSV generations:
+
+       Threshold for discarding OSVs     :0.100E-07
+
+       Maximum number of OSVs per orbital:      132
+       Average number of OSVs per orbital:       93
+       Total dimension of OSV basis:           6764
+
+       Maximum number of PAOs per orbital:      660
+       Average number of PAOs per orbital:      450
+
+     time in OSV+(Q|mui)   cpu: 36 min  7 s  wall:  1 min  1 s  ratio: 35.3
+   =========================================================================
+
+       Pairs discarded in pre-screening:                        1
+       Pairs discarded based on OSV-SOS-MP2 estimate:         676
+
+     Merge OSVs to pre-PNOs 
+
+       Number of pairs for the unified OSVs:           2024
+       Maximum number of unified OSVs per pair:         264
+       Average number of unified OSVs per pair:         185
+       Dim. of doubles space obtained from OSVs:      71876 x10^3
+       Memory needed for the pre-PNOs:                    3 MiB
+
+     time in prepnos       cpu:  2 min 43 s  wall:  0 min  4 s  ratio: 39.9
+   =========================================================================
+     time in PNOs(pdens)   cpu: 11 min 38 s  wall:  0 min 25 s  ratio: 28.2
+   =========================================================================
+
+               SC-MP2 correlation energy analysis:
+
+     Number of possible pairs:               2701
+     Pairs kept after PNO-MP2 truncation:    1756
+
+     E_MP2 truncated (pre-PNOs) with   2024 pairs:         -4.794474199283
+     E_MP2 truncated (PNOs)     with   1756 pairs:         -4.786751801503
+     E_MP2,coul of pairs screened out:                     -0.000385087136
+     Correction for skipped pairs & PNOs:                  -0.008107484916
+
+     Pair correlation energy on average:                   -0.001775073750
+     Maximal pair correlation energy:                      -0.041938707605
+
+     Maximal possible number of PNOs:         2825246
+     Total number of PNOs:                      44429
+     Maximum number of PNOs per pair:              88
+     Average number of PNOs per pair:            25.3
+     Standard deviation (sigma_n):               19.8
+     Memory allocated for PNOs:                  1 MB
+
+   =========================================================================
+
+       Restrictions on pair classes:
+     ---------------------------------------------------------
+       pairs in ladder terms       : strong  
+       OO products in ladder terms : strong  
+       OO products in ring   terms : weak    
+
+   =========================================================================
+
+              Amplitude solver routine
+              Method: MP1             
+
+
+      iter       || R2 ||          E_corr  
+     -----------------------------------------
+       1     0.263326021468    -4.892155653568
+       2     0.044078525111    -4.936187194973
+       3     0.009538646708    -4.937494080024
+       4     0.001368969926    -4.937562978227
+       5     0.000261194847    -4.937564406659
+       6     0.000052010117    -4.937564476390
+     -----------------------------------------
+
+        Quasi-Newton algorithm with DIIS
+
+        !!!      CONVERGED           !!!
+
+         within  6 cycles.
+
+
+
+     **********************************************************************
+     *                                                                    *
+     *   RHF  energy                             :  -1287.9507561130      *
+     *   MP2 correlation energy (doubles)        :     -4.9375644764      *
+     *   Correction for neglected pairs & PNOs   :     -0.0081074849      *
+     *                                                                    *
+     *   Final MP2 energy                        :  -1292.8964280743      *
+     *                                                                    *
+     *    E(S)   =     -3.0630823712      E(T)   =     -1.8744821052      *
+     *    E(OS)  =     -3.6879097396      E(SS)  =     -1.2496547368      *
+     *                                                                    *
+     *   SCS-MP2 energy                          :  -1292.7927993794      *
+     *   (computed with  C(OS) =   1.2000  and  C(SS) =   0.3333)         *
+     *                                                                    *
+     *   SOS-MP2 energy                          :  -1292.7450387744      *
+     *   (computed with  C(OS) =   1.3000)                                *
+     *                                                                    *
+     **********************************************************************
+
+     time in global C & D  cpu: 36 min 43 s  wall:  0 min 58 s  ratio: 37.9
+
+
+   **************************************************************************
+   *                                                                        *
+   *          OPTIMIZATION OF THE GROUND STATE CLUSTER AMPLITUDES           *
+   *                                                                        *
+   **************************************************************************
+
+
+   Iter.   CCSD energy      Norm(Omega)    Norm(t1)  Norm(t2)     cpu    wall
+   ..........................................................................
+    1  -1292.8269354549    0.5242773265     0.00000   0.73711   36.91    1.15
+    2  -1292.9713763055    0.1540951902     0.02094   0.71137   78.32    2.31
+    3  -1292.9846042703    0.0505858675     0.01821   0.76585   78.56    2.30
+    4  -1292.9851980171    0.0169926515     0.02549   0.78417   77.97    2.27
+    5  -1292.9853874714    0.0056436394     0.02723   0.78571   77.84    2.27
+    6  -1292.9853791526    0.0024536634     0.02826   0.78657   78.65    2.29
+    7  -1292.9853183949    0.0010196352     0.02879   0.78689   78.59    2.28
+    8  -1292.9853134352    0.0004541774     0.02898   0.78679   78.76    2.35
+    9  -1292.9853104863    0.0002132270     0.02907   0.78675   78.66    2.30
+   10  -1292.9853094013    0.0000975642     0.02910   0.78675   78.63    2.29
+   11  -1292.9853099483    0.0000505013     0.02910   0.78675   78.67    2.43
+   12  -1292.9853104493    0.0000283734     0.02910   0.78675   78.77    2.45
+   13  -1292.9853104414    0.0000122368     0.02910   0.78675   79.06    2.32
+   ..........................................................................
+
+        Quasi-Newton algorithm with DIIS
+
+        !!!      CONVERGED           !!!
+
+         within 13 cycles.
+
+
+
+     **********************************************************************
+     *                                                                    *
+     *   RHF  energy                             :  -1287.9507561130      *
+     *   correlation energy                      :     -5.0264468434      *
+     *   Correction for neglected pairs & PNOs   :     -0.0081074849      *
+     *                                                                    *
+     *   Final CCSD energy                       :  -1292.9853104414      *
+     *                                                                    *
+     **********************************************************************
+
+
+
+ ================================================================================
+
+
+     Start generation of TNOs for the virtual space
+
+     ->Screen number of triples
+
+   tolscreen:       0.000001000000
+
+       Number of possible triples:       67452
+       Number of screened triples:       35418
+       Total number of triples:          18038
+
+
+     time in screentrip    cpu:  3.55 sec    wall:  0.59 sec    ratio:  6.0
+
+     ->Merge OSVs to pre-TNO basis
+
+       Maximum number of unified OSVs per triple:         391
+       Average number of unified OSVs per triple:         273
+       Total   number of unified OSVs per triple:     4936632
+
+
+     time in pretnos       cpu:  3 h 28 min  wall:  0 h  6 min  ratio: 34.5
+
+     ->Construct TNO basis
+
+       Maximum number of TNOs:          97
+       Average number of TNOs:        53.2
+       Triples with zero TNOs:           0
+       Average compression:           95.4
+
+
+     time in tdens         cpu:  1 h  3 min  wall:  0 h  1 min  ratio: 39.1
+
+ ================================================================================
+
+
+     Calculate laplace transformed triples correction T
+
+     ->Generate 3-idx RI-precursor using PAOs
+
+
+     ->Calculate E(T0) for each triple
+
+
+
+      *********************************************************************
+      *                                                                   *
+      *  RHF  energy                             :  -1287.9507561130      *
+      *  CCSD correlation energy                 :     -5.0345543284      *
+      *  E4 doubles and triples contribution     :     -0.2410642174      *
+      *  E5 singles and triples contribution     :      0.0088220036      *
+      *  total correlation energy                :     -5.2667965421      *
+      *                                                                   *
+      *  Final CCSD(T0) energy                   :  -1293.2175526551      *
+      *                                                                   *
+      *********************************************************************
+
+
+     ->Screen number of Laplace triples
+
+   tolscreen:       0.000004641589
+
+       Number of screened Laplace triples:       14313
+       Total number of Laplace triples:           3725
+
+     ->Generate 3-idx RI-precursor using PAOs, Laplace point:   1
+
+
+     ->Generate 3-idx RI-precursor using PAOs, Laplace point:   2
+
+
+
+      *********************************************************************
+      *                                                                   *
+      *  RHF  energy                             :  -1287.9507561130      *
+      *  CCSD correlation energy                 :     -5.0345543284      *
+      *  E4 doubles and triples contribution     :     -0.2440384459      *
+      *  E5 singles and triples contribution     :      0.0092304430      *
+      *  total correlation energy                :     -5.2693623312      *
+      *                                                                   *
+      *  Final CCSD(T) energy                    :  -1293.2201184442      *
+      *                                                                   *
+      *********************************************************************
+
+
+ ================================================================================
+
+
+
+    ------------------------------------------------------------------------
+         total  cpu-time :   3 days 11 hours 47 minutes and 37 seconds
+         total wall-time :  2 hours 54 minutes and 10 seconds
+    ------------------------------------------------------------------------
+
+   ****  pnoccsd : all done  ****
+
+
+    2019-08-02 08:34:20.018 
+
+ pnoccsd ended normally

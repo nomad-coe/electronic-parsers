@@ -1,0 +1,277 @@
+  12 : nsymcrys
+ 
+Crystal symmetry, Bravais symmetry :    1   1
+ inverse operations		     :    1   1
+ spatial rotation and inverse (lattice coordinates):
+   1   0   0        1   0   0
+   0   1   0        0   1   0
+   0   0   1        0   0   1
+ spatial rotation and inverse (Cartesian coordinates):
+   1.000000000       0.000000000       0.000000000            1.000000000       0.000000000       0.000000000    
+   0.000000000       1.000000000       0.000000000            0.000000000       1.000000000       0.000000000    
+   0.000000000       0.000000000       1.000000000            0.000000000       0.000000000       1.000000000    
+ spatial translation and inverse (lattice coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ spatial translation and inverse (Cartesian coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ global spin rotation and inverse (lattice coordinates) :
+   1   0   0        1   0   0
+   0   1   0        0   1   0
+   0   0   1        0   0   1
+ global spin rotation and inverse (Cartesian coordinates) :
+   1.000000000       0.000000000       0.000000000            1.000000000       0.000000000       0.000000000    
+   0.000000000       1.000000000       0.000000000            0.000000000       1.000000000       0.000000000    
+   0.000000000       0.000000000       1.000000000            0.000000000       0.000000000       1.000000000    
+ 
+Crystal symmetry, Bravais symmetry :    2   3
+ inverse operations		     :    2   3
+ spatial rotation and inverse (lattice coordinates):
+  -1   0   0       -1   0   0
+   0  -1   0        0  -1   0
+   0   0  -1        0   0  -1
+ spatial rotation and inverse (Cartesian coordinates):
+  -1.000000000       0.000000000       0.000000000           -1.000000000       0.000000000       0.000000000    
+   0.000000000      -1.000000000       0.000000000            0.000000000      -1.000000000       0.000000000    
+   0.000000000       0.000000000      -1.000000000            0.000000000       0.000000000      -1.000000000    
+ spatial translation and inverse (lattice coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ spatial translation and inverse (Cartesian coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ global spin rotation and inverse (lattice coordinates) :
+  -1   0   0       -1   0   0
+   0  -1   0        0  -1   0
+   0   0  -1        0   0  -1
+ global spin rotation and inverse (Cartesian coordinates) :
+  -1.000000000       0.000000000       0.000000000           -1.000000000       0.000000000       0.000000000    
+   0.000000000      -1.000000000       0.000000000            0.000000000      -1.000000000       0.000000000    
+   0.000000000       0.000000000      -1.000000000            0.000000000       0.000000000      -1.000000000    
+ 
+Crystal symmetry, Bravais symmetry :    3   6
+ inverse operations		     :    6  12
+ spatial rotation and inverse (lattice coordinates):
+  -1   1   0        0  -1   0
+  -1   0   0        1  -1   0
+   0   0   1        0   0   1
+ spatial rotation and inverse (Cartesian coordinates):
+ -0.5000000011      0.8660254034       0.000000000          -0.4999999989     -0.8660254034       0.000000000    
+ -0.8660254041     -0.4999999989       0.000000000           0.8660254041     -0.5000000011       0.000000000    
+   0.000000000       0.000000000       1.000000000            0.000000000       0.000000000       1.000000000    
+ spatial translation and inverse (lattice coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ spatial translation and inverse (Cartesian coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ global spin rotation and inverse (lattice coordinates) :
+  -1   1   0        0  -1   0
+  -1   0   0        1  -1   0
+   0   0   1        0   0   1
+ global spin rotation and inverse (Cartesian coordinates) :
+ -0.5000000011      0.8660254034       0.000000000          -0.4999999989     -0.8660254034       0.000000000    
+ -0.8660254041     -0.4999999989       0.000000000           0.8660254041     -0.5000000011       0.000000000    
+   0.000000000       0.000000000       1.000000000            0.000000000       0.000000000       1.000000000    
+ 
+Crystal symmetry, Bravais symmetry :    4   8
+ inverse operations		     :    4   8
+ spatial rotation and inverse (lattice coordinates):
+  -1   1   0       -1   1   0
+   0   1   0        0   1   0
+   0   0   1        0   0   1
+ spatial rotation and inverse (Cartesian coordinates):
+  -1.000000000      0.2533348975E-08   0.000000000           -1.000000000      0.2533348975E-08   0.000000000    
+   0.000000000       1.000000000       0.000000000            0.000000000       1.000000000       0.000000000    
+   0.000000000       0.000000000       1.000000000            0.000000000       0.000000000       1.000000000    
+ spatial translation and inverse (lattice coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ spatial translation and inverse (Cartesian coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ global spin rotation and inverse (lattice coordinates) :
+  -1   1   0       -1   1   0
+   0   1   0        0   1   0
+   0   0   1        0   0   1
+ global spin rotation and inverse (Cartesian coordinates) :
+  -1.000000000      0.2533348975E-08   0.000000000           -1.000000000      0.2533348975E-08   0.000000000    
+   0.000000000       1.000000000       0.000000000            0.000000000       1.000000000       0.000000000    
+   0.000000000       0.000000000       1.000000000            0.000000000       0.000000000       1.000000000    
+ 
+Crystal symmetry, Bravais symmetry :    5  10
+ inverse operations		     :    5  10
+ spatial rotation and inverse (lattice coordinates):
+   0  -1   0        0  -1   0
+  -1   0   0       -1   0   0
+   0   0   1        0   0   1
+ spatial rotation and inverse (Cartesian coordinates):
+  0.4999999989     -0.8660254047       0.000000000           0.4999999989     -0.8660254047       0.000000000    
+ -0.8660254041     -0.4999999989       0.000000000          -0.8660254041     -0.4999999989       0.000000000    
+   0.000000000       0.000000000       1.000000000            0.000000000       0.000000000       1.000000000    
+ spatial translation and inverse (lattice coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ spatial translation and inverse (Cartesian coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ global spin rotation and inverse (lattice coordinates) :
+   0  -1   0        0  -1   0
+  -1   0   0       -1   0   0
+   0   0   1        0   0   1
+ global spin rotation and inverse (Cartesian coordinates) :
+  0.4999999989     -0.8660254047       0.000000000           0.4999999989     -0.8660254047       0.000000000    
+ -0.8660254041     -0.4999999989       0.000000000          -0.8660254041     -0.4999999989       0.000000000    
+   0.000000000       0.000000000       1.000000000            0.000000000       0.000000000       1.000000000    
+ 
+Crystal symmetry, Bravais symmetry :    6  12
+ inverse operations		     :    3   6
+ spatial rotation and inverse (lattice coordinates):
+   0  -1   0       -1   1   0
+   1  -1   0       -1   0   0
+   0   0   1        0   0   1
+ spatial rotation and inverse (Cartesian coordinates):
+ -0.4999999989     -0.8660254034       0.000000000          -0.5000000011      0.8660254034       0.000000000    
+  0.8660254041     -0.5000000011       0.000000000          -0.8660254041     -0.4999999989       0.000000000    
+   0.000000000       0.000000000       1.000000000            0.000000000       0.000000000       1.000000000    
+ spatial translation and inverse (lattice coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ spatial translation and inverse (Cartesian coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ global spin rotation and inverse (lattice coordinates) :
+   0  -1   0       -1   1   0
+   1  -1   0       -1   0   0
+   0   0   1        0   0   1
+ global spin rotation and inverse (Cartesian coordinates) :
+ -0.4999999989     -0.8660254034       0.000000000          -0.5000000011      0.8660254034       0.000000000    
+  0.8660254041     -0.5000000011       0.000000000          -0.8660254041     -0.4999999989       0.000000000    
+   0.000000000       0.000000000       1.000000000            0.000000000       0.000000000       1.000000000    
+ 
+Crystal symmetry, Bravais symmetry :    7  13
+ inverse operations		     :   10  19
+ spatial rotation and inverse (lattice coordinates):
+   0   1   0        1  -1   0
+  -1   1   0        1   0   0
+   0   0  -1        0   0  -1
+ spatial rotation and inverse (Cartesian coordinates):
+  0.4999999989      0.8660254034       0.000000000           0.5000000011     -0.8660254034       0.000000000    
+ -0.8660254041      0.5000000011       0.000000000           0.8660254041      0.4999999989       0.000000000    
+   0.000000000       0.000000000      -1.000000000            0.000000000       0.000000000      -1.000000000    
+ spatial translation and inverse (lattice coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ spatial translation and inverse (Cartesian coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ global spin rotation and inverse (lattice coordinates) :
+   0   1   0        1  -1   0
+  -1   1   0        1   0   0
+   0   0  -1        0   0  -1
+ global spin rotation and inverse (Cartesian coordinates) :
+  0.4999999989      0.8660254034       0.000000000           0.5000000011     -0.8660254034       0.000000000    
+ -0.8660254041      0.5000000011       0.000000000           0.8660254041      0.4999999989       0.000000000    
+   0.000000000       0.000000000      -1.000000000            0.000000000       0.000000000      -1.000000000    
+ 
+Crystal symmetry, Bravais symmetry :    8  15
+ inverse operations		     :    8  15
+ spatial rotation and inverse (lattice coordinates):
+   0   1   0        0   1   0
+   1   0   0        1   0   0
+   0   0  -1        0   0  -1
+ spatial rotation and inverse (Cartesian coordinates):
+ -0.4999999989      0.8660254047       0.000000000          -0.4999999989      0.8660254047       0.000000000    
+  0.8660254041      0.4999999989       0.000000000           0.8660254041      0.4999999989       0.000000000    
+   0.000000000       0.000000000      -1.000000000            0.000000000       0.000000000      -1.000000000    
+ spatial translation and inverse (lattice coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ spatial translation and inverse (Cartesian coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ global spin rotation and inverse (lattice coordinates) :
+   0   1   0        0   1   0
+   1   0   0        1   0   0
+   0   0  -1        0   0  -1
+ global spin rotation and inverse (Cartesian coordinates) :
+ -0.4999999989      0.8660254047       0.000000000          -0.4999999989      0.8660254047       0.000000000    
+  0.8660254041      0.4999999989       0.000000000           0.8660254041      0.4999999989       0.000000000    
+   0.000000000       0.000000000      -1.000000000            0.000000000       0.000000000      -1.000000000    
+ 
+Crystal symmetry, Bravais symmetry :    9  17
+ inverse operations		     :    9  17
+ spatial rotation and inverse (lattice coordinates):
+   1  -1   0        1  -1   0
+   0  -1   0        0  -1   0
+   0   0  -1        0   0  -1
+ spatial rotation and inverse (Cartesian coordinates):
+   1.000000000     -0.2533348975E-08   0.000000000            1.000000000     -0.2533348975E-08   0.000000000    
+   0.000000000      -1.000000000       0.000000000            0.000000000      -1.000000000       0.000000000    
+   0.000000000       0.000000000      -1.000000000            0.000000000       0.000000000      -1.000000000    
+ spatial translation and inverse (lattice coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ spatial translation and inverse (Cartesian coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ global spin rotation and inverse (lattice coordinates) :
+   1  -1   0        1  -1   0
+   0  -1   0        0  -1   0
+   0   0  -1        0   0  -1
+ global spin rotation and inverse (Cartesian coordinates) :
+   1.000000000     -0.2533348975E-08   0.000000000            1.000000000     -0.2533348975E-08   0.000000000    
+   0.000000000      -1.000000000       0.000000000            0.000000000      -1.000000000       0.000000000    
+   0.000000000       0.000000000      -1.000000000            0.000000000       0.000000000      -1.000000000    
+ 
+Crystal symmetry, Bravais symmetry :   10  19
+ inverse operations		     :    7  13
+ spatial rotation and inverse (lattice coordinates):
+   1  -1   0        0   1   0
+   1   0   0       -1   1   0
+   0   0  -1        0   0  -1
+ spatial rotation and inverse (Cartesian coordinates):
+  0.5000000011     -0.8660254034       0.000000000           0.4999999989      0.8660254034       0.000000000    
+  0.8660254041      0.4999999989       0.000000000          -0.8660254041      0.5000000011       0.000000000    
+   0.000000000       0.000000000      -1.000000000            0.000000000       0.000000000      -1.000000000    
+ spatial translation and inverse (lattice coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ spatial translation and inverse (Cartesian coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ global spin rotation and inverse (lattice coordinates) :
+   1  -1   0        0   1   0
+   1   0   0       -1   1   0
+   0   0  -1        0   0  -1
+ global spin rotation and inverse (Cartesian coordinates) :
+  0.5000000011     -0.8660254034       0.000000000           0.4999999989      0.8660254034       0.000000000    
+  0.8660254041      0.4999999989       0.000000000          -0.8660254041      0.5000000011       0.000000000    
+   0.000000000       0.000000000      -1.000000000            0.000000000       0.000000000      -1.000000000    
+ 
+Crystal symmetry, Bravais symmetry :   11  22
+ inverse operations		     :   11  22
+ spatial rotation and inverse (lattice coordinates):
+  -1   0   0       -1   0   0
+  -1   1   0       -1   1   0
+   0   0  -1        0   0  -1
+ spatial rotation and inverse (Cartesian coordinates):
+ -0.5000000011     -0.8660254022       0.000000000          -0.5000000011     -0.8660254022       0.000000000    
+ -0.8660254041      0.5000000011       0.000000000          -0.8660254041      0.5000000011       0.000000000    
+   0.000000000       0.000000000      -1.000000000            0.000000000       0.000000000      -1.000000000    
+ spatial translation and inverse (lattice coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ spatial translation and inverse (Cartesian coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ global spin rotation and inverse (lattice coordinates) :
+  -1   0   0       -1   0   0
+  -1   1   0       -1   1   0
+   0   0  -1        0   0  -1
+ global spin rotation and inverse (Cartesian coordinates) :
+ -0.5000000011     -0.8660254022       0.000000000          -0.5000000011     -0.8660254022       0.000000000    
+ -0.8660254041      0.5000000011       0.000000000          -0.8660254041      0.5000000011       0.000000000    
+   0.000000000       0.000000000      -1.000000000            0.000000000       0.000000000      -1.000000000    
+ 
+Crystal symmetry, Bravais symmetry :   12  24
+ inverse operations		     :   12  24
+ spatial rotation and inverse (lattice coordinates):
+   1   0   0        1   0   0
+   1  -1   0        1  -1   0
+   0   0   1        0   0   1
+ spatial rotation and inverse (Cartesian coordinates):
+  0.5000000011      0.8660254022       0.000000000           0.5000000011      0.8660254022       0.000000000    
+  0.8660254041     -0.5000000011       0.000000000           0.8660254041     -0.5000000011       0.000000000    
+   0.000000000       0.000000000       1.000000000            0.000000000       0.000000000       1.000000000    
+ spatial translation and inverse (lattice coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ spatial translation and inverse (Cartesian coordinates) :
+   0.000000000       0.000000000       0.000000000            0.000000000       0.000000000       0.000000000    
+ global spin rotation and inverse (lattice coordinates) :
+   1   0   0        1   0   0
+   1  -1   0        1  -1   0
+   0   0   1        0   0   1
+ global spin rotation and inverse (Cartesian coordinates) :
+  0.5000000011      0.8660254022       0.000000000           0.5000000011      0.8660254022       0.000000000    
+  0.8660254041     -0.5000000011       0.000000000           0.8660254041     -0.5000000011       0.000000000    
+   0.000000000       0.000000000       1.000000000            0.000000000       0.000000000       1.000000000    

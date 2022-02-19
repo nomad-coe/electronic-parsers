@@ -1,0 +1,94 @@
+SystemName   Al                 # optional change
+SystemLabel  Al
+
+#********************************************************
+# Specification of atomic species and positions
+#********************************************************
+
+# Chemical species
+NumberOfSpecies    1
+%block ChemicalSpeciesLabel
+ 1 13 Al 
+
+%endblock ChemicalSpeciesLabel
+
+# UNIT CELL
+LatticeConstant          4.0782 Ang  #note the Co is compressed
+%block LatticeVectors
+0.5  0.0  0.5
+0.5  0.5  0.0
+0.0  0.5  0.5
+%endblock LatticeVectors
+
+# ATOMIC POSITIONS
+NumberOfAtoms    1
+AtomicCoordinatesFormat    Ang
+AtomicCoordinatesFormatOut  Ang
+%block AtomicCoordinatesAndAtomicSpecies
+         
+            0.0000000     0.0000000     0.000000  1
+           
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+
+#********************************************************
+# DFT options
+#********************************************************
+
+# Basis set variables
+PAO.BasisType    split
+PAO.EnergyShift         0.02700000000 eV
+
+%block PAO.Basis                 # Define Basis set
+Al          3                    # Species label, number of l-shells
+ n=3   0   2                         # n, l, Nzeta
+   5.859      4.513
+   1.000      1.000
+ n=3   1   2                         # n, l, Nzeta
+   6.809      5.09
+   1.000      1.000 
+ n=3   2   1                         # n, l, Nzeta
+   5.176      
+   1.000      
+%endblock PAO.Basis
+
+
+
+%block kgrid_Monkhorst_Pack
+  6   0   0     0.0
+  0   6   0     0.0
+  0   0   6     0.0
+%endblock kgrid_Monkhorst_Pack
+
+
+
+# General variables
+ElectronicTemperature     300 K 
+MeshCutoff                300. Ry
+xc.functional             LDA           # Exchange-correlation functional
+xc.authors                CA 
+SpinPolarized             F
+SpinOrbit                  F
+
+
+# SCF variables
+
+
+MaxSCFIterations        500           # Maximum number of SCF iter
+DM.MixingWeight                 0.05         # optional change
+DM.Tolerance                 1.0E-5
+DM.UseSaveDM             T          # to use continuation files
+DM.NumberPulay                    5
+SolutionMethod   	      diagon
+
+
+# Output variables
+
+WriteMullikenPop                   0
+WriteBands                         F
+SaveRho                            T
+SaveElectrostaticPotential         T
+SaveTotalPotential                 F
+WriteCoorXmol                      T
+WriteMDXmol                        T
+

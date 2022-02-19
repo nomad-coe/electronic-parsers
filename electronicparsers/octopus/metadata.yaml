@@ -1,0 +1,20 @@
+codeLabel: Octopus
+codeLabelStyle: 'Capitals: O'
+codeName: octopus
+codeUrl: https://octopus-code.org/
+parserDirName: dependencies/parsers/octopus/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-octopus.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: |
+  |Input Filename| Description|
+  |--- | --- |
+  |`<text_file>` | **Mainfile:** a plain text file w/arbitrary name|
+  |`exec/` | Subdir for runtime information |
+  |`exec/parser.log` | Input variables (user-defined & default values) |
+  |`inp`| input file|
+  |`parse.log`| **Warining** : probably obsolete|
+  |`restart/`| Data to restart a calculation, e.g., `restart/gs/` is for ground-state|
+  |`static/` | Subdir to report static part of a calculation|
+  |`static/eigenvalues`| |
+  |`static/info` | General info on static part|

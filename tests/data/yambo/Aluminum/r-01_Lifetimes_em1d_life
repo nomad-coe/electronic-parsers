@@ -1,0 +1,1664 @@
+                                                                
+     /$$     /$$ /$$$$$$  /$$      /$$ /$$$$$$$   /$$$$$$       
+    |  $$   /$$//$$__  $$| $$$    /$$$| $$__  $$ /$$__  $$      
+     \  $$ /$$/| $$  \ $$| $$$$  /$$$$| $$  \ $$| $$  \ $$      
+      \  $$$$/ | $$$$$$$$| $$ $$/$$ $$| $$$$$$$ | $$  | $$      
+       \  $$/  | $$__  $$| $$  $$$| $$| $$__  $$| $$  | $$      
+        | $$   | $$  | $$| $$\  $ | $$| $$  \ $$| $$  | $$      
+        | $$   | $$  | $$| $$ \/  | $$| $$$$$$$/|  $$$$$$/      
+        |__/   |__/  |__/|__/     |__/|_______/  \______/       
+                                                                
+    GPL Version 4.4.0 Revision 148. (Based on r.16920 h.961a8d9a
+                     MPI+SLK+OpenMP Build                       
+                  http://www.yambo-code.org                     
+ 
+ 11/05/2019 at 17:35 YAMBO @ dufour
+
+ [01] CPU structure, Files & I/O Directories
+ ===========================================
+
+ * CPU             : 1
+ * THREADS    (max): 1
+ * THREADS TOT(max): 1
+ * I/O NODES       : 1
+ * Fragmented WFs  :yes
+
+ CORE databases in   .
+ Additional I/O in   .
+ Communications in   References/
+ Input file     is   References//01_Lifetimes_01_Lifetimes.in
+ Report file    is   References//r-01_Lifetimes_em1d_life
+ Precision      is   SINGLE
+
+ Job string(s)-dir(s) (main): 01_Lifetimes
+  
+ [RD./SAVE//ns.db1]------------------------------------------
+  Bands                           : 20
+  K-points                        : 29
+  G-vectors             [RL space]:  941
+  Components       [wavefunctions]: 125
+  Symmetries             [spatial]:  48
+  Spinor components               : 1
+  Spin polarizations              : 1
+  Temperature                 [ev]:  0.02585
+  Electrons                       : 3.000000
+  WF G-vectors                    : 244
+  Max atoms/species               : 1
+  No. of atom species             : 1
+  Exact exchange fraction in XC   : 0.000000
+  Exact exchange screening in XC  : 0.000000
+  Magnetic symmetries             : no
+ - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+
+ [02] CORE Variables Setup
+ =========================
+
+
+  [02.01] Unit cells
+  ==================
+
+  Unit cell is FCC
+
+  ... containing 1Al atoms
+
+  ... with scaling factors [a.u.]: 3.750000  3.750000  3.750000
+
+  Direct Lattice(DL) unit cell [iru  /  cc(a.u.)]
+  A1 =-1.000000  0.000000  1.000000     -3.750000  0.000000  3.750000
+  A2 = 0.000000  1.000000  1.000000      0.000000  3.750000  3.750000
+  A3 =-1.000000  1.000000  0.000000     -3.750000  3.750000  0.000000
+
+  DL volume [au]: 105.4688
+
+  Reciprocal Lattice(RL) unit cell [iku  /  cc]
+  B1 =-0.500000 -0.500000  0.500000     -0.837758 -0.837758  0.837758
+  B2 = 0.500000  0.500000  0.500000      0.837758  0.837758  0.837758
+  B3 =-0.500000  0.500000 -0.500000     -0.837758  0.837758 -0.837758
+
+
+  [02.02] Symmetries
+  ==================
+
+  DL (S)ymmetries [cc]
+  [S1] 1.000000  0.000000  0.000000  0.000000  1.000000  0.000000  0.000000  0.000000  1.000000
+  [S2]-1.000000  0.000000  0.000000  0.000000 -1.000000  0.000000  0.000000  0.000000  1.000000
+  [S3]-1.000000  0.000000  0.000000  0.000000  1.000000  0.000000  0.000000  0.000000 -1.000000
+  [S4] 1.000000  0.000000  0.000000  0.000000 -1.000000  0.000000  0.000000  0.000000 -1.000000
+  [S5] 0.000000  1.000000  0.000000  1.000000  0.000000  0.000000  0.000000  0.000000 -1.000000
+  [S6] 0.000000 -1.000000  0.000000 -1.000000  0.000000  0.000000  0.000000  0.000000 -1.000000
+  [S7] 0.000000 -1.000000  0.000000  1.000000  0.000000  0.000000  0.000000  0.000000  1.000000
+  [S8] 0.000000  1.000000  0.000000 -1.000000  0.000000  0.000000  0.000000  0.000000  1.000000
+  [S9] 0.000000  0.000000  1.000000  0.000000 -1.000000  0.000000  1.000000  0.000000  0.000000
+  [S10] 0.000000  0.000000 -1.000000  0.000000 -1.000000  0.000000 -1.000000  0.000000  0.000000
+  [S11] 0.000000  0.000000 -1.000000  0.000000  1.000000  0.000000  1.000000  0.000000  0.000000
+  [S12] 0.000000  0.000000  1.000000  0.000000  1.000000  0.000000 -1.000000  0.000000  0.000000
+  [S13]-1.000000  0.000000  0.000000  0.000000  0.000000  1.000000  0.000000  1.000000  0.000000
+  [S14]-1.000000  0.000000  0.000000  0.000000  0.000000 -1.000000  0.000000 -1.000000  0.000000
+  [S15] 1.000000  0.000000  0.000000  0.000000  0.000000 -1.000000  0.000000  1.000000  0.000000
+  [S16] 1.000000  0.000000  0.000000  0.000000  0.000000  1.000000  0.000000 -1.000000  0.000000
+  [S17] 0.000000  0.000000  1.000000  1.000000  0.000000  0.000000  0.000000  1.000000  0.000000
+  [S18] 0.000000  0.000000 -1.000000 -1.000000  0.000000  0.000000  0.000000  1.000000  0.000000
+  [S19] 0.000000  0.000000 -1.000000  1.000000  0.000000  0.000000  0.000000 -1.000000  0.000000
+  [S20] 0.000000  0.000000  1.000000 -1.000000  0.000000  0.000000  0.000000 -1.000000  0.000000
+  [S21] 0.000000  1.000000  0.000000  0.000000  0.000000  1.000000  1.000000  0.000000  0.000000
+  [S22] 0.000000 -1.000000  0.000000  0.000000  0.000000 -1.000000  1.000000  0.000000  0.000000
+  [S23] 0.000000 -1.000000  0.000000  0.000000  0.000000  1.000000 -1.000000  0.000000  0.000000
+  [S24] 0.000000  1.000000  0.000000  0.000000  0.000000 -1.000000 -1.000000  0.000000  0.000000
+  [S25]-1.000000  0.000000  0.000000  0.000000 -1.000000  0.000000  0.000000  0.000000 -1.000000
+  [S26] 1.000000  0.000000  0.000000  0.000000  1.000000  0.000000  0.000000  0.000000 -1.000000
+  [S27] 1.000000  0.000000  0.000000  0.000000 -1.000000  0.000000  0.000000  0.000000  1.000000
+  [S28]-1.000000  0.000000  0.000000  0.000000  1.000000  0.000000  0.000000  0.000000  1.000000
+  [S29] 0.000000 -1.000000  0.000000 -1.000000  0.000000  0.000000  0.000000  0.000000  1.000000
+  [S30] 0.000000  1.000000  0.000000  1.000000  0.000000  0.000000  0.000000  0.000000  1.000000
+  [S31] 0.000000  1.000000  0.000000 -1.000000  0.000000  0.000000  0.000000  0.000000 -1.000000
+  [S32] 0.000000 -1.000000  0.000000  1.000000  0.000000  0.000000  0.000000  0.000000 -1.000000
+  [S33] 0.000000  0.000000 -1.000000  0.000000  1.000000  0.000000 -1.000000  0.000000  0.000000
+  [S34] 0.000000  0.000000  1.000000  0.000000  1.000000  0.000000  1.000000  0.000000  0.000000
+  [S35] 0.000000  0.000000  1.000000  0.000000 -1.000000  0.000000 -1.000000  0.000000  0.000000
+  [S36] 0.000000  0.000000 -1.000000  0.000000 -1.000000  0.000000  1.000000  0.000000  0.000000
+  [S37] 1.000000  0.000000  0.000000  0.000000  0.000000 -1.000000  0.000000 -1.000000  0.000000
+  [S38] 1.000000  0.000000  0.000000  0.000000  0.000000  1.000000  0.000000  1.000000  0.000000
+  [S39]-1.000000  0.000000  0.000000  0.000000  0.000000  1.000000  0.000000 -1.000000  0.000000
+  [S40]-1.000000  0.000000  0.000000  0.000000  0.000000 -1.000000  0.000000  1.000000  0.000000
+  [S41] 0.000000  0.000000 -1.000000 -1.000000  0.000000  0.000000  0.000000 -1.000000  0.000000
+  [S42] 0.000000  0.000000  1.000000  1.000000  0.000000  0.000000  0.000000 -1.000000  0.000000
+  [S43] 0.000000  0.000000  1.000000 -1.000000  0.000000  0.000000  0.000000  1.000000  0.000000
+  [S44] 0.000000  0.000000 -1.000000  1.000000  0.000000  0.000000  0.000000  1.000000  0.000000
+  [S45] 0.000000 -1.000000  0.000000  0.000000  0.000000 -1.000000 -1.000000  0.000000  0.000000
+  [S46] 0.000000  1.000000  0.000000  0.000000  0.000000  1.000000 -1.000000  0.000000  0.000000
+  [S47] 0.000000  1.000000  0.000000  0.000000  0.000000 -1.000000  1.000000  0.000000  0.000000
+  [S48] 0.000000 -1.000000  0.000000  0.000000  0.000000  1.000000  1.000000  0.000000  0.000000
+
+  [SYMs] K-space Time-reversal not included
+  [SYMs] Spatial inversion 25 is a symmetry
+  [SYMs] Group table built correctly
+
+  [02.03] RL shells
+  =================
+
+  Shells, format: [S#] G_RL(mHa)
+
+   [S33]:941(0.3193E+5) [S32]:893(0.3088E+5) [S31]:869(0.2948E+5) [S30]:821(0.2913E+5)
+   [S29]:749(0.2807E+5) [S28]:725(0.2667E+5) [S27]:701(0.2632E+5) [S26]:645(0.2527E+5)
+   [S25]:609(0.2386E+5) [S24]:561(0.2351E+5) [S23]:537(0.2246E+5) [S22]:531(0.2070E+5)
+   [S21]:459(0.1965E+5) [S20]:411(0.1825E+5) [S19]:387(0.1790E+5) [S18]:339(0.1684E+5)
+   [S17]:331(0.1544E+5) [S16]:307(0.1509E+5) [S15]:283(0.1404E+5) [S14]:259(0.1263E+5)
+   [S13]:229(0.1228E+5) [S12]:181(0.1123E+5) [S11]:169( 9475.) [S10]:137( 8422.)
+   [S9]:113( 7018.) [S8]:89( 6667.) [S7]:65( 5615.) [S6]:59( 4211.)
+   ...
+   [S12]:181(0.1123E+5) [S11]:169( 9475.) [S10]:137( 8422.) [S9]:113( 7018.)
+   [S8]:89( 6667.) [S7]:65( 5615.) [S6]:59( 4211.) [S5]:51( 3860.)
+   [S4]:27( 2807.) [S3]:15( 1404.) [S2]:9( 1053.) [S1]:1( 0.000000)
+
+  [02.04] K-grid lattice
+  ======================
+
+  Compatible Grid is 3D
+  B1 [rlu]= 0.000000  0.000000 -0.125000
+  B2      = 0.000000 -0.125000  0.000000
+  B3      =-0.125000  0.000000  0.000000
+  Grid dimensions               :  8   8   8
+  K lattice UC volume       [au]:   0.0046
+
+  [02.05] Energies [ev] & Occupations
+  ===================================
+
+  [X]Fermi Level        [ev]:  8.363973
+  [X]VBM / CBm          [ev]:  8.363973  8.363973
+  [X]Electronic Temp. [ev K]: 0.2586E-1  300.1   
+  [X]Bosonic    Temp. [ev K]: 0.2586E-1  300.1   
+  [X]Finite Temperature mode: yes
+  [X]El. density      [cm-3]: 0.192E+24
+  [X]States summary         : Full        Metallic    Empty
+                                 0001-0001   0002-0003   0004-0020
+  [X]N of el / N of met el  :  3.000000  1.000317
+  [X]Average metallic occ.  :             0.250079
+
+  [WARNING][X] Metallic system
+  X BZ K-points :  512
+
+  Energy unit is electronVolt [eV]
+
+  *X* K [1] : 0.000000  0.000000  0.000000 ( cc) * Comp.s 113 * weight    0.0020
+              0.000000  0.000000  0.000000 (rlu)
+  E -11.55502  12.81407  12.81407  12.81407  14.19125  14.19125  14.19125  16.69581
+  E  20.10320  20.10320  22.67543  24.87139  24.87139  24.87139  32.30704  56.09406
+   
+  *X* K [2] :-0.104720  0.104720 -0.104720 ( cc) * Comp.s 116 * weight   0.01562
+              0.000000  0.000000  0.125000 (rlu)
+  E -11.11036   8.37370  11.81044  11.81044  14.89402  15.80526  15.80526  18.13979
+  E  18.13979  20.28506  21.26375  26.76972  27.86300  27.86300  34.08530  49.32233
+   
+  *X* K [3] :-0.209440  0.209440 -0.209440 ( cc) * Comp.s 117 * weight   0.01562
+              0.000000  0.000000  0.250000 (rlu)
+  E  -9.78671   3.42131  11.02846  11.02846  14.59087  14.97349  14.97349  19.00798
+  E  19.29192  19.29192  25.08370  31.51623  33.15776  33.15776  38.35537  41.81529
+   
+  *X* K [4] :-0.314159  0.314159 -0.314159 ( cc) * Comp.s 114 * weight   0.01562
+              0.000000  0.000000  0.375000 (rlu)
+  E  -7.62043  -0.95567  10.93717  10.93717  12.92565  12.92565  14.69023  16.97319
+  E  23.04084  23.04084  29.06886  34.69726  34.69726  37.98146  40.18608  40.18608
+   
+  *X* K [5] : 0.418879 -0.418879  0.418879 ( cc) * Comp.s 120 * weight    0.0078
+              0.000000  0.000000 -0.500000 (rlu)
+  E  -4.77025  -4.54773  11.52912  11.52912  11.59744  11.59744  15.34953  15.61740
+  E  26.05976  26.05976  30.94226  30.94226  31.38743  37.50230  45.38883  46.50074
+   
+  *X* K [6] : 0.000000  0.209440  0.000000 ( cc) * Comp.s 117 * weight   0.01172
+              0.000000  0.125000  0.125000 (rlu)
+  E -10.96254  10.01436  10.01436  10.21388  13.11746  14.89011  17.85269  17.85269
+  E  20.47458  20.66162  23.85309  25.59702  25.59702  29.09929  35.47300  49.28485
+   
+  *X* K [7] :-0.104720  0.314159 -0.104720 ( cc) * Comp.s 119 * weight   0.04688
+              0.000000  0.125000  0.250000 (rlu)
+  E  -9.93373   5.30312   8.93906  10.47844  11.75390  14.33478  18.36958  18.56334
+  E  21.19659  22.23028  25.06127  29.16063  29.87502  32.03690  39.91377  41.67509
+   
+  *X* K [8] :-0.209440  0.418879 -0.209440 ( cc) * Comp.s 112 * weight   0.04688
+              0.000000  0.125000  0.375000 (rlu)
+  E  -8.04899   0.77432   8.59365   9.30260  10.36026  16.52009  17.22421  18.73078
+  E  20.22995  24.53250  29.44313  33.78616  35.48167  36.25084  36.86394  39.04474
+   
+  *X* K [9] : 0.523599 -0.314159  0.523599 ( cc) * Comp.s 115 * weight   0.04688
+              0.000000  0.125000 -0.500000 (rlu)
+  E  -5.36447  -3.13271   7.66399   8.96914  10.80061  14.94245  17.77375  19.06189
+  E  22.28762  26.17383  31.27754  31.55265  33.63821  40.17649  42.33789  42.91761
+   
+  *X* K [10] : 0.418879 -0.209440  0.418879 ( cc) * Comp.s 114 * weight   0.04688
+               0.000000  0.125000 -0.375000 (rlu)
+  E  -6.34358  -1.91180   6.77834  10.07694  12.00279  14.07600  16.97909  20.01116
+  E  22.18027  24.32318  29.90078  32.80343  35.89651  38.02908  40.61292  41.86267
+   
+  *X* K [11] : 0.314159 -0.104720  0.314159 ( cc) * Comp.s 116 * weight   0.04688
+               0.000000  0.125000 -0.250000 (rlu)
+  E  -8.76983   2.19397   6.68634  11.90386  13.92186  13.93174  16.54828  18.09605
+  E  20.37665  22.76535  28.32784  31.78703  33.92058  35.77807  38.24585  42.08333
+   
+  *X* K [12] : 0.209440  0.000000  0.209440 ( cc) * Comp.s 117 * weight   0.02344
+               0.000000  0.125000 -0.125000 (rlu)
+  E -10.37307   6.43979   7.80784  13.96727  14.16087  15.63354  16.09107  16.38650
+  E  18.09318  23.62315  23.75993  26.79751  29.40942  32.62436  37.07973  42.22565
+   
+  *X* K [13] : 0.000000  0.418879  0.000000 ( cc) * Comp.s 125 * weight   0.01172
+               0.000000  0.250000  0.250000 (rlu)
+  E  -9.20524   7.41777   7.60450   7.60450   8.32282  11.25114  22.30110  22.38131
+  E  22.38131  26.80340  27.35105  28.20084  28.20084  31.82078  42.27323  42.35992
+   
+  *X* K [14] :-0.104720  0.523599 -0.104720 ( cc) * Comp.s 118 * weight   0.04688
+               0.000000  0.250000  0.375000 (rlu)
+  E  -7.62114   3.18338   5.61109   7.00926   8.47306  12.62508  20.78244  23.00670
+  E  25.76988  26.02525  31.15622  32.20219  33.88961  35.04551  35.52941  38.23452
+   
+  *X* K [15] : 0.628319 -0.209440  0.628319 ( cc) * Comp.s 113 * weight   0.04688
+               0.000000  0.250000 -0.500000 (rlu)
+  E  -5.22845  -0.84500   3.66529   7.13943   8.85077  16.32919  19.08319  22.04542
+  E  25.23724  26.58871  31.85894  33.08099  35.93839  38.53247  39.55442  42.38332
+   
+  *X* K [16] : 0.523599 -0.104720  0.523599 ( cc) * Comp.s 114 * weight   0.04688
+               0.000000  0.250000 -0.375000 (rlu)
+  E  -4.25773  -2.08608   2.53488   7.99479   9.86947  17.99808  19.87505  21.37376
+  E  22.05152  25.15985  29.01417  35.17974  37.53576  39.13854  43.46537  44.70393
+   
+  *X* K [17] : 0.418879  0.000000  0.418879 ( cc) * Comp.s 117 * weight   0.02344
+               0.000000  0.250000 -0.250000 (rlu)
+  E  -6.90931   1.15075   2.79693   9.58420  11.61845  17.39886  17.87291  18.98798
+  E  21.64785  26.26274  28.37803  31.05696  36.89417  37.47185  42.79835  43.22704
+   
+  *X* K [18] : 0.000000  0.628319  0.000000 ( cc) * Comp.s 113 * weight   0.01172
+               0.000000  0.375000  0.375000 (rlu)
+  E  -6.34661   2.55761   5.68888   6.16866   6.16866   9.84119  24.85286  26.19493
+  E  26.19493  31.39740  33.15962  33.15962  34.42556  34.58481  36.22619  37.22423
+   
+  *X* K [19] : 0.733038 -0.104720  0.733038 ( cc) * Comp.s 114 * weight   0.04688
+               0.000000  0.375000 -0.500000 (rlu)
+  E  -4.28439   0.29589   2.17811   6.05055   7.37419  11.69301  23.80689  25.96722
+  E  27.33510  31.19322  33.46394  33.70461  36.55101  36.87105  37.83643  39.67830
+   
+  *X* K [20] : 0.628319  0.000000  0.628319 ( cc) * Comp.s 110 * weight   0.02344
+               0.000000  0.375000 -0.375000 (rlu)
+  E  -1.99285  -1.49664  -0.41672   6.65829   8.31008  15.91678  22.35016  22.95832
+  E  23.74081  28.31344  33.69145  34.29072  38.03157  39.18928  40.60834  42.31915
+   
+  *X* K [21] : 0.000000 -0.837758  0.000000 ( cc) * Comp.s 116 * weight    0.0059
+               0.000000 -0.500000 -0.500000 (rlu)
+  E  -3.03456  -1.72307   5.10627   5.68903   5.68903   9.32967  26.80638  28.49352
+  E  28.49352  32.98840  32.98840  33.10107  33.64504  36.52852  41.93782  41.93782
+   
+  *X* K [22] :-0.209440  0.418879  0.000000 ( cc) * Comp.s 114 * weight   0.04688
+               0.125000  0.250000  0.375000 (rlu)
+  E  -8.62500   3.79359   5.34256   8.88950  12.28509  14.10738  17.28467  20.68255
+  E  22.41361  25.80364  26.83576  31.59704  32.95156  35.72003  35.98101  42.76421
+   
+  *X* K [23] : 0.523599 -0.314159  0.733038 ( cc) * Comp.s 115 * weight   0.09375
+               0.125000  0.250000 -0.500000 (rlu)
+  E  -6.48469   0.05842   4.60653   6.73509  12.94035  15.08840  17.29093  21.43885
+  E  24.04112  25.02359  29.98070  32.85503  35.58836  37.96721  39.23521  42.63260
+   
+  *X* K [24] : 0.418879 -0.209440  0.628319 ( cc) * Comp.s 112 * weight   0.04688
+               0.125000  0.250000 -0.375000 (rlu)
+  E  -3.71222  -3.40647   4.93364   5.59572  13.43750  13.99517  20.63861  21.08605
+  E  23.38520  23.82467  31.73464  32.11363  37.67173  40.15453  41.07724  43.16160
+   
+  *X* K [25] : 0.628319 -0.209440  0.837758 ( cc) * Comp.s 116 * weight   0.04688
+               0.125000  0.375000 -0.500000 (rlu)
+  E  -5.78663   2.20334   2.92133   4.06069  10.74388  12.88471  19.75821  25.84199
+  E  25.95349  29.24670  31.23921  32.17502  35.98485  36.53581  39.27018  39.43370
+   
+  *X* K [26] : 0.523599 -0.104720  0.733038 ( cc) * Comp.s 110 * weight   0.09375
+               0.125000  0.375000 -0.375000 (rlu)
+  E  -3.19837  -1.02666   1.41947   3.70364  11.99310  16.19973  18.28578  22.09246
+  E  26.30639  29.34728  32.78761  33.92032  36.65591  38.15720  39.87877  42.12827
+   
+  *X* K [27] : 0.418879  0.000000  0.628319 ( cc) * Comp.s 109 * weight   0.04688
+               0.125000  0.375000 -0.250000 (rlu)
+  E  -4.12110  -0.42384   1.14553   4.80366  13.23797  16.59899  17.83301  21.26091
+  E  24.60876  27.88645  31.45625  32.09541  37.81373  39.25663  42.39159  44.38507
+   
+  *X* K [28] :-0.209440 -0.837758  0.000000 ( cc) * Comp.s 108 * weight   0.02344
+               0.125000 -0.500000 -0.375000 (rlu)
+  E  -2.51383  -1.16367   1.67504   3.39273  10.22131  12.43845  22.88761  23.38317
+  E  28.63791  33.16213  33.40166  33.84899  36.78698  37.26579  38.67870  39.24613
+   
+  *X* K [29] :-0.418879 -0.837758  0.000000 ( cc) * Comp.s 108 * weight   0.01172
+               0.250000 -0.500000 -0.250000 (rlu)
+  E -.9487    -.9487    0.9409E-2  1.271     16.10     16.10     16.50     18.86   
+  E  28.79212  33.54460  34.37295  34.37295  36.28206  36.28206  36.72138  38.02901
+
+ [03] Transferred momenta grid
+ =============================
+
+ [RD./SAVE//ndb.kindx]---------------------------------------
+  Fragmentation                    :no
+  Polarization last K   : 29
+  QP states             :  1  29
+  X grid is uniform     :yes
+  BS scattering         :no
+  COLL scattering       :no
+ - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+
+ IBZ Q-points : 29
+ BZ  Q-points :  512
+
+ Q [00001] : 0.00      0.00      0.00     (iku) * weight    0.0020
+ Q [00002] : -0.06250   0.06250  -0.06250 (iku) * weight   0.01562
+ Q [00003] :-0.125000  0.125000 -0.125000 (iku) * weight   0.01562
+ Q [00004] :-0.187500  0.187500 -0.187500 (iku) * weight   0.01562
+ Q [00005] : 0.250000 -0.250000  0.250000 (iku) * weight    0.0078
+ Q [00006] : 0.000000  0.125000  0.000000 (iku) * weight   0.01172
+ Q [00007] : -0.06250   0.18750  -0.06250 (iku) * weight   0.04688
+ Q [00008] :-0.125000  0.250000 -0.125000 (iku) * weight   0.04688
+ Q [00009] :-0.187500  0.312500 -0.187500 (iku) * weight   0.04688
+ Q [00010] : 0.250000 -0.125000  0.250000 (iku) * weight   0.04688
+ Q [00011] :  0.18750  -0.06250   0.18750 (iku) * weight   0.04688
+ Q [00012] : 0.125000  0.000000  0.125000 (iku) * weight   0.02344
+ Q [00013] : 0.000000  0.250000  0.000000 (iku) * weight   0.01172
+ Q [00014] : -0.06250   0.31250  -0.06250 (iku) * weight   0.04688
+ Q [00015] :-0.125000  0.375000 -0.125000 (iku) * weight   0.04688
+ Q [00016] :  0.31250  -0.06250   0.31250 (iku) * weight   0.04688
+ Q [00017] : 0.250000  0.000000  0.250000 (iku) * weight   0.02344
+ Q [00018] : 0.000000  0.375000  0.000000 (iku) * weight   0.01172
+ Q [00019] : -0.06250   0.43750  -0.06250 (iku) * weight   0.04688
+ Q [00020] : 0.375000  0.000000  0.375000 (iku) * weight   0.02344
+ Q [00021] : 0.000000 -0.500000  0.000000 (iku) * weight    0.0059
+ Q [00022] :-0.125000  0.250000  0.000000 (iku) * weight   0.04688
+ Q [00023] : -0.18750   0.31250  -0.06250 (iku) * weight   0.09375
+ Q [00024] : 0.250000 -0.125000  0.375000 (iku) * weight   0.04688
+ Q [00025] :-0.125000  0.375000  0.000000 (iku) * weight   0.04688
+ Q [00026] : -0.18750   0.43750  -0.06250 (iku) * weight   0.09375
+ Q [00027] :0.2500    -.8893E-8 0.3750    (iku) * weight   0.04688
+ Q [00028] :-0.125000 -0.500000  0.000000 (iku) * weight   0.02344
+ Q [00029] :-0.250000 -0.500000  0.000000 (iku) * weight   0.01172
+  
+ Q [00001] : 0.00      0.00      0.00     (cc ) * weight    0.0020
+ Q [00002] : -0.10472   0.10472  -0.10472 (cc ) * weight   0.01562
+ Q [00003] :-0.209440  0.209440 -0.209440 (cc ) * weight   0.01562
+ Q [00004] :-0.314159  0.314159 -0.314159 (cc ) * weight   0.01562
+ Q [00005] : 0.418879 -0.418879  0.418879 (cc ) * weight    0.0078
+ Q [00006] : 0.000000  0.209440  0.000000 (cc ) * weight   0.01172
+ Q [00007] : -0.10472   0.31416  -0.10472 (cc ) * weight   0.04688
+ Q [00008] :-0.209439  0.418879 -0.209439 (cc ) * weight   0.04688
+ Q [00009] :-0.314159  0.523599 -0.314159 (cc ) * weight   0.04688
+ Q [00010] : 0.418879 -0.209439  0.418879 (cc ) * weight   0.04688
+ Q [00011] :  0.31416  -0.10472   0.31416 (cc ) * weight   0.04688
+ Q [00012] : 0.209440  0.000000  0.209440 (cc ) * weight   0.02344
+ Q [00013] : 0.000000  0.418879  0.000000 (cc ) * weight   0.01172
+ Q [00014] : -0.10472   0.52360  -0.10472 (cc ) * weight   0.04688
+ Q [00015] :-0.209440  0.628318 -0.209440 (cc ) * weight   0.04688
+ Q [00016] :  0.52360  -0.10472   0.52360 (cc ) * weight   0.04688
+ Q [00017] : 0.418879  0.000000  0.418879 (cc ) * weight   0.02344
+ Q [00018] : 0.000000  0.628318  0.000000 (cc ) * weight   0.01172
+ Q [00019] : -0.10472   0.73304  -0.10472 (cc ) * weight   0.04688
+ Q [00020] : 0.628318  0.000000  0.628318 (cc ) * weight   0.02344
+ Q [00021] : 0.000000 -0.837758  0.000000 (cc ) * weight    0.0059
+ Q [00022] :-0.209439  0.418879  0.000000 (cc ) * weight   0.04688
+ Q [00023] : -0.31416   0.52360  -0.10472 (cc ) * weight   0.09375
+ Q [00024] : 0.418879 -0.209439  0.628318 (cc ) * weight   0.04688
+ Q [00025] :-0.209440  0.628318  0.000000 (cc ) * weight   0.04688
+ Q [00026] : -0.31416   0.73304  -0.10472 (cc ) * weight   0.09375
+ Q [00027] :0.4189    -.1490E-7 0.6283    (cc ) * weight   0.04688
+ Q [00028] :-0.209439 -0.837758  0.000000 (cc ) * weight   0.02344
+ Q [00029] :-0.418879 -0.837758  0.000000 (cc ) * weight   0.01172
+
+  [03.01] G0W0 on the real axis
+  =============================
+
+  [GW] G damping   [ev]:  0.10000
+   
+  QP @ K 1 - 29 : b 1 - 4
+   
+
+  [03.02] Lifetimes Transitions Selector
+  ======================================
+
+  [Life-CG] R(p) Tot o/o(of R)  :  19   83   27
+  [Life-CG] R(p) Tot o/o(of R)  :  150  1346    29
+  [Life-CG] R(p) Tot o/o(of R)  :  140  1282    29
+  [Life-CG] R(p) Tot o/o(of R)  :  153  1388    29
+  [Life-CG] R(p) Tot o/o(of R)  :   70   632    27
+  [Life-CG] R(p) Tot o/o(of R)  :  122   965    29
+  [Life-CG] R(p) Tot o/o(of R)  :   262   4172     28
+  [Life-CG] R(p) Tot o/o(of R)  :   220   3889     28
+  [Life-CG] R(p) Tot o/o(of R)  :   245   4086     29
+  [Life-CG] R(p) Tot o/o(of R)  :   195   3977     29
+  [Life-CG] R(p) Tot o/o(of R)  :   284   4013     29
+  [Life-CG] R(p) Tot o/o(of R)  :  173  1826    29
+  [Life-CG] R(p) Tot o/o(of R)  :  109   978    29
+  [Life-CG] R(p) Tot o/o(of R)  :   286   4340     29
+  [Life-CG] R(p) Tot o/o(of R)  :   210   4025     29
+  [Life-CG] R(p) Tot o/o(of R)  :   274   4117     29
+  [Life-CG] R(p) Tot o/o(of R)  :  133  1907    29
+  [Life-CG] R(p) Tot o/o(of R)  :  112  1004    27
+  [Life-CG] R(p) Tot o/o(of R)  :   245   4333     29
+  [Life-CG] R(p) Tot o/o(of R)  :  171  1948    28
+  [Life-CG] R(p) Tot o/o(of R)  :   61   476    28
+  [Life-CG] R(p) Tot o/o(of R)  :   236   4121     29
+  [Life-CG] R(p) Tot o/o(of R)  :   317   8316     29
+  [Life-CG] R(p) Tot o/o(of R)  :   228   3831     29
+  [Life-CG] R(p) Tot o/o(of R)  :   231   4112     29
+  [Life-CG] R(p) Tot o/o(of R)  :   323   8395     29
+  [Life-CG] R(p) Tot o/o(of R)  :   219   4114     28
+  [Life-CG] R(p) Tot o/o(of R)  :  168  2077    29
+  [Life-CG] R(p) Tot o/o(of R)  :  102   973    28
+
+  [03.03] Dynamical Dielectric Matrix
+  ===================================
+
+  [RD./SAVE//ns.kb_pp_pwscf]----------------------------------
+   Fragmentation                    :yes
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [WF-Oscillators/G space] Performing Wave-Functions I/O from ./SAVE
+
+  [WF-Oscillators/G space loader] Normalization (few states)  min/max  :0.143E-09  1.00    
+
+  [WR./01_Lifetimes//ndb.dip_iR_and_P]------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   X band range           :  1  20
+   X band range limits    : 3  2
+   X e/h energy range [ev]:-1.000000 -1.000000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Using shifted grids    :no
+   Using covariant dipoles:no
+   Using G-space approach :yes
+   Using R-space approach :no
+   Direct v evaluation    :no
+   Field momentum norm    :0.1000E-4
+   Wavefunctions          :Slater exchange(X)+Perdew & Zunger(C)
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+
+  [WARNING] The system is a metal but Drude term not included.
+  [WF-X] Performing Wave-Functions I/O from ./SAVE
+
+  [FFT-X] Mesh size:  9   9   9
+
+  [X-CG] R(p) Tot o/o(of R)  :   751  15383    100
+  [WR./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [WR./01_Lifetimes//ndb.em1d_fragment_1]---------------------
+   :: Current Q-pt index     : 1
+   :: X energy range     [ev]: 0.180494  9.709892
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 19
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [WF-X] Performing Wave-Functions I/O from ./SAVE
+
+  [FFT-X] Mesh size:  9   9   9
+
+  [X-CG] R(p) Tot o/o(of R)  :  3158  15513    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_2]---------------------
+   :: Current Q-pt index     : 2
+   :: X energy range     [ev]:  0.03926  11.77330
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 150
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  3041  15571    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_3]---------------------
+   :: Current Q-pt index     : 3
+   :: X energy range     [ev]:  0.01796  11.84543
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 140
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  3140  15584    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_4]---------------------
+   :: Current Q-pt index     :  4
+   :: X energy range     [ev]:  0.03667  13.90884
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 153
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  1607  15590    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_5]---------------------
+   :: Current Q-pt index     :  5
+   :: X energy range     [ev]:  0.04607  13.19295
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  :  70
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  2628  15534    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_6]---------------------
+   :: Current Q-pt index     :  6
+   :: X energy range     [ev]:  0.01415  11.84543
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 122
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  5742  15556    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_7]---------------------
+   :: Current Q-pt index     :  7
+   :: X energy range     [ev]:  0.01880  13.90884
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 262
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  4957  15589    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_8]---------------------
+   :: Current Q-pt index     :  8
+   :: X energy range     [ev]:  0.01609  13.19295
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 220
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  5103  15585    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_9]---------------------
+   :: Current Q-pt index     :  9
+   :: X energy range     [ev]:  0.02683  13.90884
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 245
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  4180  15592    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_10]--------------------
+   :: Current Q-pt index     : 10
+   :: X energy range     [ev]:0.1359E-1  14.39   
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 195
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  6005  15570    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_11]--------------------
+   :: Current Q-pt index     : 11
+   :: X energy range     [ev]:  0.01988  13.90884
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 284
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  3813  15553    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_12]--------------------
+   :: Current Q-pt index     : 12
+   :: X energy range     [ev]:  0.05029  13.19295
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 173
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  2381  15582    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_13]--------------------
+   :: Current Q-pt index     : 13
+   :: X energy range     [ev]:  0.08208  13.19295
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 109
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  5967  15591    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_14]--------------------
+   :: Current Q-pt index     : 14
+   :: X energy range     [ev]:  0.02737  13.90884
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 286
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  4503  15599    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_15]--------------------
+   :: Current Q-pt index     : 15
+   :: X energy range     [ev]:  0.01824  14.39111
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 210
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  5780  15590    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_16]--------------------
+   :: Current Q-pt index     : 16
+   :: X energy range     [ev]:  0.02127  13.90884
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 274
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  2966  15596    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_17]--------------------
+   :: Current Q-pt index     : 17
+   :: X energy range     [ev]:  0.02318  14.38398
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 133
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  2608  15610    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_18]--------------------
+   :: Current Q-pt index     : 18
+   :: X energy range     [ev]:0.6171E-2  12.29   
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 112
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  5148  15592    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_19]--------------------
+   :: Current Q-pt index     : 19
+   :: X energy range     [ev]:  0.02665  13.90884
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 245
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  3837  15602    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_20]--------------------
+   :: Current Q-pt index     : 20
+   :: X energy range     [ev]:  0.01955  13.95786
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 171
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  1479  15602    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_21]--------------------
+   :: Current Q-pt index     : 21
+   :: X energy range     [ev]:  0.07329  14.38398
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  :  61
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  4821  15586    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_22]--------------------
+   :: Current Q-pt index     : 22
+   :: X energy range     [ev]:  0.01799  14.39111
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 236
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  6745  15583    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_23]--------------------
+   :: Current Q-pt index     : 23
+   :: X energy range     [ev]:0.1226E-1  13.91   
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  :  317
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  4857  15598    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_24]--------------------
+   :: Current Q-pt index     : 24
+   :: X energy range     [ev]:  0.01989  14.38398
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 228
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  5008  15600    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_25]--------------------
+   :: Current Q-pt index     : 25
+   :: X energy range     [ev]:  0.02639  14.38398
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 231
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  6895  15594    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_26]--------------------
+   :: Current Q-pt index     : 26
+   :: X energy range     [ev]:  0.01897  13.90884
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  :  323
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  4935  15603    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_27]--------------------
+   :: Current Q-pt index     : 27
+   :: X energy range     [ev]:0.1338E-1  14.39   
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 219
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  3515  15600    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_28]--------------------
+   :: Current Q-pt index     : 28
+   :: X energy range     [ev]:0.2322E-2  14.39   
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 168
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [RD./01_Lifetimes//ndb.em1d]--------------------------------
+   Brillouin Zone Q/K grids (IBZ/BZ):   29   512    29   512
+   RL vectors                   (WF): 259
+   Coulomb cutoff potential         :none
+   Fragmentation                    :yes
+   Electronic Temperature        [K]: 300.1000
+   Bosonic    Temperature        [K]: 300.1000
+   Dyn. dielectric f. energies      :Slater exchange(X)+Perdew & Zunger(C)
+                      wavefunctions :Slater exchange(X)+Perdew & Zunger(C)
+   Global Gauge                     :length
+   X matrix size          : 27
+   X band range           :  1  20
+   X e/h energy range [ev]:-1.000000 -1.000000
+   X Time ordering        :R
+   X xc-Kernel            :none
+   X Drude frequency      : 0.00      0.00    
+   X poles           [o/o]: 100.0000
+   RL vectors in the sum  : 259
+   [r,Vnl] included       :yes
+   Field direction        :0.1000E-4  0.000     0.000   
+   BZ energy Double Grid  :no
+   BZ energy DbGd points  :0
+   BZ Q point size factor : 1.000000
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [X-CG] R(p) Tot o/o(of R)  :  2322  15597    100
+  [WR./01_Lifetimes//ndb.em1d_fragment_29]--------------------
+   :: Current Q-pt index     : 29
+   :: X energy range     [ev]:  0.01767  14.38398
+   :: X damping range    [ev]:  0.10000   0.10000
+   :: Number of frequencies  : 102
+  - S/N 009108 -------------------------- v.04.04.00 r.00148 -
+  [WF-Sc] Performing Wave-Functions I/O from ./SAVE
+
+  [FFT-Sc] Mesh size:  9   9   9
+
+
+  [03.04] QP properties and I/O
+  =============================
+
+  Legend (energies in eV):
+  - B  : Band       - Eo  : bare energy
+  - Z  : Renormalization factor
+  - Gm : Width [meV] - Gf  : Width [fs]
+
+
+  Lifetimes @ K [1] (iku): 0.00      0.00      0.00    
+   B=1 Eo=-11.56 Re(Z)=1.00 Im(Z)= 0.000 Gm= 1438. Gf=0.4577
+   B=2 Eo= 12.81 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 799.9869 Gf=   0.8228
+   B=3 Eo= 12.81 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 800.0120 Gf=   0.8228
+   B=4 Eo= 12.81 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 800.0287 Gf=   0.8227
+
+  Lifetimes @ K [2] (iku): -0.06250   0.06250  -0.06250
+   B=1 Eo=-11.11 Re(Z)=1.00 Im(Z)= 0.000 Gm= 1424. Gf=0.4622
+   B=2 Eo=  8.37 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 374.1491 Gf=   1.7592
+   B=3 Eo= 11.81 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 644.1759 Gf=   1.0218
+   B=4 Eo= 11.81 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 644.3223 Gf=   1.0216
+
+  Lifetimes @ K [3] (iku):-0.125000  0.125000 -0.125000
+   B=1 Eo= -9.79 Re(Z)=1.00 Im(Z)= 0.000 Gm= 1063. Gf=0.6191
+   B=2 Eo=  3.42 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 81.04272 Gf=  8.12179
+   B=3 Eo= 11.03 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 565.2752 Gf=   1.1644
+   B=4 Eo= 11.03 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 565.2306 Gf=   1.1645
+
+  Lifetimes @ K [4] (iku):-0.187500  0.187500 -0.187500
+   B=1 Eo= -7.62 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 575.6318 Gf=   1.1435
+   B=2 Eo= -0.96 Re(Z)=1.00 Im(Z)=  0.00000 Gm=  7.11911 Gf= 92.45710
+   B=3 Eo= 10.94 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 548.4403 Gf=   1.2002
+   B=4 Eo= 10.94 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 548.4907 Gf=   1.2000
+
+  Lifetimes @ K [5] (iku): 0.250000 -0.250000  0.250000
+   B=1 Eo= -4.77 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 201.6462 Gf=   3.2642
+   B=2 Eo= -4.55 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 174.4303 Gf=   3.7735
+   B=3 Eo= 11.53 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 601.7000 Gf=   1.0939
+   B=4 Eo= 11.53 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 601.7260 Gf=   1.0939
+
+  Lifetimes @ K [6] (iku): 0.000000  0.125000  0.000000
+   B=1 Eo=-10.96 Re(Z)=1.00 Im(Z)= 0.000 Gm= 1362. Gf=0.4832
+   B=2 Eo= 10.01 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 480.1640 Gf=   1.3708
+   B=3 Eo= 10.01 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 480.2111 Gf=   1.3707
+   B=4 Eo= 10.21 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 679.0212 Gf=   0.9694
+
+  Lifetimes @ K [7] (iku): -0.06250   0.18750  -0.06250
+   B=1 Eo= -9.93 Re(Z)=1.00 Im(Z)= 0.000 Gm= 1063. Gf=0.6192
+   B=2 Eo=  5.30 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 156.2135 Gf=   4.2135
+   B=3 Eo=  8.94 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 411.1949 Gf=   1.6007
+   B=4 Eo= 10.48 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 536.0863 Gf=   1.2278
+
+  Lifetimes @ K [8] (iku):-0.125000  0.250000 -0.125000
+   B=1 Eo= -8.05 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 610.5618 Gf=   1.0780
+   B=2 Eo=  0.77 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 12.77658 Gf= 51.51707
+   B=3 Eo=  8.59 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 376.5753 Gf=   1.7479
+   B=4 Eo=  9.30 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 419.9607 Gf=   1.5673
+
+  Lifetimes @ K [9] (iku): 0.312500 -0.187500  0.312500
+   B=1 Eo= -5.36 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 281.7410 Gf=   2.3362
+   B=2 Eo= -3.13 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 86.73727 Gf=  7.58857
+   B=3 Eo=  7.66 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 283.9801 Gf=   2.3178
+   B=4 Eo=  8.97 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 399.2096 Gf=   1.6488
+
+  Lifetimes @ K [10] (iku): 0.250000 -0.125000  0.250000
+   B=1 Eo= -6.34 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 362.0200 Gf=   1.8182
+   B=2 Eo= -1.91 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 36.10270 Gf= 18.23165
+   B=3 Eo=  6.78 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 246.1927 Gf=   2.6736
+   B=4 Eo= 10.08 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 508.2451 Gf=   1.2951
+
+  Lifetimes @ K [11] (iku):  0.18750  -0.06250   0.18750
+   B=1 Eo= -8.77 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 742.3203 Gf=   0.8867
+   B=2 Eo=  2.19 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 42.05074 Gf= 15.65280
+   B=3 Eo=  6.69 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 226.6304 Gf=   2.9043
+   B=4 Eo= 11.90 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 626.7135 Gf=   1.0503
+
+  Lifetimes @ K [12] (iku): 0.125000  0.000000  0.125000
+   B=1 Eo=-10.37 Re(Z)=1.00 Im(Z)= 0.000 Gm= 1083. Gf=0.6076
+   B=2 Eo=  6.44 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 248.6393 Gf=   2.6473
+   B=3 Eo=  7.81 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 299.1801 Gf=   2.2001
+   B=4 Eo= 13.97 Re(Z)=1.00 Im(Z)= 0.000 Gm= 911.7 Gf=0.7219
+
+  Lifetimes @ K [13] (iku): 0.000000  0.250000  0.000000
+   B=1 Eo= -9.21 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 779.9655 Gf=   0.8439
+   B=2 Eo=  7.42 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 334.7752 Gf=   1.9661
+   B=3 Eo=  7.60 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 323.8882 Gf=   2.0322
+   B=4 Eo=  7.60 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 323.9452 Gf=   2.0319
+
+  Lifetimes @ K [14] (iku): -0.06250   0.31250  -0.06250
+   B=1 Eo= -7.62 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 592.3546 Gf=   1.1112
+   B=2 Eo=  3.18 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 75.95759 Gf=  8.66552
+   B=3 Eo=  5.61 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 193.8199 Gf=   3.3960
+   B=4 Eo=  7.01 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 293.5103 Gf=   2.2426
+
+  Lifetimes @ K [15] (iku): 0.375000 -0.125000  0.375000
+   B=1 Eo= -5.23 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 282.7182 Gf=   2.3282
+   B=2 Eo= -0.85 Re(Z)=1.00 Im(Z)=   0.0000 Gm=   2.9927 Gf= 219.9379
+   B=3 Eo=  3.67 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 92.34133 Gf=  7.12803
+   B=4 Eo=  7.14 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 281.1682 Gf=   2.3410
+
+  Lifetimes @ K [16] (iku):  0.31250  -0.06250   0.31250
+   B=1 Eo= -4.26 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 183.8143 Gf=   3.5809
+   B=2 Eo= -2.09 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 44.42094 Gf= 14.81760
+   B=3 Eo=  2.53 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 54.38902 Gf= 12.10192
+   B=4 Eo=  7.99 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 365.1537 Gf=   1.8026
+
+  Lifetimes @ K [17] (iku): 0.250000  0.000000  0.250000
+   B=1 Eo= -6.91 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 455.5724 Gf=   1.4448
+   B=2 Eo=  1.15 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 16.45789 Gf= 39.99369
+   B=3 Eo=  2.80 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 62.16626 Gf= 10.58793
+   B=4 Eo=  9.58 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 433.6141 Gf=   1.5180
+
+  Lifetimes @ K [18] (iku): 0.000000  0.375000  0.000000
+   B=1 Eo= -6.35 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 376.7623 Gf=   1.7470
+   B=2 Eo=  2.56 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 56.52246 Gf= 11.64514
+   B=3 Eo=  5.69 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 189.5398 Gf=   3.4727
+   B=4 Eo=  6.17 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 212.5779 Gf=   3.0963
+
+  Lifetimes @ K [19] (iku):  0.43750  -0.06250   0.43750
+   B=1 Eo= -4.28 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 191.3035 Gf=   3.4407
+   B=2 Eo=  0.30 Re(Z)=1.00 Im(Z)=   0.0000 Gm=   1.7176 Gf= 383.2253
+   B=3 Eo=  2.18 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 29.70566 Gf= 22.15779
+   B=4 Eo=  6.05 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 225.4866 Gf=   2.9191
+
+  Lifetimes @ K [20] (iku): 0.375000  0.000000  0.375000
+   B=1 Eo= -1.99 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 49.97625 Gf= 13.17049
+   B=2 Eo= -1.50 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 24.20212 Gf= 27.19645
+   B=3 Eo= -0.42 Re(Z)=1.00 Im(Z)=   0.0000 Gm=   1.2687 Gf= 518.8030
+   B=4 Eo=  6.66 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 254.6825 Gf=   2.5844
+
+  Lifetimes @ K [21] (iku): 0.000000 -0.500000  0.000000
+   B=1 Eo= -3.03 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 84.63857 Gf=  7.77674
+   B=2 Eo= -1.72 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 17.82294 Gf= 36.93060
+   B=3 Eo=  5.11 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 154.0003 Gf=   4.2741
+   B=4 Eo=  5.69 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 204.7402 Gf=   3.2149
+
+  Lifetimes @ K [22] (iku):-0.125000  0.250000  0.000000
+   B=1 Eo= -8.62 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 758.6527 Gf=   0.8676
+   B=2 Eo=  3.79 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 100.8290 Gf=   6.5280
+   B=3 Eo=  5.34 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 153.4444 Gf=   4.2896
+   B=4 Eo=  8.89 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 394.2492 Gf=   1.6695
+
+  Lifetimes @ K [23] (iku): 0.312500 -0.187500  0.437500
+   B=1 Eo= -6.48 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 413.9044 Gf=   1.5903
+   B=2 Eo=  0.06 Re(Z)=1.00 Im(Z)= 0.000 Gm=0.1024 Gf= 6427.
+   B=3 Eo=  4.61 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 137.6838 Gf=   4.7806
+   B=4 Eo=  6.74 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 255.6259 Gf=   2.5749
+
+  Lifetimes @ K [24] (iku): 0.250000 -0.125000  0.375000
+   B=1 Eo= -3.71 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 126.3112 Gf=   5.2110
+   B=2 Eo= -3.41 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 81.22018 Gf=  8.10404
+   B=3 Eo=  4.93 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 154.7873 Gf=   4.2524
+   B=4 Eo=  5.60 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 178.2093 Gf=   3.6935
+
+  Lifetimes @ K [25] (iku): 0.375000 -0.125000  0.500000
+   B=1 Eo= -5.79 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 304.2759 Gf=   2.1632
+   B=2 Eo=  2.20 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 45.55233 Gf= 14.44958
+   B=3 Eo=  2.92 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 60.11231 Gf= 10.94970
+   B=4 Eo=  4.06 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 99.56443 Gf=  6.61091
+
+  Lifetimes @ K [26] (iku):  0.31250  -0.06250   0.43750
+   B=1 Eo= -3.20 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 92.01272 Gf=  7.15349
+   B=2 Eo= -1.03 Re(Z)=1.00 Im(Z)=  0.00000 Gm=  8.48626 Gf= 77.56210
+   B=3 Eo=  1.42 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 25.79662 Gf= 25.51543
+   B=4 Eo=  3.70 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 98.02901 Gf=  6.71446
+
+  Lifetimes @ K [27] (iku): 0.250000  0.000000  0.375000
+   B=1 Eo= -4.12 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 167.5693 Gf=   3.9280
+   B=2 Eo= -0.42 Re(Z)=1.00 Im(Z)=   0.0000 Gm=   1.5012 Gf= 438.4441
+   B=3 Eo=  1.15 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 14.03301 Gf= 46.90454
+   B=4 Eo=  4.80 Re(Z)=1.00 Im(Z)=   0.0000 Gm= 147.4849 Gf=   4.4629
+
+  Lifetimes @ K [28] (iku):-0.125000 -0.500000  0.000000
+   B=1 Eo= -2.51 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 51.29229 Gf= 12.83257
+   B=2 Eo= -1.16 Re(Z)=1.00 Im(Z)=   0.0000 Gm=   6.1836 Gf= 106.4451
+   B=3 Eo=  1.68 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 13.79546 Gf= 47.71220
+   B=4 Eo=  3.39 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 76.59152 Gf=  8.59379
+
+  Lifetimes @ K [29] (iku):-0.250000 -0.500000  0.000000
+   B=1 Eo= -0.95 Re(Z)=1.00 Im(Z)=   0.0000 Gm=   2.9885 Gf= 220.2460
+   B=2 Eo= -0.95 Re(Z)=1.00 Im(Z)=   0.0000 Gm=   2.9887 Gf= 220.2323
+   B=3 Eo=  0.01 Re(Z)=1.00 Im(Z)= 0.000 Gm=0.2898 Gf= 2271.
+   B=4 Eo=  1.27 Re(Z)=1.00 Im(Z)=  0.00000 Gm= 12.45600 Gf= 52.84297
+
+
+ Timing [Min/Max/Average]: 27s/27s/27s
+
+ [04] Timing Overview
+ ====================
+
+ Routines: global (Only MASTER cpu here)
+                                    io_WF :     0.00s CPU (       125 calls,   0.552 millisec avg)
+                                  io_GROT :     0.00s CPU (         2 calls,   2.228 millisec avg)
+                                 io_QINDX :     0.00s CPU (         2 calls,   2.252 millisec avg)
+                               io_COL_CUT :     0.00s CPU
+                           io_Double_Grid :     0.00s CPU
+                                    io_HF :     0.00s CPU
+                               io_DIPOLES :     0.00s CPU (        32 calls,   1.915 millisec avg)
+                              io_KB_pwscf :     0.00s CPU (        31 calls,   0.692 millisec avg)
+                             io_KB_abinit :     0.00s CPU
+                                     io_X :     0.00s CPU (       121 calls,   2.361 millisec avg)
+                                    io_BS :     0.00s CPU
+                            GW(real-axis) :    27.00s CPU
+                  IO_and_Messaging_switch :     0.00s CPU (         6 calls,   0.003 millisec avg)
+                                  Dipoles :     0.00s CPU
+                        DIPOLE_transverse :     0.00s CPU
+                             PP_uspp_init :     0.00s CPU (         4 calls,   0.017 millisec avg)
+                              WF_load_FFT :     0.00s CPU (         4 calls,  19.404 millisec avg)
+                              io_fragment :     0.00s CPU (       261 calls,   0.407 millisec avg)
+                                FFT_setup :     0.00s CPU (        30 calls,   5.707 millisec avg)
+                           Xo (procedure) :    24.00s CPU (        29 calls,   0.836 sec avg)
+                               Xo (REDUX) :     0.00s CPU (        29 calls,   0.002 millisec avg)
+                            X (procedure) :     0.00s CPU (        29 calls,  14.911 millisec avg)
+  MATRIX transfer (X_G_all_q_X_redux_1_1) :     0.00s CPU (      5458 calls,   0.002 millisec avg)
+                           LINEAR ALGEBRA :     0.00s CPU (      5458 calls,   0.059 millisec avg)
+                        SERIAL_lin_system :     0.00s CPU (      5458 calls,   0.058 millisec avg)
+                                X (REDUX) :     0.00s CPU (        29 calls,   0.635 millisec avg)
+  MATRIX transfer (X_G_all_q_X_redux_2_1) :     0.00s CPU (      5458 calls,   0.002 millisec avg)
+
+ [05] Memory Overview
+ ====================
+
+ Memory Usage: global (Only MASTER cpu here). [O] stands for group 'O'
+ Memory treshold are: 10.00000Mb (basic treshold)  100.0000Mb (SAVEs treshold)
+
+         TOTAL not deallocated :  757.0000Kb
+
+         Max memory used   :  14.47200Mb
+
+ [06] Game Over & Game summary
+ =============================
+
+ 11/05/2019 at 17:35 YAMBO @ dufour [start]
+ 11/05/2019 at 17:36                [end]
+
+ Timing   [Min/Max/Average]: 27s/27s/27s
+             [Time-Profile]: 27s
+
+ .-ACKNOWLEDGMENT
+ |
+ | The users of YAMBO have little formal obligations with respect to
+ | the YAMBO group (those specified in the GNU General Public
+ | License, http://www.gnu.org/copyleft/gpl.txt). However, it is
+ | common practice in the scientific literature, to acknowledge the
+ | efforts of people that have made the research possible. In this
+ | spirit, please find below the reference we kindly ask you to use
+ | in order to acknowledge YAMBO:
+ |
+ | Yambo: An ab initio tool for excited state calculations
+ | A. Marini, C. Hogan, M. Gr\"uning, D. Varsano
+ | Computer Physics Communications  180, 1392 (2009).
+ |
+  
+ .-Input file : References//01_Lifetimes_01_Lifetimes.in
+ | em1d                           # [R Xd] Dynamical Inverse Dielectric Matrix
+ | life                           # [R GW] GoWo Quasiparticle lifetimes
+ | ElecTemp=  0.02586     eV      # Electronic Temperature
+ | BoseTemp=  0.02586     eV      # Bosonic Temperature
+ | FFTGvecs= 259          RL      # [FFT] Plane-waves
+ | X_Threads= 1                   # [OPENMP/X] Number of threads for response functions
+ | DIP_Threads= 1                 # [OPENMP/X] Number of threads for dipoles
+ | SE_Threads= 1                  # [OPENMP/GW] Number of threads for self-energy
+ | Chimod= "HARTREE"              # [X] IP/Hartree/ALDA/LRC/PF/BSfxc
+ | LifeTrCG= 30.00000             # [GW] [o/o] Lifetime transition reduction
+ | % BndsRnXd
+ |   1 | 20 |                     # [Xd] Polarization function bands
+ | %
+ | NGsBlkXd= 27           RL      # [Xd] Response block size
+ | % DmRngeXd
+ |   0.10000 |  0.10000 | eV      # [Xd] Damping range
+ | %
+ | % LongDrXd
+ | 0.1000E-4 | 0.000    | 0.000    |        # [Xd] [cc] Electric Field
+ | %
+ | %QPkrange                      # # [GW] QP generalized Kpoint/Band indices
+ | 1|29|1|4|
+ | %
+ | %QPerange                      # # [GW] QP generalized Kpoint/Energy indices
+ | 1|29| 0.000000|-1.000000|
+ | %

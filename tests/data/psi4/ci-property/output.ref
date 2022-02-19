@@ -1,0 +1,4071 @@
+
+    -----------------------------------------------------------------------
+          Psi4: An Open-Source Ab Initio Electronic Structure Package
+                               Psi4 undefined 
+
+                         Git: Rev {mcscf_semi} aac087f dirty
+
+
+    R. M. Parrish, L. A. Burns, D. G. A. Smith, A. C. Simmonett,
+    A. E. DePrince III, E. G. Hohenstein, U. Bozkaya, A. Yu. Sokolov,
+    R. Di Remigio, R. M. Richard, J. F. Gonthier, A. M. James,
+    H. R. McAlexander, A. Kumar, M. Saitow, X. Wang, B. P. Pritchard,
+    P. Verma, H. F. Schaefer III, K. Patkowski, R. A. King, E. F. Valeev,
+    F. A. Evangelista, J. M. Turney, T. D. Crawford, and C. D. Sherrill,
+    J. Chem. Theory Comput. in press (2017).
+    (doi: 10.1021/acs.jctc.7b00174)
+
+    -----------------------------------------------------------------------
+
+
+    Psi4 started on: Monday, 29 May 2017 05:03PM
+
+    Process ID:  23516
+    PSIDATADIR: /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4
+    Memory:     500.0 MiB
+    Threads:    1
+    
+  ==> Input File <==
+
+--------------------------------------------------------------------------
+#! CI/MCSCF cc-pvDZ properties for Potassium nitrate (rocket fuel!)
+
+molecule no3 {
+  -1 3
+   O            0.000000000000     0.000000000000     1.352965563729
+   N            0.000000000000     0.000000000000     0.099633131563
+   O           -0.000000000000     1.006816424330    -0.720095709717
+   O            0.000000000000    -1.006816424330    -0.720095709717
+  
+}
+
+set {
+    reference           rohf
+    basis               6-31G*
+    e_convergence       10
+    frozen_docc         [3, 0, 0, 2]
+    restricted_docc     [4, 1, 1, 1]
+    active              [3, 0, 2, 3] 
+    mcscf_diis_start    7
+    mcscf_diis_max_vecs 4
+    avg_states          [0, 1]
+    num_roots           2
+    mcscf_type          df
+    mcscf_r_convergence 1.e-4
+    mcscf_e_convergence 1.e-5
+    ci_maxiter          24
+    h0_blocksize        1000
+}
+
+no3.update_geometry()
+no3.print_out()
+compare_values(115.503632390134896, no3.nuclear_repulsion_energy(), 9, "Nuclear repulsion energy") #TEST
+
+props = ['DIPOLE', 'QUADRUPOLE', 'MULLIKEN_CHARGES', 'LOWDIN_CHARGES',
+         'WIBERG_LOWDIN_INDICES', 'MAYER_INDICES', 'MAYER_INDICES',
+         'MO_EXTENTS', 'GRID_FIELD', 'GRID_ESP', 'ESP_AT_NUCLEI',
+         'MULTIPOLE(3)', 'NO_OCCUPATIONS',
+         'TRANSITION_DIPOLE', 'TRANSITION_QUADRUPOLE']
+
+fci_energy = prop('FCI', properties=props)
+
+compare_values(fci_energy, -278.7924561878957, 6, 'FCI Energy')    #TEST
+compare_values(psi4.get_variable('CI DIPOLE Y'), 0.000000000000, 4, "FCI DIPOLE Y")    #TEST
+compare_values(psi4.get_variable('CI DIPOLE Z'), 1.908946764853, 4, "FCI DIPOLE Z")    #TEST
+compare_values(psi4.get_variable('CI QUADRUPOLE XX'), -22.395945512510, 4, "FCI QUADRUPOLE XX")    #TEST
+compare_values(psi4.get_variable('CI QUADRUPOLE YY'), -27.774201286760, 4, "FCI QUADRUPOLE YY")    #TEST
+compare_values(psi4.get_variable('CI QUADRUPOLE ZZ'), -29.166055634625, 4, "FCI QUADRUPOLE ZZ")    #TEST
+compare_values(psi4.get_variable('CI QUADRUPOLE YZ'), 0.000000000000, 4, "FCI QUADRUPOLE YZ")    #TEST
+compare_values(psi4.get_variable('CI ROOT 0 DIPOLE Y'), 0.000000000000, 4, "CI ROOT 0 DIPOLE Y")    #TEST
+compare_values(psi4.get_variable('CI ROOT 0 DIPOLE Z'), -0.483503167660, 4, "CI ROOT 0 DIPOLE Z")    #TEST
+compare_values(psi4.get_variable('CI ROOT 0 QUADRUPOLE XX'), -22.419106552690, 4, "CI ROOT 0 QUADRUPOLE XX")    #TEST
+compare_values(psi4.get_variable('CI ROOT 0 QUADRUPOLE YY'), -26.694665553619, 4, "CI ROOT 0 QUADRUPOLE YY")    #TEST
+compare_values(psi4.get_variable('CI ROOT 0 QUADRUPOLE ZZ'), -30.482314878839, 4, "CI ROOT 0 QUADRUPOLE ZZ")    #TEST
+compare_values(psi4.get_variable('CI ROOT 0 QUADRUPOLE YZ'), 0.000000000000, 4, "CI ROOT 0 QUADRUPOLE YZ")    #TEST
+compare_values(psi4.get_variable('CI ROOT 1 DIPOLE Y'), 0.000000000000, 4, "CI ROOT 1 DIPOLE Y")    #TEST
+compare_values(psi4.get_variable('CI ROOT 1 DIPOLE Z'), 4.301396697365, 4, "CI ROOT 1 DIPOLE Z")    #TEST
+compare_values(psi4.get_variable('CI ROOT 1 QUADRUPOLE XX'), -22.372784472330, 4, "CI ROOT 1 QUADRUPOLE XX")    #TEST
+compare_values(psi4.get_variable('CI ROOT 1 QUADRUPOLE YY'), -28.853737019899, 4, "CI ROOT 1 QUADRUPOLE YY")    #TEST
+compare_values(psi4.get_variable('CI ROOT 1 QUADRUPOLE ZZ'), -27.849796390412, 4, "CI ROOT 1 QUADRUPOLE ZZ")    #TEST
+compare_values(psi4.get_variable('CI ROOT 1 QUADRUPOLE YZ'), 0.000000000000, 4, "CI ROOT 1 QUADRUPOLE YZ")    #TEST
+compare_values(abs(psi4.get_variable('CI ROOT 0 -> ROOT 1 DIPOLE Y')), 0.000000000000, 4, "CI ROOT 0 -> ROOT 1 DIPOLE Y")  #TEST
+compare_values(abs(psi4.get_variable('CI ROOT 0 -> ROOT 1 DIPOLE Z')), 0.425513677544, 4, "CI ROOT 0 -> ROOT 1 DIPOLE Z")  #TEST
+compare_values(abs(psi4.get_variable('CI ROOT 0 -> ROOT 1 QUADRUPOLE XX')), 0.016387859082, 4, "CI ROOT 0 -> ROOT 1 QUADRUPOLE XX")  #TEST
+compare_values(abs(psi4.get_variable('CI ROOT 0 -> ROOT 1 QUADRUPOLE YY')), 0.573374390021, 4, "CI ROOT 0 -> ROOT 1 QUADRUPOLE YY")  #TEST
+compare_values(abs(psi4.get_variable('CI ROOT 0 -> ROOT 1 QUADRUPOLE ZZ')), 0.677526505530, 4, "CI ROOT 0 -> ROOT 1 QUADRUPOLE ZZ")  #TEST
+compare_values(abs(psi4.get_variable('CI ROOT 0 -> ROOT 1 QUADRUPOLE YZ')), 0.000000000000, 4, "CI ROOT 0 -> ROOT 1 QUADRUPOLE YZ")  #TEST
+
+cas_energy = prop('CASSCF', properties=props)    #TEST
+compare_values(-278.778339189657800, cas_energy, 6, 'CASSCF Energy')    #TEST
+compare_values(psi4.get_variable('CASSCF DIPOLE Y'), 0.000000000000, 2, "CASSCF DIPOLE Y")    #TEST
+compare_values(psi4.get_variable('CASSCF DIPOLE Z'), 1.994979146421, 2, "CASSCF DIPOLE Z")    #TEST
+compare_values(psi4.get_variable('CASSCF QUADRUPOLE XX'), -22.404898239966, 2, "CASSCF QUADRUPOLE XX")    #TEST
+compare_values(psi4.get_variable('CASSCF QUADRUPOLE YY'), -27.936106983618, 2, "CASSCF QUADRUPOLE YY")    #TEST
+compare_values(psi4.get_variable('CASSCF QUADRUPOLE ZZ'), -28.338138881212, 2, "CASSCF QUADRUPOLE ZZ")    #TEST
+compare_values(psi4.get_variable('CASSCF QUADRUPOLE YZ'), 0.000000000000, 2, "CASSCF QUADRUPOLE YZ")    #TEST
+compare_values(psi4.get_variable('CASSCF ROOT 1 DIPOLE Y'), 0.000000000000, 2, "CASSCF ROOT 1 DIPOLE Y")    #TEST
+compare_values(psi4.get_variable('CASSCF ROOT 1 DIPOLE Z'), 4.462471853372, 2, "CASSCF ROOT 1 DIPOLE Z")    #TEST
+compare_values(psi4.get_variable('CASSCF ROOT 1 QUADRUPOLE XX'), -22.295623175859, 2, "CASSCF ROOT 1 QUADRUPOLE XX")    #TEST
+compare_values(psi4.get_variable('CASSCF ROOT 1 QUADRUPOLE YY'), -29.286904330283, 2, "CASSCF ROOT 1 QUADRUPOLE YY")    #TEST
+compare_values(psi4.get_variable('CASSCF ROOT 1 QUADRUPOLE ZZ'), -27.288580048926, 2, "CASSCF ROOT 1 QUADRUPOLE ZZ")    #TEST
+compare_values(psi4.get_variable('CASSCF ROOT 1 QUADRUPOLE YZ'), 0.000000000000, 4, "CASSCF ROOT 1 QUADRUPOLE YZ")    #TEST
+
+set DETCI NAT_ORBS true
+cas_energy = prop('CASSCF', properties=props)    #TEST
+compare_values(-278.778339189657800, cas_energy, 6, 'CASSCF Energy')    #TEST
+compare_values(psi4.get_variable('CASSCF DIPOLE Y'), 0.000000000000, 2, "CASSCF DIPOLE Y")    #TEST
+compare_values(psi4.get_variable('CASSCF DIPOLE Z'), 1.994979146421, 2, "CASSCF DIPOLE Z")    #TEST
+compare_values(psi4.get_variable('CASSCF QUADRUPOLE XX'), -22.404898239966, 2, "CASSCF QUADRUPOLE XX")    #TEST
+compare_values(psi4.get_variable('CASSCF QUADRUPOLE YY'), -27.936106983618, 2, "CASSCF QUADRUPOLE YY")    #TEST
+compare_values(psi4.get_variable('CASSCF QUADRUPOLE ZZ'), -28.338138881212, 2, "CASSCF QUADRUPOLE ZZ")    #TEST
+compare_values(psi4.get_variable('CASSCF QUADRUPOLE YZ'), 0.000000000000, 2, "CASSCF QUADRUPOLE YZ")    #TEST
+compare_values(psi4.get_variable('CASSCF ROOT 1 DIPOLE Y'), 0.000000000000, 2, "CASSCF ROOT 1 DIPOLE Y")    #TEST
+compare_values(psi4.get_variable('CASSCF ROOT 1 DIPOLE Z'), 4.462471853372, 2, "CASSCF ROOT 1 DIPOLE Z")    #TEST
+compare_values(psi4.get_variable('CASSCF ROOT 1 QUADRUPOLE XX'), -22.295623175859, 2, "CASSCF ROOT 1 QUADRUPOLE XX")    #TEST
+compare_values(psi4.get_variable('CASSCF ROOT 1 QUADRUPOLE YY'), -29.286904330283, 2, "CASSCF ROOT 1 QUADRUPOLE YY")    #TEST
+compare_values(psi4.get_variable('CASSCF ROOT 1 QUADRUPOLE ZZ'), -27.288580048926, 2, "CASSCF ROOT 1 QUADRUPOLE ZZ")    #TEST
+compare_values(psi4.get_variable('CASSCF ROOT 1 QUADRUPOLE YZ'), 0.000000000000, 4, "CASSCF ROOT 1 QUADRUPOLE YZ")    #TEST
+#name = 'CASSCF'    #TEST
+#prop_list = []    #TEST
+#for dip in ['Y', 'Z']:    #TEST
+#    prop_list.append(name + ' DIPOLE ' + dip)    #TEST
+#for quad in ['XX', 'YY', 'ZZ', 'YZ']:    #TEST
+#    prop_list.append(name + ' QUADRUPOLE ' + quad)    #TEST
+#    #TEST
+#for p in prop_list:    #TEST
+#    val = psi4.get_variable(p)    #TEST
+#    pstring  = "compare_values(psi4.get_variable("    #TEST
+#    pstring += "'" + p + "'"    #TEST
+#    pstring += '), %14.12f, 4, "' % val    #TEST
+#    pstring += p    #TEST
+#    pstring += '")'    #TEST
+#    print pstring    #TEST
+--------------------------------------------------------------------------
+    Molecular point group: c2v
+    Full point group: C2v
+
+    Geometry (in Angstrom), charge = -1, multiplicity = 3:
+
+       Center              X                  Y                   Z               Mass       
+    ------------   -----------------  -----------------  -----------------  -----------------
+           O          0.000000000000     0.000000000000     1.352965563729    15.994914619560
+           N          0.000000000000     0.000000000000     0.099633131563    14.003074004780
+           O         -0.000000000000     1.006816424330    -0.720095709717    15.994914619560
+           O          0.000000000000    -1.006816424330    -0.720095709717    15.994914619560
+
+	Nuclear repulsion energy..........................................PASSED
+
+*** tstart() called on CHE-FEVANGE-01I
+*** at Mon May 29 17:03:58 2017
+
+   => Loading Basis Set <=
+
+    Name: 6-31G*
+    Role: ORBITAL
+    Keyword: BASIS
+    atoms 1, 3-4 entry O          line   137 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/6-31gs.gbs 
+    atoms 2      entry N          line   120 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/6-31gs.gbs 
+
+
+         ---------------------------------------------------------
+                                   SCF
+            by Justin Turney, Rob Parrish, Andy Simmonett
+                             and Daniel Smith
+                             ROHF Reference
+                        1 Threads,    500 MiB Core
+         ---------------------------------------------------------
+
+  ==> Geometry <==
+
+    Molecular point group: c2v
+    Full point group: C2v
+
+    Geometry (in Angstrom), charge = -1, multiplicity = 3:
+
+       Center              X                  Y                   Z               Mass       
+    ------------   -----------------  -----------------  -----------------  -----------------
+           O          0.000000000000     0.000000000000     1.352965563729    15.994914619560
+           N          0.000000000000     0.000000000000     0.099633131563    14.003074004780
+           O         -0.000000000000     1.006816424330    -0.720095709717    15.994914619560
+           O          0.000000000000    -1.006816424330    -0.720095709717    15.994914619560
+
+  Running in c2v symmetry.
+
+  Rotational constants: A =      0.51986  B =      0.36642  C =      0.21493 [cm^-1]
+  Rotational constants: A =  15584.92408  B =  10985.09449  C =   6443.42280 [MHz]
+  Nuclear repulsion =  115.503632390142570
+
+  Charge       = -1
+  Multiplicity = 3
+  Electrons    = 32
+  Nalpha       = 17
+  Nbeta        = 15
+
+  ==> Algorithm <==
+
+  SCF Algorithm Type is PK.
+  DIIS enabled.
+  MOM disabled.
+  Fractional occupation disabled.
+  Guess Type is GWH.
+  Energy threshold   = 1.00e-10
+  Density threshold  = 1.00e-10
+  Integral threshold = 0.00e+00
+
+  ==> Primary Basis <==
+
+  Basis Set: 6-31G*
+    Blend: 6-31G*
+    Number of shells: 24
+    Number of basis function: 60
+    Number of Cartesian functions: 60
+    Spherical Harmonics?: false
+    Max angular momentum: 2
+
+  ==> Pre-Iterations <==
+
+   -------------------------------------------------------
+    Irrep   Nso     Nmo     Nalpha   Nbeta   Ndocc  Nsocc
+   -------------------------------------------------------
+     A1        27      27       0       0       0       0
+     A2         6       6       0       0       0       0
+     B1        10      10       0       0       0       0
+     B2        17      17       0       0       0       0
+   -------------------------------------------------------
+    Total      60      60      17      15      15       2
+   -------------------------------------------------------
+
+  ==> Integral Setup <==
+
+  Using in-core PK algorithm.
+   Calculation information:
+      Number of atoms:                   4
+      Number of AO shells:              24
+      Number of primitives:             60
+      Number of atomic orbitals:        60
+      Number of basis functions:        60
+
+      Integral cutoff                 1.00e-12
+      Number of threads:                 1
+
+  Performing in-core PK
+  Using 3350730 doubles for integral storage.
+  We computed 44121 shell quartets total.
+  Whereas there are 45150 unique shell quartets.
+  ==> DiskJK: Disk-Based J/K Matrices <==
+
+    J tasked:                  Yes
+    K tasked:                  Yes
+    wK tasked:                  No
+    Memory (MB):               375
+    Schwarz Cutoff:          1E-12
+
+    OpenMP threads:              1
+  Minimum eigenvalue in the overlap matrix is 3.6436246723E-03.
+  Using Symmetric Orthogonalization.
+
+  SCF Guess: Generalized Wolfsberg-Helmholtz.
+
+  ==> Iterations <==
+
+                        Total Energy        Delta E     RMS |[F,P]|
+
+   @ROHF iter   1:  -263.04220302768931   -2.63042e+02   1.00352e-01 
+   @ROHF iter   2:  -276.73394138402739   -1.36917e+01   4.75424e-02 DIIS
+   @ROHF iter   3:  -277.89031935872504   -1.15638e+00   3.35306e-02 DIIS
+   @ROHF iter   4:  -278.50018439421149   -6.09865e-01   1.70611e-02 DIIS
+   @ROHF iter   5:  -278.65718857151478   -1.57004e-01   1.10656e-02 DIIS
+   @ROHF iter   6:  -278.74395220838937   -8.67636e-02   5.04183e-03 DIIS
+   @ROHF iter   7:  -278.76653130056900   -2.25791e-02   1.59779e-03 DIIS
+   @ROHF iter   8:  -278.76915067374694   -2.61937e-03   3.25128e-04 DIIS
+   @ROHF iter   9:  -278.76928732550408   -1.36652e-04   9.32036e-05 DIIS
+   @ROHF iter  10:  -278.76930158458481   -1.42591e-05   1.35151e-05 DIIS
+   @ROHF iter  11:  -278.76930220791638   -6.23332e-07   3.87891e-06 DIIS
+   @ROHF iter  12:  -278.76930226567561   -5.77592e-08   1.44029e-06 DIIS
+   @ROHF iter  13:  -278.76930227203570   -6.36010e-09   5.89456e-07 DIIS
+   @ROHF iter  14:  -278.76930227271157   -6.75868e-10   7.59052e-08 DIIS
+   @ROHF iter  15:  -278.76930227272692   -1.53477e-11   1.58139e-08 DIIS
+   @ROHF iter  16:  -278.76930227272760   -6.82121e-13   5.20064e-09 DIIS
+   @ROHF iter  17:  -278.76930227272794   -3.41061e-13   1.92695e-09 DIIS
+   @ROHF iter  18:  -278.76930227272777    1.70530e-13   5.67864e-10 DIIS
+   @ROHF iter  19:  -278.76930227272788   -1.13687e-13   1.46075e-10 DIIS
+   @ROHF iter  20:  -278.76930227272811   -2.27374e-13   4.66047e-11 DIIS
+
+  ==> Post-Iterations <==
+
+    Orbital Energies (a.u.)
+    -----------------------
+
+    Doubly Occupied:                                                      
+
+       1B2   -20.381078     1A1   -20.381074     2A1   -20.307354  
+       3A1   -15.526075     4A1    -1.327955     5A1    -1.111591  
+       2B2    -1.070718     6A1    -0.620783     1B1    -0.468797  
+       3B2    -0.467831     7A1    -0.447834     1A2    -0.272274  
+       8A1    -0.255625     2B1    -0.247570     4B2    -0.219852  
+
+    Singly Occupied:                                                      
+
+       5B2     0.000807     3B1     0.187127  
+
+    Virtual:                                                              
+
+       9A1     0.626983     6B2     0.739383    10A1     0.866832  
+      11A1     1.074087    12A1     1.141192     7B2     1.143460  
+       4B1     1.164150    13A1     1.317445     8B2     1.337622  
+      14A1     1.409699     5B1     1.425538    15A1     1.430734  
+       2A2     1.444151     9B2     1.515112     6B1     1.530326  
+      10B2     1.568172    16A1     1.597965     7B1     1.880040  
+       3A2     1.892209    11B2     1.942807    17A1     1.997877  
+      18A1     2.198885     8B1     2.285306     4A2     2.355176  
+      19A1     2.370834    12B2     2.374530     5A2     2.400723  
+      13B2     2.471358    20A1     2.539571     9B1     2.721468  
+      21A1     2.814847    14B2     2.864221     6A2     3.096354  
+      10B1     3.299890    22A1     3.347588    15B2     3.366851  
+      23A1     3.469247    24A1     3.526416    16B2     3.615482  
+      25A1     3.996094    17B2     4.382377    26A1     4.407404  
+      27A1     4.518234  
+
+    Final Occupation by Irrep:
+             A1    A2    B1    B2 
+    DOCC [     8,    1,    2,    4 ]
+    SOCC [     0,    0,    1,    1 ]
+
+  Energy converged.
+
+  @ROHF Final Energy:  -278.76930227272811
+
+   => Energetics <=
+
+    Nuclear Repulsion Energy =            115.5036323901425703
+    One-Electron Energy =                -621.9610038706196065
+    Two-Electron Energy =                 227.6880692077489527
+    Total Energy =                       -278.7693022727280550
+
+
+
+Properties will be evaluated at   0.000000,   0.000000,   0.000000 Bohr
+
+Properties computed using the SCF density matrix
+
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.2597
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.2604     Total:     0.2604
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:    -0.6619     Total:     0.6619
+
+
+*** tstop() called on CHE-FEVANGE-01I at Mon May 29 17:03:58 2017
+Module time:
+	user time   =       0.47 seconds =       0.01 minutes
+	system time =       0.03 seconds =       0.00 minutes
+	total time  =          0 seconds =       0.00 minutes
+Total time:
+	user time   =       0.47 seconds =       0.01 minutes
+	system time =       0.03 seconds =       0.00 minutes
+	total time  =          0 seconds =       0.00 minutes
+ MINTS: Wrapper to libmints.
+   by Justin Turney
+
+   Calculation information:
+      Number of threads:                 1
+      Number of atoms:                   4
+      Number of AO shells:              24
+      Number of SO shells:              18
+      Number of primitives:             60
+      Number of atomic orbitals:        60
+      Number of basis functions:        60
+
+      Number of irreps:                  4
+      Integral cutoff                 0.00e+00
+      Number of functions per irrep: [  27    6   10   17 ]
+
+ OEINTS: Overlap, kinetic, potential, dipole, and quadrupole integrals
+         stored in file 35.
+
+      Computing two-electron integrals...done
+      Computed 438056 non-zero two-electron integrals.
+        Stored in file 33.
+
+
+         ---------------------------------------------------------
+                          Configuration Interaction
+                            (a 'D E T C I' module)
+
+                 C. David Sherrill, Daniel G. A. Smith, and
+                              Matt L. Leininger
+         ---------------------------------------------------------
+
+Warning: iopen=0,opentype!=closed. Making iopen=1
+
+   ==> Parameters <==
+
+    EX LEVEL       =        8      H0 BLOCKSIZE  =     1000
+    VAL EX LEVEL   =        0      H0 GUESS SIZE =     1000
+    H0COUPLINGSIZE =        0      H0 COUPLING   =       NO
+    MAXITER        =       24      NUM PRINT     =       20
+    NUM ROOTS      =        2      ICORE         =        1
+    PRINT LVL      =        1      FCI           =      YES
+    R CONV         = 1.00e-04      MIXED         =      YES
+    E CONV         = 1.00e-10      MIXED4        =      YES
+    R4S            =       NO      REPL OTF      =       NO
+    DIAG METHOD    =      SEM      FOLLOW ROOT   =        0
+    PRECONDITIONER = DAVIDSON      UPDATE        = DAVIDSON
+    S              =   1.0000      Ms0           =       NO
+    GUESS VECTOR   =  H0BLOCK      OPENTYPE      = HIGHSPIN
+    COLLAPSE SIZE  =        1      HD AVG        = EVANGELISTI
+    MAX NUM VECS   =       50      REF SYM       =     AUTO
+    IOPEN        =      YES
+
+    EX ALLOW       =  1  1  1  1  1  1  1  1 
+    STATE AVERAGE  =  0(0.50)  1(0.50) 
+
+   ==> CI Orbital and Space information <==
+
+   ------------------------------------------------------
+               Space    Total    A1    A2    B1    B2
+   ------------------------------------------------------
+                 Nso       60    27     6    10    17
+                 Nmo       60    27     6    10    17
+               Ndocc       15     8     1     2     4
+               Nsocc        2     0     0     1     1
+   ------------------------------------------------------
+                       CI Spaces
+   ------------------------------------------------------
+        Dropped DOCC       12     7     1     1     3
+              Active        8     3     0     2     3
+        Dropped UOCC       40    17     5     7    11
+   ------------------------------------------------------
+
+   ==> Setting up CI strings <==
+
+    There are 56 alpha and 56 beta strings
+    The CI space requires 780 (7.80E+02) determinants and 4 blocks
+
+   ==> Transforming CI integrals <==
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (nn|nn) nbuckets = 1
+	Transforming the one-electron integrals and constructing Fock matrices
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	First half integral transformation complete.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+
+   ==> Starting CI iterations <==
+
+    H0 Block Eigenvalue = -278.79245619
+
+    Simultaneous Expansion Method (Block Davidson Method)
+    Using 2 initial trial vectors
+
+     Iter   Root       Total Energy       Delta E      C RMS
+
+   @CI  0:     0   -278.792456188231   -1.2469E+01   7.5632E-13  
+   @CI  0:     1   -278.641729671449   -1.2318E+01   7.6735E-13  
+
+    Warning: Norm of correction (root 0) is < 1.0E-13
+    Warning: Norm of correction (root 1) is < 1.0E-13
+   @CI  1:     0   -278.792456188231   0.0000E+00   5.6185E-13 c
+   @CI  1:     1   -278.641729671449   -5.3291E-15   4.0052E-13 c
+
+
+   ==> Energetics <==
+
+    SCF energy =         -278.769302272728055
+    Total CI energy =    -278.792456188231313
+
+   ==> FCI root 0 information <==
+
+    FCI Root 0 energy =  -278.792456188231313
+
+   The 20 most important determinants:
+
+    *   1   -0.985883  (    2,   13)  8A1X 2B1X 3B1A 4B2X 5B2A 
+    *   2    0.056779  (   46,   37)  8A1A 9A1A 2B1X 3B1A 4B2B 5B2X 
+    *   3   -0.056640  (    2,   20)  8A1A 9A1B 2B1X 3B1A 4B2A 5B2X 
+    *   4   -0.052077  (   55,   37)  2B1X 3B1A 4B2X 5B2X 6B2A 
+    *   5   -0.050927  (   44,   37)  8A1A 10A1A 2B1X 3B1A 4B2X 5B2B 
+    *   6    0.047800  (    2,   19)  8A1X 2B1X 3B1A 4B2A 5B2X 
+    *   7   -0.040588  (   10,   16)  8A1X 2B1A 3B1X 4B2B 5B2A 6B2A 
+    *   8    0.039932  (    2,   15)  8A1A 10A1B 2B1X 3B1A 4B2X 5B2A 
+    *   9    0.038195  (    2,   28)  8A1X 2B1A 3B1X 4B2A 5B2A 6B2B 
+    *  10   -0.027991  (   10,   25)  8A1X 2B1X 3B1A 5B2A 6B2X 
+    *  11    0.027751  (    2,   22)  8A1X 2B1A 3B1X 4B2A 5B2X 
+    *  12   -0.025184  (    2,   17)  8A1A 9A1B 2B1A 3B1X 4B2X 5B2A 
+    *  13   -0.023293  (    3,   16)  8A1B 9A1A 2B1A 3B1X 4B2X 5B2A 
+    *  14   -0.021223  (    6,   13)  8A1X 2B1X 3B1A 4B2X 6B2A 
+    *  15    0.019614  (    2,   25)  8A1X 2B1X 3B1A 4B2A 5B2A 6B2B 
+    *  16    0.019339  (   43,   37)  8A1A 9A1A 2B1X 3B1A 4B2X 5B2B 
+    *  17    0.019223  (    3,   14)  9A1X 2B1X 3B1A 4B2X 5B2A 
+    *  18   -0.018275  (    2,   18)  8A1A 10A1B 2B1A 3B1X 4B2X 5B2A 
+    *  19   -0.018144  (   10,   13)  8A1X 2B1X 3B1A 4B2B 5B2A 6B2A 
+    *  20    0.017630  (   10,   14)  8A1A 9A1B 2B1X 3B1A 4B2B 5B2A 6B2A 
+
+
+   ==> FCI root 1 information <==
+
+    FCI Root 1 energy =  -278.641729671448900
+
+   The 20 most important determinants:
+
+    *   1    0.931081  (    2,   19)  8A1X 2B1X 3B1A 4B2A 5B2X 
+    *   2    0.265877  (    2,   22)  8A1X 2B1A 3B1X 4B2A 5B2X 
+    *   3   -0.128855  (    3,   19)  8A1B 9A1A 2B1X 3B1A 4B2A 5B2X 
+    *   4   -0.115498  (    2,   20)  8A1A 9A1B 2B1X 3B1A 4B2A 5B2X 
+    *   5   -0.113209  (   10,   19)  8A1X 2B1X 3B1A 5B2X 6B2A 
+    *   6   -0.061381  (    4,   19)  8A1B 10A1A 2B1X 3B1A 4B2A 5B2X 
+    *   7    0.060577  (    2,   13)  8A1X 2B1X 3B1A 4B2X 5B2A 
+    *   8   -0.060354  (    2,   21)  8A1A 10A1B 2B1X 3B1A 4B2A 5B2X 
+    *   9   -0.043993  (    2,   16)  8A1X 2B1A 3B1X 4B2X 5B2A 
+    *  10    0.031558  (    6,   19)  8A1X 2B1X 3B1A 4B2A 5B2B 6B2A 
+    *  11   -0.019459  (   10,   22)  8A1X 2B1A 3B1X 5B2X 6B2A 
+    *  12    0.019013  (    2,   25)  8A1X 2B1X 3B1A 4B2A 5B2A 6B2B 
+    *  13   -0.017108  (   44,   32)  8A1X 10A1X 2B1X 3B1A 4B2A 
+    *  14   -0.014943  (   43,   37)  8A1A 9A1A 2B1X 3B1A 4B2X 5B2B 
+    *  15    0.014487  (    2,   14)  8A1A 9A1B 2B1X 3B1A 4B2X 5B2A 
+    *  16   -0.014185  (   55,   41)  2B1X 3B1A 4B2A 5B2X 6B2X 
+    *  17    0.014104  (   10,   13)  8A1X 2B1X 3B1A 4B2B 5B2A 6B2A 
+    *  18   -0.013634  (    2,   23)  8A1A 9A1B 2B1A 3B1X 4B2A 5B2X 
+    *  19   -0.013447  (   43,   31)  8A1X 9A1X 2B1X 3B1A 4B2A 
+    *  20    0.012521  (    2,   15)  8A1A 10A1B 2B1X 3B1A 4B2X 5B2A 
+
+		 "A good bug is a dead bug" 
+
+			 - Starship Troopers
+
+		 "I didn't write FORTRAN.  That's the problem."
+
+			 - Edward Valeev
+
+
+Properties will be evaluated at   0.000000,   0.000000,   0.000000 Bohr
+
+Properties computed using the CI density matrix
+
+
+ Multipole Moments:
+
+ ------------------------------------------------------------------------------------
+     Multipole             Electric (a.u.)       Nuclear  (a.u.)        Total (a.u.)
+ ------------------------------------------------------------------------------------
+
+ L = 1.  Multiply by 2.5417462300 to convert to Debye
+ Dipole X            :          0.0000000            0.0000000            0.0000000
+ Dipole Y            :          0.0000000            0.0000000            0.0000000
+ Dipole Z            :          0.7517449           -0.0007085            0.7510364
+
+ L = 2.  Multiply by 1.3450341749 to convert to Debye.ang
+ Quadrupole XX       :        -16.6508376            0.0000000          -16.6508376
+ Quadrupole XY       :          0.0000000           -0.0000000           -0.0000000
+ Quadrupole XZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole YY       :        -78.5680707           57.9186331          -20.6494376
+ Quadrupole YZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole ZZ       :       -103.8552354           82.1709850          -21.6842504
+
+ L = 3.  Multiply by 0.7117614302 to convert to Debye.ang^2
+ Octupole XXX        :          0.0000000            0.0000000            0.0000000
+ Octupole XXY        :          0.0000000            0.0000000            0.0000000
+ Octupole XXZ        :          0.0592367           -0.0000000            0.0592367
+ Octupole XYY        :          0.0000000            0.0000000            0.0000000
+ Octupole XYZ        :          0.0000000            0.0000000            0.0000000
+ Octupole XZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole YYY        :          0.0000000            0.0000000            0.0000000
+ Octupole YYZ        :         85.1945017          -78.8147307            6.3797709
+ Octupole YZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole ZZZ        :        -98.2769268           93.4345542           -4.8423726
+
+ --------------------------------------------------------------------------------
+
+ Electrostatic potentials at the nuclear coordinates:
+ ---------------------------------------------
+   Center     Electrostatic Potential (a.u.)
+ ---------------------------------------------
+    1  O           -22.339652078375
+    2  N           -18.357822478667
+    3  O           -22.638966100222
+    4  O           -22.638966100222
+ ---------------------------------------------
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.7517
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.7510     Total:     0.7510
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:     1.9089     Total:     1.9089
+
+  Quadrupole Moment: (Debye Ang)
+    XX:   -22.3959     YY:   -27.7742     ZZ:   -29.1661
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+  Traceless Quadrupole Moment: (Debye Ang)
+    XX:     4.0495     YY:    -1.3288     ZZ:    -2.7207
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+
+  Orbital extents (a.u.):
+            MO          <x^2>          <y^2>          <z^2>          <r^2>
+       0 B2  0   0.0177547207   3.6370466484   1.8691095193   5.5239108884
+       1 A1  0   0.0177526219   3.6370541824   1.8691499892   5.5239567936
+       2 A1  1   0.0177571150   0.0177580929   6.5533995632   6.5889147711
+       3 A1  2   0.0235092053   0.0235080616   0.0589438856   0.1059611525
+       4 A1  3   0.5136550718   1.5585062195   1.6516707388   3.7238320301
+       5 A1  4   0.4740881947   1.0910484848   4.0210437356   5.5861804151
+       6 B2  1   0.4906676506   3.5596612512   1.6318646678   5.6821935696
+       7 A1  5   0.5170521503   3.4954476149   4.4060968009   8.4185965661
+       8 B1  0   1.3878693280   2.0887642008   2.2612806616   5.7379141904
+       9 B2  2   0.4186360939   3.6466427797   3.0918886901   7.1571675637
+      10 A1  6   0.4242776095   2.0907112360   5.7329096575   8.2478985030
+      11 A2  0   1.1982267079   4.0790397660   2.1711174652   7.4483839390
+      12 A1  7   0.4354720167   3.5861187045   3.5070563840   7.5286471052
+      13 B1  1   1.2587321167   1.5780005814   5.1320982406   7.9688309388
+      14 B2  3   0.4077407940   1.8070623731   6.1643405929   8.3791437601
+      15 B2  4   0.3621406008   4.7186573759   2.3968877324   7.4776857091
+      16 B1  2   1.0738698200   1.1482035418   2.3690845114   4.5911578732
+      17 A1  8   1.0234007187   2.6467056824   3.8067849722   7.4768913733
+      18 B2  5   0.6052804235   3.0280534110   3.1140850962   6.7474189307
+      19 A1  9   1.0019356583   3.3047688759   5.2712346225   9.5779391567
+      20 A1 10   2.1854125288   3.2491253371   2.8158594257   8.2503972916
+      21 A1 11   1.6092094788   2.5990761646   4.0964765792   8.3047622227
+      22 B2  6   1.3935314465   5.1170458886   2.2928068807   8.8033842158
+      23 B1  3   3.6507891123   1.1941869381   1.1684674797   6.0134435301
+      24 A1 12   1.0848375355   3.1362627088  10.0824496405  14.3035498848
+      25 B2  7   0.9617019807   6.7047850080   4.7920671202  12.4585541089
+      26 A1 13   0.8202440094   4.6657831769   5.0220018961  10.5080290824
+      27 B1  4   2.5239047866   3.7289048823   4.2163040962  10.4691137652
+      28 A1 14   1.4083907639   3.4310581721   5.3677667890  10.2072157250
+      29 A2  1   2.4992331056   5.1710775459   2.6895074393  10.3598180908
+      30 B2  8   0.9838575916   3.6999285830   7.4689052015  12.1526913761
+      31 B1  5   2.6100413156   1.8521332636   7.7560006085  12.2181751878
+      32 B2  9   0.8604183105   5.6786466074   5.2434328182  11.7824977360
+      33 A1 15   1.6573132443   4.2086803172   2.5170885626   8.3830821240
+      34 B1  6   0.9508009750   1.7317108244   2.7610316615   5.4435434609
+      35 A2  2   0.9559290585   2.3056833163   1.7219264159   4.9835387906
+      36 B2 10   1.9549819213   3.8277438720   3.5482162507   9.3309420440
+      37 A1 16   1.4617905160   2.4719463611   5.2588063780   9.1925432551
+      38 A1 17   1.1708666244   2.8142441758   3.7144167725   7.6995275728
+      39 B1  7   0.9521962911   3.7591632168   2.9476247971   7.6589843050
+      40 A2  3   0.9403894584   1.5794935353   5.9859312004   8.5058141941
+      41 A1 18   1.5002201592   1.8287544282   4.9488436812   8.2778182686
+      42 B2 11   0.6140788959   4.0847987986   3.1259105877   7.8247882821
+      43 A2  4   0.9645060066   3.9235466523   2.8089949536   7.6970476125
+      44 B2 12   0.5902078051   2.1168805933   4.1340585858   6.8411469842
+      45 A1 19   1.3951930796   3.0287073296   3.1126229829   7.5365233920
+      46 B1  8   1.3621442478   2.4892301721   4.1168456764   7.9682200964
+      47 A1 20   1.0707074163   1.6254517806   2.1203032381   4.8164624349
+      48 B2 13   0.6265757268   3.7890993605   2.7776779430   7.1933530303
+      49 A2  5   1.0324111727   2.7554970060   2.0460529678   5.8339611464
+      50 B1  9   1.0284945458   1.4204073794   3.7171363242   6.1660382495
+      51 A1 21   0.7678880637   3.9386654262   3.0721630833   7.7787165732
+      52 B2 14   0.7090364438   3.8657536615   3.6789460653   8.2537361707
+      53 A1 22   0.8140034573   1.7582114049   6.6660082358   9.2382230979
+      54 A1 23   0.5262744851   2.1548159064   3.4709012580   6.1519916495
+      55 B2 15   0.3803170711   2.6086931381   3.6476616296   6.6366718388
+      56 A1 24   0.9845741595   3.3089467848   2.8333596387   7.1268805829
+      57 B2 16   1.6446952324   4.7763958275   3.0962546387   9.5173456986
+      58 A1 25   1.2525765520   2.3358694657   4.9947557543   8.5832017720
+      59 A1 26   1.1241087068   1.8908070676   5.1192890837   8.1342048581
+
+  Mulliken Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.49870  3.94618  0.55253 -0.44488
+       2     N     3.49146  2.82096  0.67050  0.68758
+       3     O     4.50492  4.11643  0.38849 -0.62135
+       4     O     4.50492  4.11643  0.38849 -0.62135
+
+   Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+  Lowdin Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.41863  3.86795  0.55068 -0.28658
+       2     N     3.66741  3.00470  0.66272  0.32789
+       3     O     4.45698  4.06368  0.39330 -0.52066
+       4     O     4.45698  4.06368  0.39330 -0.52066
+
+  Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+
+  Mayer Bond Indices:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.10776662056822     0.01840143482121     0.01840143482121
+    2     1.10776662056822     0.00000000000000     1.11928191773564     1.11928191773564
+    3     0.01840143482121     1.11928191773564     0.00000000000000     0.07298639167089
+    4     0.01840143482121     1.11928191773564     0.07298639167089     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.46008230914799     0.00283326808342     0.00283326808342
+    2     0.46008230914799     0.00000000000000     0.48671409966354     0.48671409966354
+    3     0.00283326808342     0.48671409966354     0.00000000000000    -0.00368044417794
+    4     0.00283326808342     0.48671409966354    -0.00368044417794     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.64768431142024     0.01556816673779     0.01556816673779
+    2     0.64768431142024     0.00000000000000     0.63256781807210     0.63256781807210
+    3     0.01556816673779     0.63256781807210     0.00000000000000     0.07666683584883
+    4     0.01556816673779     0.63256781807210     0.07666683584883     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.1445695
+      2:  3.3463305
+      3:  1.2106697
+      4:  1.2106697
+
+
+
+  Wiberg Bond Indices using Orthogonal Lowdin Orbitals:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.51918127393158     0.10570744963501     0.10570744963501
+    2     1.51918127393158     0.00000000000000     1.42795551757751     1.42795551757751
+    3     0.10570744963501     1.42795551757751     0.00000000000000     0.20720449221755
+    4     0.10570744963501     1.42795551757751     0.20720449221755     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.71928280482338     0.04237027960596     0.04237027960596
+    2     0.71928280482338     0.00000000000000     0.67796697641895     0.67796697641895
+    3     0.04237027960596     0.67796697641895     0.00000000000000     0.06675584177884
+    4     0.04237027960596     0.67796697641895     0.06675584177884     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.79989846910820     0.06333717002905     0.06333717002905
+    2     0.79989846910820     0.00000000000000     0.74998854115856     0.74998854115856
+    3     0.06333717002905     0.74998854115856     0.00000000000000     0.14044865043871
+    4     0.06333717002905     0.74998854115856     0.14044865043871     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.7305962
+      2:  4.3750923
+      3:  1.7408675
+      4:  1.7408675
+
+  Natural Orbital Occupations:
+
+  Alpha Occupations:
+  HONO-2 :    4 B2    0.997
+  HONO-1 :    8 A1    0.992
+  HONO-0 :    5 B2    0.991
+  LUNO+0 :    6 B2    0.009
+  LUNO+1 :    9 A1    0.008
+  LUNO+2 :   10 A1    0.003
+  LUNO+3 :    4 B1    0.000
+
+  Beta Occupations:
+  HONO-2 :    8 A1    0.987
+  HONO-1 :    2 B1    0.976
+  HONO-0 :    4 B2    0.505
+  LUNO+0 :    5 B2    0.497
+  LUNO+1 :    3 B1    0.024
+  LUNO+2 :    9 A1    0.007
+  LUNO+3 :    6 B2    0.002
+
+  Total Occupations:
+  HONO-2 :    8 A1    1.978
+  HONO-1 :    2 B1    1.976
+  HONO-0 :    4 B2    1.502
+  LUNO+0 :    5 B2    1.488
+  LUNO+1 :    3 B1    1.023
+  LUNO+2 :    9 A1    0.016
+  LUNO+3 :    6 B2    0.012
+
+
+ Field computed on the grid and written to grid_field.dat
+
+ Electrostatic potential computed on the grid and written to grid_esp.dat
+
+   ===> CI properties for all CI roots <=== 
+
+
+Properties computed using the CI ROOT 0 density matrix
+
+
+ Multipole Moments:
+
+ ------------------------------------------------------------------------------------
+     Multipole             Electric (a.u.)       Nuclear  (a.u.)        Total (a.u.)
+ ------------------------------------------------------------------------------------
+
+ L = 1.  Multiply by 2.5417462300 to convert to Debye
+ Dipole X            :          0.0000000            0.0000000            0.0000000
+ Dipole Y            :          0.0000000            0.0000000            0.0000000
+ Dipole Z            :         -0.1895172           -0.0007085           -0.1902257
+
+ L = 2.  Multiply by 1.3450341749 to convert to Debye.ang
+ Quadrupole XX       :        -16.6680571            0.0000000          -16.6680571
+ Quadrupole XY       :          0.0000000           -0.0000000           -0.0000000
+ Quadrupole XZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole YY       :        -77.7654623           57.9186331          -19.8468292
+ Quadrupole YZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole ZZ       :       -104.8338417           82.1709850          -22.6628567
+
+ L = 3.  Multiply by 0.7117614302 to convert to Debye.ang^2
+ Octupole XXX        :          0.0000000            0.0000000            0.0000000
+ Octupole XXY        :          0.0000000            0.0000000            0.0000000
+ Octupole XXZ        :         -0.0521504           -0.0000000           -0.0521504
+ Octupole XYY        :          0.0000000            0.0000000            0.0000000
+ Octupole XYZ        :          0.0000000            0.0000000            0.0000000
+ Octupole XZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole YYY        :          0.0000000            0.0000000            0.0000000
+ Octupole YYZ        :         83.5332329          -78.8147307            4.7185022
+ Octupole YZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole ZZZ        :       -102.5053073           93.4345542           -9.0707531
+
+ --------------------------------------------------------------------------------
+
+ Electrostatic potentials at the nuclear coordinates:
+ ---------------------------------------------
+   Center     Electrostatic Potential (a.u.)
+ ---------------------------------------------
+    1  O           -22.549346449958
+    2  N           -18.369460847230
+    3  O           -22.511359425908
+    4  O           -22.511359425908
+ ---------------------------------------------
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.1895
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.1902     Total:     0.1902
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:    -0.4835     Total:     0.4835
+
+  Quadrupole Moment: (Debye Ang)
+    XX:   -22.4191     YY:   -26.6947     ZZ:   -30.4823
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+  Traceless Quadrupole Moment: (Debye Ang)
+    XX:     4.1129     YY:    -0.1626     ZZ:    -3.9503
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+
+  Orbital extents (a.u.):
+            MO          <x^2>          <y^2>          <z^2>          <r^2>
+       0 B2  0   0.0177547207   3.6370466484   1.8691095193   5.5239108884
+       1 A1  0   0.0177526219   3.6370541824   1.8691499892   5.5239567936
+       2 A1  1   0.0177571150   0.0177580929   6.5533995632   6.5889147711
+       3 A1  2   0.0235092053   0.0235080616   0.0589438856   0.1059611525
+       4 A1  3   0.5136550718   1.5585062195   1.6516707388   3.7238320301
+       5 A1  4   0.4740881947   1.0910484848   4.0210437356   5.5861804151
+       6 B2  1   0.4906676506   3.5596612512   1.6318646678   5.6821935696
+       7 A1  5   0.5170521503   3.4954476149   4.4060968009   8.4185965661
+       8 B1  0   1.3878693280   2.0887642008   2.2612806616   5.7379141904
+       9 B2  2   0.4186360939   3.6466427797   3.0918886901   7.1571675637
+      10 A1  6   0.4242776095   2.0907112360   5.7329096575   8.2478985030
+      11 A2  0   1.1982267079   4.0790397660   2.1711174652   7.4483839390
+      12 A1  7   0.4354720167   3.5861187045   3.5070563840   7.5286471052
+      13 B1  1   1.2587321167   1.5780005814   5.1320982406   7.9688309388
+      14 B2  3   0.4077407940   1.8070623731   6.1643405929   8.3791437601
+      15 B2  4   0.3621406008   4.7186573759   2.3968877324   7.4776857091
+      16 B1  2   1.0738698200   1.1482035418   2.3690845114   4.5911578732
+      17 A1  8   1.0234007187   2.6467056824   3.8067849722   7.4768913733
+      18 B2  5   0.6052804235   3.0280534110   3.1140850962   6.7474189307
+      19 A1  9   1.0019356583   3.3047688759   5.2712346225   9.5779391567
+      20 A1 10   2.1854125288   3.2491253371   2.8158594257   8.2503972916
+      21 A1 11   1.6092094788   2.5990761646   4.0964765792   8.3047622227
+      22 B2  6   1.3935314465   5.1170458886   2.2928068807   8.8033842158
+      23 B1  3   3.6507891123   1.1941869381   1.1684674797   6.0134435301
+      24 A1 12   1.0848375355   3.1362627088  10.0824496405  14.3035498848
+      25 B2  7   0.9617019807   6.7047850080   4.7920671202  12.4585541089
+      26 A1 13   0.8202440094   4.6657831769   5.0220018961  10.5080290824
+      27 B1  4   2.5239047866   3.7289048823   4.2163040962  10.4691137652
+      28 A1 14   1.4083907639   3.4310581721   5.3677667890  10.2072157250
+      29 A2  1   2.4992331056   5.1710775459   2.6895074393  10.3598180908
+      30 B2  8   0.9838575916   3.6999285830   7.4689052015  12.1526913761
+      31 B1  5   2.6100413156   1.8521332636   7.7560006085  12.2181751878
+      32 B2  9   0.8604183105   5.6786466074   5.2434328182  11.7824977360
+      33 A1 15   1.6573132443   4.2086803172   2.5170885626   8.3830821240
+      34 B1  6   0.9508009750   1.7317108244   2.7610316615   5.4435434609
+      35 A2  2   0.9559290585   2.3056833163   1.7219264159   4.9835387906
+      36 B2 10   1.9549819213   3.8277438720   3.5482162507   9.3309420440
+      37 A1 16   1.4617905160   2.4719463611   5.2588063780   9.1925432551
+      38 A1 17   1.1708666244   2.8142441758   3.7144167725   7.6995275728
+      39 B1  7   0.9521962911   3.7591632168   2.9476247971   7.6589843050
+      40 A2  3   0.9403894584   1.5794935353   5.9859312004   8.5058141941
+      41 A1 18   1.5002201592   1.8287544282   4.9488436812   8.2778182686
+      42 B2 11   0.6140788959   4.0847987986   3.1259105877   7.8247882821
+      43 A2  4   0.9645060066   3.9235466523   2.8089949536   7.6970476125
+      44 B2 12   0.5902078051   2.1168805933   4.1340585858   6.8411469842
+      45 A1 19   1.3951930796   3.0287073296   3.1126229829   7.5365233920
+      46 B1  8   1.3621442478   2.4892301721   4.1168456764   7.9682200964
+      47 A1 20   1.0707074163   1.6254517806   2.1203032381   4.8164624349
+      48 B2 13   0.6265757268   3.7890993605   2.7776779430   7.1933530303
+      49 A2  5   1.0324111727   2.7554970060   2.0460529678   5.8339611464
+      50 B1  9   1.0284945458   1.4204073794   3.7171363242   6.1660382495
+      51 A1 21   0.7678880637   3.9386654262   3.0721630833   7.7787165732
+      52 B2 14   0.7090364438   3.8657536615   3.6789460653   8.2537361707
+      53 A1 22   0.8140034573   1.7582114049   6.6660082358   9.2382230979
+      54 A1 23   0.5262744851   2.1548159064   3.4709012580   6.1519916495
+      55 B2 15   0.3803170711   2.6086931381   3.6476616296   6.6366718388
+      56 A1 24   0.9845741595   3.3089467848   2.8333596387   7.1268805829
+      57 B2 16   1.6446952324   4.7763958275   3.0962546387   9.5173456986
+      58 A1 25   1.2525765520   2.3358694657   4.9947557543   8.5832017720
+      59 A1 26   1.1241087068   1.8908070676   5.1192890837   8.1342048581
+
+  Mulliken Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.44375  4.24154  0.20221 -0.68530
+       2     N     3.48226  2.84119  0.64107  0.67655
+       3     O     4.53700  3.95863  0.57836 -0.49563
+       4     O     4.53700  3.95863  0.57836 -0.49563
+
+   Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+  Lowdin Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.37456  4.16246  0.21210 -0.53703
+       2     N     3.66230  3.02710  0.63520  0.31060
+       3     O     4.48157  3.90522  0.57635 -0.38679
+       4     O     4.48157  3.90522  0.57635 -0.38679
+
+  Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+
+  Mayer Bond Indices:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.35592053081270     0.03783889257598     0.03783889257598
+    2     1.35592053081270     0.00000000000000     1.02537676872628     1.02537676872628
+    3     0.03783889257598     1.02537676872628     0.00000000000000     0.36490473293057
+    4     0.03783889257598     1.02537676872628     0.36490473293057     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.54043859300154     0.00653747471078     0.00653747471078
+    2     0.54043859300154     0.00000000000000     0.44191142698119     0.44191142698119
+    3     0.00653747471078     0.44191142698119     0.00000000000000     0.00119068321340
+    4     0.00653747471078     0.44191142698119     0.00119068321340     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.81548193781115     0.03130141786520     0.03130141786520
+    2     0.81548193781115     0.00000000000000     0.58346534174509     0.58346534174509
+    3     0.03130141786520     0.58346534174509     0.00000000000000     0.36371404971717
+    4     0.03130141786520     0.58346534174509     0.36371404971717     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.4315983
+      2:  3.4066741
+      3:  1.4281204
+      4:  1.4281204
+
+
+
+  Wiberg Bond Indices using Orthogonal Lowdin Orbitals:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.70111862572475     0.12626365991422     0.12626365991422
+    2     1.70111862572475     0.00000000000000     1.37686693714570     1.37686693714570
+    3     0.12626365991422     1.37686693714570     0.00000000000000     0.47987179232223
+    4     0.12626365991422     1.37686693714570     0.47987179232223     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.75607529850303     0.04395314933783     0.04395314933783
+    2     0.75607529850303     0.00000000000000     0.65902802821707     0.65902802821707
+    3     0.04395314933783     0.65902802821707     0.00000000000000     0.07100986511640
+    4     0.04395314933783     0.65902802821707     0.07100986511640     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.94504332722173     0.08231051057639     0.08231051057640
+    2     0.94504332722173     0.00000000000000     0.71783890892863     0.71783890892863
+    3     0.08231051057639     0.71783890892863     0.00000000000000     0.40886192720583
+    4     0.08231051057640     0.71783890892863     0.40886192720583     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.9536459
+      2:  4.4548525
+      3:  1.9830024
+      4:  1.9830024
+
+  Natural Orbital Occupations:
+
+  Alpha Occupations:
+  HONO-2 :    4 B2    0.997
+  HONO-1 :    8 A1    0.995
+  HONO-0 :    5 B2    0.992
+  LUNO+0 :    6 B2    0.007
+  LUNO+1 :    9 A1    0.006
+  LUNO+2 :   10 A1    0.004
+  LUNO+3 :   11 A1    0.000
+
+  Beta Occupations:
+  HONO-2 :    2 B1    0.994
+  HONO-1 :    4 B2    0.992
+  HONO-0 :    8 A1    0.985
+  LUNO+0 :    5 B2    0.014
+  LUNO+1 :    3 B1    0.006
+  LUNO+2 :    9 A1    0.006
+  LUNO+3 :    6 B2    0.003
+
+  Total Occupations:
+  HONO-2 :    2 B1    1.993
+  HONO-1 :    4 B2    1.984
+  HONO-0 :    8 A1    1.978
+  LUNO+0 :    5 B2    1.010
+  LUNO+1 :    3 B1    1.006
+  LUNO+2 :    9 A1    0.012
+  LUNO+3 :    6 B2    0.010
+
+
+ Field computed on the grid and written to grid_field.dat
+
+ Electrostatic potential computed on the grid and written to grid_esp.dat
+
+Properties computed using the CI ROOT 1 density matrix
+
+
+ Multipole Moments:
+
+ ------------------------------------------------------------------------------------
+     Multipole             Electric (a.u.)       Nuclear  (a.u.)        Total (a.u.)
+ ------------------------------------------------------------------------------------
+
+ L = 1.  Multiply by 2.5417462300 to convert to Debye
+ Dipole X            :          0.0000000            0.0000000            0.0000000
+ Dipole Y            :          0.0000000            0.0000000            0.0000000
+ Dipole Z            :          1.6930070           -0.0007085            1.6922985
+
+ L = 2.  Multiply by 1.3450341749 to convert to Debye.ang
+ Quadrupole XX       :        -16.6336182            0.0000000          -16.6336182
+ Quadrupole XY       :          0.0000000           -0.0000000           -0.0000000
+ Quadrupole XZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole YY       :        -79.3706791           57.9186331          -21.4520460
+ Quadrupole YZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole ZZ       :       -102.8766291           82.1709850          -20.7056441
+
+ L = 3.  Multiply by 0.7117614302 to convert to Debye.ang^2
+ Octupole XXX        :          0.0000000            0.0000000            0.0000000
+ Octupole XXY        :          0.0000000            0.0000000            0.0000000
+ Octupole XXZ        :          0.1706238           -0.0000000            0.1706238
+ Octupole XYY        :          0.0000000            0.0000000            0.0000000
+ Octupole XYZ        :          0.0000000            0.0000000            0.0000000
+ Octupole XZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole YYY        :          0.0000000            0.0000000            0.0000000
+ Octupole YYZ        :         86.8557704          -78.8147307            8.0410396
+ Octupole YZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole ZZZ        :        -94.0485463           93.4345542           -0.6139921
+
+ --------------------------------------------------------------------------------
+
+ Electrostatic potentials at the nuclear coordinates:
+ ---------------------------------------------
+   Center     Electrostatic Potential (a.u.)
+ ---------------------------------------------
+    1  O           -22.129957706792
+    2  N           -18.346184110105
+    3  O           -22.766572774537
+    4  O           -22.766572774537
+ ---------------------------------------------
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     1.6930
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     1.6923     Total:     1.6923
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:     4.3014     Total:     4.3014
+
+  Quadrupole Moment: (Debye Ang)
+    XX:   -22.3728     YY:   -28.8537     ZZ:   -27.8498
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+  Traceless Quadrupole Moment: (Debye Ang)
+    XX:     3.9860     YY:    -2.4950     ZZ:    -1.4910
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+
+  Orbital extents (a.u.):
+            MO          <x^2>          <y^2>          <z^2>          <r^2>
+       0 B2  0   0.0177547207   3.6370466484   1.8691095193   5.5239108884
+       1 A1  0   0.0177526219   3.6370541824   1.8691499892   5.5239567936
+       2 A1  1   0.0177571150   0.0177580929   6.5533995632   6.5889147711
+       3 A1  2   0.0235092053   0.0235080616   0.0589438856   0.1059611525
+       4 A1  3   0.5136550718   1.5585062195   1.6516707388   3.7238320301
+       5 A1  4   0.4740881947   1.0910484848   4.0210437356   5.5861804151
+       6 B2  1   0.4906676506   3.5596612512   1.6318646678   5.6821935696
+       7 A1  5   0.5170521503   3.4954476149   4.4060968009   8.4185965661
+       8 B1  0   1.3878693280   2.0887642008   2.2612806616   5.7379141904
+       9 B2  2   0.4186360939   3.6466427797   3.0918886901   7.1571675637
+      10 A1  6   0.4242776095   2.0907112360   5.7329096575   8.2478985030
+      11 A2  0   1.1982267079   4.0790397660   2.1711174652   7.4483839390
+      12 A1  7   0.4354720167   3.5861187045   3.5070563840   7.5286471052
+      13 B1  1   1.2587321167   1.5780005814   5.1320982406   7.9688309388
+      14 B2  3   0.4077407940   1.8070623731   6.1643405929   8.3791437601
+      15 B2  4   0.3621406008   4.7186573759   2.3968877324   7.4776857091
+      16 B1  2   1.0738698200   1.1482035418   2.3690845114   4.5911578732
+      17 A1  8   1.0234007187   2.6467056824   3.8067849722   7.4768913733
+      18 B2  5   0.6052804235   3.0280534110   3.1140850962   6.7474189307
+      19 A1  9   1.0019356583   3.3047688759   5.2712346225   9.5779391567
+      20 A1 10   2.1854125288   3.2491253371   2.8158594257   8.2503972916
+      21 A1 11   1.6092094788   2.5990761646   4.0964765792   8.3047622227
+      22 B2  6   1.3935314465   5.1170458886   2.2928068807   8.8033842158
+      23 B1  3   3.6507891123   1.1941869381   1.1684674797   6.0134435301
+      24 A1 12   1.0848375355   3.1362627088  10.0824496405  14.3035498848
+      25 B2  7   0.9617019807   6.7047850080   4.7920671202  12.4585541089
+      26 A1 13   0.8202440094   4.6657831769   5.0220018961  10.5080290824
+      27 B1  4   2.5239047866   3.7289048823   4.2163040962  10.4691137652
+      28 A1 14   1.4083907639   3.4310581721   5.3677667890  10.2072157250
+      29 A2  1   2.4992331056   5.1710775459   2.6895074393  10.3598180908
+      30 B2  8   0.9838575916   3.6999285830   7.4689052015  12.1526913761
+      31 B1  5   2.6100413156   1.8521332636   7.7560006085  12.2181751878
+      32 B2  9   0.8604183105   5.6786466074   5.2434328182  11.7824977360
+      33 A1 15   1.6573132443   4.2086803172   2.5170885626   8.3830821240
+      34 B1  6   0.9508009750   1.7317108244   2.7610316615   5.4435434609
+      35 A2  2   0.9559290585   2.3056833163   1.7219264159   4.9835387906
+      36 B2 10   1.9549819213   3.8277438720   3.5482162507   9.3309420440
+      37 A1 16   1.4617905160   2.4719463611   5.2588063780   9.1925432551
+      38 A1 17   1.1708666244   2.8142441758   3.7144167725   7.6995275728
+      39 B1  7   0.9521962911   3.7591632168   2.9476247971   7.6589843050
+      40 A2  3   0.9403894584   1.5794935353   5.9859312004   8.5058141941
+      41 A1 18   1.5002201592   1.8287544282   4.9488436812   8.2778182686
+      42 B2 11   0.6140788959   4.0847987986   3.1259105877   7.8247882821
+      43 A2  4   0.9645060066   3.9235466523   2.8089949536   7.6970476125
+      44 B2 12   0.5902078051   2.1168805933   4.1340585858   6.8411469842
+      45 A1 19   1.3951930796   3.0287073296   3.1126229829   7.5365233920
+      46 B1  8   1.3621442478   2.4892301721   4.1168456764   7.9682200964
+      47 A1 20   1.0707074163   1.6254517806   2.1203032381   4.8164624349
+      48 B2 13   0.6265757268   3.7890993605   2.7776779430   7.1933530303
+      49 A2  5   1.0324111727   2.7554970060   2.0460529678   5.8339611464
+      50 B1  9   1.0284945458   1.4204073794   3.7171363242   6.1660382495
+      51 A1 21   0.7678880637   3.9386654262   3.0721630833   7.7787165732
+      52 B2 14   0.7090364438   3.8657536615   3.6789460653   8.2537361707
+      53 A1 22   0.8140034573   1.7582114049   6.6660082358   9.2382230979
+      54 A1 23   0.5262744851   2.1548159064   3.4709012580   6.1519916495
+      55 B2 15   0.3803170711   2.6086931381   3.6476616296   6.6366718388
+      56 A1 24   0.9845741595   3.3089467848   2.8333596387   7.1268805829
+      57 B2 16   1.6446952324   4.7763958275   3.0962546387   9.5173456986
+      58 A1 25   1.2525765520   2.3358694657   4.9947557543   8.5832017720
+      59 A1 26   1.1241087068   1.8908070676   5.1192890837   8.1342048581
+
+  Mulliken Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.55365  3.65081  0.90285 -0.20446
+       2     N     3.50066  2.80073  0.69993  0.69861
+       3     O     4.47284  4.27423  0.19861 -0.74707
+       4     O     4.47284  4.27423  0.19861 -0.74707
+
+   Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+  Lowdin Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.46270  3.57344  0.88925 -0.03614
+       2     N     3.67252  2.98229  0.69023  0.34519
+       3     O     4.43239  4.22213  0.21026 -0.65452
+       4     O     4.43239  4.22213  0.21026 -0.65452
+
+  Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+
+  Mayer Bond Indices:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.93958332001107     0.07698138036935     0.07698138036935
+    2     0.93958332001107     0.00000000000000     1.23563298939410     1.23563298939410
+    3     0.07698138036935     1.23563298939410     0.00000000000000     0.01681698752248
+    4     0.07698138036935     1.23563298939410     0.01681698752248     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.38982670019201     0.00041874916233     0.00041874916233
+    2     0.38982670019201     0.00000000000000     0.53653437380667     0.53653437380667
+    3     0.00041874916233     0.53653437380667     0.00000000000000    -0.00699508675541
+    4     0.00041874916233     0.53653437380667    -0.00699508675541     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.54975661981907     0.07656263120702     0.07656263120702
+    2     0.54975661981907     0.00000000000000     0.69909861558743     0.69909861558743
+    3     0.07656263120702     0.69909861558743     0.00000000000000     0.02381207427789
+    4     0.07656263120702     0.69909861558743     0.02381207427789     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.0935461
+      2:  3.4108493
+      3:  1.3294314
+      4:  1.3294314
+
+
+
+  Wiberg Bond Indices using Orthogonal Lowdin Orbitals:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.41959081915960     0.17056573688500     0.17056573688500
+    2     1.41959081915960     0.00000000000000     1.50023297292373     1.50023297292373
+    3     0.17056573688500     1.50023297292373     0.00000000000000     0.16578764856336
+    4     0.17056573688500     1.50023297292373     0.16578764856336     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.69057668337485     0.04562903951872     0.04562903951872
+    2     0.69057668337485     0.00000000000000     0.70046353801430     0.70046353801430
+    3     0.04562903951872     0.70046353801430     0.00000000000000     0.06374173818370
+    4     0.04562903951872     0.70046353801430     0.06374173818370     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.72901413578475     0.12493669736629     0.12493669736629
+    2     0.72901413578475     0.00000000000000     0.79976943490943     0.79976943490943
+    3     0.12493669736629     0.79976943490943     0.00000000000000     0.10204591037966
+    4     0.12493669736629     0.79976943490943     0.10204591037966     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.7607223
+      2:  4.4200568
+      3:  1.8365864
+      4:  1.8365864
+
+  Natural Orbital Occupations:
+
+  Alpha Occupations:
+  HONO-2 :    4 B2    0.999
+  HONO-1 :    5 B2    0.998
+  HONO-0 :    8 A1    0.997
+  LUNO+0 :    9 A1    0.004
+  LUNO+1 :    6 B2    0.002
+  LUNO+2 :   10 A1    0.001
+  LUNO+3 :   11 A1    0.000
+
+  Beta Occupations:
+  HONO-2 :    8 A1    0.996
+  HONO-1 :    2 B1    0.994
+  HONO-0 :    4 B2    0.994
+  LUNO+0 :    5 B2    0.005
+  LUNO+1 :    3 B1    0.005
+  LUNO+2 :    9 A1    0.003
+  LUNO+3 :    6 B2    0.001
+
+  Total Occupations:
+  HONO-2 :    2 B1    1.994
+  HONO-1 :    8 A1    1.992
+  HONO-0 :    4 B2    1.992
+  LUNO+0 :    3 B1    1.005
+  LUNO+1 :    5 B2    1.004
+  LUNO+2 :    9 A1    0.007
+  LUNO+3 :    6 B2    0.004
+
+
+ Field computed on the grid and written to grid_field.dat
+
+ Electrostatic potential computed on the grid and written to grid_esp.dat
+
+   ===> CI properties for all CI transition density matrices <=== 
+
+
+Properties computed using the CI ROOT 0 -> ROOT 1 density matrix
+
+  Transition Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.1674     Total:     0.1674
+
+  Transition Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:     0.4255     Total:     0.4255
+
+  Transition Quadrupole Moment: (Debye Ang)
+    XX:    -0.0164     YY:    -0.5734     ZZ:     0.6775
+    XY:     0.0000     XZ:     0.0000     YZ:     0.0000
+
+  Traceless Transition Quadrupole Moment: (Debye Ang)
+    XX:    -0.0456     YY:    -0.6026     ZZ:     0.6483
+    XY:     0.0000     XZ:     0.0000     YZ:     0.0000
+
+	FCI Energy........................................................PASSED
+	FCI DIPOLE Y......................................................PASSED
+	FCI DIPOLE Z......................................................PASSED
+	FCI QUADRUPOLE XX.................................................PASSED
+	FCI QUADRUPOLE YY.................................................PASSED
+	FCI QUADRUPOLE ZZ.................................................PASSED
+	FCI QUADRUPOLE YZ.................................................PASSED
+	CI ROOT 0 DIPOLE Y................................................PASSED
+	CI ROOT 0 DIPOLE Z................................................PASSED
+	CI ROOT 0 QUADRUPOLE XX...........................................PASSED
+	CI ROOT 0 QUADRUPOLE YY...........................................PASSED
+	CI ROOT 0 QUADRUPOLE ZZ...........................................PASSED
+	CI ROOT 0 QUADRUPOLE YZ...........................................PASSED
+	CI ROOT 1 DIPOLE Y................................................PASSED
+	CI ROOT 1 DIPOLE Z................................................PASSED
+	CI ROOT 1 QUADRUPOLE XX...........................................PASSED
+	CI ROOT 1 QUADRUPOLE YY...........................................PASSED
+	CI ROOT 1 QUADRUPOLE ZZ...........................................PASSED
+	CI ROOT 1 QUADRUPOLE YZ...........................................PASSED
+	CI ROOT 0 -> ROOT 1 DIPOLE Y......................................PASSED
+	CI ROOT 0 -> ROOT 1 DIPOLE Z......................................PASSED
+	CI ROOT 0 -> ROOT 1 QUADRUPOLE XX.................................PASSED
+	CI ROOT 0 -> ROOT 1 QUADRUPOLE YY.................................PASSED
+	CI ROOT 0 -> ROOT 1 QUADRUPOLE ZZ.................................PASSED
+	CI ROOT 0 -> ROOT 1 QUADRUPOLE YZ.................................PASSED
+
+*** tstart() called on CHE-FEVANGE-01I
+*** at Mon May 29 17:03:59 2017
+
+   => Loading Basis Set <=
+
+    Name: 6-31G*
+    Role: ORBITAL
+    Keyword: BASIS
+    atoms 1, 3-4 entry O          line   137 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/6-31gs.gbs 
+    atoms 2      entry N          line   120 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/6-31gs.gbs 
+
+
+         ---------------------------------------------------------
+                                   SCF
+            by Justin Turney, Rob Parrish, Andy Simmonett
+                             and Daniel Smith
+                             ROHF Reference
+                        1 Threads,    500 MiB Core
+         ---------------------------------------------------------
+
+  ==> Geometry <==
+
+    Molecular point group: c2v
+    Full point group: C2v
+
+    Geometry (in Angstrom), charge = -1, multiplicity = 3:
+
+       Center              X                  Y                   Z               Mass       
+    ------------   -----------------  -----------------  -----------------  -----------------
+           O          0.000000000000     0.000000000000     1.352965563729    15.994914619560
+           N          0.000000000000     0.000000000000     0.099633131563    14.003074004780
+           O         -0.000000000000     1.006816424330    -0.720095709717    15.994914619560
+           O          0.000000000000    -1.006816424330    -0.720095709717    15.994914619560
+
+  Running in c2v symmetry.
+
+  Rotational constants: A =      0.51986  B =      0.36642  C =      0.21493 [cm^-1]
+  Rotational constants: A =  15584.92408  B =  10985.09449  C =   6443.42280 [MHz]
+  Nuclear repulsion =  115.503632390142570
+
+  Charge       = -1
+  Multiplicity = 3
+  Electrons    = 32
+  Nalpha       = 17
+  Nbeta        = 15
+
+  ==> Algorithm <==
+
+  SCF Algorithm Type is DF.
+  DIIS enabled.
+  MOM disabled.
+  Fractional occupation disabled.
+  Guess Type is GWH.
+  Energy threshold   = 1.00e-10
+  Density threshold  = 1.00e-10
+  Integral threshold = 0.00e+00
+
+  ==> Primary Basis <==
+
+  Basis Set: 6-31G*
+    Blend: 6-31G*
+    Number of shells: 24
+    Number of basis function: 60
+    Number of Cartesian functions: 60
+    Spherical Harmonics?: false
+    Max angular momentum: 2
+
+   => Loading Basis Set <=
+
+    Name: (6-31G* AUX)
+    Role: JKFIT
+    Keyword: DF_BASIS_SCF
+    atoms 1, 3-4 entry O          line   221 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/cc-pvdz-jkfit.gbs 
+    atoms 2      entry N          line   171 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/cc-pvdz-jkfit.gbs 
+
+  ==> Pre-Iterations <==
+
+   -------------------------------------------------------
+    Irrep   Nso     Nmo     Nalpha   Nbeta   Ndocc  Nsocc
+   -------------------------------------------------------
+     A1        27      27       0       0       0       0
+     A2         6       6       0       0       0       0
+     B1        10      10       0       0       0       0
+     B2        17      17       0       0       0       0
+   -------------------------------------------------------
+    Total      60      60      17      15      15       2
+   -------------------------------------------------------
+
+  ==> Integral Setup <==
+
+  ==> DFJK: Density-Fitted J/K Matrices <==
+
+    J tasked:                  Yes
+    K tasked:                  Yes
+    wK tasked:                  No
+    OpenMP threads:              1
+    Integrals threads:           1
+    Memory (MB):               375
+    Algorithm:                Core
+    Integral Cache:           NONE
+    Schwarz Cutoff:          1E-12
+    Fitting Condition:       1E-12
+
+   => Auxiliary Basis Set <=
+
+  Basis Set: (6-31G* AUX)
+    Blend: CC-PVDZ-JKFIT
+    Number of shells: 96
+    Number of basis function: 324
+    Number of Cartesian functions: 324
+    Spherical Harmonics?: false
+    Max angular momentum: 3
+
+  Minimum eigenvalue in the overlap matrix is 3.6436246723E-03.
+  Using Symmetric Orthogonalization.
+
+  SCF Guess: Generalized Wolfsberg-Helmholtz.
+
+  ==> Iterations <==
+
+                           Total Energy        Delta E     RMS |[F,P]|
+
+   @DF-ROHF iter   1:  -263.02734315114009   -2.63027e+02   1.00507e-01 
+   @DF-ROHF iter   2:  -276.73243568978671   -1.37051e+01   4.75684e-02 DIIS
+   @DF-ROHF iter   3:  -277.88909464366037   -1.15666e+00   3.35391e-02 DIIS
+   @DF-ROHF iter   4:  -278.49948344590439   -6.10389e-01   1.70575e-02 DIIS
+   @DF-ROHF iter   5:  -278.65651259931718   -1.57029e-01   1.10624e-02 DIIS
+   @DF-ROHF iter   6:  -278.74322598295282   -8.67134e-02   5.03974e-03 DIIS
+   @DF-ROHF iter   7:  -278.76578937277259   -2.25634e-02   1.59602e-03 DIIS
+   @DF-ROHF iter   8:  -278.76840420848077   -2.61484e-03   3.24019e-04 DIIS
+   @DF-ROHF iter   9:  -278.76854007431353   -1.35866e-04   9.28482e-05 DIIS
+   @DF-ROHF iter  10:  -278.76855425809600   -1.41838e-05   1.35089e-05 DIIS
+   @DF-ROHF iter  11:  -278.76855488212470   -6.24029e-07   3.88444e-06 DIIS
+   @DF-ROHF iter  12:  -278.76855494003166   -5.79070e-08   1.44406e-06 DIIS
+   @DF-ROHF iter  13:  -278.76855494641285   -6.38119e-09   5.90831e-07 DIIS
+   @DF-ROHF iter  14:  -278.76855494709287   -6.80018e-10   7.67486e-08 DIIS
+   @DF-ROHF iter  15:  -278.76855494710867   -1.58025e-11   1.58988e-08 DIIS
+   @DF-ROHF iter  16:  -278.76855494710941   -7.38964e-13   5.23519e-09 DIIS
+   @DF-ROHF iter  17:  -278.76855494710975   -3.41061e-13   1.94633e-09 DIIS
+   @DF-ROHF iter  18:  -278.76855494710975    0.00000e+00   5.72752e-10 DIIS
+   @DF-ROHF iter  19:  -278.76855494710986   -1.13687e-13   1.53414e-10 DIIS
+   @DF-ROHF iter  20:  -278.76855494710981    5.68434e-14   4.80168e-11 DIIS
+
+  ==> Post-Iterations <==
+
+    Orbital Energies (a.u.)
+    -----------------------
+
+    Doubly Occupied:                                                      
+
+       1B2   -20.381113     1A1   -20.381108     2A1   -20.307419  
+       3A1   -15.526335     4A1    -1.328068     5A1    -1.111665  
+       2B2    -1.070780     6A1    -0.620820     1B1    -0.468742  
+       3B2    -0.467837     7A1    -0.447834     1A2    -0.272259  
+       8A1    -0.255621     2B1    -0.247546     4B2    -0.219859  
+
+    Singly Occupied:                                                      
+
+       5B2     0.000833     3B1     0.187038  
+
+    Virtual:                                                              
+
+       9A1     0.626938     6B2     0.739453    10A1     0.866977  
+      11A1     1.074243    12A1     1.141481     7B2     1.143664  
+       4B1     1.164224    13A1     1.317713     8B2     1.337779  
+      14A1     1.409917     5B1     1.425633    15A1     1.431097  
+       2A2     1.444236     9B2     1.515379     6B1     1.530419  
+      10B2     1.568337    16A1     1.598253     7B1     1.882094  
+       3A2     1.894281    11B2     1.943110    17A1     1.998052  
+      18A1     2.200181     8B1     2.286371     4A2     2.356301  
+      19A1     2.371746    12B2     2.375589     5A2     2.401842  
+      13B2     2.472643    20A1     2.540978     9B1     2.723121  
+      21A1     2.815310    14B2     2.865970     6A2     3.098637  
+      10B1     3.302434    22A1     3.348300    15B2     3.367584  
+      23A1     3.470376    24A1     3.528814    16B2     3.618065  
+      25A1     3.996357    17B2     4.382761    26A1     4.408106  
+      27A1     4.519294  
+
+    Final Occupation by Irrep:
+             A1    A2    B1    B2 
+    DOCC [     8,    1,    2,    4 ]
+    SOCC [     0,    0,    1,    1 ]
+
+  Energy converged.
+
+  @DF-ROHF Final Energy:  -278.76855494710981
+
+   => Energetics <=
+
+    Nuclear Repulsion Energy =            115.5036323901425703
+    One-Electron Energy =                -621.9582924294543318
+    Two-Electron Energy =                 227.6861050922019274
+    Total Energy =                       -278.7685549471098057
+
+
+
+Properties will be evaluated at   0.000000,   0.000000,   0.000000 Bohr
+
+Properties computed using the SCF density matrix
+
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.2598
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.2605     Total:     0.2605
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:    -0.6620     Total:     0.6620
+
+
+*** tstop() called on CHE-FEVANGE-01I at Mon May 29 17:04:00 2017
+Module time:
+	user time   =       0.56 seconds =       0.01 minutes
+	system time =       0.06 seconds =       0.00 minutes
+	total time  =          1 seconds =       0.02 minutes
+Total time:
+	user time   =       2.03 seconds =       0.03 minutes
+	system time =       0.19 seconds =       0.00 minutes
+	total time  =          2 seconds =       0.03 minutes
+   => Loading Basis Set <=
+
+    Name: (6-31G* AUX)
+    Role: JKFIT
+    Keyword: DF_BASIS_SCF
+    atoms 1, 3-4 entry O          line   221 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/cc-pvdz-jkfit.gbs 
+    atoms 2      entry N          line   171 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/cc-pvdz-jkfit.gbs 
+
+
+         ---------------------------------------------------------
+                Multi-Configurational Self-Consistent Field
+                            (a 'D E T C I' module)
+
+                 Daniel G. A. Smith, C. David Sherrill, and
+                              Matt L. Leininger
+         ---------------------------------------------------------
+
+Warning: iopen=0,opentype!=closed. Making iopen=1
+
+   ==> Parameters <==
+
+    EX LEVEL       =        8      H0 BLOCKSIZE  =     1000
+    VAL EX LEVEL   =        0      H0 GUESS SIZE =     1000
+    H0COUPLINGSIZE =        0      H0 COUPLING   =       NO
+    MAXITER        =       24      NUM PRINT     =       20
+    NUM ROOTS      =        2      ICORE         =        1
+    PRINT LVL      =        1      FCI           =      YES
+    R CONV         = 1.00e-07      MIXED         =      YES
+    E CONV         = 1.00e-10      MIXED4        =      YES
+    R4S            =       NO      REPL OTF      =       NO
+    DIAG METHOD    =      SEM      FOLLOW ROOT   =        0
+    PRECONDITIONER = DAVIDSON      UPDATE        = DAVIDSON
+    S              =   1.0000      Ms0           =       NO
+    GUESS VECTOR   =  H0BLOCK      OPENTYPE      = HIGHSPIN
+    COLLAPSE SIZE  =        1      HD AVG        = EVANGELISTI
+    MAX NUM VECS   =       50      REF SYM       =     AUTO
+    IOPEN        =      YES
+
+    EX ALLOW       =  1  1  1  1  1  1  1  1 
+    STATE AVERAGE  =  0(0.50)  1(0.50) 
+
+   ==> CI Orbital and Space information <==
+
+   ------------------------------------------------------
+               Space    Total    A1    A2    B1    B2
+   ------------------------------------------------------
+                 Nso       60    27     6    10    17
+                 Nmo       60    27     6    10    17
+               Ndocc       15     8     1     2     4
+               Nsocc        2     0     0     1     1
+   ------------------------------------------------------
+                        MCSCF Spaces
+   ------------------------------------------------------
+         Frozen DOCC        5     3     0     0     2
+     Restricted DOCC        7     4     1     1     1
+              Active        8     3     0     2     3
+     Restricted UOCC       40    17     5     7    11
+         Frozen UOCC        0     0     0     0     0
+   ------------------------------------------------------
+
+   ==> Setting up CI strings <==
+
+    There are 56 alpha and 56 beta strings
+    The CI space requires 780 (7.80E+02) determinants and 4 blocks
+
+   ==> Setting up DF-MCSCF integrals <==
+
+  ==> DFJK: Density-Fitted J/K Matrices <==
+
+    J tasked:                  Yes
+    K tasked:                  Yes
+    wK tasked:                  No
+    OpenMP threads:              1
+    Integrals threads:           1
+    Memory (MB):               400
+    Algorithm:                Core
+    Integral Cache:           NONE
+    Schwarz Cutoff:          1E-12
+    Fitting Condition:       1E-12
+
+   => Auxiliary Basis Set <=
+
+  Basis Set: (6-31G* AUX)
+    Blend: CC-PVDZ-JKFIT
+    Number of shells: 96
+    Number of basis function: 324
+    Number of Cartesian functions: 324
+    Spherical Harmonics?: false
+    Max angular momentum: 3
+
+  ==> DFERI: Density Fitted 3-Index Tensors <==
+
+    Schwarz cutoff =   1.000E-12
+    J cutoff       =   1.000E-12
+    Mem (GB)       =           0
+
+   => Auxiliary Basis <=
+
+  Basis Set: (6-31G* AUX)
+    Blend: CC-PVDZ-JKFIT
+    Number of shells: 96
+    Number of basis function: 324
+    Number of Cartesian functions: 324
+    Spherical Harmonics?: false
+    Max angular momentum: 3
+
+
+   ==> Starting DF-MCSCF iterations <==
+
+           Iter         Total Energy       Delta E   Orb RMS    CI RMS  NCI NORB
+   @DF-MCSCF  1:   -278.716341557806    5.2213e-02  3.58e-02  4.75e-13    1    1  Initial CI
+   @DF-MCSCF  2:   -278.756557070550   -4.0216e-02  1.84e-02  2.54e-05    7    1  TS
+   @DF-MCSCF  3:   -278.766961887976   -1.0405e-02  6.31e-03  1.56e-05    8    1  TS
+   @DF-MCSCF  4:   -278.769340962996   -2.3791e-03  3.44e-03  3.19e-06    8    1  TS
+   @DF-MCSCF  5:   -278.770845615560   -1.5047e-03  3.39e-03  2.38e-06    9    1  TS
+   @DF-MCSCF  6:   -278.772098142512   -1.2525e-03  2.10e-03  1.28e-06    9    1  TS
+   @DF-MCSCF  7:   -278.773273182380   -1.1750e-03  2.73e-03  1.28e-06   10    1  TS
+   @DF-MCSCF  8:   -278.774387038895   -1.1139e-03  1.87e-03  1.65e-06   10    1  TS, DIIS
+   @DF-MCSCF  9:   -278.775414199349   -1.0272e-03  2.37e-03  1.26e-06   10    1  TS, DIIS
+   @DF-MCSCF 10:   -278.775987690977   -5.7349e-04  1.89e-03  1.05e-06   10    1  TS, DIIS
+   @DF-MCSCF 11:   -278.777998089519   -2.0104e-03  2.96e-03  8.52e-07   11    1  TS, DIIS
+   @DF-MCSCF 12:   -278.777667562334    3.3053e-04  1.36e-03  1.51e-06   10    1  TS, DIIS
+   @DF-MCSCF 13:   -278.778280744912   -6.1318e-04  1.19e-03  3.96e-07   11    1  TS, DIIS
+   @DF-MCSCF 14:   -278.778321572748   -4.0828e-05  4.45e-04  9.50e-07    9    1  TS, DIIS
+   @DF-MCSCF 15:   -278.778330150710   -8.5780e-06  2.59e-04  1.70e-07   10    1  TS, DIIS
+   @DF-MCSCF 16:   -278.778339220580   -9.0699e-06  8.31e-05  1.12e-07   10    1  TS, DIIS
+
+          @DF-MCSCF has converged!
+
+   @DF-MCSCF Final Energy: -278.778339220579824
+  
+   Computing CI Semicanonical Orbitals
+
+   ==> Energetics <==
+
+    SCF energy =         -278.768554947109806
+    Total MCSCF energy = -278.778339220579824
+
+   ==> MCSCF root 0 information <==
+
+    MCSCF Root 0 energy =  -278.817714736641392
+
+   Active Space Natural occupation numbers:
+
+        B1   1.983507        B2   1.975704        A1   1.972130
+        B1   1.015607        B2   1.003686        A1   0.028623
+        B2   0.019188        A1   0.001557
+
+   The 20 most important determinants:
+
+    *   1    0.960622  (    2,   13)  8A1X 2B1X 3B1A 4B2X 5B2A 
+    *   2   -0.187486  (    2,   16)  8A1X 2B1A 3B1X 4B2X 5B2A 
+    *   3   -0.063715  (    3,   14)  9A1X 2B1X 3B1A 4B2X 5B2A 
+    *   4   -0.058613  (    2,   19)  8A1X 2B1X 3B1A 4B2A 5B2X 
+    *   5    0.058505  (    3,   13)  8A1B 9A1A 2B1X 3B1A 4B2X 5B2A 
+    *   6    0.056087  (   10,   25)  8A1X 2B1X 3B1A 5B2A 6B2X 
+    *   7    0.054656  (    3,   16)  8A1B 9A1A 2B1A 3B1X 4B2X 5B2A 
+    *   8   -0.048823  (    2,   25)  8A1X 2B1X 3B1A 4B2A 5B2A 6B2B 
+    *   9    0.044004  (    2,   17)  8A1A 9A1B 2B1A 3B1X 4B2X 5B2A 
+    *  10   -0.043370  (    2,   22)  8A1X 2B1A 3B1X 4B2A 5B2X 
+    *  11    0.042928  (   10,   16)  8A1X 2B1A 3B1X 4B2B 5B2A 6B2A 
+    *  12    0.041645  (   10,   13)  8A1X 2B1X 3B1A 4B2B 5B2A 6B2A 
+    *  13    0.039496  (    2,   14)  8A1A 9A1B 2B1X 3B1A 4B2X 5B2A 
+    *  14   -0.037078  (   10,   14)  8A1A 9A1B 2B1X 3B1A 4B2B 5B2A 6B2A 
+    *  15   -0.036024  (    2,   28)  8A1X 2B1A 3B1X 4B2A 5B2A 6B2B 
+    *  16    0.034735  (    3,   25)  8A1B 9A1A 2B1X 3B1A 4B2A 5B2A 6B2B 
+    *  17    0.028495  (   10,   19)  8A1X 2B1X 3B1A 5B2X 6B2A 
+    *  18    0.027666  (    2,   26)  8A1A 9A1B 2B1X 3B1A 4B2A 5B2A 6B2B 
+    *  19   -0.025452  (   11,   13)  8A1B 9A1A 2B1X 3B1A 4B2B 5B2A 6B2A 
+    *  20   -0.024912  (    4,   14)  9A1B 10A1A 2B1X 3B1A 4B2X 5B2A 
+
+
+   ==> MCSCF root 1 information <==
+
+    MCSCF Root 1 energy =  -278.738963704520415
+
+   Active Space Natural occupation numbers:
+
+        B1   1.988653        B2   1.984319        A1   1.975291
+        B1   1.010438        B2   1.004524        A1   0.024754
+        B2   0.006381        A1   0.005641
+
+   The 20 most important determinants:
+
+    *   1   -0.973033  (    2,   19)  8A1X 2B1X 3B1A 4B2A 5B2X 
+    *   2    0.102914  (   10,   19)  8A1X 2B1X 3B1A 5B2X 6B2A 
+    *   3   -0.099548  (    2,   22)  8A1X 2B1A 3B1X 4B2A 5B2X 
+    *   4    0.076869  (    2,   16)  8A1X 2B1A 3B1X 4B2X 5B2A 
+    *   5    0.072651  (    3,   20)  9A1X 2B1X 3B1A 4B2A 5B2X 
+    *   6   -0.048997  (    2,   13)  8A1X 2B1X 3B1A 4B2X 5B2A 
+    *   7    0.046363  (    2,   20)  8A1A 9A1B 2B1X 3B1A 4B2A 5B2X 
+    *   8    0.043629  (   44,   32)  8A1X 10A1X 2B1X 3B1A 4B2A 
+    *   9    0.042387  (    3,   19)  8A1B 9A1A 2B1X 3B1A 4B2A 5B2X 
+    *  10   -0.032769  (    3,   22)  8A1B 9A1A 2B1A 3B1X 4B2A 5B2X 
+    *  11    0.030440  (   10,   20)  8A1A 9A1B 2B1X 3B1A 5B2X 6B2A 
+    *  12    0.030164  (    3,   21)  9A1A 10A1B 2B1X 3B1A 4B2A 5B2X 
+    *  13    0.029060  (    4,   20)  9A1B 10A1A 2B1X 3B1A 4B2A 5B2X 
+    *  14   -0.028591  (   10,   13)  8A1X 2B1X 3B1A 4B2B 5B2A 6B2A 
+    *  15    0.026390  (   25,   50)  8A1A 9A1A 2B1X 3B1B 4B2A 5B2X 
+    *  16   -0.025599  (    2,   23)  8A1A 9A1B 2B1A 3B1X 4B2A 5B2X 
+    *  17    0.025450  (   11,   19)  8A1B 9A1A 2B1X 3B1A 5B2X 6B2A 
+    *  18   -0.025150  (    6,   19)  8A1X 2B1X 3B1A 4B2A 5B2B 6B2A 
+    *  19    0.022415  (   46,   37)  8A1A 9A1A 2B1X 3B1A 4B2B 5B2X 
+    *  20   -0.020093  (    3,   13)  8A1B 9A1A 2B1X 3B1A 4B2X 5B2A 
+
+
+
+Properties will be evaluated at   0.000000,   0.000000,   0.000000 Bohr
+
+Properties computed using the CASSCF density matrix
+
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.7863
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.7856     Total:     0.7856
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:     1.9967     Total:     1.9967
+
+
+
+Properties will be evaluated at   0.000000,   0.000000,   0.000000 Bohr
+
+Properties computed using the CASSCF density matrix
+
+
+ Multipole Moments:
+
+ ------------------------------------------------------------------------------------
+     Multipole             Electric (a.u.)       Nuclear  (a.u.)        Total (a.u.)
+ ------------------------------------------------------------------------------------
+
+ L = 1.  Multiply by 2.5417462300 to convert to Debye
+ Dipole X            :          0.0000000            0.0000000            0.0000000
+ Dipole Y            :          0.0000000            0.0000000            0.0000000
+ Dipole Z            :          0.7862695           -0.0007085            0.7855610
+
+ L = 2.  Multiply by 1.3450341749 to convert to Debye.ang
+ Quadrupole XX       :        -16.6576633            0.0000000          -16.6576633
+ Quadrupole XY       :          0.0000000           -0.0000000           -0.0000000
+ Quadrupole XZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole YY       :        -78.6878967           57.9186331          -20.7692636
+ Quadrupole YZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole ZZ       :       -103.2388271           82.1709850          -21.0678421
+
+ L = 3.  Multiply by 0.7117614302 to convert to Debye.ang^2
+ Octupole XXX        :          0.0000000            0.0000000            0.0000000
+ Octupole XXY        :          0.0000000            0.0000000            0.0000000
+ Octupole XXZ        :          1.0071688           -0.0000000            1.0071688
+ Octupole XYY        :          0.0000000            0.0000000            0.0000000
+ Octupole XYZ        :          0.0000000            0.0000000            0.0000000
+ Octupole XZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole YYY        :          0.0000000            0.0000000            0.0000000
+ Octupole YYZ        :         85.6671711          -78.8147307            6.8524404
+ Octupole YZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole ZZZ        :        -95.0984870           93.4345542           -1.6639328
+
+ --------------------------------------------------------------------------------
+
+ Electrostatic potentials at the nuclear coordinates:
+ ---------------------------------------------
+   Center     Electrostatic Potential (a.u.)
+ ---------------------------------------------
+    1  O           -22.474757889176
+    2  N           -18.387120581540
+    3  O           -22.577424590386
+    4  O           -22.577424590386
+ ---------------------------------------------
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.7863
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.7856     Total:     0.7856
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:     1.9967     Total:     1.9967
+
+  Quadrupole Moment: (Debye Ang)
+    XX:   -22.4051     YY:   -27.9354     ZZ:   -28.3370
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+  Traceless Quadrupole Moment: (Debye Ang)
+    XX:     3.8207     YY:    -1.7095     ZZ:    -2.1111
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+
+  Orbital extents (a.u.):
+            MO          <x^2>          <y^2>          <z^2>          <r^2>
+       0 B2  0   0.0177547273   3.6370461313   1.8691092471   5.5239101056
+       1 A1  0   0.0177526276   3.6370536970   1.8691497126   5.5239560372
+       2 A1  1   0.0177571143   0.0177580922   6.5533986552   6.5889138617
+       3 A1  2   0.0235091888   0.0235080454   0.0589438545   0.1059610887
+       4 A1  3   0.5100309049   1.7684027518   1.6663110782   3.9447447349
+       5 A1  4   0.5356984722   0.9084995455   7.7463123477   9.1905103654
+       6 B2  1   0.4906808951   3.5593513903   1.6317275511   5.6817598365
+       7 A1  5   0.5174168662   4.3256027756   3.2124575706   8.0554772124
+       8 B1  0   1.4037343713   2.4553870255   1.7384943087   5.5976157055
+       9 B2  2   0.4273571935   3.6102109033   2.9426351732   6.9802032701
+      10 A1  6   0.4551453571   4.0698259023   2.5832479645   7.1082192239
+      11 A2  0   1.2311947335   4.0993528098   2.1749963922   7.5055439355
+      12 A1  7   0.3376280072   0.6662110582   4.2925493271   5.2963883924
+      13 B1  1   1.2198102007   0.9307565036   5.8566328873   8.0071995916
+      14 B2  3   0.3998470341   1.7200390317   6.2022872926   8.3221733584
+      15 B2  4   0.3795978522   4.8264172329   2.4173786240   7.6233937090
+      16 B1  2   1.0841189572   1.4183144736   2.2175204211   4.7199538519
+      17 A1  8   0.3806568287   0.9120295687   3.4333982717   4.7260846691
+      18 B2  5   0.5892138848   2.1650560570   4.1377818479   6.8920517897
+      19 A1  9   0.4534715751   2.2923639778   2.3959242163   5.1417597692
+      20 A1 10   2.1906885639   2.1978195228   8.1144027813  12.5029108680
+      21 A1 11   2.0264921309   8.8476461395   3.6995373931  14.5736756636
+      22 B2  6   0.6182895446   2.9674715824   4.1431824167   7.7289435437
+      23 B1  3   3.6036144812   1.0933651551   1.3744113758   6.0713910122
+      24 A1 12   1.2226547336   2.2036225984   5.0686679546   8.4949452866
+      25 B2  7   1.5444401817   7.1171781104   5.5268656120  14.1884839041
+      26 A1 13   1.0455734969   2.5135974862   8.6673530457  12.2265240287
+      27 B1  4   2.5650497679   1.6420700183   6.8364598580  11.0435796442
+      28 A1 14   1.6795982503   3.1076020374   5.2603339644  10.0475342521
+      29 A2  1   2.4605932475   5.1364981537   2.6758352097  10.2729266110
+      30 B2  8   1.0784847492   5.1878775160   5.4627167194  11.7290789846
+      31 B1  5   2.6226271256   4.0090590524   4.9761350305  11.6078212085
+      32 B2  9   0.8672531790   6.5332054365   4.2312949292  11.6317535447
+      33 A1 15   1.6982350905   4.8832042712   2.3698338479   8.9512732096
+      34 B1  6   0.9549644858   1.5766367927   2.9507021725   5.4823034511
+      35 A2  2   0.9635423275   2.1834704322   1.9148035693   5.0618163291
+      36 B2 10   1.9516774291   3.8204318773   3.4453223866   9.2174316931
+      37 A1 16   1.5977048476   2.6872143772   5.4241897709   9.7091089957
+      38 A1 17   0.9465570629   2.3619764399   4.3919629285   7.7004964313
+      39 B1  7   0.9543298715   3.7696582630   2.9882549777   7.7122431122
+      40 A2  3   0.9422651869   1.3830751734   6.1573624443   8.4827028046
+      41 A1 18   1.5707854413   2.0876351038   4.4523371167   8.1107576619
+      42 B2 11   0.5951978066   2.8530237169   4.0918667710   7.5400882945
+      43 A2  4   0.9589410502   4.1645636445   2.5033419941   7.6268466888
+      44 B2 12   0.7324559603   3.4732861586   3.0390533308   7.2447954497
+      45 A1 19   1.4373602495   3.2408034010   2.6986066024   7.3767702528
+      46 B1  8   1.3601236978   2.4908129033   4.1147961685   7.9657327696
+      47 A1 20   1.1120744106   1.5344812879   1.9146460944   4.5612017929
+      48 B2 13   0.6061308651   3.8838985167   2.7782371339   7.2682665158
+      49 A2  5   1.0341589639   2.8473776081   1.9971908324   5.8787274044
+      50 B1  9   1.0304695799   1.6046448133   3.3924668572   6.0275812504
+      51 A1 21   0.6070725913   2.6309901138   5.3568948716   8.5949575767
+      52 B2 14   0.6859420465   3.5189315036   3.6330515171   7.8379250672
+      53 A1 22   1.0399258004   2.4556806207   5.6270771743   9.1226835953
+      54 A1 23   0.4638285457   2.9537829513   2.3441038153   5.7617153122
+      55 B2 15   0.4058519340   3.0152864310   3.4429881102   6.8641264752
+      56 A1 24   1.0085054848   3.0076138409   2.9739387733   6.9900580990
+      57 B2 16   1.6314474261   4.7781835817   3.0786153574   9.4882463652
+      58 A1 25   1.3554066876   2.1986674273   6.4608645782  10.0149386931
+      59 A1 26   1.0309808129   2.3644401288   3.4549596380   6.8503805797
+
+  Mulliken Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.52945  3.89706  0.63239 -0.42652
+       2     N     3.49107  2.86567  0.62540  0.64326
+       3     O     4.48974  4.11863  0.37110 -0.60837
+       4     O     4.48974  4.11863  0.37110 -0.60837
+
+   Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+  Lowdin Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.44829  3.81290  0.63539 -0.26119
+       2     N     3.66122  3.05559  0.60563  0.28319
+       3     O     4.44525  4.06576  0.37949 -0.51100
+       4     O     4.44525  4.06576  0.37949 -0.51100
+
+  Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+
+  Mayer Bond Indices:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.11783054650691     0.03339714211356     0.03339714211356
+    2     1.11783054650691     0.00000000000000     1.07005239646494     1.07005239646494
+    3     0.03339714211356     1.07005239646494     0.00000000000000     0.06732504411666
+    4     0.03339714211356     1.07005239646494     0.06732504411666     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.45576077345156     0.00776128504778     0.00776128504778
+    2     0.45576077345156     0.00000000000000     0.47507592026501     0.47507592026501
+    3     0.00776128504778     0.47507592026501     0.00000000000000    -0.01933344484711
+    4     0.00776128504778     0.47507592026501    -0.01933344484711     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.66206977305535     0.02563585706578     0.02563585706578
+    2     0.66206977305535     0.00000000000000     0.59497647619992     0.59497647619992
+    3     0.02563585706578     0.59497647619992     0.00000000000000     0.08665848896377
+    4     0.02563585706578     0.59497647619992     0.08665848896377     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.1846248
+      2:  3.2579353
+      3:  1.1707746
+      4:  1.1707746
+
+
+
+  Wiberg Bond Indices using Orthogonal Lowdin Orbitals:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.52832420109887     0.11145794493952     0.11145794493952
+    2     1.52832420109887     0.00000000000000     1.41000077238848     1.41000077238848
+    3     0.11145794493952     1.41000077238848     0.00000000000000     0.20566180270315
+    4     0.11145794493952     1.41000077238848     0.20566180270315     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.70662511973792     0.04511313514379     0.04511313514379
+    2     0.70662511973792     0.00000000000000     0.67526322950306     0.67526322950306
+    3     0.04511313514379     0.67526322950306     0.00000000000000     0.06035567859487
+    4     0.04511313514379     0.67526322950306     0.06035567859487     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.82169908136094     0.06634480979573     0.06634480979573
+    2     0.82169908136094     0.00000000000000     0.73473754288543     0.73473754288543
+    3     0.06634480979573     0.73473754288543     0.00000000000000     0.14530612410827
+    4     0.06634480979573     0.73473754288543     0.14530612410827     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.7512401
+      2:  4.3483257
+      3:  1.7271205
+      4:  1.7271205
+
+  Natural Orbital Occupations:
+
+  Alpha Occupations:
+  HONO-2 :    4 B2    0.998
+  HONO-1 :    5 B2    0.988
+  HONO-0 :    8 A1    0.986
+  LUNO+0 :    9 A1    0.016
+  LUNO+1 :    6 B2    0.012
+  LUNO+2 :   10 A1    0.002
+  LUNO+3 :   11 A1    0.000
+
+  Beta Occupations:
+  HONO-2 :    8 A1    0.986
+  HONO-1 :    2 B1    0.968
+  HONO-0 :    4 B2    0.502
+  LUNO+0 :    5 B2    0.492
+  LUNO+1 :    3 B1    0.032
+  LUNO+2 :    9 A1    0.013
+  LUNO+3 :    6 B2    0.005
+
+  Total Occupations:
+  HONO-2 :    8 A1    1.971
+  HONO-1 :    2 B1    1.968
+  HONO-0 :    4 B2    1.498
+  LUNO+0 :    5 B2    1.480
+  LUNO+1 :    3 B1    1.031
+  LUNO+2 :    9 A1    0.029
+  LUNO+3 :    6 B2    0.019
+
+
+ Field computed on the grid and written to grid_field.dat
+
+ Electrostatic potential computed on the grid and written to grid_esp.dat
+
+   ===> CASSCF properties for all CI roots <=== 
+
+
+Properties computed using the CASSCF ROOT 0 density matrix
+
+
+ Multipole Moments:
+
+ ------------------------------------------------------------------------------------
+     Multipole             Electric (a.u.)       Nuclear  (a.u.)        Total (a.u.)
+ ------------------------------------------------------------------------------------
+
+ L = 1.  Multiply by 2.5417462300 to convert to Debye
+ Dipole X            :          0.0000000            0.0000000            0.0000000
+ Dipole Y            :          0.0000000            0.0000000            0.0000000
+ Dipole Z            :         -0.1834068           -0.0007085           -0.1841153
+
+ L = 2.  Multiply by 1.3450341749 to convert to Debye.ang
+ Quadrupole XX       :        -16.7389704            0.0000000          -16.7389704
+ Quadrupole XY       :          0.0000000           -0.0000000           -0.0000000
+ Quadrupole XZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole YY       :        -77.6842206           57.9186331          -19.7655875
+ Quadrupole YZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole ZZ       :       -104.0194340           82.1709850          -21.8484490
+
+ L = 3.  Multiply by 0.7117614302 to convert to Debye.ang^2
+ Octupole XXX        :          0.0000000            0.0000000            0.0000000
+ Octupole XXY        :          0.0000000            0.0000000            0.0000000
+ Octupole XXZ        :          0.6960077           -0.0000000            0.6960077
+ Octupole XYY        :          0.0000000            0.0000000            0.0000000
+ Octupole XYZ        :          0.0000000            0.0000000            0.0000000
+ Octupole XZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole YYY        :          0.0000000            0.0000000            0.0000000
+ Octupole YYZ        :         83.1091452          -78.8147307            4.2944145
+ Octupole YZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole ZZZ        :       -100.4753098           93.4345542           -7.0407556
+
+ --------------------------------------------------------------------------------
+
+ Electrostatic potentials at the nuclear coordinates:
+ ---------------------------------------------
+   Center     Electrostatic Potential (a.u.)
+ ---------------------------------------------
+    1  O           -22.595249440732
+    2  N           -18.459605562845
+    3  O           -22.448325013359
+    4  O           -22.448325013359
+ ---------------------------------------------
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.1834
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.1841     Total:     0.1841
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:    -0.4680     Total:     0.4680
+
+  Quadrupole Moment: (Debye Ang)
+    XX:   -22.5145     YY:   -26.5854     ZZ:   -29.3869
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+  Traceless Quadrupole Moment: (Debye Ang)
+    XX:     3.6478     YY:    -0.4231     ZZ:    -3.2246
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+
+  Orbital extents (a.u.):
+            MO          <x^2>          <y^2>          <z^2>          <r^2>
+       0 B2  0   0.0177547273   3.6370461313   1.8691092471   5.5239101056
+       1 A1  0   0.0177526276   3.6370536970   1.8691497126   5.5239560372
+       2 A1  1   0.0177571143   0.0177580922   6.5533986552   6.5889138617
+       3 A1  2   0.0235091888   0.0235080454   0.0589438545   0.1059610887
+       4 A1  3   0.5100309049   1.7684027518   1.6663110782   3.9447447349
+       5 A1  4   0.5356984722   0.9084995455   7.7463123477   9.1905103654
+       6 B2  1   0.4906808951   3.5593513903   1.6317275511   5.6817598365
+       7 A1  5   0.5174168662   4.3256027756   3.2124575706   8.0554772124
+       8 B1  0   1.4037343713   2.4553870255   1.7384943087   5.5976157055
+       9 B2  2   0.4273571935   3.6102109033   2.9426351732   6.9802032701
+      10 A1  6   0.4551453571   4.0698259023   2.5832479645   7.1082192239
+      11 A2  0   1.2311947335   4.0993528098   2.1749963922   7.5055439355
+      12 A1  7   0.3376280072   0.6662110582   4.2925493271   5.2963883924
+      13 B1  1   1.2198102007   0.9307565036   5.8566328873   8.0071995916
+      14 B2  3   0.3998470341   1.7200390317   6.2022872926   8.3221733584
+      15 B2  4   0.3795978522   4.8264172329   2.4173786240   7.6233937090
+      16 B1  2   1.0841189572   1.4183144736   2.2175204211   4.7199538519
+      17 A1  8   0.3806568287   0.9120295687   3.4333982717   4.7260846691
+      18 B2  5   0.5892138848   2.1650560570   4.1377818479   6.8920517897
+      19 A1  9   0.4534715751   2.2923639778   2.3959242163   5.1417597692
+      20 A1 10   2.1906885639   2.1978195228   8.1144027813  12.5029108680
+      21 A1 11   2.0264921309   8.8476461395   3.6995373931  14.5736756636
+      22 B2  6   0.6182895446   2.9674715824   4.1431824167   7.7289435437
+      23 B1  3   3.6036144812   1.0933651551   1.3744113758   6.0713910122
+      24 A1 12   1.2226547336   2.2036225984   5.0686679546   8.4949452866
+      25 B2  7   1.5444401817   7.1171781104   5.5268656120  14.1884839041
+      26 A1 13   1.0455734969   2.5135974862   8.6673530457  12.2265240287
+      27 B1  4   2.5650497679   1.6420700183   6.8364598580  11.0435796442
+      28 A1 14   1.6795982503   3.1076020374   5.2603339644  10.0475342521
+      29 A2  1   2.4605932475   5.1364981537   2.6758352097  10.2729266110
+      30 B2  8   1.0784847492   5.1878775160   5.4627167194  11.7290789846
+      31 B1  5   2.6226271256   4.0090590524   4.9761350305  11.6078212085
+      32 B2  9   0.8672531790   6.5332054365   4.2312949292  11.6317535447
+      33 A1 15   1.6982350905   4.8832042712   2.3698338479   8.9512732096
+      34 B1  6   0.9549644858   1.5766367927   2.9507021725   5.4823034511
+      35 A2  2   0.9635423275   2.1834704322   1.9148035693   5.0618163291
+      36 B2 10   1.9516774291   3.8204318773   3.4453223866   9.2174316931
+      37 A1 16   1.5977048476   2.6872143772   5.4241897709   9.7091089957
+      38 A1 17   0.9465570629   2.3619764399   4.3919629285   7.7004964313
+      39 B1  7   0.9543298715   3.7696582630   2.9882549777   7.7122431122
+      40 A2  3   0.9422651869   1.3830751734   6.1573624443   8.4827028046
+      41 A1 18   1.5707854413   2.0876351038   4.4523371167   8.1107576619
+      42 B2 11   0.5951978066   2.8530237169   4.0918667710   7.5400882945
+      43 A2  4   0.9589410502   4.1645636445   2.5033419941   7.6268466888
+      44 B2 12   0.7324559603   3.4732861586   3.0390533308   7.2447954497
+      45 A1 19   1.4373602495   3.2408034010   2.6986066024   7.3767702528
+      46 B1  8   1.3601236978   2.4908129033   4.1147961685   7.9657327696
+      47 A1 20   1.1120744106   1.5344812879   1.9146460944   4.5612017929
+      48 B2 13   0.6061308651   3.8838985167   2.7782371339   7.2682665158
+      49 A2  5   1.0341589639   2.8473776081   1.9971908324   5.8787274044
+      50 B1  9   1.0304695799   1.6046448133   3.3924668572   6.0275812504
+      51 A1 21   0.6070725913   2.6309901138   5.3568948716   8.5949575767
+      52 B2 14   0.6859420465   3.5189315036   3.6330515171   7.8379250672
+      53 A1 22   1.0399258004   2.4556806207   5.6270771743   9.1226835953
+      54 A1 23   0.4638285457   2.9537829513   2.3441038153   5.7617153122
+      55 B2 15   0.4058519340   3.0152864310   3.4429881102   6.8641264752
+      56 A1 24   1.0085054848   3.0076138409   2.9739387733   6.9900580990
+      57 B2 16   1.6314474261   4.7781835817   3.0786153574   9.4882463652
+      58 A1 25   1.3554066876   2.1986674273   6.4608645782  10.0149386931
+      59 A1 26   1.0309808129   2.3644401288   3.4549596380   6.8503805797
+
+  Mulliken Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.46357  4.14839  0.31519 -0.61196
+       2     N     3.53353  2.95669  0.57684  0.50978
+       3     O     4.50145  3.94746  0.55399 -0.44891
+       4     O     4.50145  3.94746  0.55399 -0.44891
+
+   Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+  Lowdin Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.39742  4.07309  0.32433 -0.47051
+       2     N     3.68743  3.13241  0.55502  0.18016
+       3     O     4.45758  3.89725  0.56032 -0.35483
+       4     O     4.45758  3.89725  0.56032 -0.35483
+
+  Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+
+  Mayer Bond Indices:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.33098006480084     0.07794522893019     0.07794522893019
+    2     1.33098006480084     0.00000000000000     1.02281247472536     1.02281247472536
+    3     0.07794522893019     1.02281247472536     0.00000000000000     0.37252239574825
+    4     0.07794522893019     1.02281247472536     0.37252239574825     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.50262999799298     0.00989348278611     0.00989348278611
+    2     0.50262999799298     0.00000000000000     0.46392547777075     0.46392547777075
+    3     0.00989348278611     0.46392547777075     0.00000000000000    -0.01846096825054
+    4     0.00989348278611     0.46392547777075    -0.01846096825054     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.82835006680786     0.06805174614408     0.06805174614408
+    2     0.82835006680786     0.00000000000000     0.55888699695461     0.55888699695461
+    3     0.06805174614408     0.55888699695461     0.00000000000000     0.39098336399879
+    4     0.06805174614408     0.55888699695461     0.39098336399879     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.4868705
+      2:  3.3766050
+      3:  1.4732801
+      4:  1.4732801
+
+
+
+  Wiberg Bond Indices using Orthogonal Lowdin Orbitals:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.70821958890189     0.16219524265241     0.16219524265241
+    2     1.70821958890189     0.00000000000000     1.37911777647501     1.37911777647501
+    3     0.16219524265241     1.37911777647501     0.00000000000000     0.48493147500043
+    4     0.16219524265241     1.37911777647501     0.48493147500043     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.73502538768728     0.04951251381067     0.04951251381067
+    2     0.73502538768728     0.00000000000000     0.66924601711200     0.66924601711199
+    3     0.04951251381067     0.66924601711200     0.00000000000000     0.06097468569001
+    4     0.04951251381067     0.66924601711199     0.06097468569001     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.97319420121461     0.11268272884174     0.11268272884174
+    2     0.97319420121461     0.00000000000000     0.70987175936302     0.70987175936302
+    3     0.11268272884174     0.70987175936302     0.00000000000000     0.42395678931042
+    4     0.11268272884174     0.70987175936302     0.42395678931042     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  2.0326101
+      2:  4.4664551
+      3:  2.0262445
+      4:  2.0262445
+
+  Natural Orbital Occupations:
+
+  Alpha Occupations:
+  HONO-2 :    4 B2    0.999
+  HONO-1 :    5 B2    0.990
+  HONO-0 :    8 A1    0.986
+  LUNO+0 :    9 A1    0.015
+  LUNO+1 :    6 B2    0.010
+  LUNO+2 :   10 A1    0.001
+  LUNO+3 :    7 B2    0.000
+
+  Beta Occupations:
+  HONO-2 :    8 A1    0.987
+  HONO-1 :    4 B2    0.986
+  HONO-0 :    2 B1    0.984
+  LUNO+0 :    3 B1    0.016
+  LUNO+1 :    9 A1    0.013
+  LUNO+2 :    5 B2    0.013
+  LUNO+3 :    6 B2    0.001
+
+  Total Occupations:
+  HONO-2 :    2 B1    1.984
+  HONO-1 :    4 B2    1.976
+  HONO-0 :    8 A1    1.972
+  LUNO+0 :    3 B1    1.016
+  LUNO+1 :    5 B2    1.004
+  LUNO+2 :    9 A1    0.029
+  LUNO+3 :    6 B2    0.019
+
+
+ Field computed on the grid and written to grid_field.dat
+
+ Electrostatic potential computed on the grid and written to grid_esp.dat
+
+Properties computed using the CASSCF ROOT 1 density matrix
+
+
+ Multipole Moments:
+
+ ------------------------------------------------------------------------------------
+     Multipole             Electric (a.u.)       Nuclear  (a.u.)        Total (a.u.)
+ ------------------------------------------------------------------------------------
+
+ L = 1.  Multiply by 2.5417462300 to convert to Debye
+ Dipole X            :          0.0000000            0.0000000            0.0000000
+ Dipole Y            :          0.0000000            0.0000000            0.0000000
+ Dipole Z            :          1.7559457           -0.0007085            1.7552372
+
+ L = 2.  Multiply by 1.3450341749 to convert to Debye.ang
+ Quadrupole XX       :        -16.5763562            0.0000000          -16.5763562
+ Quadrupole XY       :          0.0000000           -0.0000000           -0.0000000
+ Quadrupole XZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole YY       :        -79.6915728           57.9186331          -21.7729397
+ Quadrupole YZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole ZZ       :       -102.4582202           82.1709850          -20.2872352
+
+ L = 3.  Multiply by 0.7117614302 to convert to Debye.ang^2
+ Octupole XXX        :          0.0000000            0.0000000            0.0000000
+ Octupole XXY        :          0.0000000            0.0000000            0.0000000
+ Octupole XXZ        :          1.3183299           -0.0000000            1.3183299
+ Octupole XYY        :          0.0000000            0.0000000            0.0000000
+ Octupole XYZ        :          0.0000000            0.0000000            0.0000000
+ Octupole XZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole YYY        :          0.0000000            0.0000000            0.0000000
+ Octupole YYZ        :         88.2251971          -78.8147307            9.4104663
+ Octupole YZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole ZZZ        :        -89.7216642           93.4345542            3.7128900
+
+ --------------------------------------------------------------------------------
+
+ Electrostatic potentials at the nuclear coordinates:
+ ---------------------------------------------
+   Center     Electrostatic Potential (a.u.)
+ ---------------------------------------------
+    1  O           -22.354266337619
+    2  N           -18.314635600236
+    3  O           -22.706524167414
+    4  O           -22.706524167414
+ ---------------------------------------------
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     1.7559
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     1.7552     Total:     1.7552
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:     4.4614     Total:     4.4614
+
+  Quadrupole Moment: (Debye Ang)
+    XX:   -22.2958     YY:   -29.2853     ZZ:   -27.2870
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+  Traceless Quadrupole Moment: (Debye Ang)
+    XX:     3.9936     YY:    -2.9960     ZZ:    -0.9976
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+
+  Orbital extents (a.u.):
+            MO          <x^2>          <y^2>          <z^2>          <r^2>
+       0 B2  0   0.0177547273   3.6370461313   1.8691092471   5.5239101056
+       1 A1  0   0.0177526276   3.6370536970   1.8691497126   5.5239560372
+       2 A1  1   0.0177571143   0.0177580922   6.5533986552   6.5889138617
+       3 A1  2   0.0235091888   0.0235080454   0.0589438545   0.1059610887
+       4 A1  3   0.5100309049   1.7684027518   1.6663110782   3.9447447349
+       5 A1  4   0.5356984722   0.9084995455   7.7463123477   9.1905103654
+       6 B2  1   0.4906808951   3.5593513903   1.6317275511   5.6817598365
+       7 A1  5   0.5174168662   4.3256027756   3.2124575706   8.0554772124
+       8 B1  0   1.4037343713   2.4553870255   1.7384943087   5.5976157055
+       9 B2  2   0.4273571935   3.6102109033   2.9426351732   6.9802032701
+      10 A1  6   0.4551453571   4.0698259023   2.5832479645   7.1082192239
+      11 A2  0   1.2311947335   4.0993528098   2.1749963922   7.5055439355
+      12 A1  7   0.3376280072   0.6662110582   4.2925493271   5.2963883924
+      13 B1  1   1.2198102007   0.9307565036   5.8566328873   8.0071995916
+      14 B2  3   0.3998470341   1.7200390317   6.2022872926   8.3221733584
+      15 B2  4   0.3795978522   4.8264172329   2.4173786240   7.6233937090
+      16 B1  2   1.0841189572   1.4183144736   2.2175204211   4.7199538519
+      17 A1  8   0.3806568287   0.9120295687   3.4333982717   4.7260846691
+      18 B2  5   0.5892138848   2.1650560570   4.1377818479   6.8920517897
+      19 A1  9   0.4534715751   2.2923639778   2.3959242163   5.1417597692
+      20 A1 10   2.1906885639   2.1978195228   8.1144027813  12.5029108680
+      21 A1 11   2.0264921309   8.8476461395   3.6995373931  14.5736756636
+      22 B2  6   0.6182895446   2.9674715824   4.1431824167   7.7289435437
+      23 B1  3   3.6036144812   1.0933651551   1.3744113758   6.0713910122
+      24 A1 12   1.2226547336   2.2036225984   5.0686679546   8.4949452866
+      25 B2  7   1.5444401817   7.1171781104   5.5268656120  14.1884839041
+      26 A1 13   1.0455734969   2.5135974862   8.6673530457  12.2265240287
+      27 B1  4   2.5650497679   1.6420700183   6.8364598580  11.0435796442
+      28 A1 14   1.6795982503   3.1076020374   5.2603339644  10.0475342521
+      29 A2  1   2.4605932475   5.1364981537   2.6758352097  10.2729266110
+      30 B2  8   1.0784847492   5.1878775160   5.4627167194  11.7290789846
+      31 B1  5   2.6226271256   4.0090590524   4.9761350305  11.6078212085
+      32 B2  9   0.8672531790   6.5332054365   4.2312949292  11.6317535447
+      33 A1 15   1.6982350905   4.8832042712   2.3698338479   8.9512732096
+      34 B1  6   0.9549644858   1.5766367927   2.9507021725   5.4823034511
+      35 A2  2   0.9635423275   2.1834704322   1.9148035693   5.0618163291
+      36 B2 10   1.9516774291   3.8204318773   3.4453223866   9.2174316931
+      37 A1 16   1.5977048476   2.6872143772   5.4241897709   9.7091089957
+      38 A1 17   0.9465570629   2.3619764399   4.3919629285   7.7004964313
+      39 B1  7   0.9543298715   3.7696582630   2.9882549777   7.7122431122
+      40 A2  3   0.9422651869   1.3830751734   6.1573624443   8.4827028046
+      41 A1 18   1.5707854413   2.0876351038   4.4523371167   8.1107576619
+      42 B2 11   0.5951978066   2.8530237169   4.0918667710   7.5400882945
+      43 A2  4   0.9589410502   4.1645636445   2.5033419941   7.6268466888
+      44 B2 12   0.7324559603   3.4732861586   3.0390533308   7.2447954497
+      45 A1 19   1.4373602495   3.2408034010   2.6986066024   7.3767702528
+      46 B1  8   1.3601236978   2.4908129033   4.1147961685   7.9657327696
+      47 A1 20   1.1120744106   1.5344812879   1.9146460944   4.5612017929
+      48 B2 13   0.6061308651   3.8838985167   2.7782371339   7.2682665158
+      49 A2  5   1.0341589639   2.8473776081   1.9971908324   5.8787274044
+      50 B1  9   1.0304695799   1.6046448133   3.3924668572   6.0275812504
+      51 A1 21   0.6070725913   2.6309901138   5.3568948716   8.5949575767
+      52 B2 14   0.6859420465   3.5189315036   3.6330515171   7.8379250672
+      53 A1 22   1.0399258004   2.4556806207   5.6270771743   9.1226835953
+      54 A1 23   0.4638285457   2.9537829513   2.3441038153   5.7617153122
+      55 B2 15   0.4058519340   3.0152864310   3.4429881102   6.8641264752
+      56 A1 24   1.0085054848   3.0076138409   2.9739387733   6.9900580990
+      57 B2 16   1.6314474261   4.7781835817   3.0786153574   9.4882463652
+      58 A1 25   1.3554066876   2.1986674273   6.4608645782  10.0149386931
+      59 A1 26   1.0309808129   2.3644401288   3.4549596380   6.8503805797
+
+  Mulliken Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.59534  3.64573  0.94960 -0.24107
+       2     N     3.44861  2.77465  0.67396  0.77673
+       3     O     4.47802  4.28981  0.18822 -0.76783
+       4     O     4.47802  4.28981  0.18822 -0.76783
+
+   Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+  Lowdin Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.49917  3.55271  0.94646 -0.05188
+       2     N     3.63500  2.97877  0.65623  0.38623
+       3     O     4.43291  4.23426  0.19865 -0.66718
+       4     O     4.43291  4.23426  0.19865 -0.66718
+
+  Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+
+  Mayer Bond Indices:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.96824223871164     0.08089902321992     0.08089902321992
+    2     0.96824223871164     0.00000000000000     1.13319179947178     1.13319179947178
+    3     0.08089902321992     1.13319179947178     0.00000000000000    -0.01853628436068
+    4     0.08089902321992     1.13319179947178    -0.01853628436068     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.41259764136686     0.00652106116546     0.00652106116546
+    2     0.41259764136686     0.00000000000000     0.48730765723192     0.48730765723192
+    3     0.00652106116546     0.48730765723192     0.00000000000000    -0.02005312392910
+    4     0.00652106116546     0.48730765723192    -0.02005312392910     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.55564459734478     0.07437796205447     0.07437796205447
+    2     0.55564459734478     0.00000000000000     0.64588414223986     0.64588414223986
+    3     0.07437796205447     0.64588414223986     0.00000000000000     0.00151683956841
+    4     0.07437796205447     0.64588414223986     0.00151683956841     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.1300403
+      2:  3.2346258
+      3:  1.1955545
+      4:  1.1955545
+
+
+
+  Wiberg Bond Indices using Orthogonal Lowdin Orbitals:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.42311892801706     0.15618744533832     0.15618744533832
+    2     1.42311892801706     0.00000000000000     1.45753544480935     1.45753544480935
+    3     0.15618744533832     1.45753544480935     0.00000000000000     0.14392968253483
+    4     0.15618744533832     1.45753544480935     0.14392968253483     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.68279401639479     0.04254142494293     0.04254142494293
+    2     0.68279401639479     0.00000000000000     0.68210936448921     0.68210936448921
+    3     0.04254142494293     0.68210936448921     0.00000000000000     0.05991642096747
+    4     0.04254142494293     0.68210936448921     0.05991642096747     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.74032491162227     0.11364602039539     0.11364602039539
+    2     0.74032491162227     0.00000000000000     0.77542608032015     0.77542608032015
+    3     0.11364602039539     0.77542608032015     0.00000000000000     0.08401326156736
+    4     0.11364602039539     0.77542608032015     0.08401326156736     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.7354938
+      2:  4.3381898
+      3:  1.7576526
+      4:  1.7576526
+
+  Natural Orbital Occupations:
+
+  Alpha Occupations:
+  HONO-2 :    4 B2    0.997
+  HONO-1 :    5 B2    0.994
+  HONO-0 :    8 A1    0.988
+  LUNO+0 :    9 A1    0.013
+  LUNO+1 :    6 B2    0.005
+  LUNO+2 :   10 A1    0.003
+  LUNO+3 :   11 A1    0.000
+
+  Beta Occupations:
+  HONO-2 :    2 B1    0.989
+  HONO-1 :    4 B2    0.988
+  HONO-0 :    8 A1    0.987
+  LUNO+0 :    9 A1    0.011
+  LUNO+1 :    3 B1    0.011
+  LUNO+2 :    5 B2    0.010
+  LUNO+3 :   10 A1    0.003
+
+  Total Occupations:
+  HONO-2 :    2 B1    1.989
+  HONO-1 :    4 B2    1.984
+  HONO-0 :    8 A1    1.975
+  LUNO+0 :    3 B1    1.010
+  LUNO+1 :    5 B2    1.005
+  LUNO+2 :    9 A1    0.025
+  LUNO+3 :    6 B2    0.006
+
+
+ Field computed on the grid and written to grid_field.dat
+
+ Electrostatic potential computed on the grid and written to grid_esp.dat
+
+   ===> CASSCF properties for all CI transition density matrices <=== 
+
+
+Properties computed using the CASSCF ROOT 0 -> ROOT 1 density matrix
+
+  Transition Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.3398     Total:     0.3398
+
+  Transition Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:     0.8636     Total:     0.8636
+
+  Transition Quadrupole Moment: (Debye Ang)
+    XX:     0.0225     YY:    -0.8276     ZZ:     0.7085
+    XY:     0.0000     XZ:     0.0000     YZ:     0.0000
+
+  Traceless Transition Quadrupole Moment: (Debye Ang)
+    XX:     0.0547     YY:    -0.7954     ZZ:     0.7407
+    XY:     0.0000     XZ:     0.0000     YZ:     0.0000
+
+	CASSCF Energy.....................................................PASSED
+	CASSCF DIPOLE Y...................................................PASSED
+	CASSCF DIPOLE Z...................................................PASSED
+	CASSCF QUADRUPOLE XX..............................................PASSED
+	CASSCF QUADRUPOLE YY..............................................PASSED
+	CASSCF QUADRUPOLE ZZ..............................................PASSED
+	CASSCF QUADRUPOLE YZ..............................................PASSED
+	CASSCF ROOT 1 DIPOLE Y............................................PASSED
+	CASSCF ROOT 1 DIPOLE Z............................................PASSED
+	CASSCF ROOT 1 QUADRUPOLE XX.......................................PASSED
+	CASSCF ROOT 1 QUADRUPOLE YY.......................................PASSED
+	CASSCF ROOT 1 QUADRUPOLE ZZ.......................................PASSED
+	CASSCF ROOT 1 QUADRUPOLE YZ.......................................PASSED
+
+*** tstart() called on CHE-FEVANGE-01I
+*** at Mon May 29 17:04:09 2017
+
+   => Loading Basis Set <=
+
+    Name: 6-31G*
+    Role: ORBITAL
+    Keyword: BASIS
+    atoms 1, 3-4 entry O          line   137 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/6-31gs.gbs 
+    atoms 2      entry N          line   120 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/6-31gs.gbs 
+
+
+         ---------------------------------------------------------
+                                   SCF
+            by Justin Turney, Rob Parrish, Andy Simmonett
+                             and Daniel Smith
+                             ROHF Reference
+                        1 Threads,    500 MiB Core
+         ---------------------------------------------------------
+
+  ==> Geometry <==
+
+    Molecular point group: c2v
+    Full point group: C2v
+
+    Geometry (in Angstrom), charge = -1, multiplicity = 3:
+
+       Center              X                  Y                   Z               Mass       
+    ------------   -----------------  -----------------  -----------------  -----------------
+           O          0.000000000000     0.000000000000     1.352965563729    15.994914619560
+           N          0.000000000000     0.000000000000     0.099633131563    14.003074004780
+           O         -0.000000000000     1.006816424330    -0.720095709717    15.994914619560
+           O          0.000000000000    -1.006816424330    -0.720095709717    15.994914619560
+
+  Running in c2v symmetry.
+
+  Rotational constants: A =      0.51986  B =      0.36642  C =      0.21493 [cm^-1]
+  Rotational constants: A =  15584.92408  B =  10985.09449  C =   6443.42280 [MHz]
+  Nuclear repulsion =  115.503632390142570
+
+  Charge       = -1
+  Multiplicity = 3
+  Electrons    = 32
+  Nalpha       = 17
+  Nbeta        = 15
+
+  ==> Algorithm <==
+
+  SCF Algorithm Type is DF.
+  DIIS enabled.
+  MOM disabled.
+  Fractional occupation disabled.
+  Guess Type is GWH.
+  Energy threshold   = 1.00e-10
+  Density threshold  = 1.00e-10
+  Integral threshold = 0.00e+00
+
+  ==> Primary Basis <==
+
+  Basis Set: 6-31G*
+    Blend: 6-31G*
+    Number of shells: 24
+    Number of basis function: 60
+    Number of Cartesian functions: 60
+    Spherical Harmonics?: false
+    Max angular momentum: 2
+
+   => Loading Basis Set <=
+
+    Name: (6-31G* AUX)
+    Role: JKFIT
+    Keyword: DF_BASIS_SCF
+    atoms 1, 3-4 entry O          line   221 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/cc-pvdz-jkfit.gbs 
+    atoms 2      entry N          line   171 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/cc-pvdz-jkfit.gbs 
+
+  ==> Pre-Iterations <==
+
+   -------------------------------------------------------
+    Irrep   Nso     Nmo     Nalpha   Nbeta   Ndocc  Nsocc
+   -------------------------------------------------------
+     A1        27      27       0       0       0       0
+     A2         6       6       0       0       0       0
+     B1        10      10       0       0       0       0
+     B2        17      17       0       0       0       0
+   -------------------------------------------------------
+    Total      60      60      17      15      15       2
+   -------------------------------------------------------
+
+  ==> Integral Setup <==
+
+  ==> DFJK: Density-Fitted J/K Matrices <==
+
+    J tasked:                  Yes
+    K tasked:                  Yes
+    wK tasked:                  No
+    OpenMP threads:              1
+    Integrals threads:           1
+    Memory (MB):               375
+    Algorithm:                Core
+    Integral Cache:           NONE
+    Schwarz Cutoff:          1E-12
+    Fitting Condition:       1E-12
+
+   => Auxiliary Basis Set <=
+
+  Basis Set: (6-31G* AUX)
+    Blend: CC-PVDZ-JKFIT
+    Number of shells: 96
+    Number of basis function: 324
+    Number of Cartesian functions: 324
+    Spherical Harmonics?: false
+    Max angular momentum: 3
+
+  Minimum eigenvalue in the overlap matrix is 3.6436246723E-03.
+  Using Symmetric Orthogonalization.
+
+  SCF Guess: Generalized Wolfsberg-Helmholtz.
+
+  ==> Iterations <==
+
+                           Total Energy        Delta E     RMS |[F,P]|
+
+   @DF-ROHF iter   1:  -263.02734315114009   -2.63027e+02   1.00507e-01 
+   @DF-ROHF iter   2:  -276.73243568978671   -1.37051e+01   4.75684e-02 DIIS
+   @DF-ROHF iter   3:  -277.88909464366054   -1.15666e+00   3.35391e-02 DIIS
+   @DF-ROHF iter   4:  -278.49948344590445   -6.10389e-01   1.70575e-02 DIIS
+   @DF-ROHF iter   5:  -278.65651259931730   -1.57029e-01   1.10624e-02 DIIS
+   @DF-ROHF iter   6:  -278.74322598295282   -8.67134e-02   5.03974e-03 DIIS
+   @DF-ROHF iter   7:  -278.76578937277276   -2.25634e-02   1.59602e-03 DIIS
+   @DF-ROHF iter   8:  -278.76840420848089   -2.61484e-03   3.24019e-04 DIIS
+   @DF-ROHF iter   9:  -278.76854007431348   -1.35866e-04   9.28482e-05 DIIS
+   @DF-ROHF iter  10:  -278.76855425809595   -1.41838e-05   1.35089e-05 DIIS
+   @DF-ROHF iter  11:  -278.76855488212459   -6.24029e-07   3.88444e-06 DIIS
+   @DF-ROHF iter  12:  -278.76855494003172   -5.79071e-08   1.44406e-06 DIIS
+   @DF-ROHF iter  13:  -278.76855494641296   -6.38124e-09   5.90831e-07 DIIS
+   @DF-ROHF iter  14:  -278.76855494709292   -6.79961e-10   7.67486e-08 DIIS
+   @DF-ROHF iter  15:  -278.76855494710895   -1.60298e-11   1.58988e-08 DIIS
+   @DF-ROHF iter  16:  -278.76855494710946   -5.11591e-13   5.23519e-09 DIIS
+   @DF-ROHF iter  17:  -278.76855494710969   -2.27374e-13   1.94633e-09 DIIS
+   @DF-ROHF iter  18:  -278.76855494710975   -5.68434e-14   5.72752e-10 DIIS
+   @DF-ROHF iter  19:  -278.76855494710975    0.00000e+00   1.53414e-10 DIIS
+   @DF-ROHF iter  20:  -278.76855494710981   -5.68434e-14   4.80169e-11 DIIS
+
+  ==> Post-Iterations <==
+
+    Orbital Energies (a.u.)
+    -----------------------
+
+    Doubly Occupied:                                                      
+
+       1B2   -20.381113     1A1   -20.381108     2A1   -20.307419  
+       3A1   -15.526335     4A1    -1.328068     5A1    -1.111665  
+       2B2    -1.070780     6A1    -0.620820     1B1    -0.468742  
+       3B2    -0.467837     7A1    -0.447834     1A2    -0.272259  
+       8A1    -0.255621     2B1    -0.247546     4B2    -0.219859  
+
+    Singly Occupied:                                                      
+
+       5B2     0.000833     3B1     0.187038  
+
+    Virtual:                                                              
+
+       9A1     0.626938     6B2     0.739453    10A1     0.866977  
+      11A1     1.074243    12A1     1.141481     7B2     1.143664  
+       4B1     1.164224    13A1     1.317713     8B2     1.337779  
+      14A1     1.409917     5B1     1.425633    15A1     1.431097  
+       2A2     1.444236     9B2     1.515379     6B1     1.530419  
+      10B2     1.568337    16A1     1.598253     7B1     1.882094  
+       3A2     1.894281    11B2     1.943110    17A1     1.998052  
+      18A1     2.200181     8B1     2.286371     4A2     2.356301  
+      19A1     2.371746    12B2     2.375589     5A2     2.401842  
+      13B2     2.472643    20A1     2.540978     9B1     2.723121  
+      21A1     2.815310    14B2     2.865970     6A2     3.098637  
+      10B1     3.302434    22A1     3.348300    15B2     3.367584  
+      23A1     3.470376    24A1     3.528814    16B2     3.618065  
+      25A1     3.996357    17B2     4.382761    26A1     4.408106  
+      27A1     4.519294  
+
+    Final Occupation by Irrep:
+             A1    A2    B1    B2 
+    DOCC [     8,    1,    2,    4 ]
+    SOCC [     0,    0,    1,    1 ]
+
+  Energy converged.
+
+  @DF-ROHF Final Energy:  -278.76855494710981
+
+   => Energetics <=
+
+    Nuclear Repulsion Energy =            115.5036323901425703
+    One-Electron Energy =                -621.9582924294544455
+    Two-Electron Energy =                 227.6861050922020695
+    Total Energy =                       -278.7685549471098057
+
+
+
+Properties will be evaluated at   0.000000,   0.000000,   0.000000 Bohr
+
+Properties computed using the SCF density matrix
+
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.2598
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.2605     Total:     0.2605
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:    -0.6620     Total:     0.6620
+
+
+*** tstop() called on CHE-FEVANGE-01I at Mon May 29 17:04:09 2017
+Module time:
+	user time   =       0.55 seconds =       0.01 minutes
+	system time =       0.06 seconds =       0.00 minutes
+	total time  =          0 seconds =       0.00 minutes
+Total time:
+	user time   =      11.20 seconds =       0.19 minutes
+	system time =       1.09 seconds =       0.02 minutes
+	total time  =         11 seconds =       0.18 minutes
+   => Loading Basis Set <=
+
+    Name: (6-31G* AUX)
+    Role: JKFIT
+    Keyword: DF_BASIS_SCF
+    atoms 1, 3-4 entry O          line   221 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/cc-pvdz-jkfit.gbs 
+    atoms 2      entry N          line   171 file /Users/fevange/Source/psi4/objdir/stage/usr/local/psi4/share/psi4/basis/cc-pvdz-jkfit.gbs 
+
+
+         ---------------------------------------------------------
+                Multi-Configurational Self-Consistent Field
+                            (a 'D E T C I' module)
+
+                 Daniel G. A. Smith, C. David Sherrill, and
+                              Matt L. Leininger
+         ---------------------------------------------------------
+
+Warning: iopen=0,opentype!=closed. Making iopen=1
+
+   ==> Parameters <==
+
+    EX LEVEL       =        8      H0 BLOCKSIZE  =     1000
+    VAL EX LEVEL   =        0      H0 GUESS SIZE =     1000
+    H0COUPLINGSIZE =        0      H0 COUPLING   =       NO
+    MAXITER        =       24      NUM PRINT     =       20
+    NUM ROOTS      =        2      ICORE         =        1
+    PRINT LVL      =        1      FCI           =      YES
+    R CONV         = 1.00e-07      MIXED         =      YES
+    E CONV         = 1.00e-10      MIXED4        =      YES
+    R4S            =       NO      REPL OTF      =       NO
+    DIAG METHOD    =      SEM      FOLLOW ROOT   =        0
+    PRECONDITIONER = DAVIDSON      UPDATE        = DAVIDSON
+    S              =   1.0000      Ms0           =       NO
+    GUESS VECTOR   =  H0BLOCK      OPENTYPE      = HIGHSPIN
+    COLLAPSE SIZE  =        1      HD AVG        = EVANGELISTI
+    MAX NUM VECS   =       50      REF SYM       =     AUTO
+    IOPEN        =      YES
+
+    EX ALLOW       =  1  1  1  1  1  1  1  1 
+    STATE AVERAGE  =  0(0.50)  1(0.50) 
+
+   ==> CI Orbital and Space information <==
+
+   ------------------------------------------------------
+               Space    Total    A1    A2    B1    B2
+   ------------------------------------------------------
+                 Nso       60    27     6    10    17
+                 Nmo       60    27     6    10    17
+               Ndocc       15     8     1     2     4
+               Nsocc        2     0     0     1     1
+   ------------------------------------------------------
+                        MCSCF Spaces
+   ------------------------------------------------------
+         Frozen DOCC        5     3     0     0     2
+     Restricted DOCC        7     4     1     1     1
+              Active        8     3     0     2     3
+     Restricted UOCC       40    17     5     7    11
+         Frozen UOCC        0     0     0     0     0
+   ------------------------------------------------------
+
+   ==> Setting up CI strings <==
+
+    There are 56 alpha and 56 beta strings
+    The CI space requires 780 (7.80E+02) determinants and 4 blocks
+
+   ==> Setting up DF-MCSCF integrals <==
+
+  ==> DFJK: Density-Fitted J/K Matrices <==
+
+    J tasked:                  Yes
+    K tasked:                  Yes
+    wK tasked:                  No
+    OpenMP threads:              1
+    Integrals threads:           1
+    Memory (MB):               400
+    Algorithm:                Core
+    Integral Cache:           NONE
+    Schwarz Cutoff:          1E-12
+    Fitting Condition:       1E-12
+
+   => Auxiliary Basis Set <=
+
+  Basis Set: (6-31G* AUX)
+    Blend: CC-PVDZ-JKFIT
+    Number of shells: 96
+    Number of basis function: 324
+    Number of Cartesian functions: 324
+    Spherical Harmonics?: false
+    Max angular momentum: 3
+
+  ==> DFERI: Density Fitted 3-Index Tensors <==
+
+    Schwarz cutoff =   1.000E-12
+    J cutoff       =   1.000E-12
+    Mem (GB)       =           0
+
+   => Auxiliary Basis <=
+
+  Basis Set: (6-31G* AUX)
+    Blend: CC-PVDZ-JKFIT
+    Number of shells: 96
+    Number of basis function: 324
+    Number of Cartesian functions: 324
+    Spherical Harmonics?: false
+    Max angular momentum: 3
+
+
+   ==> Starting DF-MCSCF iterations <==
+
+           Iter         Total Energy       Delta E   Orb RMS    CI RMS  NCI NORB
+   @DF-MCSCF  1:   -278.716341557806    5.2213e-02  3.58e-02  5.63e-13    1    1  Initial CI
+   @DF-MCSCF  2:   -278.756557070552   -4.0216e-02  1.84e-02  2.54e-05    7    1  TS
+   @DF-MCSCF  3:   -278.766961887977   -1.0405e-02  6.31e-03  1.56e-05    8    1  TS
+   @DF-MCSCF  4:   -278.769340962997   -2.3791e-03  3.44e-03  3.19e-06    8    1  TS
+   @DF-MCSCF  5:   -278.770845615561   -1.5047e-03  3.39e-03  2.38e-06    9    1  TS
+   @DF-MCSCF  6:   -278.772098142512   -1.2525e-03  2.10e-03  1.28e-06    9    1  TS
+   @DF-MCSCF  7:   -278.773273182380   -1.1750e-03  2.73e-03  1.28e-06   10    1  TS
+   @DF-MCSCF  8:   -278.774387038894   -1.1139e-03  1.87e-03  1.65e-06   10    1  TS, DIIS
+   @DF-MCSCF  9:   -278.775414199350   -1.0272e-03  2.37e-03  1.26e-06   10    1  TS, DIIS
+   @DF-MCSCF 10:   -278.775987690978   -5.7349e-04  1.89e-03  1.05e-06   10    1  TS, DIIS
+   @DF-MCSCF 11:   -278.777998089517   -2.0104e-03  2.96e-03  8.52e-07   11    1  TS, DIIS
+   @DF-MCSCF 12:   -278.777667562334    3.3053e-04  1.36e-03  1.51e-06   10    1  TS, DIIS
+   @DF-MCSCF 13:   -278.778280744912   -6.1318e-04  1.19e-03  3.96e-07   11    1  TS, DIIS
+   @DF-MCSCF 14:   -278.778321572748   -4.0828e-05  4.45e-04  9.50e-07    9    1  TS, DIIS
+   @DF-MCSCF 15:   -278.778330150708   -8.5780e-06  2.59e-04  1.70e-07   10    1  TS, DIIS
+   @DF-MCSCF 16:   -278.778339220582   -9.0699e-06  8.31e-05  1.12e-07   10    1  TS, DIIS
+
+          @DF-MCSCF has converged!
+
+   @DF-MCSCF Final Energy: -278.778339220581870
+
+   Computing CI Natural Orbitals
+
+   ==> Energetics <==
+
+    SCF energy =         -278.768554947109806
+    Total MCSCF energy = -278.778339220581870
+
+   ==> MCSCF root 0 information <==
+
+    MCSCF Root 0 energy =  -278.817714736639687
+
+   Active Space Natural occupation numbers:
+
+        B1   1.983507        B2   1.975704        A1   1.972130
+        B1   1.015607        B2   1.003686        A1   0.028623
+        B2   0.019188        A1   0.001557
+
+   The 20 most important determinants:
+
+    *   1   -0.838729  (    2,   19)  8A1X 2B1X 3B1A 4B2A 5B2X 
+    *   2    0.483226  (    2,   13)  8A1X 2B1X 3B1A 4B2X 5B2A 
+    *   3    0.152813  (    2,   22)  8A1X 2B1A 3B1X 4B2A 5B2X 
+    *   4    0.063171  (    3,   20)  9A1X 2B1X 3B1A 4B2A 5B2X 
+    *   5    0.061451  (    6,   19)  8A1X 2B1X 3B1A 4B2A 5B2B 6B2A 
+    *   6    0.061198  (    3,   19)  8A1B 9A1A 2B1X 3B1A 4B2A 5B2X 
+    *   7    0.059865  (    2,   25)  8A1X 2B1X 3B1A 4B2A 5B2A 6B2B 
+    *   8    0.053787  (    3,   22)  8A1B 9A1A 2B1A 3B1X 4B2A 5B2X 
+    *   9    0.052775  (    6,   25)  8A1X 2B1X 3B1A 4B2A 6B2X 
+    *  10    0.043510  (    2,   23)  8A1A 9A1B 2B1A 3B1X 4B2A 5B2X 
+    *  11    0.042076  (    2,   20)  8A1A 9A1B 2B1X 3B1A 4B2A 5B2X 
+    *  12   -0.038867  (    3,   14)  9A1X 2B1X 3B1A 4B2X 5B2A 
+    *  13    0.038276  (    6,   22)  8A1X 2B1A 3B1X 4B2A 5B2B 6B2A 
+    *  14    0.035919  (    2,   28)  8A1X 2B1A 3B1X 4B2A 5B2A 6B2B 
+    *  15    0.035202  (    3,   25)  8A1B 9A1A 2B1X 3B1A 4B2A 5B2A 6B2B 
+    *  16    0.032727  (    6,   20)  8A1A 9A1B 2B1X 3B1A 4B2A 5B2B 6B2A 
+    *  17    0.029305  (    2,   26)  8A1A 9A1B 2B1X 3B1A 4B2A 5B2A 6B2B 
+    *  18   -0.026347  (    3,   16)  8A1B 9A1A 2B1A 3B1X 4B2X 5B2A 
+    *  19   -0.024932  (    2,   16)  8A1X 2B1A 3B1X 4B2X 5B2A 
+    *  20    0.022098  (    7,   19)  8A1B 9A1A 2B1X 3B1A 4B2A 5B2B 6B2A 
+
+
+   ==> MCSCF root 1 information <==
+
+    MCSCF Root 1 energy =  -278.738963704518426
+
+   Active Space Natural occupation numbers:
+
+        B1   1.988653        B2   1.984319        A1   1.975291
+        B1   1.010438        B2   1.004524        A1   0.024754
+        B2   0.006381        A1   0.005641
+
+   The 20 most important determinants:
+
+    *   1    0.843998  (    2,   13)  8A1X 2B1X 3B1A 4B2X 5B2A 
+    *   2    0.479555  (    2,   19)  8A1X 2B1X 3B1A 4B2A 5B2X 
+    *   3    0.159071  (    2,   16)  8A1X 2B1A 3B1X 4B2X 5B2A 
+    *   4    0.093970  (    6,   13)  8A1X 2B1X 3B1A 4B2X 6B2A 
+    *   5   -0.074288  (    3,   14)  9A1X 2B1X 3B1A 4B2X 5B2A 
+    *   6    0.048128  (    2,   14)  8A1A 9A1B 2B1X 3B1A 4B2X 5B2A 
+    *   7    0.048021  (   47,   32)  8A1X 10A1X 2B1X 3B1A 5B2A 
+    *   8    0.047165  (    3,   13)  8A1B 9A1A 2B1X 3B1A 4B2X 5B2A 
+    *   9   -0.039242  (    3,   20)  9A1X 2B1X 3B1A 4B2A 5B2X 
+    *  10   -0.028098  (    6,   14)  8A1A 9A1B 2B1X 3B1A 4B2X 6B2A 
+    *  11   -0.026003  (    3,   16)  8A1B 9A1A 2B1A 3B1X 4B2X 5B2A 
+    *  12    0.024317  (   25,   46)  8A1A 9A1A 2B1X 3B1B 4B2X 5B2A 
+    *  13   -0.023826  (    7,   13)  8A1B 9A1A 2B1X 3B1A 4B2X 6B2A 
+    *  14    0.023698  (   10,   13)  8A1X 2B1X 3B1A 4B2B 5B2A 6B2A 
+    *  15    0.023354  (   43,   37)  8A1A 9A1A 2B1X 3B1A 4B2X 5B2B 
+    *  16   -0.022558  (    3,   17)  9A1X 2B1A 3B1X 4B2X 5B2A 
+    *  17   -0.022437  (    3,   22)  8A1B 9A1A 2B1A 3B1X 4B2A 5B2X 
+    *  18   -0.020195  (    2,   17)  8A1A 9A1B 2B1A 3B1X 4B2X 5B2A 
+    *  19   -0.017993  (    2,   23)  8A1A 9A1B 2B1A 3B1X 4B2A 5B2X 
+    *  20   -0.016905  (    6,   20)  8A1A 9A1B 2B1X 3B1A 4B2A 5B2B 6B2A 
+
+
+
+Properties will be evaluated at   0.000000,   0.000000,   0.000000 Bohr
+
+Properties computed using the CASSCF density matrix
+
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.7863
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.7856     Total:     0.7856
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:     1.9967     Total:     1.9967
+
+
+
+Properties will be evaluated at   0.000000,   0.000000,   0.000000 Bohr
+
+Properties computed using the CASSCF density matrix
+
+
+ Multipole Moments:
+
+ ------------------------------------------------------------------------------------
+     Multipole             Electric (a.u.)       Nuclear  (a.u.)        Total (a.u.)
+ ------------------------------------------------------------------------------------
+
+ L = 1.  Multiply by 2.5417462300 to convert to Debye
+ Dipole X            :          0.0000000            0.0000000            0.0000000
+ Dipole Y            :          0.0000000            0.0000000            0.0000000
+ Dipole Z            :          0.7862695           -0.0007085            0.7855610
+
+ L = 2.  Multiply by 1.3450341749 to convert to Debye.ang
+ Quadrupole XX       :        -16.6576633            0.0000000          -16.6576633
+ Quadrupole XY       :          0.0000000           -0.0000000           -0.0000000
+ Quadrupole XZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole YY       :        -78.6878967           57.9186331          -20.7692636
+ Quadrupole YZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole ZZ       :       -103.2388271           82.1709850          -21.0678421
+
+ L = 3.  Multiply by 0.7117614302 to convert to Debye.ang^2
+ Octupole XXX        :          0.0000000            0.0000000            0.0000000
+ Octupole XXY        :          0.0000000            0.0000000            0.0000000
+ Octupole XXZ        :          1.0071688           -0.0000000            1.0071688
+ Octupole XYY        :          0.0000000            0.0000000            0.0000000
+ Octupole XYZ        :          0.0000000            0.0000000            0.0000000
+ Octupole XZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole YYY        :          0.0000000            0.0000000            0.0000000
+ Octupole YYZ        :         85.6671711          -78.8147307            6.8524404
+ Octupole YZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole ZZZ        :        -95.0984870           93.4345542           -1.6639328
+
+ --------------------------------------------------------------------------------
+
+ Electrostatic potentials at the nuclear coordinates:
+ ---------------------------------------------
+   Center     Electrostatic Potential (a.u.)
+ ---------------------------------------------
+    1  O           -22.474757888632
+    2  N           -18.387120581943
+    3  O           -22.577424590164
+    4  O           -22.577424590164
+ ---------------------------------------------
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.7863
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.7856     Total:     0.7856
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:     1.9967     Total:     1.9967
+
+  Quadrupole Moment: (Debye Ang)
+    XX:   -22.4051     YY:   -27.9354     ZZ:   -28.3370
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+  Traceless Quadrupole Moment: (Debye Ang)
+    XX:     3.8207     YY:    -1.7095     ZZ:    -2.1111
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+
+  Orbital extents (a.u.):
+            MO          <x^2>          <y^2>          <z^2>          <r^2>
+       0 B2  0   0.0177547273   3.6370461313   1.8691092471   5.5239101056
+       1 A1  0   0.0177526276   3.6370536970   1.8691497126   5.5239560372
+       2 A1  1   0.0177571143   0.0177580922   6.5533986552   6.5889138617
+       3 A1  2   0.0235091888   0.0235080454   0.0589438545   0.1059610887
+       4 A1  3   0.5093297596   1.7549576457   1.5661688518   3.8304562570
+       5 A1  4   0.5273755117   1.5464263773   6.1850646069   8.2588664959
+       6 B2  1   0.4906808951   3.5593513903   1.6317275511   5.6817598365
+       7 A1  5   0.5139069951   3.7179724299   4.0327206781   8.2646001031
+       8 B1  0   1.4037343713   2.4553870255   1.7384943087   5.5976157055
+       9 B2  2   0.4273571935   3.6102109034   2.9426351732   6.9802032701
+      10 A1  6   0.4676793341   4.0529745223   3.4243748242   7.9450286806
+      11 A2  0   1.2311947335   4.0993528098   2.1749963922   7.5055439355
+      12 A1  7   0.3375746486   0.6660834402   4.3004425267   5.3041006155
+      13 B1  1   1.2247261611   0.9965345146   5.6774565349   7.8987172106
+      14 B2  3   0.3910062888   4.7322396194   2.5147816124   7.6380275206
+      15 B2  4   0.3821173270   1.7834897622   6.1270253636   8.2926324528
+      16 B1  2   1.0792029968   1.3525364626   2.3966967735   4.8284362329
+      17 A1  8   0.2999164080   0.5147505647   3.5204682413   4.3351352140
+      18 B2  5   0.5955351554   2.1957829400   4.1156407884   6.9069588838
+      19 A1  9   0.5342653544   2.6897705998   2.3009610472   5.5249970013
+      20 A1 10   2.4701431096   3.5122919306   2.5042929228   8.4867279630
+      21 A1 11   1.8840828699   3.1549644470   4.1152164724   9.1542637894
+      22 B2  6   1.1714388414   4.5953185117   1.9614948105   7.7282521636
+      23 B1  3   3.6198893323   1.1902888051   1.1384650647   5.9486432021
+      24 A1 12   1.1580370839   2.8891084729  12.7038130523  16.7509586091
+      25 B2  7   0.9671162074   7.8905903099   5.3005504430  14.1582569603
+      26 A1 13   1.1033697527   5.8929699564   3.9220030066  10.9183427156
+      27 B1  4   2.5187031125   3.7185185233   4.1969414530  10.4341630888
+      28 A1 14   1.3653501817   3.9481348061   7.0875058308  12.4009908185
+      29 A2  1   2.4652476679   5.1466062300   2.6788028814  10.2906567793
+      30 B2  8   1.1563309548   3.4527128682   7.3375438676  11.9465876906
+      31 B1  5   2.6549093249   1.8714343604   7.8177175864  12.3440612717
+      32 B2  9   0.7954970976   5.8576486412   4.5092525323  11.1623982712
+      33 A1 15   1.8684831821   4.4887076785   2.5964623931   8.9536532536
+      34 B1  6   0.9510326250   1.7532642036   2.7110198010   5.4153166297
+      35 A2  2   0.9565569677   2.3138214060   1.7306857822   5.0010641559
+      36 B2 10   1.9647438277   3.8604469886   3.6125917824   9.4377825987
+      37 A1 16   1.5753647778   2.7086010489   5.4799502315   9.7639160582
+      38 A1 17   1.1486681601   2.8307677164   3.6557665183   7.6352023949
+      39 B1  7   0.9519735901   3.7517987350   2.9475264899   7.6512988149
+      40 A2  3   0.9403033370   1.5811399502   5.9842971440   8.5057404312
+      41 A1 18   1.4777024708   1.7977163117   4.9381344074   8.2135531900
+      42 B2 11   0.6130610817   4.0751550095   3.1349933214   7.8232094126
+      43 A2  4   0.9645745572   3.9198824232   2.8119950678   7.6964520482
+      44 B2 12   0.6609183316   2.3966733421   3.8313178066   6.8889094802
+      45 A1 19   1.4071759964   3.0903447192   3.0479902933   7.5455110089
+      46 B1  8   1.3662554724   2.4852850713   4.1026383597   7.9541789034
+      47 A1 20   1.0761338545   1.5586253123   2.0555524920   4.6903116588
+      48 B2 13   0.6460255786   3.7837551689   2.7343904901   7.1641712375
+      49 A2  5   1.0328182462   2.7535350025   2.0427531745   5.8291064232
+      50 B1  9   1.0284155526   1.4156572995   3.7189176856   6.1629905377
+      51 A1 21   0.7729568625   3.9456068281   3.0544213809   7.7729850715
+      52 B2 14   0.7155587235   3.8545761723   3.6605583909   8.2306932866
+      53 A1 22   0.8171853572   1.7514828707   6.7340178192   9.3026860472
+      54 A1 23   0.5299217374   2.1780876312   3.4441065821   6.1521159508
+      55 B2 15   0.3818494795   2.6063716623   3.6954093124   6.6836304542
+      56 A1 24   0.9981744143   3.3013286975   2.8357583867   7.1352614986
+      57 B2 16   1.6446309984   4.7755257566   3.0950915271   9.5152482822
+      58 A1 25   1.2580074296   2.3292696337   5.0138054677   8.6010825309
+      59 A1 26   1.1226869601   1.8987696868   5.0909130934   8.1123697403
+
+  Mulliken Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.52945  3.89706  0.63239 -0.42652
+       2     N     3.49107  2.86567  0.62540  0.64326
+       3     O     4.48974  4.11863  0.37110 -0.60837
+       4     O     4.48974  4.11863  0.37110 -0.60837
+
+   Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+  Lowdin Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.44829  3.81290  0.63539 -0.26119
+       2     N     3.66122  3.05559  0.60563  0.28319
+       3     O     4.44525  4.06576  0.37949 -0.51100
+       4     O     4.44525  4.06576  0.37949 -0.51100
+
+  Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+
+  Mayer Bond Indices:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.11783054557218     0.03339714186206     0.03339714186206
+    2     1.11783054557218     0.00000000000000     1.07005239727375     1.07005239727375
+    3     0.03339714186206     1.07005239727375     0.00000000000000     0.06732504413253
+    4     0.03339714186206     1.07005239727375     0.06732504413253     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.45576077358986     0.00776128512081     0.00776128512081
+    2     0.45576077358986     0.00000000000000     0.47507592086265     0.47507592086265
+    3     0.00776128512081     0.47507592086265     0.00000000000000    -0.01933344493672
+    4     0.00776128512081     0.47507592086265    -0.01933344493672     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.66206977198231     0.02563585674125     0.02563585674125
+    2     0.66206977198231     0.00000000000000     0.59497647641110     0.59497647641110
+    3     0.02563585674125     0.59497647641110     0.00000000000000     0.08665848906926
+    4     0.02563585674125     0.59497647641110     0.08665848906926     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.1846248
+      2:  3.2579353
+      3:  1.1707746
+      4:  1.1707746
+
+
+
+  Wiberg Bond Indices using Orthogonal Lowdin Orbitals:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.52832420012238     0.11145794462372     0.11145794462373
+    2     1.52832420012238     0.00000000000000     1.41000077289248     1.41000077289248
+    3     0.11145794462372     1.41000077289248     0.00000000000000     0.20566180317137
+    4     0.11145794462373     1.41000077289248     0.20566180317137     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.70662511981917     0.04511313507520     0.04511313507520
+    2     0.70662511981917     0.00000000000000     0.67526322982210     0.67526322982210
+    3     0.04511313507520     0.67526322982210     0.00000000000000     0.06035567888673
+    4     0.04511313507520     0.67526322982210     0.06035567888673     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.82169908030321     0.06634480954853     0.06634480954853
+    2     0.82169908030321     0.00000000000000     0.73473754307038     0.73473754307038
+    3     0.06634480954853     0.73473754307038     0.00000000000000     0.14530612428464
+    4     0.06634480954853     0.73473754307038     0.14530612428464     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.7512401
+      2:  4.3483257
+      3:  1.7271205
+      4:  1.7271205
+
+  Natural Orbital Occupations:
+
+  Alpha Occupations:
+  HONO-2 :    4 B2    0.998
+  HONO-1 :    5 B2    0.988
+  HONO-0 :    8 A1    0.986
+  LUNO+0 :    9 A1    0.016
+  LUNO+1 :    6 B2    0.012
+  LUNO+2 :   10 A1    0.002
+  LUNO+3 :   11 A1    0.000
+
+  Beta Occupations:
+  HONO-2 :    8 A1    0.986
+  HONO-1 :    2 B1    0.968
+  HONO-0 :    4 B2    0.502
+  LUNO+0 :    5 B2    0.492
+  LUNO+1 :    3 B1    0.032
+  LUNO+2 :    9 A1    0.013
+  LUNO+3 :    6 B2    0.005
+
+  Total Occupations:
+  HONO-2 :    8 A1    1.971
+  HONO-1 :    2 B1    1.968
+  HONO-0 :    4 B2    1.498
+  LUNO+0 :    5 B2    1.480
+  LUNO+1 :    3 B1    1.031
+  LUNO+2 :    9 A1    0.029
+  LUNO+3 :    6 B2    0.019
+
+
+ Field computed on the grid and written to grid_field.dat
+
+ Electrostatic potential computed on the grid and written to grid_esp.dat
+
+   ===> CASSCF properties for all CI roots <=== 
+
+
+Properties computed using the CASSCF ROOT 0 density matrix
+
+
+ Multipole Moments:
+
+ ------------------------------------------------------------------------------------
+     Multipole             Electric (a.u.)       Nuclear  (a.u.)        Total (a.u.)
+ ------------------------------------------------------------------------------------
+
+ L = 1.  Multiply by 2.5417462300 to convert to Debye
+ Dipole X            :          0.0000000            0.0000000            0.0000000
+ Dipole Y            :          0.0000000            0.0000000            0.0000000
+ Dipole Z            :         -0.1834068           -0.0007085           -0.1841153
+
+ L = 2.  Multiply by 1.3450341749 to convert to Debye.ang
+ Quadrupole XX       :        -16.7389704            0.0000000          -16.7389704
+ Quadrupole XY       :          0.0000000           -0.0000000           -0.0000000
+ Quadrupole XZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole YY       :        -77.6842206           57.9186331          -19.7655875
+ Quadrupole YZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole ZZ       :       -104.0194340           82.1709850          -21.8484490
+
+ L = 3.  Multiply by 0.7117614302 to convert to Debye.ang^2
+ Octupole XXX        :          0.0000000            0.0000000            0.0000000
+ Octupole XXY        :          0.0000000            0.0000000            0.0000000
+ Octupole XXZ        :          0.6960077           -0.0000000            0.6960077
+ Octupole XYY        :          0.0000000            0.0000000            0.0000000
+ Octupole XYZ        :          0.0000000            0.0000000            0.0000000
+ Octupole XZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole YYY        :          0.0000000            0.0000000            0.0000000
+ Octupole YYZ        :         83.1091452          -78.8147307            4.2944145
+ Octupole YZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole ZZZ        :       -100.4753098           93.4345542           -7.0407556
+
+ --------------------------------------------------------------------------------
+
+ Electrostatic potentials at the nuclear coordinates:
+ ---------------------------------------------
+   Center     Electrostatic Potential (a.u.)
+ ---------------------------------------------
+    1  O           -22.595249441365
+    2  N           -18.459605562375
+    3  O           -22.448325012966
+    4  O           -22.448325012966
+ ---------------------------------------------
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.1834
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.1841     Total:     0.1841
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:    -0.4680     Total:     0.4680
+
+  Quadrupole Moment: (Debye Ang)
+    XX:   -22.5145     YY:   -26.5854     ZZ:   -29.3869
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+  Traceless Quadrupole Moment: (Debye Ang)
+    XX:     3.6478     YY:    -0.4231     ZZ:    -3.2246
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+
+  Orbital extents (a.u.):
+            MO          <x^2>          <y^2>          <z^2>          <r^2>
+       0 B2  0   0.0177547273   3.6370461313   1.8691092471   5.5239101056
+       1 A1  0   0.0177526276   3.6370536970   1.8691497126   5.5239560372
+       2 A1  1   0.0177571143   0.0177580922   6.5533986552   6.5889138617
+       3 A1  2   0.0235091888   0.0235080454   0.0589438545   0.1059610887
+       4 A1  3   0.5093297596   1.7549576457   1.5661688518   3.8304562570
+       5 A1  4   0.5273755117   1.5464263773   6.1850646069   8.2588664959
+       6 B2  1   0.4906808951   3.5593513903   1.6317275511   5.6817598365
+       7 A1  5   0.5139069951   3.7179724299   4.0327206781   8.2646001031
+       8 B1  0   1.4037343713   2.4553870255   1.7384943087   5.5976157055
+       9 B2  2   0.4273571935   3.6102109034   2.9426351732   6.9802032701
+      10 A1  6   0.4676793341   4.0529745223   3.4243748242   7.9450286806
+      11 A2  0   1.2311947335   4.0993528098   2.1749963922   7.5055439355
+      12 A1  7   0.3375746486   0.6660834402   4.3004425267   5.3041006155
+      13 B1  1   1.2247261611   0.9965345146   5.6774565349   7.8987172106
+      14 B2  3   0.3910062888   4.7322396194   2.5147816124   7.6380275206
+      15 B2  4   0.3821173270   1.7834897622   6.1270253636   8.2926324528
+      16 B1  2   1.0792029968   1.3525364626   2.3966967735   4.8284362329
+      17 A1  8   0.2999164080   0.5147505647   3.5204682413   4.3351352140
+      18 B2  5   0.5955351554   2.1957829400   4.1156407884   6.9069588838
+      19 A1  9   0.5342653544   2.6897705998   2.3009610472   5.5249970013
+      20 A1 10   2.4701431096   3.5122919306   2.5042929228   8.4867279630
+      21 A1 11   1.8840828699   3.1549644470   4.1152164724   9.1542637894
+      22 B2  6   1.1714388414   4.5953185117   1.9614948105   7.7282521636
+      23 B1  3   3.6198893323   1.1902888051   1.1384650647   5.9486432021
+      24 A1 12   1.1580370839   2.8891084729  12.7038130523  16.7509586091
+      25 B2  7   0.9671162074   7.8905903099   5.3005504430  14.1582569603
+      26 A1 13   1.1033697527   5.8929699564   3.9220030066  10.9183427156
+      27 B1  4   2.5187031125   3.7185185233   4.1969414530  10.4341630888
+      28 A1 14   1.3653501817   3.9481348061   7.0875058308  12.4009908185
+      29 A2  1   2.4652476679   5.1466062300   2.6788028814  10.2906567793
+      30 B2  8   1.1563309548   3.4527128682   7.3375438676  11.9465876906
+      31 B1  5   2.6549093249   1.8714343604   7.8177175864  12.3440612717
+      32 B2  9   0.7954970976   5.8576486412   4.5092525323  11.1623982712
+      33 A1 15   1.8684831821   4.4887076785   2.5964623931   8.9536532536
+      34 B1  6   0.9510326250   1.7532642036   2.7110198010   5.4153166297
+      35 A2  2   0.9565569677   2.3138214060   1.7306857822   5.0010641559
+      36 B2 10   1.9647438277   3.8604469886   3.6125917824   9.4377825987
+      37 A1 16   1.5753647778   2.7086010489   5.4799502315   9.7639160582
+      38 A1 17   1.1486681601   2.8307677164   3.6557665183   7.6352023949
+      39 B1  7   0.9519735901   3.7517987350   2.9475264899   7.6512988149
+      40 A2  3   0.9403033370   1.5811399502   5.9842971440   8.5057404312
+      41 A1 18   1.4777024708   1.7977163117   4.9381344074   8.2135531900
+      42 B2 11   0.6130610817   4.0751550095   3.1349933214   7.8232094126
+      43 A2  4   0.9645745572   3.9198824232   2.8119950678   7.6964520482
+      44 B2 12   0.6609183316   2.3966733421   3.8313178066   6.8889094802
+      45 A1 19   1.4071759964   3.0903447192   3.0479902933   7.5455110089
+      46 B1  8   1.3662554724   2.4852850713   4.1026383597   7.9541789034
+      47 A1 20   1.0761338545   1.5586253123   2.0555524920   4.6903116588
+      48 B2 13   0.6460255786   3.7837551689   2.7343904901   7.1641712375
+      49 A2  5   1.0328182462   2.7535350025   2.0427531745   5.8291064232
+      50 B1  9   1.0284155526   1.4156572995   3.7189176856   6.1629905377
+      51 A1 21   0.7729568625   3.9456068281   3.0544213809   7.7729850715
+      52 B2 14   0.7155587235   3.8545761723   3.6605583909   8.2306932866
+      53 A1 22   0.8171853572   1.7514828707   6.7340178192   9.3026860472
+      54 A1 23   0.5299217374   2.1780876312   3.4441065821   6.1521159508
+      55 B2 15   0.3818494795   2.6063716623   3.6954093124   6.6836304542
+      56 A1 24   0.9981744143   3.3013286975   2.8357583867   7.1352614986
+      57 B2 16   1.6446309984   4.7755257566   3.0950915271   9.5152482822
+      58 A1 25   1.2580074296   2.3292696337   5.0138054677   8.6010825309
+      59 A1 26   1.1226869601   1.8987696868   5.0909130934   8.1123697403
+
+  Mulliken Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.46357  4.14839  0.31519 -0.61196
+       2     N     3.53353  2.95669  0.57684  0.50978
+       3     O     4.50145  3.94746  0.55399 -0.44891
+       4     O     4.50145  3.94746  0.55399 -0.44891
+
+   Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+  Lowdin Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.39742  4.07309  0.32433 -0.47051
+       2     N     3.68743  3.13241  0.55502  0.18016
+       3     O     4.45758  3.89725  0.56032 -0.35483
+       4     O     4.45758  3.89725  0.56032 -0.35483
+
+  Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+
+  Mayer Bond Indices:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.33098006521592     0.07794522865034     0.07794522865034
+    2     1.33098006521592     0.00000000000000     1.02281247558689     1.02281247558689
+    3     0.07794522865034     1.02281247558689     0.00000000000000     0.37252239563964
+    4     0.07794522865034     1.02281247558689     0.37252239563964     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.50262999671775     0.00989348271073     0.00989348271073
+    2     0.50262999671775     0.00000000000000     0.46392547873229     0.46392547873229
+    3     0.00989348271073     0.46392547873229     0.00000000000000    -0.01846096839595
+    4     0.00989348271073     0.46392547873229    -0.01846096839595     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.82835006849817     0.06805174593960     0.06805174593960
+    2     0.82835006849817     0.00000000000000     0.55888699685460     0.55888699685460
+    3     0.06805174593960     0.55888699685460     0.00000000000000     0.39098336403559
+    4     0.06805174593960     0.55888699685460     0.39098336403559     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.4868705
+      2:  3.3766050
+      3:  1.4732801
+      4:  1.4732801
+
+
+
+  Wiberg Bond Indices using Orthogonal Lowdin Orbitals:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.70821958907747     0.16219524237785     0.16219524237785
+    2     1.70821958907747     0.00000000000000     1.37911777676900     1.37911777676900
+    3     0.16219524237785     1.37911777676900     0.00000000000000     0.48493147542612
+    4     0.16219524237785     1.37911777676900     0.48493147542612     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.73502538696717     0.04951251351032     0.04951251351032
+    2     0.73502538696717     0.00000000000000     0.66924601755661     0.66924601755661
+    3     0.04951251351032     0.66924601755661     0.00000000000000     0.06097468595592
+    4     0.04951251351032     0.66924601755661     0.06097468595592     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.97319420211031     0.11268272886753     0.11268272886753
+    2     0.97319420211031     0.00000000000000     0.70987175921239     0.70987175921239
+    3     0.11268272886753     0.70987175921239     0.00000000000000     0.42395678947020
+    4     0.11268272886753     0.70987175921239     0.42395678947020     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  2.0326101
+      2:  4.4664551
+      3:  2.0262445
+      4:  2.0262445
+
+  Natural Orbital Occupations:
+
+  Alpha Occupations:
+  HONO-2 :    4 B2    0.999
+  HONO-1 :    5 B2    0.990
+  HONO-0 :    8 A1    0.986
+  LUNO+0 :    9 A1    0.015
+  LUNO+1 :    6 B2    0.010
+  LUNO+2 :   10 A1    0.001
+  LUNO+3 :   11 A1    0.000
+
+  Beta Occupations:
+  HONO-2 :    8 A1    0.987
+  HONO-1 :    4 B2    0.986
+  HONO-0 :    2 B1    0.984
+  LUNO+0 :    3 B1    0.016
+  LUNO+1 :    9 A1    0.013
+  LUNO+2 :    5 B2    0.013
+  LUNO+3 :    6 B2    0.001
+
+  Total Occupations:
+  HONO-2 :    2 B1    1.984
+  HONO-1 :    4 B2    1.976
+  HONO-0 :    8 A1    1.972
+  LUNO+0 :    3 B1    1.016
+  LUNO+1 :    5 B2    1.004
+  LUNO+2 :    9 A1    0.029
+  LUNO+3 :    6 B2    0.019
+
+
+ Field computed on the grid and written to grid_field.dat
+
+ Electrostatic potential computed on the grid and written to grid_esp.dat
+
+Properties computed using the CASSCF ROOT 1 density matrix
+
+
+ Multipole Moments:
+
+ ------------------------------------------------------------------------------------
+     Multipole             Electric (a.u.)       Nuclear  (a.u.)        Total (a.u.)
+ ------------------------------------------------------------------------------------
+
+ L = 1.  Multiply by 2.5417462300 to convert to Debye
+ Dipole X            :          0.0000000            0.0000000            0.0000000
+ Dipole Y            :          0.0000000            0.0000000            0.0000000
+ Dipole Z            :          1.7559457           -0.0007085            1.7552372
+
+ L = 2.  Multiply by 1.3450341749 to convert to Debye.ang
+ Quadrupole XX       :        -16.5763562            0.0000000          -16.5763562
+ Quadrupole XY       :          0.0000000           -0.0000000           -0.0000000
+ Quadrupole XZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole YY       :        -79.6915728           57.9186331          -21.7729397
+ Quadrupole YZ       :          0.0000000            0.0000000            0.0000000
+ Quadrupole ZZ       :       -102.4582202           82.1709850          -20.2872352
+
+ L = 3.  Multiply by 0.7117614302 to convert to Debye.ang^2
+ Octupole XXX        :          0.0000000            0.0000000            0.0000000
+ Octupole XXY        :          0.0000000            0.0000000            0.0000000
+ Octupole XXZ        :          1.3183299           -0.0000000            1.3183299
+ Octupole XYY        :          0.0000000            0.0000000            0.0000000
+ Octupole XYZ        :          0.0000000            0.0000000            0.0000000
+ Octupole XZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole YYY        :          0.0000000            0.0000000            0.0000000
+ Octupole YYZ        :         88.2251971          -78.8147307            9.4104663
+ Octupole YZZ        :          0.0000000            0.0000000            0.0000000
+ Octupole ZZZ        :        -89.7216642           93.4345542            3.7128900
+
+ --------------------------------------------------------------------------------
+
+ Electrostatic potentials at the nuclear coordinates:
+ ---------------------------------------------
+   Center     Electrostatic Potential (a.u.)
+ ---------------------------------------------
+    1  O           -22.354266335899
+    2  N           -18.314635601512
+    3  O           -22.706524167361
+    4  O           -22.706524167361
+ ---------------------------------------------
+  Nuclear Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:    -0.0007
+
+  Electronic Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     1.7559
+
+  Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     1.7552     Total:     1.7552
+
+  Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:     4.4614     Total:     4.4614
+
+  Quadrupole Moment: (Debye Ang)
+    XX:   -22.2958     YY:   -29.2853     ZZ:   -27.2870
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+  Traceless Quadrupole Moment: (Debye Ang)
+    XX:     3.9936     YY:    -2.9960     ZZ:    -0.9976
+    XY:    -0.0000     XZ:     0.0000     YZ:     0.0000
+
+
+  Orbital extents (a.u.):
+            MO          <x^2>          <y^2>          <z^2>          <r^2>
+       0 B2  0   0.0177547273   3.6370461313   1.8691092471   5.5239101056
+       1 A1  0   0.0177526276   3.6370536970   1.8691497126   5.5239560372
+       2 A1  1   0.0177571143   0.0177580922   6.5533986552   6.5889138617
+       3 A1  2   0.0235091888   0.0235080454   0.0589438545   0.1059610887
+       4 A1  3   0.5093297596   1.7549576457   1.5661688518   3.8304562570
+       5 A1  4   0.5273755117   1.5464263773   6.1850646069   8.2588664959
+       6 B2  1   0.4906808951   3.5593513903   1.6317275511   5.6817598365
+       7 A1  5   0.5139069951   3.7179724299   4.0327206781   8.2646001031
+       8 B1  0   1.4037343713   2.4553870255   1.7384943087   5.5976157055
+       9 B2  2   0.4273571935   3.6102109034   2.9426351732   6.9802032701
+      10 A1  6   0.4676793341   4.0529745223   3.4243748242   7.9450286806
+      11 A2  0   1.2311947335   4.0993528098   2.1749963922   7.5055439355
+      12 A1  7   0.3375746486   0.6660834402   4.3004425267   5.3041006155
+      13 B1  1   1.2247261611   0.9965345146   5.6774565349   7.8987172106
+      14 B2  3   0.3910062888   4.7322396194   2.5147816124   7.6380275206
+      15 B2  4   0.3821173270   1.7834897622   6.1270253636   8.2926324528
+      16 B1  2   1.0792029968   1.3525364626   2.3966967735   4.8284362329
+      17 A1  8   0.2999164080   0.5147505647   3.5204682413   4.3351352140
+      18 B2  5   0.5955351554   2.1957829400   4.1156407884   6.9069588838
+      19 A1  9   0.5342653544   2.6897705998   2.3009610472   5.5249970013
+      20 A1 10   2.4701431096   3.5122919306   2.5042929228   8.4867279630
+      21 A1 11   1.8840828699   3.1549644470   4.1152164724   9.1542637894
+      22 B2  6   1.1714388414   4.5953185117   1.9614948105   7.7282521636
+      23 B1  3   3.6198893323   1.1902888051   1.1384650647   5.9486432021
+      24 A1 12   1.1580370839   2.8891084729  12.7038130523  16.7509586091
+      25 B2  7   0.9671162074   7.8905903099   5.3005504430  14.1582569603
+      26 A1 13   1.1033697527   5.8929699564   3.9220030066  10.9183427156
+      27 B1  4   2.5187031125   3.7185185233   4.1969414530  10.4341630888
+      28 A1 14   1.3653501817   3.9481348061   7.0875058308  12.4009908185
+      29 A2  1   2.4652476679   5.1466062300   2.6788028814  10.2906567793
+      30 B2  8   1.1563309548   3.4527128682   7.3375438676  11.9465876906
+      31 B1  5   2.6549093249   1.8714343604   7.8177175864  12.3440612717
+      32 B2  9   0.7954970976   5.8576486412   4.5092525323  11.1623982712
+      33 A1 15   1.8684831821   4.4887076785   2.5964623931   8.9536532536
+      34 B1  6   0.9510326250   1.7532642036   2.7110198010   5.4153166297
+      35 A2  2   0.9565569677   2.3138214060   1.7306857822   5.0010641559
+      36 B2 10   1.9647438277   3.8604469886   3.6125917824   9.4377825987
+      37 A1 16   1.5753647778   2.7086010489   5.4799502315   9.7639160582
+      38 A1 17   1.1486681601   2.8307677164   3.6557665183   7.6352023949
+      39 B1  7   0.9519735901   3.7517987350   2.9475264899   7.6512988149
+      40 A2  3   0.9403033370   1.5811399502   5.9842971440   8.5057404312
+      41 A1 18   1.4777024708   1.7977163117   4.9381344074   8.2135531900
+      42 B2 11   0.6130610817   4.0751550095   3.1349933214   7.8232094126
+      43 A2  4   0.9645745572   3.9198824232   2.8119950678   7.6964520482
+      44 B2 12   0.6609183316   2.3966733421   3.8313178066   6.8889094802
+      45 A1 19   1.4071759964   3.0903447192   3.0479902933   7.5455110089
+      46 B1  8   1.3662554724   2.4852850713   4.1026383597   7.9541789034
+      47 A1 20   1.0761338545   1.5586253123   2.0555524920   4.6903116588
+      48 B2 13   0.6460255786   3.7837551689   2.7343904901   7.1641712375
+      49 A2  5   1.0328182462   2.7535350025   2.0427531745   5.8291064232
+      50 B1  9   1.0284155526   1.4156572995   3.7189176856   6.1629905377
+      51 A1 21   0.7729568625   3.9456068281   3.0544213809   7.7729850715
+      52 B2 14   0.7155587235   3.8545761723   3.6605583909   8.2306932866
+      53 A1 22   0.8171853572   1.7514828707   6.7340178192   9.3026860472
+      54 A1 23   0.5299217374   2.1780876312   3.4441065821   6.1521159508
+      55 B2 15   0.3818494795   2.6063716623   3.6954093124   6.6836304542
+      56 A1 24   0.9981744143   3.3013286975   2.8357583867   7.1352614986
+      57 B2 16   1.6446309984   4.7755257566   3.0950915271   9.5152482822
+      58 A1 25   1.2580074296   2.3292696337   5.0138054677   8.6010825309
+      59 A1 26   1.1226869601   1.8987696868   5.0909130934   8.1123697403
+
+  Mulliken Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.59534  3.64573  0.94960 -0.24107
+       2     N     3.44861  2.77465  0.67396  0.77673
+       3     O     4.47802  4.28981  0.18822 -0.76783
+       4     O     4.47802  4.28981  0.18822 -0.76783
+
+   Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+  Lowdin Charges: (a.u.)
+   Center  Symbol    Alpha    Beta     Spin     Total
+       1     O     4.49917  3.55271  0.94646 -0.05188
+       2     N     3.63500  2.97877  0.65623  0.38623
+       3     O     4.43291  4.23426  0.19865 -0.66718
+       4     O     4.43291  4.23426  0.19865 -0.66718
+
+  Total alpha = 17.00000, Total beta = 15.00000, Total charge = -1.00000
+
+
+  Mayer Bond Indices:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.96824223724380     0.08089902267834     0.08089902267834
+    2     0.96824223724380     0.00000000000000     1.13319180026365     1.13319180026365
+    3     0.08089902267834     1.13319180026365     0.00000000000000    -0.01853628411191
+    4     0.08089902267834     1.13319180026365    -0.01853628411191     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.41259764270911     0.00652106133122     0.00652106133122
+    2     0.41259764270911     0.00000000000000     0.48730765737922     0.48730765737922
+    3     0.00652106133122     0.48730765737922     0.00000000000000    -0.02005312396614
+    4     0.00652106133122     0.48730765737922    -0.02005312396614     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.55564459453469     0.07437796134712     0.07437796134712
+    2     0.55564459453469     0.00000000000000     0.64588414288443     0.64588414288443
+    3     0.07437796134712     0.64588414288443     0.00000000000000     0.00151683985423
+    4     0.07437796134712     0.64588414288443     0.00151683985423     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.1300403
+      2:  3.2346258
+      3:  1.1955545
+      4:  1.1955545
+
+
+
+  Wiberg Bond Indices using Orthogonal Lowdin Orbitals:
+
+  Total Bond Index: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     1.42311892625542     0.15618744470962     0.15618744470962
+    2     1.42311892625542     0.00000000000000     1.45753544556799     1.45753544556799
+    3     0.15618744470962     1.45753544556799     0.00000000000000     0.14392968314038
+    4     0.15618744470962     1.45753544556799     0.14392968314038     0.00000000000000
+
+
+
+  Alpha Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.68279401698945     0.04254142498993     0.04254142498993
+    2     0.68279401698945     0.00000000000000     0.68210936461226     0.68210936461226
+    3     0.04254142498993     0.68210936461226     0.00000000000000     0.05991642128253
+    4     0.04254142498993     0.68210936461226     0.05991642128253     0.00000000000000
+
+
+
+  Beta Contribution: 
+  Irrep: 1 Size: 4 x 4
+
+                 1                   2                   3                   4
+
+    1     0.00000000000000     0.74032490926597     0.11364601971969     0.11364601971969
+    2     0.74032490926597     0.00000000000000     0.77542608095573     0.77542608095573
+    3     0.11364601971969     0.77542608095573     0.00000000000000     0.08401326185786
+    4     0.11364601971969     0.77542608095573     0.08401326185786     0.00000000000000
+
+
+
+  Atomic Valences: 
+
+ #  #
+ Irrep: 1
+      1:  1.7354938
+      2:  4.3381898
+      3:  1.7576526
+      4:  1.7576526
+
+  Natural Orbital Occupations:
+
+  Alpha Occupations:
+  HONO-2 :    4 B2    0.997
+  HONO-1 :    5 B2    0.994
+  HONO-0 :    8 A1    0.988
+  LUNO+0 :    9 A1    0.013
+  LUNO+1 :    6 B2    0.005
+  LUNO+2 :   10 A1    0.003
+  LUNO+3 :   11 A1    0.000
+
+  Beta Occupations:
+  HONO-2 :    2 B1    0.989
+  HONO-1 :    4 B2    0.988
+  HONO-0 :    8 A1    0.987
+  LUNO+0 :    9 A1    0.011
+  LUNO+1 :    3 B1    0.011
+  LUNO+2 :    5 B2    0.010
+  LUNO+3 :   10 A1    0.003
+
+  Total Occupations:
+  HONO-2 :    2 B1    1.989
+  HONO-1 :    4 B2    1.984
+  HONO-0 :    8 A1    1.975
+  LUNO+0 :    3 B1    1.010
+  LUNO+1 :    5 B2    1.005
+  LUNO+2 :    9 A1    0.025
+  LUNO+3 :    6 B2    0.006
+
+
+ Field computed on the grid and written to grid_field.dat
+
+ Electrostatic potential computed on the grid and written to grid_esp.dat
+
+   ===> CASSCF properties for all CI transition density matrices <=== 
+
+
+Properties computed using the CASSCF ROOT 0 -> ROOT 1 density matrix
+
+  Transition Dipole Moment: (a.u.)
+     X:     0.0000      Y:     0.0000      Z:     0.3398     Total:     0.3398
+
+  Transition Dipole Moment: (Debye)
+     X:     0.0000      Y:     0.0000      Z:     0.8636     Total:     0.8636
+
+  Transition Quadrupole Moment: (Debye Ang)
+    XX:     0.0225     YY:    -0.8276     ZZ:     0.7085
+    XY:     0.0000     XZ:     0.0000     YZ:     0.0000
+
+  Traceless Transition Quadrupole Moment: (Debye Ang)
+    XX:     0.0547     YY:    -0.7954     ZZ:     0.7407
+    XY:     0.0000     XZ:     0.0000     YZ:     0.0000
+
+	CASSCF Energy.....................................................PASSED
+	CASSCF DIPOLE Y...................................................PASSED
+	CASSCF DIPOLE Z...................................................PASSED
+	CASSCF QUADRUPOLE XX..............................................PASSED
+	CASSCF QUADRUPOLE YY..............................................PASSED
+	CASSCF QUADRUPOLE ZZ..............................................PASSED
+	CASSCF QUADRUPOLE YZ..............................................PASSED
+	CASSCF ROOT 1 DIPOLE Y............................................PASSED
+	CASSCF ROOT 1 DIPOLE Z............................................PASSED
+	CASSCF ROOT 1 QUADRUPOLE XX.......................................PASSED
+	CASSCF ROOT 1 QUADRUPOLE YY.......................................PASSED
+	CASSCF ROOT 1 QUADRUPOLE ZZ.......................................PASSED
+	CASSCF ROOT 1 QUADRUPOLE YZ.......................................PASSED
+
+*** Psi4 exiting successfully. Buy a developer a beer!

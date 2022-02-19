@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="http://xml.exciting-code.org/info.xsl" type="text/xsl"?>
+<info date="2020-09-03" time="19:31:48" versionhash="92d022da62d49ec6e8cf207d1ac8049f13aa94e6" title="PbI2 J.Phys.Cond.Matt. (1990),2,5285-5295, ICSD database">
+  <groundstate status="finished">
+    <scl>
+      <structure>
+        <crystal unitCellVolume="848.2119435" BrillouinZoneVolume="0.2924389539" nktot="0" ngridk="6    6    4">
+          <basevect>8.613371228       0.000000000       0.000000000</basevect>
+          <basevect>-4.306685605       7.459398299       0.000000000</basevect>
+          <basevect>0.000000000       0.000000000       13.20162587</basevect>
+          <reciprvect>0.7294687691      0.4211589891       0.000000000</reciprvect>
+          <reciprvect>0.000000000      0.8423179800       0.000000000</reciprvect>
+          <reciprvect>0.000000000       0.000000000      0.4759402643</reciprvect>
+        </crystal>
+        <species chemicalSymbol="Pb">
+          <atom x="0.00000000000" y="0.00000000000" z="0.00000000000"/>
+        </species>
+        <species chemicalSymbol="I">
+          <atom x="0.333333350000" y="0.666666700000" z="0.267500010000"/>
+          <atom x="0.666666610000" y="0.333333320000" z="0.732499950000"/>
+        </species>
+      </structure>
+    </scl>
+  </groundstate>
+</info>

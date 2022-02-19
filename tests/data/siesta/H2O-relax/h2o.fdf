@@ -1,0 +1,26 @@
+SystemName          Water molecule
+SystemLabel         h2o
+NumberOfAtoms       3
+NumberOfSpecies     2
+
+%block ChemicalSpeciesLabel
+ 1  8  O      # Species index, atomic number, species label
+ 2  1  H
+%endblock ChemicalSpeciesLabel
+
+AtomicCoordinatesFormat  Ang
+%block AtomicCoordinatesAndAtomicSpecies
+ 0.000  0.000  0.000  1
+ 0.757  0.600  0.000  2
+-0.757  0.600  0.000  2
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+xc.functional                   GGA           
+xc.authors                      PBE 
+
+D.TypeOfRun            CG
+MD.VariableCell         F
+MD.MaxForceTol          0.04 eV/Ang
+MD.NumCGsteps           100
+WriteForces  T
+WriteCoorStep T

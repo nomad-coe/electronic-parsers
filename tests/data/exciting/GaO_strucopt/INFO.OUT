@@ -1,0 +1,1578 @@
+================================================================================
+| EXCITING BORON-10 started                                                    =
+| version hash id: 1e47a4bd61d2aa73ef68a31c2f3385676bee2c3a                    =
+| MPI version using     32 processor(s)                                        =
+| |  using MPI-2 features                                                      =
+|                                                                              =
+| Date (DD-MM-YYYY) : 10-06-2016                                               =
+| Time (hh:mm:ss)   : 03:06:46                                                 =
+|                                                                              =
+| All units are atomic (Hartree, Bohr, etc.)                                   =
+================================================================================
+
+********************************************************************************
+| Structural optimisation starting from atomic densities                       *
+********************************************************************************
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| Starting initialization                                                      +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ Lattice vectors (cartesian) :
+      0.1743337182     11.6196322864     -2.8807932300
+      0.1743337182     11.6196322864      2.8807932300
+     10.6392528125     -2.4441662816      0.0000000000
+
+ Reciprocal lattice vectors (cartesian) :
+      0.0618988786      0.2694406772     -1.0905304209
+      0.0618988786      0.2694406772      1.0905304209
+      0.5885378695     -0.0088300553      0.0000000000
+
+ Unit cell volume                           :     714.7265638625
+ Brillouin zone volume                      :       0.3470560995
+
+ Species :    1 (Ga)
+     parameters loaded from                 :    Ga.xml
+     name                                   :    gallium
+     nuclear charge                         :     -31.00000000
+     electronic charge                      :      31.00000000
+     atomic mass                            :  127097.25380000
+     muffin-tin radius                      :       1.75000000
+     # of radial points in muffin-tin       :     400
+
+     atomic positions (lattice) :
+       1 :   0.00000000  0.00000000  0.00000000
+       2 :   0.31616000  0.31616000  0.62882000
+       3 :   0.74824000  0.74824000  0.10933000
+       4 :   0.56792000  0.56792000  0.51949000
+
+ Species :    2 (O)
+     parameters loaded from                 :    O.xml
+     name                                   :    oxygen
+     nuclear charge                         :      -8.00000000
+     electronic charge                      :       8.00000000
+     atomic mass                            :   29165.12203000
+     muffin-tin radius                      :       1.50000000
+     # of radial points in muffin-tin       :     300
+
+     atomic positions (lattice) :
+       1 :   0.83152000  0.83152000  0.87852000
+       2 :   0.48464000  0.48464000  0.75030000
+       3 :   0.82137000  0.82137000  0.42396000
+       4 :   0.49479000  0.49479000  0.20486000
+       5 :   0.15382000  0.15382000  0.57036000
+       6 :   0.16234000  0.16234000  0.05846000
+
+ Total number of atoms per unit cell        :      10
+
+ Spin treatment                             :    spin-unpolarised
+
+ Number of Bravais lattice symmetries       :       4
+ Number of crystal symmetries               :       4
+
+ k-point grid                               :       6    6    6
+ Total number of k-points                   :      68
+ k-point set is reduced with crystal symmetries
+
+ R^MT_min * |G+k|_max (rgkmax)              :       9.00000000
+ Species with R^MT_min                      :       2 (O)
+ Maximum |G+k| for APW functions            :       6.00000000
+ Maximum |G| for potential and density      :      20.00000000
+
+ G-vector grid sizes                        :      80    80    72
+ Total number of G-vectors                  :   96549
+
+ Maximum angular momentum used for
+     APW functions                          :       8
+     computing H and O matrix elements      :       8
+     potential and density                  :       8
+     inner part of muffin-tin               :       2
+
+ Total nuclear charge                       :    -172.00000000
+ Total electronic charge                    :     172.00000000
+ Total core charge                          :      52.00000000
+ Total valence charge                       :     120.00000000
+
+ Number of empty states                     :       5
+ Total number of valence states             :      66
+
+ Maximum Hamiltonian size                   :    2826
+ Maximum number of plane-waves              :    2630
+ Total number of local-orbitals             :     196
+
+ Exchange-correlation type                  :      22
+     PBEsol, Phys. Rev. Lett. 100, 136406 (2008)
+     Generalised gradient approximation (GGA)
+
+ Smearing scheme                            :    Gaussian
+ Smearing width                             :       0.00100000
+
+ Using multisecant Broyden potential mixing
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| Ending initialization                                                        +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+********************************************************************************
+| Groundstate module started                                                   *
+********************************************************************************
+ Output level for this task is set to normal
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| Self-consistent loop started                                                 +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Density and potential initialised from atomic data
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :    1                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8219.94925212
+ _______________________________________________________________
+ Fermi energy                               :         0.17015803
+ Kinetic energy                             :      8375.76776703
+ Coulomb energy                             :    -16247.59311178
+ Exchange energy                            :      -339.27510535
+ Correlation energy                         :        -8.84880202
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000230
+     valence                                :       120.00000000
+     interstitial                           :        16.00713671
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        27.97683236
+                  atom     2    Ga          :        27.97683236
+                  atom     3    Ga          :        28.03839807
+                  atom     4    Ga          :        28.03839807
+                  atom     5     O          :         7.29533388
+                  atom     6     O          :         7.29533388
+                  atom     7     O          :         7.33509715
+                  atom     8     O          :         7.33509715
+                  atom     9     O          :         7.35077019
+                  atom    10     O          :         7.35077019
+     total charge in muffin-tins            :       155.99286329
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.15750041
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :        43.69
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :    2                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8223.76212255
+ _______________________________________________________________
+ Fermi energy                               :         0.21246498
+ Kinetic energy                             :      8370.66750851
+ Coulomb energy                             :    -16247.03582780
+ Exchange energy                            :      -338.52659007
+ Correlation energy                         :        -8.86721319
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000238
+     valence                                :       120.00000000
+     interstitial                           :        17.35883509
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.09534622
+                  atom     2    Ga          :        28.09534622
+                  atom     3    Ga          :        28.16913281
+                  atom     4    Ga          :        28.16913281
+                  atom     5     O          :         7.00161809
+                  atom     6     O          :         7.00161809
+                  atom     7     O          :         7.01122501
+                  atom     8     O          :         7.01122501
+                  atom     9     O          :         7.04326033
+                  atom    10     O          :         7.04326033
+     total charge in muffin-tins            :       154.64116491
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.10692339
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :        82.26
+
+ RMS change in effective potential (target) :  0.881198      ( 0.100000E-05)
+ Absolute change in total energy   (target) :   3.81287      ( 0.100000E-05)
+ Charge distance                   (target) :  0.215716E-01  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.337264      ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :    3                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8222.51853784
+ _______________________________________________________________
+ Fermi energy                               :         0.22812965
+ Kinetic energy                             :      8369.67064024
+ Coulomb energy                             :    -16245.13580829
+ Exchange energy                            :      -338.18000997
+ Correlation energy                         :        -8.87335982
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000240
+     valence                                :       120.00000000
+     interstitial                           :        17.83613072
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.13439704
+                  atom     2    Ga          :        28.13439704
+                  atom     3    Ga          :        28.21131371
+                  atom     4    Ga          :        28.21131371
+                  atom     5     O          :         6.90227554
+                  atom     6     O          :         6.90227554
+                  atom     7     O          :         6.90295584
+                  atom     8     O          :         6.90295584
+                  atom     9     O          :         6.93099251
+                  atom    10     O          :         6.93099251
+     total charge in muffin-tins            :       154.16386928
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.08898747
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       121.10
+
+ RMS change in effective potential (target) :  0.643942      ( 0.100000E-05)
+ Absolute change in total energy   (target) :   1.24358      ( 0.100000E-05)
+ Charge distance                   (target) :  0.746142E-02  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.134151      ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :    4                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8234.75475728
+ _______________________________________________________________
+ Fermi energy                               :         0.21622114
+ Kinetic energy                             :      8366.38764446
+ Coulomb energy                             :    -16253.32117052
+ Exchange energy                            :      -338.95163707
+ Correlation energy                         :        -8.86959416
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000232
+     valence                                :       120.00000000
+     interstitial                           :        17.21795518
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.12866904
+                  atom     2    Ga          :        28.12866904
+                  atom     3    Ga          :        28.19090573
+                  atom     4    Ga          :        28.19090573
+                  atom     5     O          :         6.97740987
+                  atom     6     O          :         6.97740987
+                  atom     7     O          :         6.99204478
+                  atom     8     O          :         6.99204478
+                  atom     9     O          :         7.10199300
+                  atom    10     O          :         7.10199300
+     total charge in muffin-tins            :       154.78204482
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.10333972
+        valence-band maximum at   66      0.5000  0.3333  0.5000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       159.88
+
+ RMS change in effective potential (target) :  0.558060E-01  ( 0.100000E-05)
+ Absolute change in total energy   (target) :   12.2362      ( 0.100000E-05)
+ Charge distance                   (target) :  0.981335E-02  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.988716E-01  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :    5                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8197.30031041
+ _______________________________________________________________
+ Fermi energy                               :         0.25753750
+ Kinetic energy                             :      8378.14326337
+ Coulomb energy                             :    -16229.51418814
+ Exchange energy                            :      -337.06140177
+ Correlation energy                         :        -8.86798388
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000238
+     valence                                :       120.00000000
+     interstitial                           :        18.30099220
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.11047451
+                  atom     2    Ga          :        28.11047451
+                  atom     3    Ga          :        28.19590951
+                  atom     4    Ga          :        28.19590951
+                  atom     5     O          :         6.91968660
+                  atom     6     O          :         6.91968660
+                  atom     7     O          :         6.92066704
+                  atom     8     O          :         6.92066704
+                  atom     9     O          :         6.70276624
+                  atom    10     O          :         6.70276624
+     total charge in muffin-tins            :       153.69900780
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.04614090
+        valence-band maximum at    4      0.5000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       198.71
+
+ RMS change in effective potential (target) :  0.699611E-01  ( 0.100000E-05)
+ Absolute change in total energy   (target) :   37.4544      ( 0.100000E-05)
+ Charge distance                   (target) :  0.201624E-01  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.240197      ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :    6                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8218.78111516
+ _______________________________________________________________
+ Fermi energy                               :         0.23970598
+ Kinetic energy                             :      8370.10152309
+ Coulomb energy                             :    -16242.13700845
+ Exchange energy                            :      -337.87032504
+ Correlation energy                         :        -8.87530476
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000237
+     valence                                :       120.00000000
+     interstitial                           :        18.11277268
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15897782
+                  atom     2    Ga          :        28.15897782
+                  atom     3    Ga          :        28.23260463
+                  atom     4    Ga          :        28.23260463
+                  atom     5     O          :         6.81902406
+                  atom     6     O          :         6.81902406
+                  atom     7     O          :         6.81398062
+                  atom     8     O          :         6.81398062
+                  atom     9     O          :         6.91902653
+                  atom    10     O          :         6.91902653
+     total charge in muffin-tins            :       153.88722732
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07839483
+        valence-band maximum at   66      0.5000  0.3333  0.5000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       237.56
+
+ RMS change in effective potential (target) :  0.189624E-01  ( 0.100000E-05)
+ Absolute change in total energy   (target) :   21.4808      ( 0.100000E-05)
+ Charge distance                   (target) :  0.106973E-01  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.306294      ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :    7                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8223.47665322
+ _______________________________________________________________
+ Fermi energy                               :         0.23868380
+ Kinetic energy                             :      8368.56159601
+ Coulomb energy                             :    -16245.07298892
+ Exchange energy                            :      -338.08950311
+ Correlation energy                         :        -8.87575720
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000237
+     valence                                :       120.00000000
+     interstitial                           :        18.00587557
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.16079323
+                  atom     2    Ga          :        28.16079323
+                  atom     3    Ga          :        28.23575046
+                  atom     4    Ga          :        28.23575046
+                  atom     5     O          :         6.86435712
+                  atom     6     O          :         6.86435712
+                  atom     7     O          :         6.86736241
+                  atom     8     O          :         6.86736241
+                  atom     9     O          :         6.86879899
+                  atom    10     O          :         6.86879899
+     total charge in muffin-tins            :       153.99412443
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07633494
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       276.42
+
+ RMS change in effective potential (target) :  0.783925E-02  ( 0.100000E-05)
+ Absolute change in total energy   (target) :   4.69554      ( 0.100000E-05)
+ Charge distance                   (target) :  0.343489E-02  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.133068      ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :    8                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.02806877
+ _______________________________________________________________
+ Fermi energy                               :         0.23709109
+ Kinetic energy                             :      8369.62169438
+ Coulomb energy                             :    -16243.75053709
+ Exchange energy                            :      -338.02496462
+ Correlation energy                         :        -8.87426145
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98231355
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15333141
+                  atom     2    Ga          :        28.15333141
+                  atom     3    Ga          :        28.22637941
+                  atom     4    Ga          :        28.22637941
+                  atom     5     O          :         6.86855491
+                  atom     6     O          :         6.86855491
+                  atom     7     O          :         6.86658793
+                  atom     8     O          :         6.86658793
+                  atom     9     O          :         6.89398957
+                  atom    10     O          :         6.89398957
+     total charge in muffin-tins            :       154.01768645
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07972525
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       315.29
+
+ RMS change in effective potential (target) :  0.674124E-03  ( 0.100000E-05)
+ Absolute change in total energy   (target) :   2.44858      ( 0.100000E-05)
+ Charge distance                   (target) :  0.949753E-03  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.741060E-03  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :    9                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.03354583
+ _______________________________________________________________
+ Fermi energy                               :         0.23712536
+ Kinetic energy                             :      8369.62233580
+ Coulomb energy                             :    -16243.75685481
+ Exchange energy                            :      -338.02474717
+ Correlation energy                         :        -8.87427965
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98342191
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15302886
+                  atom     2    Ga          :        28.15302886
+                  atom     3    Ga          :        28.22697813
+                  atom     4    Ga          :        28.22697813
+                  atom     5     O          :         6.86617324
+                  atom     6     O          :         6.86617324
+                  atom     7     O          :         6.86910272
+                  atom     8     O          :         6.86910272
+                  atom     9     O          :         6.89300608
+                  atom    10     O          :         6.89300608
+     total charge in muffin-tins            :       154.01657809
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07965736
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       354.21
+
+ RMS change in effective potential (target) :  0.388491E-03  ( 0.100000E-05)
+ Absolute change in total energy   (target) :  0.547706E-02  ( 0.100000E-05)
+ Charge distance                   (target) :  0.113954E-03  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.685260E-02  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :   10                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.02813354
+ _______________________________________________________________
+ Fermi energy                               :         0.23717205
+ Kinetic energy                             :      8369.61984561
+ Coulomb energy                             :    -16243.74999812
+ Exchange energy                            :      -338.02368962
+ Correlation energy                         :        -8.87429140
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98471106
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15309336
+                  atom     2    Ga          :        28.15309336
+                  atom     3    Ga          :        28.22708592
+                  atom     4    Ga          :        28.22708592
+                  atom     5     O          :         6.86738198
+                  atom     6     O          :         6.86738198
+                  atom     7     O          :         6.86754873
+                  atom     8     O          :         6.86754873
+                  atom     9     O          :         6.89253448
+                  atom    10     O          :         6.89253448
+     total charge in muffin-tins            :       154.01528894
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07956004
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       392.96
+
+ RMS change in effective potential (target) :  0.128238E-03  ( 0.100000E-05)
+ Absolute change in total energy   (target) :  0.541229E-02  ( 0.100000E-05)
+ Charge distance                   (target) :  0.593143E-04  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.454776E-02  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :   11                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.01817218
+ _______________________________________________________________
+ Fermi energy                               :         0.23717830
+ Kinetic energy                             :      8369.62119466
+ Coulomb energy                             :    -16243.74203985
+ Exchange energy                            :      -338.02303170
+ Correlation energy                         :        -8.87429529
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98515018
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15322553
+                  atom     2    Ga          :        28.15322553
+                  atom     3    Ga          :        28.22697889
+                  atom     4    Ga          :        28.22697889
+                  atom     5     O          :         6.86687636
+                  atom     6     O          :         6.86687636
+                  atom     7     O          :         6.86780829
+                  atom     8     O          :         6.86780829
+                  atom     9     O          :         6.89253585
+                  atom    10     O          :         6.89253585
+     total charge in muffin-tins            :       154.01484982
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07955527
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       431.84
+
+ RMS change in effective potential (target) :  0.514465E-04  ( 0.100000E-05)
+ Absolute change in total energy   (target) :  0.996136E-02  ( 0.100000E-05)
+ Charge distance                   (target) :  0.217436E-04  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.312308E-03  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :   12                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.02088457
+ _______________________________________________________________
+ Fermi energy                               :         0.23717053
+ Kinetic energy                             :      8369.62148339
+ Coulomb energy                             :    -16243.74471782
+ Exchange energy                            :      -338.02335956
+ Correlation energy                         :        -8.87429058
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98478599
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15314382
+                  atom     2    Ga          :        28.15314382
+                  atom     3    Ga          :        28.22701129
+                  atom     4    Ga          :        28.22701129
+                  atom     5     O          :         6.86706902
+                  atom     6     O          :         6.86706902
+                  atom     7     O          :         6.86783914
+                  atom     8     O          :         6.86783914
+                  atom     9     O          :         6.89254373
+                  atom    10     O          :         6.89254373
+     total charge in muffin-tins            :       154.01521401
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07955967
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       470.62
+
+ RMS change in effective potential (target) :  0.185179E-04  ( 0.100000E-05)
+ Absolute change in total energy   (target) :  0.271239E-02  ( 0.100000E-05)
+ Charge distance                   (target) :  0.824430E-05  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.230845E-03  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :   13                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.02185934
+ _______________________________________________________________
+ Fermi energy                               :         0.23716934
+ Kinetic energy                             :      8369.62139500
+ Coulomb energy                             :    -16243.74553380
+ Exchange energy                            :      -338.02343041
+ Correlation energy                         :        -8.87429012
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98473367
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15315753
+                  atom     2    Ga          :        28.15315753
+                  atom     3    Ga          :        28.22699155
+                  atom     4    Ga          :        28.22699155
+                  atom     5     O          :         6.86706507
+                  atom     6     O          :         6.86706507
+                  atom     7     O          :         6.86787055
+                  atom     8     O          :         6.86787055
+                  atom     9     O          :         6.89254846
+                  atom    10     O          :         6.89254846
+     total charge in muffin-tins            :       154.01526633
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07955997
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       509.34
+
+ RMS change in effective potential (target) :  0.544386E-05  ( 0.100000E-05)
+ Absolute change in total energy   (target) :  0.974769E-03  ( 0.100000E-05)
+ Charge distance                   (target) :  0.341281E-05  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.636414E-05  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :   14                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.02167688
+ _______________________________________________________________
+ Fermi energy                               :         0.23716937
+ Kinetic energy                             :      8369.62146715
+ Coulomb energy                             :    -16243.74542390
+ Exchange energy                            :      -338.02343018
+ Correlation energy                         :        -8.87428994
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98472269
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15315163
+                  atom     2    Ga          :        28.15315163
+                  atom     3    Ga          :        28.22699464
+                  atom     4    Ga          :        28.22699464
+                  atom     5     O          :         6.86706706
+                  atom     6     O          :         6.86706706
+                  atom     7     O          :         6.86788268
+                  atom     8     O          :         6.86788268
+                  atom     9     O          :         6.89254266
+                  atom    10     O          :         6.89254266
+     total charge in muffin-tins            :       154.01527731
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07955986
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       548.19
+
+ RMS change in effective potential (target) :  0.153961E-05  ( 0.100000E-05)
+ Absolute change in total energy   (target) :  0.182456E-03  ( 0.100000E-05)
+ Charge distance                   (target) :  0.954282E-06  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.312922E-04  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :   15                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.02141259
+ _______________________________________________________________
+ Fermi energy                               :         0.23716971
+ Kinetic energy                             :      8369.62155885
+ Coulomb energy                             :    -16243.74526450
+ Exchange energy                            :      -338.02341701
+ Correlation energy                         :        -8.87428992
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98473091
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15315195
+                  atom     2    Ga          :        28.15315195
+                  atom     3    Ga          :        28.22699416
+                  atom     4    Ga          :        28.22699416
+                  atom     5     O          :         6.86707286
+                  atom     6     O          :         6.86707286
+                  atom     7     O          :         6.86787554
+                  atom     8     O          :         6.86787554
+                  atom     9     O          :         6.89254003
+                  atom    10     O          :         6.89254003
+     total charge in muffin-tins            :       154.01526909
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07955940
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       587.18
+
+ RMS change in effective potential (target) :  0.116436E-05  ( 0.100000E-05)
+ Absolute change in total energy   (target) :  0.264294E-03  ( 0.100000E-05)
+ Charge distance                   (target) :  0.450189E-06  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.267544E-04  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :   16                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.02169057
+ _______________________________________________________________
+ Fermi energy                               :         0.23716949
+ Kinetic energy                             :      8369.62145713
+ Coulomb energy                             :    -16243.74542880
+ Exchange energy                            :      -338.02342891
+ Correlation energy                         :        -8.87428998
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98472580
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15315237
+                  atom     2    Ga          :        28.15315237
+                  atom     3    Ga          :        28.22699445
+                  atom     4    Ga          :        28.22699445
+                  atom     5     O          :         6.86707060
+                  atom     6     O          :         6.86707060
+                  atom     7     O          :         6.86787717
+                  atom     8     O          :         6.86787717
+                  atom     9     O          :         6.89254250
+                  atom    10     O          :         6.89254250
+     total charge in muffin-tins            :       154.01527420
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07955971
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       626.09
+
+ RMS change in effective potential (target) :  0.170562E-06  ( 0.100000E-05)
+ Absolute change in total energy   (target) :  0.277982E-03  ( 0.100000E-05)
+ Charge distance                   (target) :  0.188681E-06  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.705662E-05  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :   17                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.02172524
+ _______________________________________________________________
+ Fermi energy                               :         0.23716956
+ Kinetic energy                             :      8369.62143553
+ Coulomb energy                             :    -16243.74544236
+ Exchange energy                            :      -338.02342837
+ Correlation energy                         :        -8.87429004
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98472852
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15315262
+                  atom     2    Ga          :        28.15315262
+                  atom     3    Ga          :        28.22699485
+                  atom     4    Ga          :        28.22699485
+                  atom     5     O          :         6.86706981
+                  atom     6     O          :         6.86706981
+                  atom     7     O          :         6.86787655
+                  atom     8     O          :         6.86787655
+                  atom     9     O          :         6.89254191
+                  atom    10     O          :         6.89254191
+     total charge in muffin-tins            :       154.01527148
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07955963
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       664.96
+
+ RMS change in effective potential (target) :  0.146884E-06  ( 0.100000E-05)
+ Absolute change in total energy   (target) :  0.346672E-04  ( 0.100000E-05)
+ Charge distance                   (target) :  0.482580E-07  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.609209E-06  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :   18                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.02167239
+ _______________________________________________________________
+ Fermi energy                               :         0.23716953
+ Kinetic energy                             :      8369.62145851
+ Coulomb energy                             :    -16243.74541383
+ Exchange energy                            :      -338.02342707
+ Correlation energy                         :        -8.87429001
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98472784
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15315244
+                  atom     2    Ga          :        28.15315244
+                  atom     3    Ga          :        28.22699464
+                  atom     4    Ga          :        28.22699464
+                  atom     5     O          :         6.86707005
+                  atom     6     O          :         6.86707005
+                  atom     7     O          :         6.86787677
+                  atom     8     O          :         6.86787677
+                  atom     9     O          :         6.89254218
+                  atom    10     O          :         6.89254218
+     total charge in muffin-tins            :       154.01527216
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07955967
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       703.86
+
+ RMS change in effective potential (target) :  0.154649E-07  ( 0.100000E-05)
+ Absolute change in total energy   (target) :  0.528430E-04  ( 0.100000E-05)
+ Charge distance                   (target) :  0.217384E-07  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.375132E-07  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| SCF iteration number :   19                                                  +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.02167279
+ _______________________________________________________________
+ Fermi energy                               :         0.23716954
+ Kinetic energy                             :      8369.62145822
+ Coulomb energy                             :    -16243.74541397
+ Exchange energy                            :      -338.02342703
+ Correlation energy                         :        -8.87429001
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98472793
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15315244
+                  atom     2    Ga          :        28.15315244
+                  atom     3    Ga          :        28.22699466
+                  atom     4    Ga          :        28.22699466
+                  atom     5     O          :         6.86707004
+                  atom     6     O          :         6.86707004
+                  atom     7     O          :         6.86787678
+                  atom     8     O          :         6.86787678
+                  atom     9     O          :         6.89254212
+                  atom    10     O          :         6.89254212
+     total charge in muffin-tins            :       154.01527207
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07955966
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+ Wall time (seconds)                        :       743.16
+
+ RMS change in effective potential (target) :  0.106050E-07  ( 0.100000E-05)
+ Absolute change in total energy   (target) :  0.397813E-06  ( 0.100000E-05)
+ Charge distance                   (target) :  0.237098E-08  ( 0.100000E-04)
+ Abs. change in max-nonIBS-force   (target) :  0.270310E-07  ( 0.500000E-04)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| Convergence targets achieved. Performing final SCF iteration                 +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.02167339
+ _______________________________________________________________
+ Fermi energy                               :         0.23716954
+ Kinetic energy                             :      8369.62145801
+ Coulomb energy                             :    -16243.74541432
+ Exchange energy                            :      -338.02342707
+ Correlation energy                         :        -8.87429001
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        17.98472789
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15315245
+                  atom     2    Ga          :        28.15315245
+                  atom     3    Ga          :        28.22699465
+                  atom     4    Ga          :        28.22699465
+                  atom     5     O          :         6.86707007
+                  atom     6     O          :         6.86707007
+                  atom     7     O          :         6.86787676
+                  atom     8     O          :         6.86787676
+                  atom     9     O          :         6.89254213
+                  atom    10     O          :         6.89254213
+     total charge in muffin-tins            :       154.01527211
+     total charge                           :       172.00000000
+
+ Estimated fundamental gap                  :         0.07955966
+        valence-band maximum at    1      0.0000  0.0000  0.0000
+     conduction-band minimum at    1      0.0000  0.0000  0.0000
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| Self-consistent loop stopped                                                 +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ STATE.OUT is written
+
+--------------------------------------------------------------------------------
+| Writing atomic positions and forces                                          -
+--------------------------------------------------------------------------------
+
+ Atomic positions (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31616000    0.31616000    0.62882000
+ atom     3  Ga  :     0.74824000    0.74824000    0.10933000
+ atom     4  Ga  :     0.56792000    0.56792000    0.51949000
+ atom     5   O  :     0.83152000    0.83152000    0.87852000
+ atom     6   O  :     0.48464000    0.48464000    0.75030000
+ atom     7   O  :     0.82137000    0.82137000    0.42396000
+ atom     8   O  :     0.49479000    0.49479000    0.20486000
+ atom     9   O  :     0.15382000    0.15382000    0.57036000
+ atom    10   O  :     0.16234000    0.16234000    0.05846000
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :    -0.00175692   -0.00022878    0.00000000
+ atom     2  Ga  :     0.00175692    0.00022878    0.00000000
+ atom     3  Ga  :     0.00707493   -0.00577356    0.00000000
+ atom     4  Ga  :    -0.00707493    0.00577356    0.00000000
+ atom     5   O  :    -0.00371610    0.00598355    0.00000000
+ atom     6   O  :     0.00371610   -0.00598355    0.00000000
+ atom     7   O  :    -0.00329549    0.00163574    0.00000000
+ atom     8   O  :     0.00329549   -0.00163574    0.00000000
+ atom     9   O  :     0.00006371    0.00131793    0.00000000
+ atom    10   O  :    -0.00006371   -0.00131793    0.00000000
+
+ Atomic force components including IBS (cartesian) :
+ atom     1  Ga  :     0.32746964    0.01000580    0.00000000   HF force
+                 :    -0.22261453   -0.00666973    0.00000000   core correction
+                 :    -0.10661203   -0.00356485    0.00000000   IBS correction
+ atom     2  Ga  :    -0.32746964   -0.01000580    0.00000000   HF force
+                 :     0.22261453    0.00666973    0.00000000   core correction
+                 :     0.10661203    0.00356485    0.00000000   IBS correction
+ atom     3  Ga  :    -0.00287640   -0.13154230    0.00000000   HF force
+                 :     0.00880353    0.08189753    0.00000000   core correction
+                 :     0.00114780    0.04387121    0.00000000   IBS correction
+ atom     4  Ga  :     0.00287640    0.13154230    0.00000000   HF force
+                 :    -0.00880353   -0.08189753    0.00000000   core correction
+                 :    -0.00114780   -0.04387121    0.00000000   IBS correction
+ atom     5   O  :    -0.05817560    0.04764734    0.00000000   HF force
+                 :     0.05201330   -0.03970263    0.00000000   core correction
+                 :     0.00244620   -0.00196117    0.00000000   IBS correction
+ atom     6   O  :     0.05817560   -0.04764734    0.00000000   HF force
+                 :    -0.05201330    0.03970263    0.00000000   core correction
+                 :    -0.00244620    0.00196117    0.00000000   IBS correction
+ atom     7   O  :     0.03221877    0.10492871    0.00000000   HF force
+                 :    -0.03353257   -0.09996449    0.00000000   core correction
+                 :    -0.00198170   -0.00332848    0.00000000   IBS correction
+ atom     8   O  :    -0.03221877   -0.10492871    0.00000000   HF force
+                 :     0.03353257    0.09996449    0.00000000   core correction
+                 :     0.00198170    0.00332848    0.00000000   IBS correction
+ atom     9   O  :     0.03687494    0.07500640    0.00000000   HF force
+                 :    -0.03545695   -0.07046865    0.00000000   core correction
+                 :    -0.00135428   -0.00321982    0.00000000   IBS correction
+ atom    10   O  :    -0.03687494   -0.07500640    0.00000000   HF force
+                 :     0.03545695    0.07046865    0.00000000   core correction
+                 :     0.00135428    0.00321982    0.00000000   IBS correction
+
+********************************************************************************
+| Groundstate module stopped                                                   *
+********************************************************************************
+
+********************************************************************************
+| Structure-optimization module started                                        *
+********************************************************************************
+ Output level for this task is set to normal
+
+ Maximum displacement tau_BFGS   is         :         0.9000
+ Maximum displacement tau_newton is         :         1.0000
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| Use harmonic method for optimizing atomic positions                          +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+--------------------------------------------------------------------------------
+| Optimization step 0: Initialize optimization                                 -
+--------------------------------------------------------------------------------
+ Maximum force magnitude           (target) :         0.00913174  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02167339
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31616000    0.31616000    0.62882000
+ atom     3  Ga  :     0.74824000    0.74824000    0.10933000
+ atom     4  Ga  :     0.56792000    0.56792000    0.51949000
+ atom     5   O  :     0.83152000    0.83152000    0.87852000
+ atom     6   O  :     0.48464000    0.48464000    0.75030000
+ atom     7   O  :     0.82137000    0.82137000    0.42396000
+ atom     8   O  :     0.49479000    0.49479000    0.20486000
+ atom     9   O  :     0.15382000    0.15382000    0.57036000
+ atom    10   O  :     0.16234000    0.16234000    0.05846000
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :    -0.00175692   -0.00022878    0.00000000
+ atom     2  Ga  :     0.00175692    0.00022878    0.00000000
+ atom     3  Ga  :     0.00707493   -0.00577356    0.00000000
+ atom     4  Ga  :    -0.00707493    0.00577356    0.00000000
+ atom     5   O  :    -0.00371610    0.00598355    0.00000000
+ atom     6   O  :     0.00371610   -0.00598355    0.00000000
+ atom     7   O  :    -0.00329549    0.00163574    0.00000000
+ atom     8   O  :     0.00329549   -0.00163574    0.00000000
+ atom     9   O  :     0.00006371    0.00131793    0.00000000
+ atom    10   O  :    -0.00006371   -0.00131793    0.00000000
+
+--------------------------------------------------------------------------------
+| Optimization step    1    (method = harmonic)                                -
+--------------------------------------------------------------------------------
+ Number of scf iterations                   :        19  (full newton step)
+ Maximum force magnitude           (target) :         0.00604378  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02192502
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31621424    0.31621424    0.62914849
+ atom     3  Ga  :     0.74808923    0.74808923    0.11016506
+ atom     4  Ga  :     0.56812501    0.56812501    0.51898343
+ atom     5   O  :     0.83176710    0.83176710    0.87832776
+ atom     6   O  :     0.48444714    0.48444714    0.75082074
+ atom     7   O  :     0.82143480    0.82143480    0.42381326
+ atom     8   O  :     0.49477944    0.49477944    0.20533523
+ atom     9   O  :     0.15390426    0.15390426    0.57052836
+ atom    10   O  :     0.16230997    0.16230997    0.05862013
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :    -0.00189274   -0.00062787    0.00000000
+ atom     2  Ga  :     0.00189274    0.00062787    0.00000000
+ atom     3  Ga  :     0.00459639   -0.00392434    0.00000000
+ atom     4  Ga  :    -0.00459639    0.00392434    0.00000000
+ atom     5   O  :    -0.00193403    0.00351574    0.00000000
+ atom     6   O  :     0.00193403   -0.00351574    0.00000000
+ atom     7   O  :    -0.00234817    0.00157996    0.00000000
+ atom     8   O  :     0.00234817   -0.00157996    0.00000000
+ atom     9   O  :     0.00011858    0.00139265    0.00000000
+ atom    10   O  :    -0.00011858   -0.00139265    0.00000000
+
+ Time spent in this optimization step       :       793.97 seconds
+
+--------------------------------------------------------------------------------
+| Optimization step    2    (method = harmonic)                                -
+--------------------------------------------------------------------------------
+ Number of scf iterations                   :        21  (full newton step)
+ Maximum force magnitude           (target) :         0.00199997  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02215084
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31648767    0.31648767    0.63020694
+ atom     3  Ga  :     0.74785693    0.74785693    0.11200244
+ atom     4  Ga  :     0.56863074    0.56863074    0.51820450
+ atom     5   O  :     0.83229895    0.83229895    0.87829868
+ atom     6   O  :     0.48418872    0.48418872    0.75190826
+ atom     7   O  :     0.82170537    0.82170537    0.42367598
+ atom     8   O  :     0.49478229    0.49478229    0.20653097
+ atom     9   O  :     0.15422364    0.15422364    0.57108504
+ atom    10   O  :     0.16226402    0.16226402    0.05912191
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :    -0.00159201   -0.00121053    0.00000000
+ atom     2  Ga  :     0.00159201    0.00121053    0.00000000
+ atom     3  Ga  :     0.00019655   -0.00087870    0.00000000
+ atom     4  Ga  :    -0.00019655    0.00087870    0.00000000
+ atom     5   O  :     0.00101856   -0.00078991    0.00000000
+ atom     6   O  :    -0.00101856    0.00078991    0.00000000
+ atom     7   O  :    -0.00015018    0.00141122    0.00000000
+ atom     8   O  :     0.00015018   -0.00141122    0.00000000
+ atom     9   O  :     0.00022894    0.00141414    0.00000000
+ atom    10   O  :    -0.00022894   -0.00141414    0.00000000
+
+ Time spent in this optimization step       :       889.54 seconds
+
+--------------------------------------------------------------------------------
+| Optimization step    3    (method = harmonic)                                -
+--------------------------------------------------------------------------------
+ Number of scf iterations                   :        19  (partial harmonic step)
+ Maximum force magnitude           (target) :         0.00162014  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02222341
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31716361    0.31716361    0.63168115
+ atom     3  Ga  :     0.74805531    0.74805531    0.11280202
+ atom     4  Ga  :     0.56910830    0.56910830    0.51887913
+ atom     5   O  :     0.83257367    0.83257367    0.87922599
+ atom     6   O  :     0.48458995    0.48458995    0.75245516
+ atom     7   O  :     0.82234119    0.82234119    0.42435808
+ atom     8   O  :     0.49482242    0.49482242    0.20732307
+ atom     9   O  :     0.15487611    0.15487611    0.57191943
+ atom    10   O  :     0.16228751    0.16228751    0.05976172
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :     0.00022940   -0.00065435    0.00000000
+ atom     2  Ga  :    -0.00022940    0.00065435    0.00000000
+ atom     3  Ga  :     0.00096556   -0.00130099    0.00000000
+ atom     4  Ga  :    -0.00096556    0.00130099    0.00000000
+ atom     5   O  :     0.00074643   -0.00060280    0.00000000
+ atom     6   O  :    -0.00074643    0.00060280    0.00000000
+ atom     7   O  :     0.00016690    0.00096082    0.00000000
+ atom     8   O  :    -0.00016690   -0.00096082    0.00000000
+ atom     9   O  :     0.00014626    0.00073364    0.00000000
+ atom    10   O  :    -0.00014626   -0.00073364    0.00000000
+
+ Time spent in this optimization step       :       795.12 seconds
+
+--------------------------------------------------------------------------------
+| Optimization step    4    (method = harmonic)                                -
+--------------------------------------------------------------------------------
+ Number of scf iterations                   :        18  (partial harmonic step)
+ Maximum force magnitude           (target) :         0.00148926  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02226132
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31753671    0.31753671    0.63148046
+ atom     3  Ga  :     0.74814930    0.74814930    0.11288622
+ atom     4  Ga  :     0.56938740    0.56938740    0.51859425
+ atom     5   O  :     0.83272322    0.83272322    0.87926718
+ atom     6   O  :     0.48481349    0.48481349    0.75221329
+ atom     7   O  :     0.82281865    0.82281865    0.42427202
+ atom     8   O  :     0.49471806    0.49471806    0.20720845
+ atom     9   O  :     0.15529296    0.15529296    0.57190777
+ atom    10   O  :     0.16224375    0.16224375    0.05957269
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :     0.00004561   -0.00054693    0.00000000
+ atom     2  Ga  :    -0.00004561    0.00054693    0.00000000
+ atom     3  Ga  :     0.00070893   -0.00130970    0.00000000
+ atom     4  Ga  :    -0.00070893    0.00130970    0.00000000
+ atom     5   O  :     0.00066352   -0.00061864    0.00000000
+ atom     6   O  :    -0.00066352    0.00061864    0.00000000
+ atom     7   O  :    -0.00012248    0.00063368    0.00000000
+ atom     8   O  :     0.00012248   -0.00063368    0.00000000
+ atom     9   O  :    -0.00017264    0.00025499    0.00000000
+ atom    10   O  :     0.00017264   -0.00025499    0.00000000
+
+ Time spent in this optimization step       :       760.26 seconds
+
+--------------------------------------------------------------------------------
+| Optimization step    5    (method = harmonic)                                -
+--------------------------------------------------------------------------------
+ Number of scf iterations                   :        18  (partial harmonic step)
+ Maximum force magnitude           (target) :         0.00085828  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02229591
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31795397    0.31795397    0.63142001
+ atom     3  Ga  :     0.74816122    0.74816122    0.11312897
+ atom     4  Ga  :     0.56979275    0.56979275    0.51829104
+ atom     5   O  :     0.83285188    0.83285188    0.87948903
+ atom     6   O  :     0.48510209    0.48510209    0.75193098
+ atom     7   O  :     0.82327079    0.82327079    0.42422373
+ atom     8   O  :     0.49468318    0.49468318    0.20719628
+ atom     9   O  :     0.15559455    0.15559455    0.57182240
+ atom    10   O  :     0.16235943    0.16235943    0.05959761
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :    -0.00006624   -0.00033022    0.00000000
+ atom     2  Ga  :     0.00006624    0.00033022    0.00000000
+ atom     3  Ga  :     0.00045738   -0.00072626    0.00000000
+ atom     4  Ga  :    -0.00045738    0.00072626    0.00000000
+ atom     5   O  :     0.00038428   -0.00049821    0.00000000
+ atom     6   O  :    -0.00038428    0.00049821    0.00000000
+ atom     7   O  :    -0.00008379    0.00027737    0.00000000
+ atom     8   O  :     0.00008379   -0.00027737    0.00000000
+ atom     9   O  :    -0.00021135    0.00061983    0.00000000
+ atom    10   O  :     0.00021135   -0.00061983    0.00000000
+
+ Time spent in this optimization step       :       760.29 seconds
+
+--------------------------------------------------------------------------------
+| Optimization step    6    (method = harmonic)                                -
+--------------------------------------------------------------------------------
+ Number of scf iterations                   :        18  (partial harmonic step)
+ Maximum force magnitude           (target) :         0.00079039  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02231888
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31826841    0.31826841    0.63143741
+ atom     3  Ga  :     0.74815861    0.74815861    0.11340084
+ atom     4  Ga  :     0.57010980    0.57010980    0.51803656
+ atom     5   O  :     0.83290363    0.83290363    0.87971790
+ atom     6   O  :     0.48536478    0.48536478    0.75171951
+ atom     7   O  :     0.82355720    0.82355720    0.42421245
+ atom     8   O  :     0.49471121    0.49471121    0.20722496
+ atom     9   O  :     0.15603998    0.15603998    0.57178192
+ atom    10   O  :     0.16222843    0.16222843    0.05965549
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :    -0.00014045   -0.00036932    0.00000000
+ atom     2  Ga  :     0.00014045    0.00036932    0.00000000
+ atom     3  Ga  :     0.00006973   -0.00078731    0.00000000
+ atom     4  Ga  :    -0.00006973    0.00078731    0.00000000
+ atom     5   O  :     0.00025276   -0.00021982    0.00000000
+ atom     6   O  :    -0.00025276    0.00021982    0.00000000
+ atom     7   O  :    -0.00005217    0.00019981    0.00000000
+ atom     8   O  :     0.00005217   -0.00019981    0.00000000
+ atom     9   O  :    -0.00038554   -0.00007127    0.00000000
+ atom    10   O  :     0.00038554    0.00007127    0.00000000
+
+ Time spent in this optimization step       :       758.49 seconds
+
+--------------------------------------------------------------------------------
+| Optimization step    7    (method = harmonic)                                -
+--------------------------------------------------------------------------------
+ Number of scf iterations                   :        19  (partial harmonic step)
+ Maximum force magnitude           (target) :         0.00095556  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02232812
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31868572    0.31868572    0.63147654
+ atom     3  Ga  :     0.74810203    0.74810203    0.11347550
+ atom     4  Ga  :     0.57058369    0.57058369    0.51800104
+ atom     5   O  :     0.83305679    0.83305679    0.87992935
+ atom     6   O  :     0.48562893    0.48562893    0.75154719
+ atom     7   O  :     0.82387519    0.82387519    0.42420881
+ atom     8   O  :     0.49481053    0.49481053    0.20726773
+ atom     9   O  :     0.15620329    0.15620329    0.57165802
+ atom    10   O  :     0.16248243    0.16248243    0.05981852
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :     0.00000650   -0.00001803    0.00000000
+ atom     2  Ga  :    -0.00000650    0.00001803    0.00000000
+ atom     3  Ga  :     0.00033555    0.00026349    0.00000000
+ atom     4  Ga  :    -0.00033555   -0.00026349    0.00000000
+ atom     5   O  :    -0.00000262   -0.00022962    0.00000000
+ atom     6   O  :     0.00000262    0.00022962    0.00000000
+ atom     7   O  :    -0.00010297   -0.00012288    0.00000000
+ atom     8   O  :     0.00010297    0.00012288    0.00000000
+ atom     9   O  :    -0.00010168    0.00095013    0.00000000
+ atom    10   O  :     0.00010168   -0.00095013    0.00000000
+
+ Time spent in this optimization step       :       794.56 seconds
+
+--------------------------------------------------------------------------------
+| Optimization step    8    (method = harmonic)                                -
+--------------------------------------------------------------------------------
+ Number of scf iterations                   :        17  (partial harmonic step)
+ Maximum force magnitude           (target) :         0.00074619  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02232939
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31870662    0.31870662    0.63147352
+ atom     3  Ga  :     0.74818681    0.74818681    0.11353463
+ atom     4  Ga  :     0.57051980    0.57051980    0.51793889
+ atom     5   O  :     0.83296857    0.83296857    0.87992912
+ atom     6   O  :     0.48573805    0.48573805    0.75154440
+ atom     7   O  :     0.82383714    0.82383714    0.42415082
+ atom     8   O  :     0.49486948    0.49486948    0.20732270
+ atom     9   O  :     0.15623635    0.15623635    0.57160385
+ atom    10   O  :     0.16247027    0.16247027    0.05986967
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :     0.00004384    0.00015622    0.00000000
+ atom     2  Ga  :    -0.00004384   -0.00015622    0.00000000
+ atom     3  Ga  :     0.00014562   -0.00041363    0.00000000
+ atom     4  Ga  :    -0.00014562    0.00041363    0.00000000
+ atom     5   O  :    -0.00019303    0.00039179    0.00000000
+ atom     6   O  :     0.00019303   -0.00039179    0.00000000
+ atom     7   O  :     0.00027566    0.00013102    0.00000000
+ atom     8   O  :    -0.00027566   -0.00013102    0.00000000
+ atom     9   O  :    -0.00014851    0.00073126    0.00000000
+ atom    10   O  :     0.00014851   -0.00073126    0.00000000
+
+ Time spent in this optimization step       :       724.33 seconds
+
+--------------------------------------------------------------------------------
+| Optimization step    9    (method = harmonic)                                -
+--------------------------------------------------------------------------------
+ Number of scf iterations                   :        18  (partial harmonic step)
+ Maximum force magnitude           (target) :         0.00051413  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02233235
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31868594    0.31868594    0.63145771
+ atom     3  Ga  :     0.74814084    0.74814084    0.11358264
+ atom     4  Ga  :     0.57054510    0.57054510    0.51787507
+ atom     5   O  :     0.83301651    0.83301651    0.87988302
+ atom     6   O  :     0.48566943    0.48566943    0.75157470
+ atom     7   O  :     0.82385311    0.82385311    0.42418433
+ atom     8   O  :     0.49483282    0.49483282    0.20727338
+ atom     9   O  :     0.15628580    0.15628580    0.57156607
+ atom    10   O  :     0.16240014    0.16240014    0.05989164
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :    -0.00006881   -0.00003449    0.00000000
+ atom     2  Ga  :     0.00006881    0.00003449    0.00000000
+ atom     3  Ga  :    -0.00002750   -0.00012142    0.00000000
+ atom     4  Ga  :     0.00002750    0.00012142    0.00000000
+ atom     5   O  :     0.00009483   -0.00009799    0.00000000
+ atom     6   O  :    -0.00009483    0.00009799    0.00000000
+ atom     7   O  :     0.00006102    0.00006944    0.00000000
+ atom     8   O  :    -0.00006102   -0.00006944    0.00000000
+ atom     9   O  :    -0.00015904    0.00048892    0.00000000
+ atom    10   O  :     0.00015904   -0.00048892    0.00000000
+
+ Time spent in this optimization step       :       756.50 seconds
+
+--------------------------------------------------------------------------------
+| Optimization step   10    (method = harmonic)                                -
+--------------------------------------------------------------------------------
+ Number of scf iterations                   :        15  (partial harmonic step)
+ Maximum force magnitude           (target) :         0.00023229  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02233358
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31869042    0.31869042    0.63146763
+ atom     3  Ga  :     0.74812498    0.74812498    0.11357950
+ atom     4  Ga  :     0.57056544    0.57056544    0.51788814
+ atom     5   O  :     0.83300758    0.83300758    0.87990030
+ atom     6   O  :     0.48568284    0.48568284    0.75156734
+ atom     7   O  :     0.82386257    0.82386257    0.42420108
+ atom     8   O  :     0.49482785    0.49482785    0.20726656
+ atom     9   O  :     0.15636564    0.15636564    0.57150870
+ atom    10   O  :     0.16232478    0.16232478    0.05995894
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :    -0.00004503   -0.00013955    0.00000000
+ atom     2  Ga  :     0.00004503    0.00013955    0.00000000
+ atom     3  Ga  :     0.00002741   -0.00019602    0.00000000
+ atom     4  Ga  :    -0.00002741    0.00019602    0.00000000
+ atom     5   O  :     0.00011166   -0.00008803    0.00000000
+ atom     6   O  :    -0.00011166    0.00008803    0.00000000
+ atom     7   O  :    -0.00002931    0.00007727    0.00000000
+ atom     8   O  :     0.00002931   -0.00007727    0.00000000
+ atom     9   O  :    -0.00015837    0.00016993    0.00000000
+ atom    10   O  :     0.00015837   -0.00016993    0.00000000
+
+ Time spent in this optimization step       :       646.51 seconds
+
+--------------------------------------------------------------------------------
+| Optimization step   11    (method = harmonic)                                -
+--------------------------------------------------------------------------------
+ Number of scf iterations                   :        17  (partial harmonic step)
+ Maximum force magnitude           (target) :         0.00021232  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02233565
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31871613    0.31871613    0.63148372
+ atom     3  Ga  :     0.74812148    0.74812148    0.11359242
+ atom     4  Ga  :     0.57059465    0.57059465    0.51789130
+ atom     5   O  :     0.83301509    0.83301509    0.87992951
+ atom     6   O  :     0.48570104    0.48570104    0.75155421
+ atom     7   O  :     0.82388827    0.82388827    0.42420480
+ atom     8   O  :     0.49482786    0.49482786    0.20727892
+ atom     9   O  :     0.15641285    0.15641285    0.57142630
+ atom    10   O  :     0.16230328    0.16230328    0.06005742
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :     0.00000517   -0.00016410    0.00000000
+ atom     2  Ga  :    -0.00000517    0.00016410    0.00000000
+ atom     3  Ga  :     0.00006578   -0.00020187    0.00000000
+ atom     4  Ga  :    -0.00006578    0.00020187    0.00000000
+ atom     5   O  :     0.00009099   -0.00009367    0.00000000
+ atom     6   O  :    -0.00009099    0.00009367    0.00000000
+ atom     7   O  :    -0.00002999    0.00007367    0.00000000
+ atom     8   O  :     0.00002999   -0.00007367    0.00000000
+ atom     9   O  :    -0.00010263    0.00005776    0.00000000
+ atom    10   O  :     0.00010263   -0.00005776    0.00000000
+
+ Time spent in this optimization step       :       720.91 seconds
+
+--------------------------------------------------------------------------------
+| Optimization step   12    (method = harmonic)                                -
+--------------------------------------------------------------------------------
+ Number of scf iterations                   :        17  (partial harmonic step)
+ Maximum force magnitude           (target) :         0.00015200  (  0.00020000)
+ Total energy at this optimization step     :     -8221.02233684
+
+ Atomic positions at this step (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31877224    0.31877224    0.63148014
+ atom     3  Ga  :     0.74811620    0.74811620    0.11360409
+ atom     4  Ga  :     0.57065604    0.57065604    0.51787605
+ atom     5   O  :     0.83303066    0.83303066    0.87996233
+ atom     6   O  :     0.48574158    0.48574158    0.75151780
+ atom     7   O  :     0.82393469    0.82393469    0.42419677
+ atom     8   O  :     0.49483755    0.49483755    0.20728337
+ atom     9   O  :     0.15645264    0.15645264    0.57134696
+ atom    10   O  :     0.16231961    0.16231961    0.06013318
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :     0.00003235   -0.00013645    0.00000000
+ atom     2  Ga  :    -0.00003235    0.00013645    0.00000000
+ atom     3  Ga  :     0.00010212   -0.00011258    0.00000000
+ atom     4  Ga  :    -0.00010212    0.00011258    0.00000000
+ atom     5   O  :     0.00003907   -0.00007367    0.00000000
+ atom     6   O  :    -0.00003907    0.00007367    0.00000000
+ atom     7   O  :    -0.00002184    0.00004694    0.00000000
+ atom     8   O  :     0.00002184   -0.00004694    0.00000000
+ atom     9   O  :    -0.00003706    0.00010782    0.00000000
+ atom    10   O  :     0.00003706   -0.00010782    0.00000000
+
+ Time spent in this optimization step       :       727.15 seconds
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+| Force convergence target achieved                                            +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total energy                               :     -8221.02233684
+ _______________________________________________________________
+ Fermi energy                               :         0.23671314
+ Kinetic energy                             :      8369.59030639
+ Coulomb energy                             :    -16243.72195793
+ Exchange energy                            :      -338.01681458
+ Correlation energy                         :        -8.87387073
+
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+
+ Electron charges :
+     core                                   :        52.00000000
+     core leakage                           :         0.00000236
+     valence                                :       120.00000000
+     interstitial                           :        18.00166645
+     charge in muffin-tin spheres :
+                  atom     1    Ga          :        28.15370944
+                  atom     2    Ga          :        28.15370944
+                  atom     3    Ga          :        28.22351465
+                  atom     4    Ga          :        28.22351465
+                  atom     5     O          :         6.86296371
+                  atom     6     O          :         6.86296371
+                  atom     7     O          :         6.86712088
+                  atom     8     O          :         6.86712088
+                  atom     9     O          :         6.89185810
+                  atom    10     O          :         6.89185810
+     total charge in muffin-tins            :       153.99833355
+     total charge                           :       172.00000000
+
+ Optimized atomic positions (lattice) :
+ atom     1  Ga  :     0.00000000    0.00000000    0.00000000
+ atom     2  Ga  :     0.31877224    0.31877224    0.63148014
+ atom     3  Ga  :     0.74811620    0.74811620    0.11360409
+ atom     4  Ga  :     0.57065604    0.57065604    0.51787605
+ atom     5   O  :     0.83303066    0.83303066    0.87996233
+ atom     6   O  :     0.48574158    0.48574158    0.75151780
+ atom     7   O  :     0.82393469    0.82393469    0.42419677
+ atom     8   O  :     0.49483755    0.49483755    0.20728337
+ atom     9   O  :     0.15645264    0.15645264    0.57134696
+ atom    10   O  :     0.16231961    0.16231961    0.06013318
+
+ Total atomic forces including IBS (cartesian) :
+ atom     1  Ga  :     0.00003235   -0.00013645    0.00000000
+ atom     2  Ga  :    -0.00003235    0.00013645    0.00000000
+ atom     3  Ga  :     0.00010212   -0.00011258    0.00000000
+ atom     4  Ga  :    -0.00010212    0.00011258    0.00000000
+ atom     5   O  :     0.00003907   -0.00007367    0.00000000
+ atom     6   O  :    -0.00003907    0.00007367    0.00000000
+ atom     7   O  :    -0.00002184    0.00004694    0.00000000
+ atom     8   O  :     0.00002184   -0.00004694    0.00000000
+ atom     9   O  :    -0.00003706    0.00010782    0.00000000
+ atom    10   O  :     0.00003706   -0.00010782    0.00000000
+
+ Atomic force components including IBS (cartesian) :
+ atom     1  Ga  :     0.29519393   -0.01571932    0.00000000   HF force
+                 :    -0.19903112    0.01076102    0.00000000   core correction
+                 :    -0.09613047    0.00482185    0.00000000   IBS correction
+ atom     2  Ga  :    -0.29519393    0.01571932    0.00000000   HF force
+                 :     0.19903112   -0.01076102    0.00000000   core correction
+                 :     0.09613047   -0.00482185    0.00000000   IBS correction
+ atom     3  Ga  :     0.05653108   -0.12994891    0.00000000   HF force
+                 :    -0.03824204    0.08665629    0.00000000   core correction
+                 :    -0.01818692    0.04318004    0.00000000   IBS correction
+ atom     4  Ga  :    -0.05653108    0.12994891    0.00000000   HF force
+                 :     0.03824204   -0.08665629    0.00000000   core correction
+                 :     0.01818692   -0.04318004    0.00000000   IBS correction
+ atom     5   O  :    -0.04927783    0.03291503    0.00000000   HF force
+                 :     0.04705650   -0.03129516    0.00000000   core correction
+                 :     0.00226041   -0.00169354    0.00000000   IBS correction
+ atom     6   O  :     0.04927783   -0.03291503    0.00000000   HF force
+                 :    -0.04705650    0.03129516    0.00000000   core correction
+                 :    -0.00226041    0.00169354    0.00000000   IBS correction
+ atom     7   O  :     0.03889017    0.11287161    0.00000000   HF force
+                 :    -0.03677241   -0.10910934    0.00000000   core correction
+                 :    -0.00213959   -0.00371532    0.00000000   IBS correction
+ atom     8   O  :    -0.03889017   -0.11287161    0.00000000   HF force
+                 :     0.03677241    0.10910934    0.00000000   core correction
+                 :     0.00213959    0.00371532    0.00000000   IBS correction
+ atom     9   O  :     0.04026245    0.07471543    0.00000000   HF force
+                 :    -0.03883206   -0.07132098    0.00000000   core correction
+                 :    -0.00146745   -0.00328663    0.00000000   IBS correction
+ atom    10   O  :    -0.04026245   -0.07471543    0.00000000   HF force
+                 :     0.03883206    0.07132098    0.00000000   core correction
+                 :     0.00146745    0.00328663    0.00000000   IBS correction
+
+********************************************************************************
+| Structure-optimization module stopped                                        *
+********************************************************************************
+
+ Total time spent (seconds)                 :      9957.38
+
+================================================================================
+| EXCITING BORON-10 stopped                                                    =
+================================================================================

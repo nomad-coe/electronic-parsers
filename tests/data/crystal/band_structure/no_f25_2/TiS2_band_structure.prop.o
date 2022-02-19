@@ -1,0 +1,1417 @@
+Date: 2018-10-12 13:05:48
+Running on: wihuri.pub.chemistrylab.aalto.fi
+Temporary directory: /chemtemp/CRY_30684
+Executable: /share/apps/chem/crystal/c14/bin/v1_0_3d/properties
+Output: /home/nina/TiS2_TZVP_PBE0-D3/TZVP_3D_ZD/band_strucutre/new_path/TiS2_8_6geom_TZVP_PBE0-3D_ZD_smaller.prop.o
+Properties input data TiS2_8_6geom_TZVP_PBE0-3D_ZD_smaller.d3
+BAND
+TiS2-HEX: G-M-K-G-A-L-H-A|L-M|K-H
+9 6 1200 20 32 1 0
+0 0 0	3 0 0	G-M
+3 0 0	2 2 0	M-K
+2 2 0	0 0 0	K-G
+0 0 0	0 0 3	G-A
+0 0 3	3 0 3	A-L
+3 0 3	2 2 3	L-H
+2 2 3	0 0 3	H-A
+3 0 3	3 0 0	L-M
+2 2 0	2 2 3	K-H	
+END
+Creating temporary directory /chemtemp/CRY_30684 on node 
+SCF wavefunction TiS2_8_6geom_TZVP_PBE0-3D_ZD_smaller.w is available as /chemtemp/CRY_30684/fort.9
+
+         
+ *******************************************************************************
+ *                                                                             *
+ *                               CRYSTAL14                                     *
+ *                      public : 1.0.2 - Feb 23rd, 2013                        *
+ *                       HTTP://WWW.CRYSTAL.UNITO.IT                           *
+ *                                                                             *
+ *                              MAIN AUTHORS                                   *
+ *                                                                             *
+ *  R. DOVESI(1,11), V.R. SAUNDERS(2), C. ROETTI(1,11), R. ORLANDO(1,11),      *
+ *  C.M. ZICOVICH-WILSON(1,3), F. PASCALE(4), B. CIVALLERI(1,11),              *
+ *  K. DOLL(5), N.M. HARRISON(2,6), I. J. BUSH(7), Ph. D'ARCO(8),              *
+ *  M. LLUNELL(9), M. CAUSA'(10), Y. NOEL(8)                                   *
+ *                                                                             *
+ *        CONTRIBUTIONS TO THE CURRENT RELEASE HAVE BEEN GIVEN BY              *
+ *                                                                             *
+ *  L. MASCHIO(1,11), S. CASASSA(1,11), A. ERBA(1,11), M. FERRABONE(1,11),     *
+ *  M. DE LA PIERRE(1,11), M. FERRERO(1,11), V. LACIVITA(1,11),                *
+ *  J. BAIMA(1,11), E. ALBANESE(1,11), M.F. PEINTINGER(12), R. BAST(13),       *
+ *  M. RERAT(14), B. KIRTMAN(15), R. DEMICHELIS(1,16)                          *
+ *                                                                             *
+ * (1) THEORETICAL CHEMISTRY GROUP - UNIVERSITA' DI TORINO - TORINO (ITALY)    *
+ *     http://www.crystal.unito.it                                             *
+ * (2) COMPUTATIONAL SCIENCE & ENGINEERING DEPARTMENT - STFC DARESBURY (UK)    *
+ *     http://www.stfc.ac.uk/CSE/randd/cmg/CRYSTAL/25806.aspx                  *
+ * (3) UNIVERSIDAD AUTONOMA DEL ESTADO DE MORELOS - CUERNAVACA (MEXICO)        *
+ * (4) UNIVERSITE' DE LORRAINE - NANCY (FRANCE)                                *
+ * (5) UNIVERSITAET ULM - ULM (GERMANY); (6) IMPERIAL COLLEGE - LONDON (UK)    *
+ * (7) NAG - OXFORD (UK); (8) UPMC - SORBONNE UNIVERSITES - PARIS (FRANCE)     *
+ * (9) UNIVERSIDAD DE BARCELONA - BARCELONA (SPAIN)                            *
+ *(10) UNIVERSITA' DI NAPOLI "FEDERICO II" - NAPOLI (ITALY)                    *
+ *(11) NIS - NANOSTRUCTURED INTERFACES AND SURFACES - TORINO (ITALY)           *
+ *(12) MPI FUER CHEMISCHE ENERGIEKONVERSION - MUELHEIM AN DER RUHR (GERMANY)   *
+ *(13) UNIVERSITY OF STOCKHOLM - STOCKHOLM (SWEDEN)                            *
+ *(14) UNIVERSITE' DE PAU ET DES PAYS DE L'ADOUR - PAU (FRANCE)                *
+ *(15) UNIVERSITY OF CALIFORNIA SANTA BARBARA - SANTA BARBARA (USA)            *
+ *(16) CURTIN UNIVERSITY - PERTH (AUSTRALIA)                                   *
+ *                                                                             *
+ ********************************************************************************
+ EEEEEEEEEE STARTING  DATE 12 10 2018 TIME 13:05:48.9
+
+ *******************************************************************************
+ TiS2 bulk geometry_TZVP_PBE0-3D                                                 
+ CRYSTAL - PROPERTIES - TYPE OF CALCULATION :  RESTRICTED CLOSED SHELL
+ *******************************************************************************
+ KOHN-SHAM HAMILTONIAN
+
+ (EXCHANGE)[CORRELATION] FUNCTIONAL:(PERDEW-BURKE-ERNZERHOF)[PERDEW-BURKE-ERNZERHOF]
+
+
+ HYBRID EXCHANGE - PERCENTAGE OF FOCK EXCHANGE    25.0000
+
+ DIRECT LATTICE VECTOR COMPONENTS (ANGSTROM)
+         2.94103   -1.69800    0.00000
+         0.00000    3.39600    0.00000
+         0.00000    0.00000    5.66482
+
+ LATTICE PARAMETERS  (ANGSTROM AND DEGREES) - PRIMITIVE CELL
+       A          B          C         ALPHA      BETA     GAMMA        VOLUME
+    3.39600    3.39600    5.66482     90.0000   90.0000  120.0000      56.57875
+ *******************************************************************************
+ N. OF ATOMS PER CELL         3 COULOMB OVERLAP TOL          (T1) 10**   -8
+ NUMBER OF SHELLS            28 COULOMB PENETRATION TOL      (T2) 10**   -8
+ NUMBER OF AO                77 EXCHANGE OVERLAP TOL         (T3) 10**   -8
+ N. OF ELECTRONS PER CELL    54 EXCHANGE PSEUDO OVP (F(G))   (T4) 10**   -8
+ CORE ELECTRONS PER CELL     38 EXCHANGE PSEUDO OVP (P(G))   (T5) 10**  -16
+ N. OF SYMMETRY OPERATORS    12 POLE ORDER IN MONO ZONE                   4
+ *******************************************************************************
+   ATOM N.AT.  SHELL    X(A)      Y(A)      Z(A)      EXAD       N.ELECT.
+ *******************************************************************************
+    1   22 TI   12     0.000     0.000     0.000   2.200E-01      21.519
+    2   16 S     8    -1.961     0.000     1.406   5.500E-01      16.240
+    3   16 S     8    -0.980    -1.698    -1.406   5.500E-01      16.240
+ *******************************************************************************
+ DE(K)                   0.000E+00  ENERGY LEVEL SHIFTING        0.00000
+ TOTAL ENERGY -1.6456197247547E+03  CONVERGENCE ON ENER        2.298E-07
+ KIN. ENERGY   1.6424213990209E+03  VIR. COEFF.           1.02086221E+00
+ N. OF SCF CYCLES               19  FERMI ENERGY              -0.191E+00
+ WEIGHT OF F(I) IN F(I+1)      80
+ SHRINK. FACT.(MONKH.)     8  8  6  SHRINKING FACTOR(GILAT NET)        8
+ NUMBER OF K POINTS IN THE IBZ  50  CELL VOLUME (A.U.)        394.796325
+ *******************************************************************************
+
+ GCALCO - MAX INDICES DIRECT LATTICE VECTOR    18    18     9
+ NO.OF VECTORS CREATED 6999 STARS  370 RMAX    86.13113 BOHR
+
+ MATRIX SIZE: P(G)  182131, F(G)   32419, P(G) IRR   13398, F(G) IRR    5670
+ MAX G-VECTOR INDEX FOR 1- AND 2-ELECTRON INTEGRALS 233
+
+
+ CAPPA:IS1  8;IS2  8;IS3  6; K PTS MONK NET  50; SYMMOPS:K SPACE  12;G SPACE  12
+
+ WARNING **** F90MAIN3 **** BF SYMMETRY ADAPTED-INFO MODIFIED BY BAND-CALL NEWK
+
+
+ *******************************************************************************
+ *                                                                             *
+ *  BAND STRUCTURE                                                             *
+ *  TiS2-HEX: G-M-K-G-A-L-H-A|L-M|K-H                                          *
+ *  FROM BAND  20 TO BAND  32                                                  *
+ *  TOTAL OF1200 K-POINTS ALONG THE PATH                                       *
+ *                                                                             *
+ *******************************************************************************
+
+ LINE  1 ( 0.00 0.00 0.00: 0.50 0.00 0.00) IN TERMS OF PRIMITIVE LATTICE VECTORS
+ 172 POINTS - SHRINKING_FACTOR1026
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.565 0.000 0.000) STEP  0.0033
+
+
+ LINE  2 ( 0.50 0.00 0.00: 0.33 0.33 0.00) IN TERMS OF PRIMITIVE LATTICE VECTORS
+  99 POINTS - SHRINKING_FACTOR 594
+ CARTESIAN COORD. ( 0.565 0.000 0.000):( 0.565 0.326 0.000) STEP  0.0033
+
+
+ LINE  3 ( 0.33 0.33 0.00: 0.00 0.00 0.00) IN TERMS OF PRIMITIVE LATTICE VECTORS
+ 197 POINTS - SHRINKING_FACTOR1182
+ CARTESIAN COORD. ( 0.565 0.326 0.000):( 0.000 0.000 0.000) STEP  0.0033
+
+
+ LINE  4 ( 0.00 0.00 0.00: 0.00 0.00 0.50) IN TERMS OF PRIMITIVE LATTICE VECTORS
+  89 POINTS - SHRINKING_FACTOR 534
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.293) STEP  0.0033
+
+
+ LINE  5 ( 0.00 0.00 0.50: 0.50 0.00 0.50) IN TERMS OF PRIMITIVE LATTICE VECTORS
+ 171 POINTS - SHRINKING_FACTOR1026
+ CARTESIAN COORD. ( 0.000 0.000 0.293):( 0.565 0.000 0.293) STEP  0.0033
+
+
+ LINE  6 ( 0.50 0.00 0.50: 0.33 0.33 0.50) IN TERMS OF PRIMITIVE LATTICE VECTORS
+  99 POINTS - SHRINKING_FACTOR 594
+ CARTESIAN COORD. ( 0.565 0.000 0.293):( 0.565 0.326 0.293) STEP  0.0033
+
+
+ LINE  7 ( 0.33 0.33 0.50: 0.00 0.00 0.50) IN TERMS OF PRIMITIVE LATTICE VECTORS
+ 197 POINTS - SHRINKING_FACTOR1182
+ CARTESIAN COORD. ( 0.565 0.326 0.293):( 0.000 0.000 0.293) STEP  0.0033
+
+
+ LINE  8 ( 0.50 0.00 0.50: 0.50 0.00 0.00) IN TERMS OF PRIMITIVE LATTICE VECTORS
+  90 POINTS - SHRINKING_FACTOR 534
+ CARTESIAN COORD. ( 0.565 0.000 0.293):( 0.565 0.000 0.000) STEP  0.0033
+
+
+ LINE  9 ( 0.33 0.33 0.00: 0.33 0.33 0.50) IN TERMS OF PRIMITIVE LATTICE VECTORS
+  90 POINTS - SHRINKING_FACTOR 534
+ CARTESIAN COORD. ( 0.565 0.326 0.000):( 0.565 0.326 0.293) STEP  0.0033
+
+
+ 2236 DATA WRITTEN ON UNIT 25 WITH THE FOLLOWING HEADER :
+ -%-0BAND      0    0    0    3    0    0
+
+ 1287 DATA WRITTEN ON UNIT 25 WITH THE FOLLOWING HEADER :
+ -%-0BAND      3    0    0    2    2    0
+
+ 2561 DATA WRITTEN ON UNIT 25 WITH THE FOLLOWING HEADER :
+ -%-0BAND      2    2    0    0    0    0
+
+ 1157 DATA WRITTEN ON UNIT 25 WITH THE FOLLOWING HEADER :
+ -%-0BAND      0    0    0    0    0    3
+
+ 2223 DATA WRITTEN ON UNIT 25 WITH THE FOLLOWING HEADER :
+ -%-0BAND      0    0    3    3    0    3
+
+ 1287 DATA WRITTEN ON UNIT 25 WITH THE FOLLOWING HEADER :
+ -%-0BAND      3    0    3    2    2    3
+
+ 2561 DATA WRITTEN ON UNIT 25 WITH THE FOLLOWING HEADER :
+ -%-0BAND      2    2    3    0    0    3
+
+ 1170 DATA WRITTEN ON UNIT 25 WITH THE FOLLOWING HEADER :
+ -%-0BAND      3    0    3    3    0    0
+
+ 1170 DATA WRITTEN ON UNIT 25 WITH THE FOLLOWING HEADER :
+ -%-0BAND      2    2    0    2    2    3
+
+ ENERGY RANGE (A.U.)   -0.76785 -   0.01534 EFERMI  -0.19058
+     |*----------*---------------------------------------*--------------*------------------**-------*---*-------------*-----|
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       **  *             *     |
+     |*          *                                       *              *                  **        *  *             *     |
+     |*          *                                       *              *                  **        *  *             *     |
+     |*          *                                       *              *                  **        *  *             *     |
+     |*          *                                       *              *                  **        *  *             *     |
+     |*          *                                       *             **                  *         *  *             *     |
+     |*          *                                       *             **                  *         *  *             *     |
+     |*          *                                       *             **                 **         *  *             *     |
+     |*          *                                       *             **                 **         *   *            *     |
+     |*          *                                       *             **                 **         *   *            *     |
+     |*          *                                       *             **                 **         *   *            *     |
+     |*          *                                       *             **                 **         **  *            *     |
+     |*          *                                       *             **                * *         **  *            *     |
+     |*          *                                       *             **                * *         **  *            *     |
+     |*          *                                       *             **                ***         **  *            *     |
+     |*          *                                       *             **                ***         **  *            *     |
+     |*          *                                       *             **               * **         **  *            *     |
+     |*          *                                        *            **               * **         **  *            *     |
+     | *         *                                        *            **               * **         **  *           **     |
+     | *         *                                        *            **               * **         * * *           **     |
+     | *         *                                        *            **              *  **         * * *           **     |
+     | *         *                                        *            **              *  **         * * *           **     |
+     | *         *                                        *            **              * * *          ** *           **     |
+     | *         *                                        *            **              * * *          ** *           **     |
+     | *         *                                        *            **             *  * *          ** *           **     |
+     | *         *                                        *           * *             *  * *          ** *           **     |
+     | *         *                                        *           * *             *  * *          ** *           **     |
+     | *         *                                        *           * *             *  * *          * * *          **     |
+     | *         *                                        *           * *            *   * *          * * *          **     |
+     | *         *                                        *           * *            *   * *          * * *          **     |
+     | *         *                                        *           * *            *  *  *          * * *          **     |
+     | *         *                                        *           * *            *  *  *          * * *          **     |
+     | *         *                                        *           * *           *   *  *          * * *          **     |
+     | *         *                                        *           * *           *   *  *          * * *          **     |
+     | *         *                                        *           * *           *   *  *          * * *          **     |
+     | *         *                                         *          * *          *    *  *          * * *          **     |
+     | *         *                                         *          * *          *    *  *          *  **          **     |
+     | *         *                                         *          * *          *   *   *          *  **          **     |
+     | *         *                                         *          * *          *   *  *           *  **          **     |
+     |  *        *                                         *         *  *         *    *  *           *  **          **     |
+     |  *        *                                         *         *  *         *    *  *           *  **          **     |
+     |  *        *                                         *         *  *         *    *  *           *  * *         **     |
+     |  *        *                                         *         *  *        *     *  *           *  * *         **     |
+     |  *        *                                         *         *  *        *     *  *           *  * *         **     |
+     |  *        *                                         *         *  *        *     *  *           *  * *         **     |
+     |  *        *                                         *         *  *        *    *   *           *  * *         **     |
+     |  *        *                                         *         *  *       *     *   *           *   **         **     |
+     |  *        *                                         *         *  *       *     *   *           *   **         **     |
+     |  *        *                                          *        *  *       *     *   *           *   **         **     |
+     |  *        *                                          *        *   *     *      *   *           *   **         **     |
+     |  *        *                                          *        *   *     *      *   *           *   **         **     |
+     |  *        *                                          *        *   *     *      *  *            *   **         **     |
+     |  *        *                                          *       *    *     *      *  *            *   **         **     |
+     |  *        *                                          *       *    *    *       *  *            *   **         **     |
+     |   *       *                                          *       *    *    *      *   *            *   **         **     |
+     |   *       *                                          *       *    *    *      *   *            *   * *        **     |
+     |   *       *                                          *       *    *   *       *   *            *   * *        **     |
+     |   *       *                                          *       *    *   *       *   *           *    * *        **     |
+     |   *       *                                          *       *    *   *       *   *           *     **        **     |
+     |   *       *                                           *      *    *   *       *   *           *     **        **     |
+     |   *       *                                           *      *    *  *        *  *            *     **        **     |
+     |   *       *                                           *      *    *  *        *  *            *     **        **     |
+     |   *       *                                           *      *    *  *        *  *            *     **        **     |
+     |   *       *                                           *      *    * *        *   *            *     **        **     |
+     |   *       *                                           *      *    * *        *   *            *     **        **     |
+     |   *       *                                           *      *    * *        *   *            *     **        **     |
+     |   *       *                                           *     *     * *        *   *            *     **        **     |
+     |    *      *                                           *     *     **         *   *            *     **        **     |
+     |    *       *                                          *     *     **         *  *             *     **        **     |
+     |    *       *                                           *    *     **         *  *             *     **        **     |
+     |    *       *                                           *    *     **         *  *             *     * *       **     |
+     |    *       *                                           *    *     *          *  *             *     * *       **     |
+     |    *       *                                           *    *     *          *  *             *     * *       **     |
+     |    *       *                                           *    *     *          *  *             *     * *       **     |
+     |    *       *                                           *    *     *         *   *             *     * *       **     |
+     |    *       *                                           *    *    **         *  *              *     * *        *     |
+     |    *       *                                           *    *    **         *  *              *     * *        *     |
+     |    *       *                                           *    *    **         *  *              *     * *        *     |
+     |     *      *                                            *   *    **         *  *              *     * *        *     |
+     |     *      *                                            *  *    * *         *  *              *     * *        **    |
+     |     *      *                                            *  *    * *         *  *              *     * *        **    |
+     |     *      *                                            *  *    * *         *  *              *     * *        **    |
+     |     *      *                                            *  *    * *         * *               *     * *        **    |
+     |     *      *                                            *  *   *  *         * *               *      **        **    |
+     |     *      *                                            *  *   *  *         * *               *      **        **    |
+     |     *      *                                            *  *   *  *         * *               *      **        **    |
+     |     *      *                                            *  *   *  *         * *               *      **        **    |
+     |     *      *                                             * *   *  *        *  *               *      **        **    |
+     |     *      *                                             * *   *  *        * *                *      * *       **    |
+     |      *     *                                             * *  *   *        * *                *      * *       **    |
+     |      *     *                                             * *  *   *        * *                *      * *       **    |
+     |      *     *                                             * *  *   *        * *                *      * *       **    |
+     |      *     *                                             * *  *   *        * *                *      * *       **    |
+     |      *     *                                             **   *   *        * *                *      * *       **    |
+     |      *     *                                             **   *   *        **                 *      * *       **    |
+     |      *     *                                             **  *    *        **                 *      * *        *    |
+     |      *     *                                             **  *    *        **                 *      * *        *    |
+     |      *     *                                             * * *    *        **                 *      * *        *    |
+     |      *     *                                             * * *    *        **                 *      * *        *    |
+     |      *     *                                             * * *    *        **                 *      * *        *    |
+     |       *    *                                             * * *    *        *                  *      * *        *    |
+     |       *    *                                             * * *    *        *                  *      * *        *    |
+     |       *    *                                            *  * *    *        *                 *       * *        *    |
+     |       *    *                                            *  * *    *        *                 *       * *        **   |
+     |       *    *                                            *  * *    *        *                 *       * *        **   |
+     |       *    *                                            *  **     *        *                 *       * *        **   |
+     |       *    *                                            *  **     *       **                 *       * *        **   |
+     |       *    *                                            *  **     *       *                  *       * *        **   |
+     |       *    *                                            *   *     *       *                  *       * *        **   |
+     |       *    *                                           *    *     *       *                  *       * *        **   |
+     |        *   *                                           *    *     *       *                  *       * *        **   |
+     |        *   *                                           *    *     *       *                  *       * *        **   |
+     |        *   *                                           *    *     *      **                  *       * *        **   |
+     |        *   *                                           *    *     *      **                  *       * *        **   |
+     |        *   *                                           *    *     *      **                  *       * *        **   |
+     |        *   *                                          *     **    *      **                  *       * *        **   |
+     |        *   *                                          *     **    *      **                  *       * *        **   |
+     |        *   *                                          *     **    *      **                  *       * *        **   |
+     |        *   *                                          *     **    *     * *                  *       *  *       **   |
+     |        *   *                                          *     **    *     * *                  *       *  *       **   |
+     |        *   *                                          *     **    *     * *                  *       *  *       **   |
+     |        *   *                                         *      **    *     * *                  *       *  *       **   |
+     |         *  *                                         *      **    *     * *                  *       *  *       **   |
+     |         *  *                                         *      * *   *     * *                  *       *  *       **   |
+     |         *  *                                         *      * *   *     * *                  *       *  *       **   |
+     |         *  *                                         *      * *   *    *  *                  *       *  *       **   |
+     |         *  *                                         *      * *   *    *  *                  *       *  *       **   |
+     |         *  *                                         *      * *   *    *  *                  *       *  *       **   |
+     |         *  *                                         *      * *   *    *  *                  *       *  *       **   |
+     |         *  *                                        *       * *   *    *  *                  *       *  *       **   |
+     |         *  *                                        *       * *   *    *  *                  *       *  *       **   |
+     |         *  *                                        *       * *   *   *   *                  *       *  *       * *  |
+     |         *  *                                        *       *  *  *   *   *                  *       *  *       * *  |
+     |         *  *                                        *       *  *  *   *   *                  *       *  *        **  |
+     |         *  *                                        *       *  *  *   *   *                  *       *  *        **  |
+     |          * *                                        *       *  *  *   *   *                  *       *  *        **  |
+     |          * *                                        *       *  *  *   *   *                  *       *  *        **  |
+     |          * *                                       *        *  *  *   *   *                  *       *  *        **  |
+     |          * *                                       *        *  *  *  *    *                  *       *  *        **  |
+     |          * *                                       *        *  *  *  *    *                  *       *  *        **  |
+     |          * *                                       *        *   * *  *    *                  *       *  *        **  |
+     |          * *                                       *        *   * *  *    *                  *       *  *        **  |
+     |          * *                                       *        *   * *  *    *                  *       *  *        **  |
+     |          * *                                       *        *   * *  *    *                  *       *  *        **  |
+     |          * *                                       *        *   * *  *    *                  *       *  *        **  |
+     |          * *                                       *        *   * *  *    *                  *       *  *        **  |
+     |          * *                                       *        *   * * *     *                  *      *   *        **  |
+     |          * *                                       *        *   * * *     *                  *      *   *        **  |
+     |          * *                                       *        *   * * *     *                  *      *   *        **  |
+     |          * *                                       *        *    ** *     *                  *      *   *        **  |
+     |          * *                                       *        *    ** *     *                  *      *   *        **  |
+     |          **                                       *         *    ** *     *                  *      *   *        **  |
+     |           *                                       *         *    ** *     *                  *      *   *        **  |
+     |           *                                       *         *    ** *     *                  *      *   *        **  |
+     |           *                                       *         *    ** *     *                  *      *   *        **  |
+     |           *                                       *         *    ** *     *                  *      *   *        **  |
+     |           *                                       *         *    ***      *                  *      *   *        **  |
+     |           *                                       *         *    ***      *                  *      *   *        **  |
+     |           *                                       *         *    ***      *                  *      *   *        **  |
+     |           *                                       *         *    ***      *                  *      *   *        **  |
+     |           *                                       *         *    ***      *                  *      *   *        **  |
+     |-----------*---------------------------------------*---------*----***------*------------------*------*--*---------**--|
+     |           *                                       *         *    ***      *                  *      *  *         **  |
+     |           *                                       *         *    ***      *                  *      *  *         **  |
+     |           *                                       *         *    ***      *                  *      *  *         **  |
+     |           *                                       *         *    ***      *                  *      *  *         **  |
+     |           *                                       *         *    ***      *                  *      *  *         **  |
+     |           *                                       *         *    ***      *                  *      *  *         **  |
+     |           *                                       *         *    ***     *                   *      *  *         **  |
+     |           *                                       *         *    ***     *                   *      *  *         **  |
+     |           *                                       *         *    ***     *                   *      *  *         **  |
+     |           *                                       *         *    ***     *                   *      *  *         **  |
+     |           *                                       *         *    ** *    *                   *      *  *         **  |
+     |           *                                       *         *    ** *    *                   *      *  *         *   |
+     |           *                                       *         *    *  *    *                   *      *  *         *   |
+     |           *                                       *         *    *  *    *                   *      *  *         *   |
+     |           *                                       *         *    *  *    *                   *      *  *         *   |
+     |           *                                       *         *    *  *    *                    *     *  *         *   |
+     |           *                                       *         *    *  *   *                     *     *  *         *   |
+     |           *                                        *        *    *  *   *                     *     *  *         *   |
+     |           *                                        *        *    *  *   *                     *     *  *        **   |
+     |           *                                        *       *     *  *   *                     *     *  *        **   |
+     |           *                                        *       *     *  *   *                     *      * *        **   |
+     |           *                                        *       *     *  *   *                     *      * *        **   |
+     |           *                                        *       *     *  *   *                     *      * *        **   |
+     |           *                                        *       *     *  *  *                      *      * *        *    |
+     |           *                                        *       *     *  *  *                      *      * *        *    |
+     |           *                                        *       *     *  *  *                       *     * *        *    |
+     |           *                                        *       *     *  *  *                       *     * *        *    |
+     |           *                                        *       *     ** *  *                       *     * *        *    |
+     |           *                                        *       *     ** * *                        *     * *        *    |
+     |           *                                        *       *     ** * *                        *     * *        *    |
+     |           *                                        *       *     **  **                        *     * *        *    |
+     |           *                                        *       *     **  **                        *     * *        *    |
+     |           *                                        *       *     **  **                        *     * *       **    |
+     |           *                                        *       *     **  *                         *     * *       **    |
+     |           *                                        *       *     **  *                          *    * *       **    |
+     |           *                                        *       *     **  *                          *    * *       **    |
+     |           *                                        *       *     **  *                          *    * *       **    |
+     |           *                                        *       *     **  *                          *    * *       **    |
+     |           *                                        *       *     **  *                          *    * *       **    |
+     |           *                                        *       *     ** **                          *    * *       **    |
+     |           **                                        *      *     ** **                          *    * *       **    |
+     |           **                                        *      *     ** **                          *    * *      * *    |
+     |           **                                        *      *     ** **                           *   * *      * *    |
+     |           **                                        *      *     *  **                           *   * *      * *    |
+     |           **                                        *      *     *  **                           *   * *      **     |
+     |           **                                        *      *     * * *                           *   * *      **     |
+     |           **                                        *      *     * * *                           *   * *      **     |
+     |           **                                        *      *     * * *                           *   * *      **     |
+     |           **                                        *     *      * * *                           *   * *      **     |
+     |           **                                        *     *      * * *                           *   * *      **     |
+     |           **                                        *     *      * * *                           *   * *      **     |
+     |           **                                        *     *      * * *                           *   * *     * *     |
+     |           **                                        *     *      * * *                           *   * *     * *     |
+     |           **                                        *     *     ** * *                            *  * *     * *     |
+     |           **                                        *     *     ** * *                            *  * *     * *     |
+     |           **                                         *    *     ** * *                            *  * *     * *     |
+     |            *                                         *    *     ** * *                            *  * *     * *     |
+     |            *                                         *    *     ** * *                            *  * *     * *     |
+     |            *                                         *    *    * * * *                            *  * *     * *     |
+     |            *                                         *    *    * * * *                            *  * *     * *     |
+     |            *                                         *    *    * * * *                            *  * *     **      |
+     |            *                                         *    *    * * * *                            *  * *     **      |
+     |            *                                         *    *    * * * *                            *  * *     **      |
+     |            *                                         *    *    * * * *                            *  * *    * *      |
+     |            *                                         *    *   *  * * *                            *  * *    * *      |
+     |            *                                         *    *   *  * * *                            *  * *    * *      |
+     |            *                                         *    *   *   ** *                            *  * *    * *      |
+     |            *                                          *   *   *   ** *                            *  * *    * *      |
+     |            *                                          *   *   *   ** *                             * * *    * *      |
+     |            *                                          *   *  *    ** *                             * * *    * *      |
+     |            *                                          *   *  *    ** *                             * * *    * *      |
+     |            *                                          *   *  *    ** *                             *  **    * *      |
+     |            *                                          *   *  *    ** *                             *  **    * *      |
+     |            *                                          *   *  *    ** *                             *  **    * *      |
+     |            *                                          *   * *     ** *                             *  **    **       |
+     |            *                                          *   * *     ** *                             *  **    **       |
+     |            *                                          *   * *     ** *                             *  **    **       |
+     |            *                                           * *  *     ** *                             *  **    **       |
+     |            *                                           * *  *     ** *                             *  **    **       |
+     |            *                                           * *  *     ** *                             *  **    **       |
+     |            *                                           * * *      ** *                             *  **    **       |
+     |            *                                           * * *      ** *                             *  **    **       |
+     |            *                                           * * *      ** *                             *  **    **       |
+     |            *                                           * * *      ** *                             *  **    **       |
+     |            *                                           * * *      ** *                             *  **    **       |
+     |            *                                           * * *      ** *                             *  **    **       |
+     |            *                                           * **       ** *                             *  **    **       |
+     |            *                                            ***       ** *                             *  **    **       |
+     |            *                                            ***       ** *                             *  **    **       |
+     |            *                                            ***       ** *                             *  **    *        |
+     |            *                                            ***        * *                             *  **    *        |
+     |            *                                            ***        * *                             *  **    *        |
+     |            *                                            ***        * *                             *  **    *        |
+     |            *                                            ***        * *                             *  **    *        |
+     |            *                                            **         **                              *  **    *        |
+     |            *                                            **         **                              *   *    *        |
+     |            *                                            **         **                              *   *    *        |
+     |            *                                            **         **                              *   *    *        |
+     |------------*--------------------------------------------**---------**------------------------------*---*----*--------|
+     |            *                                            **         **                              *   *    *        |
+     |            *                                            **         **                              *   *    *        |
+     |            *                                            **         **                              *   *    *        |
+     |            *                                            **         * *                             *  **    *        |
+     |            *                                            ***        * *                             *  **    *        |
+     |            *                                            ***        * *                             *  **    *        |
+     |            *                                            ***        * *                             *  **    *        |
+     |            *                                            ***        * *                             *  **    *        |
+     |            *                                            ***        * *                             *  **    **       |
+     |            *                                            ***       ** *                             *  **    **       |
+     |            *                                            ***       ** *                             *  **    **       |
+     |            *                                            ***       ** *                             *  **    **       |
+     |            *                                            ***       ** *                             *  **    **       |
+     |            *                                            ** *      ** *                             *  **    **       |
+     |            *                                           * * *      ** *                             *  **    **       |
+     |            *                                           * * *      ** *                             *  **   * *       |
+     |            *                                           * * *      ** *                             *  **   * *       |
+     |            *                                           * * *      ** *                             *  **   * *       |
+     |            *                                           * * *      ** *                             *  **   * *       |
+     |            *                                           * * *      ** *                             *  **   * *       |
+     |            *                                           * * *      ** *                             *  **   *  *      |
+     |            *                                           * *  *     **  *                            *  **   *  *      |
+     |           **                                           * *  *     **  *                            *  **   *  *      |
+     |           **                                           * *  *     **  *                            *  **   *  *      |
+     |           **                                           * *  *     *   *                            *  **   *  *      |
+     |           **                                           * *  *     *   *                            *  **   *  *      |
+     |           **                                           * *  *    **   *                            *  **   *  *      |
+     |           **                                           * *  *    **   *                            *  **   *  *      |
+     |           **                                           *  * *    **   *                            *  **   *  *      |
+     |           **                                           *  * *    **   *                            *  **   *   *     |
+     |           **                                           *  *  *   **   *                            * * *   *   *     |
+     |           **                                           *  *  *   **   *                            * * *   *   *     |
+     |           **                                           *  *  *   **    *                           * * *   *   *     |
+     |           **                                           *  *  *   **    *                           * * *   *   *     |
+     |           **                                           *  *  *   **    *                           * * *   *   *     |
+     |           **                                           *  *  *   **    *                           * * *   *   *     |
+     |           **                                           *  *  *   **    *                          *  * *   *   *     |
+     |           **                                           *  *  *   **    *                          *  * *   *   *     |
+     |           **                                           *  *   * * *    *                          *  * *   *   *     |
+     |           **                                           *  *   * * *    *                          *  * *   *    *    |
+     |           **                                           *  *   * * *    *                          *  * *   *    *    |
+     |          * *                                           *  *   * * *    *                          *  * *   *    *    |
+     |          * *                                           *  *   * * *     *                         *   **   *    *    |
+     |          * *                                           *  *   * * *     *                         *   **   *    *    |
+     |          * *                                           *  *   * * *     *                         *   **   *    *    |
+     |          * *                                           *  *   * * *     *                         *   **   *    *    |
+     |          * *                                            * *   * * *     *                         *   **   *    *    |
+     |          * *                                            * *   * * *     *                         *   **   *    *    |
+     |          * *                                            * *    *  *     *                         *   **   *    *    |
+     |          * *                                            * *    *  *     *                         *   **   *    *    |
+     |          * *                                            * *    *  *     *                         *   **   *     *   |
+     |          * *                                            * *    *   *     *                        *   **   *     *   |
+     |          * *                                            * *    *   *     *                        *   **   *     *   |
+     |          * *                                            * *    *   *     *                        *   **   *     *   |
+     |          * *                                            * *   **   *     *                        *   **   *     *   |
+     |         *  *                                            * *   * *  *     *                        *   **   *     *   |
+     |         *  *                                            * *   * *  *     *                       *    **   *     *   |
+     |         *  *                                            * *   * *  *     *                       *    **   *     *   |
+     |         *  *                                            * *   * *  *     *                       *    **   *     *   |
+     |         *  *                                             **   * *  *      *                      *    **   *     *   |
+     |         *  *                                             **   * *  *      *                      *    *    *     *   |
+     |         *  *                                             **   * *  *      *                      *    *    *     *   |
+     |         *  *                                             **   * *  *      *                      *    *    *     *   |
+     |         *  *                                             **  *  *  *      *                      *    *    *     *   |
+     |         *  *                                             **  *  *  *      *                      *    *    *     *   |
+     |         *  *                                             **  *  *  *      *                      *    *    *      *  |
+     |         *  *                                             * * *  *  *      *                      *    *    *      *  |
+     |        *   *                                              ** *   * *       *                     *    *    *      *  |
+     |        *   *                                              ** *   *  *      *                     *    *    *      *  |
+     |        *   *                                              ** *   *  *      *                     *    *    *      *  |
+     |        *   *                                              ** *   *  *      *                     *    *    *      *  |
+     |        *   *                                              ***    *  *      *                     *    *    *      *  |
+     |        *   *                                              ***    *  *      *                     *    **   *      *  |
+     |        *   *                                              ***    *  *      *                     *    **   *      *  |
+     |        *   *                                              ***    *  *      *                     *    **   *      *  |
+     |        *   *                                               **    *  *       *                    *    **   *      *  |
+     |        *   *                                               **    *  *       *                   *     **   *      *  |
+     |        *   *                                               **    *  *       *                   *     **   *      *  |
+     |       *    *                                               **    *  *       *                   *     **   *      *  |
+     |       *    *                                               *     *   *      *                   *     **   *      *  |
+     |       *    *                                               *      *  *      *                   *     **   *      *  |
+     |       *    *                                               **     *  *      *                   *     **   *      *  |
+     |       *    *                                               **     *  *      *                   *     **   *      *  |
+     |       *    *                                               **     *  *       *                  *     **   *      *  |
+     |       *    *                                               **     *  *       *                  *     **   *      *  |
+     |       *    *                                               **     *  *       *                  *     **   *      *  |
+     |       *    *                                              ***     *  *       *                  *     **   *      *  |
+     |       *    *                                              ** *    *   *      *                  *     **   *      *  |
+     |      *     *                                              ** *    *   *      *                  *     **   *      *  |
+     |      *     *                                              ** *    *   *      *                  *    * *   *      *  |
+     |      *     *                                              ** *    *   *       *                 *    * *   *      *  |
+     |      *     *                                              ** *    *   *       *                 *    * *   *     *   |
+     |      *     *                                              ** *    *   *       *                 *    * *   *     *   |
+     |      *     *                                              **  *   *   *       *                 *    * *   *     *   |
+     |      *     *                                             * *  *   *   *       *                 *    * *   *     *   |
+     |      *     *                                             * *  *   *    *      *                 *    * *   *     *   |
+     |      *     *                                             * *  *   *    *      *                 *    * *   *     *   |
+     |      *     *                                             *  * *    *   *      *                 *    * *   *     *   |
+     |     *      *                                             *  * *    *   *       *                *    * *   *     *   |
+     |     *      *                                             *  *  *   *   *       *                *    * *   *     *   |
+     |     *      *                                             *  *  *   *   *       *                *    * *   *     *   |
+     |     *      *                                             *  *  *   *    *      *                *    **    *     *   |
+     |     *      *                                            *   *  *   *    *      *                *    **    *     *   |
+     |     *      *                                            *   *  *   *    *      *                *    **    *     *   |
+     |     *      *                                            *   *  *   *    *      *                *    **     *    *   |
+     |     *      *                                            *   *   *  *    *      *                *    **     *    *   |
+     |     *      *                                            *   *   *  *    *       *               *    **     *    *   |
+     |     *      *                                            *   *   *  *    *       *               *    **     *   *    |
+     |     *      *                                            *   *   *  *     *      *               *   * *     *   *    |
+     |    *       *                                            *   *   *   *    *      *               *   * *     *   *    |
+     |    *       *                                           *    *   *   *    *      *               *   * *     *   *    |
+     |    *       *                                           *    *   *   *    *      *               *   * *     *   *    |
+     |    *       *                                           *    *   *   *    *      *               *   * *     *   *    |
+     |    *       *                                           *    *    *  *    *      *               *   * *     *   *    |
+     |    *       *                                           *    *    *  *     *      *              *   * *     *   *    |
+     |    *       *                                           *    *    *  *     *      *              *   * *     *   *    |
+     |    *       *                                           *    *    *   *    *      *              *   * *     *   *    |
+     |    *       *                                           *     *   *   *    *      *              *   * *     *   *    |
+     |    *       *                                           *     *   *   *    *      *              *   * *     *   *    |
+     |    *       *                                          *      *   *   *    *      *              *   * *     *  *     |
+     |    *      *                                           *      *   *   *     *     *              *   * *      * *     |
+     |   *       *                                           *      *   *    *    *     *              *   **       * *     |
+     |   *       *                                           *      *   *    *    *     *              *   **       * *     |
+     |   *       *                                           *      *   *    *    *      *             *  * *       * *     |
+     |   *       *                                           *      *   *    *    *      *             *  * *       * *     |
+     |   *       *                                           *      *   *    *    *      *             *  * *       * *     |
+     |   *       *                                           *      *   *     *    *     *             *  * *       * *     |
+     |   *       *                                           *      *   *     *    *     *             *  * *       * *     |
+     |   *       *                                          *       *   *     *    *     *             *  * *       * *     |
+     |   *       *                                          *       *   *     *    *     *             *  * *       * *     |
+     |   *       *                                          *       *   *      *   *     *             *  * *       * *     |
+     |   *       *                                          *       *   *      *    *    *             *  * *       * *     |
+     |   *       *                                          *       *   *      *    *    *             *  * *       * *     |
+     |  *        *                                          *        *  *      *    *     *            *  * *       * *     |
+     |  *        *                                          *        *  *       *   *     *            *  * *       * *     |
+     |  *        *                                          *        *  *       *   *     *            * * *         *      |
+     |  *        *                                          *        *  *       *   *     *            * * *         *      |
+     |  *        *                                          *        *  *       *    *    *            * * *         *      |
+     |  *        *                                          *        *  *       *    *    *            * * *         *      |
+     |  *        *                                         *         *  *        *   *    *            * * *         *      |
+     |  *        *                                         *         *  *        *   *    *            * * *         *      |
+     |  *        *                                         *         *  *        *   *    *            * * *         *      |
+     |  *        *                                         *         *  *         *  *    *            * * *         *      |
+     |  *        *                                         *         *  *         *   *   *            * * *         *      |
+     |  *        *                                         *         *  *         *   *   *            * * *         *      |
+     |  *        *                                         *         *  *         *   *   *           * *  *         *      |
+     |  *        *                                         *         *  *          *  *   *           * *  *         *      |
+     |  *        *                                         *          * *          *  *   *           * *  *         *      |
+     | *         *                                         *          * *          *   *   *          * * *          *      |
+     | *         *                                         *          * *          *   *   *          * * *          *      |
+     | *         *                                         *          * *           *  *   *          * * *          *      |
+     | *         *                                         *          * *           *  *   *          * * *          *      |
+     | *         *                                        *           * *           *  *   *          * * *          **     |
+     | *         *                                        *           * *           *  *   *          * * *          **     |
+     | *         *                                        *           * *            *  *  *          * * *          **     |
+     | *         *                                        *           * *            *  *  *          **  *          **     |
+     | *         *                                        *           * *            *  *  *          **  *          **     |
+     | *         *                                        *           * *            *  *  *          **  *          **     |
+     | *         *                                        *           * *             * *  *          **  *          **     |
+     | *         *                                        *           * *             * *  *          **  *          **     |
+     | *         *                                        *           * *             *  * *          **  *          **     |
+     | *         *                                        *           * *             *  * *          ** *           **     |
+     | *         *                                        *            **              * * *          ** *           **     |
+     | *         *                                        *            **              * * *          ** *           **     |
+     | *         *                                        *            **              * * *          *  *           **     |
+     | *         *                                        *            **              * * *          *  *           **     |
+     | *         *                                        *            **               ** *          *  *           **     |
+     | *         *                                        *            **               * **          *  *            *     |
+     | *         *                                        *            **               * **          *  *            *     |
+     |*          *                                        *            **               * **          *  *            *     |
+     |*          *                                       *             **                ***          *  *            *     |
+     |*          *                                       *             **                ***          *  *            *     |
+     |*          *                                       *             **                ***          *  *            *     |
+     |*          *                                       *             **                ***         **  *            *     |
+     |*          *                                       *             **                * *         *   *            *     |
+     |*          *                                       *             **                 **         *   *            *     |
+     |*          *                                       *             **                 **         *   *            *     |
+     |*          *                                       *             **                 **         *   *            *     |
+     |*          *                                       *             **                 **         *   *            *     |
+     |*          *                                       *             **                 **         *  *             *     |
+     |*          *                                       *             **                  *         *  *             *     |
+     |*          *                                       *             **                  *         *  *             *     |
+     |*          *                                       *              *                  **        *  *             *     |
+     |*          *                                       *              *                  **        *  *             *     |
+     |*          *                                       *              *                  **        *  *             *     |
+     |*          *                                       *              *                  **        *  *             *     |
+     |*          *                                       *              *                  **       **  *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*----------*---------------------------------------*--------------*------------------**-------*---*-------------*-----|
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *             *     |
+     |*          *                                       *              *                  **       *   *              *    |
+     |*          *                                       *              *                  **       *   *              *    |
+     |*          *                                       *              *                  **       *   *              *    |
+     |*          *                                       *              *                  **       *   *              *    |
+     |*          *                                       *              *                 * *       *    *             *    |
+     |*          *                                       *              *                 * *       *    *             *    |
+     |*          *                                       *              *                 * *       *    *             *    |
+     |*          *                                       *              *                 * *       *    *             *    |
+     |*          *                                       *              *                 * *       *    *             *    |
+     |*          *                                       *              *                 * *       *    *             *    |
+     |*          *                                       *              *                 * *       *    *             *    |
+     |*          *                                        *             *                 * *       *    *             *    |
+     |*          *                                        *             *                *  *       *    *             *    |
+     |*          *                                        *             *                *  *       *    *             *    |
+     |*          *                                        *             *                *  *       *    *             *    |
+     |*          *                                        *             *                *  *       *    *             *    |
+     |*         *                                         *             *                *  *       *    *             *    |
+     |*         *                                         *             *                *  *       *    *             *    |
+     |*         *                                         *             *               *   *       *    *             *    |
+     |*         *                                         *             *               *   *       *     *            *    |
+     |*         *                                         *             *               *   *       *     *            *    |
+     |*         *                                         *             *               *   *       *     *            *    |
+     |*         *                                          *            *               *   *       *     *            *    |
+     |*         *                                          *            *              *    *       *     *            *    |
+     |*         *                                          *            *              *    *       *     *            *    |
+     |*         *                                          *            *              *    *       *     *            *    |
+     | *        *                                          *            *              *    *       *     *            *    |
+     | *        *                                          *            *             *     *       *     *            *    |
+     | *        *                                          *            *             *     *       *     *            *    |
+     | *        *                                          *            *             *     *       *     *            *    |
+     | *        *                                          *            *             *     *       *     *            *    |
+     | *        *                                           *           *             *     *       *     *            *    |
+     | *        *                                           *           *            *      *       *      *           *    |
+     | *        *                                           *           *            *      *       *      *           *    |
+     | *        *                                           *           *            *      *       *      *           *    |
+     | *        *                                           *           *            *      *       *      *           *    |
+     | *       *                                            *           *           *       *       *      *           *    |
+     | *       *                                            *           *           *       *       *      *           *    |
+     | *       *                                             *          *           *       *       *      *           *    |
+     | *       *                                             *          *           *       *       *      *           *    |
+     | *       *                                             *          *          *        *       *      *           *    |
+     | *       *                                             *          *          *        *       *      *            *   |
+     | *       *                                             *          *          *        *       *      *            *   |
+     | *       *                                             *          *          *        *       *      *            *   |
+     | *       *                                              *         *         *         *       *      *            *   |
+     | *       *                                              *         *         *         *       *      *            *   |
+     | *       *                                              *         *         *         *       *      *            *   |
+     | *       *                                              *         *         *         *       *      *            *   |
+     | *       *                                              *         *        *         *        *       *           *   |
+     | *       *                                              *         *        *         *        *       *           *   |
+     | *       *                                               *        *        *         *        *       *           *   |
+     | *       *                                               *        *        *         *        *       *           *   |
+     | *       *                                               *        *       *          *        *       *           *   |
+     | *      *                                                *        *       *          *        *       *           *   |
+     | *      *                                                *        *       *          *        *       *           *   |
+     |  *     *                                                *        *       *          *        *       *           *   |
+     |  *     *                                                 *       *       *          *        *       *           *   |
+     |  *     *                                                 *       *      *           *        *       *           *   |
+     |  *     *                                                 *       *      *           *        *       *           *   |
+     |  *     *                                                 *       *      *           *        *       *           *   |
+     |  *     *                                                 *       *      *           *        *       *           *   |
+     |  *     *                                                 *       *     *            *        *       *           *   |
+     |  *     *                                                  *      *     *            *        *       *           *   |
+     |  *     *                                                  *      *     *            *        *       *           *   |
+     |  *     *                                                  *      *     *            *        *       *           *   |
+     |  *     *                                                  *      *     *            *        *       *           *   |
+     |  *     *                                                  *      *    *             *        *       *           *   |
+     |  *     *                                                  *      *    *             *        *       *           *   |
+     |  *     *                                                  *      *    *             *        *       *           *   |
+     |  *     *                                                   *     *    *             *        *       *           *   |
+     |  *     *                                                   *     *    *             *        *       *           *   |
+     |  *     *                                                   *     *    *             *        *       *           *   |
+     |  *     *                                                   *     *   *              *        *       *           *   |
+     |  *     *                                                   *     *   *              *        *       *           *   |
+     |  *     *                                                   *     *   *              *        *       *           *   |
+     |  *     *                                                   *     *   *              *        *       *           *   |
+     |  *     *                                                   *     *   *              *        *       *           *   |
+     |  *     *                                                   *     *   *              *        *       *           *   |
+     |  *     *                                                   *     *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |--*----*-----------------------------------------------------*----*---*--------------*--------*-------*-----------*---|
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *     *                                                    *    *   *              *        *       *           *   |
+     |  *     *                                                    *   **   *              *        **      *           *   |
+     |  *     *                                                    *   **   *             **        **       *          *   |
+     |  *     *                                                    *   **    *            **         *       *          *   |
+     |  *     *                                                    *   **    *            **         *       *          *   |
+     |  *     *                                                    *   **    *            **         *       *          *   |
+     |  *     *                                                    *   **    *            *          *       *          *   |
+     |  *     *                                                    *   **    *            *          *       *          *   |
+     |  *     *                                                    *   **    *           **          *       *         **   |
+     |  *     *                                                    *   **    *           **          *       *         **   |
+     |  *     *                                                    *  * *    *           **          *       *         **   |
+     |  *     *                                                    *  * *    *           **          *       *         **   |
+     |  *     *                                                    *  * *     *          **          *       *         **   |
+     |  *     *                                                    *  * *     *         * *          **      *         **   |
+     |  *     *                                                    *  * *     *         * *          **      *         **   |
+     |   *    *                                                    *  * *     *         * *          **      *         **   |
+     |   *    *                                                    *  * *     *         **           **      *         **   |
+     |   *    *                                                    *  * *     *         **           **      *        * *   |
+     |   *    *                                                    * *  *     *        * *           **      *        * *   |
+     |   *    *                                                    * *  *     *        * *           **      *        * *   |
+     |   *    *                                                    * *  *      *       * *           **      *        * *   |
+     |   *    *                                                    * *  *      *       * *           * *     *        * *   |
+     |   *    *                                                    * *  *      *      *  *           * *     *        * *   |
+     |   *    *                                                    * *  *      *      *  *           * *      *       * *   |
+     |   *    *                                                    * *  *      *      *  *            **      *       **    |
+     |   *    *                                                    * *  *      *      * *             **      *      * *    |
+     |   *    *                                                    **   *      *     *  *             **      *      * *    |
+     |   *    *                                                    **   *      *     *  *             **      *      * *    |
+     |   *    *                                                    **   *       *    *  *             **      *      * *    |
+     |   *    *                                                    **   *       *    *  *             **      *      * *    |
+     |   *    *                                                    **   *       *   *   *             * *     *      * *    |
+     |   *    *                                                     *   *       *   *   *             * *     *      * *    |
+     |   *    *                                                     *   *       *   *   *             * *     *     *  *    |
+     |   *    *                                                     *   *       *   *   *             * *     *     *  *    |
+     |   *    *                                                    **   *       *  *   *              * *     *     *  *    |
+     |   *    *                                                    **   *       *  *   *              * *     *     *  *    |
+     |   *    *                                                    **   *       *  *   *              * *     *     *  *    |
+     |   *    *                                                    **   *       *  *   *              * *     *     *  *    |
+     |   *    *                                                    **   *        **    *              *  *    *     *  *    |
+     |    *   *                                                    **   *        **    *              *  *     *    *  *    |
+     |    *   *                                                    **    *       **    *              *  *     *   *   *    |
+     |    *   *                                                    **    *       **    *              *  *     *   *   *    |
+     |    *   *                                                   * *    *       **    *              *  *     *   *   *    |
+     |    *   *                                                   * *    *       *    *               *  *     *   *  *     |
+     |    *   *                                                   * *    *       *    *               *  *     *   *  *     |
+     |    *   *                                                   * *    *      **    *               *  *     *   *  *     |
+     |    *   *                                                   * *    *      * *   *               *  *     *   *  *     |
+     |    *   *                                                   * *    *      * *   *               *   *    *   *  *     |
+     |    *   *                                                   * *    *      * *   *               *   *    *   *  *     |
+     |    *   *                                                   * *    *     *  *   *               *   *    *   *  *     |
+     |    *   *                                                   * *    *     *  *   *               *   *    *   *  *     |
+     |    *   *                                                  *  *    *     *  *   *               *   *    *   *  *     |
+     |    *   *                                                  *  *    *     *  *  *                *   *    *  *   *     |
+     |    *   *                                                  *  *    *    *   *  *                *   *    *  *   *     |
+     |     *  *                                                  *  *    *    *   *  *                *   *    *  *   *     |
+     |     *  *                                                  *   *   *    *   *  *                *   *    *  *   *     |
+     |     *  *                                                  *   *   *    *   *  *                *   *    *  *   *     |
+     |     *  *                                                  *   *   *    *   *  *                *    *   *  *   *     |
+     |     *   *                                                 *   *   *   *    *  *                *    *   *  *   *     |
+     |     *   *                                                 *   *   *   *    *  *                *    *   *  *   *     |
+     |     *   *                                                *    *   *   *    *  *                *    *   *  *   *     |
+     |     *   *                                                *    *   *   *    *  *                *    *   *  *   *     |
+     |     *   *                                                *    *   *  *     *  *                *    *   *  *   *     |
+     |     *   *                                                *    *   *  *     *  *               *     *   *  *   *     |
+     |     *   *                                                *    *   *  *     * *                *     *   *  *   *     |
+     |     *   *                                                *    *   *  *     * *                *     *   *  *   *     |
+     |     *   *                                                *    *   *  *     * *                *     *   *  *  *      |
+     |     *   *                                                *    *   * *       **                *     *   *  *  *      |
+     |      *  *                                                *    *   * *       **                *     *   *   * *      |
+     |      *  *                                                *    *   * *       **                *     *   *   * *      |
+     |      *  *                                                *    *   * *       **                *     *   *   * *      |
+     |      *  *                                               *     *   * *       **                *      *  *   * *      |
+     |      *  *                                               *     *   * *       **                *      *  *   * *      |
+     |      *  *                                               *     *   * *       **                *      *  *   * *      |
+     |      *  *                                               *    *    **        **                *      *  *   * *      |
+     |      *  *                                               *    *    **        **                *      *  *   * *      |
+     |      *  *                                               *    *    **        **                *      *  *   * *      |
+     |      *  *                                               *    *    **        **                *      *  *   * *      |
+     |      *  *                                               *    *    **        **                *      * *    * *      |
+     |      *  *                                               *    *    **        *                 *      * *    * *      |
+     |      *  *                                               *    *    **        *                 *      * *    * *      |
+     |       * *                                               *    *    **        *                 *      * *    * *      |
+     |       * *                                               *    *    **        *                 *      * *    * *      |
+     |       * *                                              *     *    **        *                 *      * *     **      |
+     |       * *                                              *    *     **        *                 *      * *     **      |
+     |       * *                                              *    *     **        *                 *      * *     **      |
+     |       * *                                              *    *     **        *                 *      * *     **      |
+     |       * *                                              *    *     **       **                 *      * *     **      |
+     |       * *                                              *    *     **       **                *       * *     **      |
+     |       *  *                                             *    *     **       **                *       * *     **      |
+     |       *  *                                             *    *     **       **                *       * *     **      |
+     |       *  *                                             *   *      **       **                *       * *     **      |
+     |       *  *                                             *   *      **       **                *       * *     **      |
+     |        * *                                             *   *      **       **                *       * *     **      |
+     |        * *                                             *   *      **       **                *       * *      *      |
+     |        * *                                             *   *      **       **                *       * *      *      |
+     |        * *                                             *   *      **       **                *       * *      *      |
+     |        * *                                            *   *       **       **                *       * *      *      |
+     |        * *                                            *   *       **       **                *       * *      *      |
+     |        * *                                            *   *       **       **                *       * *      *      |
+     |        * *                                            *   *       **       **                *       * *      *      |
+     |        * *                                            *   *       **       **                *       * *      *      |
+     |        * *                                            *   *       **       **                *       * *      *      |
+     |        * *                                            *   *       **       **                *       * *      *      |
+     |        * *                                            *  *       * *       **                *       * *      **     |
+     |        * *                                            *  *       * *       **                *       * *      **     |
+     |        * *                                            *  *       * *       **                *       * *      **     |
+     |        * *                                            *  *       * *       **                *       * *      **     |
+     |         **                                            *  *       * *       **               *        * *      **     |
+     |         **                                            *  *       * *       **               *        * *      **     |
+     |         **                                           *   *       * *       **               *        * *      **     |
+     |         **                                           *   *       * *       **               *        * *      **     |
+     |         * *                                          *  *        * *       **               *        * *      * *    |
+     |         * *                                          *  *        * *       **               *        * *      * *    |
+     |         * *                                          *  *        * *       **               *        * *      * *    |
+     |         * *                                          *  *        * *       **               *        * *      * *    |
+     |         * *                                          *  *        * *       **               *        * *       **    |
+     |         * *                                          *  *        * *       **               *        * *       **    |
+     |         * *                                          *  *        * *       **               *        * *       **    |
+     |         * *                                          *  *        * *       **               *        * *       **    |
+     |         * *                                         *   *        * *       **               *        * *       * *   |
+     |         * *                                         *   *        * *       **               *        * *       * *   |
+     |         * *                                         *   *        * *       **               *        * *       * *   |
+     |         * *                                         *   *        * *       **               *        * *       * *   |
+     |         * *                                         *   *        * *       **               *        * *       * *   |
+     |         * *                                         *   *        **        **               *        * *       * *   |
+     |         * *                                         *   *        **        **               *        * *       * *   |
+     |         * *                                         *  *         **        **               *        * *       * *   |
+     |         * *                                         *  *         **        **               *        * *       *  *  |
+     |         * *                                        *   *         **        **               *        * *       *  *  |
+     |         * *                                        *   *         **        **              *         * *       *  *  |
+     |          * *                                       *   *         **        **              *         * *       *  *  |
+     |          * *                                       *   *         **        **              *         * *       *  *  |
+     |          * *                                       *   *         **        **              *         * *       *  *  |
+     |          * *                                       *   *         **         *              *         * *       *  *  |
+     |          * *                                       *   *         **         *              *         * *       *  *  |
+     |          * *                                       *   *         **         *              *         * *       *  *  |
+     |          * *                                       *   *         **         *              *         * *       *   * |
+     |          * *                                       *   *         **         *              *         * *       *   * |
+     |          * *                                       *   *         **         *              *         * *       *   * |
+     |          * *                                      *    *         **         *              *         * *       *   * |
+     |          * *                                      *    *         **         *              *         * *       *   * |
+     |          * *                                      *    *         **         *              *         * *       *   * |
+     |          * *                                      *    *         **         *              *        *  *       *   * |
+     |          * *                                      *    *         **         *              *        *  *       *   * |
+     |          * *                                      *    *         **         *              *        *  *       *   * |
+     |          * *                                      *    *         **         *              *        *  *       *   * |
+     |          * *                                      *    *         **         *              *        *  *       *   * |
+     |          * *                                      *    *         **         *              *        *  *       *   * |
+     |          * *                                      *    *         **         *              *        *  *       *    *|
+     |          * *                                      *    *         **         *              *        *  *       *    *|
+     |          * *                                      *    *         **         *              *        *  *       *    *|
+     |          * *                                      *    *         **         *              *        *  *       *    *|
+     |          * *                                      *    *         **         *              *        *  *       *    *|
+     |          * *                                      *    *         **         *              *        *  *       *    *|
+     |          * *                                      *    *         **         *              *        *  *       *    *|
+     |          * *                                      *    *         **         *              *        *  *       *    *|
+     |          * *                                      *    *         **         *              *        *  *       *    *|
+     |          * *                                      *    *         **         *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |----------*-*--------------------------------------*----*---------*----------*--------------*--------*--*-------*----*|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *         **              *        *  *       *    *|
+     |          * *                                      *    *         *         **              *        *  *       *    *|
+     |          * *                                      *    *         **        **              *        *  *       *    *|
+     |          * *                                      *    *         **        **              *        *  *       *    *|
+     |          * *                                      *    *         **        **              *        *  *       *    *|
+     |          * *                                      *    *         **        **              *        *  *       *    *|
+     |          * *                                      *    *         **        **              *        *  *       *    *|
+     |          * *                                      *    *         **        **              *        *  *       *    *|
+     |          * *                                      *    *         **        **               *       *  *       *    *|
+     |          * *                                      *    *         **        **               *       *  *       *    *|
+     |          * *                                      *    *         **       * *               *        * *       *    *|
+     |          * *                                      *    *         **       * *               *        * *       *    *|
+     |          * *                                      *    *         **       * *               *        * *       *    *|
+     |          * *                                      *    *         **       * *               *        * *       *    *|
+     |          * *                                      *    *         **       * *               *        * *      *     *|
+     |          * *                                      *    *         **       **                *        * *      *     *|
+     |          * *                                      *    *         **       **                *        * *      *     *|
+     |          * *                                      *    *         **      * *                *        * *      *     *|
+     |          * *                                      *    *         **      * *                *        * *      *     *|
+     |          * *                                      *    *         **      * *                 *       * *      *     *|
+     |          * *                                      *    *         **      * *                 *       * *      *     *|
+     |          * *                                      *    *        * *      * *                 *       * *      *     *|
+     |          * *                                      *    *        * *      * *                 *       * *      *     *|
+     |          * *                                      *    *        * *     *  *                 *       * *      *     *|
+     |          * *                                      *    *        * *     *  *                 *       * *      *     *|
+     |          * *                                       *   *        * *     *  *                 *       * *      *     *|
+     |          * *                                       *   *        **      *  *                 *       * *      *     *|
+     |          * *                                       *   *        **      *  *                  *      * *      *     *|
+     |          * *                                       *   *        **      *  *                  *      * *      *     *|
+     |          * *                                       *   *        **     *   *                  *      * *      *     *|
+     |          * *                                       *   *        **     *  *                   *      * *      *     *|
+     |          * *                                       *   *        **     *  *                   *      * *      *     *|
+     |          * *                                       *   *        **     *  *                   *      * *      *     *|
+     |          * *                                       *   *        **     *  *                   *      * *      *     *|
+     |           **                                       *   *        **     *  *                   *      * *      *     *|
+     |           **                                       *   *        **    *   *                   *      * *      *     *|
+     |           **                                       *   *        **    *   *                    *     * *      *     *|
+     |           **                                       *   *        **    *   *                    *     * *      *     *|
+     |           **                                       *   *        **    *   *                    *     **       *     *|
+     |           **                                       *   *        **    *   *                    *     **       *     *|
+     |           **                                       *   *        **    *   *                    *     **       *     *|
+     |           **                                        *  *        **    *  *                     *     **       *     *|
+     |           **                                        *  *        **    *  *                     *     **       *    * |
+     |           **                                        *  *        **    *  *                     *     **       *    * |
+     |           **                                        *  *        **   *   *                     *     **       *    * |
+     |           **                                        *  *        **   *   *                      *    **       *    * |
+     |           **                                        *  *        *    *   *                      *    **       *    * |
+     |           **                                        *  *        *    *   *                      *    **       *    * |
+     |           **                                        *  *        *    *   *                      *    **       *    * |
+     |           **                                        *  *        *    *   *                      *    **       *    * |
+     |           **                                        *  *        *    *   *                      *    **       *    * |
+     |           **                                        *  *        *    *  *                       *    **       *    * |
+     |           **                                        *  *        *    *  *                       *    **       *    * |
+     |           **                                         * *        *    *  *                       *    **       *    * |
+     |           **                                         * *       **    *  *                        *   **       *    * |
+     |           **                                         * *       **    *  *                        *   **       *    * |
+     |           **                                         * *       **    *  *                        *   **       *    * |
+     |           **                                         * *       **    *  *                        *   **       *    * |
+     |           **                                         * *       **    *  *                        *   **       *    * |
+     |           **                                         * *       **    *  *                        *   **       *    * |
+     |           **                                         * *       **    *  *                        *   **       *    * |
+     |           **                                         * *      * *    * *                         *   **       *    * |
+     |           **                                         * *      * *    * *                         *   **       *   *  |
+     |           **                                         * *      * *    * *                         *   *        *   *  |
+     |           **                                          * *     * *    * *                          *  *        *   *  |
+     |           **                                          * *     * *    * *                          *  *        *   *  |
+     |           **                                          * *     * *    * *                          *  *        *   *  |
+     |           **                                          * *    *  *    * *                          *  *        *   *  |
+     |           **                                          * *    *  *    * *                          *  *        *   *  |
+     |            *                                          * *    *  *    * *                          *  *         *  *  |
+     |            *                                          * *    *  *    * *                          *  *         *  *  |
+     |            *                                          * *    *  *    * *                          *  *         *  *  |
+     |            *                                          * *    *  *    **                           *  *         *  *  |
+     |            *                                          * *    *  *    **                           *  *         *  *  |
+     |            *                                           **   *   *    **                           *  *         *  *  |
+     |            *                                           **   *   *    **                           *  *         *  *  |
+     |            *                                           **   *   *    **                            * *         *  *  |
+     |            *                                           **   *   *    **                            * *         * *   |
+     |            *                                           **   *   *    **                            * *         * *   |
+     |            *                                           **   *   *    **                            * *         * *   |
+     |            *                                           **   *   *    **                            * *         * *   |
+     |            *                                           **   *   *    **                            * *         * *   |
+     |            *                                           **   *   *    **                            * *          **   |
+     |            *                                           **  *    *    **                            * *          **   |
+     |            *                                           **  *    *    **                            * *          **   |
+     |            *                                           **  *    *    **                            * *          **   |
+     |            *                                           **  *    *    **                            * *          **   |
+     |            *                                           **  *    *    **                            * *          **   |
+     |            *                                           **  *    *    **                            * *          **   |
+     |            *                                           **  *    *    **                            * *          *    |
+     |            *                                           **  *    *    *                             * *          *    |
+     |------------*--------------------------------------------*--*----*----*-----------------------------*-*----------*----|
+     |            *                                           **  *    *    *                             * *          *    |
+     |            *                                           *   *    *    *                             * *          *    |
+     |            *                                           *   *    *    **                            * *          **   |
+     |            *                                           *   *    *    **                            * *          **   |
+     |            *                                           *   *    *    **                            * *          **   |
+     |            *                                           *   *    *    **                            * *          **   |
+     |            *                                           *   *    *    **                            * *          **   |
+     |            *                                           *   *    *    **                            * *          **   |
+     |            *                                           *    *   *    **                            * *          **   |
+     |            *                                           *    *   *    **                            * *         * *   |
+     |            *                                           *    *   *    **                            * *         * *   |
+     |            *                                           *    *   *    **                            * *         * *   |
+     |            *                                           *    *   *    **                            * *         * *   |
+     |            *                                           *    *   *     *                            * *         * *   |
+     |            *                                           *    *   *     *                            * *         * *   |
+     |            *                                           *    *   *     *                            * *         * *   |
+     |            *                                           *    *   *     *                            ***         *  *  |
+     |            *                                           *    *   *     *                            ***         *  *  |
+     |            *                                           *     *  *     *                            ** *        *  *  |
+     |            *                                           *     *  *     *                            ** *        *  *  |
+     |            *                                           *     *  *     *                            ** *        *  *  |
+     |            *                                           *     *  *     *                            ** *        *  *  |
+     |            *                                           *     *  *     *                            ** *        *  *  |
+     |            *                                           *     *  *     *                            ** *       *   *  |
+     |            *                                           *     *  *     *                           * * *       *   *  |
+     |            *                                           *     *   *    *                           * * *       *   *  |
+     |            *                                          **     *   *    *                           * * *       *   *  |
+     |            *                                          **      *  *    *                           * * *       *   *  |
+     |           **                                          **      *  *    *                           * * *       *   *  |
+     |           **                                          **      *  *    *                           * * *       *   *  |
+     |           **                                          **      *  *    *                           * * *       *   *  |
+     |           **                                          **      *  *    *                           * * *       *   *  |
+     |           **                                          **      *  *    **                          * * *       *   *  |
+     |           **                                          **      *  *    **                          * * *       *   *  |
+     |           **                                          **      *  *    **                          * * *       *   *  |
+     |           **                                          **       * *    **                          * * *       *   *  |
+     |           **                                          **       * *    **                          * * *       *   *  |
+     |           **                                          **       * *    **                          * * *       *   *  |
+     |           **                                          **       * *    **                          * * *       *   *  |
+     |           *                                           **       * *   * *                          * * *       *   *  |
+     |           *                                           **       * *   * *                          * * *       *   *  |
+     |           *                                           **       * *   * *                          * * *       *   *  |
+     |           *                                           **       * *   * *                          * * *       *   *  |
+     |           *                                           **        **   * *                          * * *       *   *  |
+     |           *                                           **        **   *  *                         * * *       *   *  |
+     |           *                                            *        **   *  *                         * * *       *   *  |
+     |           *                                            *        **   *  *                         * * *      *    *  |
+     |           *                                            *        **   *  *                         * * *      *    *  |
+     |           *                                            *        **   *  *                         * * *      *    *  |
+     |           *                                            *        **   *  *                         * * *      *    *  |
+     |           *                                            *        * *  *  *                         * * *      *   *   |
+     |           *                                            *        * *  *  *                         * * *      *   *   |
+     |           *                                            *         **  *  *                         * * *      *   *   |
+     |           *                                            *         **  *  *                         * * *      *   *   |
+     |           *                                            *         **  *  *                         * * *      *   *   |
+     |           *                                            *         **  *   *                        * * *      *   *   |
+     |           *                                            *         **  *   *                        * * *      *   *   |
+     |           *                                            *         **  *   *                        * * *      *   *   |
+     |          **                                            *         **  *   *                        * * *      *   *   |
+     |          **                                            *         **  *   *                        * * *      *   *   |
+     |          **                                            *         **  *   *                        **  *      *   *   |
+     |          **                                            *          *  *   *                        **  *      *   *   |
+     |          **                                            **         ** *   *                        **  *      *   *   |
+     |          **                                            **         ***    *                        **  *      *  *    |
+     |          **                                            **         ***    *                        **  *      *  *    |
+     |          **                                            **         ***    *                        **  *      *  *    |
+     |          **                                            **         ***     *                       **  *      *  *    |
+     |          *                                             **         ***     *                       **  *      *  *    |
+     |          *                                             **         ***     *                       **  *      *  *    |
+     |          *                                             **         ***     *                       **  *      *  *    |
+     |          *                                             **         ***     *                       **  *      *  *    |
+     |          *                                             **         ***     *                       **  *      *  *    |
+     |         **                                             **         * *     *                      * *  *      *  *    |
+     |         **                                             * *         **     *                      * *  *      * *     |
+     |         **                                             * *         **     *                      * *  *      * *     |
+     |         **                                             * *         **     *                      * *  *      * *     |
+     |         **                                             * *         **     *                      * *   *     * *     |
+     |         **                                             * *         **     *                      * *   *     * *     |
+     |         **                                             * *         **     *                      * *   *     * *     |
+     |         **                                             * *         **      *                     * *   *     * *     |
+     |         **                                             * *         **      *                     * *   *     * *     |
+     |         **                                             *  *        ***     *                     * *   *     * *     |
+     |         **                                             *  *        ***     *                     * *   *     **      |
+     |         **                                             *  *        ***     *                     * *   *     **      |
+     |        * *                                             *  *        ***     *                     * *   *     **      |
+     |        * *                                             *  *        ***     *                     * *   *     **      |
+     |        * *                                             *  *        ***     *                     * *   *     **      |
+     |        * *                                             *  *        ***     *                     * *   *     **      |
+     |        * *                                             *  *        ** *    *                     * *   *     **      |
+     |        * *                                             *   *      * * *    *                     * *   *     **      |
+     |        * *                                             *   *      * * *    *                     * *   *     **      |
+     |        * *                                             *   *      * * *    *                     * *   *     *       |
+     |        * *                                             *   *      * * *    *                     * *   *     *       |
+     |        * *                                             *   *      * * *    *                     * *   *     *       |
+     |        * *                                             *   *      * * *    *                     * *    *    *       |
+     |        * *                                             *   *      * *  *    *                    * *    *    *       |
+     |       *  *                                             *    *     * *  *    *                    * *    *    *       |
+     |       *  *                                              *   *     *  * *    *                    * *    *    *       |
+     |       * *                                               *   *     *  * *    *                    * *    *    *       |
+     |       * *                                               *   *     *  * *    *                    * *    *    *       |
+     |       * *                                               *   *     *  * *    *                    * *    *   **       |
+     |       * *                                               *   *     *  * *    *                    * *    *   **       |
+     |       * *                                               *   *     *  *  *   *                    * *    *   **       |
+     |       * *                                               *   *     *  *  *   *                    * *    *   **       |
+     |       * *                                               *    *    *  *  *   *                    * *    *   **       |
+     |       * *                                               *    *    *  *  *   *                    * *    *   **       |
+     |       * *                                               *    *    *  *  *   *                    * *    *   **       |
+     |       * *                                               *    *   *   *  *   *                    * *    *   **       |
+     |      *  *                                               *    *   *   *  *   *                    * *    *   **       |
+     |      *  *                                               *    *   *   *   *  *                    * *    *   **       |
+     |      *  *                                               *    *   *   *   *  *                    * *    *   **       |
+     |      *  *                                               *    *   *    *  *  *                    * *    *   **       |
+     |      *  *                                               *    *   *    *  *  *                    * *    *   **       |
+     |      *  *                                               *    *   *    *  *  *                    * *    *  * *       |
+     |      *  *                                                *   *   *    *  *  *                    * *    *  * *       |
+     |      *  *                                                *   *   *    *   * *                    * *    *  * *       |
+     |      *  *                                                *    *  *    *   * *                    * *    *  * *       |
+     |      *  *                                                *    *  *    *   * *                    * *     * * *       |
+     |      *  *                                                *    *  *    *   * *                    * *     * * *       |
+     |      *  *                                                *    *  *    *   * *                    * *     * * *       |
+     |     *   *                                                *    *  *    *   * *                    * *     * * *       |
+     |     *   *                                                *    *  *     *   **                    * *     * *  *      |
+     |     *   *                                                *    *  *     *   **                   *  *     * *  *      |
+     |     *   *                                                *    *  *     *   **                   *  *     * *  *      |
+     |     *   *                                                *    *  *     *   **                   *  *     * *  *      |
+     |     *   *                                                *    *  *     *   **                   *  *     * *  *      |
+     |     *   *                                                 *   *  *     *   **                   *  *    *  *  *      |
+     |     *   *                                                 *   *  *     *   **                   *  *    *  *  *      |
+     |     *   *                                                 *   *  *      *  **                   *  *    *  *  *      |
+     |     *   *                                                 *   *  *      *  **                   * *     *  *  *      |
+     |     *  *                                                  *   *  *      *  **                   * *     *  *  *      |
+     |     *  *                                                  *   *  *      *  **                   * *     *  *  *      |
+     |     *  *                                                  *   *  *      *  **                   * *     *  *  *      |
+     |     *  *                                                  *   *  *       * * *                  * *     *  *  *      |
+     |    *   *                                                  *  *   *       * * *                  * *     *   * *      |
+     |    *   *                                                  *  *   *       * * *                  * *     *   * *      |
+     |    *   *                                                  *  *   *       * * *                  * *     *   *  *     |
+     |    *   *                                                   * *   *       * * *                  * *     *   *  *     |
+     |    *   *                                                   * *   *        ** *                  * *     *   *  *     |
+     |    *   *                                                   * *   *        **  *                 * *     *   *  *     |
+     |    *   *                                                   * *   *        **  *                 * *     *   *  *     |
+     |    *   *                                                   * *   *        *   *                 * *     *   *  *     |
+     |    *   *                                                   * *   *        *   *                 **      *   *  *     |
+     |    *   *                                                   * *   *        **  *                 **      *   *  *     |
+     |    *   *                                                   * *   *        **  *                 **      *   *  *     |
+     |    *   *                                                   * *   *        **   *                **      *   *  *     |
+     |    *   *                                                    **   *        **   *                **      *    * *     |
+     |    *   *                                                    **   *        **   *                **      *    * *     |
+     |    *   *                                                    **   *        * *  *                **      *    * *     |
+     |    *   *                                                    **   *        * *  *                **      *    *  *    |
+     |   *    *                                                    **   *        * *  *                **     *     *  *    |
+     |   *    *                                                    **   *       *  *  *                **     *     *  *    |
+     |   *    *                                                    **   *       *   *  *               **     *     *  *    |
+     |   *    *                                                    **   *       *   *  *               *      *     *  *    |
+     |   *    *                                                     *   *       *   *  *               *      *     *  *    |
+     |   *    *                                                     *   *       *   *  *               *      *      * *    |
+     |   *    *                                                     *   *       *    * *              **      *      * *    |
+     |   *    *                                                    **   *       *    * *              **      *      * *    |
+     |   *    *                                                    **   *       *    *  *             **      *      * *    |
+     |   *    *                                                    **   *       *    *  *             **      *      * *    |
+     |   *    *                                                    **   *      *     *  *             **      *      * *    |
+     |   *    *                                                    **   *      *      * *             **      *      * *    |
+     |   *    *                                                    * *  *      *      * *             *       *      * *    |
+     |   *    *                                                    * *  *      *      * *             *       *       **    |
+     |   *    *                                                    * *  *      *      * *             *       *       **    |
+     |   *    *                                                    * *  *      *       * *            *      *        * *   |
+     |   *    *                                                    * *  *      *       * *            *      *        * *   |
+     |   *    *                                                    * *  *      *       * *            *      *        * *   |
+     |   *    *                                                    * *  *     *        * *            *      *        * *   |
+     |   *    *                                                    * *  *     *        * *            *      *        * *   |
+     |   *    *                                                    *  * *     *         **            *      *        * *   |
+     |   *    *                                                    *  * *     *         **            *      *         **   |
+     |   *    *                                                    *  * *     *         * *          *       *         **   |
+     |  *     *                                                    *  * *     *         * *          *       *         **   |
+     |  *     *                                                    *  * *     *          **          *       *         **   |
+     |  *     *                                                    *  * *     *          **          *       *         **   |
+     |  *     *                                                    *  * *    *           **          *       *         **   |
+     |  *     *                                                    *  * *    *           **          *       *         **   |
+     |  *     *                                                    *   **    *           **          *       *         **   |
+     |  *     *                                                    *   **    *           **          *       *         **   |
+     |  *     *                                                    *   **    *            *          *       *          *   |
+     |  *     *                                                    *   **    *            *          *       *          *   |
+     |  *     *                                                    *   **    *            **         *       *          *   |
+     |  *     *                                                    *   **    *            **         *       *          *   |
+     |  *     *                                                    *   **    *            **         *       *          *   |
+     |  *     *                                                    *   **   *             **        **       *          *   |
+     |  *     *                                                    *   **   *              *        *       *           *   |
+     |  *     *                                                    *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |  *    *                                                     *    *   *              *        *       *           *   |
+     |--*----*-----------------------------------------------------*----*---*--------------*--------*-------*-----------*---|
+     |----------*-*--------------------------------------*----*---------*----------*--------------*--------*--*-------*----*|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *          *              *        *  *       *    *|
+     |          * *                                      *    *         *         **              *        *  *       *    *|
+     |          * *                                      *    *         *         **              *        *  *       *    *|
+     |          * *                                      *     *        *         **              *        *  *       *    *|
+     |          * *                                      *     *        *         *               *        *  *       *    *|
+     |          * *                                      *     *        *         *               *        *  *       *    *|
+     |          * *                                      *     *        *         *               *        *  *       *    *|
+     |          * *                                      *     *        *         *               *        *  *       *    *|
+     |          * *                                      *     *        *         *               *        *  *       *   * |
+     |          * *                                      *     *        *         *               *        *  *        *  * |
+     |          * *                                      *     *        *         *               *        *  *        *  * |
+     |          * *                                      *     *        *         *               *        *  *        *  * |
+     |          * *                                      *     *        *        **               *        *  *        *  * |
+     |          * *                                      *     *        *        **               *        *  *        *  * |
+     |          * *                                      *     *        *        **               *        *  *        *  * |
+     |          * *                                      *     *        *        **               *        *  *        *  * |
+     |          * *                                      *     *        *        **                *       *  *        *  * |
+     |          * *                                      *     *        *        **                *       *  *        *  * |
+     |          * *                                      *     *        *        **                *       *  *        *  * |
+     |          * *                                      *     *        *        **                *       *  *        *  * |
+     |          * *                                      *     *        *       * *                *       *  *        *  * |
+     |          * *                                      *     *        *       * *                *       *  *        *  * |
+     |          * *                                      *      *       *       * *                *       *  *        *  * |
+     |          * *                                      *      *       *       * *                *       *  *        *  * |
+     |          * *                                      *      *       *       * *                *       *  *        *  * |
+     |          * *                                      *      *       *       * *                *       *  *        *  * |
+     |          * *                                      *      *       *       * *                *       *  *        *  * |
+     |          * *                                      *      *       *       * *                *       *  *        * *  |
+     |          * *                                      *      *       *      *  *                *       *  *        * *  |
+     |          * *                                      *      *       *      *  *                *       *  *        * *  |
+     |          * *                                      *      *       *      *  *                *       *  *        * *  |
+     |          * *                                      *      *       *      *  *                *       *  *         **  |
+     |          * *                                      *      *       *      *  *                *       *  *         **  |
+     |          * *                                      *      *       *      *  *                *       *  *         **  |
+     |          * *                                      *      *       *      *  *                *       *  *         **  |
+     |          * *                                      *       *      *     *   *                *       *  *         **  |
+     |          * *                                      *       *      *     *  *                 *       *  *         **  |
+     |          * *                                      *       *      *     *  *                 *       *  *         **  |
+     |          * *                                      *       *      *     *  *                 *       *  *         **  |
+     |          * *                                      *       *      *     *  *                 *       *  *         **  |
+     |          * *                                      *       *      *     *  *                 *       *  *         **  |
+     |          * *                                      *       *      *     *  *                 *       *  *         **  |
+     |          * *                                      *       *      *    *   *                 *       *  *         **  |
+     |          * *                                      *       *      *    *   *                 *       *  *         **  |
+     |          * *                                      *       *      *    *   *                 *       *  *         *   |
+     |          * *                                      *       *      *    *   *                 *       *  *         *   |
+     |          * *                                      *       *      **   *   *                 *       *  *         *   |
+     |          * *                                      *       *      **   *   *                 *       *  *         *   |
+     |          * *                                      *        *     **   *   *                 *       *  *         *   |
+     |          * *                                      *        *     **  *    *                 *       *  *         *   |
+     |          * *                                      *        *     **  *    *                  *      *  *         *   |
+     |           **                                      *        *     **  *    *                  *      *  *         *   |
+     |           **                                      *        *     **  *    *                  *      *  *         *   |
+     |           **                                      *        *     **  *    *                  *      *  *         **  |
+     |           **                                      *        *     **  *    *                  *      *  *         **  |
+     |           **                                      *        *     **  *    *                  *      *  *         **  |
+     |           **                                      *        *     **  *    *                  *      *  *         **  |
+     |           *                                       *        *     ** *     *                  *      *  *         **  |
+     |           *                                       *        *     ** *     *                  *      *  *         **  |
+     |           *                                       *        *     ** *     *                  *      *  *         **  |
+     |           *                                       *        *     ** *     *                  *      *  *         **  |
+     |           *                                       *        *     ** *     *                  *      *  *         **  |
+     |           *                                       *        *     ** *     *                  *      *  *         **  |
+     |           *                                       *         *    ** *     *                  *      *  *         **  |
+     |           *                                       *         *    ** *     *                  *      *  *         **  |
+     |           *                                       *         *    ** *     *                  *      *  *         **  |
+     |           *                                       *         *    ** *     *                  *      *  *         **  |
+     |           *                                       *         *    ***      *                  *      *  *         **  |
+     |           *                                       *         *    ***      *                  *      *  *         **  |
+     |           *                                       *         *    ***      *                  *      *  *         **  |
+     |           *                                       *         *    ***      *                  *      *  *         **  |
+     |           *                                       *         *    ***      *                  *      *  *         **  |
+     |           *                                       *         *    ***      *                  *      *  *         **  |
+     |-----------*---------------------------------------*---------*----***------*------------------*------*--*---------**--|
+     |------------*--------------------------------------------**---------**------------------------------*---*----*--------|
+     |            *                                            **         **                              *   *    *        |
+     |            *                                            **         **                              *   *    *        |
+     |            *                                            **         **                              *   *    *        |
+     |            *                                            **         **                              *   *    *        |
+     |            *                                            **         **                              *   *    *        |
+     |            *                                             *         **                              *   *    *        |
+     |            *                                             *         **                              *   *    *        |
+     |            *                                             *         **                              *   *    *        |
+     |            *                                             *         **                              *   *    *        |
+     |            *                                             *         **                              *   *    *        |
+     |            *                                             *         **                              *   *    *        |
+     |            *                                             *         **                              *   *    *        |
+     |            *                                             *         **                              *  *     *        |
+     |            *                                             *         **                              *  *     *        |
+     |            *                                             *         **                              *  *     *        |
+     |            *                                             *         **                              *  *     *        |
+     |            *                                             *         **                              *  *     *        |
+     |            *                                             *         **                              *  *     *        |
+     |            *                                             *         **                              *  *     *        |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *          *                              *  *      *       |
+     |            *                                             *          *                              *  *      *       |
+     |            *                                             *          *                              *  *      *       |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *         **                              *  *      *       |
+     |            *                                             *         **                              *  *       *      |
+     |            *                                            **         **                              *  *       *      |
+     |            *                                            **         **                              *  *       *      |
+     |            *                                            **         **                              *  *       *      |
+     |            *                                            **         **                              *  *       *      |
+     |            *                                            **         **                              *  *       *      |
+     |            *                                            **         **                              *  *       *      |
+     |            *                                            **         **                              *  *       *      |
+     |            *                                            * *        **                              *  *       *      |
+     |            *                                            * *        **                              *  *       *      |
+     |            *                                            * *        **                              *  *       *      |
+     |            *                                            * *        **                              *  *       *      |
+     |            *                                            * *       * *                              *  *       *      |
+     |            *                                            * *       * *                              * *        *      |
+     |            *                                            * *       * *                              * *         *     |
+     |            *                                            * *       *  *                             * *         *     |
+     |            *                                            * *       *  *                             * *         *     |
+     |            *                                            * *       *  *                             * *         *     |
+     |            *                                            * *       *  *                             * *         *     |
+     |            *                                            * *       *  *                             * *         *     |
+     |            *                                            * *       *  *                             * *         *     |
+     |            *                                            * *       *  *                             * *         *     |
+     |            *                                            * *       *  *                             * *         *     |
+     |            *                                            * *       *  *                             * *         *     |
+     |            *                                            * *       *  *                             * *         *     |
+     |            *                                            * *       *  *                             * *         *     |
+     |            *                                            * *       *  *                             * *         *     |
+     |            *                                            * *      *   *                             * *         *     |
+     |            *                                            * *      *   *                             * *         *     |
+     |            *                                            * *      *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *     *   *                             * *          *    |
+     |            *                                            *  *    *    *                             * *          *    |
+     |            *                                            *  *    *    *                             * *          *    |
+     |            *                                            *  *    *    *                             * *          *    |
+     |            *                                            *  *    *    *                             * *          *    |
+     |------------*--------------------------------------------*--*----*----*-----------------------------*-*----------*----|
+
+ CAPPA:IS1  8;IS2  8;IS3  6; K PTS MONK NET  50; SYMMOPS:K SPACE  12;G SPACE  12
+
+ TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT BAND        TELAPSE        3.33 TCPU        3.24
+ ENDPROP   
+ TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT END         TELAPSE        3.33 TCPU        3.24
+ EEEEEEEEEE TERMINATION  DATE 12 10 2018 TIME 13:05:52.2
+------------------------------------------------------
+properties finished normally
+------------------------------------------------------
+BAND/MAPS/DOSS data for plotting fort.25 saved as /home/nina/TiS2_TZVP_PBE0-D3/TZVP_3D_ZD/band_strucutre/new_path/TiS2_8_6geom_TZVP_PBE0-3D_ZD_smaller.f25
+BAND.DAT BAND.DAT saved as /home/nina/TiS2_TZVP_PBE0-D3/TZVP_3D_ZD/band_strucutre/new_path/TiS2_8_6geom_TZVP_PBE0-3D_ZD_smaller.bnd
+Temporary directory /chemtemp/CRY_30684 removed from node 
+Date: 2018-10-12 13:05:52

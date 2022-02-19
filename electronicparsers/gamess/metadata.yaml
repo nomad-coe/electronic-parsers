@@ -1,0 +1,9 @@
+codeLabel: GAMESS
+codeLabelStyle: All in capitals
+codeName: gamess
+codeUrl: https://www.msg.chem.iastate.edu/
+parserDirName: dependencies/parsers/gamess/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-gamess.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: ''

@@ -1,0 +1,234 @@
+ +---------------------------------------------------------------+
+ |                                                               |
+ |        ####### #     # ####### ####### ####### ######         |
+ |        #     # ##    # #          #    #       #     #        |
+ |        #     # # #   # #          #    #       #     #        |
+ |        #     # #  #  # #####      #    #####   ######         |
+ |        #     # #   # # #          #    #       #              |
+ |        #     # #    ## #          #    #       #              |
+ |        ####### #     # #######    #    ####### #              |
+ |                                                               |
+ |        Linear-Scaling Ab Initio Total Energy Program          |
+ |                                                               |
+ |          Release for academic collaborators of ODG            |
+ |                                             Version 4.1.6.6   |
+ |                                                               |
+ +---------------------------------------------------------------+
+ |                                                               |
+ |  Authors:                                                     |
+ |  Jacek Dziedzic, Peter D. Haynes, Nicholas D. M. Hine,        |
+ |  Arash. A. Mostofi, Mike C. Payne and Chris-Kriton Skylaris   |
+ |                                                               |
+ |  Contributors:                                                |
+ |  J. Aarons, L. Andrinopoulos, P. W. Avraam, R. A. Bell,       |
+ |  S. J. Clark, G. C. Constantinescu, F. Corsetti, N. Corsini,  |
+ |  O. Dieguez, S. M. M. Dubois,  J. M. Escartin, H. H. Helal,   |
+ |  Q. O. Hill, L. P. Lee, J.-H. Li, G. Moynihan, D. D. O`Regan, |
+ |  M. J. S. Phipps, C. J. Pickard, M. I. J. Probert,            |
+ |  L. Ratcliff, M. Robinson, A. Ruiz Serrano, J. S. Spencer,    |
+ |  G. Teobaldi, D. Turban, V. Vitale, K. A. Wilkinson and       |
+ |  T. J. Zuehlsdorff                                            |
+ |                                                               |
+ |                                   Copyright (c) 2004-2014     |
+ |                                                               |
+ |  Please cite:                                                 |
+ |  "Introducing ONETEP: Linear-scaling density functional       |
+ |   simulations on parallel computers".                         |
+ |   C.-K. Skylaris, P. D. Haynes, A. A. Mostofi, M. C. Payne.   |
+ |   J. Chem. Phys. 122 084119 (2005).                           |
+ |                                                               |
+ |          in all publications arising from your use of ONETEP. |
+ |                                                               |
+ +---------------------------------------------------------------+
+ |                                                               |
+ |   ONETEP is based on developments described in the following  |
+ |   publications:                                               |
+ |                                                               |
+ |  "Nonorthogonal generalized Wannier function pseudopotential  |
+ |   plane-wave method".                                         |
+ |   C.-K. Skylaris, A. A. Mostofi, P. D. Haynes, O. Dieguez,    |
+ |   M. C. Payne.                                                |
+ |   Phys. Rev. B 66 035119 (2002).                              |
+ |                                                               |
+ |  "Preconditioned iterative minimization for linear-scaling    |
+ |   electronic structure calculations".                         |
+ |   A. A. Mostofi, P. D. Haynes, C.-K. Skylaris, M. C. Payne.   |
+ |   J. Chem. Phys. 119(17), pp.8842-8848 (2003).                |
+ |                                                               |
+ |  "Total-energy calculations on a real space grid with         |
+ |   localized functions and a plane-wave basis".                |
+ |   A. A. Mostofi, C.-K. Skylaris, P. D. Haynes, M. C. Payne.   |
+ |   Comput. Phys. Commun. 147, pp.788-802 (2002).               |
+ |                                                               |
+ |  "Accurate kinetic energy evaluation in electronic structure  |
+ |   calculations with localized functions on real space grids"  |
+ |   C.-K. Skylaris, A. A. Mostofi, P. D. Haynes, C. J. Pickard, |
+ |   M. C. Payne.                                                |
+ |   Comput. Phys. Commun. 140, pp.315-322 (2001).               |
+ |                                                               |
+ |  "Accurate ionic forces and geometry optimization in linear-  |
+ |   scaling density-functional theory with local orbitals"      |
+ |   N. D. M. Hine, M. Robinson, P. D. Haynes, C.-K. Skylaris,   |
+ |   M. C. Payne, and A. A. Mostofi.                             |
+ |   Phys. Rev. B 83 195102 (2011).                              |
+ |                                                               |
+ +---------------------------------------------------------------+
+
+Job started: 05-11-2014 05:08 (-0000)
+ 
+If your calculation crashes here, before "Reading parameters..."
+is displayed, then your stack size is insufficient.
+If so, use "ulimit -s unlimited" at runtime.
+
+Reading parameters from file "Ethanol_anharmonic.dat" ...... done
+
+Checking processes and threads...
+      Default threads: 4
+   Running with 4 MPI processes.
+   There are 4 MPI processes running on the same node as the root process.
+   Each MPI process is using: 
+               1 threads for simulation cell FFTs.
+               1 threads for parallel FFT box operations.
+               4 threads for loops over batched FFT box operations.
+               4 threads in other parallel regions.
+... done
+
+Basic input checks...... done
+
+Reading geometry and species blocks from file "Ethanol_anharmonic.dat" ...
+  <species_atomic_set> block not found: NGWF initialisation set to SOLVE
+... done
+
+
+--------------------------------------------------------------------------------
+---------------------------------- INPUT FILE ----------------------------------
+--------------------------------------------------------------------------------
+
+task                 : PROPERTIES                                               
+md_delta_t           : 0.75 fs                                                  
+md_num_iter          : 2000                                                     
+anh_md_temp          : 296.15 kelvin                                            
+anharmonic_calculate : .true.                                                   
+anh_type             : ir_calculation                                           
+anh_qc_factor        : harmonic                                                 
+anh_acf_factor       : normalized                                               
+anh_first_iter       : 1                                                        
+anh_last_iter        : 2000                                                     
+anh_apply_filter     : .true.                                                   
+anh_plot_firstfreq   : 600 1/cm                                                 
+anh_plot_lastfreq    : 4000 1/cm                                                
+print_qc             : .true.                                                   
+timings_level       : 3                                                         
+%block species                                                                  
+C      C    6   4   8.00                                                        
+H      H    1   1   8.00                                                        
+O      O    8   4   8.00                                                        
+%endblock species                                                               
+%block species_pot                                                              
+C "../../pseudo/carbon.recpot"                                                  
+H "../../pseudo/oxygen.recpot"                                                  
+O "../../pseudo/hydrogen.recpot"                                                
+%endblock species_pot                                                           
+%block lattice_cart                                                             
+ang                                                                             
+20.000   0.000   0.000                                                          
+0.000  20.000   0.000                                                           
+0.000   0.000  20.000                                                           
+%endblock lattice_cart                                                          
+%block positions_abs                                                            
+     Hash =   000001941500954110066051
+%endblock positions_abs                                                         
+
+--------------------------------------------------------------------------------
+-------------------------------- END INPUT FILE --------------------------------
+--------------------------------------------------------------------------------
+
+
+ 
+WARNING in pseudopotentials_read_species: string "GGA" found in pseudopotential
+file "../../pseudo/carbon.recpot", yet xc_functional = "LDA".
+ 
+<<<<<<<<<<<<<<<<<<<<<<<<< Pseudopotential information >>>>>>>>>>>>>>>>>>>>>>>>>
+File: ../../pseudo/oxygen.recpot [ 2001 points up to Gmax=  52.9 (1/bohr)]
+  Atomic number:  1;  ionic charge:  6.000000
+    Shell 1: l = 0; rc = 1.31 bohr
+File: ../../pseudo/carbon.recpot [ 2001 points up to Gmax=  52.9 (1/bohr)]
+  Atomic number:  6;  ionic charge:  4.000000
+    Shell 1: l = 0; rc = 1.48 bohr
+File: ../../pseudo/hydrogen.recpot [ 2001 points up to Gmax=  52.9 (1/bohr)]
+  Atomic number:  8;  ionic charge:  1.000000
+    Local potential
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+------------------------- Atom counting information ---------------------------
+Symbol    Natoms    Nngwfs    Nprojs
+  H          6         6         6
+  C          2         8         2
+  O          1         4         0
+.......   ......    ......    ......
+Totals:      9        18         8
+-------------------------------------------------------------------------------
+ 
+============================== PSINC grid sizes ================================
+                      Simulation cell:   63 x  63 x  63
+                              FFT-box:   63 x  63 x  63
+                                  PPD:    7 x   7 x   1
+Grid space d1=  0.599913294532a0 (KE cutoff=  21.10703Eh = 574.35138eV)
+Grid space d2=  0.599913294532a0 (KE cutoff=  21.10703Eh = 574.35138eV)
+Grid space d3=  0.599913294532a0 (KE cutoff=  21.10703Eh = 574.35138eV)
+================================================================================
+
+********************** Fourier parallelisation information *********************
+       Coarse grid (whole simulation cell) dimensions:     63    63    63
+          Real-space ('12') slabs/node (min max mean):     15    16    15
+         Recip-space ('23') slabs/node (min max mean):      8     8     8
+********************************************************************************
+
+********************** Fourier parallelisation information *********************
+       Double grid (whole simulation cell) dimensions:    126   126   126
+          Real-space ('12') slabs/node (min max mean):     31    32    31
+         Recip-space ('23') slabs/node (min max mean):     16    16    16
+********************************************************************************
+WARNING in internal_setup_spin (energy_and_force_init_cell):
+        odd number of electrons in cell - spin-polarised calculation will be performed
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxx                Beginning of ONETEP Anharmonic            xxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+ Initialising workspace ...
+Opening Ethanol_anharmonic.md file and extracting the info ...
+<QC>    [average temperature]:       260.741783742000
+<QC>  [average dipole moment]:         0.776550912276
+Calculating the Fourier transform of the dipole
+moment matrix by mean of the Weiner-Khinchin theorem ...
+Applying the quantum correction factor ...
+Outputing the result intoEthanol_anharmonic.anh ...
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxx                      End of ONETEP Anharmonic            xxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+------------------------------ TIMING INFORMATION ------------------------------
+AVERAGE TIME:       0.431s on      4 node(s)                                    
+TOTAL TIME:         0.432s on      4 node(s)                                    
+================== AVERAGE TIMINGS FROM ALL NODES (CUMULATIVE) =================
+|| TAG                                    #calls    cpu time   %total  Gflops ||
+|| work_imbalance                       :     1        0.00s   0.145%  ------ ||
+|| linalg_1d_fft                        :     7        0.00s   0.955%  ------ ||
+|| total_time                           :     1        0.43s 100.000%  ------ ||
+================================================================================
+==================== AVERAGE TIMINGS FROM ALL NODES (SELF) =====================
+|| TAG                                    #calls    cpu time   %total  Gflops ||
+|| work_imbalance                       :     1        0.00s   0.145%  ------ ||
+|| linalg_1d_fft                        :     7        0.00s   0.955%  ------ ||
+|| main program (onetep.F90)            :     1        0.43s  98.808%  ------ ||
+================================================================================
+Overhead of generating timer report: 
+- 0 ms averaging over threads,
+- 0 ms ensuring consistency across MPI ranks,
+- 0 ms printing in order.
+
+Job completed: 05-11-2014 05:08 (-0000)
+

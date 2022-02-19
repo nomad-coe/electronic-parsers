@@ -1,0 +1,129 @@
+================================================================================
+| EXCITING NITROGEN started for task xsgeneigvec (301)                         =
+| version hash id:                                                             =
+| MPI version using     32 processor(s)                                        =
+|                                                                              =
+| Date (DD-MM-YYYY) : 31-07-2019                                               =
+================================================================================
+================================================================================
+One-shot GS runs for TDDFT calculations
+================================================================================
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+One-shot GS runs for k+qmt grids
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Info(xsgeneigvec): Generating eigenvectors for Q-point      1
+--------------------------------------------------------------------------------
+Info(xsgeneigvec): Generation of eigenvectors finished
+ 
+Info(xsfinit): task Nr.     301 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 31-07-2019
+     Time (hh:mm:ss)        : 10:21:23
+     CPU time               : 45.61 sec; 0.01 hrs; ( 0 d, 00 h, 00 m, 46 s )
+     wall time              : 23.86 sec; 0.01 hrs; ( 0 d, 00 h, 00 m, 24 s )
+     CPU load               : 191.11 %
+     CPU time  (cumulative) : 192.38 sec; 0.05 hrs; ( 0 d, 00 h, 03 m, 12 s )
+ 
+================================================================================
+= EXCITING NITROGEN stopped for task    301                                    =
+================================================================================
+ 
+ 
+================================================================================
+| EXCITING NITROGEN started for task writepmatxs (320)                         =
+| MPI version using     32 processor(s)                                        =
+| Date (DD-MM-YYYY) : 31-07-2019                                               =
+================================================================================
+Info(writepmatxs): Momentum matrix elements finished
+Info(xsfinit): task Nr.     320 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 31-07-2019
+     Time (hh:mm:ss)        : 10:21:50
+     CPU time               : 44.16 sec; 0.01 hrs; ( 0 d, 00 h, 00 m, 44 s )
+     wall time              : 27.12 sec; 0.01 hrs; ( 0 d, 00 h, 00 m, 27 s )
+     CPU load               : 162.79 %
+     CPU time  (cumulative) : 236.68 sec; 0.07 hrs; ( 0 d, 00 h, 03 m, 57 s )
+ 
+================================================================================
+= EXCITING NITROGEN stopped for task    320                                    =
+================================================================================
+ 
+ 
+================================================================================
+| EXCITING NITROGEN started for task writeemat (330)                           =
+| MPI version using     32 processor(s)                                        =
+| Date (DD-MM-YYYY) : 31-07-2019                                               =
+================================================================================
+Info(writeemat): Gaunt coefficients generated within lmax values:   10    3   10
+Info(writeemat): Number of q-points:     1
+info(ematq): Number of g+q vectors:    59
+Info(writeemat): Matrix elements of the exponentials finished for q - point:    1
+Info(writeemat): Matrix elements of exponential expression finished
+Info(xsfinit): task Nr.     330 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 31-07-2019
+     Time (hh:mm:ss)        : 10:22:21
+     CPU time               : 66.78 sec; 0.02 hrs; ( 0 d, 00 h, 01 m, 07 s )
+     wall time              : 30.86 sec; 0.01 hrs; ( 0 d, 00 h, 00 m, 31 s )
+     CPU load               : 216.40 %
+     CPU time  (cumulative) : 303.59 sec; 0.08 hrs; ( 0 d, 00 h, 05 m, 04 s )
+ 
+================================================================================
+= EXCITING NITROGEN stopped for task    330                                    =
+================================================================================
+ 
+ 
+================================================================================
+| EXCITING NITROGEN started for task df (340)                                  =
+| MPI version using     32 processor(s)                                        =
+| Date (DD-MM-YYYY) : 31-07-2019                                               =
+================================================================================
+Info(df): Kohn Sham response function finished for q - point:       1
+Info(dfgather): Kohn Sham response function gathered for q - point:       1
+Info(df): Kohn-Sham response function finished
+Info(xsfinit): task Nr.     340 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 31-07-2019
+     Time (hh:mm:ss)        : 10:40:37
+     CPU time               : 3898.14 sec; 1.08 hrs; ( 0 d, 01 h, 04 m, 58 s )
+     wall time              : 1096.66 sec; 0.30 hrs; ( 0 d, 00 h, 18 m, 17 s )
+     CPU load               : 355.46 %
+     CPU time  (cumulative) : 4201.74 sec; 1.17 hrs; ( 0 d, 01 h, 10 m, 02 s )
+ 
+================================================================================
+= EXCITING NITROGEN stopped for task    340                                    =
+================================================================================
+ 
+ 
+================================================================================
+| EXCITING NITROGEN started for task idf (350)                                 =
+| MPI version using     32 processor(s)                                        =
+| Date (DD-MM-YYYY) : 31-07-2019                                               =
+================================================================================
+Exchange-correlation kernel type :   5
+  ALDA kernel, including local field effects
+Info(idf): inverse dielectric function finished for q - point:       1
+Info(idfgather): inverse dielectric function gathered for q - point:       1
+Info(idf): inverse dielectric function gathered for q - point:
+ info(idf) start xslinopt
+Info(idf): TDDFT linear optics finished for q - point:       1
+Info(idf): TDDFT linear optics finished
+Info(xsfinit): task Nr.     350 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 31-07-2019
+     Time (hh:mm:ss)        : 10:41:08
+     CPU time               : 39.16 sec; 0.01 hrs; ( 0 d, 00 h, 00 m, 39 s )
+     wall time              : 30.93 sec; 0.01 hrs; ( 0 d, 00 h, 00 m, 31 s )
+     CPU load               : 126.64 %
+     CPU time  (cumulative) : 4241.00 sec; 1.18 hrs; ( 0 d, 01 h, 10 m, 41 s )
+ 
+================================================================================
+= EXCITING NITROGEN stopped for task    350                                    =
+================================================================================
+ 
+ 

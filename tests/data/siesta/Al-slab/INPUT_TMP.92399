@@ -1,0 +1,68 @@
+SystemName   Al_slab               # optional change
+SystemLabel  Al_slab
+#********************************************************
+# Specification of atomic species and positions
+#********************************************************
+# Chemical species
+NumberOfSpecies    1
+%block ChemicalSpeciesLabel
+ 1 13 Al
+%endblock ChemicalSpeciesLabel
+# UNIT CELL
+LatticeConstant          1.0 Ang
+%block LatticeVectors
+4.457602528   0.0   0.0
+0.0   3.152000000    0.0
+0.0  0.0    30
+%endblock LatticeVectors
+# ATOMIC POSITIONS
+NumberOfAtoms    12
+AtomicCoordinatesFormat    Ang
+AtomicCoordinatesFormatOut Ang
+%block AtomicCoordinatesAndAtomicSpecies
+ 2.228801000     3.152000000    0.0    1
+ 4.457606000     1.576024000    0.0    1
+ 1.485868000     1.576024000    2.414  1
+ 3.714668000     3.152000000    2.414  1
+ 2.971741000     1.576024000    4.828  1
+ 5.200541000     3.152000000    4.828  1
+  2.228801000     3.152000000   7.242  1
+ 4.457606000     1.576024000    7.242  1
+ 1.485868000     1.576024000    9.656  1
+ 3.714668000     3.152000000    9.656  1
+ 2.971741000     1.576024000    12.07  1
+ 5.200541000     3.152000000    12.07  1
+%endblock AtomicCoordinatesAndAtomicSpecies
+#********************************************************
+# DFT options
+#********************************************************
+# Basis set variables
+%block PAO.Basis                 # Define Basis set
+Al          3                    # Species label, number of l-shells
+ n=3   0   2                         # n, l, Nzeta
+   5.859      4.513
+   1.000      1.000
+ n=3   1   2                         # n, l, Nzeta
+   6.809      5.09
+   1.000      1.000
+ n=3   2   1                         # n, l, Nzeta
+   5.176
+   1.000
+%endblock PAO.Basis
+%block kgrid_Monkhorst_Pack
+  8   0   0     0.0
+  0   8   0     0.0
+  0   0   1     0.0
+%endblock kgrid_Monkhorst_Pack
+# General variables
+ElectronicTemperature     300 K
+MeshCutoff                400. Ry
+xc.functional             LDA           # Exchange-correlation functional
+xc.authors                CA
+# SCF variables
+MaxSCFIterations         10000           # Maximum number of SCF iter
+DM.MixingWeight                 0.01         # optional change
+DM.Tolerance                 1.0E-4
+DM.UseSaveDM             T          # to use continuation files
+DM.NumberPulay                    5
+SolutionMethod   	      diagon

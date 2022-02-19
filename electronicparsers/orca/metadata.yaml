@@ -1,0 +1,9 @@
+codeLabel: ORCA
+codeLabelStyle: All in capitals
+codeName: orca
+codeUrl: https://www.faccts.de/orca/
+parserDirName: dependencies/parsers/orca/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-orca.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: ''

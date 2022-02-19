@@ -1,0 +1,111 @@
+!========================================================!
+! Input for calculation with the ONETEP program          !
+!                                                        !
+! Quality Control file for:                              ! 
+! Natural Population Analysis subroutine                 !
+! Alanine molecule CC(C(=O)O)N (ChemDB ID 5198502)       !
+!                                                        !
+! Created by Louis Lee 14/06/2011                        !
+! Modified to include NRBs 29/09/2011                    !
+!                                                        !
+!========================================================!
+
+kernel_cutoff 10000.00
+cutoff_energy 800 eV
+task SINGLEPOINT
+xc_functional PBE
+do_properties T
+popn_calculate T
+polarisation_calculate F
+
+homo_dens_plot -1
+lumo_dens_plot -1
+homo_plot -1
+lumo_plot -1
+dos_smear -1 eV
+num_eigenvalues -1
+
+read_denskern F
+read_tightbox_ngwfs F
+
+write_denskern F
+write_tightbox_ngwfs F
+
+maxit_ngwf_cg 2
+minit_lnv 4
+maxit_lnv 4
+
+maxit_pen 0
+
+output_detail NORMAL
+
+write_forces F
+grd_format F
+cube_format F
+
+write_nbo T
+
+%block nbo_write_species
+C1
+N1
+H1
+%endblock nbo_write_species
+
+print_qc T
+
+%block species_atomic_set
+C   "SOLVE"
+O   "SOLVE"
+H   "SOLVE"
+C1  "SOLVE conf=2s2 2p2 3s0 3p0 3d0"
+N1  "SOLVE conf=2s2 2p3 3s0 3p0 3d0"
+H1  "SOLVE conf=1s1 2s0 2p0"
+%endblock species_atomic_set
+
+%block nbo_species_ngwflabel
+C1 "1N 152N 153N 151N 1 152 153 151 251 253 255 252 254"
+N1 "1N 152N 153N 151N 1 152 153 151 251 253 255 252 254"
+H1 "1N 1 152 153 151"
+%endblock nbo_species_ngwflabel
+
+%block species
+C   C  6   4  7.00
+O   O  8   4  7.00
+H   H  1   1  7.00
+C1  C  6  13  7.00
+N1  N  7  13  7.00
+H1  H  1   5  7.00
+%endblock species
+
+%block species_pot
+C   "../../pseudo/carbon_spd.recpot"
+O   "../../pseudo/oxygen_spd.recpot"
+H   "../../pseudo/hydrogen_coul.recpot"
+C1  "../../pseudo/carbon_spd.recpot"
+N1  "../../pseudo/nitrogen.recpot"
+H1  "../../pseudo/hydrogen_coul.recpot"
+%endblock species_pot
+
+%block  lattice_cart
+"ang"
+25	0	0
+0	25	0
+0	0	25
+%endblock  lattice_cart
+
+%block  positions_abs
+"ang"
+C       12.481300 14.025800 12.510400
+C1      12.502100 12.495900 12.502000
+C       11.088300 11.974300 12.512700
+O       10.711200 11.269500 13.418800
+O       10.247900 12.292700 11.515700
+N1      13.212600 12.009300 13.692100
+H       13.503900 14.403100 12.502700
+H       11.954100 14.386800 11.627400
+H       11.971100 14.377300 13.407200
+H       13.012300 12.144400 11.605200
+H        9.340700 11.958000 11.522500
+H1      13.292500 11.008400 13.593000
+H1      14.149200 12.381300 13.642900
+%endblock  positions_abs                                                                                                                                                                                                                                                           

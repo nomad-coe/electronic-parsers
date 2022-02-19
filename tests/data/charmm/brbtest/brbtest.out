@@ -1,0 +1,1627 @@
+1
+                 Chemistry at HARvard Macromolecular Mechanics
+                (CHARMM) - Free Version 41b2   February 15, 2017                
+                                      605                                       
+       Copyright(c) 1984-2014  President and Fellows of Harvard College
+                              All Rights Reserved
+      Current operating system: Darwin-16.7.0(x86_64)@imacberk.local[+  1]      
+                 Created on  1/24/18 at 12:08:00 by user: bonat       
+
+            Maximum number of ATOMS:    360720, and RESidues:      120240
+ RDTITL> * TEST RUN FOR NEWTON RAPHSON AND DIAGONALIZATION
+ RDTITL> *
+  
+ CHARMM>    stream datadir.def
+ VOPEN> Attempting to open::DATADIR.DEF::
+ OPNLGU> Unit 99 opened for READONLY access to DATADIR.DEF
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * CHARMM TESTCASE DATA DIRECTORY ASSIGNMENT
+ RDTITL> *
+ Parameter: IN1 <- "" <empty>
+  
+ CHARMM>    faster on
+ MISCOM> FAST option: EXPANDED (limited fast routines)
+  
+ CHARMM>    set pnode =
+ Parameter: PNODE <- "" <empty>
+  
+ CHARMM>    if ?numnode .gt. 1 set pnode = node 0
+ RDCMND substituted energy or value "?NUMNODE" to "2"
+ Comparing "2" and "1".
+ IF test evaluated as true.  Performing command
+ Parameter: PNODE <- "NODE 0"
+  
+ CHARMM>    set 0 ./     ! input data directory
+ Parameter: 0 <- "./"
+  
+ CHARMM>    set 9 ./  ! scratch directory
+ Parameter: 9 <- "./"
+  
+ CHARMM>    set testcheck stream @0/test.str
+ Parameter: 0 -> "./"
+ Parameter: TESTCHECK <- "STREAM .//TEST.STR"
+  
+ CHARMM>    set qcheck stream @0/qtest.str
+ Parameter: 0 -> "./"
+ Parameter: QCHECK <- "STREAM .//QTEST.STR"
+  
+ CHARMM>    set testfail 0
+ Parameter: TESTFAIL <- "0"
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>    bomlev -1
+  
+ CHARMM>     
+  
+ CHARMM>    OPEN READ FORM UNIT 1 NAME  @0toph8.rtf
+ Parameter: 0 -> "./"
+ VOPEN> Attempting to open::./TOPH8.RTF::
+ OPNLGU> Unit  1 opened for READONLY access to ./TOPH8.RTF
+  
+ CHARMM>    READ RTF        CARD  UNIT  1
+ MAINIO> Residue topology file being read from unit   1.
+ TITLE> * TOPOLOGY FILE FOR PROTEINS USING EXPLICIT HYDROGEN ATOMS: VERSION 8
+ TITLE> *
+ **** WARNING from RTFRDR **** The total charge of the residue, PROP,   0.5410000,
+ does not equal the expected charge,   0.7310000.
+          PRES CTER   -0.73000
+ There were   1 warning(s) from RTFRDR.
+  
+ CHARMM>    OPEN READ FORM UNIT 2 NAME  @0param3.prm
+ Parameter: 0 -> "./"
+ VOPEN> Attempting to open::./PARAM3.PRM::
+ OPNLGU> Unit  2 opened for READONLY access to ./PARAM3.PRM
+  
+ CHARMM>    READ PARAMETER  CARD  UNIT  2
+
+          PARAMETER FILE BEING READ FROM UNIT  2
+ TITLE> * PARAMETER FILE PARAM3.INP
+ TITLE> *
+ PARMIO> NONBOND, HBOND lists and IMAGE atoms cleared.
+  
+ CHARMM>     
+  
+ CHARMM>    READ      SEQUENCE  CARD
+ MAINIO> Sequence information being read from unit   5.
+ RDTITL> *  FIRST SEQUENCE FOR SECOND DERIVATIVE TEST
+ RDTITL> *
+  
+ SEQRDR>        2
+  
+ SEQRDR>    AMN CBX
+
+          RESIDUE SEQUENCE --     2 RESIDUES
+          AMN CBX 
+  
+ CHARMM>     
+  
+ CHARMM>    READ      SEQUENCE  CARD
+ MAINIO> Sequence information being read from unit   5.
+ RDTITL> *  SECOND SEQUENCE FOR SECOND DERIVATIVE TEST
+ RDTITL> *
+  
+ SEQRDR>        2
+  
+ SEQRDR>    AMN CBX
+
+          RESIDUE SEQUENCE --     2 RESIDUES
+          AMN CBX 
+  
+ CHARMM>     
+  
+ CHARMM>    GENERATE  A  SETU
+ NO PATCHING WILL BE DONE ON THE FIRST RESIDUE
+ NO PATCHING WILL BE DONE ON THE LAST  RESIDUE
+ GENPSF> Segment   1 has been generated. Its identifier is A.
+ PSFSUM> PSF modified: NONBOND lists and IMAGE atoms cleared.
+ PSFSUM> Summary of the structure file counters :
+         Number of segments      =        1   Number of residues   =        4
+         Number of atoms         =       12   Number of groups     =        4
+         Number of bonds         =       10   Number of angles     =       12
+         Number of dihedrals     =        2   Number of impropers  =        4
+         Number of cross-terms   =        0
+         Number of HB acceptors  =        2   Number of HB donors  =        2
+         Number of NB exclusions =        0   Total charge =   -0.00000
+  
+ CHARMM>    IC PARAM
+  
+ CHARMM>    PRINT IC
+
+       INTERNAL COORDINATES
+ TITLE>  * TEST RUN FOR NEWTON RAPHSON AND DIAGONALIZATION
+ TITLE>  *
+
+     NUMBER OF INTERNAL COORDINATES :          6
+
+   N     I       J       K       L   R(I(J/K)) T(I(JK/KJ)) PHI   T(JKL)   R(KL)
+
+    1   2 N     1 CL    1 *C    1 O      1.3300  117.50  180.00  121.50   1.2300
+    2   1 CL    1 C     2 N     2 CA     1.5200  117.50  180.00  120.00   1.4900
+    3   1 C     2 CA    2 *N    2 H      1.3300  120.00  180.00  120.00   0.9800
+    4   4 N     3 CL    3 *C    3 O      1.3300  117.50  180.00  121.50   1.2300
+    5   3 CL    3 C     4 N     4 CA     1.5200  117.50  180.00  120.00   1.4900
+    6   3 C     4 CA    4 *N    4 H      1.3300  120.00  180.00  120.00   0.9800
+  
+ CHARMM>     
+  
+ CHARMM>    IC EDIT
+  
+ EDITIC>    DIHE   1  CL  1  C    2  N    2  CA   0.0
+               FOUND IN IC    2 AS POSITIVE
+  
+ EDITIC>    DIHE   3  CL  3  C    4  N    4  CA   0.0
+               FOUND IN IC    5 AS POSITIVE
+  
+ EDITIC>    DIHE   2  CA  2  N    2  H    4  H  180.0
+               DIHEDRAL NOT FOUND. ADDING NEW IC    7
+  
+ EDITIC>    DIHE   2  N   2  H    4  H    4  N  180.0
+               DIHEDRAL NOT FOUND. ADDING NEW IC    8
+  
+ EDITIC>    DIHE   2  H   4  H    4  N    4  CA 180.0
+               DIHEDRAL NOT FOUND. ADDING NEW IC    9
+  
+ EDITIC>    ANGL   2  N   2  H    4  H          100.0
+               FOUND IN IC    7 ON RIGHT SIDE
+               FOUND IN IC    8 ON LEFT  SIDE
+  
+ EDITIC>    ANGL   2  H   4  H    4  N          100.0
+               FOUND IN IC    8 ON RIGHT SIDE
+               FOUND IN IC    9 ON LEFT  SIDE
+  
+ EDITIC>    DIST   2  H   4  H                  4.5
+               FOUND IN IC    7 ON RIGHT SIDE
+               FOUND IN IC    9 ON LEFT  SIDE
+  
+ EDITIC>    END
+
+               EDIT COMPLETE. NEW COORDINATES ARE GIVEN.
+
+
+   N     I       J       K       L   R(I(J/K)) T(I(JK/KJ)) PHI   T(JKL)   R(KL)
+
+    7   2 CA    2 N     2 H     4 H      1.4900  120.00  180.00  100.00   4.5000
+    8   2 N     2 H     4 H     4 N      0.9800  100.00  180.00  100.00   0.9800
+    9   2 H     4 H     4 N     4 CA     4.5000  100.00  180.00  120.00   1.4900
+  
+ CHARMM>     
+  
+ CHARMM>    PRINT IC
+
+       INTERNAL COORDINATES
+ TITLE>  * TEST RUN FOR NEWTON RAPHSON AND DIAGONALIZATION
+ TITLE>  *
+
+     NUMBER OF INTERNAL COORDINATES :          9
+
+   N     I       J       K       L   R(I(J/K)) T(I(JK/KJ)) PHI   T(JKL)   R(KL)
+
+    1   2 N     1 CL    1 *C    1 O      1.3300  117.50  180.00  121.50   1.2300
+    2   1 CL    1 C     2 N     2 CA     1.5200  117.50    0.00  120.00   1.4900
+    3   1 C     2 CA    2 *N    2 H      1.3300  120.00  180.00  120.00   0.9800
+    4   4 N     3 CL    3 *C    3 O      1.3300  117.50  180.00  121.50   1.2300
+    5   3 CL    3 C     4 N     4 CA     1.5200  117.50    0.00  120.00   1.4900
+    6   3 C     4 CA    4 *N    4 H      1.3300  120.00  180.00  120.00   0.9800
+    7   2 CA    2 N     2 H     4 H      1.4900  120.00  180.00  100.00   4.5000
+    8   2 N     2 H     4 H     4 N      0.9800  100.00  180.00  100.00   0.9800
+    9   2 H     4 H     4 N     4 CA     4.5000  100.00  180.00  120.00   1.4900
+  
+ CHARMM>    IC SEED 2 CA 2 N 2 H
+  
+ CHARMM>    IC BILD
+  
+ CHARMM>     
+  
+ CHARMM>    COOR ORIENT MASS
+
+ ORIENT THE COORDINATES TO ALIGN WITH AXIS
+
+ MOMENTS
+      0.00000000     -0.00000000      0.00000000
+                    278.03806440    306.27514299
+                                   1037.93594157
+
+ Transpose of the rotation matrix
+     0.943013    0.332755    0.000000
+    -0.332755    0.943013   -0.000000
+    -0.000000    0.000000    1.000000
+ CENTER OF ATOMS BEFORE TRANSLATION     4.09431     0.07916    -0.00000
+ AXIS OF ROTATION IS -0.000000 -0.000000  1.000000  ANGLE IS   19.44
+
+ ALL COORDINATES ORIENTED IN THE MAIN SET BASED ON SELECTED ATOMS.
+
+  
+ CHARMM>    PRINT     COORD
+
+          COORDINATE FILE MODULE
+ TITLE>  * TEST RUN FOR NEWTON RAPHSON AND DIAGONALIZATION (TEST1)
+ TITLE>  *
+   12
+    1    1 AMN  CL    -3.43514  -1.45265  -0.00000 A    1      0.00000
+    2    1 AMN  C     -2.23841  -0.51551  -0.00000 A    1      0.00000
+    3    1 AMN  O     -1.08582  -0.94498  -0.00000 A    1      0.00000
+    4    2 CBX  N     -2.48224   0.79195   0.00000 A    2      0.00000
+    5    2 CBX  H     -1.73775   1.42924   0.00000 A    2      0.00000
+    6    2 CBX  CA    -3.88733   1.28775   0.00000 A    2      0.00000
+    7    3 AMN  CL     3.43514   1.45265  -0.00000 A    3      0.00000
+    8    3 AMN  C      2.23841   0.51551  -0.00000 A    3      0.00000
+    9    3 AMN  O      1.08582   0.94498  -0.00000 A    3      0.00000
+   10    4 CBX  N      2.48224  -0.79195   0.00000 A    4      0.00000
+   11    4 CBX  H      1.73775  -1.42924   0.00000 A    4      0.00000
+   12    4 CBX  CA     3.88733  -1.28775   0.00000 A    4      0.00000
+  
+ CHARMM>    COOR COPY COMP
+ SELECTED COORDINATES COPIED TO THE COMPARISON SET.
+
+  
+ CHARMM>     
+  
+ CHARMM>    READ COOR CARD
+          SPATIAL COORDINATES BEING READ FROM UNIT  5
+ RDTITL> * INITIAL COORDINATES FOR AMN-CBX *2
+ RDTITL> *  DATE:    10/26/83      4:44:54      CREATED BY USER: BROOKSG
+ RDTITL> *
+
+ ** WARNING ** Coordinates were overwritten for    12 atoms.
+ *** LEVEL  2 WARNING *** BOMLEV IS   -1
+  
+ CHARMM>     
+  
+ CHARMM>    HBONDS  IHBFRQ 50
+ PRNHBD: CUToff Hydrogen Bond  distance =    4.5000   Angle =   90.0000
+         CuT switching ON HB dist. =     3.5000  OFf HB dist. =    4.0000
+         CuT switching ON Hb Angle =    50.0000  OFf Hb Angle =   70.0000
+         ACCEptor antecedents included
+         All hydrogen bonds for each hydrogen will be found
+         Hydrogen bonds between excluded atoms will be kept
+
+ HBFIND-exclusions:      0 due to distance cutoff,       2 due to angle cutoff
+ HBEDIT-deletions:       0 due to duplications,          0 due to best-option,
+                         0 due to fixed atoms,           0 due to exclusions
+ HBEDIT: currently     2 hydrogen bonds present
+  
+ CHARMM>    PRINT   HBONDS ANAL
+
+     LIST OF       2    H-BOND PAIRS
+     SELECTED WITH CUTHB =  4.50, CUTHBA = 90.00
+
+
+                 HBOND                           ENERGY DISTANCE A-H-D  H-A-AA
+    1(A    2    N   -H   )(O   -     3    A   ) -0.187   3.571  50.296   0.000
+    2(A    4    N   -H   )(O   -     1    A   ) -0.187   3.571  50.296   0.000
+  
+ CHARMM>    MINI CONJ  NSTEP 100 INBFRQ 100 STEP 0.2  IHBFRQ 100  ncgcyc 50 NPRINT 10
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      ATOMs    RDIElec  SWITch   VATOm    VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  =  8.000 CTEXNB =999.000 CTONNB =  6.500 CTOFNB =  7.500
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are        0 atom  pairs and        0 atom  exclusions.
+ There are        0 group pairs and        0 group exclusions.
+ <MAKINB> with mode   5 found     22 exclusions and      8 interactions(1-4)
+ <MAKGRP> found      2 group exclusions.
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR       61 ATOM PAIRS AND        0 GROUP PAIRS
+
+ General atom nonbond list generation found:
+       25 ATOM PAIRS WERE FOUND FOR ATOM LIST
+        1 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+ PRNHBD: CUToff Hydrogen Bond  distance =    4.5000   Angle =   90.0000
+         CuT switching ON HB dist. =     3.5000  OFf HB dist. =    4.0000
+         CuT switching ON Hb Angle =    50.0000  OFf Hb Angle =   70.0000
+         ACCEptor antecedents included
+         All hydrogen bonds for each hydrogen will be found
+         Hydrogen bonds between excluded atoms will be kept
+
+ HBFIND-exclusions:      0 due to distance cutoff,       2 due to angle cutoff
+ HBEDIT-deletions:       0 due to duplications,          0 due to best-option,
+                         0 due to fixed atoms,           0 due to exclusions
+ HBEDIT: currently     2 hydrogen bonds present
+
+
+ CONJUG> An energy minimization has been requested.
+
+ NCGCYC =           50   NSTEP  =          100
+ PCUT   =    0.9999000   PRTMIN =            1
+ STEP   =    0.2000000   TOLFUN =    0.0000000
+ TOLGRD =    0.0000000   TOLITR =          100
+ TOLSTP =    0.0000000
+
+MINI MIN: Cycle      ENERgy      Delta-E         GRMS    Step-size
+MINI EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>        0     12.05508      0.00000     17.07761      0.00000
+MINI EXTERN>       18.40472     -5.97659     -0.37304      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>       10     -0.86351     12.91859      1.22604      0.02717
+MINI INTERN>        0.18366      3.62550      0.00000      0.00000      0.00000
+MINI EXTERN>        2.34912     -6.49328     -0.52850      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>       20     -5.68845      4.82493      2.87403      0.23506
+MINI INTERN>        0.28303      5.25126      0.00000     -0.00000      0.00000
+MINI EXTERN>        0.32654     -8.27798     -3.27130      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>       30     -6.56567      0.87722      3.33396      0.05793
+MINI INTERN>        0.31415      2.15691      0.00000      0.00000      0.00000
+MINI EXTERN>        2.57624     -7.84414     -3.76883      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>       40     -7.54132      0.97566      1.55754      0.01223
+MINI INTERN>        0.25042      2.87669      0.00000      0.00000      0.00000
+MINI EXTERN>        2.31729     -8.36428     -4.62145      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>       50     -7.66313      0.12181      2.30699      0.01724
+MINI INTERN>        0.17655      4.47238      0.00000      0.00000      0.00000
+MINI EXTERN>        1.24326     -8.68996     -4.86537      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>       50     -7.66313      0.12181      2.30699      0.00000
+MINI INTERN>        0.17655      4.47238      0.00000      0.00000      0.00000
+MINI EXTERN>        1.24326     -8.68996     -4.86537      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>       60     -9.72836      2.06523      2.95307      0.03408
+MINI INTERN>        0.42849      3.74667      0.00000      0.00000      0.00000
+MINI EXTERN>        1.05793     -8.93497     -6.02648      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>       70    -10.81950      1.09114      0.21541      0.01091
+MINI INTERN>        0.19111      3.43884      0.00000      0.00000      0.00000
+MINI EXTERN>        2.00151     -9.50083     -6.95013      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>       80    -10.82609      0.00659      0.16173      0.00157
+MINI INTERN>        0.18542      3.43931      0.00000      0.00000      0.00000
+MINI EXTERN>        2.05712     -9.53447     -6.97347      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>       90    -10.82775      0.00166      0.01466      0.00017
+MINI INTERN>        0.18415      3.45572      0.00000      0.00000      0.00000
+MINI EXTERN>        2.02641     -9.52593     -6.96810      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>      100    -10.82776      0.00001      0.00241      0.00015
+MINI INTERN>        0.18517      3.45424      0.00000      0.00000      0.00000
+MINI EXTERN>        2.02400     -9.52375     -6.96742      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+
+ CONJUG> Minimization exiting with number of steps limit (  100) exceeded.
+
+CONJ MIN: Cycle      ENERgy      Delta-E         GRMS    Step-size
+CONJ INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+CONJ EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ ----------       ---------    ---------    ---------    ---------    ---------
+CONJ>      100    -10.82776      0.00001      0.00241      0.20000
+CONJ INTERN>        0.18517      3.45424      0.00000      0.00000      0.00000
+CONJ EXTERN>        2.02400     -9.52375     -6.96742      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>    PRINT COORD
+
+          COORDINATE FILE MODULE
+ TITLE>  * TEST RUN FOR NEWTON RAPHSON AND DIAGONALIZATION (TEST2)
+ TITLE>  *
+   12
+    1    1 AMN  CL    -3.23963  -1.70840   0.00000 A    1      0.00000
+    2    1 AMN  C     -1.92728  -0.92523   0.00000 A    1      0.00000
+    3    1 AMN  O     -0.87136  -1.55377   0.00000 A    1      0.00000
+    4    2 CBX  N     -1.82069   0.41004   0.00000 A    2      0.00000
+    5    2 CBX  H     -0.91600   0.78292   0.00000 A    2      0.00000
+    6    2 CBX  CA    -2.97912   1.35816   0.00000 A    2      0.00000
+    7    3 AMN  CL     3.23963   1.70840   0.00000 A    3      0.00000
+    8    3 AMN  C      1.92728   0.92523   0.00000 A    3      0.00000
+    9    3 AMN  O      0.87136   1.55377   0.00000 A    3      0.00000
+   10    4 CBX  N      1.82069  -0.41004   0.00000 A    4      0.00000
+   11    4 CBX  H      0.91600  -0.78292   0.00000 A    4      0.00000
+   12    4 CBX  CA     2.97912  -1.35816   0.00000 A    4      0.00000
+  
+ CHARMM>    COOR ORIE RMS MASS
+ CENTER OF ATOMS BEFORE TRANSLATION    -0.00000    -0.00000     0.00000
+ CENTER OF REFERENCE COORDINATE SET     0.00000    -0.00000    -0.00000
+ NET TRANSLATION OF ROTATED ATOMS       0.00000     0.00000    -0.00000
+ ROTATION MATRIX
+     0.998766   -0.049656    0.000000
+     0.049656    0.998766    0.000000
+     0.000000    0.000000    1.000000
+ AXIS OF ROTATION IS  0.000000  0.000000 -1.000000  ANGLE IS    2.85
+
+ CENTER OF ROTATION   0.000000 -0.000000 -0.000000  SHIFT IS  0.000000
+
+ TOTAL SQUARE DIFF IS     63.4818  DENOMINATOR IS    146.1902
+       THUS RMS DIFF IS    0.658970
+ ALL COORDINATES ORIENTED IN THE MAIN SET BASED ON SELECTED ATOMS.
+
+  
+ CHARMM>     
+  
+ CHARMM>    if ?novibran .eq. 1 then stop
+ RDCMND: can not substitute energy "?NOVIBRAN"
+ Comparing "?NOVIBRAN" and "1".
+ IF test evaluated as false.  Skipping command
+  
+ CHARMM>     
+  
+ CHARMM>     
+  
+ CHARMM>    READ COOR CARD
+          SPATIAL COORDINATES BEING READ FROM UNIT  5
+ RDTITL> * INITIAL COORDINATES FOR AMN-CBX *2
+ RDTITL> *  DATE:    10/26/83      4:44:54      CREATED BY USER: BROOKSG
+ RDTITL> *
+
+ ** WARNING ** Coordinates were overwritten for    12 atoms.
+ *** LEVEL  2 WARNING *** BOMLEV IS   -1
+  
+ CHARMM>     
+  
+ CHARMM>    MINI    NRAP   TFREQ 100.0   NSTEP 40 INBFRQ 5 STEP 0.4 PRTMIN 1 IHBFRQ 5  -
+ CHARMM>         TOLGRD 0.0001  NPRINT 1 DEBUG
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      ATOMs    RDIElec  SWITch   VATOm    VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  =  8.000 CTEXNB =999.000 CTONNB =  6.500 CTOFNB =  7.500
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are       25 atom  pairs and       30 atom  exclusions.
+ There are        0 group pairs and        2 group exclusions.
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR       61 ATOM PAIRS AND        0 GROUP PAIRS
+
+ General atom nonbond list generation found:
+       25 ATOM PAIRS WERE FOUND FOR ATOM LIST
+        1 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+ PRNHBD: CUToff Hydrogen Bond  distance =    4.5000   Angle =   90.0000
+         CuT switching ON HB dist. =     3.5000  OFf HB dist. =    4.0000
+         CuT switching ON Hb Angle =    50.0000  OFf Hb Angle =   70.0000
+         ACCEptor antecedents included
+         All hydrogen bonds for each hydrogen will be found
+         Hydrogen bonds between excluded atoms will be kept
+
+ HBFIND-exclusions:      0 due to distance cutoff,       2 due to angle cutoff
+ HBEDIT-deletions:       0 due to duplications,          0 due to best-option,
+                         0 due to fixed atoms,           0 due to exclusions
+ HBEDIT: currently     2 hydrogen bonds present
+ **** Warning ****  The following extraneous characters
+ were found while command processing in NRAPH
+ PRTMIN 1
+
+
+ NRAPH> An energy minimization has been requested.
+
+ NSTEP  =           40   NPRINT =            1
+ STEP   =    0.4000000   TFREQ  =  100.0000000
+ TOLGRD =    0.0001000   TOLSTP =    0.0000000
+
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI MIN: Cycle      ENERgy      Delta-E         GRMS    Step-size
+MINI EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ ----------       ---------    ---------    ---------    ---------    ---------
+MINI>        0     12.05508    -22.88284     17.07761      0.00000
+MINI EXTERN>       18.40472     -5.97659     -0.37304      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    5 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=     12.055081  fcent=      0.000000 ffcent/2=    -13.907192
+ NRAPH3>   rnew=     -0.133333   enew=     -0.244058   fnew=      3.613356
+ NRAPH3>   rnew=     -0.266667   enew=     -0.938666   fnew=      6.668740
+ NRAPH3>   rnew=     -0.533333   enew=     -3.187144   fnew=      9.239849
+ NRAPH3>   rnew=     -1.066667   enew=     -5.331247   fnew=     -5.948967
+ Normal step size=    0.00000000  Improved step=   -0.92383723
+  energ=      6.386345  fcent=     -0.000000 ffcent/2=     -5.667214
+ NRAPH3>   rnew=      0.133333   enew=      0.028269   fnew=      0.435181
+ NRAPH3>   rnew=      0.066667   enew=      0.006993   fnew=      0.208921
+ Normal step size=   -0.00000000  Improved step=    0.09670132
+  energ=      6.401065  fcent=      2.906627 ffcent/2=     -1.866919
+ NRAPH3>   rnew=     -0.133333   enew=     -0.371572   fnew=      2.672437
+ NRAPH3>   rnew=     -0.266667   enew=     -0.714974   fnew=      2.470474
+ NRAPH3>   rnew=     -0.533333   enew=     -1.311328   fnew=      2.008445
+ NRAPH3>   rnew=     -1.066667   enew=     -1.888166   fnew=     -0.337428
+ Normal step size=    0.77845541  Improved step=   -0.98926111
+  energ=      4.508383  fcent=      0.075224 ffcent/2=     -0.030763
+ NRAPH3>   rnew=     -0.133333   enew=      0.340918   fnew=     -5.211244
+ NRAPH3>   rnew=     -0.066667   enew=      0.082443   fnew=     -2.551324
+ Normal step size=    1.22262451  Improved step=   -0.13333333
+  energ=      4.849301  fcent=      2.932733 ffcent/2=      0.193607
+ NRAPH3>   rnew=     -0.133333   enew=     -0.005177   fnew=     -2.867715
+ NRAPH3>   rnew=     -0.080000   enew=     -0.095827   fnew=     -0.536849
+ Normal step size=   -7.57394771  Improved step=   -0.09069989
+    1  Eigenvalue=  -27.814384  Derivative=    0.000000  Step=   -0.923837
+    2  Eigenvalue=  -11.334427  Derivative=   -0.000000  Step=    0.096701
+    3  Eigenvalue=   -3.733838  Derivative=    2.906627  Step=   -0.989261
+    4  Eigenvalue=   -0.061527  Derivative=    0.075224  Step=   -0.133333
+    5  Eigenvalue=    0.387213  Derivative=    2.932733  Step=   -0.090700
+    6  Eigenvalue=    3.734826  Derivative=   -2.208675  Step=    0.400000
+    7  Eigenvalue=    6.127510  Derivative=   -5.484551  Step=    0.400000
+    8  Eigenvalue=   16.242763  Derivative=    8.252494  Step=   -0.400000
+    9  Eigenvalue=  147.229706  Derivative=   18.311189  Step=   -0.124372
+   10  Eigenvalue=  152.043992  Derivative=   -0.583285  Step=    0.003836
+   11  Eigenvalue=  172.725683  Derivative=   -2.472231  Step=    0.014313
+   12  Eigenvalue=  173.032868  Derivative=    3.759268  Step=   -0.021726
+   13  Eigenvalue=  252.776765  Derivative=   11.385673  Step=   -0.045042
+   14  Eigenvalue=  254.365076  Derivative=   -4.246320  Step=    0.016694
+   15  Eigenvalue=  363.861557  Derivative=   -4.663569  Step=    0.012817
+   16  Eigenvalue=  374.463147  Derivative=    9.666724  Step=   -0.025815
+   17  Eigenvalue=  483.356542  Derivative=    2.733748  Step=   -0.005656
+   18  Eigenvalue=  487.510507  Derivative=   52.631917  Step=   -0.107961
+   19  Eigenvalue=  748.818501  Derivative=    0.144669  Step=   -0.000193
+   20  Eigenvalue=  750.091565  Derivative=    3.169225  Step=   -0.004225
+   21  Eigenvalue=  791.981656  Derivative=   11.835780  Step=   -0.014945
+   22  Eigenvalue=  792.032281  Derivative=  -36.984146  Step=    0.046695
+   23  Eigenvalue= 1442.971914  Derivative=   -0.053849  Step=    0.000037
+   24  Eigenvalue= 1444.232543  Derivative=   12.299340  Step=   -0.008516
+   25  Eigenvalue= 2258.554213  Derivative=   39.741420  Step=   -0.017596
+   26  Eigenvalue= 2261.439850  Derivative=   -9.659244  Step=    0.004271
+   27  Eigenvalue= 2752.906586  Derivative=    3.299832  Step=   -0.001199
+   28  Eigenvalue= 2754.185158  Derivative=    7.517498  Step=   -0.002729
+   29  Eigenvalue= 2999.762147  Derivative=   -7.947528  Step=    0.002649
+   30  Eigenvalue= 3003.244362  Derivative=  -15.828967  Step=    0.005271
+   31  Eigenvalue= 4982.249856  Derivative=   -0.934414  Step=    0.000188
+   32  Eigenvalue= 4997.376933  Derivative=   -2.831502  Step=    0.000567
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   35  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   36  Eigenvalue= 5000.128467  Derivative=    1.749353  Step=   -0.000350
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>        1      1.81330     10.24178     17.41852      1.54315
+MINI INTERN>        2.00623      1.65408      0.00000      1.20167      0.23343
+MINI EXTERN>        5.75339     -7.28384     -1.75166      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    4 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=      1.813297  fcent=     -1.719902 ffcent/2=     -5.651373
+ NRAPH3>   rnew=      0.266667   enew=     -0.778702   fnew=     -3.512520
+ NRAPH3>   rnew=      0.533333   enew=     -1.252470   fnew=      1.620152
+ Normal step size=   -0.15216675  Improved step=    0.47033050
+  energ=      0.530077  fcent=      3.469857 ffcent/2=     -3.818924
+ NRAPH3>   rnew=     -0.266667   enew=     -0.754126   fnew=      1.860959
+ NRAPH3>   rnew=     -0.533333   enew=     -0.554661   fnew=     -4.634971
+ Normal step size=    0.45429772  Improved step=   -0.38333410
+  energ=     -0.341268  fcent=     -3.396479 ffcent/2=     -2.776593
+ NRAPH3>   rnew=      0.266667   enew=     -0.778724   fnew=     -2.108198
+ NRAPH3>   rnew=      0.533333   enew=     -0.802439   fnew=      2.850836
+ Normal step size=   -0.61162701  Improved step=    0.41665370
+  energ=     -1.296913  fcent=     -3.024407 ffcent/2=     -1.296599
+ NRAPH3>   rnew=      0.266667   enew=     -0.717329   fnew=     -2.357940
+ NRAPH3>   rnew=      0.533333   enew=     -1.234140   fnew=     -1.419933
+ NRAPH3>   rnew=      1.066667   enew=     -0.714404   fnew=      5.037604
+ Normal step size=   -1.16628505  Improved step=    0.70766207
+    1  Eigenvalue=  -11.302745  Derivative=   -1.719902  Step=    0.470330
+    2  Eigenvalue=   -7.637848  Derivative=    3.469857  Step=   -0.383334
+    3  Eigenvalue=   -5.553187  Derivative=   -3.396479  Step=    0.416654
+    4  Eigenvalue=   -2.593197  Derivative=   -3.024407  Step=    0.707662
+    5  Eigenvalue=    1.902005  Derivative=   -3.470394  Step=    0.800000
+    6  Eigenvalue=   10.022351  Derivative=   -8.774223  Step=    0.800000
+    7  Eigenvalue=   19.983216  Derivative=    1.396207  Step=   -0.069869
+    8  Eigenvalue=   25.587126  Derivative=    2.592678  Step=   -0.101327
+    9  Eigenvalue=  118.498277  Derivative=    0.737049  Step=   -0.006220
+   10  Eigenvalue=  139.023908  Derivative=  -11.862854  Step=    0.085330
+   11  Eigenvalue=  188.870119  Derivative=   -3.036085  Step=    0.016075
+   12  Eigenvalue=  196.962107  Derivative=   -0.915090  Step=    0.004646
+   13  Eigenvalue=  216.603876  Derivative=    9.265179  Step=   -0.042775
+   14  Eigenvalue=  250.983256  Derivative=    4.018327  Step=   -0.016010
+   15  Eigenvalue=  294.621798  Derivative=   -3.392052  Step=    0.011513
+   16  Eigenvalue=  305.670214  Derivative=   16.956545  Step=   -0.055473
+   17  Eigenvalue=  380.799897  Derivative=   -5.443274  Step=    0.014294
+   18  Eigenvalue=  398.223081  Derivative=    5.342815  Step=   -0.013417
+   19  Eigenvalue=  708.329266  Derivative=   18.736170  Step=   -0.026451
+   20  Eigenvalue=  726.700500  Derivative=  -29.753123  Step=    0.040943
+   21  Eigenvalue=  887.986939  Derivative=    1.983219  Step=   -0.002233
+   22  Eigenvalue=  909.642454  Derivative=    2.923814  Step=   -0.003214
+   23  Eigenvalue= 1441.378731  Derivative=    6.980468  Step=   -0.004843
+   24  Eigenvalue= 1457.642083  Derivative=   -0.523443  Step=    0.000359
+   25  Eigenvalue= 2248.649139  Derivative=  -50.029038  Step=    0.022248
+   26  Eigenvalue= 2268.630606  Derivative=   -6.942484  Step=    0.003060
+   27  Eigenvalue= 2761.389488  Derivative=   34.716879  Step=   -0.012572
+   28  Eigenvalue= 2766.548572  Derivative=   13.171446  Step=   -0.004761
+   29  Eigenvalue= 2954.105949  Derivative=   -8.520373  Step=    0.002884
+   30  Eigenvalue= 2978.451715  Derivative=   36.819771  Step=   -0.012362
+   31  Eigenvalue= 4997.088953  Derivative=   -2.105812  Step=    0.000421
+   32  Eigenvalue= 4999.409477  Derivative=    2.311675  Step=   -0.000462
+   33  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   34  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   35  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   36  Eigenvalue= 5000.158132  Derivative=   -0.274802  Step=    0.000055
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>        2      2.40194     -0.58864     20.80356      1.53435
+MINI INTERN>        7.76158      3.79807      0.00000      0.04399      0.01641
+MINI EXTERN>        0.99396     -7.70214     -2.50994      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=      2.401936  fcent=      4.923049 ffcent/2=     -0.098787
+ NRAPH3>   rnew=     -0.533333   enew=     -2.631545   fnew=      4.287937
+ NRAPH3>   rnew=     -1.066667   enew=     -0.410072   fnew=    -24.256949
+ Normal step size=   24.91741539  Improved step=   -0.48878670
+    1  Eigenvalue=   -0.197575  Derivative=    4.923049  Step=   -0.488787
+    2  Eigenvalue=    8.534707  Derivative=    1.200470  Step=   -0.140657
+    3  Eigenvalue=   12.480371  Derivative=   -3.749499  Step=    0.300432
+    4  Eigenvalue=   14.531018  Derivative=   -1.408775  Step=    0.096949
+    5  Eigenvalue=   16.796925  Derivative=   -1.101467  Step=    0.065576
+    6  Eigenvalue=   28.387377  Derivative=    0.203888  Step=   -0.007182
+    7  Eigenvalue=   36.769427  Derivative=    0.704526  Step=   -0.019161
+    8  Eigenvalue=   56.424198  Derivative=   -0.963362  Step=    0.017074
+    9  Eigenvalue=  123.445730  Derivative=   -2.280661  Step=    0.018475
+   10  Eigenvalue=  135.040876  Derivative=   -0.412372  Step=    0.003054
+   11  Eigenvalue=  195.894575  Derivative=   -4.194869  Step=    0.021414
+   12  Eigenvalue=  200.947757  Derivative=    1.741480  Step=   -0.008666
+   13  Eigenvalue=  251.944631  Derivative=    0.823073  Step=   -0.003267
+   14  Eigenvalue=  283.513401  Derivative=    1.879862  Step=   -0.006631
+   15  Eigenvalue=  292.226603  Derivative=  -10.655369  Step=    0.036463
+   16  Eigenvalue=  292.918733  Derivative=   -0.998467  Step=    0.003409
+   17  Eigenvalue=  390.009207  Derivative=   -4.022133  Step=    0.010313
+   18  Eigenvalue=  407.368109  Derivative=    0.236339  Step=   -0.000580
+   19  Eigenvalue=  702.997952  Derivative=  -74.875475  Step=    0.106509
+   20  Eigenvalue=  706.789480  Derivative=  -35.129328  Step=    0.049703
+   21  Eigenvalue=  949.276257  Derivative=   -3.445898  Step=    0.003630
+   22  Eigenvalue= 1078.691733  Derivative=   -3.775459  Step=    0.003500
+   23  Eigenvalue= 1461.507771  Derivative=   30.419867  Step=   -0.020814
+   24  Eigenvalue= 1467.490572  Derivative=  -27.149326  Step=    0.018501
+   25  Eigenvalue= 2237.128397  Derivative=  -21.805590  Step=    0.009747
+   26  Eigenvalue= 2262.338621  Derivative=  -16.351104  Step=    0.007228
+   27  Eigenvalue= 2805.331825  Derivative=  -13.019709  Step=    0.004641
+   28  Eigenvalue= 2824.568072  Derivative=  -28.296346  Step=    0.010018
+   29  Eigenvalue= 2960.932292  Derivative=   73.916154  Step=   -0.024964
+   30  Eigenvalue= 2963.661674  Derivative=    1.539268  Step=   -0.000519
+   31  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   32  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   33  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   34  Eigenvalue= 5003.648204  Derivative=   -0.484461  Step=    0.000097
+   35  Eigenvalue= 5004.938053  Derivative=    0.334937  Step=   -0.000067
+   36  Eigenvalue= 5010.869322  Derivative=   -0.578940  Step=    0.000116
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>        3     -8.11462     10.51656      1.54618      0.61746
+MINI INTERN>        0.23062      3.58376      0.00000      0.13127      0.06108
+MINI EXTERN>        1.45914     -8.63099     -4.94950      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=     -8.114624  fcent=     -5.043913 ffcent/2=      0.030782
+ NRAPH3>   rnew=      0.213333   enew=     -1.016106   fnew=     -4.110686
+ NRAPH3>   rnew=      0.426667   enew=     -1.474749   fnew=      0.865208
+ Normal step size=   81.93035517  Improved step=    0.39904566
+    1  Eigenvalue=    0.061563  Derivative=   -5.043913  Step=    0.399046
+    2  Eigenvalue=    1.396862  Derivative=    0.484269  Step=   -0.346684
+    3  Eigenvalue=    2.018129  Derivative=    3.864788  Step=   -0.640000
+    4  Eigenvalue=    4.218433  Derivative=   -1.997876  Step=    0.473606
+    5  Eigenvalue=    7.366812  Derivative=    0.669049  Step=   -0.090819
+    6  Eigenvalue=    7.684629  Derivative=   -1.124179  Step=    0.146289
+    7  Eigenvalue=   25.528620  Derivative=   -0.651527  Step=    0.025521
+    8  Eigenvalue=   32.057989  Derivative=   -0.425318  Step=    0.013267
+    9  Eigenvalue=  115.875441  Derivative=   -0.087719  Step=    0.000757
+   10  Eigenvalue=  124.643356  Derivative=   -0.652173  Step=    0.005232
+   11  Eigenvalue=  198.697263  Derivative=    0.332866  Step=   -0.001675
+   12  Eigenvalue=  204.868086  Derivative=   -0.441300  Step=    0.002154
+   13  Eigenvalue=  223.716648  Derivative=    0.659794  Step=   -0.002949
+   14  Eigenvalue=  227.348668  Derivative=    2.203461  Step=   -0.009692
+   15  Eigenvalue=  283.519258  Derivative=    2.097272  Step=   -0.007397
+   16  Eigenvalue=  286.045494  Derivative=   -2.210101  Step=    0.007726
+   17  Eigenvalue=  378.816074  Derivative=    2.935522  Step=   -0.007749
+   18  Eigenvalue=  387.759368  Derivative=   -0.517936  Step=    0.001336
+   19  Eigenvalue=  701.770394  Derivative=   -3.255242  Step=    0.004639
+   20  Eigenvalue=  704.500257  Derivative=    6.140583  Step=   -0.008716
+   21  Eigenvalue=  988.389735  Derivative=   -0.807702  Step=    0.000817
+   22  Eigenvalue=  990.602361  Derivative=   -0.518250  Step=    0.000523
+   23  Eigenvalue= 1452.385480  Derivative=    0.203463  Step=   -0.000140
+   24  Eigenvalue= 1457.755938  Derivative=   -0.644907  Step=    0.000442
+   25  Eigenvalue= 2250.676040  Derivative=    0.182835  Step=   -0.000081
+   26  Eigenvalue= 2253.384801  Derivative=   -0.725583  Step=    0.000322
+   27  Eigenvalue= 2788.687688  Derivative=   -1.631377  Step=    0.000585
+   28  Eigenvalue= 2791.890310  Derivative=    0.135507  Step=   -0.000049
+   29  Eigenvalue= 2947.233108  Derivative=   -0.747851  Step=    0.000254
+   30  Eigenvalue= 2949.883220  Derivative=    1.506021  Step=   -0.000511
+   31  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   32  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.174921  Derivative=    0.004817  Step=   -0.000001
+   35  Eigenvalue= 5000.569459  Derivative=    0.044825  Step=   -0.000009
+   36  Eigenvalue= 5000.751117  Derivative=    0.092213  Step=   -0.000018
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>        4      7.83878    -15.95340     36.50966      0.97171
+MINI INTERN>        1.19666      3.60218      0.00000      0.18641      0.11730
+MINI EXTERN>       10.56815    -10.60723      2.77532      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    3 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=      7.838781  fcent=      4.873742 ffcent/2=    -64.738775
+ NRAPH3>   rnew=     -0.426667   enew=     -7.472298   fnew=      9.775644
+ NRAPH3>   rnew=     -0.853333   enew=      2.158255   fnew=    -58.332937
+ Normal step size=    0.03764160  Improved step=   -0.56871857
+  energ=      0.361523  fcent=     -5.847400 ffcent/2=    -32.045958
+ NRAPH3>   rnew=      0.426667   enew=      0.672472   fnew=     10.442352
+ NRAPH3>   rnew=      0.213333   enew=     -0.513873   fnew=      1.187521
+ Normal step size=   -0.09123460  Improved step=    0.32113635
+  energ=      0.200475  fcent=     -6.292054 ffcent/2=     -4.397560
+ NRAPH3>   rnew=      0.426667   enew=      2.816516   fnew=     18.663472
+ NRAPH3>   rnew=      0.213333   enew=      0.118550   fnew=      6.819517
+ Normal step size=   -0.71540292  Improved step=    0.21435172
+    1  Eigenvalue= -129.477549  Derivative=    4.873742  Step=   -0.568719
+    2  Eigenvalue=  -64.091917  Derivative=   -5.847400  Step=    0.321136
+    3  Eigenvalue=   -8.795120  Derivative=   -6.292054  Step=    0.214352
+    4  Eigenvalue=    5.761781  Derivative=   -4.434362  Step=    0.769616
+    5  Eigenvalue=   10.144781  Derivative=    2.112797  Step=   -0.208264
+    6  Eigenvalue=   21.107232  Derivative=   -4.432199  Step=    0.209985
+    7  Eigenvalue=   34.448176  Derivative=   -9.273432  Step=    0.269199
+    8  Eigenvalue=   79.223562  Derivative=   12.411209  Step=   -0.156661
+    9  Eigenvalue=  106.066203  Derivative=   -4.440790  Step=    0.041868
+   10  Eigenvalue=  140.852138  Derivative=    6.683025  Step=   -0.047447
+   11  Eigenvalue=  165.356183  Derivative=    9.756241  Step=   -0.059001
+   12  Eigenvalue=  179.484923  Derivative=   -7.872097  Step=    0.043859
+   13  Eigenvalue=  232.662217  Derivative=    7.591557  Step=   -0.032629
+   14  Eigenvalue=  242.066416  Derivative=  -21.755326  Step=    0.089873
+   15  Eigenvalue=  288.293222  Derivative=   10.931342  Step=   -0.037917
+   16  Eigenvalue=  331.877749  Derivative=   -5.364710  Step=    0.016165
+   17  Eigenvalue=  381.800752  Derivative=   -0.694038  Step=    0.001818
+   18  Eigenvalue=  620.268597  Derivative=  -32.100225  Step=    0.051752
+   19  Eigenvalue=  721.704735  Derivative=    8.735167  Step=   -0.012104
+   20  Eigenvalue=  978.168354  Derivative=    3.857223  Step=   -0.003943
+   21  Eigenvalue=  991.988771  Derivative=  -20.874075  Step=    0.021043
+   22  Eigenvalue= 1412.622247  Derivative=  -16.483310  Step=    0.011669
+   23  Eigenvalue= 1539.215281  Derivative=   -6.260940  Step=    0.004068
+   24  Eigenvalue= 1762.218129  Derivative=   23.966722  Step=   -0.013600
+   25  Eigenvalue= 2331.009676  Derivative=  -18.877404  Step=    0.008098
+   26  Eigenvalue= 2474.279797  Derivative=    7.603564  Step=   -0.003073
+   27  Eigenvalue= 2850.892871  Derivative=   11.268558  Step=   -0.003953
+   28  Eigenvalue= 2936.288336  Derivative=    4.055013  Step=   -0.001381
+   29  Eigenvalue= 3001.466723  Derivative=  -75.614775  Step=    0.025193
+   30  Eigenvalue= 3429.964369  Derivative=  -96.207853  Step=    0.028049
+   31  Eigenvalue= 4993.407391  Derivative=    6.411010  Step=   -0.001284
+   32  Eigenvalue= 4996.859715  Derivative=    0.987346  Step=   -0.000198
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   35  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   36  Eigenvalue= 5004.324497  Derivative=   -4.353354  Step=    0.000870
+ HBFIND-exclusions:      0 due to distance cutoff,       2 due to angle cutoff
+ HBEDIT-deletions:       0 due to duplications,          0 due to best-option,
+                         0 due to fixed atoms,           0 due to exclusions
+ HBEDIT: currently     2 hydrogen bonds present
+ UPDECI: Nonbond update at step         5
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR       61 ATOM PAIRS AND        0 GROUP PAIRS
+
+ General atom nonbond list generation found:
+       26 ATOM PAIRS WERE FOUND FOR ATOM LIST
+        0 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>        5      2.20816      5.63062     22.77270      1.12902
+MINI INTERN>        6.90415      5.64054      0.00000      0.60186      0.77422
+MINI EXTERN>        1.58081     -9.79556     -3.49787      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    3 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=      2.208157  fcent=     -0.482535 ffcent/2=    -17.680515
+ NRAPH3>   rnew=      0.341333   enew=     -1.403282   fnew=     -3.606341
+ NRAPH3>   rnew=      0.682667   enew=      2.038778   fnew=     31.835691
+ Normal step size=   -0.01364595  Improved step=    0.32140677
+  energ=      0.883403  fcent=     -3.612767 ffcent/2=     -0.459481
+ NRAPH3>   rnew=      0.341333   enew=     -0.929758   fnew=     -1.637341
+ NRAPH3>   rnew=      0.682667   enew=     -0.840533   fnew=      2.714073
+ Normal step size=   -3.93135674  Improved step=    0.51606201
+  energ=     -0.185704  fcent=      1.991867 ffcent/2=      0.080983
+ NRAPH3>   rnew=     -0.341333   enew=      0.100053   fnew=     -5.137107
+ NRAPH3>   rnew=     -0.170667   enew=     -0.230990   fnew=      0.359882
+ Normal step size=  -12.29802098  Improved step=   -0.18067287
+    1  Eigenvalue=  -35.361030  Derivative=   -0.482535  Step=    0.321407
+    2  Eigenvalue=   -0.918962  Derivative=   -3.612767  Step=    0.516062
+    3  Eigenvalue=    0.161966  Derivative=    1.991867  Step=   -0.180673
+    4  Eigenvalue=    8.591375  Derivative=   -2.160666  Step=    0.251492
+    5  Eigenvalue=   25.979410  Derivative=   -0.920157  Step=    0.035419
+    6  Eigenvalue=   34.695539  Derivative=    0.433491  Step=   -0.012494
+    7  Eigenvalue=   35.151058  Derivative=   -0.246421  Step=    0.007010
+    8  Eigenvalue=   89.059268  Derivative=   -0.544706  Step=    0.006116
+    9  Eigenvalue=  109.305273  Derivative=   10.552487  Step=   -0.096541
+   10  Eigenvalue=  112.671256  Derivative=   -4.837044  Step=    0.042931
+   11  Eigenvalue=  173.821463  Derivative=   -6.709237  Step=    0.038598
+   12  Eigenvalue=  203.625594  Derivative=    0.789058  Step=   -0.003875
+   13  Eigenvalue=  220.318947  Derivative=    0.295907  Step=   -0.001343
+   14  Eigenvalue=  231.585966  Derivative=   11.586380  Step=   -0.050031
+   15  Eigenvalue=  299.058962  Derivative=    6.802828  Step=   -0.022747
+   16  Eigenvalue=  316.548220  Derivative=   12.273616  Step=   -0.038773
+   17  Eigenvalue=  393.999558  Derivative=   11.222333  Step=   -0.028483
+   18  Eigenvalue=  516.786052  Derivative=   -5.669420  Step=    0.010971
+   19  Eigenvalue=  704.478470  Derivative=  -26.737475  Step=    0.037954
+   20  Eigenvalue=  801.065923  Derivative=   67.528716  Step=   -0.084299
+   21  Eigenvalue= 1014.290016  Derivative=   14.245022  Step=   -0.014044
+   22  Eigenvalue= 1054.335462  Derivative=   11.961211  Step=   -0.011345
+   23  Eigenvalue= 1460.264358  Derivative=   12.885969  Step=   -0.008824
+   24  Eigenvalue= 1488.839714  Derivative=  -46.582759  Step=    0.031288
+   25  Eigenvalue= 2291.415587  Derivative=   43.437621  Step=   -0.018957
+   26  Eigenvalue= 2372.552409  Derivative=  -23.415194  Step=    0.009869
+   27  Eigenvalue= 2790.948958  Derivative=   -9.190753  Step=    0.003293
+   28  Eigenvalue= 2855.963990  Derivative=   16.944107  Step=   -0.005933
+   29  Eigenvalue= 2952.103777  Derivative=   31.162874  Step=   -0.010556
+   30  Eigenvalue= 2989.182073  Derivative=   -9.663572  Step=    0.003233
+   31  Eigenvalue= 4999.400739  Derivative=   -1.399465  Step=    0.000280
+   32  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   35  Eigenvalue= 5000.741766  Derivative=   -2.346565  Step=    0.000469
+   36  Eigenvalue= 5009.025895  Derivative=   -1.116100  Step=    0.000223
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>        6     -7.80187     10.01003      4.54654      0.70405
+MINI INTERN>        0.42038      3.54042      0.00000      0.36500      0.48811
+MINI EXTERN>        2.11959     -9.38569     -5.34968      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    2 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=     -7.801874  fcent=     -3.198661 ffcent/2=     -0.456177
+ NRAPH3>   rnew=      0.273067   enew=     -0.848944   fnew=     -2.718945
+ NRAPH3>   rnew=      0.546133   enew=     -1.242624   fnew=      0.388610
+ Normal step size=   -3.50594345  Improved step=    0.52315681
+  energ=     -9.048849  fcent=      0.119574 ffcent/2=      0.116460
+ NRAPH3>   rnew=     -0.273067   enew=      0.303229   fnew=     -2.292930
+ NRAPH3>   rnew=     -0.136533   enew=      0.071972   fnew=     -1.122387
+ Normal step size=   -0.51336682  Improved step=   -0.04465169
+    1  Eigenvalue=   -0.912354  Derivative=   -3.198661  Step=    0.523157
+    2  Eigenvalue=    0.232920  Derivative=    0.119574  Step=   -0.044652
+    3  Eigenvalue=    4.319398  Derivative=    0.983565  Step=   -0.227709
+    4  Eigenvalue=    8.136103  Derivative=    0.119438  Step=   -0.014680
+    5  Eigenvalue=   18.340814  Derivative=   -1.329046  Step=    0.072464
+    6  Eigenvalue=   29.319484  Derivative=   -1.563763  Step=    0.053335
+    7  Eigenvalue=   34.842852  Derivative=    1.230950  Step=   -0.035329
+    8  Eigenvalue=   82.120457  Derivative=    3.619840  Step=   -0.044080
+    9  Eigenvalue=  120.705354  Derivative=    2.757237  Step=   -0.022843
+   10  Eigenvalue=  143.347759  Derivative=    1.018210  Step=   -0.007103
+   11  Eigenvalue=  188.817412  Derivative=    1.307218  Step=   -0.006923
+   12  Eigenvalue=  216.139301  Derivative=    4.506340  Step=   -0.020849
+   13  Eigenvalue=  221.827235  Derivative=   -1.066837  Step=    0.004809
+   14  Eigenvalue=  241.138327  Derivative=   -2.704726  Step=    0.011216
+   15  Eigenvalue=  291.521084  Derivative=   -0.513750  Step=    0.001762
+   16  Eigenvalue=  302.365772  Derivative=    5.694666  Step=   -0.018834
+   17  Eigenvalue=  402.537609  Derivative=    0.289872  Step=   -0.000720
+   18  Eigenvalue=  442.089358  Derivative=   -6.237609  Step=    0.014109
+   19  Eigenvalue=  706.960731  Derivative=    1.269333  Step=   -0.001795
+   20  Eigenvalue=  728.896599  Derivative=  -21.561276  Step=    0.029581
+   21  Eigenvalue=  979.691056  Derivative=    0.112750  Step=   -0.000115
+   22  Eigenvalue=  988.446355  Derivative=    4.812309  Step=   -0.004869
+   23  Eigenvalue= 1461.570626  Derivative=   -9.622957  Step=    0.006584
+   24  Eigenvalue= 1474.788959  Derivative=  -15.704044  Step=    0.010648
+   25  Eigenvalue= 2275.570596  Derivative=    1.143893  Step=   -0.000503
+   26  Eigenvalue= 2301.056594  Derivative=   -1.583095  Step=    0.000688
+   27  Eigenvalue= 2790.595434  Derivative=   -3.995184  Step=    0.001432
+   28  Eigenvalue= 2814.199836  Derivative=    3.589447  Step=   -0.001275
+   29  Eigenvalue= 2944.476641  Derivative=   -1.384362  Step=    0.000470
+   30  Eigenvalue= 2959.399592  Derivative=   -9.391575  Step=    0.003173
+   31  Eigenvalue= 4999.426225  Derivative=   -0.221068  Step=    0.000044
+   32  Eigenvalue= 4999.900451  Derivative=    0.865656  Step=   -0.000173
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   35  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   36  Eigenvalue= 5000.443759  Derivative=   -0.095975  Step=    0.000019
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>        7    -10.00435      2.20247      2.46346      0.58470
+MINI INTERN>        0.33239      3.66887      0.00000      0.22401      0.15294
+MINI EXTERN>        1.48173     -9.28573     -6.57856      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=    -10.004346  fcent=     -0.193511 ffcent/2=      0.211879
+ NRAPH3>   rnew=      0.218453   enew=     -0.019035   fnew=      0.139343
+ NRAPH3>   rnew=      0.131072   enew=     -0.020023   fnew=     -0.086037
+ Normal step size=    0.45665423  Improved step=    0.16177594
+ Mode    2 is plodding. Step scaled by   1.992300539    
+    1  Eigenvalue=    0.423758  Derivative=   -0.193511  Step=    0.161776
+    2  Eigenvalue=    3.384525  Derivative=    1.794879  Step=   -1.056555
+    3  Eigenvalue=    5.737378  Derivative=    1.061497  Step=   -0.185014
+    4  Eigenvalue=    6.623246  Derivative=    1.116414  Step=   -0.168560
+    5  Eigenvalue=   23.962317  Derivative=    0.117938  Step=   -0.004922
+    6  Eigenvalue=   24.871941  Derivative=   -1.066434  Step=    0.042877
+    7  Eigenvalue=   34.559251  Derivative=    0.165674  Step=   -0.004794
+    8  Eigenvalue=   54.074881  Derivative=   -0.918212  Step=    0.016980
+    9  Eigenvalue=  117.810593  Derivative=    1.239275  Step=   -0.010519
+   10  Eigenvalue=  131.215249  Derivative=   -0.113311  Step=    0.000864
+   11  Eigenvalue=  200.294155  Derivative=    0.404760  Step=   -0.002021
+   12  Eigenvalue=  215.543250  Derivative=    0.187625  Step=   -0.000870
+   13  Eigenvalue=  224.878381  Derivative=   -0.719809  Step=    0.003201
+   14  Eigenvalue=  237.397356  Derivative=   -0.385537  Step=    0.001624
+   15  Eigenvalue=  289.622185  Derivative=    1.760110  Step=   -0.006077
+   16  Eigenvalue=  298.702901  Derivative=   -1.361133  Step=    0.004557
+   17  Eigenvalue=  397.202733  Derivative=    0.939251  Step=   -0.002365
+   18  Eigenvalue=  417.049291  Derivative=   -0.240779  Step=    0.000577
+   19  Eigenvalue=  702.341763  Derivative=    2.654879  Step=   -0.003780
+   20  Eigenvalue=  719.430457  Derivative=    5.555376  Step=   -0.007722
+   21  Eigenvalue=  979.511876  Derivative=   -0.697520  Step=    0.000712
+   22  Eigenvalue= 1008.640927  Derivative=   -0.763176  Step=    0.000757
+   23  Eigenvalue= 1470.202500  Derivative=   -0.560694  Step=    0.000381
+   24  Eigenvalue= 1475.695890  Derivative=   -5.702737  Step=    0.003864
+   25  Eigenvalue= 2257.182332  Derivative=   -0.576501  Step=    0.000255
+   26  Eigenvalue= 2269.807391  Derivative=   -7.666357  Step=    0.003378
+   27  Eigenvalue= 2793.927707  Derivative=   -1.906188  Step=    0.000682
+   28  Eigenvalue= 2813.332647  Derivative=   -6.664199  Step=    0.002369
+   29  Eigenvalue= 2950.411274  Derivative=   -0.948341  Step=    0.000321
+   30  Eigenvalue= 2959.526503  Derivative=    6.238340  Step=   -0.002108
+   31  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   32  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.004973  Derivative=   -0.074878  Step=    0.000015
+   35  Eigenvalue= 5000.165936  Derivative=    0.025681  Step=   -0.000005
+   36  Eigenvalue= 5001.024865  Derivative=   -0.003572  Step=    0.000001
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>        8      1.74871    -11.75306     24.42996      1.09891
+MINI INTERN>       12.63169      4.62073      0.00000      0.01622      0.00697
+MINI EXTERN>        0.20398     -9.24135     -6.48953      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+    1  Eigenvalue=    4.536073  Derivative=   -0.628385  Step=    0.138530
+    2  Eigenvalue=   11.994358  Derivative=    0.160933  Step=   -0.013417
+    3  Eigenvalue=   15.080237  Derivative=   -0.045731  Step=    0.003033
+    4  Eigenvalue=   26.838473  Derivative=    0.461429  Step=   -0.017193
+    5  Eigenvalue=   33.828410  Derivative=   -3.472729  Step=    0.102657
+    6  Eigenvalue=   37.849626  Derivative=   -3.956773  Step=    0.104539
+    7  Eigenvalue=   41.931183  Derivative=    2.199302  Step=   -0.052450
+    8  Eigenvalue=   78.711649  Derivative=   -3.001571  Step=    0.038134
+    9  Eigenvalue=  121.975737  Derivative=   -2.153946  Step=    0.017659
+   10  Eigenvalue=  148.354393  Derivative=   -2.133393  Step=    0.014380
+   11  Eigenvalue=  203.232644  Derivative=   11.700804  Step=   -0.057573
+   12  Eigenvalue=  211.845072  Derivative=   -1.587132  Step=    0.007492
+   13  Eigenvalue=  244.830616  Derivative=   -1.145161  Step=    0.004677
+   14  Eigenvalue=  274.454275  Derivative=   -3.588121  Step=    0.013074
+   15  Eigenvalue=  294.273766  Derivative=    9.250584  Step=   -0.031435
+   16  Eigenvalue=  299.841601  Derivative=  -20.455494  Step=    0.068221
+   17  Eigenvalue=  399.630136  Derivative=   10.580940  Step=   -0.026477
+   18  Eigenvalue=  426.187675  Derivative=   21.386774  Step=   -0.050182
+   19  Eigenvalue=  701.566889  Derivative=  -32.702855  Step=    0.046614
+   20  Eigenvalue=  717.667264  Derivative=  -93.883859  Step=    0.130818
+   21  Eigenvalue= 1026.636875  Derivative=    0.080137  Step=   -0.000078
+   22  Eigenvalue= 1099.113537  Derivative=    0.426088  Step=   -0.000388
+   23  Eigenvalue= 1469.839999  Derivative=  -73.362386  Step=    0.049912
+   24  Eigenvalue= 1476.845144  Derivative=  -44.192228  Step=    0.029923
+   25  Eigenvalue= 2257.024493  Derivative=    8.130208  Step=   -0.003602
+   26  Eigenvalue= 2264.661648  Derivative=    4.105885  Step=   -0.001813
+   27  Eigenvalue= 2812.732977  Derivative=   -2.373595  Step=    0.000844
+   28  Eigenvalue= 2860.160810  Derivative=  -51.653037  Step=    0.018059
+   29  Eigenvalue= 2947.386459  Derivative=    5.097494  Step=   -0.001729
+   30  Eigenvalue= 2958.717037  Derivative=   14.346654  Step=   -0.004849
+   31  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   32  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5003.282831  Derivative=    0.002264  Step=   -0.000000
+   35  Eigenvalue= 5005.654065  Derivative=    0.006078  Step=   -0.000001
+   36  Eigenvalue= 5010.496279  Derivative=    0.008952  Step=   -0.000002
+MINI>        9    -10.69855     12.44726      0.65309      0.28519
+MINI INTERN>        0.17956      3.36805      0.00000      0.03195      0.03032
+MINI EXTERN>        1.83673     -9.27240     -6.87276      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=    -10.698551  fcent=      0.157022 ffcent/2=      0.032434
+ NRAPH3>   rnew=     -0.174763   enew=     -0.022250   fnew=      0.049606
+ NRAPH3>   rnew=     -0.349525   enew=      0.016050   fnew=     -0.630384
+ Normal step size=   -2.42065002  Improved step=   -0.15831605
+    1  Eigenvalue=    0.064868  Derivative=    0.157022  Step=   -0.158316
+    2  Eigenvalue=    2.483521  Derivative=    0.777701  Step=   -0.313145
+    3  Eigenvalue=    5.398131  Derivative=    0.420948  Step=   -0.077980
+    4  Eigenvalue=    6.071885  Derivative=   -0.170277  Step=    0.028044
+    5  Eigenvalue=   22.828683  Derivative=    0.371514  Step=   -0.016274
+    6  Eigenvalue=   33.669266  Derivative=    0.350118  Step=   -0.010399
+    7  Eigenvalue=   36.987061  Derivative=   -0.231890  Step=    0.006269
+    8  Eigenvalue=   57.657605  Derivative=   -0.115896  Step=    0.002010
+    9  Eigenvalue=  120.724702  Derivative=   -0.288618  Step=    0.002391
+   10  Eigenvalue=  134.550031  Derivative=   -0.073141  Step=    0.000544
+   11  Eigenvalue=  208.427621  Derivative=    0.751482  Step=   -0.003605
+   12  Eigenvalue=  218.744683  Derivative=   -0.431200  Step=    0.001971
+   13  Eigenvalue=  228.233688  Derivative=    0.383054  Step=   -0.001678
+   14  Eigenvalue=  238.280845  Derivative=    0.248537  Step=   -0.001043
+   15  Eigenvalue=  289.332651  Derivative=   -0.346403  Step=    0.001197
+   16  Eigenvalue=  297.366088  Derivative=   -0.929436  Step=    0.003126
+   17  Eigenvalue=  398.061245  Derivative=    0.284513  Step=   -0.000715
+   18  Eigenvalue=  411.308781  Derivative=   -0.659355  Step=    0.001603
+   19  Eigenvalue=  703.806866  Derivative=    0.025099  Step=   -0.000036
+   20  Eigenvalue=  719.865545  Derivative=   -2.177390  Step=    0.003025
+   21  Eigenvalue=  985.872180  Derivative=   -0.524917  Step=    0.000532
+   22  Eigenvalue=  991.252928  Derivative=   -0.031893  Step=    0.000032
+   23  Eigenvalue= 1469.418219  Derivative=    0.687754  Step=   -0.000468
+   24  Eigenvalue= 1474.784739  Derivative=   -0.860321  Step=    0.000583
+   25  Eigenvalue= 2257.988668  Derivative=    0.858963  Step=   -0.000380
+   26  Eigenvalue= 2264.765402  Derivative=   -1.649844  Step=    0.000728
+   27  Eigenvalue= 2795.688576  Derivative=    0.741304  Step=   -0.000265
+   28  Eigenvalue= 2812.906333  Derivative=   -2.542914  Step=    0.000904
+   29  Eigenvalue= 2951.250775  Derivative=    2.668610  Step=   -0.000904
+   30  Eigenvalue= 2960.193653  Derivative=   -0.555167  Step=    0.000188
+   31  Eigenvalue= 4999.907068  Derivative=   -0.031330  Step=    0.000006
+   32  Eigenvalue= 4999.989273  Derivative=   -0.001204  Step=    0.000000
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   35  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   36  Eigenvalue= 5000.074013  Derivative=    0.012798  Step=   -0.000003
+ HBFIND-exclusions:      0 due to distance cutoff,       2 due to angle cutoff
+ HBEDIT-deletions:       0 due to duplications,          0 due to best-option,
+                         0 due to fixed atoms,           0 due to exclusions
+ HBEDIT: currently     2 hydrogen bonds present
+ UPDECI: Nonbond update at step        10
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR       61 ATOM PAIRS AND        0 GROUP PAIRS
+
+ General atom nonbond list generation found:
+       26 ATOM PAIRS WERE FOUND FOR ATOM LIST
+        0 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>       10    -10.79340      0.09485      1.97771      0.36119
+MINI INTERN>        0.39549      3.61175      0.00000      0.00085      0.00124
+MINI EXTERN>        1.35075     -9.19241     -6.96107      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=    -10.793399  fcent=      0.091704 ffcent/2=      0.089866
+ NRAPH3>   rnew=     -0.139810   enew=     -0.009203   fnew=      0.013707
+ NRAPH3>   rnew=     -0.279620   enew=      0.010688   fnew=     -0.375683
+ Normal step size=   -0.51022393  Improved step=   -0.11893408
+    1  Eigenvalue=    0.179732  Derivative=    0.091704  Step=   -0.118934
+    2  Eigenvalue=    4.408589  Derivative=    0.043203  Step=   -0.009800
+    3  Eigenvalue=    6.699182  Derivative=   -0.012800  Step=    0.001911
+    4  Eigenvalue=    7.526694  Derivative=   -0.029182  Step=    0.003877
+    5  Eigenvalue=   24.048091  Derivative=    0.003104  Step=   -0.000129
+    6  Eigenvalue=   33.593302  Derivative=    0.055578  Step=   -0.001654
+    7  Eigenvalue=   35.486104  Derivative=    0.031551  Step=   -0.000889
+    8  Eigenvalue=   53.833551  Derivative=    0.325583  Step=   -0.006048
+    9  Eigenvalue=  119.191558  Derivative=    0.696226  Step=   -0.005841
+   10  Eigenvalue=  132.243133  Derivative=    0.360625  Step=   -0.002727
+   11  Eigenvalue=  205.590198  Derivative=   -2.396363  Step=    0.011656
+   12  Eigenvalue=  216.197844  Derivative=    0.332538  Step=   -0.001538
+   13  Eigenvalue=  231.397175  Derivative=    0.517748  Step=   -0.002237
+   14  Eigenvalue=  238.616380  Derivative=   -0.001492  Step=    0.000006
+   15  Eigenvalue=  289.739230  Derivative=   -0.245884  Step=    0.000849
+   16  Eigenvalue=  296.165917  Derivative=   -0.789474  Step=    0.002666
+   17  Eigenvalue=  397.486356  Derivative=    0.149769  Step=   -0.000377
+   18  Eigenvalue=  410.976334  Derivative=   -0.815200  Step=    0.001984
+   19  Eigenvalue=  701.578332  Derivative=    2.039024  Step=   -0.002906
+   20  Eigenvalue=  716.775842  Derivative=   -6.112027  Step=    0.008527
+   21  Eigenvalue=  997.414697  Derivative=   -0.040965  Step=    0.000041
+   22  Eigenvalue= 1004.122757  Derivative=   -0.004965  Step=    0.000005
+   23  Eigenvalue= 1471.003438  Derivative=   -2.935068  Step=    0.001995
+   24  Eigenvalue= 1475.445803  Derivative=   -5.016354  Step=    0.003400
+   25  Eigenvalue= 2255.767841  Derivative=   -3.096068  Step=    0.001373
+   26  Eigenvalue= 2261.928143  Derivative=   -0.270435  Step=    0.000120
+   27  Eigenvalue= 2797.228022  Derivative=   -1.819040  Step=    0.000650
+   28  Eigenvalue= 2814.033386  Derivative=    2.243010  Step=   -0.000797
+   29  Eigenvalue= 2952.242274  Derivative=   -5.532979  Step=    0.001874
+   30  Eigenvalue= 2960.209607  Derivative=    1.087872  Step=   -0.000367
+   31  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   32  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.089807  Derivative=   -0.004421  Step=    0.000001
+   35  Eigenvalue= 5000.411996  Derivative=   -0.012783  Step=    0.000003
+   36  Eigenvalue= 5001.024171  Derivative=    0.013032  Step=   -0.000003
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>       11    -10.87214      0.07874      0.04744      0.12083
+MINI INTERN>        0.18394      3.45602      0.00000      0.00103      0.00103
+MINI EXTERN>        1.61711     -9.16867     -6.96261      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=    -10.872138  fcent=      0.096089 ffcent/2=     -0.013036
+ NRAPH3>   rnew=     -0.055924   enew=     -0.005364   fnew=      0.094051
+ NRAPH3>   rnew=     -0.111848   enew=     -0.010158   fnew=      0.072607
+ NRAPH3>   rnew=     -0.223696   enew=     -0.010579   fnew=     -0.102701
+ Normal step size=    3.68548810  Improved step=   -0.15982180
+ Mode    1 is plodding. Step scaled by   1.578110977    
+    1  Eigenvalue=   -0.026072  Derivative=    0.096089  Step=   -0.252217
+    2  Eigenvalue=    2.596346  Derivative=    0.015773  Step=   -0.006075
+    3  Eigenvalue=    5.121165  Derivative=   -0.019553  Step=    0.003818
+    4  Eigenvalue=    6.504467  Derivative=   -0.027306  Step=    0.004198
+    5  Eigenvalue=   23.794691  Derivative=    0.000844  Step=   -0.000035
+    6  Eigenvalue=   33.220633  Derivative=   -0.034436  Step=    0.001037
+    7  Eigenvalue=   36.451777  Derivative=   -0.026442  Step=    0.000725
+    8  Eigenvalue=   54.665068  Derivative=    0.056821  Step=   -0.001039
+    9  Eigenvalue=  121.196427  Derivative=   -0.107017  Step=    0.000883
+   10  Eigenvalue=  134.245076  Derivative=    0.004471  Step=   -0.000033
+   11  Eigenvalue=  207.105664  Derivative=    0.189928  Step=   -0.000917
+   12  Eigenvalue=  218.044780  Derivative=    0.002811  Step=   -0.000013
+   13  Eigenvalue=  230.734152  Derivative=   -0.084347  Step=    0.000366
+   14  Eigenvalue=  237.502565  Derivative=    0.003838  Step=   -0.000016
+   15  Eigenvalue=  290.184745  Derivative=    0.313528  Step=   -0.001080
+   16  Eigenvalue=  295.747751  Derivative=   -0.006195  Step=    0.000021
+   17  Eigenvalue=  398.015864  Derivative=    0.366989  Step=   -0.000922
+   18  Eigenvalue=  411.080819  Derivative=   -0.006926  Step=    0.000017
+   19  Eigenvalue=  702.959196  Derivative=   -0.020001  Step=    0.000028
+   20  Eigenvalue=  717.616001  Derivative=   -1.444318  Step=    0.002013
+   21  Eigenvalue=  990.058518  Derivative=   -0.056759  Step=    0.000057
+   22  Eigenvalue=  994.414754  Derivative=   -0.222385  Step=    0.000224
+   23  Eigenvalue= 1470.308839  Derivative=   -0.019673  Step=    0.000013
+   24  Eigenvalue= 1474.373435  Derivative=    0.088757  Step=   -0.000060
+   25  Eigenvalue= 2257.083866  Derivative=   -0.339310  Step=    0.000150
+   26  Eigenvalue= 2262.652312  Derivative=   -0.029938  Step=    0.000013
+   27  Eigenvalue= 2795.591797  Derivative=    0.011964  Step=   -0.000004
+   28  Eigenvalue= 2811.767995  Derivative=   -0.580360  Step=    0.000206
+   29  Eigenvalue= 2951.975747  Derivative=   -2.186241  Step=    0.000741
+   30  Eigenvalue= 2959.507446  Derivative=   -0.017183  Step=    0.000006
+   31  Eigenvalue= 4999.981536  Derivative=   -0.000326  Step=    0.000000
+   32  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   35  Eigenvalue= 5000.002829  Derivative=    0.004252  Step=   -0.000001
+   36  Eigenvalue= 5000.005822  Derivative=    0.000433  Step=   -0.000000
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>       12    -10.89035      0.01821      0.66700      0.25238
+MINI INTERN>        0.21836      3.44419      0.00000      0.00105      0.00135
+MINI EXTERN>        1.45637     -9.05554     -6.95615      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=    -10.890353  fcent=      0.089744 ffcent/2=      0.339331
+ NRAPH3>   rnew=     -0.111848   enew=     -0.005128   fnew=     -0.009123
+ NRAPH3>   rnew=     -0.067109   enew=     -0.004401   fnew=      0.038892
+ Normal step size=   -0.13223713  Improved step=   -0.10411921
+    1  Eigenvalue=    0.678661  Derivative=    0.089744  Step=   -0.104119
+    2  Eigenvalue=    2.856188  Derivative=   -0.018912  Step=    0.006622
+    3  Eigenvalue=    5.241181  Derivative=    0.000993  Step=   -0.000190
+    4  Eigenvalue=    7.234952  Derivative=   -0.006128  Step=    0.000847
+    5  Eigenvalue=   24.344359  Derivative=    0.003810  Step=   -0.000156
+    6  Eigenvalue=   33.042667  Derivative=    0.029808  Step=   -0.000902
+    7  Eigenvalue=   39.387992  Derivative=   -0.006201  Step=    0.000157
+    8  Eigenvalue=   55.289752  Derivative=    0.082669  Step=   -0.001495
+    9  Eigenvalue=  122.442145  Derivative=   -0.174789  Step=    0.001428
+   10  Eigenvalue=  134.971462  Derivative=    0.014289  Step=   -0.000106
+   11  Eigenvalue=  206.675078  Derivative=    0.273204  Step=   -0.001322
+   12  Eigenvalue=  217.895640  Derivative=    0.010420  Step=   -0.000048
+   13  Eigenvalue=  233.257195  Derivative=   -0.022048  Step=    0.000095
+   14  Eigenvalue=  238.872551  Derivative=   -0.000806  Step=    0.000003
+   15  Eigenvalue=  291.832468  Derivative=   -0.670350  Step=    0.002297
+   16  Eigenvalue=  294.993828  Derivative=   -0.003944  Step=    0.000013
+   17  Eigenvalue=  398.350223  Derivative=   -0.709659  Step=    0.001781
+   18  Eigenvalue=  410.407108  Derivative=   -0.028788  Step=    0.000070
+   19  Eigenvalue=  703.002286  Derivative=    0.055844  Step=   -0.000079
+   20  Eigenvalue=  716.015221  Derivative=   -2.670240  Step=    0.003729
+   21  Eigenvalue=  990.975224  Derivative=   -0.000139  Step=    0.000000
+   22  Eigenvalue=  995.014026  Derivative=   -0.066613  Step=    0.000067
+   23  Eigenvalue= 1470.844692  Derivative=   -0.082669  Step=    0.000056
+   24  Eigenvalue= 1473.943037  Derivative=    0.234584  Step=   -0.000159
+   25  Eigenvalue= 2258.085760  Derivative=   -0.713474  Step=    0.000316
+   26  Eigenvalue= 2262.037690  Derivative=    0.021878  Step=   -0.000010
+   27  Eigenvalue= 2796.462920  Derivative=   -0.026894  Step=    0.000010
+   28  Eigenvalue= 2811.056858  Derivative=    1.236199  Step=   -0.000440
+   29  Eigenvalue= 2952.614999  Derivative=   -3.845806  Step=    0.001303
+   30  Eigenvalue= 2959.077693  Derivative=    0.150786  Step=   -0.000051
+   31  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   32  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   33  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   34  Eigenvalue= 5000.103377  Derivative=    0.000345  Step=   -0.000000
+   35  Eigenvalue= 5000.157778  Derivative=   -0.006689  Step=    0.000001
+   36  Eigenvalue= 5000.448435  Derivative=   -0.000661  Step=    0.000000
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>       13    -10.90533      0.01498      0.02412      0.10448
+MINI INTERN>        0.18373      3.46735      0.00000      0.00129      0.00147
+MINI EXTERN>        1.41538     -9.01779     -6.95677      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=    -10.905333  fcent=      0.079719 ffcent/2=      0.068566
+ NRAPH3>   rnew=     -0.044739   enew=     -0.003403   fnew=      0.071458
+ NRAPH3>   rnew=     -0.089478   enew=     -0.006246   fnew=      0.053289
+ NRAPH3>   rnew=     -0.178957   enew=     -0.007343   fnew=     -0.046660
+ Normal step size=   -0.58133235  Improved step=   -0.14025575
+ Mode    1 is plodding. Step scaled by   1.529802787    
+    1  Eigenvalue=    0.137131  Derivative=    0.079719  Step=   -0.214564
+    2  Eigenvalue=    2.619821  Derivative=   -0.007303  Step=    0.002787
+    3  Eigenvalue=    4.664466  Derivative=    0.001782  Step=   -0.000382
+    4  Eigenvalue=    7.017151  Derivative=   -0.008734  Step=    0.001245
+    5  Eigenvalue=   23.690841  Derivative=    0.000079  Step=   -0.000003
+    6  Eigenvalue=   32.284598  Derivative=    0.001134  Step=   -0.000035
+    7  Eigenvalue=   39.817789  Derivative=    0.001825  Step=   -0.000046
+    8  Eigenvalue=   55.351131  Derivative=    0.019517  Step=   -0.000353
+    9  Eigenvalue=  122.286621  Derivative=   -0.068693  Step=    0.000562
+   10  Eigenvalue=  134.732753  Derivative=    0.000308  Step=   -0.000002
+   11  Eigenvalue=  206.456370  Derivative=   -0.120056  Step=    0.000582
+   12  Eigenvalue=  217.772096  Derivative=   -0.000187  Step=    0.000001
+   13  Eigenvalue=  232.009666  Derivative=    0.010944  Step=   -0.000047
+   14  Eigenvalue=  237.053848  Derivative=    0.001217  Step=   -0.000005
+   15  Eigenvalue=  292.075366  Derivative=   -0.254198  Step=    0.000870
+   16  Eigenvalue=  294.455978  Derivative=    0.000438  Step=   -0.000001
+   17  Eigenvalue=  397.702675  Derivative=   -0.272242  Step=    0.000685
+   18  Eigenvalue=  409.365880  Derivative=   -0.000572  Step=    0.000001
+   19  Eigenvalue=  702.882735  Derivative=   -0.001490  Step=    0.000002
+   20  Eigenvalue=  715.292274  Derivative=   -1.054894  Step=    0.001475
+   21  Eigenvalue=  990.896039  Derivative=    0.002556  Step=   -0.000003
+   22  Eigenvalue=  994.812083  Derivative=   -0.043678  Step=    0.000044
+   23  Eigenvalue= 1470.883165  Derivative=    0.000154  Step=   -0.000000
+   24  Eigenvalue= 1473.591808  Derivative=    0.097861  Step=   -0.000066
+   25  Eigenvalue= 2258.153451  Derivative=   -0.299092  Step=    0.000132
+   26  Eigenvalue= 2261.456980  Derivative=   -0.001546  Step=    0.000001
+   27  Eigenvalue= 2796.613181  Derivative=   -0.000084  Step=    0.000000
+   28  Eigenvalue= 2810.683476  Derivative=   -0.493755  Step=    0.000176
+   29  Eigenvalue= 2951.961100  Derivative=    1.538675  Step=   -0.000521
+   30  Eigenvalue= 2958.011017  Derivative=    0.000601  Step=   -0.000000
+   31  Eigenvalue= 4999.991570  Derivative=    0.000030  Step=   -0.000000
+   32  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   35  Eigenvalue= 5000.002136  Derivative=   -0.000246  Step=    0.000000
+   36  Eigenvalue= 5000.002466  Derivative=    0.003265  Step=   -0.000001
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>       14    -10.91524      0.00991      0.44655      0.21460
+MINI INTERN>        0.20473      3.46640      0.00000      0.00192      0.00166
+MINI EXTERN>        1.26928     -8.91022     -6.94900      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=    -10.915243  fcent=      0.029760 ffcent/2=      0.366288
+ NRAPH3>   rnew=     -0.089478   enew=      0.000634   fnew=     -0.050568
+ NRAPH3>   rnew=     -0.044739   enew=     -0.000567   fnew=     -0.005427
+ Normal step size=   -0.04062401  Improved step=   -0.03728662
+    1  Eigenvalue=    0.732576  Derivative=    0.029760  Step=   -0.037287
+    2  Eigenvalue=    2.799760  Derivative=    0.009196  Step=   -0.003284
+    3  Eigenvalue=    4.744287  Derivative=   -0.000032  Step=    0.000007
+    4  Eigenvalue=    7.650958  Derivative=    0.010704  Step=   -0.001399
+    5  Eigenvalue=   23.991091  Derivative=   -0.000234  Step=    0.000010
+    6  Eigenvalue=   32.294957  Derivative=    0.000489  Step=   -0.000015
+    7  Eigenvalue=   41.930071  Derivative=   -0.000509  Step=    0.000012
+    8  Eigenvalue=   55.254229  Derivative=    0.024173  Step=   -0.000437
+    9  Eigenvalue=  123.200638  Derivative=   -0.093674  Step=    0.000760
+   10  Eigenvalue=  135.222899  Derivative=   -0.001213  Step=    0.000009
+   11  Eigenvalue=  206.033764  Derivative=    0.165826  Step=   -0.000805
+   12  Eigenvalue=  217.537283  Derivative=    0.001144  Step=   -0.000005
+   13  Eigenvalue=  233.948684  Derivative=   -0.021610  Step=    0.000092
+   14  Eigenvalue=  237.844297  Derivative=    0.000013  Step=   -0.000000
+   15  Eigenvalue=  293.549701  Derivative=   -0.367734  Step=    0.001253
+   16  Eigenvalue=  293.774098  Derivative=    0.000332  Step=   -0.000001
+   17  Eigenvalue=  397.838240  Derivative=   -0.395559  Step=    0.000994
+   18  Eigenvalue=  408.327851  Derivative=   -0.002361  Step=    0.000006
+   19  Eigenvalue=  703.063621  Derivative=   -0.004315  Step=    0.000006
+   20  Eigenvalue=  713.904449  Derivative=    1.489838  Step=   -0.002087
+   21  Eigenvalue=  991.792853  Derivative=   -0.000078  Step=    0.000000
+   22  Eigenvalue=  995.476676  Derivative=   -0.050958  Step=    0.000051
+   23  Eigenvalue= 1471.127879  Derivative=   -0.006018  Step=    0.000004
+   24  Eigenvalue= 1472.969773  Derivative=    0.153231  Step=   -0.000104
+   25  Eigenvalue= 2259.480611  Derivative=   -0.435571  Step=    0.000193
+   26  Eigenvalue= 2261.194918  Derivative=    0.002163  Step=   -0.000001
+   27  Eigenvalue= 2797.430150  Derivative=   -0.001872  Step=    0.000001
+   28  Eigenvalue= 2810.021613  Derivative=    0.709652  Step=   -0.000253
+   29  Eigenvalue= 2952.410744  Derivative=   -2.148744  Step=    0.000728
+   30  Eigenvalue= 2957.436278  Derivative=    0.012565  Step=   -0.000004
+   31  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   32  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.075317  Derivative=    0.000011  Step=   -0.000000
+   35  Eigenvalue= 5000.099892  Derivative=   -0.001323  Step=    0.000000
+   36  Eigenvalue= 5000.315832  Derivative=   -0.000020  Step=    0.000000
+ HBFIND-exclusions:      0 due to distance cutoff,       2 due to angle cutoff
+ HBEDIT-deletions:       0 due to duplications,          0 due to best-option,
+                         0 due to fixed atoms,           0 due to exclusions
+ HBEDIT: currently     2 hydrogen bonds present
+ UPDECI: Nonbond update at step        15
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR       61 ATOM PAIRS AND        0 GROUP PAIRS
+
+ General atom nonbond list generation found:
+       26 ATOM PAIRS WERE FOUND FOR ATOM LIST
+        0 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>       15    -10.91888      0.00363      0.00505      0.03758
+MINI INTERN>        0.18278      3.48291      0.00000      0.00209      0.00161
+MINI EXTERN>        1.25749     -8.89743     -6.94832      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=    -10.918878  fcent=      0.016720 ffcent/2=      0.191970
+ NRAPH3>   rnew=     -0.035791   enew=     -0.000337   fnew=      0.001473
+ NRAPH3>   rnew=     -0.071583   enew=     -0.000036   fnew=     -0.019564
+ Normal step size=   -0.04354811  Improved step=   -0.03746812
+ Mode    1 is plodding. Step scaled by   1.999978287    
+    1  Eigenvalue=    0.383939  Derivative=    0.016720  Step=   -0.074935
+    2  Eigenvalue=    2.645831  Derivative=    0.002584  Step=   -0.000977
+    3  Eigenvalue=    4.435923  Derivative=   -0.000054  Step=    0.000012
+    4  Eigenvalue=    7.470842  Derivative=    0.005716  Step=   -0.000765
+    5  Eigenvalue=   23.537213  Derivative=   -0.000003  Step=    0.000000
+    6  Eigenvalue=   31.876823  Derivative=   -0.004701  Step=    0.000147
+    7  Eigenvalue=   41.870856  Derivative=   -0.000053  Step=    0.000001
+    8  Eigenvalue=   55.100282  Derivative=   -0.003650  Step=    0.000066
+    9  Eigenvalue=  122.955296  Derivative=   -0.004168  Step=    0.000034
+   10  Eigenvalue=  134.976355  Derivative=    0.000010  Step=   -0.000000
+   11  Eigenvalue=  205.934759  Derivative=   -0.011304  Step=    0.000055
+   12  Eigenvalue=  217.433486  Derivative=    0.000000  Step=   -0.000000
+   13  Eigenvalue=  232.976715  Derivative=   -0.001391  Step=    0.000006
+   14  Eigenvalue=  236.667192  Derivative=   -0.000039  Step=    0.000000
+   15  Eigenvalue=  293.499271  Derivative=    0.000017  Step=   -0.000000
+   16  Eigenvalue=  293.514945  Derivative=   -0.015085  Step=    0.000051
+   17  Eigenvalue=  397.393346  Derivative=   -0.016065  Step=    0.000040
+   18  Eigenvalue=  407.612961  Derivative=   -0.000011  Step=    0.000000
+   19  Eigenvalue=  703.008022  Derivative=   -0.000042  Step=    0.000000
+   20  Eigenvalue=  713.593103  Derivative=   -0.078356  Step=    0.000110
+   21  Eigenvalue=  991.725410  Derivative=    0.000073  Step=   -0.000000
+   22  Eigenvalue=  995.386413  Derivative=   -0.016619  Step=    0.000017
+   23  Eigenvalue= 1471.018051  Derivative=    0.000018  Step=   -0.000000
+   24  Eigenvalue= 1472.720718  Derivative=    0.005393  Step=   -0.000004
+   25  Eigenvalue= 2259.484720  Derivative=   -0.025676  Step=    0.000011
+   26  Eigenvalue= 2260.934324  Derivative=    0.000023  Step=   -0.000000
+   27  Eigenvalue= 2797.441853  Derivative=   -0.000018  Step=    0.000000
+   28  Eigenvalue= 2809.818998  Derivative=   -0.033492  Step=    0.000012
+   29  Eigenvalue= 2951.956840  Derivative=    0.114757  Step=   -0.000039
+   30  Eigenvalue= 2956.816909  Derivative=   -0.000047  Step=    0.000000
+   31  Eigenvalue= 4999.998675  Derivative=   -0.000000  Step=    0.000000
+   32  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   33  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   34  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   35  Eigenvalue= 5000.000749  Derivative=   -0.000005  Step=    0.000000
+   36  Eigenvalue= 5000.000754  Derivative=   -0.000060  Step=    0.000000
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>       16    -10.91890      0.00002      0.07008      0.07495
+MINI INTERN>        0.18539      3.48682      0.00000      0.00244      0.00170
+MINI EXTERN>        1.20810     -8.85877     -6.94458      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=    -10.918900  fcent=     -0.015739 ffcent/2=      0.274218
+ NRAPH3>   rnew=      0.028633   enew=     -0.000229   fnew=     -0.000288
+ NRAPH3>   rnew=      0.057266   enew=     -0.000008   fnew=      0.016065
+ Normal step size=    0.02869874  Improved step=    0.02858634
+    1  Eigenvalue=    0.548435  Derivative=   -0.015739  Step=    0.028586
+    2  Eigenvalue=    2.679854  Derivative=   -0.000347  Step=    0.000129
+    3  Eigenvalue=    4.425108  Derivative=   -0.000000  Step=    0.000000
+    4  Eigenvalue=    7.662175  Derivative=    0.000241  Step=   -0.000031
+    5  Eigenvalue=   23.545644  Derivative=    0.000002  Step=   -0.000000
+    6  Eigenvalue=   31.869296  Derivative=    0.000624  Step=   -0.000020
+    7  Eigenvalue=   42.466624  Derivative=    0.000005  Step=   -0.000000
+    8  Eigenvalue=   54.937073  Derivative=    0.004619  Step=   -0.000084
+    9  Eigenvalue=  123.182352  Derivative=    0.016670  Step=   -0.000135
+   10  Eigenvalue=  135.069945  Derivative=   -0.000013  Step=    0.000000
+   11  Eigenvalue=  205.778468  Derivative=   -0.029395  Step=    0.000143
+   12  Eigenvalue=  217.321450  Derivative=    0.000013  Step=   -0.000000
+   13  Eigenvalue=  233.457145  Derivative=   -0.005173  Step=    0.000022
+   14  Eigenvalue=  236.719014  Derivative=    0.000000  Step=   -0.000000
+   15  Eigenvalue=  293.238040  Derivative=   -0.000009  Step=    0.000000
+   16  Eigenvalue=  293.996736  Derivative=   -0.065616  Step=    0.000223
+   17  Eigenvalue=  397.350632  Derivative=   -0.071985  Step=    0.000181
+   18  Eigenvalue=  407.100117  Derivative=   -0.000027  Step=    0.000000
+   19  Eigenvalue=  703.085365  Derivative=   -0.000046  Step=    0.000000
+   20  Eigenvalue=  713.104193  Derivative=    0.264753  Step=   -0.000371
+   21  Eigenvalue=  992.040607  Derivative=   -0.000002  Step=    0.000000
+   22  Eigenvalue=  995.645312  Derivative=   -0.002680  Step=    0.000003
+   23  Eigenvalue= 1471.048070  Derivative=    0.000064  Step=   -0.000000
+   24  Eigenvalue= 1472.449058  Derivative=    0.030585  Step=   -0.000021
+   25  Eigenvalue= 2260.009227  Derivative=   -0.086284  Step=    0.000038
+   26  Eigenvalue= 2260.849756  Derivative=    0.000027  Step=   -0.000000
+   27  Eigenvalue= 2797.739006  Derivative=   -0.000016  Step=    0.000000
+   28  Eigenvalue= 2809.590477  Derivative=    0.126979  Step=   -0.000045
+   29  Eigenvalue= 2952.021976  Derivative=    0.379023  Step=   -0.000128
+   30  Eigenvalue= 2956.518143  Derivative=    0.000131  Step=   -0.000000
+   31  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   32  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   33  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   34  Eigenvalue= 5000.012140  Derivative=   -0.000000  Step=    0.000000
+   35  Eigenvalue= 5000.014166  Derivative=    0.000172  Step=   -0.000000
+   36  Eigenvalue= 5000.050312  Derivative=    0.000000  Step=   -0.000000
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>       17    -10.91922      0.00032      0.00062      0.02859
+MINI INTERN>        0.18249      3.48682      0.00000      0.00228      0.00163
+MINI EXTERN>        1.22766     -8.87415     -6.94596      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=    -10.919225  fcent=     -0.002447 ffcent/2=      0.222423
+ NRAPH3>   rnew=      0.011453   enew=      0.000001   fnew=      0.002580
+ NRAPH3>   rnew=      0.005727   enew=     -0.000007   fnew=      0.000081
+ Normal step size=    0.00550007  Improved step=    0.00553670
+    1  Eigenvalue=    0.444845  Derivative=   -0.002447  Step=    0.005537
+    2  Eigenvalue=    2.651245  Derivative=   -0.000313  Step=    0.000118
+    3  Eigenvalue=    4.401390  Derivative=    0.000000  Step=   -0.000000
+    4  Eigenvalue=    7.563377  Derivative=   -0.000794  Step=    0.000105
+    5  Eigenvalue=   23.498785  Derivative=    0.000000  Step=   -0.000000
+    6  Eigenvalue=   31.828532  Derivative=    0.000796  Step=   -0.000025
+    7  Eigenvalue=   42.209973  Derivative=    0.000000  Step=   -0.000000
+    8  Eigenvalue=   54.988050  Derivative=    0.000777  Step=   -0.000014
+    9  Eigenvalue=  123.057634  Derivative=   -0.000283  Step=    0.000002
+   10  Eigenvalue=  135.001123  Derivative=   -0.000000  Step=    0.000000
+   11  Eigenvalue=  205.834285  Derivative=    0.000053  Step=   -0.000000
+   12  Eigenvalue=  217.354620  Derivative=   -0.000000  Step=    0.000000
+   13  Eigenvalue=  233.157028  Derivative=    0.000062  Step=   -0.000000
+   14  Eigenvalue=  236.590685  Derivative=    0.000000  Step=   -0.000000
+   15  Eigenvalue=  293.320962  Derivative=   -0.000000  Step=    0.000000
+   16  Eigenvalue=  293.781230  Derivative=   -0.000739  Step=    0.000003
+   17  Eigenvalue=  397.323961  Derivative=    0.000671  Step=   -0.000002
+   18  Eigenvalue=  407.234843  Derivative=   -0.000000  Step=    0.000000
+   19  Eigenvalue=  703.046381  Derivative=   -0.000000  Step=    0.000000
+   20  Eigenvalue=  713.278570  Derivative=    0.001530  Step=   -0.000002
+   21  Eigenvalue=  991.904995  Derivative=   -0.000001  Step=    0.000000
+   22  Eigenvalue=  995.531820  Derivative=    0.002264  Step=   -0.000002
+   23  Eigenvalue= 1471.015082  Derivative=    0.000000  Step=   -0.000000
+   24  Eigenvalue= 1472.532911  Derivative=    0.000059  Step=   -0.000000
+   25  Eigenvalue= 2259.783270  Derivative=    0.000027  Step=   -0.000000
+   26  Eigenvalue= 2260.863502  Derivative=   -0.000000  Step=    0.000000
+   27  Eigenvalue= 2797.606637  Derivative=    0.000000  Step=   -0.000000
+   28  Eigenvalue= 2809.657553  Derivative=   -0.000799  Step=    0.000000
+   29  Eigenvalue= 2951.952053  Derivative=    0.002368  Step=   -0.000001
+   30  Eigenvalue= 2956.586252  Derivative=    0.000001  Step=   -0.000000
+   31  Eigenvalue= 4999.999924  Derivative=    0.000000  Step=   -0.000000
+   32  Eigenvalue= 4999.999975  Derivative=    0.000000  Step=   -0.000000
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   35  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   36  Eigenvalue= 5000.000200  Derivative=   -0.000000  Step=    0.000000
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>       18    -10.91923      0.00001      0.00002      0.00554
+MINI INTERN>        0.18252      3.48637      0.00000      0.00226      0.00162
+MINI EXTERN>        1.23120     -8.87694     -6.94625      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ There are    1 eigenvalues less than TEVAL for this Newton-Raphson step.
+  energ=    -10.919231  fcent=     -0.000005 ffcent/2=      0.218573
+ NRAPH3>   rnew=      0.004581   enew=      0.000005   fnew=      0.001984
+ NRAPH3>   rnew=      0.002291   enew=      0.000001   fnew=      0.000993
+ Normal step size=    0.00001206  Improved step=    0.00001209
+    1  Eigenvalue=    0.437146  Derivative=   -0.000005  Step=    0.000012
+    2  Eigenvalue=    2.650456  Derivative=   -0.000001  Step=    0.000000
+    3  Eigenvalue=    4.405128  Derivative=    0.000000  Step=   -0.000000
+    4  Eigenvalue=    7.552018  Derivative=   -0.000003  Step=    0.000000
+    5  Eigenvalue=   23.503405  Derivative=    0.000000  Step=   -0.000000
+    6  Eigenvalue=   31.833650  Derivative=    0.000003  Step=   -0.000000
+    7  Eigenvalue=   42.170094  Derivative=    0.000000  Step=   -0.000000
+    8  Eigenvalue=   55.002471  Derivative=    0.000005  Step=   -0.000000
+    9  Eigenvalue=  123.045194  Derivative=    0.000006  Step=   -0.000000
+   10  Eigenvalue=  134.997879  Derivative=   -0.000000  Step=    0.000000
+   11  Eigenvalue=  205.846086  Derivative=   -0.000018  Step=    0.000000
+   12  Eigenvalue=  217.364007  Derivative=   -0.000000  Step=    0.000000
+   13  Eigenvalue=  233.134891  Derivative=   -0.000002  Step=    0.000000
+   14  Eigenvalue=  236.599585  Derivative=   -0.000000  Step=    0.000000
+   15  Eigenvalue=  293.342254  Derivative=   -0.000000  Step=    0.000000
+   16  Eigenvalue=  293.749299  Derivative=    0.000006  Step=   -0.000000
+   17  Eigenvalue=  397.332057  Derivative=   -0.000021  Step=    0.000000
+   18  Eigenvalue=  407.280199  Derivative=    0.000000  Step=   -0.000000
+   19  Eigenvalue=  703.041327  Derivative=    0.000000  Step=   -0.000000
+   20  Eigenvalue=  713.315815  Derivative=   -0.000052  Step=    0.000000
+   21  Eigenvalue=  991.883506  Derivative=   -0.000000  Step=    0.000000
+   22  Eigenvalue=  995.514183  Derivative=    0.000002  Step=   -0.000000
+   23  Eigenvalue= 1471.015902  Derivative=   -0.000000  Step=    0.000000
+   24  Eigenvalue= 1472.555796  Derivative=   -0.000027  Step=    0.000000
+   25  Eigenvalue= 2259.746476  Derivative=    0.000004  Step=   -0.000000
+   26  Eigenvalue= 2260.871341  Derivative=    0.000000  Step=   -0.000000
+   27  Eigenvalue= 2797.586439  Derivative=    0.000000  Step=   -0.000000
+   28  Eigenvalue= 2809.676435  Derivative=    0.000013  Step=   -0.000000
+   29  Eigenvalue= 2951.952732  Derivative=    0.000114  Step=   -0.000000
+   30  Eigenvalue= 2956.613963  Derivative=    0.000000  Step=   -0.000000
+   31  Eigenvalue= 5000.000000  Derivative=    0.000000  Step=   -0.000000
+   32  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   33  Eigenvalue= 5000.000000  Derivative=   -0.000000  Step=    0.000000
+   34  Eigenvalue= 5000.000002  Derivative=    0.000000  Step=   -0.000000
+   35  Eigenvalue= 5000.000003  Derivative=   -0.000000  Step=    0.000000
+   36  Eigenvalue= 5000.000007  Derivative=   -0.000000  Step=    0.000000
+ FASTST> Second derivatives are not supported with FAST option.
+         Using generic routines (enables second derivatives).
+MINI>       19    -10.91923      0.00000      0.00000      0.00001
+MINI INTERN>        0.18252      3.48637      0.00000      0.00226      0.00162
+MINI EXTERN>        1.23120     -8.87695     -6.94625      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+
+ NRAPH> Minimization exiting with gradient tolerance ( 0.0001000) satisfied.
+
+NRAP MIN: Cycle      ENERgy      Delta-E         GRMS    Step-size
+NRAP INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+NRAP EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ ----------       ---------    ---------    ---------    ---------    ---------
+NRAP>       19    -10.91923      0.00000      0.00000      0.40000
+NRAP INTERN>        0.18252      3.48637      0.00000      0.00226      0.00162
+NRAP EXTERN>        1.23120     -8.87695     -6.94625      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>    COOR ORIE RMS MASS
+ CENTER OF ATOMS BEFORE TRANSLATION     0.00003     0.00083     0.03886
+ CENTER OF REFERENCE COORDINATE SET     0.00000    -0.00000    -0.00000
+ NET TRANSLATION OF ROTATED ATOMS      -0.00003    -0.00083    -0.03886
+ ROTATION MATRIX
+     0.997528   -0.070271    0.000717
+     0.070239    0.997299    0.021454
+    -0.002222   -0.021351    0.999770
+ AXIS OF ROTATION IS  0.291361 -0.020006 -0.956404  ANGLE IS    4.21
+
+ CENTER OF ROTATION  -0.000260  0.154710  0.016120  SHIFT IS  0.037176
+
+ TOTAL SQUARE DIFF IS    168.6333  DENOMINATOR IS    146.1902
+       THUS RMS DIFF IS    1.074020
+ ALL COORDINATES ORIENTED IN THE MAIN SET BASED ON SELECTED ATOMS.
+
+  
+ CHARMM>    PRINT     COORD
+
+          COORDINATE FILE MODULE
+ TITLE>  * TEST RUN FOR NEWTON RAPHSON AND DIAGONALIZATION (TEST3)
+ TITLE>  *
+   12
+    1    1 AMN  CL    -3.13965  -1.54481   0.19285 A    1      0.00000
+    2    1 AMN  C     -1.85653  -0.82937  -0.22784 A    1      0.00000
+    3    1 AMN  O     -1.03318  -1.44920  -0.89737 A    1      0.00000
+    4    2 CBX  N     -1.53757   0.43573   0.07578 A    2      0.00000
+    5    2 CBX  H     -0.68605   0.77269  -0.26811 A    2      0.00000
+    6    2 CBX  CA    -2.38883   1.35790   0.89148 A    2      0.00000
+    7    3 AMN  CL     3.13965   1.54481   0.19285 A    3      0.00000
+    8    3 AMN  C      1.85653   0.82937  -0.22784 A    3      0.00000
+    9    3 AMN  O      1.03318   1.44920  -0.89737 A    3      0.00000
+   10    4 CBX  N      1.53757  -0.43573   0.07578 A    4      0.00000
+   11    4 CBX  H      0.68605  -0.77269  -0.26811 A    4      0.00000
+   12    4 CBX  CA     2.38883  -1.35790   0.89148 A    4      0.00000
+  
+ CHARMM>     
+  
+ CHARMM>    open write card unit 14 name @9/brbtest.crd
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::.//brbtest.crd::
+ OPNLGU> Unit 14 opened for WRITE access to .//brbtest.crd
+  
+ CHARMM>    WRITE     COORDS    CARD   UNIT 14
+ RDTITL> *  SECOND DERIVATIVE TEST COORDINATES
+ RDTITL> *
+ VCLOSE: Closing unit   14 with status "KEEP"
+  
+ CHARMM>     
+  
+ CHARMM>    IC FILL
+  
+ CHARMM>    PRINT IC
+
+       INTERNAL COORDINATES
+ TITLE>  *  SECOND DERIVATIVE TEST COORDINATES
+ TITLE>  *  DATE:     1/24/18     12: 8: 0      CREATED BY USER: bonat
+ TITLE>  *
+
+     NUMBER OF INTERNAL COORDINATES :          9
+
+   N     I       J       K       L   R(I(J/K)) T(I(JK/KJ)) PHI   T(JKL)   R(KL)
+
+    1   2 N     1 CL    1 *C    1 O      1.3396  125.43  179.76  118.45   1.2290
+    2   1 CL    1 C     2 N     2 CA     1.5281  125.43    0.48  124.75   1.4968
+    3   1 C     2 CA    2 *N    2 H      1.3396  124.75  179.76  118.32   0.9782
+    4   4 N     3 CL    3 *C    3 O      1.3396  125.43  179.76  118.45   1.2290
+    5   3 CL    3 C     4 N     4 CA     1.5281  125.43    0.48  124.75   1.4968
+    6   3 C     4 CA    4 *N    4 H      1.3396  124.75  179.76  118.32   0.9782
+    7   2 CA    2 N     2 H     4 H      1.4968  118.32  145.39  108.68   2.0666
+    8   2 N     2 H     4 H     4 N      0.9782  108.68 -136.43  108.68   0.9782
+    9   2 H     4 H     4 N     4 CA     2.0666  108.68  145.39  118.32   1.4968
+  
+ CHARMM>     
+  
+ CHARMM>    if ?NUMNODE .gt. 1 then
+ RDCMND substituted energy or value "?NUMNODE" to "2"
+ Comparing "2" and "1".
+ IF test evaluated as true.  Performing command
+  
+ CHARMM>     echo "Test NOT performed."
+"Test NOT performed."
+  
+ CHARMM>     stop
+ VCLOSE: Closing unit    1 with status "KEEP"
+ VCLOSE: Closing unit    2 with status "KEEP"
+
+      $$$$$$  New timer profile Local node$$$$$
+
+      Heuristic check                 0.00 Other:            0.00
+      NBONDS                          0.00 Other:            0.00
+   List time                       0.00 Other:            0.00
+         Electrostatic & VDW             0.00 Other:            0.00
+      Nonbond force                   0.00 Other:            0.00
+         Bond energy                     0.00 Other:            0.00
+         Angle energy                    0.00 Other:            0.00
+         Dihedral energy                 0.00 Other:            0.00
+         Restraints energy               0.00 Other:            0.00
+      INTRNL energy                   0.19 Other:            0.19
+      Comm energy                     0.00 Other:            0.00
+      Comm force                      0.02 Other:            0.00
+   Energy time                     0.24 Other:            0.03
+ Total time                      0.60 Other:            0.36
+
+         $$$$$$  Average   profile $$$$$
+
+      Heuristic check                 0.00 Other:            0.00
+      NBONDS                          0.00 Other:            0.00
+   List time                       0.00 Other:            0.00
+         Electrostatic & VDW             0.00 Other:            0.00
+      Nonbond force                   0.00 Other:            0.00
+         Bond energy                     0.07 Other:            0.00
+         Angle energy                    0.00 Other:            0.00
+         Dihedral energy                 0.02 Other:            0.00
+         Restraints energy               0.00 Other:            0.00
+      INTRNL energy                   0.18 Other:            0.18
+      Comm energy                     0.00 Other:            0.00
+      Comm force                      0.02 Other:            0.00
+   Energy time                     0.24 Other:            0.03
+ Total time                      0.60 Other:            0.36
+
+                    NORMAL TERMINATION BY NORMAL STOP
+                    MOST SEVERE WARNING WAS AT LEVEL  2
+
+                    $$$$$ JOB ACCOUNTING INFORMATION $$$$$
+                     ELAPSED TIME:     0.66  SECONDS 
+                         CPU TIME:     0.08  SECONDS 

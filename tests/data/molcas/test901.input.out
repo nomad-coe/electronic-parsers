@@ -1,0 +1,2604 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test901.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test901.input.22575
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 14:43:31 2016 
+
+++ ---------   Input file   ---------
+
+ >>export MOLCAS_MOLDEN=OFF
+ >>export MOLCAS_NOCHECK=POTNUC,SEWARD_MLTPL1X,SEWARD_KINETIC,SEWARD_ATTRACT
+  &SEWARD &END
+    Title
+    N2
+    Symmetry
+    x y z
+    Basis set
+    N.ANO-L...5s3p2d1f.
+    N                1.03224      0.00000      0.00000
+    End of basis
+    NOGUess
+ >>export MOLCAS_NOCHECK=SCF_ITER,RASSCF_ITER,MLTPL
+  &SCF &END
+    Title
+    N2
+    ITERATIONS
+      50
+    Occupied
+      3 2 1 0 1 0 0 0
+  &RASSCF &END
+    TITLE
+    N2
+    SYMMETRY
+      1
+    SPIN
+      1
+    NACTEL
+      4    0    0
+    FROZEN
+      0    0    0    0    0    0    0    0
+    INACTIVE
+      3    2    0    0    0    0    0    0
+    RAS1
+      0    0    0    0    0    0    0    0
+    RAS2
+      0    0    1    1    1    1    0    0
+    RAS3
+      0    0    0    0    0    0    0    0
+    ITERations
+      50,25
+    CIMX
+      25
+    LUMORB
+ >>export MOLCAS_NOCHECK=HSTAT
+  &MCKINLEY &END
+    show
+    Perturbation
+    Hessian
+    NoMCLR
+ >>export MOLCAS_NOCHECK=HARM_FREQ,IR_INTENSITIES,POLARIZABILITIES
+  &MCLR &END
+    print
+      255
+    lowmem
+
+-- ----------------------------------
+
+--- Start Module: seward at Fri Oct  7 14:43:32 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:43:32 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+ Title:
+                                               N2                                       
+ 
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+                    Reflection in the xz-plane  
+                    Reflection in the xy-plane  
+ 
+ 
+                    Character Table for D2h
+ 
+                             E   s(yz) s(xz) C2(z) s(xy) C2(y) C2(x)   i  
+                    ag       1     1     1     1     1     1     1     1  
+                    b3u      1    -1     1    -1     1    -1     1    -1  x
+                    b2u      1     1    -1    -1     1     1    -1    -1  y
+                    b1g      1    -1    -1     1     1    -1    -1     1  xy, Rz
+                    b1u      1     1     1     1    -1    -1    -1    -1  z
+                    b2g      1    -1     1    -1    -1     1    -1     1  xz, Ry
+                    b3g      1     1    -1    -1    -1    -1     1     1  yz, Rx
+                    au       1    -1    -1     1    -1     1     1    -1  I
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:N.ANO-L...5S3P2D1F...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  7.000000 au
+      Associated Actual Charge     7.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s      14       5        X                  
+         p       9       3        X                  
+         d       4       2                 X         
+         f       3       1                 X         
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      N                1.032240       0.000000       0.000000              0.546238       0.000000       0.000000
+        2      N               -1.032240       0.000000       0.000000             -0.546238       0.000000       0.000000
+ 
+ 
+            Nuclear Potential Energy             23.73479036 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         ag   b3u  b2u  b1g  b1u  b2g  b3g  au 
+      Basis functions           14   14    7    7    7    7    3    3
+ 
+--- Stop Module:  seward at Fri Oct  7 14:43:33 2016 /rc=0 ---
+--- Start Module: scf at Fri Oct  7 14:43:34 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:43:34 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+Input section
+      Header of the integral files:
+                                         N2                                   
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:43:32 2016        
+ 
+ 
+       Title:
+        N2                                                                      
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   N          0.54624   0.00000   0.00000
+       2   N         -0.54624   0.00000   0.00000
+      --------------------------------------------
+      Nuclear repulsion energy =   23.734790
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2   3   4   5   6   7   8
+                                    ag b3u b2u b1g b1u b2g b3g  au
+      Frozen orbitals                0   0   0   0   0   0   0   0
+      Occupied orbitals              3   2   1   0   1   0   0   0
+      Secondary orbitals            11  12   6   7   6   7   3   3
+      Deleted orbitals               0   0   0   0   0   0   0   0
+      Total number of orbitals      14  14   7   7   7   7   3   3
+      Number of basis functions     14  14   7   7   7   7   3   3
+ 
+      Molecular charge                           0.000
+ 
+      SCF Algorithm: Conventional
+      Minimized density differences are used
+      Number of density matrices in core               50
+      Maximum number of NDDO SCF iterations            50
+      Maximum number of HF  SCF iterations             50
+      Threshold for SCF energy change            0.10E-08
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Starting vectors from core diagonalization
+ 
+ 
+Convergence information
+                                   SCF        iterations: Energy and convergence statistics
+ 
+Iter     Tot. SCF       One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -99.68600826   -206.35884398     82.93804537  0.00E+00   0.57E+00*  0.12E+01*   0.97E+01   0.65E+02   NoneDa    0.
+   2    -97.84487505   -153.82794567     32.24828026  0.18E+01*  0.42E+00*  0.39E+00*   0.54E+01   0.36E+02   Damp      0.
+   3   -108.87071014   -196.75153208     64.14603158 -0.11E+02*  0.16E+00*  0.13E+00*   0.43E+01   0.37E+02   Damp      0.
+   4   -108.98394278   -193.95030868     61.23157554 -0.11E+00*  0.35E-01*  0.35E-01*   0.77E+00   0.70E+00   Damp      0.
+   5   -108.98988044   -194.62948085     61.90481005 -0.59E-02*  0.13E-01*  0.35E-01*   0.15E+00   0.23E+00   QNRc2D    0.
+   6   -108.99031316   -194.44442073     61.71931721 -0.43E-03*  0.26E-02*  0.26E-02*   0.22E-01   0.69E-02   QNRc2D    0.
+   7   -108.99034632   -194.47872061     61.75358394 -0.33E-04*  0.86E-03*  0.42E-03*   0.37E-02   0.72E-02   QNRc2D    0.
+   8   -108.99034779   -194.48156277     61.75642463 -0.15E-05*  0.88E-04*  0.30E-04    0.42E-03   0.22E-03   QNRc2D    0.
+   9   -108.99034780   -194.48160807     61.75646991 -0.12E-07*  0.59E-05   0.22E-05    0.49E-04   0.10E-03   QNRc2D    0.
+  10   -108.99034780   -194.48160600     61.75646784 -0.64E-10   0.38E-06   0.20E-06    0.14E-04   0.13E-04   QNRc2D    0.
+ 
+       Convergence after 10 Macro Iterations and  0 additional LS Iterations...
+ 
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total SCF energy                               -108.9903477983
+      One-electron energy                            -194.4816060020
+      Two-electron energy                              61.7564678448
+      Nuclear repulsion energy                         23.7347903588
+      Kinetic energy (interpolated)                   108.8439777410
+      Virial theorem                                    1.0013447695
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000000000
+      Max non-diagonal Fock matrix element              0.0000001954
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: SCF orbitals                                                                    
+ 
+
+      Molecular orbitals for symmetry species 1: ag 
+ 
+          Orbital        1         2         3         4         5         6         7
+          Energy      -15.6835   -1.4753   -0.6347    0.1150    0.2300    0.4197    0.5851
+          Occ. No.      2.0000    2.0000    2.0000    0.0000    0.0000    0.0000    0.0000
+ 
+        1 N     1s     -0.9999   -0.0645    0.0384   -0.0218   -0.2800    0.0000    0.4677
+        2 N     2s     -0.0024    0.7029    0.5332   -0.1758   -1.2783    0.0000    1.8430
+        3 N     3s      0.0005   -0.0690    0.1054    0.5251   -0.2832    0.0000    0.3793
+        4 N     4s      0.0001    0.0097   -0.0147    0.5152    0.1893    0.0000   -0.6449
+        5 N     5s      0.0001    0.0083   -0.0105    0.1470    0.0772    0.0000   -0.2852
+        6 N     2px     0.0006   -0.2974    0.7912   -0.2678   -1.8820    0.0000    2.2944
+        7 N     3px    -0.0020    0.1337   -0.1582   -0.0690   -3.3477    0.0000    3.5239
+        8 N     4px     0.0010   -0.0352    0.0204    0.0214   -0.8287    0.0000    0.7537
+        9 N     3d0     0.0000   -0.0168    0.0118    0.0024   -0.2790    0.4482    0.7877
+       10 N     4d0    -0.0005    0.0154   -0.0156   -0.0049   -0.2883    0.4857    0.7748
+       11 N     3d2+    0.0000    0.0291   -0.0205   -0.0041    0.4833    0.2588   -1.3643
+       12 N     4d2+    0.0008   -0.0266    0.0270    0.0085    0.4994    0.2804   -1.3420
+       13 N     4f1+    0.0000    0.0049   -0.0028   -0.0028    0.0355    0.0047   -0.0660
+       14 N     4f3+    0.0000   -0.0064    0.0036    0.0036   -0.0459    0.0036    0.0852
+
+      Molecular orbitals for symmetry species 2: b3u
+ 
+          Orbital        1         2         3         4
+          Energy      -15.6799   -0.7776    0.1176    0.3423
+          Occ. No.      2.0000    2.0000    0.0000    0.0000
+ 
+        1 N     1s     -1.0018    0.0023    0.0892   -0.1190
+        2 N     2s     -0.0092    0.8886    1.4350   -5.3888
+        3 N     3s     -0.0033   -0.0591    2.1298  -13.6499
+        4 N     4s     -0.0002   -0.0435    0.9056   -8.1036
+        5 N     5s      0.0001   -0.0058    0.0140   -1.1333
+        6 N     2px     0.0050    0.4401   -0.0438   -1.0233
+        7 N     3px     0.0008   -0.0160   -1.2468    3.1475
+        8 N     4px    -0.0004   -0.0001   -0.7005    2.6259
+        9 N     3d0     0.0010    0.0107    0.1208   -0.6605
+       10 N     4d0     0.0000    0.0012    0.0295   -0.3623
+       11 N     3d2+   -0.0018   -0.0185   -0.2093    1.1440
+       12 N     4d2+    0.0001   -0.0021   -0.0511    0.6275
+       13 N     4f1+   -0.0004   -0.0007   -0.0378    0.1247
+       14 N     4f3+    0.0005    0.0009    0.0488   -0.1610
+
+      Molecular orbitals for symmetry species 3: b2u
+ 
+          Orbital        1         2
+          Energy       -0.6167    0.1458
+          Occ. No.      2.0000    0.0000
+ 
+        1 N     2py    -0.8328    0.0045
+        2 N     3py     0.0752   -0.6622
+        3 N     4py     0.0082   -0.3332
+        4 N     3d2-    0.0799   -0.0343
+        5 N     4d2-   -0.0001   -0.0237
+        6 N     4f3-   -0.0138   -0.0082
+        7 N     4f1-    0.0036    0.0021
+
+      Molecular orbitals for symmetry species 4: b1g
+ 
+          Orbital        1         2
+          Energy        0.1378    0.3112
+          Occ. No.      0.0000    0.0000
+ 
+        1 N     2py    -1.8738    2.4564
+        2 N     3py    -1.6155    4.5561
+        3 N     4py    -0.2964    0.9206
+        4 N     3d2-    0.0838   -0.9765
+        5 N     4d2-    0.1281   -0.9312
+        6 N     4f3-    0.0043    0.0628
+        7 N     4f1-   -0.0011   -0.0162
+
+      Molecular orbitals for symmetry species 5: b1u
+ 
+          Orbital        1         2
+          Energy       -0.6167    0.1458
+          Occ. No.      2.0000    0.0000
+ 
+        1 N     2pz    -0.8328    0.0045
+        2 N     3pz     0.0752   -0.6622
+        3 N     4pz     0.0082   -0.3332
+        4 N     3d1+    0.0799   -0.0343
+        5 N     4d1+   -0.0001   -0.0237
+        6 N     4f0     0.0087    0.0052
+        7 N     4f2+   -0.0113   -0.0067
+
+      Molecular orbitals for symmetry species 6: b2g
+ 
+          Orbital        1         2
+          Energy        0.1378    0.3112
+          Occ. No.      0.0000    0.0000
+ 
+        1 N     2pz    -1.8738    2.4564
+        2 N     3pz    -1.6155    4.5561
+        3 N     4pz    -0.2964    0.9206
+        4 N     3d1+    0.0838   -0.9765
+        5 N     4d1+    0.1281   -0.9312
+        6 N     4f0    -0.0027   -0.0397
+        7 N     4f2+    0.0035    0.0513
+
+      Molecular orbitals for symmetry species 7: b3g
+ 
+          Orbital        1
+          Energy        0.4197
+          Occ. No.      0.0000
+ 
+        1 N     3d1-   -0.5176
+        2 N     4d1-   -0.5608
+        3 N     4f2-   -0.0059
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             N     
+      1s     2.0019
+      2s     1.6621
+      2px    1.1591
+      2pz    0.9657
+      2py    0.9657
+      3s     0.0633
+      3px    0.0857
+      3pz   -0.0085
+      3py   -0.0085
+      4s    -0.0013
+      3d2+   0.0115
+      3d1+   0.0369
+      3d0    0.0038
+      3d1-   0.0000
+      3d2-   0.0369
+      4px   -0.0028
+      4pz    0.0013
+      4py    0.0013
+      5s     0.0014
+      4d2+   0.0109
+      4d1+   0.0000
+      4d0    0.0036
+      4d1-   0.0000
+      4d2-   0.0000
+      4f3+   0.0005
+      4f2+   0.0029
+      4f1+   0.0003
+      4f0    0.0017
+      4f1-   0.0003
+      4f2-   0.0000
+      4f3-   0.0044
+      Total  7.0000
+ 
+      N-E    0.0000
+ 
+      Total electronic charge=   14.000000
+ 
+      Total            charge=    0.000000
+ 
+      LoProp Charges per center                                                                                               
+ 
+
+                   N     
+      Nuclear      7.0000
+      Electronic  -7.0000
+ 
+      Total        0.0000
+ 
+      Natural Bond Order Analysis
+      Based on LoProp computed density
+      -------------------------------------------------------------------------------------
+      Atom A : Gen.  Atom B : Gen.  Bond Order
+         N     :E       N     :x      3.000
+      -------------------------------------------------------------------------------------
+      NBO located      4.000 core electrons.
+      NBO located      3.885 lone pair electrons.
+      NBO located      6.000 electrons involved in    1 bonds.
+      The remaining    0.115 electrons are to be considered as diffuse
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    0.0000           Total=    0.0000
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                    XX=  -11.6786              XY=    0.0000              XZ=    0.0000              YY=  -10.3666
+                    YZ=    0.0000              ZZ=  -10.3666
+      In traceless form (Debye*Ang)
+                    XX=   -1.3121              XY=    0.0000              XZ=    0.0000              YY=    0.6560
+                    YZ=    0.0000              ZZ=    0.6560
+--- Stop Module:  scf at Fri Oct  7 14:43:35 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 14:43:35 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module RASSCF with 2000 MB of memory
+                                              at 14:43:36 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      Header of the ONEINT file:
+      --------------------------
+      N2                                                                                                                      
+      Integrals generated by seward 4.2.0  , Fri Oct  7 14:43:32 2016                                                         
+ 
+ 
+      OrdInt status: non-squared
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   N          0.54624   0.00000   0.00000
+       2   N         -0.54624   0.00000   0.00000
+      --------------------------------------------
+      Nuclear repulsion energy =   23.734790
+ 
+ 
+ 
+      Wave function specifications:
+         -----------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       4
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                5
+      Number of active orbitals                  4
+      Number of secondary orbitals              53
+      Spin quantum number                      0.0
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+         -----------------------
+ 
+      Symmetry species                           1   2   3   4   5   6   7   8
+                                                ag b3u b2u b1g b1u b2g b3g  au
+      Frozen orbitals                            0   0   0   0   0   0   0   0
+      Inactive orbitals                          3   2   0   0   0   0   0   0
+      Active orbitals                            0   0   1   1   1   1   0   0
+      RAS1 orbitals                              0   0   0   0   0   0   0   0
+      RAS2 orbitals                              0   0   1   1   1   1   0   0
+      RAS3 orbitals                              0   0   0   0   0   0   0   0
+      Secondary orbitals                        11  12   6   6   6   6   3   3
+      Deleted orbitals                           0   0   0   0   0   0   0   0
+      Number of basis functions                 14  14   7   7   7   7   3   3
+ 
+      CI expansion specifications:
+         ----------------------------
+ 
+      Number of configuration state fnc.         8
+      Number of determinants                     9
+      Number of root(s) required                 1
+      Root chosen for geometry opt.              1
+      CI root used                               1
+      highest root included in the CI            1
+      max. size of the explicit Hamiltonian      8
+ 
+      Optimization specifications:
+         ----------------------------
+ 
+      RASSCF algorithm: Conventional
+      Maximum number of macro iterations        50
+      Maximum number of SX iterations           25
+      Threshold for RASSCF energy            0.100E-07
+      Threshold for max MO rotation          0.100E+00
+      Threshold for max BLB element          0.100E-03
+      Level shift parameter                  0.500E+00
+      Make Quasi-Newton update
+      The MO-coefficients are taken from the file:
+      INPORB                                                                                                                          
+      Title: SCF orbitals                                                                  
+ 
+      Total molecular charge    0.00
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                            Wave function  control section                                            *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+                          RASSCF iterations: Energy and convergence statistics
+                          ----------------------------------------------------
+ 
+      Iter CI   SX   CI       RASSCF       Energy    max ROT   max BLB   max BLB  Level Ln srch  Step   QN    Time(min)
+          iter iter root      energy       change     param    element    value    shift minimum  type update     CPU
+        1   1    4    1  -109.01914466    0.00E+00  -0.53E+00*   1   2 4 -0.22E-01*  0.00   0.00     SX     NO      0.00
+        2   1    4    1  -109.07967907   -0.61E-01*  0.17E-01    1   5 5  0.26E-01*  0.00   0.00     SX     NO      0.00
+        3   1    4    1  -109.08112596   -0.14E-02* -0.68E-02    2   7 2  0.92E-02*  0.00   0.00     SX     NO      0.00
+        4   1    4    1  -109.08131044   -0.18E-03* -0.25E-02    1   4 3  0.30E-02*  0.00   0.00     SX     NO      0.00
+        5   1    4    1  -109.08133151   -0.21E-04* -0.11E-02    3   8 1  0.93E-03*  0.00   1.44     LS    YES      0.00
+        6   1    4    1  -109.08133362   -0.21E-05* -0.54E-03    3   9 1 -0.75E-03*  0.00   0.99     QN    YES      0.00
+        7   1    3    1  -109.08133456   -0.94E-06* -0.42E-04    2   7 2 -0.15E-03*  0.00   0.86     QN    YES      0.00
+        8   1    3    1  -109.08133460   -0.40E-07*  0.95E-05    2   7 2 -0.20E-04   0.00   1.07     QN    YES      0.00
+        9   1    3    1  -109.08133460   -0.86E-09  -0.41E-05    3   7 1  0.36E-05   0.00   1.18     QN    YES      0.00
+      Convergence after  9 iterations
+       10   1    3    1  -109.08133460   -0.46E-10  -0.41E-05    2  13 1  0.46E-06   0.00   1.18     QN    YES      0.00
+ 
+      ************************************************************************************************************************
+                                                      Wave function printout:
+                       occupation of active orbitals, and spin coupling of open shells (u,d: Spin up or down)
+      ************************************************************************************************************************
+ 
+      Note: transformation to natural orbitals
+      has been made, which may change the order of the CSFs.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=    -109.081335
+      conf/sym  3 4 5 6     Coeff  Weight
+             2  2 0 2 0   0.96884 0.93864
+             3  2 0 0 2  -0.13363 0.01786
+             4  0 2 2 0  -0.13363 0.01786
+             6  u d u d  -0.14390 0.02071
+ 
+      Natural orbitals and occupation numbers for root  1
+      sym 3:   1.936881
+      sym 4:   0.063119
+      sym 5:   1.936881
+      sym 6:   0.063119
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                                    Final results                                                    *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       4
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                5
+      Number of active orbitals                  4
+      Number of secondary orbitals              53
+      Spin quantum number                      0.0
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4   5   6   7   8
+                                                ag b3u b2u b1g b1u b2g b3g  au
+      Frozen orbitals                            0   0   0   0   0   0   0   0
+      Inactive orbitals                          3   2   0   0   0   0   0   0
+      Active orbitals                            0   0   1   1   1   1   0   0
+      RAS1 orbitals                              0   0   0   0   0   0   0   0
+      RAS2 orbitals                              0   0   1   1   1   1   0   0
+      RAS3 orbitals                              0   0   0   0   0   0   0   0
+      Secondary orbitals                        11  12   6   6   6   6   3   3
+      Deleted orbitals                           0   0   0   0   0   0   0   0
+      Number of basis functions                 14  14   7   7   7   7   3   3
+ 
+ 
+      CI expansion specifications:
+      ----------------------------
+ 
+      Number of configuration state fnc.         8
+      Number of determinants                     9
+      Number of root(s) required                 1
+      CI root used                               1
+      highest root included in the CI            1
+      Root passed to geometry opt.               1
+ 
+ 
+      Final optimization conditions:
+      ------------------------------
+ 
+      Average CI energy                            -109.08133460
+      RASSCF energy for state  1                   -109.08133460
+      Super-CI energy                                 0.00000000
+      RASSCF energy change                            0.00000000
+      Max change in MO coefficients               0.687E-05
+      Max non-diagonal density matrix element    -0.414E-05
+      Maximum BLB matrix element                  0.463E-06
+      (orbital pair   2,  13 in symmetry   1)
+      Norm of electronic gradient            0.143E-05
+ 
+ 
+      Final state energy(ies):
+      ------------------------
+ 
+      RASSCF root number  1 Total energy =       -109.08133460
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Pseudonatural active orbitals and approximate occupation numbers
+ 
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 1: ag 
+ 
+ 
+      Orbital            1         2         3         4
+      Energy      -15.6528   -1.4627   -0.6200    0.1161
+      Occ. No.      2.0000    2.0000    2.0000    0.0000
+ 
+    1 N     1s     -0.9999   -0.0650    0.0390   -0.0240
+    2 N     2s     -0.0026    0.7021    0.5344   -0.1883
+    3 N     3s      0.0006   -0.0680    0.1109    0.5198
+    4 N     4s      0.0000    0.0090   -0.0147    0.5190
+    5 N     5s      0.0002    0.0087   -0.0110    0.1488
+    6 N     2px     0.0005   -0.2980    0.7924   -0.2862
+    7 N     3px    -0.0020    0.1333   -0.1522   -0.0948
+    8 N     4px     0.0011   -0.0344    0.0180    0.0155
+    9 N     3d0     0.0000   -0.0171    0.0128    0.0000
+   10 N     4d0    -0.0005    0.0152   -0.0153   -0.0068
+   11 N     3d2+    0.0001    0.0296   -0.0221    0.0001
+   12 N     4d2+    0.0008   -0.0263    0.0265    0.0118
+   13 N     4f1+    0.0000    0.0051   -0.0029   -0.0026
+   14 N     4f3+    0.0000   -0.0066    0.0037    0.0033
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 2: b3u
+ 
+ 
+      Orbital            1         2         3
+      Energy      -15.6493   -0.7652    0.1187
+      Occ. No.      2.0000    2.0000    0.0000
+ 
+    1 N     1s     -1.0017    0.0026    0.0901
+    2 N     2s     -0.0091    0.8922    1.4435
+    3 N     3s     -0.0029   -0.0546    2.1355
+    4 N     4s     -0.0002   -0.0457    0.9049
+    5 N     5s      0.0001   -0.0062    0.0131
+    6 N     2px     0.0049    0.4365   -0.0441
+    7 N     3px     0.0006   -0.0131   -1.2480
+    8 N     4px    -0.0004   -0.0007   -0.7013
+    9 N     3d0     0.0010    0.0115    0.1206
+   10 N     4d0     0.0000    0.0014    0.0289
+   11 N     3d2+   -0.0018   -0.0199   -0.2089
+   12 N     4d2+    0.0001   -0.0024   -0.0501
+   13 N     4f1+   -0.0004   -0.0009   -0.0379
+   14 N     4f3+    0.0005    0.0011    0.0490
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 3: b2u
+ 
+ 
+      Orbital            1         2
+      Energy        0.0000    0.1456
+      Occ. No.      1.9369    0.0000
+ 
+    1 N     2py    -0.8389   -0.0039
+    2 N     3py     0.0894   -0.6608
+    3 N     4py     0.0028   -0.3340
+    4 N     3d2-    0.0716   -0.0317
+    5 N     4d2-   -0.0028   -0.0218
+    6 N     4f3-   -0.0122   -0.0084
+    7 N     4f1-    0.0032    0.0022
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 4: b1g
+ 
+ 
+      Orbital            1
+      Energy        0.0000
+      Occ. No.      0.0631
+ 
+    1 N     2py    -1.1603
+    2 N     3py     0.2024
+    3 N     4py    -0.0260
+    4 N     3d2-    0.0237
+    5 N     4d2-    0.0148
+    6 N     4f3-    0.0214
+    7 N     4f1-   -0.0055
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 5: b1u
+ 
+ 
+      Orbital            1         2
+      Energy        0.0000    0.1456
+      Occ. No.      1.9369    0.0000
+ 
+    1 N     2pz    -0.8389   -0.0039
+    2 N     3pz     0.0894   -0.6608
+    3 N     4pz     0.0028   -0.3340
+    4 N     3d1+    0.0716   -0.0317
+    5 N     4d1+   -0.0028   -0.0218
+    6 N     4f0     0.0077    0.0053
+    7 N     4f2+   -0.0100   -0.0069
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 6: b2g
+ 
+ 
+      Orbital            1
+      Energy        0.0000
+      Occ. No.      0.0631
+ 
+    1 N     2pz    -1.1603
+    2 N     3pz     0.2024
+    3 N     4pz    -0.0260
+    4 N     3d1+    0.0237
+    5 N     4d1+    0.0148
+    6 N     4f0    -0.0135
+    7 N     4f2+    0.0175
+
+      Von Neumann Entropy (Root  1) =  0.40431
+ 
+
+      Mulliken population Analysis for root number: 1
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             N     
+      1s     2.0019
+      2s     1.6646
+      2px    1.1569
+      2pz    0.9698
+      2py    0.9698
+      3s     0.0649
+      3px    0.0831
+      3pz   -0.0053
+      3py   -0.0053
+      4s    -0.0012
+      3d2+   0.0119
+      3d1+   0.0312
+      3d0    0.0040
+      3d1-   0.0000
+      3d2-   0.0312
+      4px   -0.0029
+      4pz    0.0006
+      4py    0.0006
+      5s     0.0015
+      4d2+   0.0108
+      4d1+  -0.0007
+      4d0    0.0036
+      4d1-   0.0000
+      4d2-  -0.0007
+      4f3+   0.0006
+      4f2+   0.0027
+      4f1+   0.0003
+      4f0    0.0016
+      4f1-   0.0003
+      4f2-   0.0000
+      4f3-   0.0041
+      Total  7.0000
+ 
+      N-E    0.0000
+ 
+      Total electronic charge=   14.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  1
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    0.0000           Total=    0.0000
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                    XX=  -11.8938              XY=    0.0000              XZ=    0.0000              YY=  -10.1447
+                    YZ=    0.0000              ZZ=  -10.1447
+      In traceless form (Debye*Ang)
+                    XX=   -1.7492              XY=    0.0000              XZ=    0.0000              YY=    0.8746
+                    YZ=    0.0000              ZZ=    0.8746
+
+      LoProp population Analysis for root number:  1
+      -----------------------------------------------
+ 
+ 
+      LoProp Charges per center                                                                                               
+ 
+
+                   N     
+      Nuclear      7.0000
+      Electronic  -7.0000
+ 
+      Total        0.0000
+ 
+      Natural Bond Order Analysis for root number:  1
+      Based on LoProp computed density
+      -------------------------------------------------------------------------------------
+      Atom A : Gen.  Atom B : Gen.  Bond Order
+         N     :E       N     :x      2.937
+      -------------------------------------------------------------------------------------
+      NBO located      4.000 core electrons.
+      NBO located      3.887 lone pair electrons.
+      NBO located      5.874 electrons involved in    1 bonds.
+      The remaining    0.240 electrons are to be considered as diffuse
+ 
+      Average orbitals are written to the RASORB           file
+      Natural orbitals for root   1 are written to the RASORB.1         file
+      Spin density orbitals for root   1 are written to the SPDORB.1         file
+ 
+--- Stop Module:  rasscf at Fri Oct  7 14:43:37 2016 /rc=0 ---
+*** 
+--- Start Module: mckinley at Fri Oct  7 14:43:38 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                 MOLCAS executing module MCKINLEY with 2000 MB of memory
+                                              at 14:43:38 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+                     Threshold for contributions to the gradient or Hessian: .100E-06
+ 
+  The Renormalization Contribution                                              
+  
+ 
+  Hessian in Irrep ag                                                                                                     
+  -------------------                                                                                                     
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b3u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b1g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b1u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+  The Kinetic Energy Contribution                                               
+  
+ 
+  Hessian in Irrep ag                                                                                                     
+  -------------------                                                                                                     
+  mat. size =    1x   1
+ 
+   -1.66198753
+ 
+  Hessian in Irrep b3u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b1g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   2.43133551
+ 
+  Hessian in Irrep b1u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   2.43133551
+  The Nuclear Attraction Contribution                                           
+  
+ 
+  Hessian in Irrep ag                                                                                                     
+  -------------------                                                                                                     
+  mat. size =    1x   1
+ 
+   -16.3283786
+ 
+  Hessian in Irrep b3u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b1g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   25.73097672
+ 
+  Hessian in Irrep b1u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   25.73097672
+ 
+  Hessian in Irrep ag                                                                                                     
+  -------------------                                                                                                     
+  mat. size =    1x   1
+ 
+   -15.1380949
+ 
+  Hessian in Irrep b3u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b1g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   22.09074406
+ 
+  Hessian in Irrep b1u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   22.09074406
+ 
+  Hessian in Irrep ag                                                                                                     
+  -------------------                                                                                                     
+  mat. size =    1x   1
+ 
+   11.13766205
+ 
+  Hessian in Irrep b3u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b1g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   -5.56883102
+ 
+  Hessian in Irrep b1u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   -5.56883102
+ 
+  Hessian in Irrep ag                                                                                                     
+  -------------------                                                                                                     
+  mat. size =    1x   1
+ 
+   -4.00043282
+ 
+  Hessian in Irrep b3u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b1g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   16.52191303
+ 
+  Hessian in Irrep b1u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   16.52191303
+ OVRGRD  :   0.941501966960288     
+ oper:    7.53507846585349     
+ Dens:    1977.39313280627     
+ OVRGRD  
+oper:      0.000000000    
+ OVRGRD  
+oper:      0.000000000    
+ OVRGRD  
+oper:      6.824866025    
+ OVRGRD  
+oper:      0.000000000    
+ OVRGRD  
+oper:      6.824866025    
+ KNEGRD  :   -2.25943347443614     
+ oper:    47.3975458195369     
+ Dens:    23.2356539190127     
+ KNEGRD  
+oper:      0.000000000    
+ KNEGRD  
+oper:      0.000000000    
+ KNEGRD  
+oper:      46.79200800    
+ KNEGRD  
+oper:      0.000000000    
+ KNEGRD  
+oper:      46.79200800    
+ NAGRD   :    30.8799639068707     
+ oper:    999.785871230781     
+ Dens:    23.2356539190127     
+ NAGRD   
+oper:      0.000000000    
+ NAGRD   
+oper:      0.000000000    
+ NAGRD   
+oper:      792.3385377    
+ NAGRD   
+oper:      0.000000000    
+ NAGRD   
+oper:      792.3385377    
+ 
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+ 
+ jDisp=                     1
+ 
+ Fock1
+ 
+ jIrrep,kIrrep=                     0                     0
+ipAct:     307.4264404    
+ jIrrep,kIrrep=                     1                     1
+ipAct:     3296.620017    
+ jIrrep,kIrrep=                     2                     2
+ipAct:     3307.623150    
+ jIrrep,kIrrep=                     3                     3
+ipAct:     3478.717362    
+ jIrrep,kIrrep=                     4                     4
+ipAct:     3489.720489    
+ jIrrep,kIrrep=                     5                     5
+ipAct:     3660.814879    
+ jIrrep,kIrrep=                     6                     6
+ipAct:     3663.041351    
+ jIrrep,kIrrep=                     7                     7
+ipAct:     3671.754471    
+ 
+ Fock2
+ 
+ jIrrep,kIrrep=                     0                     0
+ipIn:     1913.329451    
+ jIrrep,kIrrep=                     1                     1
+ipIn:     22533.97444    
+ jIrrep,kIrrep=                     2                     2
+ipIn:     22609.65841    
+ jIrrep,kIrrep=                     3                     3
+ipIn:     23924.56577    
+ jIrrep,kIrrep=                     4                     4
+ipIn:     24000.24975    
+ jIrrep,kIrrep=                     5                     5
+ipIn:     25315.16100    
+ jIrrep,kIrrep=                     6                     6
+ipIn:     25323.76847    
+ jIrrep,kIrrep=                     7                     7
+ipIn:     25392.66539    
+ 
+ Fock Tot
+ 
+ jIrrep,kIrrep=                     0                     0
+ipOut1:     5215.609256    
+ jIrrep,kIrrep=                     1                     1
+ipOut1:     67665.72775    
+ jIrrep,kIrrep=                     2                     2
+ipDisp3:     6.837041995    
+ jIrrep,kIrrep=                     2                     2
+ipOut1:     67727.51710    
+ jIrrep,kIrrep=                     3                     3
+ipDisp3:    0.6144589886E-03
+ jIrrep,kIrrep=                     3                     3
+ipOut1:     67729.82193    
+ jIrrep,kIrrep=                     4                     4
+ipDisp3:     6.837041995    
+ jIrrep,kIrrep=                     4                     4
+ipOut1:     67791.61128    
+ jIrrep,kIrrep=                     5                     5
+ipDisp3:    0.6144589886E-03
+ jIrrep,kIrrep=                     5                     5
+ipOut1:     67793.91611    
+ jIrrep,kIrrep=                     6                     6
+ipOut1:     67793.91611    
+ jIrrep,kIrrep=                     7                     7
+ipOut1:     67793.91611    
+ 
+TOTAL:     67793.91611    
+INACTIVE:     25392.66539    
+ 
+ 
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+ 
+ jDisp=                     2
+ 
+ Fock1
+ 
+ jIrrep,kIrrep=                     0                     1
+ipAct:     0.000000000    
+ 
+ ipDisp(jDisp),ip(jIrrep)=                   724                     0
+ 
+  ipDisp                                                      
+  mat. size =    14x   14
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+ipDisp:    0.2099754602E-31
+ipCM(kIrrep):     131.8289482    
+ipCM(jIrrep):     5129.696926    
+ jIrrep,kIrrep=                     1                     0
+ipAct:    0.1960589041E-27
+ jIrrep,kIrrep=                     2                     3
+ipAct:    0.1960589041E-27
+ 
+ ipDisp(jDisp),ip(jIrrep)=                   724                   196
+ 
+  ipDisp                                                      
+  mat. size =     7x    7
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+ipDisp:    0.1970648318E-32
+ipCM(kIrrep):     8.436054283    
+ipCM(jIrrep):     241.6789366    
+ jIrrep,kIrrep=                     3                     2
+ipAct:    0.1962444841E-27
+ jIrrep,kIrrep=                     4                     5
+ipAct:    0.1962444841E-27
+ 
+ ipDisp(jDisp),ip(jIrrep)=                   724                   245
+ 
+  ipDisp                                                      
+  mat. size =     7x    7
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+ipDisp:    0.1490814275E-32
+ipCM(kIrrep):     8.436054283    
+ipCM(jIrrep):     241.6789366    
+ jIrrep,kIrrep=                     5                     4
+ipAct:    0.1966524194E-27
+ jIrrep,kIrrep=                     6                     7
+ipAct:    0.1966524194E-27
+ 
+ ipDisp(jDisp),ip(jIrrep)=                   724                   294
+ 
+  ipDisp                                                      
+  mat. size =     3x    3
+    0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000
+ipDisp:    0.1413749378E-34
+ipCM(kIrrep):     2.330104630    
+ipCM(jIrrep):     9.278684381    
+ jIrrep,kIrrep=                     7                     6
+ipAct:    0.1966524711E-27
+ 
+ Fock2
+ 
+ jIrrep,kIrrep=                     0                     1
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     1                     0
+ipIn:    0.1153198065E-27
+ jIrrep,kIrrep=                     2                     3
+ipIn:    0.1153198065E-27
+ jIrrep,kIrrep=                     3                     2
+ipIn:    0.1153447619E-27
+ jIrrep,kIrrep=                     4                     5
+ipIn:    0.1153447619E-27
+ jIrrep,kIrrep=                     5                     4
+ipIn:    0.1153698511E-27
+ jIrrep,kIrrep=                     6                     7
+ipIn:    0.1153698511E-27
+ jIrrep,kIrrep=                     7                     6
+ipIn:    0.1153699085E-27
+ 
+ Fock Tot
+ 
+ jIrrep,kIrrep=                     0                     1
+ipOut1:    0.7694948545E-30
+ jIrrep,kIrrep=                     1                     0
+ipOut1:    0.5191551171E-28
+ jIrrep,kIrrep=                     2                     3
+ipDisp3:     0.000000000    
+ jIrrep,kIrrep=                     2                     3
+ipOut1:    0.5191551204E-28
+ jIrrep,kIrrep=                     3                     2
+ipDisp3:     0.000000000    
+ jIrrep,kIrrep=                     3                     2
+ipOut1:    0.5193876967E-28
+ jIrrep,kIrrep=                     4                     5
+ipDisp3:     0.000000000    
+ jIrrep,kIrrep=                     4                     5
+ipOut1:    0.5193877018E-28
+ jIrrep,kIrrep=                     5                     4
+ipDisp3:     0.000000000    
+ jIrrep,kIrrep=                     5                     4
+ipOut1:    0.5196302108E-28
+ jIrrep,kIrrep=                     6                     7
+ipOut1:    0.5196302108E-28
+ jIrrep,kIrrep=                     7                     6
+ipOut1:    0.5196302108E-28
+ 
+TOTAL:    0.5196302108E-28
+INACTIVE:    0.1153699085E-27
+ 
+ 
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+ 
+ jDisp=                     3
+ 
+ Fock1
+ 
+ jIrrep,kIrrep=                     0                     2
+ipAct:     0.000000000    
+ jIrrep,kIrrep=                     1                     3
+ipAct:     0.000000000    
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  1416                     0
+ 
+  ipDisp                                                      
+  mat. size =     7x   14
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+ipDisp:    0.2950094593E-32
+ipCM(kIrrep):     131.8289482    
+ipCM(jIrrep):     8.436054283    
+ jIrrep,kIrrep=                     2                     0
+ipAct:    0.6800429839E-31
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  1416                    98
+ 
+  ipDisp                                                      
+  mat. size =     7x   14
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+ipDisp:    0.2941294002E-32
+ipCM(kIrrep):     5129.696926    
+ipCM(jIrrep):     241.6789366    
+ jIrrep,kIrrep=                     3                     1
+ipAct:    0.2466184730E-29
+ jIrrep,kIrrep=                     4                     6
+ipAct:    0.2466184730E-29
+ jIrrep,kIrrep=                     5                     7
+ipAct:    0.2466184730E-29
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  1416                   196
+ 
+  ipDisp                                                      
+  mat. size =     3x    7
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+ipDisp:    0.2785291272E-33
+ipCM(kIrrep):     8.436054283    
+ipCM(jIrrep):     2.330104630    
+ jIrrep,kIrrep=                     6                     4
+ipAct:    0.2466678876E-29
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  1416                   217
+ 
+  ipDisp                                                      
+  mat. size =     3x    7
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+ipDisp:    0.2612863449E-33
+ipCM(kIrrep):     241.6789366    
+ipCM(jIrrep):     9.278684381    
+ jIrrep,kIrrep=                     7                     5
+ipAct:    0.2529459587E-29
+ 
+ Fock2
+ 
+ jIrrep,kIrrep=                     0                     2
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     1                     3
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     2                     0
+ipIn:    0.7625209539E-31
+ jIrrep,kIrrep=                     3                     1
+ipIn:    0.1801603062E-27
+ jIrrep,kIrrep=                     4                     6
+ipIn:    0.1801603062E-27
+ jIrrep,kIrrep=                     5                     7
+ipIn:    0.1801603062E-27
+ jIrrep,kIrrep=                     6                     4
+ipIn:    0.1801603516E-27
+ jIrrep,kIrrep=                     7                     5
+ipIn:    0.1801653963E-27
+ 
+ Fock Tot
+ 
+ jIrrep,kIrrep=                     0                     2
+ipDisp3:     0.000000000    
+ jIrrep,kIrrep=                     0                     2
+ipOut1:    0.9968526167E-32
+ jIrrep,kIrrep=                     1                     3
+ipDisp3:     0.000000000    
+ jIrrep,kIrrep=                     1                     3
+ipOut1:    0.1028023086E-31
+ jIrrep,kIrrep=                     2                     0
+ipOut1:    0.2425697992E-31
+ jIrrep,kIrrep=                     3                     1
+ipOut1:    0.1290093319E-30
+ jIrrep,kIrrep=                     4                     6
+ipOut1:    0.1290093319E-30
+ jIrrep,kIrrep=                     5                     7
+ipOut1:    0.1290093319E-30
+ jIrrep,kIrrep=                     6                     4
+ipDisp3:     0.000000000    
+ jIrrep,kIrrep=                     6                     4
+ipOut1:    0.1290465489E-30
+ jIrrep,kIrrep=                     7                     5
+ipDisp3:     0.000000000    
+ jIrrep,kIrrep=                     7                     5
+ipOut1:    0.1290467710E-30
+ 
+TOTAL:    0.1290467710E-30
+INACTIVE:    0.1801653963E-27
+ 
+ 
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+ 
+ jDisp=                     4
+ 
+ Fock1
+ 
+ jIrrep,kIrrep=                     0                     3
+ipAct:     0.000000000    
+ jIrrep,kIrrep=                     1                     2
+ipAct:     0.000000000    
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  2043                     0
+ 
+  ipDisp                                                      
+  mat. size =     7x   14
+    0.08887881  0.33025614 -0.11655096 -0.07369328  0.11374597 -0.45541977  0.08726685  0.15539537 -0.00034859  0.13713856
+    0.76520434  0.07584802  0.06683023 -0.89957918
+    0.06599427  0.22226563  0.07514708 -0.06396624 -0.11939542  0.10097146 -0.14884039  0.00926593  0.13040569  0.03676493
+   -0.30031884  0.35374200 -0.12118720  0.65497183
+   -0.13026504 -0.21231039  0.21313815  0.00340374  0.00953198  0.19336079  0.00028353 -0.09998318 -0.14423540 -0.00009939
+   -0.09331419 -0.29709536  0.17294477 -0.33347484
+   -0.31101967 -0.57116611  0.54744547 -0.30185894 -0.14382671  0.44345567 -0.49037833  0.35127826 -0.25719414 -0.16019635
+   -0.75922204  0.46412635  0.19665962  0.83434443
+   -0.06473742 -0.26427628 -0.02453726  0.25377693 -0.03693444 -0.40724082  0.09615482 -0.14890279 -0.17389051 -0.08930790
+    0.49871030 -0.38920934  0.01180952 -0.81670413
+    0.53133526  0.43626923 -0.66847586  0.70523739 -0.33409060 -0.31957830  0.48232798 -0.68840525  0.49677758 -0.11183897
+    0.71556014 -0.55090956 -0.35900871 -0.84056458
+   -0.13719025 -0.11264440  0.17260003 -0.18209171  0.08626180  0.08251546 -0.12453655  0.17774528  0.21564989 -0.03613372
+    0.01380297  0.10471074 -0.48105634 -0.22739272
+ipDisp:     12.21526245    
+ipCM(kIrrep):     5129.696926    
+ipCM(jIrrep):     8.436054283    
+ jIrrep,kIrrep=                     2                     1
+ipAct:     1583.303805    
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  2043                    98
+ 
+  ipDisp                                                      
+  mat. size =     7x   14
+   -0.14325424 -0.62013781  0.11182301  0.11694118 -0.16193603  0.67572315 -0.11162036 -0.21628200  0.10479693 -0.17365356
+   -0.87078299 -0.07865153 -0.11991121  1.07003196
+   -0.04485045 -0.19076376 -0.21545116  0.05247562  0.15883410 -0.10734617  0.20920476 -0.02562439 -0.11575791  0.03065020
+    0.32212559 -0.28003717  0.11474945 -0.67354840
+    0.11248865  0.25070892 -0.14505243 -0.12123848 -0.01688685 -0.22740954 -0.01522233  0.15883105  0.10368109 -0.00484050
+    0.07974282  0.29068524 -0.15114358  0.34156698
+    0.32605931  0.72569687 -0.51411493  0.24817375  0.17995184 -0.71254986  0.46852389 -0.24174370  0.15140696  0.17423075
+    0.91400845 -0.46377746 -0.09290639 -0.83331393
+    0.06163006  0.24396411  0.09787023 -0.23505805 -0.01142329  0.40891339 -0.22910980  0.17014383  0.17209761  0.03115128
+   -0.47534617  0.40951901 -0.00761478  0.79129269
+   -0.54056891 -0.52732038  0.64826693 -0.66550977  0.31068315  0.49524555 -0.46211997  0.59661879 -0.42341286  0.10291118
+   -0.99746739  0.54482003  0.26224974  0.96809265
+    0.13957435  0.13615464 -0.16738192  0.17183348 -0.08021737 -0.12787250  0.11931907 -0.15404610 -0.35411044  0.03693970
+   -0.01001983 -0.10400351  0.55025717  0.22871715
+ipDisp:     14.69279051    
+ipCM(kIrrep):     131.8289482    
+ipCM(jIrrep):     241.6789366    
+ jIrrep,kIrrep=                     3                     0
+ipAct:     2208.026207    
+ jIrrep,kIrrep=                     4                     7
+ipAct:     2208.026207    
+ jIrrep,kIrrep=                     5                     6
+ipAct:     2208.026207    
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  2043                   196
+ 
+  ipDisp                                                      
+  mat. size =     3x    7
+    0.34463469 -0.06081349 -0.12966213 -0.58812634  0.08863213 -0.05579149  0.91814024
+    0.18971418  0.11347457 -0.14115067  0.08100021 -0.23173713  0.16129004 -0.32417996
+   -0.56045936  0.32174454 -0.08967633  0.58374733 -0.47854515 -0.21195099 -0.96231070
+ipDisp:     3.565695387    
+ipCM(kIrrep):     241.6789366    
+ipCM(jIrrep):     2.330104630    
+ jIrrep,kIrrep=                     6                     5
+ipAct:     2318.659977    
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  2043                   217
+ 
+  ipDisp                                                      
+  mat. size =     3x    7
+   -0.38229986  0.03722484  0.17156834  0.60234681 -0.09876118  0.13359669 -0.80037662
+   -0.15668967 -0.20871047  0.14863386 -0.09332933  0.27194761 -0.16651533  0.33366269
+    0.49804271 -0.30527979  0.06748642 -0.66640091  0.49079016  0.16158582  0.93889606
+ipDisp:     3.458326219    
+ipCM(kIrrep):     8.436054283    
+ipCM(jIrrep):     9.278684381    
+ jIrrep,kIrrep=                     7                     4
+ipAct:     2335.780933    
+ 
+ Fock2
+ 
+ jIrrep,kIrrep=                     0                     3
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     1                     2
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     2                     1
+ipIn:     14933.31020    
+ jIrrep,kIrrep=                     3                     0
+ipIn:     19270.91797    
+ jIrrep,kIrrep=                     4                     7
+ipIn:     19270.91797    
+ jIrrep,kIrrep=                     5                     6
+ipIn:     19270.91797    
+ jIrrep,kIrrep=                     6                     5
+ipIn:     19992.75451    
+ jIrrep,kIrrep=                     7                     4
+ipIn:     20132.06379    
+ 
+ Fock Tot
+ 
+ jIrrep,kIrrep=                     0                     3
+ipDisp3:    0.6466241641E-02
+ jIrrep,kIrrep=                     0                     3
+ipOut1:    0.6705407334    
+ jIrrep,kIrrep=                     1                     2
+ipDisp3:     5.995579319    
+ jIrrep,kIrrep=                     1                     2
+ipOut1:     39051.69816    
+ jIrrep,kIrrep=                     2                     1
+ipOut1:     39140.82178    
+ jIrrep,kIrrep=                     3                     0
+ipOut1:     49416.60052    
+ jIrrep,kIrrep=                     4                     7
+ipOut1:     49416.60052    
+ jIrrep,kIrrep=                     5                     6
+ipOut1:     49416.60052    
+ jIrrep,kIrrep=                     6                     5
+ipDisp3:    0.2327670718E-03
+ jIrrep,kIrrep=                     6                     5
+ipOut1:     49416.61684    
+ jIrrep,kIrrep=                     7                     4
+ipDisp3:     1.451523809    
+ jIrrep,kIrrep=                     7                     4
+ipOut1:     49572.52368    
+ 
+TOTAL:     49572.52368    
+INACTIVE:     20132.06379    
+ 
+ 
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+ 
+ jDisp=                     5
+ 
+ Fock1
+ 
+ jIrrep,kIrrep=                     0                     4
+ipAct:     0.000000000    
+ jIrrep,kIrrep=                     1                     5
+ipAct:     0.000000000    
+ jIrrep,kIrrep=                     2                     6
+ipAct:     0.000000000    
+ jIrrep,kIrrep=                     3                     7
+ipAct:     0.000000000    
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  2670                     0
+ 
+  ipDisp                                                      
+  mat. size =     7x   14
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+ipDisp:    0.1900110393E-32
+ipCM(kIrrep):     131.8289482    
+ipCM(jIrrep):     8.436054283    
+ jIrrep,kIrrep=                     4                     0
+ipAct:    0.5269320298E-31
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  2670                    98
+ 
+  ipDisp                                                      
+  mat. size =     7x   14
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000
+ipDisp:    0.2767430699E-32
+ipCM(kIrrep):     5129.696926    
+ipCM(jIrrep):     241.6789366    
+ jIrrep,kIrrep=                     5                     1
+ipAct:    0.4359634379E-27
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  2670                   196
+ 
+  ipDisp                                                      
+  mat. size =     3x    7
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+ipDisp:    0.4077396416E-33
+ipCM(kIrrep):     8.436054283    
+ipCM(jIrrep):     2.330104630    
+ jIrrep,kIrrep=                     6                     2
+ipAct:    0.4359643837E-27
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  2670                   217
+ 
+  ipDisp                                                      
+  mat. size =     3x    7
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+    0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000  0.00000000
+ipDisp:    0.9490439969E-33
+ipCM(kIrrep):     241.6789366    
+ipCM(jIrrep):     9.278684381    
+ jIrrep,kIrrep=                     7                     3
+ipAct:    0.4365931427E-27
+ 
+ Fock2
+ 
+ jIrrep,kIrrep=                     0                     4
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     1                     5
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     2                     6
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     3                     7
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     4                     0
+ipIn:    0.7885221469E-31
+ jIrrep,kIrrep=                     5                     1
+ipIn:    0.2278142179E-26
+ jIrrep,kIrrep=                     6                     2
+ipIn:    0.2278142236E-26
+ jIrrep,kIrrep=                     7                     3
+ipIn:    0.2278148856E-26
+ 
+ Fock Tot
+ 
+ jIrrep,kIrrep=                     0                     4
+ipDisp3:     0.000000000    
+ jIrrep,kIrrep=                     0                     4
+ipOut1:    0.2691078583E-32
+ jIrrep,kIrrep=                     1                     5
+ipDisp3:     0.000000000    
+ jIrrep,kIrrep=                     1                     5
+ipOut1:    0.4882925308E-31
+ jIrrep,kIrrep=                     2                     6
+ipOut1:    0.4882925308E-31
+ jIrrep,kIrrep=                     3                     7
+ipOut1:    0.4882925308E-31
+ jIrrep,kIrrep=                     4                     0
+ipOut1:    0.6215164690E-31
+ jIrrep,kIrrep=                     5                     1
+ipOut1:    0.2413359294E-30
+ jIrrep,kIrrep=                     6                     2
+ipDisp3:     0.000000000    
+ jIrrep,kIrrep=                     6                     2
+ipOut1:    0.2413880263E-30
+ jIrrep,kIrrep=                     7                     3
+ipDisp3:     0.000000000    
+ jIrrep,kIrrep=                     7                     3
+ipOut1:    0.2413882332E-30
+ 
+TOTAL:    0.2413882332E-30
+INACTIVE:    0.2278148856E-26
+ 
+ 
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+ 
+ jDisp=                     6
+ 
+ Fock1
+ 
+ jIrrep,kIrrep=                     0                     5
+ipAct:     0.000000000    
+ jIrrep,kIrrep=                     1                     4
+ipAct:     0.000000000    
+ jIrrep,kIrrep=                     2                     7
+ipAct:     0.000000000    
+ jIrrep,kIrrep=                     3                     6
+ipAct:     0.000000000    
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  3297                     0
+ 
+  ipDisp                                                      
+  mat. size =     7x   14
+    0.08887872  0.33025577 -0.11655107 -0.07369314  0.11374587 -0.45541968  0.08726670  0.15539555 -0.66251119 -0.13425570
+    0.38290385 -0.08084129  0.85430468 -0.28960259
+    0.06599429  0.22226551  0.07514693 -0.06396617 -0.11939539  0.10097156 -0.14884040  0.00926582  0.19488081 -0.32473224
+   -0.26309420  0.14503180 -0.60387640  0.28108186
+   -0.13026503 -0.21230999  0.21313840  0.00340350  0.00953205  0.19336053  0.00028346 -0.09998305  0.15292990  0.25734198
+    0.07825455 -0.14846168  0.27964949 -0.25082201
+   -0.31101962 -0.57116635  0.54744542 -0.30185885 -0.14382687  0.44345557 -0.49037820  0.35127810  0.78610170 -0.32184703
+   -0.15687364  0.37079670 -0.85701341  0.01817100
+   -0.06473743 -0.26427618 -0.02453726  0.25377695 -0.03693449 -0.40724085  0.09615472 -0.14890267 -0.34495065  0.38171898
+    0.39994886 -0.11726175  0.78781676 -0.21561072
+   -0.33604590 -0.27592090  0.42278150 -0.44603134  0.21129725  0.20211941 -0.30505097  0.43538564  0.75962883 -0.37692234
+    0.16740903  0.08997197 -0.92285193 -0.35909690
+    0.43383342  0.35621239 -0.54580840  0.57582415 -0.27278395 -0.26093497  0.39381905 -0.56208046 -0.43689574  0.38381508
+    0.09782680 -0.17549871  0.28421509 -0.23910867
+ipDisp:     12.21524894    
+ipCM(kIrrep):     5129.696926    
+ipCM(jIrrep):     8.436054283    
+ jIrrep,kIrrep=                     4                     1
+ipAct:     1583.301317    
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  3297                    98
+ 
+  ipDisp                                                      
+  mat. size =     7x   14
+   -0.14325420 -0.62013784  0.11182292  0.11694139 -0.16193619  0.67572373 -0.11162052 -0.21628218  0.70172238  0.15494084
+   -0.52614825  0.11106229 -1.00607654  0.38361123
+   -0.04485043 -0.19076375 -0.21545111  0.05247563  0.15883405 -0.10734648  0.20920455 -0.02562418 -0.22109008  0.22719391
+    0.26131223 -0.16656254  0.62347267 -0.27949285
+    0.11248861  0.25070886 -0.14505250 -0.12123854 -0.01688671 -0.22740952 -0.01522211  0.15883088 -0.12090054 -0.24932034
+   -0.04991916  0.14953499 -0.29293396  0.23173607
+    0.32605930  0.72569718 -0.51411471  0.24817358  0.17995186 -0.71254995  0.46852366 -0.24174345 -0.86725907  0.31452769
+    0.32588119 -0.38277665  0.83007961 -0.11837184
+    0.06163005  0.24396426  0.09787020 -0.23505814 -0.01142316  0.40891341 -0.22910972  0.17014380  0.32561340 -0.37022962
+   -0.38671379  0.17778183 -0.76426205  0.20519601
+    0.34188578  0.33350793 -0.40999967  0.42090457 -0.19649259 -0.31322141  0.29227041 -0.37733453 -0.96402649  0.36984648
+   -0.08033525 -0.09346554  1.01272612  0.30065589
+   -0.44137259 -0.43055555  0.52930724 -0.54338599  0.25367158  0.40436713 -0.37731943  0.48713691  0.51179497 -0.37704979
+   -0.31934497  0.17864159 -0.33032642  0.36871255
+ipDisp:     14.69279478    
+ipCM(kIrrep):     131.8289482    
+ipCM(jIrrep):     241.6789366    
+ jIrrep,kIrrep=                     5                     0
+ipAct:     2208.024304    
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  3297                   196
+ 
+  ipDisp                                                      
+  mat. size =     3x    7
+    0.34463525 -0.06081362 -0.12966227 -0.58812680  0.08863244  0.60635149 -0.69168771
+    0.18971390  0.11347461 -0.14115053  0.08100014 -0.23173749 -0.32603053  0.15751745
+   -0.56046034  0.32174503 -0.08967656  0.58374717 -0.47854565 -0.42173159  0.89056706
+ipDisp:     3.565700639    
+ipCM(kIrrep):     241.6789366    
+ipCM(jIrrep):     2.330104630    
+ jIrrep,kIrrep=                     6                     3
+ipAct:     2318.658262    
+ 
+ ipDisp(jDisp),ip(jIrrep)=                  3297                   217
+ 
+  ipDisp                                                      
+  mat. size =     3x    7
+   -0.38230005  0.03722493  0.17156831  0.60234736 -0.09876176 -0.59574632  0.55094220
+   -0.15668938 -0.20871055  0.14863386 -0.09332917  0.27194788  0.33596777 -0.16181378
+    0.49804320 -0.30527966  0.06748611 -0.66640144  0.49078995  0.44720853 -0.84121410
+ipDisp:     3.458328989    
+ipCM(kIrrep):     8.436054283    
+ipCM(jIrrep):     9.278684381    
+ jIrrep,kIrrep=                     7                     2
+ipAct:     2335.779233    
+ 
+ Fock2
+ 
+ jIrrep,kIrrep=                     0                     5
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     1                     4
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     2                     7
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     3                     6
+ipIn:     0.000000000    
+ jIrrep,kIrrep=                     4                     1
+ipIn:     14933.31139    
+ jIrrep,kIrrep=                     5                     0
+ipIn:     19270.92124    
+ jIrrep,kIrrep=                     6                     3
+ipIn:     19992.75769    
+ jIrrep,kIrrep=                     7                     2
+ipIn:     20132.06690    
+ 
+ Fock Tot
+ 
+ jIrrep,kIrrep=                     0                     5
+ipDisp3:    0.6466241641E-02
+ jIrrep,kIrrep=                     0                     5
+ipOut1:    0.6705411548    
+ jIrrep,kIrrep=                     1                     4
+ipDisp3:     5.995579319    
+ jIrrep,kIrrep=                     1                     4
+ipOut1:     39051.70199    
+ jIrrep,kIrrep=                     2                     7
+ipOut1:     39051.70199    
+ jIrrep,kIrrep=                     3                     6
+ipOut1:     39051.70199    
+ jIrrep,kIrrep=                     4                     1
+ipOut1:     39140.82562    
+ jIrrep,kIrrep=                     5                     0
+ipOut1:     49416.60794    
+ jIrrep,kIrrep=                     6                     3
+ipDisp3:    0.2327670718E-03
+ jIrrep,kIrrep=                     6                     3
+ipOut1:     49416.62425    
+ jIrrep,kIrrep=                     7                     2
+ipDisp3:     1.451523809    
+ jIrrep,kIrrep=                     7                     2
+ipOut1:     49572.53104    
+ 
+TOTAL:     49572.53104    
+INACTIVE:     20132.06690    
+ 
+ 
+  Hessian in Irrep ag                                                                                                     
+  -------------------                                                                                                     
+  mat. size =    1x   1
+ 
+   4.61144627
+ 
+  Hessian in Irrep b3u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b1g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   -16.2890816
+ 
+  Hessian in Irrep b1u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   -16.2890816
+ *************************
+ *                       *
+ *Complete static Hessian*
+ *                       *
+ *************************
+ 
+  Hessian in Irrep ag                                                                                                     
+  -------------------                                                                                                     
+  mat. size =    1x   1
+ 
+   0.61101345
+ 
+  Hessian in Irrep b3u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b1g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.23283140
+ 
+  Hessian in Irrep b1u                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.00000000
+ 
+  Hessian in Irrep b2g                                                                                                    
+  --------------------                                                                                                    
+  mat. size =    1x   1
+ 
+   0.23283140
+ **************************************************************************************************************************
+ *                                                                                                                        *
+ *                 All data is written to disk, and could be accessed through the MCLR or RASSI program.                  *
+ *                                                                                                                        *
+ **************************************************************************************************************************
+--- Stop Module:  mckinley at Fri Oct  7 14:44:07 2016 /rc=0 ---
+--- Module mckinley spent 29 seconds 
+*** 
+--- Start Module: mclr at Fri Oct  7 14:44:08 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module MCLR with 2000 MB of memory
+                                              at 14:44:08 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ Ordinary integral handling
+ OrdInt status: non-squared
+ 
+ 
+     Wave function specifications:
+     -----------------------------
+ 
+     Number of closed shell electrons           10
+     Number of electrons in active shells        4
+     Max number of holes in RAS1 space           0
+     Max number of electrons in RAS3 space       0
+     Number of inactive orbitals                 5
+     Number of active orbitals                   4
+     Number of secondary orbitals               53
+     Spin quantum number                       0.0
+     State symmetry                              1
+     Number of roots                               1
+     States considered                             1
+     Weights                                   1.000
+ 
+     Symmetry species                                1       2       3       4       5       6       7       8
+     Skiped sym. species                             0       0       0       0       0       0       0       0
+     Frozen orbitals                                 0       0       0       0       0       0       0       0
+     Inactive orbitals                               3       2       0       0       0       0       0       0
+     Active orbitals                                 0       0       1       1       1       1       0       0
+     RAS1 orbitals                                   0       0       0       0       0       0       0       0
+     RAS2 orbitals                                   0       0       1       1       1       1       0       0
+     RAS3 orbitals                                   0       0       0       0       0       0       0       0
+     Deleted orbitals                                0       0       0       0       0       0       0       0
+     Number of basis functions                      14      14       7       7       7       7       3       3
+     Number of Orbitals                             14      14       7       7       7       7       3       3
+     Number of configurations                        8       4       0       0       0       0       4       4
+     Number of combinations                          9       4       0       0       0       0       4       4
+     Natural orbitals are used in the last CI
+     RASSCF state energy =      -109.0813346040
+     Size of explicit Hamiltonian is PCG:      100
+     Convergence threshold=  0.00010000
+     Max number of iterations in PCG:      200
+ 
+ 
+     Perturbation specifications:
+     -----------------------------
+ 
+     Number of perturbations in each symmetry    1   2   2   1   2   1   0   0
+     Type of perturbation:                       Hessian         
+ 
+     Perturbations:
+     --------------
+ 
+     -------------------------------------
+      No.    Symmetry    Center Direction 
+     -------------------------------------
+       1       ag           N          x
+       2       b3u          N          x
+       3       b3u          MLTPL  1 X
+       4       b2u          N          y
+       5       b2u          MLTPL  1 Y
+       6       b1g          N          y
+       7       b1u          N          z
+       8       b1u          MLTPL  1 Z
+       9       b2g          N          z
+     -------------------------------------
+ 
+ 
+     Linear response function is computed for root no. =   1
+ 
+ Transformation of integrals
+ Process perturbation number                      1
+        Iteration         Delta     Res(kappa) Res(CI)
+            1          0.0001799   3.9329339   0.1114422   0.0044001   0.9681499
+            2          0.0000065   0.7078999   0.1032131   0.0039402   0.0311975
+            3          0.0000001   0.0419542   0.0045945   0.0000097   0.0005087
+            4          0.0000000   0.0113765   0.0076661   0.0000226   0.0000112
+            5          0.0000000   0.0024947   0.0001054   0.0000000   0.0000005
+            6          0.0000000   0.0003007   0.0000496   0.0000000   0.0000000
+      Perturbation no:    1 converged in    6 steps.
+ 
+ Process perturbation number                      2
+        Iteration         Delta     Res(kappa) Res(CI)
+      Perturbation no:    2 converged in    0 steps.
+ 
+ Process perturbation number                      3
+        Iteration         Delta     Res(kappa) Res(CI)
+            1          0.1564054   3.4061509   0.1639396   0.0079368   1.8547395
+            2          0.0239898   0.8021805   0.5125123   0.1504424   0.1352589
+            3          0.0014064   0.2990991   0.0239174   0.0002406   0.0165087
+            4          0.0000523   0.0443644   0.0438644   0.0004322   0.0001902
+            5          0.0000031   0.0095423   0.0010548   0.0000005   0.0000366
+            6          0.0000001   0.0042883   0.0010123   0.0000002   0.0000014
+            7          0.0000000   0.0003049   0.0000156   0.0000000   0.0000000
+      Perturbation no:    3 converged in    7 steps.
+ 
+ Process perturbation number                      4
+        Iteration         Delta     Res(kappa) Res(CI)
+      Perturbation no:    4 converged in    0 steps.
+ 
+ Process perturbation number                      5
+        Iteration         Delta     Res(kappa) Res(CI)
+            1          0.0455869   1.5999162   0.0000000   0.0000000   0.5192690
+            2          0.0044300   0.2697902   0.0000000   0.0000000   0.0504616
+            3          0.0010107   0.1294850   0.0000000   0.0000000   0.0115123
+            4          0.0000627   0.0469306   0.0000000   0.0000000   0.0007145
+            5          0.0000070   0.0158683   0.0000000   0.0000000   0.0000792
+            6          0.0000014   0.0076114   0.0000000   0.0000000   0.0000154
+            7          0.0000003   0.0033891   0.0000000   0.0000000   0.0000031
+            8          0.0000000   0.0005889   0.0000000   0.0000000   0.0000002
+      Perturbation no:    5 converged in    8 steps.
+ 
+ Process perturbation number                      6
+        Iteration         Delta     Res(kappa) Res(CI)
+            1          0.0002052   2.1619306   0.0000000   0.0000000   0.7619609
+            2          0.0000097   0.2384030   0.0000000   0.0000000   0.0358499
+            3          0.0000013   0.1016471   0.0000000   0.0000000   0.0050003
+            4          0.0000005   0.0814707   0.0000000   0.0000000   0.0017988
+            5          0.0000000   0.0140828   0.0000000   0.0000000   0.0000504
+            6          0.0000000   0.0021047   0.0000000   0.0000000   0.0000007
+            7          0.0000000   0.0001778   0.0000000   0.0000000   0.0000000
+      Perturbation no:    6 converged in    7 steps.
+ 
+ Process perturbation number                      7
+        Iteration         Delta     Res(kappa) Res(CI)
+      Perturbation no:    7 converged in    0 steps.
+ 
+ Process perturbation number                      8
+        Iteration         Delta     Res(kappa) Res(CI)
+            1          0.0455869   1.5999162   0.0000000   0.0000000   0.5192690
+            2          0.0044300   0.2697902   0.0000000   0.0000000   0.0504616
+            3          0.0010107   0.1294850   0.0000000   0.0000000   0.0115123
+            4          0.0000627   0.0469306   0.0000000   0.0000000   0.0007145
+            5          0.0000070   0.0158683   0.0000000   0.0000000   0.0000792
+            6          0.0000014   0.0076114   0.0000000   0.0000000   0.0000154
+            7          0.0000003   0.0033891   0.0000000   0.0000000   0.0000031
+            8          0.0000000   0.0005889   0.0000000   0.0000000   0.0000002
+      Perturbation no:    8 converged in    8 steps.
+ 
+ Process perturbation number                      9
+        Iteration         Delta     Res(kappa) Res(CI)
+            1          0.0002052   2.1619321   0.0000000   0.0000000   0.7619625
+            2          0.0000097   0.2384033   0.0000000   0.0000000   0.0358501
+            3          0.0000013   0.1016477   0.0000000   0.0000000   0.0050004
+            4          0.0000005   0.0814712   0.0000000   0.0000000   0.0017988
+            5          0.0000000   0.0140828   0.0000000   0.0000000   0.0000504
+            6          0.0000000   0.0021047   0.0000000   0.0000000   0.0000007
+            7          0.0000000   0.0001778   0.0000000   0.0000000   0.0000000
+      Perturbation no:    9 converged in    7 steps.
+ 
+ 
+      ***********************************
+      *                                 *
+      * Harmonic frequencies in cm-1    *
+      * Intensities in km/mole          *
+      *                                 *
+      * No correction due to curvlinear *
+      * representations has been done   *
+      *                                 *
+      ***********************************
+ 
+ 
+    Symmetry ag 
+   ==============
+ 
+                1
+ 
+     Freq.    2477.01                                                                                                        
+ 
+     N          x    0.70711
+ 
+ 
+ 
+    Symmetry b3u
+   ==============
+ 
+                1
+ 
+     Freq.       0.00                                                                                                        
+ 
+     Intensity:   0.404E-25
+ 
+     N          x    0.70711
+ 
+ 
+ 
+    Symmetry b2u
+   ==============
+ 
+                1
+ 
+     Freq.       0.00                                                                                                        
+ 
+     Intensity:   0.356E-25
+ 
+     N          y    0.70711
+ 
+ 
+ 
+    Symmetry b1g
+   ==============
+ 
+                1
+ 
+     Freq.      i5.03                                                                                                        
+ 
+     N          y    0.70711
+ 
+ 
+ 
+    Symmetry b1u
+   ==============
+ 
+                1
+ 
+     Freq.       0.00                                                                                                        
+ 
+     Intensity:   0.395E-25
+ 
+     N          z    0.70711
+ 
+ 
+ 
+    Symmetry b2g
+   ==============
+ 
+                1
+ 
+     Freq.      i4.22                                                                                                        
+ 
+     N          z    0.70711
+ 
+ 
+ 
+ *********************
+ *                   *
+ *  THERMOCHEMISTRY  *
+ *                   *
+ *********************
+ 
+ Mass-centered Coordinates (Angstrom):
+ ***********************************************************
+ Label   N         X           Y           Z          Mass  
+ -----------------------------------------------------------
+ N         7     0.000000    0.000000    0.546238     14.00307
+ N         7     0.000000    0.000000   -0.546238     14.00307
+ -----------------------------------------------------------
+ Molecular mass:   28.006148
+ Rotational Constants (cm-1):    2.0173    2.0173
+ Rotational Constants (GHz) :   60.4784   60.4784
+ Rotational temperatures (K):    2.9025    2.9025
+ Rotational Symmetry factor:  2
+ Vibrational temperature (K): 
+   3563.86
+ Number of trans. and rot. degrees of freedom:  5
+ ZPVE                 3.541 kcal/mol      0.005643 au.
+ 
+ *****************************************************
+ Temperature =     0.00 Kelvin, Pressure =   1.00 atm
+ -----------------------------------------------------
+ Molecular Partition Function and Molar Entropy:
+                        q/V (M**-3)    S(kcal/mol*K)
+ Electronic            0.100000D+01        0.000
+ Translational         0.100000D+01        0.000
+ Rotational            0.100000D+01        1.987
+ Vibrational           0.100000D+01        0.000
+ TOTAL                 0.100000D+01        1.987
+ 
+ Thermal contributions to INTERNAL ENERGY:
+ Electronic           0.000 kcal/mol      0.000000 au.
+ Translational        0.000 kcal/mol      0.000000 au.
+ Rotational           0.000 kcal/mol      0.000000 au.
+ Vibrational          3.541 kcal/mol      0.005643 au.
+ TOTAL                3.541 kcal/mol      0.005643 au.
+ 
+ Thermal contributions to
+ ENTHALPY             3.541 kcal/mol      0.005643 au.
+ GIBBS FREE ENERGY    3.541 kcal/mol      0.005643 au.
+ -----------------------------------------------------
+ 
+ *****************************************************
+ Temperature =   100.00 Kelvin, Pressure =   1.00 atm
+ -----------------------------------------------------
+ Molecular Partition Function and Molar Entropy:
+                        q/V (M**-3)    S(kcal/mol*K)
+ Electronic            0.100000D+01        0.000
+ Translational         0.880814D+27       30.497
+ Rotational            0.172265D+02        7.644
+ Vibrational           0.182482D-07        0.000
+ TOTAL                 0.276887D+21       38.141
+ 
+ Thermal contributions to INTERNAL ENERGY:
+ Electronic           0.000 kcal/mol      0.000000 au.
+ Translational        0.298 kcal/mol      0.000475 au.
+ Rotational           0.199 kcal/mol      0.000317 au.
+ Vibrational          3.541 kcal/mol      0.005643 au.
+ TOTAL                4.038 kcal/mol      0.006435 au.
+ 
+ Thermal contributions to
+ ENTHALPY             4.237 kcal/mol      0.006751 au.
+ GIBBS FREE ENERGY    0.422 kcal/mol      0.000673 au.
+ -----------------------------------------------------
+ 
+ *****************************************************
+ Temperature =   273.00 Kelvin, Pressure =   1.00 atm
+ -----------------------------------------------------
+ Molecular Partition Function and Molar Entropy:
+                        q/V (M**-3)    S(kcal/mol*K)
+ Electronic            0.100000D+01        0.000
+ Translational         0.397309D+28       35.487
+ Rotational            0.470284D+02        9.639
+ Vibrational           0.146313D-02        0.000
+ TOTAL                 0.273383D+27       45.126
+ 
+ Thermal contributions to INTERNAL ENERGY:
+ Electronic           0.000 kcal/mol      0.000000 au.
+ Translational        0.814 kcal/mol      0.001297 au.
+ Rotational           0.543 kcal/mol      0.000865 au.
+ Vibrational          3.541 kcal/mol      0.005643 au.
+ TOTAL                4.897 kcal/mol      0.007804 au.
+ 
+ Thermal contributions to
+ ENTHALPY             5.440 kcal/mol      0.008669 au.
+ GIBBS FREE ENERGY   -6.880 kcal/mol     -0.010963 au.
+ -----------------------------------------------------
+ 
+ *****************************************************
+ Temperature =   298.00 Kelvin, Pressure =   1.00 atm
+ -----------------------------------------------------
+ Molecular Partition Function and Molar Entropy:
+                        q/V (M**-3)    S(kcal/mol*K)
+ Electronic            0.100000D+01        0.000
+ Translational         0.453115D+28       35.922
+ Rotational            0.513351D+02        9.814
+ Vibrational           0.252986D-02        0.000
+ TOTAL                 0.588463D+27       45.736
+ 
+ Thermal contributions to INTERNAL ENERGY:
+ Electronic           0.000 kcal/mol      0.000000 au.
+ Translational        0.888 kcal/mol      0.001416 au.
+ Rotational           0.592 kcal/mol      0.000944 au.
+ Vibrational          3.541 kcal/mol      0.005643 au.
+ TOTAL                5.022 kcal/mol      0.008002 au.
+ 
+ Thermal contributions to
+ ENTHALPY             5.614 kcal/mol      0.008946 au.
+ GIBBS FREE ENERGY   -8.016 kcal/mol     -0.012774 au.
+ -----------------------------------------------------
+ 
+ *****************************************************
+ Temperature =   323.00 Kelvin, Pressure =   1.00 atm
+ -----------------------------------------------------
+ Molecular Partition Function and Molar Entropy:
+                        q/V (M**-3)    S(kcal/mol*K)
+ Electronic            0.100000D+01        0.000
+ Translational         0.511314D+28       36.322
+ Rotational            0.556417D+02        9.974
+ Vibrational           0.401883D-02        0.000
+ TOTAL                 0.114337D+28       46.297
+ 
+ Thermal contributions to INTERNAL ENERGY:
+ Electronic           0.000 kcal/mol      0.000000 au.
+ Translational        0.963 kcal/mol      0.001534 au.
+ Rotational           0.642 kcal/mol      0.001023 au.
+ Vibrational          3.541 kcal/mol      0.005643 au.
+ TOTAL                5.146 kcal/mol      0.008200 au.
+ 
+ Thermal contributions to
+ ENTHALPY             5.788 kcal/mol      0.009223 au.
+ GIBBS FREE ENERGY   -9.166 kcal/mol     -0.014607 au.
+ -----------------------------------------------------
+ 
+ *****************************************************
+ Temperature =   373.00 Kelvin, Pressure =   1.00 atm
+ -----------------------------------------------------
+ Molecular Partition Function and Molar Entropy:
+                        q/V (M**-3)    S(kcal/mol*K)
+ Electronic            0.100000D+01        0.000
+ Translational         0.634523D+28       37.037
+ Rotational            0.642550D+02       10.260
+ Vibrational           0.841959D-02        0.001
+ TOTAL                 0.343277D+28       47.299
+ 
+ Thermal contributions to INTERNAL ENERGY:
+ Electronic           0.000 kcal/mol      0.000000 au.
+ Translational        1.112 kcal/mol      0.001772 au.
+ Rotational           0.741 kcal/mol      0.001181 au.
+ Vibrational          3.542 kcal/mol      0.005644 au.
+ TOTAL                5.395 kcal/mol      0.008597 au.
+ 
+ Thermal contributions to
+ ENTHALPY             6.136 kcal/mol      0.009778 au.
+ GIBBS FREE ENERGY  -11.507 kcal/mol     -0.018337 au.
+ -----------------------------------------------------
+ 
+ 
+ ************************************
+ *                                  *
+ *       Polarizabilities           *
+ *                                  *
+ ************************************
+ 
+ 
+ 
+   13.77239386
+    0.00000000  9.66454970
+    0.00000000  0.00000000  9.66454970
+ 
+ 
+      Isotopic shifts:
+      ----------------
+ 
+ 
+ 
+ 
+ ****************************************
+ *                                      *
+ * Isotope shifted frequencies in cm-1  *
+ *                                      *
+ ****************************************
+ 
+ 
+  Single substitutions:
+  -----------------------
+ 
+ Masses:
+ =======
+  13  14
+ 
+ 
+ Frequencies:
+ ============
+                         1         2         3         4         5         6
+ 
+            Freq.      i5.13     i4.30      0.00      0.00      0.00   2524.05                                               
+ 
+ 
+ Masses:
+ =======
+  15  14
+ 
+ 
+ Frequencies:
+ ============
+                         1         2         3         4         5         6
+ 
+            Freq.      i4.95     i4.15      0.00      0.00      0.00   2435.50                                               
+ 
+ 
+ Masses:
+ =======
+  16  14
+ 
+ 
+ Frequencies:
+ ============
+                         1         2         3         4         5         6
+ 
+            Freq.      i4.87     i4.09      0.00      0.00      0.00   2398.26                                               
+ 
+ 
+ 
+  Full substitutions:
+  -----------------------
+ 
+ Masses:
+ =======
+  13  13
+ 
+ 
+ Frequencies:
+ ============
+                         1         2         3         4         5         6
+ 
+            Freq.      i5.22     i4.38      0.00      0.00      0.00   2570.23                                               
+ 
+ 
+ Masses:
+ =======
+  15  15
+ 
+ 
+ Frequencies:
+ ============
+                         1         2         3         4         5         6
+ 
+            Freq.      i4.86     i4.08      0.00      0.00      0.00   2393.27                                               
+ 
+ 
+ Masses:
+ =======
+  16  16
+ 
+ 
+ Frequencies:
+ ============
+                         1         2         3         4         5         6
+ 
+            Freq.      i4.71     i3.95      0.00      0.00      0.00   2316.84                                               
+ 
+ 
+ 
+      The response parameters are written to the file RESP.
+--- Stop Module:  mclr at Fri Oct  7 14:44:08 2016 /rc=0 ---
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 14:44:09 2016 /rc=0 ---
+--- Module auto spent 38 seconds 

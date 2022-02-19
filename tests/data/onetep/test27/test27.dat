@@ -1,0 +1,91 @@
+!=========================================================!
+! Input for calculation with the ONETEP program           !
+!                                                         !
+! Quality Control file for:                               ! 
+! A calculation with open boundary conditions (OBCs)      !
+! using a multigrid solver, for                           !
+! 1-methylpiperidin-1-ium, C6H14N                         !
+!                                                         !
+! Created by S. Fox and J. Dziedzic on 13/12/2010         !
+!                                                         !
+! School of Chemistry                                     !
+! University of Southampton                               !
+! Highfield                                               !
+! Southampton SO17 1BJ                                    ! 
+! UK                                                      !
+!                                                         !
+!=========================================================!
+
+ ! Parameters are identical to those in test16, for comparison
+ cutoff_energy         : 600 eV
+ kernel_cutoff         : 1000
+
+ ! This turns on open BCs
+ openbc_pspot T
+ openbc_ion_ion T
+ openbc_hartree T
+ 
+ write_forces T
+ 
+ ! This makes the boundary conditions somewhat finer than default
+ is_bc_coarseness 5
+ is_bc_surface_coarseness 1
+
+ print_qc              : T
+ output_detail         : VERBOSE
+ timings_level         : 0
+ write_denskern        : F
+ write_tightbox_ngwfs  : F
+
+ charge                : 1
+
+ elec_cg_max           : 0
+ occ_mix               : 1.0
+
+ xc_functional         : PBE
+ maxit_ngwf_cg         : 3
+
+ ! This molecule is longest along the Y direction with 9.602 bohr.
+ ! With the radii of the NGWF included, this gives 23.602 bohr.
+
+ %block lattice_cart
+  48.000   0.000   0.000
+   0.000  48.000   0.000
+   0.000   0.000  48.000
+ %endblock lattice_cart
+
+ %block positions_abs
+C      17.85403817    21.92637647    22.14180411
+H      19.39415683    21.87724385    23.50806889
+H      16.38194929    23.16791998    22.87123454
+C      16.73343649    19.30534017    21.73362542
+H      15.11772919    19.46974548    20.46751560
+H      16.10983016    18.56646116    23.55153236
+C      18.62126293    17.45152863    20.58278829
+H      17.69152258    15.65440857    20.20295534
+H      20.18783761    17.15106376    21.88480271
+N      19.58879759    18.57024059    18.15072361
+H      18.04112007    18.89149234    17.08114427
+C      20.80955423    21.09868080    18.44740904
+H      21.39725595    21.81299350    16.60682551
+H      22.45360728    20.94183436    19.67950397
+C      18.87259517    22.88824199    19.62092277
+H      19.76643091    24.71937694    19.92705678
+H      17.29657191    23.10366963    18.31134948
+C      21.24229922    16.76367195    16.78256911
+H      22.75407214    16.18352909    18.05434808
+H      22.04353887    17.67451514    15.11772919
+H      20.14815357    15.11772919    16.20431597
+ %endblock positions_abs
+
+ %block species
+ C   C   6 4 7.0
+ H   H   1 1 7.0
+ N   N   7 4 7.0
+ %endblock species
+
+ %block species_pot
+ C   "../../pseudo/carbon.recpot"
+ H   "../../pseudo/hydrogen.recpot"
+ N   "../../pseudo/nitrogen.recpot"
+ %endblock species_pot

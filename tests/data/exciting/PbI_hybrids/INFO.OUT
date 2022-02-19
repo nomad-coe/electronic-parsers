@@ -1,0 +1,308 @@
+================================================================================
+| EXCITING NITROGEN-14 started                                                 =
+| version hash id: 92d022da62d49ec6e8cf207d1ac8049f13aa94e6                    =
+|                                                                              =
+| MPI version using     24 processor(s)                                        =
+|                                                                              =
+| Date (DD-MM-YYYY) : 03-09-2020                                               =
+| Time (hh:mm:ss)   : 19:31:49                                                 =
+|                                                                              =
+| All units are atomic (Hartree, Bohr, etc.)                                   =
+================================================================================
+ 
+********************************************************************************
+* Ground-state run starting from atomic densities                              *
+********************************************************************************
+ 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Starting initialization                                                      +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+ Lattice vectors (cartesian) :
+      8.6133712279      0.0000000000      0.0000000000
+     -4.3066856045      7.4593982987      0.0000000000
+      0.0000000000      0.0000000000     13.2016258725
+ 
+ Reciprocal lattice vectors (cartesian) :
+      0.7294687691      0.4211589891      0.0000000000
+      0.0000000000      0.8423179800      0.0000000000
+      0.0000000000      0.0000000000      0.4759402643
+ 
+ Unit cell volume                           :     848.2119434527
+ Brillouin zone volume                      :       0.2924389539
+ 
+ Species :    1 (Pb)
+     parameters loaded from                 :    Pb.xml
+     name                                   :    lead
+     nuclear charge                         :     -82.00000000
+     electronic charge                      :      82.00000000
+     atomic mass                            :  377702.49410000
+     muffin-tin radius                      :       2.90000000
+     # of radial points in muffin-tin       :     450
+ 
+     atomic positions (lattice) :
+       1 :   0.00000000  0.00000000  0.00000000
+ 
+ Species :    2 (I)
+     parameters loaded from                 :    I.xml
+     name                                   :    iodine
+     nuclear charge                         :     -53.00000000
+     electronic charge                      :      53.00000000
+     atomic mass                            :  231332.69700000
+     muffin-tin radius                      :       2.90000000
+     # of radial points in muffin-tin       :     400
+ 
+     atomic positions (lattice) :
+       1 :   0.33333335  0.66666670  0.26750001
+       2 :   0.66666661  0.33333332  0.73249995
+ 
+ Total number of atoms per unit cell        :       3
+ 
+ Spin treatment                             :    spin-polarised
+ Spin-orbit coupling is included
+ Global magnetic field (cartesian) :        0.00000000   0.00000000   0.00000000
+ non-collinear magnetisation
+ 
+ Number of Bravais lattice symmetries       :      24
+ Number of crystal symmetries               :      12
+ 
+ k-point grid                               :       6    6    4
+ Total number of k-points                   :      24
+ k-point set is reduced with crystal symmetries
+ 
+ R^MT_min * |G+k|_max (rgkmax)              :       8.00000000
+ Species with R^MT_min                      :       1 (Pb)
+ Maximum |G+k| for APW functions            :       2.75862069
+ Maximum |G| for potential and density      :      12.00000000
+ 
+ G-vector grid sizes                        :      36    36    54
+ Total number of G-vectors                  :   24783
+ 
+ Maximum angular momentum used for
+     APW functions                          :       8
+     computing H and O matrix elements      :       8
+     potential and density                  :       8
+     inner part of muffin-tin               :       2
+ 
+ Total nuclear charge                       :    -188.00000000
+ Total electronic charge                    :     188.00000000
+ Total core charge                          :     140.00000000
+ Total valence charge                       :      48.00000000
+ 
+ Number of empty states                     :     300
+ Total number of valence states             :     650
+ 
+ Maximum Hamiltonian size                   :     372
+ Maximum number of plane-waves              :     318
+ Total number of local-orbitals             :      54
+ 
+ Exchange-correlation type                  :     408
+     HSE, Jochen Heyd; Gustavo E. Scuseria; Matthias Ernzerhof, J. Chem. Phys. 118, 8207 (2003)
+     Hybrid functional 
+     Exchange type                          :       HF
+     Mixing coefficient for exact exchange  :       0.25000000
+     Screening parameter (omega)            :       0.11000000
+ 
+ Smearing scheme                            :    Extended linear tetrahedron method
+ 
+ Using multisecant Broyden potential mixing
+ 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Ending initialization                                                        +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+********************************************************************************
+* Hybrids module started                                                        
+********************************************************************************
+ 
+ Performing PBE self-consistent run
+ Storing STATE_PBE.OUT
+ 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Hybrids iteration number :    1                                               
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+ Total energy                               :    -35198.97996907
+ _______________________________________________________________
+ Fermi energy                               :         0.07784329
+ Kinetic energy                             :     39253.67096051
+ Coulomb energy                             :    -73873.91125724
+ Non-local exchange energy                  :       -30.84212015
+ Exchange energy                            :      -567.97037135
+ Correlation energy                         :       -10.76930099
+ No external B-field energy in total energy
+ 
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+ 
+ Electron charges :
+     core                                   :       140.00000000
+     core leakage                           :         0.00079815
+     valence                                :        48.00000000
+     interstitial                           :         4.23063527
+     charge in muffin-tin spheres :
+                  atom     1    Pb          :        80.32475705
+                  atom     2     I          :        51.72230384
+                  atom     3     I          :        51.72230384
+     total charge in muffin-tins            :       183.76936473
+     total charge                           :       188.00000000
+ 
+ Moments :
+     interstitial                 :    -0.00000000     0.00000000    -0.00000000
+     moment in muffin-tin spheres :
+         atom     1    Pb         :    -0.00000000     0.00000000    -0.00000000
+         atom     2     I         :     0.00000000     0.00000000     0.00000000
+         atom     3     I         :     0.00000000     0.00000000     0.00000000
+     total moment in muffin-tins  :     0.00000000     0.00000000    -0.00000000
+     total moment                 :    -0.00000000     0.00000000    -0.00000000
+ 
+ Estimated fundamental gap                  :         0.08193225
+        valence-band maximum at    3      0.0000  0.0000  0.5000
+     conduction-band minimum at    3      0.0000  0.0000  0.5000
+ 
+ Charge distance                   (target) :  0.110980E-02 ( 0.100000E-04)
+ 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Hybrids iteration number :    2                                               
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+ Total energy                               :    -35198.97074554
+ _______________________________________________________________
+ Fermi energy                               :         0.07812011
+ Kinetic energy                             :     39253.60024894
+ Coulomb energy                             :    -73873.82993255
+ Non-local exchange energy                  :       -30.85718899
+ Exchange energy                            :      -567.97181849
+ Correlation energy                         :       -10.76924345
+ No external B-field energy in total energy
+ 
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+ 
+ Electron charges :
+     core                                   :       140.00000000
+     core leakage                           :         0.00079815
+     valence                                :        48.00000000
+     interstitial                           :         4.22926919
+     charge in muffin-tin spheres :
+                  atom     1    Pb          :        80.32101147
+                  atom     2     I          :        51.72485967
+                  atom     3     I          :        51.72485967
+     total charge in muffin-tins            :       183.77073081
+     total charge                           :       188.00000000
+ 
+ Moments :
+     interstitial                 :    -0.00000000     0.00000000    -0.00000000
+     moment in muffin-tin spheres :
+         atom     1    Pb         :    -0.00000000    -0.00000000    -0.00000000
+         atom     2     I         :    -0.00000000     0.00000000     0.00000000
+         atom     3     I         :    -0.00000000     0.00000000     0.00000000
+     total moment in muffin-tins  :    -0.00000000     0.00000000    -0.00000000
+     total moment                 :    -0.00000000     0.00000000    -0.00000000
+ 
+ Estimated fundamental gap                  :         0.08309555
+        valence-band maximum at    3      0.0000  0.0000  0.5000
+     conduction-band minimum at    3      0.0000  0.0000  0.5000
+ 
+ Charge distance                   (target) :  0.104924E-03 ( 0.100000E-04)
+ 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Hybrids iteration number :    3                                               
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+ Total energy                               :    -35198.96929078
+ _______________________________________________________________
+ Fermi energy                               :         0.07813263
+ Kinetic energy                             :     39253.59666035
+ Coulomb energy                             :    -73873.82519917
+ Non-local exchange energy                  :       -30.85631357
+ Exchange energy                            :      -567.97151289
+ Correlation energy                         :       -10.76923907
+ No external B-field energy in total energy
+ 
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+ 
+ Electron charges :
+     core                                   :       140.00000000
+     core leakage                           :         0.00079815
+     valence                                :        48.00000000
+     interstitial                           :         4.22899416
+     charge in muffin-tin spheres :
+                  atom     1    Pb          :        80.32060619
+                  atom     2     I          :        51.72519982
+                  atom     3     I          :        51.72519982
+     total charge in muffin-tins            :       183.77100584
+     total charge                           :       188.00000000
+ 
+ Moments :
+     interstitial                 :    -0.00000000     0.00000000    -0.00000000
+     moment in muffin-tin spheres :
+         atom     1    Pb         :    -0.00000000     0.00000000     0.00000000
+         atom     2     I         :    -0.00000000     0.00000000     0.00000000
+         atom     3     I         :    -0.00000000     0.00000000     0.00000000
+     total moment in muffin-tins  :    -0.00000000     0.00000000     0.00000000
+     total moment                 :    -0.00000000     0.00000000    -0.00000000
+ 
+ Estimated fundamental gap                  :         0.08321283
+        valence-band maximum at    3      0.0000  0.0000  0.5000
+     conduction-band minimum at    3      0.0000  0.0000  0.5000
+ 
+ Charge distance                   (target) :  0.114731E-04 ( 0.100000E-04)
+ 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Hybrids iteration number :    4                                               
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+ Total energy                               :    -35198.96925817
+ _______________________________________________________________
+ Fermi energy                               :         0.07813445
+ Kinetic energy                             :     39253.59631838
+ Coulomb energy                             :    -73873.82482014
+ Non-local exchange energy                  :       -30.85635876
+ Exchange energy                            :      -567.97151790
+ Correlation energy                         :       -10.76923851
+ No external B-field energy in total energy
+ 
+ DOS at Fermi energy (states/Ha/cell)       :         0.00000000
+ 
+ Electron charges :
+     core                                   :       140.00000000
+     core leakage                           :         0.00079815
+     valence                                :        48.00000000
+     interstitial                           :         4.22897149
+     charge in muffin-tin spheres :
+                  atom     1    Pb          :        80.32056827
+                  atom     2     I          :        51.72523012
+                  atom     3     I          :        51.72523012
+     total charge in muffin-tins            :       183.77102851
+     total charge                           :       188.00000000
+ 
+ Moments :
+     interstitial                 :    -0.00000000     0.00000000    -0.00000000
+     moment in muffin-tin spheres :
+         atom     1    Pb         :    -0.00000000     0.00000000    -0.00000000
+         atom     2     I         :    -0.00000000     0.00000000     0.00000000
+         atom     3     I         :    -0.00000000     0.00000000     0.00000000
+     total moment in muffin-tins  :    -0.00000000     0.00000000    -0.00000000
+     total moment                 :    -0.00000000     0.00000000    -0.00000000
+ 
+ Estimated fundamental gap                  :         0.08322421
+        valence-band maximum at    3      0.0000  0.0000  0.5000
+     conduction-band minimum at    3      0.0000  0.0000  0.5000
+ 
+ Charge distance                   (target) :  0.131860E-05 ( 0.100000E-04)
+ 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Convergence target is reached                                                   
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Hybrids module stopped                                                        
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Total time spent (seconds)            :     12290.75
+ 
+--------------------------------------------------------------------------------
+- CAUTION! Warnings have been written in file WARNING.OUT !                    -
+--------------------------------------------------------------------------------
+ 
+================================================================================
+EXCITING NITROGEN-14 stopped                                                    
+================================================================================

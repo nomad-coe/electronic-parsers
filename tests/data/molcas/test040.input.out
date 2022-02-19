@@ -1,0 +1,3652 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test040.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test040.input.17398
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 14:36:19 2016 
+
+++ ---------   Input file   ---------
+
+ >>>>> SET MAXITER 300 <<<<
+ >>>>>>>>>>>>>>>>>>> DO while <<<<<<<<<<<<<<<<<<<<
+  &SEWARD &END
+    Title
+    The integrals Generated: Thu Feb 16 16:00:33 2006
+    Symmetry
+    X Y
+    Basis Set
+    H.cc-pVDZ.Dunning.4s1p.2s1p..
+    H1  0.0000000000  1.4182381156  1.5478261410
+    End of Basis Set
+    Basis Set
+    O.cc-pVDZ.Dunning.9s4p1d.3s2p1d.
+    O1  0.0000000000  0.0000000000  0.3976297181
+    End of Basis Set
+ >>>>>>>>>>> if ( iter = 1 ) <<<<<<<<<<<<<<
+  &SCF &End
+    Title
+    The SCF part
+    Charge
+      0
+ >>>>>>>>>  endif <<<<<<<<<<<<<<<<<<<<<<<<
+  &RASSCF &End
+    Title
+    The RAS/CAS part
+    LUMOrb
+    Spin
+      1
+    Symmetry
+      1
+    nActEl
+      0  0  0
+    Inactive
+      3   1   1   0
+    Ras2
+      0   0   0   0
+    CIROOT
+      1 1
+      1
+    THRS
+      1.0e-12, 1.0e-06, 1.0e-06
+    OUTOrbitals
+    Canonical
+  &MOTRA &End
+    Title
+    MOTRA input for subsequent CCSDT calculation
+    JOBIph
+    Frozen
+      1 0 0 0
+  &CCSDT &End
+    Title
+    The Coupled Cluster part
+    CCT
+    ADAPtations
+      1
+    Denominators
+      0
+    T3DEnominators
+      0
+    TRIPles
+      3
+  &Alaska &End
+    Delta
+      0.005
+  &SLAPAF &END
+    Iterations
+      16
+    MaxStep
+      0.5
+    THRS
+      1.0D-10 1.0D-06
+ >>>>>>>>>>>>> ENDDO <<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
+
+-- ----------------------------------
+
+--- Start Module: auto at Fri Oct  7 14:36:19 2016 
+--- Start Module: seward at Fri Oct  7 14:36:20 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:36:20 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+ Title:
+                       The integrals Generated: Thu Feb 16 16:00:33 2006                
+ 
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+                    Reflection in the xz-plane  
+ 
+ 
+                    Character Table for C2v
+ 
+                             E   s(yz) s(xz) C2(z)
+                    a1       1     1     1     1  z
+                    b1       1    -1     1    -1  x, xz, Ry
+                    b2       1     1    -1    -1  y, yz, Rx
+                    a2       1    -1    -1     1  xy, Rz, I
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:H.CC-PVDZ.DUNNING.4S1P.2S1P....... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       4       2        X                  
+         p       1       1        X                  
+      Basis set label:O.CC-PVDZ.DUNNING.9S4P1D.3S2P1D...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  8.000000 au
+      Associated Actual Charge     8.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       9       3        X                  
+         p       4       2        X                  
+         d       1       1                 X         
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      H1               0.000000       1.418238       1.547826              0.000000       0.750499       0.819074
+        2      H1               0.000000      -1.418238       1.547826              0.000000      -0.750499       0.819074
+        3      O1               0.000000       0.000000       0.397630              0.000000       0.000000       0.210417
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 H1            2 H1            3 O1    
+    1 H1       0.000000
+    2 H1       2.836476        0.000000
+    3 O1       1.826021        1.826021        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 H1            2 H1            3 O1    
+    1 H1       0.000000
+    2 H1       1.500999        0.000000
+    3 O1       0.966288        0.966288        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 H1       1 H1       3 O1        39.04
+                      1 H1       2 H1       3 O1        39.04
+                      1 H1       3 O1       2 H1       101.92
+ 
+ 
+            Nuclear Potential Energy              9.11477336 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a1   b1   b2   a2 
+      Basis functions           11    4    7    2
+ 
+--- Stop Module:  seward at Fri Oct  7 14:36:20 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:36:21 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:36:21 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+Input section
+      Header of the integral files:
+                 The integrals Generated: Thu Feb 16 16:00:33 2006            
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:20 2016        
+ 
+ 
+       Title:
+        The SCF part                                                            
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.75050   0.81907
+       2   O1         0.00000   0.00000   0.21042
+       3   H1         0.00000  -0.75050   0.81907
+      --------------------------------------------
+      Nuclear repulsion energy =    9.114773
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2   3   4
+                                    a1  b1  b2  a2
+      Frozen orbitals                0   0   0   0
+      Occupied orbitals              3   1   1   0
+      Secondary orbitals             8   3   6   2
+      Deleted orbitals               0   0   0   0
+      Total number of orbitals      11   4   7   2
+      Number of basis functions     11   4   7   2
+ 
+      Molecular charge                           0.000
+ 
+      SCF Algorithm: Conventional
+      Minimized density differences are used
+      Number of density matrices in core              400
+      Maximum number of NDDO SCF iterations           400
+      Maximum number of HF  SCF iterations            400
+      Threshold for SCF energy change            0.10E-08
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Input vectors read from INPORB
+      Orbital file label: *Guess orbitals                         
+ 
+ 
+Convergence information
+                                   SCF        iterations: Energy and convergence statistics
+ 
+Iter     Tot. SCF       One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -75.82045655   -123.07878409     38.14355418  0.00E+00   0.25E+00*  0.15E+00*   0.43E+01   0.35E+02   NoneDa    0.
+   2    -76.01640124   -122.58936111     37.45818651 -0.20E+00*  0.55E-01*  0.44E-01*   0.24E+01   0.11E+01   Damp      0.
+   3    -76.02458909   -123.21836640     38.07900395 -0.82E-02*  0.25E-01*  0.44E-01*   0.35E+00   0.13E+01   QNRc2D    0.
+   4    -76.02597555   -122.97323414     37.83248523 -0.14E-02*  0.61E-02*  0.50E-02*   0.74E-01   0.22E+00   QNRc2D    0.
+   5    -76.02610204   -122.99379055     37.85291515 -0.13E-03*  0.25E-02*  0.11E-02*   0.14E-01   0.13E-01   QNRc2D    0.
+   6    -76.02611273   -122.99996025     37.85907416 -0.11E-04*  0.57E-03*  0.21E-03*   0.33E-02   0.25E-02   QNRc2D    0.
+   7    -76.02611317   -123.00010239     37.85921586 -0.44E-06*  0.71E-04*  0.32E-04    0.88E-03   0.63E-03   QNRc2D    0.
+   8    -76.02611318   -123.00001578     37.85912924 -0.87E-08*  0.66E-05   0.49E-05    0.10E-03   0.11E-03   QNRc2D    0.
+   9    -76.02611318   -123.00002091     37.85913437 -0.14E-09   0.74E-06   0.70E-06    0.11E-04   0.17E-04   QNRc2D    0.
+ 
+       Convergence after  9 Macro Iterations and  1 additional LS Iterations...
+ 
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total SCF energy                                -76.0261131783
+      One-electron energy                            -123.0000209084
+      Two-electron energy                              37.8591343692
+      Nuclear repulsion energy                          9.1147733609
+      Kinetic energy (interpolated)                    75.9582729299
+      Virial theorem                                    1.0008931252
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000000000
+      Max non-diagonal Fock matrix element              0.0000007042
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: SCF orbitals                                                                    
+ 
+
+      Molecular orbitals for symmetry species 1: a1 
+ 
+          Orbital        1         2         3         4
+          Energy      -20.5534   -1.3342   -0.5702    0.1835
+          Occ. No.      2.0000    2.0000    2.0000    0.0000
+ 
+        1 H1    1s     -0.0004    0.4599    0.5074   -0.1394
+        2 H1    *s      0.0008   -0.2162   -0.1947   -1.0943
+        3 H1    *py     0.0008   -0.0511   -0.0457    0.0231
+        4 H1    *pz     0.0007   -0.0301    0.0089    0.0228
+        5 O1    1s      1.0004   -0.0076    0.0024   -0.0518
+        6 O1    2s      0.0022    0.8721   -0.3003    0.1405
+        7 O1    *s     -0.0014   -0.1193   -0.1821    0.9074
+        8 O1    2pz     0.0026    0.1154    0.7887    0.2866
+        9 O1    *pz    -0.0017   -0.0656   -0.0040    0.2147
+       10 O1    *d0     0.0000    0.0016    0.0181    0.0083
+       11 O1    *d2+   -0.0001   -0.0027   -0.0045   -0.0093
+
+      Molecular orbitals for symmetry species 2: b1 
+ 
+          Orbital        1
+          Energy       -0.4935
+          Occ. No.      2.0000
+ 
+        1 H1    *px    -0.0437
+        2 O1    2px    -0.9206
+        3 O1    *px    -0.0715
+        4 O1    *d1+   -0.0183
+
+      Molecular orbitals for symmetry species 3: b2 
+ 
+          Orbital        1         2
+          Energy       -0.6895    0.2552
+          Occ. No.      2.0000    0.0000
+ 
+        1 H1    1s      0.7810    0.0729
+        2 H1    *s     -0.2589    2.0001
+        3 H1    *py    -0.0315   -0.0280
+        4 H1    *pz    -0.0467   -0.0229
+        5 O1    2py     0.7144   -0.4183
+        6 O1    *py    -0.0999   -0.4749
+        7 O1    *d1-    0.0268   -0.0203
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             H1      O1    
+      1s     1.0770  2.0008
+      2s     0.0000  1.8251
+      2px    0.0000  1.8362
+      2pz    0.0000  1.5388
+      2py    0.0000  1.3358
+      *s    -0.3176 -0.1547
+      *px    0.0215  0.1196
+      *pz    0.0271 -0.0319
+      *py    0.0367 -0.1716
+      *d2+   0.0000  0.0008
+      *d1+   0.0000  0.0011
+      *d0    0.0000  0.0015
+      *d1-   0.0000  0.0089
+      *d2-   0.0000  0.0000
+      Total  0.8447  8.3105
+ 
+      N-E    0.1553 -0.3105
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    2.1040           Total=    2.1040
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    0.2785
+                    XX=   -7.0517              XY=    0.0000              XZ=    0.0000              YY=   -4.2175
+                    YZ=    0.0000              ZZ=   -5.5930
+      In traceless form (Debye*Ang)
+                    XX=   -2.1464              XY=    0.0000              XZ=    0.0000              YY=    2.1049
+                    YZ=    0.0000              ZZ=    0.0416
+--- Stop Module:  scf at Fri Oct  7 14:36:21 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 14:36:22 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module RASSCF with 2000 MB of memory
+                                              at 14:36:22 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      Header of the ONEINT file:
+      --------------------------
+      The integrals Generated: Thu Feb 16 16:00:33 2006                                                                       
+      Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:20 2016                                                         
+ 
+ 
+      OrdInt status: non-squared
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.75050   0.81907
+       2   O1         0.00000   0.00000   0.21042
+       3   H1         0.00000  -0.75050   0.81907
+      --------------------------------------------
+      Nuclear repulsion energy =    9.114773
+ 
+ 
+ 
+      Wave function specifications:
+         -----------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       0
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                5
+      Number of active orbitals                  0
+      Number of secondary orbitals              19
+      Spin quantum number                      0.0
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+         -----------------------
+ 
+      Symmetry species                           1   2   3   4
+                                                a1  b1  b2  a2
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          3   1   1   0
+      Active orbitals                            0   0   0   0
+      RAS1 orbitals                              0   0   0   0
+      RAS2 orbitals                              0   0   0   0
+      RAS3 orbitals                              0   0   0   0
+      Secondary orbitals                         8   3   6   2
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 11   4   7   2
+ 
+      CI expansion specifications:
+         ----------------------------
+ 
+      Number of configuration state fnc.         1
+      Number of determinants                     1
+      Number of root(s) required                 1
+      Root chosen for geometry opt.              1
+      CI root used                               1
+      highest root included in the CI            1
+      max. size of the explicit Hamiltonian      1
+ 
+      Optimization specifications:
+         ----------------------------
+ 
+      RASSCF algorithm: Conventional
+      Maximum number of macro iterations       200
+      Maximum number of SX iterations          100
+      Threshold for RASSCF energy            0.100E-11
+      Threshold for max MO rotation          0.100E-05
+      Threshold for max BLB element          0.100E-05
+      Level shift parameter                  0.500E+00
+      Make Quasi-Newton update
+      The MO-coefficients are taken from the file:
+      INPORB                                                                                                                          
+      Title: SCF orbitals                                                                  
+ 
+      Total molecular charge    0.00
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                            Wave function  control section                                            *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+                          RASSCF iterations: Energy and convergence statistics
+                          ----------------------------------------------------
+ 
+      Iter CI   SX   CI       RASSCF       Energy    max ROT   max BLB   max BLB  Level Ln srch  Step   QN    Time(min)
+          iter iter root      energy       change     param    element    value    shift minimum  type update     CPU
+        1   1    2    1   -76.02611318    0.00E+00   0.42E-06    1   2 2  0.14E-05*  0.00   0.00     SX     NO      0.00
+        2   1    2    1   -76.02611318   -0.19E-11* -0.16E-06    1   2 2  0.47E-06   0.00   0.00     SX     NO      0.00
+        3   1    2    1   -76.02611318   -0.24E-12  -0.69E-07    1   2 2  0.23E-06   0.00   0.00     SX     NO      0.00
+        4   1    1    1   -76.02611318   -0.71E-13   0.00E+00    1   2 2  0.63E-07   0.00   0.00     SX     NO      0.00
+      Convergence after  4 iterations
+        5   1    1    1   -76.02611318    0.00E+00   0.00E+00    1   2 2  0.63E-07   0.00   0.00     SX     NO      0.00
+ 
+      Natural orbitals and occupation numbers for root  1
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                                    Final results                                                    *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       0
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                5
+      Number of active orbitals                  0
+      Number of secondary orbitals              19
+      Spin quantum number                      0.0
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4
+                                                a1  b1  b2  a2
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          3   1   1   0
+      Active orbitals                            0   0   0   0
+      RAS1 orbitals                              0   0   0   0
+      RAS2 orbitals                              0   0   0   0
+      RAS3 orbitals                              0   0   0   0
+      Secondary orbitals                         8   3   6   2
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 11   4   7   2
+ 
+ 
+      CI expansion specifications:
+      ----------------------------
+ 
+      Number of configuration state fnc.         1
+      Number of determinants                     1
+      Number of root(s) required                 1
+      CI root used                               1
+      highest root included in the CI            1
+      Root passed to geometry opt.               1
+ 
+ 
+      Final optimization conditions:
+      ------------------------------
+ 
+      Average CI energy                             -76.02611318
+      RASSCF energy for state  1                    -76.02611318
+      Super-CI energy                                 0.00000000
+      RASSCF energy change                            0.00000000
+      Max change in MO coefficients               0.000E+00
+      Max non-diagonal density matrix element     0.000E+00
+      Maximum BLB matrix element                  0.633E-07
+      (orbital pair   1,   2 in symmetry   2)
+      Norm of electronic gradient            0.118E-06
+ 
+ 
+      Final state energy(ies):
+      ------------------------
+ 
+      RASSCF root number  1 Total energy =        -76.02611318
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      All orbitals are eigenfunctions of the PT2 Fock matrix
+ 
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 1: a1 
+ 
+ 
+      Orbital            1         2         3
+      Energy      -20.5534   -1.3342   -0.5702
+ 
+    1 H1    1s     -0.0004    0.4599    0.5074
+    2 H1    *s      0.0008   -0.2162   -0.1947
+    3 H1    *py     0.0008   -0.0511   -0.0457
+    4 H1    *pz     0.0007   -0.0301    0.0089
+    5 O1    1s      1.0004   -0.0076    0.0024
+    6 O1    2s      0.0022    0.8721   -0.3003
+    7 O1    *s     -0.0014   -0.1193   -0.1821
+    8 O1    2pz     0.0026    0.1154    0.7887
+    9 O1    *pz    -0.0017   -0.0656   -0.0040
+   10 O1    *d0     0.0000    0.0016    0.0181
+   11 O1    *d2+   -0.0001   -0.0027   -0.0045
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 2: b1 
+ 
+ 
+      Orbital            1
+      Energy       -0.4935
+ 
+    1 H1    *px    -0.0437
+    2 O1    2px    -0.9206
+    3 O1    *px    -0.0715
+    4 O1    *d1+   -0.0183
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 3: b2 
+ 
+ 
+      Orbital            1
+      Energy       -0.6895
+ 
+    1 H1    1s      0.7810
+    2 H1    *s     -0.2589
+    3 H1    *py    -0.0315
+    4 H1    *pz    -0.0467
+    5 O1    2py     0.7144
+    6 O1    *py    -0.0999
+    7 O1    *d1-    0.0268
+
+      Von Neumann Entropy (Root  1) =  0.00000
+ 
+
+      Mulliken population Analysis for root number: 1
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             H1      O1    
+      1s     1.0770  2.0008
+      2s     0.0000  1.8251
+      2px    0.0000  1.8362
+      2pz    0.0000  1.5388
+      2py    0.0000  1.3358
+      *s    -0.3176 -0.1547
+      *px    0.0215  0.1196
+      *pz    0.0271 -0.0319
+      *py    0.0367 -0.1716
+      *d2+   0.0000  0.0008
+      *d1+   0.0000  0.0011
+      *d0    0.0000  0.0015
+      *d1-   0.0000  0.0089
+      *d2-   0.0000  0.0000
+      Total  0.8447  8.3105
+ 
+      N-E    0.1553 -0.3105
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  1
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    2.1040           Total=    2.1040
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    0.2785
+                    XX=   -7.0517              XY=    0.0000              XZ=    0.0000              YY=   -4.2175
+                    YZ=    0.0000              ZZ=   -5.5930
+      In traceless form (Debye*Ang)
+                    XX=   -2.1464              XY=    0.0000              XZ=    0.0000              YY=    2.1049
+                    YZ=    0.0000              ZZ=    0.0416
+      Canonical orbitals are written to the RASORB           file
+      Natural orbitals for root   1 are written to the RASORB.1         file
+      Spin density orbitals for root   1 are written to the SPDORB.1         file
+ 
+--- Stop Module:  rasscf at Fri Oct  7 14:36:22 2016 /rc=0 ---
+*** 
+--- Start Module: motra at Fri Oct  7 14:36:23 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module MOTRA with 2000 MB of memory
+                                              at 14:36:23 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      *** WARNING: Default frozen orbitals is overwritten by user input.
+      *** Default values:   1   0   0   0
+ 
+      **************************************************************************************************************************
+      *                                                                                                                        *
+      *                                                        Project:                                                        *
+      *                                      MOTRA INPUT FOR SUBSEQUENT CCSDT CALCULATION                                      *
+      *                                                                                                                        *
+      **************************************************************************************************************************
+ 
+ 
+      Header of the integral files:
+                 The integrals Generated: Thu Feb 16 16:00:33 2006            
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:20 2016        
+ 
+ 
+      Header of MO coefficients source file:
+      JOBIPH                                                                          
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.75050   0.81907
+       2   O1         0.00000   0.00000   0.21042
+       3   H1         0.00000  -0.75050   0.81907
+      --------------------------------------------
+      Nuclear repulsion energy =    9.114773
+ 
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species:              1   2   3   4
+      Number of basis functions:    11   4   7   2
+      Frozen orbitals:               1   0   0   0
+      Deleted orbitals:              0   0   0   0
+      Number of orbitals used:      10   4   7   2
+
+       SYMMETRY  BASIS FUNCTIONS       ORBITALS      INTEGRALS   CPU(SEC)  I/O(SEC)
+        1 1 1 1   11  11  11  11    10  10  10  10        1540       0.00      0.00
+        2 1 2 1    4  11   4  11     4  10   4  10         820       0.00      0.00
+        2 2 1 1    4   4  11  11     4   4  10  10         550       0.00      0.01
+        2 2 2 2    4   4   4   4     4   4   4   4          55       0.00      0.00
+        3 1 3 1    7  11   7  11     7  10   7  10        2485       0.00      0.00
+        3 2 3 2    7   4   7   4     7   4   7   4         406       0.00      0.00
+        3 3 1 1    7   7  11  11     7   7  10  10        1540       0.00      0.00
+        3 3 2 2    7   7   4   4     7   7   4   4         280       0.00      0.00
+        3 3 3 3    7   7   7   7     7   7   7   7         406       0.00      0.00
+        4 1 3 2    2  11   7   4     2  10   7   4         560       0.00      0.00
+        4 1 4 1    2  11   2  11     2  10   2  10         210       0.00      0.00
+        4 2 3 1    2   4   7  11     2   4   7  10         560       0.00      0.00
+        4 2 4 2    2   4   2   4     2   4   2   4          36       0.00      0.00
+        4 3 2 1    2   7   4  11     2   7   4  10         560       0.00      0.00
+        4 3 4 3    2   7   2   7     2   7   2   7         105       0.00      0.00
+        4 4 1 1    2   2  11  11     2   2  10  10         165       0.00      0.00
+        4 4 2 2    2   2   4   4     2   2   4   4          30       0.00      0.00
+        4 4 3 3    2   2   7   7     2   2   7   7          84       0.00      0.00
+        4 4 4 4    2   2   2   2     2   2   2   2           6       0.00      0.00
+
+       TOTAL CPU TIME(SEC)    0.00TOTAL I/O TIME(SEC)    0.01
+ 
+--- Stop Module:  motra at Fri Oct  7 14:36:23 2016 /rc=0 ---
+*** 
+--- Start Module: ccsdt at Fri Oct  7 14:36:24 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                 MOLCAS executing module CCSD(T) with 2000 MB of memory
+                                              at 14:36:24 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+      Standard Fortran IO handling used 
+      Integrals for CCSD will be produced
+      Integrals for Noniterative T3 will be produced
+      RHF closed shell reference function
+ 
+      Actual numbers of frozen and deleted orbitals :
+      -----------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            1   0   0   0
+      Deleted orbitals                           0   0   0   0
+ 
+ 
+      Wave function specifications from previous RASSCF:
+      --------------------------------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       0
+      Max number of holes in RAS1 space          0
+      Max number of electrons in RAS3 space      0
+      Number of inactive orbitals                5
+      Number of active orbitals                  0
+      Number of secondary orbitals              19
+      Spin quantum number                      0.0
+      State symmetry                             1
+      Number of configuration state fnc.         1
+      Number of root(s) available                1
+      CI root used                               1
+      This is a closed shell RHF reference function
+ 
+ 
+      Orbital specifications from previous RASSCF:
+      --------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          3   1   1   0
+      Active orbitals                            0   0   0   0
+      Secondary orbitals                         8   3   6   2
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 11   4   7   2
+ 
+ 
+      SCF energy:    -76.02611318
+      -----------
+ 
+      Required WRK size-sum :                 6530
+  Warning!!!, typden is incompatible with SA
+  type of denominators changed to 2 - Orb. energies
+ 
+      ****************************************************************************************************************
+      *                   The Coupled Cluster part                                                                   *
+      ****************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Spin mutiplicity                           1
+      State symmetry                             1
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4
+      Total no. of orbitals                     10   4   7   2
+      No. of occupied orbitals with alpha spin   2   1   1   0
+      No. of occupied orbitals with beta spin    2   1   1   0
+      No. of virtual orbitals with alpha spin    8   3   6   2
+      No. of virtual orbitals with beta spin     8   3   6   2
+ 
+ 
+      Methods and options:
+      --------------------
+ 
+      Max no. of iterations                  30
+      Type of denominators                  diagonal Fock matrix elements
+      energy convergence criterium                0.00000010000000
+ 
+ DIIS EXTRAPOLATION USED     : NO
+ 
+ SPIN ADAPTATION             : T2 DDVV 
+ RST. INF. WILL BE SAVED IN  : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX OPERATIONS           : ESSL        
+ 
+ 
+  nproc, myid                     1                     0
+  Basic Work space requirements    :                 13846
+  Max Size             262143980
+  Final Work space requirements    :                 15226
+  Allocation of work space   : Done
+ 
+      Iteration       Total enegy      Corr. energy      Difference
+          1          -76.22866266      -0.20254949      -0.20254949
+          2          -76.23370991      -0.20759673      -0.00504724
+          3          -76.23699228      -0.21087910      -0.00328237
+          4          -76.23772545      -0.21161227      -0.00073316
+          5          -76.23801954      -0.21190636      -0.00029409
+          6          -76.23812634      -0.21201317      -0.00010681
+          7          -76.23817000      -0.21205682      -0.00004366
+          8          -76.23818783      -0.21207465      -0.00001783
+          9          -76.23819540      -0.21208222      -0.00000757
+         10          -76.23819865      -0.21208547      -0.00000325
+         11          -76.23820007      -0.21208689      -0.00000142
+         12          -76.23820070      -0.21208752      -0.00000063
+         13          -76.23820099      -0.21208781      -0.00000029
+         14          -76.23820112      -0.21208794      -0.00000013
+         15          -76.23820118      -0.21208800      -0.00000006
+      Convergence after                     16  Iterations
+ 
+ 
+      Total energy (diff) :     -76.23820118      -0.00000006
+      Correlation energy  :        -0.2120880025153
+      Reference energy    :       -76.0261131783099
+      E1aa   contribution :       0.00000000
+      E1bb   contribution :       0.00000000
+      E2aaaa contribution :      -0.02268129
+      E2bbbb contribution :      -0.02268129
+      E2abab contribution :      -0.16672541
+ 
+ 
+ Five largest amplitudes of :T1aa    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0078132334
+    3      0      3      0      5      0      1      0    -0.0074844842
+    3      0      3      0      1      0      1      0     0.0060688053
+    1      0      1      0      6      0      2      0    -0.0051772196
+    3      0      3      0      3      0      1      0     0.0049011856
+ Euclidian norm is :     0.0171421266
+ 
+ Five largest amplitudes of :T1bb    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0078132334
+    3      0      3      0      5      0      1      0    -0.0074844842
+    3      0      3      0      1      0      1      0     0.0060688053
+    1      0      1      0      6      0      2      0    -0.0051772196
+    3      0      3      0      3      0      1      0     0.0049011856
+ Euclidian norm is :     0.0171421266
+ 
+ Five largest amplitudes of :T2aaaa  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0195293042
+    3      2      3      2      3      1      1      1     0.0167792604
+    3      2      3      2      1      1      1      1    -0.0167112613
+    3      1      3      1      1      3      1      2    -0.0155890246
+    3      1      3      1      2      3      1      2    -0.0139836582
+ Euclidian norm is :     0.0698598608
+ 
+ Five largest amplitudes of :T2bbbb  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0195293042
+    3      2      3      2      3      1      1      1     0.0167792604
+    3      2      3      2      1      1      1      1    -0.0167112613
+    3      1      3      1      1      3      1      2    -0.0155890246
+    3      1      3      1      2      3      1      2    -0.0139836582
+ Euclidian norm is :     0.0698598608
+ 
+ Five largest amplitudes of :T2abab  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      2      2      2      1      1      1      1    -0.0514185288
+    3      3      3      3      2      2      1      1    -0.0364100276
+    1      1      1      1      3      3      2      2    -0.0344121655
+    3      3      3      3      1      1      1      1    -0.0306933261
+    2      1      2      1      1      3      1      2    -0.0281182386
+ Euclidian norm is :     0.2175613780
+ 
+ 
+      Happy Landing!
+ 
+ 
+  **********************************
+   Triples Contribution Calculation 
+  **********************************
+ 
+  Warning!!!, typden is incompatible with SA
+ NORB  10    4    7    2
+ NOA    2    1    1    0
+ NOB    2    1    1    0
+ NVA    8    3    6    2
+ NVB    8    3    6    2
+ 
+ NUMBER OF IRREPS             :  4
+ MULTIPLICITY                 :  1
+ OVERALL SYMMETRY STATE       :  1
+ METHOD                       : CCSD+T(CCSD)+<T3(1)WT1>+<T3(1)UT2> = CCSD(T)
+ TYPE OF DENOMINATOR          : DIAGONAL
+ SPIN ADAPTATION             : T2 DDVV 
+ CCSD RESULTS LOAD FROM FILE : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX HANDLING             : ESSL        
+ IJ CYCLE SEGMENTED          : NO          
+ 
+ 
+  Work space requirements :                 14871
+  Allocation of work space : Done
+       CCSD     =       -76.2382011808252
+       T3 corr. =        -0.0031037812700
+       CCSD + T3=       -76.2413049620952
+  T3 energy decomposition into spin parts
+  Eaaa = -5.303669796437477E-005
+  Eaab = -1.498853937020087E-003
+  Eabb = -1.498853937020086E-003
+  Ebbb = -5.303669796437477E-005
+ 
+ 
+      Happy Landing!
+ 
+--- Stop Module:  ccsdt at Fri Oct  7 14:36:25 2016 /rc=0 ---
+*** 
+--- Start Module: alaska at Fri Oct  7 14:36:25 2016 
+--- Stop Module:  alaska at Fri Oct  7 14:36:26 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: numerical_gradient at Fri Oct  7 14:36:27 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                            MOLCAS executing module NUMERICAL_GRADIENT with 2000 MB of memory
+                                              at 14:36:27 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ Root to use:                      1
+ Effective number of displacements are                      6
+ 
+ 
+      *** WARNING: Default frozen orbitals is overwritten by user input.
+      *** Default values:   1   0   0   0
+ 
+      **************************************************************************************************************************
+      *                                                                                                                        *
+      *                                                        Project:                                                        *
+      *                                      MOTRA INPUT FOR SUBSEQUENT CCSDT CALCULATION                                      *
+      *                                                                                                                        *
+      **************************************************************************************************************************
+ 
+ 
+      Header of the integral files:
+                 The integrals Generated: Thu Feb 16 16:00:33 2006            
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:27 2016        
+ 
+ 
+      Header of MO coefficients source file:
+      JOBIPH                                                                          
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.75533   0.81907
+       2   O1         0.00000   0.00000   0.21042
+       3   H1         0.00000  -0.75533   0.81907
+      --------------------------------------------
+      Nuclear repulsion energy =    9.078580
+ 
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species:              1   2   3   4
+      Number of basis functions:    11   4   7   2
+      Frozen orbitals:               1   0   0   0
+      Deleted orbitals:              0   0   0   0
+      Number of orbitals used:      10   4   7   2
+
+       SYMMETRY  BASIS FUNCTIONS       ORBITALS      INTEGRALS   CPU(SEC)  I/O(SEC)
+        1 1 1 1   11  11  11  11    10  10  10  10        1540       0.00      0.00
+        2 1 2 1    4  11   4  11     4  10   4  10         820       0.00      0.01
+        2 2 1 1    4   4  11  11     4   4  10  10         550       0.00      0.00
+        2 2 2 2    4   4   4   4     4   4   4   4          55       0.00      0.00
+        3 1 3 1    7  11   7  11     7  10   7  10        2485       0.00      0.00
+        3 2 3 2    7   4   7   4     7   4   7   4         406       0.00      0.00
+        3 3 1 1    7   7  11  11     7   7  10  10        1540       0.00      0.00
+        3 3 2 2    7   7   4   4     7   7   4   4         280       0.00      0.00
+        3 3 3 3    7   7   7   7     7   7   7   7         406       0.00      0.00
+        4 1 3 2    2  11   7   4     2  10   7   4         560       0.00      0.00
+        4 1 4 1    2  11   2  11     2  10   2  10         210       0.00      0.00
+        4 2 3 1    2   4   7  11     2   4   7  10         560       0.00      0.00
+        4 2 4 2    2   4   2   4     2   4   2   4          36       0.00      0.00
+        4 3 2 1    2   7   4  11     2   7   4  10         560       0.00      0.00
+        4 3 4 3    2   7   2   7     2   7   2   7         105       0.00      0.00
+        4 4 1 1    2   2  11  11     2   2  10  10         165       0.00      0.00
+        4 4 2 2    2   2   4   4     2   2   4   4          30       0.00      0.00
+        4 4 3 3    2   2   7   7     2   2   7   7          84       0.00      0.00
+        4 4 4 4    2   2   2   2     2   2   2   2           6       0.00      0.00
+
+       TOTAL CPU TIME(SEC)    0.00TOTAL I/O TIME(SEC)    0.01
+ 
+      Standard Fortran IO handling used 
+      Integrals for CCSD will be produced
+      Integrals for Noniterative T3 will be produced
+      RHF closed shell reference function
+ 
+      Actual numbers of frozen and deleted orbitals :
+      -----------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            1   0   0   0
+      Deleted orbitals                           0   0   0   0
+ 
+ 
+      Wave function specifications from previous RASSCF:
+      --------------------------------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       0
+      Max number of holes in RAS1 space          0
+      Max number of electrons in RAS3 space      0
+      Number of inactive orbitals                5
+      Number of active orbitals                  0
+      Number of secondary orbitals              19
+      Spin quantum number                      0.0
+      State symmetry                             1
+      Number of configuration state fnc.         1
+      Number of root(s) available                1
+      CI root used                               1
+      This is a closed shell RHF reference function
+ 
+ 
+      Orbital specifications from previous RASSCF:
+      --------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          3   1   1   0
+      Active orbitals                            0   0   0   0
+      Secondary orbitals                         8   3   6   2
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 11   4   7   2
+ 
+ 
+      SCF energy:    -76.02582946
+      -----------
+ 
+      Required WRK size-sum :                 6530
+  Warning!!!, typden is incompatible with SA
+  type of denominators changed to 2 - Orb. energies
+ 
+      ****************************************************************************************************************
+      *                   The Coupled Cluster part                                                                   *
+      ****************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Spin mutiplicity                           1
+      State symmetry                             1
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4
+      Total no. of orbitals                     10   4   7   2
+      No. of occupied orbitals with alpha spin   2   1   1   0
+      No. of occupied orbitals with beta spin    2   1   1   0
+      No. of virtual orbitals with alpha spin    8   3   6   2
+      No. of virtual orbitals with beta spin     8   3   6   2
+ 
+ 
+      Methods and options:
+      --------------------
+ 
+      Max no. of iterations                  30
+      Type of denominators                  diagonal Fock matrix elements
+      energy convergence criterium                0.00000010000000
+ 
+ DIIS EXTRAPOLATION USED     : NO
+ 
+ SPIN ADAPTATION             : T2 DDVV 
+ RST. INF. WILL BE SAVED IN  : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX OPERATIONS           : ESSL        
+ 
+ 
+  nproc, myid                     1                     0
+  Basic Work space requirements    :                 13846
+  Max Size             262143687
+  Final Work space requirements    :                 15226
+  Allocation of work space   : Done
+ 
+      Iteration       Total enegy      Corr. energy      Difference
+          1          -76.22860780      -0.20277835      -0.20277835
+          2          -76.23362150      -0.20779204      -0.00501369
+          3          -76.23693127      -0.21110182      -0.00330978
+          4          -76.23767106      -0.21184161      -0.00073979
+          5          -76.23796904      -0.21213958      -0.00029797
+          6          -76.23807753      -0.21224807      -0.00010849
+          7          -76.23812201      -0.21229255      -0.00004448
+          8          -76.23814022      -0.21231077      -0.00001821
+          9          -76.23814798      -0.21231852      -0.00000776
+         10          -76.23815132      -0.21232187      -0.00000334
+         11          -76.23815279      -0.21232333      -0.00000147
+         12          -76.23815345      -0.21232399      -0.00000066
+         13          -76.23815374      -0.21232429      -0.00000030
+         14          -76.23815388      -0.21232443      -0.00000014
+         15          -76.23815394      -0.21232449      -0.00000006
+      Convergence after                     16  Iterations
+ 
+ 
+      Total energy (diff) :     -76.23815394      -0.00000006
+      Correlation energy  :        -0.2123244898013
+      Reference energy    :       -76.0258294550847
+      E1aa   contribution :       0.00000000
+      E1bb   contribution :       0.00000000
+      E2aaaa contribution :      -0.02267686
+      E2bbbb contribution :      -0.02267686
+      E2abab contribution :      -0.16697077
+ 
+ 
+ Five largest amplitudes of :T1aa    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0079820913
+    3      0      3      0      5      0      1      0    -0.0075373419
+    3      0      3      0      1      0      1      0     0.0060349291
+    1      0      1      0      6      0      2      0    -0.0052168789
+    3      0      3      0      3      0      1      0     0.0049729878
+ Euclidian norm is :     0.0173016224
+ 
+ Five largest amplitudes of :T1bb    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0079820913
+    3      0      3      0      5      0      1      0    -0.0075373419
+    3      0      3      0      1      0      1      0     0.0060349291
+    1      0      1      0      6      0      2      0    -0.0052168789
+    3      0      3      0      3      0      1      0     0.0049729878
+ Euclidian norm is :     0.0173016224
+ 
+ Five largest amplitudes of :T2aaaa  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0196007294
+    3      2      3      2      1      1      1      1    -0.0167732100
+    3      2      3      2      3      1      1      1     0.0167355290
+    3      1      3      1      1      3      1      2    -0.0156931106
+    3      1      3      1      2      3      1      2    -0.0140410454
+ Euclidian norm is :     0.0698850616
+ 
+ Five largest amplitudes of :T2bbbb  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0196007294
+    3      2      3      2      1      1      1      1    -0.0167732100
+    3      2      3      2      3      1      1      1     0.0167355290
+    3      1      3      1      1      3      1      2    -0.0156931106
+    3      1      3      1      2      3      1      2    -0.0140410454
+ Euclidian norm is :     0.0698850616
+ 
+ Five largest amplitudes of :T2abab  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      2      2      2      1      1      1      1    -0.0514333809
+    3      3      3      3      2      2      1      1    -0.0364622267
+    1      1      1      1      3      3      2      2    -0.0345972407
+    3      3      3      3      1      1      1      1    -0.0310107384
+    2      1      2      1      1      3      1      2    -0.0282057725
+ Euclidian norm is :     0.2181248005
+ 
+ 
+      Happy Landing!
+ 
+ 
+  **********************************
+   Triples Contribution Calculation 
+  **********************************
+ 
+  Warning!!!, typden is incompatible with SA
+ NORB  10    4    7    2
+ NOA    2    1    1    0
+ NOB    2    1    1    0
+ NVA    8    3    6    2
+ NVB    8    3    6    2
+ 
+ NUMBER OF IRREPS             :  4
+ MULTIPLICITY                 :  1
+ OVERALL SYMMETRY STATE       :  1
+ METHOD                       : CCSD+T(CCSD)+<T3(1)WT1>+<T3(1)UT2> = CCSD(T)
+ TYPE OF DENOMINATOR          : DIAGONAL
+ SPIN ADAPTATION             : T2 DDVV 
+ CCSD RESULTS LOAD FROM FILE : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX HANDLING             : ESSL        
+ IJ CYCLE SEGMENTED          : NO          
+ 
+ 
+  Work space requirements :                 14871
+  Allocation of work space : Done
+       CCSD     =       -76.2381539448860
+       T3 corr. =        -0.0031178286830
+       CCSD + T3=       -76.2412717735690
+  T3 energy decomposition into spin parts
+  Eaaa = -5.298734948015083E-005
+  Eaab = -1.505926992018457E-003
+  Eabb = -1.505926992018457E-003
+  Ebbb = -5.298734948015083E-005
+ 
+ 
+      Happy Landing!
+ 
+   * Points #                     1  done.
+ 
+      *** WARNING: Default frozen orbitals is overwritten by user input.
+      *** Default values:   1   0   0   0
+ 
+      **************************************************************************************************************************
+      *                                                                                                                        *
+      *                                                        Project:                                                        *
+      *                                      MOTRA INPUT FOR SUBSEQUENT CCSDT CALCULATION                                      *
+      *                                                                                                                        *
+      **************************************************************************************************************************
+ 
+ 
+      Header of the integral files:
+                 The integrals Generated: Thu Feb 16 16:00:33 2006            
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:28 2016        
+ 
+ 
+      Header of MO coefficients source file:
+      JOBIPH                                                                          
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.74567   0.81907
+       2   O1         0.00000   0.00000   0.21042
+       3   H1         0.00000  -0.74567   0.81907
+      --------------------------------------------
+      Nuclear repulsion energy =    9.151174
+ 
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species:              1   2   3   4
+      Number of basis functions:    11   4   7   2
+      Frozen orbitals:               1   0   0   0
+      Deleted orbitals:              0   0   0   0
+      Number of orbitals used:      10   4   7   2
+
+       SYMMETRY  BASIS FUNCTIONS       ORBITALS      INTEGRALS   CPU(SEC)  I/O(SEC)
+        1 1 1 1   11  11  11  11    10  10  10  10        1540       0.01      0.00
+        2 1 2 1    4  11   4  11     4  10   4  10         820       0.00      0.00
+        2 2 1 1    4   4  11  11     4   4  10  10         550       0.00      0.00
+        2 2 2 2    4   4   4   4     4   4   4   4          55       0.00      0.00
+        3 1 3 1    7  11   7  11     7  10   7  10        2485       0.00      0.00
+        3 2 3 2    7   4   7   4     7   4   7   4         406       0.00      0.00
+        3 3 1 1    7   7  11  11     7   7  10  10        1540       0.00      0.00
+        3 3 2 2    7   7   4   4     7   7   4   4         280       0.00      0.00
+        3 3 3 3    7   7   7   7     7   7   7   7         406       0.00      0.00
+        4 1 3 2    2  11   7   4     2  10   7   4         560       0.00      0.01
+        4 1 4 1    2  11   2  11     2  10   2  10         210       0.00      0.00
+        4 2 3 1    2   4   7  11     2   4   7  10         560       0.00      0.00
+        4 2 4 2    2   4   2   4     2   4   2   4          36       0.00      0.00
+        4 3 2 1    2   7   4  11     2   7   4  10         560       0.00      0.00
+        4 3 4 3    2   7   2   7     2   7   2   7         105       0.00      0.00
+        4 4 1 1    2   2  11  11     2   2  10  10         165       0.00      0.00
+        4 4 2 2    2   2   4   4     2   2   4   4          30       0.00      0.00
+        4 4 3 3    2   2   7   7     2   2   7   7          84       0.00      0.00
+        4 4 4 4    2   2   2   2     2   2   2   2           6       0.00      0.00
+
+       TOTAL CPU TIME(SEC)    0.01TOTAL I/O TIME(SEC)    0.01
+ 
+      Standard Fortran IO handling used 
+      Integrals for CCSD will be produced
+      Integrals for Noniterative T3 will be produced
+      RHF closed shell reference function
+ 
+      Actual numbers of frozen and deleted orbitals :
+      -----------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            1   0   0   0
+      Deleted orbitals                           0   0   0   0
+ 
+ 
+      Wave function specifications from previous RASSCF:
+      --------------------------------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       0
+      Max number of holes in RAS1 space          0
+      Max number of electrons in RAS3 space      0
+      Number of inactive orbitals                5
+      Number of active orbitals                  0
+      Number of secondary orbitals              19
+      Spin quantum number                      0.0
+      State symmetry                             1
+      Number of configuration state fnc.         1
+      Number of root(s) available                1
+      CI root used                               1
+      This is a closed shell RHF reference function
+ 
+ 
+      Orbital specifications from previous RASSCF:
+      --------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          3   1   1   0
+      Active orbitals                            0   0   0   0
+      Secondary orbitals                         8   3   6   2
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 11   4   7   2
+ 
+ 
+      SCF energy:    -76.02632866
+      -----------
+ 
+      Required WRK size-sum :                 6530
+  Warning!!!, typden is incompatible with SA
+  type of denominators changed to 2 - Orb. energies
+ 
+      ****************************************************************************************************************
+      *                   The Coupled Cluster part                                                                   *
+      ****************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Spin mutiplicity                           1
+      State symmetry                             1
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4
+      Total no. of orbitals                     10   4   7   2
+      No. of occupied orbitals with alpha spin   2   1   1   0
+      No. of occupied orbitals with beta spin    2   1   1   0
+      No. of virtual orbitals with alpha spin    8   3   6   2
+      No. of virtual orbitals with beta spin     8   3   6   2
+ 
+ 
+      Methods and options:
+      --------------------
+ 
+      Max no. of iterations                  30
+      Type of denominators                  diagonal Fock matrix elements
+      energy convergence criterium                0.00000010000000
+ 
+ DIIS EXTRAPOLATION USED     : NO
+ 
+ SPIN ADAPTATION             : T2 DDVV 
+ RST. INF. WILL BE SAVED IN  : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX OPERATIONS           : ESSL        
+ 
+ 
+  nproc, myid                     1                     0
+  Basic Work space requirements    :                 13846
+  Max Size             262143687
+  Final Work space requirements    :                 15226
+  Allocation of work space   : Done
+ 
+      Iteration       Total enegy      Corr. energy      Difference
+          1          -76.22865083      -0.20232217      -0.20232217
+          2          -76.23373103      -0.20740237      -0.00508020
+          3          -76.23698641      -0.21065775      -0.00325537
+          4          -76.23771303      -0.21138437      -0.00072662
+          5          -76.23800332      -0.21167466      -0.00029029
+          6          -76.23810847      -0.21177981      -0.00010516
+          7          -76.23815133      -0.21182267      -0.00004286
+          8          -76.23816878      -0.21184012      -0.00001745
+          9          -76.23817617      -0.21184751      -0.00000738
+         10          -76.23817933      -0.21185067      -0.00000316
+         11          -76.23818071      -0.21185205      -0.00000138
+         12          -76.23818132      -0.21185266      -0.00000061
+         13          -76.23818159      -0.21185293      -0.00000027
+         14          -76.23818172      -0.21185306      -0.00000013
+         15          -76.23818178      -0.21185312      -0.00000006
+      Convergence after                     16  Iterations
+ 
+ 
+      Total energy (diff) :     -76.23818178      -0.00000006
+      Correlation energy  :        -0.2118531155590
+      Reference energy    :       -76.0263286607833
+      E1aa   contribution :       0.00000000
+      E1bb   contribution :       0.00000000
+      E2aaaa contribution :      -0.02268570
+      E2bbbb contribution :      -0.02268570
+      E2abab contribution :      -0.16648171
+ 
+ 
+ Five largest amplitudes of :T1aa    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0076478722
+    3      0      3      0      5      0      1      0    -0.0074314683
+    3      0      3      0      1      0      1      0     0.0061023614
+    1      0      1      0      6      0      2      0    -0.0051368528
+    3      0      3      0      3      0      1      0     0.0048294865
+ Euclidian norm is :     0.0169867333
+ 
+ Five largest amplitudes of :T1bb    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0076478722
+    3      0      3      0      5      0      1      0    -0.0074314683
+    3      0      3      0      1      0      1      0     0.0061023614
+    1      0      1      0      6      0      2      0    -0.0051368528
+    3      0      3      0      3      0      1      0     0.0048294865
+ Euclidian norm is :     0.0169867333
+ 
+ Five largest amplitudes of :T2aaaa  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0194539897
+    3      2      3      2      3      1      1      1     0.0168221048
+    3      2      3      2      1      1      1      1    -0.0166492306
+    3      1      3      1      1      3      1      2    -0.0154823221
+    3      1      3      1      2      3      1      2    -0.0139217935
+ Euclidian norm is :     0.0698343447
+ 
+ Five largest amplitudes of :T2bbbb  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0194539897
+    3      2      3      2      3      1      1      1     0.0168221048
+    3      2      3      2      1      1      1      1    -0.0166492306
+    3      1      3      1      1      3      1      2    -0.0154823221
+    3      1      3      1      2      3      1      2    -0.0139217935
+ Euclidian norm is :     0.0698343447
+ 
+ Five largest amplitudes of :T2abab  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      2      2      2      1      1      1      1    -0.0514009891
+    3      3      3      3      2      2      1      1    -0.0363553577
+    1      1      1      1      3      3      2      2    -0.0342176394
+    3      3      3      3      1      1      1      1    -0.0303805222
+    2      1      2      1      1      3      1      2    -0.0280256369
+ Euclidian norm is :     0.2170039015
+ 
+ 
+      Happy Landing!
+ 
+ 
+  **********************************
+   Triples Contribution Calculation 
+  **********************************
+ 
+  Warning!!!, typden is incompatible with SA
+ NORB  10    4    7    2
+ NOA    2    1    1    0
+ NOB    2    1    1    0
+ NVA    8    3    6    2
+ NVB    8    3    6    2
+ 
+ NUMBER OF IRREPS             :  4
+ MULTIPLICITY                 :  1
+ OVERALL SYMMETRY STATE       :  1
+ METHOD                       : CCSD+T(CCSD)+<T3(1)WT1>+<T3(1)UT2> = CCSD(T)
+ TYPE OF DENOMINATOR          : DIAGONAL
+ SPIN ADAPTATION             : T2 DDVV 
+ CCSD RESULTS LOAD FROM FILE : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX HANDLING             : ESSL        
+ IJ CYCLE SEGMENTED          : NO          
+ 
+ 
+  Work space requirements :                 14871
+  Allocation of work space : Done
+       CCSD     =       -76.2381817763423
+       T3 corr. =        -0.0030899961377
+       CCSD + T3=       -76.2412717724800
+  T3 energy decomposition into spin parts
+  Eaaa = -5.308612837544538E-005
+  Eaab = -1.491911940476089E-003
+  Eabb = -1.491911940476089E-003
+  Ebbb = -5.308612837544538E-005
+ 
+ 
+      Happy Landing!
+ 
+   * Points #                     2  done.
+ 
+      *** WARNING: Default frozen orbitals is overwritten by user input.
+      *** Default values:   1   0   0   0
+ 
+      **************************************************************************************************************************
+      *                                                                                                                        *
+      *                                                        Project:                                                        *
+      *                                      MOTRA INPUT FOR SUBSEQUENT CCSDT CALCULATION                                      *
+      *                                                                                                                        *
+      **************************************************************************************************************************
+ 
+ 
+      Header of the integral files:
+                 The integrals Generated: Thu Feb 16 16:00:33 2006            
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:29 2016        
+ 
+ 
+      Header of MO coefficients source file:
+      JOBIPH                                                                          
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.75050   0.82391
+       2   O1         0.00000   0.00000   0.21042
+       3   H1         0.00000  -0.75050   0.82391
+      --------------------------------------------
+      Nuclear repulsion energy =    9.087198
+ 
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species:              1   2   3   4
+      Number of basis functions:    11   4   7   2
+      Frozen orbitals:               1   0   0   0
+      Deleted orbitals:              0   0   0   0
+      Number of orbitals used:      10   4   7   2
+
+       SYMMETRY  BASIS FUNCTIONS       ORBITALS      INTEGRALS   CPU(SEC)  I/O(SEC)
+        1 1 1 1   11  11  11  11    10  10  10  10        1540       0.00      0.00
+        2 1 2 1    4  11   4  11     4  10   4  10         820       0.00      0.00
+        2 2 1 1    4   4  11  11     4   4  10  10         550       0.00      0.00
+        2 2 2 2    4   4   4   4     4   4   4   4          55       0.00      0.00
+        3 1 3 1    7  11   7  11     7  10   7  10        2485       0.00      0.00
+        3 2 3 2    7   4   7   4     7   4   7   4         406       0.00      0.00
+        3 3 1 1    7   7  11  11     7   7  10  10        1540       0.00      0.00
+        3 3 2 2    7   7   4   4     7   7   4   4         280       0.00      0.00
+        3 3 3 3    7   7   7   7     7   7   7   7         406       0.00      0.00
+        4 1 3 2    2  11   7   4     2  10   7   4         560       0.00      0.00
+        4 1 4 1    2  11   2  11     2  10   2  10         210       0.00      0.00
+        4 2 3 1    2   4   7  11     2   4   7  10         560       0.00      0.00
+        4 2 4 2    2   4   2   4     2   4   2   4          36       0.00      0.00
+        4 3 2 1    2   7   4  11     2   7   4  10         560       0.00      0.00
+        4 3 4 3    2   7   2   7     2   7   2   7         105       0.00      0.00
+        4 4 1 1    2   2  11  11     2   2  10  10         165       0.00      0.00
+        4 4 2 2    2   2   4   4     2   2   4   4          30       0.00      0.00
+        4 4 3 3    2   2   7   7     2   2   7   7          84       0.00      0.00
+        4 4 4 4    2   2   2   2     2   2   2   2           6       0.00      0.00
+
+       TOTAL CPU TIME(SEC)    0.00TOTAL I/O TIME(SEC)    0.00
+ 
+      Standard Fortran IO handling used 
+      Integrals for CCSD will be produced
+      Integrals for Noniterative T3 will be produced
+      RHF closed shell reference function
+ 
+      Actual numbers of frozen and deleted orbitals :
+      -----------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            1   0   0   0
+      Deleted orbitals                           0   0   0   0
+ 
+ 
+      Wave function specifications from previous RASSCF:
+      --------------------------------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       0
+      Max number of holes in RAS1 space          0
+      Max number of electrons in RAS3 space      0
+      Number of inactive orbitals                5
+      Number of active orbitals                  0
+      Number of secondary orbitals              19
+      Spin quantum number                      0.0
+      State symmetry                             1
+      Number of configuration state fnc.         1
+      Number of root(s) available                1
+      CI root used                               1
+      This is a closed shell RHF reference function
+ 
+ 
+      Orbital specifications from previous RASSCF:
+      --------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          3   1   1   0
+      Active orbitals                            0   0   0   0
+      Secondary orbitals                         8   3   6   2
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 11   4   7   2
+ 
+ 
+      SCF energy:    -76.02580746
+      -----------
+ 
+      Required WRK size-sum :                 6530
+  Warning!!!, typden is incompatible with SA
+  type of denominators changed to 2 - Orb. energies
+ 
+      ****************************************************************************************************************
+      *                   The Coupled Cluster part                                                                   *
+      ****************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Spin mutiplicity                           1
+      State symmetry                             1
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4
+      Total no. of orbitals                     10   4   7   2
+      No. of occupied orbitals with alpha spin   2   1   1   0
+      No. of occupied orbitals with beta spin    2   1   1   0
+      No. of virtual orbitals with alpha spin    8   3   6   2
+      No. of virtual orbitals with beta spin     8   3   6   2
+ 
+ 
+      Methods and options:
+      --------------------
+ 
+      Max no. of iterations                  30
+      Type of denominators                  diagonal Fock matrix elements
+      energy convergence criterium                0.00000010000000
+ 
+ DIIS EXTRAPOLATION USED     : NO
+ 
+ SPIN ADAPTATION             : T2 DDVV 
+ RST. INF. WILL BE SAVED IN  : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX OPERATIONS           : ESSL        
+ 
+ 
+  nproc, myid                     1                     0
+  Basic Work space requirements    :                 13846
+  Max Size             262143687
+  Final Work space requirements    :                 15226
+  Allocation of work space   : Done
+ 
+      Iteration       Total enegy      Corr. energy      Difference
+          1          -76.22862811      -0.20282066      -0.20282066
+          2          -76.23363168      -0.20782423      -0.00500357
+          3          -76.23694154      -0.21113409      -0.00330986
+          4          -76.23767976      -0.21187230      -0.00073821
+          5          -76.23797730      -0.21216984      -0.00029754
+          6          -76.23808552      -0.21227806      -0.00010822
+          7          -76.23812988      -0.21232243      -0.00004436
+          8          -76.23814803      -0.21234058      -0.00001815
+          9          -76.23815576      -0.21234830      -0.00000772
+         10          -76.23815908      -0.21235163      -0.00000332
+         11          -76.23816054      -0.21235309      -0.00000146
+         12          -76.23816119      -0.21235374      -0.00000065
+         13          -76.23816149      -0.21235403      -0.00000029
+         14          -76.23816162      -0.21235417      -0.00000014
+         15          -76.23816169      -0.21235423      -0.00000006
+      Convergence after                     16  Iterations
+ 
+ 
+      Total energy (diff) :     -76.23816169      -0.00000006
+      Correlation energy  :        -0.2123542325334
+      Reference energy    :       -76.0258074556391
+      E1aa   contribution :       0.00000000
+      E1bb   contribution :       0.00000000
+      E2aaaa contribution :      -0.02268679
+      E2bbbb contribution :      -0.02268679
+      E2abab contribution :      -0.16698065
+ 
+ 
+ Five largest amplitudes of :T1aa    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0079405708
+    3      0      3      0      5      0      1      0    -0.0075319889
+    3      0      3      0      1      0      1      0     0.0060844164
+    1      0      1      0      6      0      2      0    -0.0052329111
+    3      0      3      0      3      0      1      0     0.0050037600
+ Euclidian norm is :     0.0173016785
+ 
+ Five largest amplitudes of :T1bb    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0079405708
+    3      0      3      0      5      0      1      0    -0.0075319889
+    3      0      3      0      1      0      1      0     0.0060844164
+    1      0      1      0      6      0      2      0    -0.0052329111
+    3      0      3      0      3      0      1      0     0.0050037600
+ Euclidian norm is :     0.0173016785
+ 
+ Five largest amplitudes of :T2aaaa  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0194433526
+    3      2      3      2      3      1      1      1     0.0167918358
+    3      2      3      2      1      1      1      1    -0.0167858415
+    3      1      3      1      1      3      1      2    -0.0156508928
+    3      1      3      1      2      3      1      2    -0.0139901429
+ Euclidian norm is :     0.0699031141
+ 
+ Five largest amplitudes of :T2bbbb  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0194433526
+    3      2      3      2      3      1      1      1     0.0167918358
+    3      2      3      2      1      1      1      1    -0.0167858415
+    3      1      3      1      1      3      1      2    -0.0156508928
+    3      1      3      1      2      3      1      2    -0.0139901429
+ Euclidian norm is :     0.0699031141
+ 
+ Five largest amplitudes of :T2abab  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      2      2      2      1      1      1      1    -0.0514259422
+    3      3      3      3      2      2      1      1    -0.0364847439
+    1      1      1      1      3      3      2      2    -0.0342485746
+    3      3      3      3      1      1      1      1    -0.0311203328
+    2      1      2      1      1      3      1      2    -0.0280353781
+ Euclidian norm is :     0.2180967179
+ 
+ 
+      Happy Landing!
+ 
+ 
+  **********************************
+   Triples Contribution Calculation 
+  **********************************
+ 
+  Warning!!!, typden is incompatible with SA
+ NORB  10    4    7    2
+ NOA    2    1    1    0
+ NOB    2    1    1    0
+ NVA    8    3    6    2
+ NVB    8    3    6    2
+ 
+ NUMBER OF IRREPS             :  4
+ MULTIPLICITY                 :  1
+ OVERALL SYMMETRY STATE       :  1
+ METHOD                       : CCSD+T(CCSD)+<T3(1)WT1>+<T3(1)UT2> = CCSD(T)
+ TYPE OF DENOMINATOR          : DIAGONAL
+ SPIN ADAPTATION             : T2 DDVV 
+ CCSD RESULTS LOAD FROM FILE : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX HANDLING             : ESSL        
+ IJ CYCLE SEGMENTED          : NO          
+ 
+ 
+  Work space requirements :                 14871
+  Allocation of work space : Done
+       CCSD     =       -76.2381616881725
+       T3 corr. =        -0.0031234479769
+       CCSD + T3=       -76.2412851361493
+  T3 energy decomposition into spin parts
+  Eaaa = -5.313297955046534E-005
+  Eaab = -1.508591008876512E-003
+  Eabb = -1.508591008876512E-003
+  Ebbb = -5.313297955046534E-005
+ 
+ 
+      Happy Landing!
+ 
+   * Points #                     3  done.
+ 
+      *** WARNING: Default frozen orbitals is overwritten by user input.
+      *** Default values:   1   0   0   0
+ 
+      **************************************************************************************************************************
+      *                                                                                                                        *
+      *                                                        Project:                                                        *
+      *                                      MOTRA INPUT FOR SUBSEQUENT CCSDT CALCULATION                                      *
+      *                                                                                                                        *
+      **************************************************************************************************************************
+ 
+ 
+      Header of the integral files:
+                 The integrals Generated: Thu Feb 16 16:00:33 2006            
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:30 2016        
+ 
+ 
+      Header of MO coefficients source file:
+      JOBIPH                                                                          
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.75050   0.81424
+       2   O1         0.00000   0.00000   0.21042
+       3   H1         0.00000  -0.75050   0.81424
+      --------------------------------------------
+      Nuclear repulsion energy =    9.142390
+ 
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species:              1   2   3   4
+      Number of basis functions:    11   4   7   2
+      Frozen orbitals:               1   0   0   0
+      Deleted orbitals:              0   0   0   0
+      Number of orbitals used:      10   4   7   2
+
+       SYMMETRY  BASIS FUNCTIONS       ORBITALS      INTEGRALS   CPU(SEC)  I/O(SEC)
+        1 1 1 1   11  11  11  11    10  10  10  10        1540       0.00      0.00
+        2 1 2 1    4  11   4  11     4  10   4  10         820       0.00      0.00
+        2 2 1 1    4   4  11  11     4   4  10  10         550       0.00      0.00
+        2 2 2 2    4   4   4   4     4   4   4   4          55       0.00      0.00
+        3 1 3 1    7  11   7  11     7  10   7  10        2485       0.00      0.00
+        3 2 3 2    7   4   7   4     7   4   7   4         406       0.00      0.00
+        3 3 1 1    7   7  11  11     7   7  10  10        1540       0.00      0.00
+        3 3 2 2    7   7   4   4     7   7   4   4         280       0.00      0.00
+        3 3 3 3    7   7   7   7     7   7   7   7         406       0.00      0.01
+        4 1 3 2    2  11   7   4     2  10   7   4         560       0.00      0.00
+        4 1 4 1    2  11   2  11     2  10   2  10         210       0.00      0.00
+        4 2 3 1    2   4   7  11     2   4   7  10         560       0.00      0.00
+        4 2 4 2    2   4   2   4     2   4   2   4          36       0.00      0.00
+        4 3 2 1    2   7   4  11     2   7   4  10         560       0.00      0.00
+        4 3 4 3    2   7   2   7     2   7   2   7         105       0.00      0.00
+        4 4 1 1    2   2  11  11     2   2  10  10         165       0.00      0.00
+        4 4 2 2    2   2   4   4     2   2   4   4          30       0.00      0.00
+        4 4 3 3    2   2   7   7     2   2   7   7          84       0.00      0.00
+        4 4 4 4    2   2   2   2     2   2   2   2           6       0.00      0.00
+
+       TOTAL CPU TIME(SEC)    0.00TOTAL I/O TIME(SEC)    0.01
+ 
+      Standard Fortran IO handling used 
+      Integrals for CCSD will be produced
+      Integrals for Noniterative T3 will be produced
+      RHF closed shell reference function
+ 
+      Actual numbers of frozen and deleted orbitals :
+      -----------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            1   0   0   0
+      Deleted orbitals                           0   0   0   0
+ 
+ 
+      Wave function specifications from previous RASSCF:
+      --------------------------------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       0
+      Max number of holes in RAS1 space          0
+      Max number of electrons in RAS3 space      0
+      Number of inactive orbitals                5
+      Number of active orbitals                  0
+      Number of secondary orbitals              19
+      Spin quantum number                      0.0
+      State symmetry                             1
+      Number of configuration state fnc.         1
+      Number of root(s) available                1
+      CI root used                               1
+      This is a closed shell RHF reference function
+ 
+ 
+      Orbital specifications from previous RASSCF:
+      --------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          3   1   1   0
+      Active orbitals                            0   0   0   0
+      Secondary orbitals                         8   3   6   2
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 11   4   7   2
+ 
+ 
+      SCF energy:    -76.02637652
+      -----------
+ 
+      Required WRK size-sum :                 6530
+  Warning!!!, typden is incompatible with SA
+  type of denominators changed to 2 - Orb. energies
+ 
+      ****************************************************************************************************************
+      *                   The Coupled Cluster part                                                                   *
+      ****************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Spin mutiplicity                           1
+      State symmetry                             1
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4
+      Total no. of orbitals                     10   4   7   2
+      No. of occupied orbitals with alpha spin   2   1   1   0
+      No. of occupied orbitals with beta spin    2   1   1   0
+      No. of virtual orbitals with alpha spin    8   3   6   2
+      No. of virtual orbitals with beta spin     8   3   6   2
+ 
+ 
+      Methods and options:
+      --------------------
+ 
+      Max no. of iterations                  30
+      Type of denominators                  diagonal Fock matrix elements
+      energy convergence criterium                0.00000010000000
+ 
+ DIIS EXTRAPOLATION USED     : NO
+ 
+ SPIN ADAPTATION             : T2 DDVV 
+ RST. INF. WILL BE SAVED IN  : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX OPERATIONS           : ESSL        
+ 
+ 
+  nproc, myid                     1                     0
+  Basic Work space requirements    :                 13846
+  Max Size             262143687
+  Final Work space requirements    :                 15226
+  Allocation of work space   : Done
+ 
+      Iteration       Total enegy      Corr. energy      Difference
+          1          -76.22865754      -0.20228102      -0.20228102
+          2          -76.23374754      -0.20737102      -0.00509000
+          3          -76.23700290      -0.21062637      -0.00325536
+          4          -76.23773106      -0.21135454      -0.00072817
+          5          -76.23802178      -0.21164526      -0.00029071
+          6          -76.23812720      -0.21175067      -0.00010542
+          7          -76.23817017      -0.21179365      -0.00004297
+          8          -76.23818768      -0.21181115      -0.00001751
+          9          -76.23819509      -0.21181857      -0.00000741
+         10          -76.23819827      -0.21182174      -0.00000318
+         11          -76.23819965      -0.21182313      -0.00000139
+         12          -76.23820027      -0.21182375      -0.00000062
+         13          -76.23820055      -0.21182402      -0.00000028
+         14          -76.23820067      -0.21182415      -0.00000013
+         15          -76.23820073      -0.21182421      -0.00000006
+      Convergence after                     16  Iterations
+ 
+ 
+      Total energy (diff) :     -76.23820073      -0.00000006
+      Correlation energy  :        -0.2118242104321
+      Reference energy    :       -76.0263765231502
+      E1aa   contribution :       0.00000000
+      E1bb   contribution :       0.00000000
+      E2aaaa contribution :      -0.02267586
+      E2bbbb contribution :      -0.02267586
+      E2abab contribution :      -0.16647249
+ 
+ 
+ Five largest amplitudes of :T1aa    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0076853986
+    3      0      3      0      5      0      1      0    -0.0074363623
+    3      0      3      0      1      0      1      0     0.0060547037
+    1      0      1      0      6      0      2      0    -0.0051219196
+    3      0      3      0      3      0      1      0     0.0047993479
+ Euclidian norm is :     0.0169848785
+ 
+ Five largest amplitudes of :T1bb    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0076853986
+    3      0      3      0      5      0      1      0    -0.0074363623
+    3      0      3      0      1      0      1      0     0.0060547037
+    1      0      1      0      6      0      2      0    -0.0051219196
+    3      0      3      0      3      0      1      0     0.0047993479
+ Euclidian norm is :     0.0169848785
+ 
+ Five largest amplitudes of :T2aaaa  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0196148518
+    3      2      3      2      3      1      1      1     0.0167663803
+    3      2      3      2      1      1      1      1    -0.0166368538
+    3      1      3      1      1      3      1      2    -0.0155271062
+    3      1      3      1      2      3      1      2    -0.0139750616
+ Euclidian norm is :     0.0698167515
+ 
+ Five largest amplitudes of :T2bbbb  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0196148518
+    3      2      3      2      3      1      1      1     0.0167663803
+    3      2      3      2      1      1      1      1    -0.0166368538
+    3      1      3      1      1      3      1      2    -0.0155271062
+    3      1      3      1      2      3      1      2    -0.0139750616
+ Euclidian norm is :     0.0698167515
+ 
+ Five largest amplitudes of :T2abab  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      2      2      2      1      1      1      1    -0.0514093136
+    3      3      3      3      2      2      1      1    -0.0363310637
+    1      1      1      1      3      3      2      2    -0.0345756177
+    3      3      3      3      1      1      1      1    -0.0302734589
+    2      1      2      1      1      3      1      2    -0.0282002963
+ Euclidian norm is :     0.2170322842
+ 
+ 
+      Happy Landing!
+ 
+ 
+  **********************************
+   Triples Contribution Calculation 
+  **********************************
+ 
+  Warning!!!, typden is incompatible with SA
+ NORB  10    4    7    2
+ NOA    2    1    1    0
+ NOB    2    1    1    0
+ NVA    8    3    6    2
+ NVB    8    3    6    2
+ 
+ NUMBER OF IRREPS             :  4
+ MULTIPLICITY                 :  1
+ OVERALL SYMMETRY STATE       :  1
+ METHOD                       : CCSD+T(CCSD)+<T3(1)WT1>+<T3(1)UT2> = CCSD(T)
+ TYPE OF DENOMINATOR          : DIAGONAL
+ SPIN ADAPTATION             : T2 DDVV 
+ CCSD RESULTS LOAD FROM FILE : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX HANDLING             : ESSL        
+ IJ CYCLE SEGMENTED          : NO          
+ 
+ 
+  Work space requirements :                 14871
+  Allocation of work space : Done
+       CCSD     =       -76.2382007335824
+       T3 corr. =        -0.0030844037010
+       CCSD + T3=       -76.2412851372834
+  T3 energy decomposition into spin parts
+  Eaaa = -5.294175511749004E-005
+  Eaab = -1.489260095383408E-003
+  Eabb = -1.489260095383408E-003
+  Ebbb = -5.294175511749006E-005
+ 
+ 
+      Happy Landing!
+ 
+   * Points #                     4  done.
+ 
+      *** WARNING: Default frozen orbitals is overwritten by user input.
+      *** Default values:   1   0   0   0
+ 
+      **************************************************************************************************************************
+      *                                                                                                                        *
+      *                                                        Project:                                                        *
+      *                                      MOTRA INPUT FOR SUBSEQUENT CCSDT CALCULATION                                      *
+      *                                                                                                                        *
+      **************************************************************************************************************************
+ 
+ 
+      Header of the integral files:
+                 The integrals Generated: Thu Feb 16 16:00:33 2006            
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:31 2016        
+ 
+ 
+      Header of MO coefficients source file:
+      JOBIPH                                                                          
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.75050   0.81907
+       2   O1         0.00000   0.00000   0.21525
+       3   H1         0.00000  -0.75050   0.81907
+      --------------------------------------------
+      Nuclear repulsion energy =    9.142390
+ 
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species:              1   2   3   4
+      Number of basis functions:    11   4   7   2
+      Frozen orbitals:               1   0   0   0
+      Deleted orbitals:              0   0   0   0
+      Number of orbitals used:      10   4   7   2
+
+       SYMMETRY  BASIS FUNCTIONS       ORBITALS      INTEGRALS   CPU(SEC)  I/O(SEC)
+        1 1 1 1   11  11  11  11    10  10  10  10        1540       0.00      0.01
+        2 1 2 1    4  11   4  11     4  10   4  10         820       0.00      0.00
+        2 2 1 1    4   4  11  11     4   4  10  10         550       0.00      0.00
+        2 2 2 2    4   4   4   4     4   4   4   4          55       0.00      0.00
+        3 1 3 1    7  11   7  11     7  10   7  10        2485       0.00      0.00
+        3 2 3 2    7   4   7   4     7   4   7   4         406       0.00      0.00
+        3 3 1 1    7   7  11  11     7   7  10  10        1540       0.00      0.00
+        3 3 2 2    7   7   4   4     7   7   4   4         280       0.00      0.00
+        3 3 3 3    7   7   7   7     7   7   7   7         406       0.00      0.00
+        4 1 3 2    2  11   7   4     2  10   7   4         560       0.00      0.00
+        4 1 4 1    2  11   2  11     2  10   2  10         210       0.00      0.00
+        4 2 3 1    2   4   7  11     2   4   7  10         560       0.00      0.00
+        4 2 4 2    2   4   2   4     2   4   2   4          36       0.00      0.00
+        4 3 2 1    2   7   4  11     2   7   4  10         560       0.00      0.00
+        4 3 4 3    2   7   2   7     2   7   2   7         105       0.00      0.00
+        4 4 1 1    2   2  11  11     2   2  10  10         165       0.00      0.00
+        4 4 2 2    2   2   4   4     2   2   4   4          30       0.00      0.00
+        4 4 3 3    2   2   7   7     2   2   7   7          84       0.00      0.00
+        4 4 4 4    2   2   2   2     2   2   2   2           6       0.00      0.00
+
+       TOTAL CPU TIME(SEC)    0.00TOTAL I/O TIME(SEC)    0.01
+ 
+      Standard Fortran IO handling used 
+      Integrals for CCSD will be produced
+      Integrals for Noniterative T3 will be produced
+      RHF closed shell reference function
+ 
+      Actual numbers of frozen and deleted orbitals :
+      -----------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            1   0   0   0
+      Deleted orbitals                           0   0   0   0
+ 
+ 
+      Wave function specifications from previous RASSCF:
+      --------------------------------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       0
+      Max number of holes in RAS1 space          0
+      Max number of electrons in RAS3 space      0
+      Number of inactive orbitals                5
+      Number of active orbitals                  0
+      Number of secondary orbitals              19
+      Spin quantum number                      0.0
+      State symmetry                             1
+      Number of configuration state fnc.         1
+      Number of root(s) available                1
+      CI root used                               1
+      This is a closed shell RHF reference function
+ 
+ 
+      Orbital specifications from previous RASSCF:
+      --------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          3   1   1   0
+      Active orbitals                            0   0   0   0
+      Secondary orbitals                         8   3   6   2
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 11   4   7   2
+ 
+ 
+      SCF energy:    -76.02637652
+      -----------
+ 
+      Required WRK size-sum :                 6530
+  Warning!!!, typden is incompatible with SA
+  type of denominators changed to 2 - Orb. energies
+ 
+      ****************************************************************************************************************
+      *                   The Coupled Cluster part                                                                   *
+      ****************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Spin mutiplicity                           1
+      State symmetry                             1
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4
+      Total no. of orbitals                     10   4   7   2
+      No. of occupied orbitals with alpha spin   2   1   1   0
+      No. of occupied orbitals with beta spin    2   1   1   0
+      No. of virtual orbitals with alpha spin    8   3   6   2
+      No. of virtual orbitals with beta spin     8   3   6   2
+ 
+ 
+      Methods and options:
+      --------------------
+ 
+      Max no. of iterations                  30
+      Type of denominators                  diagonal Fock matrix elements
+      energy convergence criterium                0.00000010000000
+ 
+ DIIS EXTRAPOLATION USED     : NO
+ 
+ SPIN ADAPTATION             : T2 DDVV 
+ RST. INF. WILL BE SAVED IN  : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX OPERATIONS           : ESSL        
+ 
+ 
+  nproc, myid                     1                     0
+  Basic Work space requirements    :                 13846
+  Max Size             262143687
+  Final Work space requirements    :                 15226
+  Allocation of work space   : Done
+ 
+      Iteration       Total enegy      Corr. energy      Difference
+          1          -76.22865754      -0.20228102      -0.20228102
+          2          -76.23374754      -0.20737102      -0.00509000
+          3          -76.23700290      -0.21062637      -0.00325536
+          4          -76.23773106      -0.21135454      -0.00072817
+          5          -76.23802178      -0.21164526      -0.00029071
+          6          -76.23812720      -0.21175067      -0.00010542
+          7          -76.23817017      -0.21179365      -0.00004297
+          8          -76.23818768      -0.21181115      -0.00001751
+          9          -76.23819509      -0.21181857      -0.00000741
+         10          -76.23819827      -0.21182174      -0.00000318
+         11          -76.23819965      -0.21182313      -0.00000139
+         12          -76.23820027      -0.21182375      -0.00000062
+         13          -76.23820055      -0.21182402      -0.00000028
+         14          -76.23820067      -0.21182415      -0.00000013
+         15          -76.23820073      -0.21182421      -0.00000006
+      Convergence after                     16  Iterations
+ 
+ 
+      Total energy (diff) :     -76.23820073      -0.00000006
+      Correlation energy  :        -0.2118242104321
+      Reference energy    :       -76.0263765231503
+      E1aa   contribution :       0.00000000
+      E1bb   contribution :       0.00000000
+      E2aaaa contribution :      -0.02267586
+      E2bbbb contribution :      -0.02267586
+      E2abab contribution :      -0.16647249
+ 
+ 
+ Five largest amplitudes of :T1aa    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0076853986
+    3      0      3      0      5      0      1      0    -0.0074363623
+    3      0      3      0      1      0      1      0     0.0060547037
+    1      0      1      0      6      0      2      0    -0.0051219196
+    3      0      3      0      3      0      1      0     0.0047993479
+ Euclidian norm is :     0.0169848785
+ 
+ Five largest amplitudes of :T1bb    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0076853986
+    3      0      3      0      5      0      1      0    -0.0074363623
+    3      0      3      0      1      0      1      0     0.0060547037
+    1      0      1      0      6      0      2      0    -0.0051219196
+    3      0      3      0      3      0      1      0     0.0047993479
+ Euclidian norm is :     0.0169848785
+ 
+ Five largest amplitudes of :T2aaaa  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0196148518
+    3      2      3      2      3      1      1      1     0.0167663803
+    3      2      3      2      1      1      1      1    -0.0166368538
+    3      1      3      1      1      3      1      2    -0.0155271062
+    3      1      3      1      2      3      1      2    -0.0139750616
+ Euclidian norm is :     0.0698167515
+ 
+ Five largest amplitudes of :T2bbbb  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0196148518
+    3      2      3      2      3      1      1      1     0.0167663803
+    3      2      3      2      1      1      1      1    -0.0166368538
+    3      1      3      1      1      3      1      2    -0.0155271062
+    3      1      3      1      2      3      1      2    -0.0139750616
+ Euclidian norm is :     0.0698167515
+ 
+ Five largest amplitudes of :T2abab  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      2      2      2      1      1      1      1    -0.0514093136
+    3      3      3      3      2      2      1      1    -0.0363310637
+    1      1      1      1      3      3      2      2    -0.0345756177
+    3      3      3      3      1      1      1      1    -0.0302734589
+    2      1      2      1      1      3      1      2    -0.0282002963
+ Euclidian norm is :     0.2170322842
+ 
+ 
+      Happy Landing!
+ 
+ 
+  **********************************
+   Triples Contribution Calculation 
+  **********************************
+ 
+  Warning!!!, typden is incompatible with SA
+ NORB  10    4    7    2
+ NOA    2    1    1    0
+ NOB    2    1    1    0
+ NVA    8    3    6    2
+ NVB    8    3    6    2
+ 
+ NUMBER OF IRREPS             :  4
+ MULTIPLICITY                 :  1
+ OVERALL SYMMETRY STATE       :  1
+ METHOD                       : CCSD+T(CCSD)+<T3(1)WT1>+<T3(1)UT2> = CCSD(T)
+ TYPE OF DENOMINATOR          : DIAGONAL
+ SPIN ADAPTATION             : T2 DDVV 
+ CCSD RESULTS LOAD FROM FILE : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX HANDLING             : ESSL        
+ IJ CYCLE SEGMENTED          : NO          
+ 
+ 
+  Work space requirements :                 14871
+  Allocation of work space : Done
+       CCSD     =       -76.2382007335824
+       T3 corr. =        -0.0030844037010
+       CCSD + T3=       -76.2412851372834
+  T3 energy decomposition into spin parts
+  Eaaa = -5.294175511748915E-005
+  Eaab = -1.489260095383393E-003
+  Eabb = -1.489260095383393E-003
+  Ebbb = -5.294175511748915E-005
+ 
+ 
+      Happy Landing!
+ 
+   * Points #                     5  done.
+ 
+      *** WARNING: Default frozen orbitals is overwritten by user input.
+      *** Default values:   1   0   0   0
+ 
+      **************************************************************************************************************************
+      *                                                                                                                        *
+      *                                                        Project:                                                        *
+      *                                      MOTRA INPUT FOR SUBSEQUENT CCSDT CALCULATION                                      *
+      *                                                                                                                        *
+      **************************************************************************************************************************
+ 
+ 
+      Header of the integral files:
+                 The integrals Generated: Thu Feb 16 16:00:33 2006            
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:32 2016        
+ 
+ 
+      Header of MO coefficients source file:
+      JOBIPH                                                                          
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.75050   0.81907
+       2   O1         0.00000   0.00000   0.20559
+       3   H1         0.00000  -0.75050   0.81907
+      --------------------------------------------
+      Nuclear repulsion energy =    9.087198
+ 
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species:              1   2   3   4
+      Number of basis functions:    11   4   7   2
+      Frozen orbitals:               1   0   0   0
+      Deleted orbitals:              0   0   0   0
+      Number of orbitals used:      10   4   7   2
+
+       SYMMETRY  BASIS FUNCTIONS       ORBITALS      INTEGRALS   CPU(SEC)  I/O(SEC)
+        1 1 1 1   11  11  11  11    10  10  10  10        1540       0.00      0.01
+        2 1 2 1    4  11   4  11     4  10   4  10         820       0.00      0.00
+        2 2 1 1    4   4  11  11     4   4  10  10         550       0.00      0.00
+        2 2 2 2    4   4   4   4     4   4   4   4          55       0.00      0.00
+        3 1 3 1    7  11   7  11     7  10   7  10        2485       0.00      0.00
+        3 2 3 2    7   4   7   4     7   4   7   4         406       0.00      0.00
+        3 3 1 1    7   7  11  11     7   7  10  10        1540       0.00      0.00
+        3 3 2 2    7   7   4   4     7   7   4   4         280       0.00      0.00
+        3 3 3 3    7   7   7   7     7   7   7   7         406       0.00      0.00
+        4 1 3 2    2  11   7   4     2  10   7   4         560       0.00      0.00
+        4 1 4 1    2  11   2  11     2  10   2  10         210       0.00      0.00
+        4 2 3 1    2   4   7  11     2   4   7  10         560       0.00      0.00
+        4 2 4 2    2   4   2   4     2   4   2   4          36       0.00      0.00
+        4 3 2 1    2   7   4  11     2   7   4  10         560       0.00      0.01
+        4 3 4 3    2   7   2   7     2   7   2   7         105       0.00      0.00
+        4 4 1 1    2   2  11  11     2   2  10  10         165       0.00      0.00
+        4 4 2 2    2   2   4   4     2   2   4   4          30       0.00      0.00
+        4 4 3 3    2   2   7   7     2   2   7   7          84       0.00      0.00
+        4 4 4 4    2   2   2   2     2   2   2   2           6       0.00      0.00
+
+       TOTAL CPU TIME(SEC)    0.00TOTAL I/O TIME(SEC)    0.02
+ 
+      Standard Fortran IO handling used 
+      Integrals for CCSD will be produced
+      Integrals for Noniterative T3 will be produced
+      RHF closed shell reference function
+ 
+      Actual numbers of frozen and deleted orbitals :
+      -----------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            1   0   0   0
+      Deleted orbitals                           0   0   0   0
+ 
+ 
+      Wave function specifications from previous RASSCF:
+      --------------------------------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       0
+      Max number of holes in RAS1 space          0
+      Max number of electrons in RAS3 space      0
+      Number of inactive orbitals                5
+      Number of active orbitals                  0
+      Number of secondary orbitals              19
+      Spin quantum number                      0.0
+      State symmetry                             1
+      Number of configuration state fnc.         1
+      Number of root(s) available                1
+      CI root used                               1
+      This is a closed shell RHF reference function
+ 
+ 
+      Orbital specifications from previous RASSCF:
+      --------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          3   1   1   0
+      Active orbitals                            0   0   0   0
+      Secondary orbitals                         8   3   6   2
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 11   4   7   2
+ 
+ 
+      SCF energy:    -76.02580746
+      -----------
+ 
+      Required WRK size-sum :                 6530
+  Warning!!!, typden is incompatible with SA
+  type of denominators changed to 2 - Orb. energies
+ 
+      ****************************************************************************************************************
+      *                   The Coupled Cluster part                                                                   *
+      ****************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Spin mutiplicity                           1
+      State symmetry                             1
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4
+      Total no. of orbitals                     10   4   7   2
+      No. of occupied orbitals with alpha spin   2   1   1   0
+      No. of occupied orbitals with beta spin    2   1   1   0
+      No. of virtual orbitals with alpha spin    8   3   6   2
+      No. of virtual orbitals with beta spin     8   3   6   2
+ 
+ 
+      Methods and options:
+      --------------------
+ 
+      Max no. of iterations                  30
+      Type of denominators                  diagonal Fock matrix elements
+      energy convergence criterium                0.00000010000000
+ 
+ DIIS EXTRAPOLATION USED     : NO
+ 
+ SPIN ADAPTATION             : T2 DDVV 
+ RST. INF. WILL BE SAVED IN  : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX OPERATIONS           : ESSL        
+ 
+ 
+  nproc, myid                     1                     0
+  Basic Work space requirements    :                 13846
+  Max Size             262143687
+  Final Work space requirements    :                 15226
+  Allocation of work space   : Done
+ 
+      Iteration       Total enegy      Corr. energy      Difference
+          1          -76.22862811      -0.20282066      -0.20282066
+          2          -76.23363168      -0.20782423      -0.00500357
+          3          -76.23694154      -0.21113409      -0.00330986
+          4          -76.23767976      -0.21187230      -0.00073821
+          5          -76.23797730      -0.21216984      -0.00029754
+          6          -76.23808552      -0.21227806      -0.00010822
+          7          -76.23812988      -0.21232243      -0.00004436
+          8          -76.23814803      -0.21234058      -0.00001815
+          9          -76.23815576      -0.21234830      -0.00000772
+         10          -76.23815908      -0.21235163      -0.00000332
+         11          -76.23816054      -0.21235309      -0.00000146
+         12          -76.23816119      -0.21235374      -0.00000065
+         13          -76.23816149      -0.21235403      -0.00000029
+         14          -76.23816162      -0.21235417      -0.00000014
+         15          -76.23816169      -0.21235423      -0.00000006
+      Convergence after                     16  Iterations
+ 
+ 
+      Total energy (diff) :     -76.23816169      -0.00000006
+      Correlation energy  :        -0.2123542325334
+      Reference energy    :       -76.0258074556390
+      E1aa   contribution :       0.00000000
+      E1bb   contribution :       0.00000000
+      E2aaaa contribution :      -0.02268679
+      E2bbbb contribution :      -0.02268679
+      E2abab contribution :      -0.16698065
+ 
+ 
+ Five largest amplitudes of :T1aa    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0079405708
+    3      0      3      0      5      0      1      0    -0.0075319889
+    3      0      3      0      1      0      1      0     0.0060844164
+    1      0      1      0      6      0      2      0    -0.0052329111
+    3      0      3      0      3      0      1      0     0.0050037600
+ Euclidian norm is :     0.0173016785
+ 
+ Five largest amplitudes of :T1bb    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0079405708
+    3      0      3      0      5      0      1      0    -0.0075319889
+    3      0      3      0      1      0      1      0     0.0060844164
+    1      0      1      0      6      0      2      0    -0.0052329111
+    3      0      3      0      3      0      1      0     0.0050037600
+ Euclidian norm is :     0.0173016785
+ 
+ Five largest amplitudes of :T2aaaa  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0194433526
+    3      2      3      2      3      1      1      1     0.0167918358
+    3      2      3      2      1      1      1      1    -0.0167858415
+    3      1      3      1      1      3      1      2    -0.0156508928
+    3      1      3      1      2      3      1      2    -0.0139901429
+ Euclidian norm is :     0.0699031141
+ 
+ Five largest amplitudes of :T2bbbb  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0194433526
+    3      2      3      2      3      1      1      1     0.0167918358
+    3      2      3      2      1      1      1      1    -0.0167858415
+    3      1      3      1      1      3      1      2    -0.0156508928
+    3      1      3      1      2      3      1      2    -0.0139901429
+ Euclidian norm is :     0.0699031141
+ 
+ Five largest amplitudes of :T2abab  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      2      2      2      1      1      1      1    -0.0514259422
+    3      3      3      3      2      2      1      1    -0.0364847439
+    1      1      1      1      3      3      2      2    -0.0342485746
+    3      3      3      3      1      1      1      1    -0.0311203328
+    2      1      2      1      1      3      1      2    -0.0280353781
+ Euclidian norm is :     0.2180967179
+ 
+ 
+      Happy Landing!
+ 
+ 
+  **********************************
+   Triples Contribution Calculation 
+  **********************************
+ 
+  Warning!!!, typden is incompatible with SA
+ NORB  10    4    7    2
+ NOA    2    1    1    0
+ NOB    2    1    1    0
+ NVA    8    3    6    2
+ NVB    8    3    6    2
+ 
+ NUMBER OF IRREPS             :  4
+ MULTIPLICITY                 :  1
+ OVERALL SYMMETRY STATE       :  1
+ METHOD                       : CCSD+T(CCSD)+<T3(1)WT1>+<T3(1)UT2> = CCSD(T)
+ TYPE OF DENOMINATOR          : DIAGONAL
+ SPIN ADAPTATION             : T2 DDVV 
+ CCSD RESULTS LOAD FROM FILE : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX HANDLING             : ESSL        
+ IJ CYCLE SEGMENTED          : NO          
+ 
+ 
+  Work space requirements :                 14871
+  Allocation of work space : Done
+       CCSD     =       -76.2381616881724
+       T3 corr. =        -0.0031234479769
+       CCSD + T3=       -76.2412851361492
+  T3 energy decomposition into spin parts
+  Eaaa = -5.313297955046630E-005
+  Eaab = -1.508591008876530E-003
+  Eabb = -1.508591008876530E-003
+  Ebbb = -5.313297955046629E-005
+ 
+ 
+      Happy Landing!
+ 
+   * Points #                     6  done.
+ gradient set to Zero
+ gradient set to Zero
+ gradient set to Zero
+ 
+ Numerical gradient
+ ---------------------------------------------
+                X           Y           Z     
+ ---------------------------------------------
+  H1           0.000000    0.000000    0.000000
+  O1           0.000000    0.000000    0.000000
+ ---------------------------------------------
+--- Stop Module:  numerical_gradient at Fri Oct  7 14:36:33 2016 /rc=0 ---
+--- Module numerical_gradient spent 6 seconds 
+--- Module auto spent 8 seconds 
+*** 
+--- Start Module: slapaf at Fri Oct  7 14:36:34 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SLAPAF with 2000 MB of memory
+                                              at 14:36:34 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+      Slapaf input parameters:
+          ------------------------
+ 
+ 
+ 
+ Max iterations:                              16
+ Convergence test a la Schlegel.
+ Convergence criterion on gradient/para.<=: 0.1E-05
+ Convergence criterion on step/parameter<=: 0.1E-05
+ Convergence criterion on energy change <=: 0.1E-09
+ Max norm of step:     0.50E+00
+ 
+ Line search is performed
+ 
+ 
+ -Optimization for minimum.
+  Optimization method: RS-RFO.
+ 
+ -Initial Hessian guessed by Hessian Model Function (HMF).
+  HMF augmented with weak interactions.
+ 
+ -Hessian update method: Broyden-Fletcher-Goldfarb-Shanno
+  Max number of points in Hessian update:  5
+ 
+ -Relaxation will be done in nonredundant internal coordinates, based on
+  force constant weighted redundant internal coordinates.
+ 
+ 
+ ******************************************
+ * Statistics of the internal coordinates *
+ ******************************************
+ Translations and Rotations:         0
+ Bonds                     :         1
+ Angles                    :         1
+ Torsions                  :         0
+ Out-of-plane angles       :         0
+ 
+ 
+*****************************************************************************************************************
+*                                  Energy Statistics for Geometry Optimization                                  *
+*****************************************************************************************************************
+                       Energy     Grad     Grad              Step                 Estimated   Geom     Hessian   
+Iter      Energy       Change     Norm     Max    Element    Max     Element     Final Energy Update Update Index
+  1    -76.24130496  0.00000000 0.000000 0.000000 nrc002   0.000000  nrc002      -76.24130496 RS-RFO  None    0  
+ 
+       +----------------------------------+----------------------------------+
+       +    Cartesian Displacements       +    Gradient in internals         +
+       +  Value      Threshold Converged? +  Value      Threshold Converged? +
+ +-----+----------------------------------+----------------------------------+
+ + RMS + 0.1937E-06  0.4000E-05     Yes   + 0.8698E-07  0.1000E-05     Yes   +
+ +-----+----------------------------------+----------------------------------+
+ + Max + 0.2102E-06  0.6000E-05     Yes   + 0.7047E-07  0.1500E-05     Yes   +
+ +-----+----------------------------------+----------------------------------+
+ 
+ Geometry is converged in   1 iterations to a Minimum Structure
+ 
+*****************************************************************************************************************
+*****************************************************************************************************************
+Geometry section
+ 
+********************************************************************************
+  Geometrical information of the final structure
+********************************************************************************
+ 
+  NOTE: on convergence the final predicted structure will be printed here.
+  This is not identical to the structure printed in the head of the output.
+ 
+ *********************************************************
+ * Nuclear coordinates of the final structure / Bohr     *
+ *********************************************************
+  ATOM              X               Y               Z     
+  H1               0.000000        1.418238        1.547826
+  O1               0.000000        0.000000        0.397630
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates of the final structure / Angstrom *
+ *********************************************************
+  ATOM              X               Y               Z     
+  H1               0.000000        0.750499        0.819074
+  O1               0.000000        0.000000        0.210417
+ 
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 H1            2 H1            3 O1    
+    1 H1       0.000000
+    2 H1       2.836477        0.000000
+    3 O1       1.826021        1.826021        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 H1            2 H1            3 O1    
+    1 H1       0.000000
+    2 H1       1.500999        0.000000
+    3 O1       0.966288        0.966288        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 H1       1 H1       3 O1        39.04
+                      1 H1       2 H1       3 O1        39.04
+                      1 H1       3 O1       2 H1       101.92
+ 
+                **************************************************
+                * Radius of hypersphere / au*amu**(1/2)/amu(1/2) *
+                **************************************************
+                                     0.0000
+ 
+--- Stop Module:  slapaf at Fri Oct  7 14:36:35 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: last_energy at Fri Oct  7 14:36:36 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                               MOLCAS executing module Last_Energy with 2000 MB of memory
+                                              at 14:36:36 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:36:36 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+    Geometry read from RUNFILE
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+ Title:
+                       The integrals Generated: Thu Feb 16 16:00:33 2006                
+ 
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+                    Reflection in the xz-plane  
+ 
+ 
+                    Character Table for C2v
+ 
+                             E   s(yz) s(xz) C2(z)
+                    a1       1     1     1     1  z
+                    b1       1    -1     1    -1  x, xz, Ry
+                    b2       1     1    -1    -1  y, yz, Rx
+                    a2       1    -1    -1     1  xy, Rz, I
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:H.CC-PVDZ.DUNNING.4S1P.2S1P....... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       4       2        X                  
+         p       1       1        X                  
+      Basis set label:O.CC-PVDZ.DUNNING.9S4P1D.3S2P1D...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  8.000000 au
+      Associated Actual Charge     8.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       9       3        X                  
+         p       4       2        X                  
+         d       1       1                 X         
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      H1               0.000000       1.418238       1.547826              0.000000       0.750499       0.819074
+        2      H1               0.000000      -1.418238       1.547826              0.000000      -0.750499       0.819074
+        3      O1               0.000000       0.000000       0.397630              0.000000       0.000000       0.210417
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 H1            2 H1            3 O1    
+    1 H1       0.000000
+    2 H1       2.836477        0.000000
+    3 O1       1.826021        1.826021        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 H1            2 H1            3 O1    
+    1 H1       0.000000
+    2 H1       1.500999        0.000000
+    3 O1       0.966288        0.966288        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 H1       1 H1       3 O1        39.04
+                      1 H1       2 H1       3 O1        39.04
+                      1 H1       3 O1       2 H1       101.92
+ 
+ 
+            Nuclear Potential Energy              9.11477329 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a1   b1   b2   a2 
+      Basis functions           11    4    7    2
+ 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module RASSCF with 2000 MB of memory
+                                              at 14:36:37 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      Header of the ONEINT file:
+      --------------------------
+      The integrals Generated: Thu Feb 16 16:00:33 2006                                                                       
+      Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:36 2016                                                         
+ 
+ 
+      OrdInt status: non-squared
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.75050   0.81907
+       2   O1         0.00000   0.00000   0.21042
+       3   H1         0.00000  -0.75050   0.81907
+      --------------------------------------------
+      Nuclear repulsion energy =    9.114773
+ 
+ 
+ 
+      Wave function specifications:
+         -----------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       0
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                5
+      Number of active orbitals                  0
+      Number of secondary orbitals              19
+      Spin quantum number                      0.0
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+         -----------------------
+ 
+      Symmetry species                           1   2   3   4
+                                                a1  b1  b2  a2
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          3   1   1   0
+      Active orbitals                            0   0   0   0
+      RAS1 orbitals                              0   0   0   0
+      RAS2 orbitals                              0   0   0   0
+      RAS3 orbitals                              0   0   0   0
+      Secondary orbitals                         8   3   6   2
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 11   4   7   2
+ 
+      CI expansion specifications:
+         ----------------------------
+ 
+      Number of configuration state fnc.         1
+      Number of determinants                     1
+      Number of root(s) required                 1
+      Root chosen for geometry opt.              1
+      CI root used                               1
+      highest root included in the CI            1
+      max. size of the explicit Hamiltonian      1
+ 
+      Optimization specifications:
+         ----------------------------
+ 
+      RASSCF algorithm: Conventional
+      Maximum number of macro iterations       200
+      Maximum number of SX iterations          100
+      Threshold for RASSCF energy            0.100E-11
+      Threshold for max MO rotation          0.100E-05
+      Threshold for max BLB element          0.100E-05
+      Level shift parameter                  0.500E+00
+      Make Quasi-Newton update
+      Starting CI array(s) will be read from file JOBOLD (or JOBIPH)
+   File JOBOLD not found -- use JOBIPH.
+      The MO-coefficients are taken from the file JOBIPH
+      Title:The RAS/CAS part                                                        
+ 
+      Total molecular charge    0.00
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                            Wave function  control section                                            *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+                          RASSCF iterations: Energy and convergence statistics
+                          ----------------------------------------------------
+ 
+      Iter CI   SX   CI       RASSCF       Energy    max ROT   max BLB   max BLB  Level Ln srch  Step   QN    Time(min)
+          iter iter root      energy       change     param    element    value    shift minimum  type update     CPU
+        1   1    2    1   -76.02611318    0.00E+00   0.28E-07    1   3 3 -0.82E-07   0.00   0.00     SX     NO      0.00
+        2   1    1    1   -76.02611318    0.28E-13   0.00E+00    1   2 2  0.36E-07   0.00   0.00     SX     NO      0.00
+        3   1    1    1   -76.02611318    0.00E+00   0.00E+00    1   2 2  0.36E-07   0.00   0.00     SX     NO      0.00
+        4   1    1    1   -76.02611318    0.00E+00   0.00E+00    1   2 2  0.36E-07   0.00   0.00     SX     NO      0.00
+      Convergence after  4 iterations
+        5   1    1    1   -76.02611318    0.00E+00   0.00E+00    1   2 2  0.36E-07   0.00   0.00     SX     NO      0.00
+ 
+      Natural orbitals and occupation numbers for root  1
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                                    Final results                                                    *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       0
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                5
+      Number of active orbitals                  0
+      Number of secondary orbitals              19
+      Spin quantum number                      0.0
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4
+                                                a1  b1  b2  a2
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          3   1   1   0
+      Active orbitals                            0   0   0   0
+      RAS1 orbitals                              0   0   0   0
+      RAS2 orbitals                              0   0   0   0
+      RAS3 orbitals                              0   0   0   0
+      Secondary orbitals                         8   3   6   2
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 11   4   7   2
+ 
+ 
+      CI expansion specifications:
+      ----------------------------
+ 
+      Number of configuration state fnc.         1
+      Number of determinants                     1
+      Number of root(s) required                 1
+      CI root used                               1
+      highest root included in the CI            1
+      Root passed to geometry opt.               1
+ 
+ 
+      Final optimization conditions:
+      ------------------------------
+ 
+      Average CI energy                             -76.02611318
+      RASSCF energy for state  1                    -76.02611318
+      Super-CI energy                                 0.00000000
+      RASSCF energy change                            0.00000000
+      Max change in MO coefficients               0.000E+00
+      Max non-diagonal density matrix element     0.000E+00
+      Maximum BLB matrix element                  0.362E-07
+      (orbital pair   1,   2 in symmetry   2)
+      Norm of electronic gradient            0.534E-07
+ 
+ 
+      Final state energy(ies):
+      ------------------------
+ 
+      RASSCF root number  1 Total energy =        -76.02611318
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      All orbitals are eigenfunctions of the PT2 Fock matrix
+ 
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 1: a1 
+ 
+ 
+      Orbital            1         2         3
+      Energy      -20.5534   -1.3342   -0.5702
+ 
+    1 H1    1s     -0.0004    0.4599    0.5074
+    2 H1    *s      0.0008   -0.2162   -0.1947
+    3 H1    *py     0.0008   -0.0511   -0.0457
+    4 H1    *pz     0.0007   -0.0301    0.0089
+    5 O1    1s      1.0004   -0.0076    0.0024
+    6 O1    2s      0.0022    0.8721   -0.3003
+    7 O1    *s     -0.0014   -0.1193   -0.1821
+    8 O1    2pz     0.0026    0.1154    0.7887
+    9 O1    *pz    -0.0017   -0.0656   -0.0040
+   10 O1    *d0     0.0000    0.0016    0.0181
+   11 O1    *d2+   -0.0001   -0.0027   -0.0045
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 2: b1 
+ 
+ 
+      Orbital            1
+      Energy       -0.4935
+ 
+    1 H1    *px    -0.0437
+    2 O1    2px    -0.9206
+    3 O1    *px    -0.0715
+    4 O1    *d1+   -0.0183
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 3: b2 
+ 
+ 
+      Orbital            1
+      Energy       -0.6895
+ 
+    1 H1    1s      0.7810
+    2 H1    *s     -0.2589
+    3 H1    *py    -0.0315
+    4 H1    *pz    -0.0467
+    5 O1    2py     0.7144
+    6 O1    *py    -0.0999
+    7 O1    *d1-    0.0268
+
+      Von Neumann Entropy (Root  1) =  0.00000
+ 
+
+      Mulliken population Analysis for root number: 1
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             H1      O1    
+      1s     1.0770  2.0008
+      2s     0.0000  1.8251
+      2px    0.0000  1.8362
+      2pz    0.0000  1.5388
+      2py    0.0000  1.3358
+      *s    -0.3176 -0.1547
+      *px    0.0215  0.1196
+      *pz    0.0271 -0.0319
+      *py    0.0367 -0.1716
+      *d2+   0.0000  0.0008
+      *d1+   0.0000  0.0011
+      *d0    0.0000  0.0015
+      *d1-   0.0000  0.0089
+      *d2-   0.0000  0.0000
+      Total  0.8447  8.3105
+ 
+      N-E    0.1553 -0.3105
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  1
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    2.1040           Total=    2.1040
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    0.2785
+                    XX=   -7.0517              XY=    0.0000              XZ=    0.0000              YY=   -4.2175
+                    YZ=    0.0000              ZZ=   -5.5930
+      In traceless form (Debye*Ang)
+                    XX=   -2.1464              XY=    0.0000              XZ=    0.0000              YY=    2.1049
+                    YZ=    0.0000              ZZ=    0.0416
+      Canonical orbitals are written to the RASORB           file
+      Natural orbitals for root   1 are written to the RASORB.1         file
+      Spin density orbitals for root   1 are written to the SPDORB.1         file
+ 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module MOTRA with 2000 MB of memory
+                                              at 14:36:37 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      *** WARNING: Default frozen orbitals is overwritten by user input.
+      *** Default values:   1   0   0   0
+ 
+      **************************************************************************************************************************
+      *                                                                                                                        *
+      *                                                        Project:                                                        *
+      *                                      MOTRA INPUT FOR SUBSEQUENT CCSDT CALCULATION                                      *
+      *                                                                                                                        *
+      **************************************************************************************************************************
+ 
+ 
+      Header of the integral files:
+                 The integrals Generated: Thu Feb 16 16:00:33 2006            
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:36 2016        
+ 
+ 
+      Header of MO coefficients source file:
+      JOBIPH                                                                          
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.00000   0.75050   0.81907
+       2   O1         0.00000   0.00000   0.21042
+       3   H1         0.00000  -0.75050   0.81907
+      --------------------------------------------
+      Nuclear repulsion energy =    9.114773
+ 
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species:              1   2   3   4
+      Number of basis functions:    11   4   7   2
+      Frozen orbitals:               1   0   0   0
+      Deleted orbitals:              0   0   0   0
+      Number of orbitals used:      10   4   7   2
+
+       SYMMETRY  BASIS FUNCTIONS       ORBITALS      INTEGRALS   CPU(SEC)  I/O(SEC)
+        1 1 1 1   11  11  11  11    10  10  10  10        1540       0.00      0.00
+        2 1 2 1    4  11   4  11     4  10   4  10         820       0.00      0.00
+        2 2 1 1    4   4  11  11     4   4  10  10         550       0.00      0.00
+        2 2 2 2    4   4   4   4     4   4   4   4          55       0.00      0.00
+        3 1 3 1    7  11   7  11     7  10   7  10        2485       0.00      0.00
+        3 2 3 2    7   4   7   4     7   4   7   4         406       0.00      0.00
+        3 3 1 1    7   7  11  11     7   7  10  10        1540       0.00      0.00
+        3 3 2 2    7   7   4   4     7   7   4   4         280       0.00      0.00
+        3 3 3 3    7   7   7   7     7   7   7   7         406       0.00      0.01
+        4 1 3 2    2  11   7   4     2  10   7   4         560       0.00      0.00
+        4 1 4 1    2  11   2  11     2  10   2  10         210       0.00      0.00
+        4 2 3 1    2   4   7  11     2   4   7  10         560       0.00      0.00
+        4 2 4 2    2   4   2   4     2   4   2   4          36       0.00      0.00
+        4 3 2 1    2   7   4  11     2   7   4  10         560       0.00      0.00
+        4 3 4 3    2   7   2   7     2   7   2   7         105       0.00      0.00
+        4 4 1 1    2   2  11  11     2   2  10  10         165       0.00      0.00
+        4 4 2 2    2   2   4   4     2   2   4   4          30       0.00      0.00
+        4 4 3 3    2   2   7   7     2   2   7   7          84       0.00      0.00
+        4 4 4 4    2   2   2   2     2   2   2   2           6       0.00      0.00
+
+       TOTAL CPU TIME(SEC)    0.00TOTAL I/O TIME(SEC)    0.01
+ 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                 MOLCAS executing module CCSD(T) with 2000 MB of memory
+                                              at 14:36:37 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+      Standard Fortran IO handling used 
+      Integrals for CCSD will be produced
+      Integrals for Noniterative T3 will be produced
+      RHF closed shell reference function
+ 
+      Actual numbers of frozen and deleted orbitals :
+      -----------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            1   0   0   0
+      Deleted orbitals                           0   0   0   0
+ 
+ 
+      Wave function specifications from previous RASSCF:
+      --------------------------------------------------
+ 
+      Number of closed shell electrons          10
+      Number of electrons in active shells       0
+      Max number of holes in RAS1 space          0
+      Max number of electrons in RAS3 space      0
+      Number of inactive orbitals                5
+      Number of active orbitals                  0
+      Number of secondary orbitals              19
+      Spin quantum number                      0.0
+      State symmetry                             1
+      Number of configuration state fnc.         1
+      Number of root(s) available                1
+      CI root used                               1
+      This is a closed shell RHF reference function
+ 
+ 
+      Orbital specifications from previous RASSCF:
+      --------------------------------------------
+ 
+      Symmetry species                           1   2   3   4
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          3   1   1   0
+      Active orbitals                            0   0   0   0
+      Secondary orbitals                         8   3   6   2
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 11   4   7   2
+ 
+ 
+      SCF energy:    -76.02611318
+      -----------
+ 
+      Required WRK size-sum :                 6530
+  Warning!!!, typden is incompatible with SA
+  type of denominators changed to 2 - Orb. energies
+ 
+      ****************************************************************************************************************
+      *                   The Coupled Cluster part                                                                   *
+      ****************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Spin mutiplicity                           1
+      State symmetry                             1
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4
+      Total no. of orbitals                     10   4   7   2
+      No. of occupied orbitals with alpha spin   2   1   1   0
+      No. of occupied orbitals with beta spin    2   1   1   0
+      No. of virtual orbitals with alpha spin    8   3   6   2
+      No. of virtual orbitals with beta spin     8   3   6   2
+ 
+ 
+      Methods and options:
+      --------------------
+ 
+      Max no. of iterations                  30
+      Type of denominators                  diagonal Fock matrix elements
+      energy convergence criterium                0.00000010000000
+ 
+ DIIS EXTRAPOLATION USED     : NO
+ 
+ SPIN ADAPTATION             : T2 DDVV 
+ RST. INF. WILL BE SAVED IN  : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX OPERATIONS           : ESSL        
+ 
+ 
+  nproc, myid                     1                     0
+  Basic Work space requirements    :                 13846
+  Max Size             262143967
+  Final Work space requirements    :                 15226
+  Allocation of work space   : Done
+ 
+      Iteration       Total enegy      Corr. energy      Difference
+          1          -76.22866266      -0.20254948      -0.20254948
+          2          -76.23370991      -0.20759673      -0.00504724
+          3          -76.23699228      -0.21087910      -0.00328237
+          4          -76.23772545      -0.21161227      -0.00073316
+          5          -76.23801954      -0.21190636      -0.00029409
+          6          -76.23812634      -0.21201316      -0.00010681
+          7          -76.23817000      -0.21205682      -0.00004366
+          8          -76.23818783      -0.21207465      -0.00001783
+          9          -76.23819540      -0.21208222      -0.00000757
+         10          -76.23819865      -0.21208547      -0.00000325
+         11          -76.23820007      -0.21208689      -0.00000142
+         12          -76.23820070      -0.21208752      -0.00000063
+         13          -76.23820099      -0.21208781      -0.00000029
+         14          -76.23820112      -0.21208794      -0.00000013
+         15          -76.23820118      -0.21208800      -0.00000006
+      Convergence after                     16  Iterations
+ 
+ 
+      Total energy (diff) :     -76.23820118      -0.00000006
+      Correlation energy  :        -0.2120880006535
+      Reference energy    :       -76.0261131802314
+      E1aa   contribution :       0.00000000
+      E1bb   contribution :       0.00000000
+      E2aaaa contribution :      -0.02268129
+      E2bbbb contribution :      -0.02268129
+      E2abab contribution :      -0.16672541
+ 
+ 
+ Five largest amplitudes of :T1aa    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0078132336
+    3      0      3      0      5      0      1      0    -0.0074844846
+    3      0      3      0      1      0      1      0     0.0060688013
+    1      0      1      0      6      0      2      0    -0.0051772192
+    3      0      3      0      3      0      1      0     0.0049011858
+ Euclidian norm is :     0.0171421255
+ 
+ Five largest amplitudes of :T1bb    
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    1      0      1      0      1      0      2      0    -0.0078132336
+    3      0      3      0      5      0      1      0    -0.0074844846
+    3      0      3      0      1      0      1      0     0.0060688013
+    1      0      1      0      6      0      2      0    -0.0051772192
+    3      0      3      0      3      0      1      0     0.0049011858
+ Euclidian norm is :     0.0171421255
+ 
+ Five largest amplitudes of :T2aaaa  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0195293078
+    3      2      3      2      3      1      1      1     0.0167792589
+    3      2      3      2      1      1      1      1    -0.0167112613
+    3      1      3      1      1      3      1      2    -0.0155890257
+    3      1      3      1      2      3      1      2    -0.0139836590
+ Euclidian norm is :     0.0698598603
+ 
+ Five largest amplitudes of :T2bbbb  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      1      2      1      1      3      1      2    -0.0195293078
+    3      2      3      2      3      1      1      1     0.0167792589
+    3      2      3      2      1      1      1      1    -0.0167112613
+    3      1      3      1      1      3      1      2    -0.0155890257
+    3      1      3      1      2      3      1      2    -0.0139836590
+ Euclidian norm is :     0.0698598603
+ 
+ Five largest amplitudes of :T2abab  
+  SYMA   SYMB   SYMI   SYMJ     A      B      I      J     VALUE
+    2      2      2      2      1      1      1      1    -0.0514185283
+    3      3      3      3      2      2      1      1    -0.0364100272
+    1      1      1      1      3      3      2      2    -0.0344121736
+    3      3      3      3      1      1      1      1    -0.0306933244
+    2      1      2      1      1      3      1      2    -0.0281182424
+ Euclidian norm is :     0.2175613776
+ 
+ 
+      Happy Landing!
+ 
+ 
+  **********************************
+   Triples Contribution Calculation 
+  **********************************
+ 
+  Warning!!!, typden is incompatible with SA
+ NORB  10    4    7    2
+ NOA    2    1    1    0
+ NOB    2    1    1    0
+ NVA    8    3    6    2
+ NVB    8    3    6    2
+ 
+ NUMBER OF IRREPS             :  4
+ MULTIPLICITY                 :  1
+ OVERALL SYMMETRY STATE       :  1
+ METHOD                       : CCSD+T(CCSD)+<T3(1)WT1>+<T3(1)UT2> = CCSD(T)
+ TYPE OF DENOMINATOR          : DIAGONAL
+ SPIN ADAPTATION             : T2 DDVV 
+ CCSD RESULTS LOAD FROM FILE : RSTART
+ PREFERENCE MATRIX MULT.     : NORMAL
+ DENOMINATOR SHIFT FOR OCC.  : .00000D+00
+ DENOMINATOR SHIFT FOR VIRT. : .00000D+00
+ LEVEL OF OUTPUT PRINTING    : MINIMAL
+ INPUT/OUTPUT HANDLING       : Standard SQ 
+ MATRIX HANDLING             : ESSL        
+ IJ CYCLE SEGMENTED          : NO          
+ 
+ 
+  Work space requirements :                 14871
+  Allocation of work space : Done
+       CCSD     =       -76.2382011808849
+       T3 corr. =        -0.0031037811404
+       CCSD + T3=       -76.2413049620253
+  T3 energy decomposition into spin parts
+  Eaaa = -5.303669485176984E-005
+  Eaab = -1.498853875334597E-003
+  Eabb = -1.498853875334597E-003
+  Ebbb = -5.303669485176984E-005
+ 
+ 
+      Happy Landing!
+ 
+--- Stop Module:  last_energy at Fri Oct  7 14:36:38 2016 /rc=0 ---
+--- Stop Module:  auto at Fri Oct  7 14:36:39 2016 /rc=0 ---
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 14:36:39 2016 /rc=0 ---

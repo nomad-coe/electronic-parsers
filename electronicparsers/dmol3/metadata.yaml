@@ -1,0 +1,9 @@
+codeLabel: 'DMol3 '
+codeLabelStyle: 'Capitals: D, M'
+codeName: dmol3
+codeUrl: http://dmol3.web.psi.ch/
+parserDirName: dependencies/parsers/dmol3/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-dmol3.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: ''

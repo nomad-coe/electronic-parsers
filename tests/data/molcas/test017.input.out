@@ -1,0 +1,4342 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test017.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test017.input.16666
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 14:27:32 2016 
+
+++ ---------   Input file   ---------
+
+ >>>>>>>>>>>>>>>>>>> DO while <<<<<<<<<<<<<<<<<<<<
+ >export MOLCAS_PRINT=VERBOSE
+  &SEWARD &END
+    Symmetry
+    x z
+    Basis Set
+    C.cc-pVDZ....
+    C 0.0 0.0 0.0
+    End of Basis
+    Basis Set
+    H.cc-pVDZ....
+    HA             1.67103            -1.18160             0.0000000000
+    HB             0.0000000000        1.18160             1.67103
+    End of Basis
+  &SCF &END
+    KSDFT
+    B3LYP
+  &ALASKA &END
+  &SLAPAF &END
+ >>>>>>>>>>>>> ENDDO <<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
+
+-- ----------------------------------
+
+--- Start Module: auto at Fri Oct  7 14:27:32 2016 
+--- Start Module: seward at Fri Oct  7 14:27:32 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:27:32 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+ Basis Set     1 Label: C.CC-PVDZ....
+ Basis set is read from library:basis_library 
+ Basis Set Reference(s):
+     T.H. Dunning, Jr. J. Chem. Phys. 90, 1007 (1989).                               
+     CARBON       (9s,4p,1d) -> [3s,2p,1d]                                           
+ 
+ 
+ 
+ 
+ Basis Set     2 Label: H.CC-PVDZ....
+ Basis set is read from library:basis_library 
+ Basis Set Reference(s):
+     T.H. Dunning, Jr. J. Chem. Phys. 90, 1007 (1989).                               
+     HYDROGEN     (4s,1p) -> [2s,1p]                                                 
+ 
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+                    Reflection in the xy-plane  
+ 
+ 
+                    Character Table for C2v
+ 
+                             E   s(yz) s(xy) C2(y)
+                    a1       1     1     1     1  y
+                    b1       1    -1     1    -1  x, xy, Rz
+                    b2       1     1    -1    -1  z, yz, Rx
+                    a2       1    -1    -1     1  xz, Ry, I
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:C.CC-PVDZ......... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  6.000000 au
+      Associated Actual Charge     6.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       9       3        X                  
+         p       4       2        X                  
+         d       1       1                 X         
+ 
+       Label   Cartesian Coordinates / Bohr
+ 
+ C                  0.0000000000        0.0000000000        0.0000000000
+      Basis set label:H.CC-PVDZ......... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       4       2        X                  
+         p       1       1        X                  
+ 
+       Label   Cartesian Coordinates / Bohr
+ 
+ HA                 1.6710300000       -1.1816000000        0.0000000000
+ HB                 0.0000000000        1.1816000000        1.6710300000
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      C                0.000000       0.000000       0.000000              0.000000       0.000000       0.000000
+        2      HA               1.671030      -1.181600       0.000000              0.884271      -0.625276       0.000000
+        3      HA              -1.671030      -1.181600       0.000000             -0.884271      -0.625276       0.000000
+        4      HB               0.000000       1.181600       1.671030              0.000000       0.625276       0.884271
+        5      HB               0.000000       1.181600      -1.671030              0.000000       0.625276      -0.884271
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       2.046587        0.000000
+    3 HA       2.046587        3.342060        0.000000
+    4 HB       2.046587        3.342065        3.342065        0.000000
+    5 HB       2.046587        3.342065        3.342065        3.342060        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       1.083007        0.000000
+    3 HA       1.083007        1.768542        0.000000
+    4 HB       1.083007        1.768545        1.768545        0.000000
+    5 HB       1.083007        1.768545        1.768545        1.768542        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 HA       1 C        3 HA       109.47
+                      2 HA       1 C        4 HB       109.47
+                      2 HA       1 C        5 HB       109.47
+                      3 HA       1 C        4 HB       109.47
+                      3 HA       1 C        5 HB       109.47
+                      4 HB       1 C        5 HB       109.47
+ 
+ 
+      Rigid rotor info:
+         -----------------
+ 
+ 
+ 
+                    Total mass (a) :  16.03130
+ 
+                    Center of mass 
+                          X          Y          Z   
+                       0.00000    0.00000    0.00000
+ 
+                    Reference system based on center of mass
+                    Coordinates and Masses of Atoms, in au and a
+                          X          Y          Z        Mass
+                       0.00000    0.00000    0.00000   12.00000
+                       1.67103   -1.18160    0.00000    1.00782
+                      -1.67103   -1.18160    0.00000    1.00782
+                       0.00000    1.18160    1.67103    1.00782
+                       0.00000    1.18160   -1.67103    1.00782
+ 
+                    The Moment of Inertia Tensor / au
+                                     X          Y        Z     
+                    X            0.2052E+05
+                    Y            0.0000E+00 0.2052E+05
+                    Z            0.0000E+00 0.0000E+00 0.2052E+05
+ 
+                    The Principal Axis and Moment of Inertia (au)
+                    Eigenvalues :0.2052E+05 0.2052E+05 0.2052E+05
+                                     X'         Y'       Z'    
+                    Eigenvectors:
+                    X            0.1000E+01 0.0000E+00 0.0000E+00
+                    Y            0.0000E+00 0.0000E+00 0.1000E+01
+                    Z            0.0000E+00 0.1000E+01 0.0000E+00
+ 
+                    The Rotational Constants
+                            (cm-1)            (GHz)
+                              5.348          160.325
+                              5.348          160.325
+                              5.348          160.325
+ 
+ 
+                    *******************************************
+                    *                                         *
+                    * R I G I D - R O T O R   A N A L Y S I S *
+                    *                                         *
+                    *******************************************
+ 
+                    j(Max):  5
+ 
+                    Rotor Type: Linear Rotor            
+                    Asymmetry parameter:  0.000
+                    Prolate = -1
+                    Oblate  =  1
+ 
+ 
+                    Rotational energies / cm-1
+ 
+                    E(J= 0,kappa= 0) =        0.000
+ 
+                    E(J= 1,kappa=-1) =       10.696
+                    E(J= 1,kappa= 0) =       10.696
+                    E(J= 1,kappa= 1) =       10.696
+ 
+                    E(J= 2,kappa=-2) =       32.087
+                    E(J= 2,kappa=-1) =       32.087
+                    E(J= 2,kappa= 0) =       32.087
+                    E(J= 2,kappa= 1) =       32.087
+                    E(J= 2,kappa= 2) =       32.087
+ 
+                    E(J= 3,kappa=-3) =       64.174
+                    E(J= 3,kappa=-2) =       64.174
+                    E(J= 3,kappa=-1) =       64.174
+                    E(J= 3,kappa= 0) =       64.174
+                    E(J= 3,kappa= 1) =       64.174
+                    E(J= 3,kappa= 2) =       64.174
+                    E(J= 3,kappa= 3) =       64.174
+ 
+                    E(J= 4,kappa=-4) =      106.957
+                    E(J= 4,kappa=-3) =      106.957
+                    E(J= 4,kappa=-2) =      106.957
+                    E(J= 4,kappa=-1) =      106.957
+                    E(J= 4,kappa= 0) =      106.957
+                    E(J= 4,kappa= 1) =      106.957
+                    E(J= 4,kappa= 2) =      106.957
+                    E(J= 4,kappa= 3) =      106.957
+                    E(J= 4,kappa= 4) =      106.957
+ 
+                    E(J= 5,kappa=-5) =      160.436
+                    E(J= 5,kappa=-4) =      160.436
+                    E(J= 5,kappa=-3) =      160.436
+                    E(J= 5,kappa=-2) =      160.436
+                    E(J= 5,kappa=-1) =      160.436
+                    E(J= 5,kappa= 0) =      160.436
+                    E(J= 5,kappa= 1) =      160.436
+                    E(J= 5,kappa= 2) =      160.436
+                    E(J= 5,kappa= 3) =      160.436
+                    E(J= 5,kappa= 4) =      160.436
+                    E(J= 5,kappa= 5) =      160.436
+ 
+ 
+ 
+      Primitive basis info:
+         ---------------------
+ 
+ 
+ 
+                    *****************************************************
+                    ******** Primitive Basis Functions (Valence) ********
+                    *****************************************************
+ 
+ 
+ Basis set:C.CC-PVDZ.........                                                              
+ 
+                  Type         
+                   s
+           No.      Exponent    Contraction Coefficients
+            1  0.666500000D+04   0.000692  -0.000146   0.000000
+            2  0.100000000D+04   0.005329  -0.001154   0.000000
+            3  0.228000000D+03   0.027077  -0.005725   0.000000
+            4  0.647100000D+02   0.101718  -0.023312   0.000000
+            5  0.210600000D+02   0.274740  -0.063955   0.000000
+            6  0.749500000D+01   0.448564  -0.149981   0.000000
+            7  0.279700000D+01   0.285074  -0.127262   0.000000
+            8  0.521500000D+00   0.015204   0.544529   0.000000
+            9  0.159600000D+00  -0.003191   0.580496   1.000000
+ 
+                  Type         
+                   p
+           No.      Exponent    Contraction Coefficients
+           10  0.943900000D+01   0.038109   0.000000
+           11  0.200200000D+01   0.209480   0.000000
+           12  0.545600000D+00   0.508557   0.000000
+           13  0.151700000D+00   0.468842   1.000000
+ 
+                  Type         
+                   d
+           No.      Exponent    Contraction Coefficients
+           14  0.550000000D+00   1.000000
+ 
+ 
+ Basis set:H.CC-PVDZ.........                                                              
+ 
+                  Type         
+                   s
+           No.      Exponent    Contraction Coefficients
+           15  0.130100000D+02   0.019685   0.000000
+           16  0.196200000D+01   0.137977   0.000000
+           17  0.444600000D+00   0.478148   0.000000
+           18  0.122000000D+00   0.501240   1.000000
+ 
+                  Type         
+                   p
+           No.      Exponent    Contraction Coefficients
+           19  0.727000000D+00   1.000000
+ 
+  Number of primitives                                    54
+  Number of basis functions                               34
+ 
+ 
+      SO/AO info:
+       -----------
+ 
+ 
+                    **************************************************
+                    ******** Symmetry adapted Basis Functions ********
+                    **************************************************
+ 
+ 
+           Irreducible representation : a1 
+           Basis function(s) of irrep: y                                                                               
+ 
+ Basis Label        Type   Center Phase
+   1   C            1s        1     1
+   2   C            2s        1     1
+   3   C            *s        1     1
+   4   C            2py       1     1
+   5   C            *py       1     1
+   6   C            *d0       1     1
+   7   C            *d2+      1     1
+   8   HA           1s        2     1      3     1
+   9   HA           *s        2     1      3     1
+  10   HA           *px       2     1      3    -1
+  11   HA           *py       2     1      3     1
+  12   HB           1s        4     1      5     1
+  13   HB           *s        4     1      5     1
+  14   HB           *py       4     1      5     1
+  15   HB           *pz       4     1      5    -1
+ 
+           Irreducible representation : b1 
+           Basis function(s) of irrep: x, xy, Rz                                                                       
+ 
+ Basis Label        Type   Center Phase
+  16   C            2px       1     1
+  17   C            *px       1     1
+  18   C            *d2-      1     1
+  19   HA           1s        2     1      3    -1
+  20   HA           *s        2     1      3    -1
+  21   HA           *px       2     1      3     1
+  22   HA           *py       2     1      3    -1
+  23   HB           *px       4     1      5     1
+ 
+           Irreducible representation : b2 
+           Basis function(s) of irrep: z, yz, Rx                                                                       
+ 
+ Basis Label        Type   Center Phase
+  24   C            2pz       1     1
+  25   C            *pz       1     1
+  26   C            *d1-      1     1
+  27   HA           *pz       2     1      3     1
+  28   HB           1s        4     1      5    -1
+  29   HB           *s        4     1      5    -1
+  30   HB           *py       4     1      5    -1
+  31   HB           *pz       4     1      5     1
+ 
+           Irreducible representation : a2 
+           Basis function(s) of irrep: xz, Ry, I                                                                       
+ 
+ Basis Label        Type   Center Phase
+  32   C            *d1+      1     1
+  33   HA           *pz       2     1      3    -1
+  34   HB           *px       4     1      5    -1
+ 
+      Basis set specifications :
+      Symmetry species        a1  b1  b2  a2 
+      Basis functions          15   8   8   3
+ 
+ 
+            Nuclear Potential Energy             13.52213698 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a1   b1   b2   a2 
+      Basis functions           15    8    8    3
+ 
+ 
+  SEWARD will use a sorting area of  155648 Words(Real*8) in the first phase (=  19 bins).
+  SEWARD will use a sorting area of   14400 Words(Real*8) in the second phase.
+ 
+ 
+ Integrals are written in MOLCAS2 format
+ Number of integrals written on Disk =      72829
+ Number of nonzero integrals =      74753
+ Packing accuracy = 0.1000E-11
+ Highest disk address written      9796
+ Diagonal and subdiagonal, symmetry allowed 2-el integral blocks are stored on Disk
+ 
+  Input file to MOLDEN was generated!
+ 
+ 
+  I/O statistics
+  --------------
+ 
+  Unit  Name          Xtent      pages      MBytes     pages      MBytes
+                     (MBytes)     in          in        out        out  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   2   ONEINT          1.01       0.00       1.96       0.04      18.58
+  11   RUNFILE         0.06       0.01       0.05       0.01       0.05
+  22   RYSRW           0.67       0.02       0.53       0.00       0.00
+  40   ORDINT          4.78       0.04      11.00       0.11      11.66
+  50   TEMP01          2.38       0.02       2.38       0.08       2.64
+  77   ONEINT          1.00       0.00       1.95       0.00       0.00
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Total                           0.10      17.86       0.24      32.93
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+
+ CPU times:
+                            1
+ k4                       0.03
+ k2                       0.00
+ Seward                   0.10
+ Communication            0.00
+
+ Elapsed times:
+                            1
+ k4                       0.05
+ k2                       0.00
+ Seward                   0.63
+ Communication            0.00
+
+ Task statistic:
+                            1
+ Tasks                       1.
+ SO_ShlQ                   406.
+ 
+--- Stop Module:  seward at Fri Oct  7 14:27:33 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:27:34 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:27:34 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###     Minimized-density-differences option turned off!                    ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+Input section
+      Header of the integral files:
+                                                                              
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:27:33 2016        
+ 
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   C          0.00000   0.00000   0.00000
+       2   HA         0.88427  -0.62528   0.00000
+       3   HB         0.00000   0.62528   0.88427
+       4   HA        -0.88427  -0.62528   0.00000
+       5   HB         0.00000   0.62528  -0.88427
+      --------------------------------------------
+      Nuclear repulsion energy =   13.522137
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2   3   4
+                                    a1  b1  b2  a2
+      Frozen orbitals                0   0   0   0
+      Occupied orbitals              3   1   1   0
+      Secondary orbitals            12   7   7   3
+      Deleted orbitals               0   0   0   0
+      Total number of orbitals      15   8   8   3
+      Number of basis functions     15   8   8   3
+ 
+      Molecular charge                           0.000
+ 
+ 
+      Numerical integration parameters
+      ======================================
+      Radial quadrature type:                         MHL       
+      Size of radial grid:                            75
+      Lebedev angular grid:                           29
+      Angular grid prunned with the crowding factor:  3.00
+                                  and fading factor:  6.00
+      Screening threshold for integral computation:   0.10E-10
+      Screening threshold for density computation:    0.10E-17
+      Radial quadrature accuracy:                     0.10E-24
+      Maximum batch size        :                     128
+      AO values are recomputed each iteration
+ 
+ 
+      The same grid will be used for all iterations.
+ 
+      SCF Algorithm: Conventional
+      D(i)-D(i-1) density differences are used
+      Number of density matrices in core              400
+      Maximum number of NDDO SCF iterations           400
+      Maximum number of HF  SCF iterations            400
+      Threshold for SCF energy change            0.10E-08
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Input vectors read from INPORB
+      Orbital file label: *Guess orbitals                         
+ 
+ 
+Convergence information
+                                   B3LYP      iterations: Energy and convergence statistics
+ 
+Iter     Tot. B3LYP     One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -40.30291928    -83.14607464     29.32101839  0.00E+00   0.46E+00*  0.18E+00*   0.37E+01   0.35E+02   NoneDa    0.
+   2    -40.38600405    -87.67505830     33.76691728 -0.83E-01*  0.11E+00*  0.66E-01*   0.42E+01   0.23E+01   Damp      0.
+   3    -40.50954129    -85.14734274     31.11566447 -0.12E+00*  0.87E-01*  0.66E-01*   0.11E+01   0.45E+00   QNRc2D    0.
+   4    -40.51548788    -85.59236452     31.55473967 -0.59E-02*  0.80E-02*  0.19E-01*   0.29E+00   0.22E+00   QNRc2D    0.
+   5    -40.51561115    -85.57048362     31.53273549 -0.12E-03*  0.88E-03*  0.40E-03*   0.12E+00   0.18E-01   QNRc2D    0.
+   6    -40.51561296    -85.57285414     31.53510421 -0.18E-05*  0.22E-04*  0.85E-04    0.14E-01   0.19E-02   QNRc2D    0.
+   7    -40.51561296    -85.57284112     31.53509118 -0.86E-09   0.52E-06   0.13E-05    0.21E-03   0.77E-05   QNRc2D    0.
+ 
+       Convergence after  7 Macro Iterations and  1 additional LS Iterations...
+ 
+ 
+ 
+ This job can be restarted with the RESTART option!
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total KS-DFT energy                             -40.5156129568
+      One-electron energy                             -85.5728411168
+      Two-electron energy                              31.5350911826
+      Nuclear repulsion energy                         13.5221369774
+      Kinetic energy (interpolated)                    40.1498446174
+      Virial theorem                                    1.0091100811
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000000000
+      Max non-diagonal Fock matrix element              0.0000012681
+ 
+ 
+      Integrated DFT Energy                            -5.5976188432
+      Integrated number of electrons                     10.00000787    
+      Integrated |grad|                                  35.90740891    
+      Total number of prunned grid points                    14864
+      Number of grid points per SO-integral                  46110.1
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: RKS-DFT orbitals                                                                
+ 
+
+      Molecular orbitals for symmetry species 1: a1 
+ 
+          Orbital        1         2         3         4         5         6
+          Energy      -10.1679   -0.6955   -0.3912    0.0759    0.1466    0.4129
+          Occ. No.      2.0000    2.0000    2.0000    0.0000    0.0000    0.0000
+ 
+        1 C     1s      1.0064   -0.0275    0.0000   -0.0652    0.0000    0.0000
+        2 C     2s      0.0352    0.7572    0.0000    0.3190    0.0000    0.0000
+        3 C     *s     -0.0320   -0.2285    0.0000    2.0040    0.0000    0.0000
+        4 C     2py     0.0000    0.0000   -0.6601    0.0000   -0.5607    0.4499
+        5 C     *py     0.0000    0.0000    0.1318    0.0000   -1.0194   -1.3665
+        6 C     *d0     0.0000    0.0000   -0.0169    0.0000    0.0015    0.1134
+        7 C     *d2+    0.0000    0.0000    0.0098    0.0000   -0.0009   -0.0655
+        8 HA    1s     -0.0040    0.4473    0.5365   -0.0735   -0.1631   -1.1458
+        9 HA    *s      0.0051   -0.1778   -0.1268   -1.1025   -1.6339    0.6823
+       10 HA    *px     0.0024   -0.0294   -0.0195    0.0005   -0.0024   -0.0379
+       11 HA    *py    -0.0017    0.0208   -0.0076   -0.0004   -0.0094   -0.0287
+       12 HB    1s     -0.0040    0.4473   -0.5365   -0.0735    0.1631    1.1458
+       13 HB    *s      0.0051   -0.1778    0.1268   -1.1025    1.6339   -0.6823
+       14 HB    *py     0.0017   -0.0208   -0.0076    0.0004   -0.0094   -0.0287
+       15 HB    *pz     0.0024   -0.0294    0.0195    0.0005    0.0024    0.0379
+
+      Molecular orbitals for symmetry species 2: b1 
+ 
+          Orbital        1         2         3
+          Energy       -0.3912    0.1466    0.4129
+          Occ. No.      2.0000    0.0000    0.0000
+ 
+        1 C     2px    -0.6601    0.5607   -0.4499
+        2 C     *px     0.1318    1.0194    1.3665
+        3 C     *d2-    0.0195    0.0017    0.1309
+        4 HA    1s     -0.7588   -0.2306   -1.6205
+        5 HA    *s      0.1794   -2.3106    0.9649
+        6 HA    *px     0.0062    0.0077    0.0019
+        7 HA    *py    -0.0195    0.0024    0.0379
+        8 HB    *px    -0.0214    0.0111    0.0555
+
+      Molecular orbitals for symmetry species 3: b2 
+ 
+          Orbital        1         2         3
+          Energy       -0.3912    0.1466    0.4129
+          Occ. No.      2.0000    0.0000    0.0000
+ 
+        1 C     2pz     0.6601    0.5607   -0.4499
+        2 C     *pz    -0.1318    1.0194    1.3665
+        3 C     *d1-    0.0195   -0.0017   -0.1309
+        4 HA    *pz     0.0214    0.0111    0.0555
+        5 HB    1s      0.7588   -0.2306   -1.6205
+        6 HB    *s     -0.1794   -2.3106    0.9649
+        7 HB    *py    -0.0195   -0.0024   -0.0379
+        8 HB    *pz    -0.0062    0.0077    0.0019
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             C       HA      HB    
+      1s     2.0129  1.2497  1.2497
+      2s     1.4807  0.0000  0.0000
+      2px    1.2303  0.0000  0.0000
+      2pz    1.2303  0.0000  0.0000
+      2py    1.2303  0.0000  0.0000
+      *s    -0.4427 -0.3067 -0.3067
+      *px   -0.2208  0.0138  0.0064
+      *pz   -0.2208  0.0064  0.0138
+      *py   -0.2207  0.0101  0.0101
+      *d2+   0.0023  0.0000  0.0000
+      *d1+   0.0000  0.0000  0.0000
+      *d0    0.0070  0.0000  0.0000
+      *d1-   0.0093  0.0000  0.0000
+      *d2-   0.0093  0.0000  0.0000
+      Total  6.1074  0.9732  0.9732
+ 
+      N-E   -0.1074  0.0268  0.0268
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+      Mulliken Bond Order analysis
+      ----------------------------
+      Only bonds with order larger than 0.500 are printed
+ 
+      Atom A -   Generator  Atom B -   Generator  Bond Order
+        C     :E           HA    :E             0.999
+        C     :E           HA    :x             0.999
+        C     :E           HB    :E             0.999
+        C     :E           HB    :z             0.999
+ 
+
+      Expectation values of various operators
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+
+
+       0-st cartesian moments: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                                                                                                                          
+ Total electronic           -10.00000000
+ Total nuclear               10.00000000
+ Total                        0.00000000
+
+
+       1-st cartesian moments: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                             X               Y               Z                                                            
+ Total electronic             0.00000000      0.00000000      0.00000000
+ Total nuclear                0.00000000      0.00000000      0.00000000
+ Total                        0.00000000      0.00000000      0.00000000
+      Total                        0.00000000      0.00000000      0.00000000 Debye
+
+
+       2-nd cartesian moments: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                            XX              XY              XZ              YY              YZ              ZZ            
+ Total electronic           -11.74073945      0.00000000      0.00000000    -11.74076243      0.00000000    -11.74073945
+ Total nuclear                5.58468252      0.00000000      0.00000000      5.58471424      0.00000000      5.58468252
+ Total                       -6.15605692      0.00000000      0.00000000     -6.15604819      0.00000000     -6.15605692
+
+
+
+      Cartesian  2-pole moment: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                            XX              XY              XZ              YY              YZ              ZZ            
+ Total electronic             0.00001149      0.00000000      0.00000000     -0.00002298      0.00000000      0.00001149
+ Total nuclear               -0.00001586      0.00000000      0.00000000      0.00003172      0.00000000     -0.00001586
+ Total                       -0.00000437      0.00000000      0.00000000      0.00000874      0.00000000     -0.00000437
+
+ 
+  Statistics and timing
+  ---------------------
+ 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     Part of the program                              CPU    fraction
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  1) Input processing                         :      0.01      0.00
+  2) Wave function optimization               :      1.11      0.31
+       Line Search Iterations    (QNR steps)  :      0.68      0.19
+    a ) calculation of the density            :      0.00      0.00
+    b ) contraction with integrals            :      1.06      0.30
+    c ) acceleration of convergence           :      0.01      0.00
+          recursive BFGS         (QNR steps)  :      0.00      0.00
+    d ) solution to Roothaan-Hall equations   :      0.00      0.00
+    d') rotate MOs C with U      (QNR steps)  :      0.00      0.00
+          U=exp(kap)                          :      0.00      0.00
+            via Taylor expansion (sin/cos)    :      0.00      0.00
+            via transformation to Schur basis :      0.00      0.00
+    e') transf. Fck Mat. with C  (QNR steps)  :      0.00      0.00
+    f ) other calculations                    :      0.00      0.00
+  3) Final processing (generation of outputs) :      2.46      0.69
+ 
+     T O T A L                                :      3.58
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+ 
+  Input file to MOLDEN was generated!
+ 
+ 
+  I/O statistics
+  --------------
+ 
+  Unit  Name          Xtent      pages      MBytes     pages      MBytes
+                     (MBytes)     in          in        out        out  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  11   RUNFILE         0.06       0.01       0.05       0.00       0.00
+  22   DNSMAX          0.00       0.00       0.00       0.00       0.00
+  23   TWOHAX          0.00       0.00       0.00       0.00       0.00
+  29   SOYVEC          0.00       0.00       0.00       0.01       0.00
+  34   DNSMAT          0.00       0.00       0.00       0.00       0.00
+  35   TWOHAM          0.00       0.00       0.00       0.00       0.00
+  36   GRADIENT        0.00       0.00       0.00       0.01       0.00
+  37   SODGRAD         0.00       0.00       0.00       0.01       0.00
+  38   SOXVEC          0.00       0.00       0.00       0.01       0.00
+  39   SODELTA         0.00       0.00       0.00       0.01       0.00
+  40   ORDINT          4.78       0.13      32.03       0.00       0.03
+  77   ONEINT          0.98       0.00       1.95       0.00       0.00
+  88   NQGRID         29.74       0.71       0.46       0.00       0.00
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Total                           0.85      34.50       0.05       0.05
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+
+ CPU times:
+                            1
+ k4                       0.00
+ k2                       0.00
+ WfCtl                    3.57
+ SCF                      3.58
+ Communication            0.00
+
+ Elapsed times:
+                            1
+ k4                       0.00
+ k2                       0.01
+ WfCtl                    1.68
+ SCF                      1.81
+ Communication            0.00
+
+ Task statistic:
+                            1
+ Tasks                       0.
+ SO_ShlQ                     0.
+ Disksize                    0.
+ 
+--- Stop Module:  scf at Fri Oct  7 14:27:36 2016 /rc=0 ---
+*** 
+--- Start Module: alaska at Fri Oct  7 14:27:37 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module ALASKA with 2000 MB of memory
+                                              at 14:27:37 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+                     Threshold for contributions to the gradient: .100E-06
+ 
+ 
+                    ********************************************
+                    * Symmetry Adapted Cartesian Displacements *
+                    ********************************************
+ 
+ 
+           Irreducible representation : a1 
+           Basis function(s) of irrep: y                                                                               
+ 
+ Basis Label        Type   Center Phase
+   1   C            y         1     1
+   2   HA           x         2     1      3    -1
+   3   HA           y         2     1      3     1
+   4   HB           y         4     1      5     1
+   5   HB           z         4     1      5    -1
+ 
+           Irreducible representation : b1 
+           Basis function(s) of irrep: x, xy, Rz                                                                       
+ 
+ Basis Label        Type   Center Phase
+   6   C            x         1     1
+   7   HA           x         2     1      3     1
+   8   HA           y         2     1      3    -1
+   9   HB           x         4     1      5     1
+ 
+           Irreducible representation : b2 
+           Basis function(s) of irrep: z, yz, Rx                                                                       
+ 
+ Basis Label        Type   Center Phase
+  10   C            z         1     1
+  11   HA           z         2     1      3     1
+  12   HB           y         4     1      5    -1
+  13   HB           z         4     1      5     1
+ 
+           Irreducible representation : a2 
+           Basis function(s) of irrep: xz, Ry, I                                                                       
+ 
+ Basis Label        Type   Center Phase
+  14   HA           z         2     1      3    -1
+  15   HB           x         4     1      5    -1
+ 
+                     No automatic utilization of translational and rotational invariance of the energy is employed.
+ 
+ Rotational correction to the DFT gradient is turned off due to close-to-degener
+ acy problems!
+ Rotational correction to the DFT gradient is turned off due to close-to-degener
+ acy problems!
+ Rotational correction to the DFT gradient is turned off due to close-to-degener
+ acy problems!
+ 
+ DFT contribution computed for a moving grid.
+ 
+ Conventional ERI gradients!
+ 
+ Wavefunction type: KS-DFT  
+ Functional type:   B3LYP           
+ 
+ A total of 525087. entities were prescreened and 512891. were kept.
+ 
+ **************************************************
+ *                                                *
+ *              Molecular gradients               *
+ *                                                *
+ **************************************************
+ 
+                Irreducible representation: a1 
+ 
+                C          y                -0.3976486E-12
+                HA         x                -0.9563841E-02
+                HA         y                 0.6760810E-02
+                HB         y                -0.6760810E-02
+                HB         z                -0.9563841E-02
+ 
+ 
+  I/O statistics
+  --------------
+ 
+  Unit  Name          Xtent      pages      MBytes     pages      MBytes
+                     (MBytes)     in          in        out        out  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  11   RUNFILE         0.05       0.01       0.05       0.01       0.05
+  22   RYSRW           0.67       0.02       0.53       0.00       0.00
+  88   NQGRID         29.74       0.71       0.46       0.00       0.00
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Total                           0.74       1.04       0.01       0.05
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+
+ CPU times:
+                            1
+ Drvk2                    0.02
+ Drvh1                    0.01
+ Drvg1                    0.18
+ DrvDFT                   0.39
+ DrvRI                    0.00
+ Alaska                   0.61
+ Communication            0.00
+
+ Elapsed times:
+                            1
+ Drvk2                    0.02
+ Drvh1                    0.01
+ Drvg1                    0.26
+ DrvDFT                   0.54
+ DrvRI                    0.00
+ Alaska                   0.93
+ Communication            0.00
+
+ Task statistic:
+                            1
+ Tasks                       1.
+ SO_ShlQ                   406.
+ NPass                       0.
+ 
+--- Stop Module:  alaska at Fri Oct  7 14:27:38 2016 /rc=0 ---
+*** 
+--- Start Module: slapaf at Fri Oct  7 14:27:38 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SLAPAF with 2000 MB of memory
+                                              at 14:27:38 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+      Slapaf input parameters:
+          ------------------------
+ 
+ 
+ 
+ Max iterations:                            2000
+ Convergence test a la Schlegel.
+ Convergence criterion on gradient/para.<=: 0.3E-03
+ Convergence criterion on step/parameter<=: 0.3E-03
+ Convergence criterion on energy change <=: 0.1E-05
+ Max norm of step:     0.30E+00
+ 
+ Line search is performed
+ 
+ 
+ -Optimization for minimum.
+  Optimization method: RS-RFO.
+ 
+ -Initial Hessian guessed by Hessian Model Function (HMF).
+  HMF augmented with weak interactions.
+ 
+ -Hessian update method: Broyden-Fletcher-Goldfarb-Shanno
+  Max number of points in Hessian update:  5
+ 
+ -Relaxation will be done in nonredundant internal coordinates, based on
+  force constant weighted redundant internal coordinates.
+ 
+ 
+ Header from ONEINT:
+ *************
+ *           *
+ *           *
+ *           *
+ *           *
+ *************
+ 
+
+
+ Symmetry Distinct Nuclear Coordinates / bohr
+
+     ATOM                     X                   Y                   Z
+
+     C                0.0000000000        0.0000000000        0.0000000000
+     HA               1.6710300000       -1.1816000000        0.0000000000
+     HB               0.0000000000        1.1816000000        1.6710300000
+Internal coordinate section
+ 
+********************************************************************************
+  Auto-Defined Internal coordinates
+--------------------------------------------------------------------------------
+  Primitive Internal Coordinates:
+b001 = Bond HA C                                                                
+b002 = Bond HB C                                                                
+a001 = Angle HA C HA(X)                                                         
+a002 = Angle HA C HB                                                            
+a003 = Angle HB C HB(Z)                                                         
+  Internal Coordinates:
+q001 = 0.47123198 b001 + -.47123198 b002 + -.23639128 a001 + 0.23639128 a003    
+q002 = 0.50000000 b001 + 0.50000000 b002                                        
+q003 = 0.16715388 b001 + -.16715388 b002 + 0.66642266 a001 + -.66642266 a003    
+q004 = 0.57735000 a001 + -.28867541 a002 + 0.57735000 a003                      
+********************************************************************************
+ 
+  Number of redundant coordinates:                     5
+ 
+ 
+ ******************************************
+ * Statistics of the internal coordinates *
+ ******************************************
+ Translations and Rotations:         0
+ Bonds                     :         2
+ Angles                    :         3
+ Torsions                  :         0
+ Out-of-plane angles       :         0
+ 
+
+
+ Cartesian forces which will be relaxed hartree/bohr
+
+     ATOM                     X                   Y                   Z
+
+     C                0.0000000000        0.0000000000        0.0000000000
+     HA               0.0095638406       -0.0067608098        0.0000000000
+     HB               0.0000000000        0.0067608098        0.0095638406
+ 
+ ****************************
+ * Value of internal forces *
+ ----------------------------
+ nrc001     0.00000
+ nrc002     0.02342
+ nrc003     0.00000
+ nrc004     0.00000
+ 
+ 
+ 
+  *** Updating the molecular Hessian ***
+ 
+ 
+ No update of Hessian on the first iteration
+ 
+ 
+ *****************************************************************
+ * Eigenvalues and Eigenvectors of the Hessian                   *
+ *****************************************************************
+ 
+                       1         2         3         4
+ Eigenvalues     0.123880  0.132244  0.491531  0.491707
+ 
+ b001            0.000000 -0.000151  0.707107  0.707107
+ b002            0.000000  0.000151  0.707107 -0.707107
+ a001            0.577350  0.707107  0.000000  0.000151
+ a002           -0.577351  0.000000  0.000000  0.000000
+ a003            0.577350 -0.707107  0.000000 -0.000151
+ 
+ 
+  Force constant matrix                                       
+  mat. size =     4x    4
+ 0.451484717E+00 0.971445147E-16 0.113316645E+00 0.589805982E-16
+ 0.277555756E-16 0.491530900E+00-0.555111512E-16-0.624500451E-16
+ 0.113316645E+00-0.832667268E-16 0.172466817E+00-0.138777878E-16
+ 0.277555756E-16-0.832667268E-16-0.416333634E-16 0.123880356E+00
+ 
+ -- First iteration no line search
+ 
+ 
+ RS-RF Optimization
+  Iter   alpha   Sqrt(dqdq) StepMax   EigVal
+    1   1.00000   0.04755   0.30000  -0.00111
+ 
+ Rational Function Optimization, Lambda= -1.113789387464202E-003
+ 
+ 
+ Norm of the Step -->  4.754826717685834E-002 <--
+ 
+*****************************************************************************************************************
+*                                  Energy Statistics for Geometry Optimization                                  *
+*****************************************************************************************************************
+                       Energy     Grad     Grad              Step                 Estimated   Geom     Hessian   
+Iter      Energy       Change     Norm     Max    Element    Max     Element     Final Energy Update Update Index
+  1    -40.51561296  0.00000000 0.023424 0.023424 nrc002   0.047548  nrc002      -40.51616985 RS-RFO  None    0  
+ 
+       +----------------------------------+----------------------------------+
+       +    Cartesian Displacements       +    Gradient in internals         +
+       +  Value      Threshold Converged? +  Value      Threshold Converged? +
+ +-----+----------------------------------+----------------------------------+
+ + RMS + 0.2126E-01  0.1200E-02     No    + 0.1656E-01  0.3000E-03     No    +
+ +-----+----------------------------------+----------------------------------+
+ + Max + 0.2377E-01  0.1800E-02     No    + 0.2342E-01  0.4500E-03     No    +
+ +-----+----------------------------------+----------------------------------+
+ 
+ Convergence not reached yet!
+ 
+*****************************************************************************************************************
+*****************************************************************************************************************
+Geometry section
+ 
+********************************************************************************
+  Geometrical information of the new structure
+********************************************************************************
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates for the next iteration / Bohr     *
+ *********************************************************
+  ATOM              X               Y               Z     
+  C                0.000000        0.000000        0.000000
+  HA               1.690451       -1.195312        0.000000
+  HB               0.000000        1.195312        1.690451
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates for the next iteration / Angstrom *
+ *********************************************************
+  ATOM              X               Y               Z     
+  C                0.000000        0.000000        0.000000
+  HA               0.894548       -0.632532        0.000000
+  HB               0.000000        0.632532        0.894548
+ 
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       2.070361        0.000000
+    3 HA       2.070361        3.380903        0.000000
+    4 HB       2.070361        3.380878        3.380878        0.000000
+    5 HB       2.070361        3.380878        3.380878        3.380903        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       1.095588        0.000000
+    3 HA       1.095588        1.789097        0.000000
+    4 HB       1.095588        1.789083        1.789083        0.000000
+    5 HB       1.095588        1.789083        1.789083        1.789097        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 HA       1 C        3 HA       109.47
+                      2 HA       1 C        4 HB       109.47
+                      2 HA       1 C        5 HB       109.47
+                      3 HA       1 C        4 HB       109.47
+                      3 HA       1 C        5 HB       109.47
+                      4 HB       1 C        5 HB       109.47
+ 
+                **************************************************
+                * Radius of hypersphere / au*amu**(1/2)/amu(1/2) *
+                **************************************************
+                                     0.0119
+ 
+
+ CPU times:
+                            1
+
+ Elapsed times:
+                            1
+
+ Task statistic:
+                            1
+ 
+--- Stop Module:  slapaf at Fri Oct  7 14:27:39 2016 /rc= _CONTINUE_LOOP_ ---
+--- Stop Module:  auto at Fri Oct  7 14:27:39 2016 /rc= _CONTINUE_LOOP_ ---
+--- Module auto spent 7 seconds 
+--- Start Module: auto at Fri Oct  7 14:27:39 2016 
+*** 
+--- Start Module: seward at Fri Oct  7 14:27:40 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:27:40 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+ Basis Set     1 Label: C.CC-PVDZ....
+ Basis set is read from library:basis_library 
+ Basis Set Reference(s):
+     T.H. Dunning, Jr. J. Chem. Phys. 90, 1007 (1989).                               
+     CARBON       (9s,4p,1d) -> [3s,2p,1d]                                           
+ 
+ 
+ 
+ 
+ Basis Set     2 Label: H.CC-PVDZ....
+ Basis set is read from library:basis_library 
+ Basis Set Reference(s):
+     T.H. Dunning, Jr. J. Chem. Phys. 90, 1007 (1989).                               
+     HYDROGEN     (4s,1p) -> [2s,1p]                                                 
+ 
+ 
+ 
+    Geometry read from RUNFILE
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+                    Reflection in the xy-plane  
+ 
+ 
+                    Character Table for C2v
+ 
+                             E   s(yz) s(xy) C2(y)
+                    a1       1     1     1     1  y
+                    b1       1    -1     1    -1  x, xy, Rz
+                    b2       1     1    -1    -1  z, yz, Rx
+                    a2       1    -1    -1     1  xz, Ry, I
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:C.CC-PVDZ......... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  6.000000 au
+      Associated Actual Charge     6.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       9       3        X                  
+         p       4       2        X                  
+         d       1       1                 X         
+ 
+       Label   Cartesian Coordinates / Bohr
+ 
+ C                  0.0000000000        0.0000000000        0.0000000000
+      Basis set label:H.CC-PVDZ......... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       4       2        X                  
+         p       1       1        X                  
+ 
+       Label   Cartesian Coordinates / Bohr
+ 
+ HA                 1.6904514164       -1.1953119692        0.0000000000
+ HB                 0.0000000000        1.1953119692        1.6904514164
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      C                0.000000       0.000000       0.000000              0.000000       0.000000       0.000000
+        2      HA               1.690451      -1.195312       0.000000              0.894548      -0.632532       0.000000
+        3      HA              -1.690451      -1.195312       0.000000             -0.894548      -0.632532       0.000000
+        4      HB               0.000000       1.195312       1.690451              0.000000       0.632532       0.894548
+        5      HB               0.000000       1.195312      -1.690451              0.000000       0.632532      -0.894548
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       2.070361        0.000000
+    3 HA       2.070361        3.380903        0.000000
+    4 HB       2.070361        3.380878        3.380878        0.000000
+    5 HB       2.070361        3.380878        3.380878        3.380903        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       1.095588        0.000000
+    3 HA       1.095588        1.789097        0.000000
+    4 HB       1.095588        1.789083        1.789083        0.000000
+    5 HB       1.095588        1.789083        1.789083        1.789097        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 HA       1 C        3 HA       109.47
+                      2 HA       1 C        4 HB       109.47
+                      2 HA       1 C        5 HB       109.47
+                      3 HA       1 C        4 HB       109.47
+                      3 HA       1 C        5 HB       109.47
+                      4 HB       1 C        5 HB       109.47
+ 
+ 
+      Rigid rotor info:
+         -----------------
+ 
+ 
+ 
+                    Total mass (a) :  16.03130
+ 
+                    Center of mass 
+                          X          Y          Z   
+                       0.00000    0.00000    0.00000
+ 
+                    Reference system based on center of mass
+                    Coordinates and Masses of Atoms, in au and a
+                          X          Y          Z        Mass
+                       0.00000    0.00000    0.00000   12.00000
+                       1.69045   -1.19531    0.00000    1.00782
+                      -1.69045   -1.19531    0.00000    1.00782
+                       0.00000    1.19531    1.69045    1.00782
+                       0.00000    1.19531   -1.69045    1.00782
+ 
+                    The Moment of Inertia Tensor / au
+                                     X          Y        Z     
+                    X            0.2100E+05
+                    Y            0.0000E+00 0.2100E+05
+                    Z            0.0000E+00 0.0000E+00 0.2100E+05
+ 
+                    The Principal Axis and Moment of Inertia (au)
+                    Eigenvalues :0.2100E+05 0.2100E+05 0.2100E+05
+                                     X'         Y'       Z'    
+                    Eigenvectors:
+                    X            0.0000E+00 0.1000E+01 0.0000E+00
+                    Y            0.1000E+01 0.0000E+00 0.0000E+00
+                    Z            0.0000E+00 0.0000E+00 0.1000E+01
+ 
+                    The Rotational Constants
+                            (cm-1)            (GHz)
+                              5.226          156.662
+                              5.226          156.665
+                              5.226          156.665
+ 
+ 
+                    *******************************************
+                    *                                         *
+                    * R I G I D - R O T O R   A N A L Y S I S *
+                    *                                         *
+                    *******************************************
+ 
+                    j(Max):  5
+ 
+                    Rotor Type: Linear Rotor            
+                    Asymmetry parameter:  1.000
+                    Prolate = -1
+                    Oblate  =  1
+ 
+ 
+                    Rotational energies / cm-1
+ 
+                    E(J= 0,kappa= 0) =        0.000
+ 
+                    E(J= 1,kappa=-1) =       10.451
+                    E(J= 1,kappa= 0) =       10.451
+                    E(J= 1,kappa= 1) =       10.452
+ 
+                    E(J= 2,kappa=-2) =       31.354
+                    E(J= 2,kappa=-1) =       31.354
+                    E(J= 2,kappa= 0) =       31.355
+                    E(J= 2,kappa= 1) =       31.355
+                    E(J= 2,kappa= 2) =       31.355
+ 
+                    E(J= 3,kappa=-3) =       62.709
+                    E(J= 3,kappa=-2) =       62.709
+                    E(J= 3,kappa=-1) =       62.709
+                    E(J= 3,kappa= 0) =       62.709
+                    E(J= 3,kappa= 1) =       62.709
+                    E(J= 3,kappa= 2) =       62.709
+                    E(J= 3,kappa= 3) =       62.709
+ 
+                    E(J= 4,kappa=-4) =      104.514
+                    E(J= 4,kappa=-3) =      104.514
+                    E(J= 4,kappa=-2) =      104.515
+                    E(J= 4,kappa=-1) =      104.515
+                    E(J= 4,kappa= 0) =      104.515
+                    E(J= 4,kappa= 1) =      104.515
+                    E(J= 4,kappa= 2) =      104.515
+                    E(J= 4,kappa= 3) =      104.515
+                    E(J= 4,kappa= 4) =      104.515
+ 
+                    E(J= 5,kappa=-5) =      156.771
+                    E(J= 5,kappa=-4) =      156.771
+                    E(J= 5,kappa=-3) =      156.772
+                    E(J= 5,kappa=-2) =      156.772
+                    E(J= 5,kappa=-1) =      156.772
+                    E(J= 5,kappa= 0) =      156.772
+                    E(J= 5,kappa= 1) =      156.773
+                    E(J= 5,kappa= 2) =      156.773
+                    E(J= 5,kappa= 3) =      156.773
+                    E(J= 5,kappa= 4) =      156.773
+                    E(J= 5,kappa= 5) =      156.773
+ 
+ 
+ 
+      Primitive basis info:
+         ---------------------
+ 
+ 
+ 
+                    *****************************************************
+                    ******** Primitive Basis Functions (Valence) ********
+                    *****************************************************
+ 
+ 
+ Basis set:C.CC-PVDZ.........                                                              
+ 
+                  Type         
+                   s
+           No.      Exponent    Contraction Coefficients
+            1  0.666500000D+04   0.000692  -0.000146   0.000000
+            2  0.100000000D+04   0.005329  -0.001154   0.000000
+            3  0.228000000D+03   0.027077  -0.005725   0.000000
+            4  0.647100000D+02   0.101718  -0.023312   0.000000
+            5  0.210600000D+02   0.274740  -0.063955   0.000000
+            6  0.749500000D+01   0.448564  -0.149981   0.000000
+            7  0.279700000D+01   0.285074  -0.127262   0.000000
+            8  0.521500000D+00   0.015204   0.544529   0.000000
+            9  0.159600000D+00  -0.003191   0.580496   1.000000
+ 
+                  Type         
+                   p
+           No.      Exponent    Contraction Coefficients
+           10  0.943900000D+01   0.038109   0.000000
+           11  0.200200000D+01   0.209480   0.000000
+           12  0.545600000D+00   0.508557   0.000000
+           13  0.151700000D+00   0.468842   1.000000
+ 
+                  Type         
+                   d
+           No.      Exponent    Contraction Coefficients
+           14  0.550000000D+00   1.000000
+ 
+ 
+ Basis set:H.CC-PVDZ.........                                                              
+ 
+                  Type         
+                   s
+           No.      Exponent    Contraction Coefficients
+           15  0.130100000D+02   0.019685   0.000000
+           16  0.196200000D+01   0.137977   0.000000
+           17  0.444600000D+00   0.478148   0.000000
+           18  0.122000000D+00   0.501240   1.000000
+ 
+                  Type         
+                   p
+           No.      Exponent    Contraction Coefficients
+           19  0.727000000D+00   1.000000
+ 
+  Number of primitives                                    54
+  Number of basis functions                               34
+ 
+ 
+      SO/AO info:
+       -----------
+ 
+ 
+                    **************************************************
+                    ******** Symmetry adapted Basis Functions ********
+                    **************************************************
+ 
+ 
+           Irreducible representation : a1 
+           Basis function(s) of irrep: y                                                                               
+ 
+ Basis Label        Type   Center Phase
+   1   C            1s        1     1
+   2   C            2s        1     1
+   3   C            *s        1     1
+   4   C            2py       1     1
+   5   C            *py       1     1
+   6   C            *d0       1     1
+   7   C            *d2+      1     1
+   8   HA           1s        2     1      3     1
+   9   HA           *s        2     1      3     1
+  10   HA           *px       2     1      3    -1
+  11   HA           *py       2     1      3     1
+  12   HB           1s        4     1      5     1
+  13   HB           *s        4     1      5     1
+  14   HB           *py       4     1      5     1
+  15   HB           *pz       4     1      5    -1
+ 
+           Irreducible representation : b1 
+           Basis function(s) of irrep: x, xy, Rz                                                                       
+ 
+ Basis Label        Type   Center Phase
+  16   C            2px       1     1
+  17   C            *px       1     1
+  18   C            *d2-      1     1
+  19   HA           1s        2     1      3    -1
+  20   HA           *s        2     1      3    -1
+  21   HA           *px       2     1      3     1
+  22   HA           *py       2     1      3    -1
+  23   HB           *px       4     1      5     1
+ 
+           Irreducible representation : b2 
+           Basis function(s) of irrep: z, yz, Rx                                                                       
+ 
+ Basis Label        Type   Center Phase
+  24   C            2pz       1     1
+  25   C            *pz       1     1
+  26   C            *d1-      1     1
+  27   HA           *pz       2     1      3     1
+  28   HB           1s        4     1      5    -1
+  29   HB           *s        4     1      5    -1
+  30   HB           *py       4     1      5    -1
+  31   HB           *pz       4     1      5     1
+ 
+           Irreducible representation : a2 
+           Basis function(s) of irrep: xz, Ry, I                                                                       
+ 
+ Basis Label        Type   Center Phase
+  32   C            *d1+      1     1
+  33   HA           *pz       2     1      3    -1
+  34   HB           *px       4     1      5    -1
+ 
+      Basis set specifications :
+      Symmetry species        a1  b1  b2  a2 
+      Basis functions          15   8   8   3
+ 
+ 
+            Nuclear Potential Energy             13.36686118 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a1   b1   b2   a2 
+      Basis functions           15    8    8    3
+ 
+ 
+  SEWARD will use a sorting area of  155648 Words(Real*8) in the first phase (=  19 bins).
+  SEWARD will use a sorting area of   14400 Words(Real*8) in the second phase.
+ 
+ 
+ Integrals are written in MOLCAS2 format
+ Number of integrals written on Disk =      72829
+ Number of nonzero integrals =      74759
+ Packing accuracy = 0.1000E-11
+ Highest disk address written      9796
+ Diagonal and subdiagonal, symmetry allowed 2-el integral blocks are stored on Disk
+ 
+  Input file to MOLDEN was generated!
+ 
+ 
+  I/O statistics
+  --------------
+ 
+  Unit  Name          Xtent      pages      MBytes     pages      MBytes
+                     (MBytes)     in          in        out        out  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   2   ONEINT          1.01       0.00       1.96       0.04      18.58
+  11   RUNFILE         7.97       0.01       0.05       0.01       0.05
+  22   RYSRW           0.67       0.02       0.53       0.00       0.00
+  40   ORDINT          4.78       0.04      11.00       0.11      11.66
+  50   TEMP01          2.38       0.02       2.38       0.08       2.64
+  77   ONEINT          1.00       0.00       1.95       0.00       0.00
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Total                           0.10      17.86       0.24      32.93
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+
+ CPU times:
+                            1
+ k4                       0.03
+ k2                       0.00
+ Seward                   0.11
+ Communication            0.00
+
+ Elapsed times:
+                            1
+ k4                       0.04
+ k2                       0.01
+ Seward                   0.57
+ Communication            0.00
+
+ Task statistic:
+                            1
+ Tasks                       1.
+ SO_ShlQ                   406.
+ 
+--- Stop Module:  seward at Fri Oct  7 14:27:40 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:27:41 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:27:41 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###     Minimized-density-differences option turned off!                    ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+Input section
+      Header of the integral files:
+                                                                              
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:27:40 2016        
+ 
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   C          0.00000   0.00000   0.00000
+       2   HA         0.89455  -0.63253   0.00000
+       3   HB         0.00000   0.63253   0.89455
+       4   HA        -0.89455  -0.63253   0.00000
+       5   HB         0.00000   0.63253  -0.89455
+      --------------------------------------------
+      Nuclear repulsion energy =   13.366861
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2   3   4
+                                    a1  b1  b2  a2
+      Frozen orbitals                0   0   0   0
+      Occupied orbitals              3   1   1   0
+      Secondary orbitals            12   7   7   3
+      Deleted orbitals               0   0   0   0
+      Total number of orbitals      15   8   8   3
+      Number of basis functions     15   8   8   3
+ 
+      Molecular charge                           0.000
+ 
+ 
+      Numerical integration parameters
+      ======================================
+      Radial quadrature type:                         MHL       
+      Size of radial grid:                            75
+      Lebedev angular grid:                           29
+      Angular grid prunned with the crowding factor:  3.00
+                                  and fading factor:  6.00
+      Screening threshold for integral computation:   0.10E-10
+      Screening threshold for density computation:    0.10E-17
+      Radial quadrature accuracy:                     0.10E-24
+      Maximum batch size        :                     128
+      AO values are recomputed each iteration
+ 
+ 
+      The same grid will be used for all iterations.
+ 
+      SCF Algorithm: Conventional
+      D(i)-D(i-1) density differences are used
+      Number of density matrices in core              400
+      Maximum number of NDDO SCF iterations           400
+      Maximum number of HF  SCF iterations            400
+      Threshold for SCF energy change            0.10E-08
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Detected old SCF orbitals                                                       
+ 
+ 
+Convergence information
+                                   B3LYP      iterations: Energy and convergence statistics
+ 
+Iter     Tot. B3LYP     One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -40.51622082    -85.29941190     31.41632990  0.00E+00   0.51E-02*  0.35E-02*   0.57E+01   0.36E+02   NoneDa    0.
+   2    -40.51627989    -85.24073015     31.35758908 -0.59E-04*  0.51E-02*  0.15E-02*   0.96E-01   0.31E-01   Damp      0.
+   3    -40.51627197    -85.30260517     31.41947202  0.79E-05*  0.67E-02*  0.15E-02*   0.43E-01   0.31E-01   QNRc2D    0.
+   4    -40.51630228    -85.26959074     31.38642728 -0.30E-04*  0.18E-04   0.12E-02*   0.22E-01   0.17E-01   QNRc2D    0.
+   5    -40.51630228    -85.26956443     31.38640097 -0.72E-09   0.15E-05   0.13E-05    0.25E-03   0.30E-04   QNRc2D    0.
+ 
+       Convergence after  5 Macro Iterations and  1 additional LS Iterations...
+ 
+ 
+ 
+ This job can be restarted with the RESTART option!
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total KS-DFT energy                             -40.5163022823
+      One-electron energy                             -85.2695644330
+      Two-electron energy                              31.3864009711
+      Nuclear repulsion energy                         13.3668611797
+      Kinetic energy (interpolated)                    40.0839965035
+      Virial theorem                                    1.0107849969
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000000000
+      Max non-diagonal Fock matrix element              0.0000013484
+ 
+ 
+      Integrated DFT Energy                            -5.5833270877
+      Integrated number of electrons                     10.00000796    
+      Integrated |grad|                                  35.86810813    
+      Total number of prunned grid points                    14601
+      Number of grid points per SO-integral                  45260.9
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: RKS-DFT orbitals                                                                
+ 
+
+      Molecular orbitals for symmetry species 1: a1 
+ 
+          Orbital        1         2         3         4         5         6
+          Energy      -10.1729   -0.6916   -0.3892    0.0738    0.1438    0.4135
+          Occ. No.      2.0000    2.0000    2.0000    0.0000    0.0000    0.0000
+ 
+        1 C     1s      1.0062   -0.0255    0.0000   -0.0646    0.0000    0.0000
+        2 C     2s      0.0343    0.7623    0.0000    0.3269    0.0000    0.0000
+        3 C     *s     -0.0313   -0.2215    0.0000    1.9676    0.0000    0.0000
+        4 C     2py     0.0000    0.0000   -0.6577    0.0000   -0.5664    0.4462
+        5 C     *py     0.0000    0.0000    0.1285    0.0000   -1.0022   -1.3276
+        6 C     *d0     0.0000    0.0000   -0.0166    0.0000    0.0020    0.1152
+        7 C     *d2+    0.0000    0.0000    0.0096    0.0000   -0.0012   -0.0665
+        8 HA    1s     -0.0037    0.4411    0.5356   -0.0828   -0.1716   -1.1529
+        9 HA    *s      0.0049   -0.1753   -0.1252   -1.0860   -1.5912    0.7253
+       10 HA    *px     0.0023   -0.0288   -0.0194    0.0002   -0.0030   -0.0378
+       11 HA    *py    -0.0016    0.0204   -0.0074   -0.0002   -0.0096   -0.0312
+       12 HB    1s     -0.0037    0.4411   -0.5356   -0.0828    0.1716    1.1529
+       13 HB    *s      0.0049   -0.1753    0.1252   -1.0860    1.5912   -0.7253
+       14 HB    *py     0.0016   -0.0204   -0.0074    0.0002   -0.0096   -0.0312
+       15 HB    *pz     0.0023   -0.0288    0.0194    0.0002    0.0030    0.0378
+
+      Molecular orbitals for symmetry species 2: b1 
+ 
+          Orbital        1         2         3
+          Energy       -0.3892    0.1438    0.4135
+          Occ. No.      2.0000    0.0000    0.0000
+ 
+        1 C     2px    -0.6577    0.5664   -0.4462
+        2 C     *px     0.1285    1.0023    1.3277
+        3 C     *d2-    0.0192    0.0023    0.1331
+        4 HA    1s     -0.7575   -0.2426   -1.6305
+        5 HA    *s      0.1770   -2.2504    1.0257
+        6 HA    *px     0.0063    0.0075    0.0044
+        7 HA    *py    -0.0194    0.0030    0.0378
+        8 HB    *px    -0.0211    0.0117    0.0579
+
+      Molecular orbitals for symmetry species 3: b2 
+ 
+          Orbital        1         2         3
+          Energy       -0.3892    0.1438    0.4135
+          Occ. No.      2.0000    0.0000    0.0000
+ 
+        1 C     2pz     0.6577    0.5664   -0.4462
+        2 C     *pz    -0.1285    1.0023    1.3277
+        3 C     *d1-    0.0192   -0.0023   -0.1331
+        4 HA    *pz     0.0211    0.0117    0.0579
+        5 HB    1s      0.7575   -0.2426   -1.6305
+        6 HB    *s     -0.1770   -2.2504    1.0257
+        7 HB    *py    -0.0194   -0.0030   -0.0378
+        8 HB    *pz    -0.0063    0.0075    0.0044
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             C       HA      HB    
+      1s     2.0125  1.2434  1.2434
+      2s     1.4900  0.0000  0.0000
+      2px    1.2234  0.0000  0.0000
+      2pz    1.2234  0.0000  0.0000
+      2py    1.2234  0.0000  0.0000
+      *s    -0.4298 -0.3034 -0.3034
+      *px   -0.2159  0.0135  0.0061
+      *pz   -0.2159  0.0061  0.0135
+      *py   -0.2159  0.0098  0.0098
+      *d2+   0.0023  0.0000  0.0000
+      *d1+   0.0000  0.0000  0.0000
+      *d0    0.0068  0.0000  0.0000
+      *d1-   0.0091  0.0000  0.0000
+      *d2-   0.0091  0.0000  0.0000
+      Total  6.1225  0.9694  0.9694
+ 
+      N-E   -0.1225  0.0306  0.0306
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+      Mulliken Bond Order analysis
+      ----------------------------
+      Only bonds with order larger than 0.500 are printed
+ 
+      Atom A -   Generator  Atom B -   Generator  Bond Order
+        C     :E           HA    :E             0.998
+        C     :E           HA    :x             0.998
+        C     :E           HB    :E             0.998
+        C     :E           HB    :z             0.998
+ 
+
+      Expectation values of various operators
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+
+
+       0-st cartesian moments: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                                                                                                                          
+ Total electronic           -10.00000000
+ Total nuclear               10.00000000
+ Total                        0.00000000
+
+
+       1-st cartesian moments: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                             X               Y               Z                                                            
+ Total electronic             0.00000000      0.00000000      0.00000000
+ Total nuclear                0.00000000      0.00000000      0.00000000
+ Total                        0.00000000      0.00000000      0.00000000
+      Total                        0.00000000      0.00000000      0.00000000 Debye
+
+
+       2-nd cartesian moments: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                            XX              XY              XZ              YY              YZ              ZZ            
+ Total electronic           -11.89795170      0.00000000      0.00000000    -11.89783348      0.00000000    -11.89795170
+ Total nuclear                5.71525198      0.00000000      0.00000000      5.71508281      0.00000000      5.71525198
+ Total                       -6.18269972      0.00000000      0.00000000     -6.18275066      0.00000000     -6.18269972
+
+
+
+      Cartesian  2-pole moment: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                            XX              XY              XZ              YY              YZ              ZZ            
+ Total electronic            -0.00005911      0.00000000      0.00000000      0.00011822      0.00000000     -0.00005911
+ Total nuclear                0.00008458      0.00000000      0.00000000     -0.00016917      0.00000000      0.00008458
+ Total                        0.00002547      0.00000000      0.00000000     -0.00005095      0.00000000      0.00002547
+
+ 
+  Statistics and timing
+  ---------------------
+ 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     Part of the program                              CPU    fraction
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  1) Input processing                         :      0.02      0.01
+  2) Wave function optimization               :      0.83      0.31
+       Line Search Iterations    (QNR steps)  :      0.40      0.15
+    a ) calculation of the density            :      0.00      0.00
+    b ) contraction with integrals            :      0.83      0.31
+    c ) acceleration of convergence           :      0.00      0.00
+          recursive BFGS         (QNR steps)  :      0.00      0.00
+    d ) solution to Roothaan-Hall equations   :      0.00      0.00
+    d') rotate MOs C with U      (QNR steps)  :      0.00      0.00
+          U=exp(kap)                          :      0.00      0.00
+            via Taylor expansion (sin/cos)    :      0.00      0.00
+            via transformation to Schur basis :      0.00      0.00
+    e') transf. Fck Mat. with C  (QNR steps)  :      0.00      0.00
+    f ) other calculations                    :      0.00      0.00
+  3) Final processing (generation of outputs) :      1.79      0.68
+ 
+     T O T A L                                :      2.64
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+ 
+  Input file to MOLDEN was generated!
+ 
+ 
+  I/O statistics
+  --------------
+ 
+  Unit  Name          Xtent      pages      MBytes     pages      MBytes
+                     (MBytes)     in          in        out        out  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  11   RUNFILE         0.06       0.01       0.05       0.00       0.00
+  22   DNSMAX          0.00       0.00       0.00       0.00       0.00
+  23   TWOHAX          0.00       0.00       0.00       0.00       0.00
+  29   SOYVEC          0.00       0.00       0.00       0.01       0.00
+  34   DNSMAT          0.00       0.00       0.00       0.00       0.00
+  35   TWOHAM          0.00       0.00       0.00       0.00       0.00
+  36   GRADIENT        0.00       0.00       0.00       0.01       0.00
+  37   SODGRAD         0.00       0.00       0.00       0.00       0.00
+  38   SOXVEC          0.00       0.00       0.00       0.00       0.00
+  39   SODELTA         0.00       0.00       0.00       0.01       0.00
+  40   ORDINT          4.78       0.09      24.03       0.00       0.03
+  77   ONEINT          0.98       0.00       1.95       0.00       0.00
+  88   NQGRID         29.22       0.71       0.46       0.00       0.00
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Total                           0.81      26.49       0.03       0.04
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+
+ CPU times:
+                            1
+ k4                       0.00
+ k2                       0.00
+ WfCtl                    2.62
+ SCF                      2.64
+ Communication            0.00
+
+ Elapsed times:
+                            1
+ k4                       0.00
+ k2                       0.00
+ WfCtl                    1.36
+ SCF                      1.47
+ Communication            0.00
+
+ Task statistic:
+                            1
+ Tasks                       0.
+ SO_ShlQ                     0.
+ Disksize                    0.
+ 
+--- Stop Module:  scf at Fri Oct  7 14:27:43 2016 /rc=0 ---
+*** 
+--- Start Module: alaska at Fri Oct  7 14:27:43 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module ALASKA with 2000 MB of memory
+                                              at 14:27:44 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+                     Threshold for contributions to the gradient: .100E-06
+ 
+ 
+                    ********************************************
+                    * Symmetry Adapted Cartesian Displacements *
+                    ********************************************
+ 
+ 
+           Irreducible representation : a1 
+           Basis function(s) of irrep: y                                                                               
+ 
+ Basis Label        Type   Center Phase
+   1   C            y         1     1
+   2   HA           x         2     1      3    -1
+   3   HA           y         2     1      3     1
+   4   HB           y         4     1      5     1
+   5   HB           z         4     1      5    -1
+ 
+           Irreducible representation : b1 
+           Basis function(s) of irrep: x, xy, Rz                                                                       
+ 
+ Basis Label        Type   Center Phase
+   6   C            x         1     1
+   7   HA           x         2     1      3     1
+   8   HA           y         2     1      3    -1
+   9   HB           x         4     1      5     1
+ 
+           Irreducible representation : b2 
+           Basis function(s) of irrep: z, yz, Rx                                                                       
+ 
+ Basis Label        Type   Center Phase
+  10   C            z         1     1
+  11   HA           z         2     1      3     1
+  12   HB           y         4     1      5    -1
+  13   HB           z         4     1      5     1
+ 
+           Irreducible representation : a2 
+           Basis function(s) of irrep: xz, Ry, I                                                                       
+ 
+ Basis Label        Type   Center Phase
+  14   HA           z         2     1      3    -1
+  15   HB           x         4     1      5    -1
+ 
+                     No automatic utilization of translational and rotational invariance of the energy is employed.
+ 
+ Rotational correction to the DFT gradient is turned off due to close-to-degener
+ acy problems!
+ Rotational correction to the DFT gradient is turned off due to close-to-degener
+ acy problems!
+ Rotational correction to the DFT gradient is turned off due to close-to-degener
+ acy problems!
+ 
+ DFT contribution computed for a moving grid.
+ 
+ Conventional ERI gradients!
+ 
+ Wavefunction type: KS-DFT  
+ Functional type:   B3LYP           
+ 
+ A total of 525087. entities were prescreened and 512538. were kept.
+ 
+ **************************************************
+ *                                                *
+ *              Molecular gradients               *
+ *                                                *
+ **************************************************
+ 
+                Irreducible representation: a1 
+ 
+                C          y                 0.1304268E-12
+                HA         x                -0.2357809E-02
+                HA         y                 0.1667414E-02
+                HB         y                -0.1667414E-02
+                HB         z                -0.2357809E-02
+ 
+ 
+  I/O statistics
+  --------------
+ 
+  Unit  Name          Xtent      pages      MBytes     pages      MBytes
+                     (MBytes)     in          in        out        out  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  11   RUNFILE         0.05       0.01       0.05       0.01       0.05
+  22   RYSRW           0.67       0.02       0.53       0.00       0.00
+  88   NQGRID         29.22       0.71       0.46       0.00       0.00
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Total                           0.73       1.03       0.01       0.05
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+
+ CPU times:
+                            1
+ Drvk2                    0.01
+ Drvh1                    0.00
+ Drvg1                    0.17
+ DrvDFT                   0.38
+ DrvRI                    0.00
+ Alaska                   0.58
+ Communication            0.00
+
+ Elapsed times:
+                            1
+ Drvk2                    0.01
+ Drvh1                    0.00
+ Drvg1                    0.06
+ DrvDFT                   0.43
+ DrvRI                    0.00
+ Alaska                   0.59
+ Communication            0.00
+
+ Task statistic:
+                            1
+ Tasks                       1.
+ SO_ShlQ                   406.
+ NPass                       0.
+ 
+--- Stop Module:  alaska at Fri Oct  7 14:27:44 2016 /rc=0 ---
+*** 
+--- Start Module: slapaf at Fri Oct  7 14:27:45 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SLAPAF with 2000 MB of memory
+                                              at 14:27:45 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+      Slapaf input parameters:
+          ------------------------
+ 
+ 
+ 
+ Max iterations:                            2000
+ Convergence test a la Schlegel.
+ Convergence criterion on gradient/para.<=: 0.3E-03
+ Convergence criterion on step/parameter<=: 0.3E-03
+ Convergence criterion on energy change <=: 0.1E-05
+ Max norm of step:     0.30E+00
+ 
+ Line search is performed
+ 
+ 
+ -Optimization for minimum.
+  Optimization method: RS-RFO.
+ 
+ -Initial Hessian guessed by Hessian Model Function (HMF).
+  HMF augmented with weak interactions.
+ 
+ -Hessian update method: Broyden-Fletcher-Goldfarb-Shanno
+  Max number of points in Hessian update:  5
+ 
+ -Relaxation will be done in nonredundant internal coordinates, based on
+  force constant weighted redundant internal coordinates.
+ 
+ -The origin of the hyper sphere is defined implicitly.
+ 
+ Header from ONEINT:
+ *************
+ *           *
+ *           *
+ *           *
+ *           *
+ *************
+ 
+
+
+ Symmetry Distinct Nuclear Coordinates / bohr
+
+     ATOM                     X                   Y                   Z
+
+     C                0.0000000000        0.0000000000        0.0000000000
+     HA               1.6904514164       -1.1953119692        0.0000000000
+     HB               0.0000000000        1.1953119692        1.6904514164
+Internal coordinate section
+ 
+********************************************************************************
+  Auto-Defined Internal coordinates
+--------------------------------------------------------------------------------
+  Primitive Internal Coordinates:
+b001 = Bond HA C                                                                
+b002 = Bond HB C                                                                
+a001 = Angle HA C HA(X)                                                         
+a002 = Angle HA C HB                                                            
+a003 = Angle HB C HB(Z)                                                         
+  Internal Coordinates:
+q001 = 0.47295543 b001 + -.47295543 b002 + -.22940428 a001 + 0.22940428 a003    
+q002 = 0.50000000 b001 + 0.50000000 b002                                        
+q003 = -.16221332 b001 + 0.16221332 b002 + -.66885998 a001 + 0.66885998 a003    
+q004 = 0.57735169 a001 + -.28867371 a002 + 0.57735169 a003                      
+********************************************************************************
+ 
+  Number of redundant coordinates:                     5
+ 
+ 
+ ******************************************
+ * Statistics of the internal coordinates *
+ ******************************************
+ Translations and Rotations:         0
+ Bonds                     :         2
+ Angles                    :         3
+ Torsions                  :         0
+ Out-of-plane angles       :         0
+ 
+
+
+ Cartesian forces which will be relaxed hartree/bohr
+
+     ATOM                     X                   Y                   Z
+
+     C                0.0000000000        0.0000000000        0.0000000000
+     HA               0.0023578092       -0.0016674141        0.0000000000
+     HB               0.0000000000        0.0016674141        0.0023578092
+ 
+ ****************************
+ * Value of internal forces *
+ ----------------------------
+ nrc001     0.00000
+ nrc002     0.00578
+ nrc003     0.00000
+ nrc004     0.00000
+ 
+ 
+ 
+  *** Updating the molecular Hessian ***
+ 
+ 
+Hessian update from points:  1  2
+ 
+ 
+ *****************************************************************
+ * Eigenvalues and Eigenvectors of the Hessian                   *
+ *****************************************************************
+ 
+                       1         2         3         4
+ Eigenvalues     0.115023  0.123386  0.371175  0.473076
+ 
+ b001           -0.000041  0.000160  0.707107  0.707107
+ b002           -0.000041 -0.000160  0.707107 -0.707107
+ a001            0.577352 -0.707107  0.000034  0.000160
+ a002           -0.577347  0.000000 -0.000034  0.000000
+ a003            0.577352  0.707107  0.000034 -0.000160
+ 
+ 
+  Force constant matrix                                       
+  mat. size =     4x    4
+ 0.436222180E+00-0.659630186E-11-0.107374805E+00 0.620172714E-13
+-0.659627410E-11 0.371175453E+00 0.195028305E-10 0.149045542E-04
+-0.107374805E+00 0.195027750E-10 0.160240620E+00-0.138325487E-12
+ 0.620415576E-13 0.149045542E-04-0.138308140E-12 0.115022693E+00
+ 
+ -- Quartic line search failed, nonzero 2nd derivative
+ -- Cubic line search
+ Minimum found at -->   1.34334980401667      <--
+ 
+ 
+ RS-RF Optimization
+  Iter   alpha   Sqrt(dqdq) StepMax   EigVal
+    1   1.00000   0.00001   0.42426   0.00000
+ 
+ Rational Function Optimization, Lambda= -2.310777437935589E-011
+ 
+ 
+ Norm of the Step -->  1.632568901269405E-002 <--
+ 
+*****************************************************************************************************************
+*                                  Energy Statistics for Geometry Optimization                                  *
+*****************************************************************************************************************
+                       Energy     Grad     Grad              Step                 Estimated   Geom     Hessian   
+Iter      Energy       Change     Norm     Max    Element    Max     Element     Final Energy Update Update Index
+  1    -40.51561296  0.00000000 0.023424 0.023424 nrc002   0.047548  nrc002      -40.51616985 RS-RFO  None    0  
+  2    -40.51630228 -0.00068933 0.005776 0.005776 nrc002   0.016326  nrc002      -40.51634923 RS-RFO  BFGS    0  
+ 
+       +----------------------------------+----------------------------------+
+       +    Cartesian Displacements       +    Gradient in internals         +
+       +  Value      Threshold Converged? +  Value      Threshold Converged? +
+ +-----+----------------------------------+----------------------------------+
+ + RMS + 0.7301E-02  0.1200E-02     No    + 0.5776E-02  0.3000E-03     No    +
+ +-----+----------------------------------+----------------------------------+
+ + Max + 0.8163E-02  0.1800E-02     No    + 0.5776E-02  0.4500E-03     No    +
+ +-----+----------------------------------+----------------------------------+
+ 
+ Convergence not reached yet!
+ 
+*****************************************************************************************************************
+*****************************************************************************************************************
+Geometry section
+ 
+********************************************************************************
+  Geometrical information of the new structure
+********************************************************************************
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates for the next iteration / Bohr     *
+ *********************************************************
+  ATOM              X               Y               Z     
+  C                0.000000        0.000000        0.000000
+  HA               1.697115       -1.200027        0.000000
+  HB               0.000000        1.200027        1.697115
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates for the next iteration / Angstrom *
+ *********************************************************
+  ATOM              X               Y               Z     
+  C                0.000000        0.000000        0.000000
+  HA               0.898075       -0.635027        0.000000
+  HB               0.000000        0.635027        0.898075
+ 
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       2.078524        0.000000
+    3 HA       2.078524        3.394230        0.000000
+    4 HB       2.078524        3.394209        3.394209        0.000000
+    5 HB       2.078524        3.394209        3.394209        3.394230        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       1.099908        0.000000
+    3 HA       1.099908        1.796149        0.000000
+    4 HB       1.099908        1.796138        1.796138        0.000000
+    5 HB       1.099908        1.796138        1.796138        1.796149        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 HA       1 C        3 HA       109.47
+                      2 HA       1 C        4 HB       109.47
+                      2 HA       1 C        5 HB       109.47
+                      3 HA       1 C        4 HB       109.47
+                      3 HA       1 C        5 HB       109.47
+                      4 HB       1 C        5 HB       109.47
+ 
+                **************************************************
+                * Radius of hypersphere / au*amu**(1/2)/amu(1/2) *
+                **************************************************
+                                     0.0160
+ 
+
+ CPU times:
+                            1
+
+ Elapsed times:
+                            1
+
+ Task statistic:
+                            1
+ 
+--- Stop Module:  slapaf at Fri Oct  7 14:27:45 2016 /rc= _CONTINUE_LOOP_ ---
+--- Stop Module:  auto at Fri Oct  7 14:27:45 2016 /rc= _CONTINUE_LOOP_ ---
+--- Module auto spent 6 seconds 
+--- Start Module: auto at Fri Oct  7 14:27:46 2016 
+*** 
+--- Start Module: seward at Fri Oct  7 14:27:46 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:27:46 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+ Basis Set     1 Label: C.CC-PVDZ....
+ Basis set is read from library:basis_library 
+ Basis Set Reference(s):
+     T.H. Dunning, Jr. J. Chem. Phys. 90, 1007 (1989).                               
+     CARBON       (9s,4p,1d) -> [3s,2p,1d]                                           
+ 
+ 
+ 
+ 
+ Basis Set     2 Label: H.CC-PVDZ....
+ Basis set is read from library:basis_library 
+ Basis Set Reference(s):
+     T.H. Dunning, Jr. J. Chem. Phys. 90, 1007 (1989).                               
+     HYDROGEN     (4s,1p) -> [2s,1p]                                                 
+ 
+ 
+ 
+    Geometry read from RUNFILE
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+                    Reflection in the xy-plane  
+ 
+ 
+                    Character Table for C2v
+ 
+                             E   s(yz) s(xy) C2(y)
+                    a1       1     1     1     1  y
+                    b1       1    -1     1    -1  x, xy, Rz
+                    b2       1     1    -1    -1  z, yz, Rx
+                    a2       1    -1    -1     1  xz, Ry, I
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:C.CC-PVDZ......... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  6.000000 au
+      Associated Actual Charge     6.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       9       3        X                  
+         p       4       2        X                  
+         d       1       1                 X         
+ 
+       Label   Cartesian Coordinates / Bohr
+ 
+ C                  0.0000000000        0.0000000000        0.0000000000
+      Basis set label:H.CC-PVDZ......... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       4       2        X                  
+         p       1       1        X                  
+ 
+       Label   Cartesian Coordinates / Bohr
+ 
+ HA                 1.6971148998       -1.2000268416        0.0000000000
+ HB                 0.0000000000        1.2000268416        1.6971148998
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      C                0.000000       0.000000       0.000000              0.000000       0.000000       0.000000
+        2      HA               1.697115      -1.200027       0.000000              0.898075      -0.635027       0.000000
+        3      HA              -1.697115      -1.200027       0.000000             -0.898075      -0.635027       0.000000
+        4      HB               0.000000       1.200027       1.697115              0.000000       0.635027       0.898075
+        5      HB               0.000000       1.200027      -1.697115              0.000000       0.635027      -0.898075
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       2.078524        0.000000
+    3 HA       2.078524        3.394230        0.000000
+    4 HB       2.078524        3.394209        3.394209        0.000000
+    5 HB       2.078524        3.394209        3.394209        3.394230        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       1.099908        0.000000
+    3 HA       1.099908        1.796149        0.000000
+    4 HB       1.099908        1.796138        1.796138        0.000000
+    5 HB       1.099908        1.796138        1.796138        1.796149        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 HA       1 C        3 HA       109.47
+                      2 HA       1 C        4 HB       109.47
+                      2 HA       1 C        5 HB       109.47
+                      3 HA       1 C        4 HB       109.47
+                      3 HA       1 C        5 HB       109.47
+                      4 HB       1 C        5 HB       109.47
+ 
+ 
+      Rigid rotor info:
+         -----------------
+ 
+ 
+ 
+                    Total mass (a) :  16.03130
+ 
+                    Center of mass 
+                          X          Y          Z   
+                       0.00000    0.00000    0.00000
+ 
+                    Reference system based on center of mass
+                    Coordinates and Masses of Atoms, in au and a
+                          X          Y          Z        Mass
+                       0.00000    0.00000    0.00000   12.00000
+                       1.69711   -1.20003    0.00000    1.00782
+                      -1.69711   -1.20003    0.00000    1.00782
+                       0.00000    1.20003    1.69711    1.00782
+                       0.00000    1.20003   -1.69711    1.00782
+ 
+                    The Moment of Inertia Tensor / au
+                                     X          Y        Z     
+                    X            0.2117E+05
+                    Y            0.0000E+00 0.2117E+05
+                    Z            0.0000E+00 0.0000E+00 0.2117E+05
+ 
+                    The Principal Axis and Moment of Inertia (au)
+                    Eigenvalues :0.2117E+05 0.2117E+05 0.2117E+05
+                                     X'         Y'       Z'    
+                    Eigenvectors:
+                    X            0.0000E+00 0.0000E+00 0.1000E+01
+                    Y            0.1000E+01 0.0000E+00 0.0000E+00
+                    Z            0.0000E+00 0.1000E+01 0.0000E+00
+ 
+                    The Rotational Constants
+                            (cm-1)            (GHz)
+                              5.185          155.434
+                              5.185          155.436
+                              5.185          155.436
+ 
+ 
+                    *******************************************
+                    *                                         *
+                    * R I G I D - R O T O R   A N A L Y S I S *
+                    *                                         *
+                    *******************************************
+ 
+                    j(Max):  5
+ 
+                    Rotor Type: Linear Rotor            
+                    Asymmetry parameter:  1.000
+                    Prolate = -1
+                    Oblate  =  1
+ 
+ 
+                    Rotational energies / cm-1
+ 
+                    E(J= 0,kappa= 0) =        0.000
+ 
+                    E(J= 1,kappa=-1) =       10.370
+                    E(J= 1,kappa= 0) =       10.370
+                    E(J= 1,kappa= 1) =       10.370
+ 
+                    E(J= 2,kappa=-2) =       31.109
+                    E(J= 2,kappa=-1) =       31.109
+                    E(J= 2,kappa= 0) =       31.109
+                    E(J= 2,kappa= 1) =       31.109
+                    E(J= 2,kappa= 2) =       31.109
+ 
+                    E(J= 3,kappa=-3) =       62.217
+                    E(J= 3,kappa=-2) =       62.217
+                    E(J= 3,kappa=-1) =       62.217
+                    E(J= 3,kappa= 0) =       62.217
+                    E(J= 3,kappa= 1) =       62.218
+                    E(J= 3,kappa= 2) =       62.218
+                    E(J= 3,kappa= 3) =       62.218
+ 
+                    E(J= 4,kappa=-4) =      103.695
+                    E(J= 4,kappa=-3) =      103.695
+                    E(J= 4,kappa=-2) =      103.695
+                    E(J= 4,kappa=-1) =      103.695
+                    E(J= 4,kappa= 0) =      103.696
+                    E(J= 4,kappa= 1) =      103.696
+                    E(J= 4,kappa= 2) =      103.696
+                    E(J= 4,kappa= 3) =      103.696
+                    E(J= 4,kappa= 4) =      103.696
+ 
+                    E(J= 5,kappa=-5) =      155.542
+                    E(J= 5,kappa=-4) =      155.542
+                    E(J= 5,kappa=-3) =      155.543
+                    E(J= 5,kappa=-2) =      155.543
+                    E(J= 5,kappa=-1) =      155.543
+                    E(J= 5,kappa= 0) =      155.543
+                    E(J= 5,kappa= 1) =      155.544
+                    E(J= 5,kappa= 2) =      155.544
+                    E(J= 5,kappa= 3) =      155.544
+                    E(J= 5,kappa= 4) =      155.544
+                    E(J= 5,kappa= 5) =      155.544
+ 
+ 
+ 
+      Primitive basis info:
+         ---------------------
+ 
+ 
+ 
+                    *****************************************************
+                    ******** Primitive Basis Functions (Valence) ********
+                    *****************************************************
+ 
+ 
+ Basis set:C.CC-PVDZ.........                                                              
+ 
+                  Type         
+                   s
+           No.      Exponent    Contraction Coefficients
+            1  0.666500000D+04   0.000692  -0.000146   0.000000
+            2  0.100000000D+04   0.005329  -0.001154   0.000000
+            3  0.228000000D+03   0.027077  -0.005725   0.000000
+            4  0.647100000D+02   0.101718  -0.023312   0.000000
+            5  0.210600000D+02   0.274740  -0.063955   0.000000
+            6  0.749500000D+01   0.448564  -0.149981   0.000000
+            7  0.279700000D+01   0.285074  -0.127262   0.000000
+            8  0.521500000D+00   0.015204   0.544529   0.000000
+            9  0.159600000D+00  -0.003191   0.580496   1.000000
+ 
+                  Type         
+                   p
+           No.      Exponent    Contraction Coefficients
+           10  0.943900000D+01   0.038109   0.000000
+           11  0.200200000D+01   0.209480   0.000000
+           12  0.545600000D+00   0.508557   0.000000
+           13  0.151700000D+00   0.468842   1.000000
+ 
+                  Type         
+                   d
+           No.      Exponent    Contraction Coefficients
+           14  0.550000000D+00   1.000000
+ 
+ 
+ Basis set:H.CC-PVDZ.........                                                              
+ 
+                  Type         
+                   s
+           No.      Exponent    Contraction Coefficients
+           15  0.130100000D+02   0.019685   0.000000
+           16  0.196200000D+01   0.137977   0.000000
+           17  0.444600000D+00   0.478148   0.000000
+           18  0.122000000D+00   0.501240   1.000000
+ 
+                  Type         
+                   p
+           No.      Exponent    Contraction Coefficients
+           19  0.727000000D+00   1.000000
+ 
+  Number of primitives                                    54
+  Number of basis functions                               34
+ 
+ 
+      SO/AO info:
+       -----------
+ 
+ 
+                    **************************************************
+                    ******** Symmetry adapted Basis Functions ********
+                    **************************************************
+ 
+ 
+           Irreducible representation : a1 
+           Basis function(s) of irrep: y                                                                               
+ 
+ Basis Label        Type   Center Phase
+   1   C            1s        1     1
+   2   C            2s        1     1
+   3   C            *s        1     1
+   4   C            2py       1     1
+   5   C            *py       1     1
+   6   C            *d0       1     1
+   7   C            *d2+      1     1
+   8   HA           1s        2     1      3     1
+   9   HA           *s        2     1      3     1
+  10   HA           *px       2     1      3    -1
+  11   HA           *py       2     1      3     1
+  12   HB           1s        4     1      5     1
+  13   HB           *s        4     1      5     1
+  14   HB           *py       4     1      5     1
+  15   HB           *pz       4     1      5    -1
+ 
+           Irreducible representation : b1 
+           Basis function(s) of irrep: x, xy, Rz                                                                       
+ 
+ Basis Label        Type   Center Phase
+  16   C            2px       1     1
+  17   C            *px       1     1
+  18   C            *d2-      1     1
+  19   HA           1s        2     1      3    -1
+  20   HA           *s        2     1      3    -1
+  21   HA           *px       2     1      3     1
+  22   HA           *py       2     1      3    -1
+  23   HB           *px       4     1      5     1
+ 
+           Irreducible representation : b2 
+           Basis function(s) of irrep: z, yz, Rx                                                                       
+ 
+ Basis Label        Type   Center Phase
+  24   C            2pz       1     1
+  25   C            *pz       1     1
+  26   C            *d1-      1     1
+  27   HA           *pz       2     1      3     1
+  28   HB           1s        4     1      5    -1
+  29   HB           *s        4     1      5    -1
+  30   HB           *py       4     1      5    -1
+  31   HB           *pz       4     1      5     1
+ 
+           Irreducible representation : a2 
+           Basis function(s) of irrep: xz, Ry, I                                                                       
+ 
+ Basis Label        Type   Center Phase
+  32   C            *d1+      1     1
+  33   HA           *pz       2     1      3    -1
+  34   HB           *px       4     1      5    -1
+ 
+      Basis set specifications :
+      Symmetry species        a1  b1  b2  a2 
+      Basis functions          15   8   8   3
+ 
+ 
+            Nuclear Potential Energy             13.31436643 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a1   b1   b2   a2 
+      Basis functions           15    8    8    3
+ 
+ 
+  SEWARD will use a sorting area of  155648 Words(Real*8) in the first phase (=  19 bins).
+  SEWARD will use a sorting area of   14400 Words(Real*8) in the second phase.
+ 
+ 
+ Integrals are written in MOLCAS2 format
+ Number of integrals written on Disk =      72829
+ Number of nonzero integrals =      74753
+ Packing accuracy = 0.1000E-11
+ Highest disk address written      9796
+ Diagonal and subdiagonal, symmetry allowed 2-el integral blocks are stored on Disk
+ 
+  Input file to MOLDEN was generated!
+ 
+ 
+  I/O statistics
+  --------------
+ 
+  Unit  Name          Xtent      pages      MBytes     pages      MBytes
+                     (MBytes)     in          in        out        out  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   2   ONEINT          1.01       0.00       1.96       0.04      18.58
+  11   RUNFILE         7.97       0.01       0.05       0.01       0.05
+  22   RYSRW           0.67       0.02       0.53       0.00       0.00
+  40   ORDINT          4.78       0.04      11.00       0.11      11.66
+  50   TEMP01          2.38       0.02       2.38       0.08       2.64
+  77   ONEINT          1.00       0.00       1.95       0.00       0.00
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Total                           0.10      17.86       0.24      32.93
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+
+ CPU times:
+                            1
+ k4                       0.02
+ k2                       0.01
+ Seward                   0.12
+ Communication            0.00
+
+ Elapsed times:
+                            1
+ k4                       0.04
+ k2                       0.01
+ Seward                   0.61
+ Communication            0.00
+
+ Task statistic:
+                            1
+ Tasks                       1.
+ SO_ShlQ                   406.
+ 
+--- Stop Module:  seward at Fri Oct  7 14:27:47 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:27:47 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:27:48 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###     Minimized-density-differences option turned off!                    ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+Input section
+      Header of the integral files:
+                                                                              
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:27:46 2016        
+ 
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   C          0.00000   0.00000   0.00000
+       2   HA         0.89807  -0.63503   0.00000
+       3   HB         0.00000   0.63503   0.89807
+       4   HA        -0.89807  -0.63503   0.00000
+       5   HB         0.00000   0.63503  -0.89807
+      --------------------------------------------
+      Nuclear repulsion energy =   13.314366
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2   3   4
+                                    a1  b1  b2  a2
+      Frozen orbitals                0   0   0   0
+      Occupied orbitals              3   1   1   0
+      Secondary orbitals            12   7   7   3
+      Deleted orbitals               0   0   0   0
+      Total number of orbitals      15   8   8   3
+      Number of basis functions     15   8   8   3
+ 
+      Molecular charge                           0.000
+ 
+ 
+      Numerical integration parameters
+      ======================================
+      Radial quadrature type:                         MHL       
+      Size of radial grid:                            75
+      Lebedev angular grid:                           29
+      Angular grid prunned with the crowding factor:  3.00
+                                  and fading factor:  6.00
+      Screening threshold for integral computation:   0.10E-10
+      Screening threshold for density computation:    0.10E-17
+      Radial quadrature accuracy:                     0.10E-24
+      Maximum batch size        :                     128
+      AO values are recomputed each iteration
+ 
+ 
+      The same grid will be used for all iterations.
+ 
+      SCF Algorithm: Conventional
+      D(i)-D(i-1) density differences are used
+      Number of density matrices in core              400
+      Maximum number of NDDO SCF iterations           400
+      Maximum number of HF  SCF iterations            400
+      Threshold for SCF energy change            0.10E-08
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Detected old SCF orbitals                                                       
+ 
+ 
+Convergence information
+                                   B3LYP      iterations: Energy and convergence statistics
+ 
+Iter     Tot. B3LYP     One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -40.51633998    -85.17687116     31.34616475  0.00E+00   0.17E-02*  0.12E-02*   0.57E+01   0.36E+02   NoneDa    0.
+   2    -40.51634667    -85.15679948     31.32608637 -0.67E-05*  0.18E-02*  0.50E-03*   0.32E-01   0.11E-01   Damp      0.
+   3    -40.51634570    -85.17804755     31.34733541  0.97E-06*  0.23E-02*  0.50E-03*   0.15E-01   0.11E-01   QNRc2D    0.
+   4    -40.51634930    -85.16667659     31.33596086 -0.36E-05*  0.57E-05   0.43E-03*   0.77E-02   0.57E-02   QNRc2D    0.
+   5    -40.51634930    -85.16666796     31.33595223 -0.72E-10   0.48E-06   0.39E-06    0.75E-04   0.92E-05   QNRc2D    0.
+ 
+       Convergence after  5 Macro Iterations and  1 additional LS Iterations...
+ 
+ 
+ 
+ This job can be restarted with the RESTART option!
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total KS-DFT energy                             -40.5163492988
+      One-electron energy                             -85.1666679612
+      Two-electron energy                              31.3359522281
+      Nuclear repulsion energy                         13.3143664343
+      Kinetic energy (interpolated)                    40.0619611986
+      Virial theorem                                    1.0113421332
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000000000
+      Max non-diagonal Fock matrix element              0.0000003879
+ 
+ 
+      Integrated DFT Energy                            -5.5784841050
+      Integrated number of electrons                     10.00000794    
+      Integrated |grad|                                  35.85489242    
+      Total number of prunned grid points                    14601
+      Number of grid points per SO-integral                  45259.0
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: RKS-DFT orbitals                                                                
+ 
+
+      Molecular orbitals for symmetry species 1: a1 
+ 
+          Orbital        1         2         3         4         5         6
+          Energy      -10.1746   -0.6903   -0.3885    0.0730    0.1429    0.4137
+          Occ. No.      2.0000    2.0000    2.0000    0.0000    0.0000    0.0000
+ 
+        1 C     1s      1.0061   -0.0248    0.0000   -0.0643    0.0000    0.0000
+        2 C     2s      0.0340    0.7640    0.0000    0.3297    0.0000    0.0000
+        3 C     *s     -0.0311   -0.2192    0.0000    1.9549    0.0000    0.0000
+        4 C     2py     0.0000    0.0000   -0.6569    0.0000   -0.5684    0.4449
+        5 C     *py     0.0000    0.0000    0.1275    0.0000   -0.9963   -1.3144
+        6 C     *d0     0.0000    0.0000   -0.0165    0.0000    0.0022    0.1159
+        7 C     *d2+    0.0000    0.0000    0.0095    0.0000   -0.0013   -0.0669
+        8 HA    1s     -0.0036    0.4390    0.5353   -0.0860   -0.1744   -1.1554
+        9 HA    *s      0.0049   -0.1745   -0.1246   -1.0803   -1.5768    0.7397
+       10 HA    *px     0.0023   -0.0286   -0.0193    0.0001   -0.0032   -0.0378
+       11 HA    *py    -0.0016    0.0202   -0.0073   -0.0001   -0.0097   -0.0320
+       12 HB    1s     -0.0036    0.4390   -0.5353   -0.0860    0.1744    1.1554
+       13 HB    *s      0.0049   -0.1745    0.1246   -1.0803    1.5768   -0.7397
+       14 HB    *py     0.0016   -0.0202   -0.0073    0.0001   -0.0097   -0.0320
+       15 HB    *pz     0.0023   -0.0286    0.0193    0.0001    0.0032    0.0378
+
+      Molecular orbitals for symmetry species 2: b1 
+ 
+          Orbital        1         2         3
+          Energy       -0.3885    0.1429    0.4137
+          Occ. No.      2.0000    0.0000    0.0000
+ 
+        1 C     2px    -0.6569    0.5684   -0.4449
+        2 C     *px     0.1275    0.9963    1.3145
+        3 C     *d2-    0.0190    0.0026    0.1338
+        4 HA    1s     -0.7571   -0.2467   -1.6339
+        5 HA    *s      0.1762   -2.2299    1.0461
+        6 HA    *px     0.0063    0.0074    0.0053
+        7 HA    *py    -0.0193    0.0032    0.0378
+        8 HB    *px    -0.0210    0.0119    0.0587
+
+      Molecular orbitals for symmetry species 3: b2 
+ 
+          Orbital        1         2         3
+          Energy       -0.3885    0.1429    0.4137
+          Occ. No.      2.0000    0.0000    0.0000
+ 
+        1 C     2pz     0.6569    0.5684   -0.4449
+        2 C     *pz    -0.1275    0.9963    1.3145
+        3 C     *d1-    0.0190   -0.0026   -0.1338
+        4 HA    *pz     0.0210    0.0119    0.0587
+        5 HB    1s      0.7571   -0.2467   -1.6339
+        6 HB    *s     -0.1762   -2.2299    1.0461
+        7 HB    *py    -0.0193   -0.0032   -0.0378
+        8 HB    *pz    -0.0063    0.0074    0.0053
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             C       HA      HB    
+      1s     2.0123  1.2413  1.2413
+      2s     1.4931  0.0000  0.0000
+      2px    1.2210  0.0000  0.0000
+      2pz    1.2210  0.0000  0.0000
+      2py    1.2210  0.0000  0.0000
+      *s    -0.4254 -0.3023 -0.3023
+      *px   -0.2143  0.0134  0.0060
+      *pz   -0.2143  0.0060  0.0134
+      *py   -0.2143  0.0097  0.0097
+      *d2+   0.0023  0.0000  0.0000
+      *d1+   0.0000  0.0000  0.0000
+      *d0    0.0068  0.0000  0.0000
+      *d1-   0.0091  0.0000  0.0000
+      *d2-   0.0091  0.0000  0.0000
+      Total  6.1275  0.9681  0.9681
+ 
+      N-E   -0.1275  0.0319  0.0319
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+      Mulliken Bond Order analysis
+      ----------------------------
+      Only bonds with order larger than 0.500 are printed
+ 
+      Atom A -   Generator  Atom B -   Generator  Bond Order
+        C     :E           HA    :E             0.998
+        C     :E           HA    :x             0.998
+        C     :E           HB    :E             0.998
+        C     :E           HB    :z             0.998
+ 
+
+      Expectation values of various operators
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+
+
+       0-st cartesian moments: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                                                                                                                          
+ Total electronic           -10.00000000
+ Total nuclear               10.00000000
+ Total                        0.00000000
+
+
+       1-st cartesian moments: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                             X               Y               Z                                                            
+ Total electronic             0.00000000      0.00000000      0.00000000
+ Total nuclear                0.00000000      0.00000000      0.00000000
+ Total                        0.00000000      0.00000000      0.00000000
+      Total                        0.00000000      0.00000000      0.00000000 Debye
+
+
+       2-nd cartesian moments: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                            XX              XY              XZ              YY              YZ              ZZ            
+ Total electronic           -11.95212862      0.00000000      0.00000000    -11.95203064      0.00000000    -11.95212862
+ Total nuclear                5.76039797      0.00000000      0.00000000      5.76025768      0.00000000      5.76039797
+ Total                       -6.19173066      0.00000000      0.00000000     -6.19177296      0.00000000     -6.19173066
+
+
+
+      Cartesian  2-pole moment: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                            XX              XY              XZ              YY              YZ              ZZ            
+ Total electronic            -0.00004899      0.00000000      0.00000000      0.00009798      0.00000000     -0.00004899
+ Total nuclear                0.00007014      0.00000000      0.00000000     -0.00014028      0.00000000      0.00007014
+ Total                        0.00002115      0.00000000      0.00000000     -0.00004231      0.00000000      0.00002115
+
+ 
+  Statistics and timing
+  ---------------------
+ 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     Part of the program                              CPU    fraction
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  1) Input processing                         :      0.02      0.01
+  2) Wave function optimization               :      0.83      0.27
+       Line Search Iterations    (QNR steps)  :      0.40      0.13
+    a ) calculation of the density            :      0.00      0.00
+    b ) contraction with integrals            :      0.82      0.26
+    c ) acceleration of convergence           :      0.00      0.00
+          recursive BFGS         (QNR steps)  :      0.00      0.00
+    d ) solution to Roothaan-Hall equations   :      0.00      0.00
+    d') rotate MOs C with U      (QNR steps)  :      0.00      0.00
+          U=exp(kap)                          :      0.00      0.00
+            via Taylor expansion (sin/cos)    :      0.00      0.00
+            via transformation to Schur basis :      0.00      0.00
+    e') transf. Fck Mat. with C  (QNR steps)  :      0.00      0.00
+    f ) other calculations                    :      0.00      0.00
+  3) Final processing (generation of outputs) :      2.25      0.73
+ 
+     T O T A L                                :      3.10
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+ 
+  Input file to MOLDEN was generated!
+ 
+ 
+  I/O statistics
+  --------------
+ 
+  Unit  Name          Xtent      pages      MBytes     pages      MBytes
+                     (MBytes)     in          in        out        out  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  11   RUNFILE         0.06       0.01       0.05       0.00       0.00
+  22   DNSMAX          0.00       0.00       0.00       0.00       0.00
+  23   TWOHAX          0.00       0.00       0.00       0.00       0.00
+  29   SOYVEC          0.00       0.00       0.00       0.01       0.00
+  34   DNSMAT          0.00       0.00       0.00       0.00       0.00
+  35   TWOHAM          0.00       0.00       0.00       0.00       0.00
+  36   GRADIENT        0.00       0.00       0.00       0.01       0.00
+  37   SODGRAD         0.00       0.00       0.00       0.00       0.00
+  38   SOXVEC          0.00       0.00       0.00       0.00       0.00
+  39   SODELTA         0.00       0.00       0.00       0.01       0.00
+  40   ORDINT          4.78       0.09      24.03       0.00       0.03
+  77   ONEINT          0.98       0.00       1.95       0.00       0.00
+  88   NQGRID         29.22       0.71       0.46       0.00       0.00
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Total                           0.81      26.49       0.03       0.04
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+
+ CPU times:
+                            1
+ k4                       0.00
+ k2                       0.00
+ WfCtl                    3.08
+ SCF                      3.10
+ Communication            0.00
+
+ Elapsed times:
+                            1
+ k4                       0.00
+ k2                       0.00
+ WfCtl                    1.24
+ SCF                      1.35
+ Communication            0.00
+
+ Task statistic:
+                            1
+ Tasks                       0.
+ SO_ShlQ                     0.
+ Disksize                    0.
+ 
+--- Stop Module:  scf at Fri Oct  7 14:27:49 2016 /rc=0 ---
+*** 
+--- Start Module: alaska at Fri Oct  7 14:27:50 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module ALASKA with 2000 MB of memory
+                                              at 14:27:50 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+                     Threshold for contributions to the gradient: .100E-06
+ 
+ 
+                    ********************************************
+                    * Symmetry Adapted Cartesian Displacements *
+                    ********************************************
+ 
+ 
+           Irreducible representation : a1 
+           Basis function(s) of irrep: y                                                                               
+ 
+ Basis Label        Type   Center Phase
+   1   C            y         1     1
+   2   HA           x         2     1      3    -1
+   3   HA           y         2     1      3     1
+   4   HB           y         4     1      5     1
+   5   HB           z         4     1      5    -1
+ 
+           Irreducible representation : b1 
+           Basis function(s) of irrep: x, xy, Rz                                                                       
+ 
+ Basis Label        Type   Center Phase
+   6   C            x         1     1
+   7   HA           x         2     1      3     1
+   8   HA           y         2     1      3    -1
+   9   HB           x         4     1      5     1
+ 
+           Irreducible representation : b2 
+           Basis function(s) of irrep: z, yz, Rx                                                                       
+ 
+ Basis Label        Type   Center Phase
+  10   C            z         1     1
+  11   HA           z         2     1      3     1
+  12   HB           y         4     1      5    -1
+  13   HB           z         4     1      5     1
+ 
+           Irreducible representation : a2 
+           Basis function(s) of irrep: xz, Ry, I                                                                       
+ 
+ Basis Label        Type   Center Phase
+  14   HA           z         2     1      3    -1
+  15   HB           x         4     1      5    -1
+ 
+                     No automatic utilization of translational and rotational invariance of the energy is employed.
+ 
+ Rotational correction to the DFT gradient is turned off due to close-to-degener
+ acy problems!
+ Rotational correction to the DFT gradient is turned off due to close-to-degener
+ acy problems!
+ Rotational correction to the DFT gradient is turned off due to close-to-degener
+ acy problems!
+ 
+ DFT contribution computed for a moving grid.
+ 
+ Conventional ERI gradients!
+ 
+ Wavefunction type: KS-DFT  
+ Functional type:   B3LYP           
+ 
+ A total of 525087. entities were prescreened and 512466. were kept.
+ 
+ **************************************************
+ *                                                *
+ *              Molecular gradients               *
+ *                                                *
+ **************************************************
+ 
+                Irreducible representation: a1 
+ 
+                C          y                -0.3721230E-12
+                HA         x                -0.1052105E-05
+                HA         y                 0.7357246E-06
+                HB         y                -0.7357244E-06
+                HB         z                -0.1052106E-05
+ 
+ 
+  I/O statistics
+  --------------
+ 
+  Unit  Name          Xtent      pages      MBytes     pages      MBytes
+                     (MBytes)     in          in        out        out  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  11   RUNFILE         0.05       0.01       0.05       0.01       0.05
+  22   RYSRW           0.67       0.02       0.53       0.00       0.00
+  88   NQGRID         29.22       0.71       0.46       0.00       0.00
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Total                           0.74       1.03       0.01       0.05
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+
+ CPU times:
+                            1
+ Drvk2                    0.01
+ Drvh1                    0.00
+ Drvg1                    0.17
+ DrvDFT                   0.38
+ DrvRI                    0.00
+ Alaska                   0.58
+ Communication            0.00
+
+ Elapsed times:
+                            1
+ Drvk2                    0.01
+ Drvh1                    0.01
+ Drvg1                    0.18
+ DrvDFT                   0.56
+ DrvRI                    0.00
+ Alaska                   0.87
+ Communication            0.00
+
+ Task statistic:
+                            1
+ Tasks                       1.
+ SO_ShlQ                   406.
+ NPass                       0.
+ 
+--- Stop Module:  alaska at Fri Oct  7 14:27:51 2016 /rc=0 ---
+*** 
+--- Start Module: slapaf at Fri Oct  7 14:27:51 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SLAPAF with 2000 MB of memory
+                                              at 14:27:51 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+      Slapaf input parameters:
+          ------------------------
+ 
+ 
+ 
+ Max iterations:                            2000
+ Convergence test a la Schlegel.
+ Convergence criterion on gradient/para.<=: 0.3E-03
+ Convergence criterion on step/parameter<=: 0.3E-03
+ Convergence criterion on energy change <=: 0.1E-05
+ Max norm of step:     0.30E+00
+ 
+ Line search is performed
+ 
+ 
+ -Optimization for minimum.
+  Optimization method: RS-RFO.
+ 
+ -Initial Hessian guessed by Hessian Model Function (HMF).
+  HMF augmented with weak interactions.
+ 
+ -Hessian update method: Broyden-Fletcher-Goldfarb-Shanno
+  Max number of points in Hessian update:  5
+ 
+ -Relaxation will be done in nonredundant internal coordinates, based on
+  force constant weighted redundant internal coordinates.
+ 
+ -The origin of the hyper sphere is defined implicitly.
+ 
+ Header from ONEINT:
+ *************
+ *           *
+ *           *
+ *           *
+ *           *
+ *************
+ 
+
+
+ Symmetry Distinct Nuclear Coordinates / bohr
+
+     ATOM                     X                   Y                   Z
+
+     C                0.0000000000        0.0000000000        0.0000000000
+     HA               1.6971148998       -1.2000268416        0.0000000000
+     HB               0.0000000000        1.2000268416        1.6971148998
+Internal coordinate section
+ 
+********************************************************************************
+  Auto-Defined Internal coordinates
+--------------------------------------------------------------------------------
+  Primitive Internal Coordinates:
+b001 = Bond HA C                                                                
+b002 = Bond HB C                                                                
+a001 = Angle HA C HA(X)                                                         
+a002 = Angle HA C HB                                                            
+a003 = Angle HB C HB(Z)                                                         
+  Internal Coordinates:
+q001 = 0.47352620 b001 + -.47352620 b002 + -.22703719 a001 + 0.22703719 a003    
+q002 = 0.50000000 b001 + 0.50000000 b002                                        
+q003 = -.16053953 b001 + 0.16053953 b002 + -.66966717 a001 + 0.66966717 a003    
+q004 = 0.57735144 a001 + -.28867396 a002 + 0.57735144 a003                      
+********************************************************************************
+ 
+  Number of redundant coordinates:                     5
+ 
+ 
+ ******************************************
+ * Statistics of the internal coordinates *
+ ******************************************
+ Translations and Rotations:         0
+ Bonds                     :         2
+ Angles                    :         3
+ Torsions                  :         0
+ Out-of-plane angles       :         0
+ 
+
+
+ Cartesian forces which will be relaxed hartree/bohr
+
+     ATOM                     X                   Y                   Z
+
+     C                0.0000000000        0.0000000000        0.0000000000
+     HA               0.0000010521       -0.0000007357        0.0000000000
+     HB               0.0000000000        0.0000007357        0.0000010521
+ 
+ ****************************
+ * Value of internal forces *
+ ----------------------------
+ nrc001     0.00000
+ nrc002     0.00000
+ nrc003     0.00000
+ nrc004     0.00000
+ 
+ 
+ 
+  *** Updating the molecular Hessian ***
+ 
+ 
+Hessian update from points:  1  2  3
+ 
+ 
+ *****************************************************************
+ * Eigenvalues and Eigenvectors of the Hessian                   *
+ *****************************************************************
+ 
+                       1         2         3         4
+ Eigenvalues     0.112114  0.120477  0.353620  0.466796
+ 
+ b001           -0.000008  0.000163  0.707107  0.707107
+ b002           -0.000008 -0.000163  0.707107 -0.707107
+ a001            0.577351 -0.707107  0.000006  0.000163
+ a002           -0.577348  0.000000 -0.000006  0.000000
+ a003            0.577351  0.707107  0.000006 -0.000163
+ 
+ 
+  Force constant matrix                                       
+  mat. size =     4x    4
+ 0.431044789E+00 0.196266849E-11-0.105371354E+00 0.412235761E-12
+ 0.196258523E-11 0.353619552E+00-0.354712587E-10 0.261463406E-05
+-0.105371354E+00-0.354712171E-10 0.156228583E+00 0.151851609E-13
+ 0.412240965E-12 0.261463406E-05 0.152302637E-13 0.112113823E+00
+ 
+ -- Quartic line search failed, nonzero 2nd derivative
+ -- Cubic line search
+ Minimum found at -->   1.00044905305069      <--
+ 
+ 
+ RS-RF Optimization
+  Iter   alpha   Sqrt(dqdq) StepMax   EigVal
+    1   1.00000   0.00000   0.60000   0.00000
+ 
+ Rational Function Optimization, Lambda= -2.367980838211581E-015
+ 
+ 
+ Norm of the Step -->  7.332513724367741E-006 <--
+ 
+*****************************************************************************************************************
+*                                  Energy Statistics for Geometry Optimization                                  *
+*****************************************************************************************************************
+                       Energy     Grad     Grad              Step                 Estimated   Geom     Hessian   
+Iter      Energy       Change     Norm     Max    Element    Max     Element     Final Energy Update Update Index
+  1    -40.51561296  0.00000000 0.023424 0.023424 nrc002   0.047548  nrc002      -40.51616985 RS-RFO  None    0  
+  2    -40.51630228 -0.00068933 0.005776 0.005776 nrc002   0.016326  nrc002      -40.51634923 RS-RFO  BFGS    0  
+  3    -40.51634930 -0.00004702 0.000003 0.000003 nrc002   0.000007  nrc002      -40.51634930 RS-RFO  BFGS    0  
+ 
+       +----------------------------------+----------------------------------+
+       +    Cartesian Displacements       +    Gradient in internals         +
+       +  Value      Threshold Converged? +  Value      Threshold Converged? +
+ +-----+----------------------------------+----------------------------------+
+ + RMS + 0.3279E-05  0.1200E-02     Yes   + 0.2568E-05  0.3000E-03     Yes   +
+ +-----+----------------------------------+----------------------------------+
+ + Max + 0.3667E-05  0.1800E-02     Yes   + 0.2568E-05  0.4500E-03     Yes   +
+ +-----+----------------------------------+----------------------------------+
+ 
+ Geometry is converged in   3 iterations to a Minimum Structure
+ 
+*****************************************************************************************************************
+*****************************************************************************************************************
+Geometry section
+ 
+********************************************************************************
+  Geometrical information of the final structure
+********************************************************************************
+ 
+  NOTE: on convergence the final predicted structure will be printed here.
+  This is not identical to the structure printed in the head of the output.
+ 
+ *********************************************************
+ * Nuclear coordinates of the final structure / Bohr     *
+ *********************************************************
+  ATOM              X               Y               Z     
+  C                0.000000        0.000000        0.000000
+  HA               1.697118       -1.200029        0.000000
+  HB               0.000000        1.200029        1.697118
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates of the final structure / Angstrom *
+ *********************************************************
+  ATOM              X               Y               Z     
+  C                0.000000        0.000000        0.000000
+  HA               0.898076       -0.635028        0.000000
+  HB               0.000000        0.635028        0.898076
+ 
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       2.078528        0.000000
+    3 HA       2.078528        3.394236        0.000000
+    4 HB       2.078528        3.394215        3.394215        0.000000
+    5 HB       2.078528        3.394215        3.394215        3.394236        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       1.099910        0.000000
+    3 HA       1.099910        1.796152        0.000000
+    4 HB       1.099910        1.796141        1.796141        0.000000
+    5 HB       1.099910        1.796141        1.796141        1.796152        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 HA       1 C        3 HA       109.47
+                      2 HA       1 C        4 HB       109.47
+                      2 HA       1 C        5 HB       109.47
+                      3 HA       1 C        4 HB       109.47
+                      3 HA       1 C        5 HB       109.47
+                      4 HB       1 C        5 HB       109.47
+ 
+                **************************************************
+                * Radius of hypersphere / au*amu**(1/2)/amu(1/2) *
+                **************************************************
+                                     0.0160
+ 
+ 
+  Slapaf requests the last energy to be computed!
+ 
+
+ CPU times:
+                            1
+
+ Elapsed times:
+                            1
+
+ Task statistic:
+                            1
+ 
+--- Stop Module:  slapaf at Fri Oct  7 14:27:51 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: last_energy at Fri Oct  7 14:27:52 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                               MOLCAS executing module Last_Energy with 2000 MB of memory
+                                              at 14:27:53 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:27:53 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+ Basis Set     1 Label: C.CC-PVDZ....
+ Basis set is read from library:basis_library 
+ Basis Set Reference(s):
+     T.H. Dunning, Jr. J. Chem. Phys. 90, 1007 (1989).                               
+     CARBON       (9s,4p,1d) -> [3s,2p,1d]                                           
+ 
+ 
+ 
+ 
+ Basis Set     2 Label: H.CC-PVDZ....
+ Basis set is read from library:basis_library 
+ Basis Set Reference(s):
+     T.H. Dunning, Jr. J. Chem. Phys. 90, 1007 (1989).                               
+     HYDROGEN     (4s,1p) -> [2s,1p]                                                 
+ 
+ 
+ 
+    Geometry read from RUNFILE
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+                    Reflection in the xy-plane  
+ 
+ 
+                    Character Table for C2v
+ 
+                             E   s(yz) s(xy) C2(y)
+                    a1       1     1     1     1  y
+                    b1       1    -1     1    -1  x, xy, Rz
+                    b2       1     1    -1    -1  z, yz, Rx
+                    a2       1    -1    -1     1  xz, Ry, I
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:C.CC-PVDZ......... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  6.000000 au
+      Associated Actual Charge     6.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       9       3        X                  
+         p       4       2        X                  
+         d       1       1                 X         
+ 
+       Label   Cartesian Coordinates / Bohr
+ 
+ C                  0.0000000000        0.0000000000        0.0000000000
+      Basis set label:H.CC-PVDZ......... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       4       2        X                  
+         p       1       1        X                  
+ 
+       Label   Cartesian Coordinates / Bohr
+ 
+ HA                 1.6971179424       -1.2000288876        0.0000000000
+ HB                 0.0000000000        1.2000288876        1.6971179424
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      C                0.000000       0.000000       0.000000              0.000000       0.000000       0.000000
+        2      HA               1.697118      -1.200029       0.000000              0.898076      -0.635028       0.000000
+        3      HA              -1.697118      -1.200029       0.000000             -0.898076      -0.635028       0.000000
+        4      HB               0.000000       1.200029       1.697118              0.000000       0.635028       0.898076
+        5      HB               0.000000       1.200029      -1.697118              0.000000       0.635028      -0.898076
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       2.078528        0.000000
+    3 HA       2.078528        3.394236        0.000000
+    4 HB       2.078528        3.394215        3.394215        0.000000
+    5 HB       2.078528        3.394215        3.394215        3.394236        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 C             2 HA            3 HA            4 HB            5 HB    
+    1 C        0.000000
+    2 HA       1.099910        0.000000
+    3 HA       1.099910        1.796152        0.000000
+    4 HB       1.099910        1.796141        1.796141        0.000000
+    5 HB       1.099910        1.796141        1.796141        1.796152        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 HA       1 C        3 HA       109.47
+                      2 HA       1 C        4 HB       109.47
+                      2 HA       1 C        5 HB       109.47
+                      3 HA       1 C        4 HB       109.47
+                      3 HA       1 C        5 HB       109.47
+                      4 HB       1 C        5 HB       109.47
+ 
+ 
+      Rigid rotor info:
+         -----------------
+ 
+ 
+ 
+                    Total mass (a) :  16.03130
+ 
+                    Center of mass 
+                          X          Y          Z   
+                       0.00000    0.00000    0.00000
+ 
+                    Reference system based on center of mass
+                    Coordinates and Masses of Atoms, in au and a
+                          X          Y          Z        Mass
+                       0.00000    0.00000    0.00000   12.00000
+                       1.69712   -1.20003    0.00000    1.00782
+                      -1.69712   -1.20003    0.00000    1.00782
+                       0.00000    1.20003    1.69712    1.00782
+                       0.00000    1.20003   -1.69712    1.00782
+ 
+                    The Moment of Inertia Tensor / au
+                                     X          Y        Z     
+                    X            0.2117E+05
+                    Y            0.0000E+00 0.2117E+05
+                    Z            0.0000E+00 0.0000E+00 0.2117E+05
+ 
+                    The Principal Axis and Moment of Inertia (au)
+                    Eigenvalues :0.2117E+05 0.2117E+05 0.2117E+05
+                                     X'         Y'       Z'    
+                    Eigenvectors:
+                    X            0.0000E+00 0.1000E+01 0.0000E+00
+                    Y            0.1000E+01 0.0000E+00 0.0000E+00
+                    Z            0.0000E+00 0.0000E+00 0.1000E+01
+ 
+                    The Rotational Constants
+                            (cm-1)            (GHz)
+                              5.185          155.434
+                              5.185          155.436
+                              5.185          155.436
+ 
+ 
+                    *******************************************
+                    *                                         *
+                    * R I G I D - R O T O R   A N A L Y S I S *
+                    *                                         *
+                    *******************************************
+ 
+                    j(Max):  5
+ 
+                    Rotor Type: Linear Rotor            
+                    Asymmetry parameter:  1.000
+                    Prolate = -1
+                    Oblate  =  1
+ 
+ 
+                    Rotational energies / cm-1
+ 
+                    E(J= 0,kappa= 0) =        0.000
+ 
+                    E(J= 1,kappa=-1) =       10.369
+                    E(J= 1,kappa= 0) =       10.369
+                    E(J= 1,kappa= 1) =       10.370
+ 
+                    E(J= 2,kappa=-2) =       31.108
+                    E(J= 2,kappa=-1) =       31.108
+                    E(J= 2,kappa= 0) =       31.109
+                    E(J= 2,kappa= 1) =       31.109
+                    E(J= 2,kappa= 2) =       31.109
+ 
+                    E(J= 3,kappa=-3) =       62.217
+                    E(J= 3,kappa=-2) =       62.217
+                    E(J= 3,kappa=-1) =       62.217
+                    E(J= 3,kappa= 0) =       62.217
+                    E(J= 3,kappa= 1) =       62.217
+                    E(J= 3,kappa= 2) =       62.217
+                    E(J= 3,kappa= 3) =       62.217
+ 
+                    E(J= 4,kappa=-4) =      103.695
+                    E(J= 4,kappa=-3) =      103.695
+                    E(J= 4,kappa=-2) =      103.695
+                    E(J= 4,kappa=-1) =      103.695
+                    E(J= 4,kappa= 0) =      103.695
+                    E(J= 4,kappa= 1) =      103.695
+                    E(J= 4,kappa= 2) =      103.696
+                    E(J= 4,kappa= 3) =      103.696
+                    E(J= 4,kappa= 4) =      103.696
+ 
+                    E(J= 5,kappa=-5) =      155.542
+                    E(J= 5,kappa=-4) =      155.542
+                    E(J= 5,kappa=-3) =      155.542
+                    E(J= 5,kappa=-2) =      155.542
+                    E(J= 5,kappa=-1) =      155.543
+                    E(J= 5,kappa= 0) =      155.543
+                    E(J= 5,kappa= 1) =      155.543
+                    E(J= 5,kappa= 2) =      155.543
+                    E(J= 5,kappa= 3) =      155.543
+                    E(J= 5,kappa= 4) =      155.543
+                    E(J= 5,kappa= 5) =      155.543
+ 
+ 
+ 
+      Primitive basis info:
+         ---------------------
+ 
+ 
+ 
+                    *****************************************************
+                    ******** Primitive Basis Functions (Valence) ********
+                    *****************************************************
+ 
+ 
+ Basis set:C.CC-PVDZ.........                                                              
+ 
+                  Type         
+                   s
+           No.      Exponent    Contraction Coefficients
+            1  0.666500000D+04   0.000692  -0.000146   0.000000
+            2  0.100000000D+04   0.005329  -0.001154   0.000000
+            3  0.228000000D+03   0.027077  -0.005725   0.000000
+            4  0.647100000D+02   0.101718  -0.023312   0.000000
+            5  0.210600000D+02   0.274740  -0.063955   0.000000
+            6  0.749500000D+01   0.448564  -0.149981   0.000000
+            7  0.279700000D+01   0.285074  -0.127262   0.000000
+            8  0.521500000D+00   0.015204   0.544529   0.000000
+            9  0.159600000D+00  -0.003191   0.580496   1.000000
+ 
+                  Type         
+                   p
+           No.      Exponent    Contraction Coefficients
+           10  0.943900000D+01   0.038109   0.000000
+           11  0.200200000D+01   0.209480   0.000000
+           12  0.545600000D+00   0.508557   0.000000
+           13  0.151700000D+00   0.468842   1.000000
+ 
+                  Type         
+                   d
+           No.      Exponent    Contraction Coefficients
+           14  0.550000000D+00   1.000000
+ 
+ 
+ Basis set:H.CC-PVDZ.........                                                              
+ 
+                  Type         
+                   s
+           No.      Exponent    Contraction Coefficients
+           15  0.130100000D+02   0.019685   0.000000
+           16  0.196200000D+01   0.137977   0.000000
+           17  0.444600000D+00   0.478148   0.000000
+           18  0.122000000D+00   0.501240   1.000000
+ 
+                  Type         
+                   p
+           No.      Exponent    Contraction Coefficients
+           19  0.727000000D+00   1.000000
+ 
+  Number of primitives                                    54
+  Number of basis functions                               34
+ 
+ 
+      SO/AO info:
+       -----------
+ 
+ 
+                    **************************************************
+                    ******** Symmetry adapted Basis Functions ********
+                    **************************************************
+ 
+ 
+           Irreducible representation : a1 
+           Basis function(s) of irrep: y                                                                               
+ 
+ Basis Label        Type   Center Phase
+   1   C            1s        1     1
+   2   C            2s        1     1
+   3   C            *s        1     1
+   4   C            2py       1     1
+   5   C            *py       1     1
+   6   C            *d0       1     1
+   7   C            *d2+      1     1
+   8   HA           1s        2     1      3     1
+   9   HA           *s        2     1      3     1
+  10   HA           *px       2     1      3    -1
+  11   HA           *py       2     1      3     1
+  12   HB           1s        4     1      5     1
+  13   HB           *s        4     1      5     1
+  14   HB           *py       4     1      5     1
+  15   HB           *pz       4     1      5    -1
+ 
+           Irreducible representation : b1 
+           Basis function(s) of irrep: x, xy, Rz                                                                       
+ 
+ Basis Label        Type   Center Phase
+  16   C            2px       1     1
+  17   C            *px       1     1
+  18   C            *d2-      1     1
+  19   HA           1s        2     1      3    -1
+  20   HA           *s        2     1      3    -1
+  21   HA           *px       2     1      3     1
+  22   HA           *py       2     1      3    -1
+  23   HB           *px       4     1      5     1
+ 
+           Irreducible representation : b2 
+           Basis function(s) of irrep: z, yz, Rx                                                                       
+ 
+ Basis Label        Type   Center Phase
+  24   C            2pz       1     1
+  25   C            *pz       1     1
+  26   C            *d1-      1     1
+  27   HA           *pz       2     1      3     1
+  28   HB           1s        4     1      5    -1
+  29   HB           *s        4     1      5    -1
+  30   HB           *py       4     1      5    -1
+  31   HB           *pz       4     1      5     1
+ 
+           Irreducible representation : a2 
+           Basis function(s) of irrep: xz, Ry, I                                                                       
+ 
+ Basis Label        Type   Center Phase
+  32   C            *d1+      1     1
+  33   HA           *pz       2     1      3    -1
+  34   HB           *px       4     1      5    -1
+ 
+      Basis set specifications :
+      Symmetry species        a1  b1  b2  a2 
+      Basis functions          15   8   8   3
+ 
+ 
+            Nuclear Potential Energy             13.31434295 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a1   b1   b2   a2 
+      Basis functions           15    8    8    3
+ 
+ 
+  SEWARD will use a sorting area of  155648 Words(Real*8) in the first phase (=  19 bins).
+  SEWARD will use a sorting area of   14400 Words(Real*8) in the second phase.
+ 
+ 
+ Integrals are written in MOLCAS2 format
+ Number of integrals written on Disk =      72829
+ Number of nonzero integrals =      74753
+ Packing accuracy = 0.1000E-11
+ Highest disk address written      9796
+ Diagonal and subdiagonal, symmetry allowed 2-el integral blocks are stored on Disk
+ 
+  Input file to MOLDEN was generated!
+ 
+ 
+  I/O statistics
+  --------------
+ 
+  Unit  Name          Xtent      pages      MBytes     pages      MBytes
+                     (MBytes)     in          in        out        out  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   2   ONEINT          1.01       0.00       1.96       0.04      18.58
+  11   RUNFILE         7.97       0.01       0.05       0.01       0.05
+  22   RYSRW           0.67       0.02       0.53       0.00       0.00
+  40   ORDINT          4.78       0.04      11.00       0.11      11.66
+  50   TEMP01          2.38       0.02       2.38       0.08       2.64
+  77   ONEINT          1.00       0.00       1.95       0.00       0.00
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Total                           0.10      17.86       0.24      32.93
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:27:53 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###     Minimized-density-differences option turned off!                    ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+Input section
+      Header of the integral files:
+                                                                              
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:27:53 2016        
+ 
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   C          0.00000   0.00000   0.00000
+       2   HA         0.89808  -0.63503   0.00000
+       3   HB         0.00000   0.63503   0.89808
+       4   HA        -0.89808  -0.63503   0.00000
+       5   HB         0.00000   0.63503  -0.89808
+      --------------------------------------------
+      Nuclear repulsion energy =   13.314343
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2   3   4
+                                    a1  b1  b2  a2
+      Frozen orbitals                0   0   0   0
+      Occupied orbitals              3   1   1   0
+      Secondary orbitals            12   7   7   3
+      Deleted orbitals               0   0   0   0
+      Total number of orbitals      15   8   8   3
+      Number of basis functions     15   8   8   3
+ 
+      Molecular charge                           0.000
+ 
+ 
+      Numerical integration parameters
+      ======================================
+      Radial quadrature type:                         MHL       
+      Size of radial grid:                            75
+      Lebedev angular grid:                           29
+      Angular grid prunned with the crowding factor:  3.00
+                                  and fading factor:  6.00
+      Screening threshold for integral computation:   0.10E-10
+      Screening threshold for density computation:    0.10E-17
+      Radial quadrature accuracy:                     0.10E-24
+      Maximum batch size        :                     128
+      AO values are recomputed each iteration
+ 
+ 
+      The same grid will be used for all iterations.
+ 
+      SCF Algorithm: Conventional
+      D(i)-D(i-1) density differences are used
+      Number of density matrices in core              400
+      Maximum number of NDDO SCF iterations           400
+      Maximum number of HF  SCF iterations            400
+      Threshold for SCF energy change            0.10E-08
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Detected old SCF orbitals                                                       
+ 
+ 
+Convergence information
+                                   B3LYP      iterations: Energy and convergence statistics
+ 
+Iter     Tot. B3LYP     One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -40.51634930    -85.16662648     31.33593423  0.00E+00   0.80E-06   0.52E-06    0.57E+01   0.36E+02   NoneDa    0.
+   2    -40.51634930    -85.16661835     31.33592610 -0.15E-11   0.77E-06   0.24E-06    0.12E-04   0.41E-05   Damp      0.
+ 
+       Convergence after  2 Macro Iterations and  0 additional LS Iterations...
+ 
+ 
+ 
+ This job can be restarted with the RESTART option!
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total KS-DFT energy                             -40.5163492988
+      One-electron energy                             -85.1666183508
+      Two-electron energy                              31.3359260981
+      Nuclear repulsion energy                         13.3143429539
+      Kinetic energy (interpolated)                    40.0619496218
+      Virial theorem                                    1.0113424255
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000007673
+      Max non-diagonal Fock matrix element              0.0000002359
+ 
+ 
+      Integrated DFT Energy                            -5.5784818161
+      Integrated number of electrons                     10.00000794    
+      Integrated |grad|                                  35.85488842    
+      Total number of prunned grid points                    14601
+      Number of grid points per SO-integral                  45259.0
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: RKS-DFT orbitals                                                                
+ 
+
+      Molecular orbitals for symmetry species 1: a1 
+ 
+          Orbital        1         2         3         4         5         6
+          Energy      -10.1746   -0.6903   -0.3885    0.0730    0.1429    0.4137
+          Occ. No.      2.0000    2.0000    2.0000    0.0000    0.0000    0.0000
+ 
+        1 C     1s      1.0061   -0.0248    0.0000   -0.0643    0.0000    0.0000
+        2 C     2s      0.0340    0.7640    0.0000    0.3297    0.0000    0.0000
+        3 C     *s     -0.0311   -0.2192    0.0000    1.9549    0.0000    0.0000
+        4 C     2py     0.0000    0.0000   -0.6569    0.0000   -0.5684    0.4449
+        5 C     *py     0.0000    0.0000    0.1274    0.0000   -0.9963   -1.3144
+        6 C     *d0     0.0000    0.0000   -0.0165    0.0000    0.0022    0.1159
+        7 C     *d2+    0.0000    0.0000    0.0095    0.0000   -0.0013   -0.0669
+        8 HA    1s     -0.0036    0.4390    0.5353   -0.0860   -0.1744   -1.1554
+        9 HA    *s      0.0049   -0.1745   -0.1246   -1.0803   -1.5768    0.7397
+       10 HA    *px     0.0023   -0.0286   -0.0193    0.0001   -0.0032   -0.0378
+       11 HA    *py    -0.0016    0.0202   -0.0073   -0.0001   -0.0097   -0.0320
+       12 HB    1s     -0.0036    0.4390   -0.5353   -0.0860    0.1744    1.1554
+       13 HB    *s      0.0049   -0.1745    0.1246   -1.0803    1.5768   -0.7397
+       14 HB    *py     0.0016   -0.0202   -0.0073    0.0001   -0.0097   -0.0320
+       15 HB    *pz     0.0023   -0.0286    0.0193    0.0001    0.0032    0.0378
+
+      Molecular orbitals for symmetry species 2: b1 
+ 
+          Orbital        1         2         3
+          Energy       -0.3885    0.1429    0.4137
+          Occ. No.      2.0000    0.0000    0.0000
+ 
+        1 C     2px    -0.6569    0.5684   -0.4449
+        2 C     *px     0.1275    0.9963    1.3144
+        3 C     *d2-    0.0190    0.0026    0.1338
+        4 HA    1s     -0.7571   -0.2467   -1.6339
+        5 HA    *s      0.1762   -2.2299    1.0461
+        6 HA    *px     0.0063    0.0074    0.0053
+        7 HA    *py    -0.0193    0.0032    0.0378
+        8 HB    *px    -0.0210    0.0119    0.0587
+
+      Molecular orbitals for symmetry species 3: b2 
+ 
+          Orbital        1         2         3
+          Energy       -0.3885    0.1429    0.4137
+          Occ. No.      2.0000    0.0000    0.0000
+ 
+        1 C     2pz     0.6569    0.5684   -0.4449
+        2 C     *pz    -0.1275    0.9963    1.3144
+        3 C     *d1-    0.0190   -0.0026   -0.1338
+        4 HA    *pz     0.0210    0.0119    0.0587
+        5 HB    1s      0.7571   -0.2467   -1.6339
+        6 HB    *s     -0.1762   -2.2299    1.0461
+        7 HB    *py    -0.0193   -0.0032   -0.0378
+        8 HB    *pz    -0.0063    0.0074    0.0053
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             C       HA      HB    
+      1s     2.0123  1.2413  1.2413
+      2s     1.4931  0.0000  0.0000
+      2px    1.2210  0.0000  0.0000
+      2pz    1.2210  0.0000  0.0000
+      2py    1.2210  0.0000  0.0000
+      *s    -0.4254 -0.3023 -0.3023
+      *px   -0.2143  0.0134  0.0060
+      *pz   -0.2143  0.0060  0.0134
+      *py   -0.2143  0.0097  0.0097
+      *d2+   0.0023  0.0000  0.0000
+      *d1+   0.0000  0.0000  0.0000
+      *d0    0.0068  0.0000  0.0000
+      *d1-   0.0091  0.0000  0.0000
+      *d2-   0.0091  0.0000  0.0000
+      Total  6.1275  0.9681  0.9681
+ 
+      N-E   -0.1275  0.0319  0.0319
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+      Mulliken Bond Order analysis
+      ----------------------------
+      Only bonds with order larger than 0.500 are printed
+ 
+      Atom A -   Generator  Atom B -   Generator  Bond Order
+        C     :E           HA    :E             0.998
+        C     :E           HA    :x             0.998
+        C     :E           HB    :E             0.998
+        C     :E           HB    :z             0.998
+ 
+
+      Expectation values of various operators
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+
+
+       0-st cartesian moments: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                                                                                                                          
+ Total electronic           -10.00000000
+ Total nuclear               10.00000000
+ Total                        0.00000000
+
+
+       1-st cartesian moments: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                             X               Y               Z                                                            
+ Total electronic             0.00000000      0.00000000      0.00000000
+ Total nuclear                0.00000000      0.00000000      0.00000000
+ Total                        0.00000000      0.00000000      0.00000000
+      Total                        0.00000000      0.00000000      0.00000000 Debye
+
+
+       2-nd cartesian moments: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                            XX              XY              XZ              YY              YZ              ZZ            
+ Total electronic           -11.95214662      0.00000000      0.00000000    -11.95204792      0.00000000    -11.95214662
+ Total nuclear                5.76041862      0.00000000      0.00000000      5.76027732      0.00000000      5.76041862
+ Total                       -6.19172800      0.00000000      0.00000000     -6.19177060      0.00000000     -6.19172800
+
+
+
+      Cartesian  2-pole moment: origin at (  0.00000000,  0.00000000,  0.00000000)
+      ----------------------------------------------------------------------------
+ Component                            XX              XY              XZ              YY              YZ              ZZ            
+ Total electronic            -0.00004935      0.00000000      0.00000000      0.00009869      0.00000000     -0.00004935
+ Total nuclear                0.00007065      0.00000000      0.00000000     -0.00014130      0.00000000      0.00007065
+ Total                        0.00002130      0.00000000      0.00000000     -0.00004260      0.00000000      0.00002130
+
+ 
+  Statistics and timing
+  ---------------------
+ 
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     Part of the program                              CPU    fraction
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  1) Input processing                         :      0.02      0.01
+  2) Wave function optimization               :      0.29      0.13
+       Line Search Iterations    (QNR steps)  :      0.00      0.00
+    a ) calculation of the density            :      0.00      0.00
+    b ) contraction with integrals            :      0.28      0.12
+    c ) acceleration of convergence           :      0.00      0.00
+          recursive BFGS         (QNR steps)  :      0.00      0.00
+    d ) solution to Roothaan-Hall equations   :      0.00      0.00
+    d') rotate MOs C with U      (QNR steps)  :      0.00      0.00
+          U=exp(kap)                          :      0.00      0.00
+            via Taylor expansion (sin/cos)    :      0.00      0.00
+            via transformation to Schur basis :      0.00      0.00
+    e') transf. Fck Mat. with C  (QNR steps)  :      0.00      0.00
+    f ) other calculations                    :      0.00      0.00
+  3) Final processing (generation of outputs) :      1.85      0.80
+ 
+     T O T A L                                :      2.30
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+ 
+  Input file to MOLDEN was generated!
+ 
+ 
+  I/O statistics
+  --------------
+ 
+  Unit  Name          Xtent      pages      MBytes     pages      MBytes
+                     (MBytes)     in          in        out        out  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  11   RUNFILE         0.06       0.01       0.05       0.00       0.00
+  22   DNSMAX          0.00       0.00       0.00       0.00       0.00
+  23   TWOHAX          0.00       0.00       0.00       0.00       0.00
+  29   SOYVEC          0.00       0.00       0.00       0.00       0.00
+  34   DNSMAT          0.00       0.00       0.00       0.00       0.00
+  35   TWOHAM          0.00       0.00       0.00       0.00       0.00
+  36   GRADIENT        0.00       0.00       0.00       0.00       0.00
+  37   SODGRAD         0.00       0.00       0.00       0.00       0.00
+  38   SOXVEC          0.00       0.00       0.00       0.00       0.00
+  39   SODELTA         0.00       0.00       0.00       0.00       0.00
+  40   ORDINT          4.78       0.03       8.03       0.00       0.03
+  77   ONEINT          0.98       0.00       1.95       0.00       0.00
+  88   NQGRID         29.22       0.71       0.46       0.00       0.00
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Total                           0.75      10.49       0.01       0.04
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+ 
+--- Stop Module:  last_energy at Fri Oct  7 14:27:54 2016 /rc=0 ---
+--- Stop Module:  auto at Fri Oct  7 14:27:55 2016 /rc=0 ---
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 14:27:55 2016 /rc=0 ---

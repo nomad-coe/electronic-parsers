@@ -1,0 +1,11 @@
+* CHARMM testcase data directory assignment
+*
+faster on
+set pnode = 
+if ?numnode .gt. 1 set pnode = node 0
+set 0 ./     ! input data directory
+set 9 ./  ! scratch directory
+set testcheck stream @0/test.str
+set qcheck stream @0/qtest.str
+set testfail 0
+return

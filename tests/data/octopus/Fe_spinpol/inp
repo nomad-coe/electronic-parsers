@@ -1,0 +1,32 @@
+Units = ev_angstrom
+%LSize
+ 1.4350000000000001 | 1.4350000000000001 | 1.4350000000000001
+%
+
+PeriodicDimensions = 3
+Output = forces
+OutputFormat = xcrysden
+FromScratch = True
+RestartWrite = False
+stdout = 'stdout.txt'
+PseudopotentialSet = sg15
+Spacing = 0.2
+
+%KPointsGrid
+ 4 | 4 | 4
+%
+
+SmearingFunction = fermi_dirac
+ExtraStates = 4
+Smearing = 0.2
+ConvAbsDens = 0.01
+GuessMagnetDensity = ferromagnetic
+SpinComponents = spin_polarized
+ConvRelDens = 0.01
+KPointsUseSymmetries = True
+ExperimentalFeatures = True
+
+%Coordinates
+ 'Fe' | 0.0 | 0.0 | 0.0
+ 'Fe' | 1.4350000000000001 | 1.4350000000000001 | 1.4350000000000001
+%

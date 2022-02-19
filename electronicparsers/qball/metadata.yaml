@@ -1,0 +1,12 @@
+codeLabel: QBALL
+codeLabelStyle: all in capitals
+codeName: qball
+codeUrl: https://github.com/LLNL/qball
+parserDirName: dependencies/parsers/qball/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-qball.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: |
+  |Input Filename| Description|
+  |--- | --- |
+  |`*.out` | **Mainfile:** a plain text file w/ **user-defined** name|

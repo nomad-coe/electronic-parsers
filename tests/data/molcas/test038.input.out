@@ -1,0 +1,3845 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test038.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test038.input.23315
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 14:36:03 2016 
+
+++ ---------   Input file   ---------
+
+  &SEWARD &END  
+    Title                
+    water
+    Symmetry
+    x xy 
+    Basis set 
+    H.ano-s...2s1p.
+    H              0.0000000000        1.4499030287        1.0033239388
+    End of basis
+    Basis set
+    O.ano-s...3s3p2d.
+    O              0.0000000000       0.0000000000        -0.1264370914
+    End of basis
+    Basis set
+    O..... / inline
+      0.0 2   
+      2 2
+      0.02 0.01
+      1.0 0.0
+      0.0 1.0
+      2 2
+      0.01 0.005
+      1.0 0.0
+      0.0 1.0
+      2 2
+      0.08 0.04
+      1.0 0.0
+      0.0 1.0
+    OX             0.0000000000       0.0000000000        -0.1264370914
+    End of Basis
+  &SCF &END 
+    Title     
+    water           
+    Occupied 
+      3 0 2 0        
+    Thre
+      0.5d-10 0.5d-7 0.5d-7 0.2d-5
+  &RASSCF &End
+    Lumorb
+    Iter
+      50 50
+    Inactive
+      1 0 0 0
+    ras1
+      0 0 0 0 
+    ras2
+      4 0 2 2 
+    ras3
+      0 0 0 0
+    nactel
+      8 0 0
+    Spin
+      1
+    Symmetry
+      1
+    Thrs
+      1.0e-8 1.0e-06 1.0e-06
+  &MCLR &END
+    iter
+      100
+    timedep
+      0.2
+    Print
+      255
+
+-- ----------------------------------
+
+--- Start Module: seward at Fri Oct  7 14:36:03 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:36:03 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+ Title:
+                                             water                                      
+ 
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+                    Rotation around the z-axis  
+ 
+ 
+                    Character Table for C2v
+ 
+                             E   s(yz) C2(z) s(xz)
+                    a1       1     1     1     1  z
+                    a2       1    -1     1    -1  xy, Rz, I
+                    b2       1     1    -1    -1  y, yz, Rx
+                    b1       1    -1    -1     1  x, xz, Ry
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:H.ANO-S...2S1P...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       7       2        X                  
+         p       3       1        X                  
+      Basis set label:O.ANO-S...3S3P2D...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  8.000000 au
+      Associated Actual Charge     8.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s      10       3        X                  
+         p       6       3        X                  
+         d       3       2                 X         
+      Basis set label:O.......... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  0.000000 au
+      Associated Actual Charge     8.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       2       2        X                  
+         p       2       2        X                  
+         d       2       2                 X         
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      H                0.000000       1.449903       1.003324              0.000000       0.767256       0.530936
+        2      H                0.000000      -1.449903       1.003324              0.000000      -0.767256       0.530936
+        3      O                0.000000       0.000000      -0.126437              0.000000       0.000000      -0.066908
+        4      OX               0.000000       0.000000      -0.126437              0.000000       0.000000      -0.066908
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 H             2 H             3 O             4 OX    
+    1 H        0.000000
+    2 H        2.899806        0.000000
+    3 O        1.838091        1.838091        0.000000
+    4 OX       1.838091        1.838091        0.000000        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 H             2 H             3 O             4 OX    
+    1 H        0.000000
+    2 H        1.534511        0.000000
+    3 O        0.972676        0.972676        0.000000
+    4 OX       0.972676        0.972676        0.000000        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 H        1 H        3 O         37.93
+                      2 H        1 H        4 OX        37.93
+                      3 O        1 H        4 OX         0.00
+                      1 H        2 H        3 O         37.93
+                      1 H        2 H        4 OX        37.93
+                      3 O        2 H        4 OX         0.00
+                      1 H        3 O        2 H        104.15
+                      1 H        4 OX       2 H        104.15
+ 
+           ***************************************************************
+           *              Valence Dihedral Angles / Degree               *
+           ***************************************************************
+                    Atom centers                       Phi1     Phi2     Theta 
+           3 O        1 H        2 H        4 OX         37.93    37.93     0.00
+           3 O        2 H        1 H        4 OX         37.93    37.93     0.00
+ 
+ 
+            Nuclear Potential Energy              9.04953360 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a1   a2   b2   b1 
+      Basis functions           22    5   13   10
+ 
+--- Stop Module:  seward at Fri Oct  7 14:36:04 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:36:04 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:36:05 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+Input section
+      Header of the integral files:
+                                       water                                  
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:03 2016        
+ 
+ 
+       Title:
+        water                                                                   
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H          0.00000   0.76726   0.53094
+       2   O          0.00000   0.00000  -0.06691
+       3   OX         0.00000   0.00000  -0.06691
+       4   H          0.00000  -0.76726   0.53094
+      --------------------------------------------
+      Nuclear repulsion energy =    9.049534
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2   3   4
+                                    a1  a2  b2  b1
+      Frozen orbitals                0   0   0   0
+      Occupied orbitals              3   0   2   0
+      Secondary orbitals            19   5  11  10
+      Deleted orbitals               0   0   0   0
+      Total number of orbitals      22   5  13  10
+      Number of basis functions     22   5  13  10
+ 
+      Molecular charge                           0.000
+ 
+      SCF Algorithm: Conventional
+      Minimized density differences are used
+      Number of density matrices in core              400
+      Maximum number of NDDO SCF iterations           400
+      Maximum number of HF  SCF iterations            400
+      Threshold for SCF energy change            0.50E-10
+      Threshold for density matrix               0.50E-07
+      Threshold for Fock matrix                  0.50E-07
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-05
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Detected guessorb starting orbitals                                             
+ 
+ 
+Convergence information
+                                   SCF        iterations: Energy and convergence statistics
+ 
+Iter     Tot. SCF       One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -74.57884660   -118.79473004     35.16634983  0.00E+00   0.41E+00*  0.28E+00*   0.78E+01   0.37E+02   NoneDa    0.
+   2    -75.07702315   -119.22574151     35.09918476 -0.50E+00*  0.22E+00*  0.65E-01*   0.47E+01   0.17E+01   Damp      0.
+   3    -75.13017629   -118.32192903     34.14221914 -0.53E-01*  0.75E-01*  0.22E-01*   0.16E+01   0.62E+01   Damp      0.
+   4    -75.13821125   -118.32742914     34.13968429 -0.80E-02*  0.36E-01*  0.22E-01*   0.23E+00   0.98E+00   QNRc2D    0.
+   5    -75.13977204   -118.17988661     33.99058097 -0.16E-02*  0.34E-01*  0.38E-02*   0.60E-01   0.68E-01   QNRc2D    0.
+   6    -75.14025835   -118.14169142     33.95189946 -0.49E-03*  0.67E-02*  0.11E-02*   0.33E-01   0.19E-01   QNRc2D    0.
+   7    -75.14028701   -118.12406002     33.93423940 -0.29E-04*  0.36E-02*  0.73E-03*   0.89E-02   0.12E-01   QNRc2D    0.
+   8    -75.14029285   -118.13528101     33.94545455 -0.58E-05*  0.63E-03*  0.97E-04*   0.35E-02   0.11E-02   QNRc2D    0.
+   9    -75.14029299   -118.13499956     33.94517297 -0.14E-06*  0.75E-04*  0.10E-04*   0.11E-02   0.81E-03   QNRc2D    0.
+  10    -75.14029299   -118.13520826     33.94538166 -0.22E-08*  0.11E-04*  0.19E-05*   0.12E-03   0.16E-03   QNRc2D    0.
+  11    -75.14029299   -118.13519868     33.94537208 -0.75E-10*  0.37E-05*  0.31E-06*   0.26E-04   0.65E-04   QNRc2D    0.
+  12    -75.14029299   -118.13519597     33.94536937 -0.44E-11   0.40E-06   0.95E-07*   0.30E-05   0.39E-05   QNRc2D    0.
+  13    -75.14029299   -118.13519580     33.94536921 -0.20E-12   0.44E-07   0.21E-07    0.39E-06   0.45E-06   QNRc2D    0.
+ 
+       Convergence after 13 Macro Iterations and  0 additional LS Iterations...
+ 
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total SCF energy                                -75.1402929923
+      One-electron energy                            -118.1351958045
+      Two-electron energy                              33.9453692076
+      Nuclear repulsion energy                          9.0495336047
+      Kinetic energy (interpolated)                    76.1374850101
+      Virial theorem                                    0.9869027455
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000000000
+      Max non-diagonal Fock matrix element              0.0000000214
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: SCF orbitals                                                                    
+ 
+
+      Molecular orbitals for symmetry species 1: a1 
+ 
+          Orbital        1         2         3         4         5         6         7         8         9        10
+          Energy      -21.0951   -1.7372   -1.0198   -0.0373    0.0069    0.0197    0.0313    0.0907    0.1027    0.1476
+          Occ. No.      2.0000    2.0000    2.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+ 
+        1 H     1s     -0.0003    0.1193   -0.1859    0.4722    0.0820   -0.1356    0.0901   -0.5295   -0.1961   -1.3023
+        2 H     1s      0.0002   -0.1196    0.0790    0.1724    0.0220   -0.0285    0.0868   -0.2440   -0.0979   -0.6754
+        3 H     2py    -0.0002   -0.0454    0.0344    0.0317    0.0095   -0.0196   -0.0183   -0.0125   -0.0124    0.0309
+        4 H     2pz    -0.0004   -0.0357    0.0072    0.0154    0.0029   -0.0095   -0.0109    0.0019    0.0256    0.0280
+        5 O     1s     -1.0001   -0.0199    0.0216   -0.0566   -0.0094    0.0161    0.0069    0.0303    0.0125    0.0929
+        6 O     1s     -0.0004    0.8428    0.3514   -0.5102   -0.0848    0.1500    0.0943    0.2255    0.0856    0.6548
+        7 O     1s      0.0002   -0.0600    0.0297   -0.0826   -0.0115    0.0167   -0.0081    0.0696    0.0294    0.1857
+        8 O     2pz    -0.0006    0.1095   -0.8729   -0.1790   -0.0478    0.0878   -0.0481    0.1569    0.0323    0.3250
+        9 O     2pz     0.0008   -0.0142    0.1094   -0.0045    0.0515   -0.0557   -0.0074    0.0104   -0.0118   -0.2856
+       10 O     2pz    -0.0007    0.0144    0.0162    0.0126    0.0200   -0.0196    0.0115   -0.0245   -0.0159   -0.1806
+       11 O     3d0    -0.0002    0.0094   -0.0318   -0.0027   -0.0013    0.0019   -0.0030   -0.0059    0.0259    0.0027
+       12 O     3d0     0.0002    0.0022   -0.0055   -0.0012   -0.0003    0.0003   -0.0012   -0.0053    0.0162   -0.0024
+       13 O     3d2+    0.0007   -0.0095    0.0043   -0.0055   -0.0029    0.0070    0.0083    0.0280    0.0033   -0.0200
+       14 O     3d2+   -0.0003    0.0027   -0.0014   -0.0002   -0.0012    0.0029    0.0043    0.0150    0.0009   -0.0182
+       15 OX    1s      0.0004    0.1492   -0.0828    0.5609    0.5584   -1.1000   -1.9427    1.1641    0.4424    2.4016
+       16 OX    1s     -0.0002   -0.0481    0.0238    0.1091   -0.7291    1.3950    1.9599   -0.6395   -0.2254   -1.1575
+       17 OX    2pz     0.0001    0.0242   -0.0248   -0.0150    0.0190   -1.4141    1.2300    0.2777    0.2970    0.8468
+       18 OX    2pz    -0.0001   -0.0132    0.0141    0.0023    0.9133    1.4823   -0.8598   -0.1810   -0.1868   -0.5264
+       19 OX    3d0     0.0000    0.0003    0.0116   -0.0207    0.0193   -0.0178    0.0282    0.0917   -0.2777    0.0293
+       20 OX    3d0     0.0000    0.0003   -0.0048   -0.0168   -0.0593    0.0719   -0.0881   -0.3268    1.1622   -0.0642
+       21 OX    3d2+   -0.0001   -0.0085    0.0052   -0.0040   -0.0044    0.0033   -0.0002   -0.2197   -0.0446    0.1934
+       22 OX    3d2+    0.0000   -0.0024    0.0022   -0.0294   -0.0244    0.0544    0.0228    1.0214    0.2366   -0.5846
+
+      Molecular orbitals for symmetry species 2: a2 
+ 
+          Orbital        1
+          Energy        0.1001
+          Occ. No.      0.0000
+ 
+        1 H     2px     0.0237
+        2 O     3d2-    0.0277
+        3 O     3d2-    0.0181
+        4 OX    3d2-   -0.2629
+        5 OX    3d2-    1.1924
+
+      Molecular orbitals for symmetry species 3: b2 
+ 
+          Orbital        1         2         3         4         5
+          Energy       -1.1365   -0.1336    0.0123    0.0490    0.1211
+          Occ. No.      2.0000    2.0000    0.0000    0.0000    0.0000
+ 
+        1 H     1s     -0.3115    1.3537   -0.1058    0.9727   -0.2911
+        2 H     1s      0.1027    0.5722   -0.0329    0.4522   -0.1084
+        3 H     2py     0.0528   -0.0263   -0.0028   -0.0304    0.0335
+        4 H     2pz     0.0496    0.0069   -0.0059   -0.0075    0.0168
+        5 O     2py    -0.7864   -0.5651    0.0499   -0.3362    0.0606
+        6 O     2py     0.1551    0.0649   -0.0100   -0.1132   -0.3822
+        7 O     2py    -0.0053    0.1112   -0.0061    0.0370   -0.1517
+        8 O     3d1-   -0.0281    0.0142   -0.0071    0.0040    0.0137
+        9 O     3d1-    0.0044   -0.0008   -0.0029   -0.0043    0.0103
+       10 OX    2py    -0.0372    0.4175   -0.7271   -1.7921    0.7985
+       11 OX    2py     0.0211   -0.2028    1.5536    1.2152   -0.4990
+       12 OX    3d1-    0.0037    0.0791   -0.0064   -0.0974   -0.4638
+       13 OX    3d1-   -0.0089    0.0873   -0.0427    0.4143    1.1944
+
+      Molecular orbitals for symmetry species 4: b1 
+ 
+          Orbital        1         2         3         4
+          Energy       -0.3447    0.0083    0.0264    0.0987
+          Occ. No.      0.0000    0.0000    0.0000    0.0000
+ 
+        1 H     2px     0.0310    0.0016    0.0021    0.0156
+        2 O     2px     0.9773    0.0258    0.0957   -0.0249
+        3 O     2px     0.0541   -0.0281   -0.0390   -0.0097
+        4 O     2px    -0.0430   -0.0131   -0.0209   -0.0018
+        5 O     3d1+    0.0292    0.0013    0.0039    0.0278
+        6 O     3d1+    0.0077    0.0005    0.0014    0.0185
+        7 OX    2px     0.0026    0.2112   -1.9381    0.1608
+        8 OX    2px    -0.0014   -1.1723    1.5860   -0.1009
+        9 OX    3d1+   -0.0047   -0.0162   -0.0351   -0.2919
+       10 OX    3d1+    0.0020    0.0409    0.1076    1.2116
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             H       O       OX    
+      1s     1.0729  3.7792  0.0583
+      2px    0.0000  0.0000  0.0000
+      2pz    0.0311  1.7439  0.0021
+      2py    0.0215  1.7198  0.2918
+      3d2+   0.0000  0.0014  0.0008
+      3d1+   0.0000  0.0000  0.0000
+      3d0    0.0000  0.0032 -0.0002
+      3d1-   0.0000  0.0153  0.1335
+      3d2-   0.0000  0.0000  0.0000
+      Total  1.1254  7.2628  0.4863
+ 
+      N-E   -0.1254  0.7372 -0.4863
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=   -3.7227           Total=    3.7227
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000   -0.0315
+                    XX=  -14.6658              XY=    0.0000              XZ=    0.0000              YY=  -38.4528
+                    YZ=    0.0000              ZZ=  -18.6706
+      In traceless form (Debye*Ang)
+                    XX=   13.8959              XY=    0.0000              XZ=    0.0000              YY=  -21.7846
+                    YZ=    0.0000              ZZ=    7.8887
+--- Stop Module:  scf at Fri Oct  7 14:36:06 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 14:36:06 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module RASSCF with 2000 MB of memory
+                                              at 14:36:07 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      Header of the ONEINT file:
+      --------------------------
+      water                                                                                                                   
+      Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:03 2016                                                         
+ 
+ 
+      OrdInt status: non-squared
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H          0.00000   0.76726   0.53094
+       2   O          0.00000   0.00000  -0.06691
+       3   OX         0.00000   0.00000  -0.06691
+       4   H          0.00000  -0.76726   0.53094
+      --------------------------------------------
+      Nuclear repulsion energy =    9.049534
+ 
+ 
+ 
+      Wave function specifications:
+         -----------------------------
+ 
+      Number of closed shell electrons           2
+      Number of electrons in active shells       8
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                1
+      Number of active orbitals                  8
+      Number of secondary orbitals              41
+      Spin quantum number                      0.0
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+         -----------------------
+ 
+      Symmetry species                           1   2   3   4
+                                                a1  a2  b2  b1
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          1   0   0   0
+      Active orbitals                            4   0   2   2
+      RAS1 orbitals                              0   0   0   0
+      RAS2 orbitals                              4   0   2   2
+      RAS3 orbitals                              0   0   0   0
+      Secondary orbitals                        17   5  11   8
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 22   5  13  10
+ 
+      CI expansion specifications:
+         ----------------------------
+ 
+      Number of configuration state fnc.       492
+      Number of determinants                   677
+      Number of root(s) required                 1
+      Root chosen for geometry opt.              1
+      CI root used                               1
+      highest root included in the CI            1
+      max. size of the explicit Hamiltonian    200
+ 
+      Optimization specifications:
+         ----------------------------
+ 
+      RASSCF algorithm: Conventional
+      Maximum number of macro iterations        50
+      Maximum number of SX iterations           50
+      Threshold for RASSCF energy            0.100E-07
+      Threshold for max MO rotation          0.100E-05
+      Threshold for max BLB element          0.100E-05
+      Level shift parameter                  0.500E+00
+      Make Quasi-Newton update
+      The MO-coefficients are taken from the file:
+      INPORB                                                                                                                          
+      Title: SCF orbitals                                                                  
+ 
+      Total molecular charge    0.00
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                            Wave function  control section                                            *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+                          RASSCF iterations: Energy and convergence statistics
+                          ----------------------------------------------------
+ 
+      Iter CI   SX   CI       RASSCF       Energy    max ROT   max BLB   max BLB  Level Ln srch  Step   QN    Time(min)
+          iter iter root      energy       change     param    element    value    shift minimum  type update     CPU
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital   4 of symmetry 1 MO space 2  weight is    0.423807
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital   5 of symmetry 1 MO space 2  weight is    0.462810
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital   2 of symmetry 4 MO space 2  weight is    0.447082
+        1   1   50    1   -75.96829783    0.00E+00  -0.68E+00*   1   8 3 -0.21E+00*  0.01   0.00     SX     NO      0.00
+        2   4   52    1   -76.12438275   -0.16E+00*  0.50E+00*   1   5 1  0.86E-01*  0.00   0.00     SX     NO      0.00
+        3   3   22    1   -76.17621100   -0.52E-01* -0.10E+00*   1  17 1 -0.43E-01*  0.00   0.00     SX     NO      0.00
+        4   3   20    1   -76.18281504   -0.66E-02*  0.63E-01*   3  17 1  0.10E-01*  0.00   0.00     SX     NO      0.00
+        5   3   20    1   -76.18371277   -0.90E-03*  0.32E-01*   3  17 1  0.60E-02*  0.00   1.57     LS    YES      0.00
+        6   3   20    1   -76.18384723   -0.13E-03*  0.56E-02*   3  17 1  0.37E-02*  0.00   1.11     QN    YES      0.00
+        7   3   18    1   -76.18388365   -0.36E-04*  0.17E-02*   3  11 1  0.93E-03*  0.00   0.95     QN    YES      0.00
+        8   3   17    1   -76.18388789   -0.42E-05* -0.89E-03*   3  11 1  0.40E-03*  0.00   1.51     LS    YES      0.00
+        9   3   16    1   -76.18388843   -0.54E-06* -0.73E-03*   1  11 3  0.27E-03*  0.00   1.00     QN    YES      0.00
+       10   3   14    1   -76.18388875   -0.32E-06*  0.38E-03*   1  11 3  0.11E-03*  0.00   1.28     QN    YES      0.00
+       11   3   11    1   -76.18388879   -0.40E-07* -0.10E-03*   1   5 1  0.19E-04*  0.00   1.05     QN    YES      0.00
+       12   1    8    1   -76.18388879   -0.21E-08  -0.23E-04*   1  11 3 -0.69E-05*  0.00   1.16     QN    YES      0.00
+       13   1    6    1   -76.18388879   -0.22E-09   0.31E-05*   1  11 3 -0.12E-05*  0.00   1.04     QN    YES      0.00
+       14   1    3    1   -76.18388879   -0.75E-11  -0.11E-05*   3  17 1 -0.37E-06   0.00   1.13     QN    YES      0.00
+       15   1    2    1   -76.18388879   -0.77E-12  -0.32E-06    2  11 1  0.21E-06   0.00   1.05     QN    YES      0.00
+      Convergence after 15 iterations
+       16   1    2    1   -76.18388879   -0.13E-12  -0.32E-06    3  17 1  0.90E-07   0.00   1.05     QN    YES      0.00
+ 
+      ************************************************************************************************************************
+                                                      Wave function printout:
+                       occupation of active orbitals, and spin coupling of open shells (u,d: Spin up or down)
+      ************************************************************************************************************************
+ 
+      Note: transformation to natural orbitals
+      has been made, which may change the order of the CSFs.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -76.183889
+      conf/sym  1111 33 44     Coeff  Weight
+            75  2200 20 20  -0.97954 0.95950
+            77  2200 02 20   0.06324 0.00400
+            79  2200 ud ud  -0.06630 0.00440
+            82  2200 20 02   0.05726 0.00328
+            88  2ud0 ud 20   0.06935 0.00481
+            90  2ud0 20 ud  -0.06680 0.00446
+           111  2020 20 20   0.06062 0.00367
+ 
+      Natural orbitals and occupation numbers for root  1
+      sym 1:   1.987720   1.975838   0.024347   0.013072
+      sym 3:   1.974985   0.024819
+      sym 4:   1.978260   0.020958
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                                    Final results                                                    *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Number of closed shell electrons           2
+      Number of electrons in active shells       8
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                1
+      Number of active orbitals                  8
+      Number of secondary orbitals              41
+      Spin quantum number                      0.0
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4
+                                                a1  a2  b2  b1
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          1   0   0   0
+      Active orbitals                            4   0   2   2
+      RAS1 orbitals                              0   0   0   0
+      RAS2 orbitals                              4   0   2   2
+      RAS3 orbitals                              0   0   0   0
+      Secondary orbitals                        17   5  11   8
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 22   5  13  10
+ 
+ 
+      CI expansion specifications:
+      ----------------------------
+ 
+      Number of configuration state fnc.       492
+      Number of determinants                   677
+      Number of root(s) required                 1
+      CI root used                               1
+      highest root included in the CI            1
+      Root passed to geometry opt.               1
+ 
+ 
+      Final optimization conditions:
+      ------------------------------
+ 
+      Average CI energy                             -76.18388879
+      RASSCF energy for state  1                    -76.18388879
+      Super-CI energy                                 0.00000000
+      RASSCF energy change                            0.00000000
+      Max change in MO coefficients              -0.822E-06
+      Max non-diagonal density matrix element    -0.322E-06
+      Maximum BLB matrix element                  0.905E-07
+      (orbital pair   3,  17 in symmetry   1)
+      Norm of electronic gradient            0.258E-06
+ 
+ 
+      Final state energy(ies):
+      ------------------------
+ 
+      RASSCF root number  1 Total energy =        -76.18388879
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Pseudonatural active orbitals and approximate occupation numbers
+ 
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 1: a1 
+ 
+ 
+      Orbital            1         2         3         4         5         6         7         8         9        10
+      Energy      -20.5653    0.0000    0.0000    0.0000    0.0000    0.0099    0.0160    0.0457    0.0992    0.1189
+      Occ. No.      2.0000    1.9877    1.9758    0.0243    0.0131    0.0000    0.0000    0.0000    0.0000    0.0000
+ 
+    1 H     1s     -0.0016    0.1068   -0.2992    0.4910    0.1445    0.0113   -0.0021   -0.1632   -1.1569    0.0824
+    2 H     1s      0.0004   -0.0692    0.1356   -0.2416    0.3521    0.0202   -0.0242   -0.0836   -0.6454    0.0518
+    3 H     2py     0.0000   -0.0307    0.0397   -0.0294   -0.0004   -0.0039    0.0048    0.0093    0.0462   -0.0281
+    4 H     2pz    -0.0003   -0.0372   -0.0049    0.0537    0.0800   -0.0032    0.0021    0.0066    0.0226    0.0055
+    5 O     1s     -0.9999   -0.0185    0.0322   -0.0379   -0.0064   -0.0014    0.0002    0.0086    0.0592   -0.0077
+    6 O     1s     -0.0013    0.8694    0.0918   -0.4016    0.0065   -0.0096    0.0058    0.0523    0.3329   -0.0415
+    7 O     1s      0.0008   -0.0133    0.0514    0.0766   -1.0034   -0.0083    0.0164    0.0329    0.1058   -0.0054
+    8 O     2pz    -0.0016   -0.2171   -0.8044   -0.4568    0.0482   -0.0099    0.0096   -0.0400    0.3481   -0.0282
+    9 O     2pz     0.0009   -0.0282   -0.0069    0.5994    0.2916   -0.0214    0.0250   -0.1355    0.4476   -0.0194
+   10 O     2pz    -0.0007    0.0114   -0.0003   -0.2389   -0.1680   -0.0013    0.0044   -0.0452    0.0739    0.0065
+   11 O     3d0     0.0001   -0.0073   -0.0297    0.0440    0.0406   -0.0008    0.0008   -0.0038    0.0115    0.0101
+   12 O     3d0     0.0001   -0.0025   -0.0082    0.0178    0.0130   -0.0003    0.0005   -0.0018    0.0072    0.0082
+   13 O     3d2+   -0.0001   -0.0015    0.0111    0.0015    0.0235    0.0024   -0.0036   -0.0017   -0.0168    0.0182
+   14 O     3d2+   -0.0001    0.0034   -0.0006   -0.0119   -0.0019    0.0011   -0.0015   -0.0013   -0.0137    0.0131
+   15 OX    1s      0.0002    0.0800   -0.1429    0.2303   -0.3762   -0.4855    1.1500    0.7534    3.8630   -0.2352
+   16 OX    1s     -0.0002   -0.0253    0.0426   -0.0628    0.1047    0.7498   -1.8304   -0.6494   -2.2361    0.1409
+   17 OX    2pz     0.0001    0.0166   -0.0197    0.0368   -0.0659   -0.4488   -0.5159    1.9548   -0.2253   -0.0873
+   18 OX    2pz    -0.0001   -0.0093    0.0102   -0.0191    0.0353    1.2877    0.7561   -1.3589    0.1731    0.0524
+   19 OX    3d0     0.0000   -0.0039   -0.0082    0.0167    0.0161   -0.0100    0.0022   -0.0461    0.0476   -0.3030
+   20 OX    3d0     0.0000    0.0019    0.0028   -0.0074   -0.0089    0.0171   -0.0064    0.0862   -0.0144    0.8906
+   21 OX    3d2+   -0.0001    0.0047    0.0104   -0.0097    0.0016    0.0082   -0.0134   -0.0049   -0.1518   -0.3268
+   22 OX    3d2+    0.0001   -0.0047    0.0012   -0.0040    0.0147   -0.0072    0.0191    0.0104    0.0761    0.9785
+ 
+ 
+      Orbital           11
+      Energy        0.1244
+      Occ. No.      0.0000
+ 
+    1 H     1s      0.0241
+    2 H     1s      0.0093
+    3 H     2py    -0.0061
+    4 H     2pz    -0.0126
+    5 O     1s     -0.0031
+    6 O     1s     -0.0151
+    7 O     1s     -0.0003
+    8 O     2pz     0.0027
+    9 O     2pz     0.0326
+   10 O     2pz     0.0087
+   11 O     3d0    -0.0153
+   12 O     3d0    -0.0122
+   13 O     3d2+    0.0188
+   14 O     3d2+    0.0141
+   15 OX    1s     -0.0878
+   16 OX    1s      0.0636
+   17 OX    2pz     0.0470
+   18 OX    2pz    -0.0293
+   19 OX    3d0     0.3611
+   20 OX    3d0    -0.9983
+   21 OX    3d2+   -0.3289
+   22 OX    3d2+    0.9108
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 2: a2 
+ 
+ 
+      Orbital            1
+      Energy        0.1214
+      Occ. No.      0.0000
+ 
+    1 H     2px     0.0181
+    2 O     3d2-    0.0205
+    3 O     3d2-    0.0159
+    4 OX    3d2-   -0.4594
+    5 OX    3d2-    1.3324
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 3: b2 
+ 
+ 
+      Orbital            1         2         3         4         5
+      Energy        0.0000    0.0000    0.0104    0.0411    0.1186
+      Occ. No.      1.9750    0.0248    0.0000    0.0000    0.0000
+ 
+    1 H     1s     -0.5291    0.8263    0.0406    0.2727    0.6339
+    2 H     1s      0.0819   -0.1293    0.0321    0.1308    0.3950
+    3 H     2py     0.0312   -0.0102   -0.0047   -0.0171   -0.0163
+    4 H     2pz     0.0438   -0.0185   -0.0044   -0.0108   -0.0138
+    5 O     2py    -0.6544   -0.7070   -0.0171   -0.0315   -0.2379
+    6 O     2py     0.0953    0.4194   -0.0212    0.0212   -0.3509
+    7 O     2py     0.0012   -0.2215    0.0007    0.0263   -0.0502
+    8 O     3d1-   -0.0348   -0.0058   -0.0046   -0.0064   -0.0140
+    9 O     3d1-    0.0016    0.0194   -0.0023   -0.0054   -0.0064
+   10 OX    2py    -0.0202    0.0276   -0.5514   -2.0082   -0.0971
+   11 OX    2py     0.0111   -0.0148    1.4350    1.4318    0.0483
+   12 OX    3d1-    0.0074   -0.0225   -0.0186    0.0084   -0.6544
+   13 OX    3d1-   -0.0053    0.0090    0.0172   -0.0611    1.3942
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 4: b1 
+ 
+ 
+      Orbital            1         2         3         4         5
+      Energy        0.0000    0.0000    0.0110    0.0491    0.1241
+      Occ. No.      1.9783    0.0210    0.0000    0.0000    0.0000
+ 
+    1 H     2px     0.0528    0.1188   -0.0014    0.0026    0.0112
+    2 O     2px     0.9650   -0.1500   -0.0034    0.0957   -0.0116
+    3 O     2px     0.0438    0.8553   -0.0099    0.2157   -0.0292
+    4 O     2px    -0.0104   -0.3438   -0.0002    0.0594   -0.0028
+    5 O     3d1+    0.0276    0.0656   -0.0003    0.0048    0.0213
+    6 O     3d1+    0.0071    0.0257    0.0000    0.0023    0.0169
+    7 OX    2px    -0.0060   -0.0023   -0.6164   -1.9992   -0.0639
+    8 OX    2px     0.0039    0.0018    1.4825    1.3859    0.0391
+    9 OX    3d1+    0.0112    0.0328   -0.0077    0.0486   -0.4797
+   10 OX    3d1+   -0.0038   -0.0131    0.0110   -0.0727    1.3454
+
+      Von Neumann Entropy (Root  1) =  0.33204
+ 
+
+      Mulliken population Analysis for root number: 1
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             H       O       OX    
+      1s     0.6505  3.6730  0.0569
+      2px    0.0352  1.9255 -0.0007
+      2pz    0.0337  1.6110  0.0018
+      2py    0.0270  1.2124  0.0021
+      3d2+   0.0000  0.0020  0.0011
+      3d1+   0.0000  0.0033  0.0007
+      3d0    0.0000  0.0042  0.0006
+      3d1-   0.0000  0.0146 -0.0013
+      3d2-   0.0000  0.0000  0.0000
+      Total  0.7464  8.4459  0.0613
+ 
+      N-E    0.2536 -0.4459 -0.0613
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  1
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    1.9350           Total=    1.9350
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000   -0.0315
+                    XX=   -7.9977              XY=    0.0000              XZ=    0.0000              YY=   -4.3922
+                    YZ=    0.0000              ZZ=   -6.1680
+      In traceless form (Debye*Ang)
+                    XX=   -2.7176              XY=    0.0000              XZ=    0.0000              YY=    2.6907
+                    YZ=    0.0000              ZZ=    0.0269
+      Average orbitals are written to the RASORB           file
+      Natural orbitals for root   1 are written to the RASORB.1         file
+      Spin density orbitals for root   1 are written to the SPDORB.1         file
+ 
+--- Stop Module:  rasscf at Fri Oct  7 14:36:09 2016 /rc=0 ---
+*** 
+--- Start Module: mclr at Fri Oct  7 14:36:10 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module MCLR with 2000 MB of memory
+                                              at 14:36:10 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ Ordinary integral handling
+ No .RLXPT2  or MCKINT  , I hope that is OK
+ Seward mode is assumed, reading perturbation from ONEINT  
+ OrdInt status: non-squared
+ 
+ 
+     Wave function specifications:
+     -----------------------------
+ 
+     Number of closed shell electrons            2
+     Number of electrons in active shells        8
+     Max number of holes in RAS1 space           0
+     Max number of electrons in RAS3 space       0
+     Number of inactive orbitals                 1
+     Number of active orbitals                   8
+     Number of secondary orbitals               41
+     Spin quantum number                       0.0
+     State symmetry                              1
+     Number of roots                               1
+     States considered                             1
+     Weights                                   1.000
+ 
+     Symmetry species                                1       2       3       4
+     Skiped sym. species                             0       0       0       0
+     Frozen orbitals                                 0       0       0       0
+     Inactive orbitals                               1       0       0       0
+     Active orbitals                                 4       0       2       2
+     RAS1 orbitals                                   0       0       0       0
+     RAS2 orbitals                                   4       0       2       2
+     RAS3 orbitals                                   0       0       0       0
+     Deleted orbitals                                0       0       0       0
+     Number of basis functions                      22       5      13      10
+     Number of Orbitals                             22       5      13      10
+     Number of configurations                      492     408     432     432
+     Number of combinations                        677     592     608     608
+     Natural orbitals are used in the last CI
+     RASSCF state energy =       -76.1838887925
+     Size of explicit Hamiltonian is PCG:      100
+     Convergence threshold=  0.00010000
+     Max number of iterations in PCG:      100
+ 
+ 
+     Perturbation specifications:
+     -----------------------------
+ 
+     Number of perturbations in each symmetry    1   0   1   1
+     Type of perturbation:                       NONE            
+ 
+     Perturbations:
+     --------------
+ 
+     -------------------------------------
+      No.    Symmetry    Center Direction 
+     -------------------------------------
+       1       a1           MLTPL  1 Z
+       2       b2           MLTPL  1 Y
+       3       b1           MLTPL  1 X
+     -------------------------------------
+ 
+ 
+     Linear response function is computed for root no. =   1
+ 
+ Transformation of integrals
+        Iteration         Delta     Res(kappa) Res(CI)
+            1          0.2624151   2.5630915   1.3290032   0.3874270   1.2246659
+            2          0.1640762   1.4134565   1.5640900   0.6291466   0.3788217
+            3          0.0464437   0.9689979   0.7084566   0.1065783   0.1787392
+            4          0.0231842   0.5069668   0.6291500   0.0760259   0.0664017
+            5          0.0122336   0.3920075   0.4415648   0.0417293   0.0334255
+            6          0.0047017   0.2465280   0.2978739   0.0140413   0.0148428
+            7          0.0011046   0.1445223   0.1374554   0.0030672   0.0037187
+            8          0.0002690   0.0556698   0.0717080   0.0007795   0.0008729
+            9          0.0000852   0.0379462   0.0426477   0.0002716   0.0002520
+           10          0.0000217   0.0179157   0.0204653   0.0000650   0.0000681
+           11          0.0000055   0.0109620   0.0106550   0.0000183   0.0000158
+           12          0.0000021   0.0075375   0.0065568   0.0000072   0.0000055
+           13          0.0000011   0.0070642   0.0041679   0.0000028   0.0000037
+           14          0.0000010   0.0063559   0.0039805   0.0000030   0.0000028
+           15          0.0000009   0.0060085   0.0035779   0.0000030   0.0000024
+           16          0.0000008   0.0055335   0.0038366   0.0000025   0.0000026
+           17          0.0000013   0.0056134   0.0050010   0.0000036   0.0000042
+           18          0.0000011   0.0039294   0.0048083   0.0000034   0.0000035
+           19          0.0000005   0.0028525   0.0031238   0.0000014   0.0000017
+           20          0.0000001   0.0012736   0.0014750   0.0000003   0.0000003
+           21          0.0000000   0.0007407   0.0007027   0.0000001   0.0000001
+           22          0.0000000   0.0005866   0.0004147   0.0000000   0.0000000
+           23          0.0000000   0.0005084   0.0002988   0.0000000   0.0000000
+           24          0.0000000   0.0004613   0.0002642   0.0000000   0.0000000
+           25          0.0000000   0.0004020   0.0003000   0.0000000   0.0000000
+           26          0.0000000   0.0003378   0.0003446   0.0000000   0.0000000
+           27          0.0000000   0.0002435   0.0002560   0.0000000   0.0000000
+           28          0.0000000   0.0001465   0.0001854   0.0000000   0.0000000
+           29          0.0000000   0.0001082   0.0001275   0.0000000   0.0000000
+           30          0.0000000   0.0000669   0.0000775   0.0000000   0.0000000
+      Perturbation no:  1 converged in 30 steps.
+ 
+        Iteration         Delta     Res(kappa) Res(CI)
+            1          0.2384516   2.7650752   1.0570414   0.2013728   1.4132807
+            2          0.0712818   1.0172093   0.9831796   0.2470669   0.2356116
+            3          0.0183586   0.5794223   0.5027659   0.0518249   0.0724885
+            4          0.0037864   0.2678075   0.2413210   0.0109652   0.0146743
+            5          0.0008250   0.1161117   0.1285494   0.0026438   0.0029427
+            6          0.0001740   0.0606397   0.0550178   0.0005801   0.0005982
+            7          0.0000525   0.0312130   0.0305734   0.0001490   0.0002065
+            8          0.0000177   0.0187167   0.0196520   0.0000627   0.0000568
+            9          0.0000032   0.0066365   0.0081928   0.0000094   0.0000121
+           10          0.0000007   0.0034317   0.0036980   0.0000020   0.0000028
+           11          0.0000001   0.0014986   0.0018019   0.0000005   0.0000005
+           12          0.0000000   0.0006822   0.0007213   0.0000001   0.0000001
+           13          0.0000000   0.0002540   0.0002643   0.0000000   0.0000000
+           14          0.0000000   0.0001111   0.0001243   0.0000000   0.0000000
+      Perturbation no:  2 converged in 14 steps.
+ 
+        Iteration         Delta     Res(kappa) Res(CI)
+            1          0.2150896   2.3586212   0.6669021   0.1286978   1.2189454
+            2          0.1020430   1.3521684   0.9042793   0.2313305   0.4080194
+            3          0.0548494   0.8836108   0.7539266   0.1576188   0.1860399
+            4          0.0328172   0.8093605   0.5794112   0.0617768   0.1438390
+            5          0.0167145   0.4574178   0.4752234   0.0470005   0.0577241
+            6          0.0051443   0.3463874   0.2344284   0.0095727   0.0226586
+            7          0.0016542   0.1422851   0.1540729   0.0050456   0.0053187
+            8          0.0004634   0.0976413   0.0919071   0.0011703   0.0017331
+            9          0.0000842   0.0339211   0.0406643   0.0002564   0.0002714
+           10          0.0000220   0.0179048   0.0187832   0.0000535   0.0000841
+           11          0.0000082   0.0121680   0.0120885   0.0000228   0.0000285
+           12          0.0000025   0.0058980   0.0068371   0.0000069   0.0000087
+           13          0.0000005   0.0030820   0.0030540   0.0000015   0.0000020
+           14          0.0000001   0.0010809   0.0015157   0.0000003   0.0000003
+           15          0.0000000   0.0006563   0.0006349   0.0000001   0.0000001
+           16          0.0000000   0.0003506   0.0003851   0.0000000   0.0000000
+           17          0.0000000   0.0002661   0.0003193   0.0000000   0.0000000
+           18          0.0000000   0.0002170   0.0002275   0.0000000   0.0000000
+           19          0.0000000   0.0001550   0.0001489   0.0000000   0.0000000
+           20          0.0000000   0.0000925   0.0000946   0.0000000   0.0000000
+      Perturbation no:  3 converged in 20 steps.
+ 
+ ****************************************
+ ****************************************
+ 
+ 
+ 
+ ************************************
+ *                                  *
+ *       Time Dependent             *
+ *       Polarizabilities           *
+ *                                  *
+ ************************************
+ 
+ 
+ 
+   11.84898008
+    0.00000000 10.91522456
+    0.00000000  0.00000000 10.84053475
+ 
+       Writing response to disk in Split guga GUGA format
+ 
+ Perturbation                      3
+      conf/sym  1111 33 44     Coeff  Weight
+             1  2222 00 00  -0.00015 0.00000
+             2  2220 20 00   0.03020 0.00091
+             3  2220 ud 00  -0.00209 0.00000
+             4  2220 02 00  -0.00333 0.00001
+             5  2220 00 20   0.02380 0.00057
+             6  2220 00 ud  -0.00195 0.00000
+             7  2220 00 02  -0.00210 0.00000
+             8  22ud 20 00  -0.00445 0.00002
+             9  22ud ud 00   0.00461 0.00002
+            10  22ud 02 00   0.00092 0.00000
+            11  22ud 00 20   0.00134 0.00000
+            12  22ud 00 ud  -0.00176 0.00000
+            13  22ud 00 02   0.00009 0.00000
+            14  2u2d 20 00  -0.00396 0.00002
+            15  2u2d ud 00   0.00109 0.00000
+            16  2u2d 02 00   0.00009 0.00000
+            17  2u2d 00 20  -0.00490 0.00002
+            18  2u2d 00 ud  -0.00058 0.00000
+            19  2u2d 00 02   0.00050 0.00000
+            20  u22d 20 00   0.00507 0.00003
+            21  u22d ud 00  -0.00165 0.00000
+            22  u22d 02 00  -0.00039 0.00000
+            23  u22d 00 20   0.00699 0.00005
+            24  u22d 00 ud   0.00133 0.00000
+            25  u22d 00 02  -0.00069 0.00000
+            26  2202 20 00  -0.02235 0.00050
+            27  2202 ud 00  -0.01055 0.00011
+            28  2202 02 00   0.00090 0.00000
+            29  2202 00 20  -0.00699 0.00005
+            30  2202 00 ud   0.00355 0.00001
+            31  2202 00 02   0.00045 0.00000
+            32  2ud2 20 00  -0.00985 0.00010
+            33  2ud2 ud 00   0.00088 0.00000
+            34  2ud2 02 00   0.00142 0.00000
+            35  2ud2 00 20  -0.00397 0.00002
+            36  2ud2 00 ud  -0.00062 0.00000
+            37  2ud2 00 02   0.00049 0.00000
+            38  u2d2 20 00  -0.00117 0.00000
+            39  u2d2 ud 00   0.00071 0.00000
+            40  u2d2 02 00   0.00001 0.00000
+            41  u2d2 00 20  -0.00185 0.00000
+            42  u2d2 00 ud   0.00005 0.00000
+            43  u2d2 00 02   0.00006 0.00000
+            44  2022 20 00   0.00036 0.00000
+            45  2022 ud 00   0.00121 0.00000
+            46  2022 02 00   0.00007 0.00000
+            47  2022 00 20   0.00034 0.00000
+            48  2022 00 ud  -0.00017 0.00000
+            49  2022 00 02  -0.00003 0.00000
+            50  ud22 20 00   0.00067 0.00000
+            51  ud22 ud 00   0.00026 0.00000
+            52  ud22 02 00  -0.00021 0.00000
+            53  ud22 00 20  -0.00042 0.00000
+            54  ud22 00 ud  -0.00048 0.00000
+            55  ud22 00 02   0.00000 0.00000
+            56  0222 20 00  -0.00050 0.00000
+            57  0222 ud 00  -0.00014 0.00000
+            58  0222 02 00   0.00016 0.00000
+            59  0222 00 20  -0.00025 0.00000
+            60  0222 00 ud   0.00044 0.00000
+            61  0222 00 02   0.00006 0.00000
+            62  22uu dd 00   0.00128 0.00000
+            63  22uu 00 dd   0.00011 0.00000
+            64  2u2u dd 00   0.00020 0.00000
+            65  2u2u 00 dd  -0.00035 0.00000
+            66  u22u dd 00   0.00026 0.00000
+            67  u22u 00 dd  -0.00015 0.00000
+            68  2uu2 dd 00  -0.00009 0.00000
+            69  2uu2 00 dd   0.00029 0.00000
+            70  u2u2 dd 00  -0.00027 0.00000
+            71  u2u2 00 dd  -0.00022 0.00000
+            72  uu22 dd 00  -0.00009 0.00000
+            73  uu22 00 dd   0.00002 0.00000
+            74  2200 22 00   0.00867 0.00008
+            75  2200 20 20   0.01131 0.00013
+            76  2200 ud 20   0.42802 0.18320
+            77  2200 02 20   0.03962 0.00157
+            78  2200 20 ud  -0.06360 0.00404
+            79  2200 ud ud  -0.01879 0.00035
+            80  2200 02 ud   0.02843 0.00081
+            81  2200 uu dd   0.00692 0.00005
+            82  2200 20 02   0.00461 0.00002
+            83  2200 ud 02  -0.02388 0.00057
+            84  2200 02 02  -0.00512 0.00003
+            85  2200 00 22   0.00222 0.00000
+            86  2ud0 22 00  -0.00491 0.00002
+            87  2ud0 20 20   0.59017 0.34830
+            88  2ud0 ud 20   0.04991 0.00249
+            89  2ud0 02 20  -0.06315 0.00399
+            90  2ud0 20 ud  -0.03563 0.00127
+            91  2ud0 ud ud   0.06390 0.00408
+            92  2ud0 02 ud   0.01031 0.00011
+            93  2ud0 uu dd  -0.00853 0.00007
+            94  2ud0 20 02  -0.03161 0.00100
+            95  2ud0 ud 02  -0.00862 0.00007
+            96  2ud0 02 02   0.00650 0.00004
+            97  2ud0 00 22  -0.00277 0.00001
+            98  u2d0 22 00   0.00065 0.00000
+            99  u2d0 20 20  -0.05034 0.00253
+           100  u2d0 ud 20  -0.03475 0.00121
+           101  u2d0 02 20   0.00187 0.00000
+           102  u2d0 20 ud   0.02389 0.00057
+           103  u2d0 ud ud  -0.00123 0.00000
+           104  u2d0 02 ud  -0.00412 0.00002
+           105  u2d0 uu dd   0.00088 0.00000
+           106  u2d0 20 02   0.00223 0.00000
+           107  u2d0 ud 02   0.00390 0.00002
+           108  u2d0 02 02  -0.00017 0.00000
+           109  u2d0 00 22   0.00042 0.00000
+           110  2020 22 00  -0.00241 0.00001
+           111  2020 20 20   0.06839 0.00468
+           112  2020 ud 20  -0.06002 0.00360
+           113  2020 02 20  -0.01415 0.00020
+           114  2020 20 ud   0.03446 0.00119
+           115  2020 ud ud   0.01363 0.00019
+           116  2020 02 ud  -0.00849 0.00007
+           117  2020 uu dd  -0.00245 0.00001
+           118  2020 20 02  -0.00885 0.00008
+           119  2020 ud 02   0.00611 0.00004
+           120  2020 02 02   0.00311 0.00001
+           121  2020 00 22  -0.00078 0.00000
+           122  ud20 22 00   0.00077 0.00000
+           123  ud20 20 20  -0.02827 0.00080
+           124  ud20 ud 20  -0.00561 0.00003
+           125  ud20 02 20   0.00380 0.00001
+           126  ud20 20 ud   0.00093 0.00000
+           127  ud20 ud ud  -0.00481 0.00002
+           128  ud20 02 ud  -0.00047 0.00000
+           129  ud20 uu dd   0.00018 0.00000
+           130  ud20 20 02   0.00285 0.00001
+           131  ud20 ud 02   0.00052 0.00000
+           132  ud20 02 02  -0.00066 0.00000
+           133  ud20 00 22   0.00029 0.00000
+           134  0220 22 00  -0.00111 0.00000
+           135  0220 20 20   0.01119 0.00013
+           136  0220 ud 20  -0.00210 0.00000
+           137  0220 02 20  -0.00212 0.00000
+           138  0220 20 ud  -0.00212 0.00000
+           139  0220 ud ud   0.00076 0.00000
+           140  0220 02 ud   0.00028 0.00000
+           141  0220 uu dd  -0.00037 0.00000
+           142  0220 20 02  -0.00094 0.00000
+           143  0220 ud 02  -0.00019 0.00000
+           144  0220 02 02   0.00025 0.00000
+           145  0220 00 22  -0.00042 0.00000
+           146  2u0d 22 00   0.00439 0.00002
+           147  2u0d 20 20  -0.50906 0.25914
+           148  2u0d ud 20  -0.00302 0.00001
+           149  2u0d 02 20   0.03252 0.00106
+           150  2u0d 20 ud   0.03246 0.00105
+           151  2u0d ud ud  -0.03316 0.00110
+           152  2u0d 02 ud   0.00020 0.00000
+           153  2u0d uu dd   0.00921 0.00008
+           154  2u0d 20 02   0.03084 0.00095
+           155  2u0d ud 02   0.00230 0.00001
+           156  2u0d 02 02  -0.00388 0.00002
+           157  2u0d 00 22   0.00248 0.00001
+           158  u20d 22 00  -0.00305 0.00001
+           159  u20d 20 20   0.29412 0.08651
+           160  u20d ud 20   0.01924 0.00037
+           161  u20d 02 20  -0.00299 0.00001
+           162  u20d 20 ud  -0.02813 0.00079
+           163  u20d ud ud  -0.00293 0.00001
+           164  u20d 02 ud  -0.00089 0.00000
+           165  u20d uu dd  -0.00636 0.00004
+           166  u20d 20 02  -0.01387 0.00019
+           167  u20d ud 02  -0.00179 0.00000
+           168  u20d 02 02  -0.00013 0.00000
+           169  u20d 00 22  -0.00160 0.00000
+           170  20ud 22 00   0.00047 0.00000
+           171  20ud 20 20  -0.02037 0.00042
+           172  20ud ud 20   0.02903 0.00084
+           173  20ud 02 20   0.00134 0.00000
+           174  20ud 20 ud  -0.02505 0.00063
+           175  20ud ud ud  -0.00135 0.00000
+           176  20ud 02 ud   0.00448 0.00002
+           177  20ud uu dd   0.00086 0.00000
+           178  20ud 20 02   0.00317 0.00001
+           179  20ud ud 02  -0.00431 0.00002
+           180  20ud 02 02  -0.00002 0.00000
+           181  20ud 00 22   0.00019 0.00000
+           182  udud 22 00  -0.00003 0.00000
+           183  udud 20 20   0.01375 0.00019
+           184  udud ud 20   0.02060 0.00042
+           185  udud 02 20   0.00144 0.00000
+           186  udud 20 ud  -0.00815 0.00007
+           187  udud ud ud  -0.00130 0.00000
+           188  udud 02 ud   0.00280 0.00001
+           189  udud uu dd   0.00015 0.00000
+           190  udud 20 02  -0.00050 0.00000
+           191  udud ud 02  -0.00204 0.00000
+           192  udud 02 02  -0.00063 0.00000
+           193  udud 00 22   0.00003 0.00000
+           194  02ud 22 00   0.00033 0.00000
+           195  02ud 20 20  -0.00202 0.00000
+           196  02ud ud 20  -0.00274 0.00001
+           197  02ud 02 20  -0.00141 0.00000
+           198  02ud 20 ud   0.00205 0.00000
+           199  02ud ud ud   0.00217 0.00000
+           200  02ud 02 ud  -0.00020 0.00000
+           201  02ud uu dd  -0.00019 0.00000
+           202  02ud 20 02  -0.00071 0.00000
+           203  02ud ud 02   0.00005 0.00000
+           204  02ud 02 02   0.00031 0.00000
+           205  02ud 00 22   0.00002 0.00000
+           206  uudd 22 00   0.00024 0.00000
+           207  uudd 20 20   0.01510 0.00023
+           208  uudd ud 20   0.01053 0.00011
+           209  uudd 02 20   0.00119 0.00000
+           210  uudd 20 ud  -0.00550 0.00003
+           211  uudd ud ud  -0.00038 0.00000
+           212  uudd 02 ud   0.00264 0.00001
+           213  uudd uu dd  -0.00008 0.00000
+           214  uudd 20 02  -0.00099 0.00000
+           215  uudd ud 02  -0.00153 0.00000
+           216  uudd 02 02  -0.00068 0.00000
+           217  uudd 00 22   0.00001 0.00000
+           218  u02d 22 00   0.00011 0.00000
+           219  u02d 20 20  -0.00055 0.00000
+           220  u02d ud 20   0.00364 0.00001
+           221  u02d 02 20  -0.00222 0.00000
+           222  u02d 20 ud  -0.00288 0.00001
+           223  u02d ud ud   0.00331 0.00001
+           224  u02d 02 ud   0.00198 0.00000
+           225  u02d uu dd   0.00040 0.00000
+           226  u02d 20 02  -0.00025 0.00000
+           227  u02d ud 02  -0.00131 0.00000
+           228  u02d 02 02   0.00035 0.00000
+           229  u02d 00 22   0.00001 0.00000
+           230  0u2d 22 00   0.00020 0.00000
+           231  0u2d 20 20  -0.00943 0.00009
+           232  0u2d ud 20  -0.00152 0.00000
+           233  0u2d 02 20   0.00070 0.00000
+           234  0u2d 20 ud   0.00176 0.00000
+           235  0u2d ud ud  -0.00053 0.00000
+           236  0u2d 02 ud  -0.00040 0.00000
+           237  0u2d uu dd   0.00018 0.00000
+           238  0u2d 20 02   0.00061 0.00000
+           239  0u2d ud 02   0.00038 0.00000
+           240  0u2d 02 02  -0.00007 0.00000
+           241  0u2d 00 22   0.00011 0.00000
+           242  2002 22 00  -0.00011 0.00000
+           243  2002 20 20  -0.03947 0.00156
+           244  2002 ud 20  -0.00359 0.00001
+           245  2002 02 20   0.00105 0.00000
+           246  2002 20 ud  -0.00363 0.00001
+           247  2002 ud ud  -0.00316 0.00001
+           248  2002 02 ud   0.00020 0.00000
+           249  2002 uu dd   0.00033 0.00000
+           250  2002 20 02   0.00300 0.00001
+           251  2002 ud 02  -0.00015 0.00000
+           252  2002 02 02  -0.00021 0.00000
+           253  2002 00 22   0.00002 0.00000
+           254  ud02 22 00   0.00026 0.00000
+           255  ud02 20 20   0.05737 0.00329
+           256  ud02 ud 20  -0.01161 0.00013
+           257  ud02 02 20  -0.00226 0.00001
+           258  ud02 20 ud   0.01891 0.00036
+           259  ud02 ud ud   0.00558 0.00003
+           260  ud02 02 ud  -0.00274 0.00001
+           261  ud02 uu dd  -0.00110 0.00000
+           262  ud02 20 02  -0.00580 0.00003
+           263  ud02 ud 02   0.00230 0.00001
+           264  ud02 02 02   0.00047 0.00000
+           265  ud02 00 22  -0.00014 0.00000
+           266  0202 22 00  -0.00009 0.00000
+           267  0202 20 20  -0.02761 0.00076
+           268  0202 ud 20  -0.00113 0.00000
+           269  0202 02 20   0.00144 0.00000
+           270  0202 20 ud  -0.00944 0.00009
+           271  0202 ud ud  -0.00357 0.00001
+           272  0202 02 ud   0.00008 0.00000
+           273  0202 uu dd   0.00100 0.00000
+           274  0202 20 02   0.00398 0.00002
+           275  0202 ud 02   0.00016 0.00000
+           276  0202 02 02  -0.00027 0.00000
+           277  0202 00 22   0.00003 0.00000
+           278  u0d2 22 00  -0.00002 0.00000
+           279  u0d2 20 20   0.00309 0.00001
+           280  u0d2 ud 20  -0.00342 0.00001
+           281  u0d2 02 20   0.00074 0.00000
+           282  u0d2 20 ud   0.00406 0.00002
+           283  u0d2 ud ud  -0.00200 0.00000
+           284  u0d2 02 ud  -0.00043 0.00000
+           285  u0d2 uu dd  -0.00008 0.00000
+           286  u0d2 20 02   0.00091 0.00000
+           287  u0d2 ud 02   0.00071 0.00000
+           288  u0d2 02 02  -0.00045 0.00000
+           289  u0d2 00 22  -0.00001 0.00000
+           290  0ud2 22 00   0.00013 0.00000
+           291  0ud2 20 20  -0.00590 0.00003
+           292  0ud2 ud 20   0.00197 0.00000
+           293  0ud2 02 20   0.00136 0.00000
+           294  0ud2 20 ud  -0.00320 0.00001
+           295  0ud2 ud ud  -0.00130 0.00000
+           296  0ud2 02 ud   0.00012 0.00000
+           297  0ud2 uu dd   0.00016 0.00000
+           298  0ud2 20 02   0.00051 0.00000
+           299  0ud2 ud 02  -0.00041 0.00000
+           300  0ud2 02 02  -0.00014 0.00000
+           301  0ud2 00 22   0.00005 0.00000
+           302  0022 22 00   0.00009 0.00000
+           303  0022 20 20   0.00132 0.00000
+           304  0022 ud 20   0.00125 0.00000
+           305  0022 02 20   0.00033 0.00000
+           306  0022 20 ud  -0.00008 0.00000
+           307  0022 ud ud  -0.00006 0.00000
+           308  0022 02 ud   0.00013 0.00000
+           309  0022 uu dd   0.00000 0.00000
+           310  0022 20 02  -0.00014 0.00000
+           311  0022 ud 02  -0.00008 0.00000
+           312  0022 02 02  -0.00016 0.00000
+           313  0022 00 22   0.00002 0.00000
+           314  2uu0 dd 20  -0.05750 0.00331
+           315  2uu0 dd ud   0.00065 0.00000
+           316  2uu0 20 dd  -0.00175 0.00000
+           317  2uu0 du dd  -0.00315 0.00001
+           318  2uu0 ud dd  -0.00444 0.00002
+           319  2uu0 02 dd  -0.00154 0.00000
+           320  2uu0 dd 02   0.00458 0.00002
+           321  u2u0 dd 20   0.00270 0.00001
+           322  u2u0 dd ud  -0.00070 0.00000
+           323  u2u0 20 dd   0.00778 0.00006
+           324  u2u0 du dd  -0.00088 0.00000
+           325  u2u0 ud dd  -0.00228 0.00001
+           326  u2u0 02 dd  -0.00116 0.00000
+           327  u2u0 dd 02   0.00011 0.00000
+           328  uu20 dd 20   0.00533 0.00003
+           329  uu20 dd ud  -0.00061 0.00000
+           330  uu20 20 dd  -0.00244 0.00001
+           331  uu20 du dd  -0.00124 0.00000
+           332  uu20 ud dd  -0.00096 0.00000
+           333  uu20 02 dd   0.00026 0.00000
+           334  uu20 dd 02  -0.00032 0.00000
+           335  2u0u dd 20   0.02914 0.00085
+           336  2u0u dd ud   0.00369 0.00001
+           337  2u0u 20 dd  -0.01918 0.00037
+           338  2u0u du dd  -0.00038 0.00000
+           339  2u0u ud dd  -0.00081 0.00000
+           340  2u0u 02 dd   0.00133 0.00000
+           341  2u0u dd 02  -0.00204 0.00000
+           342  u20u dd 20  -0.03505 0.00123
+           343  u20u dd ud   0.00321 0.00001
+           344  u20u 20 dd   0.02015 0.00041
+           345  u20u du dd   0.00730 0.00005
+           346  u20u ud dd   0.01119 0.00013
+           347  u20u 02 dd  -0.00021 0.00000
+           348  u20u dd 02   0.00214 0.00000
+           349  20uu dd 20   0.01002 0.00010
+           350  20uu dd ud   0.00213 0.00000
+           351  20uu 20 dd  -0.00650 0.00004
+           352  20uu du dd   0.00039 0.00000
+           353  20uu ud dd   0.00064 0.00000
+           354  20uu 02 dd   0.00051 0.00000
+           355  20uu dd 02  -0.00072 0.00000
+           356  uduu dd 20  -0.01321 0.00017
+           357  uduu dd ud  -0.00242 0.00001
+           358  uduu 20 dd   0.00894 0.00008
+           359  uduu du dd  -0.00011 0.00000
+           360  uduu ud dd   0.00078 0.00000
+           361  uduu 02 dd  -0.00098 0.00000
+           362  uduu dd 02   0.00108 0.00000
+           363  02uu dd 20  -0.00112 0.00000
+           364  02uu dd ud  -0.00036 0.00000
+           365  02uu 20 dd   0.00140 0.00000
+           366  02uu du dd  -0.00046 0.00000
+           367  02uu ud dd  -0.00088 0.00000
+           368  02uu 02 dd  -0.00013 0.00000
+           369  02uu dd 02   0.00005 0.00000
+           370  uudu dd 20  -0.00766 0.00006
+           371  uudu dd ud  -0.00069 0.00000
+           372  uudu 20 dd   0.01214 0.00015
+           373  uudu du dd   0.00038 0.00000
+           374  uudu ud dd  -0.00008 0.00000
+           375  uudu 02 dd  -0.00158 0.00000
+           376  uudu dd 02   0.00053 0.00000
+           377  u02u dd 20   0.00030 0.00000
+           378  u02u dd ud  -0.00091 0.00000
+           379  u02u 20 dd   0.00052 0.00000
+           380  u02u du dd  -0.00089 0.00000
+           381  u02u ud dd  -0.00143 0.00000
+           382  u02u 02 dd  -0.00032 0.00000
+           383  u02u dd 02   0.00003 0.00000
+           384  0u2u dd 20   0.00095 0.00000
+           385  0u2u dd ud   0.00012 0.00000
+           386  0u2u 20 dd  -0.00112 0.00000
+           387  0u2u du dd  -0.00009 0.00000
+           388  0u2u ud dd  -0.00012 0.00000
+           389  0u2u 02 dd   0.00023 0.00000
+           390  0u2u dd 02  -0.00014 0.00000
+           391  uuud dd 20  -0.01612 0.00026
+           392  uuud dd ud  -0.00206 0.00000
+           393  uuud 20 dd   0.00973 0.00009
+           394  uuud du dd   0.00061 0.00000
+           395  uuud ud dd   0.00011 0.00000
+           396  uuud 02 dd  -0.00071 0.00000
+           397  uuud dd 02   0.00133 0.00000
+           398  uu02 dd 20   0.00831 0.00007
+           399  uu02 dd ud  -0.00001 0.00000
+           400  uu02 20 dd  -0.00815 0.00007
+           401  uu02 du dd   0.00008 0.00000
+           402  uu02 ud dd   0.00018 0.00000
+           403  uu02 02 dd   0.00065 0.00000
+           404  uu02 dd 02  -0.00045 0.00000
+           405  u0u2 dd 20   0.00048 0.00000
+           406  u0u2 dd ud   0.00108 0.00000
+           407  u0u2 20 dd  -0.00092 0.00000
+           408  u0u2 du dd   0.00043 0.00000
+           409  u0u2 ud dd   0.00063 0.00000
+           410  u0u2 02 dd   0.00001 0.00000
+           411  u0u2 dd 02  -0.00003 0.00000
+           412  0uu2 dd 20   0.00006 0.00000
+           413  0uu2 dd ud  -0.00102 0.00000
+           414  0uu2 20 dd   0.00115 0.00000
+           415  0uu2 du dd  -0.00002 0.00000
+           416  0uu2 ud dd  -0.00004 0.00000
+           417  0uu2 02 dd  -0.00003 0.00000
+           418  0uu2 dd 02  -0.00007 0.00000
+           419  2000 22 20   0.05165 0.00267
+           420  2000 22 ud  -0.00047 0.00000
+           421  2000 22 02  -0.00378 0.00001
+           422  2000 20 22   0.01225 0.00015
+           423  2000 ud 22  -0.00157 0.00000
+           424  2000 02 22  -0.00134 0.00000
+           425  ud00 22 20  -0.04310 0.00186
+           426  ud00 22 ud   0.00322 0.00001
+           427  ud00 22 02   0.00275 0.00001
+           428  ud00 20 22  -0.00821 0.00007
+           429  ud00 ud 22  -0.00055 0.00000
+           430  ud00 02 22   0.00102 0.00000
+           431  0200 22 20   0.02588 0.00067
+           432  0200 22 ud  -0.00324 0.00001
+           433  0200 22 02  -0.00163 0.00000
+           434  0200 20 22   0.00407 0.00002
+           435  0200 ud 22  -0.00321 0.00001
+           436  0200 02 22  -0.00110 0.00000
+           437  u0d0 22 20  -0.00211 0.00000
+           438  u0d0 22 ud  -0.00234 0.00001
+           439  u0d0 22 02   0.00043 0.00000
+           440  u0d0 20 22  -0.00102 0.00000
+           441  u0d0 ud 22   0.00063 0.00000
+           442  u0d0 02 22   0.00020 0.00000
+           443  0ud0 22 20  -0.00717 0.00005
+           444  0ud0 22 ud   0.00278 0.00001
+           445  0ud0 22 02  -0.00004 0.00000
+           446  0ud0 20 22  -0.00471 0.00002
+           447  0ud0 ud 22  -0.00119 0.00000
+           448  0ud0 02 22   0.00044 0.00000
+           449  0020 22 20  -0.00460 0.00002
+           450  0020 22 ud   0.00010 0.00000
+           451  0020 22 02   0.00054 0.00000
+           452  0020 20 22  -0.00148 0.00000
+           453  0020 ud 22   0.00034 0.00000
+           454  0020 02 22   0.00034 0.00000
+           455  u00d 22 20   0.00406 0.00002
+           456  u00d 22 ud   0.00237 0.00001
+           457  u00d 22 02  -0.00035 0.00000
+           458  u00d 20 22   0.00017 0.00000
+           459  u00d ud 22  -0.00068 0.00000
+           460  u00d 02 22   0.00004 0.00000
+           461  0u0d 22 20   0.00944 0.00009
+           462  0u0d 22 ud  -0.00221 0.00000
+           463  0u0d 22 02  -0.00056 0.00000
+           464  0u0d 20 22   0.00475 0.00002
+           465  0u0d ud 22   0.00062 0.00000
+           466  0u0d 02 22  -0.00038 0.00000
+           467  00ud 22 20   0.00249 0.00001
+           468  00ud 22 ud   0.00034 0.00000
+           469  00ud 22 02  -0.00034 0.00000
+           470  00ud 20 22   0.00078 0.00000
+           471  00ud ud 22  -0.00025 0.00000
+           472  00ud 02 22  -0.00014 0.00000
+           473  0002 22 20  -0.00041 0.00000
+           474  0002 22 ud   0.00036 0.00000
+           475  0002 22 02   0.00009 0.00000
+           476  0002 20 22   0.00008 0.00000
+           477  0002 ud 22   0.00008 0.00000
+           478  0002 02 22   0.00005 0.00000
+           479  uuuu dd dd  -0.00030 0.00000
+           480  uu00 22 dd   0.00069 0.00000
+           481  uu00 dd 22  -0.00071 0.00000
+           482  u0u0 22 dd   0.00108 0.00000
+           483  u0u0 dd 22  -0.00045 0.00000
+           484  0uu0 22 dd  -0.00067 0.00000
+           485  0uu0 dd 22   0.00093 0.00000
+           486  u00u 22 dd  -0.00090 0.00000
+           487  u00u dd 22   0.00011 0.00000
+           488  0u0u 22 dd   0.00100 0.00000
+           489  0u0u dd 22  -0.00041 0.00000
+           490  00uu 22 dd   0.00013 0.00000
+           491  00uu dd 22  -0.00014 0.00000
+           492  0000 22 22  -0.00092 0.00000
+      conf/sym  1111 33 44     Coeff  Weight
+             1  2222 00 00  -0.00021 0.00000
+             2  2220 20 00  -0.04335 0.00188
+             3  2220 ud 00   0.00712 0.00005
+             4  2220 02 00   0.00479 0.00002
+             5  2220 00 20  -0.02877 0.00083
+             6  2220 00 ud  -0.00073 0.00000
+             7  2220 00 02   0.00272 0.00001
+             8  22ud 20 00   0.00409 0.00002
+             9  22ud ud 00  -0.00806 0.00006
+            10  22ud 02 00  -0.00122 0.00000
+            11  22ud 00 20  -0.00786 0.00006
+            12  22ud 00 ud   0.00266 0.00001
+            13  22ud 00 02   0.00008 0.00000
+            14  2u2d 20 00   0.00793 0.00006
+            15  2u2d ud 00  -0.00112 0.00000
+            16  2u2d 02 00  -0.00007 0.00000
+            17  2u2d 00 20   0.00990 0.00010
+            18  2u2d 00 ud   0.00027 0.00000
+            19  2u2d 00 02  -0.00072 0.00000
+            20  u22d 20 00  -0.00794 0.00006
+            21  u22d ud 00   0.00215 0.00000
+            22  u22d 02 00   0.00032 0.00000
+            23  u22d 00 20  -0.01063 0.00011
+            24  u22d 00 ud  -0.00147 0.00000
+            25  u22d 00 02   0.00082 0.00000
+            26  2202 20 00   0.04380 0.00192
+            27  2202 ud 00   0.01438 0.00021
+            28  2202 02 00  -0.00193 0.00000
+            29  2202 00 20   0.02543 0.00065
+            30  2202 00 ud  -0.00275 0.00001
+            31  2202 00 02  -0.00151 0.00000
+            32  2ud2 20 00   0.02051 0.00042
+            33  2ud2 ud 00  -0.00139 0.00000
+            34  2ud2 02 00  -0.00259 0.00001
+            35  2ud2 00 20   0.00742 0.00006
+            36  2ud2 00 ud   0.00183 0.00000
+            37  2ud2 00 02  -0.00072 0.00000
+            38  u2d2 20 00  -0.00200 0.00000
+            39  u2d2 ud 00  -0.00138 0.00000
+            40  u2d2 02 00   0.00034 0.00000
+            41  u2d2 00 20   0.00186 0.00000
+            42  u2d2 00 ud  -0.00016 0.00000
+            43  u2d2 00 02  -0.00003 0.00000
+            44  2022 20 00  -0.00041 0.00000
+            45  2022 ud 00  -0.00250 0.00001
+            46  2022 02 00  -0.00010 0.00000
+            47  2022 00 20  -0.00160 0.00000
+            48  2022 00 ud   0.00041 0.00000
+            49  2022 00 02   0.00016 0.00000
+            50  ud22 20 00  -0.00141 0.00000
+            51  ud22 ud 00  -0.00018 0.00000
+            52  ud22 02 00   0.00035 0.00000
+            53  ud22 00 20   0.00074 0.00000
+            54  ud22 00 ud   0.00069 0.00000
+            55  ud22 00 02  -0.00003 0.00000
+            56  0222 20 00   0.00076 0.00000
+            57  0222 ud 00   0.00018 0.00000
+            58  0222 02 00  -0.00021 0.00000
+            59  0222 00 20  -0.00005 0.00000
+            60  0222 00 ud  -0.00061 0.00000
+            61  0222 00 02  -0.00004 0.00000
+            62  22uu dd 00  -0.00147 0.00000
+            63  22uu 00 dd  -0.00024 0.00000
+            64  2u2u dd 00  -0.00028 0.00000
+            65  2u2u 00 dd   0.00047 0.00000
+            66  u22u dd 00  -0.00047 0.00000
+            67  u22u 00 dd   0.00009 0.00000
+            68  2uu2 dd 00   0.00014 0.00000
+            69  2uu2 00 dd  -0.00058 0.00000
+            70  u2u2 dd 00   0.00093 0.00000
+            71  u2u2 00 dd   0.00025 0.00000
+            72  uu22 dd 00   0.00041 0.00000
+            73  uu22 00 dd  -0.00017 0.00000
+            74  2200 22 00  -0.01673 0.00028
+            75  2200 20 20  -0.02370 0.00056
+            76  2200 ud 20  -0.71676 0.51375
+            77  2200 02 20  -0.06500 0.00423
+            78  2200 20 ud   0.02442 0.00060
+            79  2200 ud ud   0.03655 0.00134
+            80  2200 02 ud  -0.04908 0.00241
+            81  2200 uu dd  -0.01134 0.00013
+            82  2200 20 02  -0.01438 0.00021
+            83  2200 ud 02   0.03752 0.00141
+            84  2200 02 02   0.00916 0.00008
+            85  2200 00 22  -0.00138 0.00000
+            86  2ud0 22 00   0.01386 0.00019
+            87  2ud0 20 20  -1.59218 2.53505
+            88  2ud0 ud 20  -0.12064 0.01455
+            89  2ud0 02 20   0.15641 0.02446
+            90  2ud0 20 ud   0.09225 0.00851
+            91  2ud0 ud ud  -0.15502 0.02403
+            92  2ud0 02 ud  -0.01998 0.00040
+            93  2ud0 uu dd   0.02746 0.00075
+            94  2ud0 20 02   0.08761 0.00767
+            95  2ud0 ud 02   0.02023 0.00041
+            96  2ud0 02 02  -0.01766 0.00031
+            97  2ud0 00 22   0.00720 0.00005
+            98  u2d0 22 00  -0.00385 0.00001
+            99  u2d0 20 20   0.38513 0.14833
+           100  u2d0 ud 20   0.07416 0.00550
+           101  u2d0 02 20  -0.02274 0.00052
+           102  u2d0 20 ud  -0.05136 0.00264
+           103  u2d0 ud ud   0.02099 0.00044
+           104  u2d0 02 ud   0.00842 0.00007
+           105  u2d0 uu dd  -0.00763 0.00006
+           106  u2d0 20 02  -0.02070 0.00043
+           107  u2d0 ud 02  -0.00861 0.00007
+           108  u2d0 02 02   0.00226 0.00001
+           109  u2d0 00 22  -0.00205 0.00000
+           110  2020 22 00   0.00422 0.00002
+           111  2020 20 20  -0.15776 0.02489
+           112  2020 ud 20   0.16090 0.02589
+           113  2020 02 20   0.02626 0.00069
+           114  2020 20 ud  -0.11000 0.01210
+           115  2020 ud ud  -0.02926 0.00086
+           116  2020 02 ud   0.02593 0.00067
+           117  2020 uu dd   0.00532 0.00003
+           118  2020 20 02   0.02073 0.00043
+           119  2020 ud 02  -0.02007 0.00040
+           120  2020 02 02  -0.00556 0.00003
+           121  2020 00 22   0.00106 0.00000
+           122  ud20 22 00  -0.00156 0.00000
+           123  ud20 20 20   0.07726 0.00597
+           124  ud20 ud 20   0.00252 0.00001
+           125  ud20 02 20  -0.00979 0.00010
+           126  ud20 20 ud   0.00743 0.00006
+           127  ud20 ud ud   0.01190 0.00014
+           128  ud20 02 ud  -0.00022 0.00000
+           129  ud20 uu dd  -0.00132 0.00000
+           130  ud20 20 02  -0.00762 0.00006
+           131  ud20 ud 02  -0.00003 0.00000
+           132  ud20 02 02   0.00176 0.00000
+           133  ud20 00 22  -0.00056 0.00000
+           134  0220 22 00   0.00208 0.00000
+           135  0220 20 20  -0.04758 0.00226
+           136  0220 ud 20  -0.00036 0.00000
+           137  0220 02 20   0.00486 0.00002
+           138  0220 20 ud   0.00682 0.00005
+           139  0220 ud ud  -0.00347 0.00001
+           140  0220 02 ud  -0.00070 0.00000
+           141  0220 uu dd   0.00086 0.00000
+           142  0220 20 02   0.00325 0.00001
+           143  0220 ud 02   0.00073 0.00000
+           144  0220 02 02  -0.00061 0.00000
+           145  0220 00 22   0.00071 0.00000
+           146  2u0d 22 00  -0.01188 0.00014
+           147  2u0d 20 20   1.40331 1.96928
+           148  2u0d ud 20   0.03848 0.00148
+           149  2u0d 02 20  -0.08778 0.00770
+           150  2u0d 20 ud  -0.07823 0.00612
+           151  2u0d ud ud   0.09042 0.00818
+           152  2u0d 02 ud   0.00308 0.00001
+           153  2u0d uu dd  -0.02546 0.00065
+           154  2u0d 20 02  -0.08256 0.00682
+           155  2u0d ud 02  -0.00799 0.00006
+           156  2u0d 02 02   0.00978 0.00010
+           157  2u0d 00 22  -0.00623 0.00004
+           158  u20d 22 00   0.00694 0.00005
+           159  u20d 20 20  -0.76934 0.59189
+           160  u20d ud 20  -0.05430 0.00295
+           161  u20d 02 20   0.02011 0.00040
+           162  u20d 20 ud   0.05959 0.00355
+           163  u20d ud ud  -0.01745 0.00030
+           164  u20d 02 ud  -0.00034 0.00000
+           165  u20d uu dd   0.01537 0.00024
+           166  u20d 20 02   0.04426 0.00196
+           167  u20d ud 02   0.00472 0.00002
+           168  u20d 02 02  -0.00156 0.00000
+           169  u20d 00 22   0.00352 0.00001
+           170  20ud 22 00  -0.00082 0.00000
+           171  20ud 20 20   0.05401 0.00292
+           172  20ud ud 20  -0.06885 0.00474
+           173  20ud 02 20  -0.00521 0.00003
+           174  20ud 20 ud   0.05972 0.00357
+           175  20ud ud ud   0.00630 0.00004
+           176  20ud 02 ud  -0.00997 0.00010
+           177  20ud uu dd  -0.00211 0.00000
+           178  20ud 20 02  -0.00780 0.00006
+           179  20ud ud 02   0.00942 0.00009
+           180  20ud 02 02   0.00071 0.00000
+           181  20ud 00 22  -0.00026 0.00000
+           182  udud 22 00  -0.00025 0.00000
+           183  udud 20 20  -0.00679 0.00005
+           184  udud ud 20  -0.04391 0.00193
+           185  udud 02 20  -0.00352 0.00001
+           186  udud 20 ud   0.01865 0.00035
+           187  udud ud ud   0.00490 0.00002
+           188  udud 02 ud  -0.00685 0.00005
+           189  udud uu dd  -0.00042 0.00000
+           190  udud 20 02  -0.00143 0.00000
+           191  udud ud 02   0.00471 0.00002
+           192  udud 02 02   0.00137 0.00000
+           193  udud 00 22  -0.00007 0.00000
+           194  02ud 22 00  -0.00043 0.00000
+           195  02ud 20 20  -0.00267 0.00001
+           196  02ud ud 20   0.01552 0.00024
+           197  02ud 02 20   0.00392 0.00002
+           198  02ud 20 ud  -0.01435 0.00021
+           199  02ud ud ud  -0.00543 0.00003
+           200  02ud 02 ud   0.00192 0.00000
+           201  02ud uu dd   0.00087 0.00000
+           202  02ud 20 02   0.00268 0.00001
+           203  02ud ud 02  -0.00145 0.00000
+           204  02ud 02 02  -0.00086 0.00000
+           205  02ud 00 22   0.00005 0.00000
+           206  uudd 22 00  -0.00047 0.00000
+           207  uudd 20 20  -0.02632 0.00069
+           208  uudd ud 20  -0.02312 0.00053
+           209  uudd 02 20  -0.00124 0.00000
+           210  uudd 20 ud   0.01237 0.00015
+           211  uudd ud ud   0.00179 0.00000
+           212  uudd 02 ud  -0.00643 0.00004
+           213  uudd uu dd   0.00043 0.00000
+           214  uudd 20 02   0.00067 0.00000
+           215  uudd ud 02   0.00359 0.00001
+           216  uudd 02 02   0.00121 0.00000
+           217  uudd 00 22   0.00008 0.00000
+           218  u02d 22 00   0.00003 0.00000
+           219  u02d 20 20  -0.01135 0.00013
+           220  u02d ud 20  -0.00842 0.00007
+           221  u02d 02 20   0.00820 0.00007
+           222  u02d 20 ud   0.00856 0.00007
+           223  u02d ud ud  -0.01164 0.00014
+           224  u02d 02 ud  -0.00346 0.00001
+           225  u02d uu dd  -0.00021 0.00000
+           226  u02d 20 02   0.00328 0.00001
+           227  u02d ud 02   0.00302 0.00001
+           228  u02d 02 02  -0.00206 0.00000
+           229  u02d 00 22   0.00006 0.00000
+           230  0u2d 22 00  -0.00044 0.00000
+           231  0u2d 20 20   0.02551 0.00065
+           232  0u2d ud 20   0.00479 0.00002
+           233  0u2d 02 20  -0.00209 0.00000
+           234  0u2d 20 ud  -0.00509 0.00003
+           235  0u2d ud ud   0.00235 0.00001
+           236  0u2d 02 ud   0.00125 0.00000
+           237  0u2d uu dd  -0.00026 0.00000
+           238  0u2d 20 02  -0.00183 0.00000
+           239  0u2d ud 02  -0.00116 0.00000
+           240  0u2d 02 02   0.00027 0.00000
+           241  0u2d 00 22  -0.00025 0.00000
+           242  2002 22 00   0.00010 0.00000
+           243  2002 20 20   0.08019 0.00643
+           244  2002 ud 20  -0.00072 0.00000
+           245  2002 02 20  -0.00293 0.00001
+           246  2002 20 ud   0.01683 0.00028
+           247  2002 ud ud   0.00713 0.00005
+           248  2002 02 ud  -0.00154 0.00000
+           249  2002 uu dd  -0.00069 0.00000
+           250  2002 20 02  -0.00649 0.00004
+           251  2002 ud 02   0.00141 0.00000
+           252  2002 02 02   0.00059 0.00000
+           253  2002 00 22  -0.00027 0.00000
+           254  ud02 22 00  -0.00025 0.00000
+           255  ud02 20 20  -0.12073 0.01458
+           256  ud02 ud 20   0.03759 0.00141
+           257  ud02 02 20   0.00662 0.00004
+           258  ud02 20 ud  -0.05358 0.00287
+           259  ud02 ud ud  -0.01404 0.00020
+           260  ud02 02 ud   0.00717 0.00005
+           261  ud02 uu dd   0.00214 0.00000
+           262  ud02 20 02   0.01279 0.00016
+           263  ud02 ud 02  -0.00638 0.00004
+           264  ud02 02 02  -0.00144 0.00000
+           265  ud02 00 22   0.00043 0.00000
+           266  0202 22 00  -0.00022 0.00000
+           267  0202 20 20   0.07352 0.00541
+           268  0202 ud 20  -0.01081 0.00012
+           269  0202 02 20  -0.00539 0.00003
+           270  0202 20 ud   0.03287 0.00108
+           271  0202 ud ud   0.00970 0.00009
+           272  0202 02 ud  -0.00215 0.00000
+           273  0202 uu dd  -0.00222 0.00000
+           274  0202 20 02  -0.00949 0.00009
+           275  0202 ud 02   0.00201 0.00000
+           276  0202 02 02   0.00092 0.00000
+           277  0202 00 22  -0.00046 0.00000
+           278  u0d2 22 00  -0.00002 0.00000
+           279  u0d2 20 20  -0.00790 0.00006
+           280  u0d2 ud 20   0.00784 0.00006
+           281  u0d2 02 20  -0.00161 0.00000
+           282  u0d2 20 ud  -0.00915 0.00008
+           283  u0d2 ud ud   0.00453 0.00002
+           284  u0d2 02 ud   0.00138 0.00000
+           285  u0d2 uu dd   0.00035 0.00000
+           286  u0d2 20 02  -0.00197 0.00000
+           287  u0d2 ud 02  -0.00180 0.00000
+           288  u0d2 02 02   0.00087 0.00000
+           289  u0d2 00 22   0.00003 0.00000
+           290  0ud2 22 00  -0.00037 0.00000
+           291  0ud2 20 20   0.01122 0.00013
+           292  0ud2 ud 20  -0.00422 0.00002
+           293  0ud2 02 20  -0.00265 0.00001
+           294  0ud2 20 ud   0.00622 0.00004
+           295  0ud2 ud ud   0.00155 0.00000
+           296  0ud2 02 ud  -0.00043 0.00000
+           297  0ud2 uu dd  -0.00047 0.00000
+           298  0ud2 20 02  -0.00033 0.00000
+           299  0ud2 ud 02   0.00079 0.00000
+           300  0ud2 02 02   0.00030 0.00000
+           301  0ud2 00 22  -0.00013 0.00000
+           302  0022 22 00  -0.00017 0.00000
+           303  0022 20 20  -0.00163 0.00000
+           304  0022 ud 20  -0.00338 0.00001
+           305  0022 02 20  -0.00048 0.00000
+           306  0022 20 ud   0.00082 0.00000
+           307  0022 ud ud   0.00031 0.00000
+           308  0022 02 ud  -0.00079 0.00000
+           309  0022 uu dd  -0.00002 0.00000
+           310  0022 20 02   0.00002 0.00000
+           311  0022 ud 02   0.00052 0.00000
+           312  0022 02 02   0.00027 0.00000
+           313  0022 00 22   0.00000 0.00000
+           314  2uu0 dd 20   0.11143 0.01242
+           315  2uu0 dd ud   0.00355 0.00001
+           316  2uu0 20 dd  -0.01012 0.00010
+           317  2uu0 du dd   0.00685 0.00005
+           318  2uu0 ud dd   0.00919 0.00008
+           319  2uu0 02 dd   0.00343 0.00001
+           320  2uu0 dd 02  -0.00882 0.00008
+           321  u2u0 dd 20  -0.03315 0.00110
+           322  u2u0 dd ud   0.00240 0.00001
+           323  u2u0 20 dd   0.00142 0.00000
+           324  u2u0 du dd   0.00300 0.00001
+           325  u2u0 ud dd   0.00635 0.00004
+           326  u2u0 02 dd   0.00049 0.00000
+           327  u2u0 dd 02   0.00188 0.00000
+           328  uu20 dd 20  -0.02350 0.00055
+           329  uu20 dd ud  -0.00054 0.00000
+           330  uu20 20 dd   0.01381 0.00019
+           331  uu20 du dd   0.00176 0.00000
+           332  uu20 ud dd   0.00136 0.00000
+           333  uu20 02 dd  -0.00155 0.00000
+           334  uu20 dd 02   0.00171 0.00000
+           335  2u0u dd 20  -0.05540 0.00307
+           336  2u0u dd ud  -0.00461 0.00002
+           337  2u0u 20 dd   0.03412 0.00116
+           338  2u0u du dd   0.00064 0.00000
+           339  2u0u ud dd   0.00165 0.00000
+           340  2u0u 02 dd  -0.00254 0.00001
+           341  2u0u dd 02   0.00417 0.00002
+           342  u20u dd 20   0.06087 0.00371
+           343  u20u dd ud  -0.00210 0.00000
+           344  u20u 20 dd  -0.04150 0.00172
+           345  u20u du dd  -0.01129 0.00013
+           346  u20u ud dd  -0.01760 0.00031
+           347  u20u 02 dd   0.00084 0.00000
+           348  u20u dd 02  -0.00367 0.00001
+           349  20uu dd 20  -0.02600 0.00068
+           350  20uu dd ud  -0.00418 0.00002
+           351  20uu 20 dd   0.01867 0.00035
+           352  20uu du dd  -0.00062 0.00000
+           353  20uu ud dd  -0.00082 0.00000
+           354  20uu 02 dd  -0.00147 0.00000
+           355  20uu dd 02   0.00179 0.00000
+           356  uduu dd 20   0.02668 0.00071
+           357  uduu dd ud   0.00439 0.00002
+           358  uduu 20 dd  -0.02207 0.00049
+           359  uduu du dd   0.00007 0.00000
+           360  uduu ud dd  -0.00144 0.00000
+           361  uduu 02 dd   0.00220 0.00000
+           362  uduu dd 02  -0.00203 0.00000
+           363  02uu dd 20  -0.00132 0.00000
+           364  02uu dd ud  -0.00047 0.00000
+           365  02uu 20 dd   0.00221 0.00000
+           366  02uu du dd   0.00045 0.00000
+           367  02uu ud dd   0.00144 0.00000
+           368  02uu 02 dd  -0.00027 0.00000
+           369  02uu dd 02   0.00025 0.00000
+           370  uudu dd 20   0.02350 0.00055
+           371  uudu dd ud   0.00066 0.00000
+           372  uudu 20 dd  -0.03004 0.00090
+           373  uudu du dd  -0.00106 0.00000
+           374  uudu ud dd  -0.00053 0.00000
+           375  uudu 02 dd   0.00375 0.00001
+           376  uudu dd 02  -0.00171 0.00000
+           377  u02u dd 20   0.00058 0.00000
+           378  u02u dd ud   0.00295 0.00001
+           379  u02u 20 dd  -0.00224 0.00001
+           380  u02u du dd   0.00246 0.00001
+           381  u02u ud dd   0.00363 0.00001
+           382  u02u 02 dd   0.00068 0.00000
+           383  u02u dd 02  -0.00018 0.00000
+           384  0u2u dd 20  -0.00152 0.00000
+           385  0u2u dd ud  -0.00094 0.00000
+           386  0u2u 20 dd   0.00226 0.00001
+           387  0u2u du dd  -0.00027 0.00000
+           388  0u2u ud dd  -0.00022 0.00000
+           389  0u2u 02 dd  -0.00041 0.00000
+           390  0u2u dd 02   0.00020 0.00000
+           391  uuud dd 20   0.03724 0.00139
+           392  uuud dd ud   0.00322 0.00001
+           393  uuud 20 dd  -0.02222 0.00049
+           394  uuud du dd  -0.00111 0.00000
+           395  uuud ud dd  -0.00052 0.00000
+           396  uuud 02 dd   0.00144 0.00000
+           397  uuud dd 02  -0.00264 0.00001
+           398  uu02 dd 20  -0.02597 0.00067
+           399  uu02 dd ud   0.00017 0.00000
+           400  uu02 20 dd   0.02378 0.00057
+           401  uu02 du dd   0.00035 0.00000
+           402  uu02 ud dd   0.00036 0.00000
+           403  uu02 02 dd  -0.00188 0.00000
+           404  uu02 dd 02   0.00171 0.00000
+           405  u0u2 dd 20  -0.00147 0.00000
+           406  u0u2 dd ud  -0.00281 0.00001
+           407  u0u2 20 dd   0.00244 0.00001
+           408  u0u2 du dd  -0.00109 0.00000
+           409  u0u2 ud dd  -0.00162 0.00000
+           410  u0u2 02 dd  -0.00015 0.00000
+           411  u0u2 dd 02   0.00013 0.00000
+           412  0uu2 dd 20   0.00041 0.00000
+           413  0uu2 dd ud   0.00205 0.00000
+           414  0uu2 20 dd  -0.00216 0.00000
+           415  0uu2 du dd   0.00015 0.00000
+           416  0uu2 ud dd   0.00012 0.00000
+           417  0uu2 02 dd   0.00010 0.00000
+           418  0uu2 dd 02   0.00005 0.00000
+           419  2000 22 20  -0.09763 0.00953
+           420  2000 22 ud  -0.00012 0.00000
+           421  2000 22 02   0.00711 0.00005
+           422  2000 20 22  -0.01614 0.00026
+           423  2000 ud 22   0.00275 0.00001
+           424  2000 02 22   0.00188 0.00000
+           425  ud00 22 20   0.07793 0.00607
+           426  ud00 22 ud  -0.00547 0.00003
+           427  ud00 22 02  -0.00504 0.00003
+           428  ud00 20 22   0.01644 0.00027
+           429  ud00 ud 22   0.00104 0.00000
+           430  ud00 02 22  -0.00189 0.00000
+           431  0200 22 20  -0.04150 0.00172
+           432  0200 22 ud   0.00558 0.00003
+           433  0200 22 02   0.00284 0.00001
+           434  0200 20 22  -0.00663 0.00004
+           435  0200 ud 22   0.00535 0.00003
+           436  0200 02 22   0.00183 0.00000
+           437  u0d0 22 20   0.00880 0.00008
+           438  u0d0 22 ud   0.00431 0.00002
+           439  u0d0 22 02  -0.00106 0.00000
+           440  u0d0 20 22   0.00251 0.00001
+           441  u0d0 ud 22  -0.00125 0.00000
+           442  u0d0 02 22  -0.00042 0.00000
+           443  0ud0 22 20   0.02463 0.00061
+           444  0ud0 22 ud  -0.00566 0.00003
+           445  0ud0 22 02  -0.00087 0.00000
+           446  0ud0 20 22   0.01420 0.00020
+           447  0ud0 ud 22   0.00287 0.00001
+           448  0ud0 02 22  -0.00138 0.00000
+           449  0020 22 20   0.00969 0.00009
+           450  0020 22 ud   0.00115 0.00000
+           451  0020 22 02  -0.00119 0.00000
+           452  0020 20 22   0.00352 0.00001
+           453  0020 ud 22  -0.00127 0.00000
+           454  0020 02 22  -0.00071 0.00000
+           455  u00d 22 20  -0.01008 0.00010
+           456  u00d 22 ud  -0.00451 0.00002
+           457  u00d 22 02   0.00077 0.00000
+           458  u00d 20 22  -0.00095 0.00000
+           459  u00d ud 22   0.00093 0.00000
+           460  u00d 02 22  -0.00001 0.00000
+           461  0u0d 22 20  -0.02516 0.00063
+           462  0u0d 22 ud   0.00467 0.00002
+           463  0u0d 22 02   0.00147 0.00000
+           464  0u0d 20 22  -0.01340 0.00018
+           465  0u0d ud 22  -0.00171 0.00000
+           466  0u0d 02 22   0.00100 0.00000
+           467  00ud 22 20  -0.00509 0.00003
+           468  00ud 22 ud  -0.00056 0.00000
+           469  00ud 22 02   0.00067 0.00000
+           470  00ud 20 22  -0.00181 0.00000
+           471  00ud ud 22   0.00054 0.00000
+           472  00ud 02 22   0.00030 0.00000
+           473  0002 22 20   0.00033 0.00000
+           474  0002 22 ud  -0.00099 0.00000
+           475  0002 22 02  -0.00011 0.00000
+           476  0002 20 22  -0.00062 0.00000
+           477  0002 ud 22  -0.00003 0.00000
+           478  0002 02 22  -0.00002 0.00000
+           479  uuuu dd dd   0.00018 0.00000
+           480  uu00 22 dd  -0.00092 0.00000
+           481  uu00 dd 22   0.00138 0.00000
+           482  u0u0 22 dd  -0.00167 0.00000
+           483  u0u0 dd 22   0.00053 0.00000
+           484  0uu0 22 dd   0.00135 0.00000
+           485  0uu0 dd 22  -0.00172 0.00000
+           486  u00u 22 dd   0.00160 0.00000
+           487  u00u dd 22   0.00001 0.00000
+           488  0u0u 22 dd  -0.00176 0.00000
+           489  0u0u dd 22   0.00072 0.00000
+           490  00uu 22 dd  -0.00044 0.00000
+           491  00uu dd 22   0.00034 0.00000
+           492  0000 22 22   0.00159 0.00000
+ Perturbation                      2
+      conf/sym  1111 33 44     Coeff  Weight
+             1  222u d0 00   0.00379 0.00001
+             2  222u 0d 00  -0.00013 0.00000
+             3  22u2 d0 00   0.00709 0.00005
+             4  22u2 0d 00   0.00160 0.00000
+             5  2u22 d0 00   0.00056 0.00000
+             6  2u22 0d 00   0.00039 0.00000
+             7  u222 d0 00   0.00026 0.00000
+             8  u222 0d 00  -0.00006 0.00000
+             9  22u0 2d 00  -0.03107 0.00097
+            10  22u0 d2 00  -0.00692 0.00005
+            11  22u0 d0 20   0.64140 0.41140
+            12  22u0 0d 20   0.09052 0.00819
+            13  22u0 d0 ud  -0.03235 0.00105
+            14  22u0 0d ud   0.02473 0.00061
+            15  22u0 u0 dd   0.00190 0.00000
+            16  22u0 0u dd  -0.00878 0.00008
+            17  22u0 d0 02  -0.03311 0.00110
+            18  22u0 0d 02  -0.00862 0.00007
+            19  2u20 2d 00  -0.00976 0.00010
+            20  2u20 d2 00   0.00107 0.00000
+            21  2u20 d0 20   0.05542 0.00307
+            22  2u20 0d 20   0.01333 0.00018
+            23  2u20 d0 ud   0.02581 0.00067
+            24  2u20 0d ud   0.00890 0.00008
+            25  2u20 u0 dd  -0.00740 0.00005
+            26  2u20 0u dd  -0.00165 0.00000
+            27  2u20 d0 02  -0.00642 0.00004
+            28  2u20 0d 02   0.00005 0.00000
+            29  u220 2d 00   0.00103 0.00000
+            30  u220 d2 00   0.00124 0.00000
+            31  u220 d0 20  -0.01987 0.00039
+            32  u220 0d 20   0.00431 0.00002
+            33  u220 d0 ud   0.00356 0.00001
+            34  u220 0d ud  -0.00029 0.00000
+            35  u220 u0 dd  -0.00358 0.00001
+            36  u220 0u dd  -0.00046 0.00000
+            37  u220 d0 02   0.00109 0.00000
+            38  u220 0d 02  -0.00005 0.00000
+            39  220u 2d 00   0.01690 0.00029
+            40  220u d2 00   0.00559 0.00003
+            41  220u d0 20  -0.57231 0.32754
+            42  220u 0d 20  -0.03607 0.00130
+            43  220u d0 ud   0.04860 0.00236
+            44  220u 0d ud  -0.03149 0.00099
+            45  220u u0 dd   0.01472 0.00022
+            46  220u 0u dd   0.00631 0.00004
+            47  220u d0 02   0.03401 0.00116
+            48  220u 0d 02   0.00524 0.00003
+            49  2udu 2d 00   0.00493 0.00002
+            50  2udu d2 00  -0.00090 0.00000
+            51  2udu d0 20  -0.03170 0.00100
+            52  2udu 0d 20   0.02608 0.00068
+            53  2udu d0 ud  -0.04675 0.00219
+            54  2udu 0d ud  -0.00666 0.00004
+            55  2udu u0 dd  -0.00237 0.00001
+            56  2udu 0u dd  -0.00077 0.00000
+            57  2udu d0 02   0.00645 0.00004
+            58  2udu 0d 02  -0.00478 0.00002
+            59  u2du 2d 00  -0.00108 0.00000
+            60  u2du d2 00  -0.00010 0.00000
+            61  u2du d0 20  -0.00552 0.00003
+            62  u2du 0d 20  -0.01641 0.00027
+            63  u2du d0 ud   0.01260 0.00016
+            64  u2du 0d ud   0.00304 0.00001
+            65  u2du u0 dd   0.00886 0.00008
+            66  u2du 0u dd   0.00161 0.00000
+            67  u2du d0 02  -0.00062 0.00000
+            68  u2du 0d 02   0.00142 0.00000
+            69  202u 2d 00  -0.00070 0.00000
+            70  202u d2 00  -0.00076 0.00000
+            71  202u d0 20   0.03806 0.00145
+            72  202u 0d 20   0.00206 0.00000
+            73  202u d0 ud  -0.00597 0.00004
+            74  202u 0d ud   0.00484 0.00002
+            75  202u u0 dd  -0.00119 0.00000
+            76  202u 0u dd  -0.00067 0.00000
+            77  202u d0 02  -0.00478 0.00002
+            78  202u 0d 02  -0.00089 0.00000
+            79  ud2u 2d 00   0.00051 0.00000
+            80  ud2u d2 00   0.00026 0.00000
+            81  ud2u d0 20  -0.01007 0.00010
+            82  ud2u 0d 20  -0.00428 0.00002
+            83  ud2u d0 ud   0.00239 0.00001
+            84  ud2u 0d ud  -0.00048 0.00000
+            85  ud2u u0 dd   0.00100 0.00000
+            86  ud2u 0u dd   0.00036 0.00000
+            87  ud2u d0 02   0.00091 0.00000
+            88  ud2u 0d 02   0.00080 0.00000
+            89  022u 2d 00  -0.00006 0.00000
+            90  022u d2 00  -0.00016 0.00000
+            91  022u d0 20   0.00616 0.00004
+            92  022u 0d 20   0.00117 0.00000
+            93  022u d0 ud  -0.00172 0.00000
+            94  022u 0d ud   0.00036 0.00000
+            95  022u u0 dd  -0.00059 0.00000
+            96  022u 0u dd   0.00000 0.00000
+            97  022u d0 02  -0.00019 0.00000
+            98  022u 0d 02  -0.00016 0.00000
+            99  2uud 2d 00   0.00447 0.00002
+           100  2uud d2 00   0.00012 0.00000
+           101  2uud d0 20   0.01305 0.00017
+           102  2uud 0d 20  -0.02771 0.00077
+           103  2uud d0 ud   0.00380 0.00001
+           104  2uud 0d ud   0.00450 0.00002
+           105  2uud u0 dd   0.00423 0.00002
+           106  2uud 0u dd  -0.00009 0.00000
+           107  2uud d0 02  -0.00103 0.00000
+           108  2uud 0d 02   0.00184 0.00000
+           109  u2ud 2d 00   0.00072 0.00000
+           110  u2ud d2 00  -0.00186 0.00000
+           111  u2ud d0 20   0.00729 0.00005
+           112  u2ud 0d 20   0.00354 0.00001
+           113  u2ud d0 ud  -0.02415 0.00058
+           114  u2ud 0d ud  -0.00566 0.00003
+           115  u2ud u0 dd   0.00971 0.00009
+           116  u2ud 0u dd   0.00090 0.00000
+           117  u2ud d0 02   0.00168 0.00000
+           118  u2ud 0d 02  -0.00078 0.00000
+           119  uu2d 2d 00  -0.00092 0.00000
+           120  uu2d d2 00  -0.00054 0.00000
+           121  uu2d d0 20   0.01035 0.00011
+           122  uu2d 0d 20   0.00386 0.00001
+           123  uu2d d0 ud  -0.00365 0.00001
+           124  uu2d 0d ud  -0.00029 0.00000
+           125  uu2d u0 dd   0.00065 0.00000
+           126  uu2d 0u dd  -0.00060 0.00000
+           127  uu2d d0 02  -0.00143 0.00000
+           128  uu2d 0d 02  -0.00102 0.00000
+           129  2u02 2d 00  -0.00933 0.00009
+           130  2u02 d2 00  -0.00089 0.00000
+           131  2u02 d0 20  -0.03972 0.00158
+           132  2u02 0d 20   0.01567 0.00025
+           133  2u02 d0 ud  -0.00408 0.00002
+           134  2u02 0d ud  -0.00384 0.00001
+           135  2u02 u0 dd   0.00094 0.00000
+           136  2u02 0u dd   0.00071 0.00000
+           137  2u02 d0 02   0.00287 0.00001
+           138  2u02 0d 02  -0.00123 0.00000
+           139  u202 2d 00  -0.00015 0.00000
+           140  u202 d2 00   0.00105 0.00000
+           141  u202 d0 20   0.04160 0.00173
+           142  u202 0d 20  -0.00465 0.00002
+           143  u202 d0 ud   0.02170 0.00047
+           144  u202 0d ud   0.00428 0.00002
+           145  u202 u0 dd  -0.01026 0.00011
+           146  u202 0u dd  -0.00109 0.00000
+           147  u202 d0 02  -0.00514 0.00003
+           148  u202 0d 02   0.00154 0.00000
+           149  20u2 2d 00  -0.00205 0.00000
+           150  20u2 d2 00  -0.00025 0.00000
+           151  20u2 d0 20   0.00868 0.00008
+           152  20u2 0d 20   0.00599 0.00004
+           153  20u2 d0 ud  -0.00331 0.00001
+           154  20u2 0d ud   0.00166 0.00000
+           155  20u2 u0 dd  -0.00035 0.00000
+           156  20u2 0u dd   0.00004 0.00000
+           157  20u2 d0 02  -0.00074 0.00000
+           158  20u2 0d 02  -0.00088 0.00000
+           159  udu2 2d 00   0.00173 0.00000
+           160  udu2 d2 00   0.00039 0.00000
+           161  udu2 d0 20  -0.02773 0.00077
+           162  udu2 0d 20  -0.00570 0.00003
+           163  udu2 d0 ud   0.00528 0.00003
+           164  udu2 0d ud  -0.00307 0.00001
+           165  udu2 u0 dd   0.00009 0.00000
+           166  udu2 0u dd   0.00050 0.00000
+           167  udu2 d0 02   0.00278 0.00001
+           168  udu2 0d 02   0.00114 0.00000
+           169  02u2 2d 00  -0.00129 0.00000
+           170  02u2 d2 00  -0.00046 0.00000
+           171  02u2 d0 20   0.01832 0.00034
+           172  02u2 0d 20   0.00316 0.00001
+           173  02u2 d0 ud  -0.00132 0.00000
+           174  02u2 0d ud   0.00079 0.00000
+           175  02u2 u0 dd   0.00038 0.00000
+           176  02u2 0u dd  -0.00054 0.00000
+           177  02u2 d0 02  -0.00174 0.00000
+           178  02u2 0d 02  -0.00066 0.00000
+           179  uud2 2d 00   0.00048 0.00000
+           180  uud2 d2 00   0.00031 0.00000
+           181  uud2 d0 20  -0.01339 0.00018
+           182  uud2 0d 20  -0.00186 0.00000
+           183  uud2 d0 ud   0.00492 0.00002
+           184  uud2 0d ud  -0.00154 0.00000
+           185  uud2 u0 dd  -0.00100 0.00000
+           186  uud2 0u dd   0.00076 0.00000
+           187  uud2 d0 02   0.00249 0.00001
+           188  uud2 0d 02   0.00061 0.00000
+           189  u022 2d 00   0.00027 0.00000
+           190  u022 d2 00  -0.00019 0.00000
+           191  u022 d0 20  -0.00429 0.00002
+           192  u022 0d 20   0.00106 0.00000
+           193  u022 d0 ud  -0.00379 0.00001
+           194  u022 0d ud  -0.00085 0.00000
+           195  u022 u0 dd   0.00083 0.00000
+           196  u022 0u dd   0.00016 0.00000
+           197  u022 d0 02   0.00105 0.00000
+           198  u022 0d 02  -0.00048 0.00000
+           199  0u22 2d 00  -0.00050 0.00000
+           200  0u22 d2 00   0.00011 0.00000
+           201  0u22 d0 20   0.00103 0.00000
+           202  0u22 0d 20   0.00080 0.00000
+           203  0u22 d0 ud   0.00121 0.00000
+           204  0u22 0d ud   0.00067 0.00000
+           205  0u22 u0 dd  -0.00050 0.00000
+           206  0u22 0u dd  -0.00013 0.00000
+           207  0u22 d0 02  -0.00043 0.00000
+           208  0u22 0d 02  -0.00012 0.00000
+           209  2uuu d0 dd   0.00843 0.00007
+           210  2uuu 0d dd   0.00124 0.00000
+           211  u2uu d0 dd  -0.00912 0.00008
+           212  u2uu 0d dd  -0.00180 0.00000
+           213  uu2u d0 dd  -0.00118 0.00000
+           214  uu2u 0d dd  -0.00061 0.00000
+           215  uuu2 d0 dd   0.00052 0.00000
+           216  uuu2 0d dd   0.00018 0.00000
+           217  2u00 2d 20  -0.60511 0.36615
+           218  2u00 d2 20  -0.07567 0.00573
+           219  2u00 2d ud   0.03964 0.00157
+           220  2u00 d2 ud  -0.02380 0.00057
+           221  2u00 2u dd  -0.00710 0.00005
+           222  2u00 u2 dd  -0.00813 0.00007
+           223  2u00 2d 02   0.03142 0.00099
+           224  2u00 d2 02   0.00800 0.00006
+           225  2u00 d0 22  -0.01215 0.00015
+           226  2u00 0d 22  -0.00178 0.00000
+           227  u200 2d 20   0.03214 0.00103
+           228  u200 d2 20   0.03714 0.00138
+           229  u200 2d ud  -0.03069 0.00094
+           230  u200 d2 ud   0.00057 0.00000
+           231  u200 2u dd   0.00299 0.00001
+           232  u200 u2 dd  -0.00115 0.00000
+           233  u200 2d 02  -0.00176 0.00000
+           234  u200 d2 02  -0.00401 0.00002
+           235  u200 d0 22   0.00446 0.00002
+           236  u200 0d 22   0.00152 0.00000
+           237  20u0 2d 20  -0.07571 0.00573
+           238  20u0 d2 20  -0.01464 0.00021
+           239  20u0 2d ud  -0.02227 0.00050
+           240  20u0 d2 ud  -0.00922 0.00009
+           241  20u0 2u dd  -0.00715 0.00005
+           242  20u0 u2 dd  -0.00153 0.00000
+           243  20u0 2d 02   0.00818 0.00007
+           244  20u0 d2 02   0.00022 0.00000
+           245  20u0 d0 22  -0.00368 0.00001
+           246  20u0 0d 22   0.00014 0.00000
+           247  udu0 2d 20   0.03152 0.00099
+           248  udu0 d2 20  -0.00213 0.00000
+           249  udu0 2d ud  -0.00181 0.00000
+           250  udu0 d2 ud   0.00267 0.00001
+           251  udu0 2u dd  -0.00318 0.00001
+           252  udu0 u2 dd   0.00030 0.00000
+           253  udu0 2d 02  -0.00309 0.00001
+           254  udu0 d2 02  -0.00001 0.00000
+           255  udu0 d0 22   0.00157 0.00000
+           256  udu0 0d 22   0.00034 0.00000
+           257  02u0 2d 20  -0.01857 0.00035
+           258  02u0 d2 20  -0.01216 0.00015
+           259  02u0 2d ud   0.00404 0.00002
+           260  02u0 d2 ud  -0.00012 0.00000
+           261  02u0 2u dd   0.00018 0.00000
+           262  02u0 u2 dd   0.00000 0.00000
+           263  02u0 2d 02   0.00119 0.00000
+           264  02u0 d2 02   0.00098 0.00000
+           265  02u0 d0 22  -0.00600 0.00004
+           266  02u0 0d 22  -0.00140 0.00000
+           267  uud0 2d 20   0.00333 0.00001
+           268  uud0 d2 20  -0.00864 0.00007
+           269  uud0 2d ud   0.00402 0.00002
+           270  uud0 d2 ud   0.00483 0.00002
+           271  uud0 2u dd  -0.00275 0.00001
+           272  uud0 u2 dd  -0.00058 0.00000
+           273  uud0 2d 02  -0.00239 0.00001
+           274  uud0 d2 02   0.00068 0.00000
+           275  uud0 d0 22   0.00125 0.00000
+           276  uud0 0d 22   0.00009 0.00000
+           277  u020 2d 20  -0.00824 0.00007
+           278  u020 d2 20  -0.00599 0.00004
+           279  u020 2d ud   0.00368 0.00001
+           280  u020 d2 ud  -0.00096 0.00000
+           281  u020 2u dd  -0.00109 0.00000
+           282  u020 u2 dd  -0.00007 0.00000
+           283  u020 2d 02   0.00064 0.00000
+           284  u020 d2 02   0.00099 0.00000
+           285  u020 d0 22  -0.00028 0.00000
+           286  u020 0d 22  -0.00008 0.00000
+           287  0u20 2d 20  -0.00887 0.00008
+           288  0u20 d2 20  -0.00075 0.00000
+           289  0u20 2d ud  -0.00019 0.00000
+           290  0u20 d2 ud  -0.00120 0.00000
+           291  0u20 2u dd   0.00026 0.00000
+           292  0u20 u2 dd   0.00001 0.00000
+           293  0u20 2d 02   0.00094 0.00000
+           294  0u20 d2 02   0.00013 0.00000
+           295  0u20 d0 22  -0.00099 0.00000
+           296  0u20 0d 22  -0.00030 0.00000
+           297  200u 2d 20  -0.00621 0.00004
+           298  200u d2 20   0.01819 0.00033
+           299  200u 2d ud  -0.00546 0.00003
+           300  200u d2 ud  -0.00285 0.00001
+           301  200u 2u dd  -0.00159 0.00000
+           302  200u u2 dd  -0.00048 0.00000
+           303  200u 2d 02   0.00085 0.00000
+           304  200u d2 02  -0.00137 0.00000
+           305  200u d0 22   0.00372 0.00001
+           306  200u 0d 22   0.00017 0.00000
+           307  ud0u 2d 20   0.00601 0.00004
+           308  ud0u d2 20  -0.00177 0.00000
+           309  ud0u 2d ud   0.01364 0.00019
+           310  ud0u d2 ud   0.00405 0.00002
+           311  ud0u 2u dd   0.00827 0.00007
+           312  ud0u u2 dd   0.00114 0.00000
+           313  ud0u 2d 02  -0.00218 0.00000
+           314  ud0u d2 02   0.00045 0.00000
+           315  ud0u d0 22  -0.00192 0.00000
+           316  ud0u 0d 22  -0.00062 0.00000
+           317  020u 2d 20  -0.00359 0.00001
+           318  020u d2 20   0.00985 0.00010
+           319  020u 2d ud   0.00020 0.00000
+           320  020u d2 ud  -0.00292 0.00001
+           321  020u 2u dd  -0.00007 0.00000
+           322  020u u2 dd  -0.00101 0.00000
+           323  020u 2d 02   0.00124 0.00000
+           324  020u d2 02  -0.00055 0.00000
+           325  020u d0 22   0.00542 0.00003
+           326  020u 0d 22   0.00091 0.00000
+           327  u0du 2d 20   0.00150 0.00000
+           328  u0du d2 20  -0.00180 0.00000
+           329  u0du 2d ud   0.00283 0.00001
+           330  u0du d2 ud   0.00042 0.00000
+           331  u0du 2u dd   0.00102 0.00000
+           332  u0du u2 dd   0.00005 0.00000
+           333  u0du 2d 02   0.00026 0.00000
+           334  u0du d2 02   0.00061 0.00000
+           335  u0du d0 22  -0.00034 0.00000
+           336  u0du 0d 22  -0.00001 0.00000
+           337  0udu 2d 20  -0.00075 0.00000
+           338  0udu d2 20   0.00167 0.00000
+           339  0udu 2d ud  -0.00145 0.00000
+           340  0udu d2 ud   0.00103 0.00000
+           341  0udu 2u dd  -0.00032 0.00000
+           342  0udu u2 dd  -0.00006 0.00000
+           343  0udu 2d 02  -0.00006 0.00000
+           344  0udu d2 02  -0.00054 0.00000
+           345  0udu d0 22   0.00092 0.00000
+           346  0udu 0d 22  -0.00010 0.00000
+           347  002u 2d 20   0.00094 0.00000
+           348  002u d2 20  -0.00126 0.00000
+           349  002u 2d ud   0.00021 0.00000
+           350  002u d2 ud   0.00065 0.00000
+           351  002u 2u dd  -0.00003 0.00000
+           352  002u u2 dd   0.00013 0.00000
+           353  002u 2d 02  -0.00031 0.00000
+           354  002u d2 02   0.00016 0.00000
+           355  002u d0 22  -0.00035 0.00000
+           356  002u 0d 22  -0.00009 0.00000
+           357  uu0d 2d 20   0.01474 0.00022
+           358  uu0d d2 20   0.02195 0.00048
+           359  uu0d 2d ud  -0.02388 0.00057
+           360  uu0d d2 ud  -0.00442 0.00002
+           361  uu0d 2u dd   0.00363 0.00001
+           362  uu0d u2 dd   0.00131 0.00000
+           363  uu0d 2d 02   0.00089 0.00000
+           364  uu0d d2 02  -0.00220 0.00000
+           365  uu0d d0 22   0.00079 0.00000
+           366  uu0d 0d 22   0.00027 0.00000
+           367  u0ud 2d 20   0.01964 0.00039
+           368  u0ud d2 20   0.00647 0.00004
+           369  u0ud 2d ud  -0.00460 0.00002
+           370  u0ud d2 ud   0.00083 0.00000
+           371  u0ud 2u dd   0.00111 0.00000
+           372  u0ud u2 dd   0.00088 0.00000
+           373  u0ud 2d 02  -0.00192 0.00000
+           374  u0ud d2 02  -0.00123 0.00000
+           375  u0ud d0 22   0.00057 0.00000
+           376  u0ud 0d 22  -0.00007 0.00000
+           377  0uud 2d 20  -0.00137 0.00000
+           378  0uud d2 20  -0.00034 0.00000
+           379  0uud 2d ud   0.00062 0.00000
+           380  0uud d2 ud   0.00006 0.00000
+           381  0uud 2u dd   0.00000 0.00000
+           382  0uud u2 dd  -0.00003 0.00000
+           383  0uud 2d 02  -0.00017 0.00000
+           384  0uud d2 02  -0.00002 0.00000
+           385  0uud d0 22  -0.00007 0.00000
+           386  0uud 0d 22   0.00026 0.00000
+           387  u002 2d 20   0.00595 0.00004
+           388  u002 d2 20   0.00147 0.00000
+           389  u002 2d ud  -0.00023 0.00000
+           390  u002 d2 ud   0.00120 0.00000
+           391  u002 2u dd   0.00020 0.00000
+           392  u002 u2 dd  -0.00018 0.00000
+           393  u002 2d 02  -0.00054 0.00000
+           394  u002 d2 02  -0.00029 0.00000
+           395  u002 d0 22   0.00028 0.00000
+           396  u002 0d 22  -0.00002 0.00000
+           397  0u02 2d 20  -0.01613 0.00026
+           398  0u02 d2 20  -0.00164 0.00000
+           399  0u02 2d ud   0.00078 0.00000
+           400  0u02 d2 ud  -0.00140 0.00000
+           401  0u02 2u dd  -0.00034 0.00000
+           402  0u02 u2 dd  -0.00049 0.00000
+           403  0u02 2d 02   0.00181 0.00000
+           404  0u02 d2 02   0.00051 0.00000
+           405  0u02 d0 22  -0.00004 0.00000
+           406  0u02 0d 22  -0.00012 0.00000
+           407  00u2 2d 20  -0.00217 0.00000
+           408  00u2 d2 20  -0.00044 0.00000
+           409  00u2 2d ud  -0.00120 0.00000
+           410  00u2 d2 ud  -0.00070 0.00000
+           411  00u2 2u dd  -0.00048 0.00000
+           412  00u2 u2 dd  -0.00008 0.00000
+           413  00u2 2d 02   0.00053 0.00000
+           414  00u2 d2 02   0.00004 0.00000
+           415  00u2 d0 22  -0.00009 0.00000
+           416  00u2 0d 22  -0.00003 0.00000
+           417  uuu0 2d dd   0.00554 0.00003
+           418  uuu0 d2 dd   0.00123 0.00000
+           419  uu0u 2d dd  -0.01320 0.00017
+           420  uu0u d2 dd  -0.00195 0.00000
+           421  u0uu 2d dd  -0.00217 0.00000
+           422  u0uu d2 dd  -0.00033 0.00000
+           423  0uuu 2d dd   0.00058 0.00000
+           424  0uuu d2 dd  -0.00019 0.00000
+           425  u000 2d 22  -0.00105 0.00000
+           426  u000 d2 22   0.00014 0.00000
+           427  0u00 2d 22   0.00618 0.00004
+           428  0u00 d2 22   0.00120 0.00000
+           429  00u0 2d 22   0.00107 0.00000
+           430  00u0 d2 22   0.00030 0.00000
+           431  000u 2d 22   0.00008 0.00000
+           432  000u d2 22  -0.00024 0.00000
+      conf/sym  1111 33 44     Coeff  Weight
+             1  222u d0 00  -0.00558 0.00003
+             2  222u 0d 00   0.00009 0.00000
+             3  22u2 d0 00  -0.01543 0.00024
+             4  22u2 0d 00  -0.00249 0.00001
+             5  2u22 d0 00  -0.00095 0.00000
+             6  2u22 0d 00  -0.00050 0.00000
+             7  u222 d0 00  -0.00018 0.00000
+             8  u222 0d 00   0.00006 0.00000
+             9  22u0 2d 00   0.05264 0.00277
+            10  22u0 d2 00   0.01201 0.00014
+            11  22u0 d0 20  -1.33955 1.79440
+            12  22u0 0d 20  -0.14071 0.01980
+            13  22u0 d0 ud   0.05486 0.00301
+            14  22u0 0d ud  -0.06681 0.00446
+            15  22u0 u0 dd   0.00106 0.00000
+            16  22u0 0u dd   0.01686 0.00028
+            17  22u0 d0 02   0.07522 0.00566
+            18  22u0 0d 02   0.01313 0.00017
+            19  2u20 2d 00   0.01812 0.00033
+            20  2u20 d2 00  -0.00188 0.00000
+            21  2u20 d0 20  -0.08267 0.00684
+            22  2u20 0d 20  -0.01830 0.00034
+            23  2u20 d0 ud  -0.06641 0.00441
+            24  2u20 0d ud  -0.01222 0.00015
+            25  2u20 u0 dd   0.01461 0.00021
+            26  2u20 0u dd   0.00223 0.00000
+            27  2u20 d0 02   0.00956 0.00009
+            28  2u20 0d 02  -0.00244 0.00001
+            29  u220 2d 00  -0.00330 0.00001
+            30  u220 d2 00  -0.00219 0.00000
+            31  u220 d0 20   0.02992 0.00090
+            32  u220 0d 20  -0.00633 0.00004
+            33  u220 d0 ud  -0.00748 0.00006
+            34  u220 0d ud   0.00059 0.00000
+            35  u220 u0 dd   0.00837 0.00007
+            36  u220 0u dd   0.00078 0.00000
+            37  u220 d0 02  -0.00177 0.00000
+            38  u220 0d 02  -0.00001 0.00000
+            39  220u 2d 00  -0.02684 0.00072
+            40  220u d2 00  -0.00953 0.00009
+            41  220u d0 20   1.11140 1.23522
+            42  220u 0d 20   0.07070 0.00500
+            43  220u d0 ud  -0.06864 0.00471
+            44  220u 0d ud   0.05983 0.00358
+            45  220u u0 dd  -0.01796 0.00032
+            46  220u 0u dd  -0.01275 0.00016
+            47  220u d0 02  -0.06461 0.00417
+            48  220u 0d 02  -0.00886 0.00008
+            49  2udu 2d 00  -0.00759 0.00006
+            50  2udu d2 00   0.00124 0.00000
+            51  2udu d0 20   0.05490 0.00301
+            52  2udu 0d 20  -0.04871 0.00237
+            53  2udu d0 ud   0.08964 0.00803
+            54  2udu 0d ud   0.01127 0.00013
+            55  2udu u0 dd   0.00432 0.00002
+            56  2udu 0u dd   0.00106 0.00000
+            57  2udu d0 02  -0.01010 0.00010
+            58  2udu 0d 02   0.00894 0.00008
+            59  u2du 2d 00   0.00158 0.00000
+            60  u2du d2 00   0.00031 0.00000
+            61  u2du d0 20   0.00497 0.00002
+            62  u2du 0d 20   0.03650 0.00133
+            63  u2du d0 ud  -0.02746 0.00075
+            64  u2du 0d ud  -0.00496 0.00002
+            65  u2du u0 dd  -0.01921 0.00037
+            66  u2du 0u dd  -0.00275 0.00001
+            67  u2du d0 02   0.00153 0.00000
+            68  u2du 0d 02  -0.00394 0.00002
+            69  202u 2d 00   0.00116 0.00000
+            70  202u d2 00   0.00123 0.00000
+            71  202u d0 20  -0.07416 0.00550
+            72  202u 0d 20  -0.00457 0.00002
+            73  202u d0 ud   0.00902 0.00008
+            74  202u 0d ud  -0.00883 0.00008
+            75  202u u0 dd   0.00168 0.00000
+            76  202u 0u dd   0.00140 0.00000
+            77  202u d0 02   0.00925 0.00009
+            78  202u 0d 02   0.00149 0.00000
+            79  ud2u 2d 00  -0.00083 0.00000
+            80  ud2u d2 00  -0.00045 0.00000
+            81  ud2u d0 20   0.02487 0.00062
+            82  ud2u 0d 20   0.00595 0.00004
+            83  ud2u d0 ud  -0.00423 0.00002
+            84  ud2u 0d ud   0.00255 0.00001
+            85  ud2u u0 dd  -0.00170 0.00000
+            86  ud2u 0u dd  -0.00056 0.00000
+            87  ud2u d0 02  -0.00293 0.00001
+            88  ud2u 0d 02  -0.00114 0.00000
+            89  022u 2d 00   0.00006 0.00000
+            90  022u d2 00   0.00028 0.00000
+            91  022u d0 20  -0.01263 0.00016
+            92  022u 0d 20  -0.00209 0.00000
+            93  022u d0 ud   0.00292 0.00001
+            94  022u 0d ud  -0.00068 0.00000
+            95  022u u0 dd   0.00102 0.00000
+            96  022u 0u dd  -0.00004 0.00000
+            97  022u d0 02   0.00036 0.00000
+            98  022u 0d 02   0.00031 0.00000
+            99  2uud 2d 00  -0.01082 0.00012
+           100  2uud d2 00  -0.00028 0.00000
+           101  2uud d0 20  -0.00928 0.00009
+           102  2uud 0d 20   0.06058 0.00367
+           103  2uud d0 ud  -0.01153 0.00013
+           104  2uud 0d ud  -0.00590 0.00003
+           105  2uud u0 dd  -0.00894 0.00008
+           106  2uud 0u dd  -0.00010 0.00000
+           107  2uud d0 02   0.00107 0.00000
+           108  2uud 0d 02  -0.00465 0.00002
+           109  u2ud 2d 00   0.00095 0.00000
+           110  u2ud d2 00   0.00302 0.00001
+           111  u2ud d0 20   0.00674 0.00005
+           112  u2ud 0d 20  -0.01846 0.00034
+           113  u2ud d0 ud   0.05660 0.00320
+           114  u2ud 0d ud   0.00955 0.00009
+           115  u2ud u0 dd  -0.01750 0.00031
+           116  u2ud 0u dd  -0.00167 0.00000
+           117  u2ud d0 02  -0.00421 0.00002
+           118  u2ud 0d 02   0.00391 0.00002
+           119  uu2d 2d 00   0.00141 0.00000
+           120  uu2d d2 00   0.00090 0.00000
+           121  uu2d d0 20  -0.02796 0.00078
+           122  uu2d 0d 20  -0.00547 0.00003
+           123  uu2d d0 ud   0.00617 0.00004
+           124  uu2d 0d ud  -0.00164 0.00000
+           125  uu2d u0 dd  -0.00116 0.00000
+           126  uu2d 0u dd   0.00131 0.00000
+           127  uu2d d0 02   0.00476 0.00002
+           128  uu2d 0d 02   0.00143 0.00000
+           129  2u02 2d 00   0.02169 0.00047
+           130  2u02 d2 00   0.00171 0.00000
+           131  2u02 d0 20   0.05039 0.00254
+           132  2u02 0d 20  -0.03358 0.00113
+           133  2u02 d0 ud   0.00869 0.00008
+           134  2u02 0d ud   0.00559 0.00003
+           135  2u02 u0 dd  -0.00213 0.00000
+           136  2u02 0u dd  -0.00108 0.00000
+           137  2u02 d0 02  -0.00389 0.00002
+           138  2u02 0d 02   0.00269 0.00001
+           139  u202 2d 00  -0.00302 0.00001
+           140  u202 d2 00  -0.00208 0.00000
+           141  u202 d0 20  -0.05591 0.00313
+           142  u202 0d 20   0.00858 0.00007
+           143  u202 d0 ud  -0.03970 0.00158
+           144  u202 0d ud  -0.00706 0.00005
+           145  u202 u0 dd   0.02054 0.00042
+           146  u202 0u dd   0.00205 0.00000
+           147  u202 d0 02   0.00723 0.00005
+           148  u202 0d 02  -0.00271 0.00001
+           149  20u2 2d 00   0.00369 0.00001
+           150  20u2 d2 00   0.00022 0.00000
+           151  20u2 d0 20  -0.01947 0.00038
+           152  20u2 0d 20  -0.00864 0.00007
+           153  20u2 d0 ud   0.00455 0.00002
+           154  20u2 0d ud  -0.00411 0.00002
+           155  20u2 u0 dd   0.00042 0.00000
+           156  20u2 0u dd  -0.00011 0.00000
+           157  20u2 d0 02   0.00182 0.00000
+           158  20u2 0d 02   0.00129 0.00000
+           159  udu2 2d 00  -0.00315 0.00001
+           160  udu2 d2 00  -0.00055 0.00000
+           161  udu2 d0 20   0.05597 0.00313
+           162  udu2 0d 20   0.00911 0.00008
+           163  udu2 d0 ud  -0.00805 0.00006
+           164  udu2 0d ud   0.00667 0.00004
+           165  udu2 u0 dd   0.00014 0.00000
+           166  udu2 0u dd  -0.00092 0.00000
+           167  udu2 d0 02  -0.00575 0.00003
+           168  udu2 0d 02  -0.00182 0.00000
+           169  02u2 2d 00   0.00251 0.00001
+           170  02u2 d2 00   0.00078 0.00000
+           171  02u2 d0 20  -0.03946 0.00156
+           172  02u2 0d 20  -0.00646 0.00004
+           173  02u2 d0 ud   0.00377 0.00001
+           174  02u2 0d ud  -0.00336 0.00001
+           175  02u2 u0 dd  -0.00033 0.00000
+           176  02u2 0u dd   0.00095 0.00000
+           177  02u2 d0 02   0.00431 0.00002
+           178  02u2 0d 02   0.00127 0.00000
+           179  uud2 2d 00  -0.00078 0.00000
+           180  uud2 d2 00  -0.00030 0.00000
+           181  uud2 d0 20   0.02376 0.00056
+           182  uud2 0d 20   0.00321 0.00001
+           183  uud2 d0 ud  -0.00769 0.00006
+           184  uud2 0d ud   0.00242 0.00001
+           185  uud2 u0 dd   0.00171 0.00000
+           186  uud2 0u dd  -0.00144 0.00000
+           187  uud2 d0 02  -0.00434 0.00002
+           188  uud2 0d 02  -0.00104 0.00000
+           189  u022 2d 00  -0.00022 0.00000
+           190  u022 d2 00   0.00035 0.00000
+           191  u022 d0 20   0.00645 0.00004
+           192  u022 0d 20  -0.00177 0.00000
+           193  u022 d0 ud   0.00725 0.00005
+           194  u022 0d ud   0.00142 0.00000
+           195  u022 u0 dd  -0.00173 0.00000
+           196  u022 0u dd  -0.00028 0.00000
+           197  u022 d0 02  -0.00163 0.00000
+           198  u022 0d 02   0.00086 0.00000
+           199  0u22 2d 00   0.00086 0.00000
+           200  0u22 d2 00  -0.00019 0.00000
+           201  0u22 d0 20  -0.00272 0.00001
+           202  0u22 0d 20  -0.00051 0.00000
+           203  0u22 d0 ud  -0.00378 0.00001
+           204  0u22 0d ud  -0.00107 0.00000
+           205  0u22 u0 dd   0.00093 0.00000
+           206  0u22 0u dd   0.00021 0.00000
+           207  0u22 d0 02   0.00086 0.00000
+           208  0u22 0d 02  -0.00018 0.00000
+           209  2uuu d0 dd  -0.01764 0.00031
+           210  2uuu 0d dd  -0.00207 0.00000
+           211  u2uu d0 dd   0.02047 0.00042
+           212  u2uu 0d dd   0.00306 0.00001
+           213  uu2u d0 dd   0.00200 0.00000
+           214  uu2u 0d dd   0.00079 0.00000
+           215  uuu2 d0 dd  -0.00076 0.00000
+           216  uuu2 0d dd  -0.00050 0.00000
+           217  2u00 2d 20   1.33181 1.77372
+           218  2u00 d2 20   0.13124 0.01722
+           219  2u00 2d ud  -0.06440 0.00415
+           220  2u00 d2 ud   0.06533 0.00427
+           221  2u00 2u dd   0.01757 0.00031
+           222  2u00 u2 dd   0.01745 0.00030
+           223  2u00 2d 02  -0.07477 0.00559
+           224  2u00 d2 02  -0.01304 0.00017
+           225  2u00 d0 22   0.00946 0.00009
+           226  2u00 0d 22   0.00462 0.00002
+           227  u200 2d 20  -0.20154 0.04062
+           228  u200 d2 20  -0.07530 0.00567
+           229  u200 2d ud   0.04397 0.00193
+           230  u200 d2 ud  -0.00609 0.00004
+           231  u200 2u dd  -0.00707 0.00005
+           232  u200 u2 dd  -0.00215 0.00000
+           233  u200 2d 02   0.01129 0.00013
+           234  u200 d2 02   0.00741 0.00005
+           235  u200 d0 22  -0.00970 0.00009
+           236  u200 0d 22  -0.00301 0.00001
+           237  20u0 2d 20   0.13908 0.01934
+           238  20u0 d2 20   0.02021 0.00041
+           239  20u0 2d ud   0.06377 0.00407
+           240  20u0 d2 ud   0.01523 0.00023
+           241  20u0 2u dd   0.01537 0.00024
+           242  20u0 u2 dd   0.00250 0.00001
+           243  20u0 2d 02  -0.01411 0.00020
+           244  20u0 d2 02   0.00204 0.00000
+           245  20u0 d0 22   0.00721 0.00005
+           246  20u0 0d 22   0.00052 0.00000
+           247  udu0 2d 20  -0.06237 0.00389
+           248  udu0 d2 20   0.00209 0.00000
+           249  udu0 2d ud   0.00011 0.00000
+           250  udu0 d2 ud  -0.00570 0.00003
+           251  udu0 2u dd   0.00444 0.00002
+           252  udu0 u2 dd  -0.00060 0.00000
+           253  udu0 2d 02   0.00579 0.00003
+           254  udu0 d2 02   0.00007 0.00000
+           255  udu0 d0 22  -0.00329 0.00001
+           256  udu0 0d 22  -0.00043 0.00000
+           257  02u0 2d 20   0.04805 0.00231
+           258  02u0 d2 20   0.02428 0.00059
+           259  02u0 2d ud  -0.00540 0.00003
+           260  02u0 d2 ud   0.00078 0.00000
+           261  02u0 2u dd  -0.00095 0.00000
+           262  02u0 u2 dd   0.00006 0.00000
+           263  02u0 2d 02  -0.00323 0.00001
+           264  02u0 d2 02  -0.00189 0.00000
+           265  02u0 d0 22   0.01363 0.00019
+           266  02u0 0d 22   0.00259 0.00001
+           267  uud0 2d 20  -0.00261 0.00001
+           268  uud0 d2 20   0.02401 0.00058
+           269  uud0 2d ud  -0.01603 0.00026
+           270  uud0 d2 ud  -0.00828 0.00007
+           271  uud0 2u dd   0.00457 0.00002
+           272  uud0 u2 dd   0.00133 0.00000
+           273  uud0 2d 02   0.00336 0.00001
+           274  uud0 d2 02  -0.00216 0.00000
+           275  uud0 d0 22  -0.00184 0.00000
+           276  uud0 0d 22  -0.00017 0.00000
+           277  u020 2d 20   0.02534 0.00064
+           278  u020 d2 20   0.01127 0.00013
+           279  u020 2d ud  -0.00571 0.00003
+           280  u020 d2 ud   0.00281 0.00001
+           281  u020 2u dd   0.00229 0.00001
+           282  u020 u2 dd   0.00057 0.00000
+           283  u020 2d 02  -0.00224 0.00001
+           284  u020 d2 02  -0.00177 0.00000
+           285  u020 d0 22   0.00042 0.00000
+           286  u020 0d 22   0.00019 0.00000
+           287  0u20 2d 20   0.01820 0.00033
+           288  0u20 d2 20   0.00013 0.00000
+           289  0u20 2d ud   0.00130 0.00000
+           290  0u20 d2 ud   0.00262 0.00001
+           291  0u20 2u dd  -0.00058 0.00000
+           292  0u20 u2 dd   0.00002 0.00000
+           293  0u20 2d 02  -0.00174 0.00000
+           294  0u20 d2 02  -0.00008 0.00000
+           295  0u20 d0 22   0.00168 0.00000
+           296  0u20 0d 22   0.00040 0.00000
+           297  200u 2d 20  -0.00646 0.00004
+           298  200u d2 20  -0.03910 0.00153
+           299  200u 2d ud   0.01247 0.00016
+           300  200u d2 ud   0.00348 0.00001
+           301  200u 2u dd   0.00319 0.00001
+           302  200u u2 dd   0.00040 0.00000
+           303  200u 2d 02  -0.00034 0.00000
+           304  200u d2 02   0.00322 0.00001
+           305  200u d0 22  -0.00655 0.00004
+           306  200u 0d 22  -0.00043 0.00000
+           307  ud0u 2d 20  -0.01005 0.00010
+           308  ud0u d2 20   0.00809 0.00007
+           309  ud0u 2d ud  -0.03471 0.00120
+           310  ud0u d2 ud  -0.00679 0.00005
+           311  ud0u 2u dd  -0.01816 0.00033
+           312  ud0u u2 dd  -0.00190 0.00000
+           313  ud0u 2d 02   0.00375 0.00001
+           314  ud0u d2 02  -0.00204 0.00000
+           315  ud0u d0 22   0.00320 0.00001
+           316  ud0u 0d 22   0.00070 0.00000
+           317  020u 2d 20   0.00234 0.00001
+           318  020u d2 20  -0.01879 0.00035
+           319  020u 2d ud   0.00576 0.00003
+           320  020u d2 ud   0.00531 0.00003
+           321  020u 2u dd   0.00353 0.00001
+           322  020u u2 dd   0.00172 0.00000
+           323  020u 2d 02  -0.00181 0.00000
+           324  020u d2 02   0.00122 0.00000
+           325  020u d0 22  -0.01111 0.00012
+           326  020u 0d 22  -0.00183 0.00000
+           327  u0du 2d 20   0.00209 0.00000
+           328  u0du d2 20   0.00257 0.00001
+           329  u0du 2d ud  -0.00469 0.00002
+           330  u0du d2 ud   0.00023 0.00000
+           331  u0du 2u dd  -0.00202 0.00000
+           332  u0du u2 dd   0.00022 0.00000
+           333  u0du 2d 02  -0.00177 0.00000
+           334  u0du d2 02  -0.00093 0.00000
+           335  u0du d0 22   0.00055 0.00000
+           336  u0du 0d 22   0.00011 0.00000
+           337  0udu 2d 20  -0.00329 0.00001
+           338  0udu d2 20  -0.00296 0.00001
+           339  0udu 2d ud   0.00208 0.00000
+           340  0udu d2 ud  -0.00242 0.00001
+           341  0udu 2u dd   0.00052 0.00000
+           342  0udu u2 dd  -0.00026 0.00000
+           343  0udu 2d 02   0.00081 0.00000
+           344  0udu d2 02   0.00097 0.00000
+           345  0udu d0 22  -0.00172 0.00000
+           346  0udu 0d 22   0.00023 0.00000
+           347  002u 2d 20  -0.00123 0.00000
+           348  002u d2 20   0.00263 0.00001
+           349  002u 2d ud  -0.00121 0.00000
+           350  002u d2 ud  -0.00112 0.00000
+           351  002u 2u dd  -0.00024 0.00000
+           352  002u u2 dd  -0.00020 0.00000
+           353  002u 2d 02   0.00047 0.00000
+           354  002u d2 02  -0.00038 0.00000
+           355  002u d0 22   0.00072 0.00000
+           356  002u 0d 22   0.00018 0.00000
+           357  uu0d 2d 20  -0.01930 0.00037
+           358  uu0d d2 20  -0.05250 0.00276
+           359  uu0d 2d ud   0.05346 0.00286
+           360  uu0d d2 ud   0.00728 0.00005
+           361  uu0d 2u dd  -0.00991 0.00010
+           362  uu0d u2 dd  -0.00243 0.00001
+           363  uu0d 2d 02  -0.00206 0.00000
+           364  uu0d d2 02   0.00626 0.00004
+           365  uu0d d0 22  -0.00087 0.00000
+           366  uu0d 0d 22  -0.00004 0.00000
+           367  u0ud 2d 20  -0.04856 0.00236
+           368  u0ud d2 20  -0.01105 0.00012
+           369  u0ud 2d ud   0.00826 0.00007
+           370  u0ud d2 ud  -0.00407 0.00002
+           371  u0ud 2u dd  -0.00231 0.00001
+           372  u0ud u2 dd  -0.00175 0.00000
+           373  u0ud 2d 02   0.00581 0.00003
+           374  u0ud d2 02   0.00198 0.00000
+           375  u0ud d0 22  -0.00035 0.00000
+           376  u0ud 0d 22  -0.00005 0.00000
+           377  0uud 2d 20  -0.00022 0.00000
+           378  0uud d2 20   0.00062 0.00000
+           379  0uud 2d ud  -0.00156 0.00000
+           380  0uud d2 ud  -0.00039 0.00000
+           381  0uud 2u dd   0.00013 0.00000
+           382  0uud u2 dd   0.00000 0.00000
+           383  0uud 2d 02   0.00065 0.00000
+           384  0uud d2 02  -0.00002 0.00000
+           385  0uud d0 22  -0.00011 0.00000
+           386  0uud 0d 22  -0.00061 0.00000
+           387  u002 2d 20  -0.01187 0.00014
+           388  u002 d2 20  -0.00144 0.00000
+           389  u002 2d ud   0.00000 0.00000
+           390  u002 d2 ud  -0.00282 0.00001
+           391  u002 2u dd  -0.00008 0.00000
+           392  u002 u2 dd   0.00049 0.00000
+           393  u002 2d 02   0.00120 0.00000
+           394  u002 d2 02   0.00036 0.00000
+           395  u002 d0 22  -0.00023 0.00000
+           396  u002 0d 22   0.00001 0.00000
+           397  0u02 2d 20   0.03500 0.00122
+           398  0u02 d2 20   0.00333 0.00001
+           399  0u02 2d ud  -0.00203 0.00000
+           400  0u02 d2 ud   0.00412 0.00002
+           401  0u02 2u dd   0.00072 0.00000
+           402  0u02 u2 dd   0.00090 0.00000
+           403  0u02 2d 02  -0.00434 0.00002
+           404  0u02 d2 02  -0.00093 0.00000
+           405  0u02 d0 22  -0.00019 0.00000
+           406  0u02 0d 22   0.00035 0.00000
+           407  00u2 2d 20   0.00445 0.00002
+           408  00u2 d2 20  -0.00007 0.00000
+           409  00u2 2d ud   0.00384 0.00001
+           410  00u2 d2 ud   0.00118 0.00000
+           411  00u2 2u dd   0.00091 0.00000
+           412  00u2 u2 dd   0.00013 0.00000
+           413  00u2 2d 02  -0.00103 0.00000
+           414  00u2 d2 02   0.00028 0.00000
+           415  00u2 d0 22   0.00024 0.00000
+           416  00u2 0d 22   0.00011 0.00000
+           417  uuu0 2d dd  -0.01392 0.00019
+           418  uuu0 d2 dd  -0.00239 0.00001
+           419  uu0u 2d dd   0.02918 0.00085
+           420  uu0u d2 dd   0.00364 0.00001
+           421  u0uu 2d dd   0.00398 0.00002
+           422  u0uu d2 dd   0.00034 0.00000
+           423  0uuu 2d dd  -0.00109 0.00000
+           424  0uuu d2 dd   0.00034 0.00000
+           425  u000 2d 22   0.00117 0.00000
+           426  u000 d2 22  -0.00039 0.00000
+           427  0u00 2d 22  -0.01372 0.00019
+           428  0u00 d2 22  -0.00203 0.00000
+           429  00u0 2d 22  -0.00223 0.00000
+           430  00u0 d2 22  -0.00043 0.00000
+           431  000u 2d 22   0.00009 0.00000
+           432  000u d2 22   0.00052 0.00000
+ Perturbation                      1
+      conf/sym  1111 33 44     Coeff  Weight
+             1  222u 00 d0  -0.01092 0.00012
+             2  222u 00 0d   0.00148 0.00000
+             3  22u2 00 d0   0.00417 0.00002
+             4  22u2 00 0d  -0.00064 0.00000
+             5  2u22 00 d0   0.00069 0.00000
+             6  2u22 00 0d   0.00023 0.00000
+             7  u222 00 d0  -0.00053 0.00000
+             8  u222 00 0d  -0.00002 0.00000
+             9  22u0 20 d0   0.22184 0.04921
+            10  22u0 du d0  -0.00795 0.00006
+            11  22u0 ud d0   0.02418 0.00058
+            12  22u0 02 d0  -0.01456 0.00021
+            13  22u0 20 0d  -0.02926 0.00086
+            14  22u0 du 0d   0.00594 0.00004
+            15  22u0 ud 0d   0.00284 0.00001
+            16  22u0 02 0d   0.00329 0.00001
+            17  22u0 00 2d  -0.00509 0.00003
+            18  22u0 00 d2   0.00427 0.00002
+            19  2u20 20 d0   0.01832 0.00034
+            20  2u20 du d0  -0.00970 0.00009
+            21  2u20 ud d0  -0.00654 0.00004
+            22  2u20 02 d0  -0.00286 0.00001
+            23  2u20 20 0d  -0.00014 0.00000
+            24  2u20 du 0d   0.00175 0.00000
+            25  2u20 ud 0d   0.00257 0.00001
+            26  2u20 02 0d  -0.00029 0.00000
+            27  2u20 00 2d  -0.00496 0.00002
+            28  2u20 00 d2   0.00009 0.00000
+            29  u220 20 d0  -0.00997 0.00010
+            30  u220 du d0  -0.00233 0.00001
+            31  u220 ud d0  -0.00051 0.00000
+            32  u220 02 d0   0.00099 0.00000
+            33  u220 20 0d  -0.00129 0.00000
+            34  u220 du 0d  -0.00043 0.00000
+            35  u220 ud 0d  -0.00010 0.00000
+            36  u220 02 0d   0.00002 0.00000
+            37  u220 00 2d  -0.00381 0.00001
+            38  u220 00 d2   0.00040 0.00000
+            39  220u 20 d0  -0.61197 0.37451
+            40  220u du d0   0.01078 0.00012
+            41  220u ud d0  -0.02795 0.00078
+            42  220u 02 d0   0.04093 0.00168
+            43  220u 20 0d   0.09128 0.00833
+            44  220u du 0d  -0.01902 0.00036
+            45  220u ud 0d  -0.01713 0.00029
+            46  220u 02 0d  -0.00695 0.00005
+            47  220u 00 2d  -0.00127 0.00000
+            48  220u 00 d2  -0.00490 0.00002
+            49  2udu 20 d0  -0.02647 0.00070
+            50  2udu du d0   0.02394 0.00057
+            51  2udu ud d0   0.04015 0.00161
+            52  2udu 02 d0   0.00172 0.00000
+            53  2udu 20 0d  -0.02435 0.00059
+            54  2udu du 0d  -0.00427 0.00002
+            55  2udu ud 0d  -0.00896 0.00008
+            56  2udu 02 0d   0.00429 0.00002
+            57  2udu 00 2d   0.00388 0.00002
+            58  2udu 00 d2   0.00007 0.00000
+            59  u2du 20 d0  -0.01012 0.00010
+            60  u2du du d0   0.00120 0.00000
+            61  u2du ud d0  -0.00325 0.00001
+            62  u2du 02 d0   0.00049 0.00000
+            63  u2du 20 0d   0.00682 0.00005
+            64  u2du du 0d  -0.00015 0.00000
+            65  u2du ud 0d   0.00082 0.00000
+            66  u2du 02 0d  -0.00051 0.00000
+            67  u2du 00 2d   0.00045 0.00000
+            68  u2du 00 d2  -0.00047 0.00000
+            69  202u 20 d0   0.03936 0.00155
+            70  202u du d0  -0.00041 0.00000
+            71  202u ud d0   0.00297 0.00001
+            72  202u 02 d0  -0.00568 0.00003
+            73  202u 20 0d  -0.00793 0.00006
+            74  202u du 0d   0.00265 0.00001
+            75  202u ud 0d   0.00321 0.00001
+            76  202u 02 0d   0.00122 0.00000
+            77  202u 00 2d  -0.00001 0.00000
+            78  202u 00 d2   0.00063 0.00000
+            79  ud2u 20 d0   0.00084 0.00000
+            80  ud2u du d0   0.00006 0.00000
+            81  ud2u ud d0  -0.00055 0.00000
+            82  ud2u 02 d0  -0.00002 0.00000
+            83  ud2u 20 0d   0.00077 0.00000
+            84  ud2u du 0d   0.00005 0.00000
+            85  ud2u ud 0d  -0.00001 0.00000
+            86  ud2u 02 0d  -0.00024 0.00000
+            87  ud2u 00 2d   0.00066 0.00000
+            88  ud2u 00 d2  -0.00021 0.00000
+            89  022u 20 d0   0.00701 0.00005
+            90  022u du d0   0.00001 0.00000
+            91  022u ud d0   0.00103 0.00000
+            92  022u 02 d0  -0.00068 0.00000
+            93  022u 20 0d  -0.00204 0.00000
+            94  022u du 0d   0.00013 0.00000
+            95  022u ud 0d   0.00007 0.00000
+            96  022u 02 0d   0.00025 0.00000
+            97  022u 00 2d  -0.00024 0.00000
+            98  022u 00 d2   0.00021 0.00000
+            99  2uud 20 d0  -0.01678 0.00028
+           100  2uud du d0   0.01270 0.00016
+           101  2uud ud d0  -0.00802 0.00006
+           102  2uud 02 d0   0.00196 0.00000
+           103  2uud 20 0d   0.00776 0.00006
+           104  2uud du 0d  -0.00228 0.00001
+           105  2uud ud 0d   0.00118 0.00000
+           106  2uud 02 0d  -0.00066 0.00000
+           107  2uud 00 2d   0.00102 0.00000
+           108  2uud 00 d2  -0.00061 0.00000
+           109  u2ud 20 d0  -0.01127 0.00013
+           110  u2ud du d0   0.00950 0.00009
+           111  u2ud ud d0   0.00315 0.00001
+           112  u2ud 02 d0   0.00131 0.00000
+           113  u2ud 20 0d   0.00452 0.00002
+           114  u2ud du 0d  -0.00099 0.00000
+           115  u2ud ud 0d  -0.00182 0.00000
+           116  u2ud 02 0d  -0.00021 0.00000
+           117  u2ud 00 2d   0.00350 0.00001
+           118  u2ud 00 d2  -0.00006 0.00000
+           119  uu2d 20 d0   0.00381 0.00001
+           120  uu2d du d0   0.00066 0.00000
+           121  uu2d ud d0   0.00155 0.00000
+           122  uu2d 02 d0  -0.00072 0.00000
+           123  uu2d 20 0d  -0.00141 0.00000
+           124  uu2d du 0d   0.00021 0.00000
+           125  uu2d ud 0d  -0.00039 0.00000
+           126  uu2d 02 0d   0.00040 0.00000
+           127  uu2d 00 2d  -0.00028 0.00000
+           128  uu2d 00 d2   0.00044 0.00000
+           129  2u02 20 d0  -0.02111 0.00045
+           130  2u02 du d0  -0.00283 0.00001
+           131  2u02 ud d0   0.00511 0.00003
+           132  2u02 02 d0   0.00093 0.00000
+           133  2u02 20 0d  -0.00264 0.00001
+           134  2u02 du 0d  -0.00019 0.00000
+           135  2u02 ud 0d  -0.00244 0.00001
+           136  2u02 02 0d   0.00038 0.00000
+           137  2u02 00 2d  -0.00094 0.00000
+           138  2u02 00 d2   0.00022 0.00000
+           139  u202 20 d0   0.04281 0.00183
+           140  u202 du d0  -0.01800 0.00032
+           141  u202 ud d0  -0.01124 0.00013
+           142  u202 02 d0  -0.00317 0.00001
+           143  u202 20 0d  -0.00546 0.00003
+           144  u202 du 0d   0.00331 0.00001
+           145  u202 ud 0d   0.00441 0.00002
+           146  u202 02 0d  -0.00051 0.00000
+           147  u202 00 2d  -0.00254 0.00001
+           148  u202 00 d2   0.00052 0.00000
+           149  20u2 20 d0   0.00324 0.00001
+           150  20u2 du d0  -0.00028 0.00000
+           151  20u2 ud d0   0.00177 0.00000
+           152  20u2 02 d0  -0.00026 0.00000
+           153  20u2 20 0d  -0.00205 0.00000
+           154  20u2 du 0d  -0.00009 0.00000
+           155  20u2 ud 0d   0.00025 0.00000
+           156  20u2 02 0d   0.00029 0.00000
+           157  20u2 00 2d  -0.00040 0.00000
+           158  20u2 00 d2   0.00016 0.00000
+           159  udu2 20 d0  -0.02144 0.00046
+           160  udu2 du d0  -0.00029 0.00000
+           161  udu2 ud d0  -0.00307 0.00001
+           162  udu2 02 d0   0.00257 0.00001
+           163  udu2 20 0d   0.00409 0.00002
+           164  udu2 du 0d  -0.00110 0.00000
+           165  udu2 ud 0d  -0.00076 0.00000
+           166  udu2 02 0d  -0.00066 0.00000
+           167  udu2 00 2d  -0.00019 0.00000
+           168  udu2 00 d2  -0.00034 0.00000
+           169  02u2 20 d0   0.00704 0.00005
+           170  02u2 du d0   0.00005 0.00000
+           171  02u2 ud d0   0.00131 0.00000
+           172  02u2 02 d0  -0.00053 0.00000
+           173  02u2 20 0d  -0.00100 0.00000
+           174  02u2 du 0d   0.00027 0.00000
+           175  02u2 ud 0d  -0.00016 0.00000
+           176  02u2 02 0d   0.00020 0.00000
+           177  02u2 00 2d   0.00009 0.00000
+           178  02u2 00 d2   0.00018 0.00000
+           179  uud2 20 d0  -0.01020 0.00010
+           180  uud2 du d0  -0.00244 0.00001
+           181  uud2 ud d0  -0.00374 0.00001
+           182  uud2 02 d0   0.00227 0.00001
+           183  uud2 20 0d   0.00408 0.00002
+           184  uud2 du 0d  -0.00093 0.00000
+           185  uud2 ud 0d  -0.00017 0.00000
+           186  uud2 02 0d  -0.00088 0.00000
+           187  uud2 00 2d   0.00015 0.00000
+           188  uud2 00 d2  -0.00034 0.00000
+           189  u022 20 d0  -0.00416 0.00002
+           190  u022 du d0   0.00241 0.00001
+           191  u022 ud d0   0.00221 0.00000
+           192  u022 02 d0   0.00059 0.00000
+           193  u022 20 0d  -0.00035 0.00000
+           194  u022 du 0d  -0.00065 0.00000
+           195  u022 ud 0d  -0.00095 0.00000
+           196  u022 02 0d   0.00030 0.00000
+           197  u022 00 2d   0.00040 0.00000
+           198  u022 00 d2  -0.00005 0.00000
+           199  0u22 20 d0   0.00062 0.00000
+           200  0u22 du d0  -0.00056 0.00000
+           201  0u22 ud d0  -0.00011 0.00000
+           202  0u22 02 d0  -0.00019 0.00000
+           203  0u22 20 0d  -0.00024 0.00000
+           204  0u22 du 0d   0.00013 0.00000
+           205  0u22 ud 0d   0.00015 0.00000
+           206  0u22 02 0d   0.00005 0.00000
+           207  0u22 00 2d  -0.00030 0.00000
+           208  0u22 00 d2   0.00001 0.00000
+           209  2uuu dd d0   0.01797 0.00032
+           210  2uuu dd 0d  -0.00272 0.00001
+           211  u2uu dd d0   0.00136 0.00000
+           212  u2uu dd 0d   0.00001 0.00000
+           213  uu2u dd d0  -0.00044 0.00000
+           214  uu2u dd 0d   0.00031 0.00000
+           215  uuu2 dd d0   0.00136 0.00000
+           216  uuu2 dd 0d  -0.00006 0.00000
+           217  2u00 22 d0   0.01973 0.00039
+           218  2u00 22 0d  -0.00251 0.00001
+           219  2u00 20 2d   0.12559 0.01577
+           220  2u00 du 2d   0.00037 0.00000
+           221  2u00 ud 2d   0.02084 0.00043
+           222  2u00 02 2d  -0.00397 0.00002
+           223  2u00 20 d2  -0.01980 0.00039
+           224  2u00 du d2  -0.00363 0.00001
+           225  2u00 ud d2   0.00198 0.00000
+           226  2u00 02 d2   0.00287 0.00001
+           227  u200 22 d0  -0.02175 0.00047
+           228  u200 22 0d   0.00190 0.00000
+           229  u200 20 2d   0.16134 0.02603
+           230  u200 du 2d   0.01522 0.00023
+           231  u200 ud 2d  -0.02681 0.00072
+           232  u200 02 2d  -0.01065 0.00011
+           233  u200 20 d2  -0.02344 0.00055
+           234  u200 du d2  -0.00344 0.00001
+           235  u200 ud d2   0.00493 0.00002
+           236  u200 02 d2   0.00106 0.00000
+           237  20u0 22 d0   0.00402 0.00002
+           238  20u0 22 0d   0.00019 0.00000
+           239  20u0 20 2d   0.02826 0.00080
+           240  20u0 du 2d   0.00433 0.00002
+           241  20u0 ud 2d  -0.00050 0.00000
+           242  20u0 02 2d  -0.00367 0.00001
+           243  20u0 20 d2  -0.00592 0.00004
+           244  20u0 du d2   0.00120 0.00000
+           245  20u0 ud d2   0.00411 0.00002
+           246  20u0 02 d2   0.00110 0.00000
+           247  udu0 22 d0  -0.00047 0.00000
+           248  udu0 22 0d  -0.00056 0.00000
+           249  udu0 20 2d   0.00998 0.00010
+           250  udu0 du 2d   0.00366 0.00001
+           251  udu0 ud 2d  -0.00651 0.00004
+           252  udu0 02 2d  -0.00062 0.00000
+           253  udu0 20 d2  -0.00293 0.00001
+           254  udu0 du d2   0.00091 0.00000
+           255  udu0 ud d2   0.00136 0.00000
+           256  udu0 02 d2   0.00031 0.00000
+           257  02u0 22 d0   0.00381 0.00001
+           258  02u0 22 0d  -0.00071 0.00000
+           259  02u0 20 2d  -0.00684 0.00005
+           260  02u0 du 2d   0.00105 0.00000
+           261  02u0 ud 2d  -0.00022 0.00000
+           262  02u0 02 2d   0.00026 0.00000
+           263  02u0 20 d2  -0.00300 0.00001
+           264  02u0 du d2  -0.00006 0.00000
+           265  02u0 ud d2  -0.00054 0.00000
+           266  02u0 02 d2   0.00039 0.00000
+           267  uud0 22 d0  -0.00166 0.00000
+           268  uud0 22 0d  -0.00047 0.00000
+           269  uud0 20 2d  -0.01599 0.00026
+           270  uud0 du 2d  -0.00397 0.00002
+           271  uud0 ud 2d  -0.00815 0.00007
+           272  uud0 02 2d   0.00300 0.00001
+           273  uud0 20 d2   0.00419 0.00002
+           274  uud0 du d2   0.00144 0.00000
+           275  uud0 ud d2  -0.00086 0.00000
+           276  uud0 02 d2  -0.00053 0.00000
+           277  u020 22 d0   0.00174 0.00000
+           278  u020 22 0d  -0.00018 0.00000
+           279  u020 20 2d  -0.00863 0.00007
+           280  u020 du 2d  -0.00073 0.00000
+           281  u020 ud 2d   0.00290 0.00001
+           282  u020 02 2d   0.00114 0.00000
+           283  u020 20 d2   0.00099 0.00000
+           284  u020 du d2   0.00028 0.00000
+           285  u020 ud d2  -0.00055 0.00000
+           286  u020 02 d2  -0.00004 0.00000
+           287  0u20 22 d0   0.00083 0.00000
+           288  0u20 22 0d  -0.00010 0.00000
+           289  0u20 20 2d   0.00044 0.00000
+           290  0u20 du 2d   0.00033 0.00000
+           291  0u20 ud 2d   0.00085 0.00000
+           292  0u20 02 2d  -0.00014 0.00000
+           293  0u20 20 d2  -0.00077 0.00000
+           294  0u20 du d2   0.00011 0.00000
+           295  0u20 ud d2   0.00006 0.00000
+           296  0u20 02 d2   0.00013 0.00000
+           297  200u 22 d0  -0.01167 0.00014
+           298  200u 22 0d   0.00201 0.00000
+           299  200u 20 2d  -0.01183 0.00014
+           300  200u du 2d  -0.00032 0.00000
+           301  200u ud 2d  -0.00232 0.00001
+           302  200u 02 2d   0.00073 0.00000
+           303  200u 20 d2   0.00616 0.00004
+           304  200u du d2  -0.00009 0.00000
+           305  200u ud d2  -0.00041 0.00000
+           306  200u 02 d2  -0.00058 0.00000
+           307  ud0u 22 d0   0.00246 0.00001
+           308  ud0u 22 0d  -0.00151 0.00000
+           309  ud0u 20 2d   0.01768 0.00031
+           310  ud0u du 2d  -0.00236 0.00001
+           311  ud0u ud 2d   0.00306 0.00001
+           312  ud0u 02 2d  -0.00049 0.00000
+           313  ud0u 20 d2  -0.00168 0.00000
+           314  ud0u du d2   0.00050 0.00000
+           315  ud0u ud d2  -0.00032 0.00000
+           316  ud0u 02 d2  -0.00006 0.00000
+           317  020u 22 d0  -0.01137 0.00013
+           318  020u 22 0d   0.00309 0.00001
+           319  020u 20 2d  -0.01065 0.00011
+           320  020u du 2d  -0.00198 0.00000
+           321  020u ud 2d   0.00407 0.00002
+           322  020u 02 2d   0.00047 0.00000
+           323  020u 20 d2   0.00866 0.00007
+           324  020u du d2  -0.00102 0.00000
+           325  020u ud d2  -0.00029 0.00000
+           326  020u 02 d2  -0.00082 0.00000
+           327  u0du 22 d0   0.00074 0.00000
+           328  u0du 22 0d  -0.00012 0.00000
+           329  u0du 20 2d  -0.00234 0.00001
+           330  u0du du 2d  -0.00012 0.00000
+           331  u0du ud 2d   0.00033 0.00000
+           332  u0du 02 2d   0.00041 0.00000
+           333  u0du 20 d2  -0.00001 0.00000
+           334  u0du du d2  -0.00017 0.00000
+           335  u0du ud d2  -0.00019 0.00000
+           336  u0du 02 d2   0.00020 0.00000
+           337  0udu 22 d0  -0.00177 0.00000
+           338  0udu 22 0d  -0.00021 0.00000
+           339  0udu 20 2d   0.00287 0.00001
+           340  0udu du 2d   0.00107 0.00000
+           341  0udu ud 2d  -0.00045 0.00000
+           342  0udu 02 2d  -0.00020 0.00000
+           343  0udu 20 d2  -0.00080 0.00000
+           344  0udu du d2  -0.00079 0.00000
+           345  0udu ud d2  -0.00046 0.00000
+           346  0udu 02 d2   0.00015 0.00000
+           347  002u 22 d0   0.00089 0.00000
+           348  002u 22 0d  -0.00039 0.00000
+           349  002u 20 2d   0.00103 0.00000
+           350  002u du 2d   0.00022 0.00000
+           351  002u ud 2d  -0.00040 0.00000
+           352  002u 02 2d  -0.00004 0.00000
+           353  002u 20 d2  -0.00078 0.00000
+           354  002u du d2   0.00017 0.00000
+           355  002u ud d2   0.00006 0.00000
+           356  002u 02 d2   0.00015 0.00000
+           357  uu0d 22 d0  -0.00058 0.00000
+           358  uu0d 22 0d   0.00023 0.00000
+           359  uu0d 20 2d   0.00148 0.00000
+           360  uu0d du 2d   0.00045 0.00000
+           361  uu0d ud 2d  -0.00450 0.00002
+           362  uu0d 02 2d  -0.00093 0.00000
+           363  uu0d 20 d2   0.00265 0.00001
+           364  uu0d du d2   0.00137 0.00000
+           365  uu0d ud d2   0.00174 0.00000
+           366  uu0d 02 d2   0.00020 0.00000
+           367  u0ud 22 d0  -0.00055 0.00000
+           368  u0ud 22 0d  -0.00008 0.00000
+           369  u0ud 20 2d  -0.00067 0.00000
+           370  u0ud du 2d  -0.00161 0.00000
+           371  u0ud ud 2d  -0.00195 0.00000
+           372  u0ud 02 2d  -0.00046 0.00000
+           373  u0ud 20 d2   0.00264 0.00001
+           374  u0ud du d2   0.00095 0.00000
+           375  u0ud ud d2   0.00060 0.00000
+           376  u0ud 02 d2  -0.00072 0.00000
+           377  0uud 22 d0  -0.00072 0.00000
+           378  0uud 22 0d   0.00019 0.00000
+           379  0uud 20 2d   0.00334 0.00001
+           380  0uud du 2d   0.00013 0.00000
+           381  0uud ud 2d  -0.00091 0.00000
+           382  0uud 02 2d  -0.00029 0.00000
+           383  0uud 20 d2   0.00011 0.00000
+           384  0uud du d2  -0.00008 0.00000
+           385  0uud ud d2   0.00033 0.00000
+           386  0uud 02 d2  -0.00014 0.00000
+           387  u002 22 d0  -0.00061 0.00000
+           388  u002 22 0d   0.00006 0.00000
+           389  u002 20 2d  -0.00400 0.00002
+           390  u002 du 2d   0.00015 0.00000
+           391  u002 ud 2d   0.00030 0.00000
+           392  u002 02 2d   0.00036 0.00000
+           393  u002 20 d2   0.00044 0.00000
+           394  u002 du d2  -0.00006 0.00000
+           395  u002 ud d2  -0.00034 0.00000
+           396  u002 02 d2  -0.00004 0.00000
+           397  0u02 22 d0   0.00020 0.00000
+           398  0u02 22 0d  -0.00010 0.00000
+           399  0u02 20 2d   0.00445 0.00002
+           400  0u02 du 2d  -0.00017 0.00000
+           401  0u02 ud 2d   0.00028 0.00000
+           402  0u02 02 2d  -0.00019 0.00000
+           403  0u02 20 d2  -0.00039 0.00000
+           404  0u02 du d2  -0.00032 0.00000
+           405  0u02 ud d2   0.00003 0.00000
+           406  0u02 02 d2   0.00019 0.00000
+           407  00u2 22 d0   0.00013 0.00000
+           408  00u2 22 0d   0.00001 0.00000
+           409  00u2 20 2d   0.00052 0.00000
+           410  00u2 du 2d   0.00049 0.00000
+           411  00u2 ud 2d   0.00006 0.00000
+           412  00u2 02 2d  -0.00022 0.00000
+           413  00u2 20 d2  -0.00054 0.00000
+           414  00u2 du d2   0.00011 0.00000
+           415  00u2 ud d2   0.00027 0.00000
+           416  00u2 02 d2   0.00019 0.00000
+           417  uuu0 dd 2d   0.00409 0.00002
+           418  uuu0 dd d2  -0.00088 0.00000
+           419  uu0u dd 2d   0.00137 0.00000
+           420  uu0u dd d2  -0.00002 0.00000
+           421  u0uu dd 2d   0.00008 0.00000
+           422  u0uu dd d2  -0.00008 0.00000
+           423  0uuu dd 2d   0.00077 0.00000
+           424  0uuu dd d2  -0.00035 0.00000
+           425  u000 22 2d  -0.00332 0.00001
+           426  u000 22 d2   0.00036 0.00000
+           427  0u00 22 2d   0.00242 0.00001
+           428  0u00 22 d2  -0.00063 0.00000
+           429  00u0 22 2d   0.00047 0.00000
+           430  00u0 22 d2  -0.00026 0.00000
+           431  000u 22 2d  -0.00033 0.00000
+           432  000u 22 d2   0.00029 0.00000
+      conf/sym  1111 33 44     Coeff  Weight
+             1  222u 00 d0   0.02613 0.00068
+             2  222u 00 0d  -0.00306 0.00001
+             3  22u2 00 d0   0.00066 0.00000
+             4  22u2 00 0d   0.00084 0.00000
+             5  2u22 00 d0  -0.00104 0.00000
+             6  2u22 00 0d  -0.00019 0.00000
+             7  u222 00 d0   0.00179 0.00000
+             8  u222 00 0d   0.00008 0.00000
+             9  22u0 20 d0  -2.04421 4.17880
+            10  22u0 du d0   0.02940 0.00086
+            11  22u0 ud d0  -0.17827 0.03178
+            12  22u0 02 d0   0.13874 0.01925
+            13  22u0 20 0d   0.14809 0.02193
+            14  22u0 du 0d  -0.07147 0.00511
+            15  22u0 ud 0d  -0.07282 0.00530
+            16  22u0 02 0d  -0.01678 0.00028
+            17  22u0 00 2d   0.01590 0.00025
+            18  22u0 00 d2  -0.01024 0.00010
+            19  2u20 20 d0  -0.14602 0.02132
+            20  2u20 du d0   0.10046 0.01009
+            21  2u20 ud d0   0.06794 0.00462
+            22  2u20 02 d0   0.01844 0.00034
+            23  2u20 20 0d  -0.04118 0.00170
+            24  2u20 du 0d  -0.00950 0.00009
+            25  2u20 ud 0d  -0.01626 0.00026
+            26  2u20 02 0d   0.00960 0.00009
+            27  2u20 00 2d   0.00373 0.00001
+            28  2u20 00 d2  -0.00007 0.00000
+            29  u220 20 d0  -0.01047 0.00011
+            30  u220 du d0   0.02024 0.00041
+            31  u220 ud d0   0.00136 0.00000
+            32  u220 02 d0   0.00110 0.00000
+            33  u220 20 0d   0.00915 0.00008
+            34  u220 du 0d  -0.00007 0.00000
+            35  u220 ud 0d   0.00018 0.00000
+            36  u220 02 0d  -0.00004 0.00000
+            37  u220 00 2d   0.00595 0.00004
+            38  u220 00 d2  -0.00073 0.00000
+            39  220u 20 d0   2.36458 5.59124
+            40  220u du d0  -0.03016 0.00091
+            41  220u ud d0   0.14794 0.02189
+            42  220u 02 d0  -0.16059 0.02579
+            43  220u 20 0d  -0.24983 0.06241
+            44  220u du 0d   0.08280 0.00686
+            45  220u ud 0d   0.08401 0.00706
+            46  220u 02 0d   0.02136 0.00046
+            47  220u 00 2d  -0.01354 0.00018
+            48  220u 00 d2   0.01065 0.00011
+            49  2udu 20 d0   0.12929 0.01671
+            50  2udu du d0  -0.10128 0.01026
+            51  2udu ud d0  -0.15865 0.02517
+            52  2udu 02 d0  -0.01223 0.00015
+            53  2udu 20 0d   0.12820 0.01643
+            54  2udu du 0d   0.01355 0.00018
+            55  2udu ud 0d   0.03114 0.00097
+            56  2udu 02 0d  -0.02152 0.00046
+            57  2udu 00 2d  -0.00160 0.00000
+            58  2udu 00 d2  -0.00048 0.00000
+            59  u2du 20 d0   0.02695 0.00073
+            60  u2du du d0  -0.00528 0.00003
+            61  u2du ud d0   0.04319 0.00187
+            62  u2du 02 d0  -0.00097 0.00000
+            63  u2du 20 0d  -0.06567 0.00431
+            64  u2du du 0d  -0.00096 0.00000
+            65  u2du ud 0d  -0.00871 0.00008
+            66  u2du 02 0d   0.00711 0.00005
+            67  u2du 00 2d  -0.00234 0.00001
+            68  u2du 00 d2   0.00079 0.00000
+            69  202u 20 d0  -0.15579 0.02427
+            70  202u du d0  -0.00128 0.00000
+            71  202u ud d0  -0.01623 0.00026
+            72  202u 02 d0   0.02291 0.00053
+            73  202u 20 0d   0.02583 0.00067
+            74  202u du 0d  -0.01326 0.00018
+            75  202u ud 0d  -0.01638 0.00027
+            76  202u 02 0d  -0.00407 0.00002
+            77  202u 00 2d   0.00110 0.00000
+            78  202u 00 d2  -0.00103 0.00000
+            79  ud2u 20 d0   0.03286 0.00108
+            80  ud2u du d0   0.00045 0.00000
+            81  ud2u ud d0   0.00691 0.00005
+            82  ud2u 02 d0  -0.00468 0.00002
+            83  ud2u 20 0d  -0.00783 0.00006
+            84  ud2u du 0d   0.00309 0.00001
+            85  ud2u ud 0d   0.00487 0.00002
+            86  ud2u 02 0d   0.00168 0.00000
+            87  ud2u 00 2d  -0.00094 0.00000
+            88  ud2u 00 d2   0.00028 0.00000
+            89  022u 20 d0  -0.02974 0.00088
+            90  022u du d0  -0.00040 0.00000
+            91  022u ud d0  -0.00332 0.00001
+            92  022u 02 d0   0.00212 0.00000
+            93  022u 20 0d   0.00533 0.00003
+            94  022u du 0d  -0.00051 0.00000
+            95  022u ud 0d  -0.00089 0.00000
+            96  022u 02 0d  -0.00068 0.00000
+            97  022u 00 2d   0.00088 0.00000
+            98  022u 00 d2  -0.00043 0.00000
+            99  2uud 20 d0   0.04062 0.00165
+           100  2uud du d0  -0.04683 0.00219
+           101  2uud ud d0   0.04279 0.00183
+           102  2uud 02 d0  -0.00577 0.00003
+           103  2uud 20 0d  -0.04202 0.00177
+           104  2uud du 0d   0.00585 0.00003
+           105  2uud ud 0d  -0.00527 0.00003
+           106  2uud 02 0d   0.00462 0.00002
+           107  2uud 00 2d  -0.00225 0.00001
+           108  2uud 00 d2   0.00065 0.00000
+           109  u2ud 20 d0   0.10721 0.01149
+           110  u2ud du d0  -0.06688 0.00447
+           111  u2ud ud d0  -0.05304 0.00281
+           112  u2ud 02 d0  -0.01245 0.00016
+           113  u2ud 20 0d   0.02200 0.00048
+           114  u2ud du 0d   0.00590 0.00003
+           115  u2ud ud 0d   0.01319 0.00017
+           116  u2ud 02 0d  -0.00620 0.00004
+           117  u2ud 00 2d  -0.00377 0.00001
+           118  u2ud 00 d2   0.00022 0.00000
+           119  uu2d 20 d0  -0.04103 0.00168
+           120  uu2d du d0  -0.00710 0.00005
+           121  uu2d ud d0  -0.01319 0.00017
+           122  uu2d 02 d0   0.00841 0.00007
+           123  uu2d 20 0d   0.01010 0.00010
+           124  uu2d du 0d  -0.00596 0.00004
+           125  uu2d ud 0d  -0.00274 0.00001
+           126  uu2d 02 0d  -0.00243 0.00001
+           127  uu2d 00 2d   0.00041 0.00000
+           128  uu2d 00 d2  -0.00067 0.00000
+           129  2u02 20 d0   0.06377 0.00407
+           130  2u02 du d0   0.00919 0.00008
+           131  2u02 ud d0  -0.02177 0.00047
+           132  2u02 02 d0  -0.00285 0.00001
+           133  2u02 20 0d   0.00988 0.00010
+           134  2u02 du 0d   0.00052 0.00000
+           135  2u02 ud 0d   0.00668 0.00004
+           136  2u02 02 0d  -0.00204 0.00000
+           137  2u02 00 2d   0.00194 0.00000
+           138  2u02 00 d2  -0.00026 0.00000
+           139  u202 20 d0  -0.16538 0.02735
+           140  u202 du d0   0.07067 0.00499
+           141  u202 ud d0   0.04428 0.00196
+           142  u202 02 d0   0.01455 0.00021
+           143  u202 20 0d   0.00690 0.00005
+           144  u202 du 0d  -0.00980 0.00010
+           145  u202 ud 0d  -0.01397 0.00020
+           146  u202 02 0d   0.00382 0.00001
+           147  u202 00 2d   0.00358 0.00001
+           148  u202 00 d2  -0.00049 0.00000
+           149  20u2 20 d0  -0.03407 0.00116
+           150  20u2 du d0   0.00080 0.00000
+           151  20u2 ud d0  -0.00800 0.00006
+           152  20u2 02 d0   0.00328 0.00001
+           153  20u2 20 0d   0.00703 0.00005
+           154  20u2 du 0d  -0.00118 0.00000
+           155  20u2 ud 0d  -0.00330 0.00001
+           156  20u2 02 0d  -0.00093 0.00000
+           157  20u2 00 2d   0.00054 0.00000
+           158  20u2 00 d2  -0.00015 0.00000
+           159  udu2 20 d0   0.10367 0.01075
+           160  udu2 du d0   0.00254 0.00001
+           161  udu2 ud d0   0.01665 0.00028
+           162  udu2 02 d0  -0.01212 0.00015
+           163  udu2 20 0d  -0.01653 0.00027
+           164  udu2 du 0d   0.00638 0.00004
+           165  udu2 ud 0d   0.00667 0.00004
+           166  udu2 02 0d   0.00272 0.00001
+           167  udu2 00 2d  -0.00049 0.00000
+           168  udu2 00 d2   0.00062 0.00000
+           169  02u2 20 d0  -0.05926 0.00351
+           170  02u2 du d0  -0.00197 0.00000
+           171  02u2 ud d0  -0.01152 0.00013
+           172  02u2 02 d0   0.00655 0.00004
+           173  02u2 20 0d   0.00996 0.00010
+           174  02u2 du 0d  -0.00398 0.00002
+           175  02u2 ud 0d  -0.00344 0.00001
+           176  02u2 02 0d  -0.00186 0.00000
+           177  02u2 00 2d   0.00040 0.00000
+           178  02u2 00 d2  -0.00041 0.00000
+           179  uud2 20 d0   0.04108 0.00169
+           180  uud2 du d0   0.01064 0.00011
+           181  uud2 ud d0   0.01544 0.00024
+           182  uud2 02 d0  -0.00914 0.00008
+           183  uud2 20 0d  -0.01294 0.00017
+           184  uud2 du 0d   0.00550 0.00003
+           185  uud2 ud 0d   0.00225 0.00001
+           186  uud2 02 0d   0.00291 0.00001
+           187  uud2 00 2d  -0.00027 0.00000
+           188  uud2 00 d2   0.00054 0.00000
+           189  u022 20 d0   0.01869 0.00035
+           190  u022 du d0  -0.01097 0.00012
+           191  u022 ud d0  -0.00937 0.00009
+           192  u022 02 d0  -0.00300 0.00001
+           193  u022 20 0d   0.00389 0.00002
+           194  u022 du 0d   0.00239 0.00001
+           195  u022 ud 0d   0.00348 0.00001
+           196  u022 02 0d  -0.00188 0.00000
+           197  u022 00 2d  -0.00045 0.00000
+           198  u022 00 d2   0.00005 0.00000
+           199  0u22 20 d0  -0.00871 0.00008
+           200  0u22 du d0   0.00537 0.00003
+           201  0u22 ud d0   0.00318 0.00001
+           202  0u22 02 d0   0.00184 0.00000
+           203  0u22 20 0d  -0.00164 0.00000
+           204  0u22 du 0d  -0.00119 0.00000
+           205  0u22 ud 0d  -0.00166 0.00000
+           206  0u22 02 0d   0.00068 0.00000
+           207  0u22 00 2d   0.00033 0.00000
+           208  0u22 00 d2  -0.00002 0.00000
+           209  2uuu dd d0  -0.05981 0.00358
+           210  2uuu dd 0d   0.00705 0.00005
+           211  u2uu dd d0   0.01636 0.00027
+           212  u2uu dd 0d  -0.00253 0.00001
+           213  uu2u dd d0   0.00309 0.00001
+           214  uu2u dd 0d  -0.00077 0.00000
+           215  uuu2 dd d0  -0.00393 0.00002
+           216  uuu2 dd 0d   0.00026 0.00000
+           217  2u00 22 d0  -0.07318 0.00536
+           218  2u00 22 0d   0.00322 0.00001
+           219  2u00 20 2d  -0.16664 0.02777
+           220  2u00 du 2d  -0.00778 0.00006
+           221  2u00 ud 2d  -0.01571 0.00025
+           222  2u00 02 2d   0.01013 0.00010
+           223  2u00 20 d2   0.02567 0.00066
+           224  2u00 du d2  -0.00097 0.00000
+           225  2u00 ud d2  -0.00755 0.00006
+           226  2u00 02 d2  -0.00280 0.00001
+           227  u200 22 d0   0.04575 0.00209
+           228  u200 22 0d  -0.00567 0.00003
+           229  u200 20 2d  -0.28862 0.08330
+           230  u200 du 2d  -0.02639 0.00070
+           231  u200 ud 2d   0.01524 0.00023
+           232  u200 02 2d   0.01967 0.00039
+           233  u200 20 d2   0.03158 0.00100
+           234  u200 du d2  -0.00198 0.00000
+           235  u200 ud d2  -0.01653 0.00027
+           236  u200 02 d2  -0.00192 0.00000
+           237  20u0 22 d0  -0.03785 0.00143
+           238  20u0 22 0d  -0.00116 0.00000
+           239  20u0 20 2d  -0.03641 0.00133
+           240  20u0 du 2d   0.00027 0.00000
+           241  20u0 ud 2d   0.00824 0.00007
+           242  20u0 02 2d   0.00368 0.00001
+           243  20u0 20 d2   0.00934 0.00009
+           244  20u0 du d2  -0.00110 0.00000
+           245  20u0 ud d2  -0.00305 0.00001
+           246  20u0 02 d2  -0.00044 0.00000
+           247  udu0 22 d0   0.00429 0.00002
+           248  udu0 22 0d   0.00015 0.00000
+           249  udu0 20 2d  -0.00565 0.00003
+           250  udu0 du 2d  -0.00054 0.00000
+           251  udu0 ud 2d   0.01518 0.00023
+           252  udu0 02 2d   0.00053 0.00000
+           253  udu0 20 d2  -0.00734 0.00005
+           254  udu0 du d2  -0.00121 0.00000
+           255  udu0 ud d2  -0.00228 0.00001
+           256  udu0 02 d2   0.00126 0.00000
+           257  02u0 22 d0  -0.03633 0.00132
+           258  02u0 22 0d   0.00448 0.00002
+           259  02u0 20 2d  -0.03180 0.00101
+           260  02u0 du 2d  -0.00235 0.00001
+           261  02u0 ud 2d  -0.00128 0.00000
+           262  02u0 02 2d   0.00272 0.00001
+           263  02u0 20 d2   0.02499 0.00062
+           264  02u0 du d2  -0.00011 0.00000
+           265  02u0 ud d2   0.00159 0.00000
+           266  02u0 02 d2  -0.00206 0.00000
+           267  uud0 22 d0   0.00538 0.00003
+           268  uud0 22 0d   0.00113 0.00000
+           269  uud0 20 2d  -0.00099 0.00000
+           270  uud0 du 2d   0.01001 0.00010
+           271  uud0 ud 2d   0.01393 0.00019
+           272  uud0 02 2d  -0.00123 0.00000
+           273  uud0 20 d2  -0.01516 0.00023
+           274  uud0 du d2  -0.00205 0.00000
+           275  uud0 ud d2  -0.00122 0.00000
+           276  uud0 02 d2   0.00245 0.00001
+           277  u020 22 d0  -0.00265 0.00001
+           278  u020 22 0d   0.00050 0.00000
+           279  u020 20 2d   0.01668 0.00028
+           280  u020 du 2d   0.00120 0.00000
+           281  u020 ud 2d  -0.00142 0.00000
+           282  u020 02 2d  -0.00247 0.00001
+           283  u020 20 d2  -0.00244 0.00001
+           284  u020 du d2   0.00099 0.00000
+           285  u020 ud d2   0.00242 0.00001
+           286  u020 02 d2   0.00024 0.00000
+           287  0u20 22 d0  -0.00508 0.00003
+           288  0u20 22 0d  -0.00056 0.00000
+           289  0u20 20 2d  -0.00135 0.00000
+           290  0u20 du 2d   0.00165 0.00000
+           291  0u20 ud 2d   0.00078 0.00000
+           292  0u20 02 2d   0.00030 0.00000
+           293  0u20 20 d2   0.00123 0.00000
+           294  0u20 du d2  -0.00137 0.00000
+           295  0u20 ud d2  -0.00088 0.00000
+           296  0u20 02 d2  -0.00019 0.00000
+           297  200u 22 d0   0.04532 0.00205
+           298  200u 22 0d  -0.00550 0.00003
+           299  200u 20 2d   0.02579 0.00067
+           300  200u du 2d   0.00121 0.00000
+           301  200u ud 2d   0.00151 0.00000
+           302  200u 02 2d  -0.00204 0.00000
+           303  200u 20 d2  -0.01548 0.00024
+           304  200u du d2   0.00031 0.00000
+           305  200u ud d2   0.00047 0.00000
+           306  200u 02 d2   0.00140 0.00000
+           307  ud0u 22 d0  -0.00749 0.00006
+           308  ud0u 22 0d   0.00472 0.00002
+           309  ud0u 20 2d  -0.02572 0.00066
+           310  ud0u du 2d   0.00146 0.00000
+           311  ud0u ud 2d  -0.00609 0.00004
+           312  ud0u 02 2d   0.00124 0.00000
+           313  ud0u 20 d2   0.00684 0.00005
+           314  ud0u du d2  -0.00043 0.00000
+           315  ud0u ud d2   0.00059 0.00000
+           316  ud0u 02 d2  -0.00061 0.00000
+           317  020u 22 d0   0.04238 0.00180
+           318  020u 22 0d  -0.00850 0.00007
+           319  020u 20 2d   0.04935 0.00244
+           320  020u du 2d   0.00077 0.00000
+           321  020u ud 2d  -0.00724 0.00005
+           322  020u 02 2d  -0.00391 0.00002
+           323  020u 20 d2  -0.02624 0.00069
+           324  020u du d2   0.00129 0.00000
+           325  020u ud d2   0.00004 0.00000
+           326  020u 02 d2   0.00163 0.00000
+           327  u0du 22 d0  -0.00257 0.00001
+           328  u0du 22 0d   0.00130 0.00000
+           329  u0du 20 2d   0.00009 0.00000
+           330  u0du du 2d   0.00065 0.00000
+           331  u0du ud 2d   0.00036 0.00000
+           332  u0du 02 2d   0.00027 0.00000
+           333  u0du 20 d2   0.00013 0.00000
+           334  u0du du d2   0.00005 0.00000
+           335  u0du ud d2  -0.00019 0.00000
+           336  u0du 02 d2  -0.00012 0.00000
+           337  0udu 22 d0   0.00575 0.00003
+           338  0udu 22 0d   0.00162 0.00000
+           339  0udu 20 2d  -0.00609 0.00004
+           340  0udu du 2d  -0.00333 0.00001
+           341  0udu ud 2d  -0.00309 0.00001
+           342  0udu 02 2d   0.00099 0.00000
+           343  0udu 20 d2   0.00087 0.00000
+           344  0udu du d2   0.00135 0.00000
+           345  0udu ud d2   0.00073 0.00000
+           346  0udu 02 d2  -0.00023 0.00000
+           347  002u 22 d0  -0.00338 0.00001
+           348  002u 22 0d   0.00112 0.00000
+           349  002u 20 2d  -0.00417 0.00002
+           350  002u du 2d   0.00005 0.00000
+           351  002u ud 2d   0.00103 0.00000
+           352  002u 02 2d   0.00058 0.00000
+           353  002u 20 d2   0.00157 0.00000
+           354  002u du d2  -0.00021 0.00000
+           355  002u ud d2  -0.00016 0.00000
+           356  002u 02 d2  -0.00014 0.00000
+           357  uu0d 22 d0   0.00133 0.00000
+           358  uu0d 22 0d  -0.00139 0.00000
+           359  uu0d 20 2d   0.00513 0.00003
+           360  uu0d du 2d   0.00521 0.00003
+           361  uu0d ud 2d   0.00791 0.00006
+           362  uu0d 02 2d   0.00021 0.00000
+           363  uu0d 20 d2  -0.00993 0.00010
+           364  uu0d du d2  -0.00181 0.00000
+           365  uu0d ud d2  -0.00151 0.00000
+           366  uu0d 02 d2   0.00120 0.00000
+           367  u0ud 22 d0   0.00097 0.00000
+           368  u0ud 22 0d  -0.00053 0.00000
+           369  u0ud 20 2d   0.00690 0.00005
+           370  u0ud du 2d   0.00211 0.00000
+           371  u0ud ud 2d   0.00126 0.00000
+           372  u0ud 02 2d  -0.00090 0.00000
+           373  u0ud 20 d2  -0.00255 0.00001
+           374  u0ud du d2  -0.00041 0.00000
+           375  u0ud ud d2   0.00080 0.00000
+           376  u0ud 02 d2   0.00049 0.00000
+           377  0uud 22 d0   0.00202 0.00000
+           378  0uud 22 0d  -0.00093 0.00000
+           379  0uud 20 2d  -0.00477 0.00002
+           380  0uud du 2d  -0.00137 0.00000
+           381  0uud ud 2d   0.00097 0.00000
+           382  0uud 02 2d   0.00023 0.00000
+           383  0uud 20 d2   0.00027 0.00000
+           384  0uud du d2   0.00037 0.00000
+           385  0uud ud d2  -0.00073 0.00000
+           386  0uud 02 d2   0.00008 0.00000
+           387  u002 22 d0   0.00300 0.00001
+           388  u002 22 0d   0.00014 0.00000
+           389  u002 20 2d   0.00615 0.00004
+           390  u002 du 2d  -0.00043 0.00000
+           391  u002 ud 2d  -0.00050 0.00000
+           392  u002 02 2d  -0.00057 0.00000
+           393  u002 20 d2  -0.00058 0.00000
+           394  u002 du d2   0.00066 0.00000
+           395  u002 ud d2   0.00079 0.00000
+           396  u002 02 d2   0.00002 0.00000
+           397  0u02 22 d0  -0.00137 0.00000
+           398  0u02 22 0d   0.00028 0.00000
+           399  0u02 20 2d  -0.00810 0.00007
+           400  0u02 du 2d   0.00020 0.00000
+           401  0u02 ud 2d  -0.00036 0.00000
+           402  0u02 02 2d   0.00092 0.00000
+           403  0u02 20 d2   0.00048 0.00000
+           404  0u02 du d2  -0.00042 0.00000
+           405  0u02 ud d2  -0.00073 0.00000
+           406  0u02 02 d2  -0.00018 0.00000
+           407  00u2 22 d0  -0.00161 0.00000
+           408  00u2 22 0d   0.00001 0.00000
+           409  00u2 20 2d  -0.00104 0.00000
+           410  00u2 du 2d   0.00001 0.00000
+           411  00u2 ud 2d   0.00079 0.00000
+           412  00u2 02 2d   0.00019 0.00000
+           413  00u2 20 d2   0.00026 0.00000
+           414  00u2 du d2  -0.00012 0.00000
+           415  00u2 ud d2  -0.00018 0.00000
+           416  00u2 02 d2   0.00002 0.00000
+           417  uuu0 dd 2d  -0.00785 0.00006
+           418  uuu0 dd d2   0.00141 0.00000
+           419  uu0u dd 2d  -0.00068 0.00000
+           420  uu0u dd d2  -0.00023 0.00000
+           421  u0uu dd 2d   0.00013 0.00000
+           422  u0uu dd d2   0.00008 0.00000
+           423  0uuu dd 2d  -0.00151 0.00000
+           424  0uuu dd d2   0.00068 0.00000
+           425  u000 22 2d   0.00542 0.00003
+           426  u000 22 d2  -0.00043 0.00000
+           427  0u00 22 2d  -0.00413 0.00002
+           428  0u00 22 d2   0.00147 0.00000
+           429  00u0 22 2d  -0.00154 0.00000
+           430  00u0 22 d2   0.00070 0.00000
+           431  000u 22 2d   0.00137 0.00000
+           432  000u 22 d2  -0.00081 0.00000
+ 
+      The response parameters are written to the file RESP.
+--- Stop Module:  mclr at Fri Oct  7 14:36:12 2016 /rc=0 ---
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 14:36:12 2016 /rc=0 ---
+--- Module auto spent 9 seconds 

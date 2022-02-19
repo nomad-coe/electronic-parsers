@@ -1,0 +1,11 @@
+* quick absolute test to cut down output (see test.str)
+*
+
+calc result = abs( @IN1 - @IN2 ) - abs ( @IN3 )
+if @result le 0 then
+ echo @in4 testcase result: pass
+else
+ echo @in4 testcase result: fail
+ incr testfail
+endif
+return

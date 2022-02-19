@@ -1,0 +1,245 @@
+================================================================================
+| EXCITING BORON started for task    301                                       =
+| version hash id: a06d9673db1b7255b5089fd22c132a86979a519f                    =
+| MPI version using      1 processor(s)                                        =
+|                                                                              =
+| Date (DD-MM-YYYY) : 01-10-2014                                               =
+================================================================================
+Info(xsgeneigvec): eigenvectors generated for Q-point (iq, vql below)
+     1   0.000000000       0.000000000       0.000000000    
+Info(xsgeneigvec): first Q-point is Gamma-point - copying relevant files
+Info(xsgeneigvec): generation of eigenvectors finished
+Info(xsfinit): task Nr.     301 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 01-10-2014
+     Time (hh:mm:ss)        : 22:37:46
+     CPU time               : 76137.42 sec; 21.15 hrs; ( 0 d, 21 h, 08 m, 57 s )
+     wall time              : 5124.52 sec; 1.42 hrs; ( 0 d, 01 h, 25 m, 25 s )
+     CPU load               : 1485.75 %
+     CPU time  (cumulative) : 76137.49 sec; 21.15 hrs; ( 0 d, 21 h, 08 m, 57 s )
+     wall time (cumulative) : 5124.52 sec; 1.42 hrs; ( 0 d, 01 h, 25 m, 25 s )
+     CPU load  (cumulative) : 1485.75 %
+ 
+================================================================================
+| EXCITING BORON stopped for task    301                                       =
+================================================================================
+ 
+ 
+================================================================================
+| EXCITING BORON started for task    320                                       =
+| MPI version using      1 processor(s)                                        =
+| Date (DD-MM-YYYY) : 01-10-2014                                               =
+================================================================================
+Info(writepmatxs): momentum matrix elements finished
+Info(xsfinit): task Nr.     320 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 01-10-2014
+     Time (hh:mm:ss)        : 22:39:16
+     CPU time               : 296.18 sec; 0.08 hrs; ( 0 d, 00 h, 04 m, 56 s )
+     wall time              : 89.60 sec; 0.02 hrs; ( 0 d, 00 h, 01 m, 30 s )
+     CPU load               : 330.57 %
+     CPU time  (cumulative) : 76433.67 sec; 21.23 hrs; ( 0 d, 21 h, 13 m, 54 s )
+     wall time (cumulative) : 5214.18 sec; 1.45 hrs; ( 0 d, 01 h, 26 m, 54 s )
+     CPU load  (cumulative) : 330.57 %
+ 
+================================================================================
+| EXCITING BORON stopped for task    320                                       =
+================================================================================
+ 
+ 
+================================================================================
+| EXCITING BORON started for task    401                                       =
+| MPI version using      1 processor(s)                                        =
+| Date (DD-MM-YYYY) : 01-10-2014                                               =
+================================================================================
+ 
+Info(xsinit): mapping screening-specific parameters
+ 
+Info(xsgeneigvec): eigenvectors generated for associated(input%xs%screening)/screened interaction:
+Info(xsgeneigvec): generation of eigenvectors finished
+Info(scrgeneigvec): eigenvectors for screening finished
+Info(xsfinit): task Nr.     401 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 02-10-2014
+     Time (hh:mm:ss)        : 00:04:36
+     CPU time               : 75944.59 sec; 21.10 hrs; ( 0 d, 21 h, 05 m, 45 s )
+     wall time              : 5120.06 sec; 1.42 hrs; ( 0 d, 01 h, 25 m, 20 s )
+     CPU load               : 1483.28 %
+     CPU time  (cumulative) : 152378.28 sec; 42.33 hrs; ( 1 d, 18 h, 19 m, 38 s )
+     wall time (cumulative) : 10334.24 sec; 2.87 hrs; ( 0 d, 02 h, 52 m, 14 s )
+     CPU load  (cumulative) : 1483.28 %
+ 
+================================================================================
+| EXCITING BORON stopped for task    401                                       =
+================================================================================
+ 
+ 
+================================================================================
+| EXCITING BORON started for task    420                                       =
+| MPI version using      1 processor(s)                                        =
+| Date (DD-MM-YYYY) : 02-10-2014                                               =
+================================================================================
+ 
+Info(xsinit): mapping screening-specific parameters
+ 
+Info(writepmatxs): momentum matrix elements finished
+Info(scrwritepmat): momentum matrix elements for screening finished
+Info(xsfinit): task Nr.     420 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 02-10-2014
+     Time (hh:mm:ss)        : 00:05:58
+     CPU time               : 294.98 sec; 0.08 hrs; ( 0 d, 00 h, 04 m, 55 s )
+     wall time              : 81.87 sec; 0.02 hrs; ( 0 d, 00 h, 01 m, 22 s )
+     CPU load               : 360.32 %
+     CPU time  (cumulative) : 152673.27 sec; 42.41 hrs; ( 1 d, 18 h, 24 m, 33 s )
+     wall time (cumulative) : 10416.11 sec; 2.89 hrs; ( 0 d, 02 h, 53 m, 36 s )
+     CPU load  (cumulative) : 360.32 %
+ 
+================================================================================
+| EXCITING BORON stopped for task    420                                       =
+================================================================================
+ 
+ 
+================================================================================
+| EXCITING BORON started for task    430                                       =
+| MPI version using      1 processor(s)                                        =
+| Date (DD-MM-YYYY) : 02-10-2014                                               =
+================================================================================
+ 
+Info(xsinit): mapping screening-specific parameters
+ 
+Info(findocclims): system has Kohn-Sham gap
+Info(dfq): Gamma q - point: using momentum matrix elements for dielectric function
+Info(dfq): number of G + q vectors (local field effects):  1549
+Info(dfq): lowest (partially)  unoccupied state:     43
+Info(dfq): highest (partially) occupied state  :     42
+Info(dfq): band-combination limits  nst1,  nst2,  nst3,  nst4:   42  101  101   42
+Info(dfq): band-combination limits istl1, istu1, istl2, istu2:    1   42   43  143
+Info(dfq): band-combination limits istl3, istu3, istl4, istu4:   43  143    1   42
+Info(dfq): number of G + q vectors:  1549
+Info(df): Kohn Sham response function finished for q - point:       1
+Info(df): Kohn-Sham response function finished
+Info(screen): Screening finished
+Info(xsfinit): task Nr.     430 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 02-10-2014
+     Time (hh:mm:ss)        : 03:57:06
+     CPU time               : 42227.21 sec; 11.73 hrs; ( 0 d, 11 h, 43 m, 47 s )
+     wall time              : 13868.20 sec; 3.85 hrs; ( 0 d, 03 h, 51 m, 08 s )
+     CPU load               : 304.49 %
+     CPU time  (cumulative) : 194900.50 sec; 54.14 hrs; ( 2 d, 06 h, 08 m, 20 s )
+     wall time (cumulative) : 24284.32 sec; 6.75 hrs; ( 0 d, 06 h, 44 m, 44 s )
+     CPU load  (cumulative) : 304.49 %
+ 
+================================================================================
+| EXCITING BORON stopped for task    430                                       =
+================================================================================
+ 
+ 
+================================================================================
+| EXCITING BORON started for task    440                                       =
+| MPI version using      1 processor(s)                                        =
+| Date (DD-MM-YYYY) : 02-10-2014                                               =
+================================================================================
+ 
+Info(xsinit): mapping BSE-specific parameters
+ 
+Info(scrcoulint): Gaunt coefficients generated within lmax values:      10       3      10
+Info(scrcoulint): number of q-points:      1
+Info(findocclims): system has Kohn-Sham gap
+ 
+file size for screened Coulomb interaction (GB):       0.000
+ 
+Info(scrcoulint): Screened Coulomb interaction finished
+Info(xsfinit): task Nr.     440 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 02-10-2014
+     Time (hh:mm:ss)        : 11:51:54
+     CPU time               : 103958.63 sec; 28.88 hrs; ( 1 d, 04 h, 52 m, 39 s )
+     wall time              : 28487.71 sec; 7.91 hrs; ( 0 d, 07 h, 54 m, 48 s )
+     CPU load               : 364.92 %
+     CPU time  (cumulative) : 298859.13 sec; 83.02 hrs; ( 3 d, 11 h, 00 m, 59 s )
+     wall time (cumulative) : 52772.05 sec; 14.66 hrs; ( 0 d, 14 h, 39 m, 32 s )
+     CPU load  (cumulative) : 364.92 %
+ 
+================================================================================
+| EXCITING BORON stopped for task    440                                       =
+================================================================================
+ 
+ 
+================================================================================
+| EXCITING BORON started for task    441                                       =
+| MPI version using      1 processor(s)                                        =
+| Date (DD-MM-YYYY) : 02-10-2014                                               =
+================================================================================
+ 
+Info(xsinit): mapping BSE-specific parameters
+ 
+Info(exccoulint): Gaunt coefficients generated within lmax values:      10       3      10
+Info(exccoulint): number of q-points:      1
+Info(findocclims): system has Kohn-Sham gap
+Info(exccoulint): Exchange Coulomb interaction finished
+Info(xsfinit): task Nr.     441 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 02-10-2014
+     Time (hh:mm:ss)        : 20:46:11
+     CPU time               : 87120.78 sec; 24.20 hrs; ( 1 d, 00 h, 12 m, 01 s )
+     wall time              : 32056.91 sec; 8.90 hrs; ( 0 d, 08 h, 54 m, 17 s )
+     CPU load               : 271.77 %
+     CPU time  (cumulative) : 385979.91 sec; 107.22 hrs; ( 4 d, 11 h, 13 m, 00 s )
+     wall time (cumulative) : 84829.06 sec; 23.56 hrs; ( 0 d, 23 h, 33 m, 49 s )
+     CPU load  (cumulative) : 271.77 %
+ 
+================================================================================
+| EXCITING BORON stopped for task    441                                       =
+================================================================================
+ 
+ 
+================================================================================
+| EXCITING BORON started for task    445                                       =
+| MPI version using      1 processor(s)                                        =
+| Date (DD-MM-YYYY) : 02-10-2014                                               =
+================================================================================
+ 
+Info(xsinit): mapping BSE-specific parameters
+ 
+Info(findocclims): system has Kohn-Sham gap
+ 
+Info(bse): information on number of states:
+ number of states below Fermi energy in Hamiltonian:     2
+ number of states above Fermi energy in Hamiltonian:    50
+ ranges of states according to BSE matrix:
+  range of first index and number  :     1    42       42
+  range of second index and number :     1    42       42
+  range of third index and number  :    43   143      101
+  range of fourth index and number :    43   143      101
+Info(bse): gap:   13.79977880    
+ 
+Info(bse): invoking Lapack routine ZHEEVX
+ size of BSE-Hamiltonian	   :      100
+ number of requested solutions :      100
+ timing (in seconds)	   :       0.205
+Info(xsfinit): task Nr.     445 stopped gracefully
+ 
+ Timings: 
+     Date (DD-MM-YYYY)      : 02-10-2014
+     Time (hh:mm:ss)        : 20:46:29
+     CPU time               : 78.11 sec; 0.02 hrs; ( 0 d, 00 h, 01 m, 18 s )
+     wall time              : 18.46 sec; 0.01 hrs; ( 0 d, 00 h, 00 m, 18 s )
+     CPU load               : 423.20 %
+     CPU time  (cumulative) : 386058.03 sec; 107.24 hrs; ( 4 d, 11 h, 14 m, 18 s )
+     wall time (cumulative) : 84847.52 sec; 23.57 hrs; ( 0 d, 23 h, 34 m, 08 s )
+     CPU load  (cumulative) : 423.20 %
+ 
+================================================================================
+| EXCITING BORON stopped for task    445                                       =
+================================================================================
+ 
+ 

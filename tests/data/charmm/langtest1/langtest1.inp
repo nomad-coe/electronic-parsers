@@ -1,0 +1,92 @@
+* LANGTEST1
+*  This is a test file which builds a butane
+*  molecule from 4 extended atoms and then runs
+*  a series of Langevin dynamics tests. The initial
+*  positions of the molecule are with the dihedral
+*  angle at 180 degrees.  Both bonds and bond angles
+*  are SHAKen.
+*
+
+if ?NUMNODE .gt. 1 then
+ echo "Test NOT performed."
+ stop
+endif
+
+stream datadir.def
+
+READ RTF CARDS PRINT
+* butane
+*
+   18    1
+MASS   13 CH2E  14.02700
+MASS   14 CH3E  15.03500
+
+RESI BUT  0.0
+ATOM   C1   CH3E 0.0
+ATOM   C2   CH2E 0.0
+ATOM   C3   CH2E 0.0
+ATOM   C4   CH3E 0.0
+BOND C1 C2  C2 C3  C3 C4
+ANGLE  C1 C2 C3  C2 C3 C4
+DIHEDRAL C1 C2 C3 C4
+IC C1 C2 C3 C4   0.0 0.0 180.0 0.0 0.0
+IC  X C1 C2 C3   0.0 0.0 180.0 0.0 0.0
+
+END
+
+READ PARAMETER CARD
+* From Parameter File PARAM6.INP
+*
+BOND
+CH2E CH2E   225.0       1.52
+CH2E CH3E   225.0       1.54
+THETAS
+CH2E CH2E CH3E    45.0     111.0
+PHI
+X    CH2E CH2E X        1.6       3       0.0
+NONBOND
+CH2E     1.7700    -0.1142       2.235 1.77 -0.1 1.9
+CH3E     2.1700    -0.1811       2.165 1.77 -0.1 1.9
+END
+
+READ SEQU CARD
+* Butane
+*
+1
+BUT
+
+GENERATE BUTE SETU
+
+IC PARAMETERS
+PRINT IC
+
+IC SEED 1 C1 1 C2 1 C3
+IC BUILD
+PRINT COORD
+
+SCAL FBETA SET 6.657235 SELE SEGID BUTE .AND. RESID 1 END
+SCAL FBETA SHOW
+
+! We SHAKE bonds and bond angles to simplify things
+SHAKE TOL 1.0E-5  BONDS ANGLES
+
+UPDATE NBXMOD 4
+
+PRINT COORD
+
+! Run 2.5 ps of Langevin dynamics with initial temperature
+! set to 291.0 K.  Save the trajectory to analyze the rms
+! fluctuations.
+OPEN WRITE FILE UNIT 30 NAME @9FOR030.DAT
+DYNA LANG TIMESTEP 0.001 NSTEP 2500 ISEED 314159 -
+  FIRSTT 232.0 FINALT 291.4 TWINDL 100.0 TWINDH -100.0 -
+ INBFRQ 0 IHBFRQ 0 IEQFRQ 0 NPRINT 20 IASVEL 1 -
+ TBATH 291.0 -
+ IUNCRD 30 NSAVC 5
+
+PRINT COORD
+OPEN READ FILE UNIT 30 NAME @9FOR030.DAT
+COORDINATES DYNAMICS FIRSTUNIT 30 NUNIT 1 BEGIN 5 STOP 2500
+SCALAR WMAIN SHOW
+
+STOP

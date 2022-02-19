@@ -1,0 +1,1545 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test012.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test012.input.2855
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 14:26:52 2016 
+
+++ ---------   Input file   ---------
+
+  &SEWARD &END
+    Title
+    Carbon atom
+    Symmetry
+    x y z
+    Basis set
+    C..... / inline
+      6.0 2
+      10   10
+      5240.6353 782.20479 178.35083 50.815942 16.823562 6.1757760 2.4180490
+      .51190000 .15659000 .05480600
+      1. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+      0. 1. 0. 0. 0. 0. 0. 0. 0. 0.
+      0. 0. 1. 0. 0. 0. 0. 0. 0. 0.
+      0. 0. 0. 1. 0. 0. 0. 0. 0. 0.
+      0. 0. 0. 0. 1. 0. 0. 0. 0. 0.
+      0. 0. 0. 0. 0. 1. 0. 0. 0. 0.
+      0. 0. 0. 0. 0. 0. 1. 0. 0. 0.
+      0. 0. 0. 0. 0. 0. 0. 1. 0. 0.
+      0. 0. 0. 0. 0. 0. 0. 0. 1. 0.
+      0. 0. 0. 0. 0. 0. 0. 0. 0. 1.
+      6    6
+      18.841800 4.1592400 1.2067100 .38554000 .12194000 .04267900
+      1. 0. 0. 0. 0. 0.
+      0. 1. 0. 0. 0. 0.
+      0. 0. 1. 0. 0. 0.
+      0. 0. 0. 1. 0. 0.
+      0. 0. 0. 0. 1. 0.
+      0. 0. 0. 0. 0. 1.
+      3    3
+      1.2838000 .34400000 .09220000
+      1. 0. 0.
+      0. 1. 0.
+      0. 0. 1.
+    C  0.000000  0.000000  0.000000
+    End of basis
+  &SCF &END
+    Title
+    Carbon atom, start orbitals
+    ITERATIONS
+      20, 20
+    Occupied
+      2 0 0 0 0 0 0 0
+  &RASSCF &END
+    Title
+    Carbon atom.
+    Symmetry
+      4
+    Spin
+      3
+    nActEl
+      2 0 0
+    Frozen
+      0 0 0 0 0 0 0 0
+    Inactive
+      2 0 0 0 0 0 0 0
+    Ras2
+      0 1 1 0 0 0 0 0
+    LevShft
+      0.00
+    LumOrb
+    Thrs
+      0.1d-8 0.1d-4 0.1d-4
+  &MOTRA &END
+    Title
+    Carbon atom.
+    LumOrb
+  &GUGA &END
+    Title
+    Carbon atom.
+    Electrons
+      4
+    Spin
+      3
+    Symmetry
+      8
+    Inactive
+      1    0    0    0    0    0    0    0
+    Active
+      0    1    1    0    0    0    0    0
+    CiAll
+      4
+  &MRCI &END
+    Title
+    Carbon atom
+    SDCI
+ >>RM $Project.OrdInt
+ >>LINK -force $Project.RunFile RUN001
+ >>LINK -force  $Project.RunFile RUN002
+ >>LINK -force  $Project.OneInt  ONE001
+ >>LINK -force  $Project.OneInt  ONE002
+ >>LINK -force  $Project.RasOrb  NAT001
+ >>LINK -force  $Project.CiOrb   NAT002
+  &GENANO &END
+    Title
+    Carbon atom
+    Project
+    sets
+      2
+    Center
+    C
+    Weights
+      0.5 0.5
+    !rm -f ONE* NAT*
+
+-- ----------------------------------
+
+--- Start Module: seward at Fri Oct  7 14:26:53 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:26:53 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+ Title:
+                                          Carbon atom                                   
+ 
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+                    Reflection in the xz-plane  
+                    Reflection in the xy-plane  
+ 
+ 
+                    Character Table for D2h
+ 
+                             E   s(yz) s(xz) C2(z) s(xy) C2(y) C2(x)   i  
+                    ag       1     1     1     1     1     1     1     1  
+                    b3u      1    -1     1    -1     1    -1     1    -1  x
+                    b2u      1     1    -1    -1     1     1    -1    -1  y
+                    b1g      1    -1    -1     1     1    -1    -1     1  xy, Rz
+                    b1u      1     1     1     1    -1    -1    -1    -1  z
+                    b2g      1    -1     1    -1    -1     1    -1     1  xz, Ry
+                    b3g      1     1    -1    -1    -1    -1     1     1  yz, Rx
+                    au       1    -1    -1     1    -1     1     1    -1  I
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:C.......... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  6.000000 au
+      Associated Actual Charge     6.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s      10      10        X                  
+         p       6       6        X                  
+         d       3       3                 X         
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      C                0.000000       0.000000       0.000000              0.000000       0.000000       0.000000
+ 
+ 
+            Nuclear Potential Energy              0.00000000 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         ag   b3u  b2u  b1g  b1u  b2g  b3g  au 
+      Basis functions           16    6    6    3    6    3    3    0
+ 
+--- Stop Module:  seward at Fri Oct  7 14:26:54 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:26:54 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:26:54 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+Input section
+      Header of the integral files:
+                                    Carbon atom                               
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:26:53 2016        
+ 
+ 
+       Title:
+        Carbon atom, start orbitals                                             
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   C          0.00000   0.00000   0.00000
+      --------------------------------------------
+      Nuclear repulsion energy =    0.000000
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2   3   4   5   6   7   8
+                                    ag b3u b2u b1g b1u b2g b3g  au
+      Frozen orbitals                0   0   0   0   0   0   0   0
+      Occupied orbitals              2   0   0   0   0   0   0   0
+      Secondary orbitals            14   6   6   3   6   3   3   0
+      Deleted orbitals               0   0   0   0   0   0   0   0
+      Total number of orbitals      16   6   6   3   6   3   3   0
+      Number of basis functions     16   6   6   3   6   3   3   0
+ 
+      Molecular charge                           2.000
+ 
+      SCF Algorithm: Conventional
+      Minimized density differences are used
+      Number of density matrices in core               20
+      Maximum number of NDDO SCF iterations            20
+      Maximum number of HF  SCF iterations             20
+      Threshold for SCF energy change            0.10E-08
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Detected guessorb starting orbitals                                             
+ 
+ 
+Convergence information
+                                   SCF        iterations: Energy and convergence statistics
+ 
+Iter     Tot. SCF       One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -36.35102126    -43.65674481      7.30572355  0.00E+00   0.20E+00*  0.17E+01*   0.20E+01   0.37E+02   NoneDa    0.
+   2    -36.40408113    -44.06199974      7.65791861 -0.53E-01*  0.35E-01*  0.24E-01*   0.58E+00   0.13E+01   Damp      0.
+   3    -36.40549600    -44.11180031      7.70630431 -0.14E-02*  0.36E-02*  0.24E-01*   0.28E-01   0.50E-01   QNRc2D    0.
+   4    -36.40554142    -44.11992637      7.71438495 -0.45E-04*  0.82E-03*  0.80E-03*   0.86E-03   0.91E-02   QNRc2D    0.
+   5    -36.40554300    -44.12168719      7.71614418 -0.16E-05*  0.39E-05   0.53E-05    0.67E-04   0.59E-04   QNRc2D    0.
+   6    -36.40554300    -44.12168325      7.71614025 -0.48E-10   0.12E-06   0.29E-06    0.80E-06   0.21E-05   QNRc2D    0.
+ 
+       Convergence after  6 Macro Iterations and  0 additional LS Iterations...
+ 
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total SCF energy                                -36.4055430036
+      One-electron energy                             -44.1216832490
+      Two-electron energy                               7.7161402455
+      Nuclear repulsion energy                          0.0000000000
+      Kinetic energy (interpolated)                    36.3981140706
+      Virial theorem                                    1.0002041021
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000000000
+      Max non-diagonal Fock matrix element              0.0000002926
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: SCF orbitals                                                                    
+ 
+
+      Molecular orbitals for symmetry species 1: ag 
+ 
+          Orbital        1         2
+          Energy      -12.6513   -1.6934
+          Occ. No.      2.0000    2.0000
+ 
+        1 C     1s      0.0009   -0.0002
+        2 C     1s      0.0072   -0.0018
+        3 C     1s      0.0364   -0.0089
+        4 C     1s      0.1309   -0.0355
+        5 C     1s      0.3194   -0.0880
+        6 C     1s      0.4420   -0.1978
+        7 C     1s      0.2115   -0.0967
+        8 C     1s      0.0066    0.8117
+        9 C     1s     -0.0020    0.3450
+       10 C     1s      0.0006   -0.0376
+       11 C     3d0     0.0000    0.0000
+       12 C     3d0     0.0000    0.0000
+       13 C     3d0     0.0000    0.0000
+       14 C     3d2+    0.0000    0.0000
+       15 C     3d2+    0.0000    0.0000
+       16 C     3d2+    0.0000    0.0000
+
+      Molecular orbitals for symmetry species 2: b3u
+ 
+          Orbital        1
+          Energy       -0.8645
+          Occ. No.      0.0000
+ 
+        1 C     2px     0.0158
+        2 C     2px     0.0985
+        3 C     2px     0.3382
+        4 C     2px     0.5574
+        5 C     2px     0.2142
+        6 C     2px    -0.0145
+
+      Molecular orbitals for symmetry species 3: b2u
+ 
+          Orbital        1
+          Energy       -0.8645
+          Occ. No.      0.0000
+ 
+        1 C     2py    -0.0158
+        2 C     2py    -0.0985
+        3 C     2py    -0.3382
+        4 C     2py    -0.5574
+        5 C     2py    -0.2142
+        6 C     2py     0.0145
+
+      Molecular orbitals for symmetry species 5: b1u
+ 
+          Orbital        1
+          Energy       -0.8645
+          Occ. No.      0.0000
+ 
+        1 C     2pz     0.0158
+        2 C     2pz     0.0985
+        3 C     2pz     0.3382
+        4 C     2pz     0.5574
+        5 C     2pz     0.2142
+        6 C     2pz    -0.0145
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             C     
+      1s     4.0000
+      2px    0.0000
+      2pz    0.0000
+      2py    0.0000
+      3d2+   0.0000
+      3d1+   0.0000
+      3d0    0.0000
+      3d1-   0.0000
+      3d2-   0.0000
+      Total  4.0000
+ 
+      N-E    2.0000
+ 
+      Total electronic charge=    4.000000
+ 
+      Total            charge=    2.000000
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    2.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    0.0000           Total=    0.0000
+      Center of Charge (Ang)
+                     X=    0.00000000               Y=    0.00000000               Z=    0.00000000
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                    XX=   -2.0812              XY=    0.0000              XZ=    0.0000              YY=   -2.0812
+                    YZ=    0.0000              ZZ=   -2.0812
+      In traceless form (Debye*Ang)
+                    XX=    0.0000              XY=    0.0000              XZ=    0.0000              YY=    0.0000
+                    YZ=    0.0000              ZZ=    0.0000
+--- Stop Module:  scf at Fri Oct  7 14:26:55 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 14:26:56 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module RASSCF with 2000 MB of memory
+                                              at 14:26:56 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      Header of the ONEINT file:
+      --------------------------
+      Carbon atom                                                                                                             
+      Integrals generated by seward 4.2.0  , Fri Oct  7 14:26:53 2016                                                         
+ 
+ 
+      OrdInt status: non-squared
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   C          0.00000   0.00000   0.00000
+      --------------------------------------------
+      Nuclear repulsion energy =    0.000000
+ 
+ 
+ 
+      Wave function specifications:
+         -----------------------------
+ 
+      Number of closed shell electrons           4
+      Number of electrons in active shells       2
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                2
+      Number of active orbitals                  2
+      Number of secondary orbitals              39
+      Spin quantum number                      1.0
+      State symmetry                             4
+ 
+ 
+      Orbital specifications:
+         -----------------------
+ 
+      Symmetry species                           1   2   3   4   5   6   7   8
+                                                ag b3u b2u b1g b1u b2g b3g  au
+      Frozen orbitals                            0   0   0   0   0   0   0   0
+      Inactive orbitals                          2   0   0   0   0   0   0   0
+      Active orbitals                            0   1   1   0   0   0   0   0
+      RAS1 orbitals                              0   0   0   0   0   0   0   0
+      RAS2 orbitals                              0   1   1   0   0   0   0   0
+      RAS3 orbitals                              0   0   0   0   0   0   0   0
+      Secondary orbitals                        14   5   5   3   6   3   3   0
+      Deleted orbitals                           0   0   0   0   0   0   0   0
+      Number of basis functions                 16   6   6   3   6   3   3   0
+ 
+      CI expansion specifications:
+         ----------------------------
+ 
+      Number of configuration state fnc.         1
+      Number of determinants                     1
+      Number of root(s) required                 1
+      Root chosen for geometry opt.              1
+      CI root used                               1
+      highest root included in the CI            1
+      max. size of the explicit Hamiltonian      1
+ 
+      Optimization specifications:
+         ----------------------------
+ 
+      RASSCF algorithm: Conventional
+      Maximum number of macro iterations       200
+      Maximum number of SX iterations          100
+      Threshold for RASSCF energy            0.100E-08
+      Threshold for max MO rotation          0.100E-04
+      Threshold for max BLB element          0.100E-04
+      Level shift parameter                  0.000E+00
+      Make Quasi-Newton update
+      The MO-coefficients are taken from the file:
+      INPORB                                                                                                                          
+      Title: SCF orbitals                                                                  
+ 
+      Total molecular charge    0.00
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                            Wave function  control section                                            *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+                          RASSCF iterations: Energy and convergence statistics
+                          ----------------------------------------------------
+ 
+      Iter CI   SX   CI       RASSCF       Energy    max ROT   max BLB   max BLB  Level Ln srch  Step   QN    Time(min)
+          iter iter root      energy       change     param    element    value    shift minimum  type update     CPU
+        1   1    9    1   -37.58159349    0.00E+00   0.22E+00*   2   6 1  0.35E+00*  0.00   0.00     SX     NO      0.00
+        2   1    8    1   -37.67659685   -0.95E-01* -0.12E+00*   1   2 2 -0.43E-01*  0.00   0.00     SX     NO      0.00
+        3   1    8    1   -37.68467224   -0.81E-02* -0.38E-01*   2   6 1  0.27E-01*  0.00   0.00     SX     NO      0.00
+        4   1    7    1   -37.68550924   -0.84E-03* -0.26E-01*   1   2 2 -0.71E-02*  0.00   0.00     SX     NO      0.00
+        5   1    7    1   -37.68572109   -0.21E-03*  0.77E-02*   2   6 1  0.43E-02*  0.00   0.68     QN    YES      0.00
+        6   1    6    1   -37.68579077   -0.70E-04* -0.56E-03*   2   3 1  0.10E-02*  0.00   1.04     QN    YES      0.00
+        7   1    6    1   -37.68579190   -0.11E-05* -0.18E-03*   2   3 1  0.23E-03*  0.00   1.31     QN    YES      0.00
+        8   1    4    1   -37.68579199   -0.81E-07* -0.59E-05    2  11 1  0.38E-05   0.00   1.00     QN    YES      0.00
+        9   1    3    1   -37.68579199   -0.58E-10  -0.37E-06    2   6 1 -0.97E-06   0.00   0.95     QN    YES      0.00
+      Convergence after  9 iterations
+       10   1    3    1   -37.68579199   -0.10E-11  -0.37E-06    2   4 1  0.15E-06   0.00   0.95     QN    YES      0.00
+ 
+      ************************************************************************************************************************
+                                                      Wave function printout:
+                       occupation of active orbitals, and spin coupling of open shells (u,d: Spin up or down)
+      ************************************************************************************************************************
+ 
+      Note: transformation to natural orbitals
+      has been made, which may change the order of the CSFs.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -37.685792
+      conf/sym  2 3     Coeff  Weight
+             1  u u   1.00000 1.00000
+ 
+      Natural orbitals and occupation numbers for root  1
+      sym 2:   1.000000
+      sym 3:   1.000000
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                                    Final results                                                    *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Number of closed shell electrons           4
+      Number of electrons in active shells       2
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                2
+      Number of active orbitals                  2
+      Number of secondary orbitals              39
+      Spin quantum number                      1.0
+      State symmetry                             4
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4   5   6   7   8
+                                                ag b3u b2u b1g b1u b2g b3g  au
+      Frozen orbitals                            0   0   0   0   0   0   0   0
+      Inactive orbitals                          2   0   0   0   0   0   0   0
+      Active orbitals                            0   1   1   0   0   0   0   0
+      RAS1 orbitals                              0   0   0   0   0   0   0   0
+      RAS2 orbitals                              0   1   1   0   0   0   0   0
+      RAS3 orbitals                              0   0   0   0   0   0   0   0
+      Secondary orbitals                        14   5   5   3   6   3   3   0
+      Deleted orbitals                           0   0   0   0   0   0   0   0
+      Number of basis functions                 16   6   6   3   6   3   3   0
+ 
+ 
+      CI expansion specifications:
+      ----------------------------
+ 
+      Number of configuration state fnc.         1
+      Number of determinants                     1
+      Number of root(s) required                 1
+      CI root used                               1
+      highest root included in the CI            1
+      Root passed to geometry opt.               1
+ 
+ 
+      Final optimization conditions:
+      ------------------------------
+ 
+      Average CI energy                             -37.68579199
+      RASSCF energy for state  1                    -37.68579199
+      Super-CI energy                                 0.00000000
+      RASSCF energy change                            0.00000000
+      Max change in MO coefficients               0.727E-06
+      Max non-diagonal density matrix element    -0.375E-06
+      Maximum BLB matrix element                  0.154E-06
+      (orbital pair   2,   4 in symmetry   1)
+      Norm of electronic gradient            0.186E-06
+ 
+ 
+      Final state energy(ies):
+      ------------------------
+ 
+      RASSCF root number  1 Total energy =        -37.68579199
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Pseudonatural active orbitals and approximate occupation numbers
+ 
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 1: ag 
+ 
+ 
+      Orbital            1         2         3
+      Energy      -11.3270   -0.7060    0.1315
+      Occ. No.      2.0000    2.0000    0.0000
+ 
+    1 C     1s      0.0009   -0.0002   -0.0001
+    2 C     1s      0.0072   -0.0016   -0.0005
+    3 C     1s      0.0363   -0.0077   -0.0022
+    4 C     1s      0.1306   -0.0302   -0.0108
+    5 C     1s      0.3189   -0.0768   -0.0182
+    6 C     1s      0.4389   -0.1611   -0.0706
+    7 C     1s      0.2147   -0.0945    0.0106
+    8 C     1s      0.0096    0.5647    0.0078
+    9 C     1s     -0.0025    0.5498    1.2609
+   10 C     1s      0.0009    0.0160   -1.7266
+   11 C     3d0    -0.0002   -0.0008    0.0000
+   12 C     3d0    -0.0003   -0.0024    0.0054
+   13 C     3d0     0.0000   -0.0035   -0.0416
+   14 C     3d2+    0.0000    0.0000    0.0000
+   15 C     3d2+    0.0000    0.0000    0.0000
+   16 C     3d2+    0.0000    0.0000    0.0000
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 2: b3u
+ 
+ 
+      Orbital            1         2
+      Energy        0.0000    0.1203
+      Occ. No.      1.0000    0.0000
+ 
+    1 C     2px     0.0139    0.0036
+    2 C     2px     0.0864    0.0153
+    3 C     2px     0.2878    0.0905
+    4 C     2px     0.5028    0.0089
+    5 C     2px     0.3349    0.6252
+    6 C     2px     0.0159   -1.3378
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 3: b2u
+ 
+ 
+      Orbital            1         2
+      Energy        0.0000    0.1203
+      Occ. No.      1.0000    0.0000
+ 
+    1 C     2py    -0.0139    0.0036
+    2 C     2py    -0.0864    0.0153
+    3 C     2py    -0.2878    0.0905
+    4 C     2py    -0.5028    0.0089
+    5 C     2py    -0.3349    0.6252
+    6 C     2py    -0.0159   -1.3378
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 5: b1u
+ 
+ 
+      Orbital            1         2
+      Energy        0.0304    0.1495
+      Occ. No.      0.0000    0.0000
+ 
+    1 C     2pz     0.0077    0.0083
+    2 C     2pz     0.0486    0.0427
+    3 C     2pz     0.1492    0.1838
+    4 C     2pz     0.3043    0.1632
+    5 C     2pz     0.2257    0.9211
+    6 C     2pz     0.5826   -1.2365
+
+      Von Neumann Entropy (Root  1) =  1.00000
+ 
+
+      Mulliken population Analysis for root number: 1
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             C     
+      1s     3.9999
+      2px    1.0000
+      2pz    0.0000
+      2py    1.0000
+      3d2+   0.0000
+      3d1+   0.0000
+      3d0    0.0001
+      3d1-   0.0000
+      3d2-   0.0000
+      Total  6.0000
+ 
+      N-E    0.0000
+ 
+      Total electronic charge=    6.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  1
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    0.0000           Total=    0.0000
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                    XX=   -6.8910              XY=    0.0000              XZ=    0.0000              YY=   -6.8910
+                    YZ=    0.0000              ZZ=   -4.8162
+      In traceless form (Debye*Ang)
+                    XX=   -1.0374              XY=    0.0000              XZ=    0.0000              YY=   -1.0374
+                    YZ=    0.0000              ZZ=    2.0748
+
+      Mulliken spin population Analysis for root number:  1
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             C     
+      1s     0.0000
+      2px    1.0000
+      2pz    0.0000
+      2py    1.0000
+      3d2+   0.0000
+      3d1+   0.0000
+      3d0    0.0000
+      3d1-   0.0000
+      3d2-   0.0000
+      Total  2.0000
+ 
+      Total electronic spin=    2.000000
+ 
+      Average orbitals are written to the RASORB           file
+      Natural orbitals for root   1 are written to the RASORB.1         file
+      Spin density orbitals for root   1 are written to the SPDORB.1         file
+ 
+--- Stop Module:  rasscf at Fri Oct  7 14:26:57 2016 /rc=0 ---
+*** 
+--- Start Module: motra at Fri Oct  7 14:26:58 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module MOTRA with 2000 MB of memory
+                                              at 14:26:58 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      **************************************************************************************************************************
+      *                                                                                                                        *
+      *                                                        Project:                                                        *
+      *                                                      CARBON ATOM.                                                      *
+      *                                                                                                                        *
+      **************************************************************************************************************************
+ 
+ 
+      Header of the integral files:
+                                    Carbon atom                               
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:26:53 2016        
+ 
+ 
+      Header of MO coefficients source file:
+      * RASSCF average (pseudo-natural) orbitals                                      
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   C          0.00000   0.00000   0.00000
+      --------------------------------------------
+      Nuclear repulsion energy =    0.000000
+ 
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species:              1   2   3   4   5   6   7   8
+      Number of basis functions:    16   6   6   3   6   3   3   0
+      Frozen orbitals:               1   0   0   0   0   0   0   0
+      Deleted orbitals:              0   0   0   0   0   0   0   0
+      Number of orbitals used:      15   6   6   3   6   3   3   0
+
+       SYMMETRY  BASIS FUNCTIONS       ORBITALS      INTEGRALS   CPU(SEC)  I/O(SEC)
+        1 1 1 1   16  16  16  16    15  15  15  15        7260       0.00      0.00
+        2 1 2 1    6  16   6  16     6  15   6  15        4095       0.00      0.00
+        2 2 1 1    6   6  16  16     6   6  15  15        2520       0.00      0.00
+        2 2 2 2    6   6   6   6     6   6   6   6         231       0.00      0.00
+        3 1 3 1    6  16   6  16     6  15   6  15        4095       0.00      0.00
+        3 2 3 2    6   6   6   6     6   6   6   6         666       0.00      0.00
+        3 3 1 1    6   6  16  16     6   6  15  15        2520       0.00      0.00
+        3 3 2 2    6   6   6   6     6   6   6   6         441       0.00      0.00
+        3 3 3 3    6   6   6   6     6   6   6   6         231       0.00      0.00
+        4 1 3 2    3  16   6   6     3  15   6   6        1620       0.00      0.01
+        4 1 4 1    3  16   3  16     3  15   3  15        1035       0.00      0.00
+        4 2 3 1    3   6   6  16     3   6   6  15        1620       0.00      0.00
+        4 2 4 2    3   6   3   6     3   6   3   6         171       0.00      0.00
+        4 3 2 1    3   6   6  16     3   6   6  15        1620       0.00      0.00
+        4 3 4 3    3   6   3   6     3   6   3   6         171       0.00      0.00
+        4 4 1 1    3   3  16  16     3   3  15  15         720       0.01      0.00
+        4 4 2 2    3   3   6   6     3   3   6   6         126       0.00      0.00
+        4 4 3 3    3   3   6   6     3   3   6   6         126       0.00      0.00
+        4 4 4 4    3   3   3   3     3   3   3   3          21       0.00      0.00
+        5 1 5 1    6  16   6  16     6  15   6  15        4095       0.00      0.00
+        5 2 5 2    6   6   6   6     6   6   6   6         666       0.00      0.00
+        5 3 5 3    6   6   6   6     6   6   6   6         666       0.00      0.00
+        5 4 5 4    6   3   6   3     6   3   6   3         171       0.00      0.00
+        5 5 1 1    6   6  16  16     6   6  15  15        2520       0.00      0.00
+        5 5 2 2    6   6   6   6     6   6   6   6         441       0.00      0.01
+        5 5 3 3    6   6   6   6     6   6   6   6         441       0.00      0.00
+        5 5 4 4    6   6   3   3     6   6   3   3         126       0.00      0.00
+        5 5 5 5    6   6   6   6     6   6   6   6         231       0.00      0.00
+        6 1 5 2    3  16   6   6     3  15   6   6        1620       0.00      0.00
+        6 1 6 1    3  16   3  16     3  15   3  15        1035       0.00      0.00
+        6 2 5 1    3   6   6  16     3   6   6  15        1620       0.00      0.00
+        6 2 6 2    3   6   3   6     3   6   3   6         171       0.00      0.00
+        6 3 5 4    3   6   6   3     3   6   6   3         324       0.00      0.00
+        6 3 6 3    3   6   3   6     3   6   3   6         171       0.00      0.00
+        6 4 5 3    3   3   6   6     3   3   6   6         324       0.00      0.00
+        6 4 6 4    3   3   3   3     3   3   3   3          45       0.00      0.00
+        6 5 2 1    3   6   6  16     3   6   6  15        1620       0.00      0.00
+        6 5 4 3    3   6   3   6     3   6   3   6         324       0.00      0.00
+        6 5 6 5    3   6   3   6     3   6   3   6         171       0.00      0.00
+        6 6 1 1    3   3  16  16     3   3  15  15         720       0.00      0.00
+        6 6 2 2    3   3   6   6     3   3   6   6         126       0.00      0.00
+        6 6 3 3    3   3   6   6     3   3   6   6         126       0.00      0.00
+        6 6 4 4    3   3   3   3     3   3   3   3          36       0.00      0.00
+        6 6 5 5    3   3   6   6     3   3   6   6         126       0.00      0.00
+        6 6 6 6    3   3   3   3     3   3   3   3          21       0.00      0.00
+        7 1 5 3    3  16   6   6     3  15   6   6        1620       0.00      0.00
+        7 1 6 4    3  16   3   3     3  15   3   3         405       0.00      0.00
+        7 1 7 1    3  16   3  16     3  15   3  15        1035       0.00      0.00
+        7 2 5 4    3   6   6   3     3   6   6   3         324       0.00      0.00
+        7 2 6 3    3   6   3   6     3   6   3   6         324       0.00      0.00
+        7 2 7 2    3   6   3   6     3   6   3   6         171       0.00      0.00
+        7 3 5 1    3   6   6  16     3   6   6  15        1620       0.00      0.01
+        7 3 6 2    3   6   3   6     3   6   3   6         324       0.00      0.00
+        7 3 7 3    3   6   3   6     3   6   3   6         171       0.00      0.00
+        7 4 5 2    3   3   6   6     3   3   6   6         324       0.00      0.00
+        7 4 6 1    3   3   3  16     3   3   3  15         405       0.00      0.00
+        7 4 7 4    3   3   3   3     3   3   3   3          45       0.00      0.00
+        7 5 3 1    3   6   6  16     3   6   6  15        1620       0.00      0.00
+        7 5 4 2    3   6   3   6     3   6   3   6         324       0.00      0.00
+        7 5 7 5    3   6   3   6     3   6   3   6         171       0.00      0.00
+        7 6 3 2    3   3   6   6     3   3   6   6         324       0.00      0.00
+        7 6 4 1    3   3   3  16     3   3   3  15         405       0.00      0.00
+        7 6 7 6    3   3   3   3     3   3   3   3          45       0.00      0.00
+        7 7 1 1    3   3  16  16     3   3  15  15         720       0.00      0.00
+        7 7 2 2    3   3   6   6     3   3   6   6         126       0.00      0.00
+        7 7 3 3    3   3   6   6     3   3   6   6         126       0.00      0.00
+        7 7 4 4    3   3   3   3     3   3   3   3          36       0.00      0.00
+        7 7 5 5    3   3   6   6     3   3   6   6         126       0.00      0.00
+        7 7 6 6    3   3   3   3     3   3   3   3          36       0.00      0.00
+        7 7 7 7    3   3   3   3     3   3   3   3          21       0.00      0.01
+
+       TOTAL CPU TIME(SEC)    0.01TOTAL I/O TIME(SEC)    0.04
+ 
+--- Stop Module:  motra at Fri Oct  7 14:26:58 2016 /rc=0 ---
+*** 
+--- Start Module: guga at Fri Oct  7 14:26:59 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module GUGA with 2000 MB of memory
+                                              at 14:26:59 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ Input_GUGA: keyword SYMMETRY is obsolete and ignored!
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                                        Title:                                                        *
+      *                                                     Carbon atom.                                                     *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+
+
+      ALL SINGLE AND DOUBLE REPLACEMENTS
+
+      NUMBER OF ELECTRONS IN CI         4
+      TOTAL SPIN QUANTUM NUMBER      1.00
+
+
+              ORBITALS PER SYMMETRY
+                  1    2    3    4    5    6    7    8
+      INACTIVE    1    0    0    0    0    0    0    0
+      ACTIVE      0    1    1    0    0    0    0    0
+      VALENCE     0    0    0    0    0    0    0    0
+      CORE        0    0    0    0    0    0    0    0
+      ONEOCC      0    0    0    0    0    0    0    0
+  Number of vertices                    27                    17
+
+
+
+      INTERNAL CONFIGURATIONS (FORMAL)
+
+      NUMBER OF VALENCE STATES               1
+      NUMBER OF DOUBLET COUPLED SINGLES      9
+      NUMBER OF TRIPLET COUPLED DOUBLES      5
+      NUMBER OF SINGLET COUPLED DOUBLES      3
+
+
+      OCCUPATION OF REFERENCE STATES
+
+      REF.STATE  ORB: 1   2
+          1        1   1
+      WAVE-FUNCTION SYMMETRY LABEL:  4
+
+
+      INTERNAL CONFIGURATIONS (REAL)
+
+      NUMBER OF VALENCE STATES               1
+      NUMBER OF DOUBLET COUPLED SINGLES      9
+      NUMBER OF TRIPLET COUPLED DOUBLES      5
+      NUMBER OF SINGLET COUPLED DOUBLES      3
+
+      INTERNAL TRIPLET STATES PER SYMMETRY:          1    2    2    0    0    0    0    0
+      INTERNAL SINGLET STATES PER SYMMETRY:          0    1    1    1    0    0    0    0
+
+      COEFFICIENTS FOR DIAG       68
+      TIME FOR DIAG                0
+
+      COEFFICIENTS FOR ABCI       34
+      MAXIMUM NUMBER OF ELEMENTS    13
+      TIME FOR ABCI                0
+
+      COEFFICIENTS FOR IJKL       28
+      TIME FOR IJKL                0
+
+      COEFFICIENTS FOR AIBJ      192
+      DIFFERENT TYPES     3     3    45    24     6    11    88
+      TIME FOR AIBJ                0
+
+      COEFFICIENTS FOR AIJK      188
+      TIME FOR AIJK                0
+
+      COEFFICIENTS FOR IJ          6
+
+      COEFFICIENTS FOR AI         37
+      TIME FOR ONEEL               0
+--- Stop Module:  guga at Fri Oct  7 14:26:59 2016 /rc=0 ---
+*** 
+--- Start Module: mrci at Fri Oct  7 14:26:59 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module MRCI with 2000 MB of memory
+                                              at 14:26:59 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                                        Title:                                                        *
+      *                                                     Carbon atom                                                      *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   C          0.00000   0.00000   0.00000
+      --------------------------------------------
+      Nuclear repulsion energy =    0.000000
+ 
+ 
+       THIS IS AN   S D C I   CALCULATION
+       (But an ACPF correction will be computed)
+       USE THE DEFAULT ACPF G-VALUE GFAC=  0.500000000000000     
+ 
+       A SMALL CI IS PERFORMED INVOLVING ONLY THE REFERENCE STATES.
+       THIS REFERENCE CI WILL USE THE FOLLOWING ROOT SELECTION CRITERIA:
+ 
+ 
+       ROOT SELECTION BY ENERGY ORDERING.
+      ONE SINGLE ROOT, NUMBER        1
+ 
+       THE REFERENCE CI IS FOLLOWED BY THE FULL SPACE
+       CALCULATION, WHERE THE SELECTION CRITERION
+       IS MAXIMUM OVERLAP WITH THE ROOT(S) SELECTED IN
+       THE REFERENCE CI.
+ 
+      MALMQVIST DIAGONALIZATION
+ 
+      PRINT LEVEL                          1
+      WORKSPACE SIZE, REAL*8 WORDS  ********
+      MAXIMUM NR OF ORBITALS           10000
+      MAX NR OF STORED CI/SGM ARR.        10
+      MAX NR OF ITERATIONS                20
+      ENERGY CONVERGENCE THRESHOLD  0.10D-07
+      SPIN QUANTUM NUMBER                1.0
+      CORRELATED ELECTRONS                 4
+      WAVE FUNCTION SYMMETRY LABEL         4
+      POINT GROUP ORDER                    8
+ 
+      SYMMETRY LABEL:                             1    2    3    4    5    6    7    8
+      INACTIVE ORBITALS                           1    0    0    0    0    0    0    0    1
+      ACTIVE ORBITALS                             0    1    1    0    0    0    0    0    2
+      ADDED VALENCE ORB                           0    0    0    0    0    0    0    0    0
+      VIRTUAL ORBITALS                           14    5    5    3    6    3    3    0   39
+ 
+      SUM:CORREL ORBITALS                        15    6    6    3    6    3    3    0   42
+ 
+      FROZEN ORBITALS                             0    0    0    0    0    0    0    0    0
+      DELETED ORBITALS                            0    0    0    0    0    0    0    0    0
+ 
+      SUM:ORBITALS IN CI                         15    6    6    3    6    3    3    0   42
+ 
+      PRE-FROZEN ORBITALS                         1    0    0    0    0    0    0    0    1
+      PRE-DELETED ORBITALS                        0    0    0    0    0    0    0    0    0
+      SUM:   TOTAL BASIS                         16    6    6    3    6    3    3    0   43
+ 
+         1 REFERENCE STATES
+      Occupation of the reference states
+      Active orbital nr. 1 2
+      Ref nr  1          1 1
+ 
+       FIRST ORDER INTERACTING SPACE.
+ 
+       LIST OF REFERENCE CONFIGURATIONS.
+      CONF NR:    GUGA CASE NUMBERS OF ACTIVE ORBITALS:
+          1       311
+ 
+       REAL CONFIGURATIONS:
+
+                     REFERENCE      1
+                 OTHER VALENCE      0
+       DOUBLET COUPLED SINGLES     68
+       TRIPLET COUPLED DOUBLES    488
+       SINGLET COUPLED DOUBLES    380
+                        TOTAL:    937
+
+
+      STATISTICS FOR INTEGRALS, FIRST ENTRY 10**3-10**4
+
+               0         0         7       109      1647
+            5793     17289     16522      8233      2115
+             305        27         6         0         0
+             173       651       891      1160      1269
+ 
+ ------------------------------------------------------------
+    REFERENCE CI CALCULATION.
+ ------------------------------------------------------------
+  ROOT SELECTION BY ENERGY ORDERING.
+  ONE SINGLE ROOT, NUMBER.....:        1
+ 
+ 
+         LOWEST REFERENCE CI ROOTS:
+                 ROOT      1
+               ENERGY   -37.68579199
+ CSF NR    1 CASE 311     1.000000
+ 
+ 
+ ROOT NR  1 IS USED AS START VECTOR.
+ 
+ ------------------------------------------------------------
+    MR SDCI CALCULATION.
+ ------------------------------------------------------------
+ 
+          CONVERGENCE STATISTICS:
+ ITER NVEC     ENERGIES    LOWERING RESIDUAL SEL.WGT CPU(S) CPU TOT
+    1    1    -37.68579199          0.49D+00  1.000     0.0     0.0
+    2    2    -37.77162553 -.86D-01 0.14D+00  0.956     0.0     0.0
+    3    3    -37.77430873 -.27D-02 0.41D-01  0.949     0.0     0.0
+    4    4    -37.77450193 -.19D-03 0.61D-02  0.947     0.0     0.0
+    5    5    -37.77450991 -.80D-05 0.17D-02  0.947     0.0     0.0
+    6    6    -37.77451043 -.52D-06 0.36D-03  0.947     0.0     0.0
+    7    7    -37.77451047 -.38D-07 0.13D-03  0.947     0.0     0.0
+    8    8    -37.77451047 -.18D-08 0.19D-04  0.947     0.0     0.0
+  CONVERGENCE IN ENERGY.
+  **********************************************************************
+               FINAL RESULTS FOR STATE NR   1
+ CORRESPONDING ROOT OF REFERENCE CI IS NR:  1
+            REFERENCE CI ENERGY:   -37.68579199
+         EXTRA-REFERENCE WEIGHT:     0.05300921
+          CI CORRELATION ENERGY:    -0.08871849
+                      CI ENERGY:   -37.77451047
+            DAVIDSON CORRECTION:    -0.00496615
+               CORRECTED ENERGY:   -37.77947662
+                ACPF CORRECTION:    -0.00241547
+               CORRECTED ENERGY:   -37.77692594
+ 
+      CI-COEFFICIENTS LARGER THAN 0.050
+  NOTE: THE FOLLOWING ORBITALS WERE FROZEN
+  ALREADY AT THE INTEGRAL TRANSFORMATION STEP
+  AND DO NOT EXPLICITLY APPEAR:
+        SYMMETRY:   1   2   3   4   5   6   7   8
+      PRE-FROZEN:   1   0   0   0   0   0   0   0
+  ORDER OF SPIN-COUPLING: (PRE-FROZEN, NOT SHOWN)
+                          (FROZEN, NOT SHOWN)
+                           VIRTUAL
+                           ADDED VALENCE
+                           INACTIVE
+                           ACTIVE
+ 
+  ORBITALS ARE NUMBERED WITHIN EACH SEPARATE SYMMETRY.
+ 
+
+      CONFIGURATION      1   COEFFICIENT  0.973135   REFERENCE
+ SYMMETRY             1  2  3
+ ORBITALS             2  1  1
+ OCCUPATION           2  1  1
+ SPIN-COUPLING        3  1  1
+ 
+
+      CONFIGURATION    905   COEFFICIENT -0.075781     SINGLET
+ SYMMETRY          5  1  2  3
+ ORBITALS          1  2  1  1
+ OCCUPATION        2  0  1  1
+ SPIN-COUPLING     3  0  1  1
+ 
+
+      CONFIGURATION    906   COEFFICIENT -0.079359     SINGLET
+ SYMMETRY       5  5  1  2  3
+ ORBITALS       1  2  2  1  1
+ OCCUPATION     1  1  0  1  1
+ SPIN-COUPLING  1  2  0  1  1
+  **********************************************************************
+ 
+ NATURAL ORBITALS OF STATE NR.  1
+  FULL SET OF ORBITALS ARE SAVED ON FILE 
+ CIORB01                                                                        
+                      
+ 
+ NATURAL ORBITALS IN AO BASIS. IN EACH SYMMETRY,
+ THE ORBITALS PRINTED ARE THOSE UP TO AND INCLUDING
+ THE LAST ORBITAL WITH OCCUPATION NUMBER LARGER
+ THAN THRORB =  0.0000100
+
+                            SYMMETRY LABEL  1
+
+     ORBITAL       1       2       3       4       5       6       7       8       9
+     OCC.NO.   2.00000 1.92929 0.00979 0.00631 0.00272 0.00016 0.00010 0.00004 0.00001
+ 
+   1  C     1s    0.0009 -0.0002 -0.0002  0.0000  0.0002  0.0000 -0.0003 -0.0002  0.0000
+   2  C     1s    0.0072 -0.0016 -0.0017  0.0000  0.0017  0.0000 -0.0048 -0.0016  0.0000
+   3  C     1s    0.0363 -0.0078 -0.0074  0.0000  0.0051  0.0000 -0.0085 -0.0067  0.0000
+   4  C     1s    0.1306 -0.0305 -0.0364  0.0000  0.0390  0.0000 -0.1261 -0.0382  0.0000
+   5  C     1s    0.3189 -0.0771 -0.0652  0.0000  0.0291  0.0000  0.0105 -0.0670  0.0000
+   6  C     1s    0.4389 -0.1634 -0.2471  0.0000  0.3373  0.0000 -1.2216 -0.3814  0.0000
+   7  C     1s    0.2147 -0.0930  0.0264  0.0000 -0.3296  0.0000  1.9958  0.8370  0.0000
+   8  C     1s    0.0096  0.5731  1.3051  0.0000 -0.6840  0.0000 -0.8337 -0.8590  0.0000
+   9  C     1s   -0.0025  0.5375 -1.0157  0.0000  1.0075  0.0000 -0.5703  0.9445 -0.0001
+  10  C     1s    0.0009  0.0214 -0.2761  0.0000 -0.3542  0.0000  0.9737 -0.5711  0.0000
+  11  C     3d0  -0.0002  0.0018 -0.1548  0.0000 -0.2530  0.0000 -0.1853  0.8858  0.0000
+  12  C     3d0  -0.0003  0.0067 -0.3053  0.0000 -0.6658  0.0000 -0.1102 -0.4017  0.0000
+  13  C     3d0   0.0000  0.0000 -0.0472  0.0000 -0.0990  0.0000 -0.0021 -0.4033  0.0000
+  14  C     3d2+  0.0000  0.0000  0.0000 -0.3482  0.0000  0.9763  0.0000  0.0000  0.5489
+  15  C     3d2+  0.0000  0.0000  0.0000 -0.7342  0.0000 -0.5424  0.0000  0.0000 -0.9837
+  16  C     3d2+  0.0000  0.0000  0.0000 -0.0998  0.0000 -0.3729  0.0000  0.0000  1.1076
+
+                            SYMMETRY LABEL  2
+
+     ORBITAL       1       2       3       4
+     OCC.NO.   0.99060 0.00558 0.00036 0.00003
+ 
+   1  C     2px   0.0140  0.0204  0.0386  0.0827
+   2  C     2px   0.0865  0.0981  0.4213  1.1580
+   3  C     2px   0.2916  0.6161  0.6858 -1.4396
+   4  C     2px   0.5003  0.1859 -1.4441  0.8068
+   5  C     2px   0.3316 -0.8869  0.7666  0.1076
+   6  C     2px   0.0202 -0.0471  0.1724 -0.5353
+
+                            SYMMETRY LABEL  3
+
+     ORBITAL       1       2       3       4
+     OCC.NO.   0.99060 0.00558 0.00036 0.00003
+ 
+   1  C     2py  -0.0140  0.0204  0.0386 -0.0827
+   2  C     2py  -0.0865  0.0981  0.4213 -1.1581
+   3  C     2py  -0.2916  0.6161  0.6858  1.4396
+   4  C     2py  -0.5003  0.1859 -1.4441 -0.8068
+   5  C     2py  -0.3316 -0.8869  0.7666 -0.1076
+   6  C     2py  -0.0202 -0.0471  0.1724  0.5353
+
+                            SYMMETRY LABEL  4
+
+     ORBITAL       1       2       3
+     OCC.NO.   0.00631 0.00016 0.00001
+ 
+   1  C     3d2- -0.3482 -0.9763 -0.5489
+   2  C     3d2- -0.7342  0.5424  0.9837
+   3  C     3d2- -0.0998  0.3729 -1.1076
+
+                            SYMMETRY LABEL  5
+
+     ORBITAL       1       2       3
+     OCC.NO.   0.04271 0.00011 0.00001
+ 
+   1  C     2pz   0.0135 -0.0052  0.0196
+   2  C     2pz   0.0627 -0.2812  0.2129
+   3  C     2pz   0.3223  1.1776  0.9060
+   4  C     2pz   0.6443 -0.4539 -1.7786
+   5  C     2pz   0.1299 -0.7219  1.4485
+   6  C     2pz  -0.0082  0.1462 -0.2412
+
+                            SYMMETRY LABEL  6
+
+     ORBITAL       1       2
+     OCC.NO.   0.00449 0.00006
+ 
+   1  C     3d1+ -0.3328 -1.0100
+   2  C     3d1+ -0.7447  0.5855
+   3  C     3d1+ -0.1018  0.3095
+
+                            SYMMETRY LABEL  7
+
+     ORBITAL       1       2
+     OCC.NO.   0.00449 0.00006
+ 
+   1  C     3d1- -0.3328 -1.0100
+   2  C     3d1- -0.7447  0.5855
+   3  C     3d1- -0.1018  0.3095
+  **********************************************************************
+ 
+ MULLIKEN CHARGES FOR STATE NR  1
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             C     
+      1s     3.9380
+      2px    0.9966
+      2pz    0.0428
+      2py    0.9966
+      3d2+   0.0065
+      3d1+   0.0046
+      3d0    0.0040
+      3d1-   0.0046
+      3d2-   0.0065
+      Total  6.0000
+ 
+      N-E    0.0000
+ 
+      Total electronic charge=    6.000000
+ 
+      Total            charge=    0.000000
+  **********************************************************************
+ 
+  SUMMARY OF ENERGIES:
+                ROOT:       1
+        TOTAL ENERGY:    -37.77451047
+ DAVIDSON CORRECTION:     -0.00496615
+     ACPF CORRECTION:     -0.00241547
+ 
+ 
+  Energies, machine-readable format:
+  CI State   1     Total energy:    -37.77451047     QDav:     -0.00496615     QACPF:     -0.00241547
+ 
+ 
+  EXPECTATION VALUES OF VARIOUS OPERATORS:
+ (Note: Electronic multipoles include a negative sign.)
+ 
+    PROPERTY :MLTPL  0   COMPONENT:   1
+     GAUGE ORIGIN:      0.00000000      0.00000000      0.00000000
+             ROOT:       1
+       ELECTRONIC:     -6.00000000
+          NUCLEAR:      6.00000000
+            TOTAL:      0.00000000
+ 
+    PROPERTY :MLTPLS 0   COMPONENT:   1
+     GAUGE ORIGIN:      0.00000000      0.00000000      0.00000000
+             ROOT:       1
+       ELECTRONIC:     -6.00000000
+          NUCLEAR:      6.00000000
+            TOTAL:      0.00000000
+ 
+    PROPERTY :MLTPL  2   COMPONENT:   1
+     GAUGE ORIGIN:      0.00000000      0.00000000      0.00000000
+             ROOT:       1
+       ELECTRONIC:     -5.10356009
+          NUCLEAR:      0.00000000
+            TOTAL:     -5.10356009
+ 
+    PROPERTY :MLTPL  2   COMPONENT:   4
+     GAUGE ORIGIN:      0.00000000      0.00000000      0.00000000
+             ROOT:       1
+       ELECTRONIC:     -5.10355999
+          NUCLEAR:      0.00000000
+            TOTAL:     -5.10355999
+ 
+    PROPERTY :MLTPL  2   COMPONENT:   6
+     GAUGE ORIGIN:      0.00000000      0.00000000      0.00000000
+             ROOT:       1
+       ELECTRONIC:     -3.69316014
+          NUCLEAR:      0.00000000
+            TOTAL:     -3.69316014
+ 
+    PROPERTY :KINETIC    COMPONENT:   1
+     GAUGE ORIGIN:      0.00000000      0.00000000      0.00000000
+             ROOT:       1
+       ELECTRONIC:     37.75255474
+          NUCLEAR:      0.00000000
+            TOTAL:     37.75255474
+ 
+    PROPERTY :ATTRACT    COMPONENT:   1
+     GAUGE ORIGIN:      0.00000000      0.00000000      0.00000000
+             ROOT:       1
+       ELECTRONIC:    -88.13844884
+          NUCLEAR:      0.00000000
+            TOTAL:    -88.13844884
+ 
+    PROPERTY :ATTRACTS   COMPONENT:   1
+     GAUGE ORIGIN:      0.00000000      0.00000000      0.00000000
+             ROOT:       1
+       ELECTRONIC:    -88.13844884
+          NUCLEAR:      0.00000000
+            TOTAL:    -88.13844884
+ 
+    PROPERTY :ONEHAM     COMPONENT:   1
+     GAUGE ORIGIN:      0.00000000      0.00000000      0.00000000
+             ROOT:       1
+       ELECTRONIC:    -50.38589410
+          NUCLEAR:      0.00000000
+            TOTAL:    -50.38589410
+ 
+    PROPERTY :ONEHAM 0   COMPONENT:   1
+     GAUGE ORIGIN:      0.00000000      0.00000000      0.00000000
+             ROOT:       1
+       ELECTRONIC:    -50.38589410
+          NUCLEAR:      0.00000000
+            TOTAL:    -50.38589410
+ 
+    PROPERTY :FCKINT     COMPONENT:   1
+     GAUGE ORIGIN:      0.00000000      0.00000000      0.00000000
+             ROOT:       1
+       ELECTRONIC:     -4.01678914
+          NUCLEAR:      0.00000000
+            TOTAL:     -4.01678914
+ 
+    PROPERTY :FOCK OP    COMPONENT:   1
+     GAUGE ORIGIN:      0.00000000      0.00000000      0.00000000
+             ROOT:       1
+       ELECTRONIC:    -30.20509700
+          NUCLEAR:      0.00000000
+            TOTAL:    -30.20509700
+ 
+--- Stop Module:  mrci at Fri Oct  7 14:27:00 2016 /rc=0 ---
+*** 
+--- Start Module: genano at Fri Oct  7 14:27:01 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module GENANO with 2000 MB of memory
+                                              at 14:27:01 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module GENANO with 2000 MB of memory
+                                              at 14:27:01 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ Carbon atom                                                             
+ 
+ --------------------------------------------------
+ 
+ Adding density matrix  1 with weight  0.500
+ 
+ Reading one-el. file: ONE001
+ nSym:    8
+ nBas:   16    6    6    3    6    3    3    0
+ 
+Number of primitives per shell:   10    6    3    0    0    0    0    0
+ 
+ Reading orbital file: NAT001
+ Orbital set: 
+ * RASSCF average (pseudo-natural) orbitals                              
+ 
+ --------------------------------------------------
+ 
+ Adding density matrix  2 with weight  0.500
+ 
+ Reading one-el. file: ONE002
+ nSym:    8
+ nBas:   16    6    6    3    6    3    3    0
+ 
+ Reading orbital file: NAT002
+ * TypeIndex information is IGNORED *
+ Orbital set: 
+ * MRCI                                                                  
+ 
+ --------------------------------------------------
+ 
+ *** Contraction coefficients for the 1s   shell ***
+ 
+occ      2.0000  1.9645  0.0042  0.0001  0.0000  0.0000  0.0000
+lg(occ)  0.3010  0.2933 -2.3721 -3.8251 -4.8970 -6.4709 -7.8455
+         0.0009 -0.0002  0.0002 -0.0003  0.0004 -0.0018  0.0006
+         0.0072 -0.0016  0.0020 -0.0037  0.0048 -0.0040  0.0404
+         0.0363 -0.0078  0.0084 -0.0070  0.0145 -0.1093  0.0110
+         0.1306 -0.0303  0.0431 -0.0942  0.1237 -0.1164  2.1094
+         0.3189 -0.0769  0.0719  0.0046  0.1097 -1.9460 -3.8050
+         0.4389 -0.1623  0.3025 -0.9279  1.1001  3.8220  3.2990
+         0.2147 -0.0938 -0.0708  1.3673 -2.3034 -2.5795 -1.6050
+         0.0096  0.5689 -1.4558  0.0442  2.3792  1.0696  0.5312
+        -0.0025  0.5438  1.1987 -1.6050 -2.5123 -0.7122 -0.3123
+         0.0009  0.0186  0.2389  1.5426  1.4252  0.2968  0.1159
+ 
+ *** Contraction coefficients for the 2py  shell ***
+ 
+occ      0.6704  0.0020  0.0002  0.0000  0.0000  0.0000
+lg(occ) -0.1736 -2.6891 -3.7658 -4.8618 -5.6999 -7.1412
+         0.0139 -0.0183  0.0386 -0.0810  0.1095 -1.2215
+         0.0862 -0.0736  0.4124 -1.1508  0.4667  1.1027
+         0.2901 -0.5872  0.7279  1.3963 -1.0525 -0.7740
+         0.5032 -0.2512 -1.4304 -0.7405  1.5142  0.4965
+         0.3312  0.9215  0.7036 -0.1719 -1.9112 -0.3179
+         0.0177  0.0555  0.1925  0.5766  1.4913  0.1622
+ 
+ *** Contraction coefficients for the 3d0  shell ***
+ 
+occ      0.0026  0.0000  0.0000
+lg(occ) -2.5920 -4.3191 -5.2293
+         0.3386 -0.9768  0.5539
+         0.7397  0.5303 -0.9861
+         0.1031  0.3774  1.1058
+ 
+Check sum is    4.839625
+--- Stop Module:  genano at Fri Oct  7 14:27:01 2016 /rc=0 ---
+*** Obsolete! use >>RM (or RM FORCE) command
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 14:27:01 2016 /rc=0 ---
+--- Module auto spent 9 seconds 

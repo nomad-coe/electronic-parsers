@@ -1,0 +1,1954 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test008.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test008.input.11912
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 14:26:09 2016 
+
+++ ---------   Input file   ---------
+
+  &SEWARD   &END
+    symmetry
+    x y
+    basis set
+    C.cc-pvtz.dunning.10s5p2d.4s3p2d. / inline
+      6.   2
+      10    4
+      8236.00000000
+      1235.00000000
+      280.80000000
+      79.27000000
+      25.59000000
+      8.99700000
+      3.31900000
+      0.90590000
+      0.36430000
+      0.12850000
+      0.00053100 -0.00011300  0.00000000  0.00000000
+      0.00410800 -0.00087800  0.00000000  0.00000000
+      0.02108700 -0.00454000  0.00000000  0.00000000
+      0.08185300 -0.01813300  0.00000000  0.00000000
+      0.23481700 -0.05576000  0.00000000  0.00000000
+      0.43440100 -0.12689500  0.00000000  0.00000000
+      0.34612900 -0.17035200  0.00000000  0.00000000
+      0.03937800  0.14038200  1.00000000  0.00000000
+      -0.00898300  0.59868400  0.00000000  0.00000000
+      0.00238500  0.39538900  0.00000000  1.00000000
+      5    3
+      18.71000000
+      4.13300000
+      1.20000000
+      0.38270000
+      0.12090000
+      0.01403100  0.00000000  0.00000000
+      0.08686600  0.00000000  0.00000000
+      0.29021600  0.00000000  0.00000000
+      0.50100800  1.00000000  0.00000000
+      0.34340600  0.00000000  1.00000000
+      2    2
+      1.09700000
+      0.31800000
+      1.00000000  0.00000000
+      0.00000000  1.00000000
+    C 0.000000 0.000000 -0.190085345
+    end of basis
+    basis set
+    H.cc-pvtz.dunning.5s2p.3s2p. / inline
+      1.   1
+      5    3
+      33.87000000
+      5.09500000
+      1.15900000
+      0.32580000
+      0.10270000
+      0.00606800  0.00000000  0.00000000
+      0.04530800  0.00000000  0.00000000
+      0.20282200  0.00000000  0.00000000
+      0.50390300  1.00000000  0.00000000
+      0.38342100  0.00000000  1.00000000
+      2    2
+      1.40700000
+      0.38800000
+      1.00000000  0.00000000
+      0.00000000  1.00000000
+    H 0.00000000 1.645045225 1.132564974
+    end of basis
+  &SCF  &END
+    occupied
+      3 0 1 0
+  &RASSCF  &END
+    inactive
+      1 0 0 0
+    ras2
+      3 1 2 0
+    nactel
+      6 0 0
+    symmetry
+      2
+    spin
+      3
+    lumorb
+  &CASVB  &END
+    crit
+    energy
+    guess
+    aobasis
+    orb 1
+      -0.00394020 -0.71976600 -0.05681390  0.23516610
+      -0.58031700  0.03282640  0.12269980 -0.01141660
+      -0.01341120  0.02300480  0.02366390 -0.02952710
+      -0.05636440 -0.39547960  0.19651680  0.10142010
+      0.03275530 -0.02278760  0.00989050 -0.00628660
+      0.00000000  0.00000000  0.00000000  0.00000000
+      0.00000000  0.00000000  0.00000000  0.63756060
+      -0.00530570 -0.14193620  0.03132920  0.04408610
+      0.29550030 -0.19497290 -0.07650840 -0.02247550
+      0.03796390 -0.01256100  0.00919260  0.00000000
+      0.00000000  0.00000000  0.00000000
+    orb 2
+      0.02059600 -0.13060010  0.03891300  0.03337090
+      -0.03697890 -0.00806670 -0.08510060  0.01156470
+      -0.00221900  0.00030440  0.00115070  0.00797210
+      0.01413390 -1.09020770  0.09943740  0.32466810
+      0.00384790  0.03050670 -0.00225680 -0.01602810
+      0.00000000  0.00000000  0.00000000  0.00000000
+      0.00000000  0.00000000  0.00000000  0.22988640
+      -0.03678790 -0.01703270 -0.00321170  0.00124920
+      1.33902650 -0.08761300 -0.34755060 -0.00238550
+      -0.03176820 -0.00489920 -0.01442220  0.00000000
+      0.00000000  0.00000000  0.00000000
+    orb 3
+      -0.00394020 -0.71976610 -0.05681390  0.23516610
+      -0.58031700  0.03282640  0.12269980 -0.01141660
+      -0.01341120  0.02300480  0.02366390 -0.02952710
+      -0.05636440 -0.39547960  0.19651680  0.10142010
+      0.03275530 -0.02278760  0.00989050 -0.00628660
+      0.00000000  0.00000000  0.00000000  0.00000000
+      0.00000000  0.00000000  0.00000000 -0.63756060
+      0.00530570  0.14193620 -0.03132920 -0.04408610
+      -0.29550030  0.19497290  0.07650840  0.02247550
+      -0.03796390  0.01256100 -0.00919260  0.00000000
+      0.00000000  0.00000000  0.00000000
+    orb 4
+      0.02059600 -0.13060010  0.03891300  0.03337090
+      -0.03697890 -0.00806670 -0.08510060  0.01156470
+      -0.00221900  0.00030440  0.00115070  0.00797210
+      0.01413390 -1.09020770  0.09943740  0.32466810
+      0.00384790  0.03050670 -0.00225680 -0.01602810
+      0.00000000  0.00000000  0.00000000  0.00000000
+      0.00000000  0.00000000  0.00000000 -0.22988640
+      0.03678790  0.01703270  0.00321170 -0.00124920
+      -1.33902650  0.08761300  0.34755060  0.00238550
+      0.03176820  0.00489920  0.01442220  0.00000000
+      0.00000000  0.00000000  0.00000000
+    orb 5
+      -0.00084600 -0.67879550  0.01061510 -0.11030940
+      0.50592150 -0.00942700  0.05903430  0.00749290
+      0.02412850 -0.00018550 -0.00472310 -0.00190090
+      0.02217300 -0.15644130  0.08903020  0.14343740
+      0.00316510  0.00495250  0.01220510  0.01639060
+      -0.39327610 -0.03819740  0.02984340  0.03036680
+      0.07564890 -0.00614280 -0.01103280  0.00000000
+      0.00000000  0.00000000  0.00000000  0.00000000
+      0.00000000  0.00000000  0.00000000  0.00000000
+      0.00000000  0.00000000  0.00000000  0.00000000
+      0.00000000  0.00000000  0.00000000
+    orb 6
+      -0.00084600 -0.67879550  0.01061510 -0.11030940
+      0.50592150 -0.00942700  0.05903430  0.00749290
+      0.02412850 -0.00018550 -0.00472310 -0.00190090
+      0.02217300 -0.15644130  0.08903020  0.14343740
+      0.00316510  0.00495250  0.01220510  0.01639060
+      0.39327610  0.03819740 -0.02984340 -0.03036680
+      -0.07564890  0.00614280  0.01103280  0.00000000
+      0.00000000  0.00000000  0.00000000  0.00000000
+      0.00000000  0.00000000  0.00000000  0.00000000
+      0.00000000  0.00000000  0.00000000  0.00000000
+      0.00000000  0.00000000  0.00000000
+    endguess
+    optim
+    report
+    maxiter 2
+    optim
+    orbperm
+      1 3 5 2 4 6
+    endoptim
+    report
+    couple
+    rumer
+    optim
+    report
+    couple
+    serber
+    optim
+    report
+    couple
+    kotani
+    optim
+    report
+    crit
+    overlap
+    maxiter
+      50
+    optim
+    fixstruc
+    all
+    endoptim
+    report
+    optim
+    projcas
+    endoptim
+    report
+    optim
+    vbweights
+    all
+    ciweights
+    all
+    scorr
+    report
+
+-- ----------------------------------
+
+--- Start Module: seward at Fri Oct  7 14:26:09 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:26:09 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+                    Reflection in the xz-plane  
+ 
+ 
+                    Character Table for C2v
+ 
+                             E   s(yz) s(xz) C2(z)
+                    a1       1     1     1     1  z
+                    b1       1    -1     1    -1  x, xz, Ry
+                    b2       1     1    -1    -1  y, yz, Rx
+                    a2       1    -1    -1     1  xy, Rz, I
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:C.CC-PVTZ.DUNNING.10S5P2D.4S3P2D...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  6.000000 au
+      Associated Actual Charge     6.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s      10       4        X                  
+         p       5       3        X                  
+         d       2       2                 X         
+      Basis set label:H.CC-PVTZ.DUNNING.5S2P.3S2P...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       5       3        X                  
+         p       2       2        X                  
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      C                0.000000       0.000000      -0.190085              0.000000       0.000000      -0.100589
+        2      H                0.000000       1.645045       1.132565              0.000000       0.870520       0.599328
+        3      H                0.000000      -1.645045       1.132565              0.000000      -0.870520       0.599328
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 C             2 H             3 H     
+    1 C        0.000000
+    2 H        2.110824        0.000000
+    3 H        2.110824        3.290090        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 C             2 H             3 H     
+    1 C        0.000000
+    2 H        1.117000        0.000000
+    3 H        1.117000        1.741041        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 H        1 C        3 H        102.40
+ 
+ 
+            Nuclear Potential Energy              5.98892689 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a1   b1   b2   a2 
+      Basis functions           18    7   12    4
+ 
+--- Stop Module:  seward at Fri Oct  7 14:26:10 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:26:11 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:26:11 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+Input section
+      Header of the integral files:
+                                                                              
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:26:10 2016        
+ 
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   C          0.00000   0.00000  -0.10059
+       2   H          0.00000   0.87052   0.59933
+       3   H          0.00000  -0.87052   0.59933
+      --------------------------------------------
+      Nuclear repulsion energy =    5.988927
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2   3   4
+                                    a1  b1  b2  a2
+      Frozen orbitals                0   0   0   0
+      Occupied orbitals              3   0   1   0
+      Secondary orbitals            15   7  11   4
+      Deleted orbitals               0   0   0   0
+      Total number of orbitals      18   7  12   4
+      Number of basis functions     18   7  12   4
+ 
+      Molecular charge                           0.000
+ 
+      SCF Algorithm: Conventional
+      Minimized density differences are used
+      Number of density matrices in core              400
+      Maximum number of NDDO SCF iterations           400
+      Maximum number of HF  SCF iterations            400
+      Threshold for SCF energy change            0.10E-08
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Detected guessorb starting orbitals                                             
+ 
+ 
+Convergence information
+                                   SCF        iterations: Energy and convergence statistics
+ 
+Iter     Tot. SCF       One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -38.79696225    -63.11353611     18.32764698  0.00E+00   0.20E+00*  0.10E+00*   0.45E+01   0.32E+02   NoneDa    0.
+   2    -38.88697807    -63.53627892     18.66037396 -0.90E-01*  0.45E-01*  0.22E-01*   0.16E+01   0.20E+01   Damp      0.
+   3    -38.89102275    -63.48279150     18.60284186 -0.40E-02*  0.13E-01*  0.22E-01*   0.22E+00   0.10E+01   QNRc2D    0.
+   4    -38.89151397    -63.49238785     18.61194699 -0.49E-03*  0.78E-02*  0.29E-02*   0.36E-01   0.73E-01   QNRc2D    0.
+   5    -38.89159189    -63.48511318     18.60459440 -0.78E-04*  0.54E-03*  0.35E-03*   0.13E-01   0.22E-01   QNRc2D    0.
+   6    -38.89159263    -63.48776641     18.60724689 -0.74E-06*  0.32E-03*  0.85E-04    0.20E-02   0.44E-02   QNRc2D    0.
+   7    -38.89159275    -63.48737523     18.60685559 -0.12E-06*  0.50E-04*  0.15E-04    0.56E-03   0.13E-03   QNRc2D    0.
+   8    -38.89159275    -63.48734018     18.60682054 -0.24E-08*  0.51E-05   0.19E-05    0.11E-03   0.30E-04   QNRc2D    0.
+   9    -38.89159275    -63.48734189     18.60682225 -0.42E-10   0.17E-05   0.50E-06    0.14E-04   0.34E-04   QNRc2D    0.
+ 
+       Convergence after  9 Macro Iterations and  0 additional LS Iterations...
+ 
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total SCF energy                                -38.8915927543
+      One-electron energy                             -63.4873418949
+      Two-electron energy                              18.6068222533
+      Nuclear repulsion energy                          5.9889268874
+      Kinetic energy (interpolated)                    38.8293483888
+      Virial theorem                                    1.0016030237
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000000000
+      Max non-diagonal Fock matrix element              0.0000005039
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: SCF orbitals                                                                    
+ 
+
+      Molecular orbitals for symmetry species 1: a1 
+ 
+          Orbital        1         2         3         4         5
+          Energy      -11.2927   -0.8881   -0.3944    0.1506    0.4454
+          Occ. No.      2.0000    2.0000    2.0000    0.0000    0.0000
+ 
+        1 C     1s     -0.9982    0.0100   -0.0025    0.0110   -0.0220
+        2 C     2s      0.0043   -0.7921   -0.4343   -0.2934   -0.2667
+        3 C     *s     -0.0018    0.0073   -0.0036    0.0015    0.0397
+        4 C     *s     -0.0008    0.1091   -0.1484   -2.4363   -1.7749
+        5 C     2pz    -0.0078   -0.2021    0.7666   -0.2230    0.4263
+        6 C     *pz     0.0070    0.0026   -0.0233   -0.1402    0.1657
+        7 C     *pz     0.0026    0.0529    0.0382   -0.8736   -2.0979
+        8 C     *d0    -0.0003   -0.0039    0.0085    0.0021    0.0209
+        9 C     *d0     0.0001   -0.0106    0.0351   -0.0548   -0.1282
+       10 C     *d2+    0.0003    0.0114   -0.0057   -0.0067   -0.0132
+       11 C     *d2+   -0.0005    0.0118   -0.0082    0.1015    0.0560
+       12 H     1s     -0.0017   -0.6544    0.3998    0.0253    0.0603
+       13 H     *s     -0.0026    0.1380   -0.0453    0.2207    1.2730
+       14 H     *s      0.0012    0.2167   -0.0796    2.4093    0.7553
+       15 H     *py     0.0000    0.0148   -0.0092    0.0290    0.0101
+       16 H     *py     0.0014    0.0068   -0.0056   -0.2044   -0.2221
+       17 H     *pz    -0.0001    0.0108    0.0021    0.0161   -0.0091
+       18 H     *pz     0.0009    0.0035    0.0115   -0.1145   -0.0164
+
+      Molecular orbitals for symmetry species 2: b1 
+ 
+          Orbital        1         2
+          Energy        0.0490    0.4998
+          Occ. No.      0.0000    0.0000
+ 
+        1 C     2px     0.6739    0.7335
+        2 C     *px    -0.0575    0.5626
+        3 C     *px     0.4321   -1.4457
+        4 C     *d1+    0.0031    0.0185
+        5 C     *d1+    0.0445   -0.0463
+        6 H     *px     0.0133   -0.0176
+        7 H     *px     0.0090    0.1898
+
+      Molecular orbitals for symmetry species 3: b2 
+ 
+          Orbital        1         2         3
+          Energy       -0.5617    0.2168    0.3795
+          Occ. No.      2.0000    0.0000    0.0000
+ 
+        1 C     2py     0.6757    0.4375    0.0894
+        2 C     *py    -0.0195    0.0859   -0.1577
+        3 C     *py    -0.1005    1.2828   -1.9288
+        4 C     *d1-    0.0279   -0.0092    0.0422
+        5 C     *d1-    0.0432    0.1309   -0.3180
+        6 H     1s      0.8456   -0.1316    0.2827
+        7 H     *s     -0.1225    0.0216    1.5239
+        8 H     *s     -0.1764   -3.1341    0.3659
+        9 H     *py    -0.0102   -0.0213   -0.0193
+       10 H     *py    -0.0020    0.1468   -0.1484
+       11 H     *pz    -0.0135   -0.0224    0.0005
+       12 H     *pz    -0.0089    0.1112   -0.1498
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             C       H     
+      1s     1.9964  1.3753
+      2s     1.7703  0.0000
+      2px    0.0000  0.0000
+      2pz    1.5273  0.0000
+      2py    1.2338  0.0000
+      *s    -0.1007 -0.5369
+      *px    0.0000  0.0000
+      *pz   -0.0121  0.0128
+      *py   -0.1882  0.0096
+      *d2+   0.0067  0.0000
+      *d1+   0.0000  0.0000
+      *d0    0.0061  0.0000
+      *d1-   0.0386  0.0000
+      *d2-   0.0000  0.0000
+      Total  6.2782  0.8609
+ 
+      N-E   -0.2782  0.1391
+ 
+      Total electronic charge=    8.000000
+ 
+      Total            charge=    0.000000
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    1.9126           Total=    1.9126
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0001
+                    XX=   -6.3205              XY=    0.0000              XZ=    0.0000              YY=   -7.1388
+                    YZ=    0.0000              ZZ=   -9.2714
+      In traceless form (Debye*Ang)
+                    XX=    1.8846              XY=    0.0000              XZ=    0.0000              YY=    0.6572
+                    YZ=    0.0000              ZZ=   -2.5418
+--- Stop Module:  scf at Fri Oct  7 14:26:11 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 14:26:12 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module RASSCF with 2000 MB of memory
+                                              at 14:26:12 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      Header of the ONEINT file:
+      --------------------------
+                                                                                                                              
+      Integrals generated by seward 4.2.0  , Fri Oct  7 14:26:10 2016                                                         
+ 
+ 
+      OrdInt status: non-squared
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   C          0.00000   0.00000  -0.10059
+       2   H          0.00000   0.87052   0.59933
+       3   H          0.00000  -0.87052   0.59933
+      --------------------------------------------
+      Nuclear repulsion energy =    5.988927
+ 
+ 
+ 
+      Wave function specifications:
+         -----------------------------
+ 
+      Number of closed shell electrons           2
+      Number of electrons in active shells       6
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                1
+      Number of active orbitals                  6
+      Number of secondary orbitals              34
+      Spin quantum number                      1.0
+      State symmetry                             2
+ 
+ 
+      Orbital specifications:
+         -----------------------
+ 
+      Symmetry species                           1   2   3   4
+                                                a1  b1  b2  a2
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          1   0   0   0
+      Active orbitals                            3   1   2   0
+      RAS1 orbitals                              0   0   0   0
+      RAS2 orbitals                              3   1   2   0
+      RAS3 orbitals                              0   0   0   0
+      Secondary orbitals                        14   6  10   4
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 18   7  12   4
+ 
+      CI expansion specifications:
+         ----------------------------
+ 
+      Number of configuration state fnc.        51
+      Number of determinants                    65
+      Number of root(s) required                 1
+      Root chosen for geometry opt.              1
+      CI root used                               1
+      highest root included in the CI            1
+      max. size of the explicit Hamiltonian     51
+ 
+      Optimization specifications:
+         ----------------------------
+ 
+      RASSCF algorithm: Conventional
+      Maximum number of macro iterations       200
+      Maximum number of SX iterations          100
+      Threshold for RASSCF energy            0.100E-07
+      Threshold for max MO rotation          0.100E+00
+      Threshold for max BLB element          0.100E-03
+      Level shift parameter                  0.500E+00
+      Make Quasi-Newton update
+      The MO-coefficients are taken from the file:
+      INPORB                                                                                                                          
+      Title: SCF orbitals                                                                  
+ 
+      Total molecular charge    0.00
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                            Wave function  control section                                            *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+                          RASSCF iterations: Energy and convergence statistics
+                          ----------------------------------------------------
+ 
+      Iter CI   SX   CI       RASSCF       Energy    max ROT   max BLB   max BLB  Level Ln srch  Step   QN    Time(min)
+          iter iter root      energy       change     param    element    value    shift minimum  type update     CPU
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital   4 of symmetry 1 MO space 2  weight is    0.274520
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital   2 of symmetry 3 MO space 2  weight is    0.342032
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital   4 of symmetry 3 MO space 3  weight is    0.409598
+        1   1   44    1   -38.87513728    0.00E+00   0.77E+00*   1   2 2 -0.12E+00*  0.00   0.00     SX     NO      0.00
+        2   1   10    1   -38.94964308   -0.75E-01* -0.70E-01    1   2 2 -0.30E-01*  0.00   0.00     SX     NO      0.00
+        3   1    9    1   -38.95494310   -0.53E-02* -0.34E-01    1   5 2  0.76E-02*  0.00   0.00     SX     NO      0.00
+        4   1    8    1   -38.95560997   -0.67E-03* -0.20E-01    1   5 2  0.26E-02*  0.00   0.00     SX     NO      0.00
+        5   1    8    1   -38.95577355   -0.16E-03* -0.25E-01    2  15 1  0.88E-03*  0.00   2.37     LS    YES      0.00
+        6   1    8    1   -38.95585509   -0.82E-04* -0.97E-02    1   5 2 -0.15E-02*  0.00   1.11     QN    YES      0.00
+        7   1    7    1   -38.95588047   -0.25E-04* -0.93E-02    1   5 2 -0.84E-03*  0.00   2.00     LS    YES      0.00
+        8   1    7    1   -38.95588890   -0.84E-05*  0.19E-02    1   6 3  0.39E-03*  0.00   1.04     QN    YES      0.00
+        9   1    6    1   -38.95589025   -0.14E-05* -0.65E-03    1   6 3  0.13E-03*  0.00   1.21     QN    YES      0.00
+       10   1    6    1   -38.95589037   -0.12E-06* -0.17E-03    1   5 2  0.37E-04   0.00   1.17     QN    YES      0.00
+       11   1    5    1   -38.95589038   -0.97E-08  -0.57E-04    1  10 3  0.11E-04   0.00   1.17     QN    YES      0.00
+      Convergence after 11 iterations
+       12   1    5    1   -38.95589038   -0.80E-09  -0.57E-04    1   6 3 -0.19E-05   0.00   1.17     QN    YES      0.00
+ 
+      ************************************************************************************************************************
+                                                      Wave function printout:
+                       occupation of active orbitals, and spin coupling of open shells (u,d: Spin up or down)
+      ************************************************************************************************************************
+ 
+      Note: transformation to natural orbitals
+      has been made, which may change the order of the CSFs.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -38.955890
+      conf/sym  111 2 33     Coeff  Weight
+             4  2u0 u 20   0.98597 0.97213
+             8  2u0 u 02  -0.07565 0.00572
+            39  0u2 u 20   0.05014 0.00251
+            44  uuu d 20  -0.05151 0.00265
+ 
+      Natural orbitals and occupation numbers for root  1
+      sym 1:   1.980775   1.001251   0.021636
+      sym 2:   1.000000
+      sym 3:   1.970256   0.026082
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                                    Final results                                                    *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Number of closed shell electrons           2
+      Number of electrons in active shells       6
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                1
+      Number of active orbitals                  6
+      Number of secondary orbitals              34
+      Spin quantum number                      1.0
+      State symmetry                             2
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2   3   4
+                                                a1  b1  b2  a2
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          1   0   0   0
+      Active orbitals                            3   1   2   0
+      RAS1 orbitals                              0   0   0   0
+      RAS2 orbitals                              3   1   2   0
+      RAS3 orbitals                              0   0   0   0
+      Secondary orbitals                        14   6  10   4
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 18   7  12   4
+ 
+ 
+      CI expansion specifications:
+      ----------------------------
+ 
+      Number of configuration state fnc.        51
+      Number of determinants                    65
+      Number of root(s) required                 1
+      CI root used                               1
+      highest root included in the CI            1
+      Root passed to geometry opt.               1
+ 
+ 
+      Final optimization conditions:
+      ------------------------------
+ 
+      Average CI energy                             -38.95589038
+      RASSCF energy for state  1                    -38.95589038
+      Super-CI energy                                 0.00000000
+      RASSCF energy change                            0.00000000
+      Max change in MO coefficients              -0.170E-03
+      Max non-diagonal density matrix element    -0.571E-04
+      Maximum BLB matrix element                 -0.190E-05
+      (orbital pair   1,   6 in symmetry   3)
+      Norm of electronic gradient            0.593E-05
+ 
+ 
+      Final state energy(ies):
+      ------------------------
+ 
+      RASSCF root number  1 Total energy =        -38.95589038
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Pseudonatural active orbitals and approximate occupation numbers
+ 
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 1: a1 
+ 
+ 
+      Orbital            1         2         3         4
+      Energy      -11.2448    0.0000    0.0000    0.0000
+      Occ. No.      2.0000    1.9808    1.0013    0.0216
+ 
+    1 C     1s     -0.9984    0.0045   -0.0086   -0.1180
+    2 C     2s      0.0084   -0.7327   -0.5464   -1.2564
+    3 C     *s     -0.0023    0.0073   -0.0024   -0.1206
+    4 C     *s     -0.0025    0.1139   -0.0541    0.3081
+    5 C     2pz     0.0016   -0.2723    0.7802   -0.9509
+    6 C     *pz     0.0000    0.0132    0.0214   -0.0101
+    7 C     *pz    -0.0007    0.0482   -0.0321    0.1608
+    8 C     *d0     0.0000   -0.0011   -0.0043    0.0253
+    9 C     *d0     0.0000   -0.0033   -0.0059    0.0214
+   10 C     *d2+    0.0001    0.0114   -0.0092    0.0162
+   11 C     *d2+   -0.0003    0.0110   -0.0282   -0.0012
+   12 H     1s      0.0032   -0.7085    0.3382    1.6026
+   13 H     *s     -0.0016    0.1451   -0.0579    0.0440
+   14 H     *s      0.0000    0.2263   -0.0710   -0.4619
+   15 H     *py    -0.0002    0.0143   -0.0065    0.0169
+   16 H     *py     0.0004    0.0025    0.0014   -0.0594
+   17 H     *pz    -0.0001    0.0092    0.0031    0.0125
+   18 H     *pz     0.0005    0.0009    0.0199   -0.0285
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 2: b1 
+ 
+ 
+      Orbital            1
+      Energy        0.0000
+      Occ. No.      1.0000
+ 
+    1 C     2px     0.9395
+    2 C     *px     0.0175
+    3 C     *px     0.0387
+    4 C     *d1+   -0.0036
+    5 C     *d1+   -0.0029
+    6 H     *px     0.0108
+    7 H     *px     0.0194
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 3: b2 
+ 
+ 
+      Orbital            1         2
+      Energy        0.0000    0.0000
+      Occ. No.      1.9703    0.0261
+ 
+    1 C     2py     0.6838    1.3281
+    2 C     *py    -0.0334    0.1450
+    3 C     *py    -0.1085   -0.3281
+    4 C     *d1-    0.0217    0.0289
+    5 C     *d1-    0.0235    0.1165
+    6 H     1s      0.8623   -1.4605
+    7 H     *s     -0.1136   -0.2489
+    8 H     *s     -0.1788    0.3731
+    9 H     *py    -0.0096   -0.0141
+   10 H     *py     0.0014    0.0938
+   11 H     *pz    -0.0123   -0.0127
+   12 H     *pz    -0.0080    0.0929
+
+      Von Neumann Entropy (Root  1) =  1.18711
+ 
+
+      Mulliken population Analysis for root number: 1
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             C       H     
+      1s     1.9967  1.3868
+      2s     1.5262  0.0000
+      2px    0.9388  0.0000
+      2pz    0.9095  0.0000
+      2py    1.2454  0.0000
+      *s    -0.1690 -0.5361
+      *px    0.0467  0.0072
+      *pz   -0.0463  0.0094
+      *py   -0.2207  0.0049
+      *d2+   0.0079  0.0000
+      *d1+   0.0000  0.0000
+      *d0    0.0002  0.0000
+      *d1-   0.0200  0.0000
+      *d2-   0.0000  0.0000
+      Total  6.2555  0.8723
+ 
+      N-E   -0.2555  0.1277
+ 
+      Total electronic charge=    8.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  1
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    0.6179           Total=    0.6179
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0001
+                    XX=   -8.0882              XY=    0.0000              XZ=    0.0000              YY=   -6.9438
+                    YZ=    0.0000              ZZ=   -6.8415
+      In traceless form (Debye*Ang)
+                    XX=   -1.1956              XY=    0.0000              XZ=    0.0000              YY=    0.5211
+                    YZ=    0.0000              ZZ=    0.6745
+
+      Mulliken spin population Analysis for root number:  1
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             C       H     
+      1s     0.0000 -0.0556
+      2s     0.2939  0.0000
+      2px    0.9331  0.0000
+      2pz    0.7089  0.0000
+      2py    0.0863  0.0000
+      *s     0.0140  0.0080
+      *px    0.0465  0.0072
+      *pz   -0.0068  0.0039
+      *py   -0.0069  0.0002
+      *d2+   0.0028  0.0000
+      *d1+   0.0000  0.0000
+      *d0   -0.0001  0.0000
+      *d1-   0.0013  0.0000
+      *d2-   0.0000  0.0000
+      Total  2.0728 -0.0364
+ 
+      Total electronic spin=    2.000000
+ 
+      Average orbitals are written to the RASORB           file
+      Natural orbitals for root   1 are written to the RASORB.1         file
+      Spin density orbitals for root   1 are written to the SPDORB.1         file
+ 
+--- Stop Module:  rasscf at Fri Oct  7 14:26:13 2016 /rc=0 ---
+*** 
+--- Start Module: casvb at Fri Oct  7 14:26:14 2016 
+
+     CASVB (Valence bond MCSCF)   Authors: T. Thorsteinsson and D. L. Cooper  (1996-2000)
+
+ CASVB started on Fri Oct  7 2016 at 14:26:14
+
+ ------- Recover RASSCF-related information --------------------------------------
+
+ Using JOBIPH interface file.
+ 
+      **************************************************************************************************************************
+      *                                                                                                                        *
+      *                                                        Project:                                                        *
+      *                                                    (No title given)                                                    *
+      *                                                                                                                        *
+      **************************************************************************************************************************
+ 
+ 
+      Header of the ONEINT file:
+      --------------------------
+                                                                                                                              
+      Integrals generated by seward 4.2.0  , Fri Oct  7 14:26:10 2016                                                         
+ 
+ 
+      OrdInt status: non-squared
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   C          0.00000   0.00000  -0.10059
+       2   H          0.00000   0.87052   0.59933
+       3   H          0.00000  -0.87052   0.59933
+      --------------------------------------------
+      Nuclear repulsion energy =    5.988927
+ 
+ 
+ 
+      Wave function specifications:
+         -----------------------------
+ 
+      Number of closed shell electrons           2
+      Number of electrons in active shells       6
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                1
+      Number of active orbitals                  6
+      Number of secondary orbitals              34
+      Spin quantum number                      1.0
+      State symmetry                             2
+ 
+ 
+      Orbital specifications:
+         -----------------------
+ 
+      Symmetry species                           1   2   3   4
+                                                a1  b1  b2  a2
+      Frozen orbitals                            0   0   0   0
+      Inactive orbitals                          1   0   0   0
+      Active orbitals                            3   1   2   0
+      RAS1 orbitals                              0   0   0   0
+      RAS2 orbitals                              3   1   2   0
+      RAS3 orbitals                              0   0   0   0
+      Secondary orbitals                        14   6  10   4
+      Deleted orbitals                           0   0   0   0
+      Number of basis functions                 18   7  12   4
+ 
+      CI expansion specifications:
+         ----------------------------
+ 
+      Number of configuration state fnc.        51
+      Number of determinants                    65
+      Number of root(s) required                 1
+      CI root used                               1
+      highest root included in the CI            1
+      max. size of the explicit Hamiltonian     51
+ 
+      Optimization specifications:
+         ----------------------------
+ 
+      RASSCF algorithm: Conventional
+      Maximum number of macro iterations       200
+      Maximum number of SX iterations          100
+      Threshold for RASSCF energy            0.100E-07
+      Threshold for max MO rotation          0.100E+00
+      Threshold for max BLB element          0.100E-03
+      Level shift parameter                  0.500E+00
+      Make Quasi-Newton update
+      The MO-coefficients are taken from the file JOBOLD
+      Title:(No title given)                                                        
+ 
+      Total molecular charge    0.00
+ ------- RASSCF-related information recovered ------------------------------------
+
+ Number of active electrons :   6
+ Number of active orbitals  :   6
+ Total spin                 : 1.0
+ State symmetry             :   2
+
+ Symmetries of active MOs   :   1  1  1  2  3  3
+
+ Spatial VB configurations
+ -------------------------
+     Conf. =>   Orbitals
+       1   =>    1  2  3  4  5  6
+
+ Number of VB configurations :     1
+           VB structures     :     9
+           VB determinants   :    15
+
+ -- Starting optimization - step  1 --------
+
+ Energy-based optimization (Evb).
+
+ Optimization algorithm:            dFletch
+ Maximum number of iterations:           50
+ Spin basis:                         Kotani
+
+ -------------------------------------------
+
+ Generate Kotani spin functions.
+ Rejecting step.
+ Rejecting step.
+ Rejecting step.
+ Rejecting step.
+ Rejecting step.
+ Optimization entering local region.
+ Converged ... maximum update to coefficient:  0.28780104D-06
+ Final Evb :  -38.9518074286
+ Number of iterations used:  17
+
+ -- Wavefunction summary - step  2 ---------
+ 
+ Restoring CI vector from file JOBOLD.
+ CASSCF energy :  -38.9558903786
+ 
+
+ Orbital coefficients :
+ ----------------------
+           1           2           3           4           5           6
+   1  0.85598152  0.63492678  0.85598156  0.63492678  0.42752064 -0.00000028
+   2  0.10901056 -0.09705169  0.10901055 -0.09705172  0.90395560 -0.00000015
+   3  0.18654125 -0.20183557  0.18654124 -0.20183555  0.00950632 -0.00000003
+   4  0.00000003 -0.00000001  0.00000000  0.00000000 -0.00000006  1.00000000
+   5  0.43429118  0.70797438 -0.43429111 -0.70797438  0.00000003 -0.00000034
+   6  0.17890186 -0.21326892 -0.17890186  0.21326892 -0.00000001 -0.00000002
+
+ Overlap between orbitals :
+ --------------------------
+           1           2           3           4           5           6
+   1  1.00000000  0.76456809  0.55877065  0.22594246  0.46626381 -0.00000038
+   2  0.76456809  1.00000000  0.22594252 -0.09342272  0.18179519 -0.00000041
+   3  0.55877065  0.22594252  1.00000000  0.76456808  0.46626379 -0.00000011
+   4  0.22594246 -0.09342272  0.76456808  1.00000000  0.18179513  0.00000008
+   5  0.46626381  0.18179519  0.46626379  0.18179513  1.00000000 -0.00000032
+   6 -0.00000038 -0.00000041 -0.00000011  0.00000008 -0.00000032  1.00000000
+
+ Structure coefficients :
+ ------------------------
+      0.01946791 -0.08734965  0.06176547 -0.10698100 -0.07141355  0.05049706 -0.08746342 -0.09927342
+      0.97548768
+ 
+ Saving VB wavefunction to file VBWFN.
+ 
+ Saving VB CI vector to file JOBIPH.
+ 
+ Svb :          0.9987449939
+ Evb :        -38.9518074286
+
+ Chirgwin-Coulson weights of structures :
+ ----------------------------------------
+ VB spin+space (norm   1.00000000) :
+     -0.00003661  0.00140567  0.00070283  0.00210850 -0.00252923 -0.00126462 -0.00379384 -0.01087741
+      1.01428471
+ VB spin only  (norm   0.63371459) :
+      0.00037900  0.00762996  0.00381497  0.01144493  0.00509990  0.00254995  0.00764985  0.00985521
+      0.95157622
+
+ Symmetry contributions to total VB wavefunction :
+ -------------------------------------------------
+ Irreps 1 to 4 :  0.51296993E-15  0.10000000E+01  0.15507441E-14  0.64068973E-15
+
+ Energies for components > 1d-10 :
+ ---------------------------------
+ Irreps 1 to 4 :  0.00000000E+00 -0.38951807E+02  0.00000000E+00  0.00000000E+00
+
+ One-electron density :
+ ----------------------
+           1           2           3           4           5           6
+   1  1.98256749 -0.00338463 -0.00121664  0.00000000  0.00000000 -0.00000001
+   2 -0.00338463  1.00092225 -0.00227582  0.00000000  0.00000002 -0.00000001
+   3 -0.00121664 -0.00227582  0.02059906 -0.00000002 -0.00000001  0.00000000
+   4  0.00000000  0.00000000 -0.00000002  1.00000000  0.00000000  0.00000001
+   5  0.00000000  0.00000002 -0.00000001  0.00000000  1.97100398  0.00046138
+   6 -0.00000001 -0.00000001  0.00000000  0.00000001  0.00046138  0.02490721
+
+ Natural orbitals :
+ ------------------
+           1           2           3           4           5           6
+   1 -0.99999387 -0.00000013  0.00344498 -0.00000001  0.00000000 -0.00062412
+   2  0.00344642 -0.00000002  0.99999136 -0.00000076 -0.00000001 -0.00232363
+   3  0.00061611  0.00000000 -0.00232577 -0.00000001 -0.00000048 -0.99999711
+   4  0.00000000  0.00000000  0.00000076  1.00000000  0.00000001 -0.00000002
+   5  0.00000013 -0.99999997 -0.00000002  0.00000000  0.00023708  0.00000000
+   6  0.00000000 -0.00023708 -0.00000001  0.00000001 -0.99999997  0.00000048
+
+ Occupation numbers :
+ --------------------
+           1           2           3           4           5           6
+   1  1.98257990  1.97100409  1.00091589  1.00000000  0.02490710  0.02059302
+
+ -- Starting optimization - step  3 --------
+
+ Energy-based optimization (Evb).
+
+ Optimization algorithm:            dFletch
+ Maximum number of iterations:            2
+ Spin basis:                         Kotani
+
+ -------------------------------------------
+
+ Permuting orbitals :
+    1   3   5   2   4   6
+ Converged ... maximum update to coefficient:  0.13120881D-06
+ Final Evb :  -38.9518074286
+ Number of iterations used:   1
+
+ -- Wavefunction summary - step  4 ---------
+ 
+ Restoring CI vector from file JOBOLD.
+
+ Orbital coefficients :
+ ----------------------
+           1           2           3           4           5           6
+   1  0.85598152  0.85598156  0.42752064  0.63492678  0.63492678 -0.00000028
+   2  0.10901056  0.10901055  0.90395560 -0.09705169 -0.09705172 -0.00000015
+   3  0.18654125  0.18654124  0.00950632 -0.20183557 -0.20183555 -0.00000003
+   4  0.00000003  0.00000000 -0.00000006 -0.00000001  0.00000000  1.00000000
+   5  0.43429118 -0.43429111  0.00000003  0.70797438 -0.70797438 -0.00000034
+   6  0.17890186 -0.17890186 -0.00000001 -0.21326892  0.21326892 -0.00000002
+
+ Overlap between orbitals :
+ --------------------------
+           1           2           3           4           5           6
+   1  1.00000000  0.55877065  0.46626381  0.76456809  0.22594246 -0.00000038
+   2  0.55877065  1.00000000  0.46626379  0.22594252  0.76456808 -0.00000011
+   3  0.46626381  0.46626379  1.00000000  0.18179519  0.18179513 -0.00000032
+   4  0.76456809  0.22594252  0.18179519  1.00000000 -0.09342272 -0.00000041
+   5  0.22594246  0.76456808  0.18179513 -0.09342272  1.00000000  0.00000008
+   6 -0.00000038 -0.00000011 -0.00000032 -0.00000041  0.00000008  1.00000000
+
+ Structure coefficients :
+ ------------------------
+      0.08944291  0.11547024  0.04399382  0.00000003 -0.80171574 -0.20770381 -0.34794348 -0.35975348
+      0.20088529
+ 
+ Saving VB wavefunction to file VBWFN.
+ 
+ Saving VB CI vector to file JOBIPH.
+ 
+ Svb :          0.9987449939
+ Evb :        -38.9518074286
+
+ Chirgwin-Coulson weights of structures :
+ ----------------------------------------
+ VB spin+space (norm   1.00000000) :
+      0.00135160  0.00225266  0.00057613  0.00000000  0.52518898  0.05590789  0.18524933  0.16772363
+      0.06174978
+ VB spin only  (norm   0.63371459) :
+      0.00800003  0.01333338  0.00193546  0.00000000  0.64274813  0.04314087  0.12106467  0.12942257
+      0.04035490
+
+ Symmetry contributions to total VB wavefunction :
+ -------------------------------------------------
+ Irreps 1 to 4 :  0.51296993E-15  0.10000000E+01  0.15507441E-14  0.64068973E-15
+
+ Energies for components > 1d-10 :
+ ---------------------------------
+ Irreps 1 to 4 :  0.00000000E+00 -0.38951807E+02  0.00000000E+00  0.00000000E+00
+
+ One-electron density :
+ ----------------------
+           1           2           3           4           5           6
+   1  1.98256749 -0.00338463 -0.00121664  0.00000000  0.00000000 -0.00000001
+   2 -0.00338463  1.00092225 -0.00227582  0.00000000  0.00000002 -0.00000001
+   3 -0.00121664 -0.00227582  0.02059906 -0.00000002 -0.00000001  0.00000000
+   4  0.00000000  0.00000000 -0.00000002  1.00000000  0.00000000  0.00000001
+   5  0.00000000  0.00000002 -0.00000001  0.00000000  1.97100398  0.00046138
+   6 -0.00000001 -0.00000001  0.00000000  0.00000001  0.00046138  0.02490721
+
+ Natural orbitals :
+ ------------------
+           1           2           3           4           5           6
+   1 -0.99999387 -0.00000013  0.00344498 -0.00000001  0.00000000 -0.00062412
+   2  0.00344642 -0.00000002  0.99999136 -0.00000076 -0.00000001 -0.00232363
+   3  0.00061611  0.00000000 -0.00232577 -0.00000001 -0.00000048 -0.99999711
+   4  0.00000000  0.00000000  0.00000076  1.00000000  0.00000001 -0.00000002
+   5  0.00000013 -0.99999997 -0.00000002  0.00000000  0.00023708  0.00000000
+   6  0.00000000 -0.00023708 -0.00000001  0.00000001 -0.99999997  0.00000048
+
+ Occupation numbers :
+ --------------------
+           1           2           3           4           5           6
+   1  1.98257990  1.97100409  1.00091589  1.00000000  0.02490710  0.02059302
+
+ -- Starting optimization - step  5 --------
+
+ Energy-based optimization (Evb).
+
+ Optimization algorithm:            dFletch
+ Maximum number of iterations:            2
+ Spin basis:                          Rumer
+
+ -------------------------------------------
+
+ Changing spin basis : Kotani --> Rumer
+
+ Generate Kotani spin functions.
+
+ Generate Rumer spin functions.
+ Converged ... maximum update to coefficient:  0.76987669D-07
+ Final Evb :  -38.9518074286
+ Number of iterations used:   1
+
+ -- Wavefunction summary - step  6 ---------
+ 
+ Restoring CI vector from file JOBOLD.
+
+ Orbital coefficients :
+ ----------------------
+           1           2           3           4           5           6
+   1  0.85598152  0.85598156  0.42752064  0.63492678  0.63492678 -0.00000028
+   2  0.10901056  0.10901055  0.90395560 -0.09705169 -0.09705172 -0.00000015
+   3  0.18654125  0.18654124  0.00950632 -0.20183557 -0.20183555 -0.00000003
+   4  0.00000003  0.00000000 -0.00000006 -0.00000001  0.00000000  1.00000000
+   5  0.43429118 -0.43429111  0.00000003  0.70797438 -0.70797438 -0.00000034
+   6  0.17890186 -0.17890186 -0.00000001 -0.21326892  0.21326892 -0.00000002
+
+ Overlap between orbitals :
+ --------------------------
+           1           2           3           4           5           6
+   1  1.00000000  0.55877065  0.46626381  0.76456809  0.22594246 -0.00000038
+   2  0.55877065  1.00000000  0.46626379  0.22594252  0.76456808 -0.00000011
+   3  0.46626381  0.46626379  1.00000000  0.18179519  0.18179513 -0.00000032
+   4  0.76456809  0.22594252  0.18179519  1.00000000 -0.09342272 -0.00000041
+   5  0.22594246  0.76456808  0.18179513 -0.09342272  1.00000000  0.00000008
+   6 -0.00000038 -0.00000011 -0.00000032 -0.00000041  0.00000008  1.00000000
+
+ Structure coefficients :
+ ------------------------
+     -0.89926545 -0.84948614 -0.78966098 -0.77578097 -0.94904485  0.12348458  0.24696908  0.27712863
+      0.13856436
+ 
+ Saving VB wavefunction to file VBWFN.
+ 
+ Saving VB CI vector to file JOBIPH.
+ 
+ Svb :          0.9987449939
+ Evb :        -38.9518074286
+
+ Chirgwin-Coulson weights of structures :
+ ----------------------------------------
+ VB spin+space (norm   1.00000000) :
+     -0.27642366  0.47354687  0.48546507 -0.23846597  0.45774421  0.03795771 -0.00243228  0.06260805
+      0.00000000
+ VB spin only  (norm   0.63371459) :
+     -0.18064920  0.34998684  0.31726252 -0.15584295  0.53477669  0.02480624  0.00852478  0.10113507
+      0.00000001
+
+ Symmetry contributions to total VB wavefunction :
+ -------------------------------------------------
+ Irreps 1 to 4 :  0.51296993E-15  0.10000000E+01  0.15507441E-14  0.64068973E-15
+
+ Energies for components > 1d-10 :
+ ---------------------------------
+ Irreps 1 to 4 :  0.00000000E+00 -0.38951807E+02  0.00000000E+00  0.00000000E+00
+
+ One-electron density :
+ ----------------------
+           1           2           3           4           5           6
+   1  1.98256749 -0.00338463 -0.00121664  0.00000000  0.00000000 -0.00000001
+   2 -0.00338463  1.00092225 -0.00227582  0.00000000  0.00000002 -0.00000001
+   3 -0.00121664 -0.00227582  0.02059906 -0.00000002 -0.00000001  0.00000000
+   4  0.00000000  0.00000000 -0.00000002  1.00000000  0.00000000  0.00000001
+   5  0.00000000  0.00000002 -0.00000001  0.00000000  1.97100398  0.00046138
+   6 -0.00000001 -0.00000001  0.00000000  0.00000001  0.00046138  0.02490721
+
+ Natural orbitals :
+ ------------------
+           1           2           3           4           5           6
+   1 -0.99999387 -0.00000013  0.00344498 -0.00000001  0.00000000 -0.00062412
+   2  0.00344642 -0.00000002  0.99999136 -0.00000076 -0.00000001 -0.00232363
+   3  0.00061611  0.00000000 -0.00232577 -0.00000001 -0.00000048 -0.99999711
+   4  0.00000000  0.00000000  0.00000076  1.00000000  0.00000001 -0.00000002
+   5  0.00000013 -0.99999997 -0.00000002  0.00000000  0.00023708  0.00000000
+   6  0.00000000 -0.00023708 -0.00000001  0.00000001 -0.99999997  0.00000048
+
+ Occupation numbers :
+ --------------------
+           1           2           3           4           5           6
+   1  1.98257990  1.97100409  1.00091589  1.00000000  0.02490710  0.02059302
+
+ -- Starting optimization - step  7 --------
+
+ Energy-based optimization (Evb).
+
+ Optimization algorithm:            dFletch
+ Maximum number of iterations:            2
+ Spin basis:                         Serber
+
+ -------------------------------------------
+
+ Changing spin basis : Rumer --> Serber
+
+ Generate Serber spin functions.
+ Converged ... maximum update to coefficient:  0.12151307D-06
+ Final Evb :  -38.9518074286
+ Number of iterations used:   1
+
+ -- Wavefunction summary - step  8 ---------
+
+ Generate Serber spin functions.
+ 
+ Restoring CI vector from file JOBOLD.
+
+ Orbital coefficients :
+ ----------------------
+           1           2           3           4           5           6
+   1  0.85598152  0.85598156  0.42752064  0.63492678  0.63492678 -0.00000028
+   2  0.10901056  0.10901055  0.90395560 -0.09705169 -0.09705172 -0.00000015
+   3  0.18654125  0.18654124  0.00950632 -0.20183557 -0.20183555 -0.00000003
+   4  0.00000003  0.00000000 -0.00000006 -0.00000001  0.00000000  1.00000000
+   5  0.43429118 -0.43429111  0.00000003  0.70797438 -0.70797438 -0.00000034
+   6  0.17890186 -0.17890186 -0.00000001 -0.21326892  0.21326892 -0.00000002
+
+ Overlap between orbitals :
+ --------------------------
+           1           2           3           4           5           6
+   1  1.00000000  0.55877065  0.46626381  0.76456809  0.22594246 -0.00000038
+   2  0.55877065  1.00000000  0.46626379  0.22594252  0.76456808 -0.00000011
+   3  0.46626381  0.46626379  1.00000000  0.18179519  0.18179513 -0.00000032
+   4  0.76456809  0.22594252  0.18179519  1.00000000 -0.09342272 -0.00000041
+   5  0.22594246  0.76456808  0.18179513 -0.09342272  1.00000000  0.00000008
+   6 -0.00000038 -0.00000011 -0.00000032 -0.00000041  0.00000008  1.00000000
+
+ Structure coefficients :
+ ------------------------
+      0.20088529  0.20088529  0.36493910 -0.28409465 -0.39679606  0.44891350 -0.35975348 -0.45717266
+      0.08944291
+ 
+ Saving VB wavefunction to file VBWFN.
+ 
+ Saving VB CI vector to file JOBIPH.
+ 
+ Svb :          0.9987449939
+ Evb :        -38.9518074286
+
+ Chirgwin-Coulson weights of structures :
+ ----------------------------------------
+ VB spin+space (norm   1.00000000) :
+      0.06174978  0.06174978  0.08244592  0.12349954  0.12102323  0.16303453  0.16772363  0.21742197
+      0.00135160
+ VB spin only  (norm   0.63371459) :
+      0.04035490  0.04035490  0.13318055  0.08070977  0.15744711  0.20152333  0.12942257  0.20900684
+      0.00800003
+
+ Symmetry contributions to total VB wavefunction :
+ -------------------------------------------------
+ Irreps 1 to 4 :  0.51296993E-15  0.10000000E+01  0.15507441E-14  0.64068973E-15
+
+ Energies for components > 1d-10 :
+ ---------------------------------
+ Irreps 1 to 4 :  0.00000000E+00 -0.38951807E+02  0.00000000E+00  0.00000000E+00
+
+ One-electron density :
+ ----------------------
+           1           2           3           4           5           6
+   1  1.98256749 -0.00338463 -0.00121664  0.00000000  0.00000000 -0.00000001
+   2 -0.00338463  1.00092225 -0.00227582  0.00000000  0.00000002 -0.00000001
+   3 -0.00121664 -0.00227582  0.02059906 -0.00000002 -0.00000001  0.00000000
+   4  0.00000000  0.00000000 -0.00000002  1.00000000  0.00000000  0.00000001
+   5  0.00000000  0.00000002 -0.00000001  0.00000000  1.97100398  0.00046138
+   6 -0.00000001 -0.00000001  0.00000000  0.00000001  0.00046138  0.02490721
+
+ Natural orbitals :
+ ------------------
+           1           2           3           4           5           6
+   1 -0.99999387 -0.00000013  0.00344498 -0.00000001  0.00000000 -0.00062412
+   2  0.00344642 -0.00000002  0.99999136 -0.00000076 -0.00000001 -0.00232363
+   3  0.00061611  0.00000000 -0.00232577 -0.00000001 -0.00000048 -0.99999711
+   4  0.00000000  0.00000000  0.00000076  1.00000000  0.00000001 -0.00000002
+   5  0.00000013 -0.99999997 -0.00000002  0.00000000  0.00023708  0.00000000
+   6  0.00000000 -0.00023708 -0.00000001  0.00000001 -0.99999997  0.00000048
+
+ Occupation numbers :
+ --------------------
+           1           2           3           4           5           6
+   1  1.98257990  1.97100409  1.00091589  1.00000000  0.02490710  0.02059302
+
+ -- Starting optimization - step  9 --------
+
+ Energy-based optimization (Evb).
+
+ Optimization algorithm:            dFletch
+ Maximum number of iterations:            2
+ Spin basis:                         Kotani
+
+ -------------------------------------------
+
+ Changing spin basis : Serber --> Kotani
+
+ Generate Kotani spin functions.
+ Converged ... maximum update to coefficient:  0.13120875D-06
+ Final Evb :  -38.9518074286
+ Number of iterations used:   1
+
+ -- Wavefunction summary - step 10 ---------
+ 
+ Restoring CI vector from file JOBOLD.
+
+ Orbital coefficients :
+ ----------------------
+           1           2           3           4           5           6
+   1  0.85598152  0.85598156  0.42752064  0.63492678  0.63492678 -0.00000028
+   2  0.10901056  0.10901055  0.90395560 -0.09705169 -0.09705172 -0.00000015
+   3  0.18654125  0.18654124  0.00950632 -0.20183557 -0.20183555 -0.00000003
+   4  0.00000003  0.00000000 -0.00000006 -0.00000001  0.00000000  1.00000000
+   5  0.43429118 -0.43429111  0.00000003  0.70797438 -0.70797438 -0.00000034
+   6  0.17890186 -0.17890186 -0.00000001 -0.21326892  0.21326892 -0.00000002
+
+ Overlap between orbitals :
+ --------------------------
+           1           2           3           4           5           6
+   1  1.00000000  0.55877065  0.46626381  0.76456809  0.22594246 -0.00000038
+   2  0.55877065  1.00000000  0.46626379  0.22594252  0.76456808 -0.00000011
+   3  0.46626381  0.46626379  1.00000000  0.18179519  0.18179513 -0.00000032
+   4  0.76456809  0.22594252  0.18179519  1.00000000 -0.09342272 -0.00000041
+   5  0.22594246  0.76456808  0.18179513 -0.09342272  1.00000000  0.00000008
+   6 -0.00000038 -0.00000011 -0.00000032 -0.00000041  0.00000008  1.00000000
+
+ Structure coefficients :
+ ------------------------
+      0.08944291  0.11547024  0.04399382  0.00000003 -0.80171574 -0.20770381 -0.34794348 -0.35975348
+      0.20088529
+ 
+ Saving VB wavefunction to file VBWFN.
+ 
+ Saving VB CI vector to file JOBIPH.
+ 
+ Svb :          0.9987449939
+ Evb :        -38.9518074286
+
+ Chirgwin-Coulson weights of structures :
+ ----------------------------------------
+ VB spin+space (norm   1.00000000) :
+      0.00135160  0.00225266  0.00057613  0.00000000  0.52518898  0.05590789  0.18524933  0.16772363
+      0.06174978
+ VB spin only  (norm   0.63371459) :
+      0.00800003  0.01333338  0.00193546  0.00000000  0.64274813  0.04314087  0.12106467  0.12942257
+      0.04035490
+
+ Symmetry contributions to total VB wavefunction :
+ -------------------------------------------------
+ Irreps 1 to 4 :  0.51296993E-15  0.10000000E+01  0.15507441E-14  0.64068973E-15
+
+ Energies for components > 1d-10 :
+ ---------------------------------
+ Irreps 1 to 4 :  0.00000000E+00 -0.38951807E+02  0.00000000E+00  0.00000000E+00
+
+ One-electron density :
+ ----------------------
+           1           2           3           4           5           6
+   1  1.98256749 -0.00338463 -0.00121664  0.00000000  0.00000000 -0.00000001
+   2 -0.00338463  1.00092225 -0.00227582  0.00000000  0.00000002 -0.00000001
+   3 -0.00121664 -0.00227582  0.02059906 -0.00000002 -0.00000001  0.00000000
+   4  0.00000000  0.00000000 -0.00000002  1.00000000  0.00000000  0.00000001
+   5  0.00000000  0.00000002 -0.00000001  0.00000000  1.97100398  0.00046138
+   6 -0.00000001 -0.00000001  0.00000000  0.00000001  0.00046138  0.02490721
+
+ Natural orbitals :
+ ------------------
+           1           2           3           4           5           6
+   1 -0.99999387 -0.00000013  0.00344498 -0.00000001  0.00000000 -0.00062412
+   2  0.00344642 -0.00000002  0.99999136 -0.00000076 -0.00000001 -0.00232363
+   3  0.00061611  0.00000000 -0.00232577 -0.00000001 -0.00000048 -0.99999711
+   4  0.00000000  0.00000000  0.00000076  1.00000000  0.00000001 -0.00000002
+   5  0.00000013 -0.99999997 -0.00000002  0.00000000  0.00023708  0.00000000
+   6  0.00000000 -0.00023708 -0.00000001  0.00000001 -0.99999997  0.00000048
+
+ Occupation numbers :
+ --------------------
+           1           2           3           4           5           6
+   1  1.98257990  1.97100409  1.00091589  1.00000000  0.02490710  0.02059302
+
+ -- Starting optimization - step 11 --------
+
+ Overlap-based optimization (Svb).
+
+ Optimization algorithm:            dFletch
+ Maximum number of iterations:           50
+ Spin basis:                         Kotani
+
+ All structures will be frozen.
+
+ -------------------------------------------
+ 
+ Restoring CI vector from file JOBOLD.
+ Optimization entering local region.
+ Converged ... maximum update to coefficient:  0.22431725D-05
+ Final Svb :    0.9987695921
+ Number of iterations used:   5
+
+ -- Wavefunction summary - step 12 ---------
+ 
+ Restoring CI vector from file JOBOLD.
+
+ Orbital coefficients :
+ ----------------------
+           1           2           3           4           5           6
+   1  0.87358845  0.87358853  0.42118233  0.60454541  0.60454530 -0.00000001
+   2  0.11171872  0.11171870  0.90690840 -0.09664567 -0.09664566 -0.00000003
+   3  0.18155482  0.18155482  0.01107217 -0.19891575 -0.19891575  0.00000000
+   4  0.00000000  0.00000000 -0.00000006  0.00000000  0.00000000  1.00000000
+   5  0.40157841 -0.40157825 -0.00000001  0.73502479 -0.73502487  0.00000002
+   6  0.17359372 -0.17359370 -0.00000001 -0.21296843  0.21296843 -0.00000001
+
+ Overlap between orbitals :
+ --------------------------
+           1           2           3           4           5           6
+   1  1.00000000  0.61720014  0.47126887  0.73941274  0.22301242 -0.00000001
+   2  0.61720014  1.00000000  0.47126889  0.22301270  0.73941263 -0.00000002
+   3  0.47126887  0.47126889  1.00000000  0.16477264  0.16477261 -0.00000009
+   4  0.73941274  0.22301270  0.16477264  1.00000000 -0.17123411  0.00000001
+   5  0.22301242  0.73941263  0.16477261 -0.17123411  1.00000000 -0.00000002
+   6 -0.00000001 -0.00000002 -0.00000009  0.00000001 -0.00000002  1.00000000
+
+ Structure coefficients :
+ ------------------------
+      0.08944291  0.11547024  0.04399382  0.00000003 -0.80171574 -0.20770381 -0.34794348 -0.35975348
+      0.20088529
+ 
+ Saving VB wavefunction to file VBWFN.
+ 
+ Saving VB CI vector to file JOBIPH.
+ 
+ Svb :          0.9987695921
+ Evb :        -38.9517503687
+
+ Chirgwin-Coulson weights of structures :
+ ----------------------------------------
+ VB spin+space (norm   1.00000000) :
+      0.00128956  0.00214926  0.00055143  0.00000000  0.50804780  0.05429100  0.20309850  0.16287295
+      0.06769951
+ VB spin only  (norm   0.67691498) :
+      0.00800003  0.01333338  0.00193546  0.00000000  0.64274813  0.04314087  0.12106467  0.12942257
+      0.04035490
+
+ Symmetry contributions to total VB wavefunction :
+ -------------------------------------------------
+ Irreps 1 to 4 :  0.31203979E-16  0.10000000E+01  0.13809045E-15  0.40418632E-15
+
+ Energies for components > 1d-10 :
+ ---------------------------------
+ Irreps 1 to 4 :  0.00000000E+00 -0.38951750E+02  0.00000000E+00  0.00000000E+00
+
+ One-electron density :
+ ----------------------
+           1           2           3           4           5           6
+   1  1.98313959 -0.00005867  0.00010199  0.00000000  0.00000000  0.00000000
+   2 -0.00005867  1.00109297 -0.00014265  0.00000000  0.00000000  0.00000000
+   3  0.00010199 -0.00014265  0.01977759  0.00000000  0.00000000  0.00000000
+   4  0.00000000  0.00000000  0.00000000  1.00000000  0.00000000 -0.00000001
+   5  0.00000000  0.00000000  0.00000000  0.00000000  1.97192901  0.00000325
+   6  0.00000000  0.00000000  0.00000000 -0.00000001  0.00000325  0.02406083
+
+ Natural orbitals :
+ ------------------
+           1           2           3           4           5           6
+   1 -1.00000000  0.00000000  0.00005976  0.00000000  0.00000000  0.00005194
+   2  0.00005975  0.00000000  0.99999999 -0.00000014  0.00000000 -0.00014536
+   3 -0.00005195  0.00000000 -0.00014535  0.00000000  0.00000004 -0.99999999
+   4  0.00000000  0.00000000 -0.00000014 -1.00000000  0.00000001  0.00000000
+   5  0.00000000  1.00000000  0.00000000  0.00000000 -0.00000167  0.00000000
+   6  0.00000000  0.00000167  0.00000000  0.00000001  1.00000000  0.00000004
+
+ Occupation numbers :
+ --------------------
+           1           2           3           4           5           6
+   1  1.98313960  1.97192901  1.00109299  1.00000000  0.02406083  0.01977756
+
+ -- Starting optimization - step 13 --------
+
+ Overlap-based optimization (Svb).
+
+ Optimization algorithm:            dFletch
+ Maximum number of iterations:           50
+ Casproj:                               Yes
+ Spin basis:                         Kotani
+
+ -------------------------------------------
+ 
+ Restoring CI vector from file JOBOLD.
+ Optimization entering local region.
+ Converged ... maximum update to coefficient:  0.25230680D-04
+ Final Svb :    0.9987026063
+ Number of iterations used:   5
+
+ -- Wavefunction summary - step 14 ---------
+ 
+ Restoring CI vector from file JOBOLD.
+
+ Orbital coefficients :
+ ----------------------
+           1           2           3           4           5           6
+   1  0.84214436  0.84214438  0.37169572  0.64350415  0.64350412  0.00000004
+   2  0.10779251  0.10779249  0.92832462 -0.09538186 -0.09538187  0.00000007
+   3  0.18593078  0.18593081  0.00746262 -0.20062945 -0.20062943  0.00000000
+   4  0.00000000  0.00000001 -0.00000010  0.00000000  0.00000000  1.00000000
+   5  0.45809945 -0.45809940  0.00000006  0.70099621 -0.70099624 -0.00000004
+   6  0.18640897 -0.18640893 -0.00000004 -0.21250140  0.21250141  0.00000002
+
+ Overlap between orbitals :
+ --------------------------
+           1           2           3           4           5           6
+   1  1.00000000  0.51079324  0.41447544  0.77585256  0.21282490  0.00000004
+   2  0.51079324  1.00000000  0.41447540  0.21282498  0.77585253  0.00000007
+   3  0.41447544  0.41447540  1.00000000  0.14914523  0.14914511 -0.00000001
+   4  0.77585256  0.21282498  0.14914523  1.00000000 -0.07310511 -0.00000001
+   5  0.21282490  0.77585253  0.14914511 -0.07310511  1.00000000  0.00000005
+   6  0.00000004  0.00000007 -0.00000001 -0.00000001  0.00000005  1.00000000
+
+ Structure coefficients :
+ ------------------------
+      0.07509319  0.09694489  0.04394396  0.00000000 -0.67007768 -0.18302066 -0.34134202 -0.31700108
+      0.19707392
+ 
+ Saving VB wavefunction to file VBWFN.
+ 
+ Saving VB CI vector to file JOBIPH.
+ 
+ Svb :          0.9986663718
+ Evb :        -38.9515976311
+
+ Chirgwin-Coulson weights of structures :
+ ----------------------------------------
+ VB spin+space (norm   1.00000000) :
+      0.00128150  0.00213584  0.00064797  0.00000000  0.50698952  0.05568155  0.19966423  0.16704464
+      0.06655474
+ VB spin only  (norm   0.55299406) :
+      0.00746578  0.01244297  0.00255666  0.00000000  0.59446236  0.04434803  0.15426009  0.13304408
+      0.05142003
+
+ Symmetry contributions to total VB wavefunction :
+ -------------------------------------------------
+ Irreps 1 to 4 :  0.23315533E-16  0.10000000E+01  0.72670393E-15  0.40766128E-14
+
+ Energies for components > 1d-10 :
+ ---------------------------------
+ Irreps 1 to 4 :  0.00000000E+00 -0.38951598E+02  0.00000000E+00  0.00000000E+00
+
+ One-electron density :
+ ----------------------
+           1           2           3           4           5           6
+   1  1.98310471  0.00107320  0.00298886  0.00000000  0.00000000  0.00000003
+   2  0.00107320  1.00122558 -0.00039611  0.00000000  0.00000001 -0.00000005
+   3  0.00298886 -0.00039611  0.01998332  0.00000000 -0.00000005  0.00000000
+   4  0.00000000  0.00000000  0.00000000  1.00000000  0.00000000  0.00000003
+   5  0.00000000  0.00000001 -0.00000005  0.00000000  1.97233439 -0.00368339
+   6  0.00000003 -0.00000005  0.00000000  0.00000003 -0.00368339  0.02335200
+
+ Natural orbitals :
+ ------------------
+           1           2           3           4           5           6
+   1 -0.99999824  0.00000002  0.00109176  0.00000000 -0.00000002 -0.00152272
+   2 -0.00109238  0.00000001 -0.99999932 -0.00000001  0.00000005  0.00040534
+   3 -0.00152228 -0.00000003  0.00040701  0.00000000  0.00000016  0.99999876
+   4  0.00000000  0.00000000 -0.00000001  1.00000000 -0.00000003  0.00000000
+   5  0.00000002  0.99999821  0.00000001  0.00000000  0.00188989  0.00000003
+   6 -0.00000001 -0.00188989  0.00000005  0.00000003  0.99999821 -0.00000016
+
+ Occupation numbers :
+ --------------------
+           1           2           3           4           5           6
+   1  1.98311043  1.97234135  1.00122457  1.00000000  0.02334503  0.01997861
+
+ -- Starting optimization - step 15 --------
+
+ Overlap-based optimization (Svb).
+
+ Optimization algorithm:            dFletch
+ Maximum number of iterations:           50
+ Spin basis:                         Kotani
+
+ -------------------------------------------
+ 
+ Restoring CI vector from file JOBOLD.
+ Optimization entering local region.
+ Converged ... maximum update to coefficient:  0.44186792D-05
+ Final Svb :    0.9987844738
+ Number of iterations used:   6
+
+ -- Wavefunction summary - step 16 ---------
+ 
+ Restoring CI vector from file JOBOLD.
+
+ Orbital coefficients :
+ ----------------------
+           1           2           3           4           5           6
+   1  0.88575264  0.88575259  0.44436711  0.59145444  0.59145443  0.00000001
+   2  0.11482102  0.11482104  0.89575082 -0.09750132 -0.09750133  0.00000002
+   3  0.18007305  0.18007304  0.01297460 -0.19764094 -0.19764092  0.00000000
+   4  0.00000000  0.00000000 -0.00000001  0.00000000  0.00000000  1.00000000
+   5  0.37702033 -0.37702045 -0.00000007  0.74567963 -0.74567965  0.00000000
+   6  0.16639637 -0.16639638 -0.00000001 -0.21348320  0.21348320  0.00000000
+
+ Overlap between orbitals :
+ --------------------------
+           1           2           3           4           5           6
+   1  1.00000000  0.66033574  0.49878672  0.72271088  0.23148376  0.00000001
+   2  0.66033574  1.00000000  0.49878677  0.23148366  0.72271093  0.00000001
+   3  0.49878672  0.49878677  1.00000000  0.17292166  0.17292173  0.00000001
+   4  0.72271088  0.23148366  0.17292166  1.00000000 -0.20322641  0.00000000
+   5  0.23148376  0.72271093  0.17292173 -0.20322641  1.00000000  0.00000000
+   6  0.00000001  0.00000001  0.00000001  0.00000000  0.00000000  1.00000000
+
+ Structure coefficients :
+ ------------------------
+      0.08926016  0.11523440  0.03279986 -0.00000001 -0.81459810 -0.20591790 -0.32920251 -0.35666024
+      0.19006515
+ 
+ Saving VB wavefunction to file VBWFN.
+ 
+ Saving VB CI vector to file JOBIPH.
+ 
+ Svb :          0.9987844738
+ Evb :        -38.9517081954
+
+ Chirgwin-Coulson weights of structures :
+ ----------------------------------------
+ VB spin+space (norm   1.00000000) :
+      0.00122378  0.00203963  0.00037808  0.00000000  0.50765622  0.05372145  0.20536236  0.16116437
+      0.06845412
+ VB spin only  (norm   0.75733964) :
+      0.00796738  0.01327897  0.00107583  0.00000000  0.66357007  0.04240218  0.10837429  0.12720653
+      0.03612476
+
+ Inverse-overlap weights of structures :
+ ---------------------------------------
+ VB spin+space (norm   0.19582777) :
+      0.00388586  0.00669851  0.00037862  0.00000000  0.65680074  0.03670516  0.11415720  0.14412564
+      0.03724828
+
+ Weights of Lowdin-orthogonalized structures :
+ ---------------------------------------------
+ VB spin+space (norm   1.00000000) :
+      0.00115875  0.00192088  0.00056186  0.00000001  0.42063262  0.06957151  0.24116939  0.16296016
+      0.10202484
+
+ Expectation values of (s(i)+s(j))**2
+ Lower triangle uses SPIN function with Snorm=      0.75733964
+ Upper triangle uses FULL function with Snorm=      1.00000000
+           1           2           3           4           5           6
+   1  0.00000000  1.45236705  1.54019592 -0.05876354  1.60107916  1.60300637
+   2  1.71100190  0.00000000  1.54019592  1.60107916 -0.05876355  1.60300638
+   3  1.67172365  1.67172368  0.00000000  1.47058363  1.47058364  1.99504195
+   4  0.07105102  1.25998570  1.31972098  0.00000000  1.45236705  1.39401042
+   5  1.25998571  0.07105103  1.31972095  1.71100190  0.00000000  1.39401043
+   6  1.72007183  1.72007185  1.99644071  1.24822456  1.24822453  0.00000000
+
+ Weights of CASSCF configurations in VB basis (c_res=c_cas-Svb*c_vb) :
+ ---------------------------------------------------------------------
+ Sum of inverse-overlap weights :
+ c_cas :  0.14772774D-02 expected :  0.10000000D+01
+ c_res :  0.45957843D-03 expected :  0.24295749D-02
+ 
+  Conf. =>  Orbitals              Chirgwin-Coulson                Lowdin                          Inverse
+                                  c_cas           c_res           c_cas           c_res           c_cas           c_res
+      1 =>  1  2  3  4  5  6   0.11033405D+01 -0.42036864D-10  0.30353674D+00  0.15732822D-04  0.70089278D+00  0.93646172D-04
+      2 =>  1  1  2  3  4  5   0.31683291D-17  0.56073333D-18  0.56045727D-18  0.17900053D-18  0.30053902D-17  0.23471107D-19
+      3 =>  1  1  2  3  4  6   0.17445783D-01  0.23854734D-04  0.11646444D-01  0.29941844D-04  0.75632491D-02  0.59066481D-04
+      4 =>  1  1  2  3  5  6  -0.25910676D-01  0.99813456D-05  0.80330986D-01  0.52792464D-05  0.13125331D-02  0.10250451D-04
+      5 =>  1  1  2  4  5  6  -0.30964045D-02  0.61192014D-04  0.39506647D-02  0.31280581D-04  0.40694914D-02  0.31781386D-04
+      6 =>  1  1  3  4  5  6  -0.46500574D-01  0.13866419D-03  0.15084241D-01  0.11547288D-03  0.33717181D-01  0.26332006D-03
+      7 =>  2  2  1  3  4  5  -0.40571345D-17 -0.34414766D-18  0.20110964D-17  0.36086520D-19  0.18754986D-17  0.14647026D-19
+      8 =>  2  2  1  3  4  6  -0.25910697D-01  0.99813606D-05  0.80330986D-01  0.52792500D-05  0.13125352D-02  0.10250467D-04
+      9 =>  2  2  1  3  5  6   0.17445780D-01  0.23854698D-04  0.11646439D-01  0.29941825D-04  0.75632475D-02  0.59066469D-04
+     10 =>  2  2  1  4  5  6  -0.30964158D-02  0.61192043D-04  0.39506648D-02  0.31280588D-04  0.40694920D-02  0.31781391D-04
+
+ Accumulated weights:   Chirgwin-Coulson                Lowdin                          Inverse
+                        c_cas           c_res           c_cas           c_res           c_cas           c_res
+ For ionicity  0 :   0.11033405D+01 -0.42036864D-10  0.30353674D+00  0.15732822D-04  0.70089278D+00  0.93646172D-04
+ For ionicity  1 :  -0.16531966D+00  0.11544089D-02  0.53532994D+00  0.11006649D-02  0.21095613D+00  0.16474978D-02
+ For ionicity  2 :   0.61979142D-01  0.12751660D-02  0.16113332D+00  0.13131772D-02  0.88151085D-01  0.68843091D-03
+ Total all       :   0.10000000D+01  0.24295749D-02  0.10000000D+01  0.24295749D-02  0.10000000D+01  0.24295749D-02
+ 
+
+ Symmetry contributions to total VB wavefunction :
+ -------------------------------------------------
+ Irreps 1 to 4 :  0.15973274E-18  0.10000000E+01  0.17304098E-17  0.15607092E-15
+
+ Energies for components > 1d-10 :
+ ---------------------------------
+ Irreps 1 to 4 :  0.00000000E+00 -0.38951708E+02  0.00000000E+00  0.00000000E+00
+
+ One-electron density :
+ ----------------------
+           1           2           3           4           5           6
+   1  1.98326837  0.00000553  0.00011411  0.00000000  0.00000000  0.00000000
+   2  0.00000553  1.00106511 -0.00015134  0.00000000  0.00000000  0.00000000
+   3  0.00011411 -0.00015134  0.01968200  0.00000000  0.00000000  0.00000000
+   4  0.00000000  0.00000000  0.00000000  1.00000000  0.00000000  0.00000000
+   5  0.00000000  0.00000000  0.00000000  0.00000000  1.97181576 -0.00002381
+   6  0.00000000  0.00000000  0.00000000  0.00000000 -0.00002381  0.02416875
+
+ Natural orbitals :
+ ------------------
+           1           2           3           4           5           6
+   1 -1.00000000  0.00000008 -0.00000561  0.00000000  0.00000000  0.00005811
+   2 -0.00000562  0.00000000  0.99999999  0.00000000  0.00000000 -0.00015421
+   3 -0.00005811  0.00000000 -0.00015421  0.00000000 -0.00000013 -0.99999999
+   4  0.00000000  0.00000000  0.00000000 -1.00000000  0.00000000  0.00000000
+   5  0.00000008  1.00000000  0.00000000  0.00000000 -0.00001223  0.00000000
+   6  0.00000000 -0.00001223  0.00000000  0.00000000 -1.00000000  0.00000013
+
+ Occupation numbers :
+ --------------------
+           1           2           3           4           5           6
+   1  1.98326838  1.97181576  1.00106514  1.00000000  0.02416875  0.01968197
+
+ Total number of structure transformations :            1396
+ Total number of Hamiltonian applications :              487
+ Total number of 2-electron density evaluations :         53
+ Total number of Hessian applications :                  693
+ Total number of pure orbital Hessian applications :     218
+ Total number of pure CI Hessian applications :           28
+ Approximate memory usage (8-byte words) :             14057
+
+ CASVB completed on Fri Oct  7 2016 at 14:26:17 after     1.630 CPU seconds
+--- Stop Module:  casvb at Fri Oct  7 14:26:17 2016 /rc=0 ---
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 14:26:17 2016 /rc=0 ---
+--- Module auto spent 8 seconds 

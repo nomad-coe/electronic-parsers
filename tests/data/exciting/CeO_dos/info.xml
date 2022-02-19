@@ -1,0 +1,531 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="http://xml.exciting-code.org/info.xsl" type="text/xsl"?>
+<info date="2018-11-13" time="11:50:18" versionhash="" title="Ce O2">
+  <groundstate status="finished">
+    <scl>
+      <iter iteration="1" rms="0.567176235729992" rmslog10="-0.246281974065" deltae="8966.75386540837" deltaelog10="3.95263524867" chgdst="6.946095079206711E-002" chgdstlog10="-1.15825927630" fermidos="0.281024724249E-10">
+        <energies totalEnergy="-8966.75386541" fermiEnergy="0.150720304746" sum-of-eigenvalues="-5531.98850248" electronic-kinetic="9697.40281464" core-electron-kinetic="0.00000000000" Coulomb="-18436.9380968" Coulomb-potential="-14932.9681267" nuclear-nuclear="-716.985811464" electron-nuclear="-20506.9364439" Hartree="2786.98415855" Madelung="-10970.4540334" xc-potential="-296.423190377" xc-effective-B-field="-0.119313980080E-29" external-B-field="-0.222653468488E-16" exchange="-223.468447714" correlation="-3.75044299851" LDApU="0.307426401883E-03"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.5479375308E-03" valence="24.00000000" interstitial="2.813211947" muffin-tin-total="71.18678805">
+          <atom species="Ce" muffin-tin="54.09316935"/>
+          <atom species="O" muffin-tin="8.546809354"/>
+          <atom species="O" muffin-tin="8.546809354"/>
+        </charges>
+        <timing timetot="107.606792927" timeinit="7.25557017326" timemat="0.743389844894" timefv="0.387786865234" timesv="11.1767411232" timerho="0.768774271011" timepot="87.2745306492" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="-0.406349316254E-14"/>
+          <interstitial x="-0.325986616740E-15"/>
+          <mommttot x="-0.373750654580E-14"/>
+          <atom species="Ce">
+            <mommt x="-0.779365295667E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.147907062507E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.147907062507E-14"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="2" rms="0.405082972638066" rmslog10="-0.392456011679" deltae="29.2319424996695" deltaelog10="1.46585767574" chgdst="3.313905764503098E-002" chgdstlog10="-1.47965984551" fermidos="0.281047229976E-10">
+        <energies totalEnergy="-8995.98580791" fermiEnergy="0.253689152287" sum-of-eigenvalues="-5543.74688071" electronic-kinetic="9676.45908590" core-electron-kinetic="0.00000000000" Coulomb="-18445.3994639" Coulomb-potential="-14923.9893551" nuclear-nuclear="-716.985811464" electron-nuclear="-20532.8379498" Hartree="2804.42429734" Madelung="-10983.4047864" xc-potential="-296.216611491" xc-effective-B-field="-0.832987646918E-27" external-B-field="0.798046615560E-17" exchange="-223.277315603" correlation="-3.76972982556" LDApU="0.161555165566E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.4125282500E-03" valence="24.00000000" interstitial="3.283523798" muffin-tin-total="70.71647620">
+          <atom species="Ce" muffin-tin="54.79138715"/>
+          <atom species="O" muffin-tin="7.962544524"/>
+          <atom species="O" muffin-tin="7.962544524"/>
+        </charges>
+        <timing itertime="105.727372169" timetot="209.098062038" timeinit="7.25557017326" timemat="1.48606681824" timefv="0.775009870529" timesv="22.4340651035" timerho="2.24557018280" timepot="174.901779890" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="0.291291843576E-14"/>
+          <interstitial x="0.283527921375E-16"/>
+          <mommttot x="0.288456564362E-14"/>
+          <atom species="Ce">
+            <mommt x="0.654816960146E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.183180197892E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.183180197892E-14"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="3" rms="0.288213391375331" rmslog10="-0.540285844253" deltae="22.8008837908092" deltaelog10="1.35795168112" chgdst="1.666898399476901E-002" chgdstlog10="-1.77809087041" fermidos="0.281047111101E-10">
+        <energies totalEnergy="-9018.78669170" fermiEnergy="0.278945558453" sum-of-eigenvalues="-5549.04701214" electronic-kinetic="9660.32570679" core-electron-kinetic="0.00000000000" Coulomb="-18451.8461342" Coulomb-potential="-14912.8492566" nuclear-nuclear="-716.985811464" electron-nuclear="-20556.8713889" Hartree="2822.01106615" Madelung="-10995.4215059" xc-potential="-296.523462334" xc-effective-B-field="0.414329768153E-26" external-B-field="0.174315060169E-17" exchange="-223.490446455" correlation="-3.78184154102" LDApU="0.602371636755E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3615257876E-03" valence="24.00000000" interstitial="3.350115830" muffin-tin-total="70.64988417">
+          <atom species="Ce" muffin-tin="55.33650372"/>
+          <atom species="O" muffin-tin="7.656690224"/>
+          <atom species="O" muffin-tin="7.656690224"/>
+        </charges>
+        <timing itertime="106.641047001" timetot="311.365275145" timeinit="7.25557017326" timemat="2.23087596893" timefv="1.16299200058" timesv="33.5482189655" timerho="3.84229207039" timepot="263.325325966" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="0.127252103447E-14"/>
+          <interstitial x="0.626338618145E-14"/>
+          <mommttot x="-0.499086514697E-14"/>
+          <atom species="Ce">
+            <mommt x="-0.536829324109E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.222701791143E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.222701791143E-14"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="4" rms="0.291990562424827" rmslog10="-0.534631185377" deltae="100.939424920263" deltaelog10="2.00406082611" chgdst="4.849084719399814E-002" chgdstlog10="-1.31434022817" fermidos="0.186947987168E-10">
+        <energies totalEnergy="-8917.84726678" fermiEnergy="0.231694938154" sum-of-eigenvalues="-5504.12534205" electronic-kinetic="9725.50794294" core-electron-kinetic="0.00000000000" Coulomb="-18416.9611604" Coulomb-potential="-14934.2975005" nuclear-nuclear="-716.985811464" electron-nuclear="-20465.6531974" Hartree="2765.67784847" Madelung="-10949.8124102" xc-potential="-295.335784526" xc-effective-B-field="-0.136290492312E-25" external-B-field="0.322178958444E-17" exchange="-222.645614516" correlation="-3.74865917797" LDApU="0.224375336966E-03"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.8348775822E-03" valence="24.00000000" interstitial="3.090440775" muffin-tin-total="70.90955922">
+          <atom species="Ce" muffin-tin="53.86587902"/>
+          <atom species="O" muffin-tin="8.521840102"/>
+          <atom species="O" muffin-tin="8.521840102"/>
+        </charges>
+        <timing itertime="106.621703863" timetot="413.368630886" timeinit="7.25557017326" timemat="2.97476291656" timefv="1.55151796341" timesv="44.5254180431" timerho="5.43558478355" timepot="351.625777006" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="0.470389077213E-14"/>
+          <interstitial x="0.206206170741E-14"/>
+          <mommttot x="0.264182906472E-14"/>
+          <atom species="Ce">
+            <mommt x="0.372530744514E-13"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.173056226934E-13"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.173056226934E-13"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="5" rms="0.103307492885809" rmslog10="-0.985868177987" deltae="78.0195818383563" deltaelog10="1.89220361829" chgdst="2.257233889856488E-002" chgdstlog10="-1.64642343790" fermidos="0.281048792660E-10">
+        <energies totalEnergy="-8995.86684862" fermiEnergy="0.235777955223" sum-of-eigenvalues="-5544.48763595" electronic-kinetic="9678.64482337" core-electron-kinetic="0.00000000000" Coulomb="-18447.1300782" Coulomb-potential="-14926.4839429" nuclear-nuclear="-716.985811464" electron-nuclear="-20533.8045906" Hartree="2803.66032386" Madelung="-10983.8881068" xc-potential="-296.648516408" xc-effective-B-field="-0.190726182861E-26" external-B-field="0.563432497245E-18" exchange="-223.621986489" correlation="-3.76035674951" LDApU="0.749483424010E-03"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3843722567E-03" valence="24.00000000" interstitial="3.011890155" muffin-tin-total="70.98810984">
+          <atom species="Ce" muffin-tin="54.52813823"/>
+          <atom species="O" muffin-tin="8.229985806"/>
+          <atom species="O" muffin-tin="8.229985806"/>
+        </charges>
+        <timing itertime="106.075971127" timetot="514.958567142" timeinit="7.25557017326" timemat="3.72079086304" timefv="1.94411706924" timesv="55.5119020939" timerho="6.96862196922" timepot="439.557564974" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="0.164525016612E-14"/>
+          <interstitial x="0.794571979388E-14"/>
+          <mommttot x="-0.630046962776E-14"/>
+          <atom species="Ce">
+            <mommt x="0.222554128777E-13"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.142779412527E-13"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.142779412527E-13"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="6" rms="2.698845040457987E-002" rmslog10="-1.56882205061" deltae="27.5305977370608" deltaelog10="1.43981564078" chgdst="3.353198450634580E-002" chgdstlog10="-1.47454074318" fermidos="0.281181111710E-10">
+        <energies totalEnergy="-9023.39744635" fermiEnergy="0.299682531931" sum-of-eigenvalues="-5548.67211459" electronic-kinetic="9655.71381027" core-electron-kinetic="0.00000000000" Coulomb="-18451.7386175" Coulomb-potential="-14907.7196238" nuclear-nuclear="-716.985811464" electron-nuclear="-20561.7859883" Hartree="2827.03318225" Madelung="-10997.8788056" xc-potential="-296.666301084" xc-effective-B-field="-0.187955859363E-28" external-B-field="-0.759678789981E-18" exchange="-223.597063594" correlation="-3.78314957896" LDApU="0.757403567733E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3351566841E-03" valence="24.00000000" interstitial="3.305566548" muffin-tin-total="70.69443345">
+          <atom species="Ce" muffin-tin="55.46623364"/>
+          <atom species="O" muffin-tin="7.614099905"/>
+          <atom species="O" muffin-tin="7.614099905"/>
+        </charges>
+        <timing itertime="106.161368847" timetot="616.767703533" timeinit="7.25557017326" timemat="4.46639800072" timefv="2.32831215858" timesv="66.5758070946" timerho="8.52033805847" timepot="527.621278048" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="-0.443659768127E-14"/>
+          <interstitial x="0.350675212864E-14"/>
+          <mommttot x="-0.794334980992E-14"/>
+          <atom species="Ce">
+            <mommt x="0.422328967432E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.608331974212E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.608331974212E-14"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="7" rms="2.666541827657624E-002" rmslog10="-1.57405159954" deltae="15.8491817533395" deltaelog10="1.20000684579" chgdst="1.361335939343996E-002" chgdstlog10="-1.86603468993" fermidos="0.288219199260E-10">
+        <energies totalEnergy="-9007.54826460" fermiEnergy="0.287597163468" sum-of-eigenvalues="-5546.51828135" electronic-kinetic="9667.96478806" core-electron-kinetic="0.00000000000" Coulomb="-18448.2901938" Coulomb-potential="-14918.0286470" nuclear-nuclear="-716.985811464" electron-nuclear="-20544.5801177" Hartree="2813.27573531" Madelung="-10989.2758703" xc-potential="-296.454422381" xc-effective-B-field="-0.126238246980E-27" external-B-field="-0.381971918449E-18" exchange="-223.452187731" correlation="-3.77329847099" LDApU="0.262734913539E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3545332165E-03" valence="24.00000000" interstitial="3.267620768" muffin-tin-total="70.73237923">
+          <atom species="Ce" muffin-tin="55.00800770"/>
+          <atom species="O" muffin-tin="7.862185764"/>
+          <atom species="O" muffin-tin="7.862185764"/>
+        </charges>
+        <timing itertime="105.730499983" timetot="718.304280281" timeinit="7.25557017326" timemat="5.21082091331" timefv="2.71108508110" timesv="77.5763051510" timerho="10.0987761021" timepot="615.451722860" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="-0.446150596819E-14"/>
+          <interstitial x="-0.123281105331E-16"/>
+          <mommttot x="-0.444917785765E-14"/>
+          <atom species="Ce">
+            <mommt x="-0.101026024663E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.217407591650E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.217407591650E-14"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="8" rms="1.021170143319109E-002" rmslog10="-1.99090189146" deltae="11.7977756352866" deltaelog10="1.07180013270" chgdst="8.146017007556298E-003" chgdstlog10="-2.08905468751" fermidos="0.327256803832E-10">
+        <energies totalEnergy="-9019.34604024" fermiEnergy="0.293210666422" sum-of-eigenvalues="-5548.96486131" electronic-kinetic="9659.47239276" core-electron-kinetic="0.00000000000" Coulomb="-18451.4610372" Coulomb-potential="-14911.7971046" nuclear-nuclear="-716.985811464" electron-nuclear="-20557.1533469" Hartree="2822.67812116" Madelung="-10995.5624849" xc-potential="-296.640149512" xc-effective-B-field="-0.534208302127E-29" external-B-field="-0.152732690915E-18" exchange="-223.583626845" correlation="-3.77920331346" LDApU="0.543434596276E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3361568795E-03" valence="24.00000000" interstitial="3.277524612" muffin-tin-total="70.72247539">
+          <atom species="Ce" muffin-tin="55.29217442"/>
+          <atom species="O" muffin-tin="7.715150485"/>
+          <atom species="O" muffin-tin="7.715150485"/>
+        </charges>
+        <timing itertime="105.652884007" timetot="819.632641554" timeinit="7.25557017326" timemat="5.95705103874" timefv="3.09402203560" timesv="88.5442731380" timerho="11.5979821682" timepot="703.183743000" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="-0.356789480662E-14"/>
+          <interstitial x="-0.795163332581E-15"/>
+          <mommttot x="-0.277273147404E-14"/>
+          <atom species="Ce">
+            <mommt x="-0.625998201092E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.107336663647E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.107336663647E-14"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="9" rms="4.880130728227056E-003" rmslog10="-2.31156854402" deltae="4.94579499616884" deltaelog10="0.694236110837" chgdst="3.173898057828512E-003" chgdstlog10="-2.49840702643" fermidos="0.329550651965E-10">
+        <energies totalEnergy="-9014.40024524" fermiEnergy="0.291854891188" sum-of-eigenvalues="-5548.01698110" electronic-kinetic="9662.97507595" core-electron-kinetic="0.00000000000" Coulomb="-18450.0838161" Coulomb-potential="-14914.4422624" nuclear-nuclear="-716.985811464" electron-nuclear="-20551.7537469" Hartree="2818.65574226" Madelung="-10992.8626849" xc-potential="-296.549794678" xc-effective-B-field="-0.754270269276E-29" external-B-field="0.315030738557E-19" exchange="-223.518708573" correlation="-3.77690705657" LDApU="0.411053577980E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3431541976E-03" valence="24.00000000" interstitial="3.280450787" muffin-tin-total="70.71954921">
+          <atom species="Ce" muffin-tin="55.17704224"/>
+          <atom species="O" muffin-tin="7.771253487"/>
+          <atom species="O" muffin-tin="7.771253487"/>
+        </charges>
+        <timing itertime="105.712616205" timetot="920.995469332" timeinit="7.25557017326" timemat="6.70449995995" timefv="3.48105788231" timesv="99.5204510689" timerho="13.1198952198" timepot="790.913995028" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="0.147184801013E-14"/>
+          <interstitial x="0.240411232101E-15"/>
+          <mommttot x="0.123143677803E-14"/>
+          <atom species="Ce">
+            <mommt x="0.128134471460E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.249539682843E-16"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.249539682843E-16"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="10" rms="1.179887743370838E-003" rmslog10="-2.92815931028" deltae="2.03798034181818" deltaelog10="0.309199990524" chgdst="1.271530249843918E-003" chgdstlog10="-2.89567330345" fermidos="0.245113500400E-10">
+        <energies totalEnergy="-9016.43822558" fermiEnergy="0.292307585008" sum-of-eigenvalues="-5548.43441134" electronic-kinetic="9661.53109833" core-electron-kinetic="0.00000000000" Coulomb="-18450.6506708" Coulomb-potential="-14913.3785533" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.9511653" Hartree="2820.28630602" Madelung="-10993.9613941" xc-potential="-296.586956396" xc-effective-B-field="-0.880500075545E-28" external-B-field="-0.234413705439E-19" exchange="-223.545450625" correlation="-3.77782620937" LDApU="0.462368303096E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3400610202E-03" valence="24.00000000" interstitial="3.278988031" muffin-tin-total="70.72101197">
+          <atom species="Ce" muffin-tin="55.22330743"/>
+          <atom species="O" muffin-tin="7.748852270"/>
+          <atom species="O" muffin-tin="7.748852270"/>
+        </charges>
+        <timing itertime="106.032349825" timetot="1022.64018559" timeinit="7.25557017326" timemat="7.45367097855" timefv="3.86076903343" timesv="110.589742184" timerho="14.5873012543" timepot="878.893131971" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="-0.219039797499E-14"/>
+          <interstitial x="-0.154696558738E-14"/>
+          <mommttot x="-0.643432387616E-15"/>
+          <atom species="Ce">
+            <mommt x="-0.245305169211E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="0.904809652245E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="0.904809652245E-15"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="11" rms="1.702522102120645E-004" rmslog10="-3.76890724137" deltae="0.327746989387379" deltaelog10="-0.484461288954" chgdst="1.911529720730066E-004" chgdstlog10="-3.71861894512" fermidos="0.214953038989E-10">
+        <energies totalEnergy="-9016.11047859" fermiEnergy="0.292315215140" sum-of-eigenvalues="-5548.36367262" electronic-kinetic="9661.75989203" core-electron-kinetic="0.00000000000" Coulomb="-18450.5566022" Coulomb-potential="-14913.5432601" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.5983214" Hartree="2820.02753065" Madelung="-10993.7849722" xc-potential="-296.580304527" xc-effective-B-field="-0.870526807017E-26" external-B-field="-0.229784036373E-19" exchange="-223.540611733" correlation="-3.77769712495" LDApU="0.454047381829E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3405911606E-03" valence="24.00000000" interstitial="3.279775426" muffin-tin-total="70.72022457">
+          <atom species="Ce" muffin-tin="55.21625349"/>
+          <atom species="O" muffin-tin="7.751985541"/>
+          <atom species="O" muffin-tin="7.751985541"/>
+        </charges>
+        <timing itertime="105.614310980" timetot="1123.94220352" timeinit="7.25557017326" timemat="8.20194196701" timefv="4.24052309990" timesv="121.508172035" timerho="16.1092402935" timepot="966.626755953" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="-0.429427526017E-14"/>
+          <interstitial x="-0.775591437420E-15"/>
+          <mommttot x="-0.351868382275E-14"/>
+          <atom species="Ce">
+            <mommt x="-0.508819812164E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="0.784757149441E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="0.784757149441E-15"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="12" rms="1.264741478953459E-004" rmslog10="-3.89799823792" deltae="0.105852779504858" deltaelog10="-0.975297733698" chgdst="6.264203146671529E-005" chgdstlog10="-4.20313416665" fermidos="0.202178962801E-10">
+        <energies totalEnergy="-9016.00462581" fermiEnergy="0.292290627137" sum-of-eigenvalues="-5548.34184775" electronic-kinetic="9661.83304494" core-electron-kinetic="0.00000000000" Coulomb="-18450.5252880" Coulomb-potential="-14913.5964856" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.4824674" Hartree="2819.94299087" Madelung="-10993.7270451" xc-potential="-296.578407064" xc-effective-B-field="-0.538790907596E-28" external-B-field="-0.138393804215E-19" exchange="-223.539250413" correlation="-3.77764844033" LDApU="0.451606030213E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3407443680E-03" valence="24.00000000" interstitial="3.279734906" muffin-tin-total="70.72026509">
+          <atom species="Ce" muffin-tin="55.21404210"/>
+          <atom species="O" muffin-tin="7.753111497"/>
+          <atom species="O" muffin-tin="7.753111497"/>
+        </charges>
+        <timing itertime="105.800577164" timetot="1225.28019142" timeinit="7.25557017326" timemat="8.94782400131" timefv="4.62069487572" timesv="132.468691111" timerho="17.6284682751" timepot="1054.35894299" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="-0.517269257676E-14"/>
+          <interstitial x="-0.263244989674E-14"/>
+          <mommttot x="-0.254024268001E-14"/>
+          <atom species="Ce">
+            <mommt x="0.500036665050E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.152013967253E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.152013967253E-14"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="13" rms="2.353253345747465E-005" rmslog10="-4.62833131518" deltae="4.475894533425162E-002" deltaelog10="-1.34912015541" chgdst="2.623188117495263E-005" chgdstlog10="-4.58117056360" fermidos="0.196325095557E-10">
+        <energies totalEnergy="-9016.04938476" fermiEnergy="0.292295108552" sum-of-eigenvalues="-5548.35171714" electronic-kinetic="9661.80185084" core-electron-kinetic="0.00000000000" Coulomb="-18450.5382312" Coulomb-potential="-14913.5743115" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.5305279" Hartree="2819.97810821" Madelung="-10993.7510754" xc-potential="-296.579256487" xc-effective-B-field="-0.208562388962E-28" external-B-field="-0.984243432045E-21" exchange="-223.539864650" correlation="-3.77766708805" LDApU="0.452730346596E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3406741916E-03" valence="24.00000000" interstitial="3.279674295" muffin-tin-total="70.72032570">
+          <atom species="Ce" muffin-tin="55.21500856"/>
+          <atom species="O" muffin-tin="7.752658571"/>
+          <atom species="O" muffin-tin="7.752658571"/>
+        </charges>
+        <timing itertime="105.651453018" timetot="1326.71747398" timeinit="7.25557017326" timemat="9.69067215919" timefv="4.99733185768" timesv="143.579308271" timerho="19.1465106010" timepot="1142.04808092" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="-0.735753847296E-15"/>
+          <interstitial x="-0.188516851135E-14"/>
+          <mommttot x="0.114941466405E-14"/>
+          <atom species="Ce">
+            <mommt x="0.955436650830E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="0.969890066111E-16"/>
+          </atom>
+          <atom species="O">
+            <mommt x="0.969890066111E-16"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="14" rms="2.819353147147956E-005" rmslog10="-4.54985052177" deltae="1.022962201750488E-002" deltaelog10="-1.99014041309" chgdst="6.409794519539308E-006" chgdstlog10="-5.19315589255" fermidos="0.193520266973E-10">
+        <energies totalEnergy="-9016.05961438" fermiEnergy="0.292297930978" sum-of-eigenvalues="-5548.35397027" electronic-kinetic="9661.79476288" core-electron-kinetic="0.00000000000" Coulomb="-18450.5412480" Coulomb-potential="-14913.5693046" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.5415684" Hartree="2819.98613190" Madelung="-10993.7565957" xc-potential="-296.579428505" xc-effective-B-field="-0.125500355357E-27" external-B-field="0.662485205283E-21" exchange="-223.539987184" correlation="-3.77767197960" LDApU="0.452991257981E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3406584976E-03" valence="24.00000000" interstitial="3.279683571" muffin-tin-total="70.72031643">
+          <atom species="Ce" muffin-tin="55.21523162"/>
+          <atom species="O" muffin-tin="7.752542406"/>
+          <atom species="O" muffin-tin="7.752542406"/>
+        </charges>
+        <timing itertime="105.651403904" timetot="1428.20945811" timeinit="7.25557017326" timemat="10.4370491505" timefv="5.37879967690" timesv="154.681530476" timerho="20.6685297489" timepot="1229.78797889" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="0.990458300649E-15"/>
+          <interstitial x="0.533419749312E-16"/>
+          <mommttot x="0.937116325718E-15"/>
+          <atom species="Ce">
+            <mommt x="0.116611375082E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.114498712552E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.114498712552E-15"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="15" rms="4.510608072077091E-006" rmslog10="-5.34576490722" deltae="8.925049862227752E-003" deltaelog10="-2.04938934890" chgdst="5.681893061601216E-006" chgdstlog10="-5.24550694435" fermidos="0.192134421209E-10">
+        <energies totalEnergy="-9016.05068933" fermiEnergy="0.292297066080" sum-of-eigenvalues="-5548.35214169" electronic-kinetic="9661.80107613" core-electron-kinetic="0.00000000000" Coulomb="-18450.5387585" Coulomb-potential="-14913.5739569" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.5319372" Hartree="2819.97899017" Madelung="-10993.7517801" xc-potential="-296.579260920" xc-effective-B-field="-0.392144959817E-28" external-B-field="0.641509887976E-21" exchange="-223.539866415" correlation="-3.77766804656" LDApU="0.452753939578E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3406716883E-03" valence="24.00000000" interstitial="3.279696147" muffin-tin-total="70.72030385">
+          <atom species="Ce" muffin-tin="55.21502266"/>
+          <atom species="O" muffin-tin="7.752640595"/>
+          <atom species="O" muffin-tin="7.752640595"/>
+        </charges>
+        <timing itertime="105.639697075" timetot="1529.69594550" timeinit="7.25557017326" timemat="11.1815412045" timefv="5.75544762611" timesv="165.795793533" timerho="22.1634728909" timepot="1317.54412007" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="0.191819768480E-14"/>
+          <interstitial x="-0.369428937655E-14"/>
+          <mommttot x="0.561248706135E-14"/>
+          <atom species="Ce">
+            <mommt x="-0.197599321864E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="0.379424013999E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="0.379424013999E-14"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="16" rms="6.611577648503201E-007" rmslog10="-6.17969489720" deltae="3.448061306698946E-004" deltaelog10="-3.46242502100" chgdst="4.638698301433341E-007" chgdstlog10="-6.33360387285" fermidos="0.191454446514E-10">
+        <energies totalEnergy="-9016.05103414" fermiEnergy="0.292298350572" sum-of-eigenvalues="-5548.35215665" electronic-kinetic="9661.80081122" core-electron-kinetic="0.00000000000" Coulomb="-18450.5388374" Coulomb-potential="-14913.5737051" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.5323467" Hartree="2819.97932080" Madelung="-10993.7519848" xc-potential="-296.579262743" xc-effective-B-field="-0.133262092009E-28" external-B-field="0.425873215394E-21" exchange="-223.539867258" correlation="-3.77766837450" LDApU="0.452766704944E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3406714094E-03" valence="24.00000000" interstitial="3.279699578" muffin-tin-total="70.72030042">
+          <atom species="Ce" muffin-tin="55.21503634"/>
+          <atom species="O" muffin-tin="7.752632042"/>
+          <atom species="O" muffin-tin="7.752632042"/>
+        </charges>
+        <timing itertime="105.624354839" timetot="1631.33506250" timeinit="7.25557017326" timemat="11.9297382832" timefv="6.13463854790" timesv="177.031094313" timerho="23.6960301399" timepot="1405.28799105" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="0.254683218793E-14"/>
+          <interstitial x="-0.613595506096E-15"/>
+          <mommttot x="0.316042769403E-14"/>
+          <atom species="Ce">
+            <mommt x="-0.126628862418E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="0.164352827822E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="0.164352827822E-14"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="17" rms="1.003455151418619E-007" rmslog10="-6.99850203317" deltae="7.975501830514986E-005" deltaelog10="-4.09824198095" chgdst="6.610476363460195E-008" chgdstlog10="-7.17976724330" fermidos="0.191540979785E-10">
+        <energies totalEnergy="-9016.05111389" fermiEnergy="0.292298300508" sum-of-eigenvalues="-5548.35216742" electronic-kinetic="9661.80074557" core-electron-kinetic="0.00000000000" Coulomb="-18450.5388503" Coulomb-potential="-14913.5736486" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.5324291" Hartree="2819.97939023" Madelung="-10993.7520260" xc-potential="-296.579264393" xc-effective-B-field="-0.318940569847E-28" external-B-field="0.637433758942E-22" exchange="-223.539868455" correlation="-3.77766840847" LDApU="0.452769278855E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3406713133E-03" valence="24.00000000" interstitial="3.279699091" muffin-tin-total="70.72030091">
+          <atom species="Ce" muffin-tin="55.21503875"/>
+          <atom species="O" muffin-tin="7.752631079"/>
+          <atom species="O" muffin-tin="7.752631079"/>
+        </charges>
+        <timing itertime="105.723741055" timetot="1732.99023604" timeinit="7.25557017326" timemat="12.6756193638" timefv="6.51374864578" timesv="188.184091330" timerho="25.2091283798" timepot="1493.15207815" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="0.762403812339E-15"/>
+          <interstitial x="0.528208271262E-15"/>
+          <mommttot x="0.234195541077E-15"/>
+          <atom species="Ce">
+            <mommt x="0.125443361555E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.510119037239E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.510119037239E-15"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="18" rms="1.695524519880011E-008" rmslog10="-7.77069592528" deltae="3.533769449859392E-005" deltaelog10="-4.45176178814" chgdst="2.791525018412614E-008" chgdstlog10="-7.55415847553" fermidos="0.191702355226E-10">
+        <energies totalEnergy="-9016.05107855" fermiEnergy="0.292298204051" sum-of-eigenvalues="-5548.35216169" electronic-kinetic="9661.80077238" core-electron-kinetic="0.00000000000" Coulomb="-18450.5388421" Coulomb-potential="-14913.5736702" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.5323911" Hartree="2819.97936047" Madelung="-10993.7520070" xc-potential="-296.579263876" xc-effective-B-field="-0.557538631812E-27" external-B-field="0.962359818188E-22" exchange="-223.539868096" correlation="-3.77766838837" LDApU="0.452768229666E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3406713596E-03" valence="24.00000000" interstitial="3.279699044" muffin-tin-total="70.72030096">
+          <atom species="Ce" muffin-tin="55.21503779"/>
+          <atom species="O" muffin-tin="7.752631584"/>
+          <atom species="O" muffin-tin="7.752631584"/>
+        </charges>
+        <timing itertime="105.624520063" timetot="1834.47109008" timeinit="7.25557017326" timemat="13.4209022522" timefv="6.88926959038" timesv="199.209740400" timerho="26.7074763775" timepot="1580.98813128" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="0.230206443865E-14"/>
+          <interstitial x="0.146934781790E-15"/>
+          <mommttot x="0.215512965686E-14"/>
+          <atom species="Ce">
+            <mommt x="0.223049987198E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.376851075575E-16"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.376851075575E-16"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="19" rms="2.219750770394614E-009" rmslog10="-8.65369578461" deltae="3.694305632961914E-006" deltaelog10="-5.43246717787" chgdst="3.744596237877322E-009" chgdstlog10="-8.42659500336" fermidos="0.191797848493E-10">
+        <energies totalEnergy="-9016.05108225" fermiEnergy="0.292298161995" sum-of-eigenvalues="-5548.35216205" electronic-kinetic="9661.80076947" core-electron-kinetic="0.00000000000" Coulomb="-18450.5388429" Coulomb-potential="-14913.5736676" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.5323952" Hartree="2819.97936382" Madelung="-10993.7520091" xc-potential="-296.579263915" xc-effective-B-field="-0.124146199403E-28" external-B-field="-0.629031230266E-22" exchange="-223.539868121" correlation="-3.77766839103" LDApU="0.452768353239E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3406713557E-03" valence="24.00000000" interstitial="3.279699060" muffin-tin-total="70.72030094">
+          <atom species="Ce" muffin-tin="55.21503791"/>
+          <atom species="O" muffin-tin="7.752631516"/>
+          <atom species="O" muffin-tin="7.752631516"/>
+        </charges>
+        <timing itertime="105.682050943" timetot="1935.87123275" timeinit="7.25557017326" timemat="14.1646521091" timefv="7.26483941078" timesv="210.154120445" timerho="28.2030422688" timepot="1668.82900834" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="-0.300941581024E-14"/>
+          <interstitial x="-0.122445915787E-14"/>
+          <mommttot x="-0.178495665237E-14"/>
+          <atom species="Ce">
+            <mommt x="-0.357644282603E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="0.895743086830E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="0.895743086830E-15"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="20" rms="3.176638584975931E-009" rmslog10="-8.49803219326" deltae="3.584282239899039E-007" deltaelog10="-6.44559779968" chgdst="2.180707144324487E-010" chgdstlog10="-9.66140265361" fermidos="0.191837234246E-10">
+        <energies totalEnergy="-9016.05108261" fermiEnergy="0.292298142803" sum-of-eigenvalues="-5548.35216211" electronic-kinetic="9661.80076921" core-electron-kinetic="0.00000000000" Coulomb="-18450.5388430" Coulomb-potential="-14913.5736674" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.5323956" Hartree="2819.97936412" Madelung="-10993.7520093" xc-potential="-296.579263921" xc-effective-B-field="-0.167436439629E-29" external-B-field="-0.150322097471E-22" exchange="-223.539868125" correlation="-3.77766839119" LDApU="0.452768362193E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3406713552E-03" valence="24.00000000" interstitial="3.279699060" muffin-tin-total="70.72030094">
+          <atom species="Ce" muffin-tin="55.21503792"/>
+          <atom species="O" muffin-tin="7.752631512"/>
+          <atom species="O" muffin-tin="7.752631512"/>
+        </charges>
+        <timing itertime="105.687155962" timetot="2037.40697861" timeinit="7.25557017326" timemat="14.9113011360" timefv="7.64446830750" timesv="221.129075289" timerho="29.7078564167" timepot="1756.75870728" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="-0.143834415523E-14"/>
+          <interstitial x="0.849239151369E-15"/>
+          <mommttot x="-0.228758330660E-14"/>
+          <atom species="Ce">
+            <mommt x="-0.110961524050E-14"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.588984033051E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.588984033051E-15"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="21" rms="1.363443055540917E-009" rmslog10="-8.86536299574" deltae="4.882167559117079E-009" deltaelog10="-8.31138731940" chgdst="3.156853601127753E-011" chgdstlog10="-10.5007455580" fermidos="0.191856421886E-10">
+        <energies totalEnergy="-9016.05108261" fermiEnergy="0.292298133370" sum-of-eigenvalues="-5548.35216212" electronic-kinetic="9661.80076922" core-electron-kinetic="0.00000000000" Coulomb="-18450.5388430" Coulomb-potential="-14913.5736674" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.5323957" Hartree="2819.97936411" Madelung="-10993.7520093" xc-potential="-296.579263923" xc-effective-B-field="-0.479328430797E-29" external-B-field="-0.304974807670E-23" exchange="-223.539868126" correlation="-3.77766839119" LDApU="0.452768362945E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3406713551E-03" valence="24.00000000" interstitial="3.279699059" muffin-tin-total="70.72030094">
+          <atom species="Ce" muffin-tin="55.21503792"/>
+          <atom species="O" muffin-tin="7.752631512"/>
+          <atom species="O" muffin-tin="7.752631512"/>
+        </charges>
+        <timing itertime="105.573949099" timetot="2138.95513034" timeinit="7.25557017326" timemat="15.6570410728" timefv="8.02392935753" timesv="232.173262119" timerho="31.2135844231" timepot="1844.63174319" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="-0.583625081724E-15"/>
+          <interstitial x="0.668850381095E-15"/>
+          <mommttot x="-0.125247546282E-14"/>
+          <atom species="Ce">
+            <mommt x="-0.603279421779E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.324598020520E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.324598020520E-15"/>
+          </atom>
+        </moments>
+      </iter>
+      <iter iteration="22" rms="1.352321545751049E-009" rmslog10="-8.86892003255" deltae="5.540641723200679E-009" deltaelog10="-8.25643993190" chgdst="3.036808073125178E-011" chgdstlog10="-10.5175826547" fermidos="0.191854353224E-10">
+        <energies totalEnergy="-9016.05108261" fermiEnergy="0.292298134400" sum-of-eigenvalues="-5548.35216211" electronic-kinetic="9661.80076921" core-electron-kinetic="0.00000000000" Coulomb="-18450.5388430" Coulomb-potential="-14913.5736674" nuclear-nuclear="-716.985811464" electron-nuclear="-20553.5323956" Hartree="2819.97936412" Madelung="-10993.7520093" xc-potential="-296.579263921" xc-effective-B-field="-0.320812573555E-27" external-B-field="-0.312554080535E-23" exchange="-223.539868125" correlation="-3.77766839120" LDApU="0.452768362574E-02"/>
+        <charges totalcharge="74.00000000" core="50.00000000" core_leakage="0.3406713551E-03" valence="24.00000000" interstitial="3.279699060" muffin-tin-total="70.72030094">
+          <atom species="Ce" muffin-tin="55.21503792"/>
+          <atom species="O" muffin-tin="7.752631512"/>
+          <atom species="O" muffin-tin="7.752631512"/>
+        </charges>
+        <timing itertime="105.632189989" timetot="2240.50496674" timeinit="7.25557017326" timemat="16.4017300606" timefv="8.40748429298" timesv="243.170987129" timerho="32.7326836586" timepot="1932.53651142" timefor="0.00000000000"/>
+        <moments>
+          <momtot x="-0.119625881356E-14"/>
+          <interstitial x="0.850587355957E-15"/>
+          <mommttot x="-0.204684616952E-14"/>
+          <atom species="Ce">
+            <mommt x="-0.768013354536E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.639416407493E-15"/>
+          </atom>
+          <atom species="O">
+            <mommt x="-0.639416407493E-15"/>
+          </atom>
+        </moments>
+      </iter>
+      <structure>
+        <crystal unitCellVolume="267.2816343" BrillouinZoneVolume="0.9280481022" nktot="0" ngridk="8    8    8">
+          <basevect>0.000000000       5.112653663       5.112653663</basevect>
+          <basevect>5.112653663       0.000000000       5.112653663</basevect>
+          <basevect>5.112653663       5.112653663       0.000000000</basevect>
+          <reciprvect>-0.6144739817      0.6144739817      0.6144739817</reciprvect>
+          <reciprvect>0.6144739817     -0.6144739817      0.6144739817</reciprvect>
+          <reciprvect>0.6144739817      0.6144739817     -0.6144739817</reciprvect>
+        </crystal>
+        <species chemicalSymbol="Ce">
+          <atom x="0.00000000000" y="0.00000000000" z="0.00000000000"/>
+        </species>
+        <species chemicalSymbol="O">
+          <atom x="0.750000000000" y="0.750000000000" z="0.750000000000"/>
+          <atom x="0.250000000000" y="0.250000000000" z="0.250000000000"/>
+        </species>
+      </structure>
+    </scl>
+  </groundstate>
+</info>

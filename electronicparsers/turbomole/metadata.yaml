@@ -1,0 +1,7 @@
+codeLabel: TURBOMOLE
+codeLabelStyle: All in capitals
+codeUrl: https://www.turbomole.org/
+parserDirName: dependencies/parsers/turbomole/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-turbomole.git
+parserSpecific: ''
+tableOfFiles: ''

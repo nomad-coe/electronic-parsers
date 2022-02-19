@@ -1,0 +1,320 @@
+
+   OpenMP run-time library returned nthreads =  8
+
+ ccsdf12 (node093) : TURBOMOLE V7.2 ( 21285 ) 30 Jun 2017 at 09:40:16
+ Copyright (C) 2017 TURBOMOLE GmbH, Karlsruhe
+
+
+    2017-11-07 17:00:18.451 
+
+
+          ************************************************************
+          *                                                          *
+          *              C C S D F 1 2   P R O G R A M               *
+          *                                                          *
+          *               the quantum chemistry groups               *
+          *                  at the universities in                  *
+          *            Karlsruhe, Bochum, Bristol & Mainz            *
+          *                                                          *
+          ************************************************************
+
+
+   *-----------------------------------------------------------------------*
+   |                     program will use  8 thread(s)                     |
+   *-----------------------------------------------------------------------*
+
+
+              +--------------------------------------------------+
+              | Atomic coordinate, charge and isotop information |
+              +--------------------------------------------------+
+
+                    atomic coordinates            atom    charge  isotop
+         16.38080580   16.22878026   27.06012745    c      6.000     0
+         16.67466415   12.93073486   27.61142622    s     16.000     0
+         14.25125819   11.71706874   27.41499652    o      8.000     0
+         18.37776868   12.46441683   29.67696817    o      8.000     0
+         18.19818042   12.21917809   25.06548014    f      9.000     0
+         15.30906355   16.51216377   25.31419895    h      1.000     0
+         18.27617476   17.04807418   26.94186706    h      1.000     0
+         15.35129672   16.99992822   28.68340347    h      1.000     0
+ 
+       center of nuclear mass  :   16.80508991   13.04366365   27.33622846
+       center of nuclear charge:   16.77663670   13.16498186   27.34816185
+
+              +--------------------------------------------------+
+              |               basis set information              |
+              +--------------------------------------------------+
+
+              we will work with the 1s 3p 5d 7f 9g ... basis set
+              ...i.e. with spherical basis functions...
+
+   type   atoms  prim   cont   basis
+   ---------------------------------------------------------------------------
+    c        1     46     31   def2-TZVPP   [5s3p2d1f|11s6p2d1f]
+    s        1     63     42   def2-TZVPP   [5s5p3d1f|14s9p3d1f]
+    o        2     46     31   def2-TZVPP   [5s3p2d1f|11s6p2d1f]
+    f        1     46     31   def2-TZVPP   [5s3p2d1f|11s6p2d1f]
+    h        3     16     14   def2-TZVPP   [3s2p1d|5s2p1d]
+   ---------------------------------------------------------------------------
+   total:    8    295    208
+   ---------------------------------------------------------------------------
+
+   total number of primitive shells          :   95
+   total number of contracted shells         :   76
+   total number of cartesian basis functions :  237
+   total number of SCF-basis functions       :  208
+
+
+ symmetry group of the molecule :   c1 
+
+ the group has the following generators :
+   c1(z)
+
+    1 symmetry operations found
+
+ there are 1 real representations :   a   
+WARNING: an $rij but no $rik flag found
+WARNING: $rij is ignored by ricc2!
+
+
+   =========================================================================
+
+
+     restricted closed shell calculation for the wavefunction models:
+               CCSD(T)    - CC Singles and Doubles With Pert. Triples Corr.
+
+
+     global parameters for ricc2 program:
+
+        hard restart (reuse of interm.) :  disabled
+        soft restart (reuse of vectors) :  disabled
+        threshold for vector function   :    0.100000E-05
+        convergence threshold energy    :    0.100000E-06
+        linear dependence threshold     :    0.100000E-13
+        global print level              :      1
+        maximum number of iterations    :   100
+        maximum number DIIS vectors     :    10
+        max. dim. of reduced space      :   100
+        core memory limit (MB)          : 24000
+
+
+     CCSD(T) energy only: Energy will be calculated directly from T3 amplitudes!
+
+     Scratch Directory : /local/2299728.1.parallel/
+
+
+   =========================================================================
+
+    der. integral neglect threshold  :  0.10E-07
+    integral neglect threshold       :  0.14E-09
+    integral storage threshold THIZE :  0.10E-04
+    integral storage threshold THIME :         5
+
+
+                  +------------------------------------------+
+                  |     Auxiliary basis set information      |
+                  +------------------------------------------+
+
+              we will work with the 1s 3p 5d 7f 9g ... basis set
+              ...i.e. with spherical basis functions...
+
+   type   atoms  prim   cont   basis
+   ---------------------------------------------------------------------------
+    c        1     81     76   def2-TZVPP   [8s6p4d3f1g|8s6p5d3f1g]
+    s        1    123    123   def2-TZVPP   [11s8p7d5f2g|11s8p7d5f2g]
+    o        2     81     76   def2-TZVPP   [8s6p4d3f1g|8s6p5d3f1g]
+    f        1     81     76   def2-TZVPP   [8s6p4d3f1g|8s6p5d3f1g]
+    h        3     30     30   def2-TZVPP   [4s3p2d1f|4s3p2d1f]
+   ---------------------------------------------------------------------------
+   total:    8    537    517
+   ---------------------------------------------------------------------------
+
+   total number of primitive shells          :  112
+   total number of contracted shells         :  151
+   total number of cartesian basis functions :  642
+   total number of SCF-basis functions       :  517
+
+
+ maximum number of shells which are related by symmetry :  1
+
+
+ The symmetry information takes   1 MB
+
+*---------------------------------------------------------------------*
+|               simplified C1 algorithm will be applied               |
+*---------------------------------------------------------------------*
+
+         -----------------
+         -T+V- integrals
+         -----------------
+
+ 1e-integrals will be neglected if expon. factor < 0.141011E-10
+  MOs are in ASCII format !
+
+
+ reading orbital data $scfmo  from file mos
+ orbital characterization : scfconv=8
+ all orbitals will be active in the correlation treatment
+
+
+   Molecular Orbital Statistic:
+   ============================
+
+   -----------------------------
+   orbitals in total:
+   -----------------------------
+    frozen occupied :      0
+    active occupied :     25
+    active virtual  :    183
+    frozen virtual  :      0
+    all together    :    208
+   -----------------------------
+
+
+     time in riccmos       cpu:  0.80 sec    wall:  0.10 sec    ratio:  7.9
+
+     total memory allocated for calculation of (Q|P)**(-1/2) : 4 MiB
+
+
+     calculation of (P|Q) ...
+     time in lp2sym        cpu:  0.14 sec    wall:  0.02 sec    ratio:  7.9
+
+
+     calculation of the Cholesky decomposition of (P|Q)**(-1) ...
+     time in invmetri      cpu:  0.44 sec    wall:  0.06 sec    ratio:  7.9
+
+   threshold for RMS(d[D]) in SCF was     :  0.10E-05
+   integral neglect threshold             :  0.14E-09
+   derivative integral neglect threshold  :  0.10E-07
+
+
+   =========================================================================
+
+     Energy of reference wave function is  -686.4224241606000
+     Maximum orbital residual is           0.1853943660392E-05
+
+
+     Number of symmetry-nonredundant auxiliary basis functions:      517
+
+     Block lengths for integral files:
+        frozen occupied (BOI):        0 MiB
+        active occupied (BJI):        1 MiB
+        active virtual  (BAI):        1 MiB
+        frozen virtual  (BGI):        0 MiB
+               general  (BTI):        1 MiB
+
+   =========================================================================
+
+
+
+
+     **********************************************************************
+     *               no explicit correlation will be included             *
+     **********************************************************************
+
+
+     time in 3idx,ccsdint  cpu:  8.83 sec    wall:  1.11 sec    ratio:  8.0
+
+     Calculate integrals (ia|jb) for MP2 start guess
+
+
+
+     **********************************************************************
+     *                                                                    *
+     *   RHF  energy                             :   -686.4224241606      *
+     *   MP2 correlation energy (doubles)        :     -1.3268666189      *
+     *                                                                    *
+     *   Final MP2 energy                        :   -687.7492907795      *
+     *                                                                    *
+     *    E(S)   =     -0.8128604654      E(T)   =     -0.5140061535      *
+     *    E(OS)  =     -0.9841958499      E(SS)  =     -0.3426707690      *
+     *                                                                    *
+     *   SCS-MP2 energy                          :   -687.7176827701      *
+     *   (computed with  C(OS) =   1.2000  and  C(SS) =   0.3333)         *
+     *                                                                    *
+     *   SOS-MP2 energy                          :   -687.7018787654      *
+     *   (computed with  C(OS) =   1.3000)                                *
+     *                                                                    *
+     *   Norm of MP1 T2 amplitudes               :      0.3196299335      *
+     *                                                                    *
+     **********************************************************************
+
+     time in ccsdint       cpu: 18.52 sec    wall:  2.47 sec    ratio:  7.5
+
+
+   **************************************************************************
+   *                                                                        *
+   *          OPTIMIZATION OF THE GROUND STATE CLUSTER AMPLITUDES           *
+   *                                                                        *
+   **************************************************************************
+     threshold for screening of BF intermediate: 0.18E-13
+     start CCSD from scratch because restart not enabled
+
+
+   Iter.   CCSD energy      Norm(Omega)    Norm(t1)  Norm(t2)     cpu    wall
+   ...........................................................................
+    1   -687.7217924221    0.2911602150     0.00000   0.33458   13.72    1.94
+    2   -687.7530862478    0.0897015461     0.08024   0.33238   13.38    1.86
+    3   -687.7573294411    0.0251659851     0.07211   0.34703   14.84    2.09
+    4   -687.7572864400    0.0086789786     0.08614   0.35286   13.48    1.88
+    5   -687.7572502707    0.0027336439     0.09002   0.35346   13.35    1.89
+    6   -687.7572376992    0.0010892548     0.09157   0.35353   13.68    1.93
+    7   -687.7572253646    0.0003660422     0.09205   0.35352   13.37    1.90
+    8   -687.7572264018    0.0001111908     0.09211   0.35349   15.26    2.13
+    9   -687.7572264677    0.0000394579     0.09212   0.35348   13.33    1.91
+   10   -687.7572264369    0.0000137033     0.09212   0.35348   13.74    1.95
+   11   -687.7572265362    0.0000053139     0.09211   0.35348   13.67    1.93
+   12   -687.7572265719    0.0000021836     0.09211   0.35348   13.27    1.85
+   13   -687.7572265701    0.0000007663     0.09211   0.35348   12.76    1.81
+   ...........................................................................
+   CC equations converged in 13 iterations.
+
+   last energy change         :  0.18E-08
+   convergence threshold      :  0.10E-06
+   norm of the vector function:  0.77E-06
+   convergence threshold      :  0.10E-05
+
+     time in total         cpu:  2 h 57 min  wall:  0 h 25 min  ratio:  7.1
+
+
+     **********************************************************************
+     *                                                                    *
+     *   RHF  energy                             :   -686.4224241606      *
+     *   correlation energy                      :     -1.3348024095      *
+     *                                                                    *
+     *   Final CCSD energy                       :   -687.7572265701      *
+     *                                                                    *
+     *   D1 diagnostic                           :      0.0521            *
+     *                                                                    *
+     **********************************************************************
+
+     time in triples corr  cpu:  1 h 48 min  wall:  0 h 14 min  ratio:  7.3
+
+
+      *********************************************************************
+      *                                                                   *
+      *  RHF  energy                             :   -686.4224241606      *
+      *  CCSD correlation energy                 :     -1.3348024095      *
+      *  E4 doubles and triples contribution     :     -0.0516755912      *
+      *  E5 singles and triples contribution     :      0.0033583597      *
+      *  total correlation energy                :     -1.3831196410      *
+      *                                                                   *
+      *  Final CCSD(T) energy                    :   -687.8055438016      *
+      *                                                                   *
+      *  D1 diagnostic (CCSD)                    :      0.0521            *
+      *                                                                   *
+      *********************************************************************
+
+
+
+    ------------------------------------------------------------------------
+         total  cpu-time :  4 hours 47 minutes and  6 seconds
+         total wall-time : 40 minutes and  7 seconds
+    ------------------------------------------------------------------------
+
+   ****  ccsdf12 : all done  ****
+
+
+    2017-11-07 17:40:25.097 
+
+ ccsdf12 ended normally

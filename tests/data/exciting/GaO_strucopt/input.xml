@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<input>
+  <title>GaO betaneu</title>
+  <structure speciespath="/gfs1/work/bepklion/GaO/betastructure">
+    <crystal>
+    <basevect>    0.1743337182109400   11.6196322863812824   -2.8807932300000001 </basevect>
+    <basevect>    0.1743337182109400   11.6196322863812824    2.8807932300000001 </basevect>
+    <basevect>   10.6392528124925914   -2.4441662815786551    0.0000000000000000 </basevect>
+    
+    </crystal>
+    <species speciesfile="Ga.xml" rmt="1.7500">
+      <atom coord="      -0.65808000        0.34192000        0.68559000 "/>
+      <atom coord="      -0.34192000        0.65808000        0.31441000 "/>
+      <atom coord="      -0.90984000        0.09016000        0.79492000 "/>
+      <atom coord="      -0.09016000        0.90984000        0.20508000 "/>
+    </species>
+    <species speciesfile="O.xml" rmt="1.5000">
+      <atom coord="      -0.82656000        0.17344000        0.56411000 "/>
+      <atom coord="      -0.17344000        0.82656000        0.43589000 "/>
+      <atom coord="      -0.83671000        0.16329000        0.10955000 "/>
+      <atom coord="      -0.16329000        0.83671000        0.89045000 "/>
+      <atom coord="      -0.50426000        0.49574000        0.25595000 "/>
+      <atom coord="      -0.49574000        0.50426000        0.74405000 "/>
+    </species>
+  </structure>
+  
+  <groundstate maxscl="50" gmaxvr="20.0" ngridk="6 6 6" rgkmax="9.0" tforce="true">
+  </groundstate>
+  
+  <relax method="harmonic" maxbfgs="5" taubfgs="0.9" taunewton="1.0"> </relax>
+  
+  
+</input>

@@ -1,0 +1,1135 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test014.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test014.input.18543
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 14:27:05 2016 
+
+++ ---------   Input file   ---------
+
+  &SEWARD  &END
+    Title
+    Ammonia
+    PkThrs
+      1.0d-9
+    Basis set
+    H.ANO-S...2s1p.
+    H1      0.940000     0.000000   0.360000   /Angstrom
+    H2     -0.470000     0.814064   0.360000   /Angstrom
+    H3     -0.470000    -0.814064   0.360000   /Angstrom
+    End of basis
+    Basis set
+    N.ANO-S...3s2p1d.
+    N4   0.000000     0.000000     0.000000  /Angstrom
+    End of basis
+  &SCF &END
+    Occupied
+      5 
+  &RASSCF &END
+    Title
+    Ammonia
+    Symmetry
+      1
+    Spin
+      1
+    nActEl
+      8 0 0
+    Inactive
+      1
+    Ras2
+      7
+    Tight
+      1.0-9 0.0001
+  &LoProp &End
+    Expansion
+    Midpoint
+    NoField
+
+-- ----------------------------------
+
+--- Start Module: seward at Fri Oct  7 14:27:06 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:27:06 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+ Title:
+                                            Ammonia                                     
+ 
+ 
+                   Integrals are discarded if absolute value <: 0.10E-11
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+ 
+ 
+                    Character Table for C1 
+ 
+                             E  
+                    a        1  x, y, xy, Rz, z, xz, Ry, yz, Rx, I
+ 
+      Basis set label:H.ANO-S...2S1P...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       7       2        X                  
+         p       3       1        X                  
+      Basis set label:N.ANO-S...3S2P1D...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  7.000000 au
+      Associated Actual Charge     7.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s      10       3        X                  
+         p       6       2        X                  
+         d       3       1                 X         
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      H1               1.776343       0.000000       0.680301              0.940000       0.000000       0.360000
+        2      H2              -0.888171       1.538358       0.680301             -0.470000       0.814064       0.360000
+        3      H3              -0.888171      -1.538358       0.680301             -0.470000      -0.814064       0.360000
+        4      N4               0.000000       0.000000       0.000000              0.000000       0.000000       0.000000
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 H1            2 H2            3 H3            4 N4    
+    1 H1       0.000000
+    2 H2       3.076716        0.000000
+    3 H3       3.076716        3.076716        0.000000
+    4 N4       1.902157        1.902158        1.902158        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 H1            2 H2            3 H3            4 N4    
+    1 H1       0.000000
+    2 H2       1.628128        0.000000
+    3 H3       1.628128        1.628128        0.000000
+    4 N4       1.006578        1.006578        1.006578        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      1 H1       4 N4       2 H2       107.95
+                      1 H1       4 N4       3 H3       107.95
+                      2 H2       4 N4       3 H3       107.95
+ 
+ 
+            Nuclear Potential Energy             12.01516065 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a  
+      Basis functions           29
+ 
+--- Stop Module:  seward at Fri Oct  7 14:27:07 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:27:07 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:27:07 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+Input section
+      Header of the integral files:
+                                      Ammonia                                 
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:27:06 2016        
+ 
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.94000   0.00000   0.36000
+       2   H2        -0.47000   0.81406   0.36000
+       3   H3        -0.47000  -0.81406   0.36000
+       4   N4         0.00000   0.00000   0.00000
+      --------------------------------------------
+      Nuclear repulsion energy =   12.015161
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1
+                                     a
+      Frozen orbitals                0
+      Occupied orbitals              5
+      Secondary orbitals            24
+      Deleted orbitals               0
+      Total number of orbitals      29
+      Number of basis functions     29
+ 
+      Molecular charge                           0.000
+ 
+      SCF Algorithm: Conventional
+      Minimized density differences are used
+      Number of density matrices in core              400
+      Maximum number of NDDO SCF iterations           400
+      Maximum number of HF  SCF iterations            400
+      Threshold for SCF energy change            0.10E-08
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Detected guessorb starting orbitals                                             
+ 
+ 
+Convergence information
+                                   SCF        iterations: Energy and convergence statistics
+ 
+Iter     Tot. SCF       One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -56.01788302    -98.79285027     30.75980660  0.00E+00   0.27E+00*  0.16E+00*   0.40E+01   0.30E+02   NoneDa    0.
+   2    -56.19914372    -99.89585673     31.68155236 -0.18E+00*  0.75E-01*  0.37E-01*   0.80E+00   0.16E+01   Damp      0.
+   3    -56.20802522    -99.57958529     31.35639942 -0.89E-02*  0.20E-01*  0.37E-01*   0.23E+00   0.30E+00   QNRc2D    0.
+   4    -56.20899264    -99.74636897     31.52221567 -0.97E-03*  0.11E-01*  0.69E-02*   0.57E-01   0.64E-01   QNRc2D    0.
+   5    -56.20919153    -99.68449649     31.46014430 -0.20E-03*  0.17E-02*  0.83E-03*   0.21E-01   0.75E-02   QNRc2D    0.
+   6    -56.20919690    -99.68022882     31.45587127 -0.54E-05*  0.76E-03*  0.17E-03*   0.35E-02   0.17E-02   QNRc2D    0.
+   7    -56.20919765    -99.67997338     31.45561508 -0.75E-06*  0.14E-03*  0.42E-04    0.87E-03   0.94E-03   QNRc2D    0.
+   8    -56.20919767    -99.68026392     31.45590559 -0.26E-07*  0.32E-04*  0.10E-04    0.91E-04   0.16E-03   QNRc2D    0.
+   9    -56.20919767    -99.68026458     31.45590626 -0.11E-08*  0.73E-05   0.21E-05    0.37E-04   0.56E-04   QNRc2D    0.
+  10    -56.20919767    -99.68026266     31.45590433 -0.58E-10   0.15E-05   0.42E-06    0.40E-05   0.45E-05   QNRc2D    0.
+ 
+       Convergence after 10 Macro Iterations and  0 additional LS Iterations...
+ 
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total SCF energy                                -56.2091976718
+      One-electron energy                             -99.6802626564
+      Two-electron energy                              31.4559043307
+      Nuclear repulsion energy                         12.0151606539
+      Kinetic energy (interpolated)                    56.2664934394
+      Virial theorem                                    0.9989817072
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000000000
+      Max non-diagonal Fock matrix element              0.0000004244
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: SCF orbitals                                                                    
+ 
+
+      Molecular orbitals for symmetry species 1: a  
+ 
+          Orbital        1         2         3         4         5         6         7         8         9        10
+          Energy      -15.5376   -1.1439   -0.6370   -0.6370   -0.4287    0.1073    0.2771    0.2771    0.3334    0.3504
+          Occ. No.      2.0000    2.0000    2.0000    2.0000    2.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+ 
+        1 H1    1s      0.0008   -0.2177    0.0000    0.4196   -0.1235   -0.5857    0.9202    0.0000    0.2795    0.0000
+        2 H1    2s      0.0002    0.0308    0.0000   -0.0731    0.0112   -0.3932    0.2755    0.0000    0.0541    0.0000
+        3 H1    2px    -0.0008    0.0377    0.0000   -0.0305    0.0178    0.0237   -0.1094    0.0000   -0.0906    0.0000
+        4 H1    2py     0.0000    0.0000    0.0166    0.0000    0.0000    0.0000    0.0000    0.0646    0.0000    0.0433
+        5 H1    2pz    -0.0002    0.0130    0.0000   -0.0165   -0.0298    0.0115   -0.0663    0.0000    0.0506    0.0000
+        6 H2    1s      0.0008   -0.2177    0.3634   -0.2098   -0.1235   -0.5857   -0.4601    0.7969    0.2795   -2.4639
+        7 H2    2s      0.0002    0.0308   -0.0633    0.0366    0.0112   -0.3932   -0.1378    0.2386    0.0541   -1.4849
+        8 H2    2px     0.0004   -0.0189    0.0204    0.0048   -0.0089   -0.0118    0.0211    0.0753    0.0453    0.0042
+        9 H2    2py    -0.0007    0.0327   -0.0187    0.0204    0.0154    0.0205    0.0753   -0.0659   -0.0784    0.0360
+       10 H2    2pz    -0.0002    0.0130   -0.0143    0.0083   -0.0298    0.0115    0.0331   -0.0574    0.0506   -0.0030
+       11 H3    1s      0.0008   -0.2177   -0.3634   -0.2098   -0.1235   -0.5857   -0.4601   -0.7969    0.2795    2.4639
+       12 H3    2s      0.0002    0.0308    0.0633    0.0366    0.0112   -0.3932   -0.1378   -0.2386    0.0541    1.4849
+       13 H3    2px     0.0004   -0.0189   -0.0204    0.0048   -0.0089   -0.0118    0.0211   -0.0753    0.0453   -0.0042
+       14 H3    2py     0.0007   -0.0327   -0.0187   -0.0204   -0.0154   -0.0205   -0.0753   -0.0659    0.0784    0.0360
+       15 H3    2pz    -0.0002    0.0130    0.0143    0.0083   -0.0298    0.0115    0.0332    0.0574    0.0506    0.0030
+       16 N4    1s     -1.0005    0.0607    0.0000    0.0000    0.0279    0.1661    0.0000    0.0000   -0.0904    0.0000
+       17 N4    2s     -0.0040   -0.5697    0.0000    0.0000    0.4065    1.2671    0.0000    0.0000   -0.6127    0.0000
+       18 N4    3s     -0.0004    0.0946    0.0000    0.0000    0.0656    0.4839    0.0000    0.0000   -0.3015    0.0000
+       19 N4    2px     0.0000    0.0000    0.0000    0.6209    0.0000    0.0000   -0.6548    0.0000    0.0000    0.0000
+       20 N4    3px     0.0000    0.0000    0.0000   -0.0649    0.0000    0.0000   -1.3602    0.0000    0.0000    0.0000
+       21 N4    2py     0.0000    0.0000    0.6209    0.0000    0.0000    0.0000    0.0000   -0.6548    0.0000    1.6724
+       22 N4    3py     0.0000    0.0000   -0.0649    0.0000    0.0000    0.0000    0.0000   -1.3602    0.0000    1.3674
+       23 N4    2pz    -0.0015   -0.0612    0.0000    0.0000   -0.8608    0.2692    0.0000    0.0000   -0.1603    0.0000
+       24 N4    3pz     0.0005    0.0392    0.0000    0.0000   -0.0368    0.1594    0.0000    0.0000   -1.1119    0.0000
+       25 N4    3d2-    0.0000    0.0000   -0.0247    0.0000    0.0000    0.0000    0.0000    0.0264    0.0000   -0.0033
+       26 N4    3d1-    0.0000    0.0000    0.0356    0.0000    0.0000    0.0000    0.0000   -0.0359    0.0000    0.0205
+       27 N4    3d0     0.0001    0.0018    0.0000    0.0000   -0.0201   -0.0151    0.0000    0.0000    0.0063    0.0000
+       28 N4    3d1+    0.0000    0.0000    0.0000    0.0356    0.0000    0.0000   -0.0359    0.0000    0.0000    0.0000
+       29 N4    3d2+    0.0000    0.0000    0.0000    0.0247    0.0000    0.0000   -0.0264    0.0000    0.0000    0.0000
+ 
+          Orbital       11
+          Energy        0.3504
+          Occ. No.      0.0000
+ 
+        1 H1    1s      2.8451
+        2 H1    2s      1.7146
+        3 H1    2px    -0.0335
+        4 H1    2py     0.0000
+        5 H1    2pz     0.0035
+        6 H2    1s     -1.4225
+        7 H2    2s     -0.8573
+        8 H2    2px    -0.0409
+        9 H2    2py    -0.0042
+       10 H2    2pz    -0.0018
+       11 H3    1s     -1.4225
+       12 H3    2s     -0.8573
+       13 H3    2px    -0.0409
+       14 H3    2py     0.0042
+       15 H3    2pz    -0.0018
+       16 N4    1s      0.0000
+       17 N4    2s      0.0000
+       18 N4    3s      0.0000
+       19 N4    2px    -1.6724
+       20 N4    3px    -1.3674
+       21 N4    2py     0.0000
+       22 N4    3py     0.0000
+       23 N4    2pz     0.0000
+       24 N4    3pz     0.0000
+       25 N4    3d2-    0.0000
+       26 N4    3d1-    0.0000
+       27 N4    3d0     0.0000
+       28 N4    3d1+   -0.0205
+       29 N4    3d2+   -0.0033
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             H1      H2      H3      N4    
+      1s     0.7851  0.7851  0.7851  2.0012
+      2s     0.0376  0.0376  0.0376  1.2649
+      2px    0.0366  0.0187  0.0187  1.1627
+      2pz    0.0332  0.0332  0.0332  1.6892
+      2py    0.0127  0.0306  0.0306  1.1627
+      3s     0.0000  0.0000  0.0000 -0.0251
+      3px    0.0000  0.0000  0.0000 -0.0097
+      3pz    0.0000  0.0000  0.0000  0.0065
+      3py    0.0000  0.0000  0.0000 -0.0097
+      3d2+   0.0000  0.0000  0.0000  0.0089
+      3d1+   0.0000  0.0000  0.0000  0.0117
+      3d0    0.0000  0.0000  0.0000  0.0007
+      3d1-   0.0000  0.0000  0.0000  0.0117
+      3d2-   0.0000  0.0000  0.0000  0.0089
+      Total  0.9051  0.9051  0.9051  7.2846
+ 
+      N-E    0.0949  0.0949  0.0949 -0.2846
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+      LoProp Charges per center                                                                                               
+ 
+
+                   H1       H2       H3       N4    
+      Nuclear      1.0000   1.0000   1.0000   7.0000
+      Electronic  -0.7613  -0.7613  -0.7613  -7.7162
+ 
+      Total        0.2387   0.2387   0.2387  -0.7162
+ 
+      Natural Bond Order Analysis
+      Based on LoProp computed density
+      -------------------------------------------------------------------------------------
+      Atom A  Atom B  Bond Order | Atom A  Atom B  Bond Order
+        H1          N4            0.983  |   H2          N4          0.983
+        H3          N4            0.983  |
+      -------------------------------------------------------------------------------------
+      NBO located      2.000 core electrons.
+      NBO located      1.912 lone pair electrons.
+      NBO located      5.899 electrons involved in    3 bonds.
+      The remaining    0.189 electrons are to be considered as diffuse
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    1.5954           Total=    1.5954
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0639
+                    XX=   -6.2507              XY=    0.0000              XZ=    0.0000              YY=   -6.2507
+                    YZ=    0.0000              ZZ=   -9.4330
+      In traceless form (Debye*Ang)
+                    XX=    1.5912              XY=    0.0000              XZ=    0.0000              YY=    1.5912
+                    YZ=    0.0000              ZZ=   -3.1823
+--- Stop Module:  scf at Fri Oct  7 14:27:08 2016 /rc=0 ---
+*** 
+--- Start Module: rasscf at Fri Oct  7 14:27:09 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module RASSCF with 2000 MB of memory
+                                              at 14:27:09 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      Header of the ONEINT file:
+      --------------------------
+      Ammonia                                                                                                                 
+      Integrals generated by seward 4.2.0  , Fri Oct  7 14:27:06 2016                                                         
+ 
+ 
+      OrdInt status: non-squared
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.94000   0.00000   0.36000
+       2   H2        -0.47000   0.81406   0.36000
+       3   H3        -0.47000  -0.81406   0.36000
+       4   N4         0.00000   0.00000   0.00000
+      --------------------------------------------
+      Nuclear repulsion energy =   12.015161
+ 
+ 
+ 
+      Wave function specifications:
+         -----------------------------
+ 
+      Number of closed shell electrons           2
+      Number of electrons in active shells       8
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                1
+      Number of active orbitals                  7
+      Number of secondary orbitals              21
+      Spin quantum number                      0.0
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+         -----------------------
+ 
+      Symmetry species                           1
+                                                 a
+      Frozen orbitals                            0
+      Inactive orbitals                          1
+      Active orbitals                            7
+      RAS1 orbitals                              0
+      RAS2 orbitals                              7
+      RAS3 orbitals                              0
+      Secondary orbitals                        21
+      Deleted orbitals                           0
+      Number of basis functions                 29
+ 
+      CI expansion specifications:
+         ----------------------------
+ 
+      Number of configuration state fnc.       490
+      Number of determinants                   630
+      Number of root(s) required                 1
+      Root chosen for geometry opt.              1
+      CI root used                               1
+      highest root included in the CI            1
+      max. size of the explicit Hamiltonian    200
+ 
+      Optimization specifications:
+         ----------------------------
+ 
+      RASSCF algorithm: Conventional
+      Maximum number of macro iterations       200
+      Maximum number of SX iterations          100
+      Threshold for RASSCF energy            0.100E-07
+      Threshold for max MO rotation          0.100E+00
+      Threshold for max BLB element          0.100E-03
+      Level shift parameter                  0.500E+00
+      Make Quasi-Newton update
+      Orbitals from runfile: scf orbitals
+      The MO-coefficients are taken from scf orbitals on runfile
+ 
+      Total molecular charge    0.00
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                            Wave function  control section                                            *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+                          RASSCF iterations: Energy and convergence statistics
+                          ----------------------------------------------------
+ 
+      Iter CI   SX   CI       RASSCF       Energy    max ROT   max BLB   max BLB  Level Ln srch  Step   QN    Time(min)
+          iter iter root      energy       change     param    element    value    shift minimum  type update     CPU
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital   6 of symmetry 1 MO space 2  weight is    0.131812
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital   7 of symmetry 1 MO space 2  weight is    0.487978
+ ###############################################################################
+ ###############################################################################
+ ###                                                                         ###
+ ###                                                                         ###
+ ###    Large orbital rotation.                                              ###
+ ###                                                                         ###
+ ###                                                                         ###
+ ###############################################################################
+ ###############################################################################
+      Molecular orbital   8 of symmetry 1 MO space 2  weight is    0.487978
+        1   1   12    1   -56.21346392    0.00E+00  -0.68E+00*   5   9 1  0.35E-02*  0.00   0.00     SX     NO      0.00
+        2   7   17    1   -56.26009802   -0.47E-01*  0.19E+00*   4  29 1  0.18E-01*  0.00   0.00     SX     NO      0.00
+        3   4   14    1   -56.27286536   -0.13E-01*  0.91E-01    3  22 1  0.60E-02*  0.00   0.00     SX     NO      0.00
+        4   4   12    1   -56.27611135   -0.32E-02*  0.47E-01    3  15 1  0.38E-02*  0.00   0.00     SX     NO      0.00
+        5   4   12    1   -56.27710524   -0.99E-03*  0.48E-01    1   6 1 -0.33E-02*  0.00   2.28     LS    YES      0.00
+        6   4   12    1   -56.27755358   -0.45E-03* -0.14E-01    1   6 1 -0.42E-02*  0.00   1.27     QN    YES      0.00
+        7   4   10    1   -56.27761571   -0.62E-04* -0.61E-02    1   6 1 -0.19E-02*  0.00   1.45     LS    YES      0.00
+        8   4   11    1   -56.27762235   -0.66E-05* -0.59E-02    1   6 1 -0.82E-03*  0.00   1.03     QN    YES      0.00
+        9   4   11    1   -56.27762962   -0.73E-05* -0.37E-02    3  15 1 -0.23E-03*  0.00   1.64     LS    YES      0.00
+       10   4   10    1   -56.27763096   -0.13E-05* -0.11E-02    1   6 1  0.57E-03*  0.00   1.01     QN    YES      0.00
+       11   3   10    1   -56.27763150   -0.54E-06* -0.83E-03    1   6 1  0.18E-03*  0.00   1.79     LS    YES      0.00
+       12   3    9    1   -56.27763163   -0.13E-06*  0.32E-03    1   6 1 -0.13E-03*  0.00   1.00     QN    YES      0.00
+       13   3    9    1   -56.27763168   -0.43E-07*  0.40E-03    1   6 1 -0.65E-04   0.00   1.73     QN    YES      0.00
+       14   3    7    1   -56.27763169   -0.15E-07* -0.16E-03    5   9 1 -0.15E-04   0.00   1.17     QN    YES      0.00
+       15   2    7    1   -56.27763169   -0.20E-08  -0.11E-03    5   9 1 -0.82E-05   0.00   1.67     QN    YES      0.00
+      Convergence after 15 iterations
+       16   1    7    1   -56.27763169   -0.36E-09  -0.11E-03    1   6 1  0.89E-05   0.00   1.67     QN    YES      0.00
+ 
+      ************************************************************************************************************************
+                                                      Wave function printout:
+                       occupation of active orbitals, and spin coupling of open shells (u,d: Spin up or down)
+      ************************************************************************************************************************
+ 
+      Note: transformation to natural orbitals
+      has been made, which may change the order of the CSFs.
+ 
+      printout of CI-coefficients larger than  0.05 for root  1
+      energy=     -56.277632
+      conf/sym  1111111     Coeff  Weight
+             1  2222000   0.98486 0.96995
+            74  2202020  -0.06448 0.00416
+            99  2ud20ud   0.05301 0.00281
+           112  u2d2ud0   0.06423 0.00413
+           145  2022002  -0.06448 0.00416
+           157  ud22u0d  -0.06423 0.00413
+           171  0222200  -0.05985 0.00358
+ 
+      Natural orbitals and occupation numbers for root  1
+      sym 1:   1.981004   1.979589   1.979589   1.998908   0.021326   0.019791   0.019791
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                                    Final results                                                    *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Number of closed shell electrons           2
+      Number of electrons in active shells       8
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                1
+      Number of active orbitals                  7
+      Number of secondary orbitals              21
+      Spin quantum number                      0.0
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1
+                                                 a
+      Frozen orbitals                            0
+      Inactive orbitals                          1
+      Active orbitals                            7
+      RAS1 orbitals                              0
+      RAS2 orbitals                              7
+      RAS3 orbitals                              0
+      Secondary orbitals                        21
+      Deleted orbitals                           0
+      Number of basis functions                 29
+ 
+ 
+      CI expansion specifications:
+      ----------------------------
+ 
+      Number of configuration state fnc.       490
+      Number of determinants                   630
+      Number of root(s) required                 1
+      CI root used                               1
+      highest root included in the CI            1
+      Root passed to geometry opt.               1
+ 
+ 
+      Final optimization conditions:
+      ------------------------------
+ 
+      Average CI energy                             -56.27763169
+      RASSCF energy for state  1                    -56.27763169
+      Super-CI energy                                 0.00000000
+      RASSCF energy change                            0.00000000
+      Max change in MO coefficients              -0.875E-04
+      Max non-diagonal density matrix element    -0.105E-03
+      Maximum BLB matrix element                  0.891E-05
+      (orbital pair   1,   6 in symmetry   1)
+      Norm of electronic gradient            0.126E-04
+ 
+ 
+      Final state energy(ies):
+      ------------------------
+ 
+      RASSCF root number  1 Total energy =        -56.27763169
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Pseudonatural active orbitals and approximate occupation numbers
+ 
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 1: a  
+ 
+ 
+      Orbital            1         2         3         4         5         6         7         8
+      Energy      -15.4020    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+      Occ. No.      2.0000    1.9810    1.9796    1.9796    1.9989    0.0213    0.0198    0.0198
+ 
+    1 H1    1s      0.0047   -0.2528    0.0000    0.4196    0.0356   -0.5891   -1.1564    0.0000
+    2 H1    2s     -0.0010    0.0295    0.0000   -0.0724   -0.0118    0.0984    0.0515    0.0000
+    3 H1    2px    -0.0018    0.0363    0.0000   -0.0242   -0.0101    0.0648    0.0589    0.0000
+    4 H1    2py     0.0000    0.0000    0.0147    0.0000    0.0000    0.0000    0.0000   -0.0848
+    5 H1    2pz    -0.0031   -0.0093    0.0000   -0.0128   -0.0309   -0.0757    0.0125    0.0000
+    6 H2    1s      0.0047   -0.2528    0.3634   -0.2098    0.0356   -0.5891    0.5782   -1.0015
+    7 H2    2s     -0.0010    0.0295   -0.0627    0.0362   -0.0118    0.0984   -0.0258    0.0446
+    8 H2    2px     0.0009   -0.0181    0.0168    0.0050    0.0051   -0.0324   -0.0489   -0.0622
+    9 H2    2py    -0.0016    0.0314   -0.0145    0.0168   -0.0088    0.0561   -0.0622    0.0230
+   10 H2    2pz    -0.0031   -0.0093   -0.0111    0.0064   -0.0309   -0.0757   -0.0062    0.0108
+   11 H3    1s      0.0047   -0.2528   -0.3634   -0.2098    0.0356   -0.5891    0.5782    1.0015
+   12 H3    2s     -0.0010    0.0295    0.0627    0.0362   -0.0118    0.0984   -0.0258   -0.0446
+   13 H3    2px     0.0009   -0.0181   -0.0168    0.0050    0.0051   -0.0324   -0.0489    0.0622
+   14 H3    2py     0.0016   -0.0314   -0.0145   -0.0168    0.0088   -0.0561    0.0622    0.0230
+   15 H3    2pz    -0.0031   -0.0093    0.0111    0.0064   -0.0309   -0.0757   -0.0062   -0.0108
+   16 N4    1s     -0.9978    0.0618    0.0000    0.0000    0.0772    0.1280    0.0000    0.0000
+   17 N4    2s      0.0595   -0.1843    0.0000    0.0000    0.6793    1.0613    0.0000    0.0000
+   18 N4    3s     -0.0011    0.1207    0.0000    0.0000   -0.0052   -0.1455    0.0000    0.0000
+   19 N4    2px     0.0000    0.0000    0.0000    0.6229    0.0000    0.0000    1.1390    0.0000
+   20 N4    3px     0.0000    0.0000    0.0000   -0.0705    0.0000    0.0000   -0.2089    0.0000
+   21 N4    2py     0.0000    0.0000    0.6229    0.0000    0.0000    0.0000    0.0000    1.1390
+   22 N4    3py     0.0000    0.0000   -0.0705    0.0000    0.0000    0.0000    0.0000   -0.2089
+   23 N4    2pz    -0.0583   -0.5855    0.0000    0.0000   -0.6276    0.6016    0.0000    0.0000
+   24 N4    3pz    -0.0044    0.0095    0.0000    0.0000   -0.0520   -0.3058    0.0000    0.0000
+   25 N4    3d2-    0.0000    0.0000   -0.0258    0.0000    0.0000    0.0000    0.0000   -0.0851
+   26 N4    3d1-    0.0000    0.0000    0.0376    0.0000    0.0000    0.0000    0.0000    0.1295
+   27 N4    3d0    -0.0015   -0.0114    0.0000    0.0000   -0.0170    0.0254    0.0000    0.0000
+   28 N4    3d1+    0.0000    0.0000    0.0000    0.0376    0.0000    0.0000    0.1295    0.0000
+   29 N4    3d2+    0.0000    0.0000    0.0000    0.0258    0.0000    0.0000    0.0851    0.0000
+
+      Von Neumann Entropy (Root  1) =  0.24537
+ 
+
+      Mulliken population Analysis for root number: 1
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             H1      H2      H3      N4    
+      1s     0.7950  0.7950  0.7950  2.0012
+      2s     0.0364  0.0364  0.0364  1.2719
+      2px    0.0320  0.0162  0.0162  1.1594
+      2pz    0.0324  0.0324  0.0324  1.6754
+      2py    0.0110  0.0267  0.0267  1.1594
+      3s     0.0000  0.0000  0.0000 -0.0250
+      3px    0.0000  0.0000  0.0000 -0.0073
+      3pz    0.0000  0.0000  0.0000  0.0095
+      3py    0.0000  0.0000  0.0000 -0.0073
+      3d2+   0.0000  0.0000  0.0000  0.0089
+      3d1+   0.0000  0.0000  0.0000  0.0119
+      3d0    0.0000  0.0000  0.0000  0.0007
+      3d1-   0.0000  0.0000  0.0000  0.0119
+      3d2-   0.0000  0.0000  0.0000  0.0089
+      Total  0.9068  0.9068  0.9068  7.2796
+ 
+      N-E    0.0932  0.0932  0.0932 -0.2796
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  1
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    1.4914           Total=    1.4914
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0639
+                    XX=   -6.3313              XY=    0.0000              XZ=    0.0000              YY=   -6.3313
+                    YZ=    0.0000              ZZ=   -9.4439
+      In traceless form (Debye*Ang)
+                    XX=    1.5563              XY=    0.0000              XZ=    0.0000              YY=    1.5563
+                    YZ=    0.0000              ZZ=   -3.1127
+
+      LoProp population Analysis for root number:  1
+      -----------------------------------------------
+ 
+ 
+      LoProp Charges per center                                                                                               
+ 
+
+                   H1       H2       H3       N4    
+      Nuclear      1.0000   1.0000   1.0000   7.0000
+      Electronic  -0.7722  -0.7722  -0.7722  -7.6833
+ 
+      Total        0.2278   0.2278   0.2278  -0.6833
+ 
+      Natural Bond Order Analysis for root number:  1
+      Based on LoProp computed density
+      -------------------------------------------------------------------------------------
+      Atom A  Atom B  Bond Order | Atom A  Atom B  Bond Order
+        H1          N4            0.974  |   H2          N4          0.974
+        H3          N4            0.974  |
+      -------------------------------------------------------------------------------------
+      NBO located      2.000 core electrons.
+      NBO located      1.911 lone pair electrons.
+      NBO located      5.846 electrons involved in    3 bonds.
+      The remaining    0.243 electrons are to be considered as diffuse
+ 
+      Average orbitals are written to the RASORB           file
+      Natural orbitals for root   1 are written to the RASORB.1         file
+      Spin density orbitals for root   1 are written to the SPDORB.1         file
+ 
+--- Stop Module:  rasscf at Fri Oct  7 14:27:10 2016 /rc=0 ---
+*** 
+--- Start Module: loprop at Fri Oct  7 14:27:11 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module LoProp with 2000 MB of memory
+                                              at 14:27:12 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+  No dynamic properties will be computed.
+ 
+  Expansion centers of the domains are for the
+   atomic domains: the atom center
+   bond domains  : the center of the bond
+ 
+ Multipole moments will be processed up to order  2
+ 
+ 
+ **********************************************************************************
+ *                                                                                *
+ *                            The Localized properties                            *
+ *                                                                                *
+ **********************************************************************************
+ 
+ 
+ 
+ ====================
+ ATOMIC DOMAIN: H1    
+ ====================
+ Domain center:  :  1.77634256  0.00000000  0.68030140 / bohr
+ Expansion center:  1.77634256  0.00000000  0.68030140 / bohr
+ Total charge    :  0.22776737
+ 
+ Electronic multipole moments:
+Electronic Charge
+ -0.77223263
+ 
+Electronic Dipole
+ -0.10380536  0.00000000 -0.04703127
+... with nuclear contribution
+ -0.10380536  0.00000000 -0.04703127
+ 
+Electronic Quadrupole
+ -0.50892386  0.00000000 -0.02153746 -0.46418910  0.00000000 -0.47967624
+... with nuclear contribution
+ -0.50892386  0.00000000 -0.02153746 -0.46418910  0.00000000 -0.47967624
+ 
+ 
+Dipole magnitude:  0.11396268
+ 
+ 
+ 
+ ====================
+ ATOMIC DOMAIN: H2    
+ ====================
+ Domain center:  : -0.88817128  1.53835801  0.68030140 / bohr
+ Expansion center: -0.88817128  1.53835801  0.68030140 / bohr
+ Total charge    :  0.22776735
+ 
+ Electronic multipole moments:
+Electronic Charge
+ -0.77223265
+ 
+Electronic Dipole
+  0.05190267 -0.08989807 -0.04703126
+... with nuclear contribution
+  0.05190267 -0.08989807 -0.04703126
+ 
+Electronic Quadrupole
+ -0.47537281  0.01937071  0.01076872 -0.49774018 -0.01865198 -0.47967626
+... with nuclear contribution
+ -0.47537281  0.01937071  0.01076872 -0.49774018 -0.01865198 -0.47967626
+ 
+ 
+Dipole magnitude:  0.11396267
+ 
+ 
+ 
+ ====================
+ ATOMIC DOMAIN: H3    
+ ====================
+ Domain center:  : -0.88817128 -1.53835801  0.68030140 / bohr
+ Expansion center: -0.88817128 -1.53835801  0.68030140 / bohr
+ Total charge    :  0.22776735
+ 
+ Electronic multipole moments:
+Electronic Charge
+ -0.77223265
+ 
+Electronic Dipole
+  0.05190267  0.08989807 -0.04703126
+... with nuclear contribution
+  0.05190267  0.08989807 -0.04703126
+ 
+Electronic Quadrupole
+ -0.47537281 -0.01937071  0.01076872 -0.49774018  0.01865198 -0.47967626
+... with nuclear contribution
+ -0.47537281 -0.01937071  0.01076872 -0.49774018  0.01865198 -0.47967626
+ 
+ 
+Dipole magnitude:  0.11396267
+ 
+ 
+ 
+ =========================
+ BOND DOMAIN: N4    ,H1    
+ =========================
+ Domain center:  :  0.88817128  0.00000000  0.34015070 / bohr
+ Expansion center:  0.88817128  0.00000000  0.34015070 / bohr
+ Total charge    :  0.00000000
+ 
+ Electronic multipole moments:
+Electronic Charge
+  0.00000000
+ 
+Electronic Dipole
+ -0.25404076  0.00000000 -0.10144254
+ 
+Electronic Quadrupole
+  0.55210441  0.00000000  0.26855177 -0.12018311  0.00000000 -0.00619076
+ 
+ 
+Dipole magnitude:  0.27354579
+ 
+ 
+ 
+ =========================
+ BOND DOMAIN: N4    ,H2    
+ =========================
+ Domain center:  : -0.44408564  0.76917900  0.34015070 / bohr
+ Expansion center: -0.44408564  0.76917900  0.34015070 / bohr
+ Total charge    :  0.00000000
+ 
+ Electronic multipole moments:
+Electronic Charge
+  0.00000000
+ 
+Electronic Dipole
+  0.12702037 -0.22000572 -0.10144255
+ 
+Electronic Quadrupole
+  0.04788870 -0.29110904 -0.13427587  0.38403259  0.23257266 -0.00619081
+ 
+ 
+Dipole magnitude:  0.27354576
+ 
+ 
+ 
+ =========================
+ BOND DOMAIN: N4    ,H3    
+ =========================
+ Domain center:  : -0.44408564 -0.76917900  0.34015070 / bohr
+ Expansion center: -0.44408564 -0.76917900  0.34015070 / bohr
+ Total charge    :  0.00000000
+ 
+ Electronic multipole moments:
+Electronic Charge
+  0.00000000
+ 
+Electronic Dipole
+  0.12702037  0.22000572 -0.10144255
+ 
+Electronic Quadrupole
+  0.04788870  0.29110904 -0.13427587  0.38403259 -0.23257266 -0.00619081
+ 
+ 
+Dipole magnitude:  0.27354576
+ 
+ 
+ 
+ ====================
+ ATOMIC DOMAIN: N4    
+ ====================
+ Domain center:  :  0.00000000  0.00000000  0.00000000 / bohr
+ Expansion center:  0.00000000  0.00000000  0.00000000 / bohr
+ Total charge    : -0.68330207
+ 
+ Electronic multipole moments:
+Electronic Charge
+ -7.68330207
+ 
+Electronic Dipole
+  0.00000002  0.00000000  0.56731612
+... with nuclear contribution
+  0.00000002  0.00000000  0.56731612
+ 
+Electronic Quadrupole
+ -3.74332019  0.00000000  0.00000005 -3.74332017  0.00000000 -5.33919050
+... with nuclear contribution
+ -3.74332019  0.00000000  0.00000005 -3.74332017  0.00000000 -5.33919050
+ 
+ 
+Dipole magnitude:  0.56731612
+ 
+ 
+ 
+ 
+ **********************************************************************************
+ *                                                                                *
+ *                        The Molecular Multipole Moments                         *
+ *                                                                                *
+ **********************************************************************************
+ Expansion center:  0.00000000  0.00000000  0.20409042 / bohr
+ 
+ 
+ 
+l=0
+ 
+xyz    Nuclear        Electronic     Molecular   
+ 
+000     10.00000000    -10.00000000      0.00000000
+ 
+l=1
+ 
+xyz    Nuclear        Electronic     Molecular   
+ 
+100      0.00000000      0.00000000      0.00000000
+010      0.00000000      0.00000000      0.00000000
+001      0.00000000      0.58674605      0.58674605
+ 
+l=2
+ 
+xyz    Nuclear        Electronic     Molecular   
+ 
+200      4.73308932     -9.44023060     -4.70714128
+110      0.00000000      0.00000000      0.00000000
+101      0.00000000      0.00000006      0.00000006
+020      4.73309072     -9.44023151     -4.70714079
+011      0.00000000      0.00000000      0.00000000
+002      0.97190100     -8.09095925     -7.11905825
+ 
+ **********************************************************************************
+ *                                                                                *
+ *       Errors introduced by zeroing multipole moments greater than l =  1       *
+ *                                                                                *
+ **********************************************************************************
+ 
+l=2
+ 
+  m     Original       New            Error            Percent
+ 
+ -2      0.00000000      0.00000000      0.00000000      0.00
+ -1      0.00000000      0.00000000      0.00000000      0.00
+  0     -1.39252105     -0.09828422     -1.29423683     92.94
+  1      0.00000006     -0.00000001      0.00000007    118.04
+  2     -0.00000025     -0.00000010     -0.00000015     59.03
+ 
+Root mean square =       0.57880031
+ 
+ **********************************************************************************
+ *                                                                                *
+ *       Errors introduced by zeroing multipole moments greater than l =  0       *
+ *                                                                                *
+ **********************************************************************************
+ 
+l=1
+ 
+  m     Original       New            Error            Percent
+ 
+ -1      0.00000000      0.00000000      0.00000000      0.00
+  0      0.58674605      0.46485136      0.12189469     20.77
+  1      0.00000000      0.00000002     -0.00000002    ******
+ 
+Root mean square =       0.07037593
+ 
+l=2
+ 
+  m     Original       New            Error            Percent
+ 
+ -2      0.00000000      0.00000000      0.00000000      0.00
+ -1      0.00000000      0.00000000      0.00000000      0.00
+  0     -1.39252105     -0.54937637     -0.84314468     60.55
+  1      0.00000006      0.00000001      0.00000005     81.34
+  2     -0.00000025     -0.00000014     -0.00000011     43.63
+ 
+Root mean square =       0.37706576
+--- Stop Module:  loprop at Fri Oct  7 14:27:12 2016 /rc=0 ---
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 14:27:13 2016 /rc=0 ---
+--- Module auto spent 8 seconds 

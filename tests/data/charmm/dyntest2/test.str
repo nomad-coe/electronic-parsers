@@ -1,0 +1,36 @@
+* testing against reference value
+*
+! stream @0test.str VAL REF TOL TESTID ! All arguments required
+! checks if |val-ref| > tol*|ref|
+! if tol < 0 or ref=0 an absolute test is performed vs |tol|
+! sets teststat to pass or fail and increments testfail by 1 if test not passed
+! echo @tstid  testcase result: @teststat
+
+! LNilsson, March 2011, September 2014
+
+calc tst01 = abs( @IN1 - @IN2 )
+if @IN3 gt 0 then
+   calc bogus = abs( @in2 )
+   if @bogus le 0 then
+     calc tst02 = abs (  @IN3 )
+   else
+     calc tst02 = abs( @IN2 * @IN3 )
+   endif
+else
+   calc tst02 = abs (  @IN3 )
+endif
+set xxxprnl ?prnlev
+prnlev 2 @pnode
+if @tst01 .le. @tst02 then
+  set teststat pass
+else
+  set teststat fail
+  incr testfail by 1
+endif
+echo @in4 testcase result: @teststat
+prnlev @xxxprnl @pnode
+return
+
+
+
+ 

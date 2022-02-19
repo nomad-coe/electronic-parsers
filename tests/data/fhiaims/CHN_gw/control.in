@@ -1,0 +1,1338 @@
+#########################################################################################
+#
+#  Test run input file control.in 
+#
+#########################################################################################
+
+#  Physical model
+  qpe_calc gw
+  xc               pbe0
+  RI_method v
+  relativistic     atomic_zora scalar
+
+  anacon_type 1
+  frequency_points 200
+  n_anacon_par 16
+
+# DFT - SCF convergence settings
+  occupation_type    gaussian 0.0001
+  mixer              pulay
+    n_max_pulay        10
+    charge_mix_param   0.2
+  sc_accuracy_rho    1E-6
+  sc_accuracy_eev    1E-4
+  sc_accuracy_etot   1E-6
+  sc_iter_limit      100
+  prodbas_threshold  1.e-4
+
+  override_illconditioning .true.
+  
+################################################################################
+#
+#  FHI-aims code project
+# Igor Ying Zhang and Xinguo Ren, Fritz Haber Institute Berlin, 2012
+#
+#  Suggested "def2-QZVP" defaults for H atom (to be pasted into control.in file)
+#
+################################################################################
+  species        H
+#     global species definitions
+    nucleus             1
+    mass                1.00794
+#
+    l_hartree           6
+#
+    cut_pot             4.0  2.0  1.0
+    basis_dep_cutoff    0e-0
+#     
+    radial_base         24 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.1930   50
+      division   0.3175  110
+      division   0.4293  194
+      division   0.5066  302
+      division   0.5626  434
+      division   0.5922  590
+#      division   0.6227  974
+#      division   0.6868 1202
+      outer_grid  770
+#      outer_grid  434
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      1  s   1.
+#     ion occupancy
+    ion_occ      1  s   0.5
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# H def2-QZVP
+ gaussian 0 4
+       190.6916900            0.0007082  
+        28.6055320            0.0054679  
+         6.5095943            0.0279666  
+         1.8412455            0.1076454  
+ gaussian 0 1 0.59853725
+ gaussian 0 1 0.21397624
+ gaussian 0 1 0.80316286E-01
+ gaussian 1 1 2.29200000
+ gaussian 1 1 0.83800000
+ gaussian 1 1 0.29200000
+ gaussian 2 1 2.06200000
+ gaussian 2 1 0.66200000
+ gaussian 3 1 1.39700000
+################################################################################
+#
+#  FHI-aims code project
+# Igor Ying Zhang and Xinguo Ren, Fritz Haber Institute Berlin, 2012
+#
+#  Suggested "def2-QZVP" defaults for C atom (to be pasted into control.in file)
+#
+################################################################################
+  species        C
+#     global species definitions
+    nucleus             6
+    mass                12.0107
+#
+    l_hartree           6
+#
+    cut_pot             4.0  2.0  1.0
+    basis_dep_cutoff    0e-0
+#
+    radial_base         34 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.2187   50
+      division   0.4416  110
+      division   0.6335  194
+      division   0.7727  302
+      division   0.8772  434
+      division   0.9334  590
+#      division   0.9924  770
+#      division   1.0230  974
+#      division   1.5020 1202
+#     outer_grid  974
+      outer_grid  770
+#      outer_grid  434
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      2  s   2.
+    valence      2  p   2.
+#     ion occupancy
+    ion_occ      2  s   1.
+    ion_occ      2  p   1.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# C def2-QZVP
+ gaussian 0 8
+     67025.0710290            0.0000387  
+     10039.9865380            0.0003011  
+      2284.9316911            0.0015788  
+       647.1412213            0.0066087  
+       211.0947234            0.0233671  
+        76.1776439            0.0704207  
+        29.6338392            0.1736034  
+        12.1877851            0.3229231  
+ gaussian 0 2
+        53.0260063            0.0748974  
+        15.2585028            0.7613622  
+ gaussian 0 1 5.2403957464
+ gaussian 0 1 2.2905022379
+ gaussian 0 1 0.69673283006
+ gaussian 0 1 0.27599337363
+ gaussian 0 1 0.10739884389
+ gaussian 1 5
+       105.1255508            0.0008465  
+        24.8844611            0.0066274  
+         7.8637231            0.0301204  
+         2.8407002            0.0999514  
+         1.1227137            0.2382630  
+ gaussian 1 1 0.46050725555
+ gaussian 1 1 0.18937530913
+ gaussian 1 1 0.75983791611E-01
+ gaussian 2 1 1.84800000
+ gaussian 2 1 0.64900000
+ gaussian 2 1 0.22800000
+ gaussian 3 1 1.41900000
+ gaussian 3 1 0.48500000
+ gaussian 4 1 1.01100000
+################################################################################
+#
+#  FHI-aims code project
+# Igor Ying Zhang and Xinguo Ren, Fritz Haber Institute Berlin, 2012
+#
+#  Suggested "def2-QZVP" defaults for N atom (to be pasted into control.in file)
+#
+################################################################################
+  species        N
+#     global species definitions
+    nucleus             7
+    mass                14.0067
+#
+    l_hartree           6
+#
+    cut_pot             4.0  2.0  1.0
+    basis_dep_cutoff    0e-0
+#
+    radial_base         35 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.1841   50
+      division   0.3514  110
+      division   0.5126  194
+      division   0.6292  302
+      division   0.6939  434
+      division   0.7396  590
+#      division   0.7632  770
+#      division   0.8122  974
+#      division   1.1604 1202
+#      outer_grid  974
+      outer_grid  770
+#      outer_grid  434
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      2  s   2.
+    valence      2  p   3.
+#     ion occupancy
+    ion_occ      2  s   1.
+    ion_occ      2  p   2.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# N def2-QZVP
+ gaussian 0 8
+     90726.8892100            0.0000393  
+     13590.5288010            0.0003051  
+      3092.9883781            0.0016001  
+       875.9987636            0.0066983  
+       285.7446998            0.0236901  
+       103.1191342            0.0714554  
+        40.1285568            0.1763277  
+        16.5280957            0.3267759  
+ gaussian 0 2
+        69.3909610            0.0800521  
+        20.4282006            0.7826806  
+ gaussian 0 1 7.1292587972
+ gaussian 0 1 3.1324304893
+ gaussian 0 1 0.98755778723
+ gaussian 0 1 0.38765721307
+ gaussian 0 1 0.14909883075
+ gaussian 1 5
+       150.0574267           -0.0008622  
+        35.4915995           -0.0068571  
+        11.2478642           -0.0317957  
+         4.0900305           -0.1053740  
+         1.6220573           -0.2451971  
+ gaussian 1 1 0.66442261530
+ gaussian 1 1 0.27099770070
+ gaussian 1 1 0.10688749984
+ gaussian 2 1 2.83700000
+ gaussian 2 1 0.96800000
+ gaussian 2 1 0.33500000
+ gaussian 3 1 2.02700000
+ gaussian 3 1 0.68500000
+ gaussian 4 1 1.42700000
+################################################################################
+#
+#  FHI-aims code project
+# Igor Ying Zhang and Xinguo Ren, Fritz Haber Institute Berlin, 2012
+#
+#  Suggested "def2-QZVP" defaults for O atom (to be pasted into control.in file)
+#
+################################################################################
+  species        O
+#     global species definitions
+    nucleus             8
+    mass                15.9994
+#
+    l_hartree           6
+#
+    cut_pot             4.0  2.0  1.0
+    basis_dep_cutoff    0e-0
+#
+    radial_base         36 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.1817   50
+      division   0.3417  110
+      division   0.4949  194
+      division   0.6251  302
+      division   0.8014  434
+      division   0.8507  590
+#      division   0.8762  770
+#      division   0.9023  974
+#      division   1.2339 1202
+#      outer_grid 974
+      outer_grid 770
+#      outer_grid  434
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      2  s   2.
+    valence      2  p   4.
+#     ion occupancy
+    ion_occ      2  s   1.
+    ion_occ      2  p   3.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# O def2-QZVP
+ gaussian 0 8
+    116506.4690800            0.0000404  
+     17504.3497240            0.0003126  
+      3993.4513230            0.0016341  
+      1133.0063186            0.0068283  
+       369.9956959            0.0241244  
+       133.6207435            0.0727302  
+        52.0356436            0.1793443  
+        21.4619393            0.3305959  
+ gaussian 0 2
+        89.8350513            0.0964687  
+        26.4280108            0.9411748  
+ gaussian 0 1 9.2822824649
+ gaussian 0 1 4.0947728533
+ gaussian 0 1 1.3255349078
+ gaussian 0 1 0.51877230787
+ gaussian 0 1 0.19772676454
+ gaussian 1 5
+       191.1525581            0.0025116  
+        45.2333567            0.0200392  
+        14.3534659            0.0936091  
+         5.2422372            0.3061813  
+         2.0792419            0.6781050  
+ gaussian 1 1 0.84282371424
+ gaussian 1 1 0.33617694891
+ gaussian 1 1 0.12863997974
+ gaussian 2 1 3.77500000
+ gaussian 2 1 1.30000000
+ gaussian 2 1 0.44400000
+ gaussian 3 1 2.66600000
+ gaussian 3 1 0.85900000
+ gaussian 4 1 1.84600000
+################################################################################
+#
+#  FHI-aims code project
+# Igor Ying Zhang and Xinguo Ren, Fritz Haber Institute Berlin, 2012
+#
+#  Suggested "def2-QZVP" defaults for F atom (to be pasted into control.in file)
+#
+################################################################################
+  species        F
+#     global species definitions
+    nucleus             9
+    mass                18.9984032
+#
+    l_hartree           6
+#
+    cut_pot             4.0  2.0  1.0
+    basis_dep_cutoff    0e-0
+#
+    radial_base         37 7.0
+    radial_multiplier   6
+    angular_grids       specified 
+      division   0.4014  110
+      division   0.5291  194
+      division   0.6019  302
+      division   0.6814  434
+      division   0.7989  590
+#      division   0.8965  770
+#      division   1.3427  974
+#      outer_grid   974
+      outer_grid   770
+#      outer_grid  434
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      2  s   2.
+    valence      2  p   5.
+#     ion occupancy
+    ion_occ      2  s   1.
+    ion_occ      2  p   4.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# F def2-QZVP
+ gaussian 0 8
+    132535.9734500            0.0000474  
+     19758.1125880            0.0003707  
+      4485.1996947            0.0019451  
+      1273.8151020            0.0080573  
+       418.9383124            0.0279929  
+       152.5572198            0.0827351  
+        59.8215248            0.1985417  
+        24.8190769            0.3486063  
+ gaussian 0 2
+       100.7444667            0.1050507  
+        30.1037283            0.9406847  
+ gaussian 0 1 10.814283272
+ gaussian 0 1 4.8172886770
+ gaussian 0 1 1.6559334213
+ gaussian 0 1 0.64893519582
+ gaussian 0 1 0.24778104545
+ gaussian 1 5
+       240.9665411            0.0030390  
+        57.0206998            0.0243577  
+        18.1269521            0.1144293  
+         6.6457405            0.3706466  
+         2.6375723            0.7979155  
+ gaussian 1 1 1.0638217200
+ gaussian 1 1 0.41932562750
+ gaussian 1 1 0.15747588299
+ gaussian 2 1 5.01400000
+ gaussian 2 1 1.72500000
+ gaussian 2 1 0.58600000
+ gaussian 3 1 3.56200000
+ gaussian 3 1 1.14800000
+ gaussian 4 1 2.37600000
+################################################################################
+#
+#  FHI-aims code project
+# Igor Ying Zhang and Xinguo Ren, Fritz Haber Institute Berlin, 2012
+#
+#  Suggested "def2-QZVP" defaults for Li atom (to be pasted into control.in file)
+#
+################################################################################
+  species        Li
+#     global species definitions
+    nucleus             3
+    mass                6.941
+#
+    l_hartree           6
+#
+    cut_pot             4.0  2.0  1.0
+    basis_dep_cutoff    0e-0
+#     
+    radial_base         29 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.4484  110
+      division   0.5659  194
+      division   0.6315  302
+      division   0.6662  434
+      division   0.8186  590
+#      division   0.9037  770
+#      division   6.2760  974
+#      outer_grid   974
+      outer_grid  770
+#      outer_grid  434
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      2  s   1.
+#     ion occupancy
+    ion_occ      1  s   2.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# Li def2-QZVP
+ gaussian 0 9
+     14853.9770850            0.0000427  
+      2225.2236477            0.0003324  
+       504.8873901            0.0017518  
+       142.4584755            0.0073478  
+        46.3155996            0.0258998  
+        16.6553355            0.0766707  
+         6.4331186            0.1827608  
+         2.6027044            0.3265543  
+         1.0897245            0.3700043  
+ gaussian 0 2
+         4.4236596            0.1112099  
+         1.2356395            0.7998734  
+ gaussian 0 1 0.46067470602
+ gaussian 0 1 0.96617166955E-01
+ gaussian 0 1 0.45915452296E-01
+ gaussian 0 1 0.21140048730E-01
+ gaussian 1 3
+         3.2605109            0.0086505  
+         0.6500304            0.0476141  
+         0.1694167            0.2100114  
+ gaussian 1 1 0.55732343767E-01
+ gaussian 1 1 0.20489959241E-01
+ gaussian 1 1 3.3270000
+ gaussian 2 1 0.2300000
+ gaussian 2 1 0.0757000
+ gaussian 3 1 0.1350000
+################################################################################
+#
+#  FHI-aims code project
+# Igor Ying Zhang and Xinguo Ren, Fritz Haber Institute Berlin, 2012
+#
+#  Suggested "def2-QZVP" defaults for B atom (to be pasted into control.in file)
+#
+################################################################################
+  species        B
+#     global species definitions
+    nucleus             5
+    mass                10.811
+#
+    l_hartree           6
+#
+    cut_pot             4.0  2.0  1.0
+    basis_dep_cutoff    0e-0
+#
+    radial_base         32 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.3742  110
+      division   0.5197  194
+      division   0.5753  302
+      division   0.7664  434
+#      division   0.8392  770
+#      division   1.6522  974
+#      outer_grid   974
+      outer_grid  770
+#      outer_grid  434
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      2  s   2.
+    valence      2  p   1.
+#     ion occupancy
+    ion_occ      2  s   1.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# B def2-QZVP
+ gaussian 0 8
+     46447.6670560            0.0000384  
+      6957.6889042            0.0002984  
+      1583.4428403            0.0015645  
+       448.4660101            0.0065477  
+       146.2863926            0.0231390  
+        52.7843861            0.0696158  
+        20.5193962            0.1711964  
+         8.4185659            0.3191319  
+ gaussian 0 2
+        36.5100183            0.0789906  
+        10.5418540            0.7892638  
+ gaussian 0 1 3.6004091387
+ gaussian 0 1 1.5617023749
+ gaussian 0 1 0.44997370775
+ gaussian 0 1 0.18075230237
+ gaussian 0 1 0.71596696319E-01
+ gaussian 1 5
+        72.2404628            0.0008654  
+        16.8077072            0.0068762  
+         5.2259411            0.0309767  
+         1.8508351            0.1043236  
+         0.7220678            0.2616414  
+ gaussian 1 1 0.29491018056
+ gaussian 1 1 0.12201141839
+ gaussian 1 1 0.49865393625E-01
+ gaussian 2 1 1.11000000
+ gaussian 2 1 0.40200000
+ gaussian 2 1 0.14500000
+ gaussian 3 1 0.88200000
+ gaussian 3 1 0.31100000
+ gaussian 4 1 0.67300000
+################################################################################
+#
+#  FHI-aims code project
+#  Igor Ying Zhang and Xinguo Ren, Fritz Haber Institute Berlin, 2012
+#
+#  Suggested "def2-QZVP" defaults for Si atom (to be pasted into control.in file)
+#
+################################################################################
+  species        Si
+#     global species definitions
+    nucleus             14
+    mass                28.0855
+#
+    l_hartree           6
+#
+    cut_pot             4.0          2.0  1.0
+    basis_dep_cutoff    0e-0
+#
+    radial_base         42 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.4121   50
+      division   0.7665  110
+      division   1.0603  194
+      division   1.2846  302
+      division   1.4125  434
+      division   1.4810  590
+#      division   1.5529  770
+#      division   1.6284  974
+#      division   2.6016 1202
+#      outer_grid   974
+      outer_grid   770
+#      outer_grid  434
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      3  s   2.
+    valence      3  p   2.
+#     ion occupancy
+    ion_occ      3  s   1.
+    ion_occ      3  p   1.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# Si def2-QZVP
+ gaussian 0 10
+    918070.6956500            0.0000127  
+    137485.2538600            0.0000984  
+     31287.7727140            0.0005173  
+      8861.6105697            0.0021785  
+      2890.6943156            0.0078657  
+      1043.4063979            0.0249876  
+       406.8016028            0.0697618  
+       168.4836021            0.1647336  
+        73.1856288            0.3028560  
+        32.9984854            0.3600726  
+ gaussian 0 3
+       278.7875133            0.0201855  
+        85.9102287            0.1772041  
+        32.9926040            0.6358786  
+ gaussian 0 1 15.033693254
+ gaussian 0 1 5.7257514773
+ gaussian 0 1 2.6146521029
+ gaussian 0 1 1.1757833152
+ gaussian 0 1 0.35432330868
+ gaussian 0 1 0.16248335806
+ gaussian 0 1 0.68332457181E-01
+ gaussian 1 8
+      1775.8850516            0.0002019  
+       420.8378685            0.0017544  
+       136.4229024            0.0095040  
+        51.7009917            0.0373257  
+        21.5594560            0.1108540  
+         9.5559200            0.2375641  
+         4.3529819            0.3529578  
+         2.0096964            0.3288593  
+ gaussian 1 2
+        46.4181538            0.0258588  
+         1.9076418           -0.5987487  
+ gaussian 1 1 0.92337221587
+ gaussian 1 1 0.34515720370
+ gaussian 1 1 0.13656834761
+ gaussian 1 1 0.52987060586E-01
+ gaussian 2 1 2.64500000
+ gaussian 2 1 0.608000000
+ gaussian 2 1 0.272000000
+ gaussian 2 1 0.113000000
+ gaussian 3 1 0.212000000
+ gaussian 3 1 0.541000000
+ gaussian 4 1 0.461000000
+################################################################################
+#
+#  FHI-aims code project
+# Igor Ying Zhang and Xinguo Ren, Fritz Haber Institute Berlin, 2012
+#
+#  Suggested "def2-QZVP" defaults for P atom (to be pasted into control.in file)
+#
+################################################################################
+  species        P
+#     global species definitions
+    nucleus             15
+    mass                30.973762
+#
+    l_hartree           6
+#
+    cut_pot             4.0          2.0  1.0
+    basis_dep_cutoff    0e-0
+#
+    radial_base         43 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.2995   50
+      division   0.5998  110
+      division   0.9240  194
+      division   1.0921  302
+      division   1.2863  434
+      division   1.3165  590
+#      division   1.4113  770
+#      division   1.5128  974
+#      division   2.4980 1202
+      outer_grid  770
+#      outer_grid  434
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      3  s   2.
+    valence      3  p   3.
+#     ion occupancy
+    ion_occ      3  s   1.
+    ion_occ      3  p   2.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# P def2-QZVP
+ gaussian 0 10
+   1090561.7138000            0.0000121  
+    163316.3946100            0.0000944  
+     37166.6074510            0.0004962  
+     10526.8809450            0.0020900  
+      3433.9976028            0.0075489  
+      1239.5360480            0.0240104  
+       483.2745620            0.0672315  
+       200.1691159            0.1597867  
+        86.9603948            0.2973591  
+        39.2112834            0.3618717  
+ gaussian 0 3
+       336.7588366            0.0191547  
+       103.7217979            0.1713408  
+        39.7718612            0.6368966  
+ gaussian 0 1 17.888612952
+ gaussian 0 1 6.9644556879
+ gaussian 0 1 3.2198092087
+ gaussian 0 1 1.4669943979
+ gaussian 0 1 0.47765437532
+ gaussian 0 1 0.21637789241
+ gaussian 0 1 0.90235894336E-01
+ gaussian 1 8
+      2019.6711374            0.0002136  
+       478.6012509            0.0018569  
+       155.1494250            0.0100707  
+        58.8163566            0.0396052  
+        24.5445128            0.1173607  
+        10.8835711            0.2495054  
+         4.9624791            0.3642129  
+         2.3002912            0.3176413  
+ gaussian 1 2
+        59.3713450            0.3943292  
+         3.0694591           -6.3522960  
+ gaussian 1 1 1.0634401739
+ gaussian 1 1 0.45022152161
+ gaussian 1 1 0.18267271344
+ gaussian 1 1 0.71610333771E-01
+ gaussian 2 1 3.34300000
+ gaussian 2 1 0.807000000
+ gaussian 2 1 0.365000000
+ gaussian 2 1 0.154000000
+ gaussian 3 1 0.280000000
+ gaussian 3 1 0.703000000
+ gaussian 4 1 0.597000000
+################################################################################
+#
+#  FHI-aims code project
+# Igor Ying Zhang and Xinguo Ren, Fritz Haber Institute Berlin, 2009
+#
+#  Suggested "def2-QZVP" defaults for S atom (to be pasted into control.in file)
+#
+################################################################################
+  species        S
+#     global species definitions
+    nucleus             16
+    mass                32.065
+#
+    l_hartree           6
+#
+    cut_pot             4.0          2.0  1.0
+    basis_dep_cutoff    0e-0
+#
+    radial_base         44 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.4665  110
+      division   0.5810  194
+      division   0.7139  302
+      division   0.8274  434
+      division   0.9105  590
+#      division   1.0975  770
+#      division   1.2028  974
+#      outer_grid  974
+      outer_grid 770
+#      outer_grid  434
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      3  s   2.
+    valence      3  p   4.
+#     ion occupancy
+    ion_occ      3  s   1.
+    ion_occ      3  p   3.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# S def2-QZVP
+ gaussian 0 10
+   1273410.9023000            0.0000118  
+    190697.8300700            0.0000915  
+     43397.8853300            0.0004809  
+     12291.8096770            0.0020257  
+      4009.7420824            0.0073190  
+      1447.3531030            0.0233005  
+       564.3010291            0.0653862  
+       233.7450624            0.1561445  
+       101.5640281            0.2931856  
+        45.8059072            0.3628791  
+ gaussian 0 3
+       394.2728150            0.0187533  
+       121.7224959            0.1687073  
+        46.7541260            0.6380683  
+ gaussian 0 1 20.923008254
+ gaussian 0 1 8.2685567800
+ gaussian 0 1 3.8629345671
+ gaussian 0 1 1.7794684781
+ gaussian 0 1 0.61064260103
+ gaussian 0 1 0.27412269445
+ gaussian 0 1 0.11325939107
+ gaussian 1 8
+      2189.8930459            0.0002391  
+       518.9459659            0.0020772  
+       168.1956015            0.0112424  
+        63.7452828            0.0440699  
+        26.5970331            0.1291878  
+        11.7742514            0.2691082  
+         5.3534379            0.3785593  
+         2.4701912            0.2969213  
+ gaussian 1 2
+        82.1202883           -0.0394203  
+         4.9523533            0.6404840  
+ gaussian 1 1 1.0828262029
+ gaussian 1 1 0.49271277356
+ gaussian 1 1 0.20483450942
+ gaussian 1 1 0.80743615716E-01
+ gaussian 2 1 4.15900000
+ gaussian 2 1 1.01900000
+ gaussian 2 1 0.464000000
+ gaussian 2 1 0.194000000
+ gaussian 3 1 0.335000000
+ gaussian 3 1 0.869000000
+ gaussian 4 1 0.683000000
+################################################################################
+#
+#  FHI-aims code project
+# Igor Ying Zhang and Xinguo Ren, Fritz Haber Institute Berlin, 2012
+#
+#  Suggested "def2-QZVP" defaults for Cl atom (to be pasted into control.in file)
+#
+################################################################################
+  species        Cl
+#     global species definitions
+    nucleus             17
+    mass                35.453
+#
+    l_hartree           6
+#
+    cut_pot             4.0          2.0  1.0
+    basis_dep_cutoff    0e-0
+#
+    radial_base         45 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.4412  110
+      division   0.5489  194
+      division   0.6734  302
+      division   0.7794  434
+      division   0.9402  590
+#      division   1.0779  770
+#      division   1.1792  974
+#      outer_grid  974
+      outer_grid  770
+#      outer_grid  434
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      3  s   2.
+    valence      3  p   5.
+#     ion occupancy
+    ion_occ      3  s   1.
+    ion_occ      3  p   4.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# Cl def2-QZVP
+ gaussian 0 10
+   1467459.0095000            0.0000115  
+    219756.1643300            0.0000892  
+     50010.7703010            0.0004691  
+     14164.8239180            0.0019762  
+      4620.7465525            0.0071420  
+      1667.8991635            0.0227532  
+       650.2919926            0.0639598  
+       269.3803738            0.1533106  
+       117.0675211            0.2898695  
+        52.8117668            0.3634807  
+ gaussian 0 3
+       461.4276999            0.0180195  
+       142.1266535            0.1648944  
+        54.4378388            0.6389159  
+ gaussian 0 1 24.160770219
+ gaussian 0 1 9.7083540306
+ gaussian 0 1 4.5640696733
+ gaussian 0 1 2.1194744832
+ gaussian 0 1 0.75722365394
+ gaussian 0 1 0.33747224597
+ gaussian 0 1 0.13860775149
+ gaussian 1 8
+      2501.9457890            0.0002424  
+       592.8805928            0.0021080  
+       192.1808919            0.0114327  
+        72.8757105            0.0449567  
+        30.4363584            0.1319748  
+        13.4901789            0.2749364  
+         6.1478071            0.3834724  
+         2.8450945            0.2887194  
+ gaussian 1 2
+       105.3939794           -0.0343118  
+         6.7369739            0.6406082  
+ gaussian 1 1 1.2421095772
+ gaussian 1 1 0.55669714254
+ gaussian 1 1 0.23387801464
+ gaussian 1 1 0.93164490890E-01
+ gaussian 2 1 5.19100000
+ gaussian 2 1 1.27600000
+ gaussian 2 1 0.583000000
+ gaussian 2 1 0.243000000
+ gaussian 3 1 0.423000000
+ gaussian 3 1 1.08900000
+ gaussian 4 1 0.827000000
+################################################################################
+#
+#  FHI-aims code project
+#  VB, Fritz-Haber Institut, 2007
+#
+#  Suggested "safe" defaults for As atom (to be pasted into control.in file)
+#
+################################################################################
+  species        As
+#
+    nucleus             33
+    mass                74.92160
+#
+    l_hartree           6
+#
+    cut_pot             4.0          2.0  1.0
+    basis_dep_cutoff    0.d0
+#
+    radial_base         55 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.9730  194
+      division   1.1593  302
+      division   1.3290  434
+      division   1.4293  590
+      outer_grid  770
+ 
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      4  s   2.
+    valence      4  p   3.
+    valence      3  d  10.
+#     ion occupancy
+    ion_occ      4  s   1.
+    ion_occ      4  p   2.
+    ion_occ      3  d  10.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+# As def2-QZVP
+gaussian 0 11
+ 8217482.6198000             0.70590618422E-05      
+ 1230500.3720000             0.54880889611E-04      
+ 280225.8664800              0.28809164698E-03      
+  79482.5094150              0.12129779464E-02      
+  25963.7833510              0.43914559880E-02      
+   9381.4010193              0.14125362961E-01      
+   3660.4911972              0.40657915618E-01      
+   1518.2356024              0.10300382633    
+    661.80098920             0.21730077101    
+    300.58642127             0.33995751412    
+    141.11137296             0.31088634077 
+gaussian 0 4
+   2577.0870580              0.70752991980E-02      
+    798.07872277             0.71383615256E-01      
+    306.57574948             0.34287024634    
+    132.27558802             0.74361403413  
+gaussian 0 1 67.448702235
+gaussian 0 1 29.209180441 
+gaussian 0 1 14.156509326 
+gaussian 0 1 6.5561506682
+gaussian 0 1 3.1392847238
+gaussian 0 1 1.4294631050 
+gaussian 0 1 0.41103390885
+gaussian 0 1 0.20032453310 
+gaussian 0 1 0.85669928850E-01
+gaussian 1 10
+  25198.5042780              0.54758168372E-04      
+   5972.5601381              0.48572462452E-03      
+   1941.9123183              0.27908085625E-02      
+    743.59381104             0.12201505962E-01      
+    315.63828052             0.42666285138E-01      
+    143.96878925             0.11870919141    
+     69.068683164            0.24909407023    
+     34.254305629            0.36061356903    
+     17.371746759            0.29392241832    
+      8.7634555628           0.97829057366E-01    
+gaussian 1 5
+    228.49024582            -0.24900140765E-02      
+     86.313555488           -0.19482515843E-01      
+     36.751366267           -0.61495071038E-01      
+      8.5365149464           0.47258065062    
+      4.1935128599           1.0236065079   
+gaussian 1 1 2.0464980417
+gaussian 1 1 0.98000000000
+gaussian 1 1 0.40534340618
+gaussian 1 1 0.16655070471
+gaussian 1 1 0.65981706123E-01
+gaussian 2 7
+    479.32599612             0.71722800196E-03      
+    143.96064855             0.64419223046E-02      
+     55.548909224            0.31776498964E-01      
+     23.927581006            0.10276249168    
+     10.988194172            0.22710952843    
+      5.1489356262           0.33477474118    
+      2.3836810892           0.34175986071 
+gaussian 2 1 1.0688204667
+gaussian 2 1 0.43305693742
+gaussian 2 1 0.1700000 
+gaussian 3 1 0.26400000000 
+gaussian 3 1 0.64400000000
+gaussian 4 1 0.54650000000 
+
+################################################################################
+#
+#  FHI-aims code project
+#  VB, Fritz-Haber Institut, 2007
+#
+#  Suggested "safe" defaults for Se atom (to be pasted into control.in file)
+#
+################################################################################
+  species        Se
+#     global species definitions
+    nucleus             34
+    mass                78.96
+#
+    l_hartree           6
+#
+    cut_pot             4.0          2.0  1.0
+    basis_dep_cutoff    0.d0
+#
+    radial_base         55 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.9913  194
+      division   1.1593  302
+      division   1.3908  434
+      division   1.4959  590
+      outer_grid  770
+ 
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      4  s   2.
+    valence      4  p   4.
+    valence      3  d  10.
+#     ion occupancy
+    ion_occ      4  s   1.
+    ion_occ      4  p   3.
+    ion_occ      3  d  10.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# Se def2-QZVP
+gaussian 0 11
+ 9520446.7743000             0.63309690150E-05      
+ 1424984.0802000             0.49267697990E-04      
+ 324127.5768200              0.25920249744E-03      
+  91774.8769500              0.10943145743E-02      
+  29932.7257250              0.39706139067E-02      
+  10804.6179050              0.12801187916E-01      
+   4214.0134779              0.36980379417E-01      
+   1747.8116633              0.94461349896E-01      
+    762.12160878             0.20274705434    
+    346.45604141             0.32878956424    
+    163.11569304             0.32300252609 
+gaussian 0 4
+   2614.5153067              0.79113928518E-02      
+    818.68552756             0.77187739408E-01      
+    318.63398991             0.35672061949    
+    139.04844125             0.75846750004
+gaussian 0 1 78.348734788
+gaussian 0 1 31.704290663
+gaussian 0 1 15.505859269
+gaussian 0 1 7.3227423625
+gaussian 0 1 3.4969483549
+gaussian 0 1 1.6121546085 
+gaussian 0 1 0.49587158541 
+gaussian 0 1 0.24092138175
+gaussian 0 1 0.10231739397 
+gaussian 1 10
+  25360.2156150              0.60531790911E-04      
+   5993.7896610              0.53987774437E-03      
+   1943.0741755              0.31130456170E-02      
+    742.35316156             0.13599674694E-01      
+    314.62114597             0.47298958377E-01      
+    143.34748044             0.12981487726    
+     68.673617552            0.26569982215    
+     34.013554117            0.36723195311    
+     17.198099621            0.27478356345    
+      8.5830329629           0.79256169683E-01
+gaussian 1 5
+    236.58209146            -0.12271649354E-02      
+     90.576183214           -0.92584627774E-02      
+     39.086689301           -0.28428728384E-01      
+      9.3084344018           0.21201102192    
+      4.6169923084           0.47117589805  
+gaussian 1 1 2.2653477506 
+gaussian 1 1 1.0800000000
+gaussian 1 1 0.47939328581
+gaussian 1 1 0.19619983845
+gaussian 1 1 0.76256339275E-01 
+gaussian 2 7
+    539.48700124             0.66722955533E-03      
+    162.13394435             0.60399330928E-02      
+     62.661795641            0.30238666507E-01      
+     27.077272889            0.99267892065E-01      
+     12.483003929            0.22358036310    
+      5.8864623136           0.33574682762    
+      2.7519131105           0.34554856483
+gaussian 2 1 1.2500769617
+gaussian 2 1 0.51172841843
+gaussian 2 1 0.2000000
+gaussian 3 1 0.28400000000
+gaussian 3 1 0.70970000000
+gaussian 4 1 0.57300000000
+
+
+
+
+################################################################################
+#
+#  FHI-aims code project
+#  VB, Fritz-Haber Institut, 2007
+#
+#  Suggested "safe" defaults for Br atom (to be pasted into control.in file)
+#
+################################################################################
+  species        Br
+#     global species definitions
+    nucleus             35
+    mass                79.904
+#
+    l_hartree           6
+#
+    cut_pot             4.0   2.0  1.0
+    basis_dep_cutoff    0.d0
+#
+    radial_base         56 7.0
+    radial_multiplier   6
+    angular_grids       specified
+      division   0.9869  194
+      division   1.1684  302
+      division   1.3643  434
+      division   1.5935  590
+      outer_grid  770
+  
+################################################################################
+#
+#  Definition of "minimal" basis
+#
+################################################################################
+#     valence basis states
+    valence      4  s   2.
+    valence      4  p   5.
+    valence      3  d  10.
+#     ion occupancy
+    ion_occ      4  s   1.
+    ion_occ      4  p   4.
+    ion_occ      3  d  10.
+################################################################################
+#
+#   For exact comparison with all GTO-based codes, one or more of
+#   the following flags are needed:
+#
+    include_min_basis   .false.
+    pure_gauss          .true.
+#
+
+
+# Br def2-QZVP
+gaussian 0 11
+ 10629044.2640000            0.59322104325E-05      
+ 1591918.2739000             0.46118980689E-04      
+ 362333.9843700              0.24244612378E-03      
+ 102643.1114100              0.10231422748E-02      
+  33489.8466680              0.37121984175E-02      
+  12091.2471900              0.11978107933E-01      
+   4716.1908789              0.34682692842E-01      
+   1956.1598080              0.89068331264E-01      
+    853.08595848             0.19330124567    
+    387.96633666             0.32071144956    
+    182.85156613             0.32996797574  
+gaussian 0 4
+   3240.4086421              0.65905194070E-02      
+   1000.4631935              0.68439609656E-01      
+    383.37301682             0.34495478668    
+    166.03929698             0.82315542085  
+gaussian 0 1 87.919906994
+gaussian 0 1 35.675840068
+gaussian 0 1 17.543657842
+gaussian 0 1 8.4473660433
+gaussian 0 1 3.9666180616
+gaussian 0 1 1.8356815987
+gaussian 0 1 0.59084778776
+gaussian 0 1 0.28863218421
+gaussian 0 1 0.12153380537
+gaussian 1 10
+  26566.4765790              0.62073657410E-04      
+   6290.5088566              0.55131636217E-03      
+   2043.3178410              0.31680110980E-02      
+    781.67221007             0.13816597290E-01      
+    331.51078945             0.48018539681E-01      
+    151.09198667             0.13162015183    
+     72.395278166            0.26860052203    
+     35.869510844            0.36827391093    
+     18.139906191            0.27108612944    
+      9.0466688944           0.76215338633E-01
+gaussian 1 5
+    253.71822146            -0.13729169381E-02      
+     97.250818058           -0.10393811185E-01      
+     42.034897960           -0.32204214612E-01      
+      9.9685673555           0.24224770086    
+      4.9395854745           0.53557868398 
+gaussian 1 1 2.4382845475
+gaussian 1 1 1.1800000000
+gaussian 1 1 0.51047564965
+gaussian 1 1 0.21215851928
+gaussian 1 1 0.83943604990E-01
+gaussian 2 7
+    601.44434484             0.62783723765E-03      
+    180.85718640             0.57205157153E-02      
+     69.986806340            0.29002521527E-01      
+     30.324710300            0.96446989766E-01      
+     14.027909238            0.22065825870    
+      6.6511702082           0.33657642375    
+      3.1354168338           0.34872040582
+gaussian 2 1 1.4393591843
+gaussian 2 1 0.59350441438
+gaussian 2 1 0.2300000
+gaussian 3 1 0.34070000000
+gaussian 3 1 0.82570000000
+gaussian 4 1 0.64910000000

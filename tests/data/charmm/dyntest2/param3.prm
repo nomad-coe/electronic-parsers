@@ -1,0 +1,596 @@
+* Parameter File PARAM3.INP
+*
+
+! Peptide geometry to give Ramachandran et al BBA 359:298 (1974)
+! Peptide torsions from Hagler et al JACS 98:4600 (1976)
+! Amide parameters least squares fit to n-methyl acteamide ir, proline exp.
+! barrier (20kcal).  Ring impropers based on ir out of plane bending delocalized
+! impropers for tryptophan.  Phenol toluene for ring oop vibes.  Hydrogen bond
+! parameters (o-o,o-n,n-n) from Vinogradov and Linell, strengths for eps=r at
+! small r, lengths from experimental data.  Nonbonded terms from parmfix,
+! hydrogen (a-0.044,n-1,r-0.8 == emin-0.1).  Carbon monoxide heme parameters
+! included 8/1/81 A. W. Lee.  Angle for N-terminal proline added (REB 10/18/81).
+
+BOND
+C    C      450.0       1.38!	FROM B. R. GELIN THESIS AMIDE AND DIPEPTIDES
+C    CH1E   405.0       1.52!	EXCEPT WHERE NOTED.  CH1E,CH2E,CH3E, AND CT
+C    CH2E   405.0       1.52!	ALL TREATED THE SAME. UREY-BRADLEY TERMS ADDED
+C    CH3E   405.0       1.52
+C    CR1E   450.0       1.38
+C    CT     405.0       1.53
+C    N      471.0       1.33
+C    NC2    400.0       1.33!	BOND LENGTH FROM PARMFIX9 FORCE K APROXIMATE
+C    NC2E   400.0       1.33
+C    NH1    471.0       1.33
+C    NH1E   471.0       1.33
+C    NH2    471.0       1.33
+C    NH2E   471.0       1.33
+C    NP     471.0       1.33
+C    NR     471.0       1.33
+C    O      580.0       1.23
+C    OC     580.0       1.23!	FORCE DECREASE AND LENGTH INCREASE FROM C-O
+C    OH1    450.0       1.38!	FROM PARMFIX9 (NO VALUE IN GELIN THESIS)
+C    OH1E   450.0       1.38
+CH1E CH1E   225.0       1.53
+CH1E CH2E   225.0       1.52
+CH1E CH3E   225.0       1.52
+CH1E N      422.0       1.45
+CH1E NH1    422.0       1.45
+CH1E NH1E   422.0       1.45
+CH1E NH2    422.0       1.45
+CH1E NH2E   422.0       1.45
+CH1E NH3    422.0       1.45
+CH1E NH3E   422.0       1.45
+CH1E OH1    400.0       1.42!	FROM PARMFIX9 (NO VALUE IN GELIN THESIS)
+CH1E OH1E   400.0       1.42
+CH2E CH2E   225.0       1.52
+CH2E CH3E   225.0       1.54
+CH2E CR1E   250.0       1.45!	FROM WARSHEL AND KARPLUS 1972 JACS 96:5612
+CH2E N      422.0       1.45
+CH2E NH1    422.0       1.45
+CH2E NH1E   422.0       1.45
+CH2E NH2    422.0       1.45
+CH2E NH2E   422.0       1.45
+CH2E NH3    422.0       1.45
+CH2E NH3E   422.0       1.45
+CH2E OH1    400.0       1.42
+CH2E OH1E   400.0       1.42
+CH2E S      450.0       1.81!	FROM PARMFIX9
+CH2E SH1E   450.0       1.81
+CH3E NH1    422.0       1.49
+CH3E NH1E   422.0       1.49
+CH3E S      450.0       1.77!	FROM PARMFIX9
+CM   OM    1115.0       1.128!  FROM CAUGHEY ET AL(1978),CARBON MONOXIDE
+CR1E CR1E   450.0       1.38
+CR1E NH1    450.0       1.305
+CR1E NH1E   450.0       1.305
+CR1E NR     450.0       1.305
+CT   CT     200.0       1.53
+CT   N      422.0       1.45
+CT   NC2    422.0       1.45
+CT   NH1    422.0       1.45
+CT   NH2    422.0       1.45
+CT   NH3    422.0       1.45
+CT   OH1    400.0       1.42
+CT   S      450.0       1.81
+FE   CM     258.0       1.79!   FROM KROEKER ET AL(JCP:72:4846)
+FE   NP     500.0       2.09
+FE   NR      65.0       1.98!   FROM NAGAI ET AL(1980)
+H    NH1    405.0       0.98!	GELIN AND IR STRETCH 3200 CM-1
+H    NH2    405.0       0.98
+H    OH1    450.0       0.96!	FROM IR STRETCH 3400 CM-1
+H    OH2    450.0       0.96
+HA   C      350.0       1.08
+HA   CT     300.0       1.08
+HC   NC2    405.0       1.00
+HC   NH1    405.0       0.98
+HC   NH3    405.0       1.04
+S    S      500.0       2.02
+THETAS
+C    C    C       70.0     106.5!	FROM B. R. GELIN THESIS WITH HARMONIC
+C    C    CH2E    65.0     126.5!	PART OF F TERMS INCORPORATED. ATOMS
+C    C    CH3E    65.0     126.5!	WITH EXTENDED H COMPENSATED FOR LACK
+C    C    CR1E    70.0     122.5!	OF H ANGLES.
+C    C    CT      70.0     126.5
+C    C    HA      40.0     120.0!	AMIDE PARAMETERS FIT BY LEAST SQUARES
+C    C    NH1     65.0     109.0!	TO N-METHYL ACETAMIDE VIBRATIONS.
+C    C    NH1E    65.0     109.0!	Geometry to give Ramachandran geom. on
+C    C    NP      65.0     112.5!	minimization of N-methyl acetamide.
+C    C    NR      65.0     112.5
+C    C    OH1     65.0     119.0
+C    CH1E CH1E    70.0     110.0
+C    CH1E CH2E    70.0     109.5
+C    CH1E CH3E    70.0     106.5
+C    CH1E N       45.0     111.6
+C    CH1E NH1     45.0     111.6
+C    CH1E NH1E    45.0     111.6
+C    CH1E NH2     45.0     111.6
+C    CH1E NH2E    45.0     111.6
+C    CH1E NH3     45.0     111.6
+C    CH1E NH3E    45.0     111.6
+C    CH2E CH1E    70.0     112.5
+C    CH2E CH2E    70.0     113.0
+C    CH2E NH1     70.0     111.6
+C    CH2E NH1E    70.0     111.6
+C    CH2E NH2     70.0     111.6
+C    CH2E NH2E    70.0     111.6
+C    CH2E NH3     70.0     111.6
+C    CH2E NH3E    70.0     111.6
+C    CR1E C       90.0     126.5
+C    CR1E CH2E    90.0     122.0
+C    CR1E CR1E    90.0     119.0
+C    CR1E NH1     90.0     109.5
+C    CR1E NH1E    90.0     109.5
+C    CR1E NR      90.0     106.5
+C    CT   CT      70.0     109.5
+C    CT   HA      70.0     109.5
+C    CT   N       70.0     111.6
+C    CT   NH1     70.0     111.6
+C    CT   NH2     70.0     111.6
+C    CT   NH3     70.0     111.6
+C    N    CH1E    80.0     120.0
+C    N    CH2E    80.0     120.0
+C    N    CT      80.0     120.0
+C    NC2  CT      80.0     120.0
+C    NC2  HC      35.0     120.0
+C    NH1  C       60.0     102.5
+C    NH1  CH1E    77.5     120.0
+C    NH1  CH2E    77.5     120.0
+C    NH1  CH3E    77.5     120.0
+C    NH1  CR1E    60.0     108.0
+C    NH1  CT      80.0     120.0
+C    NH1  H       30.0     120.0
+C    NH1E CH1E    77.5     120.0
+C    NH1E CH2E    77.5     120.0
+C    NH1E CH3E    77.5     120.0
+C    NH1E CR1E    60.0     108.0
+C    NH2  H       30.0     120.0
+C    NP   C       70.0     102.5
+C    NP   FE      50.0     128.0!	FORCE CONSTANT FROM PARMFIX9
+C    NR   C       70.0     102.5
+C    NR   CR1E    70.0     109.5
+C    OH1  H       50.0     109.5
+CH1E C    N       20.0     117.5
+CH1E C    NH1     20.0     117.5
+CH1E C    NH1E    20.0     117.5
+CH1E C    O       85.0     121.5
+CH1E C    OC      85.0     117.5
+CH1E C    OH1     85.0     120.0
+CH1E C    OH1E    85.0     120.0
+CH1E CH1E CH2E    45.0     112.5
+CH1E CH1E CH3E    45.0     111.0
+CH1E CH1E NH1     50.0     110.0
+CH1E CH1E NH1E    50.0     110.0
+CH1E CH1E NH2     50.0     109.5
+CH1E CH1E NH2E    50.0     109.5
+CH1E CH1E NH3     50.0     107.5
+CH1E CH1E NH3E    50.0     107.5
+CH1E CH1E OH1     50.0     104.5
+CH1E CH1E OH1E    50.0     104.5
+CH1E CH2E CH1E    45.0     117.0
+CH1E CH2E CH2E    45.0     112.5
+CH1E CH2E CH3E    45.0     113.0
+CH1E CH2E OH1     45.0     111.0
+CH3E CH2E OH1     45.0     111.0
+CH1E CH2E OH1E    45.0     111.0
+CH3E CH2E OH1E    45.0     111.0
+CH1E CH2E S       50.0     112.5
+CH1E CH2E SH1E    50.0     112.5
+CH1E N    CH2E    60.0     110.0
+CH1E N    CH3E    60.0     110.0
+CH1E NH1  CH3E    60.0     120.0
+CH1E NH1  H       35.0     120.0
+CH1E NH1E CH3E    65.0     120.0
+CH1E NH2  CH2E    60.0     120.0
+CH1E NH2  H       35.0     120.0
+CH1E NH2E CH2E    65.0     120.0
+CH1E NH3  HC      35.0     109.5
+CH1E NH3  CH2E    35.0     109.5
+CH1E OH1  H       35.0     109.5
+CH2E C    CR1E    70.0     121.5
+CH2E C    N       20.0     117.5
+CH2E C    NH1     20.0     117.5
+CH2E C    NH1E    20.0     117.5
+CH2E C    NH2     20.0     117.5
+CH2E C    NH2E    20.0     117.5
+CH2E C    NR      60.0     116.0
+CH2E C    O       85.0     121.6
+CH2E C    OC      85.0     118.5
+CH2E C    OH1     85.0     120.0
+CH2E C    OH1E    85.0     120.0
+CH2E CH1E CH3E    50.0     111.5
+CH2E CH1E N       65.0     104.0
+CH2E CH1E NH1     65.0     110.0
+CH2E CH1E NH1E    65.0     110.0
+CH2E CH1E NH2     65.0     110.0
+CH2E CH1E NH2E    65.0     110.0
+CH2E CH1E NH3     65.0     110.0
+CH2E CH1E NH3E    65.0     110.0
+CH2E CH2E CH2E    45.0     110.0
+CH2E CH2E CH3E    45.0     111.0
+CH2E CH2E N       65.0     105.0
+CH2E CH2E NH1     65.0     111.0
+CH2E CH2E NH1E    65.0     111.0
+CH2E CH2E NH2     65.0     109.5
+CH2E CH2E NH2E    65.0     109.5
+CH2E CH2E NH3     65.0     110.5
+CH2E CH2E NH3E    65.0     110.5
+CH2E CH2E S       50.0     112.5
+CH2E N    CH3E    60.0     109.5
+CH2E NH1  CH3E    60.0     120.0
+CH2E NH1  H       35.0     120.0
+CH2E NH1E CH3E    65.0     120.0
+CH2E NH2  H       35.0     120.0
+CH2E NH3  HC      35.0     109.5
+CH2E OH1  H       35.0     109.5
+CH2E S    CH3E    50.0      99.5! FROM PARMFIX9, CHECK WITH IR
+CH2E S    S       50.0     104.2
+CH3E C    N       20.0     117.5
+CH3E C    NH1     20.0     117.5
+CH3E C    NH1E    20.0     117.5
+CH3E C    O       85.0     121.5
+CH3E CH1E CH3E    50.0     111.0
+CH3E CH1E NH1     65.0     108.5
+CH3E CH1E NH1E    65.0     108.5
+CH3E CH1E NH2     65.0     109.5
+CH3E CH1E NH2E    65.0     109.5
+CH3E CH1E NH3     65.0     109.5
+CH3E CH1E NH3E    65.0     109.5
+CH3E CH1E OH1     60.0     110.5
+CH3E CH1E OH1E    60.0     110.5
+CH3E NH1  H       35.0     120.0
+CR1E C    CR1E    65.0     120.5
+CR1E C    NH1     65.0     116.5
+CR1E C    NH1E    65.0     116.5
+CR1E C    NP      65.0     122.5
+CR1E C    NR      65.0     122.5
+CR1E C    OH1     65.0     119.0
+CR1E C    OH1E    65.0     119.0
+CR1E CR1E CR1E    90.0     120.5
+CR1E NH1  CR1E    65.0     110.0
+CR1E NH1  H       35.0     120.0
+CR1E NH1E CR1E    80.0     110.0
+CR1E NR   CR1E    65.0     110.0
+CR1E NR   FE      30.0     124.8!	FORCE CONSTANT FROM PARMFIX9
+CT   C    N       20.0     117.5
+CT   C    NH1     20.0     117.5
+CT   C    NH2     20.0     117.5
+CT   C    O       85.0     121.5
+CT   C    OC      85.0     118.5
+CT   C    OH1     85.0     120.0
+CT   CT   CT      45.0     111.00
+CT   CT   HA      40.0     109.50
+CT   CT   N       65.0     105.00
+CT   CT   NC2     65.0     110.00
+CT   CT   NH1     65.0     110.00
+CT   CT   NH2     65.0     110.00
+CT   CT   NH3     65.0     110.00
+CT   CT   OH1     50.0     109.50
+CT   CT   S       50.0     112.50
+CT   N    CT      60.0     110.0
+CT   NC2  HC      35.0     120.0
+CT   NH1  H       35.0     120.0
+CT   NH2  H       35.0     120.0
+CT   NH3  HC      35.0     109.5
+CT   OH1  H       35.0     109.5
+CT   S    CT      50.0      99.5!	FORCE CONSTANTS FROM PARMFIX9
+CT   S    S       50.0     104.2
+FE   CM   OM       5.0      90.0!       FROM KROEKER ET AL(1980)
+H    NH2  H       40.0     125.0
+H    OH2  H       55.0     104.5!	EXPERIMENTAL GEOMETRY, BEND 1650 CM 1
+HA   C    NH1     40.0     120.0
+HA   C    NR      40.0     120.0
+HA   CT   HA      40.0     109.5
+HA   CT   N       50.0     109.5
+HA   CT   NC2     50.0     109.5
+HA   CT   NH1     50.0     109.5
+HA   CT   NH3     50.0     109.5
+HA   CT   OH1     50.0     109.5
+HA   CT   S       40.0     109.5
+HC   NC2  HC      40.0     120.0
+HC   NH3  HC      40.0     109.5
+N    C    O       85.0     121.0
+NC2  C    NC2     70.0     120.0
+NC2  C    NH1     70.0     120.0
+NC2E C    NC2E    70.0     120.0
+NC2E C    NH1E    70.0     120.0
+NH1  C    NR      70.0     120.0
+NH1  C    O       65.0     121.0
+NH1  CR1E NH1     70.0     109.0
+NH1  CR1E NR      70.0     109.0
+NH1E C    O       65.0     121.0
+NH1E CR1E NH1E    70.0     109.0
+NH1E CR1E NR      70.0     109.0
+NH2  C    O       65.0     121.0
+NH2E C    O       65.0     121.0
+NP   FE   CM      5.0       90.0
+NP   FE   NP      50.0      90.0
+NP   FE   NR      5.0      115.0
+NR   FE   CM      5.0      180.0
+O    C    OH1     85.0     120.0
+O    C    OH1E    85.0     120.0
+OC   C    OC      85.0     122.5
+PHI
+CH1E C    N    CH1E    10.0       2     180.0! PROLINE ISOMERIZATON BARRIER
+CH2E C    N    CH1E    10.0       2     180.0! OF 20 KCAL/MOL.
+CR1E C    C    CR1E    35.0       2     180.0! THESE TERMS FOR TRYPTOPHAN
+CR1E C    C    C       10.0       2     180.0! RINGS PLANAR.
+CR1E C    C    NH1     10.0       2     180.0
+CR1E C    C    NH1E    10.0       2     180.0
+X    C    CH1E X        0.0       3       0.0! FROM GELIN THESIS AMIDES
+X    C    CH2E X        0.0       3       0.0! USING A SINGLE
+X    C    CR1E X       10.0       2     180.0! DIHEDRAL PER BOND RATHER
+X    C    CT   X        0.0       3       0.0! THAN MULTIPLE TORSIONS.
+X    C    N    X        8.2       2     180.0! ALKANE TORSION REDUCED TO
+X    C    NC2  X        8.2       2     180.0! 1.6 FROM 1.8 TO COINCIDE WITH
+X    C    NH1  X        8.2       2     180.0! THE EXPERIMENTAL BARRIER.
+X    C    NH1E X        8.2       2     180.0! IRON AND SULFUR TORSIONS
+X    C    NH2  X        8.2       2     180.0
+X    C    OH1  X        1.8       2     180.0
+X    CH1E CH1E X        1.6       3       0.0
+X    CH1E CH2E X        1.6       3       0.0
+X    CH1E N    X        0.3       3       0.0! from Hagler et al tabulation of
+X    CH1E NH1  X        0.3       3       0.0! exp. data and 6 31g calc.
+X    CH1E NH1E X        0.3       3       0.0
+X    CH1E NH2  X        1.8       3       0.0! protonated secondary amine
+X    CH1E NH3  X        0.6       3       0.0! 1/proton so 3 for the bond
+X    CH1E OH1  X        0.5       3       0.0! Changed to roughly meoh
+X    CH2E CH2E X        1.6       3       0.0
+X    CH2E N    X        0.3       3       0.0! see CH1E comments
+X    CH2E NH1  X        0.3       3       0.0
+X    CH2E NH1E X        0.3       3       0.0
+X    CH2E NH2  X        0.6       3       0.0
+X    CH2E NH3  X        0.6       3       0.0
+X    CH2E OH1  X        0.5       3       0.0
+X    CH2E S    X        1.2       2       0.0
+X    CT   CT   X        1.6       3       0.0
+X    CT   N    X        0.3       3       0.0! see CH1E comments
+X    CT   NC2  X        0.3       3       0.0
+X    CT   NH1  X        0.3       3       0.0
+X    CT   NH2  X        0.6       3       0.0
+X    CT   NH3  X        0.6       3       0.0
+X    CT   OH1  X        0.5       3       0.0
+X    CT   S    X        1.2       2       0.0
+X    FE   NR   X        0.05      4       0.0
+X    FE   CM   X        0.05      4       0.0
+X    S    S    X        4.0       2       0.0! from exp. NMR barrier
+IMPHI
+C    C    CR1E CH2E    90.0   0    0.0! GIVE 220 CM-1 METHYL OOP FOR TOLUENE.
+C    CR1E C    CH2E    90.0   0   0.0! USED HERE FOR TRP CG OUT OF PLANE
+C    CR1E CR1E CH2E    90.0   0   0.0!               PHE, AND TYR CG OOP
+C    CR1E NH1  CH2E    90.0   0   0.0!               HIS CG RING OOP
+C    NH1  CR1E CH2E    90.0   0   0.0!
+C    CR1E CR1E OH1    150.0   0   0.0! GIVE 249 CM-1 PHENOL OH OOP.
+C    CR1E CR1E OH1E   150.0   0   0.0! USED HERE FOR TYR HYROXYL OOP
+C    H    H    NH2     45.0   0   0.0! PRIMARY AMIDES (ASN AND GLN) OOP
+C    OC   OC   CH1E   100.0   0   0.0! CARBOXYL OUT OF PLANE.
+C    OC   OC   CH2E   100.0   0   0.0!
+C    X    X    C       25.0   0   0.0! FROM BENZENE NORMAL MODE ANALYSIS
+C    X    X    CH2E    90.0   0   0.0! FROM TOLUENE METHYL OOP. 217 CM-1
+C    X    X    CH3E    90.0   0   0.0
+C    X    X    CR1E    25.0   0   0.0
+C    X    X    H       75.0   0   0.0! FROM BENZENE NORMAL MODE ANALYSIS
+C    X    X    HA      75.0   0   0.0!
+C    X    X    NH1    100.0   0   0.0! AMIDES FIT TO N-METHYL ACETAMIDE.
+C    X    X    NH1E   100.0   0   0.0
+C    X    X    O      100.0   0   0.0
+C    X    X    OC     100.0   0   0.0
+C    X    X    OH1    150.0   0   0.0! USED FOR TYR HYDROXYL OOP
+C    X    X    OH1E   150.0   0   0.0
+CH1E X    X    CH1E    55.0   0 35.26439! CALCULATED TO  BE THE SAME AS THE 3
+CH1E X    X    CH2E    55.0   0 35.26439! H-CH1E-X ANGLES WITH K=40
+CH1E X    X    CH3E    55.0   0 35.26439
+CR1E X    X    CR1E    25.0   0   0.0! EXTENDED ATOM VERSION OF BENZENE
+CR1E X    X    NH1     25.0   0   0.0! SAME AS ABOVE FOR LACK OF BETTER VALUES
+CR1E X    X    NH1E    25.0   0   0.0
+FE   X    X    NP      20.0   0   0.0! FROM PARMFIX9
+H    X    X    O       45.0   0   0.0
+N    CH1E CH2E C       45.0   0   0.0! PROLINE NITROGENS
+N    X    X    CH2E    45.0   0   0.0
+N    X    X    CT      45.0   0   0.0
+NC2  X    X    CT      45.0   0   0.0
+NC2  X    X    HC      45.0   0   0.0
+NH1  X    X    CH1E    45.0   0   0.0
+NH1  X    X    CH2E    45.0   0   0.0
+NH1  X    X    CH3E    45.0   0   0.0
+NH1  X    X    CT      45.0   0   0.0
+NH1  X    X    H       45.0   0   0.0! AMIDES PROTON OOP
+NH1  X    X    NH1     25.0   0   0.0! 
+NH1  X    X    NR      25.0   0   0.0
+NH1E X    X    NH1E    25.0   0   0.0
+NH1E X    X    NR      25.0   0   0.0
+NH2  X    X    H       45.0   0   0.0
+NR   X    X    C       25.0   0   0.0
+NR   X    X    CR1E    25.0   0   0.0
+NR   X    X    CT      25.0   0   0.0
+NONBOND
+C        1.6500    5.0       1.8000!	EXCEPT AS NOTED FROM PARMFIX9
+CH1E     1.3500    6.0       1.8500
+CH2E     1.7700    7.0       1.9000
+CH3E     2.1700    8.0       1.9500
+CM       1.6500    5.0       1.8000!    SUBJECT TO CHANGE
+CR1E     2.0700    6.0       1.9000
+CT       0.9800    5.0       1.8000!	FROM GELIN THESIS AMIDES
+FE       0.0100    0.0001    0.6500!    SUBJECT TO CHANGE
+H        0.0440    1.0       0.8000
+HA       0.1000    1.0       1.4680!	From Gelin thesis amides section
+HC       0.0440    1.0       0.8000
+N        1.1000    6.0       1.6000
+NC2      1.1000    6.0       1.6000
+NC2E     1.7000    8.0       1.7000
+NH1      1.1000    6.0       1.6000
+NH1E     1.4000    7.0       1.6500
+NH2      1.1000    6.0       1.6000
+NH2E     1.7000    8.0       1.7000
+NH3      1.1000    6.0       1.6000
+NH3E     2.1300    9.0       1.7500
+NP       1.1000    6.0       1.6000
+NR       1.1000    6.0       1.6000
+O        0.8400    6.0       1.6000
+OC       2.1400    6.0       1.6000
+OH1      0.8400    6.0       1.6000
+OH1E     1.2000    7.0       1.6500
+OH2      0.8400    6.0       1.6000
+OH2E     1.2000    7.0       1.7000
+OM       0.8400    6.0       1.6000!     SUBJECT TO CHANGE
+S        0.3400   16.0       1.9000
+SH1E     0.3400   16.0       1.9500
+HBOND
+NC2  N       -3.00      3.0!	VALUES FROM VINOGRADOV AND LINELL FOR
+NC2  NC2     -3.00      3.0!	TYPICAL LENGTHS AND DEPTHS.
+NC2  NC2E    -3.00      3.0
+NC2  NH1     -3.00      3.0
+NC2  NH1E    -3.00      3.0
+NC2  NH2     -3.00      3.0
+NC2  NH2E    -3.00      3.0
+NC2  NP      -3.00      3.0
+NC2  NR      -3.00      3.0
+NC2  O       -3.50      2.9
+NC2  OC      -3.50      2.9
+NC2E N       -3.00      3.0
+NC2E NC2     -3.00      3.0
+NC2E NC2E    -3.00      3.0
+NC2E NH1     -3.00      3.0
+NC2E NH1E    -3.00      3.0
+NC2E NH2     -3.00      3.0
+NC2E NH2E    -3.00      3.0
+NC2E NP      -3.00      3.0
+NC2E NR      -3.00      3.0
+NC2E O       -3.50      2.9
+NC2E OC      -3.50      2.9
+NH1  N       -3.00      3.0
+NH1  NC2     -3.00      3.0
+NH1  NC2E    -3.00      3.0
+NH1  NH1     -3.00      3.0
+NH1  NH1E    -3.00      3.0
+NH1  NH2     -3.00      3.0
+NH1  NH2E    -3.00      3.0
+NH1  NP      -3.00      3.0
+NH1  NR      -3.00      3.0
+NH1  O       -3.50      2.9
+NH1  OC      -3.50      2.9
+NH1E N       -3.00      3.0
+NH1E NC2     -3.00      3.0
+NH1E NC2E    -3.00      3.0
+NH1E NH1     -3.00      3.0
+NH1E NH1E    -3.00      3.0
+NH1E NH2     -3.00      3.0
+NH1E NH2E    -3.00      3.0
+NH1E NP      -3.00      3.0
+NH1E NR      -3.00      3.0
+NH1E O       -3.50      2.9
+NH1E OC      -3.50      2.9
+NH2  N       -3.00      3.0
+NH2  NC2     -3.00      3.0
+NH2  NC2E    -3.00      3.0
+NH2  NH1     -3.00      3.0
+NH2  NH1E    -3.00      3.0
+NH2  NH2     -3.00      3.0
+NH2  NH2E    -3.00      3.0
+NH2  NP      -3.00      3.0
+NH2  NR      -3.00      3.0
+NH2  O       -3.50      2.9
+NH2  OC      -3.50      2.9
+NH2E N       -3.00      3.0
+NH2E NC2     -3.00      3.0
+NH2E NC2E    -3.00      3.0
+NH2E NH1     -3.00      3.0
+NH2E NH1E    -3.00      3.0
+NH2E NH2     -3.00      3.0
+NH2E NH2E    -3.00      3.0
+NH2E NP      -3.00      3.0
+NH2E NR      -3.00      3.0
+NH2E O       -3.50      2.9
+NH2E OC      -3.50      2.9
+NH3  N       -3.00      3.0
+NH3  NC2     -3.00      3.0
+NH3  NC2E    -3.00      3.0
+NH3  NH1     -3.00      3.0
+NH3  NH1E    -3.00      3.0
+NH3  NH2     -3.00      3.0
+NH3  NH2E    -3.00      3.0
+NH3  NP      -3.00      3.0
+NH3  NR      -3.00      3.0
+NH3  O       -3.50      2.9
+NH3  OC      -3.50      2.9
+NH3  OH1     -3.50      2.9
+NH3  OH1E    -3.50      2.9
+NH3  OH2     -3.50      2.9
+NH3  OH2E    -3.50      2.9
+NH3E N       -3.00      3.0
+NH3E NC2     -3.00      3.0
+NH3E NC2E    -3.00      3.0
+NH3E NH1     -3.00      3.0
+NH3E NH1E    -3.00      3.0
+NH3E NH2     -3.00      3.0
+NH3E NH2E    -3.00      3.0
+NH3E NP      -3.00      3.0
+NH3E NR      -3.00      3.0
+NH3E O       -3.50      2.9
+NH3E OC      -3.50      2.9
+NH3E OH1     -3.50      2.9
+NH3E OH1E    -3.50      2.9
+NH3E OH2     -3.50      2.9
+NH3E OH2E    -3.50      2.9
+OH1  N       -4.00      2.85
+OH1  NC2     -4.00      2.85
+OH1  NC2E    -4.00      2.85
+OH1  NH1     -4.00      2.85
+OH1  NH1E    -4.00      2.85
+OH1  NH2     -4.00      2.85
+OH1  NH2E    -4.00      2.85
+OH1  NP      -4.00      2.85
+OH1  NR      -4.00      2.85
+OH1  O       -4.25      2.75
+OH1  OC      -4.25      2.75
+OH1  OH1     -4.25      2.75
+OH1  OH1E    -4.25      2.75
+OH1  OH2     -4.25      2.75
+OH1  OH2E    -4.25      2.75
+OH1E N       -4.00      2.85
+OH1E NC2     -4.00      2.85
+OH1E NC2E    -4.00      2.85
+OH1E NH1     -4.00      2.85
+OH1E NH1E    -4.00      2.85
+OH1E NH2     -4.00      2.85
+OH1E NH2E    -4.00      2.85
+OH1E NP      -4.00      2.85
+OH1E NR      -4.00      2.85
+OH1E O       -4.25      2.75
+OH1E OC      -4.25      2.75
+OH1E OH1     -4.25      2.75
+OH1E OH1E    -4.25      2.75
+OH1E OH2     -4.25      2.75
+OH1E OH2E    -4.25      2.75
+OH2  N       -4.00      2.85
+OH2  NC2     -4.00      2.85
+OH2  NC2E    -4.00      2.85
+OH2  NH1     -4.00      2.85
+OH2  NH1E    -4.00      2.85
+OH2  NH2     -4.00      2.85
+OH2  NH2E    -4.00      2.85
+OH2  NP      -4.00      2.85
+OH2  NR      -4.00      2.85
+OH2  O       -4.25      2.75
+OH2  OC      -4.25      2.75
+OH2  OH1     -4.25      2.75
+OH2  OH1E    -4.25      2.75
+OH2  OH2     -4.25      2.75
+OH2  OH2E    -4.25      2.75
+OH2E N       -4.00      2.85
+OH2E NC2     -4.00      2.85
+OH2E NC2E    -4.00      2.85
+OH2E NH1     -4.00      2.85
+OH2E NH1E    -4.00      2.85
+OH2E NH2     -4.00      2.85
+OH2E NH2E    -4.00      2.85
+OH2E NP      -4.00      2.85
+OH2E NR      -4.00      2.85
+OH2E O       -4.25      2.75
+OH2E OC      -4.25      2.75
+OH2E OH1     -4.25      2.75
+OH2E OH1E    -4.25      2.75
+OH2E OH2     -4.25      2.75
+OH2E OH2E    -4.25      2.75
+
+END  

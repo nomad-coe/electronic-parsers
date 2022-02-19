@@ -1,0 +1,76 @@
+!========================================================!
+! Input for calculation with the ONETEP program          !
+!                                                        !
+! Quality Control file for: Non-linear Core Corrections  !
+! and .usp pseudopotentials                              !
+! GaAs dimer (H passivated) slightly displaced from      !
+! equilibrium positions as test of forces                !
+!                                                        !
+! Created by Nicholas D.M. Hine on 17/02/2009            !
+!                                                        !
+! Department of Materials                                !
+! Imperial College London                                !
+! Exhibition Road                                        !
+! London SW7 2AZ                                         !
+! UK                                                     !
+!                                                        !
+!========================================================!
+
+task                     : SINGLEPOINT
+cutoff_energy            : 400.000000  eV
+xc_functional            : LDA
+maxit_pen                : 3
+write_denskern           : F
+write_tightbox_ngwfs     : F
+write_forces             : T
+output_detail            : NORMAL
+timings_level            : 0
+print_qc                 : T
+charge                   : 0
+grd_format               : F
+cube_format              : T
+polarisation_calculate   : T
+popn_calculate           : T
+do_properties            : T
+dos_smear                : -0.1 eV
+homo_plot                : -1
+lumo_plot                : -1
+
+coulomb_cutoff_type      : SPHERE
+coulomb_cutoff_radius    : 50 bohr
+coulomb_cutoff_write_int : T
+
+psinc_spacing            : 0.6100000000000001 0.6100000000000001 0.6100000000000001
+
+%block lattice_cart
+   27.45000000000000    0.00000000000000    0.00000000000000
+    0.00000000000000   27.45000000000000    0.00000000000000
+    0.00000000000000    0.00000000000000   27.45000000000000
+%endblock lattice_cart
+
+%block padded_lattice_cart
+   91.50000000000000    0.00000000000000    0.00000000000000
+    0.00000000000000   91.50000000000000    0.00000000000000
+    0.00000000000000    0.00000000000000   91.50000000000000
+%endblock padded_lattice_cart
+
+%block species
+Ga   Ga  31  4 10.0
+As   As  33  4 10.0
+H    H    1  1  8.0
+%endblock species
+
+%block species_pot
+Ga "../../pseudo/Ga_OTF.usp"
+As "../../pseudo/As_OTF.usp"
+H  "../../pseudo/H_OTF.usp"
+%endblock species_pot
+
+%block positions_abs
+Ga    11.458780    13.000000    11.000000
+As    15.549700    13.000000    11.000000
+H     17.239280    15.244820    11.000000
+H     17.239280    10.755180    11.000000
+H     10.131480    15.668500    11.000000
+H     10.131480    10.331500    11.000000
+%endblock positions_abs

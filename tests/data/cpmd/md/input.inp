@@ -1,0 +1,41 @@
+&INFO
+isolated hydrogen molecule.
+simple molecular dynamics deltat=4au
+&END
+
+&CPMD
+ MOLECULAR DYNAMICS CP
+
+ TRAJECTORY XYZ
+
+ TEMPERATURE
+  50.0D0
+
+ MAXSTEP
+  50
+ TIMESTEP
+  4.0
+&END
+
+&SYSTEM
+ SYMMETRY
+  1
+ ANGSTROM
+ CELL
+  8.00 1.0 1.0  0.0  0.0  0.0
+ CUTOFF
+  70.0
+&END
+
+&DFT
+ FUNCTIONAL LDA
+&END
+
+&ATOMS
+*H_MT_LDA.psp
+ LMAX=S
+  2
+ 0.371   0.000   0.000
+-0.371   0.000   0.000
+&END
+

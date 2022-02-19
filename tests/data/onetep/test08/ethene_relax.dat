@@ -1,0 +1,41 @@
+! Input for calculation with the ONETEP program
+!
+! Quality Control file for: GEOMETRY OPTIMISATION
+! Created by Peter Haynes 06/02/2008
+
+task                : GEOMETRYOPTIMIZATION
+geom_max_iter       : 2
+write_forces        : TRUE
+maxit_pen           : 3
+cutoff_energy       : 550 eV
+xc_functional       : LDA
+
+ngwf_threshold_orig : 1e-5
+
+timings_level       : 0
+print_qc            : TRUE
+
+%block  lattice_cart
+  40.000    0.000    0.000
+   0.000   40.000    0.000
+   0.000    0.000   40.000
+%endblock  lattice_cart
+
+%block  positions_abs
+C     21.131469   19.862216   20.048416
+H     22.316684   21.381117   21.086741
+H     22.305600   18.474510   19.097577
+C     18.868395   20.137541   19.951432
+H     17.694385   21.525477   20.902418
+H     17.683467   18.617139   18.913416
+%endblock  positions_abs
+
+%block  species
+H     H   1  1  5.50
+C     C   6  4  6.00
+%endblock  species
+
+%block  species_pot
+H     "../../pseudo/hydrogen.recpot"
+C     "../../pseudo/carbon.recpot"
+%endblock  species_pot

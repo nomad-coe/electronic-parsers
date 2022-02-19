@@ -1,0 +1,674 @@
+1
+                 Chemistry at HARvard Macromolecular Mechanics
+                (CHARMM) - Free Version 41b2   February 15, 2017                
+                                      605                                       
+       Copyright(c) 1984-2014  President and Fellows of Harvard College
+                              All Rights Reserved
+         Current operating system: Darwin-16.7.0(x86_64)@imacberk.local         
+                 Created on  2/2/18 at 16:08:47 by user: bonat       
+
+            Maximum number of ATOMS:    360720, and RESidues:      120240
+ RDTITL> * ENERTEST : USING BPTI COORDINATES
+ RDTITL> *
+  
+ CHARMM>     
+  
+ CHARMM>    stream datadir.def
+ VOPEN> Attempting to open::DATADIR.DEF::
+ OPNLGU> Unit 99 opened for READONLY access to DATADIR.DEF
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * CHARMM TESTCASE DATA DIRECTORY ASSIGNMENT
+ RDTITL> *
+ Parameter: IN1 <- "" <empty>
+  
+ CHARMM>    faster on
+ MISCOM> FAST option: EXPANDED (limited fast routines)
+  
+ CHARMM>    set pnode =
+ Parameter: PNODE <- "" <empty>
+  
+ CHARMM>    if ?numnode .gt. 1 set pnode = node 0
+ RDCMND substituted energy or value "?NUMNODE" to "1"
+ Comparing "1" and "1".
+ IF test evaluated as false.  Skipping command
+  
+ CHARMM>    set 0 ./     ! input data directory
+ Parameter: 0 <- "./"
+  
+ CHARMM>    set 9 ./  ! scratch directory
+ Parameter: 9 <- "./"
+  
+ CHARMM>    set testcheck stream @0/test.str
+ Parameter: 0 -> "./"
+ Parameter: TESTCHECK <- "STREAM .//TEST.STR"
+  
+ CHARMM>    set qcheck stream @0/qtest.str
+ Parameter: 0 -> "./"
+ Parameter: QCHECK <- "STREAM .//QTEST.STR"
+  
+ CHARMM>    set testfail 0
+ Parameter: TESTFAIL <- "0"
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>    bomlev -2
+  
+ CHARMM>     
+  
+ CHARMM>    OPEN READ FORM UNIT 1 NAME @0toph10.rtf
+ Parameter: 0 -> "./"
+ VOPEN> Attempting to open::./TOPH10.RTF::
+ OPNLGU> Unit  1 opened for READONLY access to ./TOPH10.RTF
+  
+ CHARMM>    READ RTF  CARD UNIT 1
+ MAINIO> Residue topology file being read from unit   1.
+ TITLE> * TOPOLOGY FILE FOR PROTEINS USING EXPLICIT HYDROGEN ATOMS: VERSION 10
+ TITLE> *
+ WARNING from DECODF -- Zero length string being converted to 0.
+  
+ CHARMM>    OPEN READ FORM UNIT 2 NAME @0param8.prm
+ Parameter: 0 -> "./"
+ VOPEN> Attempting to open::./PARAM8.PRM::
+ OPNLGU> Unit  2 opened for READONLY access to ./PARAM8.PRM
+  
+ CHARMM>    READ PARAMETER CARD UNIT 2
+
+          PARAMETER FILE BEING READ FROM UNIT  2
+ TITLE> * PARAMETER FILE PARAM8.INP
+ TITLE> *
+ PARRDR> WARNING: ATOMS IN BOND C    OS    292.00000   1.43000 DONT EXIST
+ PARRDR> WARNING: ATOMS IN BOND CH3E OS    292.00000   1.38000 DONT EXIST
+ PARRDR> WARNING: ATOMS IN ANGLE OS   C    CH1E   70.00000 125.30000 DONT EXIST
+ PARRDR> WARNING: ATOMS IN ANGLE OS   C    CH2E   70.00000 125.30000 DONT EXIST
+ PARRDR> WARNING: ATOMS IN ANGLE OS   C    O      70.00000 120.00000 DONT EXIST
+ PARRDR> WARNING: ATOMS IN ANGLE C    OS   CH3E   46.50000 120.50000 DONT EXIST
+ PARRDR> WARNING: ATOMS IN DIHEDRAL X    C    OS   X       1.80000    2 180.00000 DONT EXIST
+ PARRDR> WARNING: ATOM FOR NBOND OS   DOESNT EXIST
+
+      ***** LEVEL -1 WARNING FROM <PARRDR> *****
+      ***** NBFIX involves an atom in a vdw group; Whole VDW group modified
+      ******************************************
+      BOMLEV ( -2) IS NOT REACHED. WRNLEV IS  5
+
+
+      ***** LEVEL -1 WARNING FROM <PARRDR> *****
+      ***** NBFIX involves an atom in a vdw group; Whole VDW group modified
+      ******************************************
+      BOMLEV ( -2) IS NOT REACHED. WRNLEV IS  5
+
+ PARMIO> NONBOND, HBOND lists and IMAGE atoms cleared.
+  
+ CHARMM>     
+  
+ CHARMM>    READ      SEQUENCE  CARDS
+ MAINIO> Sequence information being read from unit   5.
+ RDTITL> *PTI SEQUENCE
+ RDTITL> *
+  
+ SEQRDR>       58
+  
+ SEQRDR>    ARG PRO ASP PHE CYS LEU GLU PRO PRO TYR
+  
+ SEQRDR>    THR GLY PRO CYS LYS ALA ARG ILE ILE ARG
+  
+ SEQRDR>    TYR PHE TYR ASN ALA LYS ALA GLY LEU CYS
+  
+ SEQRDR>    GLN THR PHE VAL TYR GLY GLY CYS ARG ALA
+  
+ SEQRDR>    LYS ARG ASN ASN PHE LYS SER ALA GLU ASP
+  
+ SEQRDR>    CYS MET ARG THR CYS GLY GLY ALA
+
+          RESIDUE SEQUENCE --    58 RESIDUES
+          ARG PRO ASP PHE CYS LEU GLU PRO PRO TYR THR GLY PRO CYS LYS ALA ARG ILE ILE ARG 
+          TYR PHE TYR ASN ALA LYS ALA GLY LEU CYS GLN THR PHE VAL TYR GLY GLY CYS ARG ALA 
+          LYS ARG ASN ASN PHE LYS SER ALA GLU ASP CYS MET ARG THR CYS GLY GLY ALA 
+ ***** Message from SEQRDR ***** THE SYSTEM CONTAINS 12 TITRATABLE GROUPS
+ THE USER MUST PREDETERMINE THE PROTONATION STATE THROUGH THE SEQUENCE AND RTF
+ HIS -  0  HSD -  0  HSE -  0  HSP -  0  ASP -  2  GLU -  2  LYS -  4  TYR -  4
+  
+ CHARMM>    GENERATE  MAIN
+ THE PATCH 'NTER' WILL BE USED FOR THE FIRST RESIDUE
+ THE PATCH 'CTER' WILL BE USED FOR THE LAST  RESIDUE
+ GENPSF> Segment   1 has been generated. Its identifier is MAIN.
+ PSFSUM> PSF modified: NONBOND lists and IMAGE atoms cleared.
+ PSFSUM> Summary of the structure file counters :
+         Number of segments      =        1   Number of residues   =       58
+         Number of atoms         =      568   Number of groups     =      222
+         Number of bonds         =      579   Number of angles     =      828
+         Number of dihedrals     =      342   Number of impropers  =      259
+         Number of cross-terms   =        0
+         Number of HB acceptors  =       79   Number of HB donors  =      114
+         Number of NB exclusions =       24   Total charge =    6.00000
+  
+ CHARMM>     
+  
+ CHARMM>    PATCH DISU MAIN  5 MAIN 55
+ PATCH: Check angles and dihedrals autogenerated.
+ PSFSUM> PSF modified: NONBOND lists and IMAGE atoms cleared.
+ PSFSUM> Summary of the structure file counters :
+         Number of segments      =        1   Number of residues   =       58
+         Number of atoms         =      568   Number of groups     =      222
+         Number of bonds         =      580   Number of angles     =      830
+         Number of dihedrals     =      345   Number of impropers  =      259
+         Number of cross-terms   =        0
+         Number of HB acceptors  =       79   Number of HB donors  =      114
+         Number of NB exclusions =       24   Total charge =    6.00000
+  
+ CHARMM>    PATCH DISU MAIN 14 MAIN 38
+ PATCH: Check angles and dihedrals autogenerated.
+ PSFSUM> PSF modified: NONBOND lists and IMAGE atoms cleared.
+ PSFSUM> Summary of the structure file counters :
+         Number of segments      =        1   Number of residues   =       58
+         Number of atoms         =      568   Number of groups     =      222
+         Number of bonds         =      581   Number of angles     =      832
+         Number of dihedrals     =      348   Number of impropers  =      259
+         Number of cross-terms   =        0
+         Number of HB acceptors  =       79   Number of HB donors  =      114
+         Number of NB exclusions =       24   Total charge =    6.00000
+  
+ CHARMM>    PATCH DISU MAIN 30 MAIN 51
+ PATCH: Check angles and dihedrals autogenerated.
+ PSFSUM> PSF modified: NONBOND lists and IMAGE atoms cleared.
+ PSFSUM> Summary of the structure file counters :
+         Number of segments      =        1   Number of residues   =       58
+         Number of atoms         =      568   Number of groups     =      222
+         Number of bonds         =      582   Number of angles     =      834
+         Number of dihedrals     =      351   Number of impropers  =      259
+         Number of cross-terms   =        0
+         Number of HB acceptors  =       79   Number of HB donors  =      114
+         Number of NB exclusions =       24   Total charge =    6.00000
+  
+ CHARMM>     
+  
+ CHARMM>    READ      SEQUENCE            WATER    4
+  
+ CHARMM>    GENERATE  SOLV
+ NO PATCHING WILL BE DONE ON THE FIRST RESIDUE
+ NO PATCHING WILL BE DONE ON THE LAST  RESIDUE
+ GENPSF> Segment   2 has been generated. Its identifier is SOLV.
+ PSFSUM> PSF modified: NONBOND lists and IMAGE atoms cleared.
+ PSFSUM> Summary of the structure file counters :
+         Number of segments      =        2   Number of residues   =       62
+         Number of atoms         =      580   Number of groups     =      226
+         Number of bonds         =      590   Number of angles     =      838
+         Number of dihedrals     =      351   Number of impropers  =      259
+         Number of cross-terms   =        0
+         Number of HB acceptors  =       83   Number of HB donors  =      122
+         Number of NB exclusions =       24   Total charge =    6.00000
+  
+ CHARMM>     
+  
+ CHARMM>    open unit 3 read card   name @0bpti.crd
+ Parameter: 0 -> "./"
+ VOPEN> Attempting to open::./BPTI.CRD::
+ OPNLGU> Unit  3 opened for READONLY access to ./BPTI.CRD
+  
+ CHARMM>    READ COORD card  UNIT 3
+          SPATIAL COORDINATES BEING READ FROM UNIT  3
+ TITLE> * PTI TEST CASE COORDINATES
+ TITLE> * OBTAINED USING HARMONIC CONSTRAINTS.
+ TITLE> *  DATE:     7/29/83      3:14:47      CREATED BY USER: BROOKS
+ TITLE> *
+  
+ CHARMM>    COOR COPY COMP
+ SELECTED COORDINATES COPIED TO THE COMPARISON SET.
+
+  
+ CHARMM>     
+  
+ CHARMM>    HBONDS IHBFRQ 50 ALL
+ PRNHBD: CUToff Hydrogen Bond  distance =    4.5000   Angle =   90.0000
+         CuT switching ON HB dist. =     3.5000  OFf HB dist. =    4.0000
+         CuT switching ON Hb Angle =    50.0000  OFf Hb Angle =   70.0000
+         ACCEptor antecedents included
+         All hydrogen bonds for each hydrogen will be found
+         Hydrogen bonds between excluded atoms will be kept
+
+ HBFIND-exclusions:   9740 due to distance cutoff,     234 due to angle cutoff
+ HBEDIT-deletions:       0 due to duplications,          0 due to best-option,
+                         0 due to fixed atoms,           0 due to exclusions
+ Info: double HBOND between atoms  MAIN 35   TYR  OH   and  SOLV 4    OH2  OH2 
+ Info: double HBOND between atoms  SOLV 1    OH2  OH2  and  SOLV 3    OH2  OH2 
+ Info: double HBOND between atoms  SOLV 2    OH2  OH2  and  SOLV 3    OH2  OH2 
+ HBEDIT: currently   136 hydrogen bonds present
+ **** Warning ****  The following extraneous characters
+ were found while command processing in CHARMM
+ ALL
+  
+ CHARMM>    NBONDS ATOM CDIE SHIF  VSHI VDIS
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      ATOMs    CDIElec  SHIFt    VATOm    VSHIft  
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  =  8.000 CTEXNB =999.000 CTONNB =  6.500 CTOFNB =  7.500
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are        0 atom  pairs and        0 atom  exclusions.
+ There are        0 group pairs and        0 group exclusions.
+
+      ***** LEVEL  1 WARNING FROM <GTNBCT> *****
+      ***** CUTNB and CTOFNB are too close for efficient heuristic update.
+      ******************************************
+      BOMLEV ( -2) IS NOT REACHED. WRNLEV IS  5
+
+ <MAKINB> with mode   5 found   1452 exclusions and    999 interactions(1-4)
+ <MAKGRP> found    560 group exclusions.
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR    31097 ATOM PAIRS AND        0 GROUP PAIRS
+
+ General atom nonbond list generation found:
+    25554 ATOM PAIRS WERE FOUND FOR ATOM LIST
+     3393 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+  
+ CHARMM>    UPDATE INBFRQ 0 IHBFRQ 0
+  
+ CHARMM>     
+  
+ CHARMM>    !!!!! 1 first section
+ CHARMM>    !TIMER 2
+ CHARMM>    GETE PRINT
+ENER ENR:  Eval#     ENERgy      Delta-E         GRMS
+ENER INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+ENER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ ----------       ---------    ---------    ---------    ---------    ---------
+ENER>        0   -484.85917      0.00000     15.52945
+ENER INTERN>       99.69547     73.06844      0.00000     87.44244     13.86646
+ENER EXTERN>     -172.14485   -480.75971   -106.02743      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>    FASTER ON
+ MISCOM> FAST option: EXPANDED (limited fast routines)
+  
+ CHARMM>    ENERGY
+ENER ENR:  Eval#     ENERgy      Delta-E         GRMS
+ENER INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+ENER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ ----------       ---------    ---------    ---------    ---------    ---------
+ENER>        0   -484.85917      0.00000     15.52945
+ENER INTERN>       99.69547     73.06844      0.00000     87.44244     13.86646
+ENER EXTERN>     -172.14485   -480.75971   -106.02743      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>    ENERGY COMP
+ FASTST> Bad array location in memory for FAST routines.
+ENER ENR:  Eval#     ENERgy      Delta-E         GRMS
+ENER INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+ENER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ ----------       ---------    ---------    ---------    ---------    ---------
+ENER>        0   -484.85917      0.00000     15.52945
+ENER INTERN>       99.69547     73.06844      0.00000     87.44244     13.86646
+ENER EXTERN>     -172.14485   -480.75971   -106.02743      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>    FASTER OFF
+ Hardwired Periodic Boundaries: 
+              Turned Off
+ MISCOM> FAST option: OFF (full feature routines)
+  
+ CHARMM>    TIMER 0
+  
+ CHARMM>    SKIP ALL EXCL DIHE
+ SKIPE> The following energy terms will be computed :
+  DIHE
+  
+ CHARMM>    GETE PRINT
+ENER ENR:  Eval#     ENERgy      Delta-E         GRMS
+ENER INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+ ----------       ---------    ---------    ---------    ---------    ---------
+ENER>        0     87.44244   -572.30161      1.62281
+ENER INTERN>        0.00000      0.00000      0.00000     87.44244      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>    SKIP NONE DIHE VDW ELEC
+ SKIPE> The following energy terms will be computed :
+  BOND ANGL UREY IMPR HBON USER HARM CDIH CIC  CDRO NOE  SBOU IMNB IMEL IMHB
+  EWKS EWSE EXTE RXNF ST2  IMST TSM  QMEL QMVD ASP  EHAR GEO  MDIP PINT PRMS
+  PANG SSBP BK4D SHEL RESD SHAP STRB OOPL PULL POLA DMC  RGY  EWEX EWQC EWUT
+  PBEL PBNP MBDE STRS BNDB BNDT EBST MBST BBT  SST  GBEN HMCM ADUM HYDR GSBP
+  FQPO GRVD GREL SASL CMAP ELRC OLAP UMBR RREP RPHO RHBN RBDO RBAC RARO PHEN
+  MMPT VMOD CROS FCTP FCTN PATH PMF1 PMF2 PRIM VALB CPUC SMBP EEMA ERMD CSRE
+  
+ CHARMM>    GETE PRINT
+ENER ENR:  Eval#     ENERgy      Delta-E         GRMS
+ENER INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+ENER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ ----------       ---------    ---------    ---------    ---------    ---------
+ENER>        0     80.60295      6.83950     15.79361
+ENER INTERN>       99.69547     73.06844      0.00000      0.00000     13.86646
+ENER EXTERN>        0.00000      0.00000   -106.02743      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>     
+  
+ CHARMM>    !!!!! 2 second section
+ CHARMM>    ! TEST SOME ELECTROSTATICS
+ CHARMM>    SKIP ALL EXCL ELEC
+ SKIPE> The following energy terms will be computed :
+  ELEC
+  
+ CHARMM>    ENERGY INBFRQ 1 ATOM  CUTNB 100.0 CTOFNB 99.0 CTONNB 98.0   CDIE SWIT VSWI
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      ATOMs    CDIElec  SWITch   VATOm    VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  =100.000 CTEXNB =999.000 CTONNB = 98.000 CTOFNB = 99.000
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are    25554 atom  pairs and     2451 atom  exclusions.
+ There are        0 group pairs and      560 group exclusions.
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR   167621 ATOM PAIRS AND        0 GROUP PAIRS
+
+ General atom nonbond list generation found:
+   166458 ATOM PAIRS WERE FOUND FOR ATOM LIST
+        0 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+ENER ENR:  Eval#     ENERgy      Delta-E         GRMS
+ENER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ ----------       ---------    ---------    ---------    ---------    ---------
+ENER>        0   -333.66939    414.27234      3.33394
+ENER EXTERN>        0.00000   -333.66939      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>    !TEST FIRST STEP 0.005 TOL 0.0000 SELE ATOM MAIN 6 CA END
+ CHARMM>    ENERGY INBFRQ 1 GROUP CUTNB 100.0 CTOFNB 99.0 CTONNB 98.0   CDIE SWIT
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      GROUps   CDIElec  SWITch   VGROup   VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  =100.000 CTEXNB =999.000 CTONNB = 98.000 CTOFNB = 99.000
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are   166458 atom  pairs and     2451 atom  exclusions.
+ There are        0 group pairs and      560 group exclusions.
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR   167621 ATOM PAIRS AND    25764 GROUP PAIRS
+
+ General group nonbond list generation found:
+    25651 GROUP PAIRS WERE FOUND FOR GROUP LIST
+        0 GROUP PAIRS WERE BEYOND CUTOFFS
+        0 GROUP PAIRS WERE NOT SELECTED
+ENER ENR:  Eval#     ENERgy      Delta-E         GRMS
+ENER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ ----------       ---------    ---------    ---------    ---------    ---------
+ENER>        0   -333.66939     -0.00000      3.33394
+ENER EXTERN>        0.00000   -333.66939      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>    !TEST FIRST STEP 0.005 TOL 0.0000 SELE ATOM MAIN 6 CA END
+ CHARMM>    !
+ CHARMM>    !
+ CHARMM>    !!!!! 3 third section
+ CHARMM>    ! test energy title printing
+ CHARMM>    FORMAT (F10.4)
+  
+ CHARMM>    write title unit 6
+ RDTITL> *  TOTE       0.0000
+ RDTITL> *  TOTK       0.0000
+ RDTITL> *  ENER    -333.6694
+ RDTITL> *  TEMP       0.0000
+ RDTITL> *  BOND       0.0000
+ RDTITL> *  ANGL       0.0000
+ RDTITL> *  DIHE       0.0000
+ RDTITL> *  IMPR       0.0000
+ RDTITL> *  VDW        0.0000
+ RDTITL> *  ELEC    -333.6694
+ RDTITL> *  HBON       0.0000
+ RDTITL> *  ST2        0.0000
+ RDTITL> *  HARM       0.0000
+ RDTITL> *  CDIH       0.0000
+ RDTITL> *  CIC        0.0000
+ RDTITL> *  CDRO       0.0000
+ RDTITL> *  USER       0.0000
+ RDTITL> *  RXNF       0.0000
+ RDTITL> *  IMNB       0.0000
+ RDTITL> *  IMEL       0.0000
+ RDTITL> *  IMHB       0.0000
+ RDTITL> *  IMST       0.0000
+ RDTITL> *  SBOU       0.0000
+ RDTITL> *
+  TOTE       0.0000
+  TOTK       0.0000
+  ENER    -333.6694
+  TEMP       0.0000
+  BOND       0.0000
+  ANGL       0.0000
+  DIHE       0.0000
+  IMPR       0.0000
+  VDW        0.0000
+  ELEC    -333.6694
+  HBON       0.0000
+  ST2        0.0000
+  HARM       0.0000
+  CDIH       0.0000
+  CIC        0.0000
+  CDRO       0.0000
+  USER       0.0000
+  RXNF       0.0000
+  IMNB       0.0000
+  IMEL       0.0000
+  IMHB       0.0000
+  IMST       0.0000
+  SBOU       0.0000
+  
+ CHARMM>     
+  
+ CHARMM>    !!!! 4 fourth section
+ CHARMM>    GETE print
+ UPDECI: Nonbond update at step         1
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR   167621 ATOM PAIRS AND    25764 GROUP PAIRS
+
+ General group nonbond list generation found:
+    25651 GROUP PAIRS WERE FOUND FOR GROUP LIST
+        0 GROUP PAIRS WERE BEYOND CUTOFFS
+        0 GROUP PAIRS WERE NOT SELECTED
+ENER ENR:  Eval#     ENERgy      Delta-E         GRMS
+ENER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ ----------       ---------    ---------    ---------    ---------    ---------
+ENER>        0   -333.66939     -0.00000      3.33394
+ENER EXTERN>        0.00000   -333.66939      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>    coor force comp
+ SELECTED FORCES COPIED TO THE COMPARISON SET.
+
+  
+ CHARMM>    coor dist weigh comp
+  
+ CHARMM>    scalar xcomp = wcomp
+  
+ CHARMM>    scalar ycomp = wcomp
+  
+ CHARMM>    scalar zcomp = wcomp
+  
+ CHARMM>    scalar mass store 1
+  
+ CHARMM>    coor copy
+ SELECTED COORDINATES COPIED TO THE MAIN SET.
+
+  
+ CHARMM>    scalar xcomp aver byseg
+  
+ CHARMM>    scalar ycomp aver byres
+  
+ CHARMM>    scalar zcomp aver bygrou weight 1
+  
+ CHARMM>    open write unit 80 card name @9for080e.dat
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::./for080e.dat::
+ OPNLGU> Unit 80 opened for WRITE access to ./for080e.dat
+  
+ CHARMM>    write coor  card comp unit 80
+ RDTITL> * AVERAGED FORCES FOR PTI
+ RDTITL> *
+ VCLOSE: Closing unit   80 with status "KEEP"
+  
+ CHARMM>    scalar wmain = wcomp
+  
+ CHARMM>    scalar x aver all sele type ca end
+ SELRPN>     58 atoms have been selected out of    580
+  
+ CHARMM>    scalar x aver all sele type cb* end
+ SELRPN>     52 atoms have been selected out of    580
+  
+ CHARMM>    scalar x aver all sele type cg* end
+ SELRPN>     42 atoms have been selected out of    580
+  
+ CHARMM>    scalar x aver all sele type cd* end
+ SELRPN>     39 atoms have been selected out of    580
+  
+ CHARMM>    scalar x aver all sele type c end
+ SELRPN>     58 atoms have been selected out of    580
+  
+ CHARMM>    scalar x aver all sele type o end
+ SELRPN>     57 atoms have been selected out of    580
+  
+ CHARMM>    scalar x aver all sele type n end
+ SELRPN>     58 atoms have been selected out of    580
+  
+ CHARMM>    scalar x aver all sele type h* end
+ SELRPN>    122 atoms have been selected out of    580
+  
+ CHARMM>    scalar y aver byres sele type ca .or. type c .or. type n end
+ SELRPN>    174 atoms have been selected out of    580
+  
+ CHARMM>    scalar z aver byseg sele type o* end
+ SELRPN>     83 atoms have been selected out of    580
+  
+ CHARMM>    scalar z aver byseg sele type h* end
+ SELRPN>    122 atoms have been selected out of    580
+  
+ CHARMM>    open write unit 81 card name @9for081e.dat
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::./for081e.dat::
+ OPNLGU> Unit 81 opened for WRITE access to ./for081e.dat
+  
+ CHARMM>    write coor card unit 81
+ RDTITL> * AVERGE FORCES FOR PTI
+ RDTITL> *
+ VCLOSE: Closing unit   81 with status "KEEP"
+  
+ CHARMM>    print coor sele type ca end
+ SELRPN>     58 atoms have been selected out of    580
+ NOTE: A SELECTED SUBSET OF ATOMS WILL BE USED
+
+
+          COORDINATE FILE MODULE
+ TITLE>  * AVERGE FORCES FOR PTI
+ TITLE>  *  DATE:     2/ 2/18     16: 8:47      CREATED BY USER: bonat
+ TITLE>  *
+   58
+    5    1 ARG  CA     2.60349   4.83667   2.76622 MAIN 1      2.76622
+   22    2 PRO  CA     2.60349   6.22816   1.95169 MAIN 2      1.95169
+   29    3 ASP  CA     2.60349   7.28416   4.64228 MAIN 3      4.64228
+   38    4 PHE  CA     2.60349   2.70284   2.28723 MAIN 4      2.28723
+   50    5 CYS  CA     2.60349   2.56022   2.20399 MAIN 5      2.20399
+   57    6 LEU  CA     2.60349   3.42787   1.81396 MAIN 6      1.81396
+   66    7 GLU  CA     2.60349   4.02358   3.03003 MAIN 7      3.03003
+   76    8 PRO  CA     2.60349   3.52847   2.19072 MAIN 8      2.19072
+   83    9 PRO  CA     2.60349   2.15243   2.38373 MAIN 9      2.38373
+   90   10 TYR  CA     2.60349   4.76450   3.79698 MAIN 10     3.79698
+  104   11 THR  CA     2.60349   4.63863   2.49679 MAIN 11     2.49679
+  113   12 GLY  CA     2.60349   5.14982   1.25067 MAIN 12     1.25067
+  118   13 PRO  CA     2.60349   2.46411   2.16601 MAIN 13     2.16601
+  125   14 CYS  CA     2.60349   5.48252   2.90806 MAIN 14     2.90806
+  132   15 LYS  CA     2.60349   3.54674   1.78429 MAIN 15     1.78429
+  145   16 ALA  CA     2.60349   4.64941   3.11715 MAIN 16     3.11715
+  151   17 ARG  CA     2.60349   4.81029   1.94624 MAIN 17     1.94624
+  168   18 ILE  CA     2.60349   6.37614   3.01527 MAIN 18     3.01527
+  177   19 ILE  CA     2.60349   6.24910   1.76743 MAIN 19     1.76743
+  186   20 ARG  CA     2.60349   6.63468   2.90143 MAIN 20     2.90143
+  203   21 TYR  CA     2.60349   6.13677   2.64094 MAIN 21     2.64094
+  217   22 PHE  CA     2.60349   7.03872   2.58029 MAIN 22     2.58029
+  229   23 TYR  CA     2.60349   4.89204   2.82938 MAIN 23     2.82938
+  243   24 ASN  CA     2.60349   4.74454   2.47694 MAIN 24     2.47694
+  254   25 ALA  CA     2.60349   2.31072   1.59573 MAIN 25     1.59573
+  260   26 LYS  CA     2.60349   3.78024   2.04356 MAIN 26     2.04356
+  273   27 ALA  CA     2.60349   4.73305   2.85425 MAIN 27     2.85425
+  279   28 GLY  CA     2.60349   3.99758   2.74241 MAIN 28     2.74241
+  284   29 LEU  CA     2.60349   5.28249   3.22177 MAIN 29     3.22177
+  293   30 CYS  CA     2.60349   5.09909   2.36497 MAIN 30     2.36497
+  300   31 GLN  CA     2.60349   5.96838   3.11494 MAIN 31     3.11494
+  312   32 THR  CA     2.60349   5.67023   3.46388 MAIN 32     3.46388
+  321   33 PHE  CA     2.60349   5.67925   3.53744 MAIN 33     3.53744
+  333   34 VAL  CA     2.60349   4.67191   2.91106 MAIN 34     2.91106
+  341   35 TYR  CA     2.60349   5.44392   3.56260 MAIN 35     3.56260
+  355   36 GLY  CA     2.60349   3.36358   2.97272 MAIN 36     2.97272
+  360   37 GLY  CA     2.60349   3.36850   2.51422 MAIN 37     2.51422
+  365   38 CYS  CA     2.60349   6.39395   3.69835 MAIN 38     3.69835
+  372   39 ARG  CA     2.60349   4.93204   0.59595 MAIN 39     0.59595
+  389   40 ALA  CA     2.60349   5.62331   2.27827 MAIN 40     2.27827
+  395   41 LYS  CA     2.60349   6.25603   2.34864 MAIN 41     2.34864
+  408   42 ARG  CA     2.60349   5.51197   2.38923 MAIN 42     2.38923
+  425   43 ASN  CA     2.60349   5.83687   3.53672 MAIN 43     3.53672
+  436   44 ASN  CA     2.60349   5.25359   1.96947 MAIN 44     1.96947
+  447   45 PHE  CA     2.60349   5.20563   3.62712 MAIN 45     3.62712
+  459   46 LYS  CA     2.60349   6.12090   1.89525 MAIN 46     1.89525
+  472   47 SER  CA     2.60349   9.73703   3.65978 MAIN 47     3.65978
+  480   48 ALA  CA     2.60349   7.23702   1.53703 MAIN 48     1.53703
+  486   49 GLU  CA     2.60349   5.39323   3.71730 MAIN 49     3.71730
+  496   50 ASP  CA     2.60349   2.81497   3.60398 MAIN 50     3.60398
+  505   51 CYS  CA     2.60349   4.38285   1.68979 MAIN 51     1.68979
+  512   52 MET  CA     2.60349   5.10448   2.38611 MAIN 52     2.38611
+  521   53 ARG  CA     2.60349   3.31118   1.91728 MAIN 53     1.91728
+  538   54 THR  CA     2.60349   3.47623   3.10349 MAIN 54     3.10349
+  547   55 CYS  CA     2.60349   4.87942   2.92486 MAIN 55     2.92486
+  554   56 GLY  CA     2.60349   5.48223   1.67848 MAIN 56     1.67848
+  559   57 GLY  CA     2.60349  12.33370   3.84060 MAIN 57     3.84060
+  564   58 ALA  CA     2.60349   7.78678   0.75740 MAIN 58     0.75740
+  
+ CHARMM>    stop
+ VCLOSE: Closing unit    1 with status "KEEP"
+ VCLOSE: Closing unit    2 with status "KEEP"
+ VCLOSE: Closing unit    3 with status "KEEP"
+
+      $$$$$$  New timer profile Local node$$$$$
+
+      Heuristic check                 0.00 Other:            0.00
+      NBONDS                          0.00 Other:            0.00
+   List time                       0.00 Other:            0.00
+         Electrostatic & VDW             0.00 Other:            0.00
+      Nonbond force                   0.02 Other:            0.02
+         Bond energy                     0.00 Other:            0.00
+         Angle energy                    0.00 Other:            0.00
+         Dihedral energy                 0.00 Other:            0.00
+         Restraints energy               0.00 Other:            0.00
+      INTRNL energy                   0.00 Other:            0.00
+      Comm energy                     0.00 Other:            0.00
+      Comm force                      0.00 Other:            0.00
+   Energy time                     0.02 Other:            0.00
+ Total time                      0.06 Other:            0.04
+
+         $$$$$$  Average   profile $$$$$
+
+      Heuristic check                 0.00 Other:            0.00
+      NBONDS                          0.00 Other:            0.00
+   List time                       0.00 Other:            0.00
+         Electrostatic & VDW             0.00 Other:            0.00
+      Nonbond force                   0.02 Other:            0.02
+         Bond energy                     0.00 Other:            0.00
+         Angle energy                    0.00 Other:            0.00
+         Dihedral energy                 0.00 Other:            0.00
+         Restraints energy               0.00 Other:            0.00
+      INTRNL energy                   0.00 Other:            0.00
+      Comm energy                     0.00 Other:            0.00
+      Comm force                      0.00 Other:            0.00
+   Energy time                     0.02 Other:            0.00
+ Total time                      0.06 Other:            0.04
+
+                    NORMAL TERMINATION BY NORMAL STOP
+                    MOST SEVERE WARNING WAS AT LEVEL -1
+
+                    $$$$$ JOB ACCOUNTING INFORMATION $$$$$
+                     ELAPSED TIME:     0.07  SECONDS 
+                         CPU TIME:     0.06  SECONDS 

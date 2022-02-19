@@ -1,0 +1,55 @@
+!===============================================================!
+! Input file for a NV-MD Ecalculation with the ONETEP program   !
+!===============================================================! 
+
+ task                 : PROPERTIES
+ md_delta_t           : 0.75 fs     ! Timestep
+ md_num_iter          : 2000        ! Number of iterations
+ anh_md_temp          : 296.15 kelvin  ! Initial temperature
+ anharmonic_calculate : .true.
+ anh_type             : ir_calculation
+ anh_qc_factor        : harmonic
+ anh_acf_factor       : normalized
+ anh_first_iter       : 1 
+ anh_last_iter        : 2000 
+ anh_apply_filter     : .true.
+! anh_plot_all         : .true.
+ anh_plot_firstfreq   : 600 1/cm
+ anh_plot_lastfreq    : 4000 1/cm
+ print_qc             : .true.
+
+ timings_level       : 3
+
+%block species
+C      C    6   4   8.00
+H      H    1   1   8.00
+O      O    8   4   8.00
+%endblock species
+
+
+ %block species_pot
+ C "../../pseudo/carbon.recpot"
+ H "../../pseudo/hydrogen.recpot"
+ O "../../pseudo/oxygen.recpot" 
+ %endblock species_pot
+
+ %block lattice_cart
+ang
+  20.000   0.000   0.000
+   0.000  20.000   0.000
+   0.000   0.000  20.000
+ %endblock lattice_cart
+
+! --- INITIAL POSITIONS AND VELOCITIES ---
+ %block positions_abs
+ ang
+H   7.919857  10.432973  10.072282 
+C   8.787030   9.770471   9.990284 
+H   8.734409   9.046014  10.809795 
+C  10.084976  10.559039  10.051055 
+O  11.232231   9.726810   9.872388 
+H  10.150614  11.120025  10.994302 
+H  11.247388   9.100126  10.615068 
+H  10.131609  11.284181   9.235478 
+H   8.726246   9.225137   9.045941
+ %endblock positions_abs

@@ -1,0 +1,13 @@
+codeLabel: Psi4
+codeLabelStyle: 'Capitals: P'
+codeName: psi4
+codeUrl: https://psicode.org/
+parserDirName: dependencies/parsers/psi4/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-psi4.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: |
+  |Input Filename| Description|
+  |--- | --- |
+  |`*.out` | **Mainfile:** a plain text file w/ **user-defined** name|
+  |`*.dat` |plain text input file|

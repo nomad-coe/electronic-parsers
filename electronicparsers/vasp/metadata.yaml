@@ -1,0 +1,13 @@
+codeLabel: VASP
+codeLabelStyle: All in capitals
+codeName: vasp
+codeUrl: https://www.vasp.at/
+parserDirName: dependencies/parsers/vasp/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-vasp.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: |
+  |Input Filename| Description|
+  |--- | --- |
+  |`vasprun.xml` | **Mainfile** in plain-text (structured) XML format |
+  |`OUTCAR` | plain-text (semi-structured) file, VAPS's detailed output. Read by NOMAD only as fallback to parse `outcar` data |

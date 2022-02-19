@@ -1,0 +1,67 @@
+<input>
+  <title>PbI2 </title>
+ <structure speciespath="./">
+    <crystal scale="1.889725989">
+      <basevect>      4.55800009        0.00000000        0.00000000</basevect>
+      <basevect>     -2.27900004        3.94734387        0.00000000</basevect>
+      <basevect>      0.00000000        0.00000000        6.98600006</basevect>
+    </crystal>
+    <species speciesfile="Pb.xml" rmt="2.9">
+      <atom coord="      0.00000000        0.00000000        0.00000000"/>
+    </species>
+    <species speciesfile="I.xml" rmt="2.9">
+      <atom coord="      0.33333335        0.66666670        0.26750001"/>
+      <atom coord="      0.66666661        0.33333332        0.73249995"/>
+    </species>
+  </structure>
+
+   <groundstate
+       do="skip" 
+       ngridk="6 6 4" 
+       outputlevel="normal"
+       rgkmax="8.0"
+       nempty="300"
+       xctype="HYB_HSE">
+      <spin spinorb="true"
+      realspace="true"/>
+      <Hybrid 
+         exchangetype="HF" 
+         excoeff="0.25" 
+         omega="0.11"/>  
+   </groundstate>
+
+<gw
+    taskname="g0w0" coreflag="all" skipgnd="false"
+    ibgw="1" nbgw="325"
+    >
+    <mixbasis
+      lmaxmb="3"
+      epsmb="1.d-4"
+      gmb="1"
+    ></mixbasis>
+    <freqgrid
+      fgrid="gauleg2"
+      nomeg="16"
+      freqmax="1.0"
+    ></freqgrid>
+    <barecoul
+      pwm="2.0"
+      basis="mb"
+      barcevtol="1.0"
+    ></barecoul>
+    <selfenergy
+      method="ac" actype="pade" tol="1.d-14"
+      singularity="mpb"
+      eqpsolver="0"
+      eshift="1"
+      swidth="1.d-4"
+      >
+      <wgrid
+        type="eqdist"
+        size="2000"
+        wmax="1.0"
+        wmin="-1.2"
+      />
+    </selfenergy>
+  </gw>
+</input>

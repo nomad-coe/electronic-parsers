@@ -1,0 +1,26 @@
+! Bench 1                                                                       
+!
+! This is a RHF/6-31G* run on silacyclopropane, with 61 AOs.                    
+!
+! This calculation comes from a study of cycloalkanes and 
+! silacycloalkanes by J.A.Boatz, M.S.Gordon, and R.L.Hilderbrandt,
+! J.Am.Chem.Soc., 1988, 110, 352-358.                                           
+!                                                                               
+! The FINAL energy is -368.0867960551 after 10 iterations,                      
+! running SCF in the direct mode.                                               
+!                                                                               
+ $CONTRL SCFTYP=RHF  RUNTYP=ENERGY   UNITS=ANGS $END                            
+ $SYSTEM TIMLIM=600 MEMORY=200000 $END                                          
+ $BASIS  GBASIS=N31 NGAUSS=6 NDFUNC=1 $END                                      
+ $GUESS  GUESS=HUCKEL   $END                                                    
+ $SCF    DIRSCF=.True. $END                                                     
+ $ELMOM  IEMOM=2 WHERE=COMASS $END                                              
+ $DATA                                                                          
+RHF/6-31G*//RHF/3-21G* silacyclopropane                                         
+Cnv      2                                                                      
+                                                                                
+SILICON    14.0     0.0           0.0           0.831921                        
+CARBON      6.0     0.0           0.793934     -0.836953                        
+HYDROGEN    1.0    -1.227947      0.0           1.637848                        
+HYDROGEN    1.0    -0.897288      1.249560     -1.219788                        
+ $END                                                                           

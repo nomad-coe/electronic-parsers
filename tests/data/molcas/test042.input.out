@@ -1,0 +1,593 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test042.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test042.input.8243
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 14:36:53 2016 
+
+++ ---------   Input file   ---------
+
+  &SEWARD  &END
+    Title
+    BeO molecule
+    Symmetry
+    xy x
+    Basis set
+    Be.ano-s...3s2p1d.
+    Be     0.000000     0.000000     0.000000   Angstrom
+    End of basis
+    Basis set
+    O.ano-s...3s2p1d.
+    O      0.000000     0.000000     1.401400   Angstrom
+    End of basis
+  &SCF &END
+    UHF
+    KSDFT
+    BLYP
+    Occupied
+      4 1 0 1
+      4 1 0 1
+    DiisThreshold
+      0.02
+    c1diis
+    HLgap
+      0.2
+
+-- ----------------------------------
+
+--- Start Module: seward at Fri Oct  7 14:36:54 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:36:54 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Two-Electron Repulsion integrals
+ 
+ Title:
+                                          BeO molecule                                  
+ 
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Rotation around the z-axis  
+                    Reflection in the yz-plane  
+ 
+ 
+                    Character Table for C2v
+ 
+                             E   C2(z) s(yz) s(xz)
+                    a1       1     1     1     1  z
+                    b2       1    -1     1    -1  y, yz, Rx
+                    a2       1     1    -1    -1  xy, Rz, I
+                    b1       1    -1    -1     1  x, xz, Ry
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:BE.ANO-S...3S2P1D...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  4.000000 au
+      Associated Actual Charge     4.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s      10       3        X                  
+         p       4       2        X                  
+         d       3       1                 X         
+      Basis set label:O.ANO-S...3S2P1D...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  8.000000 au
+      Associated Actual Charge     8.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s      10       3        X                  
+         p       6       2        X                  
+         d       3       1                 X         
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      BE               0.000000       0.000000       0.000000              0.000000       0.000000       0.000000
+        2      O                0.000000       0.000000       2.648262              0.000000       0.000000       1.401400
+ 
+ 
+            Nuclear Potential Energy             12.08339571 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a1   b2   a2   b1 
+      Basis functions           14    6    2    6
+ 
+--- Stop Module:  seward at Fri Oct  7 14:36:54 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:36:55 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:36:55 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+Minimum HOMO-LUMO gap          0.200E+00
+Input section
+      Header of the integral files:
+                                    BeO molecule                              
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:36:54 2016        
+ 
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   BE         0.00000   0.00000   0.00000
+       2   O          0.00000   0.00000   1.40140
+      --------------------------------------------
+      Nuclear repulsion energy =   12.083396
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2   3   4
+                                    a1  b2  a2  b1
+      Frozen orbitals                0   0   0   0
+      Occupied orbitals alpha        4   1   0   1
+      Occupied orbitals beta         4   1   0   1
+      Secondary orbitals alpha      10   5   2   5
+      Secondary orbitals beta       10   5   2   5
+      Deleted orbitals               0   0   0   0
+      Total number of orbitals      14   6   2   6
+      Number of basis functions     14   6   2   6
+ 
+      Molecular charge                           0.000
+ 
+ 
+      The same grid will be used for all iterations.
+ 
+      SCF Algorithm: Conventional USCF
+      D(i)-D(i-1) density differences are used
+      Number of density matrices in core              400
+      Maximum number of NDDO SCF iterations           400
+      Maximum number of HF  SCF iterations            400
+      Threshold for SCF energy change            0.10E-08
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.20E-01
+      Threshold at which QNR/C2DIIS is turned on 0.00E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: UHFORB
+ 
+      Detected guessorb starting orbitals                                             
+ 
+ 
+Convergence information
+                               UHF BLYP       iterations: Energy and convergence statistics
+ 
+Iter     Tot. BLYP      One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -89.39896818   -163.68886871     62.20650482  0.00E+00   0.24E+00*  0.21E+00*   0.49E+01   0.39E+02   NoneDa    0.
+   2    -89.66535585   -154.71690048     52.96814892 -0.27E+00*  0.14E+00*  0.94E-01*   0.23E+01   0.34E+01   Damp      0.
+   3    -89.84769013   -157.10947774     55.17839190 -0.18E+00*  0.70E-01*  0.31E-01*   0.14E+01   0.63E+00   Damp      0.
+   4    -89.90550954   -159.27234608     57.28344083 -0.58E-01*  0.43E-01*  0.16E-01*   0.37E+00   0.32E+00   Damp      0.
+   5    -89.89571374   -157.91785998     55.93875052  0.98E-02*  0.33E-01*  0.40E-02*   0.23E+00   0.50E+00   Damp      0.
+   6    -89.90060270   -158.13218264     56.14818423 -0.49E-02*  0.26E-01*  0.38E-02*   0.16E+00   0.29E+00   Damp      0.
+   7    -89.90444051   -158.36381617     56.37597995 -0.38E-02*  0.18E-01*  0.43E-02*   0.13E+00   0.19E+00   Damp      0.
+   8    -89.90716482   -158.63349746     56.64293693 -0.27E-02*  0.58E-02*  0.21E-02*   0.11E+00   0.83E-01   c1Diis    0.
+   9    -89.90783115   -158.77715726     56.78593040 -0.67E-03*  0.13E-02*  0.14E-02*   0.30E-01   0.38E-01   c1Diis    0.
+  10    -89.90803796   -158.88507131     56.89363763 -0.21E-03*  0.20E-02*  0.62E-03*   0.14E-01   0.42E-02   c1Diis    0.
+  11    -89.90805490   -158.89404126     56.90259064 -0.17E-04*  0.89E-03*  0.53E-03*   0.77E-02   0.32E-02   c1Diis    0.
+  12    -89.90806167   -158.90912855     56.91767117 -0.68E-05*  0.67E-03*  0.32E-03*   0.50E-02   0.31E-02   c1Diis    0.
+  13    -89.90806392   -158.90698505     56.91552542 -0.22E-05*  0.18E-03*  0.13E-03    0.28E-02   0.58E-03   c1Diis    0.
+  14    -89.90806426   -158.90297408     56.91151411 -0.34E-06*  0.18E-03*  0.89E-04    0.15E-02   0.19E-02   c1Diis    0.
+  15    -89.90806453   -158.90397879     56.91251854 -0.27E-06*  0.21E-03*  0.53E-04    0.11E-02   0.13E-02   c1Diis    0.
+  16    -89.90806461   -158.90398886     56.91252854 -0.71E-07*  0.14E-03*  0.46E-04    0.12E-02   0.15E-02   c1Diis    0.
+  17    -89.90806472   -158.90474330     56.91328287 -0.11E-06*  0.49E-04   0.46E-04    0.71E-03   0.11E-02   c1Diis    0.
+  18    -89.90806484   -158.90649573     56.91503518 -0.12E-06*  0.38E-04   0.35E-04    0.44E-03   0.38E-03   c1Diis    0.
+  19    -89.90806487   -158.90807908     56.91661850 -0.32E-07*  0.57E-04   0.20E-04    0.28E-03   0.23E-03   c1Diis    0.
+  20    -89.90806488   -158.90837344     56.91691285 -0.36E-08*  0.38E-04   0.65E-05    0.25E-03   0.22E-03   c1Diis    0.
+  21    -89.90806488   -158.90814792     56.91668733 -0.35E-08*  0.20E-04   0.46E-05    0.23E-03   0.63E-04   c1Diis    0.
+  22    -89.90806488   -158.90814912     56.91668853 -0.76E-09   0.17E-04   0.36E-05    0.13E-03   0.75E-04   c1Diis    0.
+ 
+       Convergence after 22 Macro Iterations and  0 additional LS Iterations...
+ 
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total KS-DFT energy                             -89.9080648797
+      One-electron energy                            -158.9081491238
+      Two-electron energy                              56.9166885331
+      Nuclear repulsion energy                         12.0833957110
+      Kinetic energy (interpolated)                    89.3578040128
+      Virial theorem                                    1.0061579498
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000170195
+      Max non-diagonal Fock matrix element              0.0000035549
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: UKS-DFT orbitals (alpha)                                                        
+ 
+
+      Molecular orbitals for symmetry species 1: a1 
+ 
+          Orbital        1         2         3         4         5         6         7         8         9
+          Energy      -18.7290   -3.9358   -0.7639   -0.2591   -0.1841    0.0701    0.1376    0.2952    0.3026
+          Occ. No.      1.0000    1.0000    1.0000    1.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+ 
+        1 BE    1s      0.0018    0.9994   -0.0544   -0.0698   -0.0258    0.0272    0.0336   -0.2444    0.0000
+        2 BE    2s      0.0061    0.0091    0.1196    0.3868   -0.7763    0.4886    0.1300   -0.8923    0.0000
+        3 BE    3s     -0.0002   -0.0079   -0.0227   -0.0596   -0.0710    0.1996    0.8605   -0.1410    0.0000
+        4 BE    2pz     0.0041   -0.0027    0.1177    0.0486    0.5637    0.8143    0.1965   -0.5251    0.0000
+        5 BE    3pz    -0.0001    0.0024   -0.0464   -0.0931   -0.0481    0.6050   -0.4808   -0.2494    0.0000
+        6 BE    3d0     0.0011    0.0001    0.0374    0.0118    0.0034   -0.2459   -0.0405   -0.8745    0.0000
+        7 BE    3d2+    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.9949
+        8 O     1s      0.9993   -0.0007   -0.0203   -0.0219   -0.0075   -0.0520   -0.0176    0.1559    0.0000
+        9 O     2s     -0.0021    0.0020    0.8607   -0.3466   -0.0300   -0.5201   -0.1585    1.0387    0.0000
+       10 O     3s     -0.0078    0.0002   -0.0263   -0.0536   -0.0339   -0.1043   -0.0490    0.4256    0.0000
+       11 O     2pz     0.0020   -0.0027   -0.0984   -0.7846   -0.3411    0.0266    0.0045   -0.0738    0.0000
+       12 O     3pz     0.0024    0.0015    0.0298    0.0190    0.0097   -0.0654    0.0504   -0.6904    0.0000
+       13 O     3d0    -0.0007    0.0025    0.0126    0.0192    0.0077    0.0221   -0.0118    0.0353    0.0000
+       14 O     3d2+    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0236
+
+      Molecular orbitals for symmetry species 2: b2 
+ 
+          Orbital        1         2         3
+          Energy       -0.2199   -0.0245    0.1910
+          Occ. No.      1.0000    0.0000    0.0000
+ 
+        1 BE    2py    -0.3298    1.0164   -0.1349
+        2 BE    3py     0.0464    0.2248    0.9748
+        3 BE    3d1-   -0.0476   -0.1452    0.0974
+        4 O     2py    -0.8286   -0.5441    0.0580
+        5 O     3py     0.0045   -0.1164    0.0126
+        6 O     3d1-    0.0182   -0.0055    0.0193
+
+      Molecular orbitals for symmetry species 3: a2 
+ 
+          Orbital        1
+          Energy        0.3026
+          Occ. No.      0.0000
+ 
+        1 BE    3d2-   -0.9949
+        2 O     3d2-   -0.0236
+
+      Molecular orbitals for symmetry species 4: b1 
+ 
+          Orbital        1         2         3
+          Energy       -0.2199   -0.0245    0.1910
+          Occ. No.      1.0000    0.0000    0.0000
+ 
+        1 BE    2px    -0.3298    1.0164   -0.1349
+        2 BE    3px     0.0464    0.2248    0.9748
+        3 BE    3d1+   -0.0476   -0.1452    0.0974
+        4 O     2px    -0.8286   -0.5441    0.0580
+        5 O     3px     0.0045   -0.1164    0.0126
+        6 O     3d1+    0.0182   -0.0055    0.0193
+ 
+ 
+      LoProp Charges per center                                                                                               
+ 
+
+                   BE       O     
+      Nuclear      4.0000   8.0000
+      Electronic  -2.7457  -9.2543
+ 
+      Total        1.2543  -1.2543
+ 
+      Natural Bond Order Analysis
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: UKS-DFT orbitals (beta)                                                         
+ 
+
+      Molecular orbitals for symmetry species 1: a1 
+ 
+          Orbital        1         2         3         4         5         6         7         8         9
+          Energy      -18.7290   -3.9358   -0.7639   -0.2591   -0.1841    0.0701    0.1376    0.2952    0.3026
+          Occ. No.      1.0000    1.0000    1.0000    1.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+ 
+        1 BE    1s     -0.0018   -0.9994    0.0544    0.0698   -0.0258    0.0272    0.0336   -0.2444    0.0000
+        2 BE    2s     -0.0061   -0.0091   -0.1196   -0.3868   -0.7763    0.4886    0.1300   -0.8923    0.0000
+        3 BE    3s      0.0002    0.0079    0.0227    0.0596   -0.0710    0.1996    0.8605   -0.1410    0.0000
+        4 BE    2pz    -0.0041    0.0027   -0.1177   -0.0486    0.5637    0.8143    0.1965   -0.5251    0.0000
+        5 BE    3pz     0.0001   -0.0024    0.0464    0.0931   -0.0481    0.6050   -0.4808   -0.2494    0.0000
+        6 BE    3d0    -0.0011   -0.0001   -0.0374   -0.0118    0.0034   -0.2459   -0.0405   -0.8745    0.0000
+        7 BE    3d2+    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.9949
+        8 O     1s     -0.9993    0.0007    0.0203    0.0219   -0.0075   -0.0520   -0.0176    0.1559    0.0000
+        9 O     2s      0.0021   -0.0020   -0.8607    0.3466   -0.0300   -0.5201   -0.1585    1.0387    0.0000
+       10 O     3s      0.0078   -0.0002    0.0263    0.0536   -0.0339   -0.1043   -0.0490    0.4256    0.0000
+       11 O     2pz    -0.0020    0.0027    0.0984    0.7846   -0.3411    0.0266    0.0045   -0.0738    0.0000
+       12 O     3pz    -0.0024   -0.0015   -0.0298   -0.0190    0.0097   -0.0654    0.0504   -0.6904    0.0000
+       13 O     3d0     0.0007   -0.0025   -0.0126   -0.0192    0.0077    0.0221   -0.0118    0.0353    0.0000
+       14 O     3d2+    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0236
+
+      Molecular orbitals for symmetry species 2: b2 
+ 
+          Orbital        1         2         3
+          Energy       -0.2199   -0.0245    0.1910
+          Occ. No.      1.0000    0.0000    0.0000
+ 
+        1 BE    2py    -0.3298    1.0164   -0.1349
+        2 BE    3py     0.0464    0.2248    0.9748
+        3 BE    3d1-   -0.0476   -0.1452    0.0974
+        4 O     2py    -0.8286   -0.5441    0.0580
+        5 O     3py     0.0045   -0.1164    0.0126
+        6 O     3d1-    0.0182   -0.0055    0.0193
+
+      Molecular orbitals for symmetry species 3: a2 
+ 
+          Orbital        1
+          Energy        0.3026
+          Occ. No.      0.0000
+ 
+        1 BE    3d2-   -0.9949
+        2 O     3d2-   -0.0236
+
+      Molecular orbitals for symmetry species 4: b1 
+ 
+          Orbital        1         2         3
+          Energy       -0.2199   -0.0245    0.1910
+          Occ. No.      1.0000    0.0000    0.0000
+ 
+        1 BE    2px    -0.3298    1.0164   -0.1349
+        2 BE    3px     0.0464    0.2248    0.9748
+        3 BE    3d1+   -0.0476   -0.1452    0.0974
+        4 O     2px    -0.8286   -0.5441    0.0580
+        5 O     3px     0.0045   -0.1164    0.0126
+        6 O     3d1+    0.0182   -0.0055    0.0193
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per centre and basis function type
+      ---------------------------------------------------
+ 
+                         BE                      O     
+                  alpha        beta       alpha        beta
+      1s         1.0001      1.0001      0.9994      0.9994
+      2s         0.2202      0.2202      0.9037      0.9037
+      2px        0.1936      0.1936      0.7858      0.7858
+      2pz        0.0646      0.0646      0.7488      0.7488
+      2py        0.1936      0.1936      0.7858      0.7858
+      3s         0.0180      0.0180     -0.0065     -0.0065
+      3px        0.0007      0.0007     -0.0008     -0.0008
+      3pz        0.0393      0.0393     -0.0034     -0.0034
+      3py        0.0007      0.0007     -0.0008     -0.0008
+      3d2+       0.0000      0.0000      0.0000      0.0000
+      3d1+       0.0188      0.0188      0.0019      0.0019
+      3d0        0.0139      0.0139      0.0019      0.0019
+      3d1-       0.0188      0.0188      0.0019      0.0019
+      3d2-       0.0000      0.0000      0.0000      0.0000
+      Total      1.7824      1.7824      4.2176      4.2176
+      Total            3.5648                  8.4352
+ 
+      Charge           0.4352                 -0.4352
+ 
+      Total electronic charge=   12.000000
+ 
+      Total            charge=    0.000000
+ 
+      LoProp Charges per center                                                                                               
+ 
+
+                   BE       O     
+      Nuclear      4.0000   8.0000
+      Electronic  -2.7457  -9.2543
+ 
+      Total        1.2543  -1.2543
+ 
+      Natural Bond Order Analysis
+      Based on LoProp computed density
+      -------------------------------------------------------------------------------------
+      Atom A : Gen.  Atom B : Gen.  Bond Order
+         BE    :E       O     :E      3.000
+      -------------------------------------------------------------------------------------
+      NBO located      4.000 core electrons.
+      NBO located      1.889 lone pair electrons.
+      NBO located      6.000 electrons involved in    1 bonds.
+      The remaining    0.111 electrons are to be considered as diffuse
+ 
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: Natural orbitals
+ 
+
+      Molecular orbitals for symmetry species 1: a1 
+ 
+          Orbital        1         2         3         4         5         6         7         8         9        10
+          Energy       -0.2625  -18.7289   -3.9357   -0.7607    0.4435    0.2063    0.3510    0.3026    1.4538    1.9639
+          Occ. No.      2.0000    2.0000    2.0000    2.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+ 
+        1 BE    1s     -0.0595   -0.0017   -0.9999   -0.0577   -0.0046    0.1031    0.0039    0.0000   -0.8077    0.0000
+        2 BE    2s      0.3761   -0.0066   -0.0067    0.1501    0.0542    0.3139    0.4326    0.0000   -2.9960    0.0000
+        3 BE    3s     -0.0576    0.0003    0.0076   -0.0274    0.5989   -0.6617    0.1522    0.0000    0.1066    0.0000
+        4 BE    2pz     0.0390   -0.0040    0.0032    0.1212   -0.6907   -0.0350    0.8833    0.0000   -2.2133    0.0000
+        5 BE    3pz    -0.0891    0.0002   -0.0030   -0.0537    0.3249    0.4781    0.7830    0.0000    0.4759    0.0000
+        6 BE    3d0     0.0088   -0.0011    0.0000    0.0382   -0.3455    0.3887   -0.2385    0.0000   -1.1340    0.0000
+        7 BE    3d2+    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.9949    0.0000    0.2302
+        8 O     1s     -0.0221   -0.9993    0.0005   -0.0207    0.0826   -0.0451   -0.0558    0.0000    0.4015    0.0000
+        9 O     2s     -0.4140    0.0040   -0.0026    0.8304    0.5092   -0.2732   -0.5214    0.0000    2.8592    0.0000
+       10 O     3s     -0.0514    0.0078   -0.0005   -0.0305    0.3338   -0.0273   -0.5884    0.0000    2.2005    0.0000
+       11 O     2pz    -0.7743   -0.0007   -0.0020   -0.1606   -0.3297    0.0351   -0.0578    0.0000   -1.3290    0.0000
+       12 O     3pz     0.0166   -0.0024   -0.0013    0.0313    0.3809    0.4478   -0.2811    0.0000   -1.0672    0.0000
+       13 O     3d0     0.0182    0.0006   -0.0024    0.0141   -0.2188   -0.0489    0.2669    0.0000    0.4079    0.0000
+       14 O     3d2+    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0236    0.0000   -1.0210
+
+      Molecular orbitals for symmetry species 2: b2 
+ 
+          Orbital        1         2         3         4         5
+          Energy       -0.2199   -0.0212    0.1963    0.5693    2.3061
+          Occ. No.      2.0000    0.0000    0.0000    0.0000    0.0000
+ 
+        1 BE    2py    -0.3298   -0.9613    0.2093   -1.0906    0.7184
+        2 BE    3py     0.0464   -0.2376   -0.9137   -0.3543   -0.0002
+        3 BE    3d1-   -0.0476    0.1654   -0.1942   -1.4716    0.6444
+        4 O     2py    -0.8286    0.5162   -0.0411    1.0452   -0.4779
+        5 O     3py     0.0045    0.0247   -0.1230    1.2876   -0.6029
+        6 O     3d1-    0.0182   -0.0133   -0.0094    0.0064    1.1335
+
+      Molecular orbitals for symmetry species 3: a2 
+ 
+          Orbital        1         2
+          Energy        0.3026    1.9639
+          Occ. No.      0.0000    0.0000
+ 
+        1 BE    3d2-   -0.9949    0.2302
+        2 O     3d2-   -0.0236   -1.0210
+
+      Molecular orbitals for symmetry species 4: b1 
+ 
+          Orbital        1         2         3         4         5
+          Energy       -0.2199   -0.0212    0.1963    0.5693    2.3061
+          Occ. No.      2.0000    0.0000    0.0000    0.0000    0.0000
+ 
+        1 BE    2px    -0.3298   -0.9613    0.2093   -1.0906    0.7184
+        2 BE    3px     0.0464   -0.2376   -0.9137   -0.3543   -0.0002
+        3 BE    3d1+   -0.0476    0.1654   -0.1942   -1.4716    0.6444
+        4 O     2px    -0.8286    0.5162   -0.0411    1.0452   -0.4779
+        5 O     3px     0.0045    0.0247   -0.1230    1.2876   -0.6029
+        6 O     3d1+    0.0182   -0.0133   -0.0094    0.0064    1.1335
+ 
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=   -5.8812           Total=    5.8812
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    0.8964
+                    XX=  -11.0821              XY=    0.0000              XZ=    0.0000              YY=  -11.0821
+                    YZ=    0.0000              ZZ=   -4.6592
+      In traceless form (Debye*Ang)
+                    XX=   -3.2114              XY=    0.0000              XZ=    0.0000              YY=   -3.2114
+                    YZ=    0.0000              ZZ=    6.4228
+ 
+--- Stop Module:  scf at Fri Oct  7 14:36:57 2016 /rc=0 ---
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 14:36:58 2016 /rc=0 ---

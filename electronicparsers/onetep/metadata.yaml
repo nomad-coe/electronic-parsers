@@ -1,0 +1,9 @@
+codeLabel: ONETEP
+codeLabelStyle: All in capitals
+codeName: onetep
+codeUrl: https://www.onetep.org/
+parserDirName: dependencies/parsers/onetep/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-onetep.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: ''

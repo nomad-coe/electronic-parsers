@@ -1,0 +1,1190 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test045.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test045.input.9827
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 14:37:54 2016 
+
+++ ---------   Input file   ---------
+
+ >>> DO WHILE <<<
+  &SEWARD &END
+    Title
+    H2O geom optim, using the SVP
+    Symmetry
+    x z
+    Basis set
+    H.SVP.....
+    H1            1.432371       1.141126       0.000000
+    End of basis
+    Basis set
+    O.SVP
+    O              0.000000      -0.060568       0.000000
+    End of basis
+    RIJ
+  &SCF &End 
+    Occupation
+      3 1 1 0 
+    KSDFT
+    BLYP 
+    ChoInput
+    Algo
+      3
+    EndChoInput
+  &Slapaf 
+ >>> ENDDO <<<
+
+-- ----------------------------------
+
+--- Start Module: auto at Fri Oct  7 14:37:54 2016 
+--- Start Module: seward at Fri Oct  7 14:37:55 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:37:55 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  RI decomposed two-electron repulsion integrals stored Cholesky style
+                   - RIJ auxiliary basis
+ 
+ Title:
+                                 H2O geom optim, using the SVP                          
+ 
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+                    Reflection in the xy-plane  
+ 
+ 
+                    Character Table for C2v
+ 
+                             E   s(yz) s(xy) C2(y)
+                    a1       1     1     1     1  y
+                    b1       1    -1     1    -1  x, xy, Rz
+                    b2       1     1    -1    -1  z, yz, Rx
+                    a2       1    -1    -1     1  xz, Ry, I
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:H.DZP..... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       4       2        X                  
+         p       1       1        X                  
+      Basis set label:O.SVP..... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  8.000000 au
+      Associated Actual Charge     8.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       7       3        X                  
+         p       4       2        X                  
+         d       1       1                 X         
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      H1               1.432371       1.141126       0.000000              0.757978       0.603858       0.000000
+        2      H1              -1.432371       1.141126       0.000000             -0.757978       0.603858       0.000000
+        3      O                0.000000      -0.060568       0.000000              0.000000      -0.032051       0.000000
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 H1            2 H1            3 O     
+    1 H1       0.000000
+    2 H1       2.864742        0.000000
+    3 O        1.869694        1.869694        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 H1            2 H1            3 O     
+    1 H1       0.000000
+    2 H1       1.515956        0.000000
+    3 O        0.989399        0.989399        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 H1       1 H1       3 O         40.00
+                      1 H1       2 H1       3 O         40.00
+                      1 H1       3 O        2 H1       100.01
+ 
+ 
+            Nuclear Potential Energy              8.90662225 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a1   b1   b2   a2 
+      Basis functions           11    7    4    2
+ 
+      RI vectors                23   14   10    6
+ 
+ 
+--- Stop Module:  seward at Fri Oct  7 14:37:55 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:37:56 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:37:56 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ MO-based-Exchange Cholesky. MO-transformation in reduced sets
+ 
+Input section
+      Header of the integral files:
+                           H2O geom optim, using the SVP                      
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:37:55 2016        
+ 
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.75798   0.60386   0.00000
+       2   O          0.00000  -0.03205   0.00000
+       3   H1        -0.75798   0.60386   0.00000
+      --------------------------------------------
+      Nuclear repulsion energy =    8.906622
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2   3   4
+                                    a1  b1  b2  a2
+      Frozen orbitals                0   0   0   0
+      Occupied orbitals              3   1   1   0
+      Secondary orbitals             8   6   3   2
+      Deleted orbitals               0   0   0   0
+      Total number of orbitals      11   7   4   2
+      Number of basis functions     11   7   4   2
+ 
+      Molecular charge                           0.000
+ 
+ 
+      The same grid will be used for all iterations.
+ 
+      SCF Algorithm: RI/DF
+      D(i)-D(i-1) density differences are used
+      Number of density matrices in core              400
+      Maximum number of NDDO SCF iterations           400
+      Maximum number of HF  SCF iterations            400
+      Threshold for SCF energy change            0.10E-03
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Detected guessorb starting orbitals                                             
+ 
+ 
+Convergence information
+                                   BLYP       iterations: Energy and convergence statistics
+ 
+Iter     Tot. BLYP      One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -76.19069954   -131.77174907     46.67442728  0.00E+00   0.30E+00*  0.15E+00*   0.36E+01   0.41E+02   NoneDa    0.
+   2    -76.30284100   -131.19122636     45.98176311 -0.11E+00*  0.18E+00*  0.80E-01*   0.14E+01   0.71E+00   Damp      0.
+   3    -76.29296149   -133.36766706     48.16808331  0.99E-02*  0.49E-01*  0.40E-01*   0.70E+00   0.96E+00   Damp      0.
+   4    -76.33549425   -131.87163212     46.62951562 -0.43E-01*  0.32E-01*  0.40E-01*   0.19E+00   0.18E+00   QNRc2D    0.
+   5    -76.33717363   -131.84104165     46.59724577 -0.17E-02*  0.74E-02*  0.93E-02*   0.84E-01   0.57E-01   QNRc2D    0.
+   6    -76.33720819   -131.88855518     46.64472474 -0.35E-04   0.12E-02*  0.29E-02*   0.12E-01   0.20E-01   QNRc2D    0.
+   7    -76.33721113   -131.88662112     46.64278774 -0.29E-05   0.18E-03*  0.16E-03*   0.55E-02   0.15E-02   QNRc2D    0.
+   8    -76.33721121   -131.88678411     46.64295065 -0.82E-07   0.16E-04   0.42E-04    0.76E-03   0.23E-03   QNRc2D    0.
+ 
+       Convergence after  8 Macro Iterations and  2 additional LS Iterations...
+ 
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total KS-DFT energy                             -76.3372112118
+      One-electron energy                            -131.8867841115
+      Two-electron energy                              46.6429506515
+      Nuclear repulsion energy                          8.9066222482
+      Kinetic energy (interpolated)                    75.7944738388
+      Virial theorem                                    1.0071606457
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000000000
+      Max non-diagonal Fock matrix element              0.0000422900
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: RKS-DFT orbitals                                                                
+ 
+
+      Molecular orbitals for symmetry species 1: a1 
+ 
+          Orbital        1         2         3         4
+          Energy      -18.7683   -0.8747   -0.3075    0.0154
+          Occ. No.      2.0000    2.0000    2.0000    0.0000
+ 
+        1 H1    1s     -0.0029    0.2872    0.2959   -0.1834
+        2 H1    *s      0.0034    0.0239    0.1094   -1.1161
+        3 H1    *px     0.0034   -0.0428   -0.0343   -0.0089
+        4 H1    *py     0.0029   -0.0218    0.0185   -0.0017
+        5 O     1s     -0.9886    0.2756   -0.1181    0.1038
+        6 O     2s      0.0401    0.5554   -0.2298    0.1803
+        7 O     *s     -0.0149    0.2569   -0.3888    0.8985
+        8 O     2py     0.0031    0.1325    0.5374    0.2798
+        9 O     *py    -0.0003    0.0026    0.3258    0.3534
+       10 O     *d0    -0.0012   -0.0064   -0.0088   -0.0069
+       11 O     *d2+    0.0004   -0.0005   -0.0158   -0.0073
+
+      Molecular orbitals for symmetry species 2: b1 
+ 
+          Orbital        1         2         3
+          Energy       -0.4379    0.0921    0.4904
+          Occ. No.      2.0000    0.0000    0.0000
+ 
+        1 H1    1s     -0.4575    0.2018   -1.3435
+        2 H1    *s     -0.1749    1.7337    1.3276
+        3 H1    *px     0.0163    0.0062   -0.0518
+        4 H1    *py     0.0355    0.0132   -0.1320
+        5 O     2px    -0.5072   -0.4036    0.2849
+        6 O     *px    -0.2061   -0.5904    0.2982
+        7 O     *d2-   -0.0216   -0.0046   -0.0961
+
+      Molecular orbitals for symmetry species 3: b2 
+ 
+          Orbital        1
+          Energy       -0.2235
+          Occ. No.      2.0000
+ 
+        1 H1    *pz    -0.0428
+        2 O     2pz    -0.6402
+        3 O     *pz    -0.4893
+        4 O     *d1-   -0.0197
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             H1      O     
+      1s     0.6898  1.9887
+      2s     0.0000  1.0871
+      2px    0.0000  0.7917
+      2pz    0.0000  1.1472
+      2py    0.0000  0.9138
+      *s     0.1059  0.6372
+      *px    0.0265  0.3517
+      *pz    0.0188  0.8140
+      *py    0.0213  0.5336
+      *d2+   0.0000  0.0005
+      *d1+   0.0000  0.0000
+      *d0    0.0000  0.0018
+      *d1-   0.0000  0.0012
+      *d2-   0.0000  0.0068
+      Total  0.8624  8.2752
+ 
+      N-E    0.1376 -0.2752
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    1.9726               Z=    0.0000           Total=    1.9726
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0391    0.0000
+                    XX=   -4.5423              XY=    0.0000              XZ=    0.0000              YY=   -5.6892
+                    YZ=    0.0000              ZZ=   -7.0472
+      In traceless form (Debye*Ang)
+                    XX=    1.8259              XY=    0.0000              XZ=    0.0000              YY=    0.1055
+                    YZ=    0.0000              ZZ=   -1.9315
+--- Stop Module:  scf at Fri Oct  7 14:37:57 2016 /rc=0 ---
+*** 
+--- Start Module: slapaf at Fri Oct  7 14:37:57 2016 
+--- Stop Module:  slapaf at Fri Oct  7 14:37:58 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: alaska at Fri Oct  7 14:37:58 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module ALASKA with 2000 MB of memory
+                                              at 14:37:58 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+                     Threshold for contributions to the gradient: .100E-06
+ 
+ 
+                    ********************************************
+                    * Symmetry Adapted Cartesian Displacements *
+                    ********************************************
+ 
+ 
+           Irreducible representation : a1 
+           Basis function(s) of irrep: y                                                                               
+ 
+ Basis Label        Type   Center Phase
+   1   H1           x         1     1      2    -1
+   2   H1           y         1     1      2     1
+   3   O            y         3     1
+ 
+           Irreducible representation : b1 
+           Basis function(s) of irrep: x, xy, Rz                                                                       
+ 
+ Basis Label        Type   Center Phase
+   4   H1           x         1     1      2     1
+   5   H1           y         1     1      2    -1
+   6   O            x         3     1
+ 
+           Irreducible representation : b2 
+           Basis function(s) of irrep: z, yz, Rx                                                                       
+ 
+ Basis Label        Type   Center Phase
+   7   H1           z         1     1      2     1
+   8   O            z         3     1
+ 
+           Irreducible representation : a2 
+           Basis function(s) of irrep: xz, Ry, I                                                                       
+ 
+ Basis Label        Type   Center Phase
+   9   H1           z         1     1      2    -1
+ 
+                     No automatic utilization of translational and rotational invariance of the energy is employed.
+ 
+ 
+ DFT contribution computed for a moving grid.
+ 
+ 
+ Wavefunction type: KS-DFT  
+ Functional type:   BLYP            
+ 
+ A total of 526. entities were prescreened and 526. were kept.
+ A total of 19565. entities were prescreened and 19456. were kept.
+--- Stop Module:  alaska at Fri Oct  7 14:37:59 2016 /rc=0 ---
+*** 
+--- Start Module: slapaf at Fri Oct  7 14:37:59 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SLAPAF with 2000 MB of memory
+                                              at 14:38:00 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+      Slapaf input parameters:
+          ------------------------
+ 
+ 
+ 
+ Max iterations:                            2000
+ Convergence test a la Schlegel.
+ Convergence criterion on gradient/para.<=: 0.3E-03
+ Convergence criterion on step/parameter<=: 0.3E-03
+ Convergence criterion on energy change <=: 0.1E-05
+ Max norm of step:     0.30E+00
+ 
+ Line search is performed
+ 
+ 
+ -Optimization for minimum.
+  Optimization method: RS-RFO.
+ 
+ -Initial Hessian guessed by Hessian Model Function (HMF).
+  HMF augmented with weak interactions.
+ 
+ -Hessian update method: Broyden-Fletcher-Goldfarb-Shanno
+  Max number of points in Hessian update:  5
+ 
+ -Relaxation will be done in nonredundant internal coordinates, based on
+  force constant weighted redundant internal coordinates.
+ 
+ -The origin of the hyper sphere is defined implicitly.
+ 
+ ******************************************
+ * Statistics of the internal coordinates *
+ ******************************************
+ Translations and Rotations:         0
+ Bonds                     :         1
+ Angles                    :         1
+ Torsions                  :         0
+ Out-of-plane angles       :         0
+ 
+ 
+*****************************************************************************************************************
+*                                  Energy Statistics for Geometry Optimization                                  *
+*****************************************************************************************************************
+                       Energy     Grad     Grad              Step                 Estimated   Geom     Hessian   
+Iter      Energy       Change     Norm     Max    Element    Max     Element     Final Energy Update Update Index
+  1    -76.33721121  0.00000000 0.020267-0.013447 nrc001  -0.027661  nrc001      -76.33738760 RS-RFO  None    0  
+ 
+       +----------------------------------+----------------------------------+
+       +    Cartesian Displacements       +    Gradient in internals         +
+       +  Value      Threshold Converged? +  Value      Threshold Converged? +
+ +-----+----------------------------------+----------------------------------+
+ + RMS + 0.1177E-01  0.1200E-02     No    + 0.1433E-01  0.3000E-03     No    +
+ +-----+----------------------------------+----------------------------------+
+ + Max + 0.1644E-01  0.1800E-02     No    + 0.1345E-01  0.4500E-03     No    +
+ +-----+----------------------------------+----------------------------------+
+ 
+ Convergence not reached yet!
+ 
+*****************************************************************************************************************
+*****************************************************************************************************************
+Geometry section
+ 
+********************************************************************************
+  Geometrical information of the new structure
+********************************************************************************
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates for the next iteration / Bohr     *
+ *********************************************************
+  ATOM              X               Y               Z     
+  H1               1.434632        1.132905        0.000000
+  O                0.000000       -0.044126        0.000000
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates for the next iteration / Angstrom *
+ *********************************************************
+  ATOM              X               Y               Z     
+  H1               0.759174        0.599507        0.000000
+  O                0.000000       -0.023350        0.000000
+ 
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 H1            2 H1            3 O     
+    1 H1       0.000000
+    2 H1       2.869264        0.000000
+    3 O        1.855686        1.855686        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 H1            2 H1            3 O     
+    1 H1       0.000000
+    2 H1       1.518349        0.000000
+    3 O        0.981987        0.981987        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 H1       1 H1       3 O         39.37
+                      1 H1       2 H1       3 O         39.37
+                      1 H1       3 O        2 H1       101.27
+ 
+                **************************************************
+                * Radius of hypersphere / au*amu**(1/2)/amu(1/2) *
+                **************************************************
+                                     0.0158
+ 
+--- Stop Module:  slapaf at Fri Oct  7 14:38:00 2016 /rc= _CONTINUE_LOOP_ ---
+--- Stop Module:  auto at Fri Oct  7 14:38:00 2016 /rc= _CONTINUE_LOOP_ ---
+--- Start Module: auto at Fri Oct  7 14:38:00 2016 
+*** 
+--- Start Module: seward at Fri Oct  7 14:38:01 2016 
+      RI vectors                23   14   10    6
+ 
+ 
+--- Stop Module:  seward at Fri Oct  7 14:38:01 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:38:01 2016 
+ MO-based-Exchange Cholesky. MO-transformation in reduced sets
+ 
+--- Stop Module:  scf at Fri Oct  7 14:38:02 2016 /rc=0 ---
+*** 
+--- Start Module: slapaf at Fri Oct  7 14:38:03 2016 
+--- Stop Module:  slapaf at Fri Oct  7 14:38:03 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: alaska at Fri Oct  7 14:38:04 2016 
+--- Stop Module:  alaska at Fri Oct  7 14:38:04 2016 /rc=0 ---
+*** 
+--- Start Module: slapaf at Fri Oct  7 14:38:05 2016 
+ 
+*****************************************************************************************************************
+*                                  Energy Statistics for Geometry Optimization                                  *
+*****************************************************************************************************************
+                       Energy     Grad     Grad              Step                 Estimated   Geom     Hessian   
+Iter      Energy       Change     Norm     Max    Element    Max     Element     Final Energy Update Update Index
+  1    -76.33721121  0.00000000 0.020267-0.013447 nrc001  -0.027661  nrc001      -76.33738760 RS-RFO  None    0  
+  2    -76.33745342 -0.00024221 0.007553-0.005011 nrc001  -0.017390  nrc001      -76.33749452 RS-RFO  BFGS    0  
+ 
+       +----------------------------------+----------------------------------+
+       +    Cartesian Displacements       +    Gradient in internals         +
+       +  Value      Threshold Converged? +  Value      Threshold Converged? +
+ +-----+----------------------------------+----------------------------------+
+ + RMS + 0.7539E-02  0.1200E-02     No    + 0.5341E-02  0.3000E-03     No    +
+ +-----+----------------------------------+----------------------------------+
+ + Max + 0.1045E-01  0.1800E-02     No    + 0.5011E-02  0.4500E-03     No    +
+ +-----+----------------------------------+----------------------------------+
+ 
+ Convergence not reached yet!
+ 
+*****************************************************************************************************************
+*****************************************************************************************************************
+Geometry section
+ 
+********************************************************************************
+  Geometrical information of the new structure
+********************************************************************************
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates for the next iteration / Bohr     *
+ *********************************************************
+  ATOM              X               Y               Z     
+  H1               1.436450        1.127678        0.000000
+  O                0.000000       -0.033673        0.000000
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates for the next iteration / Angstrom *
+ *********************************************************
+  ATOM              X               Y               Z     
+  H1               0.760137        0.596742        0.000000
+  O                0.000000       -0.017819        0.000000
+ 
+--- Stop Module:  slapaf at Fri Oct  7 14:38:05 2016 /rc= _CONTINUE_LOOP_ ---
+--- Stop Module:  auto at Fri Oct  7 14:38:05 2016 /rc= _CONTINUE_LOOP_ ---
+--- Start Module: auto at Fri Oct  7 14:38:05 2016 
+*** 
+--- Start Module: seward at Fri Oct  7 14:38:06 2016 
+      RI vectors                23   14   10    6
+ 
+ 
+--- Stop Module:  seward at Fri Oct  7 14:38:06 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:38:07 2016 
+ MO-based-Exchange Cholesky. MO-transformation in reduced sets
+ 
+--- Stop Module:  scf at Fri Oct  7 14:38:08 2016 /rc=0 ---
+*** 
+--- Start Module: slapaf at Fri Oct  7 14:38:09 2016 
+--- Stop Module:  slapaf at Fri Oct  7 14:38:09 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: alaska at Fri Oct  7 14:38:10 2016 
+--- Stop Module:  alaska at Fri Oct  7 14:38:10 2016 /rc=0 ---
+*** 
+--- Start Module: slapaf at Fri Oct  7 14:38:11 2016 
+ 
+*****************************************************************************************************************
+*                                  Energy Statistics for Geometry Optimization                                  *
+*****************************************************************************************************************
+                       Energy     Grad     Grad              Step                 Estimated   Geom     Hessian   
+Iter      Energy       Change     Norm     Max    Element    Max     Element     Final Energy Update Update Index
+  1    -76.33721121  0.00000000 0.020267-0.013447 nrc001  -0.027661  nrc001      -76.33738760 RS-RFO  None    0  
+  2    -76.33745342 -0.00024221 0.007553-0.005011 nrc001  -0.017390  nrc001      -76.33749452 RS-RFO  BFGS    0  
+  3    -76.33749263 -0.00003921 0.000426 0.000280 nrc001   0.000733  nrc001      -76.33749274 RS-RFO  BFGS    0  
+ 
+       +----------------------------------+----------------------------------+
+       +    Cartesian Displacements       +    Gradient in internals         +
+       +  Value      Threshold Converged? +  Value      Threshold Converged? +
+ +-----+----------------------------------+----------------------------------+
+ + RMS + 0.2875E-03  0.1200E-02     Yes   + 0.3015E-03  0.3000E-03     No    +
+ +-----+----------------------------------+----------------------------------+
+ + Max + 0.3471E-03  0.1800E-02     Yes   + 0.2797E-03  0.4500E-03     Yes   +
+ +-----+----------------------------------+----------------------------------+
+ 
+ Convergence not reached yet!
+ 
+*****************************************************************************************************************
+*****************************************************************************************************************
+Geometry section
+ 
+********************************************************************************
+  Geometrical information of the new structure
+********************************************************************************
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates for the next iteration / Bohr     *
+ *********************************************************
+  ATOM              X               Y               Z     
+  H1               1.436633        1.127852        0.000000
+  O                0.000000       -0.034020        0.000000
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates for the next iteration / Angstrom *
+ *********************************************************
+  ATOM              X               Y               Z     
+  H1               0.760234        0.596834        0.000000
+  O                0.000000       -0.018002        0.000000
+ 
+--- Stop Module:  slapaf at Fri Oct  7 14:38:11 2016 /rc= _CONTINUE_LOOP_ ---
+--- Stop Module:  auto at Fri Oct  7 14:38:11 2016 /rc= _CONTINUE_LOOP_ ---
+--- Start Module: auto at Fri Oct  7 14:38:11 2016 
+*** 
+--- Start Module: seward at Fri Oct  7 14:38:12 2016 
+      RI vectors                23   14   10    6
+ 
+ 
+--- Stop Module:  seward at Fri Oct  7 14:38:12 2016 /rc=0 ---
+*** 
+--- Start Module: scf at Fri Oct  7 14:38:13 2016 
+ MO-based-Exchange Cholesky. MO-transformation in reduced sets
+ 
+--- Stop Module:  scf at Fri Oct  7 14:38:13 2016 /rc=0 ---
+*** 
+--- Start Module: slapaf at Fri Oct  7 14:38:14 2016 
+--- Stop Module:  slapaf at Fri Oct  7 14:38:14 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: alaska at Fri Oct  7 14:38:15 2016 
+--- Stop Module:  alaska at Fri Oct  7 14:38:16 2016 /rc=0 ---
+*** 
+--- Start Module: slapaf at Fri Oct  7 14:38:16 2016 
+ 
+*****************************************************************************************************************
+*                                  Energy Statistics for Geometry Optimization                                  *
+*****************************************************************************************************************
+                       Energy     Grad     Grad              Step                 Estimated   Geom     Hessian   
+Iter      Energy       Change     Norm     Max    Element    Max     Element     Final Energy Update Update Index
+  1    -76.33721121  0.00000000 0.020267-0.013447 nrc001  -0.027661  nrc001      -76.33738760 RS-RFO  None    0  
+  2    -76.33745342 -0.00024221 0.007553-0.005011 nrc001  -0.017390  nrc001      -76.33749452 RS-RFO  BFGS    0  
+  3    -76.33749263 -0.00003921 0.000426 0.000280 nrc001   0.000733  nrc001      -76.33749274 RS-RFO  BFGS    0  
+  4    -76.33749275 -0.00000012 0.000062-0.000040 nrc001  -0.000088  nrc001      -76.33749275 RS-RFO  BFGS    0  
+ 
+       +----------------------------------+----------------------------------+
+       +    Cartesian Displacements       +    Gradient in internals         +
+       +  Value      Threshold Converged? +  Value      Threshold Converged? +
+ +-----+----------------------------------+----------------------------------+
+ + RMS + 0.5566E-04  0.1200E-02     Yes   + 0.4410E-04  0.3000E-03     Yes   +
+ +-----+----------------------------------+----------------------------------+
+ + Max + 0.6385E-04  0.1800E-02     Yes   + 0.4029E-04  0.4500E-03     Yes   +
+ +-----+----------------------------------+----------------------------------+
+ 
+ Geometry is converged in   4 iterations to a Minimum Structure
+ 
+*****************************************************************************************************************
+*****************************************************************************************************************
+Geometry section
+ 
+********************************************************************************
+  Geometrical information of the final structure
+********************************************************************************
+ 
+  NOTE: on convergence the final predicted structure will be printed here.
+  This is not identical to the structure printed in the head of the output.
+ 
+ *********************************************************
+ * Nuclear coordinates of the final structure / Bohr     *
+ *********************************************************
+  ATOM              X               Y               Z     
+  H1               1.436673        1.127820        0.000000
+  O                0.000000       -0.033956        0.000000
+ 
+ 
+ *********************************************************
+ * Nuclear coordinates of the final structure / Angstrom *
+ *********************************************************
+  ATOM              X               Y               Z     
+  H1               0.760255        0.596817        0.000000
+  O                0.000000       -0.017969        0.000000
+ 
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 H1            2 H1            3 O     
+    1 H1       0.000000
+    2 H1       2.873346        0.000000
+    3 O        1.847634        1.847634        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 H1            2 H1            3 O     
+    1 H1       0.000000
+    2 H1       1.520509        0.000000
+    3 O        0.977726        0.977726        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 H1       1 H1       3 O         38.96
+                      1 H1       2 H1       3 O         38.96
+                      1 H1       3 O        2 H1       102.08
+ 
+                **************************************************
+                * Radius of hypersphere / au*amu**(1/2)/amu(1/2) *
+                **************************************************
+                                     0.0255
+ 
+--- Stop Module:  slapaf at Fri Oct  7 14:38:16 2016 /rc= _INVOKED_OTHER_MODULE_ ---
+*** 
+--- Start Module: last_energy at Fri Oct  7 14:38:18 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                               MOLCAS executing module Last_Energy with 2000 MB of memory
+                                              at 14:38:18 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:38:18 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+    Geometry read from RUNFILE
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  RI decomposed two-electron repulsion integrals stored Cholesky style
+                   - RIJ auxiliary basis
+ 
+ Title:
+                                 H2O geom optim, using the SVP                          
+ 
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Reflection in the yz-plane  
+                    Reflection in the xy-plane  
+ 
+ 
+                    Character Table for C2v
+ 
+                             E   s(yz) s(xy) C2(y)
+                    a1       1     1     1     1  y
+                    b1       1    -1     1    -1  x, xy, Rz
+                    b2       1     1    -1    -1  z, yz, Rx
+                    a2       1    -1    -1     1  xz, Ry, I
+ 
+                    Unitary symmetry adaptation
+ 
+ 
+      Basis set label:H.DZP..... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       4       2        X                  
+         p       1       1        X                  
+      Basis set label:O.SVP..... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  8.000000 au
+      Associated Actual Charge     8.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       7       3        X                  
+         p       4       2        X                  
+         d       1       1                 X         
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      H1               1.436673       1.127820       0.000000              0.760255       0.596817       0.000000
+        2      H1              -1.436673       1.127820       0.000000             -0.760255       0.596817       0.000000
+        3      O                0.000000      -0.033956       0.000000              0.000000      -0.017969       0.000000
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 H1            2 H1            3 O     
+    1 H1       0.000000
+    2 H1       2.873346        0.000000
+    3 O        1.847634        1.847634        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 H1            2 H1            3 O     
+    1 H1       0.000000
+    2 H1       1.520509        0.000000
+    3 O        0.977726        0.977726        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      2 H1       1 H1       3 O         38.96
+                      1 H1       2 H1       3 O         38.96
+                      1 H1       3 O        2 H1       102.08
+ 
+ 
+            Nuclear Potential Energy              9.00774801 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a1   b1   b2   a2 
+      Basis functions           11    7    4    2
+ 
+      RI vectors                23   14   10    6
+ 
+ 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                   MOLCAS executing module SCF with 2000 MB of memory
+                                              at 14:38:18 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ MO-based-Exchange Cholesky. MO-transformation in reduced sets
+ 
+Input section
+      Header of the integral files:
+                           H2O geom optim, using the SVP                      
+       Integrals generated by seward 4.2.0  , Fri Oct  7 14:38:18 2016        
+ 
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   H1         0.76025   0.59682   0.00000
+       2   O          0.00000  -0.01797   0.00000
+       3   H1        -0.76025   0.59682   0.00000
+      --------------------------------------------
+      Nuclear repulsion energy =    9.007748
+ 
+ 
+      Orbital specifications :
+      Symmetry species               1   2   3   4
+                                    a1  b1  b2  a2
+      Frozen orbitals                0   0   0   0
+      Occupied orbitals              3   1   1   0
+      Secondary orbitals             8   6   3   2
+      Deleted orbitals               0   0   0   0
+      Total number of orbitals      11   7   4   2
+      Number of basis functions     11   7   4   2
+ 
+      Molecular charge                           0.000
+ 
+ 
+      The same grid will be used for all iterations.
+ 
+      SCF Algorithm: RI/DF
+      D(i)-D(i-1) density differences are used
+      Number of density matrices in core              400
+      Maximum number of NDDO SCF iterations           400
+      Maximum number of HF  SCF iterations            400
+      Threshold for SCF energy change            0.10E-03
+      Threshold for density matrix               0.10E-03
+      Threshold for Fock matrix                  0.15E-03
+      Threshold for linear dependence            0.10E-04
+      Threshold at which DIIS is turned on       0.15E+00
+      Threshold at which QNR/C2DIIS is turned on 0.15E+00
+      Threshold for Norm(delta) (QNR/C2DIIS)     0.20E-04
+      DIIS extrapolation of the SCF procedure
+      All orbitals punched on: SCFORB
+ 
+      Detected old SCF orbitals                                                       
+ 
+ 
+Convergence information
+                                   BLYP       iterations: Energy and convergence statistics
+ 
+Iter     Tot. BLYP      One-electron     Two-electron   Energy   Max Dij or  Max Fij    DNorm      TNorm     AccCon    Time
+           Energy          Energy          Energy       Change   Delta Norm     
+                                      in Sec.
+   1    -76.33749275   -132.08580677     46.74056601  0.00E+00   0.27E-04   0.96E-05    0.38E+01   0.41E+02   NoneDa    0.
+   2    -76.33749275   -132.08590849     46.74066774 -0.68E-09   0.13E-04   0.46E-05    0.14E-03   0.45E-04   Damp      0.
+ 
+       Convergence after  2 Macro Iterations and  0 additional LS Iterations...
+ 
+ 
+ *****************************************************************************************************************************
+ *                                                                                                                           *
+ *                                             SCF/KS-DFT Program, Final results                                             *
+ *                                                    Molcas version 7.8                                                     *
+ *                                                                                                                           *
+ *                                                                                                                           *
+ *                                                       Final Results                                                       *
+ *                                                                                                                           *
+ *****************************************************************************************************************************
+ 
+      Total KS-DFT energy                             -76.3374927479
+      One-electron energy                            -132.0859084946
+      Two-electron energy                              46.7406677355
+      Nuclear repulsion energy                          9.0077480112
+      Kinetic energy (interpolated)                    75.8211887559
+      Virial theorem                                    1.0068094948
+      Total spin, S(S+1)                                0.0000000000
+      Total spin, S                                     0.0000000000
+      Max non-diagonal density matrix element           0.0000127401
+      Max non-diagonal Fock matrix element              0.0000045562
+ 
+      All orbitals with orbital energies smaller than  E(LUMO)+0.5 are printed
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Title: RKS-DFT orbitals                                                                
+ 
+
+      Molecular orbitals for symmetry species 1: a1 
+ 
+          Orbital        1         2         3         4
+          Energy      -18.7656   -0.8775   -0.3037    0.0186
+          Occ. No.      2.0000    2.0000    2.0000    0.0000
+ 
+        1 H1    1s     -0.0033    0.2912    0.2892   -0.1806
+        2 H1    *s      0.0034    0.0241    0.1055   -1.1309
+        3 H1    *px     0.0036   -0.0437   -0.0334   -0.0086
+        4 H1    *py     0.0030   -0.0211    0.0200   -0.0010
+        5 O     1s     -0.9886    0.2755   -0.1167    0.1049
+        6 O     2s      0.0404    0.5538   -0.2273    0.1816
+        7 O     *s     -0.0148    0.2519   -0.3851    0.9185
+        8 O     2py     0.0032    0.1321    0.5415    0.2706
+        9 O     *py    -0.0002    0.0016    0.3321    0.3451
+       10 O     *d0    -0.0012   -0.0064   -0.0091   -0.0071
+       11 O     *d2+    0.0005   -0.0001   -0.0159   -0.0069
+
+      Molecular orbitals for symmetry species 2: b1 
+ 
+          Orbital        1         2         3
+          Energy       -0.4449    0.0957    0.5019
+          Occ. No.      2.0000    0.0000    0.0000
+ 
+        1 H1    1s     -0.4622    0.1864   -1.3494
+        2 H1    *s     -0.1691    1.7610    1.2846
+        3 H1    *px     0.0170    0.0055   -0.0557
+        4 H1    *py     0.0353    0.0120   -0.1416
+        5 O     2px    -0.5071   -0.3978    0.2948
+        6 O     *px    -0.1998   -0.5927    0.3205
+        7 O     *d2-   -0.0219   -0.0059   -0.0982
+
+      Molecular orbitals for symmetry species 3: b2 
+ 
+          Orbital        1
+          Energy       -0.2235
+          Occ. No.      2.0000
+ 
+        1 H1    *pz    -0.0430
+        2 O     2pz    -0.6396
+        3 O     *pz    -0.4893
+        4 O     *d1-   -0.0197
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             H1      O     
+      1s     0.6947  1.9886
+      2s     0.0000  1.0824
+      2px    0.0000  0.7943
+      2pz    0.0000  1.1458
+      2py    0.0000  0.9254
+      *s     0.1016  0.6263
+      *px    0.0271  0.3410
+      *pz    0.0194  0.8143
+      *py    0.0215  0.5429
+      *d2+   0.0000  0.0004
+      *d1+   0.0000  0.0000
+      *d0    0.0000  0.0018
+      *d1-   0.0000  0.0012
+      *d2-   0.0000  0.0069
+      Total  0.8643  8.2714
+ 
+      N-E    0.1357 -0.2714
+ 
+      Total electronic charge=   10.000000
+ 
+      Total            charge=    0.000000
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    1.9459               Z=    0.0000           Total=    1.9459
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0508    0.0000
+                    XX=   -4.4692              XY=    0.0000              XZ=    0.0000              YY=   -5.7427
+                    YZ=    0.0000              ZZ=   -7.0232
+      In traceless form (Debye*Ang)
+                    XX=    1.9138              XY=    0.0000              XZ=    0.0000              YY=    0.0035
+                    YZ=    0.0000              ZZ=   -1.9173
+--- Stop Module:  last_energy at Fri Oct  7 14:38:18 2016 /rc=0 ---
+--- Stop Module:  auto at Fri Oct  7 14:38:19 2016 /rc=0 ---
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 14:38:19 2016 /rc=0 ---

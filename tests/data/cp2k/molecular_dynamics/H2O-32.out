@@ -1,0 +1,2476 @@
+ DBCSR| Multiplication driver                                                SMM
+ DBCSR| Multrec recursion limit                                              512
+ DBCSR| Multiplication stack size                                           1000
+ DBCSR| Multiplication size stacks                                             3
+ DBCSR| Use subcommunicators                                                   T
+ DBCSR| Use MPI combined types                                                 F
+ DBCSR| Use MPI memory allocation                                              T
+ DBCSR| Use Communication thread                                               T
+ DBCSR| Communication thread load                                             87
+
+
+  **** **** ******  **  PROGRAM STARTED AT               2016-06-06 16:10:16.909
+ ***** ** ***  *** **   PROGRAM STARTED ON                   lauri-Lenovo-Z50-70
+ **    ****   ******    PROGRAM STARTED BY                                 lauri
+ ***** **    ** ** **   PROGRAM PROCESS ID                                 12281
+  **** **  *******  **  PROGRAM STARTED IN /home/lauri/Dropbox/nomad-dev/nomad-l
+                                           ab-base/parsers/cp2k/test/unittests/c
+                                           p2k_2.6.2/md/nve
+
+ CP2K| version string:                                        CP2K version 2.6.2
+ CP2K| source code revision number:                                    svn:15893
+ CP2K| is freely available from                             http://www.cp2k.org/
+ CP2K| Program compiled at                           ke 4.11.2015 08.48.42 +0200
+ CP2K| Program compiled on                                   lauri-Lenovo-Z50-70
+ CP2K| Program compiled for                          Linux-x86-64-gfortran_basic
+ CP2K| Input file name                                                H2O-32.inp
+
+ GLOBAL| Force Environment number                                              1
+ GLOBAL| Basis set file name                                     ../../BASIS_SET
+ GLOBAL| Geminal file name                                         BASIS_GEMINAL
+ GLOBAL| Potential file name                                ../../GTH_POTENTIALS
+ GLOBAL| MM Potential file name                                     MM_POTENTIAL
+ GLOBAL| Coordinate file name                                      __STD_INPUT__
+ GLOBAL| Method name                                                        CP2K
+ GLOBAL| Project name                                                     H2O-32
+ GLOBAL| Preferred FFT library                                             FFTW3
+ GLOBAL| Preferred diagonalization lib.                                       SL
+ GLOBAL| Run type                                                             MD
+ GLOBAL| All-to-all communication in single precision                          F
+ GLOBAL| FFTs using library dependent lengths                                  F
+ GLOBAL| Global print level                                               MEDIUM
+ GLOBAL| Total number of message passing processes                             1
+ GLOBAL| Number of threads for this process                                    1
+ GLOBAL| This output is from process                                           0
+
+ MEMORY| system memory details [Kb]
+ MEMORY|                        rank 0           min           max       average
+ MEMORY| MemTotal              8070360       8070360       8070360       8070360
+ MEMORY| MemFree               1746740       1746740       1746740       1746740
+ MEMORY| Buffers                949116        949116        949116        949116
+ MEMORY| Cached                2345284       2345284       2345284       2345284
+ MEMORY| Slab                   532456        532456        532456        532456
+ MEMORY| SReclaimable           491668        491668        491668        491668
+ MEMORY| MemLikelyFree         5532808       5532808       5532808       5532808
+
+
+ *** Fundamental physical constants (SI units) ***
+
+ *** Literature: B. J. Mohr and B. N. Taylor,
+ ***             CODATA recommended values of the fundamental physical
+ ***             constants: 2006, Web Version 5.1
+ ***             http://physics.nist.gov/constants
+
+ Speed of light in vacuum [m/s]                             2.99792458000000E+08
+ Magnetic constant or permeability of vacuum [N/A**2]       1.25663706143592E-06
+ Electric constant or permittivity of vacuum [F/m]          8.85418781762039E-12
+ Planck constant (h) [J*s]                                  6.62606896000000E-34
+ Planck constant (h-bar) [J*s]                              1.05457162825177E-34
+ Elementary charge [C]                                      1.60217648700000E-19
+ Electron mass [kg]                                         9.10938215000000E-31
+ Electron g factor [ ]                                     -2.00231930436220E+00
+ Proton mass [kg]                                           1.67262163700000E-27
+ Fine-structure constant                                    7.29735253760000E-03
+ Rydberg constant [1/m]                                     1.09737315685270E+07
+ Avogadro constant [1/mol]                                  6.02214179000000E+23
+ Boltzmann constant [J/K]                                   1.38065040000000E-23
+ Atomic mass unit [kg]                                      1.66053878200000E-27
+ Bohr radius [m]                                            5.29177208590000E-11
+
+ *** Conversion factors ***
+
+ [u] -> [a.u.]                                              1.82288848426455E+03
+ [Angstrom] -> [Bohr] = [a.u.]                              1.88972613288564E+00
+ [a.u.] = [Bohr] -> [Angstrom]                              5.29177208590000E-01
+ [a.u.] -> [s]                                              2.41888432650478E-17
+ [a.u.] -> [fs]                                             2.41888432650478E-02
+ [a.u.] -> [J]                                              4.35974393937059E-18
+ [a.u.] -> [N]                                              8.23872205491840E-08
+ [a.u.] -> [K]                                              3.15774647902944E+05
+ [a.u.] -> [kJ/mol]                                         2.62549961709828E+03
+ [a.u.] -> [kcal/mol]                                       6.27509468713739E+02
+ [a.u.] -> [Pa]                                             2.94210107994716E+13
+ [a.u.] -> [bar]                                            2.94210107994716E+08
+ [a.u.] -> [atm]                                            2.90362800883016E+08
+ [a.u.] -> [eV]                                             2.72113838565563E+01
+ [a.u.] -> [Hz]                                             6.57968392072181E+15
+ [a.u.] -> [1/cm] (wave numbers)                            2.19474631370540E+05
+ [a.u./Bohr**2] -> [1/cm]                                   5.14048714338585E+03
+ 
+
+ CELL_TOP| Volume [angstrom^3]:                                          956.487
+ CELL_TOP| Vector a [angstrom     9.853     0.000     0.000    |a| =       9.853
+ CELL_TOP| Vector b [angstrom     0.000     9.853     0.000    |b| =       9.853
+ CELL_TOP| Vector c [angstrom     0.000     0.000     9.853    |c| =       9.853
+ CELL_TOP| Angle (b,c), alpha [degree]:                                   90.000
+ CELL_TOP| Angle (a,c), beta  [degree]:                                   90.000
+ CELL_TOP| Angle (a,b), gamma [degree]:                                   90.000
+ CELL_TOP| Numerically orthorhombic:                                         YES
+
+ GENERATE|  Preliminary Number of Bonds generated:                             0
+ GENERATE|  Achieved consistency in connectivity generation.
+
+ CELL| Volume [angstrom^3]:                                              956.487
+ CELL| Vector a [angstrom]:       9.853     0.000     0.000    |a| =       9.853
+ CELL| Vector b [angstrom]:       0.000     9.853     0.000    |b| =       9.853
+ CELL| Vector c [angstrom]:       0.000     0.000     9.853    |c| =       9.853
+ CELL| Angle (b,c), alpha [degree]:                                       90.000
+ CELL| Angle (a,c), beta  [degree]:                                       90.000
+ CELL| Angle (a,b), gamma [degree]:                                       90.000
+ CELL| Numerically orthorhombic:                                             YES
+
+ CELL_REF| Volume [angstrom^3]:                                          956.487
+ CELL_REF| Vector a [angstrom     9.853     0.000     0.000    |a| =       9.853
+ CELL_REF| Vector b [angstrom     0.000     9.853     0.000    |b| =       9.853
+ CELL_REF| Vector c [angstrom     0.000     0.000     9.853    |c| =       9.853
+ CELL_REF| Angle (b,c), alpha [degree]:                                   90.000
+ CELL_REF| Angle (a,c), beta  [degree]:                                   90.000
+ CELL_REF| Angle (a,b), gamma [degree]:                                   90.000
+ CELL_REF| Numerically orthorhombic:                                         YES
+
+ *******************************************************************************
+ *******************************************************************************
+ **                                                                           **
+ **     #####                         ##              ##                      **
+ **    ##   ##            ##          ##              ##                      **
+ **   ##     ##                       ##            ######                    **
+ **   ##     ##  ##   ##  ##   #####  ##  ##   ####   ##    #####    #####    **
+ **   ##     ##  ##   ##  ##  ##      ## ##   ##      ##   ##   ##  ##   ##   **
+ **   ##  ## ##  ##   ##  ##  ##      ####     ###    ##   ######   ######    **
+ **    ##  ###   ##   ##  ##  ##      ## ##      ##   ##   ##       ##        **
+ **     #######   #####   ##   #####  ##  ##  ####    ##    #####   ##        **
+ **           ##                                                    ##        **
+ **                                                                           **
+ **                                                ... make the atoms dance   **
+ **                                                                           **
+ **            Copyright (C) by CP2K Developers Group (2000 - 2014)           **
+ **                                                                           **
+ *******************************************************************************
+
+ DFT| Spin restricted Kohn-Sham (RKS) calculation                            RKS
+ DFT| Multiplicity                                                             1
+ DFT| Number of spin states                                                    1
+ DFT| Charge                                                                   0
+ DFT| Self-interaction correction (SIC)                                       NO
+ DFT| Cutoffs: density                                              1.000000E-10
+ DFT|          gradient                                             1.000000E-10
+ DFT|          tau                                                  1.000000E-10
+ DFT|          cutoff_smoothing_range                               0.000000E+00
+ DFT| XC density smoothing                                                  NONE
+ DFT| XC derivatives                                                          PW
+ FUNCTIONAL| ROUTINE=NEW
+ FUNCTIONAL| PADE:
+ FUNCTIONAL| S. Goedecker, M. Teter and J. Hutter, Phys. Rev. B 54, 1703 (1996)
+
+ QS| Method:                                                                 GPW
+ QS| Density plane wave grid type                        NON-SPHERICAL FULLSPACE
+ QS| Number of grid levels:                                                    4
+ QS| Density cutoff [a.u.]:                                                100.0
+ QS| Multi grid cutoff [a.u.]: 1) grid level                               100.0
+ QS|                           2) grid level                                33.3
+ QS|                           3) grid level                                11.1
+ QS|                           4) grid level                                 3.7
+ QS| Grid level progression factor:                                          3.0
+ QS| Relative density cutoff [a.u.]:                                        15.0
+ QS| Consistent realspace mapping and integration 
+ QS| Interaction thresholds: eps_pgf_orb:                                1.0E-06
+ QS|                         eps_filter_matrix:                          0.0E+00
+ QS|                         eps_core_charge:                            1.0E-14
+ QS|                         eps_rho_gspace:                             1.0E-12
+ QS|                         eps_rho_rspace:                             1.0E-12
+ QS|                         eps_gvg_rspace:                             1.0E-06
+ QS|                         eps_ppl:                                    1.0E-02
+ QS|                         eps_ppnl:                                   1.0E-08
+
+
+ ATOMIC KIND INFORMATION
+
+  1. Atomic kind: O                                     Number of atoms:       2
+
+     Orbital Basis Set                                             DZVP-GTH-PADE
+
+       Number of orbital shell sets:                                           2
+       Number of orbital shells:                                               5
+       Number of primitive Cartesian functions:                                5
+       Number of Cartesian basis functions:                                   14
+       Number of spherical basis functions:                                   13
+       Norm type:                                                              2
+
+       Normalised Cartesian orbitals:
+
+                        Set   Shell   Orbital            Exponent    Coefficient
+
+                          1       1    2s                8.304404       0.526521
+                                                         2.457945      -0.055011
+                                                         0.759736      -0.404341
+                                                         0.213639      -0.086026
+
+                          1       2    3s                8.304404       0.000000
+                                                         2.457945       0.000000
+                                                         0.759736       0.000000
+                                                         0.213639       0.223960
+
+                          1       3    3px               8.304404      -2.000758
+                                                         2.457945      -1.321077
+                                                         0.759736      -0.480331
+                                                         0.213639      -0.078647
+                          1       3    3py               8.304404      -2.000758
+                                                         2.457945      -1.321077
+                                                         0.759736      -0.480331
+                                                         0.213639      -0.078647
+                          1       3    3pz               8.304404      -2.000758
+                                                         2.457945      -1.321077
+                                                         0.759736      -0.480331
+                                                         0.213639      -0.078647
+
+                          1       4    4px               8.304404       0.000000
+                                                         2.457945       0.000000
+                                                         0.759736       0.000000
+                                                         0.213639       0.207033
+                          1       4    4py               8.304404       0.000000
+                                                         2.457945       0.000000
+                                                         0.759736       0.000000
+                                                         0.213639       0.207033
+                          1       4    4pz               8.304404       0.000000
+                                                         2.457945       0.000000
+                                                         0.759736       0.000000
+                                                         0.213639       0.207033
+
+                          2       1    3dx2              0.800000       1.113825
+                          2       1    3dxy              0.800000       1.929201
+                          2       1    3dxz              0.800000       1.929201
+                          2       1    3dy2              0.800000       1.113825
+                          2       1    3dyz              0.800000       1.929201
+                          2       1    3dz2              0.800000       1.113825
+
+     Potential information for                                       GTH-PADE-q6
+
+       Description:                       Goedecker-Teter-Hutter pseudopotential
+                                           Goedecker et al., PRB 54, 1703 (1996)
+                                          Hartwigsen et al., PRB 58, 3641 (1998)
+                                                      Krack, TCA 114, 145 (2005)
+
+       Gaussian exponent of the core charge distribution:               8.154466
+       Electronic configuration (s p d ...):                               2   4
+
+       Parameters of the local part of the GTH pseudopotential:
+
+                          rloc        C1          C2          C3          C4
+                        0.247621  -16.580318    2.395701
+
+       Parameters of the non-local part of the GTH pseudopotential:
+
+                   l      r(l)      h(i,j,l)
+
+                   0    0.221786   18.266917
+                   1    0.256829
+
+  2. Atomic kind: H                                     Number of atoms:       4
+
+     Orbital Basis Set                                             DZVP-GTH-PADE
+
+       Number of orbital shell sets:                                           2
+       Number of orbital shells:                                               3
+       Number of primitive Cartesian functions:                                5
+       Number of Cartesian basis functions:                                    5
+       Number of spherical basis functions:                                    5
+       Norm type:                                                              2
+
+       Normalised Cartesian orbitals:
+
+                        Set   Shell   Orbital            Exponent    Coefficient
+
+                          1       1    1s                8.374435      -0.083834
+                                                         1.805868      -0.155208
+                                                         0.485253      -0.104875
+                                                         0.165824      -0.128813
+
+                          1       2    2s                8.374435       0.000000
+                                                         1.805868       0.000000
+                                                         0.485253       0.000000
+                                                         0.165824       0.185202
+
+                          2       1    2px               0.700000       0.912668
+                          2       1    2py               0.700000       0.912668
+                          2       1    2pz               0.700000       0.912668
+
+     Potential information for                                       GTH-PADE-q1
+
+       Description:                       Goedecker-Teter-Hutter pseudopotential
+                                           Goedecker et al., PRB 54, 1703 (1996)
+                                          Hartwigsen et al., PRB 58, 3641 (1998)
+                                                      Krack, TCA 114, 145 (2005)
+
+       Gaussian exponent of the core charge distribution:              12.500000
+       Electronic configuration (s p d ...):                                   1
+
+       Parameters of the local part of the GTH pseudopotential:
+
+                          rloc        C1          C2          C3          C4
+                        0.200000   -4.180237    0.725075
+
+
+ MOLECULE KIND INFORMATION
+
+
+ All atoms are their own molecule, skipping detailed information
+
+
+ TOTAL NUMBERS AND MAXIMUM NUMBERS
+
+  Total number of            - Atomic kinds:                                   2
+                             - Atoms:                                          6
+                             - Shell sets:                                    12
+                             - Shells:                                        22
+                             - Primitive Cartesian functions:                 30
+                             - Cartesian basis functions:                     48
+                             - Spherical basis functions:                     46
+
+  Maximum angular momentum of- Orbital basis functions:                        2
+                             - Local part of the GTH pseudopotential:          2
+                             - Non-local part of the GTH pseudopotential:      0
+
+
+ MODULE QUICKSTEP:  ATOMIC COORDINATES IN angstrom
+
+  Atom  Kind  Element       X           Y           Z          Z(eff)       Mass
+
+       1     1 O    8    2.280398    9.146539    5.088696      6.00      15.9994
+       2     1 O    8    1.251703    2.406261    7.769908      6.00      15.9994
+       3     2 H    1    1.762019    9.820429    5.528454      1.00       1.0079
+       4     2 H    1    3.095987    9.107088    5.588186      1.00       1.0079
+       5     2 H    1    0.554129    2.982634    8.082024      1.00       1.0079
+       6     2 H    1    1.771257    2.954779    7.182181      1.00       1.0079
+
+
+
+
+ SCF PARAMETERS         Density guess:                                    ATOMIC
+                        --------------------------------------------------------
+                        max_scf:                                              50
+                        max_scf_history:                                       0
+                        max_diis:                                              4
+                        --------------------------------------------------------
+                        eps_scf:                                        1.00E-05
+                        eps_scf_history:                                0.00E+00
+                        eps_diis:                                       1.00E-01
+                        eps_eigval:                                     1.00E-05
+                        --------------------------------------------------------
+                        level_shift [a.u.]:                                 0.00
+                        --------------------------------------------------------
+                        Mixing method:                           DIRECT_P_MIXING
+                        --------------------------------------------------------
+                        No outer SCF
+
+ PW_GRID| Information for grid number                                          1
+ PW_GRID| Cutoff [a.u.]                                                    100.0
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1            -45      44                Points:          90
+ PW_GRID|   Bounds   2            -45      44                Points:          90
+ PW_GRID|   Bounds   3            -45      44                Points:          90
+ PW_GRID| Volume element (a.u.^3)  0.8854E-02     Volume (a.u.^3)      6454.6933
+ PW_GRID| Grid span                                                    FULLSPACE
+
+ PW_GRID| Information for grid number                                          2
+ PW_GRID| Cutoff [a.u.]                                                     33.3
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1            -27      26                Points:          54
+ PW_GRID|   Bounds   2            -27      26                Points:          54
+ PW_GRID|   Bounds   3            -27      26                Points:          54
+ PW_GRID| Volume element (a.u.^3)  0.4099E-01     Volume (a.u.^3)      6454.6933
+ PW_GRID| Grid span                                                    FULLSPACE
+
+ PW_GRID| Information for grid number                                          3
+ PW_GRID| Cutoff [a.u.]                                                     11.1
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1            -13      13                Points:          27
+ PW_GRID|   Bounds   2            -13      13                Points:          27
+ PW_GRID|   Bounds   3            -13      13                Points:          27
+ PW_GRID| Volume element (a.u.^3)  0.3279         Volume (a.u.^3)      6454.6933
+ PW_GRID| Grid span                                                    FULLSPACE
+
+ PW_GRID| Information for grid number                                          4
+ PW_GRID| Cutoff [a.u.]                                                      3.7
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1             -9       8                Points:          18
+ PW_GRID|   Bounds   2             -9       8                Points:          18
+ PW_GRID|   Bounds   3             -9       8                Points:          18
+ PW_GRID| Volume element (a.u.^3)   1.107         Volume (a.u.^3)      6454.6933
+ PW_GRID| Grid span                                                    FULLSPACE
+
+ POISSON| Solver                                                        PERIODIC
+ POISSON| Periodicity                                                        XYZ
+
+ RS_GRID| Information for grid number                                          1
+ RS_GRID|   Bounds   1            -45      44                Points:          90
+ RS_GRID|   Bounds   2            -45      44                Points:          90
+ RS_GRID|   Bounds   3            -45      44                Points:          90
+
+ RS_GRID| Information for grid number                                          2
+ RS_GRID|   Bounds   1            -27      26                Points:          54
+ RS_GRID|   Bounds   2            -27      26                Points:          54
+ RS_GRID|   Bounds   3            -27      26                Points:          54
+
+ RS_GRID| Information for grid number                                          3
+ RS_GRID|   Bounds   1            -13      13                Points:          27
+ RS_GRID|   Bounds   2            -13      13                Points:          27
+ RS_GRID|   Bounds   3            -13      13                Points:          27
+
+ RS_GRID| Information for grid number                                          4
+ RS_GRID|   Bounds   1             -9       8                Points:          18
+ RS_GRID|   Bounds   2             -9       8                Points:          18
+ RS_GRID|   Bounds   3             -9       8                Points:          18
+
+ DISTRIBUTION OF THE PARTICLES (ROWS)
+              Process row      Number of particles         Number of matrix rows
+                        0                        6                            -1
+                      Sum                        6                            -1
+
+ DISTRIBUTION OF THE PARTICLES (COLUMNS)
+              Process col      Number of particles      Number of matrix columns
+                        0                        6                            -1
+                      Sum                        6                            -1
+
+ MD| Molecular Dynamics Protocol 
+ MD| Ensemble Type                                                           NVE
+ MD| Number of Time Steps                                                     10
+ MD| Time Step [fs]                                                         0.50
+ MD| Temperature [K]                                                      300.00
+ MD| Temperature tolerance [K]                                              0.00
+ MD| Print MD information every                                        1 step(s)
+ MD| File type     Print frequency[steps]                             File names
+ MD| Coordinates            1                                   H2O-32-pos-1.xyz
+ MD| Velocities             1                                   H2O-32-vel-1.xyz
+ MD| Energies               1                                      H2O-32-1.ener
+ MD| Dump                  20                                   H2O-32-1.restart
+
+ ROT| Rotational Analysis Info 
+ ROT| Principal axes and moments of inertia in atomic units:
+ ROT|                                1                 2                 3
+ ROT| EIGENVALUES            0.176891422E+05   0.311778776E+07   0.312664946E+07
+ ROT|      X                    -0.144517578       0.888853595       0.434803354
+ ROT|      Y                    -0.922146151      -0.280330864       0.266572848
+ ROT|      Z                     0.358833034      -0.362427777       0.860165658
+ ROT| Numer of Rotovibrational vectors:     6
+
+ Calculation of degrees of freedom
+                                                      Number of atoms:         6
+                                 Number of Intramolecular constraints:         0
+                                 Number of Intermolecular constraints:         0
+                                  Invariants(translation + rotations):         3
+                                                   Degrees of freedom:        15
+
+
+ Restraints Information
+                                  Number of Intramolecular restraints:         0
+                                  Number of Intermolecular restraints:         0
+ ************************** Velocities initialization **************************
+ Initial Temperature                                                    300.00 K
+ COM velocity:            0.000000000000     -0.000000000000     -0.000000000000
+ *******************************************************************************
+
+
+ DISTRIBUTION OF THE NEIGHBOR LISTS
+              Total number of particle pairs:                                 42
+              Total number of matrix elements:                              2410
+              Average number of particle pairs:                               42
+              Maximum number of particle pairs:                               42
+              Average number of matrix element:                             2410
+              Maximum number of matrix elements:                            2410
+
+
+ DISTRIBUTION OF THE OVERLAP MATRIX
+              Number  of non-zero blocks:                                     21
+              Percentage non-zero blocks:                                 100.00
+              Average number of blocks per CPU:                               21
+              Maximum number of blocks per CPU:                               21
+              Average number of matrix elements per CPU:                    1287
+              Maximum number of matrix elements per CPU:                    1287
+
+ Number of electrons:                                                         16
+ Number of occupied orbitals:                                                  8
+ Number of molecular orbitals:                                                 8
+
+ Number of orbital functions:                                                 46
+ Number of independent orbital functions:                                     46
+
+ Extrapolation method: initial_guess
+
+ Atomic guess: The first density matrix is obtained in terms of atomic orbitals
+               and electronic configurations assigned to each atomic kind
+
+ Guess for atomic kind: O
+
+ Electronic structure
+    Total number of core electrons                                          2.00
+    Total number of valence electrons                                       6.00
+    Total number of electrons                                               8.00
+    Multiplicity                                                   not specified
+    S   [  2.00] 2.00
+    P      4.00
+
+
+ *******************************************************************************
+                  Iteration          Convergence                     Energy [au]
+ *******************************************************************************
+                          1         1.68085                     -14.857481728656
+                          2         2.15642                     -14.936142370053
+                          3        0.890654E-01                 -15.701381433081
+                          4        0.300038E-02                 -15.702655347039
+                          5        0.124050E-02                 -15.702656532555
+                          6        0.771851E-03                 -15.702656682204
+                          7        0.254544E-04                 -15.702656776553
+                          8        0.154783E-06                 -15.702656776662
+
+ Energy components [Hartree]           Total Energy ::          -15.702656776662
+                                        Band Energy ::           -2.982159100248
+                                     Kinetic Energy ::           11.942300538966
+                                   Potential Energy ::          -27.644957315628
+                                      Virial (-V/T) ::            2.314877039430
+                                        Core Energy ::          -26.240316547129
+                                          XC Energy ::           -3.168822356033
+                                     Coulomb Energy ::           13.706482126500
+                       Total Pseudopotential Energy ::          -38.217120617695
+                       Local Pseudopotential Energy ::          -39.522374145046
+                    Nonlocal Pseudopotential Energy ::            1.305253527351
+                                        Confinement ::            0.345035316001
+
+ Orbital energies  State     L     Occupation   Energy[a.u.]          Energy[eV]
+
+                       1     0          2.000      -0.854038          -23.239548
+
+                       1     1          4.000      -0.318521           -8.667395
+
+
+ Guess for atomic kind: H
+
+ Electronic structure
+    Total number of core electrons                                          0.00
+    Total number of valence electrons                                       1.00
+    Total number of electrons                                               1.00
+    Multiplicity                                                   not specified
+    S      1.00
+
+
+ *******************************************************************************
+                  Iteration          Convergence                     Energy [au]
+ *******************************************************************************
+                          1        0.316011E-02                  -0.422390558413
+                          2        0.333152E-03                  -0.422399635530
+                          3        0.114302E-06                  -0.422399737491
+
+ Energy components [Hartree]           Total Energy ::           -0.422399737491
+                                        Band Energy ::           -0.193019372217
+                                     Kinetic Energy ::            0.475009752129
+                                   Potential Energy ::           -0.897409489620
+                                      Virial (-V/T) ::            1.889244348347
+                                        Core Energy ::           -0.478923189740
+                                          XC Energy ::           -0.248206713182
+                                     Coulomb Energy ::            0.304730165431
+                       Total Pseudopotential Energy ::           -0.971460622099
+                       Local Pseudopotential Energy ::           -0.971460622099
+                    Nonlocal Pseudopotential Energy ::            0.000000000000
+                                        Confinement ::            0.175276802303
+
+ Orbital energies  State     L     Occupation   Energy[a.u.]          Energy[eV]
+
+                       1     0          1.000      -0.193019           -5.252324
+
+ Re-scaling the density matrix to get the right number of electrons
+                  # Electrons              Trace(P)               Scaling factor
+                           16                16.000                        1.000
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002170       -0.0000002170
+  Core density on regular grids:               16.0000000534        0.0000000534
+  Total charge density on r-space grids:       -0.0000001637
+  Total charge density g-space grids:          -0.0000001637
+
+     1 P_Mix/Diag. 0.40E+00    0.2     1.05352258       -34.0188901133 -3.40E+01
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002783       -0.0000002783
+  Core density on regular grids:               16.0000000534        0.0000000534
+  Total charge density on r-space grids:       -0.0000002249
+  Total charge density g-space grids:          -0.0000002249
+
+     2 P_Mix/Diag. 0.40E+00    0.3     0.62083394       -34.1458289065 -1.27E-01
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002918       -0.0000002918
+  Core density on regular grids:               16.0000000534        0.0000000534
+  Total charge density on r-space grids:       -0.0000002385
+  Total charge density g-space grids:          -0.0000002385
+
+     3 P_Mix/Diag. 0.40E+00    0.3     0.37286315       -34.2212938321 -7.55E-02
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000003015       -0.0000003015
+  Core density on regular grids:               16.0000000534        0.0000000534
+  Total charge density on r-space grids:       -0.0000002482
+  Total charge density g-space grids:          -0.0000002482
+
+     4 P_Mix/Diag. 0.40E+00    0.3     0.22179103       -34.2654647104 -4.42E-02
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000003071       -0.0000003071
+  Core density on regular grids:               16.0000000534        0.0000000534
+  Total charge density on r-space grids:       -0.0000002537
+  Total charge density g-space grids:          -0.0000002537
+
+     5 P_Mix/Diag. 0.40E+00    0.3     0.13209640       -34.2916072186 -2.61E-02
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000003104       -0.0000003104
+  Core density on regular grids:               16.0000000534        0.0000000534
+  Total charge density on r-space grids:       -0.0000002571
+  Total charge density g-space grids:          -0.0000002571
+
+     6 P_Mix/Diag. 0.40E+00    0.3     0.07865708       -34.3071779376 -1.56E-02
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000003124       -0.0000003124
+  Core density on regular grids:               16.0000000534        0.0000000534
+  Total charge density on r-space grids:       -0.0000002590
+  Total charge density g-space grids:          -0.0000002590
+
+     7 DIIS/Diag.  0.72E-03    0.3     0.04636610       -34.3164833578 -9.31E-03
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000003151       -0.0000003151
+  Core density on regular grids:               16.0000000534        0.0000000534
+  Total charge density on r-space grids:       -0.0000002618
+  Total charge density g-space grids:          -0.0000002618
+
+     8 DIIS/Diag.  0.20E-04    0.3     0.00009762       -34.3303964698 -1.39E-02
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000003152       -0.0000003152
+  Core density on regular grids:               16.0000000534        0.0000000534
+  Total charge density on r-space grids:       -0.0000002618
+  Total charge density g-space grids:          -0.0000002618
+
+     9 DIIS/Diag.  0.49E-05    0.3     0.00001488       -34.3303964709 -1.14E-09
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000003151       -0.0000003151
+  Core density on regular grids:               16.0000000534        0.0000000534
+  Total charge density on r-space grids:       -0.0000002618
+  Total charge density g-space grids:          -0.0000002618
+
+    10 DIIS/Diag.  0.52E-05    0.3     0.00000662       -34.3303964709 -1.92E-11
+
+  *** SCF run converged in    10 steps ***
+
+
+  Electronic density on regular grids:        -16.0000003151       -0.0000003151
+  Core density on regular grids:               16.0000000534        0.0000000534
+  Total charge density on r-space grids:       -0.0000002618
+  Total charge density g-space grids:          -0.0000002618
+
+  Overlap energy of the core charge distribution:               0.00000017581306
+  Self energy of the core charge distribution:                -87.66578109182967
+  Core Hamiltonian energy:                                     25.75907029299670
+  Hartree energy:                                              35.86422520296517
+  Exchange-correlation energy:                                 -8.28791105089043
+
+  Total energy:                                               -34.33039647094518
+
+
+ MULLIKEN POPULATION ANALYSIS
+
+ #  Atom  Element  Kind  Atomic population                Net charge
+       1     O        1          6.632241                 -0.632241
+       2     O        1          6.631909                 -0.631909
+       3     H        2          0.683116                  0.316884
+       4     H        2          0.688086                  0.311914
+       5     H        2          0.680282                  0.319718
+       6     H        2          0.684365                  0.315635
+ # Total charge                 16.000000                  0.000000
+
+
+ !-----------------------------------------------------------------------------!
+                           Hirschfeld Charges
+
+  #Atom  Element  Kind  Ref Charge     Population                     Net charge
+      1       O      1       6.000          6.553                         -0.553
+      2       O      1       6.000          6.549                         -0.549
+      3       H      2       1.000          0.726                          0.274
+      4       H      2       1.000          0.726                          0.274
+      5       H      2       1.000          0.722                          0.278
+      6       H      2       1.000          0.724                          0.276
+
+  Total Charge                                                             0.000
+ !-----------------------------------------------------------------------------!
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000003152       -0.0000003152
+  Core density on regular grids:               16.0000000534        0.0000000534
+  Total charge density on r-space grids:       -0.0000002618
+  Total charge density g-space grids:          -0.0000002618
+
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):              -34.330396470966519
+
+
+ MD_ENERGIES| Initialization proceeding
+
+
+ ******************************** GO CP2K GO! **********************************
+ INITIAL POTENTIAL ENERGY[hartree]     =                     -0.343303964710E+02
+ INITIAL KINETIC ENERGY[hartree]       =                      0.712533452240E-02
+ INITIAL TEMPERATURE[K]                =                                 300.000
+ INITIAL VOLUME[bohr^3]                =                      0.645469325907E+04
+ INITIAL CELL LNTHS[bohr]   =      0.1861909E+02   0.1861909E+02   0.1861909E+02
+ INITIAL CELL ANGLS[deg]    =      0.9000000E+02   0.9000000E+02   0.9000000E+02
+ ******************************** GO CP2K GO! **********************************
+
+ DISTRIBUTION OF THE NEIGHBOR LISTS
+              Total number of particle pairs:                                 42
+              Total number of matrix elements:                              2410
+              Average number of particle pairs:                               42
+              Maximum number of particle pairs:                               42
+              Average number of matrix element:                             2410
+              Maximum number of matrix elements:                            2410
+
+
+ DISTRIBUTION OF THE OVERLAP MATRIX
+              Number  of non-zero blocks:                                     21
+              Percentage non-zero blocks:                                 100.00
+              Average number of blocks per CPU:                               21
+              Maximum number of blocks per CPU:                               21
+              Average number of matrix elements per CPU:                    1287
+              Maximum number of matrix elements per CPU:                    1287
+
+ Number of electrons:                                                         16
+ Number of occupied orbitals:                                                  8
+ Number of molecular orbitals:                                                 8
+
+ Number of orbital functions:                                                 46
+ Number of independent orbital functions:                                     46
+
+ Extrapolation method: PS Nth order
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002766       -0.0000002766
+  Core density on regular grids:               16.0000000516        0.0000000516
+  Total charge density on r-space grids:       -0.0000002250
+  Total charge density g-space grids:          -0.0000002250
+
+     1 P_Mix/Diag. 0.40E+00    0.2     0.02774880       -34.3296113933 -3.43E+01
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002734       -0.0000002734
+  Core density on regular grids:               16.0000000516        0.0000000516
+  Total charge density on r-space grids:       -0.0000002218
+  Total charge density g-space grids:          -0.0000002218
+
+     2 P_Mix/Diag. 0.40E+00    0.3     0.01951991       -34.3296787431 -6.73E-05
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002744       -0.0000002744
+  Core density on regular grids:               16.0000000516        0.0000000516
+  Total charge density on r-space grids:       -0.0000002228
+  Total charge density g-space grids:          -0.0000002228
+
+     3 DIIS/Diag.  0.49E-03    0.3     0.01031306       -34.3297192958 -4.06E-05
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002751       -0.0000002751
+  Core density on regular grids:               16.0000000516        0.0000000516
+  Total charge density on r-space grids:       -0.0000002235
+  Total charge density g-space grids:          -0.0000002235
+
+     4 DIIS/Diag.  0.53E-03    0.3     0.00066613       -34.3297788448 -5.95E-05
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002751       -0.0000002751
+  Core density on regular grids:               16.0000000516        0.0000000516
+  Total charge density on r-space grids:       -0.0000002235
+  Total charge density g-space grids:          -0.0000002235
+
+     5 DIIS/Diag.  0.98E-03    0.3     0.00064127       -34.3297784568  3.88E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002751       -0.0000002751
+  Core density on regular grids:               16.0000000516        0.0000000516
+  Total charge density on r-space grids:       -0.0000002235
+  Total charge density g-space grids:          -0.0000002235
+
+     6 DIIS/Diag.  0.54E-03    0.3     0.00079721       -34.3297788111 -3.54E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002752       -0.0000002752
+  Core density on regular grids:               16.0000000516        0.0000000516
+  Total charge density on r-space grids:       -0.0000002236
+  Total charge density g-space grids:          -0.0000002236
+
+     7 DIIS/Diag.  0.15E-04    0.3     0.00001586       -34.3297789923 -1.81E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002752       -0.0000002752
+  Core density on regular grids:               16.0000000516        0.0000000516
+  Total charge density on r-space grids:       -0.0000002236
+  Total charge density g-space grids:          -0.0000002236
+
+     8 DIIS/Diag.  0.28E-05    0.3     0.00000552       -34.3297789925 -1.72E-10
+
+  *** SCF run converged in     8 steps ***
+
+
+  Electronic density on regular grids:        -16.0000002752       -0.0000002752
+  Core density on regular grids:               16.0000000516        0.0000000516
+  Total charge density on r-space grids:       -0.0000002236
+  Total charge density g-space grids:          -0.0000002236
+
+  Overlap energy of the core charge distribution:               0.00000019249220
+  Self energy of the core charge distribution:                -87.66578109182967
+  Core Hamiltonian energy:                                     25.76511274578137
+  Hartree energy:                                              35.86024116760368
+  Exchange-correlation energy:                                 -8.28935200655925
+
+  Total energy:                                               -34.32977899251168
+
+
+ MULLIKEN POPULATION ANALYSIS
+
+ #  Atom  Element  Kind  Atomic population                Net charge
+       1     O        1          6.635017                 -0.635017
+       2     O        1          6.631140                 -0.631140
+       3     H        2          0.681075                  0.318925
+       4     H        2          0.687237                  0.312763
+       5     H        2          0.680777                  0.319223
+       6     H        2          0.684755                  0.315245
+ # Total charge                 16.000000                  0.000000
+
+
+ !-----------------------------------------------------------------------------!
+                           Hirschfeld Charges
+
+  #Atom  Element  Kind  Ref Charge     Population                     Net charge
+      1       O      1       6.000          6.556                         -0.556
+      2       O      1       6.000          6.547                         -0.547
+      3       H      2       1.000          0.727                          0.273
+      4       H      2       1.000          0.722                          0.278
+      5       H      2       1.000          0.723                          0.277
+      6       H      2       1.000          0.725                          0.275
+
+  Total Charge                                                             0.000
+ !-----------------------------------------------------------------------------!
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002752       -0.0000002752
+  Core density on regular grids:               16.0000000516        0.0000000516
+  Total charge density on r-space grids:       -0.0000002236
+  Total charge density g-space grids:          -0.0000002236
+
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):              -34.329778992517717
+
+
+ Centre of mass motion (COM):                            x =        0.0000001465
+                                                         y =        0.0000001396
+                                                         z =       -0.0000001680
+
+ *******************************************************************************
+ ENSEMBLE TYPE                =                                              NVE
+ STEP NUMBER                  =                                                1
+ TIME [fs]                    =                                         0.500000
+ CONSERVED QUANTITY [hartree] =                              -0.343232456449E+02
+
+                                              INSTANTANEOUS             AVERAGES
+ CPU TIME [s]                 =                        5.60                 5.60
+ ENERGY DRIFT PER ATOM [K]    =          0.134159668266E+01   0.000000000000E+00
+ POTENTIAL ENERGY[hartree]    =         -0.343297789925E+02  -0.343297789925E+02
+ KINETIC ENERGY [hartree]     =          0.653334760734E-02   0.653334760734E-02
+ TEMPERATURE [K]              =                     275.075              275.075
+ *******************************************************************************
+
+
+ DISTRIBUTION OF THE NEIGHBOR LISTS
+              Total number of particle pairs:                                 43
+              Total number of matrix elements:                              2475
+              Average number of particle pairs:                               43
+              Maximum number of particle pairs:                               43
+              Average number of matrix element:                             2475
+              Maximum number of matrix elements:                            2475
+
+
+ DISTRIBUTION OF THE OVERLAP MATRIX
+              Number  of non-zero blocks:                                     21
+              Percentage non-zero blocks:                                 100.00
+              Average number of blocks per CPU:                               21
+              Maximum number of blocks per CPU:                               21
+              Average number of matrix elements per CPU:                    1287
+              Maximum number of matrix elements per CPU:                    1287
+
+ Number of electrons:                                                         16
+ Number of occupied orbitals:                                                  8
+ Number of molecular orbitals:                                                 8
+
+ Number of orbital functions:                                                 46
+ Number of independent orbital functions:                                     46
+
+ Extrapolation method: PS Nth order
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002333       -0.0000002333
+  Core density on regular grids:               16.0000000488        0.0000000488
+  Total charge density on r-space grids:       -0.0000001844
+  Total charge density g-space grids:          -0.0000001844
+
+     1 P_Mix/Diag. 0.40E+00    0.2     0.00659104       -34.3287800283 -3.43E+01
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002336       -0.0000002336
+  Core density on regular grids:               16.0000000488        0.0000000488
+  Total charge density on r-space grids:       -0.0000001848
+  Total charge density g-space grids:          -0.0000001848
+
+     2 P_Mix/Diag. 0.40E+00    0.3     0.00501583       -34.3287842906 -4.26E-06
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002335       -0.0000002335
+  Core density on regular grids:               16.0000000488        0.0000000488
+  Total charge density on r-space grids:       -0.0000001847
+  Total charge density g-space grids:          -0.0000001847
+
+     3 DIIS/Diag.  0.21E-03    0.3     0.00258674       -34.3287868703 -2.58E-06
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002334       -0.0000002334
+  Core density on regular grids:               16.0000000488        0.0000000488
+  Total charge density on r-space grids:       -0.0000001846
+  Total charge density g-space grids:          -0.0000001846
+
+     4 DIIS/Diag.  0.19E-03    0.3     0.00030267       -34.3287906412 -3.77E-06
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002334       -0.0000002334
+  Core density on regular grids:               16.0000000488        0.0000000488
+  Total charge density on r-space grids:       -0.0000001846
+  Total charge density g-space grids:          -0.0000001846
+
+     5 DIIS/Diag.  0.48E-03    0.3     0.00029891       -34.3287905806  6.06E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002334       -0.0000002334
+  Core density on regular grids:               16.0000000488        0.0000000488
+  Total charge density on r-space grids:       -0.0000001846
+  Total charge density g-space grids:          -0.0000001846
+
+     6 DIIS/Diag.  0.23E-03    0.3     0.00022635       -34.3287906377 -5.71E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002334       -0.0000002334
+  Core density on regular grids:               16.0000000488        0.0000000488
+  Total charge density on r-space grids:       -0.0000001846
+  Total charge density g-space grids:          -0.0000001846
+
+     7 DIIS/Diag.  0.59E-05    0.3     0.00000475       -34.3287906527 -1.50E-08
+
+  *** SCF run converged in     7 steps ***
+
+
+  Electronic density on regular grids:        -16.0000002334       -0.0000002334
+  Core density on regular grids:               16.0000000488        0.0000000488
+  Total charge density on r-space grids:       -0.0000001846
+  Total charge density g-space grids:          -0.0000001846
+
+  Overlap energy of the core charge distribution:               0.00000020623838
+  Self energy of the core charge distribution:                -87.66578109182967
+  Core Hamiltonian energy:                                     25.75507690270124
+  Hartree energy:                                              35.86807754887056
+  Exchange-correlation energy:                                 -8.28616421871344
+
+  Total energy:                                               -34.32879065273292
+
+
+ MULLIKEN POPULATION ANALYSIS
+
+ #  Atom  Element  Kind  Atomic population                Net charge
+       1     O        1          6.637717                 -0.637717
+       2     O        1          6.630730                 -0.630730
+       3     H        2          0.679065                  0.320935
+       4     H        2          0.686456                  0.313544
+       5     H        2          0.681086                  0.318914
+       6     H        2          0.684946                  0.315054
+ # Total charge                 16.000000                  0.000000
+
+
+ !-----------------------------------------------------------------------------!
+                           Hirschfeld Charges
+
+  #Atom  Element  Kind  Ref Charge     Population                     Net charge
+      1       O      1       6.000          6.559                         -0.559
+      2       O      1       6.000          6.546                         -0.546
+      3       H      2       1.000          0.727                          0.273
+      4       H      2       1.000          0.719                          0.281
+      5       H      2       1.000          0.725                          0.275
+      6       H      2       1.000          0.725                          0.275
+
+  Total Charge                                                             0.000
+ !-----------------------------------------------------------------------------!
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000002334       -0.0000002334
+  Core density on regular grids:               16.0000000488        0.0000000488
+  Total charge density on r-space grids:       -0.0000001846
+  Total charge density g-space grids:          -0.0000001846
+
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):              -34.328790652750705
+
+
+ Centre of mass motion (COM):                            x =        0.0000000879
+                                                         y =        0.0000001530
+                                                         z =       -0.0000002060
+
+ *******************************************************************************
+ ENSEMBLE TYPE                =                                              NVE
+ STEP NUMBER                  =                                                2
+ TIME [fs]                    =                                         1.000000
+ CONSERVED QUANTITY [hartree] =                              -0.343232069643E+02
+
+                                              INSTANTANEOUS             AVERAGES
+ CPU TIME [s]                 =                        2.15                 3.87
+ ENERGY DRIFT PER ATOM [K]    =          0.337732155597E+01   0.168866077799E+01
+ POTENTIAL ENERGY[hartree]    =         -0.343287906528E+02  -0.343292848226E+02
+ KINETIC ENERGY [hartree]     =          0.558368842891E-02   0.605851801813E-02
+ TEMPERATURE [K]              =                     235.092              255.084
+ *******************************************************************************
+
+
+ DISTRIBUTION OF THE NEIGHBOR LISTS
+              Total number of particle pairs:                                 43
+              Total number of matrix elements:                              2475
+              Average number of particle pairs:                               43
+              Maximum number of particle pairs:                               43
+              Average number of matrix element:                             2475
+              Maximum number of matrix elements:                            2475
+
+
+ DISTRIBUTION OF THE OVERLAP MATRIX
+              Number  of non-zero blocks:                                     21
+              Percentage non-zero blocks:                                 100.00
+              Average number of blocks per CPU:                               21
+              Maximum number of blocks per CPU:                               21
+              Average number of matrix elements per CPU:                    1287
+              Maximum number of matrix elements per CPU:                    1287
+
+ Number of electrons:                                                         16
+ Number of occupied orbitals:                                                  8
+ Number of molecular orbitals:                                                 8
+
+ Number of orbital functions:                                                 46
+ Number of independent orbital functions:                                     46
+
+ Extrapolation method: PS Nth order
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001880       -0.0000001880
+  Core density on regular grids:               16.0000000420        0.0000000420
+  Total charge density on r-space grids:       -0.0000001460
+  Total charge density g-space grids:          -0.0000001460
+
+     1 P_Mix/Diag. 0.40E+00    0.2     0.00332546       -34.3279972475 -3.43E+01
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001884       -0.0000001884
+  Core density on regular grids:               16.0000000420        0.0000000420
+  Total charge density on r-space grids:       -0.0000001464
+  Total charge density g-space grids:          -0.0000001464
+
+     2 P_Mix/Diag. 0.40E+00    0.3     0.00240315       -34.3279979326 -6.85E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001883       -0.0000001883
+  Core density on regular grids:               16.0000000420        0.0000000420
+  Total charge density on r-space grids:       -0.0000001463
+  Total charge density g-space grids:          -0.0000001463
+
+     3 DIIS/Diag.  0.62E-04    0.3     0.00124895       -34.3279983557 -4.23E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001882       -0.0000001882
+  Core density on regular grids:               16.0000000420        0.0000000420
+  Total charge density on r-space grids:       -0.0000001462
+  Total charge density g-space grids:          -0.0000001462
+
+     4 DIIS/Diag.  0.59E-04    0.3     0.00004296       -34.3279989764 -6.21E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001882       -0.0000001882
+  Core density on regular grids:               16.0000000420        0.0000000420
+  Total charge density on r-space grids:       -0.0000001462
+  Total charge density g-space grids:          -0.0000001462
+
+     5 DIIS/Diag.  0.88E-04    0.3     0.00008885       -34.3279989742  2.24E-09
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001882       -0.0000001882
+  Core density on regular grids:               16.0000000420        0.0000000420
+  Total charge density on r-space grids:       -0.0000001462
+  Total charge density g-space grids:          -0.0000001462
+
+     6 DIIS/Diag.  0.29E-04    0.3     0.00003858       -34.3279989776 -3.38E-09
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001882       -0.0000001882
+  Core density on regular grids:               16.0000000420        0.0000000420
+  Total charge density on r-space grids:       -0.0000001462
+  Total charge density g-space grids:          -0.0000001462
+
+     7 DIIS/Diag.  0.37E-05    0.3     0.00000381       -34.3279989781 -5.34E-10
+
+  *** SCF run converged in     7 steps ***
+
+
+  Electronic density on regular grids:        -16.0000001882       -0.0000001882
+  Core density on regular grids:               16.0000000420        0.0000000420
+  Total charge density on r-space grids:       -0.0000001462
+  Total charge density g-space grids:          -0.0000001462
+
+  Overlap energy of the core charge distribution:               0.00000020003836
+  Self energy of the core charge distribution:                -87.66578109182967
+  Core Hamiltonian energy:                                     25.72887667508554
+  Hartree energy:                                              35.88737086277405
+  Exchange-correlation energy:                                 -8.27846562416591
+
+  Total energy:                                               -34.32799897809764
+
+
+ MULLIKEN POPULATION ANALYSIS
+
+ #  Atom  Element  Kind  Atomic population                Net charge
+       1     O        1          6.640245                 -0.640245
+       2     O        1          6.631005                 -0.631005
+       3     H        2          0.677218                  0.322782
+       4     H        2          0.685709                  0.314291
+       5     H        2          0.681014                  0.318986
+       6     H        2          0.684809                  0.315191
+ # Total charge                 16.000000                  0.000000
+
+
+ !-----------------------------------------------------------------------------!
+                           Hirschfeld Charges
+
+  #Atom  Element  Kind  Ref Charge     Population                     Net charge
+      1       O      1       6.000          6.562                         -0.562
+      2       O      1       6.000          6.546                         -0.546
+      3       H      2       1.000          0.726                          0.274
+      4       H      2       1.000          0.717                          0.283
+      5       H      2       1.000          0.725                          0.275
+      6       H      2       1.000          0.725                          0.275
+
+  Total Charge                                                             0.000
+ !-----------------------------------------------------------------------------!
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001882       -0.0000001882
+  Core density on regular grids:               16.0000000420        0.0000000420
+  Total charge density on r-space grids:       -0.0000001462
+  Total charge density g-space grids:          -0.0000001462
+
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):              -34.327998978110351
+
+
+ Centre of mass motion (COM):                            x =       -0.0000002613
+                                                         y =        0.0000000452
+                                                         z =       -0.0000000838
+
+ *******************************************************************************
+ ENSEMBLE TYPE                =                                              NVE
+ STEP NUMBER                  =                                                3
+ TIME [fs]                    =                                         1.500000
+ CONSERVED QUANTITY [hartree] =                              -0.343231833800E+02
+
+                                              INSTANTANEOUS             AVERAGES
+ CPU TIME [s]                 =                        2.18                 3.31
+ ENERGY DRIFT PER ATOM [K]    =          0.461854413432E+01   0.266528856343E+01
+ POTENTIAL ENERGY[hartree]    =         -0.343279989781E+02  -0.343288562078E+02
+ KINETIC ENERGY [hartree]     =          0.481559812479E-02   0.564421138702E-02
+ TEMPERATURE [K]              =                     202.753              237.640
+ *******************************************************************************
+
+
+ DISTRIBUTION OF THE NEIGHBOR LISTS
+              Total number of particle pairs:                                 43
+              Total number of matrix elements:                              2475
+              Average number of particle pairs:                               43
+              Maximum number of particle pairs:                               43
+              Average number of matrix element:                             2475
+              Maximum number of matrix elements:                            2475
+
+
+ DISTRIBUTION OF THE OVERLAP MATRIX
+              Number  of non-zero blocks:                                     21
+              Percentage non-zero blocks:                                 100.00
+              Average number of blocks per CPU:                               21
+              Maximum number of blocks per CPU:                               21
+              Average number of matrix elements per CPU:                    1287
+              Maximum number of matrix elements per CPU:                    1287
+
+ Number of electrons:                                                         16
+ Number of occupied orbitals:                                                  8
+ Number of molecular orbitals:                                                 8
+
+ Number of orbital functions:                                                 46
+ Number of independent orbital functions:                                     46
+
+ Extrapolation method: PS Nth order
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001388       -0.0000001388
+  Core density on regular grids:               16.0000000241        0.0000000241
+  Total charge density on r-space grids:       -0.0000001147
+  Total charge density g-space grids:          -0.0000001147
+
+     1 P_Mix/Diag. 0.40E+00    0.2     0.00128263       -34.3277537893 -3.43E+01
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001386       -0.0000001386
+  Core density on regular grids:               16.0000000241        0.0000000241
+  Total charge density on r-space grids:       -0.0000001145
+  Total charge density g-space grids:          -0.0000001145
+
+     2 P_Mix/Diag. 0.40E+00    0.3     0.00110377       -34.3277539868 -1.98E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001387       -0.0000001387
+  Core density on regular grids:               16.0000000241        0.0000000241
+  Total charge density on r-space grids:       -0.0000001146
+  Total charge density g-space grids:          -0.0000001146
+
+     3 DIIS/Diag.  0.42E-04    0.3     0.00056487       -34.3277541096 -1.23E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001387       -0.0000001387
+  Core density on regular grids:               16.0000000241        0.0000000241
+  Total charge density on r-space grids:       -0.0000001147
+  Total charge density g-space grids:          -0.0000001147
+
+     4 DIIS/Diag.  0.35E-04    0.3     0.00007055       -34.3277542899 -1.80E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001387       -0.0000001387
+  Core density on regular grids:               16.0000000241        0.0000000241
+  Total charge density on r-space grids:       -0.0000001147
+  Total charge density g-space grids:          -0.0000001147
+
+     5 DIIS/Diag.  0.97E-04    0.3     0.00008362       -34.3277542872  2.72E-09
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001387       -0.0000001387
+  Core density on regular grids:               16.0000000241        0.0000000241
+  Total charge density on r-space grids:       -0.0000001147
+  Total charge density g-space grids:          -0.0000001147
+
+     6 DIIS/Diag.  0.30E-04    0.3     0.00003299       -34.3277542901 -2.88E-09
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001387       -0.0000001387
+  Core density on regular grids:               16.0000000241        0.0000000241
+  Total charge density on r-space grids:       -0.0000001147
+  Total charge density g-space grids:          -0.0000001147
+
+     7 DIIS/Diag.  0.26E-05    0.3     0.00000185       -34.3277542904 -2.89E-10
+
+  *** SCF run converged in     7 steps ***
+
+
+  Electronic density on regular grids:        -16.0000001387       -0.0000001387
+  Core density on regular grids:               16.0000000241        0.0000000241
+  Total charge density on r-space grids:       -0.0000001147
+  Total charge density g-space grids:          -0.0000001147
+
+  Overlap energy of the core charge distribution:               0.00000016963001
+  Self energy of the core charge distribution:                -87.66578109182967
+  Core Hamiltonian energy:                                     25.68911260163325
+  Hartree energy:                                              35.91597679859386
+  Exchange-correlation energy:                                 -8.26706276841986
+
+  Total energy:                                               -34.32775429039241
+
+
+ MULLIKEN POPULATION ANALYSIS
+
+ #  Atom  Element  Kind  Atomic population                Net charge
+       1     O        1          6.642547                 -0.642547
+       2     O        1          6.632027                 -0.632027
+       3     H        2          0.675642                  0.324358
+       4     H        2          0.684937                  0.315063
+       5     H        2          0.680513                  0.319487
+       6     H        2          0.684334                  0.315666
+ # Total charge                 16.000000                  0.000000
+
+
+ !-----------------------------------------------------------------------------!
+                           Hirschfeld Charges
+
+  #Atom  Element  Kind  Ref Charge     Population                     Net charge
+      1       O      1       6.000          6.565                         -0.565
+      2       O      1       6.000          6.547                         -0.547
+      3       H      2       1.000          0.725                          0.275
+      4       H      2       1.000          0.715                          0.285
+      5       H      2       1.000          0.724                          0.276
+      6       H      2       1.000          0.724                          0.276
+
+  Total Charge                                                             0.000
+ !-----------------------------------------------------------------------------!
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000001387       -0.0000001387
+  Core density on regular grids:               16.0000000241        0.0000000241
+  Total charge density on r-space grids:       -0.0000001147
+  Total charge density g-space grids:          -0.0000001147
+
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):              -34.327754290395617
+
+
+ Centre of mass motion (COM):                            x =       -0.0000008538
+                                                         y =       -0.0000001424
+                                                         z =        0.0000002004
+
+ *******************************************************************************
+ ENSEMBLE TYPE                =                                              NVE
+ STEP NUMBER                  =                                                4
+ TIME [fs]                    =                                         2.000000
+ CONSERVED QUANTITY [hartree] =                              -0.343231877469E+02
+
+                                              INSTANTANEOUS             AVERAGES
+ CPU TIME [s]                 =                        2.15                 3.02
+ ENERGY DRIFT PER ATOM [K]    =          0.438871760285E+01   0.309614582329E+01
+ POTENTIAL ENERGY[hartree]    =         -0.343277542904E+02  -0.343285807284E+02
+ KINETIC ENERGY [hartree]     =          0.456654350095E-02   0.537479441550E-02
+ TEMPERATURE [K]              =                     192.266              226.297
+ *******************************************************************************
+
+
+ DISTRIBUTION OF THE NEIGHBOR LISTS
+              Total number of particle pairs:                                 43
+              Total number of matrix elements:                              2475
+              Average number of particle pairs:                               43
+              Maximum number of particle pairs:                               43
+              Average number of matrix element:                             2475
+              Maximum number of matrix elements:                            2475
+
+
+ DISTRIBUTION OF THE OVERLAP MATRIX
+              Number  of non-zero blocks:                                     21
+              Percentage non-zero blocks:                                 100.00
+              Average number of blocks per CPU:                               21
+              Maximum number of blocks per CPU:                               21
+              Average number of matrix elements per CPU:                    1287
+              Maximum number of matrix elements per CPU:                    1287
+
+ Number of electrons:                                                         16
+ Number of occupied orbitals:                                                  8
+ Number of molecular orbitals:                                                 8
+
+ Number of orbital functions:                                                 46
+ Number of independent orbital functions:                                     46
+
+ Extrapolation method: PS Nth order
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000862       -0.0000000862
+  Core density on regular grids:               15.9999999978       -0.0000000022
+  Total charge density on r-space grids:       -0.0000000885
+  Total charge density g-space grids:          -0.0000000885
+
+     1 P_Mix/Diag. 0.40E+00    0.2     0.00145705       -34.3279973504 -3.43E+01
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000860       -0.0000000860
+  Core density on regular grids:               15.9999999978       -0.0000000022
+  Total charge density on r-space grids:       -0.0000000882
+  Total charge density g-space grids:          -0.0000000882
+
+     2 P_Mix/Diag. 0.40E+00    0.3     0.00127793       -34.3279975608 -2.10E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000860       -0.0000000860
+  Core density on regular grids:               15.9999999978       -0.0000000022
+  Total charge density on r-space grids:       -0.0000000883
+  Total charge density g-space grids:          -0.0000000883
+
+     3 DIIS/Diag.  0.46E-04    0.3     0.00065443       -34.3279976937 -1.33E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000861       -0.0000000861
+  Core density on regular grids:               15.9999999978       -0.0000000022
+  Total charge density on r-space grids:       -0.0000000883
+  Total charge density g-space grids:          -0.0000000883
+
+     4 DIIS/Diag.  0.37E-04    0.3     0.00007665       -34.3279978892 -1.95E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000861       -0.0000000861
+  Core density on regular grids:               15.9999999978       -0.0000000022
+  Total charge density on r-space grids:       -0.0000000883
+  Total charge density g-space grids:          -0.0000000883
+
+     5 DIIS/Diag.  0.10E-03    0.3     0.00008942       -34.3279978864  2.80E-09
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000861       -0.0000000861
+  Core density on regular grids:               15.9999999978       -0.0000000022
+  Total charge density on r-space grids:       -0.0000000883
+  Total charge density g-space grids:          -0.0000000883
+
+     6 DIIS/Diag.  0.33E-04    0.3     0.00003834       -34.3279978893 -2.94E-09
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000861       -0.0000000861
+  Core density on regular grids:               15.9999999978       -0.0000000022
+  Total charge density on r-space grids:       -0.0000000883
+  Total charge density g-space grids:          -0.0000000883
+
+     7 DIIS/Diag.  0.27E-05    0.3     0.00000194       -34.3279978897 -3.35E-10
+
+  *** SCF run converged in     7 steps ***
+
+
+  Electronic density on regular grids:        -16.0000000861       -0.0000000861
+  Core density on regular grids:               15.9999999978       -0.0000000022
+  Total charge density on r-space grids:       -0.0000000883
+  Total charge density g-space grids:          -0.0000000883
+
+  Overlap energy of the core charge distribution:               0.00000012679646
+  Self energy of the core charge distribution:                -87.66578109182967
+  Core Hamiltonian energy:                                     25.64083925644905
+  Hartree energy:                                              35.95033978458972
+  Exchange-correlation energy:                                 -8.25339596567451
+
+  Total energy:                                               -34.32799788966895
+
+
+ MULLIKEN POPULATION ANALYSIS
+
+ #  Atom  Element  Kind  Atomic population                Net charge
+       1     O        1          6.644587                 -0.644587
+       2     O        1          6.633556                 -0.633556
+       3     H        2          0.674409                  0.325591
+       4     H        2          0.684100                  0.315900
+       5     H        2          0.679718                  0.320282
+       6     H        2          0.683629                  0.316371
+ # Total charge                 16.000000                  0.000000
+
+
+ !-----------------------------------------------------------------------------!
+                           Hirschfeld Charges
+
+  #Atom  Element  Kind  Ref Charge     Population                     Net charge
+      1       O      1       6.000          6.568                         -0.568
+      2       O      1       6.000          6.549                         -0.549
+      3       H      2       1.000          0.723                          0.277
+      4       H      2       1.000          0.714                          0.286
+      5       H      2       1.000          0.723                          0.277
+      6       H      2       1.000          0.723                          0.277
+
+  Total Charge                                                             0.000
+ !-----------------------------------------------------------------------------!
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000861       -0.0000000861
+  Core density on regular grids:               15.9999999978       -0.0000000022
+  Total charge density on r-space grids:       -0.0000000883
+  Total charge density g-space grids:          -0.0000000883
+
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):              -34.327997889672346
+
+
+ Centre of mass motion (COM):                            x =       -0.0000016106
+                                                         y =       -0.0000003631
+                                                         z =        0.0000006325
+
+ *******************************************************************************
+ ENSEMBLE TYPE                =                                              NVE
+ STEP NUMBER                  =                                                5
+ TIME [fs]                    =                                         2.500000
+ CONSERVED QUANTITY [hartree] =                              -0.343232089619E+02
+
+                                              INSTANTANEOUS             AVERAGES
+ CPU TIME [s]                 =                        2.18                 2.85
+ ENERGY DRIFT PER ATOM [K]    =          0.327219228389E+01   0.313135511541E+01
+ POTENTIAL ENERGY[hartree]    =         -0.343279978897E+02  -0.343284641607E+02
+ KINETIC ENERGY [hartree]     =          0.478892780061E-02   0.525762109252E-02
+ TEMPERATURE [K]              =                     201.630              221.363
+ *******************************************************************************
+
+
+ DISTRIBUTION OF THE NEIGHBOR LISTS
+              Total number of particle pairs:                                 43
+              Total number of matrix elements:                              2475
+              Average number of particle pairs:                               43
+              Maximum number of particle pairs:                               43
+              Average number of matrix element:                             2475
+              Maximum number of matrix elements:                            2475
+
+
+ DISTRIBUTION OF THE OVERLAP MATRIX
+              Number  of non-zero blocks:                                     21
+              Percentage non-zero blocks:                                 100.00
+              Average number of blocks per CPU:                               21
+              Maximum number of blocks per CPU:                               21
+              Average number of matrix elements per CPU:                    1287
+              Maximum number of matrix elements per CPU:                    1287
+
+ Number of electrons:                                                         16
+ Number of occupied orbitals:                                                  8
+ Number of molecular orbitals:                                                 8
+
+ Number of orbital functions:                                                 46
+ Number of independent orbital functions:                                     46
+
+ Extrapolation method: PS Nth order
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000327       -0.0000000327
+  Core density on regular grids:               15.9999999746       -0.0000000254
+  Total charge density on r-space grids:       -0.0000000581
+  Total charge density g-space grids:          -0.0000000581
+
+     1 P_Mix/Diag. 0.40E+00    0.2     0.00123890       -34.3284120683 -3.43E+01
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000325       -0.0000000325
+  Core density on regular grids:               15.9999999746       -0.0000000254
+  Total charge density on r-space grids:       -0.0000000578
+  Total charge density g-space grids:          -0.0000000578
+
+     2 P_Mix/Diag. 0.40E+00    0.3     0.00102669       -34.3284121956 -1.27E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000325       -0.0000000325
+  Core density on regular grids:               15.9999999746       -0.0000000254
+  Total charge density on r-space grids:       -0.0000000579
+  Total charge density g-space grids:          -0.0000000579
+
+     3 DIIS/Diag.  0.36E-04    0.3     0.00052615       -34.3284122757 -8.01E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000325       -0.0000000325
+  Core density on regular grids:               15.9999999746       -0.0000000254
+  Total charge density on r-space grids:       -0.0000000579
+  Total charge density g-space grids:          -0.0000000579
+
+     4 DIIS/Diag.  0.29E-04    0.3     0.00004993       -34.3284123935 -1.18E-07
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000325       -0.0000000325
+  Core density on regular grids:               15.9999999746       -0.0000000254
+  Total charge density on r-space grids:       -0.0000000579
+  Total charge density g-space grids:          -0.0000000579
+
+     5 DIIS/Diag.  0.71E-04    0.3     0.00005985       -34.3284123921  1.38E-09
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000325       -0.0000000325
+  Core density on regular grids:               15.9999999746       -0.0000000254
+  Total charge density on r-space grids:       -0.0000000579
+  Total charge density g-space grids:          -0.0000000579
+
+     6 DIIS/Diag.  0.26E-04    0.3     0.00003039       -34.3284123935 -1.46E-09
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000325       -0.0000000325
+  Core density on regular grids:               15.9999999746       -0.0000000254
+  Total charge density on r-space grids:       -0.0000000579
+  Total charge density g-space grids:          -0.0000000579
+
+     7 DIIS/Diag.  0.21E-05    0.3     0.00000154       -34.3284123938 -2.18E-10
+
+  *** SCF run converged in     7 steps ***
+
+
+  Electronic density on regular grids:        -16.0000000325       -0.0000000325
+  Core density on regular grids:               15.9999999746       -0.0000000254
+  Total charge density on r-space grids:       -0.0000000579
+  Total charge density g-space grids:          -0.0000000579
+
+  Overlap energy of the core charge distribution:               0.00000008723216
+  Self energy of the core charge distribution:                -87.66578109182967
+  Core Hamiltonian energy:                                     25.59111064373451
+  Hartree energy:                                              35.98565017274408
+  Exchange-correlation energy:                                 -8.23939220564286
+
+  Total energy:                                               -34.32841239376179
+
+
+ MULLIKEN POPULATION ANALYSIS
+
+ #  Atom  Element  Kind  Atomic population                Net charge
+       1     O        1          6.646337                 -0.646337
+       2     O        1          6.635184                 -0.635184
+       3     H        2          0.673548                  0.326452
+       4     H        2          0.683190                  0.316810
+       5     H        2          0.678878                  0.321122
+       6     H        2          0.682862                  0.317138
+ # Total charge                 16.000000                 -0.000000
+
+
+ !-----------------------------------------------------------------------------!
+                           Hirschfeld Charges
+
+  #Atom  Element  Kind  Ref Charge     Population                     Net charge
+      1       O      1       6.000          6.569                         -0.569
+      2       O      1       6.000          6.553                         -0.553
+      3       H      2       1.000          0.721                          0.279
+      4       H      2       1.000          0.714                          0.286
+      5       H      2       1.000          0.721                          0.279
+      6       H      2       1.000          0.722                          0.278
+
+  Total Charge                                                             0.000
+ !-----------------------------------------------------------------------------!
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -16.0000000325       -0.0000000325
+  Core density on regular grids:               15.9999999746       -0.0000000254
+  Total charge density on r-space grids:       -0.0000000579
+  Total charge density g-space grids:          -0.0000000579
+
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):              -34.328412393763912
+
+
+ Centre of mass motion (COM):                            x =       -0.0000024706
+                                                         y =       -0.0000005973
+                                                         z =        0.0000011754
+
+ *******************************************************************************
+ ENSEMBLE TYPE                =                                              NVE
+ STEP NUMBER                  =                                                6
+ TIME [fs]                    =                                         3.000000
+ CONSERVED QUANTITY [hartree] =                              -0.343232275333E+02
+
+                                              INSTANTANEOUS             AVERAGES
+ CPU TIME [s]                 =                        2.16                 2.74
+ ENERGY DRIFT PER ATOM [K]    =          0.229479431301E+01   0.299192831501E+01
+ POTENTIAL ENERGY[hartree]    =         -0.343284123938E+02  -0.343284555329E+02
+ KINETIC ENERGY [hartree]     =          0.518486045882E-02   0.524549432024E-02
+ TEMPERATURE [K]              =                     218.300              220.853
+ *******************************************************************************
+
+
+ DISTRIBUTION OF THE NEIGHBOR LISTS
+              Total number of particle pairs:                                 43
+              Total number of matrix elements:                              2475
+              Average number of particle pairs:                               43
+              Maximum number of particle pairs:                               43
+              Average number of matrix element:                             2475
+              Maximum number of matrix elements:                            2475
+
+
+ DISTRIBUTION OF THE OVERLAP MATRIX
+              Number  of non-zero blocks:                                     21
+              Percentage non-zero blocks:                                 100.00
+              Average number of blocks per CPU:                               21
+              Maximum number of blocks per CPU:                               21
+              Average number of matrix elements per CPU:                    1287
+              Maximum number of matrix elements per CPU:                    1287
+
+ Number of electrons:                                                         16
+ Number of occupied orbitals:                                                  8
+ Number of molecular orbitals:                                                 8
+
+ Number of orbital functions:                                                 46
+ Number of independent orbital functions:                                     46
+
+ Extrapolation method: PS Nth order
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999802        0.0000000198
+  Core density on regular grids:               15.9999999631       -0.0000000369
+  Total charge density on r-space grids:       -0.0000000171
+  Total charge density g-space grids:          -0.0000000171
+
+     1 P_Mix/Diag. 0.40E+00    0.2     0.00073750       -34.3287039410 -3.43E+01
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999801        0.0000000199
+  Core density on regular grids:               15.9999999631       -0.0000000369
+  Total charge density on r-space grids:       -0.0000000170
+  Total charge density g-space grids:          -0.0000000170
+
+     2 P_Mix/Diag. 0.40E+00    0.3     0.00050282       -34.3287039857 -4.47E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999801        0.0000000199
+  Core density on regular grids:               15.9999999631       -0.0000000369
+  Total charge density on r-space grids:       -0.0000000170
+  Total charge density g-space grids:          -0.0000000170
+
+     3 DIIS/Diag.  0.18E-04    0.3     0.00026074       -34.3287040127 -2.70E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999801        0.0000000199
+  Core density on regular grids:               15.9999999631       -0.0000000369
+  Total charge density on r-space grids:       -0.0000000170
+  Total charge density g-space grids:          -0.0000000170
+
+     4 DIIS/Diag.  0.15E-04    0.3     0.00000617       -34.3287040522 -3.95E-08
+
+  *** SCF run converged in     4 steps ***
+
+
+  Electronic density on regular grids:        -15.9999999801        0.0000000199
+  Core density on regular grids:               15.9999999631       -0.0000000369
+  Total charge density on r-space grids:       -0.0000000170
+  Total charge density g-space grids:          -0.0000000170
+
+  Overlap energy of the core charge distribution:               0.00000005921810
+  Self energy of the core charge distribution:                -87.66578109182967
+  Core Hamiltonian energy:                                     25.54730077591877
+  Hartree energy:                                              36.01683985530930
+  Exchange-correlation energy:                                 -8.22706365078373
+
+  Total energy:                                               -34.32870405216723
+
+
+ MULLIKEN POPULATION ANALYSIS
+
+ #  Atom  Element  Kind  Atomic population                Net charge
+       1     O        1          6.647753                 -0.647753
+       2     O        1          6.636537                 -0.636537
+       3     H        2          0.673059                  0.326941
+       4     H        2          0.682245                  0.317755
+       5     H        2          0.678218                  0.321782
+       6     H        2          0.682188                  0.317812
+ # Total charge                 16.000000                  0.000000
+
+
+ !-----------------------------------------------------------------------------!
+                           Hirschfeld Charges
+
+  #Atom  Element  Kind  Ref Charge     Population                     Net charge
+      1       O      1       6.000          6.570                         -0.570
+      2       O      1       6.000          6.556                         -0.556
+      3       H      2       1.000          0.720                          0.280
+      4       H      2       1.000          0.715                          0.285
+      5       H      2       1.000          0.719                          0.281
+      6       H      2       1.000          0.720                          0.280
+
+  Total Charge                                                             0.000
+ !-----------------------------------------------------------------------------!
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999801        0.0000000199
+  Core density on regular grids:               15.9999999631       -0.0000000369
+  Total charge density on r-space grids:       -0.0000000170
+  Total charge density g-space grids:          -0.0000000170
+
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):              -34.328704052235857
+
+
+ Centre of mass motion (COM):                            x =       -0.0000033696
+                                                         y =       -0.0000008554
+                                                         z =        0.0000017621
+
+ *******************************************************************************
+ ENSEMBLE TYPE                =                                              NVE
+ STEP NUMBER                  =                                                7
+ TIME [fs]                    =                                         3.500000
+ CONSERVED QUANTITY [hartree] =                              -0.343232335826E+02
+
+                                              INSTANTANEOUS             AVERAGES
+ CPU TIME [s]                 =                        1.37                 2.54
+ ENERGY DRIFT PER ATOM [K]    =          0.197642382700E+01   0.284685624529E+01
+ POTENTIAL ENERGY[hartree]    =         -0.343287040522E+02  -0.343284910356E+02
+ KINETIC ENERGY [hartree]     =          0.547046960753E-02   0.527763364699E-02
+ TEMPERATURE [K]              =                     230.325              222.206
+ *******************************************************************************
+
+
+ DISTRIBUTION OF THE NEIGHBOR LISTS
+              Total number of particle pairs:                                 43
+              Total number of matrix elements:                              2475
+              Average number of particle pairs:                               43
+              Maximum number of particle pairs:                               43
+              Average number of matrix element:                             2475
+              Maximum number of matrix elements:                            2475
+
+
+ DISTRIBUTION OF THE OVERLAP MATRIX
+              Number  of non-zero blocks:                                     21
+              Percentage non-zero blocks:                                 100.00
+              Average number of blocks per CPU:                               21
+              Maximum number of blocks per CPU:                               21
+              Average number of matrix elements per CPU:                    1287
+              Maximum number of matrix elements per CPU:                    1287
+
+ Number of electrons:                                                         16
+ Number of occupied orbitals:                                                  8
+ Number of molecular orbitals:                                                 8
+
+ Number of orbital functions:                                                 46
+ Number of independent orbital functions:                                     46
+
+ Extrapolation method: PS Nth order
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999297        0.0000000703
+  Core density on regular grids:               15.9999999620       -0.0000000380
+  Total charge density on r-space grids:        0.0000000322
+  Total charge density g-space grids:           0.0000000322
+
+     1 P_Mix/Diag. 0.40E+00    0.2     0.00064355       -34.3287573478 -3.43E+01
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999297        0.0000000703
+  Core density on regular grids:               15.9999999620       -0.0000000380
+  Total charge density on r-space grids:        0.0000000322
+  Total charge density g-space grids:           0.0000000322
+
+     2 P_Mix/Diag. 0.40E+00    0.3     0.00042804       -34.3287573711 -2.33E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999297        0.0000000703
+  Core density on regular grids:               15.9999999620       -0.0000000380
+  Total charge density on r-space grids:        0.0000000322
+  Total charge density g-space grids:           0.0000000322
+
+     3 DIIS/Diag.  0.12E-04    0.3     0.00022093       -34.3287573856 -1.45E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999297        0.0000000703
+  Core density on regular grids:               15.9999999620       -0.0000000380
+  Total charge density on r-space grids:        0.0000000322
+  Total charge density g-space grids:           0.0000000322
+
+     4 DIIS/Diag.  0.11E-04    0.3     0.00002113       -34.3287574069 -2.13E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999297        0.0000000703
+  Core density on regular grids:               15.9999999620       -0.0000000380
+  Total charge density on r-space grids:        0.0000000322
+  Total charge density g-space grids:           0.0000000322
+
+     5 DIIS/Diag.  0.23E-04    0.3     0.00002078       -34.3287574067  2.15E-10
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999297        0.0000000703
+  Core density on regular grids:               15.9999999620       -0.0000000380
+  Total charge density on r-space grids:        0.0000000322
+  Total charge density g-space grids:           0.0000000322
+
+     6 DIIS/Diag.  0.11E-04    0.3     0.00001782       -34.3287574069 -2.07E-10
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999297        0.0000000703
+  Core density on regular grids:               15.9999999620       -0.0000000380
+  Total charge density on r-space grids:        0.0000000322
+  Total charge density g-space grids:           0.0000000322
+
+     7 DIIS/Diag.  0.26E-06    0.3     0.00000029       -34.3287574070 -6.01E-11
+
+  *** SCF run converged in     7 steps ***
+
+
+  Electronic density on regular grids:        -15.9999999297        0.0000000703
+  Core density on regular grids:               15.9999999620       -0.0000000380
+  Total charge density on r-space grids:        0.0000000322
+  Total charge density g-space grids:           0.0000000322
+
+  Overlap energy of the core charge distribution:               0.00000004339017
+  Self energy of the core charge distribution:                -87.66578109182967
+  Core Hamiltonian energy:                                     25.51569466630500
+  Hartree energy:                                              36.03947114094336
+  Exchange-correlation energy:                                 -8.21814216580568
+
+  Total energy:                                               -34.32875740699683
+
+
+ MULLIKEN POPULATION ANALYSIS
+
+ #  Atom  Element  Kind  Atomic population                Net charge
+       1     O        1          6.648757                 -0.648757
+       2     O        1          6.637429                 -0.637429
+       3     H        2          0.672916                  0.327084
+       4     H        2          0.681363                  0.318637
+       5     H        2          0.677842                  0.322158
+       6     H        2          0.681693                  0.318307
+ # Total charge                 16.000000                  0.000000
+
+
+ !-----------------------------------------------------------------------------!
+                           Hirschfeld Charges
+
+  #Atom  Element  Kind  Ref Charge     Population                     Net charge
+      1       O      1       6.000          6.570                         -0.570
+      2       O      1       6.000          6.559                         -0.559
+      3       H      2       1.000          0.718                          0.282
+      4       H      2       1.000          0.716                          0.284
+      5       H      2       1.000          0.717                          0.283
+      6       H      2       1.000          0.719                          0.281
+
+  Total Charge                                                             0.000
+ !-----------------------------------------------------------------------------!
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999999297        0.0000000703
+  Core density on regular grids:               15.9999999620       -0.0000000380
+  Total charge density on r-space grids:        0.0000000322
+  Total charge density g-space grids:           0.0000000322
+
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):              -34.328757406996914
+
+
+ Centre of mass motion (COM):                            x =       -0.0000042179
+                                                         y =       -0.0000011465
+                                                         z =        0.0000023227
+
+ *******************************************************************************
+ ENSEMBLE TYPE                =                                              NVE
+ STEP NUMBER                  =                                                8
+ TIME [fs]                    =                                         4.000000
+ CONSERVED QUANTITY [hartree] =                              -0.343232307153E+02
+
+                                              INSTANTANEOUS             AVERAGES
+ CPU TIME [s]                 =                        2.16                 2.49
+ ENERGY DRIFT PER ATOM [K]    =          0.212732656553E+01   0.275691503532E+01
+ POTENTIAL ENERGY[hartree]    =         -0.343287574070E+02  -0.343285243321E+02
+ KINETIC ENERGY [hartree]     =          0.552669165523E-02   0.530876589802E-02
+ TEMPERATURE [K]              =                     232.692              223.516
+ *******************************************************************************
+
+
+ DISTRIBUTION OF THE NEIGHBOR LISTS
+              Total number of particle pairs:                                 43
+              Total number of matrix elements:                              2475
+              Average number of particle pairs:                               43
+              Maximum number of particle pairs:                               43
+              Average number of matrix element:                             2475
+              Maximum number of matrix elements:                            2475
+
+
+ DISTRIBUTION OF THE OVERLAP MATRIX
+              Number  of non-zero blocks:                                     21
+              Percentage non-zero blocks:                                 100.00
+              Average number of blocks per CPU:                               21
+              Maximum number of blocks per CPU:                               21
+              Average number of matrix elements per CPU:                    1287
+              Maximum number of matrix elements per CPU:                    1287
+
+ Number of electrons:                                                         16
+ Number of occupied orbitals:                                                  8
+ Number of molecular orbitals:                                                 8
+
+ Number of orbital functions:                                                 46
+ Number of independent orbital functions:                                     46
+
+ Extrapolation method: PS Nth order
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998816        0.0000001184
+  Core density on regular grids:               15.9999999662       -0.0000000338
+  Total charge density on r-space grids:        0.0000000846
+  Total charge density g-space grids:           0.0000000846
+
+     1 P_Mix/Diag. 0.40E+00    0.2     0.00082543       -34.3285981290 -3.43E+01
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998816        0.0000001184
+  Core density on regular grids:               15.9999999662       -0.0000000338
+  Total charge density on r-space grids:        0.0000000846
+  Total charge density g-space grids:           0.0000000846
+
+     2 P_Mix/Diag. 0.40E+00    0.3     0.00056358       -34.3285981776 -4.86E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998816        0.0000001184
+  Core density on regular grids:               15.9999999662       -0.0000000338
+  Total charge density on r-space grids:        0.0000000846
+  Total charge density g-space grids:           0.0000000846
+
+     3 DIIS/Diag.  0.26E-04    0.3     0.00028742       -34.3285982090 -3.15E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998816        0.0000001184
+  Core density on regular grids:               15.9999999662       -0.0000000338
+  Total charge density on r-space grids:        0.0000000845
+  Total charge density g-space grids:           0.0000000845
+
+     4 DIIS/Diag.  0.17E-04    0.3     0.00002488       -34.3285982554 -4.63E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998816        0.0000001184
+  Core density on regular grids:               15.9999999662       -0.0000000338
+  Total charge density on r-space grids:        0.0000000845
+  Total charge density g-space grids:           0.0000000845
+
+     5 DIIS/Diag.  0.33E-04    0.3     0.00002459       -34.3285982550  3.82E-10
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998816        0.0000001184
+  Core density on regular grids:               15.9999999662       -0.0000000338
+  Total charge density on r-space grids:        0.0000000845
+  Total charge density g-space grids:           0.0000000845
+
+     6 DIIS/Diag.  0.18E-04    0.3     0.00002802       -34.3285982553 -3.70E-10
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998816        0.0000001184
+  Core density on regular grids:               15.9999999662       -0.0000000338
+  Total charge density on r-space grids:        0.0000000845
+  Total charge density g-space grids:           0.0000000845
+
+     7 DIIS/Diag.  0.76E-06    0.3     0.00000061       -34.3285982555 -1.47E-10
+
+  *** SCF run converged in     7 steps ***
+
+
+  Electronic density on regular grids:        -15.9999998816        0.0000001184
+  Core density on regular grids:               15.9999999662       -0.0000000338
+  Total charge density on r-space grids:        0.0000000845
+  Total charge density g-space grids:           0.0000000845
+
+  Overlap energy of the core charge distribution:               0.00000003794181
+  Self energy of the core charge distribution:                -87.66578109182967
+  Core Hamiltonian energy:                                     25.50050669446433
+  Hartree energy:                                              36.05048715422972
+  Exchange-correlation energy:                                 -8.21381105030031
+
+  Total energy:                                               -34.32859825549413
+
+
+ MULLIKEN POPULATION ANALYSIS
+
+ #  Atom  Element  Kind  Atomic population                Net charge
+       1     O        1          6.649229                 -0.649229
+       2     O        1          6.637842                 -0.637842
+       3     H        2          0.673092                  0.326908
+       4     H        2          0.680685                  0.319315
+       5     H        2          0.677748                  0.322252
+       6     H        2          0.681404                  0.318596
+ # Total charge                 16.000000                  0.000000
+
+
+ !-----------------------------------------------------------------------------!
+                           Hirschfeld Charges
+
+  #Atom  Element  Kind  Ref Charge     Population                     Net charge
+      1       O      1       6.000          6.570                         -0.570
+      2       O      1       6.000          6.561                         -0.561
+      3       H      2       1.000          0.717                          0.283
+      4       H      2       1.000          0.718                          0.282
+      5       H      2       1.000          0.716                          0.284
+      6       H      2       1.000          0.719                          0.281
+
+  Total Charge                                                            -0.000
+ !-----------------------------------------------------------------------------!
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998816        0.0000001184
+  Core density on regular grids:               15.9999999662       -0.0000000338
+  Total charge density on r-space grids:        0.0000000845
+  Total charge density g-space grids:           0.0000000845
+
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):              -34.328598255494526
+
+
+ Centre of mass motion (COM):                            x =       -0.0000049022
+                                                         y =       -0.0000014538
+                                                         z =        0.0000028288
+
+ *******************************************************************************
+ ENSEMBLE TYPE                =                                              NVE
+ STEP NUMBER                  =                                                9
+ TIME [fs]                    =                                         4.500000
+ CONSERVED QUANTITY [hartree] =                              -0.343232270126E+02
+
+                                              INSTANTANEOUS             AVERAGES
+ CPU TIME [s]                 =                        2.16                 2.46
+ ENERGY DRIFT PER ATOM [K]    =          0.232220039482E+01   0.270861340860E+01
+ POTENTIAL ENERGY[hartree]    =         -0.343285982555E+02  -0.343285325458E+02
+ KINETIC ENERGY [hartree]     =          0.537124292944E-02   0.531570779040E-02
+ TEMPERATURE [K]              =                     226.147              223.809
+ *******************************************************************************
+
+
+ DISTRIBUTION OF THE NEIGHBOR LISTS
+              Total number of particle pairs:                                 42
+              Total number of matrix elements:                              2410
+              Average number of particle pairs:                               42
+              Maximum number of particle pairs:                               42
+              Average number of matrix element:                             2410
+              Maximum number of matrix elements:                            2410
+
+
+ DISTRIBUTION OF THE OVERLAP MATRIX
+              Number  of non-zero blocks:                                     21
+              Percentage non-zero blocks:                                 100.00
+              Average number of blocks per CPU:                               21
+              Maximum number of blocks per CPU:                               21
+              Average number of matrix elements per CPU:                    1287
+              Maximum number of matrix elements per CPU:                    1287
+
+ Number of electrons:                                                         16
+ Number of occupied orbitals:                                                  8
+ Number of molecular orbitals:                                                 8
+
+ Number of orbital functions:                                                 46
+ Number of independent orbital functions:                                     46
+
+ Extrapolation method: PS Nth order
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998359        0.0000001641
+  Core density on regular grids:               15.9999999758       -0.0000000242
+  Total charge density on r-space grids:        0.0000001399
+  Total charge density g-space grids:           0.0000001399
+
+     1 P_Mix/Diag. 0.40E+00    0.2     0.00082480       -34.3282868572 -3.43E+01
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998360        0.0000001640
+  Core density on regular grids:               15.9999999758       -0.0000000242
+  Total charge density on r-space grids:        0.0000001398
+  Total charge density g-space grids:           0.0000001398
+
+     2 P_Mix/Diag. 0.40E+00    0.3     0.00058053       -34.3282869261 -6.89E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998360        0.0000001640
+  Core density on regular grids:               15.9999999758       -0.0000000242
+  Total charge density on r-space grids:        0.0000001398
+  Total charge density g-space grids:           0.0000001398
+
+     3 DIIS/Diag.  0.31E-04    0.3     0.00029968       -34.3282869712 -4.51E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998361        0.0000001639
+  Core density on regular grids:               15.9999999758       -0.0000000242
+  Total charge density on r-space grids:        0.0000001397
+  Total charge density g-space grids:           0.0000001397
+
+     4 DIIS/Diag.  0.16E-04    0.3     0.00002459       -34.3282870377 -6.65E-08
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998361        0.0000001639
+  Core density on regular grids:               15.9999999758       -0.0000000242
+  Total charge density on r-space grids:        0.0000001397
+  Total charge density g-space grids:           0.0000001397
+
+     5 DIIS/Diag.  0.35E-04    0.3     0.00003769       -34.3282870371  5.87E-10
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998361        0.0000001639
+  Core density on regular grids:               15.9999999758       -0.0000000242
+  Total charge density on r-space grids:        0.0000001397
+  Total charge density g-space grids:           0.0000001397
+
+     6 DIIS/Diag.  0.73E-05    0.3     0.00001070       -34.3282870378 -7.14E-10
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998361        0.0000001639
+  Core density on regular grids:               15.9999999758       -0.0000000242
+  Total charge density on r-space grids:        0.0000001397
+  Total charge density g-space grids:           0.0000001397
+
+     7 DIIS/Diag.  0.15E-05    0.3     0.00000109       -34.3282870379 -3.35E-11
+
+  *** SCF run converged in     7 steps ***
+
+
+  Electronic density on regular grids:        -15.9999998361        0.0000001639
+  Core density on regular grids:               15.9999999758       -0.0000000242
+  Total charge density on r-space grids:        0.0000001397
+  Total charge density g-space grids:           0.0000001397
+
+  Overlap energy of the core charge distribution:               0.00000004250114
+  Self energy of the core charge distribution:                -87.66578109182967
+  Core Hamiltonian energy:                                     25.50343606215508
+  Hartree energy:                                              36.04862218083943
+  Exchange-correlation energy:                                 -8.21456423154843
+
+  Total energy:                                               -34.32828703788246
+
+
+ MULLIKEN POPULATION ANALYSIS
+
+ #  Atom  Element  Kind  Atomic population                Net charge
+       1     O        1          6.649021                 -0.649021
+       2     O        1          6.637886                 -0.637886
+       3     H        2          0.673555                  0.326445
+       4     H        2          0.680389                  0.319611
+       5     H        2          0.677856                  0.322144
+       6     H        2          0.681293                  0.318707
+ # Total charge                 16.000000                 -0.000000
+
+
+ !-----------------------------------------------------------------------------!
+                           Hirschfeld Charges
+
+  #Atom  Element  Kind  Ref Charge     Population                     Net charge
+      1       O      1       6.000          6.568                         -0.568
+      2       O      1       6.000          6.563                         -0.563
+      3       H      2       1.000          0.716                          0.284
+      4       H      2       1.000          0.721                          0.279
+      5       H      2       1.000          0.714                          0.286
+      6       H      2       1.000          0.718                          0.282
+
+  Total Charge                                                            -0.000
+ !-----------------------------------------------------------------------------!
+
+  Trace(PS):                                   16.0000000000
+  Electronic density on regular grids:        -15.9999998361        0.0000001639
+  Core density on regular grids:               15.9999999758       -0.0000000242
+  Total charge density on r-space grids:        0.0000001397
+  Total charge density g-space grids:           0.0000001397
+
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):              -34.328287037884145
+
+
+ Centre of mass motion (COM):                            x =       -0.0000053295
+                                                         y =       -0.0000017445
+                                                         z =        0.0000033084
+
+ *******************************************************************************
+ ENSEMBLE TYPE                =                                              NVE
+ STEP NUMBER                  =                                               10
+ TIME [fs]                    =                                         5.000000
+ CONSERVED QUANTITY [hartree] =                              -0.343232241234E+02
+
+                                              INSTANTANEOUS             AVERAGES
+ CPU TIME [s]                 =                        2.14                 2.42
+ ENERGY DRIFT PER ATOM [K]    =          0.247425322254E+01   0.268517738999E+01
+ POTENTIAL ENERGY[hartree]    =         -0.343282870379E+02  -0.343285079950E+02
+ KINETIC ENERGY [hartree]     =          0.506291445843E-02   0.529042845721E-02
+ TEMPERATURE [K]              =                     213.165              222.744
+ *******************************************************************************
+
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                                DBCSR STATISTICS                             -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ COUNTER                                      CPU                  ACC      ACC%
+ number of processed stacks                   492                    0       0.0
+ matmuls inhomo. stacks                         0                    0       0.0
+ matmuls total                               2943                    0       0.0
+ flops   5 x    8 x    5                   153600                    0       0.0
+ flops  13 x    8 x    5                   199680                    0       0.0
+ flops   5 x    8 x   13                   199680                    0       0.0
+ flops  13 x    8 x   13                   259584                    0       0.0
+ flops   5 x    5 x    8                   396000                    0       0.0
+ flops  13 x    5 x    8                   411840                    0       0.0
+ flops   5 x   13 x    8                   411840                    0       0.0
+ flops  13 x   13 x    8                   803088                    0       0.0
+ flops total                              2835312                    0       0.0
+ marketing flops                          4164288
+ -------------------------------------------------------------------------------
+
+ -------------------------------------------------------------------------------
+ ----                             MULTIGRID INFO                            ----
+ -------------------------------------------------------------------------------
+ count for grid        1:           4137          cutoff [a.u.]          100.00
+ count for grid        2:           2518          cutoff [a.u.]           33.33
+ count for grid        3:           1119          cutoff [a.u.]           11.11
+ count for grid        4:             48          cutoff [a.u.]            3.70
+ total gridlevel count  :           7822
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                         MESSAGE PASSING PERFORMANCE                         -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+
+ ROUTINE             CALLS  TOT TIME [s]  AVE VOLUME [Bytes]  PERFORMANCE [MB/s]
+ MP_Group                5         0.000
+ MP_Bcast               97         0.000                  5.                1.49
+ MP_Allreduce         1534         0.001                 31.               40.81
+ MP_Sync                 4         0.000
+ MP_Alltoall          2444         0.002               3631.             5074.58
+ MP_Wait              2952         0.001
+ MP_ISend              984         0.001               4487.             3207.19
+ MP_IRecv              984         0.001               4487.             7260.12
+ MP_Memory            2856         0.002
+ -------------------------------------------------------------------------------
+
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                           R E F E R E N C E S                               -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ 
+ CP2K version 2.6.2, the CP2K developers group (2015).
+ CP2K is freely available from http://www.cp2k.org/ .
+
+ Borstnik, U; VandeVondele, J; Weber, V; Hutter, J. 
+ PARALLEL COMPUTING, 40 (5-6), 47-58 (2014). 
+ Sparse matrix multiplication: The distributed block-compressed sparse
+ row library.
+ http://dx.doi.org/10.1016/j.parco.2014.03.012
+
+
+ Hutter, J; Iannuzzi, M; Schiffmann, F; VandeVondele, J. 
+ WILEY INTERDISCIPLINARY REVIEWS-COMPUTATIONAL MOLECULAR SCIENCE, 4 (1), 15-25 (2014). 
+ CP2K: atomistic simulations of condensed matter systems.
+ http://dx.doi.org/10.1002/wcms.1159
+
+
+ Krack, M. 
+ THEORETICAL CHEMISTRY ACCOUNTS, 114 (1-3), 145-152 (2005). 
+ Pseudopotentials for H to Kr optimized for gradient-corrected
+ exchange-correlation functionals.
+ http://dx.doi.org/10.1007/s00214-005-0655-y
+
+
+ VandeVondele, J; Krack, M; Mohamed, F; Parrinello, M; Chassaing, T;
+ Hutter, J. COMPUTER PHYSICS COMMUNICATIONS, 167 (2), 103-128 (2005). 
+ QUICKSTEP: Fast and accurate density functional calculations using a
+ mixed Gaussian and plane waves approach.
+ http://dx.doi.org/10.1016/j.cpc.2004.12.014
+
+
+ Frigo, M; Johnson, SG. 
+ PROCEEDINGS OF THE IEEE, 93 (2), 216-231 (2005). 
+ The design and implementation of FFTW3.
+ http://dx.doi.org/10.1109/JPROC.2004.840301
+
+
+ Hartwigsen, C; Goedecker, S; Hutter, J. 
+ PHYSICAL REVIEW B, 58 (7), 3641-3662 (1998). 
+ Relativistic separable dual-space Gaussian pseudopotentials from H to Rn.
+ http://dx.doi.org/10.1103/PhysRevB.58.3641
+
+
+ Lippert, G; Hutter, J; Parrinello, M. 
+ MOLECULAR PHYSICS, 92 (3), 477-487 (1997). 
+ A hybrid Gaussian and plane wave density functional scheme.
+ http://dx.doi.org/10.1080/002689797170220
+
+
+ Goedecker, S; Teter, M; Hutter, J. 
+ PHYSICAL REVIEW B, 54 (3), 1703-1710 (1996). 
+ Separable dual-space Gaussian pseudopotentials.
+ http://dx.doi.org/10.1103/PhysRevB.54.1703
+
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                                T I M I N G                                  -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ SUBROUTINE                       CALLS  ASD         SELF TIME        TOTAL TIME
+                                MAXIMUM       AVERAGE  MAXIMUM  AVERAGE  MAXIMUM
+ CP2K                                 1  1.0    0.003    0.003   24.537   24.537
+ qs_mol_dyn_low                       1  2.0    0.002    0.002   24.246   24.246
+ qs_forces                           11  3.9    0.000    0.000   24.219   24.219
+ qs_energies_scf                     11  4.9    0.000    0.000   22.437   22.437
+ velocity_verlet                     10  3.0    0.001    0.001   21.083   21.083
+ scf_env_do_scf                      11  5.9    0.000    0.000   20.465   20.465
+ scf_env_do_scf_inner_loop           78  6.9    0.007    0.007   20.452   20.452
+ fft_wrap_pw1pw2                    901 11.9    0.010    0.010   14.825   14.825
+ rebuild_ks_matrix                   89  8.5    0.000    0.000   14.032   14.032
+ qs_ks_build_kohn_sham_matrix        89  9.5    0.013    0.013   14.032   14.032
+ fft_wrap_pw1pw2_100                367 12.4    0.673    0.673   13.407   13.407
+ qs_ks_update_qs_env                 78  7.9    0.001    0.001   12.279   12.279
+ fft3d_s                            902 13.9    9.917    9.917    9.939    9.939
+ qs_rho_update_rho                   89  8.0    0.001    0.001    9.084    9.084
+ calculate_rho_elec                  89  9.0    1.208    1.208    9.083    9.083
+ density_rs2pw                       89 10.0    0.002    0.002    7.797    7.797
+ sum_up_and_integrate                89 10.5    0.105    0.105    6.170    6.170
+ integrate_v_rspace                  89 11.5    1.668    1.668    6.065    6.065
+ potential_pw2rs                     89 12.5    0.018    0.018    4.386    4.386
+ qs_vxc_create                       89 10.5    0.001    0.001    3.025    3.025
+ xc_vxc_pw_create                    89 11.5    0.337    0.337    3.024    3.024
+ xc_rho_set_and_dset_create          89 12.5    0.002    0.002    2.686    2.686
+ xc_functional_eval                  89 13.5    2.577    2.577    2.577    2.577
+ pw_gather_s                        456 13.4    2.287    2.287    2.287    2.287
+ pw_scatter_s                       445 14.4    1.844    1.844    1.844    1.844
+ qs_ks_update_qs_env_forces          11  4.9    0.000    0.000    1.756    1.756
+ pw_poisson_solve                    89 10.5    0.846    0.846    1.254    1.254
+ fft_wrap_pw1pw2_40                 178 13.2    0.064    0.064    1.233    1.233
+ init_scf_run                        11  5.9    0.001    0.001    1.169    1.169
+ scf_env_initial_rho_setup           11  6.9    0.000    0.000    1.165    1.165
+ wfi_extrapolate                     11  7.9    0.000    0.000    1.039    1.039
+ pw_copy                            712 12.6    0.882    0.882    0.882    0.882
+ qs_energies_init_hamiltonians       11  5.9    0.000    0.000    0.512    0.512
+ qs_env_update_s_mstruct             11  6.9    0.000    0.000    0.495    0.495
+ -------------------------------------------------------------------------------
+
+  **** **** ******  **  PROGRAM ENDED AT                 2016-06-06 16:10:41.500
+ ***** ** ***  *** **   PROGRAM RAN ON                       lauri-Lenovo-Z50-70
+ **    ****   ******    PROGRAM RAN BY                                     lauri
+ ***** **    ** ** **   PROGRAM PROCESS ID                                 12281
+  **** **  *******  **  PROGRAM STOPPED IN /home/lauri/Dropbox/nomad-dev/nomad-l
+                                           ab-base/parsers/cp2k/test/unittests/c
+                                           p2k_2.6.2/md/nve

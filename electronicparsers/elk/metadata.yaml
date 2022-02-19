@@ -1,0 +1,9 @@
+codeLabel: Elk
+codeLabelStyle: Only E in capitals
+codeName: elk
+codeUrl: http://elk.sourceforge.net/
+parserDirName: dependencies/parsers/elk/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-elk.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: ''

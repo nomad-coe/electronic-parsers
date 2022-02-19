@@ -1,0 +1,3551 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test032.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test032.input.10448
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 14:33:43 2016 
+
+++ ---------   Input file   ---------
+
+  &SEWARD  &END
+    Title
+    TiCl    C2                                            r(Ti-Cl)
+      4.6000
+    Molecule
+    Symmetry
+    XY
+    Basis set
+    Cl.ECP.Barandiaran.7s7p1d.3s4p1d.7e-CG-AIMP-SO. / inline
+      7.000000         2
+      7    3
+      1624.206760
+      240.4285120
+      53.24486840
+      4.946716500
+      2.324416250
+      .4905502010
+      .1773858390
+      .004739567470 /
+      .031842847200 /
+      .094806068900 /
+      -.312804805000 /
+      -.275363899000 /
+      .0    .713439129000 /
+      .0    .0    .475413978000 /
+      7    4
+      92.97652070
+      21.13118850
+      6.008378930
+      .7000661990
+      .2638039870
+      .9954937270E-01
+      .4900000000E-01
+      -1.84439911D-02 /
+      -8.74630901D-02 /
+      -1.82583701D-01 /
+      4.29951570D-01 /
+      0.   5.02339390D-01 /
+      0.   0.   1.98211306D-01 /
+      0.   0.   0.   1.000         /
+      1    1
+      .5140000000
+      1.000000000000
+    M1
+      9
+      243528.2400
+      26351.96000
+      4889.395300
+      1187.063900
+      345.2973000
+      109.4725300
+      30.68129500
+      11.40798600
+      4.760681700
+      .017430648571
+      .027528717143
+      .053943637143
+      .100170490000
+      .163089857143
+      .180702942857
+      .287916442857
+      .460338614286
+      .137450081429
+    M2
+      0
+    COREREP
+      1.0
+    PROJOP
+      1
+      8    2
+      210.615620      21.3540210
+      3929.000000
+      705.3000000
+      196.1000000
+      67.33000000
+      25.84000000
+      7.423000000
+      3.157000000
+      1.300000000
+      .018581161000   .005141034900
+      .093893853000   .028493392000
+      .279931590000   .088917562000
+      .451789300000   .201292530000
+      .285603100000   .162635910000
+      .027470973000  -.398034810000
+      -.006334092300  -.621600190000
+      .001429809800  -.135748510000
+      7    1
+      16.1543760
+      329.0000000
+      84.77000000
+      29.74000000
+      12.03100000
+      5.226000000
+      2.357000000
+      .9951000000
+      .007763960700
+      .046290121000
+      .156586320000
+      .323457100000
+      .402593980000
+      .236866150000
+      .034840559000
+    Spectral Representation Operator
+    Valence primitive basis
+    Exchange
+      1stOrder Relativistic Correction
+    CLQR-2P
+    End of Spectral Representation Operator
+    Cl    0.0000 0.0000 0.0000
+    End Of Basis
+    Basis set
+    Ti.ECP.Barandiaran.9s6p6d3f.3s4p4d1f.10e-CG-AIMP-SO. / inline
+      10.000000         3
+      9    3
+      2866.391570
+      419.2789180
+      92.74846200
+      8.663369800
+      3.459088960
+      1.463062870
+      .5588778320
+      .7828337980E-01
+      .3025153260E-01
+      -.001342063290 /
+      -.009074569810 /
+      -.027639455000 /
+      .117151695000 /
+      .083918874900 /
+      -.194231014000 /
+      -.357246998000 /
+      .0    .684717752000 /
+      .0    .0    .460793422000 /
+      6    4
+      190.3145320
+      43.67077230
+      12.85323600
+      1.491738830
+      .4988432200
+      .7300000000E-01
+      -1.98111195D-02 /
+      -1.02100229D-01 /
+      -2.35035036D-01 /
+      0.   6.14288957D-01 /
+      0.   0.   4.77307856D-01 /
+      0.   0.   0.   1.000          /
+      6    4
+      23.51654780
+      6.330513980
+      2.070363400
+      .6865646910
+      .2093152700
+      .7200000000E-01
+      2.82563621D-02 /
+      1.37382127D-01 /
+      3.52539574D-01 /
+      0.   4.86566792D-01 /
+      0.   0.   3.31855310D-01 /
+      0.   0.   0.   1.0000         /
+      3     1
+      1.3935308
+      0.4997522
+      0.2139998
+      0.1737857      /
+      0.5973381      /
+      0.3929396      /
+    M1
+      10
+      265900.0000
+      31760.00000
+      6351.000000
+      1595.300000
+      473.7000000
+      147.5100000
+      43.10000000
+      17.14700000
+      3.561000000
+      1.463900000
+      .015863687000
+      .023180023000
+      .044827762000
+      .082762486000
+      .128275860000
+      .137594620000
+      .271557800000
+      .313587050000
+      .109200410000
+      .073150294000
+    M2
+      0
+    COREREP
+      1.0
+    PROJOP
+      1
+      10    3
+      369.039460      43.3198950      5.81154180
+      6908.000000
+      1218.900000
+      335.1000000
+      114.5600000
+      44.26000000
+      12.48000000
+      5.280000000
+      1.791000000
+      .8609000000
+      .3714000000
+      .018567774000   .005418750400   .001956537600
+      .093488432000   .030302941000   .010823446000
+      .281334090000   .094507837000   .034632122000
+      .451380950000   .216628090000   .080705233000
+      .285569290000   .163246990000   .066706506000
+      .028321321000  -.485793510000  -.256200260000
+      -.009238411000  -.602352120000  -.499801640000
+      .004368424600  -.080741968000   .241368470000
+      -.002425073600   .013436823000   .756195570000
+      .000796693160  -.003236153700   .253283210000
+      6    1
+      35.6586150
+      454.0000000
+      115.9000000
+      40.08000000
+      15.79000000
+      6.648000000
+      2.731000000
+      .012199963000
+      .071836821000
+      .231613020000
+      .424397130000
+      .371255800000
+      .085547308000
+    Spectral Representation Operator
+    Valence primitive basis
+    Exchange
+      1stOrder Relativistic Correction
+    TIQR3F-3S
+    End of Spectral Representation Operator
+    Ti     0.00000   0.00000   4.6000
+    End Of Basis
+ >>COPY  $MOLCAS/Test/input/test032.RasOrb INPORB
+  &RASSCF &END
+    Title
+    TiCl C2   CASSCF [Ti3d, Ti4s, Ti4p-pi] 4Sig-.ave
+    Symmetry
+      1
+    Spin
+      4
+    nActEl
+      3 0 0
+    Inactive
+      3   4
+    Ras2
+      4   4
+    LumOrb
+    MAXORB
+      20
+    Ciroot
+      7  20
+      1  2  3 4 5 6 7
+      1  1  1 1 1 1 1
+    Iterations
+      40 20
+    Levshft
+      1.0
+    Prwf
+      0.01
+
+-- ----------------------------------
+
+--- Start Module: seward at Fri Oct  7 14:33:44 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 2000 MB of memory
+                                              at 14:33:44 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals modified with ECP contributions
+                  Two-Electron Repulsion integrals
+ 
+ Title:
+                 TiCl    C2                                            r(Ti-Cl)         
+                                             4.6000                                     
+ 
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+
+                    --- Group Generators ---
+                    Rotation around the z-axis  
+ 
+ 
+                    Character Table for C2 
+ 
+                             E   C2(z)
+                    a        1     1  xy, Rz, z, I
+                    b        1    -1  x, y, xz, Ry, yz, Rx
+ 
+                    Symmetry adaptation a la MOLECULE.
+ 
+ 
+      Basis set label:CL.ECP.BARANDIARAN.7S7P1D.3S4P1D.7E-CG-AIMP-SO...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  7.000000 au
+      Associated Actual Charge    17.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       7       3        X                  
+         p       7       4        X                  
+         d       1       1                 X         
+ 
+      Effective Core Potential specification:
+      =======================================
+ 
+       Number of M1 terms:    9
+ 
+      Projection basis set 
+      Shell  nPrim  nBasis 
+         s       8       2
+         p       7       1
+ 
+      Spectral Resolvent Operators :
+         Exchange
+         Mass-Velocity
+         Darwin 1-electron contact term
+ 
+      Spectral Resolvent basis set 
+      Shell  nPrim 
+         s       7
+         p       7
+         d       1
+      Basis set label:TI.ECP.BARANDIARAN.9S6P6D3F.3S4P4D1F.10E-CG-AIMP-SO...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge 10.000000 au
+      Associated Actual Charge    22.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       9       3        X                  
+         p       6       4        X                  
+         d       6       4                 X         
+         f       3       1                 X         
+ 
+      Effective Core Potential specification:
+      =======================================
+ 
+       Number of M1 terms:   10
+ 
+      Projection basis set 
+      Shell  nPrim  nBasis 
+         s      10       3
+         p       6       1
+ 
+      Spectral Resolvent Operators :
+         Exchange
+         Mass-Velocity
+         Darwin 1-electron contact term
+ 
+      Spectral Resolvent basis set 
+      Shell  nPrim 
+         s       9
+         p       6
+         d       6
+         f       3
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      CL               0.000000       0.000000       0.000000              0.000000       0.000000       0.000000
+        2      TI               0.000000       0.000000       4.600000              0.000000       0.000000       2.434215
+ 
+ 
+            Nuclear Potential Energy             15.21739130 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a    b  
+      Basis functions           32   30
+ 
+--- Stop Module:  seward at Fri Oct  7 14:33:45 2016 /rc=0 ---
+--- Start Module: rasscf at Fri Oct  7 14:33:45 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module RASSCF with 2000 MB of memory
+                                              at 14:33:46 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+ 
+      Header of the ONEINT file:
+      --------------------------
+      TiCl    C2                                            r(Ti-Cl)                                                          
+      Integrals generated by seward 4.2.0  , Fri Oct  7 14:33:44 2016                                                         
+ 
+ 
+      OrdInt status: non-squared
+ 
+ 
+      Cartesian coordinates in Angstrom:
+      --------------------------------------------
+      No.  Label        X         Y         Z     
+      --------------------------------------------
+       1   CL         0.00000   0.00000   0.00000
+       2   TI         0.00000   0.00000   2.43422
+      --------------------------------------------
+      Nuclear repulsion energy =   15.217391
+ 
+ 
+ 
+      Wave function specifications:
+         -----------------------------
+ 
+      Number of closed shell electrons          14
+      Number of electrons in active shells       3
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                7
+      Number of active orbitals                  8
+      Number of secondary orbitals              47
+      Spin quantum number                      1.5
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+         -----------------------
+ 
+      Symmetry species                           1   2
+                                                 a   b
+      Frozen orbitals                            0   0
+      Inactive orbitals                          3   4
+      Active orbitals                            4   4
+      RAS1 orbitals                              0   0
+      RAS2 orbitals                              4   4
+      RAS3 orbitals                              0   0
+      Secondary orbitals                        25  22
+      Deleted orbitals                           0   0
+      Number of basis functions                 32  30
+ 
+      CI expansion specifications:
+         ----------------------------
+ 
+      Number of configuration state fnc.        28
+      Number of determinants                    28
+      Number of root(s) required                 7
+      CI roots used                              1     2     3     4     5     6     7
+      weights                                0.143 0.143 0.143 0.143 0.143 0.143 0.143
+      highest root included in the CI           20
+      max. size of the explicit Hamiltonian     28
+ 
+      Optimization specifications:
+         ----------------------------
+ 
+      RASSCF algorithm: Conventional
+      Maximum number of macro iterations        40
+      Maximum number of SX iterations           20
+      Threshold for RASSCF energy            0.100E-07
+      Threshold for max MO rotation          0.100E+00
+      Threshold for max BLB element          0.100E-03
+      Level shift parameter                  0.100E+01
+      Make Quasi-Newton update
+      The MO-coefficients are taken from the file:
+      INPORB                                                                                                                          
+      Title: RASSCF average (pseudo-natural) orbitals                                      
+ 
+      Total molecular charge    0.00
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                            Wave function  control section                                            *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+                          RASSCF iterations: Energy and convergence statistics
+                          ----------------------------------------------------
+ 
+      Iter CI   SX   CI       RASSCF       Energy    max ROT   max BLB   max BLB  Level Ln srch  Step   QN    Time(min)
+          iter iter root      energy       change     param    element    value    shift minimum  type update     CPU
+        1   1   20    0   -52.45274942    0.00E+00  -0.18E+00*   6  24 1 -0.19E+00*  1.14   0.00     SX     NO      0.02
+        2   1   22    0   -52.55767535   -0.10E+00*  0.94E-01    6  24 1 -0.99E-01*  1.03   0.00     SX     NO      0.03
+        3   1   18    0   -52.59685948   -0.39E-01*  0.96E-01    6  24 1 -0.46E-01*  1.00   0.00     SX     NO      0.04
+        4   1   13    0   -52.61640961   -0.20E-01*  0.85E-01    6   8 1  0.38E-01*  0.99   0.00     SX     NO      0.03
+        5   1   18    0   -52.62804648   -0.12E-01*  0.92E-01    6   8 1  0.30E-01*  0.98   2.50     LS    YES      0.05
+        6   1   11    0   -52.63684495   -0.88E-02*  0.90E-01    6   8 1  0.20E-01*  0.97   2.34     LS    YES      0.04
+        7   1   10    0   -52.64105130   -0.42E-02*  0.53E-01    6  24 1  0.16E-01*  0.96   1.41     QN    YES      0.05
+        8   1   10    0   -52.64296206   -0.19E-02*  0.39E-01    6  24 1  0.11E-01*  0.96   1.84     LS    YES      0.04
+        9   1   10    0   -52.64346489   -0.50E-03*  0.14E-01    6  24 1  0.76E-02*  0.96   1.15     QN    YES      0.04
+       10   1   10    0   -52.64389424   -0.43E-03*  0.89E-02    7   8 1 -0.32E-02*  0.96   1.68     LS    YES      0.04
+       11   1    9    0   -52.64397855   -0.84E-04*  0.11E-01    6  24 1 -0.34E-02*  0.96   1.05     QN    YES      0.11
+       12   1    9    0   -52.64406583   -0.87E-04*  0.15E-01    6  24 1 -0.23E-02*  0.96   2.50     LS    YES      0.04
+       13   1    9    0   -52.64413587   -0.70E-04*  0.17E-01    1  29 1 -0.15E-02*  0.96   1.63     QN    YES      0.04
+       14   1    9    0   -52.64416890   -0.33E-04*  0.10E-01    1  25 1  0.64E-03*  0.96   1.35     QN    YES      0.03
+       15   1    8    0   -52.64417750   -0.86E-05*  0.11E-01    6  24 1  0.42E-03*  0.96   1.69     QN    YES      0.04
+       16   1    8    0   -52.64418405   -0.65E-05*  0.11E-01    1  29 1  0.32E-03*  0.96   1.52     QN    YES      0.04
+       17   1    8    0   -52.64418870   -0.47E-05*  0.11E-01    1  25 1 -0.34E-03*  0.96   1.69     QN    YES      0.04
+       18   1    8    0   -52.64419222   -0.35E-05*  0.58E-02    6  14 1 -0.29E-03*  0.96   1.48     QN    YES      0.07
+       19   1    7    0   -52.64419370   -0.15E-05*  0.19E-02    3   8 1  0.20E-03*  0.96   1.45     QN    YES      0.05
+       20   1    7    0   -52.64419415   -0.45E-06*  0.34E-03    3   8 1  0.16E-03*  0.96   1.33     QN    YES      0.05
+       21   1    5    0   -52.64419426   -0.11E-06*  0.20E-03    3   8 1  0.93E-04   0.96   1.52     QN    YES      0.11
+       22   1    6    0   -52.64419431   -0.43E-07*  0.16E-03    3   8 1  0.35E-04   0.96   1.47     QN    YES      0.04
+       23   1    5    0   -52.64419432   -0.14E-07* -0.89E-04    3   7 1 -0.16E-04   0.96   1.40     QN    YES      0.05
+       24   1    5    0   -52.64419432   -0.36E-08  -0.22E-04    3   7 1 -0.11E-04   0.96   1.33     QN    YES      0.04
+      Convergence after 24 iterations
+       25   1    5    0   -52.64419433   -0.71E-09  -0.22E-04    3   7 1 -0.75E-05   0.96   1.33     QN    YES      0.05
+ 
+      ************************************************************************************************************************
+                                                      Wave function printout:
+                       occupation of active orbitals, and spin coupling of open shells (u,d: Spin up or down)
+      ************************************************************************************************************************
+ 
+      Note: transformation to natural orbitals
+      has been made, which may change the order of the CSFs.
+ 
+      printout of CI-coefficients larger than  0.01 for root  1
+      energy=     -52.676349
+      conf/sym  1111 2222     Coeff  Weight
+             2  uu0u 0000   0.58533 0.34261
+             6  u000 u0u0  -0.01097 0.00012
+             9  u000 0u0u   0.01097 0.00012
+            13  0u00 0uu0  -0.01097 0.00012
+            14  0u00 u00u  -0.01097 0.00012
+            17  00u0 uu00   0.02468 0.00061
+            18  00u0 u0u0   0.03192 0.00102
+            21  00u0 0u0u   0.03192 0.00102
+            22  00u0 00uu   0.01118 0.00012
+            23  000u uu00  -0.78784 0.62069
+            24  000u u0u0  -0.12877 0.01658
+            27  000u 0u0u  -0.12877 0.01658
+            28  000u 00uu   0.01685 0.00028
+ 
+      printout of CI-coefficients larger than  0.01 for root  2
+      energy=     -52.667529
+      conf/sym  1111 2222     Coeff  Weight
+             3  u0uu 0000  -0.99977 0.99954
+            19  00u0 0uu0  -0.01092 0.00012
+            20  00u0 u00u  -0.01092 0.00012
+ 
+      printout of CI-coefficients larger than  0.01 for root  3
+      energy=     -52.667529
+      conf/sym  1111 2222     Coeff  Weight
+             4  0uuu 0000  -0.99977 0.99954
+            18  00u0 u0u0   0.01092 0.00012
+            21  00u0 0u0u  -0.01092 0.00012
+ 
+      printout of CI-coefficients larger than  0.01 for root  4
+      energy=     -52.632001
+      conf/sym  1111 2222     Coeff  Weight
+             1  uuu0 0000   0.06092 0.00371
+             2  uu0u 0000   0.80826 0.65329
+             6  u000 u0u0   0.02781 0.00077
+             9  u000 0u0u  -0.02781 0.00077
+            13  0u00 0uu0   0.02781 0.00077
+            14  0u00 u00u   0.02781 0.00077
+            17  00u0 uu00  -0.02350 0.00055
+            18  00u0 u0u0  -0.02700 0.00073
+            21  00u0 0u0u  -0.02700 0.00073
+            22  00u0 00uu  -0.01025 0.00011
+            23  000u uu00   0.56997 0.32487
+            24  000u u0u0   0.07724 0.00597
+            27  000u 0u0u   0.07724 0.00597
+            28  000u 00uu  -0.03142 0.00099
+ 
+      printout of CI-coefficients larger than  0.01 for root  5
+      energy=     -52.630345
+      conf/sym  1111 2222     Coeff  Weight
+             7  u000 0uu0   0.01498 0.00022
+             8  u000 u00u  -0.01498 0.00022
+            11  0u00 uu00  -0.98589 0.97197
+            12  0u00 u0u0   0.07604 0.00578
+            15  0u00 0u0u   0.07604 0.00578
+            16  0u00 00uu   0.12016 0.01444
+            19  00u0 0uu0  -0.02306 0.00053
+            20  00u0 u00u  -0.02306 0.00053
+            25  000u 0uu0  -0.01509 0.00023
+            26  000u u00u  -0.01509 0.00023
+ 
+      printout of CI-coefficients larger than  0.01 for root  6
+      energy=     -52.630345
+      conf/sym  1111 2222     Coeff  Weight
+             5  u000 uu00  -0.98589 0.97197
+             6  u000 u0u0   0.07604 0.00578
+             9  u000 0u0u   0.07604 0.00578
+            10  u000 00uu   0.12016 0.01444
+            13  0u00 0uu0  -0.01498 0.00022
+            14  0u00 u00u   0.01498 0.00022
+            18  00u0 u0u0  -0.02306 0.00053
+            21  00u0 0u0u   0.02306 0.00053
+            24  000u u0u0  -0.01509 0.00023
+            27  000u 0u0u   0.01509 0.00023
+ 
+      printout of CI-coefficients larger than  0.01 for root  7
+      energy=     -52.605264
+      conf/sym  1111 2222     Coeff  Weight
+             1  uuu0 0000  -0.84856 0.72005
+             2  uu0u 0000   0.04198 0.00176
+             6  u000 u0u0   0.01814 0.00033
+             9  u000 0u0u  -0.01814 0.00033
+            13  0u00 0uu0   0.01814 0.00033
+            14  0u00 u00u   0.01814 0.00033
+            17  00u0 uu00   0.51855 0.26890
+            18  00u0 u0u0  -0.02174 0.00047
+            21  00u0 0u0u  -0.02174 0.00047
+            22  00u0 00uu  -0.04725 0.00223
+            23  000u uu00   0.05294 0.00280
+            24  000u u0u0  -0.02891 0.00084
+            27  000u 0u0u  -0.02891 0.00084
+            28  000u 00uu  -0.01781 0.00032
+ 
+      printout of CI-coefficients larger than  0.01 for root  8
+      energy=     -52.565496
+      conf/sym  1111 2222     Coeff  Weight
+             1  uuu0 0000   0.52423 0.27481
+             2  uu0u 0000  -0.02683 0.00072
+             6  u000 u0u0   0.02938 0.00086
+             9  u000 0u0u  -0.02938 0.00086
+            13  0u00 0uu0   0.02938 0.00086
+            14  0u00 u00u   0.02938 0.00086
+            17  00u0 uu00   0.82979 0.68855
+            18  00u0 u0u0  -0.07486 0.00560
+            21  00u0 0u0u  -0.07486 0.00560
+            22  00u0 00uu  -0.10927 0.01194
+            23  000u uu00   0.01720 0.00030
+            24  000u u0u0  -0.06403 0.00410
+            27  000u 0u0u  -0.06403 0.00410
+            28  000u 00uu  -0.02874 0.00083
+ 
+      printout of CI-coefficients larger than  0.01 for root  9
+      energy=     -52.406315
+      conf/sym  1111 2222     Coeff  Weight
+             7  u000 0uu0  -0.50000 0.25000
+             8  u000 u00u  -0.50000 0.25000
+            12  0u00 u0u0  -0.50000 0.25000
+            15  0u00 0u0u   0.50000 0.25000
+ 
+      printout of CI-coefficients larger than  0.01 for root 10
+      energy=     -52.406315
+      conf/sym  1111 2222     Coeff  Weight
+             6  u000 u0u0   0.50000 0.25000
+             9  u000 0u0u  -0.50000 0.25000
+            13  0u00 0uu0  -0.50000 0.25000
+            14  0u00 u00u  -0.50000 0.25000
+ 
+      printout of CI-coefficients larger than  0.01 for root 11
+      energy=     -52.399360
+      conf/sym  1111 2222     Coeff  Weight
+             7  u000 0uu0   0.42208 0.17815
+             8  u000 u00u   0.42208 0.17816
+            12  0u00 u0u0  -0.42208 0.17815
+            15  0u00 0u0u   0.42208 0.17815
+            19  00u0 0uu0   0.35467 0.12579
+            20  00u0 u00u  -0.35467 0.12579
+            25  000u 0uu0   0.13380 0.01790
+            26  000u u00u  -0.13380 0.01790
+ 
+      printout of CI-coefficients larger than  0.01 for root 12
+      energy=     -52.397934
+      conf/sym  1111 2222     Coeff  Weight
+             7  u000 0uu0   0.62376 0.38907
+             8  u000 u00u  -0.62376 0.38907
+            19  00u0 0uu0   0.30861 0.09524
+            20  00u0 u00u   0.30861 0.09524
+            25  000u 0uu0   0.12517 0.01567
+            26  000u u00u   0.12517 0.01567
+ 
+      printout of CI-coefficients larger than  0.01 for root 13
+      energy=     -52.397934
+      conf/sym  1111 2222     Coeff  Weight
+            13  0u00 0uu0   0.62376 0.38907
+            14  0u00 u00u  -0.62376 0.38907
+            18  00u0 u0u0  -0.30861 0.09524
+            21  00u0 0u0u   0.30861 0.09524
+            24  000u u0u0  -0.12517 0.01567
+            27  000u 0u0u   0.12517 0.01567
+ 
+      printout of CI-coefficients larger than  0.01 for root 14
+      energy=     -52.376599
+      conf/sym  1111 2222     Coeff  Weight
+             2  uu0u 0000   0.03349 0.00112
+             6  u000 u0u0  -0.49608 0.24610
+             9  u000 0u0u   0.49608 0.24610
+            13  0u00 0uu0  -0.49608 0.24610
+            14  0u00 u00u  -0.49608 0.24610
+            17  00u0 uu00   0.08101 0.00656
+            18  00u0 u0u0   0.03734 0.00139
+            21  00u0 0u0u   0.03734 0.00139
+            22  00u0 00uu   0.01629 0.00027
+            23  000u uu00   0.04791 0.00230
+            24  000u u0u0   0.03305 0.00109
+            27  000u 0u0u   0.03305 0.00109
+            28  000u 00uu   0.01866 0.00035
+ 
+      printout of CI-coefficients larger than  0.01 for root 15
+      energy=     -52.345234
+      conf/sym  1111 2222     Coeff  Weight
+             3  u0uu 0000   0.01749 0.00031
+             7  u000 0uu0   0.31365 0.09837
+             8  u000 u00u  -0.31365 0.09837
+            11  0u00 uu00   0.05966 0.00356
+            12  0u00 u0u0   0.07041 0.00496
+            15  0u00 0u0u   0.07041 0.00496
+            16  0u00 00uu   0.03694 0.00136
+            19  00u0 0uu0  -0.46309 0.21445
+            20  00u0 u00u  -0.46309 0.21445
+            25  000u 0uu0  -0.42379 0.17960
+            26  000u u00u  -0.42379 0.17960
+ 
+      printout of CI-coefficients larger than  0.01 for root 16
+      energy=     -52.345234
+      conf/sym  1111 2222     Coeff  Weight
+             4  0uuu 0000  -0.01749 0.00031
+             5  u000 uu00   0.05966 0.00356
+             6  u000 u0u0   0.07041 0.00496
+             9  u000 0u0u   0.07041 0.00496
+            10  u000 00uu   0.03694 0.00136
+            13  0u00 0uu0  -0.31365 0.09837
+            14  0u00 u00u   0.31365 0.09837
+            18  00u0 u0u0  -0.46309 0.21445
+            21  00u0 0u0u   0.46309 0.21445
+            24  000u u0u0  -0.42379 0.17960
+            27  000u 0u0u   0.42379 0.17960
+ 
+      printout of CI-coefficients larger than  0.01 for root 17
+      energy=     -52.330786
+      conf/sym  1111 2222     Coeff  Weight
+             7  u000 0uu0   0.24444 0.05975
+             8  u000 u00u   0.24444 0.05975
+            12  0u00 u0u0  -0.24444 0.05975
+            15  0u00 0u0u   0.24444 0.05975
+            19  00u0 0uu0  -0.40691 0.16557
+            20  00u0 u00u   0.40691 0.16557
+            25  000u 0uu0  -0.46360 0.21493
+            26  000u u00u   0.46360 0.21493
+ 
+      printout of CI-coefficients larger than  0.01 for root 18
+      energy=     -52.290955
+      conf/sym  1111 2222     Coeff  Weight
+             7  u000 0uu0   0.09921 0.00984
+             8  u000 u00u  -0.09921 0.00984
+            11  0u00 uu00   0.01783 0.00032
+            12  0u00 u0u0   0.07104 0.00505
+            15  0u00 0u0u   0.07104 0.00505
+            19  00u0 0uu0  -0.42514 0.18074
+            20  00u0 u00u  -0.42514 0.18074
+            25  000u 0uu0   0.55150 0.30415
+            26  000u u00u   0.55150 0.30415
+ 
+      printout of CI-coefficients larger than  0.01 for root 19
+      energy=     -52.290955
+      conf/sym  1111 2222     Coeff  Weight
+             5  u000 uu00  -0.01783 0.00032
+             6  u000 u0u0  -0.07104 0.00505
+             9  u000 0u0u  -0.07104 0.00505
+            13  0u00 0uu0   0.09921 0.00984
+            14  0u00 u00u  -0.09921 0.00984
+            18  00u0 u0u0   0.42514 0.18074
+            21  00u0 0u0u  -0.42514 0.18074
+            24  000u u0u0  -0.55150 0.30415
+            27  000u 0u0u   0.55150 0.30415
+ 
+      printout of CI-coefficients larger than  0.01 for root 20
+      energy=     -52.281444
+      conf/sym  1111 2222     Coeff  Weight
+             7  u000 0uu0  -0.10998 0.01210
+             8  u000 u00u  -0.10998 0.01210
+            12  0u00 u0u0   0.10998 0.01210
+            15  0u00 0u0u  -0.10998 0.01210
+            19  00u0 0uu0   0.45677 0.20864
+            20  00u0 u00u  -0.45677 0.20864
+            25  000u 0uu0  -0.51689 0.26717
+            26  000u u00u   0.51689 0.26717
+ 
+      Natural orbitals and occupation numbers for root  1
+      sym 1:   0.342851   0.342851   0.002017   0.997502
+      sym 2:   0.654978   0.654978   0.002412   0.002412
+ 
+      Natural orbitals and occupation numbers for root  2
+      sym 1:   0.999709   0.000042   0.999791   0.999542
+      sym 2:   0.000249   0.000249   0.000209   0.000209
+ 
+      Natural orbitals and occupation numbers for root  3
+      sym 1:   0.000042   0.999709   0.999791   0.999542
+      sym 2:   0.000249   0.000249   0.000209   0.000209
+ 
+      Natural orbitals and occupation numbers for root  4
+      sym 1:   0.658549   0.658549   0.004788   0.992117
+      sym 2:   0.339142   0.339142   0.003856   0.003856
+ 
+      Natural orbitals and occupation numbers for root  5
+      sym 1:   0.000503   0.997979   0.001572   0.000054
+      sym 2:   0.983246   0.983246   0.016701   0.016701
+ 
+      Natural orbitals and occupation numbers for root  6
+      sym 1:   0.997979   0.000503   0.001572   0.000054
+      sym 2:   0.983246   0.983246   0.016701   0.016701
+ 
+      Natural orbitals and occupation numbers for root  7
+      sym 1:   0.722474   0.722474   0.992167   0.006517
+      sym 2:   0.274137   0.274137   0.004046   0.004046
+ 
+      Natural orbitals and occupation numbers for root  8
+      sym 1:   0.277258   0.277258   0.986678   0.009870
+      sym 2:   0.704432   0.704432   0.020036   0.020036
+ 
+      Natural orbitals and occupation numbers for root  9
+      sym 1:   0.500000   0.500000   0.000000   0.000000
+      sym 2:   0.500000   0.500000   0.500000   0.500000
+ 
+      Natural orbitals and occupation numbers for root 10
+      sym 1:   0.500000   0.500000   0.000000   0.000000
+      sym 2:   0.500000   0.500000   0.500000   0.500000
+ 
+      Natural orbitals and occupation numbers for root 11
+      sym 1:   0.356309   0.356309   0.287382   0.000000
+      sym 2:   0.500001   0.499999   0.499999   0.500001
+ 
+      Natural orbitals and occupation numbers for root 12
+      sym 1:   0.778160   0.000029   0.221828   0.000017
+      sym 2:   0.499993   0.499995   0.499991   0.499988
+ 
+      Natural orbitals and occupation numbers for root 13
+      sym 1:   0.000029   0.778160   0.221828   0.000017
+      sym 2:   0.499994   0.499994   0.499990   0.499989
+ 
+      Natural orbitals and occupation numbers for root 14
+      sym 1:   0.493359   0.493359   0.014911   0.000694
+      sym 2:   0.506562   0.506562   0.492277   0.492277
+ 
+      Natural orbitals and occupation numbers for root 15
+      sym 1:   0.197055   0.014838   0.788413   0.000306
+      sym 2:   0.506736   0.506736   0.492957   0.492958
+ 
+      Natural orbitals and occupation numbers for root 16
+      sym 1:   0.014838   0.197055   0.788413   0.000306
+      sym 2:   0.506736   0.506736   0.492958   0.492958
+ 
+      Natural orbitals and occupation numbers for root 17
+      sym 1:   0.119499   0.119499   0.000000   0.761001
+      sym 2:   0.500000   0.500000   0.500000   0.500000
+ 
+      Natural orbitals and occupation numbers for root 18
+      sym 1:   0.019760   0.010452   0.000075   0.969863
+      sym 2:   0.501695   0.501694   0.498230   0.498230
+ 
+      Natural orbitals and occupation numbers for root 19
+      sym 1:   0.010452   0.019760   0.000075   0.969863
+      sym 2:   0.501695   0.501695   0.498230   0.498230
+ 
+      Natural orbitals and occupation numbers for root 20
+      sym 1:   0.024191   0.024191   0.000000   0.951617
+      sym 2:   0.500000   0.500000   0.500000   0.500000
+ 
+      ************************************************************************************************************************
+      *                                                                                                                      *
+      *                                                    Final results                                                    *
+      *                                                                                                                      *
+      ************************************************************************************************************************
+ 
+ 
+      Wave function specifications:
+      -----------------------------
+ 
+      Number of closed shell electrons          14
+      Number of electrons in active shells       3
+      Max number of holes in RAS1 space          0
+      Max nr of electrons in RAS3 space          0
+      Number of inactive orbitals                7
+      Number of active orbitals                  8
+      Number of secondary orbitals              47
+      Spin quantum number                      1.5
+      State symmetry                             1
+ 
+ 
+      Orbital specifications:
+      -----------------------
+ 
+      Symmetry species                           1   2
+                                                 a   b
+      Frozen orbitals                            0   0
+      Inactive orbitals                          3   4
+      Active orbitals                            4   4
+      RAS1 orbitals                              0   0
+      RAS2 orbitals                              4   4
+      RAS3 orbitals                              0   0
+      Secondary orbitals                        25  22
+      Deleted orbitals                           0   0
+      Number of basis functions                 32  30
+ 
+ 
+      CI expansion specifications:
+      ----------------------------
+ 
+      Number of configuration state fnc.        28
+      Number of determinants                    28
+      Number of root(s) required                 7
+      CI roots used                              1     2     3     4     5     6     7
+      weights                                0.143 0.143 0.143 0.143 0.143 0.143 0.143
+      highest root included in the CI           20
+      Root passed to geometry opt.               1
+ 
+ 
+      Final optimization conditions:
+      ------------------------------
+ 
+      Average CI energy                             -52.64419433
+      RASSCF energy for state  1                    -52.67634942
+      Super-CI energy                                 0.00000000
+      RASSCF energy change                            0.00000000
+      Max change in MO coefficients               0.470E-04
+      Max non-diagonal density matrix element    -0.218E-04
+      Maximum BLB matrix element                 -0.747E-05
+      (orbital pair   3,   7 in symmetry   1)
+      Norm of electronic gradient            0.869E-01
+ 
+ 
+      Final state energy(ies):
+      ------------------------
+ 
+      RASSCF root number  1 Total energy =        -52.67634942
+      RASSCF root number  2 Total energy =        -52.66752855
+      RASSCF root number  3 Total energy =        -52.66752855
+      RASSCF root number  4 Total energy =        -52.63200054
+      RASSCF root number  5 Total energy =        -52.63034453
+      RASSCF root number  6 Total energy =        -52.63034453
+      RASSCF root number  7 Total energy =        -52.60526415
+      RASSCF root number  8 Total energy =        -52.56549589
+      RASSCF root number  9 Total energy =        -52.40631470
+      RASSCF root number 10 Total energy =        -52.40631470
+      RASSCF root number 11 Total energy =        -52.39936044
+      RASSCF root number 12 Total energy =        -52.39793406
+      RASSCF root number 13 Total energy =        -52.39793406
+      RASSCF root number 14 Total energy =        -52.37659883
+      RASSCF root number 15 Total energy =        -52.34523446
+      RASSCF root number 16 Total energy =        -52.34523446
+      RASSCF root number 17 Total energy =        -52.33078564
+      RASSCF root number 18 Total energy =        -52.29095475
+      RASSCF root number 19 Total energy =        -52.29095475
+      RASSCF root number 20 Total energy =        -52.28144391
+ 
+ 
+      Molecular orbitals:
+         -------------------
+ 
+      Pseudonatural active orbitals and approximate occupation numbers
+ 
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 1: a  
+ 
+ 
+      Orbital            1         2         3         4         5         6         7         8
+      Energy       -1.7730   -0.9975   -0.4325    0.0000    0.0000    0.0000    0.0000    0.1189
+      Occ. No.      2.0000    2.0000    2.0000    0.5317    0.5317    0.4289    0.5706    0.0000
+ 
+    1 CL    3s     -0.0154    0.5299   -0.0571    0.0000    0.0000    0.0262   -0.0273    0.0770
+    2 CL    *s     -0.0181    0.6779   -0.0851    0.0000    0.0000    0.0274   -0.0359    0.0605
+    3 CL    *s     -0.0122    0.4483   -0.0730    0.0000    0.0000    0.0557   -0.0234    0.3311
+    4 CL    3pz    -0.0088    0.0162    0.4022    0.0000    0.0000    0.0574   -0.0545   -0.0242
+    5 CL    *pz    -0.0106    0.0209    0.4388    0.0000    0.0000    0.0970   -0.0658    0.0843
+    6 CL    *pz    -0.0030   -0.0098    0.2296    0.0000    0.0000    0.0718   -0.0466   -0.5964
+    7 CL    *pz     0.0008   -0.0080   -0.0137    0.0000    0.0000   -0.0165    0.0244    1.0473
+    8 CL    *d2-    0.0000    0.0000    0.0000    0.0000    0.0045    0.0000    0.0000    0.0000
+    9 CL    *d0    -0.0059    0.0090    0.0311    0.0000    0.0000   -0.0091   -0.0047    0.0081
+   10 CL    *d2+    0.0000    0.0000    0.0000    0.0045    0.0000    0.0000    0.0000    0.0000
+   11 TI    4s      0.0013    0.0457    0.1389    0.0000    0.0000   -0.0208    0.4321    0.2339
+   12 TI    *s      0.0089    0.0609    0.1701    0.0000    0.0000   -0.0296    0.7663    1.0846
+   13 TI    *s     -0.0018    0.0087   -0.0353    0.0000    0.0000   -0.0929    0.2681   -1.7286
+   14 TI    *pz     0.3145    0.0228    0.0326    0.0000    0.0000    0.0302   -0.0357   -0.0239
+   15 TI    *pz     0.6103    0.0499    0.0807    0.0000    0.0000    0.0790   -0.0903   -0.0527
+   16 TI    *pz     0.4737    0.0305    0.0326    0.0000    0.0000    0.0228   -0.0437   -0.0707
+   17 TI    *pz     0.0153   -0.0522   -0.0656    0.0000    0.0000   -0.2432    0.3997    0.4532
+   18 TI    3d2-    0.0000    0.0000    0.0000    0.0000    0.4285    0.0000    0.0000    0.0000
+   19 TI    *d2-    0.0000    0.0000    0.0000    0.0000    0.4716    0.0000    0.0000    0.0000
+   20 TI    *d2-    0.0000    0.0000    0.0000    0.0000    0.3516    0.0000    0.0000    0.0000
+   21 TI    *d2-    0.0000    0.0000    0.0000    0.0000    0.0609    0.0000    0.0000    0.0000
+   22 TI    3d0     0.0029    0.0096    0.0381    0.0000    0.0000   -0.4209   -0.0828   -0.0412
+   23 TI    *d0     0.0025    0.0121    0.0461    0.0000    0.0000   -0.4546   -0.0918   -0.0345
+   24 TI    *d0     0.0040    0.0198    0.0613    0.0000    0.0000   -0.3346   -0.0699   -0.0756
+   25 TI    *d0     0.0000    0.0155   -0.0002    0.0000    0.0000   -0.0527   -0.0019    0.2364
+   26 TI    3d2+    0.0000    0.0000    0.0000    0.4285    0.0000    0.0000    0.0000    0.0000
+   27 TI    *d2+    0.0000    0.0000    0.0000    0.4716    0.0000    0.0000    0.0000    0.0000
+   28 TI    *d2+    0.0000    0.0000    0.0000    0.3516    0.0000    0.0000    0.0000    0.0000
+   29 TI    *d2+    0.0000    0.0000    0.0000    0.0609    0.0000    0.0000    0.0000    0.0000
+   30 TI    *f2-    0.0000    0.0000    0.0000    0.0000    0.0084    0.0000    0.0000    0.0000
+   31 TI    *f0    -0.0009   -0.0079   -0.0138    0.0000    0.0000   -0.0097    0.0030   -0.0015
+   32 TI    *f2+    0.0000    0.0000    0.0000    0.0084    0.0000    0.0000    0.0000    0.0000
+ 
+ 
+ 
+      Molecular orbitals for symmetry species 2: b  
+ 
+ 
+      Orbital            1         2         3         4         5         6         7         8         9        10
+      Energy       -1.7729   -1.7729   -0.4005   -0.4005    0.0000    0.0000    0.0000    0.0000    0.1421    0.1421
+      Occ. No.      2.0000    2.0000    2.0000    2.0000    0.4578    0.4578    0.0107    0.0107    0.0000    0.0000
+ 
+    1 CL    3px     0.0000   -0.0014    0.0000    0.4110    0.0468    0.0000    0.0000   -0.0091    0.0000   -0.1195
+    2 CL    *px     0.0000   -0.0011    0.0000    0.4576    0.0594    0.0000    0.0000   -0.0104    0.0000    0.0229
+    3 CL    *px     0.0000   -0.0024    0.0000    0.2485    0.0707    0.0000    0.0000    0.0982    0.0000   -1.1797
+    4 CL    *px     0.0000    0.0048    0.0000   -0.0058    0.0060    0.0000    0.0000    0.0671    0.0000    1.7011
+    5 CL    3py     0.0014    0.0000   -0.4110    0.0000    0.0000    0.0468    0.0091    0.0000   -0.1195    0.0000
+    6 CL    *py     0.0011    0.0000   -0.4576    0.0000    0.0000    0.0594    0.0104    0.0000    0.0229    0.0000
+    7 CL    *py     0.0024    0.0000   -0.2485    0.0000    0.0000    0.0707   -0.0982    0.0000   -1.1797    0.0000
+    8 CL    *py    -0.0048    0.0000    0.0058    0.0000    0.0000    0.0060   -0.0671    0.0000    1.7011    0.0000
+    9 CL    *d1-    0.0017    0.0000   -0.0233    0.0000    0.0000   -0.0118    0.0236    0.0000   -0.0004    0.0000
+   10 CL    *d1+    0.0000   -0.0017    0.0000    0.0233   -0.0118    0.0000    0.0000   -0.0236    0.0000   -0.0004
+   11 TI    *px     0.0000   -0.3145    0.0000   -0.0116   -0.0182    0.0000    0.0000   -0.0420    0.0000   -0.0097
+   12 TI    *px     0.0000   -0.6092    0.0000   -0.0269   -0.0479    0.0000    0.0000   -0.1034    0.0000   -0.0219
+   13 TI    *px     0.0000   -0.4775    0.0000   -0.0171   -0.0148    0.0000    0.0000   -0.0641    0.0000   -0.0172
+   14 TI    *px     0.0000   -0.0190    0.0000    0.0584    0.1912    0.0000    0.0000    0.5498    0.0000   -0.0453
+   15 TI    *py     0.3145    0.0000    0.0116    0.0000    0.0000   -0.0182    0.0420    0.0000   -0.0097    0.0000
+   16 TI    *py     0.6092    0.0000    0.0269    0.0000    0.0000   -0.0479    0.1034    0.0000   -0.0219    0.0000
+   17 TI    *py     0.4775    0.0000    0.0171    0.0000    0.0000   -0.0148    0.0641    0.0000   -0.0172    0.0000
+   18 TI    *py     0.0190    0.0000   -0.0584    0.0000    0.0000    0.1912   -0.5498    0.0000   -0.0453    0.0000
+   19 TI    3d1-    0.0003    0.0000    0.0216    0.0000    0.0000    0.4009    0.3910    0.0000    0.0261    0.0000
+   20 TI    *d1-    0.0009    0.0000    0.0232    0.0000    0.0000    0.4422    0.2935    0.0000    0.0273    0.0000
+   21 TI    *d1-    0.0019    0.0000    0.0421    0.0000    0.0000    0.3550   -0.2859    0.0000    0.0035    0.0000
+   22 TI    *d1-   -0.0017    0.0000    0.0237    0.0000    0.0000    0.1317   -0.5146    0.0000   -0.2490    0.0000
+   23 TI    3d1+    0.0000   -0.0003    0.0000   -0.0216    0.4009    0.0000    0.0000   -0.3910    0.0000    0.0261
+   24 TI    *d1+    0.0000   -0.0009    0.0000   -0.0232    0.4422    0.0000    0.0000   -0.2935    0.0000    0.0273
+   25 TI    *d1+    0.0000   -0.0019    0.0000   -0.0421    0.3550    0.0000    0.0000    0.2859    0.0000    0.0035
+   26 TI    *d1+    0.0000    0.0017    0.0000   -0.0237    0.1317    0.0000    0.0000    0.5146    0.0000   -0.2490
+   27 TI    *f3-    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+   28 TI    *f1-   -0.0010    0.0000   -0.0136    0.0000    0.0000    0.0126   -0.0670    0.0000   -0.0042    0.0000
+   29 TI    *f1+    0.0000    0.0010    0.0000    0.0136    0.0126    0.0000    0.0000    0.0670    0.0000   -0.0042
+   30 TI    *f3+    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
+
+      Von Neumann Entropy (Root  1) =  2.46113
+ 
+
+      Mulliken population Analysis for root number: 1
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6711  0.0000
+      3pz    0.6547  0.0000
+      3py    0.6711  0.0000
+      4s     0.0000 -0.0087
+      3d2+   0.0000  0.1051
+      3d1+   0.0000  0.2246
+      3d0    0.0000  0.0155
+      3d1-   0.0000  0.2246
+      3d2-   0.0000  0.1051
+      *s     1.9023  0.8945
+      *px    1.2499  2.0409
+      *pz    1.1659  2.2591
+      *py    1.2499  2.0409
+      *d2+   0.0000  0.2377
+      *d1+   0.0022  0.4647
+      *d0    0.0041  0.1043
+      *d1-   0.0022  0.4647
+      *d2-   0.0000  0.2377
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0040
+      *f0    0.0000  0.0058
+      *f1-   0.0000  0.0040
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5756  9.4244
+ 
+      N-E   -0.5756  0.5756
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  1
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    4.7332           Total=    4.7332
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -28.1611              XY=    0.0000              XZ=    0.0000              YY=  -28.1611
+                    YZ=    0.0000              ZZ=  -36.3611
+      In traceless form (Debye*Ang)
+                    XX=    4.1000              XY=    0.0000              XZ=    0.0000              YY=    4.1000
+                    YZ=    0.0000              ZZ=   -8.2000
+
+      Mulliken spin population Analysis for root number:  1
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0026  0.0000
+      3pz    0.0057  0.0000
+      3py    0.0026  0.0000
+      4s     0.0000 -0.0055
+      3d2+   0.0000  0.1051
+      3d1+   0.0000  0.2228
+      3d0    0.0000  0.0092
+      3d1-   0.0000  0.2228
+      3d2-   0.0000  0.1051
+      *s     0.0006  0.7766
+      *px    0.0025  0.0100
+      *pz    0.0077  0.1809
+      *py    0.0025  0.0100
+      *d2+   0.0000  0.2377
+      *d1+   0.0003  0.4190
+      *d0    0.0000  0.0242
+      *d1-   0.0003  0.4190
+      *d2-   0.0000  0.2377
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0000
+      *f0    0.0000  0.0001
+      *f1-   0.0000  0.0000
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0251  2.9749
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root  2) =  1.50653
+ 
+
+      Mulliken population Analysis for root number: 2
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6684  0.0000
+      3pz    0.6598  0.0000
+      3py    0.6684  0.0000
+      4s     0.0000 -0.0087
+      3d2+   0.0000  0.3066
+      3d1+   0.0000  0.0019
+      3d0    0.0000  0.3102
+      3d1-   0.0000  0.0019
+      3d2-   0.0000  0.0000
+      *s     1.9032  0.8995
+      *px    1.2474  2.0309
+      *pz    1.1774  2.3321
+      *py    1.2474  2.0309
+      *d2+   0.0001  0.6930
+      *d1+   0.0019  0.0459
+      *d0    0.0050  0.7126
+      *d1-   0.0019  0.0459
+      *d2-   0.0000  0.0000
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0001
+      *f1+   0.0000  0.0039
+      *f0    0.0000  0.0062
+      *f1-   0.0000  0.0039
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5830  9.4170
+ 
+      N-E   -0.5830  0.5830
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  2
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    4.1250           Total=    4.1250
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -28.3763              XY=    0.0000              XZ=    0.0000              YY=  -28.3763
+                    YZ=    0.0000              ZZ=  -38.8782
+      In traceless form (Debye*Ang)
+                    XX=    5.2510              XY=    0.0000              XZ=    0.0000              YY=    5.2510
+                    YZ=    0.0000              ZZ=  -10.5019
+
+      Mulliken spin population Analysis for root number:  2
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0000  0.0000
+      3pz    0.0108  0.0000
+      3py    0.0000  0.0000
+      4s     0.0000 -0.0055
+      3d2+   0.0000  0.3066
+      3d1+   0.0000  0.0001
+      3d0    0.0000  0.3039
+      3d1-   0.0000  0.0001
+      3d2-   0.0000  0.0000
+      *s     0.0015  0.7815
+      *px    0.0000  0.0001
+      *pz    0.0193  0.2539
+      *py    0.0000  0.0001
+      *d2+   0.0001  0.6930
+      *d1+   0.0000  0.0003
+      *d0    0.0009  0.6325
+      *d1-   0.0000  0.0003
+      *d2-   0.0000  0.0000
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0001
+      *f1+   0.0000  0.0000
+      *f0    0.0000  0.0005
+      *f1-   0.0000  0.0000
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0325  2.9675
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root  3) =  1.50653
+ 
+
+      Mulliken population Analysis for root number: 3
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6684  0.0000
+      3pz    0.6598  0.0000
+      3py    0.6684  0.0000
+      4s     0.0000 -0.0087
+      3d2+   0.0000  0.0000
+      3d1+   0.0000  0.0019
+      3d0    0.0000  0.3102
+      3d1-   0.0000  0.0019
+      3d2-   0.0000  0.3066
+      *s     1.9032  0.8995
+      *px    1.2474  2.0309
+      *pz    1.1774  2.3321
+      *py    1.2474  2.0309
+      *d2+   0.0000  0.0000
+      *d1+   0.0019  0.0459
+      *d0    0.0050  0.7126
+      *d1-   0.0019  0.0459
+      *d2-   0.0001  0.6930
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0039
+      *f0    0.0000  0.0062
+      *f1-   0.0000  0.0039
+      *f2-   0.0000  0.0001
+      *f3-   0.0000  0.0000
+      Total  7.5830  9.4170
+ 
+      N-E   -0.5830  0.5830
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  3
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    4.1250           Total=    4.1250
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -28.3763              XY=    0.0000              XZ=    0.0000              YY=  -28.3763
+                    YZ=    0.0000              ZZ=  -38.8782
+      In traceless form (Debye*Ang)
+                    XX=    5.2510              XY=    0.0000              XZ=    0.0000              YY=    5.2510
+                    YZ=    0.0000              ZZ=  -10.5019
+
+      Mulliken spin population Analysis for root number:  3
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0000  0.0000
+      3pz    0.0108  0.0000
+      3py    0.0000  0.0000
+      4s     0.0000 -0.0055
+      3d2+   0.0000  0.0000
+      3d1+   0.0000  0.0001
+      3d0    0.0000  0.3039
+      3d1-   0.0000  0.0001
+      3d2-   0.0000  0.3066
+      *s     0.0015  0.7815
+      *px    0.0000  0.0001
+      *pz    0.0193  0.2539
+      *py    0.0000  0.0001
+      *d2+   0.0000  0.0000
+      *d1+   0.0000  0.0003
+      *d0    0.0009  0.6325
+      *d1-   0.0000  0.0003
+      *d2-   0.0001  0.6930
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0000
+      *f0    0.0000  0.0005
+      *f1-   0.0000  0.0000
+      *f2-   0.0000  0.0001
+      *f3-   0.0000  0.0000
+      Total  0.0325  2.9675
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root  4) =  2.48097
+ 
+
+      Mulliken population Analysis for root number: 4
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6698  0.0000
+      3pz    0.6541  0.0000
+      3py    0.6698  0.0000
+      4s     0.0000 -0.0087
+      3d2+   0.0000  0.2019
+      3d1+   0.0000  0.1135
+      3d0    0.0000  0.0232
+      3d1-   0.0000  0.1135
+      3d2-   0.0000  0.2019
+      *s     1.9023  0.8824
+      *px    1.2487  2.0384
+      *pz    1.1653  2.2443
+      *py    1.2487  2.0384
+      *d2+   0.0001  0.4565
+      *d1+   0.0021  0.2665
+      *d0    0.0041  0.1221
+      *d1-   0.0021  0.2665
+      *d2-   0.0001  0.4565
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0040
+      *f0    0.0000  0.0057
+      *f1-   0.0000  0.0040
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5692  9.4308
+ 
+      N-E   -0.5692  0.5692
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  4
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    5.0074           Total=    5.0074
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -28.6170              XY=    0.0000              XZ=    0.0000              YY=  -28.6170
+                    YZ=    0.0000              ZZ=  -34.5388
+      In traceless form (Debye*Ang)
+                    XX=    2.9609              XY=    0.0000              XZ=    0.0000              YY=    2.9609
+                    YZ=    0.0000              ZZ=   -5.9217
+
+      Mulliken spin population Analysis for root number:  4
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0014  0.0000
+      3pz    0.0051  0.0000
+      3py    0.0014  0.0000
+      4s     0.0000 -0.0055
+      3d2+   0.0000  0.2019
+      3d1+   0.0000  0.1117
+      3d0    0.0000  0.0169
+      3d1-   0.0000  0.1117
+      3d2-   0.0000  0.2019
+      *s     0.0006  0.7644
+      *px    0.0014  0.0076
+      *pz    0.0072  0.1661
+      *py    0.0014  0.0076
+      *d2+   0.0001  0.4565
+      *d1+   0.0002  0.2208
+      *d0    0.0000  0.0421
+      *d1-   0.0002  0.2208
+      *d2-   0.0001  0.4565
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0001
+      *f0    0.0000  0.0001
+      *f1-   0.0000  0.0001
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0187  2.9813
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root  5) =  1.63448
+ 
+
+      Mulliken population Analysis for root number: 5
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6721  0.0000
+      3pz    0.6490  0.0000
+      3py    0.6721  0.0000
+      4s     0.0000 -0.0033
+      3d2+   0.0000  0.0002
+      3d1+   0.0000  0.2400
+      3d0    0.0000  0.0067
+      3d1-   0.0000  0.2400
+      3d2-   0.0000  0.3060
+      *s     1.9017  0.1182
+      *px    1.2519  2.0966
+      *pz    1.1582  2.0782
+      *py    1.2519  2.0966
+      *d2+   0.0000  0.0003
+      *d1+   0.0029  0.7318
+      *d0    0.0041  0.0809
+      *d1-   0.0029  0.7318
+      *d2-   0.0001  0.6918
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0047
+      *f0    0.0000  0.0057
+      *f1-   0.0000  0.0047
+      *f2-   0.0000  0.0001
+      *f3-   0.0000  0.0000
+      Total  7.5690  9.4310
+ 
+      N-E   -0.5690  0.5690
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  5
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    6.6176           Total=    6.6176
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -25.3222              XY=    0.0000              XZ=    0.0000              YY=  -25.3222
+                    YZ=    0.0000              ZZ=  -28.8270
+      In traceless form (Debye*Ang)
+                    XX=    1.7524              XY=    0.0000              XZ=    0.0000              YY=    1.7524
+                    YZ=    0.0000              ZZ=   -3.5049
+
+      Mulliken spin population Analysis for root number:  5
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0036  0.0000
+      3pz    0.0000  0.0000
+      3py    0.0036  0.0000
+      4s     0.0000  0.0000
+      3d2+   0.0000  0.0002
+      3d1+   0.0000  0.2382
+      3d0    0.0000  0.0004
+      3d1-   0.0000  0.2382
+      3d2-   0.0000  0.3060
+      *s     0.0000  0.0003
+      *px    0.0045  0.0657
+      *pz    0.0000  0.0000
+      *py    0.0045  0.0657
+      *d2+   0.0000  0.0003
+      *d1+   0.0011  0.6862
+      *d0    0.0000  0.0009
+      *d1-   0.0011  0.6862
+      *d2-   0.0001  0.6918
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0007
+      *f0    0.0000  0.0000
+      *f1-   0.0000  0.0007
+      *f2-   0.0000  0.0001
+      *f3-   0.0000  0.0000
+      Total  0.0185  2.9815
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root  6) =  1.63448
+ 
+
+      Mulliken population Analysis for root number: 6
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6721  0.0000
+      3pz    0.6490  0.0000
+      3py    0.6721  0.0000
+      4s     0.0000 -0.0033
+      3d2+   0.0000  0.3060
+      3d1+   0.0000  0.2400
+      3d0    0.0000  0.0067
+      3d1-   0.0000  0.2400
+      3d2-   0.0000  0.0002
+      *s     1.9017  0.1182
+      *px    1.2519  2.0966
+      *pz    1.1582  2.0782
+      *py    1.2519  2.0966
+      *d2+   0.0001  0.6918
+      *d1+   0.0029  0.7318
+      *d0    0.0041  0.0809
+      *d1-   0.0029  0.7318
+      *d2-   0.0000  0.0003
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0001
+      *f1+   0.0000  0.0047
+      *f0    0.0000  0.0057
+      *f1-   0.0000  0.0047
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5690  9.4310
+ 
+      N-E   -0.5690  0.5690
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  6
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    6.6176           Total=    6.6176
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -25.3222              XY=    0.0000              XZ=    0.0000              YY=  -25.3222
+                    YZ=    0.0000              ZZ=  -28.8270
+      In traceless form (Debye*Ang)
+                    XX=    1.7524              XY=    0.0000              XZ=    0.0000              YY=    1.7524
+                    YZ=    0.0000              ZZ=   -3.5049
+
+      Mulliken spin population Analysis for root number:  6
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0036  0.0000
+      3pz    0.0000  0.0000
+      3py    0.0036  0.0000
+      4s     0.0000  0.0000
+      3d2+   0.0000  0.3060
+      3d1+   0.0000  0.2382
+      3d0    0.0000  0.0004
+      3d1-   0.0000  0.2382
+      3d2-   0.0000  0.0002
+      *s     0.0000  0.0003
+      *px    0.0045  0.0657
+      *pz    0.0000  0.0000
+      *py    0.0045  0.0657
+      *d2+   0.0001  0.6918
+      *d1+   0.0011  0.6862
+      *d0    0.0000  0.0009
+      *d1-   0.0011  0.6862
+      *d2-   0.0000  0.0003
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0001
+      *f1+   0.0000  0.0007
+      *f0    0.0000  0.0000
+      *f1-   0.0000  0.0007
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0185  2.9815
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root  7) =  2.41210
+ 
+
+      Mulliken population Analysis for root number: 7
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6695  0.0000
+      3pz    0.6544  0.0000
+      3py    0.6695  0.0000
+      4s     0.0000 -0.0033
+      3d2+   0.0000  0.2215
+      3d1+   0.0000  0.0715
+      3d0    0.0000  0.2957
+      3d1-   0.0000  0.0715
+      3d2-   0.0000  0.2215
+      *s     1.9026  0.1302
+      *px    1.2486  2.0471
+      *pz    1.1700  2.1594
+      *py    1.2486  2.0471
+      *d2+   0.0001  0.5008
+      *d1+   0.0021  0.2353
+      *d0    0.0050  0.6764
+      *d1-   0.0021  0.2353
+      *d2-   0.0001  0.5008
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0001
+      *f1+   0.0000  0.0041
+      *f0    0.0000  0.0061
+      *f1-   0.0000  0.0041
+      *f2-   0.0000  0.0001
+      *f3-   0.0000  0.0000
+      Total  7.5747  9.4253
+ 
+      N-E   -0.5747  0.5747
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  7
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    7.0936           Total=    7.0936
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -24.1231              XY=    0.0000              XZ=    0.0000              YY=  -24.1231
+                    YZ=    0.0000              ZZ=  -27.5188
+      In traceless form (Debye*Ang)
+                    XX=    1.6979              XY=    0.0000              XZ=    0.0000              YY=    1.6979
+                    YZ=    0.0000              ZZ=   -3.3957
+
+      Mulliken spin population Analysis for root number:  7
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0010  0.0000
+      3pz    0.0054  0.0000
+      3py    0.0010  0.0000
+      4s     0.0000  0.0000
+      3d2+   0.0000  0.2215
+      3d1+   0.0000  0.0696
+      3d0    0.0000  0.2895
+      3d1-   0.0000  0.0696
+      3d2-   0.0000  0.2215
+      *s     0.0009  0.0122
+      *px    0.0012  0.0162
+      *pz    0.0118  0.0812
+      *py    0.0012  0.0162
+      *d2+   0.0001  0.5008
+      *d1+   0.0003  0.1896
+      *d0    0.0009  0.5963
+      *d1-   0.0003  0.1896
+      *d2-   0.0001  0.5008
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0001
+      *f1+   0.0000  0.0002
+      *f0    0.0000  0.0004
+      *f1-   0.0000  0.0002
+      *f2-   0.0000  0.0001
+      *f3-   0.0000  0.0000
+      Total  0.0242  2.9758
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root  8) =  2.52464
+ 
+
+      Mulliken population Analysis for root number: 8
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6710  0.0000
+      3pz    0.6542  0.0000
+      3py    0.6710  0.0000
+      4s     0.0000 -0.0033
+      3d2+   0.0000  0.0850
+      3d1+   0.0000  0.1712
+      3d0    0.0000  0.2964
+      3d1-   0.0000  0.1712
+      3d2-   0.0000  0.0850
+      *s     1.9026  0.1303
+      *px    1.2507  2.0822
+      *pz    1.1698  2.1551
+      *py    1.2507  2.0822
+      *d2+   0.0000  0.1922
+      *d1+   0.0027  0.5421
+      *d0    0.0050  0.6783
+      *d1-   0.0027  0.5421
+      *d2-   0.0000  0.1922
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0045
+      *f0    0.0000  0.0061
+      *f1-   0.0000  0.0045
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5825  9.4175
+ 
+      N-E   -0.5825  0.5825
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  8
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    6.1494           Total=    6.1494
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -24.6544              XY=    0.0000              XZ=    0.0000              YY=  -24.6544
+                    YZ=    0.0000              ZZ=  -31.7716
+      In traceless form (Debye*Ang)
+                    XX=    3.5586              XY=    0.0000              XZ=    0.0000              YY=    3.5586
+                    YZ=    0.0000              ZZ=   -7.1172
+
+      Mulliken spin population Analysis for root number:  8
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0026  0.0000
+      3pz    0.0052  0.0000
+      3py    0.0026  0.0000
+      4s     0.0000  0.0000
+      3d2+   0.0000  0.0850
+      3d1+   0.0000  0.1694
+      3d0    0.0000  0.2901
+      3d1-   0.0000  0.1694
+      3d2-   0.0000  0.0850
+      *s     0.0009  0.0124
+      *px    0.0033  0.0514
+      *pz    0.0116  0.0769
+      *py    0.0033  0.0514
+      *d2+   0.0000  0.1922
+      *d1+   0.0008  0.4965
+      *d0    0.0009  0.5982
+      *d1-   0.0008  0.4965
+      *d2-   0.0000  0.1922
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0006
+      *f0    0.0000  0.0004
+      *f1-   0.0000  0.0006
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0321  2.9679
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root  9) =  3.00000
+ 
+
+      Mulliken population Analysis for root number: 9
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6704  0.0000
+      3pz    0.6490  0.0000
+      3py    0.6704  0.0000
+      4s     0.0000 -0.0033
+      3d2+   0.0000  0.1533
+      3d1+   0.0000  0.2341
+      3d0    0.0000  0.0063
+      3d1-   0.0000  0.2341
+      3d2-   0.0000  0.1533
+      *s     1.9017  0.1179
+      *px    1.2540  2.2149
+      *pz    1.1582  2.0782
+      *py    1.2540  2.2149
+      *d2+   0.0000  0.3466
+      *d1+   0.0031  0.6168
+      *d0    0.0041  0.0801
+      *d1-   0.0031  0.6168
+      *d2-   0.0000  0.3466
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0067
+      *f0    0.0000  0.0057
+      *f1-   0.0000  0.0067
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5702  9.4298
+ 
+      N-E   -0.5702  0.5702
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number:  9
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    4.0914           Total=    4.0914
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -28.9773              XY=    0.0000              XZ=    0.0000              YY=  -28.9773
+                    YZ=    0.0000              ZZ=  -36.9757
+      In traceless form (Debye*Ang)
+                    XX=    3.9992              XY=    0.0000              XZ=    0.0000              YY=    3.9992
+                    YZ=    0.0000              ZZ=   -7.9984
+
+      Mulliken spin population Analysis for root number:  9
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0020  0.0000
+      3pz    0.0000  0.0000
+      3py    0.0020  0.0000
+      4s     0.0000  0.0000
+      3d2+   0.0000  0.1533
+      3d1+   0.0000  0.2323
+      3d0    0.0000  0.0000
+      3d1-   0.0000  0.2323
+      3d2-   0.0000  0.1533
+      *s     0.0000  0.0000
+      *px    0.0066  0.1840
+      *pz    0.0000  0.0000
+      *py    0.0066  0.1840
+      *d2+   0.0000  0.3466
+      *d1+   0.0012  0.5711
+      *d0    0.0000  0.0000
+      *d1-   0.0012  0.5711
+      *d2-   0.0000  0.3466
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0028
+      *f0    0.0000  0.0000
+      *f1-   0.0000  0.0028
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0198  2.9802
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root 10) =  3.00000
+ 
+
+      Mulliken population Analysis for root number:10
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6704  0.0000
+      3pz    0.6490  0.0000
+      3py    0.6704  0.0000
+      4s     0.0000 -0.0033
+      3d2+   0.0000  0.1533
+      3d1+   0.0000  0.2341
+      3d0    0.0000  0.0063
+      3d1-   0.0000  0.2341
+      3d2-   0.0000  0.1533
+      *s     1.9017  0.1179
+      *px    1.2540  2.2149
+      *pz    1.1582  2.0782
+      *py    1.2540  2.2149
+      *d2+   0.0000  0.3466
+      *d1+   0.0031  0.6168
+      *d0    0.0041  0.0801
+      *d1-   0.0031  0.6168
+      *d2-   0.0000  0.3466
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0067
+      *f0    0.0000  0.0057
+      *f1-   0.0000  0.0067
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5702  9.4298
+ 
+      N-E   -0.5702  0.5702
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number: 10
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    4.0914           Total=    4.0914
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -28.9773              XY=    0.0000              XZ=    0.0000              YY=  -28.9773
+                    YZ=    0.0000              ZZ=  -36.9757
+      In traceless form (Debye*Ang)
+                    XX=    3.9992              XY=    0.0000              XZ=    0.0000              YY=    3.9992
+                    YZ=    0.0000              ZZ=   -7.9984
+
+      Mulliken spin population Analysis for root number: 10
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0020  0.0000
+      3pz    0.0000  0.0000
+      3py    0.0020  0.0000
+      4s     0.0000  0.0000
+      3d2+   0.0000  0.1533
+      3d1+   0.0000  0.2323
+      3d0    0.0000  0.0000
+      3d1-   0.0000  0.2323
+      3d2-   0.0000  0.1533
+      *s     0.0000  0.0000
+      *px    0.0066  0.1840
+      *pz    0.0000  0.0000
+      *py    0.0066  0.1840
+      *d2+   0.0000  0.3466
+      *d1+   0.0012  0.5711
+      *d0    0.0000  0.0000
+      *d1-   0.0012  0.5711
+      *d2-   0.0000  0.3466
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0028
+      *f0    0.0000  0.0000
+      *f1-   0.0000  0.0028
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0198  2.9802
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root 11) =  3.28897
+ 
+
+      Mulliken population Analysis for root number:11
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6704  0.0000
+      3pz    0.6495  0.0000
+      3py    0.6704  0.0000
+      4s     0.0000 -0.0035
+      3d2+   0.0000  0.1093
+      3d1+   0.0000  0.2341
+      3d0    0.0000  0.0913
+      3d1-   0.0000  0.2341
+      3d2-   0.0000  0.1093
+      *s     1.9019  0.1349
+      *px    1.2540  2.2149
+      *pz    1.1605  2.0820
+      *py    1.2540  2.2149
+      *d2+   0.0000  0.2470
+      *d1+   0.0031  0.6168
+      *d0    0.0044  0.2585
+      *d1-   0.0031  0.6168
+      *d2-   0.0000  0.2470
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0067
+      *f0    0.0000  0.0057
+      *f1-   0.0000  0.0067
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5736  9.4264
+ 
+      N-E   -0.5736  0.5736
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number: 11
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    4.0907           Total=    4.0907
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -28.9350              XY=    0.0000              XZ=    0.0000              YY=  -28.9350
+                    YZ=    0.0000              ZZ=  -37.3441
+      In traceless form (Debye*Ang)
+                    XX=    4.2045              XY=    0.0000              XZ=    0.0000              YY=    4.2045
+                    YZ=    0.0000              ZZ=   -8.4090
+
+      Mulliken spin population Analysis for root number: 11
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0020  0.0000
+      3pz    0.0005  0.0000
+      3py    0.0020  0.0000
+      4s     0.0000 -0.0002
+      3d2+   0.0000  0.1093
+      3d1+   0.0000  0.2323
+      3d0    0.0000  0.0850
+      3d1-   0.0000  0.2323
+      3d2-   0.0000  0.1093
+      *s     0.0002  0.0169
+      *px    0.0066  0.1840
+      *pz    0.0024  0.0038
+      *py    0.0066  0.1840
+      *d2+   0.0000  0.2470
+      *d1+   0.0012  0.5711
+      *d0    0.0003  0.1784
+      *d1-   0.0012  0.5711
+      *d2-   0.0000  0.2470
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0028
+      *f0    0.0000  0.0001
+      *f1-   0.0000  0.0028
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0231  2.9769
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root 12) =  2.88211
+ 
+
+      Mulliken population Analysis for root number:12
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6704  0.0000
+      3pz    0.6493  0.0000
+      3py    0.6704  0.0000
+      4s     0.0000 -0.0035
+      3d2+   0.0000  0.2386
+      3d1+   0.0000  0.2341
+      3d0    0.0000  0.0713
+      3d1-   0.0000  0.2341
+      3d2-   0.0000  0.0000
+      *s     1.9019  0.1333
+      *px    1.2540  2.2149
+      *pz    1.1599  2.0806
+      *py    1.2540  2.2149
+      *d2+   0.0001  0.5394
+      *d1+   0.0031  0.6168
+      *d0    0.0043  0.2168
+      *d1-   0.0031  0.6168
+      *d2-   0.0000  0.0000
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0001
+      *f1+   0.0000  0.0067
+      *f0    0.0000  0.0057
+      *f1-   0.0000  0.0067
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5727  9.4273
+ 
+      N-E   -0.5727  0.5727
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number: 12
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    4.0964           Total=    4.0964
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -28.9619              XY=    0.0000              XZ=    0.0000              YY=  -28.9619
+                    YZ=    0.0000              ZZ=  -37.2310
+      In traceless form (Debye*Ang)
+                    XX=    4.1346              XY=    0.0000              XZ=    0.0000              YY=    4.1346
+                    YZ=    0.0000              ZZ=   -8.2692
+
+      Mulliken spin population Analysis for root number: 12
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0020  0.0000
+      3pz    0.0004  0.0000
+      3py    0.0020  0.0000
+      4s     0.0000 -0.0002
+      3d2+   0.0000  0.2386
+      3d1+   0.0000  0.2323
+      3d0    0.0000  0.0651
+      3d1-   0.0000  0.2323
+      3d2-   0.0000  0.0000
+      *s     0.0001  0.0154
+      *px    0.0066  0.1840
+      *pz    0.0018  0.0023
+      *py    0.0066  0.1840
+      *d2+   0.0001  0.5394
+      *d1+   0.0012  0.5711
+      *d0    0.0002  0.1367
+      *d1-   0.0012  0.5711
+      *d2-   0.0000  0.0000
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0001
+      *f1+   0.0000  0.0028
+      *f0    0.0000  0.0000
+      *f1-   0.0000  0.0028
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0222  2.9778
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root 13) =  2.88211
+ 
+
+      Mulliken population Analysis for root number:13
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6704  0.0000
+      3pz    0.6493  0.0000
+      3py    0.6704  0.0000
+      4s     0.0000 -0.0035
+      3d2+   0.0000  0.0000
+      3d1+   0.0000  0.2341
+      3d0    0.0000  0.0713
+      3d1-   0.0000  0.2341
+      3d2-   0.0000  0.2386
+      *s     1.9019  0.1333
+      *px    1.2540  2.2149
+      *pz    1.1599  2.0806
+      *py    1.2540  2.2149
+      *d2+   0.0000  0.0000
+      *d1+   0.0031  0.6168
+      *d0    0.0043  0.2168
+      *d1-   0.0031  0.6168
+      *d2-   0.0001  0.5394
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0067
+      *f0    0.0000  0.0057
+      *f1-   0.0000  0.0067
+      *f2-   0.0000  0.0001
+      *f3-   0.0000  0.0000
+      Total  7.5727  9.4273
+ 
+      N-E   -0.5727  0.5727
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number: 13
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    4.0964           Total=    4.0964
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -28.9619              XY=    0.0000              XZ=    0.0000              YY=  -28.9619
+                    YZ=    0.0000              ZZ=  -37.2310
+      In traceless form (Debye*Ang)
+                    XX=    4.1346              XY=    0.0000              XZ=    0.0000              YY=    4.1346
+                    YZ=    0.0000              ZZ=   -8.2692
+
+      Mulliken spin population Analysis for root number: 13
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0020  0.0000
+      3pz    0.0004  0.0000
+      3py    0.0020  0.0000
+      4s     0.0000 -0.0002
+      3d2+   0.0000  0.0000
+      3d1+   0.0000  0.2323
+      3d0    0.0000  0.0651
+      3d1-   0.0000  0.2323
+      3d2-   0.0000  0.2386
+      *s     0.0001  0.0154
+      *px    0.0066  0.1840
+      *pz    0.0018  0.0023
+      *py    0.0066  0.1840
+      *d2+   0.0000  0.0000
+      *d1+   0.0012  0.5711
+      *d0    0.0002  0.1367
+      *d1-   0.0012  0.5711
+      *d2-   0.0001  0.5394
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0028
+      *f0    0.0000  0.0000
+      *f1-   0.0000  0.0028
+      *f2-   0.0000  0.0001
+      *f3-   0.0000  0.0000
+      Total  0.0222  2.9778
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root 14) =  3.05212
+ 
+
+      Mulliken population Analysis for root number:14
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6705  0.0000
+      3pz    0.6490  0.0000
+      3py    0.6705  0.0000
+      4s     0.0000 -0.0033
+      3d2+   0.0000  0.1513
+      3d1+   0.0000  0.2368
+      3d0    0.0000  0.0100
+      3d1-   0.0000  0.2368
+      3d2-   0.0000  0.1513
+      *s     1.9017  0.1217
+      *px    1.2540  2.2121
+      *pz    1.1583  2.0784
+      *py    1.2540  2.2121
+      *d2+   0.0000  0.3420
+      *d1+   0.0031  0.6157
+      *d0    0.0041  0.0879
+      *d1-   0.0031  0.6157
+      *d2-   0.0000  0.3420
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0067
+      *f0    0.0000  0.0057
+      *f1-   0.0000  0.0067
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5703  9.4297
+ 
+      N-E   -0.5703  0.5703
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number: 14
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    4.1616           Total=    4.1616
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -28.8976              XY=    0.0000              XZ=    0.0000              YY=  -28.8976
+                    YZ=    0.0000              ZZ=  -36.7514
+      In traceless form (Debye*Ang)
+                    XX=    3.9269              XY=    0.0000              XZ=    0.0000              YY=    3.9269
+                    YZ=    0.0000              ZZ=   -7.8537
+
+      Mulliken spin population Analysis for root number: 14
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0020  0.0000
+      3pz    0.0000  0.0000
+      3py    0.0020  0.0000
+      4s     0.0000  0.0000
+      3d2+   0.0000  0.1513
+      3d1+   0.0000  0.2350
+      3d0    0.0000  0.0037
+      3d1-   0.0000  0.2350
+      3d2-   0.0000  0.1513
+      *s     0.0000  0.0038
+      *px    0.0066  0.1812
+      *pz    0.0001  0.0002
+      *py    0.0066  0.1812
+      *d2+   0.0000  0.3420
+      *d1+   0.0012  0.5700
+      *d0    0.0000  0.0079
+      *d1-   0.0012  0.5700
+      *d2-   0.0000  0.3420
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0028
+      *f0    0.0000  0.0000
+      *f1-   0.0000  0.0028
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0198  2.9802
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root 15) =  2.91294
+ 
+
+      Mulliken population Analysis for root number:15
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6705  0.0000
+      3pz    0.6490  0.0000
+      3py    0.6705  0.0000
+      4s     0.0000 -0.0053
+      3d2+   0.0000  0.0604
+      3d1+   0.0000  0.2373
+      3d0    0.0000  0.1817
+      3d1-   0.0000  0.2373
+      3d2-   0.0000  0.0045
+      *s     1.9021  0.3480
+      *px    1.2540  2.2129
+      *pz    1.1623  2.0825
+      *py    1.2540  2.2129
+      *d2+   0.0000  0.1366
+      *d1+   0.0031  0.6154
+      *d0    0.0046  0.4561
+      *d1-   0.0031  0.6154
+      *d2-   0.0000  0.0103
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0067
+      *f0    0.0000  0.0057
+      *f1-   0.0000  0.0067
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5751  9.4249
+ 
+      N-E   -0.5751  0.5751
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number: 15
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    3.9766           Total=    3.9766
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -30.0582              XY=    0.0000              XZ=    0.0000              YY=  -30.0582
+                    YZ=    0.0000              ZZ=  -38.0226
+      In traceless form (Debye*Ang)
+                    XX=    3.9822              XY=    0.0000              XZ=    0.0000              YY=    3.9822
+                    YZ=    0.0000              ZZ=   -7.9644
+
+      Mulliken spin population Analysis for root number: 15
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0020  0.0000
+      3pz    0.0000  0.0000
+      3py    0.0020  0.0000
+      4s     0.0000 -0.0021
+      3d2+   0.0000  0.0604
+      3d1+   0.0000  0.2354
+      3d0    0.0000  0.1754
+      3d1-   0.0000  0.2354
+      3d2-   0.0000  0.0045
+      *s     0.0003  0.2300
+      *px    0.0066  0.1820
+      *pz    0.0041  0.0042
+      *py    0.0066  0.1820
+      *d2+   0.0000  0.1366
+      *d1+   0.0012  0.5697
+      *d0    0.0005  0.3761
+      *d1-   0.0012  0.5697
+      *d2-   0.0000  0.0103
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0028
+      *f0    0.0000  0.0000
+      *f1-   0.0000  0.0028
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0247  2.9753
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root 16) =  2.91294
+ 
+
+      Mulliken population Analysis for root number:16
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6705  0.0000
+      3pz    0.6490  0.0000
+      3py    0.6705  0.0000
+      4s     0.0000 -0.0053
+      3d2+   0.0000  0.0045
+      3d1+   0.0000  0.2373
+      3d0    0.0000  0.1817
+      3d1-   0.0000  0.2373
+      3d2-   0.0000  0.0604
+      *s     1.9021  0.3480
+      *px    1.2540  2.2129
+      *pz    1.1623  2.0825
+      *py    1.2540  2.2129
+      *d2+   0.0000  0.0103
+      *d1+   0.0031  0.6154
+      *d0    0.0046  0.4561
+      *d1-   0.0031  0.6154
+      *d2-   0.0000  0.1366
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0067
+      *f0    0.0000  0.0057
+      *f1-   0.0000  0.0067
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5751  9.4249
+ 
+      N-E   -0.5751  0.5751
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number: 16
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    3.9766           Total=    3.9766
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -30.0582              XY=    0.0000              XZ=    0.0000              YY=  -30.0582
+                    YZ=    0.0000              ZZ=  -38.0226
+      In traceless form (Debye*Ang)
+                    XX=    3.9822              XY=    0.0000              XZ=    0.0000              YY=    3.9822
+                    YZ=    0.0000              ZZ=   -7.9644
+
+      Mulliken spin population Analysis for root number: 16
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0020  0.0000
+      3pz    0.0000  0.0000
+      3py    0.0020  0.0000
+      4s     0.0000 -0.0021
+      3d2+   0.0000  0.0045
+      3d1+   0.0000  0.2354
+      3d0    0.0000  0.1754
+      3d1-   0.0000  0.2354
+      3d2-   0.0000  0.0604
+      *s     0.0003  0.2300
+      *px    0.0066  0.1820
+      *pz    0.0041  0.0042
+      *py    0.0066  0.1820
+      *d2+   0.0000  0.0103
+      *d1+   0.0012  0.5697
+      *d0    0.0005  0.3761
+      *d1-   0.0012  0.5697
+      *d2-   0.0000  0.1366
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0028
+      *f0    0.0000  0.0000
+      *f1-   0.0000  0.0028
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0247  2.9753
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root 17) =  3.01618
+ 
+
+      Mulliken population Analysis for root number:17
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6704  0.0000
+      3pz    0.6490  0.0000
+      3py    0.6704  0.0000
+      4s     0.0000 -0.0057
+      3d2+   0.0000  0.0366
+      3d1+   0.0000  0.2341
+      3d0    0.0000  0.1520
+      3d1-   0.0000  0.2341
+      3d2-   0.0000  0.0366
+      *s     1.9020  0.4039
+      *px    1.2540  2.2149
+      *pz    1.1618  2.0906
+      *py    1.2540  2.2149
+      *d2+   0.0000  0.0828
+      *d1+   0.0031  0.6168
+      *d0    0.0046  0.3950
+      *d1-   0.0031  0.6168
+      *d2-   0.0000  0.0828
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0067
+      *f0    0.0000  0.0057
+      *f1-   0.0000  0.0067
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5746  9.4254
+ 
+      N-E   -0.5746  0.5746
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number: 17
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    3.7071           Total=    3.7071
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -30.5133              XY=    0.0000              XZ=    0.0000              YY=  -30.5133
+                    YZ=    0.0000              ZZ=  -38.9118
+      In traceless form (Debye*Ang)
+                    XX=    4.1993              XY=    0.0000              XZ=    0.0000              YY=    4.1993
+                    YZ=    0.0000              ZZ=   -8.3985
+
+      Mulliken spin population Analysis for root number: 17
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0020  0.0000
+      3pz    0.0000  0.0000
+      3py    0.0020  0.0000
+      4s     0.0000 -0.0024
+      3d2+   0.0000  0.0366
+      3d1+   0.0000  0.2323
+      3d0    0.0000  0.1457
+      3d1-   0.0000  0.2323
+      3d2-   0.0000  0.0366
+      *s     0.0003  0.2859
+      *px    0.0066  0.1840
+      *pz    0.0037  0.0123
+      *py    0.0066  0.1840
+      *d2+   0.0000  0.0828
+      *d1+   0.0012  0.5711
+      *d0    0.0004  0.3150
+      *d1-   0.0012  0.5711
+      *d2-   0.0000  0.0828
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0028
+      *f0    0.0000  0.0000
+      *f1-   0.0000  0.0028
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0241  2.9759
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root 18) =  2.61227
+ 
+
+      Mulliken population Analysis for root number:18
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6705  0.0000
+      3pz    0.6593  0.0000
+      3py    0.6705  0.0000
+      4s     0.0000 -0.0065
+      3d2+   0.0000  0.0061
+      3d1+   0.0000  0.2349
+      3d0    0.0000  0.0645
+      3d1-   0.0000  0.2349
+      3d2-   0.0000  0.0032
+      *s     1.9027  0.6536
+      *px    1.2540  2.2144
+      *pz    1.1713  2.3238
+      *py    1.2540  2.2144
+      *d2+   0.0000  0.0137
+      *d1+   0.0031  0.6164
+      *d0    0.0042  0.1889
+      *d1-   0.0031  0.6164
+      *d2-   0.0000  0.0072
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0067
+      *f0    0.0000  0.0061
+      *f1-   0.0000  0.0067
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5947  9.4053
+ 
+      N-E   -0.5947  0.5947
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number: 18
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=   -0.1046           Total=    0.1046
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -31.5756              XY=    0.0000              XZ=    0.0000              YY=  -31.5756
+                    YZ=    0.0000              ZZ=  -54.3045
+      In traceless form (Debye*Ang)
+                    XX=   11.3644              XY=    0.0000              XZ=    0.0000              YY=   11.3644
+                    YZ=    0.0000              ZZ=  -22.7289
+
+      Mulliken spin population Analysis for root number: 18
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0020  0.0000
+      3pz    0.0103  0.0000
+      3py    0.0020  0.0000
+      4s     0.0000 -0.0032
+      3d2+   0.0000  0.0061
+      3d1+   0.0000  0.2331
+      3d0    0.0000  0.0582
+      3d1-   0.0000  0.2331
+      3d2-   0.0000  0.0032
+      *s     0.0010  0.5357
+      *px    0.0066  0.1835
+      *pz    0.0131  0.2456
+      *py    0.0066  0.1835
+      *d2+   0.0000  0.0137
+      *d1+   0.0012  0.5707
+      *d0    0.0001  0.1088
+      *d1-   0.0012  0.5707
+      *d2-   0.0000  0.0072
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0028
+      *f0    0.0000  0.0004
+      *f1-   0.0000  0.0028
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0442  2.9558
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root 19) =  2.61227
+ 
+
+      Mulliken population Analysis for root number:19
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6705  0.0000
+      3pz    0.6593  0.0000
+      3py    0.6705  0.0000
+      4s     0.0000 -0.0065
+      3d2+   0.0000  0.0032
+      3d1+   0.0000  0.2349
+      3d0    0.0000  0.0645
+      3d1-   0.0000  0.2349
+      3d2-   0.0000  0.0061
+      *s     1.9027  0.6536
+      *px    1.2540  2.2144
+      *pz    1.1713  2.3238
+      *py    1.2540  2.2144
+      *d2+   0.0000  0.0072
+      *d1+   0.0031  0.6164
+      *d0    0.0042  0.1889
+      *d1-   0.0031  0.6164
+      *d2-   0.0000  0.0137
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0067
+      *f0    0.0000  0.0061
+      *f1-   0.0000  0.0067
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5947  9.4053
+ 
+      N-E   -0.5947  0.5947
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number: 19
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=   -0.1046           Total=    0.1046
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -31.5756              XY=    0.0000              XZ=    0.0000              YY=  -31.5756
+                    YZ=    0.0000              ZZ=  -54.3045
+      In traceless form (Debye*Ang)
+                    XX=   11.3644              XY=    0.0000              XZ=    0.0000              YY=   11.3644
+                    YZ=    0.0000              ZZ=  -22.7289
+
+      Mulliken spin population Analysis for root number: 19
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0020  0.0000
+      3pz    0.0103  0.0000
+      3py    0.0020  0.0000
+      4s     0.0000 -0.0032
+      3d2+   0.0000  0.0032
+      3d1+   0.0000  0.2331
+      3d0    0.0000  0.0582
+      3d1-   0.0000  0.2331
+      3d2-   0.0000  0.0061
+      *s     0.0010  0.5357
+      *px    0.0066  0.1835
+      *pz    0.0131  0.2456
+      *py    0.0066  0.1835
+      *d2+   0.0000  0.0072
+      *d1+   0.0012  0.5707
+      *d0    0.0001  0.1088
+      *d1-   0.0012  0.5707
+      *d2-   0.0000  0.0137
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0028
+      *f0    0.0000  0.0004
+      *f1-   0.0000  0.0028
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0442  2.9558
+ 
+      Total electronic spin=    3.000000
+ 
+
+      Von Neumann Entropy (Root 20) =  2.66394
+ 
+
+      Mulliken population Analysis for root number:20
+      -----------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken charges per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0021  0.0000
+      3px    0.6704  0.0000
+      3pz    0.6592  0.0000
+      3py    0.6704  0.0000
+      4s     0.0000 -0.0061
+      3d2+   0.0000  0.0074
+      3d1+   0.0000  0.2341
+      3d0    0.0000  0.0795
+      3d1-   0.0000  0.2341
+      3d2-   0.0000  0.0074
+      *s     1.9027  0.5970
+      *px    1.2540  2.2149
+      *pz    1.1714  2.3161
+      *py    1.2540  2.2149
+      *d2+   0.0000  0.0168
+      *d1+   0.0031  0.6168
+      *d0    0.0043  0.2193
+      *d1-   0.0031  0.6168
+      *d2-   0.0000  0.0168
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0067
+      *f0    0.0000  0.0061
+      *f1-   0.0000  0.0067
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  7.5948  9.4052
+ 
+      N-E   -0.5948  0.5948
+ 
+      Total electronic charge=   17.000000
+ 
+      Total            charge=    0.000000
+ 
+
+      Expectation values of various properties for root number: 20
+      -----------------------------------------------------------
+ 
+ 
+ 
+      Molecular Properties:
+         ---------------------
+ 
+ 
+      Charge (e):                                                                     
+                      =    0.0000
+      Dipole Moment (Debye):                                                          
+      Origin of the operator (Ang)=    0.0000    0.0000    0.0000
+                     X=    0.0000               Y=    0.0000               Z=    0.0752           Total=    0.0752
+      Quadrupole Moment (Debye*Ang):                                                  
+      Origin of the operator (Ang)=    0.0000    0.0000    1.4076
+                    XX=  -31.2322              XY=    0.0000              XZ=    0.0000              YY=  -31.2322
+                    YZ=    0.0000              ZZ=  -53.6724
+      In traceless form (Debye*Ang)
+                    XX=   11.2201              XY=    0.0000              XZ=    0.0000              YY=   11.2201
+                    YZ=    0.0000              ZZ=  -22.4402
+
+      Mulliken spin population Analysis for root number: 20
+      ---------------------------------------------------
+ 
+ 
+ 
+      Molecular Charges:
+         ------------------
+ 
+ 
+ 
+      Mulliken spin population per center and basis function type
+      ---------------------------------------------------
+ 
+             CL      TI    
+      3s     0.0000  0.0000
+      3px    0.0020  0.0000
+      3pz    0.0103  0.0000
+      3py    0.0020  0.0000
+      4s     0.0000 -0.0028
+      3d2+   0.0000  0.0074
+      3d1+   0.0000  0.2323
+      3d0    0.0000  0.0732
+      3d1-   0.0000  0.2323
+      3d2-   0.0000  0.0074
+      *s     0.0010  0.4790
+      *px    0.0066  0.1840
+      *pz    0.0133  0.2378
+      *py    0.0066  0.1840
+      *d2+   0.0000  0.0168
+      *d1+   0.0012  0.5711
+      *d0    0.0002  0.1393
+      *d1-   0.0012  0.5711
+      *d2-   0.0000  0.0168
+      *f3+   0.0000  0.0000
+      *f2+   0.0000  0.0000
+      *f1+   0.0000  0.0028
+      *f0    0.0000  0.0004
+      *f1-   0.0000  0.0028
+      *f2-   0.0000  0.0000
+      *f3-   0.0000  0.0000
+      Total  0.0444  2.9556
+ 
+      Total electronic spin=    3.000000
+ 
+      Average orbitals are written to the RASORB           file
+      Natural orbitals for root   1 are written to the RASORB.1         file
+      Natural orbitals for root   2 are written to the RASORB.2         file
+      Natural orbitals for root   3 are written to the RASORB.3         file
+      Natural orbitals for root   4 are written to the RASORB.4         file
+      Natural orbitals for root   5 are written to the RASORB.5         file
+      Natural orbitals for root   6 are written to the RASORB.6         file
+      Natural orbitals for root   7 are written to the RASORB.7         file
+      Natural orbitals for root   8 are written to the RASORB.8         file
+      Natural orbitals for root   9 are written to the RASORB.9         file
+      Natural orbitals for root  10 are written to the RASORB.10        file
+      Natural orbitals for root  11 are written to the RASORB.11        file
+      Natural orbitals for root  12 are written to the RASORB.12        file
+      Natural orbitals for root  13 are written to the RASORB.13        file
+      Natural orbitals for root  14 are written to the RASORB.14        file
+      Natural orbitals for root  15 are written to the RASORB.15        file
+      Natural orbitals for root  16 are written to the RASORB.16        file
+      Natural orbitals for root  17 are written to the RASORB.17        file
+      Natural orbitals for root  18 are written to the RASORB.18        file
+      Natural orbitals for root  19 are written to the RASORB.19        file
+      Natural orbitals for root  20 are written to the RASORB.20        file
+      Spin density orbitals for root   1 are written to the SPDORB.1         file
+      Spin density orbitals for root   2 are written to the SPDORB.2         file
+      Spin density orbitals for root   3 are written to the SPDORB.3         file
+      Spin density orbitals for root   4 are written to the SPDORB.4         file
+      Spin density orbitals for root   5 are written to the SPDORB.5         file
+      Spin density orbitals for root   6 are written to the SPDORB.6         file
+      Spin density orbitals for root   7 are written to the SPDORB.7         file
+      Spin density orbitals for root   8 are written to the SPDORB.8         file
+      Spin density orbitals for root   9 are written to the SPDORB.9         file
+      Spin density orbitals for root  10 are written to the SPDORB.10        file
+      Spin density orbitals for root  11 are written to the SPDORB.11        file
+      Spin density orbitals for root  12 are written to the SPDORB.12        file
+      Spin density orbitals for root  13 are written to the SPDORB.13        file
+      Spin density orbitals for root  14 are written to the SPDORB.14        file
+      Spin density orbitals for root  15 are written to the SPDORB.15        file
+      Spin density orbitals for root  16 are written to the SPDORB.16        file
+      Spin density orbitals for root  17 are written to the SPDORB.17        file
+      Spin density orbitals for root  18 are written to the SPDORB.18        file
+      Spin density orbitals for root  19 are written to the SPDORB.19        file
+      Spin density orbitals for root  20 are written to the SPDORB.20        file
+ 
+ 
+--- Stop Module:  rasscf at Fri Oct  7 14:33:54 2016 /rc=0 ---
+--- Module rasscf spent 9 seconds 
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 14:33:58 2016 /rc=0 ---
+--- Module auto spent 15 seconds 

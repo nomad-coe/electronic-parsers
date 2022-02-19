@@ -1,0 +1,235 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test910.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test910.input.20242
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 14:56:27 2016 
+
+++ ---------   Input file   ---------
+
+ >>export MOLCAS_MOLDEN=OFF
+ >>export MOLCAS_NOCHECK=SEWARD_MLTPL1X,SEWARD_KINETIC,SEWARD_ATTRACT
+ >>export MOLCASMEM=512
+  &SEWARD  &END
+    Title
+    H2CHfH2
+    Douglas-Kroll
+    Basis set
+    Hf.ano-rcc...7s6p4d1f.
+    Hf              0.1274084559       -0.0956247065        3.9951014946
+    End of basis
+    Basis set
+    C.ano-rcc...3s2p1d. 
+    C             -0.1035320430        0.0323071443        0.1807064930
+    End of basis
+    Basis set
+    H.ano-rcc...3s2p. 
+    H1             3.9253408643       -0.2222639524        4.1229258949 
+    H2            -0.2229390778        3.6587118005        4.5624594149 
+    H3             2.0354803876        0.0779720105        0.3698321328 
+    H4            -0.6752300195        0.1810514713       -1.7801317100 
+    End of basis
+
+-- ----------------------------------
+
+--- Start Module: seward at Fri Oct  7 14:56:27 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module SEWARD with 512 MB of memory
+                                              at 14:56:27 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+               SEWARD will generate:
+                  Multipole Moment integrals up to order  2
+                  Kinetic Energy integrals
+                  Nuclear Attraction integrals (point charge)
+                  One-Electron Hamiltonian integrals
+                  Relativistic Douglas-Kroll integrals
+                  Atomic mean-field integrals
+                  Two-Electron Repulsion integrals
+ 
+ Title:
+                                            H2CHfH2                                     
+ 
+ 
+                   Integrals are discarded if absolute value <: 0.10E-12
+                   Integral cutoff threshold is set to       <: 0.10E-11
+ 
+ 
+     Symmetry information:
+        ---------------------
+ 
+ 
+ 
+ 
+                    Character Table for C1 
+ 
+                             E  
+                    a        1  x, y, xy, Rz, z, xz, Ry, yz, Rx, I
+ 
+      Basis set label:HF.ANO-RCC...7S6P4D1F...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge 72.000000 au
+      Associated Actual Charge    72.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s      24       7        X                  
+         p      21       6        X                  
+         d      15       4                 X         
+         f      11       1                 X         
+      Basis set label:C.ANO-RCC...3S2P1D...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  6.000000 au
+      Associated Actual Charge     6.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s      14       3        X                  
+         p       9       2        X                  
+         d       4       1                 X         
+      Basis set label:H.ANO-RCC...3S2P...... 
+ 
+      Valence basis set:
+      ==================
+      Associated Effective Charge  1.000000 au
+      Associated Actual Charge     1.000000 au
+      Nuclear Model: Point charge
+ 
+ 
+      Shell  nPrim  nBasis  Cartesian Spherical Contaminant
+         s       8       3        X                  
+         p       4       2        X                  
+ 
+ 
+      Molecular structure info:
+         -------------------------
+ 
+ 
+                    ************************************************ 
+                    **** Cartesian Coordinates / Bohr, Angstrom **** 
+                    ************************************************ 
+ 
+     Center  Label                x              y              z                     x              y              z
+        1      HF               0.127408      -0.095625       3.995101              0.067422      -0.050602       2.114117
+        2      C               -0.103532       0.032307       0.180706             -0.054787       0.017096       0.095626
+        3      H1               3.925341      -0.222264       4.122926              2.077201      -0.117617       2.181758
+        4      H2              -0.222939       3.658712       4.562459             -0.117974       1.936107       2.414350
+        5      H3               2.035480       0.077972       0.369832              1.077130       0.041261       0.195707
+        6      H4              -0.675230       0.181051      -1.780132             -0.357316       0.095808      -0.942005
+ 
+                    *************************************** 
+                    *    InterNuclear Distances / Bohr    * 
+                    *************************************** 
+ 
+               1 HF            2 C             3 H1            4 H2            5 H3            6 H4    
+    1 HF       0.000000
+    2 C        3.823521        0.000000
+    3 H1       3.802192        5.642492        0.000000
+    4 H2       3.813093        5.689009        5.697665        0.000000
+    5 H3       4.100421        2.147843        4.212770        5.958211        0.000000
+    6 H4       5.837302        2.047889        7.494932        7.247562        3.461347        0.000000
+ 
+                    ******************************************* 
+                    *    InterNuclear Distances / Angstrom    * 
+                    ******************************************* 
+ 
+               1 HF            2 C             3 H1            4 H2            5 H3            6 H4    
+    1 HF       0.000000
+    2 C        2.023320        0.000000
+    3 H1       2.012034        2.985878        0.000000
+    4 H2       2.017802        3.010494        3.015075        0.000000
+    5 H3       2.169849        1.136589        2.229302        3.152950        0.000000
+    6 H4       3.088967        1.083696        3.966147        3.835244        1.831666        0.000000
+ 
+                    ************************************** 
+                    *    Valence Bond Angles / Degree    * 
+                    ************************************** 
+                          Atom centers                 Phi
+                      5 H3       2 C        6 H4       111.15
+ 
+ 
+            Nuclear Potential Energy            189.67966290 au
+ 
+ 
+      Basis set specifications :
+      Symmetry species         a  
+      Basis functions          102
+ 
+ 
+--- Stop Module:  seward at Fri Oct  7 14:57:06 2016 /rc=0 ---
+--- Module seward spent 39 seconds 
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 14:57:06 2016 /rc=0 ---
+--- Module auto spent 39 seconds 

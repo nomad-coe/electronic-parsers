@@ -1,0 +1,32 @@
+ 
+Number of elements in symmetry group    :     12
+Number of generators for symmetry group :      7
+ 
+generating element:   7 , number of elemnts in orbit:   6
+ (orbit of generator below)
+   7   3   2   6  10   1
+ 
+generating element:   5 , number of elemnts in orbit:   2
+ (orbit of generator below)
+   5   1
+ 
+generating element:   4 , number of elemnts in orbit:   2
+ (orbit of generator below)
+   4   1
+ 
+generating element:  12 , number of elemnts in orbit:   2
+ (orbit of generator below)
+  12   1
+ 
+generating element:   8 , number of elemnts in orbit:   2
+ (orbit of generator below)
+   8   1
+ 
+generating element:  11 , number of elemnts in orbit:   2
+ (orbit of generator below)
+  11   1
+ 
+generating element:   9 , number of elemnts in orbit:   2
+ (orbit of generator below)
+   9   1
+ 

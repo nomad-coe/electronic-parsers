@@ -1,0 +1,63 @@
+! Input for calculation with the ONETEP program
+!
+! Quality Control file for: LR_TDDFT
+! Created by Tim Zuhlsdorff 
+! Based on test07 and test09
+
+task                 : LR_TDDFT
+cutoff_energy        : 400 eV
+
+xc_functional        : LDA
+cond_num_states : 6
+print_qc: T
+
+lr_tddft_write_kernels: F
+lr_tddft_num_states: 2
+lr_tddft_cg_threshold: 1.0E-7
+lr_tddft_maxit_cg: 40
+lr_tddft_reset_cg: 10
+lr_tddft_restart: F
+lr_tddft_projector: F
+lr_tddft_joint_set: F
+lr_tddft_analysis: F
+lr_tddft_triplet: F
+lr_tddft_preopt: F
+lr_tddft_precond: T
+lr_tddft_write_densities: F
+lr_tddft_preopt_iter: 10
+lr_tddft_xc_finite_diff: F
+
+%block  lattice_cart
+  40.000    0.000    0.000
+   0.000   40.000    0.000
+   0.000    0.000   40.000
+%endblock  lattice_cart
+
+%block  positions_abs
+C     21.231469   19.962216   20.048416
+H     22.316684   21.381117   21.086741
+H     22.305600   18.474510   19.097577
+C     18.768395   20.037541   19.951432
+H     17.694385   21.525477   20.902418
+H     17.683467   18.617139   18.913416
+%endblock  positions_abs
+
+%block  species
+H     H   1  1  5.50
+C     C   6  4  6.00
+%endblock  species
+
+%block  species_cond
+H     H   1  4  5.50
+C     C   6  4  6.00
+%endblock  species_cond
+
+%block species_atomic_set
+H    SOLVE
+C    SOLVE
+%endblock species_atomic_set
+
+%block  species_pot
+H     "../../pseudo/hydrogen.recpot"
+C     "../../pseudo/carbon.recpot"
+%endblock  species_pot

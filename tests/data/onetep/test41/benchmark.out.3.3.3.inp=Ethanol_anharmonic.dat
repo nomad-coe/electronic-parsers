@@ -1,0 +1,679 @@
+ +---------------------------------------------------------------+
+ |                                                               |
+ |        ####### #     # ####### ####### ####### ######         |
+ |        #     # ##    # #          #    #       #     #        |
+ |        #     # # #   # #          #    #       #     #        |
+ |        #     # #  #  # #####      #    #####   ######         |
+ |        #     # #   # # #          #    #       #              |
+ |        #     # #    ## #          #    #       #              |
+ |        ####### #     # #######    #    ####### #              |
+ |                                                               |
+ |        Linear-Scaling Ab Initio Total Energy Program          |
+ |                                                               |
+ |          Release for academic collaborators of ODG            |
+ |                                             Version 3.5.9.8   |
+ |                                                               |
+ +---------------------------------------------------------------+
+ |                                                               |
+ |  Authors:                                                     |
+ |  Jacek Dziedzic, Peter D. Haynes, Nicholas D. M. Hine,        |
+ |  Arash. A. Mostofi, Mike C. Payne and Chris-Kriton Skylaris   |
+ |                                                               |
+ |  Contributors:                                                |
+ |  J. Aarons, L. Andrinopoulos, P. W. Avraam, R. A. Bell,       |
+ |  S. J. Clark, G. C. Constantinescu, F. Corsetti, N. Corsini,  |
+ |  O. Dieguez, S. M. M. Dubois,  H. H. Helal,                   |
+ |  Q. O. Hill, L. P. Lee, J.-H. Li, D. D. O`Regan,              |
+ |  M. J. S. Phipps, C. J. Pickard, M. I. J. Probert,            |
+ |  L. Ratcliff, M. Robinson, A. Ruiz Serrano, J. S. Spencer,    |
+ |  G. Teobaldi, V. Vitale, K. A. Wilkinson and                  |
+ |  T. J. Zuehlsdorff                                            |
+ |                                                               |
+ |                                   Copyright (c) 2004-2014     |
+ |                                                               |
+ |  Please cite:                                                 |
+ |  "Introducing ONETEP: Linear-scaling density functional       |
+ |   simulations on parallel computers".                         |
+ |   C.-K. Skylaris, P. D. Haynes, A. A. Mostofi, M. C. Payne.   |
+ |   J. Chem. Phys. 122 084119 (2005).                           |
+ |                                                               |
+ |          in all publications arising from your use of ONETEP. |
+ |                                                               |
+ +---------------------------------------------------------------+
+ |                                                               |
+ |   ONETEP is based on developments described in the following  |
+ |   publications:                                               |
+ |                                                               |
+ |  "Nonorthogonal generalized Wannier function pseudopotential  |
+ |   plane-wave method".                                         |
+ |   C.-K. Skylaris, A. A. Mostofi, P. D. Haynes, O. Dieguez,    |
+ |   M. C. Payne.                                                |
+ |   Phys. Rev. B 66 035119 (2002).                              |
+ |                                                               |
+ |  "Preconditioned iterative minimization for linear-scaling    |
+ |   electronic structure calculations".                         |
+ |   A. A. Mostofi, P. D. Haynes, C.-K. Skylaris, M. C. Payne.   |
+ |   J. Chem. Phys. 119(17), pp.8842-8848 (2003).                |
+ |                                                               |
+ |  "Total-energy calculations on a real space grid with         |
+ |   localized functions and a plane-wave basis".                |
+ |   A. A. Mostofi, C.-K. Skylaris, P. D. Haynes, M. C. Payne.   |
+ |   Comput. Phys. Commun. 147, pp.788-802 (2002).               |
+ |                                                               |
+ |  "Accurate kinetic energy evaluation in electronic structure  |
+ |   calculations with localized functions on real space grids"  |
+ |   C.-K. Skylaris, A. A. Mostofi, P. D. Haynes, C. J. Pickard, |
+ |   M. C. Payne.                                                |
+ |   Comput. Phys. Commun. 140, pp.315-322 (2001).               |
+ |                                                               |
+ |  "Accurate ionic forces and geometry optimization in linear-  |
+ |   scaling density-functional theory with local orbitals"      |
+ |   N. D. M. Hine, M. Robinson, P. D. Haynes, C.-K. Skylaris,   |
+ |   M. C. Payne, and A. A. Mostofi.                             |
+ |   Phys. Rev. B 83 195102 (2011).                              |
+ |                                                               |
+ +---------------------------------------------------------------+
+
+Job started: 21-03-2014 10:17 (-0000)
+ 
+If your calculation crashes here, before "Reading parameters..."
+is displayed, then your stack size is insufficient.
+If so, use "ulimit -s unlimited" at runtime.
+
+Reading parameters from file "Ethanol_anharmonic.dat" ...... done
+Running on     4 processors.
+There are   4 MPI processes running on the same node as the root process.
+Each MPI process is using: 
+             1 threads for simulation cell FFTs.
+             1 threads for parallel FFT box operations.
+             1 threads for loops over batched FFT box operations.
+             1 threads in other parallel regions.
+ 
+Reading geometry and species blocks from file "Ethanol_anharmonic.dat" ...
+  <species_atomic_set> block not found: NGWF initialisation set to SOLVE
+... done
+-------------------------------------------------------------------------------
+---------------------------- RUN-TIME PARAMETERS ------------------------------
+-------------------------------------------------------------------------------
+task                         : PROPERTIES *! Type of calculation (String)       
+cutoffenergy                 : 20.0000000000000      hartree *! Plane wave kine 
+kernelcutoff                 : 1000.00000000000      bohr *! Density kernel rad 
+xcfunctional                 : LDA *! Exchange-correlation functional (String)  
+libxcxfuncid                 : 0 *! Functional identifier for which exchange fu 
+libxccfuncid                 : 0 *! Functional identifier for which correlation 
+charge                       : 0.000000000000000E+000 *! The total charge of th 
+spin                         : 0 *! Total spin of system (Integer)              
+spinpolarized                : F *! Switch for spin polarisation (Boolean)      
+spinpolarised                : F *! Switch for spin polarisation (Boolean)      
+constantefield               : 0.0 0.0 0.0 *! Cartesian coordinates of constant 
+fftboxpref                   : 0 0 0 *! Preferred FFT box dimensions (String)   
+ppdnpoints                   : 0 0 1 *! PPD edge length in grid points for each 
+psincspacing                 : 0.0 0.0 0.0 *! PSINC grid spacing in atomic unit 
+oldinput                     : F *! Read old-format input file (Boolean)        
+develcode                    : *! For development code only (String)            
+positionsxyzfile             : *! .xyz file to read positional data from (Strin 
+positionsintermediatexyzfile : *! .xyz file to read positional data for interme 
+positionsproductxyzfile      : *! .xyz file to read positional data for product 
+nnho                         : F *! Initialise NGWFs to nonorthogonal natural h 
+ngwfhalo                     : -1.00000000000000      bohr *! Halo extension to 
+nonscforces                  : T *! Include non self-consistent forces due to N 
+externalpressure             : 0.000000000000000E+000 ha/bohr**3 *! External ap 
+smoothingfactor              : 5.00000000000000 *! Smoothing factor in volume t 
+isosurfacecutoff             : 5.000000000000000E-004 *! Isosurface cutoff in v 
+maxitpalsermano              : 50 *! Maximum number of iterations for Palser-Ma 
+maxitkernelocccheck          : 0 *! Maximum number of kernel resets after occup 
+maxitpen                     : 3 *! Max number of penalty functional iterations 
+penparam                     : 4.00000000000000 *! Penalty functional parameter 
+minitlnv                     : 5 *! Min number of LNV iterations (Integer)      
+maxitlnv                     : 5 *! Max number of LNV iterations (Integer)      
+lnvthresholdorig             : 1.000000000000000E-009 *! LNV convergence thresh 
+lnvcgtype                    : LNV_FLETCHER *! Type of CG coefficient for LNV d 
+lnvcgmaxstep                 : 3.00000000000000 *! Maximum length of trial step 
+exactlnv                     : T *! Use original LNV algorithm (Boolean)        
+oldlnv                       : F *! Use LNV algorithm backwards compatible pre  
+lnvchecktrialsteps           : T *! Check stability of kernel at each trial ste 
+kerfix                       : 1 *! Density kernel fixing approach (Integer)    
+maxitkernelfix               : 3 *! Maximum # iterations of Penalty Functional  
+initialdensrealspace         : T *! Construct initial density in real space fro 
+kerneldiissize               : 10 *! Max number of kernels saved during kernel  
+kerneldiismaxit              : 25 *! Max number of kernel DIIS iterations (Inte 
+kerneldiisthreshold          : 1.000000000000000E-009 *! Density mixing converg 
+kerneldiislineariter         : 5 *! Number of linear mixing iterations (Integer 
+kerneldiiscoeff              : 0.100000000000000 *! Coefficient for the input k 
+kerneldiisconvcriteria       : 1000 *! Density mixing convergence criteria (Str 
+kerneldiislshift             : 1.00000000000000      hartree *! The initial val 
+kerneldiislsiter             : 0 *! Maximum Level shifting iteration (Integer)  
+kerneldiisscheme             : NONE *! Select scheme for kernel-diis (String)   
+edft                         : F *! Use Ensemble-DFT method to optimise the ker 
+edftmaxit                    : 10 *! Maximum number of EDFT iterations to optim 
+edftmaxstep                  : 1.00000000000000 *! Maximum step during EDFT lin 
+edftsmearingwidth            : 3.166811429000000E-003 hartree *! Occupancy smea 
+edftfreeenergythres          : 1.000000000000000E-006 hartree *! Convergence th 
+edftenergythres              : 1.000000000000000E-004 hartree *! Convergence th 
+edftentropythres             : 1.000000000000000E-004 hartree *! Convergence th 
+edftrmsgradientthres         : 1.000000000000000E-004 *! Convergence threshold  
+edftcommutatorthres          : 1.000000000000000E-005 hartree *! Convergence th 
+edftfermithres               : 1.000000000000000E-003 hartree *! Convergence th 
+edftwriteocc                 : F *! Generate file with smeared occupancies (Boo 
+edftextrabands               : -1 *! Number of additional MOs with non-zero occ 
+eigensolverorfac             : 1.000000000000000E-004 *! Precision to which the 
+eigensolverabstol            : 1.000000000000000E-009 *! Precision to which the 
+writehamiltonian             : F *! Save current Hamiltonian matrix in a file ( 
+readhamiltonian              : F *! Read current Hamiltonian matrix from a file 
+ngwfcgrotate                 : F *! Rotate density kernel during NGWF optimizat 
+edftroundevals               : -1 *! Round EDFT eigenvalues to N decimal figure 
+maxitngwfcg                  : 60 *! Max number of NGWF conjugate gradients (CG 
+ngwfcgtype                   : NGWF_FLETCHER *! Type of CG coefficient for NGWF 
+ngwfcgmaxstep                : -8.00000000000000 *! Maximum length of trial ste 
+eleccgmax                    : 3 *! Number of NGWF iterations to reset CG (Inte 
+precondscheme                : TETER *! Recip-space preconditioning scheme (Str 
+kzero                        : 3.00000000000000      1/bohr *! KE preconditioni 
+rprecond                     : 2.00000000000000      bohr *! Radial cut-off for 
+precondrecip                 : T *! Recip-space KE preconditioning (Boolean)    
+precondreal                  : F *! Real-space KE preconditioning (Boolean)     
+smoothscheme                 : NONE *! Smoothing scheme for the NGWF gradients  
+rsmooth                      : 1.50000000000000      bohr *! Radius of the unsh 
+ksmooth                      : 5.00000000000000      1/bohr *! Characteristic w 
+occmix                       : 0.250000000000000 *! Mix fraction of occupancy p 
+kernelupdate                 : F *! Update density kernel during NGWF line sear 
+kernelchristoffelupdate      : F *! Update density kernel during NGWF line sear 
+maxithotelling               : 50 *! Number of Hotelling iteration per NGWF cha 
+maxresidhotelling            : 1.000000000000000E-012 *! Max allowed value in H 
+rmskernelmeasure             : F *! Use root mean squared measure of [K,H] comm 
+maxitngwfdiis                : 0 *! Max number of NGWF DIIS steps (Integer)     
+ngwfdiissize                 : 4 *! Max size of the DIIS iterative subspace (In 
+ngwfdiisreset                : 8 *! Max number of iteration for the resetting o 
+ngwfdiismaxstep              : 2.00000000000000 *! Max length of trial step for 
+ngwfthresholdorig            : 2.000000000000000E-006 *! NGWF convergence thres 
+elecenergytol                : -1.000000000000000E-003 hartree *! Tolerance on  
+elecforcetol                 : -1.000000000000000E-003 ha/bohr *! Tolerance on  
+ngwfmaxgrad                  : -2.000000000000000E-005 *! Maximum permissible v 
+deltaeconv                   : T *! Use consecutive energy gains as a criterion 
+kernelforceconv              : F *! Force density kernel convergence on last NG 
+fftboxbatchsize              : 16 *! Number of NGWFs in fftbox batches (Integer 
+densethreshold               : 0.400000000000000 *! Threshold for matrix segmen 
+commsgroupsize               : -1 *! Number of nodes in a group (determines com 
+ovlpfornonlocal              : F *! Overlap sparsity for nonlocal (Boolean)     
+usespacefillingcurve         : T *! Re-arrange atoms according to space-filling 
+corehamdenskernguess         : T *! Initial guess for density kernel from core  
+checkatoms                   : T *! Check atoms on top of each other (Boolean)  
+locpotscheme                 : FULL *! Scheme for evaluating local potential ma 
+smoothprojectors             : -0.400000000000000 *! Halfwidth of Gaussian filt 
+smoothlocpspot               : -0.400000000000000 *! Halfwidth of Gaussian filt 
+oddpsincgrid                 : F *! Force odd number of points in simcell psinc 
+evenpsincgrid                : F *! Force even number of points in simcell psin 
+realspaceprojectors          : F *! Whether to evaluate and store projectors in 
+projectorsprecalculate       : T *! Whether to pre-calculate the nonlocal proje 
+outputdetail                 : NORMAL *! Level of output detail (String)        
+pawoutputdetail              : DEFAULT *! Level of output detail for PAW: BRIEF 
+mdoutputdetail               : DEFAULT *! Level of output detail for MD: BRIEF, 
+timingslevel                 : 3 *! Level of timings output: 0(none) 1(nodes su 
+timingsorder                 : TIME *! Sorting order of timings (String)        
+runtime                      : -1.00000000000000 *! The maximum allocated run t 
+writeparams                  : T *! Output runtime parameters at startup (Boole 
+esdfdump                     : T *! Dump all runtime parameters at startup (Boo 
+writeforces                  : F *! Write ionic forces (Boolean)                
+writepositions               : T *! Write ionic positions each geometry or MD s 
+writevelocities              : F *! Write ionic velocities each MD step (Boolea 
+writexyz                     : F *! Output coordinates in .xyz file (Boolean)   
+printqc                      : T *! Print Quality Control information (Boolean) 
+cubeformat                   : T *! Allow .cube format for plot outputs (Boolea 
+dxformat                     : F *! Allow .dx format for plot outputs (Boolean) 
+dxformatcoarse               : F *! Output only points on the coarse grid (Bool 
+dxformatdigits               : 7 *! Number of significant digits in .dx output  
+grdformat                    : F *! Allow .grd format for plot outputs (Boolean 
+writedensityplot             : T *! Write the charge density in plotting format 
+writepolarisationplot        : F *! Write the polarisation density in plotting  
+writengwfplot                : F *! Write NGWFs in plotting format (Boolean)    
+writengwfgradplot            : F *! Write NGWF Gradients in plotting format (Bo 
+writengwfradial              : 0 *! Write NGWFs radial distributions (Integer)  
+writengwfgradradial          : 0 *! Write NGWFs gradients radial distributions  
+writeradialstep              : 5.000000000000000E-003 bohr *! Define the grid s 
+writeradialsmear             : 1.000000000000000E-002 bohr *! Define the gaussi 
+writeinitialradialngwfs      : F *! Controls output of radial NGWF plots from a 
+readdenskern                 : F *! Read density kernel restart information (Bo 
+writedenskern                : T *! Write density kernel restart information (B 
+readtightboxngwfs            : F *! Read in universal tightbox NGWFs restart in 
+writetightboxngwfs           : T *! Write in universal tightbox NGWFs restart i 
+writeconvergeddkngwfs        : F *! Only write Density Kernel and NGWFs upon co 
+readswngwfs                  : F *! Read NGWFs restart information in spherical 
+writeswngwfs                 : F *! Write NGWFs restart information in spherica 
+writemaxl                    : 3 *! Maximum angular momentum number when writin 
+readmaxl                     : 3 *! Maximum angular momentum number when readin 
+extransw                     : 0 *! Maximum number of zeros of the sph Bessel f 
+paw                          : F *! Uses a PAW construction to find correct cor 
+finegridscale                : 2.00000000000000 *! Ratio of size of fine grid t 
+dblgridscale                 : 2.00000000000000 *! Ratio of charge density / po 
+augfuncsrecip                : T *! Construct Augmentation functions in recip s 
+pseudopath                   : *! Path to pseudopotentials (String)             
+dispersion                   : 0 *! Select dispersion correction (String)       
+vdwdcoeff                    : -1.00000000000000 *! Replacement VDW damping coe 
+hubbardmaxiter               : 10 *! Maximum number of DFT+U projector optimisa 
+hubbardenergytol             : 1.000000000000000E-008 hartree *! Energy toleran 
+hubbardconvwin               : 2 *! Energy convergence window when using DFT+U  
+hubbardprojmixing            : 0.000000000000000E+000 *! Proportion of old Hubb 
+hubbardfunctional            : 1 *! DFT+U energy functional to use (Integer)    
+hubbardtensorcorr            : 1 *! DFT+U projector tensorial correction to use 
+hubbardngwfspinthreshold     : 2.000000000000000E-005 *! NGWF RMS  gradient thr 
+hubbardscfonthefly           : F *! Carry out on-the-fly HUBBARDSCF with new pr 
+hubbardreadprojectors        : F *! Logical to read Hubbard-projectors from fil 
+cdftatomcharge               : F *! Perform an ATOM-CHARGE-constrained CDFT sim 
+cdftatomspin                 : F *! Perform an ATOM-SPIN-constrained CDFT simul 
+cdftgroupchargediff          : F *! Perform a GROUP-CHARGE-DIFFERENCE-constrain 
+cdftgroupspindiff            : F *! Perform a GROUP-SPIN-DIFFERENCE-constrained 
+cdftgroupchargeacceptor      : F *! Perform an ACCEPTOR GROUP-CHARGE-constraine 
+cdftgroupchargedonor         : F *! Perform a DONOR GROUP-CHARGE-constrained CD 
+cdftgroupspinacceptor        : F *! Perform an ACCEPTOR GROUP-SPIN-constrained  
+cdftgroupspindonor           : F *! Perform a DONOR GROUP-SPIN-constrained CDFT 
+cdfthubbard                  : F *! Perform a constrained-DFT+U simulation (Boo 
+cicdft                       : F *! Perform a CONFIGURATION-INTERACTION CDFT si 
+cdftprintallocc              : F *! Logical to have the occupancy-matrix of all 
+cdftreadprojectors           : F *! Logical to read cDFT-projectors from file ( 
+cdftgroupchargeuponly        : F *! Logical to constrain only UP electrons (Boo 
+cdftgroupchargedownonly      : F *! Logical to constrain only UP electrons (Boo 
+cdftmultiproj                : F *! Logical to use mutiple angular-momentum pro 
+cicdftnumconf                : 0 *! Number of cDFT-configurations for CI_CDFT s 
+cdftgroupchargedifftarget    : 0.000000000000000E+000 *! Targeted CHARGE differ 
+cdftgroupspindifftarget      : 0.000000000000000E+000 *! Targeted SPIN differen 
+cdftchargeacceptortarget     : 0.000000000000000E+000 *! Targeted group-CHARGE  
+cdftchargedonortarget        : 0.000000000000000E+000 *! Targeted group-CHARGE  
+cdftspinacceptortarget       : 0.000000000000000E+000 *! Targeted group-SPIN fo 
+cdftspindonortarget          : 0.000000000000000E+000 *! Targeted group-SPIN fo 
+maxitcdftucg                 : 60 *! Max number of cdFT-U conjugate gradients ( 
+cdftcgtype                   : NGWF_FLETCHER *! Type of CG coefficient for CDFT 
+cdftcgthreshold              : 1.000000000000000E-003 *! RMS gradient convergen 
+cdfttriallength              : 0.100000000000000 *! Trial length for cDFT line- 
+cdftcgmax                    : 5 *! Number of U-opt iterations to reset CG (Int 
+cdftmaxgrad                  : 1.000000000000000E-003 *! Maximum permissible va 
+cdftelecenergytol            : -1.000000000000000E-004 hartree *! Tolerance on  
+cdftcgmaxstep                : 50.0000000000000 *! Maximum length of trial step 
+cdftguru                     : F *! Let the user signal she/he does not need he 
+cdftcontinuation             : F *! Logical to restart (from the *.cdft file) a 
+cdfttight                    : F *! Logical to activate tight NGWFs-cDFT optimi 
+cdftwritepotentials          : T *! Logical to write cDFT-potentials into file  
+coulombcutoffradius          : 0.000000000000000E+000 bohr *! Radius of sphere  
+coulombcutofflength          : 0.000000000000000E+000 bohr *! Length of cylinde 
+coulombcutofftype            : NONE *! Type of cutoff coulomb interaction: NONE 
+coulombcutoffwriteint        : F *! Write real-space cutoff Coulomb interaction 
+pbccorrectioncutoff          : 0.000000000000000E+000 bohr *! alpha*L cutoff pa 
+doproperties                 : F *! Allow calculation of properties (Boolean)   
+numeigenvalues               : 10 *! Number of energy and occupancy eigenvalues 
+homodensplot                 : -1 *! Number of squared MOs to plot from HOMO an 
+lumodensplot                 : -1 *! Number of squared MOs to plot from LUMO an 
+homoplot                     : 5 *! Number of MOs to plot from HOMO and lower ( 
+lumoplot                     : 5 *! Number of MOs to plot from LUMO and higher  
+dossmear                     : 3.674932438755288E-003 hartree *! Half width of  
+ldossmear                    : 3.674932438755288E-003 hartree *! Lorentzian bro 
+popncalculate                : F *! Allow population analysis (Boolean)         
+popnbondcutoff               : 5.66917840375065      bohr *! Bond length cutoff 
+ngwfanalysis                 : F *! Perform NGWF analysis (Boolean)             
+polarisationcalculate        : F *! Allow calculation of polarisation (Boolean) 
+spreadcalculate              : F *! Calculate spread of NGWFs (Boolean)         
+anharmoniccalculate          : T *! Active the calculation of the IR spectrum ( 
+geommodulusest               : 1.700000000000000E-002 ha/bohr**3 *! The estimat 
+geomfrequencyest             : 7.600000000000000E-003 hartree *! The estimated  
+geomenergytol                : 1.000000000000000E-006 hartree *! Geometry optim 
+geomforcetol                 : 2.000000000000000E-003 ha/bohr *! Geometry optim 
+geomdisptol                  : 5.000000000000000E-003 bohr *! Geometry optimiza 
+geommaxiter                  : 50 *! Maximum number of geometry optimization it 
+geomconvergencewin           : 2 *! Geometry optimization convergence tolerance 
+geomcontinuation             : F *! Read information for continuation of a prev 
+geombackupiter               : 1 *! Number of geometry optimisation iterations  
+geomresetdkngwfsiter         : 6 *! Number of geom iterations between resets of 
+geomlbfgsmaxupdates          : 30 *! Number of LBFGS update vectors to store (I 
+geomlbfgsblocklength         : 30 *! How many updates to store before reallocat 
+geomreusedkngwfs             : T *! Re-use density kernel and NGWFs during geom 
+geomprintinvhessian          : F *! Write inverse Hessian to standard output (B 
+geommethod                   : CARTESIAN *! Method for geometry optimization (S 
+geomlbfgs                    : F *! Whether to perform LBFGS rather than BFGS i 
+tssearchmethod               : LSTQST *! Specifies method to be used for TS sea 
+tssearchlstqstprotocol       : LSTMAXIMUM *! Specifies LSTQST protocol (String) 
+tssearchqstmaxiter           : 5 *! Specifies maximum number of QST steps (Inte 
+tssearchcgmaxiter            : 20 *! Specifies maximum number of CG steps (Inte 
+tssearchforcetol             : 5.000000000000000E-003 ha/bohr *! Force toleranc 
+tssearchdisptol              : 1.000000000000000E-002 bohr *! Displacement tole 
+mdproperties                 : F *! Compute vibrational and IR spectra from MD  
+mdrestart                    : F *! Restart MD from backup files (Boolean)      
+mddeltat                     : 31.0060254712101      aut *! Molecular dynamics  
+mdnumiter                    : 2000 *! Maximum number of molecular dynamics ite 
+mdresethistory               : 100 *! Reset mixing scheme for initial guess of  
+mtsxi                        : F *! Internal thermostat in the multiple time-st 
+mtsnstep                     : 1 *! Number of time steps in the multiple time-s 
+mtsngwfthreshold             : 5.000000000000000E-004 *! NGWF convergence thres 
+mtslnvthreshold              : 5.000000000000000E-006 *! LNV convergence thresh 
+mtselecenergytol             : -1.000000000000000E-003 hartree *! Tolerance on  
+mtselecforcetol              : -1.000000000000000E-003 ha/bohr *! Tolerance on  
+mtsngwfmaxgrad               : -2.000000000000000E-005 *! Maximum permissible v 
+mtsmaxitngwfcg               : 50 *! Max number of conjugate gradients iteratio 
+mtsminitlnv                  : 5 *! Min number of LNV iterations (Integer)      
+mtsmaxitlnv                  : 5 *! Max number of LNV iterations (Integer)      
+mtsmaxitpen                  : 3 *! Max number of penalty iterations (Integer)  
+mtsmixinc                    : F *! Include the mts correction step in the NGWF 
+mixdkntype                   : NONE *! Type of mixing used to build new guess f 
+mixdknnum                    : 0 *! Number of coefficients used to build new gu 
+mixdkninittype               : NONE *! Type of initialization before MIX_DKN_TY 
+mixdkninitnum                : 0 *! Number of steps before extrapolation of the 
+mixdknreset                  : 50 *! Number of extrapolation steps between two  
+mixngwfstype                 : NONE *! Type of mixing used to build new guess f 
+mixngwfsnum                  : 0 *! Number of coefficients used to build new gu 
+mixngwfsinittype             : NONE *! Type of initialization before MIX_DKN_TY 
+mixngwfsinitnum              : 0 *! Number of steps before extrapolation of the 
+mixngwfsreset                : 50 *! Number of extrapolation steps between two  
+mixngwfscoeff                : 0.100000000000000 *! Mix the propagated NGWFs wi 
+mixlocallength               : 10.0000000000000      bohr *! Max radius for loc 
+mixlocalsmear                : 5.00000000000000      bohr *! Radial smearing fo 
+condreaddenskern             : F *! Read in conduction density kernel (Boolean) 
+condreadtightboxngwfs        : F *! Read in universal tightbox conduction NGWFs 
+condfixedshift               : F *! Fixed projected conduction Hamiltonian shif 
+condcalcmaxeigen             : T *! Calculate maximum conduction Hamiltonian ei 
+condnumstates                : 0 *! Number of conduction states to be optimised 
+condmaxitlnv                 : 10 *! Max number of LNV iterations during conduc 
+condminitlnv                 : 10 *! Min number of LNV iterations during conduc 
+condkernelcutoff             : 1000.00000000000      bohr *! Conduction density 
+condinitshift                : 0.000000000000000E+000 hartree *! Initial shifti 
+condshiftbuffer              : 0.100000000000000      hartree *! Additional buf 
+condnumextrastates           : 0 *! Number of extra conduction states for initi 
+condnumextraits              : 0 *! Number of NGWF iterations with extra conduc 
+condplotjointorbitals        : T *! Plot orbitals in the joint basis following  
+condplotvcorbitals           : T *! Plot orbitals in the val and cond NGWF basi 
+condcalcopticalspectra       : F *! Calculate matrix elements for optical absor 
+condspeccalcmommatels        : T *! Calculate momentum matrix elements (default 
+condspeccalcnonloccomm       : T *! Calculate nonlocal commutator for momentum  
+condspeccontderiv            : T *! Calculate non-local commuator using continu 
+condspecnonloccommshift      : 1.000000000000000E-004 *! Finite difference shif 
+condspecprintmatels          : F *! Write optical matrix elements to file (Bool 
+condspecoptsmear             : 3.674932438755288E-003 hartree *! Half width of  
+condspecscissorop            : 0.000000000000000E+000 hartree *! Scissor operat 
+condcalceels                 : F *! Calculate matrix elements for electron ener 
+lrtddftcalculate             : F *! enables LR-TDDFT calculation (Boolean)      
+lrtddftnumstates             : 1 *! Sets the number of excitation energies we w 
+lrtddftcgthreshold           : 1.000000000000000E-006 *! sets convergence toler 
+lrtddftpenaltytol            : 1.000000000000000E-008 *! sets the convergence t 
+lrtddftmaxitpen              : 20 *! sets the maximum number of iterations for  
+lrtddftmaxitcg               : 60 *! sets the maximum number of iterations for  
+lrtddftresetcg               : 100 *! sets the number of iterations after which 
+lrtddftkernelcutoff          : 1000.00000000000      bohr *! sets cutoff on the 
+lrtddftwritedensities        : T *!Determines whether to write out TDDFT respon 
+lrtddftwritekernels          : F *! writes out response kernels after each iter 
+lrtddftrestart               : F *! Restart flag for the LR_TDDFT option (Boole 
+lrtddfttriplet               : F *! DEtermines if triplet states are calculated 
+lrtddftprojector             : T *! Use projector onto unoccupied subspace (Boo 
+lrtddftjointset              : T *! Use joint set to represent cond states (Boo 
+lrtddftpreopt                : T *! Refine starting guess in preoptimisation ro 
+lrtddftpreoptiter            : 20 *! Number of preoptimisation iterations (Inte 
+lrtddftanalysis              : F *! Do a full O(N^3) analysis of TDDFT transiti 
+etransbulk                   : F *! Compute electronic transport coefficients ( 
+etranslcr                    : F *! Compute electronic transport coefficients ( 
+etranssameleads              : F *! Use same description for all leads (Boolean 
+etranswritehs                : F *! Write hamiltonian corresponding to transpor 
+etransecmplx                 : 1.000000000000000E-006 hartree *! Imaginary part 
+etransemax                   : 0.200000000000000      hartree *! Highest energy 
+etransemin                   : -0.200000000000000      hartree *! Lowest energy 
+etransenum                   : 50 *! Number of energy points for the calculatio 
+etranseref                   : 0.000000000000000E+000 hartree *! Reference ener 
+etranserefmethod             : DIAG *! The method used to determine the referen 
+etranscalculateleadmu        : F *! Calculate the lead chemical potentials (Boo 
+etransleadnkpoints           : 32 *! Number of kpoints to use to determine lead 
+etransleaddisptol            : 1.00000000000000      bohr *! The maximum accept 
+anhqcfactor                  : HARMONIC *! Quantum correction factor in IR spec 
+anhacffactor                 : NORMALIZED *! Prefactor for the autocorrelation  
+anhtype                      : IR_CALCULATION *! Describe the type of calculati 
+anhfirstiter                 : 1 *! First md iteration to include in the autoco 
+anhlastiter                  : 2000 *! Last md iteration to include in the auto 
+anhmdtemp                    : 296.150000000000      kelvin *! Temperature in t 
+anhplotfirstfreq             : 600.000000000000      1/cm *! First freq to be s 
+anhplotlastfreq              : 4000.00000000000      1/cm *! Last freq to be sh 
+anhplotall                   : F *! Plot the whole IR spectrum (Boolean)        
+anhapplyfilter               : T *! Apply the gaussian filter (Boolean)         
+phononfarmingtask            : 0 *! Operation to perform for phonon calc (for t 
+phononsampling               : 1 *! Default number of sampling points for finit 
+phononvibfree                : 7 *! Default allowed vibrational degrees of free 
+phononfinitedisp             : 0.100000000000000      bohr *! Amplitude of the  
+phononfmax                   : 5.000000000000000E-003 ha/bohr *! Maximum force  
+phononenergycheck            : F *! Check total energy of system doesn't decrea 
+phonontmin                   : 0.000000000000000E+000 hartree *! Lower bound of 
+phonontmax                   : 2.000000000000000E-003 hartree *! Upper bound of 
+phonondeltat                 : 1.500000000000000E-005 hartree *! Temperature st 
+phononminfreq                : 3.600000000000000E-006 hartree *! Discard phonon 
+phononwriteeigenvecs         : F *! Write phonon mode eigenvectors to file (Boo 
+phononanimatescale           : 1.00000000000000 *! Scaling factor for phonon mo 
+phonondosmin                 : 0.000000000000000E+000 *! Lower bound of frequen 
+phonondosmax                 : 1000.00000000000 *! Upper bound of frequency ran 
+phonondosdelta               : 10.0000000000000 *! Frequency step (in cm^-1) fo 
+phonondos                    : T *! Calculate phonon DOS from MP grid and write 
+phononsk                     : F *! Use Slater-Koster style interpolation for q 
+bskpointpathspacing          : 0.188972700000000      1/bohr *! K-point spacing 
+bsnumeigenvalues             : -1 *! Num of energy and occ. eigenvalues to prin 
+bsunfold                     : 0 0 0 *! Number of times to unfold Brillouin zon 
+bsmethod                     : TB *! Method to use: 'KP' or 'TB' (String)       
+dotddft                      : F *! Allow Time-Dependent DFT calculation (Boole 
+tddftmaximumenergy           : 1.00000000000000      hartree *! Desired maximum 
+tddftresolution              : 1.000000000000000E-003 hartree *! Desired resolu 
+tddftpropagationmethod       : CRANKNICHOLSON *! Method used to integrate von N 
+tddftsparsitylevel           : 0 *! Matrix sparsity when computing propagators  
+tddfttammdancoff             : F *! Invoke Tamm-Dancoff decoupling approximatio 
+tddftdipolekickstrength      : 0.0 0.0 0.0 *! Maximum allowed phase shift in TD 
+tddftxcfunctional            : LDA *! Exchange-correlation functional for TDDFT 
+tddfthamiltonianmixing       : 0 *! Order of polynomial extrapolation to H(t +  
+tddftdamping                 : 0.000000000000000E+000 hartree *! Energy smearin 
+tddftenforcedidempotency     : F *! Project out at each timestep that part of c 
+tddftmaxithotelling          : 50 *! Number of Hotelling iteration per propagat 
+tddftmaxresidhotelling       : 1.000000000000000E-018 *! Max allowed value in H 
+tddftinvoverlapexact         : T *! Renew inverse overlap with O N^3 algorithm  
+isimplicitsolvent            : F *! Use implicit solvent? (Boolean)             
+issmearedionrep              : F *! Implicit solvent: use smeared ions for elec 
+isseparaterestartfiles       : F *! If true, dielectric cavity will be construc 
+isautosolvation              : F *! If true, vacuum calculation will automatica 
+isincludecavitation          : F *! Implicit solvent: include cavitation energy 
+isdensitythreshold           : 7.800000000000000E-004 *! Implicit solvent: rho_ 
+issolvationbeta              : 1.30000000000000 *! Implicit solvent: beta param 
+isbulkpermittivity           : 1.00000000000000 *! Implicit solvent: eps_inf pa 
+ismultigriddefecterrortol    : 1.000000000000000E-002 *! Implicit solvent: stop 
+ismultigriderrortol          : 1.000000000000000E-005 *! Implicit solvent: stop 
+issmearedionwidth            : 0.800000000000000      bohr *! Implicit solvent: 
+iscorewidth                  : 1.20000000000000      bohr *! Implicit solvent:  
+issurfacethickness           : 2.000000000000000E-004 *! Implicit solvent: thic 
+issolventsurfacetension      : 4.762400000000000E-005 ha/bohr**2 *! Implicit so 
+ismultigridmaxiters          : 100 *! Implicit solvent: max number of iteration 
+ismultigridnlevels           : 4 *! Implicit solvent: number of levels in multi 
+isdiscretizationorder        : 8 *! Implicit solvent: discretization order (2nd 
+isbccoarseness               : 5 *! Open BCs: controls boundary condition coars 
+isbcsurfacecoarseness        : 1 *! Open BCs: controls boundary condition coars 
+isbcthreshold                : 1.000000000000000E-009 *! Open BCs: controls bou 
+ischecksolvenergygrad        : F *! Implicit solvent: sanity check the energy g 
+issolvationmethod            : DIRECT *! Implicit solvent: direct or corrective 
+isdielectricmodel            : FIX_INITIAL *! Implicit solvent: how the cavity  
+isdielectricfunction         : FGF *! Implicit solvent: how the cavity is deter 
+issolvationoutputdetail      : NONE *! Implicit solvent: controls extra output  
+openbcionion                 : F *! Force open BCs in ion-ion energy (Boolean)  
+openbchartree                : F *! Force open BCs in Hartree potential (Boolea 
+openbcpspot                  : F *! Force open BCs in local pseudopotential (Bo 
+openbcpspotfinetunenptsx     : 100000 *! Open BCs in local pseudo, npts_x param 
+openbcpspotfinetunealpha     : 0.300000000000000 *! Open BCs in local pseudo, a 
+openbcpspotfinetunef         : -1 *! Open BCs in local pseudo, fineness paramet 
+hfxintegration               : 2 *! Variant of the numerical pointwise approach 
+hfxcutoff                    : 1000.00000000000      bohr *! HFx cutoff radius  
+hfxnlppforexchange           : F *! Give exchange matrix same sparsity as non-l 
+hfxradialsegments            : 50 *! Number of radial segments in vmatrix evalu 
+hfxangularsegments           : 50 *! Number of angular segments in vmatrix eval 
+hfxcheborder                 : 16 *! Order for Chebyshev interpolation (Integer 
+hfxchebintervals             : 14 *! Number of intervals Chebyshev interpolatio 
+hfxchebabatchsize            : 10 *! Number of SW expansions buffered (Integer) 
+hfxchebbbatchsize            : 10 *! Number of SW pot expansions buffered (Inte 
+hfxmaxl                      : 4 *! Maximum quantum number l used for SW expans 
+hfxmaxzeros                  : 10 *! Maximum number of Bessel zeros used for SW 
+hfxreadvmatrix               : F *! Read restart information for the V matrix ( 
+hfxwritevmatrix              : F *! Write restart information for the V matrix  
+hfxreadxmatrix               : F *! Read restart information for the X matrix ( 
+hfxwritexmatrix              : F *! Write restart information for the X matrix  
+hfxdebug                     : F *! Debug HFx? (Boolean)                        
+hfxmetric                    : ELECTROSTATIC *! Electrostatic or overlap metric 
+hfxoverlapindirect           : F *! Inversions done for overlap metric (Boolean 
+hfximproveinverse            : F *! Use Hotelling improvement when calculating  
+hfxcthreshold                : 0.000000000000000E+000 *! Absolute magnitude bel 
+hfxcachelimitforsnpos        : 1024 *! Max cache size for SWOP-NGWF-product ove 
+hfxcachelimitforswops        : 1024 *! Max cache size for SWs or SWpots in PPDs 
+hfxcachelimitforwmats        : 1024 *! Max cache size for W-matrices (in MiB) ( 
+hfxcachelimitforexpansions   : 1024 *! Max cache size for expansions (tb_swpot_ 
+hfxcachelimitforps           : 1024 *! Max cache size for p_beta_delta (in MiB) 
+hfxcachelimitforngwfs        : 256 *! Max cache size for remote NGWFs (in MiB)  
+hfxcachelimitfordknblks      : 50 *! Max cache size for remote DKN blocks (in M 
+zerototalforce               : T *! Subtract avg force to ensure Newton's 3rd l 
+ddeccalculate                : F *! Performs DDEC charge analysis (Boolean)     
+ddecwriterad                 : F *! Write DDEC partial radial density for each  
+ddecclassicalhirshfeld       : F *! DDEC range of IH (+/-) ionic reference stat 
+ddecradnpts                  : 100 *! Number of spherical shells per atom (Inte 
+ddecradrcut                  : 10.0000000000000      bohr *! Radius of largest  
+ddecmaxit                    : 2000 *! Maximum number of DDEC iterations (Integ 
+ddecconvthreshold            : 2.000000000000000E-005 *! DDEC charge convergenc 
+ddecihfraction               : 0.214285714285714 *! DDEC IH fraction (Double Pr 
+ddeczerothreshold            : 1.000000000000000E-007 *! DDEC threshold to negl 
+ddecihionicrange             : 2 *! DDEC range of IH (+/-) ionic reference stat 
+ddecatomsolvemaxit           : 480 *! Maximum number of iterations for the atom 
+ddecrcompmaxit               : 50 *! Maximum number of iterations for finding r 
+ddectargetradius             : 11.5000000000000      bohr *! DDEC force target  
+ddecrcompeconv               : 5.000000000000000E-008 hartree *! Energy converg 
+ddecwritercomp               : F *! Write compensated ionic densities for all r 
+ddecrefdensinit              : T *! Initialize ISA guess densities as neutral r 
+ddecrenormalizerefdens       : F *! Renormalize reference densities (Boolean)   
+ddecmultipole                : F *! Compute DDEC dipoles and quadrupoles (Boole 
+ddecmoment                   : F *! Compute DDEC moment (Boolean)               
+ddecmomentorder              : 1 *! Order of DDEC moment (Integer)              
+ddecinterpraddens            : F *! Interpolate converged radial densities for  
+ddecavgrad                   : F *! Compute expected radius of each atom based  
+ddecminshelldens             : 100.000000000000 *! Minimum number of points per 
+ddecrmse                     : F *! Calculate DDEC point charge RMS V(r) (Boole 
+writenbo                     : F *! Performs Natural Population Analysis and wr 
+nboinitlclowdin              : T *! Performs atom-centered Lowdin symmetric ort 
+nbowritelclowdin             : F *! Write a GENNBO FILE.47 containing all the a 
+nbowritenpacomp              : F *! Writes individual NAO population into the s 
+nboscaledm                   : T *! Scales density matrix in the FILE.47 output 
+nbowritedipole               : F *! Writes dipole matrix to FILE.47 (Boolean)   
+nboscalespin                 : T *! Whether or not partial density matrices for 
+nbopnaoanalysis              : F *! S/P/D/F CHARACTER ANALYSIS ON PNAO. (Boolea 
+nboaopnaoscheme              : ORIGINAL *! AO to PNAO scheme to use in generati 
+plotnbo                      : F *! Plot NBO's orbitals from FILE.xx as defined 
+nboplotorbtype               : *! Type of GENNBO-generated orbital to plot. (St 
+threadsmax                   : 1 *! Number of threads in outer loops (Integer)  
+threadsnumfftboxes           : 1 *! Number of threads to use in OpenMP-parallel 
+threadsperfftbox             : 1 *! Number of nested threads used for FFT box o 
+threadspercellfft            : 1 *! Number of threads to use in OpenMP-parallel 
+threadsnummkl                : 1 *! Number of threads to use in OpenMP-parallel 
+%block positionsabs          : *! Cartesian positions for each atom (Block)     
+ang                                                                             
+H   7.919857  10.432973  10.072282                                              
+C   8.787030   9.770471   9.990284                                              
+H   8.734409   9.046014  10.809795                                              
+C  10.084976  10.559039  10.051055                                              
+O  11.232231   9.726810   9.872388                                              
+H  10.150614  11.120025  10.994302                                              
+H  11.247388   9.100126  10.615068                                              
+H  10.131609  11.284181   9.235478                                              
+H   8.726246   9.225137   9.045941                                              
+%endblock positionsabs       : *! Cartesian positions for each atom (Block)     
+%block latticecart           : *! The simulation cell lattice vectors (Block)   
+ang                                                                             
+20.000   0.000   0.000                                                          
+0.000  20.000   0.000                                                           
+0.000   0.000  20.000                                                           
+%endblock latticecart        : *! The simulation cell lattice vectors (Block)   
+%block species               : *! Species information (symbol, atomic number, n 
+C      C    6   4   8.00                                                        
+H      H    1   1   8.00                                                        
+O      O    8   4   8.00                                                        
+%endblock species            : *! Species information (symbol, atomic number, n 
+%block speciespot            : *! Pseudopotential name for each species (Block) 
+C "../../pseudo/carbon.recpot"                                                  
+H "../../pseudo/oxygen.recpot"                                                  
+O "../../pseudo/hydrogen.recpot"                                                
+%endblock speciespot         : *! Pseudopotential name for each species (Block) 
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+WARNING in pseudopotentials_read_species: string "GGA" found in pseudopotential
+file "../../pseudo/carbon.recpot", yet xc_functional = "LDA".
+ 
+<<<<<<<<<<<<<<<<<<<<<<<<< Pseudopotential information >>>>>>>>>>>>>>>>>>>>>>>>>
+File: ../../pseudo/oxygen.recpot [ 2001 points up to Gmax=  52.9 (1/bohr)]
+  Atomic number:  1;  ionic charge:  6.000000
+    Shell 1: l = 0; rc = 1.31 bohr
+File: ../../pseudo/carbon.recpot [ 2001 points up to Gmax=  52.9 (1/bohr)]
+  Atomic number:  6;  ionic charge:  4.000000
+    Shell 1: l = 0; rc = 1.48 bohr
+File: ../../pseudo/hydrogen.recpot [ 2001 points up to Gmax=  52.9 (1/bohr)]
+  Atomic number:  8;  ionic charge:  1.000000
+    Local potential
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+------------------------- Atom counting information ---------------------------
+Symbol    Natoms    Nngwfs    Nprojs
+  H          6         6         6
+  C          2         8         2
+  O          1         4         0
+.......   ......    ......    ......
+Totals:      9        18         8
+-------------------------------------------------------------------------------
+ 
+============================== PSINC grid sizes ================================
+                      Simulation cell:   63 x  63 x  63
+                              FFT-box:   63 x  63 x  63
+                                  PPD:    7 x   7 x   1
+Grid space d1=  0.599913294532a0 (KE cutoff=  21.10703Eh = 574.35138eV)
+Grid space d2=  0.599913294532a0 (KE cutoff=  21.10703Eh = 574.35138eV)
+Grid space d3=  0.599913294532a0 (KE cutoff=  21.10703Eh = 574.35138eV)
+================================================================================
+
+********************** Fourier parallelisation information *********************
+       Coarse grid (whole simulation cell) dimensions:     63    63    63
+          Real-space ('12') slabs/node (min max mean):     15    16    15
+         Recip-space ('23') slabs/node (min max mean):      8     8     8
+********************************************************************************
+
+********************** Fourier parallelisation information *********************
+       Double grid (whole simulation cell) dimensions:    126   126   126
+          Real-space ('12') slabs/node (min max mean):     31    32    31
+         Recip-space ('23') slabs/node (min max mean):     16    16    16
+********************************************************************************
+WARNING in internal_setup_spin (energy_and_force_init_cell):
+        odd number of electrons in cell - spin-polarised calculation will be performed
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxx                Beginning of ONETEP Anharmonic            xxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+ Initialising workspace ...
+Opening Ethanol_anharmonic.md file and extracting the info ...
+<QC>    [average temperature]:       260.741783742000
+<QC>  [average dipole moment]:         0.776550912276
+Calculating the Fourier transform of the dipole
+moment matrix by mean of the Weiner-Khinchin theorem ...
+Applying the quantum correction factor ...
+Outputing the result intoEthanol_anharmonic.anh ...
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxx                      End of ONETEP Anharmonic            xxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+------------------------------ TIMING INFORMATION ------------------------------
+AVERAGE TIME:       0.374s on      4 node(s)                                    
+TOTAL TIME:         0.385s on      4 node(s)                                    
+================== AVERAGE TIMINGS FROM ALL NODES (CUMULATIVE) =================
+|| TAG                                    #calls    cpu time   %total  Gflops ||
+|| work_imbalance                       :     1        0.00s   0.011%  ------ ||
+|| wrappers_1d_fft                      :     7        0.00s   0.329%  ------ ||
+|| total_time                           :     1        0.37s 100.000%  ------ ||
+================================================================================
+==================== AVERAGE TIMINGS FROM ALL NODES (SELF) =====================
+|| TAG                                    #calls    cpu time   %total  Gflops ||
+|| work_imbalance                       :     1        0.00s   0.011%  ------ ||
+|| wrappers_1d_fft                      :     7        0.00s   0.329%  ------ ||
+|| main program (onetep.F90)            :     1        0.37s  99.574%  ------ ||
+================================================================================
+Overhead of generating timer report: 
+- 0 ms averaging over threads,
+- 0 ms ensuring consistency across MPI ranks,
+- 0 ms printing in order.
+
+Job completed: 21-03-2014 10:17 (-0000)
+

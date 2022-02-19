@@ -1,0 +1,118 @@
+* TEST RUN FOR NEWTON RAPHSON AND DIAGONALIZATION
+*
+stream datadir.def
+bomlev -1
+
+OPEN READ FORM UNIT 1 NAME  @0toph8.rtf
+READ RTF        CARD  UNIT  1
+OPEN READ FORM UNIT 2 NAME  @0param3.prm
+READ PARAMETER  CARD  UNIT  2
+
+READ      SEQUENCE  CARD
+*  FIRST SEQUENCE FOR SECOND DERIVATIVE TEST
+*
+    2
+AMN CBX
+
+READ      SEQUENCE  CARD
+*  SECOND SEQUENCE FOR SECOND DERIVATIVE TEST
+*
+    2
+AMN CBX
+
+GENERATE  A  SETU
+IC PARAM
+PRINT IC
+
+IC EDIT
+DIHE   1  CL  1  C    2  N    2  CA   0.0
+DIHE   3  CL  3  C    4  N    4  CA   0.0
+DIHE   2  CA  2  N    2  H    4  H  180.0
+DIHE   2  N   2  H    4  H    4  N  180.0
+DIHE   2  H   4  H    4  N    4  CA 180.0
+ANGL   2  N   2  H    4  H          100.0
+ANGL   2  H   4  H    4  N          100.0
+DIST   2  H   4  H                  4.5
+END
+
+PRINT IC
+IC SEED 2 CA 2 N 2 H
+IC BILD
+
+COOR ORIENT MASS
+PRINT     COORD
+COOR COPY COMP
+
+READ COOR CARD
+* INITIAL COORDINATES FOR AMN-CBX *2
+*  DATE:    10/26/83      4:44:54      CREATED BY USER: BROOKSG1
+*
+   12
+    1    1 AMN  CL    -3.33267  -1.67441   0.00000 A    1      0.00000
+    2    1 AMN  C     -2.19986  -0.66094   0.00000 A    1      0.00000
+    3    1 AMN  O     -1.02163  -1.01403   0.00000 A    1      0.00000
+    4    2 CBX  N     -2.52876   0.62775   0.00000 A    2      0.00000
+    5    2 CBX  H     -1.82759   1.31241   0.00000 A    2      0.00000
+    6    2 CBX  CA    -3.96329   1.03051   0.00000 A    2      0.00000
+    7    3 AMN  CL     3.33267   1.67441   0.00000 B    1      0.00000
+    8    3 AMN  C      2.19986   0.66094   0.00000 B    1      0.00000
+    9    3 AMN  O      1.02163   1.01403   0.00000 B    1      0.00000
+   10    4 CBX  N      2.52876  -0.62775   0.00000 B    2      0.00000
+   11    4 CBX  H      1.82759  -1.31241   0.00000 B    2      0.00000
+   12    4 CBX  CA     3.96329  -1.03051   0.00000 B    2      0.00000
+
+HBONDS  IHBFRQ 50
+PRINT   HBONDS ANAL
+MINI CONJ  NSTEP 100 INBFRQ 100 STEP 0.2  IHBFRQ 100  ncgcyc 50 NPRINT 10
+PRINT COORD
+COOR ORIE RMS MASS
+
+if ?novibran .eq. 1 then stop
+
+
+READ COOR CARD
+* INITIAL COORDINATES FOR AMN-CBX *2
+*  DATE:    10/26/83      4:44:54      CREATED BY USER: BROOKSG2
+*
+   12
+    1    1 AMN  CL    -3.33267  -1.67441   0.00000 A    1      0.00000
+    2    1 AMN  C     -2.19986  -0.66094   0.00000 A    1      0.00000
+    3    1 AMN  O     -1.02163  -1.01403   0.00000 A    1      0.00000
+    4    2 CBX  N     -2.52876   0.62775   0.00000 A    2      0.00000
+    5    2 CBX  H     -1.82759   1.31241   0.00000 A    2      0.00000
+    6    2 CBX  CA    -3.96329   1.03051   0.00000 A    2      0.00000
+    7    3 AMN  CL     3.33267   1.67441   0.00000 B    1      0.00000
+    8    3 AMN  C      2.19986   0.66094   0.00000 B    1      0.00000
+    9    3 AMN  O      1.02163   1.01403   0.00000 B    1      0.00000
+   10    4 CBX  N      2.52876  -0.62775   0.00000 B    2      0.00000
+   11    4 CBX  H      1.82759  -1.31241   0.00000 B    2      0.00000
+   12    4 CBX  CA     3.96329  -1.03051   0.00000 B    2      0.00000
+
+MINI    NRAP   TFREQ 100.0   NSTEP 40 INBFRQ 5 STEP 0.4 PRTMIN 1 IHBFRQ 5  -
+     TOLGRD 0.0001  NPRINT 1 DEBUG
+COOR ORIE RMS MASS
+PRINT     COORD
+
+open write card unit 14 name @9/brbtest.crd
+WRITE     COORDS    CARD   UNIT 14
+*  SECOND DERIVATIVE TEST COORDINATES
+*
+
+IC FILL
+PRINT IC
+
+if ?NUMNODE .gt. 1 then
+ echo "Test NOT performed."
+ stop
+endif
+
+if ?novibran .eq. 1 then
+ echo "Test NOT performed."
+ stop
+endif
+
+VIBRAN
+DIAG
+PRINT NORM INTD DIPO MODE 1 THRU 13
+END
+STOP

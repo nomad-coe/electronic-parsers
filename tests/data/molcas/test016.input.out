@@ -1,0 +1,643 @@
+   License is going to expire in 1071 days  on Friday Septempber 13rd, 2019
+   This copy of MOLCAS is licensed to  Carmen Sousa
+                                                                                                   
+                                              ^^^^^            M O L C A S                         
+                                             ^^^^^^^           version 7.8 patchlevel 047           
+                               ^^^^^         ^^^^^^^                                               
+                              ^^^^^^^        ^^^ ^^^                                               
+                              ^^^^^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^       ^^^^ ^^^                                               
+                              ^^^ ^^^^      ^^^  ^^^                                               
+                              ^^^  ^^ ^^^^^  ^^  ^^^^                                              
+                             ^^^^      ^^^^   ^   ^^^                                              
+                             ^   ^^^   ^^^^   ^^^^  ^                                              
+                            ^   ^^^^    ^^    ^^^^   ^                                             
+                        ^^^^^   ^^^^^   ^^   ^^^^^   ^^^^^                                         
+                     ^^^^^^^^   ^^^^^        ^^^^^    ^^^^^^^                                      
+                 ^^^^^^^^^^^    ^^^^^^      ^^^^^^^   ^^^^^^^^^^^                                  
+               ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^                                
+               ^^^^^^^^^^^^^   ^^^^             ^^^   ^^^      ^^^^                                
+               ^^^^^^^^^^^^^                          ^^^      ^^^^                                
+               ^^^^^^^^^^^^^       ^^^^^^^^^^^^        ^^      ^^^^                                
+               ^^^^^^^^^^^^      ^^^^^^^^^^^^^^^^      ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^                                
+               ^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^    ^^      ^^^^    ^^^^^     ^^^    ^^^^^^     
+               ^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^   ^^      ^^^^   ^^^^^^^    ^^^   ^^^  ^^^    
+               ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^   ^       ^^^^  ^^^    ^^   ^^^   ^^    ^^    
+               ^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^            ^^^^  ^^         ^^ ^^  ^^^^^       
+               ^^^^^^^^^^      ^^^^^^^^^^^^^^^^^^^^        ^   ^^^^  ^^         ^^ ^^   ^^^^^^     
+               ^^^^^^^^          ^^^^^^^^^^^^^^^^          ^   ^^^^  ^^        ^^^^^^^     ^^^^    
+               ^^^^^^      ^^^     ^^^^^^^^^^^^     ^      ^   ^^^^  ^^^   ^^^ ^^^^^^^ ^^    ^^    
+                         ^^^^^^                    ^^      ^   ^^^^   ^^^^^^^  ^^   ^^ ^^^  ^^^    
+                      ^^^^^^^^^^^^             ^^^^^^      ^           ^^^^^  ^^     ^^ ^^^^^^     
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                  
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^                                             
+                               ^^^^^^^^^^^^^^^^^^^^                                                
+                                   ^^^^^^^^^^^^                                                    
+                                       ^^^^^^                                                      
+
+                           Copyright, all rights, reserved:                                        
+                         Permission is hereby granted to use                                       
+                but not to reproduce or distribute any part of this                                
+             program. The use is restricted to research purposes only.                             
+                            Lund University Sweden, 2010.                                          
+                                                                                                   
+ For the author list and the recommended citation consult section 1.5 of the MOLCAS user's guide.  
+
+
+
+   -------------------------------------------------------------------
+  |                                                                   
+  |   Project         = test016.input
+  |   Submitted from  = /home/g4rosendo/molcas
+  |   Scratch area    = /scratch/g4rosendo/test016.input.6493
+  |   Save outputs to = /home/g4rosendo/molcas
+  |   Molcas          = /aplic/molcas/7.8_intel_10.1_mkl_10.1/
+  |                                                                   
+  |   Scratch area is empty
+  |                                                                   
+  |      MOLCAS_ISDEV = PRODUCTION          
+  |       MOLCAS_CPUS = 8                   
+  |      MOLCAS_COLOR = NO                  
+  |                                                                   
+   -------------------------------------------------------------------
+--- Start Module: auto at Fri Oct  7 14:27:30 2016 
+
+++ ---------   Input file   ---------
+
+  &VIBROT &END
+    RoVibrational spectrum
+    Title
+    H2 1Sg+
+    Atoms
+      0 H 0 H
+    Potential
+      0.800 -1.01861680
+      1.000 -1.12334182
+      1.100 -1.14893328
+      1.200 -1.16386650
+      1.300 -1.17132170
+      1.400 -1.17348513
+      1.500 -1.17189290
+      1.600 -1.16764454
+      1.700 -1.16153973
+      1.800 -1.15416786
+      1.900 -1.14596802
+      2.000 -1.13727000
+      2.100 -1.12832304
+      2.200 -1.11931621
+      2.400 -1.10166363
+      2.800 -1.07005364
+      3.200 -1.04530454
+      3.600 -1.02767731
+      4.000 -1.01612682
+      5.000 -1.00367427
+      6.000 -1.00077274
+      10.00 -0.99997057
+    Grid
+      450
+    Range
+      0.4 5.0
+    Vibrations
+      3
+    Rotations
+      0 3
+    Orbital
+      0
+ >>COPY $Project.VibWvs $Project.VibWvs_GS
+  &VIBROT &END
+    RoVibrational spectrum
+    Title
+    H2 1Pu
+    Atoms
+      0 H 0 H
+    Potential
+      0.800 -0.42551985
+      1.000 -0.57191384
+      1.100 -0.61602598
+      1.200 -0.64805116
+      1.300 -0.67126306
+      1.400 -0.68794049
+      1.500 -0.69970706
+      1.600 -0.70774314
+      1.700 -0.71292179
+      1.800 -0.71589877
+      1.900 -0.71717290
+      2.000 -0.71712800
+      2.100 -0.71606216
+      2.200 -0.71420874
+      2.400 -0.70883728
+      2.800 -0.69461676
+      3.200 -0.67921291
+      3.600 -0.66464735
+      4.000 -0.65175468
+      5.000 -0.62788932
+      6.000 -0.61403297
+      10.00 -0.59852060
+    Grid
+      450
+    Range
+      0.4 5.0
+    Vibrations
+      3
+    Rotations
+      1 4
+    Orbital
+      1
+ >>COPY $Project.VibWvs $Project.VibWvs_XS
+ >>LINK $Project.VibWvs_GS VIBWVS1
+ >>LINK $Project.VibWvs_XS VIBWVS2
+  &VIBROT &END
+    Transition moments
+    Observable
+    Dipole Moment
+      0.800 0.57938359
+      1.000 0.62852037
+      1.100 0.65216622
+      1.200 0.67506184
+      1.300 0.69709869
+      1.400 0.71821433
+      1.500 0.73833904
+      1.600 0.75741713
+      1.700 0.77538706
+      1.800 0.79219774
+      1.900 0.80778988
+      2.000 0.82211035
+      2.100 0.83510594
+      2.200 0.84672733
+      2.400 0.86565481
+      2.800 0.88532063
+      3.200 0.88056207
+      3.600 0.85474708
+      4.000 0.81515210
+      5.000 0.70549066
+      6.000 0.62103112
+      10.00 0.46501146
+
+-- ----------------------------------
+
+--- Start Module: vibrot at Fri Oct  7 14:27:30 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module VibRot with 2000 MB of memory
+                                              at 14:27:30 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+
+ Vibration-Rotation spectrum for the HH   molecule.
+ H2 1Sg+                                                                        
+  
+
+ Rotational quantum number range   0  3
+ Electronic angular momentum       0
+ Vibrational quantum number range  0  2
+ Mass of atom   1 H    0.183715D+04 au
+ Mass of atom   1 H    0.183715D+04 au
+ Reduced mass          0.918576D+03 au
+
+ Statistics for numerical integration
+ Number of steps           449
+ Step length               0.005638
+ Radial integration range  0.400000  5.000000 au
+ logarithmic range        -0.916291  1.609438
+
+ Spectroscopic constants will be computed
+ Matrix elements of operators will not be computed
+
+ Potential read from input
+       R(au)     E(au)
+     0.800000   -1.018617
+     1.000000   -1.123342
+     1.100000   -1.148933
+     1.200000   -1.163866
+     1.300000   -1.171322
+     1.400000   -1.173485
+     1.500000   -1.171893
+     1.600000   -1.167645
+     1.700000   -1.161540
+     1.800000   -1.154168
+     1.900000   -1.145968
+     2.000000   -1.137270
+     2.100000   -1.128323
+     2.200000   -1.119316
+     2.400000   -1.101664
+     2.800000   -1.070054
+     3.200000   -1.045305
+     3.600000   -1.027677
+     4.000000   -1.016127
+     5.000000   -1.003674
+     6.000000   -1.000773
+    10.000000   -0.999971
+ Generating plot file:VIBPLT0 
+
+ Scaling parameter for potential:    1.000000
+
+ extremum points
+                        R(au)         Value
+ Min point            1.402108     -1.173486
+ Extrapolated value at infinity    -0.999941
+
+
+ Eigenstates
+
+  Vib. q.n.   Rot. q.n.    Energy
+      1           0      0.009928
+      2           0      0.028886
+      3           0      0.046777
+      1           1      0.010467
+      2           1      0.029398
+      3           1      0.047262
+      1           2      0.011540
+      2           2      0.030417
+      3           2      0.048227
+      1           3      0.013138
+      2           3      0.031934
+      3           3      0.049664
+
+     Rotational constants for vibrational quantum number  0
+     B=0.592545E+02 cm-1     D=0.446806E-01 cm-1
+     Observed and computed term values (cm-1)
+       1        0.118333E+03        0.118330E+03        0.284958E-02
+       2        0.353917E+03        0.353918E+03       -0.158310E-02
+       3        0.704620E+03        0.704619E+03        0.316620E-03
+
+     Rotational constants for vibrational quantum number  1
+     B=0.562605E+02 cm-1     D=0.428924E-01 cm-1
+     Observed and computed term values (cm-1)
+       1        0.112352E+03        0.112349E+03        0.267762E-02
+       2        0.336017E+03        0.336019E+03       -0.148757E-02
+       3        0.668950E+03        0.668949E+03        0.297513E-03
+
+     Rotational constants for vibrational quantum number  2
+     B=0.532882E+02 cm-1     D=0.409298E-01 cm-1
+     Observed and computed term values (cm-1)
+       1        0.106415E+03        0.106413E+03        0.247222E-02
+       2        0.318254E+03        0.318256E+03       -0.137345E-02
+       3        0.633565E+03        0.633565E+03        0.274691E-03
+
+     Rotational constants B(nv) and D(nv) in cm-1
+       1        0.592545E+02        0.446806E-01
+       2        0.562605E+02        0.428924E-01
+       3        0.532882E+02        0.409298E-01
+
+     Spectroscopic constants De=0.456474E-01 cm-1  Betae=-.187541E-02 cm-1
+     Observed and computed D values
+       0        0.446806E-01        0.447097E-01       -0.290806E-04
+       1        0.428924E-01        0.428343E-01        0.581612E-04
+       2        0.409298E-01        0.409589E-01       -0.290806E-04
+
+     Spectroscopic constants Be,Alphae and Gammae
+     Be=0.607596E+02 cm-1    Alphae=0.301566E+01 cm-1    Gammae=0.108447E-01
+     Observed and computed B values
+       0        0.592545E+02        0.592545E+02       -0.568434E-13
+       1        0.562605E+02        0.562605E+02        0.120792E-12
+       2        0.532882E+02        0.532882E+02        0.710543E-14
+
+     Vibrational constants we  =0.442749E+04 cm-1
+                           wexe=-.142436E+03 cm-1
+                           weye=0.562846E+01 cm-1
+     Observed and computed band origins
+       0        0.217884E+04        0.217884E+04       -0.207365E-09
+       1        0.633976E+04        0.633976E+04       -0.930413E-09
+       2        0.102665E+05        0.102665E+05       -0.218643E-08
+
+
+     Spectroscopic constants for H H 
+
+
+     Range of J-values used in fit  0  3
+     Range of v-values used in fit  0  2
+
+
+
+     Re(a)                 0.7420
+     De(ev)                4.7222
+     D0(ev)                4.4520
+     we(cm-1)        0.442749E+04
+     wexe(cm-1)      -.142436E+03
+     weye(cm-1)      0.562846E+01
+     Be(cm-1)        0.607596E+02
+     Alphae(cm-1)    0.301566E+01
+     Gammae(cm-1)    0.108447E-01
+     Dele(cm-1)      0.456474E-01
+     Betae(cm-1)     -.187541E-02
+
+
+     Max deviation in term values is  0.81E-02 cm(-1)
+
+
+     Term values(observed and computed) in cm(-1)
+
+ J-value         0                     1                     2                     3
+
+ v-value
+     0   2178.84   2178.84     2297.17   2297.17     2532.76   2532.76     2883.46   2883.46
+     1   6339.76   6339.76     6452.11   6452.11     6675.77   6675.78     7008.71   7008.71
+     2  10266.45  10266.45    10372.87  10372.87    10584.71  10584.71    10900.02  10900.01
+
+
+     observed G-values in cm(-1)
+
+     v      G(v)     deltaG(v+1/2)
+     0    2178.84
+                       4160.91
+     1    6339.76
+                       3926.70
+     2   10266.45
+--- Stop Module:  vibrot at Fri Oct  7 14:27:30 2016 /rc=0 ---
+--- Start Module: vibrot at Fri Oct  7 14:27:31 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module VibRot with 2000 MB of memory
+                                              at 14:27:31 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+
+ Vibration-Rotation spectrum for the HH   molecule.
+ H2 1Pu                                                                         
+  
+
+ Rotational quantum number range   1  4
+ Electronic angular momentum       1
+ Vibrational quantum number range  0  2
+ Mass of atom   1 H    0.183715D+04 au
+ Mass of atom   1 H    0.183715D+04 au
+ Reduced mass          0.918576D+03 au
+
+ Statistics for numerical integration
+ Number of steps           449
+ Step length               0.005638
+ Radial integration range  0.400000  5.000000 au
+ logarithmic range        -0.916291  1.609438
+
+ Spectroscopic constants will be computed
+ Matrix elements of operators will not be computed
+
+ Potential read from input
+       R(au)     E(au)
+     0.800000   -0.425520
+     1.000000   -0.571914
+     1.100000   -0.616026
+     1.200000   -0.648051
+     1.300000   -0.671263
+     1.400000   -0.687940
+     1.500000   -0.699707
+     1.600000   -0.707743
+     1.700000   -0.712922
+     1.800000   -0.715899
+     1.900000   -0.717173
+     2.000000   -0.717128
+     2.100000   -0.716062
+     2.200000   -0.714209
+     2.400000   -0.708837
+     2.800000   -0.694617
+     3.200000   -0.679213
+     3.600000   -0.664647
+     4.000000   -0.651755
+     5.000000   -0.627889
+     6.000000   -0.614033
+    10.000000   -0.598521
+ Generating plot file:VIBPLT0 
+
+ Scaling parameter for potential:    1.000000
+
+ extremum points
+                        R(au)         Value
+ Min point            1.945079     -0.717296
+ Extrapolated value at infinity    -0.596055
+
+
+ Eigenstates
+
+  Vib. q.n.   Rot. q.n.    Energy
+      1           1      0.005725
+      2           1      0.016393
+      3           1      0.026476
+      1           2      0.006284
+      2           2      0.016924
+      3           2      0.026981
+      1           3      0.007117
+      2           3      0.017715
+      3           3      0.027732
+      1           4      0.008217
+      2           4      0.018761
+      3           4      0.028724
+
+     Rotational constants for vibrational quantum number  0
+     B=0.307419E+02 cm-1     D=0.196323E-01 cm-1
+     Observed and computed term values (cm-1)
+       2        0.122657E+03        0.122653E+03        0.376424E-02
+       3        0.305453E+03        0.305455E+03       -0.263497E-02
+       4        0.546993E+03        0.546992E+03        0.627373E-03
+
+     Rotational constants for vibrational quantum number  1
+     B=0.292123E+02 cm-1     D=0.188564E-01 cm-1
+     Observed and computed term values (cm-1)
+       2        0.116551E+03        0.116547E+03        0.365653E-02
+       3        0.290235E+03        0.290237E+03       -0.255957E-02
+       4        0.519712E+03        0.519712E+03        0.609422E-03
+
+     Rotational constants for vibrational quantum number  2
+     B=0.277355E+02 cm-1     D=0.181245E-01 cm-1
+     Observed and computed term values (cm-1)
+       2        0.110656E+03        0.110652E+03        0.354086E-02
+       3        0.275540E+03        0.275542E+03       -0.247861E-02
+       4        0.493367E+03        0.493367E+03        0.590144E-03
+
+     Rotational constants B(nv) and D(nv) in cm-1
+       1        0.307419E+02        0.196323E-01
+       2        0.292123E+02        0.188564E-01
+       3        0.277355E+02        0.181245E-01
+
+     Spectroscopic constants De=0.200019E-01 cm-1  Betae=-.753882E-03 cm-1
+     Observed and computed D values
+       0        0.196323E-01        0.196250E-01        0.733284E-05
+       1        0.188564E-01        0.188711E-01       -0.146657E-04
+       2        0.181245E-01        0.181172E-01        0.733284E-05
+
+     Spectroscopic constants Be,Alphae and Gammae
+     Be=0.315264E+02 cm-1    Alphae=0.158234E+01 cm-1    Gammae=0.263884E-01
+     Observed and computed B values
+       0        0.307419E+02        0.307419E+02       -0.248690E-13
+       1        0.292123E+02        0.292123E+02        0.156319E-12
+       2        0.277355E+02        0.277355E+02        0.312639E-12
+
+     Vibrational constants we  =0.258545E+04 cm-1
+                           wexe=-.154876E+03 cm-1
+                           weye=0.201751E+02 cm-1
+     Observed and computed band origins
+       0        0.125653E+04        0.125653E+04       -0.670752E-10
+       1        0.359779E+04        0.359779E+04       -0.405180E-09
+       2        0.581088E+04        0.581088E+04       -0.106593E-08
+
+
+     Spectroscopic constants for H H 
+
+
+     Range of J-values used in fit  1  4
+     Range of v-values used in fit  0  2
+
+
+
+     Re(a)                 1.0293
+     De(ev)                3.2990
+     D0(ev)                3.1432
+     we(cm-1)        0.258545E+04
+     wexe(cm-1)      -.154876E+03
+     weye(cm-1)      0.201751E+02
+     Be(cm-1)        0.315264E+02
+     Alphae(cm-1)    0.158234E+01
+     Gammae(cm-1)    0.263884E-01
+     Dele(cm-1)      0.200019E-01
+     Betae(cm-1)     -.753882E-03
+
+
+     Max deviation in term values is  0.61E+02 cm(-1)
+
+
+     Term values(observed and computed) in cm(-1)
+
+ J-value         1                     2                     3                     4
+
+ v-value
+     0   1256.53   1317.93     1379.18   1440.27     1561.98   1622.60     1803.52   1863.51
+     1   3597.79   3656.14     3714.35   3772.39     3888.03   3945.62     4117.51   4174.49
+     2   5810.88   5866.28     5921.54   5976.65     6086.42   6141.10     6304.25   6358.35
+
+
+     observed G-values in cm(-1)
+
+     v      G(v)     deltaG(v+1/2)
+     0    1256.53
+                       2341.27
+     1    3597.79
+                       2213.09
+     2    5810.88
+--- Stop Module:  vibrot at Fri Oct  7 14:27:31 2016 /rc=0 ---
+--- Start Module: vibrot at Fri Oct  7 14:27:31 2016 
+ 
+ 
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+                                  MOLCAS executing module VibRot with 2000 MB of memory
+                                              at 14:27:31 Fri Oct  7 2016
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+ 
+ 
+
+ Transition moments for the HH   molecule.
+
+ State number 1
+ H2 1Sg+                                                                        
+  
+
+ Rotational quantum number range   0  3
+ Electronic angular momentum       0
+ Vibrational quantum number range  0  2
+ Mass of atom   1 H    0.183715D+04 au
+ Mass of atom   1 H    0.183715D+04 au
+ Reduced mass          0.918576D+03 au
+
+ State number 2
+ H2 1Pu                                                                         
+  
+
+ Rotational quantum number range   1  4
+ Electronic angular momentum       1
+ Vibrational quantum number range  0  2
+ Mass of atom   1 H    0.183715D+04 au
+ Mass of atom   1 H    0.183715D+04 au
+ Reduced mass          0.918576D+03 au
+
+ Statistics for numerical integration
+ Number of steps           449
+ Step length               0.005638
+ Radial integration range  0.400000  5.000000 au
+ logarithmic range        -0.916291  1.609438
+ Matrix elements of  1 operators will be computed
+ Generating plot file:VIBPLT1 
+
+ Input data for observables
+
+       Dipole Moment     
+     R(au)        Value                                                                                                                                                             
+    0.8000      0.579384                                                                                                                                                            
+    1.0000      0.628520                                                                                                                                                            
+    1.1000      0.652166                                                                                                                                                            
+    1.2000      0.675062                                                                                                                                                            
+    1.3000      0.697099                                                                                                                                                            
+    1.4000      0.718214                                                                                                                                                            
+    1.5000      0.738339                                                                                                                                                            
+    1.6000      0.757417                                                                                                                                                            
+    1.7000      0.775387                                                                                                                                                            
+    1.8000      0.792198                                                                                                                                                            
+    1.9000      0.807790                                                                                                                                                            
+    2.0000      0.822110                                                                                                                                                            
+    2.1000      0.835106                                                                                                                                                            
+    2.2000      0.846727                                                                                                                                                            
+    2.4000      0.865655                                                                                                                                                            
+    2.8000      0.885321                                                                                                                                                            
+    3.2000      0.880562                                                                                                                                                            
+    3.6000      0.854747                                                                                                                                                            
+    4.0000      0.815152                                                                                                                                                            
+    5.0000      0.705491                                                                                                                                                            
+    6.0000      0.621031                                                                                                                                                            
+   10.0000      0.465011                                                                                                                                                            
+     No plot file                                                                                                                                                                   
+  Interpolated value at equilibrium for state 1:
+    1.4021      0.718649                                                                                                                                                            
+ 
+  Matrix elements of observables.
+ Dipole Moment                                                                  
+  
+ Asymptotic energy difference (au):0.00000000E+00
+
+ Rotational quantum number for potential 1:  0, for potential 2:  1
+ --------------------------------------------------------------------------------
+ 
+ Overlap matrix for vibrational wave functions for potential number  1
+     0  0    0.298418     1  0    0.000000     1  1    0.399847     2  0    0.000000     2  1    0.000000     2  2    0.456340
+ 
+ Overlap matrix for vibrational wave functions for potential number  2
+     0  0    0.552190     1  0    0.000000     1  1    0.742728     2  0    0.000000     2  1    0.000000     2  2    0.847435
+
+ Overlap matrix for pot-1 and pot-2 functions
+     0  0   -0.357670     0  1   -0.445372     0  2   -0.438977
+     1  0   -0.575964     1  1   -0.370251     1  2   -0.099299
+     2  0    0.576019     2  1   -0.078668     2  2   -0.347753
+ 
+ Transition moments over vibrational wave functions (atomic units)
+     0  0   -0.275743     0  1   -0.335820     0  2   -0.324074     1  0   -0.461364     1  1   -0.289970     1  2   -0.075776
+     2  0    0.478271     2  1   -0.063982     2  2   -0.277089
+ 
+ Energy differences for vibrational wave functions(atomic units)
+     0  0    0.048101     0  1    0.058769     0  2    0.068853     1  0    0.029143     1  1    0.039810     1  2    0.049894
+     2  0    0.011251     2  1    0.021919     2  2    0.032003
+ Energy differences for vibrational wave functions(cm-1)
+     0  0     10557.0     0  1     12898.3     0  2     15111.4     1  0      6396.1     1  1      8737.4     1  2     10950.5
+     2  0      2469.4     2  1      4810.7     2  2      7023.8
+ Oscillator strengths for vibrational wave functions
+     0  0    0.002438     0  1    0.004418     0  2    0.004821     1  0    0.004136     1  1    0.002232     1  2    0.000191
+     2  0    0.001716     2  1    0.000060     2  2    0.001638
+ 
+ Contributions to inverse lifetimes (ns-1)
+No degeneracy factor is included in these values.
+     0  0    0.000181     0  1    0.000490     0  2    0.000734     1  0    0.000113     1  1    0.000114     1  2    0.000015
+     2  0    0.000007     2  1    0.000001     2  2    0.000054
+
+ Lifetimes (in nano seconds)
+   v       tau
+   0   3321.36
+   1   1653.27
+   2   1244.63
+--- Stop Module:  vibrot at Fri Oct  7 14:27:31 2016 /rc=0 ---
+
+     Happy landing!
+
+--- Stop Module:  auto at Fri Oct  7 14:27:32 2016 /rc=0 ---

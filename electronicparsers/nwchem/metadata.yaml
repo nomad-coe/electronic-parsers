@@ -1,0 +1,9 @@
+codeLabel: NWChem
+codeLabelStyle: 'Capitals: N, W, C'
+codeName: nwchem
+codeUrl: https://nwchemgit.github.io/
+parserDirName: dependencies/parsers/nwchem/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-nwchem.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: ''

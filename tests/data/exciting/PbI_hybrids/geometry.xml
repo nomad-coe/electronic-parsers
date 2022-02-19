@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<input>
+  <title>PbI2 J.Phys.Cond.Matt. (1990),2,5285-5295, ICSD database</title>
+  <structure speciespath="./">
+    <crystal>
+      <basevect>   8.613371228       0.000000000       0.000000000</basevect>
+      <basevect>  -4.306685605       7.459398299       0.000000000</basevect>
+      <basevect>   0.000000000       0.000000000       13.20162587</basevect>
+    </crystal>
+    <species speciesfile="Pb.xml" rmt="2.9000">
+      <atom coord="0.0000000000      0.0000000000      0.0000000000" bfcmt="0.000000000000000E+000  0.000000000000000E+000  0.000000000000000E+000"/>
+    </species>
+    <species speciesfile="I.xml" rmt="2.9000">
+      <atom coord="0.3333333500      0.6666667000      0.2675000100" bfcmt="0.000000000000000E+000  0.000000000000000E+000  0.000000000000000E+000"/>
+      <atom coord="0.6666666100      0.3333333200      0.7324999500" bfcmt="0.000000000000000E+000  0.000000000000000E+000  0.000000000000000E+000"/>
+    </species>
+  </structure>
+</input>

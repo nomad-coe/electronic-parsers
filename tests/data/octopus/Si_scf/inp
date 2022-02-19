@@ -1,0 +1,28 @@
+a = angstrom
+
+%LSize
+ 1.9197949109214762 * a | 1.9197949109214762 * a | 2.7149999999999999 * a
+%
+
+PeriodicDimensions = 3
+Output = forces
+OutputFormat = xcrysden
+FromScratch = True
+RestartWrite = False
+stdout = 'stdout.txt'
+Spacing = 0.15 * a
+
+%KPointsGrid
+ 4 | 4 | 4
+%
+
+KPointsUseSymmetries = True
+
+%Coordinates
+ 'Si' | 0.0 | 0.0 | 0.0
+ 'Si' | 1.9197949109214762*a | 0.0 | 1.3574999999999999*a
+ 'Si' | 1.9197949109214762*a | 1.9197949109214762 *a | 2.714999999999999 *a
+ 'Si' | 0.0 | 1.9197949109214762*a | 4.0724999999999998 *a
+%
+
+experimentalfeatures = true

@@ -1,0 +1,88 @@
+<input>
+  <title>H-az</title>
+  <structure speciespath="/scratch/Caterina/Azobenzene/H-az/Molecule/Species" cartesian="true" tshift="false">
+    <crystal>
+      <basevect>   22.00000000       0.000000000       0.000000000</basevect>
+      <basevect>   0.000000000       15.00000000       0.000000000</basevect>
+      <basevect>   0.000000000       0.000000000       35.00000000</basevect>
+    </crystal>
+    <species speciesfile="C.xml" rmt="1.2000">
+<atom coord="-0.239105161749221 0.259574675552915 -2.52534878675801 " />
+<atom coord="-2.55787853293755 0.694300510301653 -3.67446292092705 " />
+<atom coord="-2.69318103652236 0.848732711840193 -6.27502469872096 " />
+<atom coord="-0.52351650826982 0.566878164818892 -7.73511028063945 " />
+<atom coord="1.80845848989715 0.22230927560749 -6.56499184016243 " />
+<atom coord="1.95989925491877 0.0963136733782181 -3.97471773160295 " />
+<atom coord="0.629401644666475 0.36913721906386 -14.2575247006107 " />
+<atom coord="2.74969518716982 -0.1357957221135 -15.7276579565408 " />
+<atom coord="-1.70677421476209 0.780995477507345 -15.3928627310474 " />
+<atom coord="2.52302631330299 -0.249698966622145 -18.331318885243 " />
+<atom coord="-1.92116553774426 0.653781001902576 -17.9854139596339 " />
+<atom coord="0.195119895566173 0.138900542200231 -19.4612466296734 " />
+<atom coord="-1.58381540247766 -1.80460155879732 1.13827844434719 " />
+    </species>
+    <!--species speciesfile="N_XAS.xml" rmt="1.1000"-->
+    <species speciesfile="N.xml" rmt="1.1000">
+<atom coord="-0.90228566158935 0.642882951117319 -10.3405683389231 " />
+<atom coord="1.04852967966118 0.353497845334228 -11.645295753483 " />
+    </species>
+    <species speciesfile="H.xml" rmt="0.8000">
+<atom coord="-4.25688030398891 0.959727667783117 -2.52857265959304 " />
+<atom coord="-4.4793709933081 1.23473384718767 -7.24843020447593 " />
+<atom coord="3.48952864938248 0 -7.7514904270252 " />
+<atom coord="3.75649404396108 -0.259170274153913 -3.01016748265042 " />
+<atom coord="4.53287292045084 -0.511813434138886 -14.7433373924651 " />
+<atom coord="-3.33835811520224 1.16886177257826 -14.1844225336995 " />
+<atom coord="4.17275536436566 -0.696418893331005 -19.4961744383545 " />
+<atom coord="-3.76184574845628 0.96890984721186 -18.8830414462301 " />
+<atom coord="0 0 -21.5172403497354 " />
+<atom coord="-0.812718310615045 -3.72463137111727 0.818926061062344 " />
+<atom coord="-1.62277777651796 -1.4120317353053 3.17919592907631 " />
+<atom coord="-3.5281111884639 -1.7346382270438 0.380167550680566 " />
+    </species>
+    <species speciesfile="O.xml" rmt="1.2000">
+<atom coord="0 0 0 " />
+    </species>
+  </structure>
+
+  <groundstate
+    do="skip"
+    ngridk="1 1 1"
+    gmaxvr="16.0"
+    xctype="LDA_PW"
+    nempty="30"
+    rgkmax="4.0" >
+  </groundstate>
+
+   <xs xstype="BSE"
+        rgkmax="4.0"
+        ngridk="1 1 1"
+        ngridq="1 1 1"
+        nempty="100"
+        gqmax="2.0"
+        broad="0.00367493"
+        tevout="true" nosym="true">
+
+       <energywindow intv="10.0 20.0"
+          points="10000" />
+
+       <screening screentype="full"
+                  nempty="100"/>
+
+       <BSE bsetype="singlet"
+            nstlbsemat="1 2 1 50"
+            nstlbse="1 2 1 50"
+            sciavbd="true"/>
+
+           <qpointset>
+            <qpoint>0.0 0.0 0.0</qpoint>
+           </qpointset>
+
+        <!--plan>
+         <doonly task="bse"/>
+         <doonly task="bsegenspec"/>
+        </plan-->
+
+   </xs>
+
+  </input>

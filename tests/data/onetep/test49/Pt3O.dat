@@ -1,0 +1,73 @@
+! Projected Density of States (pDOS) QC Test
+! Written by Jolyon Aarons, 30/10/2014, Southampton.
+
+! Parameters
+task                     : singlepoint
+charge                   : 0
+cutoff_energy            : 450 eV
+kernel_cutoff            : 1000 Bohr
+xc_functional            : RPBE
+k_zero                   : 2.5
+maxit_palser_mano        : 100
+edft                     : T
+edft_smearing_width      : 0.1 eV
+edft_maxit               : 10
+maxit_ngwf_cg            : 1
+occ_mix                  : 1.0
+paw                      : T
+
+do_properties            : T
+cube_format              : F
+write_density_plot       : F
+popn_calculate           : F
+ngwf_analysis            : F
+dos_smear                : 0.3 eV
+pdos_max_l               : 2
+print_qc                 : T
+read_denskern            : F
+read_tightbox_ngwfs      : F
+read_hamiltonian         : F
+write_denskern           : F
+write_tightbox_ngwfs     : F
+write_hamiltonian        : F
+write_xyz                : F
+output_detail            : VERBOSE
+timings_level            : 2
+
+
+! Cell
+%block lattice_cart
+ Ang
+ 20.000   0.000   0.000
+  0.000  20.000   0.000
+  0.000   0.000  20.000
+%endblock lattice_cart
+
+%block species
+ Pt Pt 78 9 9.0
+ O  O  8  4 9.0
+%endblock species
+
+%block species_atomic_set
+ Pt "SOLVE conf=5d9 6s1 6p0"
+ O  "SOLVE"
+%endblock species_atomic_set
+
+%block species_pot
+ Pt "../../pseudo/platinum.paw"
+ O  "../../pseudo/oxygen.paw"
+%endblock species_pot
+
+%block species_pdos_groups
+ Pt O
+ Pt
+ O
+%endblock species_pdos_groups
+
+%block positions_abs
+ Ang
+ Pt        8.8292 12.2847  8.7330
+ Pt        9.2819 11.1839 11.1325
+ Pt       11.1589 11.1504  9.2649
+ O        10.0664 12.6143 10.1519
+%endblock positions_abs

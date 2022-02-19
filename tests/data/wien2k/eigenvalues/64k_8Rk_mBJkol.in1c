@@ -1,0 +1,123 @@
+WFFIL  EF=.366644798100   (WFFIL, WFPRI, ENFIL, SUPWF) 
+  8.00       10    4 (R-MT*K-MAX; MAX L IN WF, V-NMT
+  0.30    4  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 2   -1.84      0.002 CONT 1
+ 2    0.30      0.000 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    4  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 2   -1.84      0.002 CONT 1
+ 2    0.30      0.000 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    4  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 2   -1.84      0.002 CONT 1
+ 2    0.30      0.000 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    4  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 2   -1.84      0.002 CONT 1
+ 2    0.30      0.000 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    4  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 2   -1.84      0.002 CONT 1
+ 2    0.30      0.000 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    4  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 2   -1.84      0.002 CONT 1
+ 2    0.30      0.000 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    5  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0    0.30      0.000 CONT 1
+ 0   -4.32      0.001 STOP 1
+ 1   -2.58      0.002 CONT 1
+ 1    0.30      0.000 CONT 1
+ 2    0.30      0.005 CONT 1
+  0.30    5  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0    0.30      0.000 CONT 1
+ 0   -4.32      0.001 STOP 1
+ 1   -2.58      0.002 CONT 1
+ 1    0.30      0.000 CONT 1
+ 2    0.30      0.005 CONT 1
+  0.30    5  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0    0.30      0.000 CONT 1
+ 0   -4.32      0.001 STOP 1
+ 1   -2.58      0.002 CONT 1
+ 1    0.30      0.000 CONT 1
+ 2    0.30      0.005 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+  0.30    3  0      (GLOBAL E-PARAMETER WITH n OTHER CHOICES, global APW/LAPW)
+ 0   -1.53      0.002 CONT 1
+ 0    0.30      0.000 CONT 1
+ 1    0.30      0.000 CONT 1
+K-VECTORS FROM UNIT:4   -9.0       1.5   410   emin / de (emax=Ef+de) / nband

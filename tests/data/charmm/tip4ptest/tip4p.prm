@@ -1,0 +1,26 @@
+* TIPS3P WATER PARAMETER FILE
+*
+BOND
+HT   OT     450.0       0.9572 ! from TIPS3P geometry
+HT   HT       0.0       1.5139 ! from TIPS3P geometry (for SHAKE w/PARAM)
+LP   OT       0.0       0.15   ! from TIP4P geometry
+
+THETAS
+HT   OT   HT      55.0     104.52    ! FROM TIPS3P GEOMETRY
+!
+NONBONDED   GROUP CDIEL SWITCH VGROUP VDISTANCE VSWITCH -
+     CUTNB 10.0  CTOFNB 8.0 CTONNB 8.0 EPS 1.0  E14FAC 1.0  WMIN 1.5
+!
+HT       0.0440    -0.0498    0.8000 !TIP3P water hydrogen, see NBFIX below
+OT       0.8400    -0.1591    1.6000 !TIP3P water oxygen,   see NBFIX below
+LP       0.0440     0.0000    0.8000 ! TIP4P lone pair
+
+NBFIX
+!!OT   OT      -0.152073  3.5365  ! TIPS3P VDW INTERACTION
+OT   OT      -0.15504   3.53977   ! TIPS4P VDW INTERACTION
+HT   HT       0.0       0.4490
+HT   OT       0.0       1.9927
+
+HBOND CUTHB 0.5
+END
+

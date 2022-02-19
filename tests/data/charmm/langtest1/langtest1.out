@@ -1,0 +1,1132 @@
+1
+                 Chemistry at HARvard Macromolecular Mechanics
+                (CHARMM) - Free Version 41b2   February 15, 2017                
+                                      605                                       
+       Copyright(c) 1984-2014  President and Fellows of Harvard College
+                              All Rights Reserved
+         Current operating system: Darwin-16.7.0(x86_64)@imacberk.local         
+                 Created on  2/2/18 at 16:10:38 by user: bonat       
+
+            Maximum number of ATOMS:    360720, and RESidues:      120240
+ RDTITL> * LANGTEST1
+ RDTITL> *  THIS IS A TEST FILE WHICH BUILDS A BUTANE
+ RDTITL> *  MOLECULE FROM 4 EXTENDED ATOMS AND THEN RUNS
+ RDTITL> *  A SERIES OF LANGEVIN DYNAMICS TESTS. THE INITIAL
+ RDTITL> *  POSITIONS OF THE MOLECULE ARE WITH THE DIHEDRAL
+ RDTITL> *  ANGLE AT 180 DEGREES.  BOTH BONDS AND BOND ANGLES
+ RDTITL> *  ARE SHAKEN.
+ RDTITL> *
+  
+ CHARMM>     
+  
+ CHARMM>    if ?NUMNODE .gt. 1 then
+ RDCMND substituted energy or value "?NUMNODE" to "1"
+ Comparing "1" and "1".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>     
+  
+ CHARMM>    stream datadir.def
+ VOPEN> Attempting to open::DATADIR.DEF::
+ OPNLGU> Unit 99 opened for READONLY access to DATADIR.DEF
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * CHARMM TESTCASE DATA DIRECTORY ASSIGNMENT
+ RDTITL> *
+ Parameter: IN1 <- "" <empty>
+  
+ CHARMM>    faster on
+ MISCOM> FAST option: EXPANDED (limited fast routines)
+  
+ CHARMM>    set pnode =
+ Parameter: PNODE <- "" <empty>
+  
+ CHARMM>    if ?numnode .gt. 1 set pnode = node 0
+ RDCMND substituted energy or value "?NUMNODE" to "1"
+ Comparing "1" and "1".
+ IF test evaluated as false.  Skipping command
+  
+ CHARMM>    set 0 ./     ! input data directory
+ Parameter: 0 <- "./"
+  
+ CHARMM>    set 9 ./  ! scratch directory
+ Parameter: 9 <- "./"
+  
+ CHARMM>    set testcheck stream @0/test.str
+ Parameter: 0 -> "./"
+ Parameter: TESTCHECK <- "STREAM .//TEST.STR"
+  
+ CHARMM>    set qcheck stream @0/qtest.str
+ Parameter: 0 -> "./"
+ Parameter: QCHECK <- "STREAM .//QTEST.STR"
+  
+ CHARMM>    set testfail 0
+ Parameter: TESTFAIL <- "0"
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>     
+  
+ CHARMM>    READ RTF CARDS PRINT
+ MAINIO> Residue topology file being read from unit   5.
+ RDTITL> * BUTANE
+ RDTITL> *
+  
+ rtf>          18    1
+  
+ RTF>       MASS   13 CH2E  14.02700
+  
+ RTF>       MASS   14 CH3E  15.03500
+  
+ RTF>        
+  
+ RTF>       RESI BUT  0.0
+  
+ RTF>       ATOM   C1   CH3E 0.0
+  
+ RTF>       ATOM   C2   CH2E 0.0
+  
+ RTF>       ATOM   C3   CH2E 0.0
+  
+ RTF>       ATOM   C4   CH3E 0.0
+  
+ RTF>       BOND C1 C2  C2 C3  C3 C4
+  
+ RTF>       ANGLE  C1 C2 C3  C2 C3 C4
+  
+ RTF>       DIHEDRAL C1 C2 C3 C4
+  
+ RTF>       IC C1 C2 C3 C4   0.0 0.0 180.0 0.0 0.0
+  
+ RTF>       IC  X C1 C2 C3   0.0 0.0 180.0 0.0 0.0
+  
+ RTF>        
+  
+ RTF>       END
+  
+ CHARMM>     
+  
+ CHARMM>    READ PARAMETER CARD
+
+          PARAMETER FILE BEING READ FROM UNIT  5
+ RDTITL> * FROM PARAMETER FILE PARAM6.INP
+ RDTITL> *
+ PARMIO> NONBOND, HBOND lists and IMAGE atoms cleared.
+  
+ CHARMM>     
+  
+ CHARMM>    READ SEQU CARD
+ MAINIO> Sequence information being read from unit   5.
+ RDTITL> * BUTANE
+ RDTITL> *
+  
+ SEQRDR>    1
+  
+ SEQRDR>    BUT
+
+          RESIDUE SEQUENCE --     1 RESIDUES
+          BUT 
+  
+ CHARMM>     
+  
+ CHARMM>    GENERATE BUTE SETU
+ NO PATCHING WILL BE DONE ON THE FIRST RESIDUE
+ NO PATCHING WILL BE DONE ON THE LAST  RESIDUE
+ GENPSF> Segment   1 has been generated. Its identifier is BUTE.
+ PSFSUM> PSF modified: NONBOND lists and IMAGE atoms cleared.
+ PSFSUM> Summary of the structure file counters :
+         Number of segments      =        1   Number of residues   =        1
+         Number of atoms         =        4   Number of groups     =        1
+         Number of bonds         =        3   Number of angles     =        2
+         Number of dihedrals     =        1   Number of impropers  =        0
+         Number of cross-terms   =        0
+         Number of HB acceptors  =        0   Number of HB donors  =        0
+         Number of NB exclusions =        0   Total charge =    0.00000
+  
+ CHARMM>     
+  
+ CHARMM>    IC PARAMETERS
+  
+ CHARMM>    PRINT IC
+
+       INTERNAL COORDINATES
+ TITLE>  * LANGTEST1
+ TITLE>  *  THIS IS A TEST FILE WHICH BUILDS A BUTANE
+ TITLE>  *  MOLECULE FROM 4 EXTENDED ATOMS AND THEN RUNS
+ TITLE>  *  A SERIES OF LANGEVIN DYNAMICS TESTS. THE INITIAL
+ TITLE>  *  POSITIONS OF THE MOLECULE ARE WITH THE DIHEDRAL
+ TITLE>  *  ANGLE AT 180 DEGREES.  BOTH BONDS AND BOND ANGLES
+ TITLE>  *  ARE SHAKEN.
+ TITLE>  *
+
+     NUMBER OF INTERNAL COORDINATES :          2
+
+   N     I       J       K       L   R(I(J/K)) T(I(JK/KJ)) PHI   T(JKL)   R(KL)
+
+    1   1 C1    1 C2    1 C3    1 C4     1.5400  111.00  180.00  111.00   1.5400
+    2 -99 ??    1 C1    1 C2    1 C3     0.0000    0.00  180.00  111.00   1.5200
+  
+ CHARMM>     
+  
+ CHARMM>    IC SEED 1 C1 1 C2 1 C3
+  
+ CHARMM>    IC BUILD
+  
+ CHARMM>    PRINT COORD
+
+          COORDINATE FILE MODULE
+ TITLE>  * LANGTEST1
+ TITLE>  *  THIS IS A TEST FILE WHICH BUILDS A BUTANE
+ TITLE>  *  MOLECULE FROM 4 EXTENDED ATOMS AND THEN RUNS
+ TITLE>  *  A SERIES OF LANGEVIN DYNAMICS TESTS. THE INITIAL
+ TITLE>  *  POSITIONS OF THE MOLECULE ARE WITH THE DIHEDRAL
+ TITLE>  *  ANGLE AT 180 DEGREES.  BOTH BONDS AND BOND ANGLES
+ TITLE>  *  ARE SHAKEN.
+ TITLE>  *
+    4
+    1    1 BUT  C1     0.00000   0.00000   0.00000 BUTE 1      0.00000
+    2    1 BUT  C2     1.54000   0.00000   0.00000 BUTE 1      0.00000
+    3    1 BUT  C3     2.08472   1.41904   0.00000 BUTE 1      0.00000
+    4    1 BUT  C4     3.62472   1.41904   0.00000 BUTE 1      0.00000
+  
+ CHARMM>     
+  
+ CHARMM>    SCAL FBETA SET 6.657235 SELE SEGID BUTE .AND. RESID 1 END
+ SELRPN>      4 atoms have been selected out of      4
+  
+ CHARMM>    SCAL FBETA SHOW
+ ( BUTE BUT  1    C1   )    6.6572    
+ ( BUTE BUT  1    C2   )    6.6572    
+ ( BUTE BUT  1    C3   )    6.6572    
+ ( BUTE BUT  1    C4   )    6.6572    
+  
+ CHARMM>     
+  
+ CHARMM>    ! We SHAKE bonds and bond angles to simplify things
+ CHARMM>    SHAKE TOL 1.0E-5  BONDS ANGLES
+ SHKCOM> SHAKE parameters: TOL =   0.1000D-04 MXITer =    500
+
+               5 constraints will held by SHAKE.
+  
+ CHARMM>     
+  
+ CHARMM>    UPDATE NBXMOD 4
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      ATOMs    RDIElec  SWITch   VATOm    VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  =  8.000 CTEXNB =999.000 CTONNB =  6.500 CTOFNB =  7.500
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      4
+ There are        0 atom  pairs and        0 atom  exclusions.
+ There are        0 group pairs and        0 group exclusions.
+
+      ***** LEVEL  1 WARNING FROM <GTNBCT> *****
+      ***** CUTNB and CTOFNB are too close for efficient heuristic update.
+      ******************************************
+      BOMLEV (  0) IS NOT REACHED. WRNLEV IS  5
+
+ <MAKINB> with mode   4 found      6 exclusions and      0 interactions(1-4)
+ <MAKGRP> found      0 group exclusions.
+ Generating nonbond list with Exclusion mode = 4
+ == PRIMARY == SPACE FOR        5 ATOM PAIRS AND        0 GROUP PAIRS
+
+ General atom nonbond list generation found:
+        0 ATOM PAIRS WERE FOUND FOR ATOM LIST
+        0 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+  
+ CHARMM>     
+  
+ CHARMM>    PRINT COORD
+
+          COORDINATE FILE MODULE
+ TITLE>  * LANGTEST1
+ TITLE>  *  THIS IS A TEST FILE WHICH BUILDS A BUTANE
+ TITLE>  *  MOLECULE FROM 4 EXTENDED ATOMS AND THEN RUNS
+ TITLE>  *  A SERIES OF LANGEVIN DYNAMICS TESTS. THE INITIAL
+ TITLE>  *  POSITIONS OF THE MOLECULE ARE WITH THE DIHEDRAL
+ TITLE>  *  ANGLE AT 180 DEGREES.  BOTH BONDS AND BOND ANGLES
+ TITLE>  *  ARE SHAKEN.
+ TITLE>  *
+    4
+    1    1 BUT  C1     0.00000   0.00000   0.00000 BUTE 1      0.00000
+    2    1 BUT  C2     1.54000   0.00000   0.00000 BUTE 1      0.00000
+    3    1 BUT  C3     2.08472   1.41904   0.00000 BUTE 1      0.00000
+    4    1 BUT  C4     3.62472   1.41904   0.00000 BUTE 1      0.00000
+  
+ CHARMM>     
+  
+ CHARMM>    ! Run 2.5 ps of Langevin dynamics with initial temperature
+ CHARMM>    ! set to 291.0 K.  Save the trajectory to analyze the rms
+ CHARMM>    ! fluctuations.
+ CHARMM>    OPEN WRITE FILE UNIT 30 NAME @9FOR030.DAT
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::./for030.dat::
+ OPNLGU> Unit 30 opened for WRITE access to ./for030.dat
+  
+ CHARMM>    DYNA LANG TIMESTEP 0.001 NSTEP 2500 ISEED 314159 -
+ CHARMM>      FIRSTT 232.0 FINALT 291.4 TWINDL 100.0 TWINDH -100.0 -
+ CHARMM>     INBFRQ 0 IHBFRQ 0 IEQFRQ 0 NPRINT 20 IASVEL 1 -
+ CHARMM>     TBATH 291.0 -
+ CHARMM>     IUNCRD 30 NSAVC 5
+  IUNREA = -1         IUNWRI = -1          IUNOS = -1
+  IUNCRD = 30         IUNVEL = -1          KUNIT = -1
+
+      ***** LEVEL  5 WARNING FROM <RNGMODSEEDS> *****
+      ***** Only one seed number specified! See random.doc for syntax.
+      ******************************************
+      BOMLEV (  0) IS NOT REACHED. WRNLEV IS  5
+
+ DCNTRL> Langevin integration requested.
+   NSTEP =     2500    NSAVC =        5    NSAVV =       10
+  ISCALE =        0   ISCVEL =        0   IASORS =        0
+  IASVEL =        1   ICHECW =        1   NTRFRQ =        0
+  IHTFRQ =        0   IEQFRQ =        0   NPRINT =       20
+  INBFRQ =        0   IHBFRQ =        0   IPRFRQ =     1000
+  ILBFRQ =       50   IMGFRQ =        0
+  ISVFRQ =        0   NCYCLE =       50    NSNOS =       10
+  FIRSTT =   232.000  TEMINC =     5.000  TSTRUC =  -999.000
+  FINALT =   291.400  TWINDH =   100.000  TWINDL =  -100.000
+
+  TIME STEP =  2.04548E-02 AKMA       1.00000E-03 PS
+
+  RANDOM NUM. GEN. SEED(S) = 314159 314159 314159 314159
+
+           SHAKE TOLERANCE =     0.10000E-04
+ NUMBER OF DEGREES OF FREEDOM =      7
+
+          GAUSSIAN OPTION                  IS            1
+          VELOCITIES ASSIGNED AT TEMPERATURE =    290.0000
+          SEED FOR RANDOM NUMBER GENERATOR IS:
+          SEEDS> 314159 314159 314159 314159
+
+     DETAILS ABOUT CENTRE OF MASS
+     POSITION          :    1.8123596       0.70952112       4.55440082E-17
+     VELOCITY          :   7.76830786E-02   0.16825673      -0.20082572    
+     ANGULAR MOMENTUM  :   -3.2292976        13.434890        28.281869    
+     KINETIC ENERGY    :    2.1702327    
+ LNGFIL: TBATH =   291.000000  DELTA =    0.020455
+ LNGFIL: Langevin dynamics setup for       4 atoms
+ LNGFIL: RBUF =    0.000000
+ LNGFIL: SXREF =    0.000000 SYREF =    0.000000 SZREF =    0.000000
+DYNA DYN: Step         Time      TOTEner        TOTKe       ENERgy  TEMPerature
+DYNA PROP:             GRMS      HFCTote        HFCKe       EHFCor        VIRKe
+DYNA PRESS:            VIRE         VIRI       PRESSE       PRESSI       VOLUme
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>        0      0.00000      6.48903      6.48903      0.00000    932.97933
+DYNA PROP>         19.85806      6.50533      6.47245      0.01630     -9.16722
+DYNA PRESS>         0.00000      6.11148      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       20      0.02000      6.23391      6.20871      0.02520    892.67586
+DYNA PROP>         16.52575      6.24809      6.19373      0.01417     11.04909
+DYNA INTERN>        0.00000      0.00000      0.00000      0.02520      0.00000
+DYNA PRESS>         0.00000     -7.36606      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       40      0.04000      7.32430      7.29821      0.02609   1049.32162
+DYNA PROP>         20.66197      7.36465      7.27916      0.04035     17.65258
+DYNA INTERN>        0.00000      0.00000      0.00000      0.02609      0.00000
+DYNA PRESS>         0.00000    -11.76839      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       60      0.06000      5.15547      5.15523      0.00023    741.20912
+DYNA PROP>         23.50107      5.13147      5.14783     -0.02399     -7.13384
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00023      0.00000
+DYNA PRESS>         0.00000      4.75589      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       80      0.08000      6.13074      6.09498      0.03576    876.32455
+DYNA PROP>         19.11587      6.01317      6.08227     -0.11757     -7.32497
+DYNA INTERN>        0.00000      0.00000      0.00000      0.03576      0.00000
+DYNA PRESS>         0.00000      4.88331      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      100      0.10000      5.31332      5.14800      0.16533    740.16836
+DYNA PROP>         25.41587      5.48683      5.14216      0.17350     -6.06786
+DYNA INTERN>        0.00000      0.00000      0.00000      0.16533      0.00000
+DYNA PRESS>         0.00000      4.04524      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      120      0.12000      6.29003      6.11058      0.17945    878.56701
+DYNA PROP>         18.52035      6.27053      6.09396     -0.01950     23.32973
+DYNA INTERN>        0.00000      0.00000      0.00000      0.17945      0.00000
+DYNA PRESS>         0.00000    -15.55316      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      140      0.14000      4.70872      4.65471      0.05400    669.24532
+DYNA PROP>         21.56098      4.85527      4.64803      0.14655     15.30784
+DYNA INTERN>        0.00000      0.00000      0.00000      0.05400      0.00000
+DYNA PRESS>         0.00000    -10.20523      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      160      0.16000      5.11098      5.11087      0.00011    734.83016
+DYNA PROP>         23.49352      5.21677      5.10264      0.10579     53.08214
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00011      0.00000
+DYNA PRESS>         0.00000    -35.38810      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      180      0.18000      5.50596      5.44597      0.05999    783.00984
+DYNA PROP>         26.75733      5.47178      5.43530     -0.03418     46.19283
+DYNA INTERN>        0.00000      0.00000      0.00000      0.05999      0.00000
+DYNA PRESS>         0.00000    -30.79522      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      200      0.20000      4.62648      4.47302      0.15347    643.12126
+DYNA PROP>         14.82593      4.66501      4.46060      0.03852      8.04068
+DYNA INTERN>        0.00000      0.00000      0.00000      0.15346      0.00000
+DYNA PRESS>         0.00000     -5.36045      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      220      0.22000      5.72118      5.31114      0.41004    763.62525
+DYNA PROP>         16.01149      5.63119      5.29570     -0.08999    -15.35054
+DYNA INTERN>        0.00000      0.00000      0.00000      0.41004      0.00000
+DYNA PRESS>         0.00000     10.23369      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      240      0.24000      2.89339      2.48074      0.41265    356.67557
+DYNA PROP>         20.93753      2.99292      2.47873      0.09953     28.25118
+DYNA INTERN>        0.00000      0.00000      0.00000      0.41265      0.00000
+DYNA PRESS>         0.00000    -18.83412      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      260      0.26000      1.99737      1.75073      0.24663    251.71684
+DYNA PROP>         22.27111      2.03800      1.75487      0.04063     35.37137
+DYNA INTERN>        0.00000      0.00000      0.00000      0.24663      0.00000
+DYNA PRESS>         0.00000    -23.58091      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      280      0.28000      1.17316      1.11428      0.05889    160.20853
+DYNA PROP>         23.62117      1.15739      1.11973     -0.01577    -25.55062
+DYNA INTERN>        0.00000      0.00000      0.00000      0.05889      0.00000
+DYNA PRESS>         0.00000     17.03375      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      300      0.30000      1.58508      1.53275      0.05234    220.37502
+DYNA PROP>         22.44463      1.67040      1.53691      0.08532      5.53090
+DYNA INTERN>        0.00000      0.00000      0.00000      0.05234      0.00000
+DYNA PRESS>         0.00000     -3.68727      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      320      0.32000      0.82080      0.55026      0.27054     79.11463
+DYNA PROP>         24.80284      0.84694      0.55187      0.02614     12.44193
+DYNA INTERN>        0.00000      0.00000      0.00000      0.27054      0.00000
+DYNA PRESS>         0.00000     -8.29462      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      340      0.34000      1.59293      1.39480      0.19813    200.54187
+DYNA PROP>         22.65378      1.57706      1.39615     -0.01587    -22.09504
+DYNA INTERN>        0.00000      0.00000      0.00000      0.19813      0.00000
+DYNA PRESS>         0.00000     14.73002      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      360      0.36000      0.95638      0.87568      0.08070    125.90303
+DYNA PROP>         23.11857      0.90104      0.88267     -0.05534    -16.17266
+DYNA INTERN>        0.00000      0.00000      0.00000      0.08070      0.00000
+DYNA PRESS>         0.00000     10.78177      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      380      0.38000      1.22355      1.21557      0.00799    174.77175
+DYNA PROP>         20.29863      1.20245      1.21789     -0.02110     44.88802
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00799      0.00000
+DYNA PRESS>         0.00000    -29.92535      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      400      0.40000      1.90005      1.88597      0.01408    271.16113
+DYNA PROP>         18.97880      1.85912      1.88779     -0.04094     -4.30236
+DYNA INTERN>        0.00000      0.00000      0.00000      0.01408      0.00000
+DYNA PRESS>         0.00000      2.86824      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      420      0.42000      2.22358      2.15131      0.07227    309.31072
+DYNA PROP>         22.36505      2.28626      2.15343      0.06269    -39.29444
+DYNA INTERN>        0.00000      0.00000      0.00000      0.07227      0.00000
+DYNA PRESS>         0.00000     26.19629      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      440      0.44000      2.09265      1.91941      0.17324    275.96939
+DYNA PROP>         21.81311      2.00228      1.92082     -0.09038     38.27187
+DYNA INTERN>        0.00000      0.00000      0.00000      0.17324      0.00000
+DYNA PRESS>         0.00000    -25.51458      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      460      0.46000      2.02434      1.84364      0.18070    265.07474
+DYNA PROP>         23.84653      2.03039      1.84237      0.00605    -20.64020
+DYNA INTERN>        0.00000      0.00000      0.00000      0.18070      0.00000
+DYNA PRESS>         0.00000     13.76013      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      480      0.48000      3.05516      2.94620      0.10897    423.59841
+DYNA PROP>         16.58495      3.08493      2.93990      0.02976     -2.93090
+DYNA INTERN>        0.00000      0.00000      0.00000      0.10897      0.00000
+DYNA PRESS>         0.00000      1.95394      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      500      0.50000      3.93688      3.93417      0.00270    565.64762
+DYNA PROP>         18.03863      3.90275      3.92771     -0.03413      4.02718
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00270      0.00000
+DYNA PRESS>         0.00000     -2.68479      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      520      0.52000      3.78203      3.49636      0.28567    502.69959
+DYNA PROP>         16.36943      3.78354      3.48887      0.00151      8.78888
+DYNA INTERN>        0.00000      0.00000      0.00000      0.28567      0.00000
+DYNA PRESS>         0.00000     -5.85925      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      540      0.54000      3.58590      2.65004      0.93586    381.01722
+DYNA PROP>         23.97169      3.60391      2.64806      0.01801     -5.38679
+DYNA INTERN>        0.00000      0.00000      0.00000      0.93586      0.00000
+DYNA PRESS>         0.00000      3.59119      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      560      0.56000      3.52881      1.97276      1.55605    283.63987
+DYNA PROP>         21.89241      3.59548      1.97499      0.06667     -3.97655
+DYNA INTERN>        0.00000      0.00000      0.00000      1.55605      0.00000
+DYNA PRESS>         0.00000      2.65103      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      580      0.58000      2.76819      1.29236      1.47582    185.81313
+DYNA PROP>         21.57102      2.77781      1.29504      0.00962      0.38106
+DYNA INTERN>        0.00000      0.00000      0.00000      1.47582      0.00000
+DYNA PRESS>         0.00000     -0.25404      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      600      0.60000      3.81593      2.93904      0.87688    422.56959
+DYNA PROP>         13.44399      3.79183      2.93313     -0.02410     16.98736
+DYNA INTERN>        0.00000      0.00000      0.00000      0.87688      0.00000
+DYNA PRESS>         0.00000    -11.32491      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      620      0.62000      4.37896      4.26689      0.11207    613.48480
+DYNA PROP>         18.67768      4.35801      4.25728     -0.02095     17.63958
+DYNA INTERN>        0.00000      0.00000      0.00000      0.11207      0.00000
+DYNA PRESS>         0.00000    -11.75972      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      640      0.64000      4.26297      4.06160      0.20137    583.96819
+DYNA PROP>         20.93342      4.35425      4.05611      0.09128      1.58024
+DYNA INTERN>        0.00000      0.00000      0.00000      0.20137      0.00000
+DYNA PRESS>         0.00000     -1.05349      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      660      0.66000      3.05353      2.14579      0.90774    308.51718
+DYNA PROP>         24.50221      3.00361      2.14801     -0.04992      3.97477
+DYNA INTERN>        0.00000      0.00000      0.00000      0.90774      0.00000
+DYNA PRESS>         0.00000     -2.64985      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      680      0.68000      4.09106      2.58198      1.50907    371.23239
+DYNA PROP>         18.76002      4.07697      2.57914     -0.01409     -0.88553
+DYNA INTERN>        0.00000      0.00000      0.00000      1.50907      0.00000
+DYNA PRESS>         0.00000      0.59035      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      700      0.70000      3.67377      1.86328      1.81049    267.89926
+DYNA PROP>         22.52622      3.75793      1.86748      0.08415     10.71856
+DYNA INTERN>        0.00000      0.00000      0.00000      1.81049      0.00000
+DYNA PRESS>         0.00000     -7.14571      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      720      0.72000      3.67079      1.99509      1.67571    286.84932
+DYNA PROP>         25.57604      3.65346      2.00205     -0.01734     21.53672
+DYNA INTERN>        0.00000      0.00000      0.00000      1.67571      0.00000
+DYNA PRESS>         0.00000    -14.35781      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      740      0.74000      3.51702      2.69692      0.82010    387.75781
+DYNA PROP>         25.40319      3.51579      2.69209     -0.00123     56.02108
+DYNA INTERN>        0.00000      0.00000      0.00000      0.82010      0.00000
+DYNA PRESS>         0.00000    -37.34739      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      760      0.76000      2.82297      2.71300      0.10997    390.06939
+DYNA PROP>         23.72652      2.86983      2.71098      0.04686    -13.67434
+DYNA INTERN>        0.00000      0.00000      0.00000      0.10997      0.00000
+DYNA PRESS>         0.00000      9.11623      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      780      0.78000      0.92393      0.85555      0.06838    123.00941
+DYNA PROP>         22.56003      0.90962      0.86226     -0.01431     -2.48883
+DYNA INTERN>        0.00000      0.00000      0.00000      0.06838      0.00000
+DYNA PRESS>         0.00000      1.65922      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      800      0.80000      1.65014      1.34362      0.30653    193.18233
+DYNA PROP>         23.37658      1.69500      1.35140      0.04485      7.34477
+DYNA INTERN>        0.00000      0.00000      0.00000      0.30653      0.00000
+DYNA PRESS>         0.00000     -4.89651      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      820      0.82000      0.97065      0.41816      0.55249     60.12265
+DYNA PROP>         16.79099      0.96325      0.42092     -0.00740     27.92041
+DYNA INTERN>        0.00000      0.00000      0.00000      0.55249      0.00000
+DYNA PRESS>         0.00000    -18.61360      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      840      0.84000      1.86265      1.16719      0.69545    167.81687
+DYNA PROP>         12.35869      1.84282      1.16559     -0.01983    -14.25375
+DYNA INTERN>        0.00000      0.00000      0.00000      0.69545      0.00000
+DYNA PRESS>         0.00000      9.50250      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      860      0.86000      1.56516      0.98948      0.57568    142.26521
+DYNA PROP>         28.26374      1.55849      0.99206     -0.00667      8.19177
+DYNA INTERN>        0.00000      0.00000      0.00000      0.57568      0.00000
+DYNA PRESS>         0.00000     -5.46118      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      880      0.88000      1.39299      1.16375      0.22925    167.32124
+DYNA PROP>         22.78538      1.43403      1.17115      0.04103     -2.95824
+DYNA INTERN>        0.00000      0.00000      0.00000      0.22925      0.00000
+DYNA PRESS>         0.00000      1.97216      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      900      0.90000      0.94073      0.90511      0.03562    130.13445
+DYNA PROP>         22.67022      0.92963      0.91150     -0.01109    -34.06651
+DYNA INTERN>        0.00000      0.00000      0.00000      0.03562      0.00000
+DYNA PRESS>         0.00000     22.71101      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      920      0.92000      1.09056      1.08389      0.00667    155.83908
+DYNA PROP>         25.45936      1.12769      1.09110      0.03713     24.41126
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00667      0.00000
+DYNA PRESS>         0.00000    -16.27417      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      940      0.94000      1.04619      0.97193      0.07426    139.74171
+DYNA PROP>         21.38035      1.09251      0.97399      0.04632    -35.13377
+DYNA INTERN>        0.00000      0.00000      0.00000      0.07426      0.00000
+DYNA PRESS>         0.00000     23.42251      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      960      0.96000      0.67835      0.50924      0.16911     73.21808
+DYNA PROP>         26.61772      0.67160      0.51657     -0.00676     53.15468
+DYNA INTERN>        0.00000      0.00000      0.00000      0.16911      0.00000
+DYNA PRESS>         0.00000    -35.43645      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>      980      0.98000      0.87783      0.74102      0.13681    106.54226
+DYNA PROP>         25.12425      0.91181      0.75073      0.03399    -30.19999
+DYNA INTERN>        0.00000      0.00000      0.00000      0.13681      0.00000
+DYNA PRESS>         0.00000     20.13333      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1000      1.00000      0.76869      0.65861      0.11008     94.69387
+DYNA PROP>         27.72102      0.76045      0.66404     -0.00824    -28.79946
+DYNA INTERN>        0.00000      0.00000      0.00000      0.11008      0.00000
+DYNA PRESS>         0.00000     19.19964      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ DYNAMC> Averages for the last 1000 steps:
+AVER DYN: Step         Time      TOTEner        TOTKe       ENERgy  TEMPerature
+AVER PROP:             GRMS      HFCTote        HFCKe       EHFCor        VIRKe
+AVER INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+AVER PRESS:            VIRE         VIRI       PRESSE       PRESSI       VOLUme
+ ----------       ---------    ---------    ---------    ---------    ---------
+AVER>     1000      1.00000      3.01686      2.65311      0.36376    381.45807
+AVER PROP>         21.03264      3.01815      2.65121      0.00129      1.66372
+AVER INTERN>        0.00000      0.00000      0.00000      0.36376      0.00000
+AVER PRESS>         0.00000     -1.10915      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ DYNAMC> RMS fluctuations for the last 1000 steps:
+FLUC>     1000      1.00000      1.75143      1.78859      0.48556    257.16034
+FLUC PROP>          4.27998      1.75005      1.78252      0.05196     24.56355
+FLUC INTERN>        0.00000      0.00000      0.00000      0.48556      0.00000
+FLUC PRESS>         0.00000     16.37570      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+
+     DRIFT/STEP (LAST-TOTAL):   -3.97071161E-03  -3.97071161E-03
+     E AT STEP 0            :     5.0054912        5.0054912    
+     CORR. COEFFICIENT      :   -0.65497880      -0.65497880    
+DYNA>     1020      1.02000      1.66918      1.60752      0.06166    231.12584
+DYNA PROP>         21.02529      1.62282      1.60748     -0.04636    -12.94217
+DYNA INTERN>        0.00000      0.00000      0.00000      0.06166      0.00000
+DYNA PRESS>         0.00000      8.62811      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1040      1.04000      2.19376      2.11286      0.08089    303.78339
+DYNA PROP>         24.86601      2.20430      2.11666      0.01055     13.22062
+DYNA INTERN>        0.00000      0.00000      0.00000      0.08089      0.00000
+DYNA PRESS>         0.00000     -8.81375      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1060      1.06000      2.52575      2.50821      0.01755    360.62471
+DYNA PROP>         21.58487      2.57247      2.51016      0.04671     -6.23624
+DYNA INTERN>        0.00000      0.00000      0.00000      0.01755      0.00000
+DYNA PRESS>         0.00000      4.15750      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1080      1.08000      2.09154      2.09128      0.00027    300.67979
+DYNA PROP>         27.57734      2.12518      2.10297      0.03363      5.69034
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00026      0.00000
+DYNA PRESS>         0.00000     -3.79356      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1100      1.10000      1.25083      1.21158      0.03924    174.19865
+DYNA PROP>         27.71160      1.23366      1.21660     -0.01716     12.89388
+DYNA INTERN>        0.00000      0.00000      0.00000      0.03924      0.00000
+DYNA PRESS>         0.00000     -8.59592      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1120      1.12000      0.94435      0.88458      0.05977    127.18298
+DYNA PROP>         24.07793      0.89797      0.89335     -0.04638     24.75348
+DYNA INTERN>        0.00000      0.00000      0.00000      0.05977      0.00000
+DYNA PRESS>         0.00000    -16.50232      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1140      1.14000      1.39520      1.39490      0.00030    200.55643
+DYNA PROP>         22.99521      1.31007      1.40102     -0.08514      0.50327
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00030      0.00000
+DYNA PRESS>         0.00000     -0.33552      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1160      1.16000      1.22897      1.10831      0.12066    159.35093
+DYNA PROP>         27.87305      1.31337      1.12116      0.08440    -37.27451
+DYNA INTERN>        0.00000      0.00000      0.00000      0.12066      0.00000
+DYNA PRESS>         0.00000     24.84967      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1180      1.18000      1.99896      1.78972      0.20923    257.32273
+DYNA PROP>         21.56988      1.97765      1.79184     -0.02131     21.05237
+DYNA INTERN>        0.00000      0.00000      0.00000      0.20923      0.00000
+DYNA PRESS>         0.00000    -14.03491      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1200      1.20000      1.69677      1.58067      0.11610    227.26555
+DYNA PROP>         23.48854      1.64808      1.58334     -0.04868     12.67200
+DYNA INTERN>        0.00000      0.00000      0.00000      0.11610      0.00000
+DYNA PRESS>         0.00000     -8.44800      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1220      1.22000      0.66645      0.64965      0.01680     93.40530
+DYNA PROP>         15.54927      0.72726      0.65328      0.06081     -8.88957
+DYNA INTERN>        0.00000      0.00000      0.00000      0.01680      0.00000
+DYNA PRESS>         0.00000      5.92638      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1240      1.24000      0.64718      0.64552      0.00166     92.81105
+DYNA PROP>         20.54636      0.68505      0.64945      0.03788     15.20990
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00166      0.00000
+DYNA PRESS>         0.00000    -10.13994      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1260      1.26000      1.74407      1.70170      0.04236    244.66733
+DYNA PROP>         22.53103      1.72857      1.70566     -0.01550     28.59289
+DYNA INTERN>        0.00000      0.00000      0.00000      0.04236      0.00000
+DYNA PRESS>         0.00000    -19.06192      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1280      1.28000      0.82565      0.69894      0.12671    100.49239
+DYNA PROP>         22.76937      0.87607      0.70805      0.05042     -2.29931
+DYNA INTERN>        0.00000      0.00000      0.00000      0.12671      0.00000
+DYNA PRESS>         0.00000      1.53287      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1300      1.30000      0.36480      0.25962      0.10518     37.32801
+DYNA PROP>         17.28814      0.38367      0.26340      0.01887    -23.68463
+DYNA INTERN>        0.00000      0.00000      0.00000      0.10518      0.00000
+DYNA PRESS>         0.00000     15.78975      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1320      1.32000      1.38471      1.38094      0.00377    198.54928
+DYNA PROP>         17.89313      1.32239      1.38064     -0.06232     -9.24008
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00377      0.00000
+DYNA PRESS>         0.00000      6.16005      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1340      1.34000      1.15710      1.04168      0.11542    149.77049
+DYNA PROP>         16.88149      1.15249      1.04273     -0.00461     13.53836
+DYNA INTERN>        0.00000      0.00000      0.00000      0.11542      0.00000
+DYNA PRESS>         0.00000     -9.02558      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1360      1.36000      1.64971      1.38955      0.26016    199.78707
+DYNA PROP>         15.49017      1.64642      1.38730     -0.00329    -22.83621
+DYNA INTERN>        0.00000      0.00000      0.00000      0.26016      0.00000
+DYNA PRESS>         0.00000     15.22414      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1380      1.38000      1.00298      0.76469      0.23829    109.94506
+DYNA PROP>         27.82857      1.03608      0.76958      0.03310     76.00806
+DYNA INTERN>        0.00000      0.00000      0.00000      0.23829      0.00000
+DYNA PRESS>         0.00000    -50.67204      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1400      1.40000      2.07440      1.94550      0.12890    279.71977
+DYNA PROP>         26.71745      2.01492      1.95323     -0.05948     34.57965
+DYNA INTERN>        0.00000      0.00000      0.00000      0.12890      0.00000
+DYNA PRESS>         0.00000    -23.05310      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1420      1.42000      2.05658      2.04376      0.01283    293.84737
+DYNA PROP>         18.61633      2.03180      2.04222     -0.02478    -21.11690
+DYNA INTERN>        0.00000      0.00000      0.00000      0.01283      0.00000
+DYNA PRESS>         0.00000     14.07793      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1440      1.44000      1.88268      1.86854      0.01414    268.65446
+DYNA PROP>         24.51816      1.83959      1.87034     -0.04309     10.74412
+DYNA INTERN>        0.00000      0.00000      0.00000      0.01414      0.00000
+DYNA PRESS>         0.00000     -7.16274      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1460      1.46000      1.89610      1.80382      0.09228    259.34921
+DYNA PROP>         22.44367      1.82267      1.80491     -0.07343      0.50351
+DYNA INTERN>        0.00000      0.00000      0.00000      0.09228      0.00000
+DYNA PRESS>         0.00000     -0.33567      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1480      1.48000      1.50284      1.32781      0.17503    190.91040
+DYNA PROP>         23.27163      1.50119      1.33010     -0.00165    -15.80598
+DYNA INTERN>        0.00000      0.00000      0.00000      0.17503      0.00000
+DYNA PRESS>         0.00000     10.53732      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1500      1.50000      1.37420      1.34592      0.02828    193.51325
+DYNA PROP>         24.12415      1.43042      1.34857      0.05622      5.63548
+DYNA INTERN>        0.00000      0.00000      0.00000      0.02828      0.00000
+DYNA PRESS>         0.00000     -3.75699      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1520      1.52000      0.87066      0.84035      0.03031    120.82430
+DYNA PROP>         22.26001      0.87220      0.84455      0.00154     55.19497
+DYNA INTERN>        0.00000      0.00000      0.00000      0.03031      0.00000
+DYNA PRESS>         0.00000    -36.79665      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1540      1.54000      0.84215      0.50319      0.33896     72.34710
+DYNA PROP>         30.09383      0.84724      0.51467      0.00509     -9.26493
+DYNA INTERN>        0.00000      0.00000      0.00000      0.33896      0.00000
+DYNA PRESS>         0.00000      6.17662      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1560      1.56000      0.65876      0.09525      0.56351     13.69520
+DYNA PROP>         18.97000      0.66295      0.09736      0.00418    -16.84716
+DYNA INTERN>        0.00000      0.00000      0.00000      0.56351      0.00000
+DYNA PRESS>         0.00000     11.23144      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1580      1.58000      0.88992      0.21816      0.67176     31.36632
+DYNA PROP>         21.17478      0.89075      0.21947      0.00083     39.22787
+DYNA INTERN>        0.00000      0.00000      0.00000      0.67176      0.00000
+DYNA PRESS>         0.00000    -26.15191      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1600      1.60000      1.13998      0.33429      0.80569     48.06298
+DYNA PROP>         33.85995      1.11685      0.35611     -0.02313      0.78244
+DYNA INTERN>        0.00000      0.00000      0.00000      0.80569      0.00000
+DYNA PRESS>         0.00000     -0.52163      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1620      1.62000      1.59199      0.80683      0.78517    116.00412
+DYNA PROP>         23.13672      1.63022      0.81293      0.03823    -17.68127
+DYNA INTERN>        0.00000      0.00000      0.00000      0.78517      0.00000
+DYNA PRESS>         0.00000     11.78752      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1640      1.64000      1.13476      0.46222      0.67255     66.45663
+DYNA PROP>         19.70289      1.13319      0.46649     -0.00157     23.10985
+DYNA INTERN>        0.00000      0.00000      0.00000      0.67255      0.00000
+DYNA PRESS>         0.00000    -15.40657      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1660      1.66000      1.80838      1.53500      0.27338    220.69948
+DYNA PROP>         21.97038      1.84828      1.53686      0.03990     39.62230
+DYNA INTERN>        0.00000      0.00000      0.00000      0.27338      0.00000
+DYNA PRESS>         0.00000    -26.41487      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1680      1.68000      1.77207      1.76770      0.00437    254.15675
+DYNA PROP>         24.67507      1.72657      1.76858     -0.04551     -1.02214
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00437      0.00000
+DYNA PRESS>         0.00000      0.68142      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1700      1.70000      1.28665      1.16498      0.12167    167.49867
+DYNA PROP>         14.54132      1.31036      1.16599      0.02371    -18.00152
+DYNA INTERN>        0.00000      0.00000      0.00000      0.12167      0.00000
+DYNA PRESS>         0.00000     12.00101      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1720      1.72000      1.97934      1.53570      0.44364    220.79944
+DYNA PROP>         15.09200      1.97816      1.53462     -0.00118     12.23947
+DYNA INTERN>        0.00000      0.00000      0.00000      0.44364      0.00000
+DYNA PRESS>         0.00000     -8.15964      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1740      1.74000      2.15664      1.60741      0.54923    231.10995
+DYNA PROP>         20.45559      2.16216      1.60799      0.00552     26.65331
+DYNA INTERN>        0.00000      0.00000      0.00000      0.54923      0.00000
+DYNA PRESS>         0.00000    -17.76887      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1760      1.76000      1.75058      1.54536      0.20522    222.18850
+DYNA PROP>         30.97253      1.74322      1.55029     -0.00735     32.63409
+DYNA INTERN>        0.00000      0.00000      0.00000      0.20522      0.00000
+DYNA PRESS>         0.00000    -21.75606      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1780      1.78000      1.92290      1.92287      0.00004    276.46578
+DYNA PROP>         27.96378      1.89796      1.92739     -0.02495     35.89661
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00004      0.00000
+DYNA PRESS>         0.00000    -23.93107      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1800      1.80000      1.76639      1.60771      0.15868    231.15319
+DYNA PROP>         28.47871      1.77602      1.61671      0.00963    -15.76224
+DYNA INTERN>        0.00000      0.00000      0.00000      0.15868      0.00000
+DYNA PRESS>         0.00000     10.50816      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1820      1.82000      2.16101      1.86163      0.29938    267.66116
+DYNA PROP>         21.98662      2.19996      1.86569      0.03895    -13.78709
+DYNA INTERN>        0.00000      0.00000      0.00000      0.29938      0.00000
+DYNA PRESS>         0.00000      9.19139      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1840      1.84000      2.21999      2.03167      0.18832    292.10885
+DYNA PROP>         25.41004      2.19022      2.04129     -0.02977     -3.46499
+DYNA INTERN>        0.00000      0.00000      0.00000      0.18832      0.00000
+DYNA PRESS>         0.00000      2.30999      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1860      1.86000      1.79262      1.67723      0.11539    241.14882
+DYNA PROP>         16.45708      1.77216      1.67461     -0.02046      0.24923
+DYNA INTERN>        0.00000      0.00000      0.00000      0.11539      0.00000
+DYNA PRESS>         0.00000     -0.16615      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1880      1.88000      2.43082      2.39620      0.03463    344.52011
+DYNA PROP>         15.51727      2.42504      2.39352     -0.00578    -10.73646
+DYNA INTERN>        0.00000      0.00000      0.00000      0.03463      0.00000
+DYNA PRESS>         0.00000      7.15764      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1900      1.90000      1.89498      1.88862      0.00636    271.54208
+DYNA PROP>         20.96150      1.91253      1.88841      0.01755    -15.35019
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00636      0.00000
+DYNA PRESS>         0.00000     10.23346      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1920      1.92000      1.66101      1.65588      0.00514    238.07851
+DYNA PROP>         28.11453      1.74032      1.66481      0.07931     32.69966
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00514      0.00000
+DYNA PRESS>         0.00000    -21.79977      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1940      1.94000      1.83213      1.77393      0.05820    255.05228
+DYNA PROP>         25.14249      1.81896      1.77941     -0.01318     -9.92191
+DYNA INTERN>        0.00000      0.00000      0.00000      0.05820      0.00000
+DYNA PRESS>         0.00000      6.61460      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1960      1.96000      2.12378      2.07098      0.05280    297.76156
+DYNA PROP>         19.20850      2.15572      2.06816      0.03194     -5.60034
+DYNA INTERN>        0.00000      0.00000      0.00000      0.05280      0.00000
+DYNA PRESS>         0.00000      3.73356      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     1980      1.98000      2.49963      2.43937      0.06025    350.72833
+DYNA PROP>         16.60070      2.54097      2.43552      0.04135      5.00423
+DYNA INTERN>        0.00000      0.00000      0.00000      0.06025      0.00000
+DYNA PRESS>         0.00000     -3.33616      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2000      2.00000      1.36179      1.29798      0.06381    186.62069
+DYNA PROP>         28.22050      1.31836      1.29707     -0.04343     45.04945
+DYNA INTERN>        0.00000      0.00000      0.00000      0.06381      0.00000
+DYNA PRESS>         0.00000    -30.03297      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ DYNAMC> Averages for the last 1000 steps:
+AVER DYN: Step         Time      TOTEner        TOTKe       ENERgy  TEMPerature
+AVER PROP:             GRMS      HFCTote        HFCKe       EHFCor        VIRKe
+AVER INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+AVER PRESS:            VIRE         VIRI       PRESSE       PRESSI       VOLUme
+ ----------       ---------    ---------    ---------    ---------    ---------
+AVER>     1000      2.00000      1.55727      1.38574      0.17153    199.23896
+AVER PROP>         21.22690      1.55786      1.38813      0.00059      0.63467
+AVER INTERN>        0.00000      0.00000      0.00000      0.17153      0.00000
+AVER PRESS>         0.00000     -0.42312      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ DYNAMC> RMS fluctuations for the last 1000 steps:
+FLUC>     1000      2.00000      0.52955      0.59956      0.21168     86.20421
+FLUC PROP>          4.38459      0.52888      0.59775      0.04015     24.36940
+FLUC INTERN>        0.00000      0.00000      0.00000      0.21168      0.00000
+FLUC PRESS>         0.00000     16.24627      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ DYNAMC> Averages for the last 2000 steps:
+LAVE>     2000      2.00000      2.28707      2.01942      0.26765    290.34852
+LAVE PROP>         21.12977      2.28801      2.01967      0.00094      1.14920
+LAVE INTERN>        0.00000      0.00000      0.00000      0.26765      0.00000
+LAVE PRESS>         0.00000     -0.76613      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+ DYNAMC> RMS fluctuations for the last 2000 steps:
+LFLC>     2000      2.00000      1.48545      1.47676      0.38668    212.32582
+LFLC PROP>          4.33369      1.48469      1.47180      0.04643     24.47207
+LFLC INTERN>        0.00000      0.00000      0.00000      0.38668      0.00000
+LFLC PRESS>         0.00000     16.31472      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+
+     DRIFT/STEP (LAST-TOTAL):    4.95306929E-04  -1.52964037E-03
+     E AT STEP 0            :     1.3099625        3.8184120    
+     CORR. COEFFICIENT      :    0.27034982      -0.59483027    
+DYNA>     2020      2.02000      1.56483      1.51299      0.05183    217.53504
+DYNA PROP>         18.22578      1.56874      1.51308      0.00391     21.18605
+DYNA INTERN>        0.00000      0.00000      0.00000      0.05183      0.00000
+DYNA PRESS>         0.00000    -14.12403      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2040      2.04000      1.46515      1.45369      0.01147    209.00799
+DYNA PROP>         26.24458      1.46287      1.45511     -0.00228     22.05938
+DYNA INTERN>        0.00000      0.00000      0.00000      0.01147      0.00000
+DYNA PRESS>         0.00000    -14.70625      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2060      2.06000      1.20711      1.20380      0.00330    173.08041
+DYNA PROP>         16.93179      1.18510      1.20392     -0.02201    -30.90594
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00330      0.00000
+DYNA PRESS>         0.00000     20.60396      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2080      2.08000      0.94342      0.90775      0.03567    130.51441
+DYNA PROP>         22.84258      0.93229      0.91126     -0.01112    -30.99901
+DYNA INTERN>        0.00000      0.00000      0.00000      0.03567      0.00000
+DYNA PRESS>         0.00000     20.66601      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2100      2.10000      1.52670      1.42848      0.09822    205.38398
+DYNA PROP>         23.23997      1.50732      1.43017     -0.01938     31.33099
+DYNA INTERN>        0.00000      0.00000      0.00000      0.09822      0.00000
+DYNA PRESS>         0.00000    -20.88733      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2120      2.12000      0.86535      0.80978      0.05558    116.42807
+DYNA PROP>         20.89128      0.86625      0.81293      0.00090      8.55771
+DYNA INTERN>        0.00000      0.00000      0.00000      0.05558      0.00000
+DYNA PRESS>         0.00000     -5.70514      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2140      2.14000      1.28944      1.27887      0.01057    183.87272
+DYNA PROP>         18.12739      1.28903      1.27911     -0.00040     25.95872
+DYNA INTERN>        0.00000      0.00000      0.00000      0.01057      0.00000
+DYNA PRESS>         0.00000    -17.30581      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2160      2.16000      1.43495      1.42282      0.01212    204.57086
+DYNA PROP>         22.04279      1.44298      1.42493      0.00803    -27.90786
+DYNA INTERN>        0.00000      0.00000      0.00000      0.01212      0.00000
+DYNA PRESS>         0.00000     18.60524      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2180      2.18000      0.96578      0.93772      0.02806    134.82384
+DYNA PROP>         17.58191      0.98788      0.93983      0.02210     -0.60988
+DYNA INTERN>        0.00000      0.00000      0.00000      0.02806      0.00000
+DYNA PRESS>         0.00000      0.40659      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2200      2.20000      0.90582      0.89378      0.01204    128.50568
+DYNA PROP>         21.26850      0.90413      0.89629     -0.00169    -55.71554
+DYNA INTERN>        0.00000      0.00000      0.00000      0.01204      0.00000
+DYNA PRESS>         0.00000     37.14369      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2220      2.22000      0.58574      0.58169      0.00404     83.63491
+DYNA PROP>         21.29192      0.64387      0.58512      0.05813    -39.01920
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00404      0.00000
+DYNA PRESS>         0.00000     26.01280      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2240      2.24000      0.35819      0.35262      0.00557     50.69853
+DYNA PROP>         21.00628      0.34864      0.36020     -0.00955      7.99498
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00557      0.00000
+DYNA PRESS>         0.00000     -5.32998      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2260      2.26000      1.13627      1.13621      0.00006    163.36259
+DYNA PROP>         20.25168      1.07736      1.13902     -0.05891     -7.06062
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00006      0.00000
+DYNA PRESS>         0.00000      4.70708      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2280      2.28000      1.26973      1.26358      0.00615    181.67438
+DYNA PROP>         20.40431      1.26037      1.26438     -0.00936    -11.21997
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00615      0.00000
+DYNA PRESS>         0.00000      7.47998      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2300      2.30000      1.13106      1.12812      0.00294    162.19825
+DYNA PROP>         22.23638      1.07478      1.13357     -0.05628    -14.33471
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00294      0.00000
+DYNA PRESS>         0.00000      9.55648      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2320      2.32000      1.22613      1.22592      0.00021    176.26034
+DYNA PROP>         26.02848      1.22849      1.22858      0.00236    -30.50544
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00021      0.00000
+DYNA PRESS>         0.00000     20.33696      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2340      2.34000      1.11834      1.11778      0.00055    160.71275
+DYNA PROP>         20.05267      1.07612      1.11960     -0.04221    -43.68310
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00055      0.00000
+DYNA PRESS>         0.00000     29.12207      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2360      2.36000      1.96085      1.96030      0.00055    281.84789
+DYNA PROP>         17.11606      1.93384      1.95975     -0.02701     -4.28054
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00055      0.00000
+DYNA PRESS>         0.00000      2.85369      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2380      2.38000      2.03062      2.02486      0.00576    291.13046
+DYNA PROP>         20.72930      1.99170      2.02637     -0.03892     -7.96858
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00576      0.00000
+DYNA PRESS>         0.00000      5.31239      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2400      2.40000      3.62854      3.55667      0.07186    511.37147
+DYNA PROP>         16.70561      3.67905      3.54872      0.05052     20.64105
+DYNA INTERN>        0.00000      0.00000      0.00000      0.07186      0.00000
+DYNA PRESS>         0.00000    -13.76070      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2420      2.42000      2.60569      2.33461      0.27107    335.66620
+DYNA PROP>         21.23203      2.59408      2.33203     -0.01160      8.93083
+DYNA INTERN>        0.00000      0.00000      0.00000      0.27107      0.00000
+DYNA PRESS>         0.00000     -5.95389      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2440      2.44000      2.92036      2.50646      0.41390    360.37421
+DYNA PROP>         21.89892      2.88321      2.50466     -0.03715    -27.98742
+DYNA INTERN>        0.00000      0.00000      0.00000      0.41390      0.00000
+DYNA PRESS>         0.00000     18.65828      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2460      2.46000      2.16573      1.82347      0.34227    262.17433
+DYNA PROP>         19.64525      2.20737      1.82442      0.04163     -7.51378
+DYNA INTERN>        0.00000      0.00000      0.00000      0.34227      0.00000
+DYNA PRESS>         0.00000      5.00918      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>     2480      2.48000      1.08721      0.85835      0.22886    123.41193
+DYNA PROP>         24.40851      1.08187      0.86656     -0.00534     -8.41538
+DYNA INTERN>        0.00000      0.00000      0.00000      0.22886      0.00000
+DYNA PRESS>         0.00000      5.61025      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+
+    500   COORDINATE SETS STARTING FROM
+     STEP NO        5   FOR EVERY     5  STEPS
+     WRITTEN ON UNIT   30
+
+ VCLOSE: Closing unit   30 with status "KEEP"
+DYNA>     2500      2.50000      1.75466      1.74954      0.00513    251.54467
+DYNA PROP>         17.97499      1.73955      1.74486     -0.01511    -31.15421
+DYNA INTERN>        0.00000      0.00000      0.00000      0.00513      0.00000
+DYNA PRESS>         0.00000     20.76947      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+
+     DETAILS ABOUT CENTRE OF MASS
+     POSITION          :    1.3819921      -5.96030645E-03   -1.3127708    
+     VELOCITY          :   3.00067682E-02  -9.94480669E-02  -2.66777579E-02
+     ANGULAR MOMENTUM  :    7.3744611        3.9588738        6.4807820    
+     KINETIC ENERGY    :   0.33427191    
+  
+ CHARMM>     
+  
+ CHARMM>    PRINT COORD
+
+          COORDINATE FILE MODULE
+ TITLE>  * LANGTEST1
+ TITLE>  *  THIS IS A TEST FILE WHICH BUILDS A BUTANE
+ TITLE>  *  MOLECULE FROM 4 EXTENDED ATOMS AND THEN RUNS
+ TITLE>  *  A SERIES OF LANGEVIN DYNAMICS TESTS. THE INITIAL
+ TITLE>  *  POSITIONS OF THE MOLECULE ARE WITH THE DIHEDRAL
+ TITLE>  *  ANGLE AT 180 DEGREES.  BOTH BONDS AND BOND ANGLES
+ TITLE>  *  ARE SHAKEN.
+ TITLE>  *  DATE:     2/ 2/18     16:10:38      CREATED BY USER: bonat
+ TITLE>  *
+    4
+    1    1 BUT  C1     1.13164  -1.82967  -0.68099 BUTE 1      0.00000
+    2    1 BUT  C2     1.87289  -0.55740  -1.13209 BUTE 1      0.00000
+    3    1 BUT  C3     0.89189   0.55196  -1.47470 BUTE 1      0.00000
+    4    1 BUT  C4     1.63160   1.81170  -1.96204 BUTE 1      0.00000
+  
+ CHARMM>    OPEN READ FILE UNIT 30 NAME @9FOR030.DAT
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::./FOR030.DAT::
+ OPNLGU> Unit 30 opened for READONLY access to ./FOR030.DAT
+  
+ CHARMM>    COORDINATES DYNAMICS FIRSTUNIT 30 NUNIT 1 BEGIN 5 STOP 2500
+
+ READING TRAJECTORY FROM UNIT  30
+   NUMBER OF COORDINATE SETS IN FILE:         500
+   NUMBER OF PREVIOUS DYNAMICS STEPS:           5
+   FREQUENCY FOR SAVING COORDINATES:            5
+   NUMBER OF STEPS FOR CREATION RUN:         2500
+
+ TITLE>  * LANGTEST1
+ TITLE>  *  THIS IS A TEST FILE WHICH BUILDS A BUTANE
+ TITLE>  *  MOLECULE FROM 4 EXTENDED ATOMS AND THEN RUNS
+ TITLE>  *  A SERIES OF LANGEVIN DYNAMICS TESTS. THE INITIAL
+ TITLE>  *  POSITIONS OF THE MOLECULE ARE WITH THE DIHEDRAL
+ TITLE>  *  ANGLE AT 180 DEGREES.  BOTH BONDS AND BOND ANGLES
+ TITLE>  *  ARE SHAKEN.
+ TITLE>  *  DATE:     2/ 2/18     16:10:38      CREATED BY USER: bonat
+ TITLE>  *
+ *****  WARNING  ***** SKIP=     1 WAS NOT A MULTIPLE OF THE FILE INTERVAL=     5
+ IT HAS BEEN RESET TO     5
+
+  500 CORD RECORDS READ FROM   1 UNITS STARTING WITH UNIT  30
+ RUNNING FROM STEP       5 TO     2500 SKIPPING    5 STEPS BETWEEN RECORDS
+ Time step was  2.0454828E-02 AKMA time units.
+  
+ CHARMM>    SCALAR WMAIN SHOW
+ ( BUTE BUT  1    C1   )   0.86058    
+ ( BUTE BUT  1    C2   )   0.65984    
+ ( BUTE BUT  1    C3   )   0.89742    
+ ( BUTE BUT  1    C4   )    1.1297    
+  
+ CHARMM>     
+  
+ CHARMM>    STOP
+ VCLOSE: Closing unit   30 with status "KEEP"
+
+      $$$$$$  New timer profile Local node$$$$$
+
+   Shake Setup                     0.00 Other:            0.00
+   First List                      0.00 Other:            0.00
+   Shake time                      0.01 Other:            0.00
+      Comm coords                     0.00 Other:            0.00
+         Comm variables                  0.00 Other:            0.00
+         Save shake coords               0.02 Other:            0.00
+         Heuristic check                 0.00 Other:            0.00
+         Temp and virial calc            0.00 Other:            0.00
+      dynamc                          0.04 Other:            0.01
+   Dynamics total                  0.06 Other:            0.01
+   List time                       0.00 Other:            0.00
+         Electrostatic & VDW             0.00 Other:            0.00
+      Nonbond force                   0.01 Other:            0.01
+         Bond energy                     0.00 Other:            0.00
+         Angle energy                    0.00 Other:            0.00
+         Dihedral energy                 0.00 Other:            0.00
+         Restraints energy               0.00 Other:            0.00
+      INTRNL energy                   0.02 Other:            0.01
+      Comm energy                     0.00 Other:            0.00
+      Comm force                      0.00 Other:            0.00
+   Energy time                     0.05 Other:            0.01
+ Total time                      0.15 Other:            0.03
+
+         $$$$$$  Average   profile $$$$$
+
+   Shake Setup                     0.00 Other:            0.00
+   First List                      0.00 Other:            0.00
+   Shake time                      0.01 Other:            0.00
+      Comm coords                     0.00 Other:            0.00
+         Comm variables                  0.00 Other:            0.00
+         Save shake coords               0.02 Other:            0.00
+         Heuristic check                 0.00 Other:            0.00
+         Temp and virial calc            0.00 Other:            0.00
+      dynamc                          0.04 Other:            0.01
+   Dynamics total                  0.06 Other:            0.01
+   List time                       0.00 Other:            0.00
+         Electrostatic & VDW             0.00 Other:            0.00
+      Nonbond force                   0.01 Other:            0.01
+         Bond energy                     0.00 Other:            0.00
+         Angle energy                    0.00 Other:            0.00
+         Dihedral energy                 0.00 Other:            0.00
+         Restraints energy               0.00 Other:            0.00
+      INTRNL energy                   0.02 Other:            0.01
+      Comm energy                     0.00 Other:            0.00
+      Comm force                      0.00 Other:            0.00
+   Energy time                     0.05 Other:            0.01
+ Total time                      0.15 Other:            0.03
+
+                    NORMAL TERMINATION BY NORMAL STOP
+                    MOST SEVERE WARNING WAS AT LEVEL  1
+
+                    $$$$$ JOB ACCOUNTING INFORMATION $$$$$
+                     ELAPSED TIME:     0.16  SECONDS 
+                         CPU TIME:     0.15  SECONDS 

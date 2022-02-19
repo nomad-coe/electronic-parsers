@@ -1,0 +1,66 @@
+ !============================================================!
+ ! ~~~~~~~ Quality control test for the ONETEP program ~~~~~~ !
+ !------------------------------------------------------------!
+ ! Molecule: chloroform.                                      !
+ ! no. of C   :            1                                  !
+ ! no. of H   :            1                                  ! 
+ ! no. of Cl  :            3                                  !
+ ! total atoms:            5                                  !
+ !------------------------------------------------------------!
+ ! Aim: test for non self-consistent forces calculation.      !
+ !------------------------------------------------------------!
+ ! Created by Alvaro Ruiz Serrano on 22/11/2010.              !
+ !============================================================!
+
+
+ print_qc             : TRUE
+ output_detail        : NORMAL
+ timings_level        : 0
+
+ task                 : SINGLEPOINT
+ cutoff_energy        : 600 eV
+ xc_functional        : PBE
+ dispersion           : 1
+
+ maxit_ngwf_cg        : 0
+ minit_lnv            : 25 
+ maxit_lnv            : 30 
+
+ elec_cg_max          : 0
+ occ_mix              : 1.0
+
+
+ write_denskern       : F
+ write_tightbox_ngwfs : F
+ write_xyz            : F
+ write_forces         : T
+ nonsc_forces         : T
+
+
+ %block lattice_cart
+   38.00    0.00    0.00
+    0.00   38.00    0.00
+    0.00    0.00   38.00
+ %endblock lattice_cart
+
+ %block positions_abs
+ C      18.61914658    17.91617217    17.02422615
+ Cl     16.00000000    16.00000000    16.00000000
+ Cl     18.26954909    21.14380736    16.00000000
+ Cl     21.58978037    16.60659888    16.00000000
+ H      18.61914658    17.91617217    19.10102420
+ %endblock positions_abs
+
+
+ %block species
+ C   C   6 4 7.0
+ Cl  Cl 17 9 7.0
+ H   H   1 1 7.0
+ %endblock species
+
+
+ %block species_pot
+ C   '../../pseudo/carbon.recpot'
+ Cl  '../../pseudo/chlorine.recpot'
+ H   '../../pseudo/hydrogen.recpot'
+ %endblock species_pot

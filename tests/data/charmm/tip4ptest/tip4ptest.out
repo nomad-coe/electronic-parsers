@@ -1,0 +1,1138 @@
+1
+                 Chemistry at HARvard Macromolecular Mechanics
+                (CHARMM) - Free Version 41b2   February 15, 2017                
+                                      605                                       
+       Copyright(c) 1984-2014  President and Fellows of Harvard College
+                              All Rights Reserved
+         Current operating system: Darwin-16.7.0(x86_64)@imacberk.local         
+                 Created on  2/2/18 at 17:02:08 by user: bonat       
+
+            Maximum number of ATOMS:    360720, and RESidues:      120240
+ RDTITL> * TIP4PTEST.INP
+ RDTITL> * AUTHOR: BERNARD R. BROOKS
+ RDTITL> * FILES : TIP4P.RTF, TIP4P.PRM AND TIP4PTEST.CRD
+ RDTITL> * TESTS : LONE PAIR FACILITY
+ RDTITL> *
+  
+ CHARMM>     
+  
+ CHARMM>    if ?lonepair .ne. 1 then
+ RDCMND substituted energy or value "?LONEPAIR" to "1"
+ Comparing "1" and "1".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>     
+  
+ CHARMM>    bomlev -2
+  
+ CHARMM>    stream datadir.def
+ VOPEN> Attempting to open::DATADIR.DEF::
+ OPNLGU> Unit 99 opened for READONLY access to DATADIR.DEF
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * CHARMM TESTCASE DATA DIRECTORY ASSIGNMENT
+ RDTITL> *
+ Parameter: IN1 <- "" <empty>
+  
+ CHARMM>    faster on
+ MISCOM> FAST option: EXPANDED (limited fast routines)
+  
+ CHARMM>    set pnode =
+ Parameter: PNODE <- "" <empty>
+  
+ CHARMM>    if ?numnode .gt. 1 set pnode = node 0
+ RDCMND substituted energy or value "?NUMNODE" to "1"
+ Comparing "1" and "1".
+ IF test evaluated as false.  Skipping command
+  
+ CHARMM>    set 0 ./     ! input data directory
+ Parameter: 0 <- "./"
+  
+ CHARMM>    set 9 ./  ! scratch directory
+ Parameter: 9 <- "./"
+  
+ CHARMM>    set testcheck stream @0/test.str
+ Parameter: 0 -> "./"
+ Parameter: TESTCHECK <- "STREAM .//TEST.STR"
+  
+ CHARMM>    set qcheck stream @0/qtest.str
+ Parameter: 0 -> "./"
+ Parameter: QCHECK <- "STREAM .//QTEST.STR"
+  
+ CHARMM>    set testfail 0
+ Parameter: TESTFAIL <- "0"
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>     
+  
+ CHARMM>    open read card unit 11 name  @0tip4p.rtf
+ Parameter: 0 -> "./"
+ VOPEN> Attempting to open::./TIP4P.RTF::
+ OPNLGU> Unit 11 opened for READONLY access to ./TIP4P.RTF
+  
+ CHARMM>    read rtf   card   unit  11
+ MAINIO> Residue topology file being read from unit  11.
+ TITLE> * TIPS3P WATER TOPOLOGY FILE
+ TITLE> *
+  
+ CHARMM>    close unit 11
+ VCLOSE: Closing unit   11 with status "KEEP"
+  
+ CHARMM>    open read card unit 12 name  @0tip4p.prm
+ Parameter: 0 -> "./"
+ VOPEN> Attempting to open::./TIP4P.PRM::
+ OPNLGU> Unit 12 opened for READONLY access to ./TIP4P.PRM
+  
+ CHARMM>    read parameter  card unit   12
+
+          PARAMETER FILE BEING READ FROM UNIT 12
+ TITLE> * TIPS3P WATER PARAMETER FILE
+ TITLE> *
+ PARMIO> NONBOND, HBOND lists and IMAGE atoms cleared.
+  
+ CHARMM>    close unit 12
+ VCLOSE: Closing unit   12 with status "KEEP"
+  
+ CHARMM>     
+  
+ CHARMM>    read sequence    tip4 125
+  
+ CHARMM>    generate solv setup
+ NO PATCHING WILL BE DONE ON THE FIRST RESIDUE
+ NO PATCHING WILL BE DONE ON THE LAST  RESIDUE
+ GENPSF> Segment   1 has been generated. Its identifier is SOLV.
+ PSFSUM> PSF modified: NONBOND lists and IMAGE atoms cleared.
+ PSFSUM> Summary of the structure file counters :
+         Number of segments      =        1   Number of residues   =      125
+         Number of atoms         =      500   Number of groups     =      125
+         Number of bonds         =      500   Number of angles     =      125
+         Number of dihedrals     =        0   Number of impropers  =        0
+         Number of cross-terms   =        0
+         Number of HB acceptors  =        0   Number of HB donors  =        0
+         Number of NB exclusions =        0   Total charge =    0.00000
+  
+ CHARMM>     
+  
+ CHARMM>    open unit 13 read card name @0tip4ptest.crd
+ Parameter: 0 -> "./"
+ VOPEN> Attempting to open::./TIP4PTEST.CRD::
+ OPNLGU> Unit 13 opened for READONLY access to ./TIP4PTEST.CRD
+  
+ CHARMM>    read  coord  card  unit 13
+          SPATIAL COORDINATES BEING READ FROM UNIT 13
+ TITLE> * 125 WATERS - INTERMEDIATE DYNAMICS RESULTS
+ TITLE> * MODIFIED RTF - OXYGEN CHARGE=-.4, HYDROGEN CHARGE=+.2
+ TITLE> *
+
+ ** WARNING ** For atom in coordinate file, the residue type does not match that (RESN) in the PSF:    1 PSF= TIP4 INPUT= OH2 
+
+ ** WARNING ** For atom in coordinate file, the residue type does not match that (RESN) in the PSF:    1 PSF= TIP4 INPUT= OH2 
+
+ ** WARNING ** For atom in coordinate file, the residue type does not match that (RESN) in the PSF:    1 PSF= TIP4 INPUT= OH2 
+
+ ** WARNING ** For atom in coordinate file, the residue type does not match that (RESN) in the PSF:    2 PSF= TIP4 INPUT= OH2 
+
+ ** WARNING ** For atom in coordinate file, the residue type does not match that (RESN) in the PSF:    2 PSF= TIP4 INPUT= OH2 
+ ** WARNING ** After reading, there are no coordinates for selected atom:     2     1 TIP4 OM  
+ ** WARNING ** After reading, there are no coordinates for selected atom:     6     2 TIP4 OM  
+ ** WARNING ** After reading, there are no coordinates for selected atom:    10     3 TIP4 OM  
+ ** WARNING ** After reading, there are no coordinates for selected atom:    14     4 TIP4 OM  
+ ** WARNING ** After reading, there are no coordinates for selected atom:    18     5 TIP4 OM  
+ ** WARNING ** After reading, there are no coordinates for selected atom:    22     6 TIP4 OM  
+ ** WARNING ** After reading, there are no coordinates for selected atom:    26     7 TIP4 OM  
+ ** WARNING ** After reading, there are no coordinates for selected atom:    30     8 TIP4 OM  
+ ** WARNING ** After reading, there are no coordinates for selected atom:    34     9 TIP4 OM  
+ ** WARNING ** After reading, there are no coordinates for selected atom:    38    10 TIP4 OM  
+
+ ** A total of   125 selected atoms have no coordinates
+ *** LEVEL  2 WARNING *** BOMLEV IS   -2
+
+ ** WARNING **   375 atoms in coordinates file had a sequence mismatch.
+ *** LEVEL  0 WARNING *** BOMLEV IS   -2
+  
+ CHARMM>    close unit 13
+ VCLOSE: Closing unit   13 with status "KEEP"
+  
+ CHARMM>     
+  
+ CHARMM>    coor copy comp
+ SELECTED COORDINATES COPIED TO THE COMPARISON SET.
+
+
+ **** WARNING **** FOR THIS OPERATION, THERE WERE  125 MISSING COORDINATES
+
+  
+ CHARMM>    coor stat
+ STATISTICS FOR       375 SELECTED ATOMS:
+    XMIN =   -9.720880 XMAX =    9.178500 XAVE =   -0.395206
+    YMIN =   -9.425590 YMAX =    9.414090 YAVE =   -0.037241
+    ZMIN =   -9.613620 ZMAX =    9.026330 ZAVE =    0.028523
+    WMIN =    0.000000 WMAX =    0.000000 WAVE =    0.000000
+
+ **** WARNING **** FOR THIS OPERATION, THERE WERE  125 MISSING COORDINATES
+
+  
+ CHARMM>     
+  
+ CHARMM>    shake bonh param tol 1.0e-12  FAST  WATER TIP4
+ SHKCOM> SHAKE parameters: TOL =   0.1000D-11 MXITer =    500
+
+             375 constraints will held by SHAKE.
+ FSSHKINI: Fast shake initialized with       0 bond contraints and      125 water constraints (3-center).
+ FSSHKINI:        0 constraints are in groups of:      125
+ FSSHKINI:      0 2-body (CH),      0 3-body(CH2),      0 4-body(CH3),      0 >4-body. 
+ FSSHKINI: Fast shake initialized with       0 bond contraints and      125 water constraints (3-center).
+ FSSHKINI:        0 constraints are in groups of:      125
+ FSSHKINI:      0 2-body (CH),      0 3-body(CH2),      0 4-body(CH3),      0 >4-body. 
+   ==== COLLCT_FSTSHK ====
+ FSSHKINI: =========== Totals for all nodes:     375 total constraints
+ FSSHKINI: Fast shake initialized with       0 bond contraints and      125 water constraints (3-center).
+ FSSHKINI:      0 2-body (CH),      0 3-body(CH2),      0 4-body(CH3),      0 >4-body. 
+  
+ CHARMM>     
+  
+ CHARMM>    LONEpair BISEctor DIST 0.15 ANGLE 0.0 DIHE 0.0 -
+ CHARMM>            SELE ATOM SOLV * OM  END  SELE ATOM SOLV * OH2 END -
+ CHARMM>            SELE ATOM SOLV * H1  END  SELE ATOM SOLV * H2  END
+ SELRPN>    125 atoms have been selected out of    500
+ SELRPN>    125 atoms have been selected out of    500
+ SELRPN>    125 atoms have been selected out of    500
+ SELRPN>    125 atoms have been selected out of    500
+  
+ CHARMM>    scalar move show sele resid 23 end
+ SELRPN>      4 atoms have been selected out of    500
+ ( SOLV TIP4 23   OH2  )    0.0000    
+ ( SOLV TIP4 23   OM   )   -1.0000    
+ ( SOLV TIP4 23   H1   )    0.0000    
+ ( SOLV TIP4 23   H2   )    0.0000    
+  
+ CHARMM>     
+  
+ CHARMM>    !!LONEpair print
+ CHARMM>    coor shake
+ SELECTED COORDINATES CONSTRAINED IN THE MAIN SET.
+
+  
+ CHARMM>    !!ic fill
+ CHARMM>    !!print ic
+ CHARMM>     
+  
+ CHARMM>    coor stat
+ STATISTICS FOR       500 SELECTED ATOMS:
+    XMIN =   -9.719742 XMAX =    9.177463 XAVE =   -0.395111
+    YMIN =   -9.423635 YMAX =    9.412999 YAVE =   -0.038418
+    ZMIN =   -9.612397 ZMAX =    9.025383 ZAVE =    0.029194
+    WMIN =    0.000000 WMAX =    0.000000 WAVE =    0.000000
+  
+ CHARMM>     
+  
+ CHARMM>    crystal Define  cubic 15.517182  15.517182  15.517182  90.0 90.0 90.0
+ Crystal Parameters : Crystal Type = CUBI
+           A     =   15.51718 B    =   15.51718 C     =   15.51718
+           Alpha =   90.00000 Beta =   90.00000 Gamma =   90.00000
+  
+ CHARMM>    crystal build   cutoff 16.0
+ XBUILD> Building all transformations with a minimum atom-atom
+         contact distance of less than   16.00 Angstroms.
+
+ Range of Grid Search for Transformation     1 :
+ Lattice Vector A    -3 TO     3
+ Lattice Vector B    -3 TO     3
+ Lattice Vector C    -3 TO     3
+
+
+ The number of transformations generated =    64
+
+
+ Number  Symop   A   B   C   Distance
+
+      1      1  -1   0  -2    15.8551
+      2      1   0  -1  -2    15.5470
+      3      1   0   0  -2    12.7688
+      4      1   0   1  -2    15.8784
+      5      1  -2  -1  -1    15.6580
+      6      1  -2   0  -1    13.6527
+      7      1  -1  -2  -1    15.9173
+      8      1  -1  -1  -1     3.5603
+      9      1  -1   0  -1     2.8963
+     10      1  -1   1  -1     5.4956
+     11      1   0  -2  -1    15.8417
+     12      1   0  -1  -1     2.5729
+     13      1   0   0  -1     1.9558
+     14      1   0   1  -1     4.0646
+     15      1   0   2  -1    15.1793
+     16      1  -2  -1   0    15.2003
+     17      1  -2   0   0    12.2971
+     18      1  -2   1   0    15.8099
+     19      1  -1  -2   0    15.1047
+     20      1  -1  -1   0     2.3361
+     21      1  -1   0   0     2.0588
+     22      1  -1   1   0     1.5977
+     23      1  -1   2   0    15.6606
+     24      1   0  -2   0    14.0080
+     25      1   0  -1   0     2.1330
+     26      1   0   1   0     2.1330
+     27      1   0   2   0    14.0080
+     28      1  -2  -1   1    15.2100
+     29      1  -2   0   1    15.3778
+     30      1  -1  -2   1    14.2955
+     31      1  -1  -1   1     3.3247
+     32      1  -1   0   1     2.0177
+     33      1  -1   1   1     7.0246
+     34      1   0  -2   1    15.1793
+     35      1   0  -1   1     4.0646
+     36      1   0   0   1     1.9558
+     37      1   0   1   1     2.5729
+     38      1   0   2   1    15.8417
+     39      1  -1   0   2    15.0246
+     40      1   0  -1   2    15.8784
+     41      1   0   0   2    12.7688
+     42      1   0   1   2    15.5470
+     43      1   1   0   2    15.8551
+     44      1   2   1   1    15.6580
+     45      1   2   0   1    13.6527
+     46      1   1   2   1    15.9173
+     47      1   1   1   1     3.5603
+     48      1   1   0   1     2.8963
+     49      1   1  -1   1     5.4956
+     50      1   2   1   0    15.2003
+     51      1   2   0   0    12.2971
+     52      1   2  -1   0    15.8099
+     53      1   1   2   0    15.1047
+     54      1   1   1   0     2.3361
+     55      1   1   0   0     2.0588
+     56      1   1  -1   0     1.5977
+     57      1   1  -2   0    15.6606
+     58      1   2   1  -1    15.2100
+     59      1   2   0  -1    15.3778
+     60      1   1   2  -1    14.2955
+     61      1   1   1  -1     3.3247
+     62      1   1   0  -1     2.0177
+     63      1   1  -1  -1     7.0246
+     64      1   1   0  -2    15.0246
+                     THERE ARE NO ROTATIONS FOR THIS TRANSFORMATION SET
+    64 Transformations have been processed.
+
+  
+ CHARMM>     
+  
+ CHARMM>    image bygroups xcen 0.0 ycen 0.0 zcen 0.0 sele all end
+ SELRPN>    500 atoms have been selected out of    500
+ IMAGE CENTERING ON FOR SOME ATOMS
+  
+ CHARMM>    update imgfrq 5
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ GROUP    7 OPERATED ON BY TRANSFORMATION C013
+ GROUP    8 OPERATED ON BY TRANSFORMATION C021
+ GROUP   18 OPERATED ON BY TRANSFORMATION C026
+ GROUP   21 OPERATED ON BY TRANSFORMATION C026
+ GROUP   22 OPERATED ON BY TRANSFORMATION C021
+ GROUP   25 OPERATED ON BY TRANSFORMATION C025
+ GROUP   37 OPERATED ON BY TRANSFORMATION C055
+ GROUP   39 OPERATED ON BY TRANSFORMATION C036
+ GROUP   44 OPERATED ON BY TRANSFORMATION C026
+ GROUP   47 OPERATED ON BY TRANSFORMATION C054
+ GROUP   49 OPERATED ON BY TRANSFORMATION C055
+ GROUP   59 OPERATED ON BY TRANSFORMATION C036
+ GROUP   61 OPERATED ON BY TRANSFORMATION C021
+ GROUP   62 OPERATED ON BY TRANSFORMATION C055
+ GROUP   67 OPERATED ON BY TRANSFORMATION C021
+ GROUP   77 OPERATED ON BY TRANSFORMATION C025
+ GROUP   87 OPERATED ON BY TRANSFORMATION C025
+ GROUP   94 OPERATED ON BY TRANSFORMATION C055
+ GROUP   99 OPERATED ON BY TRANSFORMATION C055
+ GROUP  108 OPERATED ON BY TRANSFORMATION C025
+ GROUP  111 OPERATED ON BY TRANSFORMATION C009
+ GROUP  113 OPERATED ON BY TRANSFORMATION C055
+ GROUP  116 OPERATED ON BY TRANSFORMATION C013
+ GROUP  120 OPERATED ON BY TRANSFORMATION C036
+ GROUP  123 OPERATED ON BY TRANSFORMATION C055
+ GROUP  124 OPERATED ON BY TRANSFORMATION C025
+
+ <MKIMAT2>: updating the image atom lists and remapping
+ Transformation   Atoms  Groups  Residues  Min-Distance
+    1  C001 has       0       0       0       15.31
+    2  C002 has       0       0       0       14.96
+    3  C003 has       0       0       0       14.84
+    4  C004 has       0       0       0       15.33
+    5  C005 has       0       0       0       14.83
+    6  C006 has       0       0       0       14.83
+    7  C007 has       0       0       0       15.15
+    8  C008 has     132      33      33        1.39
+    9  C009 has     288      72      72        0.50
+   10  C010 has      96      24      24        2.36
+   11  C011 has       0       0       0       14.78
+   12  C012 has     288      72      72        0.29
+   13  C013 has     452     113     113        0.00
+   14  C014 has     268      67      67        0.99
+   15  C015 has       0       0       0       14.92
+   16  C016 has       0       0       0       14.43
+   17  C017 has       0       0       0       14.35
+   18  C018 has       0       0       0       14.69
+   19  C019 has       0       0       0       15.09
+   20  C020 has     300      75      75        0.00
+   21  C021 has     444     111     111        0.00
+   22  C022 has     288      72      72        0.00
+   23  C023 has       0       0       0       15.04
+   24  C024 has       0       0       0       14.67
+   25  C025 has     436     109     109        0.00
+   28  C028 has       0       0       0       14.75
+   29  C029 has       0       0       0       14.71
+   30  C030 has       0       0       0       16.80
+   31  C031 has     144      36      36        2.10
+   32  C032 has     308      77      77        0.22
+   33  C033 has     172      43      43        0.22
+   39  C039 has       0       0       0       14.97
+ Total of 4116 atoms and 1029 groups and 1029 residues were included
+
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      GROUps   CDIElec  SWITch   VGROup   VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  = 10.000 CTEXNB =999.000 CTONNB =  8.000 CTOFNB =  8.000
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are        0 atom  pairs and        0 atom  exclusions.
+ There are        0 group pairs and        0 group exclusions.
+ GTNBCT> CUTNB,CTOFNB,CTONNB=      10.0       8.0       8.0
+
+      ***** LEVEL  1 WARNING FROM <GTNBCT> *****
+      ***** CUTNB,CTOFNB,CTONNB are not in correct order.
+      ******************************************
+      BOMLEV ( -2) IS NOT REACHED. WRNLEV IS  5
+
+ <MAKINB> with mode   5 found    750 exclusions and      0 interactions(1-4)
+ <MAKGRP> found      0 group exclusions.
+ <MAKGRP> found      0 image group exclusions.
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR    52359 ATOM PAIRS AND     4355 GROUP PAIRS
+
+ General group nonbond list generation found:
+     3773 GROUP PAIRS WERE FOUND FOR GROUP LIST
+     4102 GROUP PAIRS WERE BEYOND CUTOFFS
+        0 GROUP PAIRS WERE NOT SELECTED
+        0 QM group pairs excluded
+ SPACE FOR        0 ATOM PAIRS AND    15453 GROUP PAIRS
+
+ Image group nonbond list generation found:
+     5013 GROUP PAIRS WERE FOUND FOR GROUP LIST
+   107987 GROUP PAIRS WERE BEYOND CUTOFFS
+  
+ CHARMM>     
+  
+ CHARMM>    energy
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+
+ <MKIMAT2>: updating the image atom lists and remapping
+ Transformation   Atoms  Groups  Residues  Min-Distance
+    1  C001 has       0       0       0       15.31
+    2  C002 has       0       0       0       14.96
+    3  C003 has       0       0       0       14.84
+    4  C004 has       0       0       0       15.33
+    5  C005 has       0       0       0       14.83
+    6  C006 has       0       0       0       14.83
+    7  C007 has       0       0       0       15.15
+    8  C008 has     132      33      33        1.39
+    9  C009 has     288      72      72        0.50
+   10  C010 has      96      24      24        2.36
+   11  C011 has       0       0       0       14.78
+   12  C012 has     288      72      72        0.29
+   13  C013 has     452     113     113        0.00
+   14  C014 has     268      67      67        0.99
+   15  C015 has       0       0       0       14.92
+   16  C016 has       0       0       0       14.43
+   17  C017 has       0       0       0       14.35
+   18  C018 has       0       0       0       14.69
+   19  C019 has       0       0       0       15.09
+   20  C020 has     300      75      75        0.00
+   21  C021 has     444     111     111        0.00
+   22  C022 has     288      72      72        0.00
+   23  C023 has       0       0       0       15.04
+   24  C024 has       0       0       0       14.67
+   25  C025 has     436     109     109        0.00
+   28  C028 has       0       0       0       14.75
+   29  C029 has       0       0       0       14.71
+   30  C030 has       0       0       0       16.80
+   31  C031 has     144      36      36        2.10
+   32  C032 has     308      77      77        0.22
+   33  C033 has     172      43      43        0.22
+   39  C039 has       0       0       0       14.97
+ Total of 4116 atoms and 1029 groups and 1029 residues were included
+
+ <MAKGRP> found      0 image group exclusions.
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      GROUps   CDIElec  SWITch   VGROup   VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  = 10.000 CTEXNB =999.000 CTONNB =  8.000 CTOFNB =  8.000
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are        0 atom  pairs and      750 atom  exclusions.
+ There are     3773 group pairs and        0 group exclusions.
+ GTNBCT> CUTNB,CTOFNB,CTONNB=      10.0       8.0       8.0
+
+      ***** LEVEL  1 WARNING FROM <GTNBCT> *****
+      ***** CUTNB,CTOFNB,CTONNB are not in correct order.
+      ******************************************
+      BOMLEV ( -2) IS NOT REACHED. WRNLEV IS  5
+
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR    52359 ATOM PAIRS AND     4355 GROUP PAIRS
+
+ General group nonbond list generation found:
+     3773 GROUP PAIRS WERE FOUND FOR GROUP LIST
+     4102 GROUP PAIRS WERE BEYOND CUTOFFS
+        0 GROUP PAIRS WERE NOT SELECTED
+        0 QM group pairs excluded
+ SPACE FOR        0 ATOM PAIRS AND    15453 GROUP PAIRS
+
+ Image group nonbond list generation found:
+     5013 GROUP PAIRS WERE FOUND FOR GROUP LIST
+   107987 GROUP PAIRS WERE BEYOND CUTOFFS
+ENER ENR:  Eval#     ENERgy      Delta-E         GRMS
+ENER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ENER IMAGES:        IMNBvdw       IMELec       IMHBnd       RXNField    EXTElec
+ ----------       ---------    ---------    ---------    ---------    ---------
+ENER>        0   -795.29031      0.00000      5.43730
+ENER EXTERN>       54.69990   -621.15186      0.00000      0.00000      0.00000
+ENER IMAGES>        1.71279   -230.55114      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>     
+  
+ CHARMM>    test first step 0.0001 tol 0.0 sele resid 23 end
+ SELRPN>      4 atoms have been selected out of    500
+ TESTFD: Parameters: STEP=   0.00010  MASSweighting=   0
+ TESTFD: The following first derivatives differ by more than TOL=    0.000000
+
+  DIM.         ATOM                 ANALYTIC        FINITE-DIFF     DEVIATION
+   89 X ( SOLV 23   TIP4 OH2 )      0.01017014      0.01017284     -0.00000270
+   89 Y ( SOLV 23   TIP4 OH2 )     -2.33712659     -2.33714038      0.00001379
+   89 Z ( SOLV 23   TIP4 OH2 )      0.71986924      0.71987104     -0.00000179
+   91 X ( SOLV 23   TIP4 H1  )      3.58802346      3.58802282      0.00000064
+   91 Y ( SOLV 23   TIP4 H1  )     -2.31140234     -2.31139463     -0.00000771
+   91 Z ( SOLV 23   TIP4 H1  )     -0.20660347     -0.20659046     -0.00001301
+   92 X ( SOLV 23   TIP4 H2  )     -0.17012791     -0.17013056      0.00000265
+   92 Y ( SOLV 23   TIP4 H2  )     -1.65509922     -1.65509334     -0.00000589
+   92 Z ( SOLV 23   TIP4 H2  )      0.17273481      0.17272028      0.00001453
+
+ TESTFD: A total of     0 elements were within the tolerance
+  
+ CHARMM>     
+  
+ CHARMM>    open write card unit 15 name @9for015.dat
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::./for015.dat::
+ OPNLGU> Unit 15 opened for WRITE access to ./for015.dat
+  
+ CHARMM>    open write file unit 14 name @9for014.dat
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::./for014.dat::
+ OPNLGU> Unit 14 opened for WRITE access to ./for014.dat
+  
+ CHARMM>    open write file unit 13 name @9for013.dat
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::./for013.dat::
+ OPNLGU> Unit 13 opened for WRITE access to ./for013.dat
+  
+ CHARMM>    open write card unit 12 name @9for012.dat
+ Parameter: 9 -> "./"
+ VOPEN> Attempting to open::./for012.dat::
+ OPNLGU> Unit 12 opened for WRITE access to ./for012.dat
+  
+ CHARMM>     
+  
+ CHARMM>    DYNA  STRT  NSTEP 40 TIMESTEP 0.001  -
+ CHARMM>      IUNWRI 15 IUNVEL 14   IUNCRD 13  KUNIT 12  -
+ CHARMM>      NPRINT 1  NSAVV  10   NSAVC  10  INBFRQ 5  IPRFRQ  20   -
+ CHARMM>      FIRSTT 300.0  FINALT  300.0  ISEED 439632  -
+ CHARMM>      NTRFRQ 0  IASORS  0  ICHECW  1   IASVEL 1 -
+ CHARMM>      atom fshift vshft cutnb 14.0 ctofnb 12.0 ctonnb 10.0
+  IUNREA = -1         IUNWRI = 15          IUNOS = -1
+  IUNCRD = 13         IUNVEL = 14          KUNIT = 12
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ ***** Info from GTNBCT *****
+ CUTIM is reset to  14.0 from  13.5
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      ATOMs    CDIElec  FSHIft   VATOm    VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  = 14.000 CTEXNB =999.000 CTONNB = 10.000 CTOFNB = 12.000
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  1.000 EPS    =  1.000
+ NBXMOD =      5
+ There are        0 atom  pairs and      750 atom  exclusions.
+ There are     3773 group pairs and        0 group exclusions.
+
+      ***** LEVEL  5 WARNING FROM <RNGMODSEEDS> *****
+      ***** Only one seed number specified! See random.doc for syntax.
+      ******************************************
+      BOMLEV ( -2) IS NOT REACHED. WRNLEV IS  5
+
+   NSTEP =       40    NSAVC =       10    NSAVV =       10
+  ISCALE =        0   ISCVEL =        0   IASORS =        0
+  IASVEL =        1   ICHECW =        1   NTRFRQ =        0
+  IHTFRQ =        0   IEQFRQ =        0   NPRINT =        1
+  INBFRQ =        5   IHBFRQ =        0   IPRFRQ =       20
+  ILBFRQ =       50   IMGFRQ =        5
+  ISVFRQ =        0   NCYCLE =        5    NSNOS =       10
+  FIRSTT =   300.000  TEMINC =     5.000  TSTRUC =  -999.000
+  FINALT =   300.000  TWINDH =    10.000  TWINDL =   -10.000
+
+  TIME STEP =  2.04548E-02 AKMA       1.00000E-03 PS
+
+  RANDOM NUM. GEN. SEED(S) = 439632 439632 439632 439632
+
+           SHAKE TOLERANCE =     0.10000E-11
+ NUMBER OF DEGREES OF FREEDOM =    747
+
+          GAUSSIAN OPTION                  IS            1
+          VELOCITIES ASSIGNED AT TEMPERATURE =    375.0000
+          SEED FOR RANDOM NUMBER GENERATOR IS:
+          SEEDS> 439632 439632 439632 439632
+
+     DETAILS ABOUT CENTRE OF MASS
+     POSITION          :  -2.22776425E-02  -0.16773943       3.21516351E-02
+     VELOCITY          :   8.67130661E-03   1.27480652E-02   1.51708705E-03
+     ANGULAR MOMENTUM  :    743.44349       -405.99229       -504.59279    
+     KINETIC ENERGY    :   0.27023807    
+ **** Warning ****  The following extraneous characters
+ were found while command processing in DCNTRL
+ VSHFT
+DYNA DYN: Step         Time      TOTEner        TOTKe       ENERgy  TEMPerature
+DYNA PROP:             GRMS      HFCTote        HFCKe       EHFCor        VIRKe
+DYNA EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+DYNA IMAGES:        IMNBvdw       IMELec       IMHBnd       RXNField    EXTElec
+DYNA PRESS:            VIRE         VIRI       PRESSE       PRESSI       VOLUme
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>        0      0.00000   -499.59139    282.05216   -781.64355    380.01367
+DYNA PROP>         15.41854   -499.34295    282.79443      0.24844    349.64483
+DYNA EXTERN>       52.60543   -611.47351      0.00000      0.00000      0.00000
+DYNA IMAGES>       -2.81697   -219.95850      0.00000      0.00000      0.00000
+DYNA PRESS>      -145.43816    -87.65839   2669.08838   1851.19371   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>        1      0.00100   -499.60428    284.07335   -783.67763    382.73685
+DYNA PROP>         15.43077   -499.66239    284.80578     -0.05811    350.75574
+DYNA EXTERN>       52.41723   -611.65546      0.00000      0.00000      0.00000
+DYNA IMAGES>       -2.49035   -221.94906      0.00000      0.00000      0.00000
+DYNA PRESS>      -142.98686    -90.85030   2624.10194   1817.22401   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>        2      0.00200   -499.63131    289.67245   -789.30376    390.28061
+DYNA PROP>         15.43683   -499.66308    290.38564     -0.03177    355.31843
+DYNA EXTERN>       52.16422   -614.21195      0.00000      0.00000      0.00000
+DYNA IMAGES>       -2.15008   -225.10595      0.00000      0.00000      0.00000
+DYNA PRESS>      -136.41672   -100.46223   2503.52646   1709.09321   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>        3      0.00300   -499.67046    298.45186   -798.12232    402.10926
+DYNA PROP>         15.43785   -499.66345    299.13765      0.00701    363.52627
+DYNA EXTERN>       51.84719   -618.91771      0.00000      0.00000      0.00000
+DYNA IMAGES>       -1.79571   -229.25610      0.00000      0.00000      0.00000
+DYNA PRESS>      -126.07459   -116.27626   2313.72710   1525.95160   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>        4      0.00400   -499.71840    309.83697   -809.55537    417.44860
+DYNA PROP>         15.43572   -499.66333    310.48930      0.05507    376.05983
+DYNA EXTERN>       51.47250   -625.43732      0.00000      0.00000      0.00000
+DYNA IMAGES>       -1.42533   -234.16522      0.00000      0.00000      0.00000
+DYNA PRESS>      -113.75416   -136.95240   2087.62190   1285.38619   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>        5      0.00500   -499.77207    323.12288   -822.89495    435.34894
+DYNA PROP>         15.43209   -499.66346    323.73833      0.10861    392.94643
+DYNA EXTERN>       51.05078   -633.34666      0.00000      0.00000      0.00000
+DYNA IMAGES>       -1.03566   -239.56341      0.00000      0.00000      0.00000
+DYNA PRESS>      -101.10675   -160.85753   1855.51615   1008.77579   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step         5
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step         5
+DYNA>        6      0.00600   -499.82676    337.52970   -837.35647    454.75950
+DYNA PROP>         15.42859   -499.66337    338.10764      0.16339    395.51826
+DYNA EXTERN>       52.37861   -649.99488      0.00000      0.00000      0.00000
+DYNA IMAGES>       -2.40525   -237.33494      0.00000      0.00000      0.00000
+DYNA PRESS>       -77.39949   -186.27935   1420.43933    718.03766   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>        7      0.00700   -499.87868    352.25891   -852.13759    474.60440
+DYNA PROP>         15.42594   -499.66283    352.80148      0.21585    414.45411
+DYNA EXTERN>       51.93110   -659.51231      0.00000      0.00000      0.00000
+DYNA IMAGES>       -1.98874   -242.56764      0.00000      0.00000      0.00000
+DYNA PRESS>       -65.13939   -211.16336   1195.44124    441.13978   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>        8      0.00800   -499.92430    366.55211   -866.47641    493.86188
+DYNA PROP>         15.42425   -499.66224    367.06395      0.26205    436.07679
+DYNA EXTERN>       51.47391   -668.89139      0.00000      0.00000      0.00000
+DYNA IMAGES>       -1.53019   -247.52874      0.00000      0.00000      0.00000
+DYNA PRESS>       -56.53637   -234.18149   1037.55825    193.20687   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>        9      0.00900   -499.96103    379.74434   -879.70537    511.63600
+DYNA PROP>         15.42306   -499.66174    380.23183      0.29930    460.10783
+DYNA EXTERN>       51.02284   -677.67592      0.00000      0.00000      0.00000
+DYNA IMAGES>       -1.02385   -252.02845      0.00000      0.00000      0.00000
+DYNA PRESS>       -52.76291   -253.97565    968.30747     -8.95143   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       10      0.01000   -499.98619    391.30454   -891.29073    527.21125
+DYNA PROP>         15.42137   -499.66098    391.77507      0.32521    485.14496
+DYNA EXTERN>       50.59359   -685.49429      0.00000      0.00000      0.00000
+DYNA IMAGES>       -0.46468   -255.92535      0.00000      0.00000      0.00000
+DYNA PRESS>       -53.74512   -269.68485    986.33307   -156.01947   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        10
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        10
+DYNA>       11      0.01100   -499.99906    400.86556   -900.86463    540.09298
+DYNA PROP>         15.41835   -499.66035    401.32684      0.33872    550.95680
+DYNA EXTERN>       49.84900   -689.01598      0.00000      0.00000      0.00000
+DYNA IMAGES>        0.50389   -262.20154      0.00000      0.00000      0.00000
+DYNA PRESS>       -86.13962   -281.16491   1580.83857   -249.83910   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       12      0.01200   -500.00059    408.23320   -908.23379    550.01952
+DYNA PROP>         15.41329   -499.65952    408.69232      0.34107    572.97145
+DYNA EXTERN>       49.44666   -693.78406      0.00000      0.00000      0.00000
+DYNA IMAGES>        1.24211   -265.13850      0.00000      0.00000      0.00000
+DYNA PRESS>       -94.17034   -287.81063   1728.21869   -281.68715   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       13      0.01300   -499.99168    413.37957   -913.37125    556.95331
+DYNA PROP>         15.40603   -499.65919    413.84251      0.33249    594.41678
+DYNA EXTERN>       49.10698   -697.16369      0.00000      0.00000      0.00000
+DYNA IMAGES>        2.04568   -267.36023      0.00000      0.00000      0.00000
+DYNA PRESS>      -106.66423   -289.61362   1957.50723   -251.76470   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       14      0.01400   -499.97508    416.42105   -916.39613    561.05115
+DYNA PROP>         15.39694   -499.65864    416.89228      0.31643    615.16714
+DYNA EXTERN>       48.84551   -699.22907      0.00000      0.00000      0.00000
+DYNA IMAGES>        2.91344   -268.92600      0.00000      0.00000      0.00000
+DYNA PRESS>      -122.10502   -288.00640   2240.87746   -184.95589   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       15      0.01500   -499.95247    417.58757   -917.54004    562.62282
+DYNA PROP>         15.38673   -499.65856    418.06992      0.29391    635.01819
+DYNA EXTERN>       48.67829   -700.13303      0.00000      0.00000      0.00000
+DYNA IMAGES>        3.84181   -269.92712      0.00000      0.00000      0.00000
+DYNA PRESS>      -140.72721   -282.61825   2582.63280    -71.66421   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        15
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        15
+DYNA>       16      0.01600   -499.92629    417.19043   -917.11672    562.08775
+DYNA PROP>         15.37652   -499.65820    417.68516      0.26809    686.98165
+DYNA EXTERN>       44.89905   -694.45115      0.00000      0.00000      0.00000
+DYNA IMAGES>        8.54756   -276.11218      0.00000      0.00000      0.00000
+DYNA PRESS>      -183.55540   -274.43237   3368.61785     73.85611   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       17      0.01700   -499.90004    415.58512   -915.48516    559.92489
+DYNA PROP>         15.36746   -499.65854    416.09218      0.24150    704.52738
+DYNA EXTERN>       44.88699   -693.79458      0.00000      0.00000      0.00000
+DYNA IMAGES>        9.65973   -276.23731      0.00000      0.00000      0.00000
+DYNA PRESS>      -205.67417   -264.01075   3774.54252    245.62438   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       18      0.01800   -499.87501    413.13738   -913.01239    556.62701
+DYNA PROP>         15.36079   -499.65909    413.65571      0.21592    720.11277
+DYNA EXTERN>       45.02155   -692.65996      0.00000      0.00000      0.00000
+DYNA IMAGES>       10.80461   -276.17859      0.00000      0.00000      0.00000
+DYNA PRESS>      -228.07011   -252.00507   4185.55398    436.14378   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       19      0.01900   -499.85098    410.19751   -910.04849    552.66607
+DYNA PROP>         15.35762   -499.65915    410.72538      0.19183    733.46463
+DYNA EXTERN>       45.31744   -691.27148      0.00000      0.00000      0.00000
+DYNA IMAGES>       11.97045   -276.06489      0.00000      0.00000      0.00000
+DYNA PRESS>      -249.33612   -239.64030   4575.82875    627.21100   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       20      0.02000   -499.83100    407.08553   -906.91653    548.47325
+DYNA PROP>         15.35926   -499.65973    407.62084      0.17127    744.16758
+DYNA EXTERN>       45.78667   -689.83333      0.00000      0.00000      0.00000
+DYNA IMAGES>       13.14531   -276.01519      0.00000      0.00000      0.00000
+DYNA PRESS>      -268.24674   -227.86499   4922.87742    805.32902   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+ DYNAMC> Averages for the last 20 steps:
+AVER DYN: Step         Time      TOTEner        TOTKe       ENERgy  TEMPerature
+AVER PROP:             GRMS      HFCTote        HFCKe       EHFCor        VIRKe
+AVER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+AVER IMAGES:        IMNBvdw       IMELec       IMHBnd       RXNField    EXTElec
+AVER PRESS:            VIRE         VIRI       PRESSE       PRESSI       VOLUme
+ ----------       ---------    ---------    ---------    ---------    ---------
+AVER>       20      0.02000   -499.86378    372.61150   -872.47529    502.02580
+AVER PROP>         15.40697   -499.66089    373.15699      0.20289    529.38465
+AVER EXTERN>       49.40951   -669.32371      0.00000      0.00000      0.00000
+AVER IMAGES>        2.41824   -254.97932      0.00000      0.00000      0.00000
+AVER PRESS>      -130.53057   -222.39254   2395.50341    484.10487   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+ DYNAMC> RMS fluctuations for the last 20 steps:
+FLUC>       20      0.02000      0.12211     47.13713     47.24306     63.50865
+FLUC PROP>          0.02782      0.00193     47.05794      0.12335    138.42201
+FLUC EXTERN>        2.68354     30.98968      0.00000      0.00000      0.00000
+FLUC IMAGES>        5.20563     18.45005      0.00000      0.00000      0.00000
+FLUC PRESS>        63.62570     65.24958   1167.66196    665.16589      0.00007
+ ----------       ---------    ---------    ---------    ---------    ---------
+
+     DRIFT/STEP (LAST-TOTAL):    2.99181855E-04   2.99181855E-04
+     E AT STEP 0            :    -499.66403       -499.66403    
+     CORR. COEFFICIENT      :    0.89401404       0.89401404    
+ UPDECI: Image update at step        20
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        20
+DYNA>       21      0.02100   -499.81326    404.08025   -903.89350    544.42418
+DYNA PROP>         15.36655   -499.66011    404.62069      0.15315    645.28486
+DYNA EXTERN>       52.59908   -698.12991      0.00000      0.00000      0.00000
+DYNA IMAGES>        8.15673   -266.51941      0.00000      0.00000      0.00000
+DYNA PRESS>      -214.17551   -216.01439   3930.55959    986.10574   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       22      0.02200   -499.79988    401.41062   -901.21050    540.82734
+DYNA PROP>         15.37999   -499.66038    401.95391      0.13950    655.05842
+DYNA EXTERN>       53.73671   -697.70550      0.00000      0.00000      0.00000
+DYNA IMAGES>        9.01768   -266.25939      0.00000      0.00000      0.00000
+DYNA PRESS>      -231.81859   -204.88702   4254.34630   1157.68868   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       23      0.02300   -499.79036    399.25038   -899.04074    537.91682
+DYNA PROP>         15.40014   -499.66079    399.79440      0.12957    660.94368
+DYNA EXTERN>       55.07952   -697.58023      0.00000      0.00000      0.00000
+DYNA IMAGES>        9.84146   -266.38149      0.00000      0.00000      0.00000
+DYNA PRESS>      -245.40335   -195.22577   4503.65450   1308.57145   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       24      0.02400   -499.78505    397.71617   -897.50122    535.84975
+DYNA PROP>         15.42725   -499.66116    398.25909      0.12389    662.57825
+DYNA EXTERN>       56.62556   -697.80799      0.00000      0.00000      0.00000
+DYNA IMAGES>       10.62236   -266.94114      0.00000      0.00000      0.00000
+DYNA PRESS>      -254.57133   -187.14751   4671.90558   1438.04007   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       25      0.02500   -499.78427    396.86591   -896.65018    534.70418
+DYNA PROP>         15.46145   -499.66162    397.40626      0.12265    659.87932
+DYNA EXTERN>       58.36904   -698.41633      0.00000      0.00000      0.00000
+DYNA IMAGES>       11.35831   -267.96120      0.00000      0.00000      0.00000
+DYNA PRESS>      -259.59414   -180.32540   4764.08454   1552.80551   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        25
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        25
+DYNA>       26      0.02600   -499.78805    396.69767   -896.48572    534.47751
+DYNA PROP>         15.50302   -499.66211    397.23445      0.12594    555.92355
+DYNA EXTERN>       62.72855   -708.80324      0.00000      0.00000      0.00000
+DYNA IMAGES>        9.62338   -260.03441      0.00000      0.00000      0.00000
+DYNA PRESS>      -196.05574   -174.55996   3598.02474   1656.51123   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       27      0.02700   -499.79668    397.15112   -896.94780    535.08845
+DYNA PROP>         15.55180   -499.66296    397.68374      0.13372    547.58365
+DYNA EXTERN>       64.93637   -710.49413      0.00000      0.00000      0.00000
+DYNA IMAGES>       10.17872   -261.56877      0.00000      0.00000      0.00000
+DYNA PRESS>      -195.12898   -169.92679   3581.01676   1747.03640   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       28      0.02800   -499.80950    398.10995   -897.91946    536.38030
+DYNA PROP>         15.60744   -499.66382    398.63831      0.14568    538.18594
+DYNA EXTERN>       67.30541   -712.57276      0.00000      0.00000      0.00000
+DYNA IMAGES>       10.70577   -263.35787      0.00000      0.00000      0.00000
+DYNA PRESS>      -192.88405   -165.90658   3539.81761   1832.49426   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       29      0.02900   -499.82472    399.40942   -899.23414    538.13110
+DYNA PROP>         15.66953   -499.66427    399.93412      0.16045    529.15306
+DYNA EXTERN>       69.81962   -715.00041      0.00000      0.00000      0.00000
+DYNA IMAGES>       11.21524   -265.26860      0.00000      0.00000      0.00000
+DYNA PRESS>      -190.73846   -162.03025   3500.44159   1919.48673   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       30      0.03000   -499.84040    400.85509   -900.69549    540.07887
+DYNA PROP>         15.73713   -499.66414    401.37760      0.17626    521.83630
+DYNA EXTERN>       72.46174   -717.72130      0.00000      0.00000      0.00000
+DYNA IMAGES>       11.71870   -267.15464      0.00000      0.00000      0.00000
+DYNA PRESS>      -189.41213   -158.47874   3476.10084   2002.32477   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        30
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        30
+DYNA>       31      0.03100   -499.85419    402.25313   -902.10733    541.96247
+DYNA PROP>         15.80939   -499.66400    402.77572      0.19019    480.22678
+DYNA EXTERN>       76.81455   -719.84638      0.00000      0.00000      0.00000
+DYNA IMAGES>       10.62631   -269.70181      0.00000      0.00000      0.00000
+DYNA PRESS>      -165.57155   -154.57964   3038.57730   2090.98684   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       32      0.03200   -499.86496    403.44267   -903.30763    543.56516
+DYNA PROP>         15.88530   -499.66429    403.96800      0.20067    479.48164
+DYNA EXTERN>       79.64347   -723.22809      0.00000      0.00000      0.00000
+DYNA IMAGES>       11.16308   -270.88609      0.00000      0.00000      0.00000
+DYNA PRESS>      -169.53894   -150.11549   3111.38701   2187.50035   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       33      0.03300   -499.87097    404.31372   -904.18469    544.73874
+DYNA PROP>         15.96381   -499.66402    404.84399      0.20695    480.78723
+DYNA EXTERN>       82.54063   -726.68870      0.00000      0.00000      0.00000
+DYNA IMAGES>       11.72395   -271.76057      0.00000      0.00000      0.00000
+DYNA PRESS>      -175.75315   -144.77167   3225.43051   2296.28785   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       34      0.03400   -499.87498    404.80726   -904.68224    545.40370
+DYNA PROP>         16.04348   -499.66399    405.34364      0.21099    481.79181
+DYNA EXTERN>       85.48591   -730.12018      0.00000      0.00000      0.00000
+DYNA IMAGES>       12.31227   -272.36023      0.00000      0.00000      0.00000
+DYNA PRESS>      -182.60644   -138.58810   3351.20240   2415.88192   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       35      0.03500   -499.87769    404.89887   -904.77657    545.52712
+DYNA PROP>         16.12329   -499.66391    405.44141      0.21378    480.79275
+DYNA EXTERN>       88.45866   -733.41381      0.00000      0.00000      0.00000
+DYNA IMAGES>       12.92774   -272.74915      0.00000      0.00000      0.00000
+DYNA PRESS>      -188.75453   -131.77396   3464.03256   2542.13161   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+ UPDECI: Image update at step        35
+
+ SELECTED IMAGES ATOMS BEING CENTERED ABOUT  0.000000  0.000000  0.000000
+ UPDECI: Nonbond update at step        35
+DYNA>       36      0.03600   -499.88039    404.57792   -904.45832    545.09470
+DYNA PROP>         16.20216   -499.66391    405.12624      0.21649    529.70177
+DYNA EXTERN>       87.50983   -737.69238      0.00000      0.00000      0.00000
+DYNA IMAGES>       17.49457   -271.77035      0.00000      0.00000      0.00000
+DYNA PRESS>      -228.59595   -124.53856   4195.20419   2671.06002   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       37      0.03700   -499.88273    403.83717   -903.71991    544.09668
+DYNA PROP>         16.27867   -499.66391    404.39098      0.21883    514.52481
+DYNA EXTERN>       90.50885   -739.96650      0.00000      0.00000      0.00000
+DYNA IMAGES>       18.11510   -272.37737      0.00000      0.00000      0.00000
+DYNA PRESS>      -226.55862   -116.45792   4157.81504   2810.36075   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       38      0.03800   -499.88441    402.67132   -902.55572    542.52590
+DYNA PROP>         16.35125   -499.66373    403.23098      0.22068    496.01748
+DYNA EXTERN>       93.47829   -741.86227      0.00000      0.00000      0.00000
+DYNA IMAGES>       18.73609   -272.90783      0.00000      0.00000      0.00000
+DYNA PRESS>      -222.83715   -107.84117   4089.51846   2954.30357   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+DYNA>       39      0.03900   -499.88417    401.08629   -900.97046    540.39037
+DYNA PROP>         16.41837   -499.66355    401.65306      0.22062    475.19671
+DYNA EXTERN>       96.39773   -743.37215      0.00000      0.00000      0.00000
+DYNA IMAGES>       19.34632   -273.34236      0.00000      0.00000      0.00000
+DYNA PRESS>      -218.33313    -98.46467   4006.86051   3107.07607   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+
+      4   COORDINATE SETS STARTING FROM
+     STEP NO       10   FOR EVERY    10  STEPS
+     WRITTEN ON UNIT   13
+
+ VCLOSE: Closing unit   13 with status "KEEP"
+
+      4   VELOCITY SETS STARTING FROM
+     STEP NO       10   FOR EVERY    10  STEPS
+     WRITTEN ON UNIT   14
+
+ VCLOSE: Closing unit   14 with status "KEEP"
+DYNA>       40      0.04000   -499.88061    399.11930   -898.99991    537.74021
+DYNA PROP>         16.47854   -499.66365    399.69499      0.21695    454.17326
+DYNA EXTERN>       99.24837   -744.52012      0.00000      0.00000      0.00000
+DYNA IMAGES>       19.93391   -273.66208      0.00000      0.00000      0.00000
+DYNA PRESS>      -214.43606    -88.34611   3935.34127   3268.81605   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+ DYNAMC> Averages for the last 20 steps:
+AVER DYN: Step         Time      TOTEner        TOTKe       ENERgy  TEMPerature
+AVER PROP:             GRMS      HFCTote        HFCKe       EHFCor        VIRKe
+AVER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+AVER IMAGES:        IMNBvdw       IMELec       IMHBnd       RXNField    EXTElec
+AVER PRESS:            VIRE         VIRI       PRESSE       PRESSI       VOLUme
+ ----------       ---------    ---------    ---------    ---------    ---------
+AVER>       20      0.04000   -499.83936    401.12771   -900.96708    540.44618
+AVER PROP>         15.83293   -499.66302    401.66858      0.17635    542.45606
+AVER EXTERN>       74.68740   -719.74712      0.00000      0.00000      0.00000
+AVER IMAGES>       12.74088   -268.64824      0.00000      0.00000      0.00000
+AVER PRESS>      -208.13839   -153.49898   3819.76606   2097.27349   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+ DYNAMC> RMS fluctuations for the last 20 steps:
+FLUC>       20      0.04000      0.03880      2.82751      2.85648      3.80955
+FLUC PROP>          0.36738      0.00138      2.82805      0.03780     71.02071
+FLUC EXTERN>       14.94068     16.44810      0.00000      0.00000      0.00000
+FLUC IMAGES>        3.63654      4.00058      0.00000      0.00000      0.00000
+FLUC PRESS>        26.91346     34.24838    493.91711    640.69894      0.00007
+ ----------       ---------    ---------    ---------    ---------    ---------
+ DYNAMC> Averages for the last 40 steps:
+LAVE>       40      0.04000   -499.85157    386.86961   -886.72118    521.23599
+LAVE PROP>         15.61995   -499.66195    387.41278      0.18962    535.92036
+LAVE EXTERN>       62.04845   -694.53542      0.00000      0.00000      0.00000
+LAVE IMAGES>        7.57956   -261.81378      0.00000      0.00000      0.00000
+LAVE PRESS>      -169.33448   -187.94576   3107.63474   1290.68918   3736.27266
+ ----------       ---------    ---------    ---------    ---------    ---------
+ DYNAMC> RMS fluctuations for the last 40 steps:
+LFLC>       40      0.04000      0.09142     36.30765     36.37277     48.91791
+LFLC PROP>          0.33650      0.00199     36.25536      0.09219    110.20441
+LFLC EXTERN>       16.58178     35.37061      0.00000      0.00000      0.00000
+LFLC IMAGES>        6.84111     14.99714      0.00000      0.00000      0.00000
+LFLC PRESS>        62.38610     62.46447   1144.91279   1037.80954      0.00007
+ ----------       ---------    ---------    ---------    ---------    ---------
+
+     DRIFT/STEP (LAST-TOTAL):   -1.88417278E-04  -6.59341604E-05
+     E AT STEP 0            :    -499.66104       -499.66060    
+     CORR. COEFFICIENT      :   -0.78609264      -0.38313372    
+ WRIDYN: RESTart file was written at step      40
+ VCLOSE: Closing unit   15 with status "KEEP"
+
+     DETAILS ABOUT CENTRE OF MASS
+     POSITION          :  -2.22776425E-02  -4.36019721E-02   0.15628909    
+     VELOCITY          :   6.46790542E-15  -8.86529299E-15   6.16384726E-15
+     ANGULAR MOMENTUM  :    497.11230       -381.70528       -694.82409    
+     KINETIC ENERGY    :   1.78375242E-25
+  
+ CHARMM>     
+  
+ CHARMM>    coor stat comp
+ STATISTICS FOR       500 SELECTED ATOMS:
+    XMIN =   -3.871246 XMAX =    2.909272 XAVE =   -0.012587
+    YMIN =   -2.975547 YMAX =    1.998597 YAVE =   -0.029108
+    ZMIN =   -2.585152 ZMAX =    1.924578 ZAVE =   -0.024617
+    WMIN =    0.000000 WMAX = 4977.861553 WAVE =  389.363285
+  
+ CHARMM>    coor stat comp sele type OH2 end
+ SELRPN>    125 atoms have been selected out of    500
+ STATISTICS FOR       125 SELECTED ATOMS:
+    XMIN =   -0.689395 XMAX =    0.590652 XAVE =    0.003116
+    YMIN =   -0.579881 YMAX =    0.584837 YAVE =    0.007205
+    ZMIN =   -0.705570 ZMAX =    0.511758 ZAVE =    0.006093
+    WMIN =  101.029340 WMAX = 4977.861553 WAVE =  710.688165
+  
+ CHARMM>    coor stat comp sele type OM end
+ SELRPN>    125 atoms have been selected out of    500
+ STATISTICS FOR       125 SELECTED ATOMS:
+    XMIN =   -0.613035 XMAX =    0.570968 XAVE =   -0.004013
+    YMIN =   -0.654003 YMAX =    0.743428 YAVE =   -0.009279
+    ZMIN =   -0.656758 ZMAX =    0.640658 ZAVE =   -0.007847
+    WMIN =    0.000000 WMAX =    0.000000 WAVE =    0.000000
+  
+ CHARMM>    coor stat comp sele type H1 end
+ SELRPN>    125 atoms have been selected out of    500
+ STATISTICS FOR       125 SELECTED ATOMS:
+    XMIN =   -2.072443 XMAX =    2.909272 XAVE =   -0.101784
+    YMIN =   -2.061389 YMAX =    1.998597 YAVE =   -0.097996
+    ZMIN =   -2.585152 ZMAX =    1.924578 ZAVE =    0.009250
+    WMIN =   41.792206 WMAX = 1831.566514 WAVE =  417.216068
+  
+ CHARMM>    coor stat comp sele type H2 end
+ SELRPN>    125 atoms have been selected out of    500
+ STATISTICS FOR       125 SELECTED ATOMS:
+    XMIN =   -3.871246 XMAX =    1.696666 XAVE =    0.052332
+    YMIN =   -2.975547 YMAX =    1.722913 YAVE =   -0.016360
+    ZMIN =   -1.718060 ZMAX =    1.914013 ZAVE =   -0.105965
+    WMIN =   54.448996 WMAX = 2859.018258 WAVE =  429.548905
+  
+ CHARMM>     
+  
+ CHARMM>    @testcheck ?ener -875.989942 -1 tip4ptest
+ Parameter: TESTCHECK -> "STREAM .//TEST.STR"
+ RDCMND substituted energy or value "?ENER" to "-898.999913"
+ VOPEN> Attempting to open::.//TEST.STR::
+ OPNLGU> Unit 99 opened for READONLY access to .//TEST.STR
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * TESTING AGAINST REFERENCE VALUE
+ RDTITL> *
+ Parameter: IN1 <- "-898.999913"
+ Parameter: IN2 <- "-875.989942"
+ Parameter: IN3 <- "-1"
+ Parameter: IN4 <- "TIP4PTEST"
+  
+ CHARMM>    ! stream @0test.str VAL REF TOL TESTID ! All arguments required
+ CHARMM>    ! checks if |val-ref| > tol*|ref|
+ CHARMM>    ! if tol < 0 or ref=0 an absolute test is performed vs |tol|
+ CHARMM>    ! sets teststat to pass or fail and increments testfail by 1 if test not passed
+ CHARMM>    ! echo @tstid  testcase result: @teststat
+ CHARMM>     
+  
+ CHARMM>    ! LNilsson, March 2011, September 2014
+ CHARMM>     
+  
+ CHARMM>    calc tst01 = abs( @IN1 - @IN2 )
+ Parameter: IN1 -> "-898.999913"
+ Parameter: IN2 -> "-875.989942"
+Evaluating: ABS(-898.999913--875.989942)
+ Parameter: TST01 <- "23.009971"
+  
+ CHARMM>    if @IN3 gt 0 then
+ Parameter: IN3 -> "-1"
+ Comparing "-1" and "0".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+  
+ CHARMM>       calc tst02 = abs (  @IN3 )
+ Parameter: IN3 -> "-1"
+Evaluating: ABS(-1)
+ Parameter: TST02 <- "1"
+  
+ CHARMM>    endif
+  
+ CHARMM>    set xxxprnl ?prnlev
+ RDCMND substituted energy or value "?PRNLEV" to "5"
+ Parameter: XXXPRNL <- "5"
+  
+ CHARMM>    prnlev 2 @pnode
+ Parameter: PNODE -> "" <empty>
+ Comparing "23.009971" and "1".
+ IF test evaluated as false.  Skip to ELSE or ENDIF
+ Parameter: TESTSTAT <- "FAIL"
+ Parameter: TESTFAIL <- "1"
+TIP4PTEST TESTCASE RESULT: FAIL
+  
+ CHARMM>    return
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>     
+  
+ CHARMM>    stop
+ VCLOSE: Closing unit   12 with status "KEEP"
+
+      $$$$$$  New timer profile Local node$$$$$
+
+   Shake Setup                     0.00 Other:            0.00
+   First List                      0.01 Other:            0.00
+   Shake time                      0.00 Other:            0.00
+      Comm coords                     0.00 Other:            0.00
+         Comm variables                  0.00 Other:            0.00
+         Save shake coords               0.00 Other:            0.00
+         Heuristic check                 0.00 Other:            0.00
+         Temp and virial calc            0.00 Other:            0.00
+      dynamc                          0.00 Other:            0.00
+   Dynamics total                  0.01 Other:            0.01
+      Image Update                    0.00 Other:            0.00
+      NBONDS                          0.05 Other:            0.00
+   List time                       0.05 Other:            0.00
+      Nonbond force                   0.23 Other:            0.00
+         Bond energy                     0.00 Other:            0.00
+         Angle energy                    0.00 Other:            0.00
+         Dihedral energy                 0.00 Other:            0.00
+         Restraints energy               0.00 Other:            0.00
+      INTRNL energy                   0.00 Other:            0.00
+      Comm energy                     0.00 Other:            0.00
+      Comm force                      0.00 Other:            0.00
+   Energy time                     0.23 Other:            0.00
+ Total time                      0.36 Other:            0.06
+
+         $$$$$$  Average   profile $$$$$
+
+   Shake Setup                     0.00 Other:            0.00
+   First List                      0.01 Other:            0.00
+   Shake time                      0.00 Other:            0.00
+      Comm coords                     0.00 Other:            0.00
+         Comm variables                  0.00 Other:            0.00
+         Save shake coords               0.00 Other:            0.00
+         Heuristic check                 0.00 Other:            0.00
+         Temp and virial calc            0.00 Other:            0.00
+      dynamc                          0.00 Other:            0.00
+   Dynamics total                  0.01 Other:            0.01
+      Image Update                    0.00 Other:            0.00
+      NBONDS                          0.05 Other:            0.00
+   List time                       0.05 Other:            0.00
+      Nonbond force                   0.23 Other:            0.00
+         Bond energy                     0.00 Other:            0.00
+         Angle energy                    0.00 Other:            0.00
+         Dihedral energy                 0.00 Other:            0.00
+         Restraints energy               0.00 Other:            0.00
+      INTRNL energy                   0.00 Other:            0.00
+      Comm energy                     0.00 Other:            0.00
+      Comm force                      0.00 Other:            0.00
+   Energy time                     0.23 Other:            0.00
+ Total time                      0.36 Other:            0.06
+
+                    NORMAL TERMINATION BY NORMAL STOP
+                    MOST SEVERE WARNING WAS AT LEVEL  0
+
+                    $$$$$ JOB ACCOUNTING INFORMATION $$$$$
+                     ELAPSED TIME:     0.37  SECONDS 
+                         CPU TIME:     0.35  SECONDS 

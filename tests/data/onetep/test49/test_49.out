@@ -1,0 +1,1823 @@
+ +---------------------------------------------------------------+
+ |                                                               |
+ |        ####### #     # ####### ####### ####### ######         |
+ |        #     # ##    # #          #    #       #     #        |
+ |        #     # # #   # #          #    #       #     #        |
+ |        #     # #  #  # #####      #    #####   ######         |
+ |        #     # #   # # #          #    #       #              |
+ |        #     # #    ## #          #    #       #              |
+ |        ####### #     # #######    #    ####### #              |
+ |                                                               |
+ |        Linear-Scaling Ab Initio Total Energy Program          |
+ |                                                               |
+ |          Release for academic collaborators of ODG            |
+ |                                             Version 4.1.12.10 |
+ |                                                               |
+ +---------------------------------------------------------------+
+ |                                                               |
+ |  Authors:                                                     |
+ |  Jacek Dziedzic, Peter D. Haynes, Nicholas D. M. Hine,        |
+ |  Arash. A. Mostofi, Mike C. Payne and Chris-Kriton Skylaris   |
+ |                                                               |
+ |  Contributors:                                                |
+ |  J. Aarons, L. Andrinopoulos, P. W. Avraam, R. A. Bell,       |
+ |  S. J. Clark, G. C. Constantinescu, F. Corsetti, N. Corsini,  |
+ |  O. Dieguez, S. M. M. Dubois,  J. M. Escartin, H. H. Helal,   |
+ |  Q. O. Hill, L. P. Lee, J.-H. Li, G. Moynihan, D. D. O`Regan, |
+ |  M. J. S. Phipps, C. J. Pickard, M. I. J. Probert,            |
+ |  L. Ratcliff, M. Robinson, A. Ruiz Serrano, J. S. Spencer,    |
+ |  E. W. Tait, G. Teobaldi, D. Turban, V. Vitale,               |
+ |  K. A. Wilkinson and T. J. Zuehlsdorff                        |
+ |                                                               |
+ |                                   Copyright (c) 2004-2015     |
+ |                                                               |
+ |  Please cite:                                                 |
+ |  "Introducing ONETEP: Linear-scaling density functional       |
+ |   simulations on parallel computers".                         |
+ |   C.-K. Skylaris, P. D. Haynes, A. A. Mostofi, M. C. Payne.   |
+ |   J. Chem. Phys. 122 084119 (2005).                           |
+ |                                                               |
+ |          in all publications arising from your use of ONETEP. |
+ |                                                               |
+ +---------------------------------------------------------------+
+ |                                                               |
+ |   ONETEP is based on developments described in the following  |
+ |   publications:                                               |
+ |                                                               |
+ |  "Nonorthogonal generalized Wannier function pseudopotential  |
+ |   plane-wave method".                                         |
+ |   C.-K. Skylaris, A. A. Mostofi, P. D. Haynes, O. Dieguez,    |
+ |   M. C. Payne.                                                |
+ |   Phys. Rev. B 66 035119 (2002).                              |
+ |                                                               |
+ |  "Preconditioned iterative minimization for linear-scaling    |
+ |   electronic structure calculations".                         |
+ |   A. A. Mostofi, P. D. Haynes, C.-K. Skylaris, M. C. Payne.   |
+ |   J. Chem. Phys. 119(17), pp.8842-8848 (2003).                |
+ |                                                               |
+ |  "Total-energy calculations on a real space grid with         |
+ |   localized functions and a plane-wave basis".                |
+ |   A. A. Mostofi, C.-K. Skylaris, P. D. Haynes, M. C. Payne.   |
+ |   Comput. Phys. Commun. 147, pp.788-802 (2002).               |
+ |                                                               |
+ |  "Accurate kinetic energy evaluation in electronic structure  |
+ |   calculations with localized functions on real space grids"  |
+ |   C.-K. Skylaris, A. A. Mostofi, P. D. Haynes, C. J. Pickard, |
+ |   M. C. Payne.                                                |
+ |   Comput. Phys. Commun. 140, pp.315-322 (2001).               |
+ |                                                               |
+ |  "Accurate ionic forces and geometry optimization in linear-  |
+ |   scaling density-functional theory with local orbitals"      |
+ |   N. D. M. Hine, M. Robinson, P. D. Haynes, C.-K. Skylaris,   |
+ |   M. C. Payne, and A. A. Mostofi.                             |
+ |   Phys. Rev. B 83 195102 (2011).                              |
+ |                                                               |
+ +---------------------------------------------------------------+
+
+Job started: 16-04-2015 09:37 (+0100)
+ 
+If your calculation crashes here, before "Reading parameters..."
+is displayed, then your stack size is insufficient.
+If so, use "ulimit -s unlimited" at runtime.
+
+Reading parameters from file "Pt3O.dat" ...... done
+
+Checking processes and threads...
+   Determining the default number of threads...
+      No default threads set at compilation time: defaulting to 1.
+      OpenMP library call suggests 3 threads.
+      Hybrid MPI-OpenMP compilation detected.
+      Number of MPI processes > 1.
+      OMP_NUM_THREADS environment variable present and
+      its value matches the one obtained from the OpenMP library call.
+      Using this value as default.
+      Default threads: 3
+      Default applies to threads_max and threads_num_fftboxes.
+      Settings in the input file override this default.
+   ... done
+
+   Running with 4 MPI processes.
+   There are 4 MPI processes running on the same node as the root process.
+   Each MPI process is using: 
+               1 threads for simulation cell FFTs.
+               1 threads for parallel FFT box operations.
+               3 threads for loops over batched FFT box operations.
+               3 threads in other parallel regions.
+... done
+
+Basic input checks...
+Resetting ngwf_cg_rotate to TRUE for EDFT calculations
+
+WARNING: The number of FFT boxes in a batch is not a multiple of the number of
+OpenMP threads. Consider changing fftbox_batch_size.
+... done
+
+Reading geometry and species blocks from file "Pt3O.dat" ...    
+  Number of PPD points along a3 set to 1.  This is 
+  the default value, it may have been provided also in the input file.
+... done
+
+
+--------------------------------------------------------------------------------
+---------------------------------- INPUT FILE ----------------------------------
+--------------------------------------------------------------------------------
+
+task                     : singlepoint                                          
+charge                   : 0                                                    
+cutoff_energy            : 850 eV                                               
+kernel_cutoff            : 1000 Bohr                                            
+xc_functional            : RPBE                                                 
+k_zero                   : 2.5                                                  
+maxit_palser_mano        : 100                                                  
+edft                     : T                                                    
+edft_smearing_width      : 0.1 eV                                               
+edft_maxit               : 10                                                   
+maxit_ngwf_cg            : 1                                                    
+occ_mix                  : 1.0                                                  
+do_properties            : T                                                    
+cube_format              : F                                                    
+write_density_plot       : F                                                    
+popn_calculate           : F                                                    
+ngwf_analysis            : F                                                    
+dos_smear                : 0.3 eV                                               
+pdos_max_l               : 2                                                    
+print_qc                 : T                                                    
+read_denskern            : F                                                    
+read_tightbox_ngwfs      : F                                                    
+read_hamiltonian         : F                                                    
+write_denskern           : F                                                    
+write_tightbox_ngwfs     : F                                                    
+write_hamiltonian        : F                                                    
+write_xyz                : F                                                    
+output_detail            : VERBOSE                                              
+timings_level            : 2                                                    
+%block lattice_cart                                                             
+Ang                                                                             
+20.000   0.000   0.000                                                          
+0.000  20.000   0.000                                                           
+0.000   0.000  20.000                                                           
+%endblock lattice_cart                                                          
+%block species                                                                  
+Pt Pt 78 9 9.0                                                                  
+O  O  8  4 9.0                                                                  
+%endblock species                                                               
+%block species_atomic_set                                                       
+Pt "SOLVE conf=5d9 6s1 6p0"                                                     
+O  "SOLVE"                                                                      
+%endblock species_atomic_set                                                    
+%block species_pot                                                              
+Pt "../../pseudo/platinum.recpot"                                               
+O  "../../pseudo/oxygen.recpot"                                                 
+%endblock species_pot                                                           
+%block positions_abs                                                            
+     Hash =  -000000520149154733834092
+%endblock positions_abs                                                         
+
+--------------------------------------------------------------------------------
+-------------------------------- END INPUT FILE --------------------------------
+--------------------------------------------------------------------------------
+
+
+ 
+ ESDF WARNING(1): "kzero" (esdf_physical) has no units. Assume "1/bohr".
+<<<<<<<<<<<<<<<<<<<<<<<<< Pseudopotential information >>>>>>>>>>>>>>>>>>>>>>>>>
+File: ../../pseudo/platinum.recpot [ 2001 points up to Gmax=  52.9 (1/bohr)]
+  Atomic number: 78;  ionic charge: 10.000000
+    Shell 1: l = 1; rc = 2.26 bohr
+    Shell 2: l = 2; rc = 1.96 bohr
+File: ../../pseudo/oxygen.recpot [ 2001 points up to Gmax=  52.9 (1/bohr)]
+  Atomic number:  8;  ionic charge:  6.000000
+    Shell 1: l = 0; rc = 1.31 bohr
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+------------------------- Atom counting information ---------------------------
+Symbol    Natoms    Nngwfs    Nprojs
+  Pt         3        27        24
+  O          1         4         1
+.......   ......    ......    ......
+Totals:      4        31        25
+-------------------------------------------------------------------------------
+ 
+============================== PSINC grid sizes ================================
+                      Simulation cell:   77 x  77 x  77
+                              FFT-box:   77 x  77 x  77
+                                  PPD:    7 x   7 x   1
+Grid space d1=  0.490838150071a0 (KE cutoff=  31.53025Eh = 857.98169eV)
+Grid space d2=  0.490838150071a0 (KE cutoff=  31.53025Eh = 857.98169eV)
+Grid space d3=  0.490838150071a0 (KE cutoff=  31.53025Eh = 857.98169eV)
+================================================================================
+
+********************** Fourier parallelisation information *********************
+       Coarse grid (whole simulation cell) dimensions:     77    77    77
+          Real-space ('12') slabs/node (min max mean):     19    20    19
+         Recip-space ('23') slabs/node (min max mean):      9    10     9
+********************************************************************************
+
+********************** Fourier parallelisation information *********************
+       Double grid (whole simulation cell) dimensions:    154   154   154
+          Real-space ('12') slabs/node (min max mean):     38    39    38
+         Recip-space ('23') slabs/node (min max mean):     19    20    19
+********************************************************************************
+
+WARNING: The number of FFT boxes in a batch is not a multiple of the number of
+OpenMP threads. Consider changing fftbox_batch_size.
+
+Determining parallel strategy ...
+... using space-filling curve
+... NGWF load balancing: max      9;  min      4;  average      8
+... Projector load balancing: max      8;  min      1;  average      6
+... done
+Calculating Ewald energy ...
+              Ewald: real-space energy =      77.629671
+        Ewald: reciprocal-space energy =       4.788799
+         Ewald: (sum_charge)**2 Energy =      10.800884
+         Ewald: (sum_charge**2) Energy =      11.200917
+                          Ewald Energy =      60.416670
+Basis initialisation ...
+... Atom positions lie inside simulation cell
+... NGWF spheres initialised
+... Projector spheres initialised
+... NGWF tight boxes initialised
+... Tight-boxes gathered
+... NGWF basis size (local,global):      63776    217824
+... Nonlocal pseudopotential projector initialisation
+... done
+
+=========================== Sparse matrix information ==========================
+                        Overlap matrix filling: 100.00%
+                        Density kernel filling: 100.00%
+              NGWF-Proj overlap matrix filling: 100.00%
+                    Hamiltonian matrix filling: 100.00%
+                  NGWF diagonal matrix filling:  26.95%
+                             KS matrix filling: 100.00% 
+                           KSKS matrix filling: 100.00% 
+================================================================================
+
+Sparse matrix initialisation ... done
+
+Atom SCF Calculation for Pt : Z (AE atom) =  78 : Z (PS atom) =  10
+Config String: 5d9 6s1 6p0
+Orbitals (num,occ):  3     9.00 1.00 0.00
+Orbitals   (num,l):  3        2    0    1
+Real-space Grid (nr,dr,rmax): 1393    0.0064655172    9.0000000000
+Spherical Bessel Basis (nsws,lmax,cutoff):   37    2  187.4198705451
+Confining potential (l,width,scale):  0    3.0000000000  100.0000000000
+Confining potential (l,width,scale):  1    3.0000000000  100.0000000000
+Confining potential (l,width,scale):  2    3.0000000000  100.0000000000
+  1  -20.6500581549    0.0874052524   28.2095283125   -4.7867163191
+  2  -28.8289363150   -4.0543964444   23.6114817115   -4.0487970526
+  3  -25.5874598206   -1.9354059463   25.7331436698   -4.4295366570
+  4  -26.5558070707   -2.3404415830   25.3081343159   -4.3726528484
+  5  -26.3359896037   -2.1970546840   25.4590741742   -4.4040629805
+  6  -26.3646021696   -2.2025534244   25.4538288250   -4.4059630121
+  7  -26.3666324630   -2.2006825591   25.4560794983   -4.4074951362
+  8  -26.3678188146   -2.1999410508   25.4570421071   -4.4083687484
+  9  -26.3682774398   -2.1995989930   25.4575158235   -4.4088890337
+ 10  -26.3683740050   -2.1994404674   25.4577528489   -4.4092017078
+ 11  -26.3683220711   -2.1993716001   25.4578684809   -4.4093899556
+ 12  -26.3682247403   -2.1993458082   25.4579221310   -4.4095033417
+ 13  -26.3681461854   -2.1993408603   25.4579403654   -4.4095579863
+ 14  -26.3680774095   -2.1993410581   25.4579491673   -4.4095952632
+ 15  -26.3680201519   -2.1993436229   25.4579527020   -4.4096206947
+ 16  -26.3679740413   -2.1993470258   25.4579534355   -4.4096380468
+ 17  -26.3679377714   -2.1993504730   25.4579527952   -4.4096498879
+ 18  -26.3679097379   -2.1993535921   25.4579515819   -4.4096579694
+ 19  -26.3678883619   -2.1993562440   25.4579502248   -4.4096634857
+ 20  -26.3678722370   -2.1993584114   25.4579489375   -4.4096672514
+ 21  -26.3678601790   -2.1993601353   25.4579478120   -4.4096698223
+ 22  -26.3678512273   -2.1993614797   25.4579468747   -4.4096715777
+ 23  -26.3678446218   -2.1993625125   25.4579461191   -4.4096727764
+ 24  -26.3678397725   -2.1993632965   25.4579455237   -4.4096735949
+ 25  -26.3678362283   -2.1993638861   25.4579450626   -4.4096741539
+ 26  -26.3678336477   -2.1993643261   25.4579447101   -4.4096745356
+ 27  -26.3678317749   -2.1993646524   25.4579444436   -4.4096747963
+ 28  -26.3678304199   -2.1993648930   25.4579442437   -4.4096749743
+ 29  -26.3678294419   -2.1993650696   25.4579440948   -4.4096750958
+ 30  -26.3678287377   -2.1993651987   25.4579439846   -4.4096751788
+ 31  -26.3678282317   -2.1993652927   25.4579439035   -4.4096752355
+ 32  -26.3678278687   -2.1993653611   25.4579438439   -4.4096752742
+ 33  -26.3678276088   -2.1993654106   25.4579438005   -4.4096753006
+ 34  -26.3678274229   -2.1993654464   25.4579437688   -4.4096753186
+ 35  -26.3678272901   -2.1993654722   25.4579437458   -4.4096753309
+ 36  -26.3678271954   -2.1993654908   25.4579437291   -4.4096753393
+Atom SCF converged after  36 iterations to a total energy of    -26.36782720
+
+Atom SCF Calculation for O  : Z (AE atom) =   8 : Z (PS atom) =   6
+Config String:
+Orbitals (num,occ):  2     2.00 4.00
+Orbitals   (num,l):  2        0    1
+Real-space Grid (nr,dr,rmax): 1393    0.0064655172    9.0000000000
+Spherical Bessel Basis (nsws,lmax,cutoff):   37    1  187.4198705451
+Confining potential (l,width,scale):  0    3.0000000000  100.0000000000
+Confining potential (l,width,scale):  1    3.0000000000  100.0000000000
+  1   -1.9129245752   -7.5630377910   10.1554301925   -2.4705810696
+  2  -16.0065243263   -3.1467339199   13.6360102839   -3.2589208835
+  3  -15.9883203365   -3.0796906430   13.7088096695   -3.2823791283
+  4  -15.8739181331   -3.0868309863   13.7014386242   -3.2845895366
+  5  -15.8622566684   -3.0822432449   13.7064228791   -3.2871492562
+  6  -15.8516691263   -3.0813042304   13.7074615770   -3.2881720306
+  7  -15.8462576027   -3.0808342376   13.7079811784   -3.2887178016
+  8  -15.8434592408   -3.0806061142   13.7082337243   -3.2890060712
+  9  -15.8420054318   -3.0804969157   13.7083549209   -3.2891578314
+ 10  -15.8412479556   -3.0804453119   13.7084124068   -3.2892376294
+ 11  -15.8408524957   -3.0804212645   13.7084393305   -3.2892795822
+ 12  -15.8406457167   -3.0804102451   13.7084517518   -3.2893016473
+ 13  -15.8405374555   -3.0804053031   13.7084573745   -3.2893132606
+ 14  -15.8404807085   -3.0804031506   13.7084598560   -3.2893193783
+ 15  -15.8404509310   -3.0804022521   13.7084609127   -3.2893226041
+ 16  -15.8404352892   -3.0804019017   13.7084613386   -3.2893243069
+ 17  -15.8404270641   -3.0804017813   13.7084614948   -3.2893252065
+ 18  -15.8404227347   -3.0804017514   13.7084615414   -3.2893256825
+ 19  -15.8404204535   -3.0804017532   13.7084615474   -3.2893259345
+ 20  -15.8404192503   -3.0804017633   13.7084615409   -3.2893260680
+ 21  -15.8404186151   -3.0804017734   13.7084615323   -3.2893261389
+ 22  -15.8404182794   -3.0804017812   13.7084615252   -3.2893261766
+ 23  -15.8404181018   -3.0804017867   13.7084615200   -3.2893261966
+ 24  -15.8404180077   -3.0804017902   13.7084615166   -3.2893262073
+Atom SCF converged after  24 iterations to a total energy of    -15.84041801
+NGWF initialisation ...... done
+============ Calculation of NGWF S^-1 using Hotelling algorithm ================ 
+         Iteration  |  Frobenius norm and Maximum abs value    (of I-S*S_n^-1)   
+               1       0.52964315E+01     0.95991160E+00
+               2       0.50747714E+01     0.92171594E+00
+               3       0.47132182E+01     0.85050222E+00
+               4       0.41609720E+01     0.73000377E+00
+               5       0.34071916E+01     0.65342811E+00
+               6       0.25881673E+01     0.55806278E+00
+               7       0.19959629E+01     0.42556199E+00
+               8       0.16673076E+01     0.34041108E+00
+               9       0.14479142E+01     0.32173233E+00
+              10       0.12744968E+01     0.30023911E+00
+              11       0.10870082E+01     0.26295630E+00
+              12       0.82962838E+00     0.20238667E+00
+              13       0.48673594E+00     0.11989173E+00
+              14       0.16765469E+00     0.42073156E-01
+              15       0.19938130E-01     0.51813319E-02
+              16       0.28458224E-03     0.78583400E-04
+              17       0.59926172E-07     0.18078631E-07
+              18       0.77351063E-14     0.37747583E-14
+================================================================================
+Up spin density kernel initialisation ...... done
+
+>>> Optimising kernel for current NGWFs:
+
+--------------------------- Ensemble-DFT optimisation --------------------------
+Running ScaLAPACK on    4 processor(s).
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    0      0.025762229093      0.010518071153     -94.84522218589956  -9.48E+01
+
+Step                       =       0.381966011250
+Energy                     =     -94.835039037417
+Entropy (-TS)              =      -0.010183148483
+Free energy (A=E-TS)       =     -94.845222185900
+Est. 0K Energy 0.5*(E+A)   =     -94.840130611658
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.154150402573             -1.54E-01
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9196219364    1.0000000000 | 
+                          ------
+      13 |    -0.2065527753    0.9999993586 | 
+      14 |    -0.2050115819    0.9999990243 | 
+      15 |    -0.2027833322    0.9999982109 | 
+      16 |    -0.2008464043    0.9999969694 | 
+      17 |    -0.1689320843    0.9824040929 | 
+      18 |    -0.1565464173    0.6574598104 | 
+                 - Gap at zero temperature -
+      19 |    -0.1520372226    0.3600768293 | 
+      20 |    -0.1187027218    0.0000646866 | 
+      21 |    -0.1034486617    0.0000010189 | 
+      22 |    -0.0980489832    0.0000002344 | 
+      23 |    -0.0115351885    0.0000000000 | 
+      24 |     0.0089207749    0.0000000000 | 
+                          ------
+      31 |     1.3214735686    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   9.48E+01 |   1.00E-06 |        No
+     Delta_Energy      |   9.48E+01 |   1.00E-04 |        No
+     Delta_Entropy     |   1.02E-02 |   1.00E-04 |        No
+     RMS_gradient      |   2.58E-02 |   1.00E-04 |        No
+     Commutator        |   1.05E-02 |   1.00E-05 |        No
+     Delta_Fermi_level |   1.54E-01 |   1.00E-03 |        No
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -94.84522218589956
+.    Trial1    0.381966      -94.83397966886041
+.    Trial2    0.145898      -94.87309503731649
+. Quadratic    0.175226      -94.87329151853481      -94.87389833978854
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    1      0.018158503993      0.005012372579     -94.87329151853481  -2.81E-02
+
+Step                       =       0.175225651240
+Energy                     =     -94.862914191812
+Entropy (-TS)              =      -0.010377326722
+Free energy (A=E-TS)       =     -94.873291518535
+Est. 0K Energy 0.5*(E+A)   =     -94.868102855174
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.159944391741             -5.79E-03
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9076686456    1.0000000000 | 
+                          ------
+      13 |    -0.2171577296    0.9999998268 | 
+      14 |    -0.2121109237    0.9999993160 | 
+      15 |    -0.2073463556    0.9999974991 | 
+      16 |    -0.2036985782    0.9999932518 | 
+      17 |    -0.1797659082    0.9954756986 | 
+      18 |    -0.1604291724    0.5329314372 | 
+                 - Gap at zero temperature -
+      19 |    -0.1595260975    0.4715745140 | 
+      20 |    -0.1209828443    0.0000248638 | 
+      21 |    -0.1127970582    0.0000026804 | 
+      22 |    -0.1089660633    0.0000009450 | 
+      23 |    -0.0107463614    0.0000000000 | 
+      24 |     0.0083124519    0.0000000000 | 
+                          ------
+      31 |     1.3188285492    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   2.81E-02 |   1.00E-06 |        No
+     Delta_Energy      |   2.79E-02 |   1.00E-04 |        No
+     Delta_Entropy     |   1.94E-04 |   1.00E-04 |        No
+     RMS_gradient      |   1.82E-02 |   1.00E-04 |        No
+     Commutator        |   5.01E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   5.79E-03 |   1.00E-03 |        No
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -94.87329151853481
+.    Trial1    0.175226      -94.88035537670811
+.    Trial2    0.490261      -94.79252591907147
+. Quadratic    0.118580      -94.88332979896619      -94.88244386195883
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    2      0.013029177560      0.003465123170     -94.88332979896619  -1.00E-02
+
+Step                       =       0.118580492152
+Energy                     =     -94.873343590386
+Entropy (-TS)              =      -0.009986208580
+Free energy (A=E-TS)       =     -94.883329798966
+Est. 0K Energy 0.5*(E+A)   =     -94.878336694676
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.164015649730             -4.07E-03
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9113870385    1.0000000000 | 
+                          ------
+      13 |    -0.2200376235    0.9999997604 | 
+      14 |    -0.2178849780    0.9999995697 | 
+      15 |    -0.2123267850    0.9999980472 | 
+      16 |    -0.2090266114    0.9999952064 | 
+      17 |    -0.1834150270    0.9949277549 | 
+      18 |    -0.1658850043    0.6244974124 | 
+                 - Gap at zero temperature -
+      19 |    -0.1622248426    0.3805279854 | 
+      20 |    -0.1277430632    0.0000516814 | 
+      21 |    -0.1152660036    0.0000017331 | 
+      22 |    -0.1128528247    0.0000008988 | 
+      23 |    -0.0106296401    0.0000000000 | 
+      24 |     0.0070592108    0.0000000000 | 
+                          ------
+      31 |     1.3153523757    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   1.00E-02 |   1.00E-06 |        No
+     Delta_Energy      |   1.04E-02 |   1.00E-04 |        No
+     Delta_Entropy     |   3.91E-04 |   1.00E-04 |        No
+     RMS_gradient      |   1.30E-02 |   1.00E-04 |        No
+     Commutator        |   3.47E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   4.07E-03 |   1.00E-03 |        No
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -94.88332979896619
+.    Trial1    0.118580      -94.88707359877951
+.    Trial2    0.455253      -94.87902466854580
+. Quadratic    0.188827      -94.88769048583555      -94.88767494467241
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    3      0.009489775873      0.002551769764     -94.88769048583555  -4.36E-03
+
+Step                       =       0.188826834293
+Energy                     =     -94.877481038758
+Entropy (-TS)              =      -0.010209447077
+Free energy (A=E-TS)       =     -94.887690485836
+Est. 0K Energy 0.5*(E+A)   =     -94.882585762297
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.167293569078             -3.28E-03
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9165184176    1.0000000000 | 
+                          ------
+      13 |    -0.2228916775    0.9999997312 | 
+      14 |    -0.2221449512    0.9999996706 | 
+      15 |    -0.2139372329    0.9999969259 | 
+      16 |    -0.2088241507    0.9999876414 | 
+      17 |    -0.1875257415    0.9959521112 | 
+      18 |    -0.1684796152    0.5799924647 | 
+                 - Gap at zero temperature -
+      19 |    -0.1661678174    0.4240094844 | 
+      20 |    -0.1313552377    0.0000566022 | 
+      21 |    -0.1207281691    0.0000031403 | 
+      22 |    -0.1195209334    0.0000022610 | 
+      23 |    -0.0101869354    0.0000000000 | 
+      24 |     0.0069967883    0.0000000000 | 
+                          ------
+      31 |     1.3133089763    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   4.36E-03 |   1.00E-06 |        No
+     Delta_Energy      |   4.14E-03 |   1.00E-04 |        No
+     Delta_Entropy     |   2.23E-04 |   1.00E-04 |        No
+     RMS_gradient      |   9.49E-03 |   1.00E-04 |        No
+     Commutator        |   2.55E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   3.28E-03 |   1.00E-03 |        No
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -94.88769048583555
+.    Trial1    0.188827      -94.88932769312633
+.    Trial2    0.498667      -94.86746032855945
+. Quadratic    0.121693      -94.88999630301799      -94.89004391968318
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    4      0.007291478406      0.001962041369     -94.88999630301799  -2.31E-03
+
+Step                       =       0.121693163610
+Energy                     =     -94.880015894962
+Entropy (-TS)              =      -0.009980408055
+Free energy (A=E-TS)       =     -94.889996303018
+Est. 0K Energy 0.5*(E+A)   =     -94.885006098990
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.169080334568             -1.79E-03
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9196641212    1.0000000000 | 
+                          ------
+      13 |    -0.2259140538    0.9999998079 | 
+      14 |    -0.2231058586    0.9999995876 | 
+      15 |    -0.2156975736    0.9999969037 | 
+      16 |    -0.2106371487    0.9999877293 | 
+      17 |    -0.1887498956    0.9952855996 | 
+      18 |    -0.1709367524    0.6236715391 | 
+                 - Gap at zero temperature -
+      19 |    -0.1672963527    0.3809658879 | 
+      20 |    -0.1347534874    0.0000877532 | 
+      21 |    -0.1223079911    0.0000029683 | 
+      22 |    -0.1213174951    0.0000022670 | 
+      23 |    -0.0098487022    0.0000000000 | 
+      24 |     0.0065953853    0.0000000000 | 
+                          ------
+      31 |     1.3117383629    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   2.31E-03 |   1.00E-06 |        No
+     Delta_Energy      |   2.53E-03 |   1.00E-04 |        No
+     Delta_Entropy     |   2.29E-04 |   1.00E-04 |        No
+     RMS_gradient      |   7.29E-03 |   1.00E-04 |        No
+     Commutator        |   1.96E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   1.79E-03 |   1.00E-03 |        No
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -94.88999630301799
+.    Trial1    0.121693      -94.89112256387433
+.    Trial2    0.457177      -94.88877516825315
+. Quadratic    0.191019      -94.89131253860376      -94.89129341517234
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    5      0.005449470780      0.001526619865     -94.89131253860376  -1.32E-03
+
+Step                       =       0.191019457580
+Energy                     =     -94.881159874849
+Entropy (-TS)              =      -0.010152663755
+Free energy (A=E-TS)       =     -94.891312538604
+Est. 0K Energy 0.5*(E+A)   =     -94.886236206726
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.170360509632             -1.28E-03
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9232709670    1.0000000000 | 
+                          ------
+      13 |    -0.2261102506    0.9999997420 | 
+      14 |    -0.2248746617    0.9999996389 | 
+      15 |    -0.2159638971    0.9999959201 | 
+      16 |    -0.2096077849    0.9999769961 | 
+      17 |    -0.1899861084    0.9952291340 | 
+      18 |    -0.1718210718    0.5980730994 | 
+                 - Gap at zero temperature -
+      19 |    -0.1689710990    0.4065897529 | 
+      20 |    -0.1374241638    0.0001281070 | 
+      21 |    -0.1248978199    0.0000042392 | 
+      22 |    -0.1240963778    0.0000034085 | 
+      23 |    -0.0092690726    0.0000000000 | 
+      24 |     0.0067766293    0.0000000000 | 
+                          ------
+      31 |     1.3108665756    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   1.32E-03 |   1.00E-06 |        No
+     Delta_Energy      |   1.14E-03 |   1.00E-04 |        No
+     Delta_Entropy     |   1.72E-04 |   1.00E-04 |        No
+     RMS_gradient      |   5.45E-03 |   1.00E-04 |        No
+     Commutator        |   1.53E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   1.28E-03 |   1.00E-03 |        No
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -94.89131253860376
+.    Trial1    0.191019      -94.89179862787243
+.    Trial2    0.500023      -94.88435894948742
+. Quadratic    0.119408      -94.89204938881679      -94.89207164995977
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    6      0.004346826267      0.001199283278     -94.89204938881679  -7.37E-04
+
+Step                       =       0.119408303250
+Energy                     =     -94.882024298647
+Entropy (-TS)              =      -0.010025090170
+Free energy (A=E-TS)       =     -94.892049388817
+Est. 0K Energy 0.5*(E+A)   =     -94.887036843732
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.171118596774             -7.58E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9251006577    1.0000000000 | 
+                          ------
+      13 |    -0.2278203846    0.9999998009 | 
+      14 |    -0.2249604227    0.9999995664 | 
+      15 |    -0.2165422420    0.9999957155 | 
+      16 |    -0.2103077876    0.9999766296 | 
+      17 |    -0.1902724156    0.9945791450 | 
+      18 |    -0.1729568766    0.6225124157 | 
+                 - Gap at zero temperature -
+      19 |    -0.1693625395    0.3827595229 | 
+      20 |    -0.1392120726    0.0001695344 | 
+      21 |    -0.1257600566    0.0000043610 | 
+      22 |    -0.1247953329    0.0000033541 | 
+      23 |    -0.0089435635    0.0000000000 | 
+      24 |     0.0066336023    0.0000000000 | 
+                          ------
+      31 |     1.3101224413    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   7.37E-04 |   1.00E-06 |        No
+     Delta_Energy      |   8.64E-04 |   1.00E-04 |        No
+     Delta_Entropy     |   1.28E-04 |   1.00E-04 |        No
+     RMS_gradient      |   4.35E-03 |   1.00E-04 |        No
+     Commutator        |   1.20E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   7.58E-04 |   1.00E-03 |       Yes
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -94.89204938881679
+.    Trial1    0.119408      -94.89243089836489
+.    Trial2    0.455764      -94.89161371243745
+. Quadratic    0.189152      -94.89249662272017      -94.89249092684410
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    7      0.003364653381      0.000958909994     -94.89249662272017  -4.47E-04
+
+Step                       =       0.189152149645
+Energy                     =     -94.882346769536
+Entropy (-TS)              =      -0.010149853184
+Free energy (A=E-TS)       =     -94.892496622720
+Est. 0K Energy 0.5*(E+A)   =     -94.887421696128
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.171550378830             -4.32E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9272937118    1.0000000000 | 
+                          ------
+      13 |    -0.2274360876    0.9999997514 | 
+      14 |    -0.2255840170    0.9999995885 | 
+      15 |    -0.2163866736    0.9999949730 | 
+      16 |    -0.2093251128    0.9999656585 | 
+      17 |    -0.1904887123    0.9942536590 | 
+      18 |    -0.1731425209    0.6066489449 | 
+                 - Gap at zero temperature -
+      19 |    -0.1700433370    0.3988903907 | 
+      20 |    -0.1408830182    0.0002375040 | 
+      21 |    -0.1268876488    0.0000052701 | 
+      22 |    -0.1261412379    0.0000043014 | 
+      23 |    -0.0084604484    0.0000000000 | 
+      24 |     0.0068209104    0.0000000000 | 
+                          ------
+      31 |     1.3097624743    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   4.47E-04 |   1.00E-06 |        No
+     Delta_Energy      |   3.22E-04 |   1.00E-04 |        No
+     Delta_Entropy     |   1.25E-04 |   1.00E-04 |        No
+     RMS_gradient      |   3.36E-03 |   1.00E-04 |        No
+     Commutator        |   9.59E-04 |   1.00E-05 |        No
+     Delta_Fermi_level |   4.32E-04 |   1.00E-03 |       Yes
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -94.89249662272017
+.    Trial1    0.189152      -94.89266708823537
+.    Trial2    0.498868      -94.88992176033305
+. Quadratic    0.117596      -94.89276057822073      -94.89276731705468
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    8      0.002738012017      0.000760570220     -94.89276057822073  -2.64E-04
+
+Step                       =       0.117595763379
+Energy                     =     -94.882681442488
+Entropy (-TS)              =      -0.010079135733
+Free energy (A=E-TS)       =     -94.892760578221
+Est. 0K Energy 0.5*(E+A)   =     -94.887721010354
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.171878477663             -3.28E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9284174643    1.0000000000 | 
+                          ------
+      13 |    -0.2282656601    0.9999997831 | 
+      14 |    -0.2255869639    0.9999995504 | 
+      15 |    -0.2165212510    0.9999947012 | 
+      16 |    -0.2096077288    0.9999652308 | 
+      17 |    -0.1904725570    0.9936928979 | 
+      18 |    -0.1736956316    0.6211605730 | 
+                 - Gap at zero temperature -
+      19 |    -0.1701555761    0.3848933056 | 
+      20 |    -0.1418716688    0.0002842587 | 
+      21 |    -0.1273396732    0.0000054508 | 
+      22 |    -0.1264631709    0.0000042942 | 
+      23 |    -0.0082172799    0.0000000000 | 
+      24 |     0.0067628814    0.0000000000 | 
+                          ------
+      31 |     1.3093779050    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   2.64E-04 |   1.00E-06 |        No
+     Delta_Energy      |   3.35E-04 |   1.00E-04 |        No
+     Delta_Entropy     |   7.07E-05 |   1.00E-04 |       Yes
+     RMS_gradient      |   2.74E-03 |   1.00E-04 |        No
+     Commutator        |   7.61E-04 |   1.00E-05 |        No
+     Delta_Fermi_level |   3.28E-04 |   1.00E-03 |       Yes
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -94.89276057822073
+.    Trial1    0.117596      -94.89290178277510
+.    Trial2    0.454644      -94.89259199318327
+. Quadratic    0.187559      -94.89292619341185      -94.89292460643550
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    9      0.002162359371      0.000619343186     -94.89292619341185  -1.66E-04
+
+Step                       =       0.187559355937
+Energy                     =     -94.882758887517
+Entropy (-TS)              =      -0.010167305895
+Free energy (A=E-TS)       =     -94.892926193412
+Est. 0K Energy 0.5*(E+A)   =     -94.887842540464
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.171986792959             -1.08E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9298058908    1.0000000000 | 
+                          ------
+      13 |    -0.2278462171    0.9999997496 | 
+      14 |    -0.2257893891    0.9999995618 | 
+      15 |    -0.2162738847    0.9999941627 | 
+      16 |    -0.2088508369    0.9999560013 | 
+      17 |    -0.1903704493    0.9933236981 | 
+      18 |    -0.1736477733    0.6111098514 | 
+                 - Gap at zero temperature -
+      19 |    -0.1704237491    0.3952421050 | 
+      20 |    -0.1428864499    0.0003637509 | 
+      21 |    -0.1278631470    0.0000061028 | 
+      22 |    -0.1271739651    0.0000050592 | 
+      23 |    -0.0078700979    0.0000000000 | 
+      24 |     0.0069030677    0.0000000000 | 
+                          ------
+      31 |     1.3092222319    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   1.66E-04 |   1.00E-06 |        No
+     Delta_Energy      |   7.74E-05 |   1.00E-04 |       Yes
+     Delta_Entropy     |   8.82E-05 |   1.00E-04 |       Yes
+     RMS_gradient      |   2.16E-03 |   1.00E-04 |        No
+     Commutator        |   6.19E-04 |   1.00E-05 |        No
+     Delta_Fermi_level |   1.08E-04 |   1.00E-03 |       Yes
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -94.89292619341185
+.    Trial1    0.187559      -94.89299080411850
+.    Trial2    0.497884      -94.89191529336993
+. Quadratic    0.116286      -94.89302774847469      -94.89302967945285
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#   10      0.001779016940      0.000493610600     -94.89302774847469  -1.02E-04
+
+Step                       =       0.116286365690
+Energy                     =     -94.882900292053
+Entropy (-TS)              =      -0.010127456422
+Free energy (A=E-TS)       =     -94.893027748475
+Est. 0K Energy 0.5*(E+A)   =     -94.887964020264
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.172127528798             -1.41E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9305201520    1.0000000000 | 
+                          ------
+      13 |    -0.2282690233    0.9999997681 | 
+      14 |    -0.2257735753    0.9999995427 | 
+      15 |    -0.2162549625    0.9999939035 | 
+      16 |    -0.2089677089    0.9999557147 | 
+      17 |    -0.1902718688    0.9928776556 | 
+      18 |    -0.1739274604    0.6200571307 | 
+                 - Gap at zero temperature -
+      19 |    -0.1704325875    0.3866961766 | 
+      20 |    -0.1434563621    0.0004087935 | 
+      21 |    -0.1281059346    0.0000062746 | 
+      22 |    -0.1273335100    0.0000050851 | 
+      23 |    -0.0077029711    0.0000000000 | 
+      24 |     0.0068751783    0.0000000000 | 
+                          ------
+      31 |     1.3090095307    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   1.02E-04 |   1.00E-06 |        No
+     Delta_Energy      |   1.41E-04 |   1.00E-04 |        No
+     Delta_Entropy     |   3.98E-05 |   1.00E-04 |       Yes
+     RMS_gradient      |   1.78E-03 |   1.00E-04 |        No
+     Commutator        |   4.94E-04 |   1.00E-05 |        No
+     Delta_Fermi_level |   1.41E-04 |   1.00E-03 |       Yes
+Finished EDFT density kernel iterations (  10)
+
+<QC>             [commutator]:         0.000493610600
+<QC>           [rms_gradient]:         0.001779016940
+<QC>       [delta_lagrangian]:        -0.000101555063
+<QC>           [delta_energy]:        -0.000141404536
+<QC>          [delta_entropy]:         0.000039849473
+<QC>                   [iter]:                     10
+<QC>               [edft%num]:                     31
+<QC>            [edft%nbands]:                     31
+<QC>       [edft%free_energy]:       -94.893027748475
+<QC>            [edft%energy]:       -94.882900292053
+<QC>           [edft%entropy]:        -0.010127456422
+<QC>        [orth_residue(1)]:         0.000000000000
+<QC>               [fermi(1)]:        -0.172127528798
+<QC>       [integrated_ne(1)]:        18.000000000000
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total free energy           =  -9.48930277484747E+01  Eh
+     [H,K] commutator            =   4.9361E-04
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+################################################################################
+########################### NGWF CG iteration  001 #############################
+################################################################################
+****** Reciprocal space K.E. preconditioning with k_zero =  2.5000 a0^-1 *******
+
+>>> Checking for convergence of NGWFs:   NOT CONVERGED
+  ========================================================================
+         NGWF RMS gradient =  6.1166E-03 >  2.0000E-06  | above tolerance
+  ========================================================================
+
+>>> Improving NGWFs using line search:
+============ Calculation of NGWF S^-1 using Hotelling algorithm ================ 
+         Iteration  |  Frobenius norm and Maximum abs value    (of I-S*S_n^-1)   
+               1       0.22691609E+00     0.49131398E-01
+               2       0.32480702E-01     0.72341579E-02
+               3       0.70061160E-03     0.15646368E-03
+               4       0.32729705E-06     0.73164421E-07
+               5       0.70890646E-13     0.15765167E-13
+================================================================================
+============ Calculation of NGWF S^-1 using Hotelling algorithm ================ 
+         Iteration  |  Frobenius norm and Maximum abs value    (of I-S*S_n^-1)   
+               1       0.18573421E+00     0.39603563E-01
+               2       0.21456212E-01     0.47241907E-02
+               3       0.30397276E-03     0.67083443E-04
+               4       0.61339723E-07     0.13514907E-07
+               5       0.71556252E-14     0.17763568E-14
+================================================================================
+------------------------------- NGWF line search -------------------------------
+RMS gradient                =       0.00611661350762
+Trial step length           =               0.122474
+Gradient along search dir.  =        -29.94918736053
+Functional at step 0        =     -94.89302774847469
+Functional at step 1        =     -88.42545630202380
+Functional predicted        =     -95.22488600486021
+Selected quadratic step     =               0.022161
+Conjugate gradients coeff.  =               0.000000
+--------------------------- NGWF line search finished --------------------------
+                                               
+
+>>> Optimising kernel for current NGWFs:
+
+--------------------------- Ensemble-DFT optimisation --------------------------
+Running ScaLAPACK on    4 processor(s).
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    0      0.018004195450      0.006139040055     -95.21850666784658  -3.25E-01
+
+Step                       =       0.381966011250
+Energy                     =     -95.208379211425
+Entropy (-TS)              =      -0.010127456422
+Free energy (A=E-TS)       =     -95.218506667847
+Est. 0K Energy 0.5*(E+A)   =     -95.213442939636
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.172127528798              0.00E+00
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9305201520    1.0000000000 | 
+                          ------
+      13 |    -0.2282690233    0.9999997681 | 
+      14 |    -0.2257735753    0.9999995427 | 
+      15 |    -0.2162549625    0.9999939035 | 
+      16 |    -0.2089677089    0.9999557147 | 
+      17 |    -0.1902718688    0.9928776556 | 
+      18 |    -0.1739274604    0.6200571307 | 
+                 - Gap at zero temperature -
+      19 |    -0.1704325875    0.3866961766 | 
+      20 |    -0.1434563621    0.0004087935 | 
+      21 |    -0.1281059346    0.0000062746 | 
+      22 |    -0.1273335100    0.0000050851 | 
+      23 |    -0.0077029711    0.0000000000 | 
+      24 |     0.0068751783    0.0000000000 | 
+                          ------
+      31 |     1.3090095307    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   3.25E-01 |   1.00E-06 |        No
+     Delta_Energy      |   3.25E-01 |   1.00E-04 |        No
+     Delta_Entropy     |   0.00E+00 |   1.00E-04 |       Yes
+     RMS_gradient      |   1.80E-02 |   1.00E-04 |        No
+     Commutator        |   6.14E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   0.00E+00 |   1.00E-03 |       Yes
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -95.21850666784658
+.    Trial1    0.381966      -95.22784015983186
+.    Trial2    0.618034      -95.22507038402294
+. Quadratic    0.399755      -95.22785738738104      -95.22785867966552
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    1      0.009748286124      0.003669402719     -95.22785738738104  -9.35E-03
+
+Step                       =       0.399755371297
+Energy                     =     -95.217266860567
+Entropy (-TS)              =      -0.010590526814
+Free energy (A=E-TS)       =     -95.227857387381
+Est. 0K Energy 0.5*(E+A)   =     -95.222562123974
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.175264068922             -3.14E-03
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9556623556    1.0000000000 | 
+                          ------
+      13 |    -0.2283899403    0.9999994732 | 
+      14 |    -0.2259829655    0.9999989858 | 
+      15 |    -0.2160364442    0.9999848095 | 
+      16 |    -0.2080895582    0.9998679701 | 
+      17 |    -0.1908791661    0.9859241980 | 
+      18 |    -0.1766844863    0.5954443695 | 
+                 - Gap at zero temperature -
+      19 |    -0.1740371112    0.4172980287 | 
+      20 |    -0.1513063656    0.0014725569 | 
+      21 |    -0.1304370292    0.0000050397 | 
+      22 |    -0.1301329536    0.0000046394 | 
+      23 |    -0.0108219780    0.0000000000 | 
+      24 |     0.0044324838    0.0000000000 | 
+                          ------
+      31 |     1.0539857859    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   9.35E-03 |   1.00E-06 |        No
+     Delta_Energy      |   8.89E-03 |   1.00E-04 |        No
+     Delta_Entropy     |   4.63E-04 |   1.00E-04 |        No
+     RMS_gradient      |   9.75E-03 |   1.00E-04 |        No
+     Commutator        |   3.67E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   3.14E-03 |   1.00E-03 |        No
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -95.22785738738104
+.    Trial1    0.399755      -95.22247821832275
+.    Trial2    0.152693      -95.23085545568262
+. Quadratic    0.149645      -95.23085980726428      -95.23085670037085
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    2      0.006659310809      0.002732731927     -95.23085980726428  -3.00E-03
+
+Step                       =       0.149644506923
+Energy                     =     -95.220490484554
+Entropy (-TS)              =      -0.010369322710
+Free energy (A=E-TS)       =     -95.230859807264
+Est. 0K Energy 0.5*(E+A)   =     -95.225675145909
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.174016545607              1.25E-03
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9509642318    1.0000000000 | 
+                          ------
+      13 |    -0.2290128873    0.9999996833 | 
+      14 |    -0.2247037171    0.9999989770 | 
+      15 |    -0.2148312007    0.9999849833 | 
+      16 |    -0.2085100854    0.9999161380 | 
+      17 |    -0.1898511294    0.9867294449 | 
+      18 |    -0.1758911310    0.6248311431 | 
+                 - Gap at zero temperature -
+      19 |    -0.1723298722    0.3872298890 | 
+      20 |    -0.1495972786    0.0012989745 | 
+      21 |    -0.1300390418    0.0000063503 | 
+      22 |    -0.1287805508    0.0000045089 | 
+      23 |    -0.0103834005    0.0000000000 | 
+      24 |     0.0042634589    0.0000000000 | 
+                          ------
+      31 |     0.9990789537    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   3.00E-03 |   1.00E-06 |        No
+     Delta_Energy      |   3.22E-03 |   1.00E-04 |        No
+     Delta_Entropy     |   2.21E-04 |   1.00E-04 |        No
+     RMS_gradient      |   6.66E-03 |   1.00E-04 |        No
+     Commutator        |   2.73E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   1.25E-03 |   1.00E-03 |        No
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -95.23085980726428
+.    Trial1    0.149645      -95.23205947659406
+.    Trial2    0.474451      -95.22220303435081
+. Quadratic    0.124397      -95.23212937236552      -95.23211101873221
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    3      0.005787198063      0.002463941601     -95.23212937236552  -1.27E-03
+
+Step                       =       0.124396648949
+Energy                     =     -95.221565697729
+Entropy (-TS)              =      -0.010563674636
+Free energy (A=E-TS)       =     -95.232129372366
+Est. 0K Energy 0.5*(E+A)   =     -95.226847535047
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.173098305446              9.18E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9510617507    1.0000000000 | 
+                          ------
+      13 |    -0.2268689747    0.9999995580 | 
+      14 |    -0.2237012619    0.9999989533 | 
+      15 |    -0.2138299811    0.9999846404 | 
+      16 |    -0.2065024428    0.9998872032 | 
+      17 |    -0.1890496987    0.9871392869 | 
+      18 |    -0.1744718053    0.5923652034 | 
+                 - Gap at zero temperature -
+      19 |    -0.1718993613    0.4191527935 | 
+      20 |    -0.1491081218    0.0014596181 | 
+      21 |    -0.1294635071    0.0000069710 | 
+      22 |    -0.1288239502    0.0000058575 | 
+      23 |    -0.0102934056    0.0000000000 | 
+      24 |     0.0045175660    0.0000000000 | 
+                          ------
+      31 |     0.9606335122    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   1.27E-03 |   1.00E-06 |        No
+     Delta_Energy      |   1.08E-03 |   1.00E-04 |        No
+     Delta_Entropy     |   1.94E-04 |   1.00E-04 |        No
+     RMS_gradient      |   5.79E-03 |   1.00E-04 |        No
+     Commutator        |   2.46E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   9.18E-04 |   1.00E-03 |       Yes
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -95.23212937236552
+.    Trial1    0.124397      -95.23296466774543
+.    Trial2    0.458847      -95.23012138714257
+. Quadratic    0.163442      -95.23301818241792      -95.23301522264873
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    4      0.004799790930      0.002075659032     -95.23301818241792  -8.89E-04
+
+Step                       =       0.163441505529
+Energy                     =     -95.222508189012
+Entropy (-TS)              =      -0.010509993406
+Free energy (A=E-TS)       =     -95.233018182418
+Est. 0K Energy 0.5*(E+A)   =     -95.227763185715
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.172581995130              5.16E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9519682342    1.0000000000 | 
+                          ------
+      13 |    -0.2270042775    0.9999996298 | 
+      14 |    -0.2226491136    0.9999987890 | 
+      15 |    -0.2125781318    0.9999812369 | 
+      16 |    -0.2062834206    0.9998959679 | 
+      17 |    -0.1880367590    0.9853057106 | 
+      18 |    -0.1742764750    0.6132740447 | 
+                 - Gap at zero temperature -
+      19 |    -0.1710915415    0.3999732172 | 
+      20 |    -0.1488321418    0.0015581106 | 
+      21 |    -0.1293880066    0.0000078594 | 
+      22 |    -0.1281042718    0.0000055422 | 
+      23 |    -0.0102314315    0.0000000000 | 
+      24 |     0.0044292990    0.0000000000 | 
+                          ------
+      31 |     0.9157821110    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   8.89E-04 |   1.00E-06 |        No
+     Delta_Energy      |   9.42E-04 |   1.00E-04 |        No
+     Delta_Entropy     |   5.37E-05 |   1.00E-04 |       Yes
+     RMS_gradient      |   4.80E-03 |   1.00E-04 |        No
+     Commutator        |   2.08E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   5.16E-04 |   1.00E-03 |       Yes
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -95.23301818241792
+.    Trial1    0.163442      -95.23364003305620
+.    Trial2    0.482978      -95.22905687643387
+. Quadratic    0.132349      -95.23367894819079      -95.23367635740925
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    5      0.004182539896      0.001859553871     -95.23367894819079  -6.61E-04
+
+Step                       =       0.132349394229
+Energy                     =     -95.223027166822
+Entropy (-TS)              =      -0.010651781369
+Free energy (A=E-TS)       =     -95.233678948191
+Est. 0K Energy 0.5*(E+A)   =     -95.228353057506
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.171922836828              6.59E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9527036451    1.0000000000 | 
+                          ------
+      13 |    -0.2254209684    0.9999995239 | 
+      14 |    -0.2217679904    0.9999987136 | 
+      15 |    -0.2117590731    0.9999804025 | 
+      16 |    -0.2046857418    0.9998657027 | 
+      17 |    -0.1873092002    0.9850337781 | 
+      18 |    -0.1732872729    0.5917695112 | 
+                 - Gap at zero temperature -
+      19 |    -0.1707609338    0.4216087617 | 
+      20 |    -0.1485552581    0.0017286250 | 
+      21 |    -0.1289639485    0.0000083787 | 
+      22 |    -0.1281467943    0.0000067082 | 
+      23 |    -0.0101879059    0.0000000000 | 
+      24 |     0.0046357218    0.0000000000 | 
+                          ------
+      31 |     0.8858368714    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   6.61E-04 |   1.00E-06 |        No
+     Delta_Energy      |   5.19E-04 |   1.00E-04 |        No
+     Delta_Entropy     |   1.42E-04 |   1.00E-04 |        No
+     RMS_gradient      |   4.18E-03 |   1.00E-04 |        No
+     Commutator        |   1.86E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   6.59E-04 |   1.00E-03 |       Yes
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -95.23367894819079
+.    Trial1    0.132349      -95.23415813824275
+.    Trial2    0.463762      -95.23228526050302
+. Quadratic    0.156724      -95.23417170355690      -95.23417001643556
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    6      0.003457079132      0.001552540876     -95.23417170355690  -4.93E-04
+
+Step                       =       0.156724144013
+Energy                     =     -95.223544508535
+Entropy (-TS)              =      -0.010627195022
+Free energy (A=E-TS)       =     -95.234171703557
+Est. 0K Energy 0.5*(E+A)   =     -95.228858106046
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.171533078854              3.90E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9535152735    1.0000000000 | 
+                          ------
+      13 |    -0.2254762339    0.9999995782 | 
+      14 |    -0.2210064643    0.9999985767 | 
+      15 |    -0.2107503825    0.9999768077 | 
+      16 |    -0.2044646010    0.9998717247 | 
+      17 |    -0.1865021241    0.9832640904 | 
+      18 |    -0.1731378882    0.6074711764 | 
+                 - Gap at zero temperature -
+      19 |    -0.1701588912    0.4075896042 | 
+      20 |    -0.1483407922    0.0018129252 | 
+      21 |    -0.1289098948    0.0000091801 | 
+      22 |    -0.1276191662    0.0000064612 | 
+      23 |    -0.0101420769    0.0000000000 | 
+      24 |     0.0045994930    0.0000000000 | 
+                          ------
+      31 |     0.8546896562    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   4.93E-04 |   1.00E-06 |        No
+     Delta_Energy      |   5.17E-04 |   1.00E-04 |        No
+     Delta_Entropy     |   2.46E-05 |   1.00E-04 |       Yes
+     RMS_gradient      |   3.46E-03 |   1.00E-04 |        No
+     Commutator        |   1.55E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   3.90E-04 |   1.00E-03 |       Yes
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -95.23417170355690
+.    Trial1    0.156724      -95.23453008865766
+.    Trial2    0.478827      -95.23221001239143
+. Quadratic    0.136054      -95.23453881222896      -95.23453855642363
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    7      0.003023308885      0.001385999669     -95.23453881222896  -3.67E-04
+
+Step                       =       0.136053740666
+Energy                     =     -95.223808506002
+Entropy (-TS)              =      -0.010730306227
+Free energy (A=E-TS)       =     -95.234538812229
+Est. 0K Energy 0.5*(E+A)   =     -95.229173659116
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.171002779716              5.30E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9540403752    1.0000000000 | 
+                          ------
+      13 |    -0.2242732226    0.9999994935 | 
+      14 |    -0.2202816709    0.9999984993 | 
+      15 |    -0.2101064139    0.9999760791 | 
+      16 |    -0.2032203793    0.9998442237 | 
+      17 |    -0.1858953608    0.9829182267 | 
+      18 |    -0.1723738331    0.5922044453 | 
+                 - Gap at zero temperature -
+      19 |    -0.1698631908    0.4230901605 | 
+      20 |    -0.1480823351    0.0019518452 | 
+      21 |    -0.1285679679    0.0000096629 | 
+      22 |    -0.1276304027    0.0000074870 | 
+      23 |    -0.0100984685    0.0000000000 | 
+      24 |     0.0047710302    0.0000000000 | 
+                          ------
+      31 |     0.8322267861    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   3.67E-04 |   1.00E-06 |        No
+     Delta_Energy      |   2.64E-04 |   1.00E-04 |        No
+     Delta_Entropy     |   1.03E-04 |   1.00E-04 |        No
+     RMS_gradient      |   3.02E-03 |   1.00E-04 |        No
+     Commutator        |   1.39E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   5.30E-04 |   1.00E-03 |       Yes
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -95.23453881222896
+.    Trial1    0.136054      -95.23480959885454
+.    Trial2    0.466052      -95.23362727212255
+. Quadratic    0.151246      -95.23481292375565      -95.23481235880894
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    8      0.002502705567      0.001157889974     -95.23481292375565  -2.74E-04
+
+Step                       =       0.151245877173
+Energy                     =     -95.224094924794
+Entropy (-TS)              =      -0.010717998962
+Free energy (A=E-TS)       =     -95.234812923756
+Est. 0K Energy 0.5*(E+A)   =     -95.229453924275
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.170693254061              3.10E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9545634674    1.0000000000 | 
+                          ------
+      13 |    -0.2242973935    0.9999995375 | 
+      14 |    -0.2197292507    0.9999983968 | 
+      15 |    -0.2093209326    0.9999727715 | 
+      16 |    -0.2030371644    0.9998494861 | 
+      17 |    -0.1852716781    0.9814220403 | 
+      18 |    -0.1722428057    0.6038799842 | 
+                 - Gap at zero temperature -
+      19 |    -0.1693989750    0.4128503835 | 
+      20 |    -0.1478806706    0.0020098655 | 
+      21 |    -0.1285175898    0.0000103689 | 
+      22 |    -0.1272300353    0.0000073042 | 
+      23 |    -0.0100570187    0.0000000000 | 
+      24 |     0.0047603312    0.0000000000 | 
+                          ------
+      31 |     0.8103803184    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   2.74E-04 |   1.00E-06 |        No
+     Delta_Energy      |   2.86E-04 |   1.00E-04 |        No
+     Delta_Entropy     |   1.23E-05 |   1.00E-04 |       Yes
+     RMS_gradient      |   2.50E-03 |   1.00E-04 |        No
+     Commutator        |   1.16E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   3.10E-04 |   1.00E-03 |       Yes
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -95.23481292375565
+.    Trial1    0.151246      -95.23501538668064
+.    Trial2    0.475441      -95.23381471815314
+. Quadratic    0.138735      -95.23501703922611      -95.23501704667953
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#    9      0.002197471256      0.001030761936     -95.23501703922611  -2.04E-04
+
+Step                       =       0.138734833888
+Energy                     =     -95.224223136325
+Entropy (-TS)              =      -0.010793902901
+Free energy (A=E-TS)       =     -95.235017039226
+Est. 0K Energy 0.5*(E+A)   =     -95.229620087776
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.170273641548              4.20E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9549213766    1.0000000000 | 
+                          ------
+      13 |    -0.2233871461    0.9999994714 | 
+      14 |    -0.2191512836    0.9999983262 | 
+      15 |    -0.2088211138    0.9999721708 | 
+      16 |    -0.2020810958    0.9998258338 | 
+      17 |    -0.1847826749    0.9810746145 | 
+      18 |    -0.1716556767    0.5929259192 | 
+                 - Gap at zero temperature -
+      19 |    -0.1691487685    0.4240678789 | 
+      20 |    -0.1476522094    0.0021169490 | 
+      21 |    -0.1282469624    0.0000107979 | 
+      22 |    -0.1272246875    0.0000081758 | 
+      23 |    -0.0100185121    0.0000000000 | 
+      24 |     0.0048988187    0.0000000000 | 
+                          ------
+      31 |     0.7936233031    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   2.04E-04 |   1.00E-06 |        No
+     Delta_Energy      |   1.28E-04 |   1.00E-04 |        No
+     Delta_Entropy     |   7.59E-05 |   1.00E-04 |       Yes
+     RMS_gradient      |   2.20E-03 |   1.00E-04 |        No
+     Commutator        |   1.03E-03 |   1.00E-05 |        No
+     Delta_Fermi_level |   4.20E-04 |   1.00E-03 |       Yes
+
+  Line search of the free energy minimum:
+  Step_type        Step             Free_energy   Predicted_free_energy
+.   Initial    0.000000      -95.23501703922611
+.    Trial1    0.138735      -95.23516855711749
+.    Trial2    0.467709      -95.23444812794276
+. Quadratic    0.147185      -95.23516921198166      -95.23516905816558
+
+--------------------------------------------------------------------------------
+  Iter        RMS_gradient          Commutator    Free_energy(A=E-TS)     DeltaA
+#   10      0.001819189370      0.000861523961     -95.23516921198166  -1.52E-04
+
+Step                       =       0.147184776326
+Energy                     =     -95.224381262467
+Entropy (-TS)              =      -0.010787949515
+Free energy (A=E-TS)       =     -95.235169211982
+Est. 0K Energy 0.5*(E+A)   =     -95.229775237224
+Residual Non-orthogonality =       0.000000000000
+Residual N_electrons       =       0.000000000000
+
+Spin          Integrated_Ne            Fermi_level     Delta_Fermi_level
+   1        36.000000000000        -0.170032890343              2.41E-04
+
+                           Spin 1          
+     Orb      H-eigenvalues     Occupancies
+       1 |    -0.9552570805    1.0000000000 | 
+                          ------
+      13 |    -0.2234006712    0.9999995067 | 
+      14 |    -0.2187482378    0.9999982506 | 
+      15 |    -0.2082199396    0.9999693031 | 
+      16 |    -0.2019371964    0.9998303632 | 
+      17 |    -0.1843072948    0.9798520295 | 
+      18 |    -0.1715475150    0.6016042628 | 
+                 - Gap at zero temperature -
+      19 |    -0.1687949527    0.4165716922 | 
+      20 |    -0.1474775963    0.0021553102 | 
+      21 |    -0.1282028743    0.0000113915 | 
+      22 |    -0.1269221804    0.0000080396 | 
+      23 |    -0.0099847175    0.0000000000 | 
+      24 |     0.0048996413    0.0000000000 | 
+                          ------
+      31 |     0.7781132864    0.0000000000 | 
+
+                       |  Abs_value |  Threshold | Converged
+     Delta_Free_energy |   1.52E-04 |   1.00E-06 |        No
+     Delta_Energy      |   1.58E-04 |   1.00E-04 |        No
+     Delta_Entropy     |   5.95E-06 |   1.00E-04 |       Yes
+     RMS_gradient      |   1.82E-03 |   1.00E-04 |        No
+     Commutator        |   8.62E-04 |   1.00E-05 |        No
+     Delta_Fermi_level |   2.41E-04 |   1.00E-03 |       Yes
+Finished EDFT density kernel iterations (  10)
+
+<QC>             [commutator]:         0.000861523961
+<QC>           [rms_gradient]:         0.001819189370
+<QC>       [delta_lagrangian]:        -0.000152172756
+<QC>           [delta_energy]:        -0.000158126142
+<QC>          [delta_entropy]:         0.000005953386
+<QC>                   [iter]:                     10
+<QC>               [edft%num]:                     31
+<QC>            [edft%nbands]:                     31
+<QC>       [edft%free_energy]:       -95.235169211982
+<QC>            [edft%energy]:       -95.224381262467
+<QC>           [edft%entropy]:        -0.010787949515
+<QC>        [orth_residue(1)]:         0.000000000000
+<QC>               [fermi(1)]:        -0.170032890343
+<QC>       [integrated_ne(1)]:        18.000000000000
+
+
+>>> Density kernel optimised for the current NGWF basis:
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Total free energy           =  -9.52351692119817E+01  Eh
+     [H,K] commutator            =   8.6152E-04
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+================================================================================
+           ---------------- ENERGY COMPONENTS (Eh) ----------------
+           | Kinetic                    :       74.81092251710527 |
+           | Pseudopotential (local)    :     -274.03711274440030 |
+           | Pseudopotential (non-local):      -89.08193072418754 |
+           | Hartree                    :      149.60401475887474 |
+           | Exchange-correlation       :      -16.93694477910175 |
+           | Ewald                      :       60.41666970924267 |
+           | Total                      :      -95.22438126246693 |
+           --------------------------------------------------------
+           ------ LOCAL ENERGY COMPONENTS FROM MATRIX TRACES ------
+           | Pseudopotential (local)    :     -274.03711274441923 |
+           | Hartree                    :      149.60401475888472 |
+           --------------------------------------------------------
+           Integrated density           :       35.99999999999588
+           Integrated density tr(KS)    :       36.00000000000000
+================================================================================
+
+WARNING: maximum number of NGWF CG iterations (   1) exceeded!
+
+                    <<<<< CALCULATION SUMMARY >>>>>
+|ITER|    RMS GRADIENT   |     TOTAL ENERGY    |   step   |     Epredicted      
+   0     0.00611661350762    -95.23516921198166  <-- CG                         
+ 
+<QC>        [NGWF iterations]:                      1
+<QC>           [total_energy]:       -95.235169211982
+<QC>           [rms_gradient]:         0.006116613508
+
+===================== Writing canonical molecular orbitals =====================
+| Orbital  Energy (eV)  Norm     |
+| HOMO-5   -5.94102740  1.000000 | 
+| HOMO-4   -5.86688563  1.000000 | 
+| HOMO-3   -5.58700542  1.000000 | 
+| HOMO-2   -5.35244734  1.000000 | 
+| HOMO-1   -4.94252521  1.000000 | 
+| HOMO     -4.58276365  1.000000 | 
+| LUMO     -4.54974913  1.000000 | 
+| LUMO+1   -3.97656819  1.000000 | 
+| LUMO+2   -3.45414273  1.000000 | 
+| LUMO+3   -3.44368419  1.000000 | 
+| LUMO+4   -0.26589973  1.000000 | 
+| LUMO+5    0.15329750  1.000000 | 
+================================================================================
+ 
+===================== Density of States (DOS) calculation ======================
+Writing "Pt3O_DOS.txt" ...  done
+================================================================================
+ 
+Writing bands to file "Pt3O.val_bands" ... done
+================ Projected Density of States (pDOS) calculation ================
+ 
+Constructing SW functions  ...  done
+ 
+Performing overlap integrals ...  done
+<QC>     [lcao_overlap_trace]:        15.349997689685
+<QC> [inv_lcao_overlap_trace]:       152.771929715923
+ 
+Computing pDOS weights ...  done
+<QC>   [lcao_ngwf_lcao_trace]:        17.067624605203
+ 
+ => Outputting data for OptaDOS <=
+ 
+Writing pDOS weights to file "Pt3O.val_pdos_bin" ... done
+ 
+Writing band gradients to file "Pt3O.val_dome_bin" ... done
+ 
+Writing Castep output cell file to "Pt3O-out.cell" ... done
+<QC> [pdoswts (l=0, eig_i=1)]:         1.016060419782
+<QC> [pdoswts (l=1, eig_i=1)]:         0.081309873549
+<QC> [pdoswts (l=2, eig_i=1)]:         0.178932243038
+<QC> [pdoswts (l=0, eig_i=2)]:         0.036431821492
+<QC> [pdoswts (l=1, eig_i=2)]:         0.855903591494
+<QC> [pdoswts (l=2, eig_i=2)]:         0.296559988770
+<QC> [pdoswts (l=0, eig_i=3)]:         0.033064101232
+<QC> [pdoswts (l=1, eig_i=3)]:         0.829922118933
+<QC> [pdoswts (l=2, eig_i=3)]:         0.338436155978
+<QC> [pdoswts (l=0, eig_i=4)]:         0.093971397926
+<QC> [pdoswts (l=1, eig_i=4)]:         0.653827411998
+<QC> [pdoswts (l=2, eig_i=4)]:         0.324636429461
+<QC> [pdoswts (l=0, eig_i=5)]:         0.153966217372
+<QC> [pdoswts (l=1, eig_i=5)]:         0.059184043198
+<QC> [pdoswts (l=2, eig_i=5)]:         0.825928386216
+<QC> [pdoswts (l=0, eig_i=6)]:         0.014888409762
+<QC> [pdoswts (l=1, eig_i=6)]:         0.026562501009
+<QC> [pdoswts (l=2, eig_i=6)]:         0.998804916411
+<QC> [pdoswts (l=0, eig_i=7)]:         0.014643808884
+<QC> [pdoswts (l=1, eig_i=7)]:         0.047179457386
+<QC> [pdoswts (l=2, eig_i=7)]:         0.969696430222
+<QC> [pdoswts (l=0, eig_i=8)]:         0.135199825695
+<QC> [pdoswts (l=1, eig_i=8)]:         0.024630866717
+<QC> [pdoswts (l=2, eig_i=8)]:         0.864928869229
+<QC> [pdoswts (l=0, eig_i=9)]:         0.004857218128
+<QC> [pdoswts (l=1, eig_i=9)]:         0.046303920263
+<QC> [pdoswts (l=2, eig_i=9)]:         1.001227797120
+<QC> [pdoswts (l=0, eig_i=10):         0.017035531732
+<QC> [pdoswts (l=1, eig_i=10):         0.033782375841
+<QC> [pdoswts (l=2, eig_i=10):         1.063666450861
+<QC> [pdoswts (l=0, eig_i=11):         0.009979774733
+<QC> [pdoswts (l=1, eig_i=11):         0.056737519945
+<QC> [pdoswts (l=2, eig_i=11):         1.174883081192
+<QC> [pdoswts (l=0, eig_i=12):         0.178915132217
+<QC> [pdoswts (l=1, eig_i=12):         0.160952073565
+<QC> [pdoswts (l=2, eig_i=12):         0.705451991719
+<QC> [pdoswts (l=0, eig_i=13):         0.134348169881
+<QC> [pdoswts (l=1, eig_i=13):         0.144829582970
+<QC> [pdoswts (l=2, eig_i=13):         0.794185079409
+<QC> [pdoswts (l=0, eig_i=14):         0.000110583970
+<QC> [pdoswts (l=1, eig_i=14):         0.012205209274
+<QC> [pdoswts (l=2, eig_i=14):         1.007280599160
+<QC> [pdoswts (l=0, eig_i=15):         0.002433290334
+<QC> [pdoswts (l=1, eig_i=15):         0.011817132863
+<QC> [pdoswts (l=2, eig_i=15):         1.023250031504
+<QC> [pdoswts (l=0, eig_i=16):         0.001998492785
+<QC> [pdoswts (l=1, eig_i=16):         0.013527191511
+<QC> [pdoswts (l=2, eig_i=16):         1.026513025147
+<QC> [pdoswts (l=0, eig_i=17):         0.001369149161
+<QC> [pdoswts (l=1, eig_i=17):         0.075739741140
+<QC> [pdoswts (l=2, eig_i=17):         0.923577333241
+<QC> [pdoswts (l=0, eig_i=18):         0.034564143495
+<QC> [pdoswts (l=1, eig_i=18):         0.294847812182
+<QC> [pdoswts (l=2, eig_i=18):         0.726529940884
+<QC> [pdoswts (l=0, eig_i=19):         0.036583099421
+<QC> [pdoswts (l=1, eig_i=19):         0.327992912690
+<QC> [pdoswts (l=2, eig_i=19):         0.715999471291
+<QC> [pdoswts (l=0, eig_i=20):         0.494375935990
+<QC> [pdoswts (l=1, eig_i=20):         0.222277385557
+<QC> [pdoswts (l=2, eig_i=20):         0.410140060850
+<QC> [pdoswts (l=0, eig_i=21):         0.286347208973
+<QC> [pdoswts (l=1, eig_i=21):         0.473502346400
+<QC> [pdoswts (l=2, eig_i=21):         0.294363431295
+<QC> [pdoswts (l=0, eig_i=22):         0.296314726758
+<QC> [pdoswts (l=1, eig_i=22):         0.498236389294
+<QC> [pdoswts (l=2, eig_i=22):         0.301714323873
+<QC> [pdoswts (l=0, eig_i=23):         0.047326848400
+<QC> [pdoswts (l=1, eig_i=23):         0.862865320623
+<QC> [pdoswts (l=2, eig_i=23):         0.136085026515
+<QC> [pdoswts (l=0, eig_i=24):         0.000052436813
+<QC> [pdoswts (l=1, eig_i=24):         0.799905644747
+<QC> [pdoswts (l=2, eig_i=24):         0.239064013133
+<QC> [pdoswts (l=0, eig_i=25):         0.002862407569
+<QC> [pdoswts (l=1, eig_i=25):         0.822681553544
+<QC> [pdoswts (l=2, eig_i=25):         0.227912324105
+<QC> [pdoswts (l=0, eig_i=26):         0.005812317878
+<QC> [pdoswts (l=1, eig_i=26):         0.997028806707
+<QC> [pdoswts (l=2, eig_i=26):         0.101627878520
+<QC> [pdoswts (l=0, eig_i=27):         0.012815992533
+<QC> [pdoswts (l=1, eig_i=27):         1.012115504735
+<QC> [pdoswts (l=2, eig_i=27):         0.085129293726
+<QC> [pdoswts (l=0, eig_i=28):         0.147655995404
+<QC> [pdoswts (l=1, eig_i=28):         0.966181350455
+<QC> [pdoswts (l=2, eig_i=28):         0.045589378516
+<QC> [pdoswts (l=0, eig_i=29):         0.000071421236
+<QC> [pdoswts (l=1, eig_i=29):         0.910666570291
+<QC> [pdoswts (l=2, eig_i=29):         0.089498469311
+<QC> [pdoswts (l=0, eig_i=30):         0.053553731013
+<QC> [pdoswts (l=1, eig_i=30):         0.359472775002
+<QC> [pdoswts (l=2, eig_i=30):         0.855057951061
+<QC> [pdoswts (l=0, eig_i=31):         0.038322889816
+<QC> [pdoswts (l=1, eig_i=31):         0.334845280187
+<QC> [pdoswts (l=2, eig_i=31):         0.833443579240
+ 
+ => Computing Gaussian smeared pDOS <= 
+Writing "Pt3O_PDOS.txt" ...  done
+ Band centres :   -6.01074443257938        3.18862738386423     
+  0.604570008643507     
+ 
+ => Computing Occupancy-weighted Gaussian smeared pDOS <= 
+Writing "Pt3O_occ_PDOS.txt" ...  done
+ Band centres :   -12.9676869622190       -5.90288158644809     
+  -2.38723520344707     
+================================================================================
+
+=================== Orbital energy and occupancy information ===================
+
+      Total number of orbitals:      31
+   Number of occupied orbitals:      18
+                 Occupancy sum:      18.000000000
+                 HOMO-LUMO gap:       0.001213262 Eh
+                 Mid-gap level:      -0.167806837 Eh
+
+                        Orbital | Energy (Eh) | Occupancy
+                            1    -0.957011070   0.9999817
+                        .......   ...........   .........
+                            9    -0.238493260   0.9999461
+                           10    -0.237701930   0.9999482
+                           11    -0.236016351   0.9998930
+                           12    -0.226288088   0.9999339
+                           13    -0.218328743   0.9996999
+                           14    -0.215604083   0.9998870
+                           15    -0.205318675   0.9997852
+                           16    -0.196698824   0.9997590
+                           17    -0.181634462   0.9751670
+                           18    -0.168413468   0.5984675
+                        .......   --- gap ---   .........
+                           19    -0.167200207   0.4237270
+                           20    -0.146136194   0.0032774
+                           21    -0.126937412   0.0002648
+                           22    -0.126553067   0.0003243
+                           23    -0.009771636   0.0000337
+                           24     0.005633580   0.0000172
+                           25     0.010419369   0.0000784
+                           26     0.091480303   0.0000133
+                           27     0.095698176   0.0000165
+                           28     0.127832357   0.0000110
+                        .......   ...........   .........
+                           31     0.689666824   0.0000344
+ 
+<QC>    [energy_eigenvalue_1]:        -0.957011069964
+<QC>    [energy_eigenvalue_n]:         0.689666823614
+<QC>            [occupancy_1]:         0.999981730971
+<QC>            [occupancy_n]:         0.000034376351
+
+================================================================================
+
+------------------------------ TIMING INFORMATION ------------------------------
+AVERAGE TIME:     149.019s on      4 node(s)                                    
+TOTAL TIME:       149.019s on      4 node(s)                                    
+==================== AVERAGE TIMINGS FROM ALL NODES (SELF) =====================
+++ TAG                                    #calls    cpu time   %total  Gflops ++
+++ ngwf_gradient_coeffs                 :     1        0.00s   0.000%  ------ ++
+++ work_imbalance                       :     1        0.00s   0.000%  ------ ++
+++ pseudopotentials_nonlocal_mat        :     3        0.00s   0.000%  ------ ++
+++ sparse_hotelling_invert              :     4        0.00s   0.000%  ------ ++
+++ sparse_init                          :     1        0.01s   0.003%  ------ ++
+++ integrals_locpot_dbl_grid            :    26        0.01s   0.009%  ------ ++
+++ pseudo_make_structure_factor         :     1        0.01s   0.010%  ------ ++
+++ basis_extract_function_from_box      :   186        0.02s   0.013%  ------ ++
+++ edft_diag_ngwf_ham                   :    61        0.02s   0.014%  ------ ++
+++ ewald_calculate_energy               :     1        0.02s   0.014%  ------ ++
+++ pseudopotentials_local_on_grid       :     1        0.02s   0.015%  ------ ++
+++ sparse_product                       :   301        0.03s   0.017%  ------ ++
+++ sparse_trace                         :   414        0.03s   0.019%  ------ ++
+++ properties_calculate                 :     1        0.04s   0.024%  ------ ++
+++ hamiltonian_energy_components        :     1        0.05s   0.033%  ------ ++
+++ eigenstates_calculate                :     1        0.08s   0.057%  ------ ++
+++ ngwf_gradient_lnv                    :     1        0.09s   0.061%  ------ ++
+++ function_ops_brappd_ketppd           :     8        0.12s   0.077%  ------ ++
+++ hartree_on_grid                      :    66        0.17s   0.113%  ------ ++
+++ fourier_apply_box_pair               :    28        0.19s   0.127%  25.534 ++
+++ projectors_func_ovlp_box             :     3        0.19s   0.129%  ------ ++
+++ integrals_kinetic                    :     3        0.19s   0.131%  ------ ++
+++ dense_eigensolve                     :    62        0.20s   0.133%  ------ ++
+++ density_initial_guess_real           :     1        0.22s   0.149%  ------ ++
+++ ngwfs_initialise_from_radial         :     1        0.24s   0.159%  ------ ++
+++ ngwf_cg_optimise                     :     1        0.28s   0.187%  ------ ++
+++ basis_dot_function_with_box          :  7199        0.35s   0.234%  ------ ++
+++ projectors_init_fftbox_recip         :     4        0.40s   0.267%  ------ ++
+++ basis_copy_function_to_box           :   821        0.56s   0.376%  ------ ++
+++ projectors_gradient_batch            :     1        0.67s   0.451%  ------ ++
+++ eigenstates_pdos                     :     1        0.69s   0.462%  ------ ++
+++ integrals_locpot_mat_els_batch       :    26        0.79s   0.527%  ------ ++
+++ density_batch_row_sums               :    65        0.83s   0.557%  ------ ++
+++ basis_add_function_to_box            : 16748        0.92s   0.620%  ------ ++
+++ main program (onetep.F90)            :     1        0.94s   0.634%  ------ ++
+++ ngwf_gradient_batch                  :     1        1.05s   0.706%  ------ ++
+++ density_on_dbl_grid                  :    65        1.50s   1.006%  ------ ++
+++ edft_calculate                       :     2        1.92s   1.287%  ------ ++
+++ cell_grid_extract_box                :   271        2.60s   1.742%  ------ ++
+++ density_batch_interp_deposit         :    65        4.50s   3.021%  ------ ++
+++ xc_energy_potential                  :    66        4.76s   3.191%  ------ ++
+++ sw_recp_generate                     :   171        5.17s   3.467%  ------ ++
+++ density_fftbox_deposit_to_cell       :   585        6.79s   4.559%  ------ ++
+++ cell_grid_deposit_box                :   694        6.90s   4.627%  ------ ++
+++ fourier_apply_cell_backward          :   331       11.03s   7.401%   6.025 ++
+++ fourier_apply_cell_forward           :   330       11.80s   7.916%   5.617 ++
+++ potential_apply_to_ngwf_batch        :    26       13.08s   8.781%  ------ ++
+++ density_fftbox_interpolate_multiply  :   585       16.71s  11.216%  ------ ++
+++ sw_init                              :     1       19.67s  13.199%  ------ ++
+++ fourier_apply_box                    :  1707       29.39s  19.722%  45.755 ++
+================================================================================
+Overhead of generating timer report: 
+- 0 ms averaging over threads,
+- 0 ms ensuring consistency across MPI ranks,
+- 0 ms printing in order.
+
+Job completed: 16-04-2015 09:39 (+0100)
+

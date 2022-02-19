@@ -1,0 +1,15 @@
+codeLabel: YAMBO
+codeLabelStyle: all in capitals
+codeName: yambo
+codeUrl: https://www.yambo-code.org/
+parserDirName: dependencies/parsers/yambo/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-yambo.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: |
+  |Input Filename| Description|
+  |--- | --- |
+  |`r-*` | **Mainfile:** a plain text file w/ **user-defined** name|
+  |`o-*` | plain text auxiliary output files w/ user-defined filenames |
+  |`*.in`| plain text input file w/ **user-defined** name|
+  |`n.*`| netcdf file with **user-defined** name|

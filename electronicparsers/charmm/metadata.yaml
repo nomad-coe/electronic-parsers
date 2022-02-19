@@ -1,0 +1,8 @@
+codeLabel: CHARMM
+codeLabelStyle: all in capitals
+codeName: charmm
+codeUrl: https://www.charmm.org/charmm/
+parserDirName: dependencies/parsers/charmm/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-charmm.git
+preamble: ''
+tableOfFiles: ''

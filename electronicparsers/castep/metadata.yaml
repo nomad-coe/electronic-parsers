@@ -1,0 +1,22 @@
+codeLabel: CASTEP
+codeLabelStyle: all in capitals
+codeName: castep
+codeUrl: http://www.castep.org/
+parserDirName: dependencies/parsers/castep/
+parserGitUrl: https://github.com/nomad-coe/nomad-parser-castep.git
+parserSpecific: |
+  ### CASTEP output examples
+  [Note: The list below is much shorter than the existing examples]
+  A few output files to test the parser are provided in the directory `castep/test/examples/*/`.
+
+          FILE NAME     |              FILE DESCRIPTION
+      __________________|___________________________________________________
+      "Si2.castep_v_1" --> Single Point Calculation (minimum verbosity)
+      "Si2.castep_v_2" --> Single Point Calculation (medium verbosity)
+      "Si2.castep_v_3" --> Single Point Calculation (maximum verbosity)
+
+      "Si2.castep_b_v_1" --> Band Structure Calculation (minimum verbosity)
+      "Si2.castep_b_v_2" --> Band Structure Calculation (medium verbosity)
+      "Si2.castep_b_v_3" --> Band Structure Calculation (maximum verbosity)
+preamble: ''
+tableOfFiles: ''

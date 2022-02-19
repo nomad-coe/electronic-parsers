@@ -1,0 +1,54 @@
+<input>
+        <title>SiC</title>
+        <structure speciespath="./">
+                <crystal scale="8.2014">
+                        <basevect>0.0 0.5 0.5 </basevect>
+                        <basevect>0.5 0.0 0.5 </basevect>
+                        <basevect>0.5 0.5 0.0 </basevect>
+                </crystal>
+		<species speciesfile="C.xml" rmt="1.6">
+                        <atom coord="0.00 0.00 0.00"/>
+                </species>
+                <species speciesfile="Si.xml" rmt="1.9">
+                        <atom coord="0.25 0.25 0.25"/>
+                </species>
+        </structure>
+        <groundstate 
+                ngridk="12 12 12"
+                rgkmax="6.0"
+                gmaxvr="15.0"
+                epsengy="1e-6"
+		reducek="false"
+                nosym="true"
+                vkloff="0.0 0.0 0.0"
+                do="fromscratch"
+                mixerswitch="1"
+                mixer="msec"
+                frozencore="false"
+                outputlevel="high"
+		nempty="20"
+                xctype="LDA_PW">
+        </groundstate>
+        <xs
+          xstype ="TDDFT"
+          ngridk="12 12 12"
+          vkloff="0.097 0.273 0.493"
+          nempty="300"
+          gqmax="3.0"
+          broad="0.004"
+          tevout="true">
+
+          <energywindow
+             intv="0.0 10.0"
+             points="10001" />
+
+          <tddft
+             fxctype="ALDA"/>
+
+          <qpointset>
+              <qpoint> 0.0 0.0 0.0 </qpoint>
+          </qpointset>
+
+        </xs>
+
+</input>
