@@ -183,17 +183,16 @@ def test_gw(silicon_gw):
     assert len(sec_sccs) == 2
 
     # Check GW properties
-    sec_gw = sec_sccs[1].gw[0]
-    assert approx(sec_gw.fermi_energy.magnitude, 1.09865567e-19)
-    assert approx(sec_gw.fundamental_gap.magnitude, 3.42913865e-19)
-    assert approx(sec_gw.optical_gap.magnitude, 6.45981597e-19)
-    assert np.shape(sec_gw.eigenvalues[0].energies[0][2]) == (20,)
-    assert sec_gw.eigenvalues[0].kpoints[-3][1] == 0.0
-    assert sec_gw.eigenvalues[0].energies[0][2][9].magnitude == approx(1.769533187849446e-18, abs=1e-20)
-    assert sec_gw.eigenvalues[0].qp_linearization_prefactor[0][2][9] == approx(0.79935)
-    assert sec_gw.eigenvalues[0].value_exchange[0][2][0].magnitude == approx(-2.855981572623473e-18, abs=1e-20)
-    assert sec_gw.eigenvalues[0].value_correlation[0][2][14].magnitude == approx(-1.0879742954267992e-18, abs=1e-20)
-    assert sec_gw.eigenvalues[0].value_xc_potential[0][2][6].magnitude == approx(-2.1691473890869554e-18, abs=1e-20)
+    assert approx(sec_sccs[1].energy.fermi.magnitude, 1.09865567e-19)
+    assert approx(sec_sccs[1].eigenvalues[0].band_gap[0].value_fundamental.magnitude, 3.42913865e-19)
+    assert approx(sec_sccs[1].eigenvalues[0].band_gap[0].value_optical.magnitude, 6.45981597e-19)
+    assert np.shape(sec_sccs[1].eigenvalues[0].energies[0][2]) == (20,)
+    assert sec_sccs[1].eigenvalues[0].kpoints[-3][1] == 0.0
+    assert sec_sccs[1].eigenvalues[0].energies[0][2][9].magnitude == approx(1.769533187849446e-18, abs=1e-20)
+    assert sec_sccs[1].eigenvalues[0].qp_linearization_prefactor[0][2][9] == approx(0.79935)
+    assert sec_sccs[1].eigenvalues[0].value_exchange[0][2][0].magnitude == approx(-2.855981572623473e-18, abs=1e-20)
+    assert sec_sccs[1].eigenvalues[0].value_correlation[0][2][14].magnitude == approx(-1.0879742954267992e-18, abs=1e-20)
+    assert sec_sccs[1].eigenvalues[0].value_xc_potential[0][2][6].magnitude == approx(-2.1691473890869554e-18, abs=1e-20)
 
 
 def test_band_gw_silicon(silicon_gw):

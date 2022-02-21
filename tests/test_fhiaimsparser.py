@@ -212,7 +212,7 @@ def test_gw(parser):
     assert len(sec_methods) == 2
     assert sec_methods[1].electronic.method == 'scGW'
 
-    sec_scfs = archive.run[0].calculation[0].scf_iteration
+    sec_scfs = archive.run[0].calculation[1].scf_iteration
     assert len(sec_scfs) == 6
     assert sec_scfs[1].x_fhi_aims_scgw_galitskii_migdal_total_energy.magnitude == approx(-1.28528018e-17)
     assert sec_scfs[4].x_fhi_aims_single_particle_energy.magnitude == approx(-4.96262869e-18)
@@ -222,7 +222,7 @@ def test_gw_eigs(parser):
     archive = EntryArchive()
     parser.parse('tests/data/fhiaims/CHN_gw/output.out', archive, None)
 
-    sec_eigs_gw = archive.run[0].calculation[0].gw[0].eigenvalues[0]
+    sec_eigs_gw = archive.run[0].calculation[1].eigenvalues[0]
     assert sec_eigs_gw.value_exchange[0][0][7].magnitude == approx(-1.16615227e-17)
     assert sec_eigs_gw.value_qp[0][0][71].magnitude == approx(-2.60353703e-20)
     assert sec_eigs_gw.occupations[0][0][64] == 2.0
