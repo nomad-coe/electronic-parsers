@@ -2867,9 +2867,9 @@ class Energy(simulation.calculation.Energy):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_onetep_pseudopotential_local = SubSection(simulation.calculation.EnergyEntry.m_def)
+    x_onetep_pseudopotential_local = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
 
-    x_onetep_pseudopotential_non_local = SubSection(simulation.calculation.EnergyEntry.m_def)
+    x_onetep_pseudopotential_non_local = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
 
 
 class Method(simulation.method.Method):
