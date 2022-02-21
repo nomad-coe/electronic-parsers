@@ -34,8 +34,8 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, BandStructure, BandEnergies, Dos, DosValues,
-    ScfIteration, Energy, EnergyEntry, Stress, StressEntry, Thermodynamics, GW,
-    GWBandEnergies, Forces, ForcesEntry
+    ScfIteration, Energy, EnergyEntry, Stress, StressEntry, Thermodynamics,
+    Forces, ForcesEntry
 )
 from nomad.datamodel.metainfo.workflow import Workflow
 
@@ -941,12 +941,14 @@ class FHIAimsParser:
                 sec_thermo.pressure = pressure
 
         def parse_gw(section):
-            sec_scc = sec_run.calculation[-1]
-            if not sec_scc.scf_iteration:
+            gw_scf_energies = section.get('gw_self_consistency')
+            gw_eigenvalues = section.get('gw_eigenvalues')
+
+            if gw_scf_energies is None and gw_eigenvalues is None:
                 return
 
-            sec_scf_iteration = sec_scc.scf_iteration[-1]
-            gw_scf_energies = section.get('gw_self_consistency')
+            sec_scc = sec_run.m_create(Calculation)
+            sec_scf_iteration = sec_scc.m_create(ScfIteration)
             if gw_scf_energies is not None:
                 for energies in gw_scf_energies:
                     sec_scf_iteration = sec_scc.m_create(ScfIteration)
@@ -960,13 +962,11 @@ class FHIAimsParser:
 
                 self._electronic_structure_method = 'scGW' if len(gw_scf_energies) > 1 else 'G0W0'
 
-            gw_eigenvalues = section.get('gw_eigenvalues')
             metainfo_map = {
                 'occ_num': 'occupations', 'e_gs': 'value_ks', 'e_x^ex': 'value_exchange',
                 'e_xc^gs': 'value_ks_xc', 'e_c^nloc': 'value_correlation', 'e_qp': 'value_qp'}
             if gw_eigenvalues is not None:
-                sec_gw = sec_scc.m_create(GW)
-                sec_eigs_gw = sec_gw.m_create(GWBandEnergies)
+                sec_eigs_gw = sec_scc.m_create(BandEnergies)
                 for key, name in metainfo_map.items():
                     # TODO verify shape of eigenvalues
                     val = gw_eigenvalues[key] if key == 'occ_num' else gw_eigenvalues[key] * ureg.eV

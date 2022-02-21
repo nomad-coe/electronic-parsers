@@ -35,7 +35,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry,
-    Thermodynamics, BandEnergies, GW, GWBandEnergies, ScfIteration
+    Thermodynamics, BandEnergies, ScfIteration
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from .metainfo import turbomole  # pylint: disable=unused-import
@@ -1024,8 +1024,7 @@ class TurbomoleParser:
                 'eigenvalue_ks_ExchangeCorrelation': 'value_ks_xc',
                 'ExchangeCorrelation_perturbativeGW_derivation': 'x_turbomole_ExchangeCorrelation_perturbativeGW_derivation'
             }
-            sec_gw = sec_scc.m_create(GW)
-            sec_eigs_gw = sec_gw.m_create(GWBandEnergies)
+            sec_eigs_gw = sec_scc.m_create(BandEnergies)
             for key, name in gw_metainfo_map.items():
                 val = [q.get(key) for q in self.module.gw.get('qp_states', [])]
                 # TODO verify shape for spin polarized

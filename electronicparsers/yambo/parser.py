@@ -29,7 +29,7 @@ from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.method import Method
 from nomad.datamodel.metainfo.simulation.calculation import (
-    Calculation, Energy, EnergyEntry, BandEnergies, GW, GWBandEnergies)
+    Calculation, Energy, EnergyEntry, BandEnergies)
 from .metainfo.yambo import (
     x_yambo_dipoles, x_yambo_dynamic_dielectric_matrix_fragment, x_yambo_io,
     x_yambo_dynamic_dielectric_matrix, x_yambo_local_xc_nonlocal_fock,
@@ -515,8 +515,7 @@ class YamboParser:
                 eigenvalues.kpoints), np.size(energies) // len(eigenvalues.kpoints))) * ureg.eV
 
         if self.netcdf_parser.QP_E_Eo_Z is not None or self.netcdf_parser.QP_E is not None:
-            gw = calc.m_create(GW)
-            gw_band_energies = gw.m_create(GWBandEnergies)
+            gw_band_energies = calc.m_create(BandEnergies)
             n_spin = self.netcdf_parser.QP_table.shape[1] // 2
             gw_band_energies.kpoints = self.netcdf_parser.QP_kpts.T
             if self.netcdf_parser.QP_E_Eo_Z is not None:
@@ -532,8 +531,7 @@ class YamboParser:
             gw_band_energies.qp_linearization_prefactor = np.reshape(z, shape)
 
         elif source.qp_energy is not None:
-            gw = calc.m_create(GW)
-            gw_band_energies = gw.m_create(GWBandEnergies)
+            gw_band_energies = calc.m_create(BandEnergies)
             qp_energy = source.qp_energy
             gw_band_energies.kpoints = [q.kpoint for q in qp_energy]
             energies = np.transpose([q.band for q in qp_energy])
@@ -544,7 +542,7 @@ class YamboParser:
 
         if self.netcdf_parser.Sx_Vxc is not None or self.netcdf_parser.Sx is not None:
             n_spin = self.netcdf_parser.QP_table.shape[1] // 2
-            band_energies = calc.m_create(x_yambo_local_xc_nonlocal_fock_bandenergies)
+            gw_band_energies = calc.eigenvalues[-1] if calc.eigenvalues else calc.m_create(BandEnergies)
             if self.netcdf_parser.Sx_Vxc is not None:
                 if self.netcdf_parser.Sx_Vxc.shape[0] % 8 == 0:
                     qp = self.netcdf_parser.Sx_Vxc.reshape(-1, 8).T
@@ -556,8 +554,8 @@ class YamboParser:
                 sx = self.netcdf_parser.Sx.T[0]
                 vxc = self.netcdf_parser.Vxc.T[0]
             shape = (n_spin, 1, len(sx) // n_spin)
-            band_energies.x_yambo_sx = np.reshape(sx, shape)
-            band_energies.x_yambo_vxc = np.reshape(vxc, shape)
+            gw_band_energies.value_exchange = np.reshape(sx, shape)
+            gw_band_energies.value_xc_potential = np.reshape(vxc, shape)
 
         for key, val in source.items():
             if key.startswith('x_yambo') and val is not None:

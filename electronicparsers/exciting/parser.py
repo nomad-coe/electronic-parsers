@@ -32,9 +32,8 @@ from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
-    Calculation, Dos, DosValues, BandStructure, BandEnergies,
-    GW, GWBandEnergies, Energy, EnergyEntry, Charges,
-    Forces, ForcesEntry, ScfIteration
+    Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, EnergyEntry, Charges,
+    Forces, ForcesEntry, ScfIteration, BandGap
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 
@@ -1301,15 +1300,13 @@ class ExcitingParser:
                 return
             return np.reshape(data, (nspin, len(data) // nspin, len(data[0])))
 
-        sec_gw = sec_scc.gw[0] if sec_scc.gw else sec_scc.m_create(GW)
-
-        sec_gw_eigenvalues = sec_gw.m_create(GWBandEnergies)
+        sec_gw_eigenvalues = sec_scc.m_create(BandEnergies)
+        sec_gw_eigenvalues.qp_linearization_prefactor = reshape(get_data('Znk'))
         sec_gw_eigenvalues.n_bands = len(eigs_gw[0])
         sec_gw_eigenvalues.n_kpoints = len(eigs_gw)
         sec_gw_eigenvalues.kpoints = get_data('k_points')
 
         sec_gw_eigenvalues.energies = reshape(eigs_gw)
-        sec_gw_eigenvalues.qp_linearization_prefactor = reshape(get_data('Znk'))
         sec_gw_eigenvalues.value_exchange = reshape(get_data('Sx'))
         eigs_gw_C = reshape(get_data('Sc'))
         if eigs_gw_C is None:
@@ -1832,11 +1829,8 @@ class ExcitingParser:
 
         self.info_gw_parser.mainfile = gw_info_files[0]
 
-        sec_gw = sec_scc.gw[-1] if sec_scc.gw else sec_scc.m_create(GW)
-
         fermi_energy = self.info_gw_parser.get('fermi_energy', None)
         if fermi_energy is not None:
-            sec_gw.fermi_energy = fermi_energy
             sec_scc.energy = Energy(fermi=fermi_energy)
 
         gw_files = ['EVALQP.DAT', 'EVALQP.TXT', 'TDOS-QP.OUT']
@@ -1862,12 +1856,13 @@ class ExcitingParser:
         fundamental_band_gap = self.info_gw_parser.get('direct_band_gap', None)
         if fundamental_band_gap is None:
             fundamental_band_gap = self.info_gw_parser.get('fundamental_band_gap', None)
+        sec_gap = sec_scc.eigenvalues[-1].m_create(BandGap)
         if fundamental_band_gap is not None:
-            sec_gw.fundamental_gap = fundamental_band_gap
+            sec_gap.value_fundamental = fundamental_band_gap
 
         optical_band_gap = self.info_gw_parser.get('optical_band_gap', None)
         if optical_band_gap is not None:
-            sec_gw.optical_gap = optical_band_gap
+            sec_gap.value_optical = optical_band_gap
 
     def parse_miscellaneous(self):
         sec_worfklow = self.archive.m_create(Workflow)

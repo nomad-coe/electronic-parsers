@@ -92,10 +92,10 @@ def test_1(parser):
     assert calc[1].x_yambo_local_xc_nonlocal_fock_bandenergies[0].x_yambo_sx[0][0][1].magnitude == approx(-8.87037934e-19)
     assert calc[1].x_yambo_local_xc_nonlocal_fock_bandenergies[0].x_yambo_vxc[0][0][0].magnitude == approx(-2.58066631e-18)
 
-    assert calc[2].gw[0].eigenvalues[0].kpoints[-1][1] == approx(-0.5)
-    assert calc[2].gw[0].eigenvalues[0].qp_linearization_prefactor[0][0][1] == approx(0.8320594)
-    assert calc[2].gw[0].eigenvalues[0].value_qp[0][0][0].magnitude == approx(-1.56952554e-19)
-    assert calc[2].gw[0].eigenvalues[0].value_ks[0][0][0].magnitude == approx(-6.59862623e-20)
+    assert calc[2].eigenvalues[0].kpoints[-1][1] == approx(-0.5)
+    assert calc[2].eigenvalues[0].qp_linearization_prefactor[0][0][1] == approx(0.8320594)
+    assert calc[2].eigenvalues[0].value_qp[0][0][0].magnitude == approx(-1.56952554e-19)
+    assert calc[2].eigenvalues[0].value_ks[0][0][0].magnitude == approx(-6.59862623e-20)
 
 
 def test_2(parser):
@@ -144,9 +144,9 @@ def test_3(parser):
     assert calc[1].x_yambo_bare_xc_bandenergies[0].x_yambo_hf[0][0][7].magnitude == approx(-8.34041085e-19)
     assert calc[1].x_yambo_filled_bands[1] == 8
     assert calc[1].x_yambo_direct_gaps[0].magnitude == approx(1.96538367e-19)
-    assert calc[2].gw[0].eigenvalues[0].qp_linearization_prefactor[0][0][2] == approx(0.8)
-    assert calc[2].gw[0].eigenvalues[0].value_qp[0][0][5].magnitude == approx(1.13754541e-19)
-    assert calc[2].gw[0].eigenvalues[0].value_ks[0][0][1].magnitude == approx(0.)
+    assert calc[2].eigenvalues[0].qp_linearization_prefactor[0][0][2] == approx(0.8)
+    assert calc[2].eigenvalues[0].value_qp[0][0][5].magnitude == approx(1.13754541e-19)
+    assert calc[2].eigenvalues[0].value_ks[0][0][1].magnitude == approx(0.)
 
 
 def test_4(parser):
@@ -157,6 +157,6 @@ def test_4(parser):
     assert len(calc) == 3
     assert calc[1].x_yambo_bare_xc_bandenergies[0].x_yambo_hf[0][8][3].magnitude == approx(-1.02367551e-18)
     assert calc[1].x_yambo_bare_xc_bandenergies[0].x_yambo_dft[0][3][1].magnitude == approx(-3.58760674e-18)
-    assert calc[2].gw[0].eigenvalues[0].qp_linearization_prefactor[0][2][2] == approx(0.89)
-    assert calc[2].gw[0].eigenvalues[0].value_qp[0][5][1].magnitude == approx(-5.68772705e-19)
-    assert calc[2].gw[0].eigenvalues[0].value_ks[0][-1][3].magnitude == approx(2.36641489e-18)
+    assert calc[2].eigenvalues[0].qp_linearization_prefactor[0][2][2] == approx(0.89)
+    assert calc[2].eigenvalues[0].value_qp[0][5][1].magnitude == approx(-5.68772705e-19)
+    assert calc[2].eigenvalues[0].value_ks[0][-1][3].magnitude == approx(2.36641489e-18)
