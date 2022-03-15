@@ -2,8 +2,8 @@ codeLabel: BigDFT
 codeLabelStyle: 'Capitals: B,D,F,T,'
 codeName: bigdft
 codeUrl: http://bigdft.org/
-parserDirName: dependencies/parsers/bigdft/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-bigdft.git
+parserDirName: dependencies/electronic/electronicparsers/bigdft/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''
 tableOfFiles: ''

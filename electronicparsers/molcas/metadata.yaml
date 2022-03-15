@@ -2,8 +2,8 @@ codeLabel: Molcas
 codeLabelStyle: 'Capitals: M; also seen all in capitals'
 codeName: molcas
 codeUrl: http://molcas.org/
-parserDirName: dependencies/parsers/molcas/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-molcas.git
+parserDirName: dependencies/electronic/electronicparsers/molcas/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''
 tableOfFiles: ''

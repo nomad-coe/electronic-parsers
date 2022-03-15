@@ -2,8 +2,8 @@ codeLabel: FPLO
 codeLabelStyle: All in capitals
 codeName: fplo
 codeUrl: https://www.fplo.de/
-parserDirName: dependencies/parsers/fplo/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-fplo.git
+parserDirName: dependencies/electronic/electronicparsers/fplo/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''
 tableOfFiles: ''

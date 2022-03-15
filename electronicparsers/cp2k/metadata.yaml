@@ -2,8 +2,8 @@ codeLabel: CP2K
 codeLabelStyle: all in capitals
 codeName: cp2k
 codeUrl: https://www.cp2k.org/
-parserDirName: dependencies/parsers/cp2k/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-cp2k.git
+parserDirName: dependencies/electronic/electronicparsers/cp2k/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: |
   ## Usage notes
   The parser is based on CP2K 2.6.2.

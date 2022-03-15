@@ -2,8 +2,8 @@ codeLabel: BAND
 codeLabelStyle: all in capitals
 codeName: band
 codeUrl: https://www.scm.com/product/band_periodicdft/
-parserDirName: dependencies/parsers/band/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-band.git
+parserDirName: dependencies/electronic/electronicparsers/band/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''
 tableOfFiles: ''

@@ -2,8 +2,8 @@ codeLabel: FHI-aims
 codeLabelStyle: 'Capitals: FHI, the rest in lowercase; use dash.'
 codeName: fhi-aims
 codeUrl: https://aimsclub.fhi-berlin.mpg.de/
-parserDirName: dependencies/parsers/fhi-aims/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-fhi-aims.git
+parserDirName: dependencies/electronic/electronicparsers/fhi-aims/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''
 tableOfFiles: |

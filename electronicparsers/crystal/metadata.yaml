@@ -2,8 +2,8 @@ codeLabel: CRYSTAL
 codeLabelStyle: all in capitals
 codeName: crystal
 codeUrl: https://www.crystal.unito.it/
-parserDirName: dependencies/parsers/crystal/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-crystal.git
+parserDirName: dependencies/electronic/electronicparsers/crystal/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''
 tableOfFiles: |

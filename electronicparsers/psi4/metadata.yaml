@@ -2,8 +2,8 @@ codeLabel: Psi4
 codeLabelStyle: 'Capitals: P'
 codeName: psi4
 codeUrl: https://psicode.org/
-parserDirName: dependencies/parsers/psi4/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-psi4.git
+parserDirName: dependencies/electronic/electronicparsers/psi4/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''
 tableOfFiles: |

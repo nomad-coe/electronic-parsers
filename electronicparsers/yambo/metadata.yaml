@@ -2,8 +2,8 @@ codeLabel: YAMBO
 codeLabelStyle: all in capitals
 codeName: yambo
 codeUrl: https://www.yambo-code.org/
-parserDirName: dependencies/parsers/yambo/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-yambo.git
+parserDirName: dependencies/electronic/electronicparsers/yambo/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''
 tableOfFiles: |

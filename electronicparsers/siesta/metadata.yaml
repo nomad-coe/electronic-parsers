@@ -2,8 +2,8 @@ codeLabel: SIESTA
 codeLabelStyle: All in capitals
 codeName: siesta
 codeUrl: https://departments.icmab.es/leem/siesta/
-parserDirName: dependencies/parsers/siesta/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-siesta.git
+parserDirName: dependencies/electronic/electronicparsers/siesta/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''
 tableOfFiles: ''

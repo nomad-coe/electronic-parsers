@@ -2,8 +2,8 @@ codeLabel: QUANTUM ESPRESSO
 codeLabelStyle: All in capitals, separated by space
 codeName: quantum-espresso
 codeUrl: http://www.quantum-espresso.org/
-parserDirName: dependencies/parsers/quantum-espresso/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-quantum-espresso.git
+parserDirName: dependencies/electronic/electronicparsers/quantum-espresso/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''
 tableOfFiles: |

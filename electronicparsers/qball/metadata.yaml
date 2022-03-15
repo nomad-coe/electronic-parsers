@@ -2,8 +2,8 @@ codeLabel: QBALL
 codeLabelStyle: all in capitals
 codeName: qball
 codeUrl: https://github.com/LLNL/qball
-parserDirName: dependencies/parsers/qball/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-qball.git
+parserDirName: dependencies/electronic/electronicparsers/qball/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''
 tableOfFiles: |

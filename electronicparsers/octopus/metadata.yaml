@@ -2,8 +2,8 @@ codeLabel: Octopus
 codeLabelStyle: 'Capitals: O'
 codeName: octopus
 codeUrl: https://octopus-code.org/
-parserDirName: dependencies/parsers/octopus/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-octopus.git
+parserDirName: dependencies/electronic/electronicparsers/octopus/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''
 tableOfFiles: |

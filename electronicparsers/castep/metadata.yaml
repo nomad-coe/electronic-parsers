@@ -2,8 +2,8 @@ codeLabel: CASTEP
 codeLabelStyle: all in capitals
 codeName: castep
 codeUrl: http://www.castep.org/
-parserDirName: dependencies/parsers/castep/
-parserGitUrl: https://github.com/nomad-coe/nomad-parser-castep.git
+parserDirName: dependencies/electronic/electronicparsers/castep/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: |
   ### CASTEP output examples
   [Note: The list below is much shorter than the existing examples]
