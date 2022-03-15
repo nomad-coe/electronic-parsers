@@ -16,7 +16,6 @@
 # limitations under the License.
 #
 
-import sys
 import pytest
 
 from nomad.datamodel import EntryArchive
