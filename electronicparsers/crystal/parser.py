@@ -967,8 +967,8 @@ def to_k_points(segments):
             n_steps = n_steps - 1
 
         delta = end - start
-        start_step = (shrinking_factor * start).astype(np.int)
-        step_size = (shrinking_factor * delta / n_steps).astype(np.int)
+        start_step = (shrinking_factor * start).astype(np.int32)
+        step_size = (shrinking_factor * delta / n_steps).astype(np.int32)
         steps = (start_step + step_size * np.arange(0, end_idx)[:, None])
         k_points = steps / shrinking_factor
         all_k_points.append(k_points)
@@ -982,7 +982,7 @@ def to_system(atomic_numbers, labels, positions, lattice, pos_type="scaled", wra
     and lattice vectors (if present). The conversion depends on the material
     type.
     """
-    atomic_numbers = std_atomic_number(atomic_numbers.astype(np.int))
+    atomic_numbers = std_atomic_number(atomic_numbers.astype(np.int32))
     atom_labels = std_label(labels)
     positions = positions.astype(np.float64)
 
