@@ -22,8 +22,8 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference
 )
-from vaspparser.metainfo import vasp_incars
-from vaspparser.metainfo import vasp_incarsOut
+from . import vasp_incars
+from . import vasp_incarsOut
 from nomad.datamodel.metainfo import simulation
 
 

@@ -21,18 +21,19 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import BasicParser
 
 
-class FploParser(BasicParser):
+class FploParser:
     def __init__(self):
         re_f = r'\-*\d+\.\d+E*\-*\+*\d*'
 
-        super().__init__(
-            specifications=dict(
-                name='parsers/fplo', code_name='fplo', domain='dft',
-                mainfile_contents_re=r'\s*\|\s*FULL-POTENTIAL LOCAL-ORBITAL MINIMUM BASIS BANDSTRUCTURE CODE\s*\|\s*',
-                mainfile_mime_re=r'text/.*'),
+        self._parser = BasicParser(
+            'fplo',
             units_mapping=dict(length=ureg.bohr, energy=ureg.eV),
             program_version=r'main version\:\s*(\S+)[\|\s]+sub  version\:\s*(\S+)[\|\s]+release\s*\:\s*(\S+)',
             lattice_vectors=r'lattice vectors\s*(a1\s*\:\s*[\s\S]+?)rec',
             atom_labels_atom_positions=rf'No\. *Element WPS CPA\-Block *X *Y *Z([\s\S]+?)\n *\n',
             energy_reference_fermi=(rf'Fermi energy\:\s*({re_f}).+electrons', lambda x: [x]),
-            energy_total=rf'total energy.+\s*EE\:\s*({re_f})')
+            energy_total=rf'total energy.+\s*EE\:\s*({re_f})'
+        )
+
+    def parse(self, mainfile, archive, logger=None):
+        self._parser.parse(mainfile, archive, logger=None)

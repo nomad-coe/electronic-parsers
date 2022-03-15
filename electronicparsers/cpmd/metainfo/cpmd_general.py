@@ -20,7 +20,7 @@ import numpy as np            # pylint: disable=unused-import
 import typing                 # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference
+    Reference, JSON
 )
 from nomad.datamodel.metainfo import simulation
 from nomad.datamodel.metainfo import workflow
@@ -239,8 +239,8 @@ class x_cpmd_section_supercell(MSection):
         ''')
 
     x_cpmd_cell_dimension = Quantity(
-        type=str,
-        shape=[],
+        type=np.dtype(np.int32),
+        shape=[3],
         description='''
         The cell dimension.
         ''')
@@ -773,10 +773,6 @@ class Run(simulation.run.Run):
         sub_section=SectionProxy('x_cpmd_section_system_information'),
         repeats=True)
 
-    x_cpmd_section_supercell = SubSection(
-        sub_section=SectionProxy('x_cpmd_section_supercell'),
-        repeats=True)
-
     x_cpmd_section_wave_function_initialization = SubSection(
         sub_section=SectionProxy('x_cpmd_section_wave_function_initialization'),
         repeats=True)
@@ -802,6 +798,12 @@ class Method(simulation.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
+    x_cpmd_simulation_parameters = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        ''')
+
     x_cpmd_section_xc_information = SubSection(
         sub_section=SectionProxy('x_cpmd_section_xc_information'),
         repeats=True)
@@ -815,9 +817,53 @@ class Method(simulation.method.Method):
         repeats=True)
 
 
+class System(simulation.system.System):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_cpmd_section_supercell = SubSection(
+        sub_section=SectionProxy('x_cpmd_section_supercell'),
+        repeats=True)
+
+
 class Calculation(simulation.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
+
+    x_cpmd_total_number_of_scf_steps = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        Total number of SCF steps at the end of this geometry optimization step.
+        ''')
+
+    x_cpmd_gnmax = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        The largest absolute component of the force on any atom (GNMAX).
+        ''')
+
+    x_cpmd_gnorm = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        Average force on the atoms (GNORM).
+        ''')
+
+    x_cpmd_cnstr = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        The largest absolute component of a constraint force on the atoms (CNSTR).
+        ''')
+
+    x_cpmd_restart_file = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        The restart file.
+        ''')
 
     x_cpmd_section_scf = SubSection(
         sub_section=SectionProxy('x_cpmd_section_scf'),
@@ -838,4 +884,13 @@ class GeometryOptimization(workflow.GeometryOptimization):
 
     x_cpmd_section_geo_opt_step = SubSection(
         sub_section=SectionProxy('x_cpmd_section_geo_opt_step'),
+        repeats=True)
+
+
+class MolecularDynamics(workflow.MolecularDynamics):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_cpmd_section_md_averaged_quantities = SubSection(
+        sub_section=SectionProxy('x_cpmd_section_md_averaged_quantities'),
         repeats=True)

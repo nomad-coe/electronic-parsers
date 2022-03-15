@@ -22,7 +22,6 @@ import logging
 from datetime import datetime
 
 from nomad.units import ureg
-from nomad.parsing.parser import FairdiParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
@@ -159,13 +158,8 @@ class OutParser(TextParser):
         ]
 
 
-class BandParser(FairdiParser):
+class BandParser:
     def __init__(self):
-        super().__init__(
-            name='parsers/band', code_name='BAND',
-            code_homepage='https://www.scm.com/product/band_periodicdft/',
-            mainfile_contents_re=r' +\* +Amsterdam Density Functional +\(ADF\)')
-
         self.out_parser = OutParser()
 
     def init_parser(self):

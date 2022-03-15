@@ -21,7 +21,6 @@ import numpy as np
 import logging
 
 from nomad.units import ureg
-from nomad.parsing.parser import FairdiParser
 
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 
@@ -581,14 +580,8 @@ class FHIAimsOutParser(TextParser):
         return calculation_type
 
 
-class FHIAimsParser(FairdiParser):
+class FHIAimsParser:
     def __init__(self):
-        super().__init__(
-            name='parsers/fhi-aims', code_name='FHI-aims',
-            code_homepage='https://aimsclub.fhi-berlin.mpg.de/',
-            mainfile_contents_re=(
-                r'^(.*\n)*'
-                r'?\s*Invoking FHI-aims \.\.\.'))
         self.out_parser = FHIAimsOutParser()
         self.control_parser = FHIAimsControlParser()
         self.dos_parser = DataTextParser()

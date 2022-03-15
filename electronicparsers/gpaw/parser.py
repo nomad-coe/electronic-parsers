@@ -4,7 +4,6 @@ import ase
 from ase.io.ulm import Reader
 
 from nomad.units import ureg
-from nomad.parsing import FairdiParser
 from nomad.parsing.file_parser import FileParser, TarParser, XMLParser, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
@@ -253,13 +252,8 @@ class GPW2Parser(FileParser):
             return self.get_parameter('occupations').get('width')
 
 
-class GPAWParser(FairdiParser):
+class GPAWParser:
     def __init__(self):
-        super(). __init__(
-            name='parsers/gpaw', code_name='GPAW', code_homepage='https://wiki.fysik.dtu.dk/gpaw/',
-            mainfile_name_re=(r'^.*\.(gpw2|gpw)$'),
-            mainfile_mime_re=r'application/(x-tar|octet-stream)')
-
         self.gpw_parser = GPWParser()
         self.gpw2_parser = GPW2Parser()
         self._xc_map = {
