@@ -1,0 +1,200 @@
+ *******************************************************************************
+ ** Site#: 23702        For non-commercial use only     Version 15.347L 64BITS**
+ *******************************************************************************
+ ** Cite this work as:                                                        **
+ **                                                                           **
+ ** (a) MOPAC2012, James J. P. Stewart, Stewart Computational Chemistry,      **
+ **  Version 15.347L web: HTTP://OpenMOPAC.net         Days remaining:  42    **
+ **                                                                           **
+ **                                 AND                                       **
+ **                                                                           **
+ ** (b) Maia, J.D.C., et al., J. Chem. Theory Comput. 2012, 8, 3072-3081.     **
+ **                DOI: 10.1021/ct3004645.                                    **
+ *******************************************************************************
+ **                                                                           **
+ **                                MOPAC2012                                  **
+ **                                                                           **
+ *******************************************************************************
+
+                              PM7 CALCULATION RESULTS
+
+
+ *******************************************************************************
+ *  CALCULATION DONE:                                Tue Nov  1 15:25:21 2016  *
+ *  PM7        - The PM7 Hamiltonian to be used
+ *  TRIPLET    - SPIN STATE DEFINED AS A TRIPLET
+ *  UHF        - UNRESTRICTED HARTREE-FOCK CALCULATION
+ *  1SCF       - DO 1 SCF AND THEN STOP 
+ *  T=         - A TIME OF 172800.0 SECONDS REQUESTED
+ *  DUMP=N     - RESTART FILE WRITTEN EVERY  7200.000 SECONDS
+ *  RELSCF     - DEFAULT SCF CRITERION MULTIPLIED BY   0.100E-03
+ *             (DEFAULT SCFCRT= 0.00010)
+ *  GRADIENTS- ALL GRADIENTS TO BE PRINTED
+ *******************************************************************************
+PM7 1SCF GRADIENTS RELSCF=0.0001 TRIPLET UHF
+ Title: ASE calculation
+
+   ATOM   CHEMICAL          X               Y               Z
+  NUMBER   SYMBOL      (ANGSTROMS)     (ANGSTROMS)     (ANGSTROMS)
+ 
+     1       O          3.00000000  *   3.00000000  *   4.24595600  *
+     2       O          3.00000000  *   3.00000000  *   3.00000000  *
+ 
+
+
+          CARTESIAN COORDINATES 
+
+    NO.       ATOM         X         Y         Z
+
+     1         O        3.0000    3.0000    4.2460
+     2         O        3.0000    3.0000    3.0000
+
+ General Reference for PM7:
+ "Optimization of Parameters for Semiempirical Methods VI: More Modifications to the 
+ NDDO Approximations and Re-optimization of Parameters", J. J. P. Stewart, J. Mol. Mod., 1:32, 19 (2013)
+ http://www.springerlink.com/openurl.asp?genre=article&id=doi:10.1007/s00894-012-1667-x
+
+           Empirical Formula: O2  =     2 atoms
+
+
+
+      MOLECULAR POINT GROUP   :   D*h 
+
+
+ TRIPLET STATE CALCULATION
+
+
+          UHF CALCULATION, NO. OF ALPHA ELECTRONS =    7
+                           NO. OF BETA  ELECTRONS =    5
+  SCF CRITERION =    0.1000E-07
+
+ -------------------------------------------------------------------------------
+PM7 1SCF GRADIENTS RELSCF=0.0001 TRIPLET UHF
+ Title: ASE calculation
+
+
+
+     1SCF WAS SPECIFIED, SO BFGS WAS NOT USED                 
+     SCF FIELD WAS ACHIEVED                                   
+
+
+                              PM7 CALCULATION
+                                                       MOPAC2012 (Version: 15.347L)
+                                                       Tue Nov  1 15:25:21 2016
+                                                       No. of days left =  42
+
+
+
+
+          FINAL HEAT OF FORMATION =          0.42912 KCAL/MOL =       1.79544 KJ/MOL
+
+
+          TOTAL ENERGY            =       -587.00937 EV
+          ELECTRONIC ENERGY       =       -926.76950 EV  POINT GROUP:     D*h 
+          CORE-CORE REPULSION     =        339.76013 EV
+          COSMO AREA              =         50.36 SQUARE ANGSTROMS
+          COSMO VOLUME            =         32.43 CUBIC ANGSTROMS
+
+          GRADIENT NORM           =        214.85922
+          IONIZATION POTENTIAL    =         11.233373 EV
+          ALPHA SOMO LUMO (EV)    =        -11.233  1.757
+          BETA  SOMO LUMO (EV)    =        -13.843 -0.204
+          NO. OF ALPHA ELECTRONS  =          7
+          NO. OF BETA  ELECTRONS  =          5
+          MOLECULAR WEIGHT        =         31.9988
+
+          MOLECULAR DIMENSIONS (Angstroms)
+
+            Atom       Atom       Distance
+            O     2    O     1     1.24596
+            O     2    O     1     0.00000
+            O     1    O     2     0.00000
+
+
+          SCF CALCULATIONS        =          1
+ 
+          WALL-CLOCK TIME         =          0.016 SECONDS
+          COMPUTATION TIME        =          0.008 SECONDS
+
+
+
+       FINAL  POINT  AND  DERIVATIVES
+
+   PARAMETER     ATOM    TYPE            VALUE       GRADIENT
+      1          1  O    CARTESIAN X     3.000000     0.000000  KCAL/ANGSTROM
+      2          1  O    CARTESIAN Y     3.000000     0.000000  KCAL/ANGSTROM
+      3          1  O    CARTESIAN Z     4.245956   151.928414  KCAL/ANGSTROM
+      4          2  O    CARTESIAN X     3.000000     0.000000  KCAL/ANGSTROM
+      5          2  O    CARTESIAN Y     3.000000     0.000000  KCAL/ANGSTROM
+      6          2  O    CARTESIAN Z     3.000000  -151.928414  KCAL/ANGSTROM
+
+
+
+
+   ATOM   CHEMICAL          X               Y               Z
+  NUMBER   SYMBOL      (ANGSTROMS)     (ANGSTROMS)     (ANGSTROMS)
+ 
+     1       O          3.00000000  *   3.00000000  *   4.24595600  *
+     2       O          3.00000000  *   3.00000000  *   3.00000000  *
+
+                             CARTESIAN COORDINATES
+
+   1    O        3.000000000     3.000000000     4.245956000
+   2    O        3.000000000     3.000000000     3.000000000
+
+
+           Empirical Formula: O2  =     2 atoms
+
+
+
+      MOLECULAR POINT GROUP   :   D*h 
+
+
+          ALPHA EIGENVALUES  
+ -32.47749 -30.29817 -18.27895 -16.23275 -16.23275 -11.23337 -11.23337   1.75697
+
+
+           BETA EIGENVALUES 
+ -28.23822 -25.38894 -16.80926 -13.84253 -13.84253  -0.20372  -0.20372   3.14024
+
+
+              NET ATOMIC CHARGES AND DIPOLE CONTRIBUTIONS
+
+  ATOM NO.   TYPE          CHARGE      No. of ELECS.   s-Pop       p-Pop       
+    1          O          -0.000000        6.0000     1.97203     4.02797
+    2          O           0.000000        6.0000     1.97203     4.02797
+ DIPOLE           X         Y         Z       TOTAL
+ POINT-CHG.    -0.000    -0.000    -0.000     0.000
+ HYBRID         0.000     0.000     0.000     0.000
+ SUM           -0.000    -0.000    -0.000     0.000
+
+
+          ATOMIC ORBITAL ELECTRON POPULATIONS
+
+     Atom    s        px        py        pz   
+    1  O   1.97203   1.50000   1.50000   1.02797
+    2  O   1.97203   1.50000   1.50000   1.02797
+
+
+                    (SZ)    =    1.000000
+                    (S**2)  =    2.002364
+
+
+          ATOMIC ORBITAL SPIN POPULATIONS
+
+    Atom   Total    s     px     py     pz   
+         Atomic
+    1  O  1.0000  0.008  0.500  0.500 -0.008
+    2  O  1.0000  0.008  0.500  0.500 -0.008
+
+ **********************
+ *                    *
+ * JOB ENDED NORMALLY *
+ *                    *
+ **********************
+
+
+
+ TOTAL JOB TIME:             0.04 SECONDS
+
+ == MOPAC DONE ==

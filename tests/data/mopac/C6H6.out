@@ -1,0 +1,286 @@
+ *******************************************************************************
+ ** Site#: 23702        For non-commercial use only     Version 15.347L 64BITS**
+ *******************************************************************************
+ ** Cite this work as:                                                        **
+ **                                                                           **
+ ** (a) MOPAC2012, James J. P. Stewart, Stewart Computational Chemistry,      **
+ **  Version 15.347L web: HTTP://OpenMOPAC.net         Days remaining: 106    **
+ **                                                                           **
+ **                                 AND                                       **
+ **                                                                           **
+ ** (b) Maia, J.D.C., et al., J. Chem. Theory Comput. 2012, 8, 3072-3081.     **
+ **                DOI: 10.1021/ct3004645.                                    **
+ *******************************************************************************
+ **                                                                           **
+ **                                MOPAC2012                                  **
+ **                                                                           **
+ *******************************************************************************
+
+                              PM7 CALCULATION RESULTS
+
+
+ *******************************************************************************
+ *  CALCULATION DONE:                                Mon Aug 29 14:26:28 2016  *
+ *  PM7        - The PM7 Hamiltonian to be used
+ *  1SCF       - DO 1 SCF AND THEN STOP 
+ *  T=         - A TIME OF 172800.0 SECONDS REQUESTED
+ *  DUMP=N     - RESTART FILE WRITTEN EVERY  7200.000 SECONDS
+ *  RELSCF     - DEFAULT SCF CRITERION MULTIPLIED BY   0.100E-03
+ *             (DEFAULT SCFCRT= 0.00010)
+ *  GRADIENTS- ALL GRADIENTS TO BE PRINTED
+ *******************************************************************************
+PM7 1SCF GRADIENTS RELSCF=0.0001
+ Title: ASE calculation
+
+   ATOM   CHEMICAL          X               Y               Z
+  NUMBER   SYMBOL      (ANGSTROMS)     (ANGSTROMS)     (ANGSTROMS)
+ 
+     1       C          4.14978700  *   5.87760800  *   2.00000000  *
+     2       C          5.35810700  *   5.17998400  *   2.00000000  *
+     3       C          5.35810700  *   3.78473600  *   2.00000000  *
+     4       C          4.14978700  *   3.08711200  *   2.00000000  *
+     5       C          2.94146700  *   3.78473600  *   2.00000000  *
+     6       C          2.94146700  *   5.17998400  *   2.00000000  *
+     7       H          4.14978700  *   6.96472000  *   2.00000000  *
+     8       H          6.29957400  *   5.72354000  *   2.00000000  *
+     9       H          6.29957400  *   3.24118000  *   2.00000000  *
+    10       H          4.14978700  *   2.00000000  *   2.00000000  *
+    11       H          2.00000000  *   3.24118000  *   2.00000000  *
+    12       H          2.00000000  *   5.72354000  *   2.00000000  *
+ 
+
+
+          CARTESIAN COORDINATES 
+
+    NO.       ATOM         X         Y         Z
+
+     1         C        4.1498    5.8776    2.0000
+     2         C        5.3581    5.1800    2.0000
+     3         C        5.3581    3.7847    2.0000
+     4         C        4.1498    3.0871    2.0000
+     5         C        2.9415    3.7847    2.0000
+     6         C        2.9415    5.1800    2.0000
+     7         H        4.1498    6.9647    2.0000
+     8         H        6.2996    5.7235    2.0000
+     9         H        6.2996    3.2412    2.0000
+    10         H        4.1498    2.0000    2.0000
+    11         H        2.0000    3.2412    2.0000
+    12         H        2.0000    5.7235    2.0000
+
+     ===================== shared-memory parallel CPU Section ======================
+     **                                                                           **
+     **  MOPAC calculations will run in shared-memory parallel CPUs               **
+     **                                                                           **
+     **  Number of Threads =  4                                                   **
+     **                                                                           **
+     **                                                                           **
+     **  For information on this work, see:                                       **
+     **                                                                           **
+     **  Maia, J.D.C., et al., J. Chem. Theory Comput. 2012, 8, 3072-3081.        **
+     **        DOI: 10.1021/ct3004645.                                            **
+     **                                                                           **
+     ===================== shared-memory parallel CPU Section ======================
+      
+
+
+ General Reference for PM7:
+ "Optimization of Parameters for Semiempirical Methods VI: More Modifications to the 
+ NDDO Approximations and Re-optimization of Parameters", J. J. P. Stewart, J. Mol. Mod., 1:32, 19 (2013)
+ http://www.springerlink.com/openurl.asp?genre=article&id=doi:10.1007/s00894-012-1667-x
+
+           Empirical Formula: C6 H6  =    12 atoms
+
+
+
+      MOLECULAR POINT GROUP   :   D6h 
+
+
+      RHF CALCULATION, NO. OF DOUBLY OCCUPIED LEVELS =   15
+
+  SCF CRITERION =    0.1000E-07
+
+ -------------------------------------------------------------------------------
+PM7 1SCF GRADIENTS RELSCF=0.0001
+ Title: ASE calculation
+
+
+
+     1SCF WAS SPECIFIED, SO BFGS WAS NOT USED                 
+     SCF FIELD WAS ACHIEVED                                   
+
+
+                              PM7 CALCULATION
+                                                       MOPAC2012 (Version: 15.347L)
+                                                       Mon Aug 29 14:26:28 2016
+                                                       No. of days left = 106
+
+
+
+
+          FINAL HEAT OF FORMATION =         22.96441 KCAL/MOL =      96.08311 KJ/MOL
+
+
+          TOTAL ENERGY            =       -817.56157 EV
+          ELECTRONIC ENERGY       =      -3250.01084 EV  POINT GROUP:     D6h 
+          CORE-CORE REPULSION     =       2432.44927 EV
+          COSMO AREA              =        119.74 SQUARE ANGSTROMS
+          COSMO VOLUME            =        108.88 CUBIC ANGSTROMS
+
+          GRADIENT NORM           =          5.53956
+          IONIZATION POTENTIAL    =          9.818363 EV
+          HOMO LUMO ENERGIES (EV) =         -9.818  0.231
+          NO. OF FILLED LEVELS    =         15
+          MOLECULAR WEIGHT        =         78.1134
+
+          MOLECULAR DIMENSIONS (Angstroms)
+
+            Atom       Atom       Distance
+            H    11    H     8     4.96472
+            H     9    H     7     4.29957
+            C     1    C     2     0.00000
+
+
+          SCF CALCULATIONS        =          1
+ 
+          WALL-CLOCK TIME         =          0.035 SECONDS
+          COMPUTATION TIME        =          0.059 SECONDS
+
+
+
+       FINAL  POINT  AND  DERIVATIVES
+
+   PARAMETER     ATOM    TYPE            VALUE       GRADIENT
+      1          1  C    CARTESIAN X     4.149787    -0.000011  KCAL/ANGSTROM
+      2          1  C    CARTESIAN Y     5.877608     2.229863  KCAL/ANGSTROM
+      3          1  C    CARTESIAN Z     2.000000    -0.000000  KCAL/ANGSTROM
+      4          2  C    CARTESIAN X     5.358107     1.962924  KCAL/ANGSTROM
+      5          2  C    CARTESIAN Y     5.179984     1.147085  KCAL/ANGSTROM
+      6          2  C    CARTESIAN Z     2.000000    -0.000000  KCAL/ANGSTROM
+      7          3  C    CARTESIAN X     5.358107     1.949078  KCAL/ANGSTROM
+      8          3  C    CARTESIAN Y     3.784736    -1.096867  KCAL/ANGSTROM
+      9          3  C    CARTESIAN Z     2.000000    -0.000000  KCAL/ANGSTROM
+     10          4  C    CARTESIAN X     4.149787    -0.050192  KCAL/ANGSTROM
+     11          4  C    CARTESIAN Y     3.087112    -2.280065  KCAL/ANGSTROM
+     12          4  C    CARTESIAN Z     2.000000    -0.000000  KCAL/ANGSTROM
+     13          5  C    CARTESIAN X     2.941467    -1.904179  KCAL/ANGSTROM
+     14          5  C    CARTESIAN Y     3.784736    -1.088340  KCAL/ANGSTROM
+     15          5  C    CARTESIAN Z     2.000000    -0.000000  KCAL/ANGSTROM
+     16          6  C    CARTESIAN X     2.941467    -1.957623  KCAL/ANGSTROM
+     17          6  C    CARTESIAN Y     5.179984     1.088321  KCAL/ANGSTROM
+     18          6  C    CARTESIAN Z     2.000000    -0.000000  KCAL/ANGSTROM
+     19          7  H    CARTESIAN X     4.149787     0.000007  KCAL/ANGSTROM
+     20          7  H    CARTESIAN Y     6.964720    -0.293002  KCAL/ANGSTROM
+     21          7  H    CARTESIAN Z     2.000000    -0.000000  KCAL/ANGSTROM
+     22          8  H    CARTESIAN X     6.299574    -0.263969  KCAL/ANGSTROM
+     23          8  H    CARTESIAN Y     5.723540    -0.156822  KCAL/ANGSTROM
+     24          8  H    CARTESIAN Z     2.000000    -0.000000  KCAL/ANGSTROM
+     25          9  H    CARTESIAN X     6.299574    -0.242884  KCAL/ANGSTROM
+     26          9  H    CARTESIAN Y     3.241180     0.157079  KCAL/ANGSTROM
+     27          9  H    CARTESIAN Z     2.000000    -0.000000  KCAL/ANGSTROM
+     28         10  H    CARTESIAN X     4.149787    -0.000278  KCAL/ANGSTROM
+     29         10  H    CARTESIAN Y     2.000000     0.292732  KCAL/ANGSTROM
+     30         10  H    CARTESIAN Z     2.000000    -0.000000  KCAL/ANGSTROM
+     31         11  H    CARTESIAN X     2.000000     0.243128  KCAL/ANGSTROM
+     32         11  H    CARTESIAN Y     3.241180     0.135981  KCAL/ANGSTROM
+     33         11  H    CARTESIAN Z     2.000000    -0.000000  KCAL/ANGSTROM
+     34         12  H    CARTESIAN X     2.000000     0.263994  KCAL/ANGSTROM
+     35         12  H    CARTESIAN Y     5.723540    -0.135969  KCAL/ANGSTROM
+     36         12  H    CARTESIAN Z     2.000000    -0.000000  KCAL/ANGSTROM
+
+
+
+
+   ATOM   CHEMICAL          X               Y               Z
+  NUMBER   SYMBOL      (ANGSTROMS)     (ANGSTROMS)     (ANGSTROMS)
+ 
+     1       C          4.14978700  *   5.87760800  *   2.00000000  *
+     2       C          5.35810700  *   5.17998400  *   2.00000000  *
+     3       C          5.35810700  *   3.78473600  *   2.00000000  *
+     4       C          4.14978700  *   3.08711200  *   2.00000000  *
+     5       C          2.94146700  *   3.78473600  *   2.00000000  *
+     6       C          2.94146700  *   5.17998400  *   2.00000000  *
+     7       H          4.14978700  *   6.96472000  *   2.00000000  *
+     8       H          6.29957400  *   5.72354000  *   2.00000000  *
+     9       H          6.29957400  *   3.24118000  *   2.00000000  *
+    10       H          4.14978700  *   2.00000000  *   2.00000000  *
+    11       H          2.00000000  *   3.24118000  *   2.00000000  *
+    12       H          2.00000000  *   5.72354000  *   2.00000000  *
+
+                             CARTESIAN COORDINATES
+
+   1    C        4.149787000     5.877608000     2.000000000
+   2    C        5.358107000     5.179984000     2.000000000
+   3    C        5.358107000     3.784736000     2.000000000
+   4    C        4.149787000     3.087112000     2.000000000
+   5    C        2.941467000     3.784736000     2.000000000
+   6    C        2.941467000     5.179984000     2.000000000
+   7    H        4.149787000     6.964720000     2.000000000
+   8    H        6.299574000     5.723540000     2.000000000
+   9    H        6.299574000     3.241180000     2.000000000
+  10    H        4.149787000     2.000000000     2.000000000
+  11    H        2.000000000     3.241180000     2.000000000
+  12    H        2.000000000     5.723540000     2.000000000
+
+
+           Empirical Formula: C6 H6  =    12 atoms
+
+
+
+      MOLECULAR POINT GROUP   :   D6h 
+
+
+                  EIGENVALUES  
+ -30.40915 -25.81655 -25.81655 -20.91103 -20.91103 -18.06721 -15.40643 -15.21598
+ -14.25956 -14.25956 -13.41244 -11.94300 -11.94300  -9.81836  -9.81836   0.23120
+   0.23120   2.57261   4.42232   4.42232   5.04269   5.32923   5.32924   5.52883
+   5.82873   6.11884   6.11884   6.19585   6.19585   6.40867
+
+
+              NET ATOMIC CHARGES AND DIPOLE CONTRIBUTIONS
+
+  ATOM NO.   TYPE          CHARGE      No. of ELECS.   s-Pop       p-Pop       
+    1          C          -0.147945        4.1479     1.08391     3.06404
+    2          C          -0.147945        4.1479     1.08391     3.06404
+    3          C          -0.147945        4.1479     1.08391     3.06404
+    4          C          -0.147945        4.1479     1.08391     3.06404
+    5          C          -0.147945        4.1479     1.08391     3.06404
+    6          C          -0.147945        4.1479     1.08391     3.06404
+    7          H           0.147945        0.8521     0.85205
+    8          H           0.147945        0.8521     0.85205
+    9          H           0.147945        0.8521     0.85205
+   10          H           0.147945        0.8521     0.85205
+   11          H           0.147945        0.8521     0.85205
+   12          H           0.147945        0.8521     0.85205
+ DIPOLE           X         Y         Z       TOTAL
+ POINT-CHG.    -0.000    -0.000    -0.000     0.000
+ HYBRID         0.000     0.000    -0.000     0.000
+ SUM           -0.000    -0.000    -0.000     0.000
+
+
+          ATOMIC ORBITAL ELECTRON POPULATIONS
+
+     Atom    s        px        py        pz   
+    1  C   1.08391   0.98825   1.07579   1.00000
+    2  C   1.08391   1.05391   1.01013   1.00000
+    3  C   1.08391   1.05390   1.01013   1.00000
+    4  C   1.08391   0.98825   1.07579   1.00000
+    5  C   1.08391   1.05391   1.01013   1.00000
+    6  C   1.08391   1.05390   1.01013   1.00000
+    7  H   0.85205
+    8  H   0.85205
+    9  H   0.85205
+   10  H   0.85205
+   11  H   0.85205
+   12  H   0.85205
+
+ **********************
+ *                    *
+ * JOB ENDED NORMALLY *
+ *                    *
+ **********************
+
+
+
+ TOTAL JOB TIME:             0.05 SECONDS
+
+ == MOPAC DONE ==
