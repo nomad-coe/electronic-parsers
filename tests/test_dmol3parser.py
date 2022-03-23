@@ -31,18 +31,51 @@ def parser():
     return Dmol3Parser()
 
 
-def test_basic(parser):
+def test_optimization(parser):
     archive = EntryArchive()
 
     parser.parse('tests/data/dmol3/h2o.outmol', archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == 'version 3.0'
+    assert sec_run.program.version == '3.0'
+    assert sec_run.time_run.date_start > 0.
 
-    sec_systems = archive.run[0].system
-    assert len(sec_systems) == 11
-    assert sec_systems[0].atoms.labels[2] == 'H'
-    assert sec_systems[2].atoms.positions[1][2].magnitude == approx(-8.84266338e-10,)
+    sec_method = archive.run[0].method[0]
+    assert sec_method.x_dmol3_calculation_type == 'optimize_frequency'
+    assert sec_method.x_dmol3_rcut == approx(6.0)
+    assert sec_method.x_dmol3_scf_iterations == 150
+    assert sec_method.x_dmol3_occupation_name == 'Fermi'
+    assert sec_method.x_dmol3_diis_number == 10
+    assert sec_method.x_dmol3_diis_name == 'pulay'
+    assert sec_method.x_dmol3_opt_energy_convergence == approx(1.0e-05)
 
-    sec_sccs = sec_run.calculation
-    assert sec_sccs[7].energy.total.value.magnitude == approx(-3.33238073e-16)
+    sec_system = archive.run[0].system
+    assert len(sec_system) == 11
+    assert sec_system[0].atoms.labels[2] == 'H'
+    assert sec_system[2].atoms.positions[1][2].magnitude == approx(-8.84266338e-10,)
+
+    sec_calc = sec_run.calculation
+    assert sec_calc[7].energy.total.value.magnitude == approx(-3.33238073e-16)
+    assert sec_calc[2].energy.x_dmol3_binding.value.magnitude == approx(-1.66336861e-18)
+    assert len(sec_calc[5].scf_iteration) == 7
+    assert sec_calc[1].scf_iteration[2].energy.total.value.magnitude == approx(-3.33238086e-16)
+    assert sec_calc[5].scf_iteration[5].energy.x_dmol3_binding.value.magnitude == approx(-1.66332632e-18)
+    assert sec_calc[0].eigenvalues[0].energies[0][0][4].magnitude == approx(-1.08436443e-18)
+    assert sec_calc[0].eigenvalues[0].occupations[0][0][2] == approx(2.0)
+    assert sec_calc[1].charges[0].value[0].magnitude == approx(-4.82255167e-20)
+    assert sec_calc[1].charges[1].value[2].magnitude == approx(3.89328922e-20)
+    assert sec_calc[1].multipoles[0].dipole.total == approx(1.9470)
+    assert sec_calc[10].vibrational_frequencies[0].value[2].magnitude == approx(-1050.0)
+    assert sec_calc[10].vibrational_frequencies[0].x_dmol3_normal_modes[5][2][0] == approx(-0.1073)
+    assert sec_calc[10].x_dmol3_h_rot.magnitude == approx(0.889)
+    assert sec_calc[10].x_dmol3_c_vib.magnitude == approx(5.816)
+
+    sec_workflow = archive.workflow
+    assert sec_workflow[0].geometry_optimization.convergence_tolerance_energy_difference.magnitude == approx(4.35974472e-23)
+    assert sec_workflow[0].geometry_optimization.convergence_tolerance_force_maximum.magnitude == approx(8.2387235e-12)
+    assert sec_workflow[0].geometry_optimization.convergence_tolerance_displacement_maximum.magnitude == approx(1.58753163e-13)
+    assert sec_workflow[1].thermodynamics.temperature[22].magnitude == approx(550.00)
+    assert sec_workflow[1].thermodynamics.entropy[32].magnitude == approx(5.15393944e-22)
+    assert sec_workflow[1].thermodynamics.heat_capacity_c_p[40].magnitude == approx(1.08988499e-22)
+    assert sec_workflow[1].thermodynamics.enthalpy[7].magnitude == approx(1.1136461e-19)
+    assert sec_workflow[1].thermodynamics.gibbs_free_energy[20].magnitude == approx(-9.34881901e-20)
