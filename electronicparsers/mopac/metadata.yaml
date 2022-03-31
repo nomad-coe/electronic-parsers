@@ -1,0 +1,9 @@
+codeLabel: MOPAC
+codeLabelStyle: All in capitals
+codeName: mopac
+codeUrl: http://openmopac.net/
+parserDirName: dependencies/parsers/atomistic/atomisticparsers/mopac/
+parserGitUrl: https://github.com/nomad-coe/atomistic-parsers.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: ''
