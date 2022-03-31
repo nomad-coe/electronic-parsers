@@ -35,6 +35,7 @@ from .gamess.parser import GamessParser
 from .gaussian.parser import GaussianParser
 from .gpaw.parser import GPAWParser
 from .molcas.parser import MolcasParser
+from .mopac.parser import MopacParser
 from .nwchem.parser import NWChemParser
 from .octopus.parser import OctopusParser
 from .onetep.parser import OnetepParser
