@@ -28,14 +28,14 @@ from nomad.datamodel.metainfo import simulation
 m_package = Package()
 
 
-class dmol3_section_hirshfeld_population(MSection):
+class x_dmol3_section_hirshfeld_population(MSection):
     '''
     Hirshfeld Population Analysis Section
     '''
 
     m_def = Section(validate=False)
 
-    dmol3_hirshfeld_population = Quantity(
+    x_dmol3_hirshfeld_population = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
@@ -43,14 +43,14 @@ class dmol3_section_hirshfeld_population(MSection):
         ''')
 
 
-class dmol3_section_mulliken_population(MSection):
+class x_dmol3_section_mulliken_population(MSection):
     '''
     Mulliken Population Analysis Section
     '''
 
     m_def = Section(validate=False)
 
-    dmol3_mulliken_population = Quantity(
+    x_dmol3_mulliken_population = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
@@ -62,273 +62,273 @@ class Method(simulation.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    dmol3_aux_density = Quantity(
+    x_dmol3_aux_density = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 aux density
         ''')
 
-    dmol3_aux_partition = Quantity(
+    x_dmol3_aux_partition = Quantity(
         type=np.dtype(np.int32),
         shape=[],
         description='''
         dmol3 aux parition
         ''')
 
-    dmol3_basis_name = Quantity(
+    x_dmol3_basis_name = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 basis name
         ''')
 
-    dmol3_calculation_type = Quantity(
+    x_dmol3_calculation_type = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 calculation type
         ''')
 
-    dmol3_charge = Quantity(
+    x_dmol3_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 system charge
         ''')
 
-    dmol3_electrostatic_moments = Quantity(
+    x_dmol3_electrostatic_moments = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 Electrostatic_Moments
         ''')
 
-    dmol3_functional_name = Quantity(
+    x_dmol3_functional_name = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 functional name
         ''')
 
-    dmol3_hirshfeld_analysis = Quantity(
+    x_dmol3_hirshfeld_analysis = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 Hirshfeld_Analysis
         ''')
 
-    dmol3_integration_grid = Quantity(
+    x_dmol3_integration_grid = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 integration grid
         ''')
 
-    dmol3_kpoints = Quantity(
+    x_dmol3_kpoints = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 Kpoints
         ''')
 
-    dmol3_mulliken_analysis = Quantity(
+    x_dmol3_mulliken_analysis = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 Mulliken_Analysis
         ''')
 
-    dmol3_nuclear_efg = Quantity(
+    x_dmol3_nuclear_efg = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 Nuclear_EFG
         ''')
 
-    dmol3_occupation_name = Quantity(
+    x_dmol3_occupation_name = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 Occupation name
         ''')
 
-    dmol3_occupation_width = Quantity(
+    x_dmol3_occupation_width = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 Occupation width
         ''')
 
-    dmol3_opt_coordinate_system = Quantity(
+    x_dmol3_opt_coordinate_system = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 OPT_Coordinate_System
         ''')
 
-    dmol3_opt_displacement_convergence = Quantity(
+    x_dmol3_opt_displacement_convergence = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 OPT_Displacement_Convergence
         ''')
 
-    dmol3_opt_energy_convergence = Quantity(
+    x_dmol3_opt_energy_convergence = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 OPT_Energy_Convergence
         ''')
 
-    dmol3_opt_gdiis = Quantity(
+    x_dmol3_opt_gdiis = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 OPT_Gdiis
         ''')
 
-    dmol3_opt_gradient_convergence = Quantity(
+    x_dmol3_opt_gradient_convergence = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 OPT_Gradient_Convergence
         ''')
 
-    dmol3_opt_hessian_project = Quantity(
+    x_dmol3_opt_hessian_project = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 OPT_Hessian_Project
         ''')
 
-    dmol3_opt_iterations = Quantity(
+    x_dmol3_opt_iterations = Quantity(
         type=np.dtype(np.int32),
         shape=[],
         description='''
         dmol3 OPT_Iterations
         ''')
 
-    dmol3_opt_max_displacement = Quantity(
+    x_dmol3_opt_max_displacement = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 OPT_Max_Displacement
         ''')
 
-    dmol3_opt_steep_tol = Quantity(
+    x_dmol3_opt_steep_tol = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 OPT_Steep_Tol
         ''')
 
-    dmol3_optical_absorption = Quantity(
+    x_dmol3_optical_absorption = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 Optical_Absorption
         ''')
 
-    dmol3_partial_dos = Quantity(
+    x_dmol3_partial_dos = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 Partial_Dos
         ''')
 
-    dmol3_pseudopotential_name = Quantity(
+    x_dmol3_pseudopotential_name = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 pseudopotential name
         ''')
 
-    dmol3_rcut = Quantity(
+    x_dmol3_rcut = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 atom R_cut
         ''')
 
-    dmol3_scf_charge_mixing = Quantity(
+    x_dmol3_scf_charge_mixing = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 SCF_Charge_Mixing
         ''')
 
-    dmol3_scf_density_convergence = Quantity(
+    x_dmol3_scf_density_convergence = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 SCF_Density_Convergence
         ''')
 
-    dmol3_scf_diis_name = Quantity(
+    x_dmol3_scf_diis_name = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 SCF_DIIS name
         ''')
 
-    dmol3_scf_diis_number = Quantity(
+    x_dmol3_scf_diis_number = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 SCF_DIIS number
         ''')
 
-    dmol3_scf_direct = Quantity(
+    x_dmol3_scf_direct = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 SCF_Direct
         ''')
 
-    dmol3_scf_iterations = Quantity(
+    x_dmol3_scf_iterations = Quantity(
         type=np.dtype(np.int32),
         shape=[],
         description='''
         dmol3 SCF_Iterations
         ''')
 
-    dmol3_scf_number_bad_steps = Quantity(
+    x_dmol3_scf_number_bad_steps = Quantity(
         type=np.dtype(np.int32),
         shape=[],
         description='''
         dmol3 SCF_Number_Bad_Steps
         ''')
 
-    dmol3_scf_restart = Quantity(
+    x_dmol3_scf_restart = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 SCF_Restart
         ''')
 
-    dmol3_scf_spin_mixing = Quantity(
+    x_dmol3_scf_spin_mixing = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 SCF_Spin_Mixing
         ''')
 
-    dmol3_spin_polarization = Quantity(
+    x_dmol3_spin_polarization = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 spin polarization
         ''')
 
-    dmol3_spin = Quantity(
+    x_dmol3_spin = Quantity(
         type=np.dtype(np.int32),
         shape=[],
         description='''
         dmol3 number of unpaired electrons
         ''')
 
-    dmol3_symmetry = Quantity(
+    x_dmol3_symmetry = Quantity(
         type=str,
         shape=[],
         description='''
@@ -340,7 +340,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    dmol3_binding_energy_scf_iteration = Quantity(
+    x_dmol3_binding_energy_scf_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -348,21 +348,21 @@ class ScfIteration(simulation.calculation.ScfIteration):
         dmol3 binding energy at every SCF
         ''')
 
-    dmol3_convergence_scf_iteration = Quantity(
+    x_dmol3_convergence_scf_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
         dmol3 convergence at every SCF
         ''')
 
-    dmol3_number_scf_iteration = Quantity(
+    x_dmol3_number_scf_iteration = Quantity(
         type=np.dtype(np.int32),
         shape=[],
         description='''
         dmol3 iteration number at every SCF
         ''')
 
-    dmol3_time_scf_iteration = Quantity(
+    x_dmol3_time_scf_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
@@ -374,7 +374,7 @@ class BandEnergies(simulation.calculation.BandEnergies):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    dmol3_eigenvalue_eigenvalue = Quantity(
+    x_dmol3_eigenvalue_eigenvalue = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -382,7 +382,7 @@ class BandEnergies(simulation.calculation.BandEnergies):
         Single eigenvalue
         ''')
 
-    dmol3_eigenvalue_occupation = Quantity(
+    x_dmol3_eigenvalue_occupation = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''
@@ -394,14 +394,14 @@ class System(simulation.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    dmol3_geometry_atom_labels = Quantity(
+    x_dmol3_geometry_atom_labels = Quantity(
         type=str,
         shape=[],
         description='''
         labels of atom
         ''')
 
-    dmol3_geometry_atom_positions_x = Quantity(
+    x_dmol3_geometry_atom_positions_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='meter',
@@ -409,7 +409,7 @@ class System(simulation.system.System):
         x component of atomic position
         ''')
 
-    dmol3_geometry_atom_positions_y = Quantity(
+    x_dmol3_geometry_atom_positions_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='meter',
@@ -417,7 +417,7 @@ class System(simulation.system.System):
         y component of atomic position
         ''')
 
-    dmol3_geometry_atom_positions_z = Quantity(
+    x_dmol3_geometry_atom_positions_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='meter',
@@ -426,22 +426,26 @@ class System(simulation.system.System):
         ''')
 
 
-class Run(simulation.run.Run):
+class Program(simulation.run.Program):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    dmol3_program_compilation_date = Quantity(
+    x_dmol3_compilation_date = Quantity(
         type=str,
         shape=[],
         description='''
         dmol3 compilation date
         ''')
 
-    dmol3_program_compilation_time = Quantity(
-        type=str,
-        shape=[],
+
+class Energy(simulation.calculation.Energy):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_dmol3_binding = SubSection(
+        sub_section=simulation.calculation.EnergyEntry.m_def,
         description='''
-        dmol compilation date
+        Binding energy.
         ''')
 
 
@@ -449,10 +453,139 @@ class Calculation(simulation.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    dmol3_section_hirshfeld_population = SubSection(
-        sub_section=SectionProxy('dmol3_section_hirshfeld_population'),
+    x_dmol3_h_trans = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='kcal/mol',
+        description='''
+        ''')
+
+    x_dmol3_h_rot = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='kcal/mol',
+        description='''
+        ''')
+
+    x_dmol3_h_pv = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='kcal/mol',
+        description='''
+        ''')
+
+    x_dmol3_h_pv = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='kcal/mol',
+        description='''
+        ''')
+
+    x_dmol3_h_vib_minus_zpve = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='kcal/mol',
+        description='''
+        ''')
+
+    x_dmol3_s_trans = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='cal/mol/K',
+        description='''
+        ''')
+
+    x_dmol3_s_rot = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='cal/mol/K',
+        description='''
+        ''')
+
+    x_dmol3_s_vib = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='cal/mol/K',
+        description='''
+        ''')
+
+    x_dmol3_c_trans = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='cal/mol/K',
+        description='''
+        ''')
+
+    x_dmol3_c_rot = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='cal/mol/K',
+        description='''
+        ''')
+
+    x_dmol3_c_vib = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='cal/mol/K',
+        description='''
+        ''')
+
+    x_dmol3_c_total = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='cal/mol/K',
+        description='''
+        ''')
+
+    x_dmol3_h_total_minus_zpve = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='kcal/mol',
+        description='''
+        ''')
+
+    x_dmol3_s_total = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='cal/mol/K',
+        description='''
+        ''')
+
+    x_dmol3_c_total = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='cal/mol/K',
+        description='''
+        ''')
+
+    x_dmol3_gibbs_total = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='kcal/mol',
+        description='''
+        ''')
+
+    x_dmol3_section_hirshfeld_population = SubSection(
+        sub_section=SectionProxy('x_dmol3_section_hirshfeld_population'),
         repeats=True)
 
-    dmol3_section_mulliken_population = SubSection(
-        sub_section=SectionProxy('dmol3_section_mulliken_population'),
+    x_dmol3_section_mulliken_population = SubSection(
+        sub_section=SectionProxy('x_dmol3_section_mulliken_population'),
         repeats=True)
+
+
+class Vibrations(simulation.calculation.Vibrations):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    n_atoms = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        ''')
+
+    x_dmol3_normal_modes = Quantity(
+        type=np.dtype(np.float64),
+        shape=['n_frequencies', 'n_atoms', 3],
+        description='''
+        ''')
