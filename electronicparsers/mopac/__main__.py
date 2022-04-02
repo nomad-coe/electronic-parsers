@@ -22,7 +22,7 @@ import logging
 
 from nomad.utils import configure_logging
 from nomad.datamodel import EntryArchive
-from atomisticparsers.mopac import MopacParser
+from electronicparsers.mopac import MopacParser
 
 if __name__ == "__main__":
     configure_logging(console_log_level=logging.DEBUG)

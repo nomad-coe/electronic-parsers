@@ -168,7 +168,7 @@ class x_elk_section_xc(MSection):
         ''')
 
 
-class System(simulation.system.System):
+class Method(simulation.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -230,6 +230,12 @@ class System(simulation.system.System):
         shape=[],
         description='''
         number k-points z
+        ''')
+
+    x_elk_kpoints_grid = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
         ''')
 
     x_elk_number_kpoints = Quantity(
@@ -411,32 +417,11 @@ class System(simulation.system.System):
         repeats=True)
 
 
-class ScfIteration(simulation.calculation.ScfIteration):
+class Energy(simulation.calculation.Energy):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_elk_core_charge_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Core charge scf iteration
-        ''')
-
-    x_elk_valence_charge_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Valence charge scf iteration
-        ''')
-
-    x_elk_interstitial_charge_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Interstitial charge scf iteration
-        ''')
-
-    x_elk_fermi_energy_scf_iteration = Quantity(
+    x_elk_fermi_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -444,7 +429,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         Fermi energy
         ''')
 
-    x_elk_core_electron_kinetic_energy_scf_iteration = Quantity(
+    x_elk_core_electron_kinetic_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -452,7 +437,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         Core-electron kinetic energy
         ''')
 
-    x_elk_coulomb_energy_scf_iteration = Quantity(
+    x_elk_coulomb_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -460,7 +445,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         Coulomb energy
         ''')
 
-    x_elk_coulomb_potential_energy_scf_iteration = Quantity(
+    x_elk_coulomb_potential_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -468,7 +453,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         Coulomb potential energy
         ''')
 
-    x_elk_nuclear_nuclear_energy_scf_iteration = Quantity(
+    x_elk_nuclear_nuclear_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -476,7 +461,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         Nuclear-nuclear energy
         ''')
 
-    x_elk_electron_nuclear_energy_scf_iteration = Quantity(
+    x_elk_electron_nuclear_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -484,7 +469,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         Electron-nuclear energy
         ''')
 
-    x_elk_hartree_energy_scf_iteration = Quantity(
+    x_elk_hartree_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -492,7 +477,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         Hartree energy
         ''')
 
-    x_elk_madelung_energy_scf_iteration = Quantity(
+    x_elk_madelung_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -500,7 +485,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         Madelung energy
         ''')
 
-    x_elk_exchange_energy_scf_iteration = Quantity(
+    x_elk_exchange_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -508,7 +493,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         Exchange energy
         ''')
 
-    x_elk_correlation_energy_scf_iteration = Quantity(
+    x_elk_correlation_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -516,7 +501,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         Correlation energy
         ''')
 
-    x_elk_electron_entropic_energy_scf_iteration = Quantity(
+    x_elk_electron_entropic_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         unit='joule',
@@ -546,6 +531,32 @@ class ScfIteration(simulation.calculation.ScfIteration):
         unit='joule',
         description='''
         Estimated fundamental indirect gap
+        ''')
+
+
+class Charges(simulation.calculation.Charges):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_elk_core_charge = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        Core charge scf iteration
+        ''')
+
+    x_elk_valence_charge = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        Valence charge scf iteration
+        ''')
+
+    x_elk_interstitial_charge = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        Interstitial charge scf iteration
         ''')
 
 
