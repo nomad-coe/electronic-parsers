@@ -456,112 +456,112 @@ class Calculation(simulation.calculation.Calculation):
     x_dmol3_h_trans = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='kcal/mol',
+        # unit='kcal/mol',
         description='''
         ''')
 
     x_dmol3_h_rot = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='kcal/mol',
+        # unit='kcal/mol',
         description='''
         ''')
 
     x_dmol3_h_pv = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='kcal/mol',
+        # unit='kcal/mol',
         description='''
         ''')
 
     x_dmol3_h_pv = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='kcal/mol',
+        # unit='kcal/mol',
         description='''
         ''')
 
     x_dmol3_h_vib_minus_zpve = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='kcal/mol',
+        # unit='kcal/mol',
         description='''
         ''')
 
     x_dmol3_s_trans = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='cal/mol/K',
+        # unit='cal/mol/K',
         description='''
         ''')
 
     x_dmol3_s_rot = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='cal/mol/K',
+        # unit='cal/mol/K',
         description='''
         ''')
 
     x_dmol3_s_vib = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='cal/mol/K',
+        # unit='cal/mol/K',
         description='''
         ''')
 
     x_dmol3_c_trans = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='cal/mol/K',
+        # unit='cal/mol/K',
         description='''
         ''')
 
     x_dmol3_c_rot = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='cal/mol/K',
+        # unit='cal/mol/K',
         description='''
         ''')
 
     x_dmol3_c_vib = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='cal/mol/K',
+        # unit='cal/mol/K',
         description='''
         ''')
 
     x_dmol3_c_total = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='cal/mol/K',
+        # unit='cal/mol/K',
         description='''
         ''')
 
     x_dmol3_h_total_minus_zpve = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='kcal/mol',
+        # unit='kcal/mol',
         description='''
         ''')
 
     x_dmol3_s_total = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='cal/mol/K',
+        # unit='cal/mol/K',
         description='''
         ''')
 
     x_dmol3_c_total = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='cal/mol/K',
+        # unit='cal/mol/K',
         description='''
         ''')
 
     x_dmol3_gibbs_total = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='kcal/mol',
+        # unit='kcal/mol',
         description='''
         ''')
 

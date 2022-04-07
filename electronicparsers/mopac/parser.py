@@ -68,7 +68,7 @@ class MainfileParser(TextParser):
             Quantity(
                 'x_mopac_fhof',
                 rf'FINAL HEAT OF FORMATION += +({re_f}) KCAL/MOL',
-                dtype=np.float64, unit=ureg.kcal / MOL
+                dtype=np.float64, unit=ureg.J * 4184.0 / MOL
             ),
             Quantity(
                 'energy_total',
@@ -179,7 +179,7 @@ class MopacParser:
         forces = self.mainfile_parser.forces
         if forces is not None:
             sec_calc.forces = Forces(total=ForcesEntry(
-                value=np.reshape(forces, (len(sec_system.atoms.labels), 3)) * ureg.kcal / ureg.angstrom / MOL)
+                value=np.reshape(forces, (len(sec_system.atoms.labels), 3)) * ureg.J * 4184.0 / ureg.angstrom / MOL)
             )
 
         eigenvalues = self.mainfile_parser.eigenvalues

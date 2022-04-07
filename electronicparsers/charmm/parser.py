@@ -40,7 +40,7 @@ class CharmmParser:
 
         self._parser = BasicParser(
             'Charmm',
-            units_mapping=dict(length=ureg.angstrom, energy=ureg.kcal / 6.02214076e+23),
+            units_mapping=dict(length=ureg.angstrom, energy=ureg.J * 4184.0 / 6.02214076e+23),
             auxilliary_files=r'\/*([a-z][\w\-]+.crd)',
             program_version=r'\(CHARMM\) \- (.+Version[\w \,]+?\d\d\d\d)',
             atom_labels_atom_positions=(

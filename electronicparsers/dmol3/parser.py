@@ -418,7 +418,7 @@ class Dmol3Parser:
                 for key, val in source.thermodynamic_quantities.items():
                     if key == 'energy_zero_point':
                         target.energy.zero_point = EnergyEntry(
-                            value=source.thermodynamic_quantities.energy_zero_point * ureg.kcal / MOL)
+                            value=source.thermodynamic_quantities.energy_zero_point * ureg.J * 4184.0 / MOL)
                     else:
                         setattr(target, key, val)
 
@@ -454,7 +454,8 @@ class Dmol3Parser:
                 sec_thermodynamics = sec_workflow.m_create(Thermodynamics)
                 thermo_data = np.transpose(thermo_data)
                 sec_thermodynamics.temperature = thermo_data[1]
-                sec_thermodynamics.entropy = thermo_data[2] * ureg.cal / ureg.K / MOL
-                sec_thermodynamics.heat_capacity_c_p = thermo_data[3] * ureg.cal / ureg.K / MOL
-                sec_thermodynamics.enthalpy = thermo_data[4] * ureg.kcal / MOL
-                sec_thermodynamics.gibbs_free_energy = thermo_data[5] * ureg.kcal / MOL
+                # calorie is not a ureg unit
+                sec_thermodynamics.entropy = thermo_data[2] * ureg.J * 4.184 / ureg.K / MOL
+                sec_thermodynamics.heat_capacity_c_p = thermo_data[3] * ureg.J * 4.184 / ureg.K / MOL
+                sec_thermodynamics.enthalpy = thermo_data[4] * ureg.J * 4184.0 / MOL
+                sec_thermodynamics.gibbs_free_energy = thermo_data[5] * ureg.J * 4184.0 / MOL
