@@ -738,7 +738,9 @@ class AbinitParser:
             if energy is None:
                 continue
             key = key.lstrip('energy_')
-            if hasattr(Energy, key):
+            if key == 'internal':
+                sec_energy.internatl = energy
+            elif hasattr(Energy, key):
                 sec_energy.m_add_sub_section(getattr(Energy, key), EnergyEntry(value=energy))
 
             else:

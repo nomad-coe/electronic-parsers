@@ -35,7 +35,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Thermodynamics, Stress,
     StressEntry, Charges, ChargesValue, ScfIteration, BandStructure, BandEnergies,
-    Vibrations, VibrationsValues
+    VibrationalFrequencies, VibrationalFrequenciesValues
 )
 from nomad.datamodel.metainfo.workflow import (
     Workflow, GeometryOptimization, MolecularDynamics
@@ -988,17 +988,17 @@ class CastepParser:
             # why are vibrational frequencies section under section_run?
             for vibrational_frequencies in source.get('vibrational_frequencies', []):
                 sec_frequencies = sec_run.m_create(x_castep_section_vibrational_frequencies)
-                sec_vibrations = sec_scc.m_create(Vibrations)
+                sec_vibrations = sec_scc.m_create(VibrationalFrequencies)
                 for key, val in vibrational_frequencies.items():
                     if key == 'vibrational_frequencies':
                         sec_vibrations.value = val * (1 / ureg.cm)
                     elif key == 'ir_intensity':
-                        sec_ir = sec_vibrations.m_create(VibrationsValues, Vibrations.infrared)
+                        sec_ir = sec_vibrations.m_create(VibrationalFrequenciesValues, VibrationalFrequencies.infrared)
                         sec_ir.intensity = val
                         if vibrational_frequencies.get('ir_active') is not None:
                             sec_ir.activity = vibrational_frequencies.get('ir_active')
                     elif key == 'raman_activity':
-                        sec_raman = sec_vibrations.m_create(VibrationsValues, Vibrations.raman)
+                        sec_raman = sec_vibrations.m_create(VibrationalFrequenciesValues, VibrationalFrequencies.raman)
                         sec_raman.intensity = val
                         if vibrational_frequencies.get('raman_active') is not None:
                             sec_raman.activity = vibrational_frequencies.get('raman_active')

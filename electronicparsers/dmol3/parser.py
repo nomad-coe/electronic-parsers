@@ -30,7 +30,7 @@ from nomad.datamodel.metainfo.simulation.method import Method, BasisSet
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, BandEnergies, Charges, Multipoles,
-    MultipolesEntry, Vibrations
+    MultipolesEntry, VibrationalFrequencies
 )
 from nomad.datamodel.metainfo.workflow import Workflow, Thermodynamics, GeometryOptimization
 
@@ -404,7 +404,7 @@ class Dmol3Parser:
 
             # vibrational frequencies
             if source.vibrational_frequencies is not None:
-                sec_vibrations = target.m_create(Vibrations)
+                sec_vibrations = target.m_create(VibrationalFrequencies)
                 sec_vibrations.value = source.vibrational_frequencies
                 # normal modes
                 if source.normal_modes is not None:
