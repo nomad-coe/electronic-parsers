@@ -1,0 +1,55 @@
+System.CurrrentDirectory         ./
+System.Name                      C2H2
+DATA.PATH /usr/local_rwth/sw/OpenMX/3.9/DFT_DATA
+level.of.stdout                   1
+level.of.fileout                  0
+
+Species.Number       2
+<Definition.of.Atomic.Species
+  H   H6.0-s3p2        H_PBE19
+  C   C6.0-s4p3d2      C_PBE19
+Definition.of.Atomic.Species>
+
+
+Atoms.Number         4
+Atoms.SpeciesAndCoordinates.Unit   Ang
+<Atoms.SpeciesAndCoordinates          
+ 1  C   0.6005  0.000  0.000  2.0 2.0
+ 2  C  -0.6005  0.000  0.000  2.0 2.0
+ 3  H   1.8015  0.000  0.000  0.5 0.5
+ 4  H  -1.8015  0.000  0.000  0.5 0.5
+Atoms.SpeciesAndCoordinates>
+
+Atoms.UnitVectors.Unit            AU
+<Atoms.UnitVectors                     
+  40.0   0.0   0.0  
+   0.0  30.0   0.0  
+   0.0   0.0  30.0  
+Atoms.UnitVectors>
+
+scf.XcType                 LDA
+scf.SpinPolarization       off
+scf.ElectronicTemperature  500.0
+scf.energycutoff           250.0
+scf.maxIter                100
+scf.EigenvalueSolver       cluster
+scf.Kgrid                  1 1 1
+scf.Mixing.Type            rmm-diis
+scf.Init.Mixing.Weight     0.10 
+scf.Min.Mixing.Weight      0.001 
+scf.Max.Mixing.Weight      0.400
+scf.Mixing.History         7
+scf.Mixing.StartPulay      5
+scf.criterion              1.0e-8
+
+MD.Type                       NVT_NH
+MD.maxIter                    100
+MD.TimeStep                   0.5
+NH.Mass.HeatBath              10.0
+
+<MD.TempControl
+     3
+     1    300.0
+     50   300.0
+     100  1000.0
+MD.TempControl>

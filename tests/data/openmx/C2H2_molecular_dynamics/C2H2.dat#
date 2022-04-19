@@ -1,0 +1,98 @@
+System.CurrrentDirectory         ./
+System.Name                      C2H2
+DATA.PATH /usr/local_rwth/sw/OpenMX/3.9/DFT_DATA
+level.of.stdout                   1
+level.of.fileout                  0
+
+Species.Number       2
+<Definition.of.Atomic.Species
+  H   H6.0-s3p2        H_PBE19
+  C   C6.0-s4p3d2      C_PBE19
+Definition.of.Atomic.Species>
+
+
+Atoms.Number         4
+Atoms.SpeciesAndCoordinates.Unit   Ang
+<Atoms.SpeciesAndCoordinates          
+   1    C    0.59984876567299    0.00150440950124   -0.05056375345433     2.0     2.0
+   2    C   -0.60604542951011   -0.00793169913130    0.04438476780285     2.0     2.0
+   3    H    1.75095490648504   -0.14567922357631    0.10890581600955     0.5     0.5
+   4    H   -1.74249828972296    0.15103148117509   -0.10354005166848     0.5     0.5
+Atoms.SpeciesAndCoordinates>
+
+Atoms.UnitVectors.Unit  AU
+<Atoms.UnitVectors
+ 40.000000000000000   0.000000000000000   0.000000000000000 
+  0.000000000000000  30.000000000000000   0.000000000000000 
+  0.000000000000000   0.000000000000000  30.000000000000000 
+Atoms.UnitVectors>
+
+scf.XcType                 LDA
+scf.SpinPolarization       off
+scf.ElectronicTemperature  500.0
+scf.energycutoff           250.0
+scf.maxIter                100
+scf.EigenvalueSolver       cluster
+scf.Kgrid                  1 1 1
+scf.Mixing.Type            rmm-diis
+scf.Init.Mixing.Weight     0.10 
+scf.Min.Mixing.Weight      0.001 
+scf.Max.Mixing.Weight      0.400
+scf.Mixing.History         7
+scf.Mixing.StartPulay      5
+scf.criterion              1.0e-8
+
+MD.Type                       NVT_NH
+MD.maxIter                    100
+MD.TimeStep                   0.5
+NH.Mass.HeatBath              10.0
+
+<MD.TempControl
+     3
+     1    300.0
+     50   300.0
+     100  1000.0
+MD.TempControl>
+
+
+scf.restart    on
+
+
+scf.fixed.grid   -19.90000000000000  -14.90000000000000  -14.90000000000000
+
+
+<MD.Init.Velocity
+    1      134.98185204162201   -365.94965424262068     15.95985997966720
+    2      -37.44861618762418    -60.74296793022621   -325.84389864675433
+    3     -358.91190596096175    700.63206611718249   -726.53015156965716
+    4      261.37867010696391   -273.93944394433561   1036.41419023674439
+MD.Init.Velocity>
+
+
+<MD.Init.Velocity.Prev
+    1       21.61703495259437   -353.94303608412707     -5.61709367305507
+    2       -3.65542883659588    -72.59529079840215   -321.12181370601149
+    3      223.02417323271820    601.17252256530242   -612.45589019952752
+    4     -315.74183626044186   -172.37061713169953    924.76433692388196
+MD.Init.Velocity.Prev>
+
+NH.R         0.652428974749874
+NH.nzeta    -0.000140310385108
+NH.czeta    -0.000140310385108
+
+
+MD.Current.Iter  100
+
+
+<Atoms.Unitvectors.Velocity
+  0.0000000000000000000000   0.0000000000000000000000   0.0000000000000000000000 
+  0.0000000000000000000000   0.0000000000000000000000   0.0000000000000000000000 
+  0.0000000000000000000000   0.0000000000000000000000   0.0000000000000000000000 
+Atoms.Unitvectors.Velocity>
+
+
+<NPT.WV.F0
+  0.0000000000000000000000   0.0000000000000000000000   0.0000000000000000000000 
+  0.0000000000000000000000   0.0000000000000000000000   0.0000000000000000000000 
+  0.0000000000000000000000   0.0000000000000000000000   0.0000000000000000000000 
+NPT.WV.F0>

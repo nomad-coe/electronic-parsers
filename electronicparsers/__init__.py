@@ -39,6 +39,7 @@ from .mopac.parser import MopacParser
 from .nwchem.parser import NWChemParser
 from .octopus.parser import OctopusParser
 from .onetep.parser import OnetepParser
+from .openmx.parser import OpenmxParser
 from .orca.parser import OrcaParser
 from .psi4.parser import Psi4Parser
 from .qball.parser import QBallParser

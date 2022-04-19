@@ -1,0 +1,1125 @@
+
+The number of threads in each node for OpenMP parallelization is 1.
+
+
+*******************************************************
+*******************************************************
+ Welcome to OpenMX   Ver. 3.9.2                           
+ Copyright (C), 2002-2019, T. Ozaki                    
+ OpenMX comes with ABSOLUTELY NO WARRANTY.             
+ This is free software, and you are welcome to         
+ redistribute it under the constitution of the GNU-GPL.
+*******************************************************
+*******************************************************
+
+Automatic determination of Kerker_factor:   1.052131942280
+
+
+<Input_std>  Your input file was normally read.
+<Input_std>  The system includes 2 species and 6 atoms.
+
+*******************************************************
+                     PAO and VPS                       
+*******************************************************
+
+<SetPara_DFT>  PAOs of species O were normally found.
+<SetPara_DFT>  PAOs of species Cr were normally found.
+<SetPara_DFT>  VPSs of species O were normally found.
+               O_CA19.vps is j-dependent.
+               In case of scf.SpinOrbit.Coupling=off,
+               j-dependent pseudo potentials are averaged by j-degeneracy,
+               which corresponds to a scalar relativistic treatment.
+<SetPara_DFT>  VPSs of species Cr were normally found.
+               Cr_CA19.vps is j-dependent.
+               In case of scf.SpinOrbit.Coupling=off,
+               j-dependent pseudo potentials are averaged by j-degeneracy,
+               which corresponds to a scalar relativistic treatment.
+
+*******************************************************
+                  DFT+U Type and DC                    
+*******************************************************
+             scf.DFTU.Type: 1 (Simplified)         
+
+*******************************************************
+     Fourier transform of PAO and projectors of VNL    
+*******************************************************
+
+<FT_PAO>          Fourier transform of pseudo atomic orbitals
+<FT_NLP>          Fourier transform of non-local projectors
+<FT_ProExpn_VNA>  Fourier transform of VNA separable projectors
+<FT_VNA>          Fourier transform of VNA potentials
+<FT_ProductPAO>   Fourier transform of product of PAOs
+
+*******************************************************
+  Allocation of atoms to proccesors at MD_iter=    1     
+*******************************************************
+
+ proc =   0  # of atoms=   1  estimated weight=         1.00000
+ proc =   1  # of atoms=   1  estimated weight=         1.00000
+ proc =   2  # of atoms=   1  estimated weight=         1.00000
+ proc =   3  # of atoms=   1  estimated weight=         1.00000
+ proc =   4  # of atoms=   1  estimated weight=         1.00000
+ proc =   5  # of atoms=   1  estimated weight=         1.00000
+ proc =   6  # of atoms=   0  estimated weight=         0.00000
+ proc =   7  # of atoms=   0  estimated weight=         0.00000
+ proc =   8  # of atoms=   0  estimated weight=         0.00000
+ proc =   9  # of atoms=   0  estimated weight=         0.00000
+ proc =  10  # of atoms=   0  estimated weight=         0.00000
+ proc =  11  # of atoms=   0  estimated weight=         0.00000
+ proc =  12  # of atoms=   0  estimated weight=         0.00000
+ proc =  13  # of atoms=   0  estimated weight=         0.00000
+ proc =  14  # of atoms=   0  estimated weight=         0.00000
+ proc =  15  # of atoms=   0  estimated weight=         0.00000
+ proc =  16  # of atoms=   0  estimated weight=         0.00000
+ proc =  17  # of atoms=   0  estimated weight=         0.00000
+ proc =  18  # of atoms=   0  estimated weight=         0.00000
+ proc =  19  # of atoms=   0  estimated weight=         0.00000
+ proc =  20  # of atoms=   0  estimated weight=         0.00000
+ proc =  21  # of atoms=   0  estimated weight=         0.00000
+ proc =  22  # of atoms=   0  estimated weight=         0.00000
+ proc =  23  # of atoms=   0  estimated weight=         0.00000
+
+
+
+
+*******************************************************
+        Analysis of neighbors and setting of grids        
+*******************************************************
+
+TFNAN=     528   Average FNAN=  88.00000
+TSNAN=       0   Average SNAN=   0.00000
+<truncation> CpyCell= 1 ct_AN=   1 FNAN SNAN  88   0
+<truncation> CpyCell= 1 ct_AN=   2 FNAN SNAN  82   0
+<truncation> CpyCell= 1 ct_AN=   3 FNAN SNAN  89   0
+<truncation> CpyCell= 1 ct_AN=   4 FNAN SNAN  89   0
+<truncation> CpyCell= 1 ct_AN=   5 FNAN SNAN  91   0
+<truncation> CpyCell= 1 ct_AN=   6 FNAN SNAN  89   0
+TFNAN=     640   Average FNAN= 106.66667
+TSNAN=       0   Average SNAN=   0.00000
+<truncation> CpyCell= 2 ct_AN=   1 FNAN SNAN 104   0
+<truncation> CpyCell= 2 ct_AN=   2 FNAN SNAN 104   0
+<truncation> CpyCell= 2 ct_AN=   3 FNAN SNAN 108   0
+<truncation> CpyCell= 2 ct_AN=   4 FNAN SNAN 108   0
+<truncation> CpyCell= 2 ct_AN=   5 FNAN SNAN 108   0
+<truncation> CpyCell= 2 ct_AN=   6 FNAN SNAN 108   0
+TFNAN=     640   Average FNAN= 106.66667
+TSNAN=       0   Average SNAN=   0.00000
+<truncation> CpyCell= 3 ct_AN=   1 FNAN SNAN 104   0
+<truncation> CpyCell= 3 ct_AN=   2 FNAN SNAN 104   0
+<truncation> CpyCell= 3 ct_AN=   3 FNAN SNAN 108   0
+<truncation> CpyCell= 3 ct_AN=   4 FNAN SNAN 108   0
+<truncation> CpyCell= 3 ct_AN=   5 FNAN SNAN 108   0
+<truncation> CpyCell= 3 ct_AN=   6 FNAN SNAN 108   0
+TFNAN=     640   Average FNAN= 106.66667
+TSNAN=       0   Average SNAN=   0.00000
+<truncation> CpyCell= 3 ct_AN=   1 FNAN SNAN 104   0
+<truncation> CpyCell= 3 ct_AN=   2 FNAN SNAN 104   0
+<truncation> CpyCell= 3 ct_AN=   3 FNAN SNAN 108   0
+<truncation> CpyCell= 3 ct_AN=   4 FNAN SNAN 108   0
+<truncation> CpyCell= 3 ct_AN=   5 FNAN SNAN 108   0
+<truncation> CpyCell= 3 ct_AN=   6 FNAN SNAN 108   0
+<Check_System> The system is bulk.
+lattice vectors (bohr)
+A  =  8.333687800000,  0.000000000000,  0.000000000000
+B  =  0.000000000000,  8.333687800000,  0.000000000000
+C  =  0.000000000000,  0.000000000000,  5.499100700000
+reciprocal lattice vectors (bohr^-1)
+RA =  0.753950166837,  0.000000000000,  0.000000000000
+RB =  0.000000000000,  0.753950166837,  0.000000000000
+RC =  0.000000000000,  0.000000000000,  1.142584151474
+Grid_Origin -0.590302873258 -0.590302873258 -1.264793151740
+Cell_Volume =    381.914481211412 (Bohr^3)
+GridVol     =      0.009547862030 (Bohr^3)
+Grid_Origin -0.590302873258 -0.590302873258 -1.264793151740
+Cell_Volume =    381.914481211412 (Bohr^3)
+GridVol     =      0.009547862030 (Bohr^3)
+<UCell_Box> Info. of cutoff energy and num. of grids
+lattice vectors (bohr)
+A  =  8.333687800000,  0.000000000000,  0.000000000000
+B  =  0.000000000000,  8.333687800000,  0.000000000000
+C  =  0.000000000000,  0.000000000000,  5.499100700000
+reciprocal lattice vectors (bohr^-1)
+RA =  0.753950166837,  0.000000000000,  0.000000000000
+RB =  0.000000000000,  0.753950166837,  0.000000000000
+RC =  0.000000000000,  0.000000000000,  1.142584151474
+Required cutoff energy (Ryd) for 3D-grids = 220.0000
+    Used cutoff energy (Ryd) for 3D-grids = 227.3763, 227.3763, 203.9841
+Num. of grids of a-, b-, and c-axes = 40, 40, 25
+Grid_Origin -0.590302873258 -0.590302873258 -1.264793151740
+Cell_Volume =    381.914481211412 (Bohr^3)
+GridVol     =      0.009547862030 (Bohr^3)
+Cell vectors (bohr) of the grid cell (gtv)
+  gtv_a =  0.208342195000,  0.000000000000,  0.000000000000
+  gtv_b =  0.000000000000,  0.208342195000,  0.000000000000
+  gtv_c =  0.000000000000,  0.000000000000,  0.219964028000
+  |gtv_a| =  0.208342195000
+  |gtv_b| =  0.208342195000
+  |gtv_c| =  0.219964028000
+Num. of grids overlapping with atom    1 = 94773
+Num. of grids overlapping with atom    2 = 94773
+Num. of grids overlapping with atom    3 = 94773
+Num. of grids overlapping with atom    4 = 94773
+Num. of grids overlapping with atom    5 = 94773
+Num. of grids overlapping with atom    6 = 94773
+
+*******************************************************
+             SCF calculation at MD = 1                
+*******************************************************
+
+<MD= 1>  Calculation of the overlap matrix
+<MD= 1>  Calculation of the nonlocal matrix
+<MD= 1>  Calculation of the VNA projector matrix
+
+******************* MD= 1  SCF= 1 *******************
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.141913
+<Band_DFT>  DM, time=0.363585
+    1   Cr  MulP   7.1447   4.7828 sum  11.9275 diff   2.3619
+    2   Cr  MulP   7.1446   4.7828 sum  11.9274 diff   2.3618
+    3    O  MulP   3.4277   3.6086 sum   7.0363 diff  -0.1809
+    4    O  MulP   3.4277   3.6086 sum   7.0363 diff  -0.1809
+    5    O  MulP   3.4277   3.6086 sum   7.0363 diff  -0.1809
+    6    O  MulP   3.4277   3.6086 sum   7.0363 diff  -0.1809
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000000660
+<DFT>  Mixing_weight= 0.010000000000
+<DFT>  Uele   =  -52.153535047549  dUele     =   1.000000000000
+<DFT>  NormRD =    1.000000000000  Criterion =   0.000000100000
+
+******************* MD= 1  SCF= 2 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.122679
+<Band_DFT>  DM, time=0.361146
+    1   Cr  MulP   7.0002   4.5505 sum  11.5508 diff   2.4497
+    2   Cr  MulP   7.0002   4.5505 sum  11.5507 diff   2.4497
+    3    O  MulP   3.4999   3.7247 sum   7.2246 diff  -0.2248
+    4    O  MulP   3.4999   3.7247 sum   7.2246 diff  -0.2248
+    5    O  MulP   3.4999   3.7247 sum   7.2246 diff  -0.2248
+    6    O  MulP   3.4999   3.7247 sum   7.2246 diff  -0.2248
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003531
+<DFT>  Mixing_weight= 0.001000000000
+<DFT>  Uele   =  -52.383289776217  dUele     =   0.229754728669
+<DFT>  NormRD =   13.315418287030  Criterion =   0.000000100000
+
+******************* MD= 1  SCF= 3 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.114280
+<Band_DFT>  DM, time=0.360879
+    1   Cr  MulP   6.9821   4.5523 sum  11.5344 diff   2.4298
+    2   Cr  MulP   6.9821   4.5523 sum  11.5344 diff   2.4298
+    3    O  MulP   3.5090   3.7238 sum   7.2328 diff  -0.2149
+    4    O  MulP   3.5090   3.7238 sum   7.2328 diff  -0.2149
+    5    O  MulP   3.5090   3.7238 sum   7.2328 diff  -0.2149
+    6    O  MulP   3.5090   3.7238 sum   7.2328 diff  -0.2149
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003003
+<DFT>  Mixing_weight= 0.001000000000
+<DFT>  Uele   =  -52.374083709739  dUele     =   0.009206066479
+<DFT>  NormRD =   13.351630883161  Criterion =   0.000000100000
+
+******************* MD= 1  SCF= 4 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.121775
+<Band_DFT>  DM, time=0.361456
+    1   Cr  MulP   6.9759   4.5541 sum  11.5300 diff   2.4218
+    2   Cr  MulP   6.9759   4.5541 sum  11.5300 diff   2.4219
+    3    O  MulP   3.5120   3.7230 sum   7.2350 diff  -0.2109
+    4    O  MulP   3.5120   3.7230 sum   7.2350 diff  -0.2109
+    5    O  MulP   3.5120   3.7230 sum   7.2350 diff  -0.2109
+    6    O  MulP   3.5120   3.7230 sum   7.2350 diff  -0.2109
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003447
+<DFT>  Mixing_weight= 0.001000000000
+<DFT>  Uele   =  -52.375509072664  dUele     =   0.001425362926
+<DFT>  NormRD =   13.356855534408  Criterion =   0.000000100000
+
+******************* MD= 1  SCF= 5 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.113365
+<Band_DFT>  DM, time=0.360567
+    1   Cr  MulP   6.9780   4.5559 sum  11.5339 diff   2.4222
+    2   Cr  MulP   6.9781   4.5559 sum  11.5339 diff   2.4222
+    3    O  MulP   3.5110   3.7221 sum   7.2330 diff  -0.2111
+    4    O  MulP   3.5110   3.7221 sum   7.2330 diff  -0.2111
+    5    O  MulP   3.5110   3.7221 sum   7.2330 diff  -0.2111
+    6    O  MulP   3.5110   3.7221 sum   7.2330 diff  -0.2111
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003002
+<DFT>  Mixing_weight= 0.300000000000
+<DFT>  Uele   =  -52.375234693941  dUele     =   0.000274378724
+<DFT>  NormRD =   13.335525781405  Criterion =   0.000000100000
+
+******************* MD= 1  SCF= 6 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.135513
+<Band_DFT>  DM, time=0.364712
+    1   Cr  MulP   8.2678   5.2561 sum  13.5239 diff   3.0117
+    2   Cr  MulP   8.2678   5.2561 sum  13.5239 diff   3.0117
+    3    O  MulP   2.8819   3.3562 sum   6.2381 diff  -0.4742
+    4    O  MulP   2.8819   3.3562 sum   6.2381 diff  -0.4742
+    5    O  MulP   2.8819   3.3562 sum   6.2381 diff  -0.4743
+    6    O  MulP   2.8819   3.3561 sum   6.2380 diff  -0.4743
+ Sum of MulP: up   =    28.06320 down          =    23.93680
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.126409303885
+<DFT>  Mixing_weight= 0.300000000000
+<DFT>  Uele   =  -53.376770935376  dUele     =   1.001536241436
+<DFT>  NormRD =    6.567126615542  Criterion =   0.000000100000
+
+******************* MD= 1  SCF= 7 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.139080
+<Band_DFT>  DM, time=0.362261
+    1   Cr  MulP   8.2456   5.0920 sum  13.3376 diff   3.1536
+    2   Cr  MulP   8.2456   5.0920 sum  13.3376 diff   3.1536
+    3    O  MulP   2.8787   3.4525 sum   6.3312 diff  -0.5737
+    4    O  MulP   2.8787   3.4525 sum   6.3312 diff  -0.5737
+    5    O  MulP   2.8787   3.4525 sum   6.3312 diff  -0.5737
+    6    O  MulP   2.8787   3.4525 sum   6.3312 diff  -0.5737
+ Sum of MulP: up   =    28.00610 down          =    23.99390
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.012196909588
+<DFT>  Mixing_weight= 0.300000000000
+<DFT>  Uele   =  -52.930323108351  dUele     =   0.446447827025
+<DFT>  NormRD =    4.881297680095  Criterion =   0.000000100000
+
+******************* MD= 1  SCF= 8 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.137283
+<Band_DFT>  DM, time=0.361332
+    1   Cr  MulP   8.3973   5.0806 sum  13.4779 diff   3.3167
+    2   Cr  MulP   8.3973   5.0806 sum  13.4779 diff   3.3167
+    3    O  MulP   2.8043   3.4568 sum   6.2611 diff  -0.6524
+    4    O  MulP   2.8043   3.4568 sum   6.2611 diff  -0.6524
+    5    O  MulP   2.8043   3.4568 sum   6.2610 diff  -0.6525
+    6    O  MulP   2.8043   3.4568 sum   6.2610 diff  -0.6525
+ Sum of MulP: up   =    28.01173 down          =    23.98827
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.023453727100
+<DFT>  Mixing_weight= 0.300000000000
+<DFT>  Uele   =  -52.801084882853  dUele     =   0.129238225498
+<DFT>  NormRD =    3.836973214769  Criterion =   0.000000100000
+
+******************* MD= 1  SCF= 9 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.138712
+<Band_DFT>  DM, time=0.360540
+    1   Cr  MulP   8.2658   4.9961 sum  13.2619 diff   3.2697
+    2   Cr  MulP   8.2658   4.9961 sum  13.2619 diff   3.2697
+    3    O  MulP   2.8671   3.5019 sum   6.3691 diff  -0.6348
+    4    O  MulP   2.8671   3.5019 sum   6.3691 diff  -0.6348
+    5    O  MulP   2.8671   3.5020 sum   6.3690 diff  -0.6349
+    6    O  MulP   2.8671   3.5020 sum   6.3691 diff  -0.6348
+ Sum of MulP: up   =    28.00002 down          =    23.99998
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000033880093
+<DFT>  Mixing_weight= 0.300000000000
+<DFT>  Uele   =  -52.477679715417  dUele     =   0.323405167437
+<DFT>  NormRD =    3.248728071068  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=10 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.137844
+<Band_DFT>  DM, time=0.361091
+    1   Cr  MulP   8.1901   5.0975 sum  13.2876 diff   3.0927
+    2   Cr  MulP   8.1901   5.0975 sum  13.2876 diff   3.0927
+    3    O  MulP   2.9049   3.4512 sum   6.3562 diff  -0.5463
+    4    O  MulP   2.9049   3.4512 sum   6.3562 diff  -0.5463
+    5    O  MulP   2.9049   3.4513 sum   6.3562 diff  -0.5463
+    6    O  MulP   2.9049   3.4513 sum   6.3562 diff  -0.5464
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000175720
+<DFT>  Mixing_weight= 0.300000000000
+<DFT>  Uele   =  -52.373169481386  dUele     =   0.104510234031
+<DFT>  NormRD =    2.360112534210  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=11 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.139024
+<Band_DFT>  DM, time=0.362313
+    1   Cr  MulP   8.1796   5.1345 sum  13.3140 diff   3.0451
+    2   Cr  MulP   8.1796   5.1345 sum  13.3140 diff   3.0451
+    3    O  MulP   2.9102   3.4328 sum   6.3430 diff  -0.5225
+    4    O  MulP   2.9102   3.4328 sum   6.3430 diff  -0.5225
+    5    O  MulP   2.9101   3.4328 sum   6.3429 diff  -0.5226
+    6    O  MulP   2.9102   3.4328 sum   6.3430 diff  -0.5225
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000028901
+<DFT>  Mixing_weight= 0.300000000000
+<DFT>  Uele   =  -52.394228048890  dUele     =   0.021058567505
+<DFT>  NormRD =    1.764050088828  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=12 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.137259
+<Band_DFT>  DM, time=0.360245
+    1   Cr  MulP   8.1682   5.1476 sum  13.3158 diff   3.0206
+    2   Cr  MulP   8.1682   5.1476 sum  13.3158 diff   3.0206
+    3    O  MulP   2.9159   3.4262 sum   6.3421 diff  -0.5103
+    4    O  MulP   2.9159   3.4262 sum   6.3421 diff  -0.5103
+    5    O  MulP   2.9159   3.4262 sum   6.3422 diff  -0.5103
+    6    O  MulP   2.9158   3.4262 sum   6.3420 diff  -0.5104
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000008914
+<DFT>  Mixing_weight= 0.300000000000
+<DFT>  Uele   =  -52.404934187974  dUele     =   0.010706139084
+<DFT>  NormRD =    1.342887875274  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=13 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.138939
+<Band_DFT>  DM, time=0.360755
+    1   Cr  MulP   8.1590   5.1559 sum  13.3149 diff   3.0031
+    2   Cr  MulP   8.1590   5.1559 sum  13.3149 diff   3.0031
+    3    O  MulP   2.9205   3.4220 sum   6.3425 diff  -0.5015
+    4    O  MulP   2.9205   3.4220 sum   6.3426 diff  -0.5015
+    5    O  MulP   2.9204   3.4221 sum   6.3424 diff  -0.5017
+    6    O  MulP   2.9206   3.4221 sum   6.3427 diff  -0.5015
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000004704
+<DFT>  Mixing_weight= 0.300000000000
+<DFT>  Uele   =  -52.413362068278  dUele     =   0.008427880304
+<DFT>  NormRD =    1.027340441907  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=14 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.138372
+<Band_DFT>  DM, time=0.362484
+    1   Cr  MulP   8.1521   5.1629 sum  13.3149 diff   2.9892
+    2   Cr  MulP   8.1521   5.1628 sum  13.3149 diff   2.9892
+    3    O  MulP   2.9240   3.4186 sum   6.3425 diff  -0.4946
+    4    O  MulP   2.9240   3.4186 sum   6.3425 diff  -0.4946
+    5    O  MulP   2.9241   3.4186 sum   6.3427 diff  -0.4945
+    6    O  MulP   2.9238   3.4186 sum   6.3424 diff  -0.4948
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003442
+<DFT>  Mixing_weight= 0.300000000000
+<DFT>  Uele   =  -52.421058541885  dUele     =   0.007696473607
+<DFT>  NormRD =    0.789056138034  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=15 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.136907
+<Band_DFT>  DM, time=0.360500
+    1   Cr  MulP   8.1462   5.1686 sum  13.3148 diff   2.9776
+    2   Cr  MulP   8.1462   5.1686 sum  13.3148 diff   2.9776
+    3    O  MulP   2.9269   3.4157 sum   6.3426 diff  -0.4888
+    4    O  MulP   2.9269   3.4157 sum   6.3426 diff  -0.4888
+    5    O  MulP   2.9267   3.4157 sum   6.3424 diff  -0.4890
+    6    O  MulP   2.9271   3.4158 sum   6.3429 diff  -0.4887
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000002946
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.427153756760  dUele     =   0.006095214875
+<DFT>  NormRD =    0.430997379618  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=16 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.136194
+<Band_DFT>  DM, time=0.360955
+    1   Cr  MulP   8.1315   5.1839 sum  13.3154 diff   2.9475
+    2   Cr  MulP   8.1315   5.1839 sum  13.3154 diff   2.9475
+    3    O  MulP   2.9346   3.4081 sum   6.3427 diff  -0.4735
+    4    O  MulP   2.9340   3.4080 sum   6.3420 diff  -0.4740
+    5    O  MulP   2.9391   3.4091 sum   6.3482 diff  -0.4699
+    6    O  MulP   2.9294   3.4070 sum   6.3364 diff  -0.4776
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003323
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.452314412385  dUele     =   0.025160655625
+<DFT>  NormRD =    0.053819729040  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=17 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.138427
+<Band_DFT>  DM, time=0.361080
+    1   Cr  MulP   8.1222   5.1892 sum  13.3114 diff   2.9330
+    2   Cr  MulP   8.1223   5.1892 sum  13.3115 diff   2.9331
+    3    O  MulP   2.9377   3.4051 sum   6.3428 diff  -0.4675
+    4    O  MulP   2.9402   3.4057 sum   6.3458 diff  -0.4655
+    5    O  MulP   2.9177   3.4009 sum   6.3186 diff  -0.4832
+    6    O  MulP   2.9599   3.4099 sum   6.3698 diff  -0.4501
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003020
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.450931102010  dUele     =   0.001383310375
+<DFT>  NormRD =    0.095450042501  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=18 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.139196
+<Band_DFT>  DM, time=0.360959
+    1   Cr  MulP   8.1201   5.1914 sum  13.3115 diff   2.9287
+    2   Cr  MulP   8.1201   5.1914 sum  13.3115 diff   2.9287
+    3    O  MulP   2.9402   3.4043 sum   6.3445 diff  -0.4642
+    4    O  MulP   2.9397   3.4042 sum   6.3439 diff  -0.4645
+    5    O  MulP   2.9442   3.4052 sum   6.3494 diff  -0.4611
+    6    O  MulP   2.9357   3.4034 sum   6.3392 diff  -0.4677
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003055
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.452329939728  dUele     =   0.001398837718
+<DFT>  NormRD =    0.044846145954  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=19 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.139605
+<Band_DFT>  DM, time=0.362879
+    1   Cr  MulP   8.1233   5.1986 sum  13.3219 diff   2.9247
+    2   Cr  MulP   8.1233   5.1986 sum  13.3219 diff   2.9247
+    3    O  MulP   2.9384   3.4007 sum   6.3391 diff  -0.4623
+    4    O  MulP   2.9384   3.4007 sum   6.3391 diff  -0.4623
+    5    O  MulP   2.9385   3.4008 sum   6.3393 diff  -0.4622
+    6    O  MulP   2.9381   3.4007 sum   6.3387 diff  -0.4626
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003480
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.466023257890  dUele     =   0.013693318163
+<DFT>  NormRD =    0.028958721235  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=20 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.138892
+<Band_DFT>  DM, time=0.360969
+    1   Cr  MulP   8.1116   5.1952 sum  13.3068 diff   2.9164
+    2   Cr  MulP   8.1116   5.1952 sum  13.3068 diff   2.9164
+    3    O  MulP   2.9443   3.4024 sum   6.3466 diff  -0.4581
+    4    O  MulP   2.9441   3.4024 sum   6.3465 diff  -0.4582
+    5    O  MulP   2.9448   3.4025 sum   6.3473 diff  -0.4578
+    6    O  MulP   2.9437   3.4023 sum   6.3460 diff  -0.4586
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003149
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.452954022479  dUele     =   0.013069235411
+<DFT>  NormRD =    0.025453723199  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=21 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.137448
+<Band_DFT>  DM, time=0.362859
+    1   Cr  MulP   8.1131   5.1971 sum  13.3102 diff   2.9160
+    2   Cr  MulP   8.1131   5.1970 sum  13.3101 diff   2.9160
+    3    O  MulP   2.9434   3.4014 sum   6.3448 diff  -0.4581
+    4    O  MulP   2.9435   3.4015 sum   6.3450 diff  -0.4579
+    5    O  MulP   2.9434   3.4015 sum   6.3449 diff  -0.4581
+    6    O  MulP   2.9435   3.4015 sum   6.3450 diff  -0.4580
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003330
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.455740752079  dUele     =   0.002786729600
+<DFT>  NormRD =    0.017237051432  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=22 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.139101
+<Band_DFT>  DM, time=0.360631
+    1   Cr  MulP   8.1140   5.1989 sum  13.3129 diff   2.9151
+    2   Cr  MulP   8.1140   5.1989 sum  13.3129 diff   2.9152
+    3    O  MulP   2.9433   3.4006 sum   6.3439 diff  -0.4573
+    4    O  MulP   2.9427   3.4005 sum   6.3432 diff  -0.4578
+    5    O  MulP   2.9430   3.4006 sum   6.3435 diff  -0.4576
+    6    O  MulP   2.9430   3.4006 sum   6.3436 diff  -0.4576
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003533
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.459612586271  dUele     =   0.003871834192
+<DFT>  NormRD =    0.005582927035  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=23 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.137701
+<Band_DFT>  DM, time=0.362875
+    1   Cr  MulP   8.1142   5.1992 sum  13.3134 diff   2.9151
+    2   Cr  MulP   8.1142   5.1992 sum  13.3134 diff   2.9150
+    3    O  MulP   2.9425   3.4003 sum   6.3428 diff  -0.4578
+    4    O  MulP   2.9433   3.4005 sum   6.3438 diff  -0.4572
+    5    O  MulP   2.9429   3.4004 sum   6.3434 diff  -0.4575
+    6    O  MulP   2.9428   3.4004 sum   6.3433 diff  -0.4576
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003562
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460028248098  dUele     =   0.000415661828
+<DFT>  NormRD =    0.004432136885  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=24 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.136195
+<Band_DFT>  DM, time=0.362441
+    1   Cr  MulP   8.1140   5.1994 sum  13.3134 diff   2.9146
+    2   Cr  MulP   8.1139   5.1993 sum  13.3132 diff   2.9146
+    3    O  MulP   2.9430   3.4003 sum   6.3433 diff  -0.4573
+    4    O  MulP   2.9430   3.4003 sum   6.3433 diff  -0.4573
+    5    O  MulP   2.9430   3.4003 sum   6.3434 diff  -0.4573
+    6    O  MulP   2.9430   3.4003 sum   6.3434 diff  -0.4573
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003606
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460298176569  dUele     =   0.000269928471
+<DFT>  NormRD =    0.002000352904  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=25 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.139324
+<Band_DFT>  DM, time=0.363877
+    1   Cr  MulP   8.1137   5.1994 sum  13.3131 diff   2.9143
+    2   Cr  MulP   8.1142   5.1996 sum  13.3137 diff   2.9146
+    3    O  MulP   2.9430   3.4002 sum   6.3433 diff  -0.4572
+    4    O  MulP   2.9431   3.4003 sum   6.3433 diff  -0.4572
+    5    O  MulP   2.9430   3.4003 sum   6.3433 diff  -0.4573
+    6    O  MulP   2.9430   3.4003 sum   6.3433 diff  -0.4573
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003629
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460565680577  dUele     =   0.000267504008
+<DFT>  NormRD =    0.001526366493  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=26 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.135864
+<Band_DFT>  DM, time=0.363397
+    1   Cr  MulP   8.1139   5.1996 sum  13.3135 diff   2.9144
+    2   Cr  MulP   8.1141   5.1996 sum  13.3137 diff   2.9145
+    3    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    4    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    5    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4573
+    6    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003650
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460822544229  dUele     =   0.000256863652
+<DFT>  NormRD =    0.000477647023  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=27 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.137543
+<Band_DFT>  DM, time=0.363523
+    1   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    2   Cr  MulP   8.1141   5.1996 sum  13.3137 diff   2.9145
+    3    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    4    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    5    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    6    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003653
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460837707939  dUele     =   0.000015163710
+<DFT>  NormRD =    0.000333842517  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=28 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.139216
+<Band_DFT>  DM, time=0.367002
+    1   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    2   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    3    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    4    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    5    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4573
+    6    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003656
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460836716603  dUele     =   0.000000991336
+<DFT>  NormRD =    0.000228460434  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=29 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.138458
+<Band_DFT>  DM, time=0.363535
+    1   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    2   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    3    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    4    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    5    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    6    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003658
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460845932814  dUele     =   0.000009216211
+<DFT>  NormRD =    0.000180801564  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=30 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.137971
+<Band_DFT>  DM, time=0.361811
+    1   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    2   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    3    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    4    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    5    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    6    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003658
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460852481612  dUele     =   0.000006548798
+<DFT>  NormRD =    0.000189820825  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=31 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.141305
+<Band_DFT>  DM, time=0.362035
+    1   Cr  MulP   8.1140   5.1996 sum  13.3137 diff   2.9144
+    2   Cr  MulP   8.1140   5.1996 sum  13.3135 diff   2.9144
+    3    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    4    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    5    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    6    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003658
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460851153542  dUele     =   0.000001328070
+<DFT>  NormRD =    0.000224721671  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=32 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.136945
+<Band_DFT>  DM, time=0.361338
+    1   Cr  MulP   8.1140   5.1996 sum  13.3137 diff   2.9144
+    2   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    3    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    4    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    5    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    6    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003661
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460884435686  dUele     =   0.000033282144
+<DFT>  NormRD =    0.000132789592  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=33 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.137917
+<Band_DFT>  DM, time=0.361524
+    1   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    2   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    3    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    4    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    5    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    6    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003661
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460892543223  dUele     =   0.000008107536
+<DFT>  NormRD =    0.000089254518  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=34 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.137359
+<Band_DFT>  DM, time=0.361619
+    1   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    2   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    3    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    4    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    5    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    6    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003661
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460892063744  dUele     =   0.000000479479
+<DFT>  NormRD =    0.000076073201  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=35 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.139476
+<Band_DFT>  DM, time=0.362104
+    1   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    2   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    3    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    4    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    5    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    6    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003661
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460888651248  dUele     =   0.000003412496
+<DFT>  NormRD =    0.000073337318  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=36 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.137976
+<Band_DFT>  DM, time=0.361573
+    1   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    2   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    3    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    4    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    5    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    6    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003662
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460890103706  dUele     =   0.000001452458
+<DFT>  NormRD =    0.000047405762  Criterion =   0.000000100000
+
+******************* MD= 1  SCF=37 *******************
+<Poisson>  Poisson's equation using FFT...
+<Set_Hamiltonian>  Hamiltonian matrix for VNA+dVH+Vxc...
+<Band>  Solving the eigenvalue problem...
+ KGrids1:  -0.40000  -0.20000   0.00000   0.20000   0.40000 
+ KGrids2:  -0.40000  -0.20000  -0.00000   0.20000   0.40000 
+ KGrids3:  -0.43750  -0.31250  -0.18750  -0.06250   0.06250   0.18750   0.31250   0.43750 
+<Band_DFT>  Eigen, time=0.136795
+<Band_DFT>  DM, time=0.363171
+    1   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    2   Cr  MulP   8.1140   5.1996 sum  13.3136 diff   2.9144
+    3    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    4    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    5    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+    6    O  MulP   2.9430   3.4002 sum   6.3432 diff  -0.4572
+ Sum of MulP: up   =    28.00000 down          =    24.00000
+              total=    52.00000 ideal(neutral)=    52.00000
+<DFT>  Total Spin Moment (muB) =  4.000000003662
+<DFT>  Mixing_weight= 0.030000000000
+<DFT>  Uele   =  -52.460890030460  dUele     =   0.000000073246
+<DFT>  NormRD =    0.000039607868  Criterion =   0.000000100000
+
+<Band_DFT_Dosout>
+ KGrids1: 0.000001 0.200001 0.400001 0.600001 0.800001 
+ KGrids2: -0.000001 0.199999 0.399999 0.599999 0.799999 
+ KGrids3: 0.000002 0.125002 0.250002 0.375002 0.500002 0.625002 0.750002 0.875002 
+write eigenvalues
+write eigenvectors
+<MD= 1>  Force calculation
+  Force calculation #1
+  Force calculation #2
+  Force calculation #3
+  Force calculation #4
+  Force calculation #5
+  Force calculation for LDA_U with dual
+<MD= 1>  Total Energy
+  Force calculation #6
+  Force calculation #7
+
+*******************************************************
+                  Dipole moment (Debye)                 
+*******************************************************
+
+ Absolute D       54.50357320
+
+                      Dx                Dy                Dz
+ Total            -38.53984540      -38.53984702       -0.00012446
+ Core             402.46051512      402.46051512      181.70525074
+ Electron        -441.00036052     -441.00036214     -181.70537521
+ Back ground       -0.00000000       -0.00000000       -0.00000000
+
+*******************************************************
+                Total Energy (Hartree) at MD = 1        
+*******************************************************
+
+  Uele  =     -52.460890030460
+
+  Ukin  =     125.709464919512
+  UH0   =   -3105.734944563172
+  UH1   =       0.076573643105
+  Una   =    -135.524377597588
+  Unl   =       2.611057629613
+  Uxc0  =     -20.273942289853
+  Uxc1  =     -17.302510408331
+  Ucore =    2910.360438731205
+  Uhub  =       0.243340428511
+  Ucs   =       0.000000000000
+  Uzs   =       0.000000000000
+  Uzo   =       0.000000000000
+  Uef   =       0.000000000000
+  UvdW  =       0.000000000000
+  Uch   =       0.000000000000
+  Utot  =    -239.834899506999
+
+  UpV   =       0.000000000000
+  Enpy  =    -239.834899506999
+  Note:
+
+  Uele:   band energy
+  Ukin:   kinetic energy
+  UH0:    electric part of screened Coulomb energy
+  UH1:    difference electron-electron Coulomb energy
+  Una:    neutral atom potential energy
+  Unl:    non-local potential energy
+  Uxc0:   exchange-correlation energy for alpha spin
+  Uxc1:   exchange-correlation energy for beta spin
+  Ucore:  core-core Coulomb energy
+  Uhub:   LDA+U energy
+  Ucs:    constraint energy for spin orientation
+  Uzs:    Zeeman term for spin magnetic moment
+  Uzo:    Zeeman term for orbital magnetic moment
+  Uef:    electric energy by electric field
+  UvdW:   semi-empirical vdW energy 
+  Uch:    penalty term to create a core hole
+  UpV:    pressure times volume
+  Enpy:   Enthalpy = Utot + UpV
+  (see also PRB 72, 045121(2005) for the energy contributions)
+
+
+*******************************************************
+           Computational times (s) at MD = 1            
+*******************************************************
+
+  DFT in total      =   60.40402
+
+  Set_OLP_Kin       =    1.08294
+  Set_Nonlocal      =    2.14886
+  Set_ProExpn_VNA   =    6.01765
+  Set_Hamiltonian   =   15.62735
+  Poisson           =    0.00673
+  diagonalization   =   19.42129
+  Mixing_DM         =    0.10869
+  Force             =    3.69091
+  Total_Energy      =    1.41473
+  Set_Aden_Grid     =    0.29126
+  Set_Orbitals_Grid =    0.40514
+  Set_Density_Grid  =    8.94522
+  RestartFileDFT    =    0.38641
+  Mulliken_Charge   =    0.00920
+  FFT(2D)_Density   =    0.04186
+
+*******************************************************
+             MD or geometry opt. at MD = 1              
+*******************************************************
+
+
+outputting data on grids to files...
+
+
+***********************************************************
+***********************************************************
+               Computational Time (second)                 
+***********************************************************
+***********************************************************
+
+                               Min_ID   Min_Time       Max_ID   Max_Time
+   Total Computational Time =     9       64.124          0       64.133
+   readfile                 =     8        2.551         15        2.559
+   truncation               =     9        1.003          5        1.133
+   MD_pac                   =     0        0.008         18        0.013
+   OutData                  =     4        0.000          0        0.006
+   DFT                      =     5       60.395          9       60.524
+
+*** In DFT ***
+
+   Set_OLP_Kin              =    10        0.050          1        1.380
+   Set_Nonlocal             =     1        1.852         10        3.182
+   Set_ProExpn_VNA          =    10        2.126          1        6.282
+   Set_Hamiltonian          =     7       15.627         12       15.637
+   Poisson                  =    15        0.006         14        0.007
+   Diagonalization          =    12       19.412         14       19.422
+   Mixing_DM                =    19        0.108          4        0.110
+   Force                    =    15        3.691          2        3.691
+   Total_Energy             =     4        1.415         20        1.415
+   Set_Aden_Grid            =     1        0.027         23        4.186
+   Set_Orbitals_Grid        =     6        0.000          1        0.408
+   Set_Density_Grid         =    14        8.890          1        8.946
+   RestartFileDFT           =     3        0.352         19        0.421
+   Mulliken_Charge          =     2        0.009         14        0.054
+   FFT(2D)_Density          =     4        0.041          3        0.042
+   Others                   =     2        0.775         12        1.338
+
+The calculation was normally finished.

@@ -30,6 +30,7 @@ This is a collection of the NOMAD parsers for the following electronic structure
 29. [VASP](https://www.vasp.at/)
 30. [WIEN2k](http://www.wien2k.at/)
 31. [YAMBO](https://www.yambo-code.org/)
+32. [OpenMX](http://www.openmx-square.org/)
 
 Each of the parsers will read the relevant input and output files and provide all information in
 NOMAD's unified Metainfo based Archive format.
