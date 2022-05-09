@@ -659,18 +659,6 @@ class x_cp2k_section_total_numbers(MSection):
         ''')
 
 
-class x_cp2k_section_md(MSection):
-    '''
-    CP2K Molecular Dynamics information.
-    '''
-
-    m_def = Section(validate=False)
-
-    x_cp2k_section_md_step = SubSection(
-        sub_section=SectionProxy('x_cp2k_section_md_step'),
-        repeats=True)
-
-
 class x_cp2k_section_md_settings(MSection):
     '''
     Settings for CP2K Molecular Dynamics.
@@ -678,23 +666,10 @@ class x_cp2k_section_md_settings(MSection):
 
     m_def = Section(validate=False)
 
-    x_cp2k_md_ensemble_type = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        The ensemble type in molecular dynamics.
-        ''')
-
-    x_cp2k_md_time_step = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Time step.
-        ''')
-
     x_cp2k_md_target_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
+        unit='kelvin',
         description='''
         Thermostat target temperature.
         ''')
@@ -702,6 +677,7 @@ class x_cp2k_section_md_settings(MSection):
     x_cp2k_md_target_temperature_tolerance = Quantity(
         type=np.dtype(np.float64),
         shape=[],
+        unit='kelvin',
         description='''
         Target temperature tolerance.
         ''')
@@ -802,260 +778,6 @@ class x_cp2k_section_md_settings(MSection):
         shape=[],
         description='''
         Number of requested time steps in molecular dynamics.
-        ''')
-
-
-class x_cp2k_section_md_step(MSection):
-    '''
-    Information from MD step.
-    '''
-
-    m_def = Section(validate=False)
-
-    x_cp2k_md_potential_energy_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous potential energy in an MD step.
-        ''')
-
-    x_cp2k_md_potential_energy_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average potential energy for an MD step. Averaged over this and the previous
-        steps.
-        ''')
-
-    x_cp2k_md_kinetic_energy_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous kinetic energy in an MD step.
-        ''')
-
-    x_cp2k_md_kinetic_energy_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average kinetic energy in an MD step.
-        ''')
-
-    x_cp2k_md_energy_drift_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous energy drift in an MD step.
-        ''')
-
-    x_cp2k_md_energy_drift_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average kinetic energy in an MD step.
-        ''')
-
-    x_cp2k_md_temperature_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous temperature in an MD step.
-        ''')
-
-    x_cp2k_md_temperature_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average temperature in an MD step.
-        ''')
-
-    x_cp2k_md_barostat_temperature_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous barostat temperature in an MD step.
-        ''')
-
-    x_cp2k_md_barostat_temperature_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average barostat temperature in an MD step.
-        ''')
-
-    x_cp2k_md_pressure_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous pressure in an MD step.
-        ''')
-
-    x_cp2k_md_pressure_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average pressure in an MD step.
-        ''')
-
-    x_cp2k_md_cpu_time_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous CPU time for this step.
-        ''')
-
-    x_cp2k_md_cpu_time_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average CPU time for this step.
-        ''')
-
-    x_cp2k_md_step_number = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        Step number.
-        ''')
-
-    x_cp2k_md_time = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Simulation time for this step.
-        ''')
-
-    x_cp2k_md_conserved_quantity = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Conserved quantity for this MD step.
-        ''')
-
-    x_cp2k_md_volume_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous cell volume in this MD step.
-        ''')
-
-    x_cp2k_md_volume_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average cell volume in an MD step.
-        ''')
-
-    x_cp2k_md_cell_length_a_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous cell vector a length in this MD step.
-        ''')
-
-    x_cp2k_md_cell_length_a_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average cell vector a length in this MD step.
-        ''')
-
-    x_cp2k_md_cell_length_b_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous cell vector b length in this MD step.
-        ''')
-
-    x_cp2k_md_cell_length_b_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average cell vector b length in this MD step.
-        ''')
-
-    x_cp2k_md_cell_length_c_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous cell vector c length in this MD step.
-        ''')
-
-    x_cp2k_md_cell_length_c_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average cell vector c length in this MD step.
-        ''')
-
-    x_cp2k_md_cell_length_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[3],
-        description='''
-        Instantaneous cell vector lengths in this MD step.
-        ''')
-
-    x_cp2k_md_cell_length_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[3],
-        description='''
-        Average cell vector lengths in this MD step.
-        ''')
-
-    x_cp2k_md_cell_angle_a_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous cell vector a angle in this MD step.
-        ''')
-
-    x_cp2k_md_cell_angle_a_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average cell vector a angle in this MD step.
-        ''')
-
-    x_cp2k_md_cell_angle_b_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous cell vector b angle in this MD step.
-        ''')
-
-    x_cp2k_md_cell_angle_b_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average cell vector b angle in this MD step.
-        ''')
-
-    x_cp2k_md_cell_angle_c_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous cell vector c angle in this MD step.
-        ''')
-
-    x_cp2k_md_cell_angle_c_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average cell vector c angle in this MD step.
-        ''')
-
-    x_cp2k_md_cell_angle_instantaneous = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Instantaneous cell vector angles in this MD step.
-        ''')
-
-    x_cp2k_md_cell_angle_average = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Average cell vector angles in this MD step.
         ''')
 
 
@@ -1418,7 +1140,3 @@ class Method(simulation.method.Method):
 class Calculation(simulation.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
-
-    x_cp2k_section_md_step = SubSection(
-        sub_section=SectionProxy('x_cp2k_section_md_step'),
-        repeats=True)
