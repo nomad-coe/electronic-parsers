@@ -1102,15 +1102,6 @@ class GeometryOptimization(workflow.GeometryOptimization):
         repeats=True)
 
 
-class MolecularDynamics(workflow.MolecularDynamics):
-
-    m_def = Section(validate=False, extends_base_section=True)
-
-    x_cp2k_section_md = SubSection(
-        sub_section=SectionProxy('x_cp2k_section_md'),
-        repeats=True)
-
-
 class Workflow(workflow.Workflow):
 
     m_def = Section(validate=False, extends_base_section=True)
