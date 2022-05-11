@@ -369,7 +369,7 @@ class CP2KOutParser(TextParser):
             return [val[0].strip().replace(' ', '_').lower(), val[-1].strip()]
 
         def md_extract(val_in):
-            result = re.search(' MD\| (?P<key>.+?)(?: \[(?P<unit>.+)\])? {2,}(?P<value>.+)', val_in)
+            result = re.search(r' MD\| (?P<key>.+?)(?: \[(?P<unit>.+)\])? {2,}(?P<value>.+)', val_in)
             value = result.group('value')
             unit = units_map.get(result.group('unit'))
             key = result.group('key').strip().replace(' ', '_').lower()
