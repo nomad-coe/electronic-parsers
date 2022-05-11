@@ -841,7 +841,7 @@ class CP2KParser:
                 return calculation
             return calculation.molecular_dynamics.md_step[frame - 1].get('ensemble_type', '')
 
-    def get_timestep(self):
+    def get_time_step(self):
         return self.settings['md'].get('time_step')
 
     def get_velocities(self, frame):
@@ -1427,7 +1427,7 @@ class CP2KParser:
             # Parse common MD information
             sec_md = sec_workflow.m_create(MolecularDynamics)
             sec_md.ensemble_type = self._ensemble_map.get(self.get_ensemble_type(0), None)
-            sec_md.timestep = self.get_timestep()
+            sec_md.time_step = self.get_time_step()
             sec_md_settings = sec_workflow.m_create(x_cp2k_section_md_settings)
 
             # Parse code specific MD information
