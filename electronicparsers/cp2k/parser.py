@@ -37,7 +37,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Stress, StressEntry, ScfIteration, Forces,
-    ForcesEntry, Thermodynamics
+    ForcesEntry
 )
 from nomad.datamodel.metainfo.workflow import (
     Workflow, GeometryOptimization, MolecularDynamics
@@ -49,7 +49,7 @@ from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings, x_cp2k_sec
     x_cp2k_section_atomic_kind, x_cp2k_section_kind_basis_set, x_cp2k_section_total_numbers,\
     x_cp2k_section_maximum_angular_momentum, x_cp2k_section_quickstep_calculation,\
     x_cp2k_section_scf_iteration, x_cp2k_section_stress_tensor, x_cp2k_section_md_settings,\
-    x_cp2k_section_md_step, x_cp2k_section_restart_information, x_cp2k_section_geometry_optimization,\
+    x_cp2k_section_restart_information, x_cp2k_section_geometry_optimization,\
     x_cp2k_section_geometry_optimization_step
 
 
@@ -61,8 +61,13 @@ except ImportError:
 
 
 units_map = {
-    'hbar': ureg.hbar, 'hartree': ureg.hartree, 'angstrom': ureg.angstrom,
-    'au_t': ureg.hbar / ureg.hartree}
+    'hbar': ureg.hbar,
+    'hartree': ureg.hartree,
+    'angstrom': ureg.angstrom,
+    'au_t': ureg.hbar / ureg.hartree,
+    'fs': ureg.femtosecond,
+    'K': ureg.kelvin,
+}
 
 
 def resolve_unit(unit_str, parts=[]):
@@ -363,6 +368,15 @@ class CP2KOutParser(TextParser):
             val = val_in.split('  ', 1)
             return [val[0].strip().replace(' ', '_').lower(), val[-1].strip()]
 
+        def md_extract(val_in):
+            result = re.search(r' MD\| (?P<key>.+?)(?: \[(?P<unit>.+)\])? {2,}(?P<value>.+)', val_in)
+            value = result.group('value')
+            unit = units_map.get(result.group('unit'))
+            key = result.group('key').strip().replace(' ', '_').lower()
+            if unit:
+                value = float(value) * unit
+            return [key, value]
+
         def str_to_program(val_in):
             val = val_in.split(' ', 2)
             return ['_'.join(val[:2]).lower(), ''.join([v.strip() for v in val[2].split('\n')])]
@@ -605,8 +619,12 @@ class CP2KOutParser(TextParser):
                         dtype=float, unit='hartree'),
                     Quantity(
                         'md',
-                        r' MD\| (.+? {2}) +(.+)', str_operation=str_to_header, repeats=True
-                    )])),
+                        r'( MD\| .+? {2} +.+)',
+                        str_operation=md_extract,
+                        convert=False,
+                        repeats=True,
+                    ),
+                ])),
             # TODO add mp2, rpa, gw
             Quantity(
                 'single_point',
@@ -789,6 +807,7 @@ class CP2KParser:
             self._settings['global'] = to_dict(self.out_parser.get('global', []), False)
             self._settings['md'] = to_dict(
                 self.out_parser.get(self._calculation_type, {}).get('scf_parameters', {}).get('md', []))
+            self._settings['md_setup'] = to_dict(self.out_parser.get(self._calculation_type, {}).get('scf_parameters', {}).get('md_setup', []))
 
         return self._settings
 
@@ -821,6 +840,9 @@ class CP2KParser:
             if not calculation:
                 return calculation
             return calculation.molecular_dynamics.md_step[frame - 1].get('ensemble_type', '')
+
+    def get_time_step(self):
+        return self.settings['md'].get('time_step')
 
     def get_velocities(self, frame):
         if self.out_parser.get(self._calculation_type, {}).get('molecular_dynamics') is not None:
@@ -986,7 +1008,8 @@ class CP2KParser:
         try:
             data = self.energy_parser.data[frame // self.energy_parser._frequency]
             return dict(
-                time=data[1],
+                step=data[0],
+                time=data[1] * ureg.femtosecond,
                 kinetic_energy_instantaneous=data[2] * ureg.hartree,
                 temperature_instantaneous=data[3],
                 potential_energy_instantaneous=data[4] * ureg.hartree,
@@ -1155,31 +1178,30 @@ class CP2KParser:
             # TODO put in workflow
             md_output = self.get_md_output(source._frame)
             md_output = md_output if md_output else source
-            sec_scc = sec_run.calculation[-1]
-            sec_md_step = sec_scc.m_create(x_cp2k_section_md_step)
-            sec_thermo = sec_scc.m_create(Thermodynamics)
+            calc = sec_run.calculation[-1]
 
-            with_average = [
-                'cpu_time', 'energy_drift', 'potential_energy', 'kinetic_energy',
-                'temperature', 'pressure', 'barostat_temperature', 'volume']
-            for key, val in md_output.items():
-                if val is None:
-                    continue
-                name = 'x_cp2k_md_%s' % key
-
-                if 'energy' in key or 'conserved' in key:
-                    val = val.to('joule').magnitude
-                elif 'pressure' in key:
-                    val - val.to('pascal').magnitude
-                elif 'volume' in key:
-                    val = val.to('m**3').magnitude
-
-                if key in with_average:
-                    setattr(sec_md_step, '%s_instantaneous' % name, val[0])
-                    name = '%s_average' % name
-                    val = val[1]
-                setattr(sec_thermo, key.replace('_instantaneous', ''), val)
-                setattr(sec_md_step, name, val)
+            # Store to common metainfo
+            energy_kinetic = md_output.get("kinetic_energy_instantaneous")
+            if energy_kinetic:
+                calc.energy.kinetic = EnergyEntry(value=energy_kinetic.to('joule'))
+            potential_energy = md_output.get("potential_energy_instantaneous")
+            if potential_energy:
+                calc.energy.potential = EnergyEntry(value=potential_energy.to('joule'))
+            step = int(md_output.get("step"))
+            if step:
+                calc.step = step
+            time = md_output.get("time")
+            if time:
+                calc.time = time.to('second')
+            volume = md_output.get("volume_instantaneous")
+            if volume:
+                calc.volume = volume.to('m**3')
+            pressure = md_output.get("pressure_instantaneous")
+            if pressure:
+                calc.pressure = pressure.to('m**3')
+            temperature = md_output.get("temperature_instantaneous")
+            if temperature:
+                calc.temperature = temperature
 
         def parse_calculations(calculations):
             for n, calculation in enumerate(calculations):
@@ -1402,14 +1424,16 @@ class CP2KParser:
                     sec_geometry_optimization.input_force_maximum_tolerance = threshold_force
 
         elif self.sampling_method == 'molecular_dynamics':
+            # Parse common MD information
             sec_md = sec_workflow.m_create(MolecularDynamics)
-            ensemble_type = self._ensemble_map.get(self.get_ensemble_type(0), None)
-            if ensemble_type is not None:
-                sec_md.ensemble_type = ensemble_type
-
+            sec_md.ensemble_type = self._ensemble_map.get(self.get_ensemble_type(0), None)
+            sec_md.time_step = self.get_time_step()
             sec_md_settings = sec_workflow.m_create(x_cp2k_section_md_settings)
+
+            # Parse code specific MD information
+            ignored = {'time_step', 'ensemble_type', 'file_type'}
             for key, val in self.settings['md'].items():
-                if val is None or key == 'file_type':
+                if val is None or key in ignored:
                     continue
                 if key in ['coordinates', 'simulation_cell', 'velocities', 'energies', 'dump']:
                     val = val.split()

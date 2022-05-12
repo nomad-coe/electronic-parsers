@@ -116,9 +116,8 @@ def test_molecular_dynamics(parser):
     assert len(sec_sccs) == 12
     assert len(sec_sccs[6].scf_iteration) == 7
     assert sec_sccs[3].energy.total.value.magnitude == approx(-1.49661312e-16)
-    assert sec_sccs[10].x_cp2k_section_md_step[0].x_cp2k_md_kinetic_energy_instantaneous == approx(2.34172483e-20)
-    assert sec_sccs[7].thermodynamics[0].temperature.magnitude == approx(218.299664775)
-    assert sec_sccs[9].thermodynamics[0].kinetic_energy.magnitude == approx(2.4094966278264588e-20)
+    assert sec_sccs[9].energy.kinetic.value.magnitude == approx(2.4094966278264588e-20)
+    assert sec_sccs[7].temperature.magnitude == approx(218.299664775)
 
     sec_systems = archive.run[0].system
     assert len(sec_systems) == 12
