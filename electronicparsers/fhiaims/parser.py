@@ -694,6 +694,23 @@ class FHIAimsParser:
             'Hirshfeld charge': 'x_fhi_aims_hirschfeld_charge',
             'Hirshfeld volume': 'x_fhi_aims_hirschfeld_volume'
         }
+        self._frame_rate = None
+        # max cumulative number of atoms for all parsed trajectories to calculate sampling rate
+        self._cum_max_atoms = 1000000
+
+    @property
+    def frame_rate(self):
+        if self._frame_rate is None:
+            n_frames = 0
+            for calc_type in ['full_scf', 'geometry_optimization', 'molecular_dynamics']:
+                n_frames += len(self.out_parser.get(calc_type, []))
+            n_atoms = len(self.out_parser.get('structure', {}).get('positions', []))
+            if n_atoms == 0 or n_frames == 0:
+                self._frame_rate = 1
+            else:
+                cum_atoms = n_atoms * n_frames
+                self._frame_rate = 1 if cum_atoms <= self._cum_max_atoms else cum_atoms // self._cum_max_atoms
+        return self._frame_rate
 
     def get_fhiaims_file(self, default):
         base, *ext = default.split('.')
@@ -1114,13 +1131,22 @@ class FHIAimsParser:
                     sec_method.starting_method_ref = sec_run.method[0]
                 sec_method.methods_ref = [sec_run.method[0]]
 
-        for section in self.out_parser.get('full_scf', []):
+        for n, section in enumerate(self.out_parser.get('full_scf', [])):
+            # skip frames for large trajectories
+            if (n % self.frame_rate) > 0:
+                continue
             parse_section(section)
 
-        for section in self.out_parser.get('geometry_optimization', []):
+        for n, section in enumerate(self.out_parser.get('geometry_optimization', [])):
+            # skip frames for large trajectories
+            if (n % self.frame_rate) > 0:
+                continue
             parse_section(section)
 
-        for section in self.out_parser.get('molecular_dynamics', []):
+        for n, section in enumerate(self.out_parser.get('molecular_dynamics', [])):
+            # skip frames for large trajectories
+            if (n % self.frame_rate) > 0:
+                continue
             parse_section(section)
 
         if not sec_run.calculation:
@@ -1229,11 +1255,11 @@ class FHIAimsParser:
             'x_fhi_aims_controlInOut_relativistic', 'x_fhi_aims_controlInOut_xc',
             'x_fhi_aims_controlInOut_hse_unit', 'x_fhi_aims_controlInOut_hybrid_xc_coeff']
         # add controlInOut parameters
-        for key, val in self.out_parser.items():
-            if key.startswith('x_fhi_aims_controlInOut') and val is not None:
+        for key in self.out_parser.keys():
+            if key.startswith('x_fhi_aims_controlInOut'):
                 if key not in inout_exclude:
                     try:
-                        setattr(sec_method, key, val)
+                        setattr(sec_method, key, self.out_parser.get(key))
                     except Exception:
                         self.logger.warn('Error setting controlInOut metainfo.', data=dict(key=key))
 
@@ -1378,6 +1404,7 @@ class FHIAimsParser:
         self.control_parser.logger = self.logger
         self.dos_parser.logger = self.logger
         self.bandstructure_parser.logger = self.logger
+        self._frame_rate = None
 
     def reuse_parser(self, parser):
         self.out_parser.quantities = parser.out_parser.quantities
