@@ -696,7 +696,7 @@ class FHIAimsParser:
         }
         self._frame_rate = None
         # max cumulative number of atoms for all parsed trajectories to calculate sampling rate
-        self._cum_max_atoms = 1000000
+        self._cum_max_atoms = 100000
 
     @property
     def frame_rate(self):
