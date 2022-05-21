@@ -2063,7 +2063,7 @@ class ExcitingParser:
         forces = section.get('forces')
         if forces is not None:
             sec_forces = sec_scc.m_create(Forces)
-            sec_forces.total = ForcesEntry(value=forces)
+            sec_forces.total = ForcesEntry(value=np.reshape(forces, (np.size(forces) // 3, 3)))
 
         # scf iterations
         scf_iterations = section.get('scf_iteration', [])
