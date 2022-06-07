@@ -597,7 +597,9 @@ class CastepParser:
             'b3lyp': ['HYB_GGA_XC_B3LYP5']}
 
         self._relativistic_map = {
-            'Koelling-Harmon': 'scalar_relativistic'}
+            'koelling-harmon': 'Koelling-Harmon',
+            'zora': 'ZORA',
+            'schroedinger': None}
 
         self._sampling_method_map = {
             'single point energy': 'single_point',
@@ -792,9 +794,8 @@ class CastepParser:
                     sec_xc_functional.contributions.append(sec_functional)
 
         # relativistic treatment
-        relativistic = self._relativistic_map.get(xc_parameters.get('relativistic treatment'))
-        if relativistic is not None:
-            sec_method.electronic.relativity_method = relativistic
+        sec_method.electronic.relativity_method = self._relativistic_map.get(
+            xc_parameters.get('relativistic treatment', '').lower())
 
         # dispersion correction
         dispersion = xc_parameters.get('sedc with')

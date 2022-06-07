@@ -684,8 +684,8 @@ class FHIAimsParser:
 
         self._relativity_map = {
             'Non-relativistic': None,
-            'ZORA': 'scalar_relativistic',
-            'on-site free-atom approximation to ZORA': 'scalar_relativistic_atomic_ZORA'
+            'ZORA': 'ZORA',
+            'on-site free-atom approximation to ZORA': 'atomic_ZORA'
         }
 
         self._property_map = {
