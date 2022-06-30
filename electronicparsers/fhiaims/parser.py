@@ -840,11 +840,6 @@ class FHIAimsParser:
             sec_scc = sec_run.calculation[-1]
             sec_dos = None
             energies = None
-            lattice_vectors = section.get(
-                'lattice_vectors', self.out_parser.get('lattice_vectors'))
-            if lattice_vectors is None:
-                lattice_vectors = np.eye(3) * ureg.angstrom
-            volume = np.abs(np.linalg.det(lattice_vectors.magnitude)) * ureg.angstrom ** 3
             n_spin = self.out_parser.get_number_of_spin_channels()
             # parse total first, we expect only one file
             total_dos_files, _ = section.get('total_dos_files', [['KS_DOS_total_raw.dat'], []])
@@ -857,7 +852,7 @@ class FHIAimsParser:
                 sec_dos.n_energies = len(energies)
                 sec_dos.energies = energies
                 # dos unit is 1/(eV-cell volume)
-                dos = data[1: n_spin + 1] * (1 / ureg.eV) * volume.to('m**3').magnitude
+                dos = data[1: n_spin + 1] / ureg.eV
                 for spin in range(len(dos)):
                     sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
                     sec_dos_values.spin = spin

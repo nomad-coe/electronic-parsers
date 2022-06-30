@@ -613,9 +613,7 @@ class OutcarContentParser(ContentParser):
         # DOSCAR fomat (spin) energy dos_up dos_down integrated_up integrated_down
         dos = np.transpose(dos)
         dos_energies = dos[0]
-        cell = self.get_structure(n_calc)['cell']
-        volume = np.abs(np.linalg.det(cell.magnitude))
-        dos_values = dos[1: 1 + self.ispin] * volume
+        dos_values = dos[1: 1 + self.ispin]
         dos_integrated = dos[1 + self.ispin: 2 * self.ispin + 1]
 
         return dos_energies, dos_values, dos_integrated, e_fermi
@@ -1086,11 +1084,6 @@ class RunContentParser(ContentParser):
         dos_energies = dos[0].T[0]
         dos_values = dos[1].T
         dos_integrated = dos[2].T
-
-        # unit of dos in vasprun is states/eV/cell
-        cell = self.get_structure(n_calc)['cell']
-        volume = np.abs(np.linalg.det(cell.magnitude)) * ureg.angstrom ** 3
-        dos_values *= volume.to('m**3').magnitude
 
         return dos_energies, dos_values, dos_integrated, e_fermi
 
