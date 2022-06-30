@@ -9,7 +9,7 @@ from scipy import integrate
 # set constants
 ev_to_joule = 1.602177e-19
 window = 100
-prefix = '/home/nathan/Documents/electronic-parsers/tests/trace_spinrenormalization/'
+prefix = '/home/nathan/Documents/electronic-parsers/tests/test_issue_868/'
 example_files = ('fhi', 'vasp')
 #%%
 # read in data and store it in a dataframe or a dictionary
