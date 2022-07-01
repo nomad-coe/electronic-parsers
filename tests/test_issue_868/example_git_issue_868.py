@@ -55,4 +55,4 @@ for filename in example_files:
     dos_integral[program] = integrate.trapz(df.loc[df['e' + program] < 0, 'd' + program], df.loc[df['e' + program] < 0, 'e' + program])
 print('FHI: ' + str(dos_integral['FHI']))
 print('VASP:' + str(dos_integral['VASP']))
-print('VASP/FHI' + str(dos_integral['VASP'] / dos_integral['FHI']))
+print('VASP/FHI: ' + str(dos_integral['VASP'] / dos_integral['FHI']))
