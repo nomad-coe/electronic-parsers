@@ -121,8 +121,8 @@ def test_band_spinpol(parser):
     assert np.shape(sec_dos.energies) == (50,)
     assert np.shape(sec_dos.total[1].value) == (50,)
     assert sec_dos.energies[46].magnitude == approx(-1.1999976e-18)
-    assert sec_dos.total[0].value[46].magnitude == approx((.18127036 / ureg.eV).to(ureg.joule).magnitude)
-    assert sec_dos.total[1].value[15].magnitude == approx((.57150097 / ureg.eV).to(ureg.joule).magnitude)
+    assert sec_dos.total[0].value[46].magnitude == approx((.18127036 / ureg.eV).to(1 / ureg.joule).magnitude)
+    assert sec_dos.total[1].value[15].magnitude == approx((.57150097 / ureg.eV).to(1 / ureg.joule).magnitude)
 
     # v151211 test for the Fermi level
     assert sec_scc.energy.fermi.to('eV').magnitude == approx(-9.3842209)
