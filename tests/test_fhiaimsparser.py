@@ -162,7 +162,7 @@ def test_dos_silicon(silicon):
     scc = silicon.run[-1].calculation[0]
     dos = scc.dos_electronic[0]
     energies = dos.energies.to(ureg.electron_volt).magnitude
-    values = np.array([d.value for d in dos.total])
+    values = np.array([d.value.magnitude for d in dos.total])
 
     # Check that an energy reference is reported
     energy_reference = scc.energy.fermi
