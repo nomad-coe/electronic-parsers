@@ -670,7 +670,7 @@ class OutcarContentParser(ContentParser):
                 'f-2', 'f-1', 'f0', 'f1', 'f2', 'f3']
         else:
             fields = [None] * n_lm
-            self.parser.logger.warn(
+            self.parser.logger.warning(
                 'Cannot determine lm fields for n_lm', data=dict(n_lm=n_lm))
 
         return dos, fields
@@ -1071,7 +1071,7 @@ class RunContentParser(ContentParser):
         n_dos = 1 if isinstance(e_fermi, float) else len(e_fermi)
         if n_dos > 1:
             e_fermi = e_fermi[-1]
-            self.parser.logger.warn('Multiple dos found, will read only last.')
+            self.parser.logger.warning('Multiple dos found, will read only last.')
 
         try:
             dos = np.reshape(dos, (n_dos, self.ispin, len(dos) // self.ispin // n_dos, 3))[-1]
@@ -1130,7 +1130,7 @@ class VASPParser:
         try:
             sec_method.x_vasp_incar_out = incar_parameters
         except Exception:
-            self.logger.warn('Error setting metainfo defintion x_vasp_incar_out', data=dict(
+            self.logger.warning('Error setting metainfo defintion x_vasp_incar_out', data=dict(
                 incar=incar_parameters))
 
         prec = 1.3 if 'acc' in self.parser.incar.get('PREC', '') else 1.0
@@ -1154,7 +1154,7 @@ class VASPParser:
         try:
             sec_method.x_vasp_incar_in = incar_parameters
         except Exception:
-            self.logger.warn('Error setting metainfo defintion x_vasp_incar_in', data=dict(
+            self.logger.warning('Error setting metainfo defintion x_vasp_incar_in', data=dict(
                 incar=incar_parameters))
 
         sec_method.electronic = Electronic(method='DFT+U' if self.parser.incar.get(
@@ -1166,7 +1166,7 @@ class VASPParser:
                 try:
                     setattr(sec_method, key, val)
                 except Exception:
-                    self.logger.warn('Error setting metainfo', data=dict(key=key))
+                    self.logger.warning('Error setting metainfo', data=dict(key=key))
 
         # atom properties
         atomtypes = self.parser.atom_info.get('atomtypes', {})
@@ -1312,7 +1312,7 @@ class VASPParser:
                     else:
                         setattr(section, metainfo_key, val)
                 except Exception:
-                    self.logger.warn('Error setting metainfo', data=dict(key=key))
+                    self.logger.warning('Error setting metainfo', data=dict(key=key))
 
             return section
 
@@ -1444,7 +1444,7 @@ class VASPParser:
                 sec_scc.single_configuration_calculation_converged = converged
 
         if self.parser.n_calculations == 0:
-            self.logger.warn('No calculation was parsed.')
+            self.logger.warning('No calculation was parsed.')
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath

@@ -883,7 +883,7 @@ class OctopusParser:
             try:
                 setattr(sec_electronic, metainfo_key, int(val))
             except Exception:
-                self.logger.warn('Error setting metainfo', data=dict(key=metainfo_key))
+                self.logger.warning('Error setting metainfo', data=dict(key=metainfo_key))
 
         # convert parsed values to proper metainfo type
         definitions = dict(m_env.all_definitions_by_name)
@@ -908,7 +908,7 @@ class OctopusParser:
                     metainfo_name, val = convert_to_metainfo(prefix, key, val)
                     setattr(sec_run, metainfo_name, val)
                 except Exception:
-                    self.logger.warn('Error setting metainfo', data=dict(key=key))
+                    self.logger.warning('Error setting metainfo', data=dict(key=key))
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath

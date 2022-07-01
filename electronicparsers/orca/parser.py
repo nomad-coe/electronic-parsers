@@ -676,7 +676,7 @@ class OrcaParser:
                     xc_functionals.append('LDA_C_%s' % (lda_correlation))
 
                 if len(xc_functionals) == 0:
-                    self.logger.warn('Cannot resolve xc functional', data=dict(name=xc_functional))
+                    self.logger.warning('Cannot resolve xc functional', data=dict(name=xc_functional))
 
         sec_xc_functional = sec_dft.m_create(XCFunctional)
         for functional in xc_functionals:
