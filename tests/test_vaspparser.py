@@ -77,7 +77,7 @@ def test_vasprunxml_static(parser):
     assert np.shape(sec_scc.forces.total.value) == (1, 3)
     assert sec_scc.stress.total.value[2][2].magnitude == approx(-2.78384438e+08)
     assert len(sec_scc.dos_electronic[0].energies) == 5000
-    assert sec_scc.dos_electronic[0].total[0].value[1838].magnitude == approx(.1369 / ureg.eV.to(ureg.joule).magnitude)
+    assert sec_scc.dos_electronic[0].total[0].value[1838].magnitude == approx((.1369 / ureg.eV).to(ureg.joule).magnitude)
     assert len(sec_scc.dos_electronic[0].atom_projected) == 9
     assert sec_scc.dos_electronic[0].atom_projected[0].value[-1].magnitude == approx(3.40162245e+17)
     assert np.shape(sec_scc.eigenvalues[0].energies[0][887]) == (37,)
@@ -201,7 +201,7 @@ def test_outcar(parser):
     assert sec_eigs.occupations[0][49][9] == 2.0
     sec_dos = sec_scc.dos_electronic[0]
     assert len(sec_dos.energies) == 301
-    assert sec_dos.total[0].value[282].magnitude == approx(.2545E+01 / ureg.eV.to(ureg.joule).magnitude)
+    assert sec_dos.total[0].value[282].magnitude == approx((.2545E+01 / ureg.eV).to(ureg.joule).magnitude)
     assert sec_dos.total[0].value_integrated[-1] == 30.0
     assert sec_dos.atom_projected[10].value[-15].magnitude == approx(1.51481425e+17)
     assert sec_dos.atom_projected[5].value[-16].magnitude == approx(1.71267009e+16)
