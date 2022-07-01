@@ -828,7 +828,7 @@ class CastepParser:
         method = title.get('general parameters', {}).get('type of calculation', 'single point')
         method = self._sampling_method_map.get(method)
         if method is None:
-            self.logger.warn('Sampling method cannot be resolved.')
+            self.logger.warning('Sampling method cannot be resolved.')
             method = 'single_point'
         sec_workflow.type = method
 

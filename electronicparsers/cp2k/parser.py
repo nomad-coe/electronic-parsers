@@ -56,7 +56,7 @@ from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings, x_cp2k_sec
 try:
     import mdtraj
 except ImportError:
-    logging.getLogger(__name__).warn('Required MDTraj module not found.')
+    logging.getLogger(__name__).warning('Required MDTraj module not found.')
     mdtraj = False
 
 

@@ -378,7 +378,7 @@ class CPMDParser:
 
             # assert that energies and trajectory data match
             if len(energies) != len(trajectory):
-                self.logger.warn('Trajectory and energies files do not match.')
+                self.logger.warning('Trajectory and energies files do not match.')
 
             lattice_vectors = self.mainfile_parser.get('supercell', {}).get('lattice_vectors')
             lattice_vectors = lattice_vectors * ureg.bohr if lattice_vectors else lattice_vectors

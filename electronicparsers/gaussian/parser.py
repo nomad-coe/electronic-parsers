@@ -983,7 +983,7 @@ class GaussianParser:
             if res is not None:
                 basis_keys = [key for key in res.groups() if key is not None]
                 if len(basis_keys) != 1:
-                    self.logger.warn('Cannot resolve basis set', data=dict(key=parameter))
+                    self.logger.warning('Cannot resolve basis set', data=dict(key=parameter))
                 return (basis_keys[0], parameter)
 
         def resolve_xc_functional(parameter):
@@ -995,7 +995,7 @@ class GaussianParser:
             if res is not None:
                 xc_keys = [key for key in res.groups() if key is not None]
                 if len(xc_keys) != 2:
-                    self.logger.warn('Cannot resolve xc functional', data=dict(key=name))
+                    self.logger.warning('Cannot resolve xc functional', data=dict(key=name))
                     return
 
                 x_name = 'LC-' if xc_keys[0] == 'LC-' else self._xc_functional_map.get(

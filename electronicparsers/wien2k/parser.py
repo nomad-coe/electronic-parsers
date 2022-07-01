@@ -653,7 +653,7 @@ class Wien2kParser:
             if len(dos[2]) > 0:
                 labels = [a.atom_name for a in self.struct_parser.get('atom', [])]
                 if len(labels) == 0:
-                    self.logger.warn('Cannot resolve atom labels.')
+                    self.logger.warning('Cannot resolve atom labels.')
                 else:
                     for species in range(len(dos[2])):
                         for spin in range(len(dos[2][species])):
@@ -701,7 +701,7 @@ class Wien2kParser:
         for name in xc_functional:
             functionals = self._xc_functional_map.get(name)
             if functionals is None:
-                self.logger.warn('Cannot resolve XC functional.')
+                self.logger.warning('Cannot resolve XC functional.')
                 continue
             for functional in functionals:
                 if '_X_' in functional or functional.endswith('_X'):
