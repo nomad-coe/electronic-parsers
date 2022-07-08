@@ -1250,7 +1250,7 @@ class VASPParser:
             atom_number = 0
             for element_index, element_number in enumerate(atom_counts.values()):
                 for hubbard_array in (hubbard_orbitals, hubbard_us, hubbard_js):
-                    if element_number != hubbard_array:
+                    if element_number != len(hubbard_array):
                         raise ValueError('Hubbard parameters (LDAUL, LDAU, LDAUJ) have to be of the same length as the element section')
                 for _ in range(element_number):
                     atom_number += 1
