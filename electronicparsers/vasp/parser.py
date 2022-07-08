@@ -61,7 +61,7 @@ from nomad.datamodel.metainfo.workflow import (
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
     data = {}
-    pattern = re.compile(r'([A-Z_]+)\s*=\s*([\w\-]+\s{0,3}[\d\. ]*[E\-\+\d]*)')
+    pattern = re.compile(r'([A-Z_]+)\s*=\s*([\w]+\s{0,3}[\-\d\. ]*[E\-\+\d]*)') # TODO stress test extensively
 
     def convert(v):
         if isinstance(v, list):
@@ -1244,19 +1244,26 @@ class VASPParser:
         hubbard_method_index = self.parser.incar.get('LDAUTYPE', 0)
         if hubbard_method_index > 0:
             hubbard_method_type = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
-            hubbard_orbitals = self.parser.incar.get('LDAUL', [])
+            hubbard_orbital_type = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
+            try:
+                hubbard_orbitals = [hubbard_orbital_type[orbit] for orbit in self.parser.incar.get('LDAUL', [])]
+            except KeyError:
+                raise KeyError('Hubbard orbital type not recognized. Expected s, p, d, or f.')
             hubbard_us = self.parser.incar.get('LDAUU', [])
             hubbard_js = self.parser.incar.get('LDAUJ', [])
-            atom_number = 0
-            for element_index, element_number in enumerate(atom_counts.values()):
-                for hubbard_array in (hubbard_orbitals, hubbard_us, hubbard_js):
-                    if len(atom_counts.values()) != len(hubbard_array):
-                        raise ValueError('Hubbard parameters (LDAUL, LDAU, LDAUJ) have to be of the same length as the element section')
-                for _ in range(element_number):
-                    atom_number += 1
-                    if hubbard_orbitals[element_index] > -1:
+            atom_numbers = atomtypes['atomspertype']
+
+            for hubbard_array in (hubbard_orbitals, hubbard_us, hubbard_js):
+                if len(atom_numbers) != len(hubbard_array):
+                    raise ValueError('Hubbard parameters (LDAUL, LDAU, LDAUJ) have to be of the same length as the element section')
+
+            atom_index = 0
+            for element_index, element_number in enumerate(atom_numbers):
+                if hubbard_orbitals[element_index]:
+                    for _ in range(element_number):
+                        atom_index += 1
                         hubbard_correction = sec_dft.m_create(HubbardCorrection)
-                        hubbard_correction.atom_index = atom_number
+                        hubbard_correction.atom_index = atom_index
                         hubbard_correction.orbital = hubbard_orbitals[element_index]
                         hubbard_correction.U = hubbard_us[element_index]
                         hubbard_correction.J = hubbard_js[element_index]
