@@ -1241,9 +1241,9 @@ class VASPParser:
 
         # hubbard correction
         # based on https://www.vasp.at/wiki/index.php/LDAUTYPE (08/07/2022)
-        if self.parser.incar.get('LDAU', False):
+        hubbard_method_index = self.parser.incar.get('LDAUTYPE', 0)
+        if hubbard_method_index > 0:
             hubbard_method_type = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
-            hubbard_method_index = self.parser.incar.get('LDAUTYPE', 2)
             hubbard_orbitals = self.parser.incar.get('LDAUL', [])
             hubbard_us = self.parser.incar.get('LDAUU', [])
             hubbard_js = self.parser.incar.get('LDAUJ', [])
