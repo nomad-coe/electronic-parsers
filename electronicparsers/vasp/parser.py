@@ -36,14 +36,15 @@ import logging
 from datetime import datetime
 import ase
 import re
-from xml.sax import ContentHandler, make_parser  # type: ignore
+from xml.sax import ContentHandler, make_parser
+from nomad.parsing import parser  # type: ignore
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, BasisSetCellDependent, DFT, AtomParameters, XCFunctional,
+    HubbardCorrection, Method, BasisSet, BasisSetCellDependent, DFT, AtomParameters, XCFunctional,
     Functional, Electronic, Scf
 )
 from nomad.datamodel.metainfo.simulation.system import (
@@ -1237,6 +1238,29 @@ class VASPParser:
                     sec_xc_functional.hybrid.append(Functional(name=xc_functional))
                 else:
                     sec_xc_functional.contributions.append(Functional(name=xc_functional))
+
+        # hubbard correction
+        # based on https://www.vasp.at/wiki/index.php/LDAUTYPE (08/07/2022)
+        if self.parser.incar.get('LDAU', False):
+            hubbard_method_type = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
+            hubbard_method_index = self.parser.incar.get('LDAUTYPE', 2)
+            hubbard_orbitals = self.parser.incar.get('LDAUL', [])
+            hubbard_us = self.parser.incar.get('LDAUU', [])
+            hubbard_js = self.parser.incar.get('LDAUJ', [])
+            atom_number = 0
+            for element_index, element_number in enumerate(atom_counts.values()):
+                for hubbard_array in (hubbard_orbitals, hubbard_us, hubbard_js):
+                    if element_number != hubbard_array:
+                        raise ValueError('Hubbard parameters (LDAUL, LDAU, LDAUJ) have to be of the same length as the element section')
+                for _ in range(element_number):
+                    atom_number += 1
+                    if hubbard_orbitals[element_index] > -1:
+                        hubbard_correction = sec_dft.m_create(HubbardCorrection)
+                        hubbard_correction.atom_index = atom_number
+                        hubbard_correction.orbital = hubbard_orbitals[element_index]
+                        hubbard_correction.U = hubbard_us[element_index]
+                        hubbard_correction.J = hubbard_js[element_index]
+                        hubbard_correction.method = hubbard_method_type[hubbard_method_index]
 
         # convergence thresholds
         tolerance = self.parser.incar.get('EDIFF')
