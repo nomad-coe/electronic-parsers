@@ -1165,8 +1165,10 @@ class VASPParser:
             self.logger.warn('Error setting metainfo defintion x_vasp_incar_in', data=dict(
                 incar=incar_parameters))
 
-        sec_method.electronic = Electronic(method='DFT+U' if self.parser.incar.get(
-            'LDAU', False) else 'DFT')
+        if self.parser.incar.get('LDAU', False) or self.parser.incar.get('LDAUTYPE', 0):
+            sec_method.electronic = Electronic(method='DFT+U')
+        else:
+            sec_method.electronic = Electronic(method='DFT')
 
         # kpoints
         for key, val in self.parser.kpoints_info.items():
