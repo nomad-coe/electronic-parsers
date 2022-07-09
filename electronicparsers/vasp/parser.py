@@ -1267,8 +1267,8 @@ class VASPParser:
                         hubbard_correction = sec_dft.m_create(HubbardCorrection)
                         hubbard_correction.atom_index = atom_index
                         hubbard_correction.orbital = hubbard_orbitals[element_index]
-                        hubbard_correction.U = hubbard_us[element_index]
-                        hubbard_correction.J = hubbard_js[element_index]
+                        hubbard_correction.U = hubbard_us[element_index] * ureg.eV
+                        hubbard_correction.J = hubbard_js[element_index] * ureg.eV
                         hubbard_correction.method = hubbard_method_type[hubbard_method_index]
 
         # convergence thresholds
