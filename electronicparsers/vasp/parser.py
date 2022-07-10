@@ -44,7 +44,7 @@ from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    HubbardCorrection, Method, BasisSet, BasisSetCellDependent, DFT, AtomParameters, XCFunctional,
+    Method, BasisSet, BasisSetCellDependent, DFT, AtomParameters, XCFunctional,
     Functional, Electronic, Scf
 )
 from nomad.datamodel.metainfo.simulation.system import (
@@ -1224,6 +1224,8 @@ class VASPParser:
                 sec_xc_functional.hybrid.append(Functional(
                     name='HYB_GGA_XC_%s' % gga, parameters=dict(
                         aggax=aggax, aggac=aggac, aldac=aldac)))
+            if not sec_xc_functional.hybrid[-1].parameters:
+                sec_xc_functional.hybrid[-1].parameters = {}
             sec_xc_functional.hybrid[-1].parameters['mixing_parameter_alpha'] = aexx
             sec_xc_functional.hybrid[-1].parameters['screening_parameter'] = hfscreen
 
