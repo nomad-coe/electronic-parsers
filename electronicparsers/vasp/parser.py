@@ -61,7 +61,7 @@ from nomad.datamodel.metainfo.workflow import (
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
     data = {}
-    pattern = re.compile(r'([A-Z_]+)\s*=\s*([\w]+\s{0,3}[\-\d\. ]*[E\-\+\d]*)') # TODO stress test extensively
+    pattern = re.compile(r'([A-Z_]+)\s*=\s*([\w]*\s{0,3}[\-\d\. ]*[E\-\+\d]*)') # TODO stress test extensively
 
     def convert(v):
         if isinstance(v, list):
@@ -1261,7 +1261,7 @@ class VASPParser:
 
             atom_index = 0
             for element_index, element_number in enumerate(atom_numbers):
-                if hubbard_orbitals[element_index]:
+                if hubbard_orbitals[element_index] and (hubbard_us[element_index] or hubbard_js[element_index]):
                     for _ in range(element_number):
                         atom_index += 1
                         hubbard_correction = sec_dft.m_create(HubbardCorrection)
@@ -1270,6 +1270,8 @@ class VASPParser:
                         hubbard_correction.U = hubbard_us[element_index] * ureg.eV
                         hubbard_correction.J = hubbard_js[element_index] * ureg.eV
                         hubbard_correction.method = hubbard_method_type[hubbard_method_index]
+                else:
+                    atom_index += element_number
 
         # convergence thresholds
         tolerance = self.parser.incar.get('EDIFF')
