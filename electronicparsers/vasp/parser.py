@@ -1261,7 +1261,7 @@ class VASPParser:
 
             atom_index = 0
             for element_index, element_number in enumerate(atom_numbers):
-                if hubbard_orbitals[element_index]:
+                if hubbard_orbitals[element_index] and hubbard_us[element_index] and hubbard_js[element_index]:
                     for _ in range(element_number):
                         atom_index += 1
                         hubbard_correction = sec_dft.m_create(HubbardCorrection)
