@@ -1364,7 +1364,7 @@ class QuantumEspressoRunParser(TextParser):
             numbers_split = numbers.split()
 
         if not numbers_split:
-            self.logger.warn('Unknown XC functional format', data=dict(value=numbers))
+            self.logger.warning('Unknown XC functional format', data=dict(value=numbers))
         numbers_split = [int(n) for n in numbers_split]
 
         # numbers should have six digits
@@ -1416,7 +1416,7 @@ class QuantumEspressoRunParser(TextParser):
             xc_component = self._xc_functional_map[i]
             xc_number = numbers_split[i]
             if xc_number >= len(xc_component) or xc_component[xc_number] is None:
-                # self.logger.warn(
+                # self.logger.warning(
                 #     'Cannot resolve XC functional',
                 #     data=dict(name=xc_names[i], index=xc_number))
                 continue
@@ -2214,7 +2214,7 @@ class QuantumEspressoParser:
                     sec_eigenvalues.occupations = occupations
 
             except Exception:
-                self.logger.warn('Error reading eigenvalues.')
+                self.logger.warning('Error reading eigenvalues.')
 
         # homo lumo
         homo = calculation.get('homo_lumo')

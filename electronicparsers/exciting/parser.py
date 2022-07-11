@@ -1434,7 +1434,7 @@ class ExcitingParser:
 
         files = self.get_exciting_files(name)
         if len(files) > 1:
-            self.logger.warn('Found multiple files. Will read all!', data=dict(file=name))
+            self.logger.warning('Found multiple files. Will read all!', data=dict(file=name))
 
         for n in range(len(files)):
             parser.mainfile = files[n]
@@ -1636,7 +1636,7 @@ class ExcitingParser:
                     sec_scc = sccs[i]
                     if sec_scc is None:
                         # This is the case when there is a mismatch between files
-                        self.logger.warn(
+                        self.logger.warning(
                             'Mismatch in EXCITON and file type', data=dict(file=quantity))
                         sec_scc = sec_run.m_create(Calculation)
 
@@ -1825,7 +1825,7 @@ class ExcitingParser:
         # parse properties
         gw_info_files = self.get_exciting_files(gw_info_file)
         if len(gw_info_files) > 1:
-            self.logger.warn('Found multiple GW info files, will read only first!')
+            self.logger.warning('Found multiple GW info files, will read only first!')
 
         self.info_gw_parser.mainfile = gw_info_files[0]
 
@@ -2135,7 +2135,7 @@ class ExcitingParser:
                 try:
                     setattr(sec_system, name, val)
                 except Exception:
-                    self.logger.warn('Error setting metainfo.')
+                    self.logger.warning('Error setting metainfo.')
 
         # species
         species = self.info_parser.get_initialization_parameter('species', [])

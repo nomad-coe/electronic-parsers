@@ -909,7 +909,7 @@ class TurbomoleParser:
                     0, 2, 1, 3)) * ureg.hartree / ureg.bohr**2
                 sec_scc.hessian_matrix = hessian.to('J/m**2').magnitude
             except Exception:
-                self.logger.warn('Cannot read hessian file.')
+                self.logger.warning('Cannot read hessian file.')
 
         # vibrational frequencies
         vibration = self.module.get('normal_modes_vibrational_frequencies')
@@ -926,7 +926,7 @@ class TurbomoleParser:
                     sec_scc.x_turbomole_vibrations_normal_modes = np.transpose(np.reshape(
                         normal_modes, (n_atoms, 3, len(normal_modes[0]))), axes=(2, 0, 1))
                 except Exception:
-                    self.logger.warn('Cannot read normal modes file.')
+                    self.logger.warning('Cannot read normal modes file.')
 
             if self.module.get('vibrational_spectrum_file') is not None:
                 self.vibrational_parser.mainfile = os.path.join(self.maindir, self.module.get(
@@ -941,7 +941,7 @@ class TurbomoleParser:
                     sec_scc.x_turbomole_vibrations_raman_activity = [s[-1] == 'YES' for s in spectrum]
 
                 except Exception:
-                    self.logger.warn('Cannot read vibrational spectrum file.')
+                    self.logger.warning('Cannot read vibrational spectrum file.')
 
         # eigenvalues
         eigenvalue_files = self.module.get('eigenvalue_file')
@@ -967,7 +967,7 @@ class TurbomoleParser:
                     sec_eigenvalues.x_turbomole_eigenvalues_irreducible_representation = irrep
                     sec_eigenvalues.kpoints = [np.zeros(3)]
             except Exception:
-                self.logger.warn('Cannot read eigenvalues.')
+                self.logger.warning('Cannot read eigenvalues.')
 
         # self consistency
         self_consistency = self.module.get('self_consistency', {})
@@ -1161,7 +1161,7 @@ class TurbomoleParser:
         for header in ['program_version', 'x_turbomole_nodename']:
             value = [module_run.get(header) for module_run in self.out_parser.get('module_run', [])]
             if len(set(value)) > 1:
-                self.logger.warn('Multiple values found for header.')
+                self.logger.warning('Multiple values found for header.')
             if value:
                 if header == 'program_version':
                     sec_run.program.version = value[0]

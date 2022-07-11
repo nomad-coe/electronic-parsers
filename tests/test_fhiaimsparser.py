@@ -121,8 +121,8 @@ def test_band_spinpol(parser):
     assert np.shape(sec_dos.energies) == (50,)
     assert np.shape(sec_dos.total[1].value) == (50,)
     assert sec_dos.energies[46].magnitude == approx(-1.1999976e-18)
-    assert sec_dos.total[0].value[46].magnitude == approx(1.2418253e-11)
-    assert sec_dos.total[1].value[15].magnitude == approx(3.91517047e-11)
+    assert sec_dos.total[0].value[46].magnitude == approx((.18127036 / ureg.eV).to(1 / ureg.joule).magnitude)
+    assert sec_dos.total[1].value[15].magnitude == approx((.57150097 / ureg.eV).to(1 / ureg.joule).magnitude)
 
 
 def test_band_silicon(silicon):
@@ -154,7 +154,7 @@ def test_dos_silicon(silicon):
     scc = silicon.run[-1].calculation[0]
     dos = scc.dos_electronic[0]
     energies = dos.energies.to(ureg.electron_volt).magnitude
-    values = np.array([d.value for d in dos.total])
+    values = np.array([d.value.magnitude for d in dos.total])
 
     # Check that an energy reference is reported
     energy_reference = scc.energy.fermi
