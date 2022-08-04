@@ -47,7 +47,24 @@ def silicon_band(parser):
     return archive
 
 
+def integrate_dos(dos, spin_pol, e_fermi=None):
+    """"""
+    # Restrain integral to the occupied states
+    if e_fermi:
+        occ_energy = [e.magnitude for e in dos.energies if e <= e_fermi]
+    else:
+        occ_energy = [e.magnitude for e in dos.energies]
+    # Perofrm the integration
+    dos_integrated = 0.
+    spins = [0, 1] if spin_pol else [0]
+    for spin in spins:
+        occ_value = [v.magnitude for v in dos.total[spin].value[:len(occ_energy)]]
+        dos_integrated += np.trapz(x=occ_energy, y=occ_value)
+    return dos_integrated
+
+
 def test_vasprunxml_static(parser):
+    """Test Mg1 system, computed in VASP 4.6.35"""
     archive = EntryArchive()
     parser.parse('tests/data/vasp/Mg_bands/vasprun.xml.static', archive, None)
 
@@ -76,12 +93,18 @@ def test_vasprunxml_static(parser):
     assert sec_scc.energy.total.value.magnitude == approx(-2.3264377e-19)
     assert np.shape(sec_scc.forces.total.value) == (1, 3)
     assert sec_scc.stress.total.value[2][2].magnitude == approx(-2.78384438e+08)
+
+    # test DOS values
     assert len(sec_scc.dos_electronic[0].energies) == 5000
     assert sec_scc.dos_electronic[0].total[0].value[1838].magnitude == approx((.1369 / ureg.eV).to(1 / ureg.joule).magnitude)
     assert len(sec_scc.dos_electronic[0].atom_projected) == 9
     assert sec_scc.dos_electronic[0].atom_projected[0].value[-1].magnitude == approx(3.40162245e+17)
     assert np.shape(sec_scc.eigenvalues[0].energies[0][887]) == (37,)
     assert sec_scc.scf_iteration[2].energy.total_t0.value.magnitude == approx(-2.27580485e-19,)
+
+    # test DOS integrated
+    dos_integrated = integrate_dos(sec_scc.dos_electronic[0], False, sec_scc.energy.fermi)
+    assert pytest.approx(dos_integrated, abs=1e-2) == 8. - 6. # dos starts from 6 electrons already
 
 
 def test_vasprunxml_relax(parser):
