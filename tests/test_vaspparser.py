@@ -48,7 +48,10 @@ def silicon_band(parser):
 
 
 def integrate_dos(dos, spin_pol, e_fermi=None):
-    """"""
+    """Integrate the DOS value over the spin channels stated in `spin_pol`.
+    When the sampling range is wide enough and `e_fermi` is given,
+    the integral should yield the number of valence electrons.
+    The explicit integral serves to check energy and value units."""
     # Restrain integral to the occupied states
     if e_fermi:
         occ_energy = [e.magnitude for e in dos.energies if e <= e_fermi]
@@ -58,7 +61,11 @@ def integrate_dos(dos, spin_pol, e_fermi=None):
     dos_integrated = 0.
     spins = [0, 1] if spin_pol else [0]
     for spin in spins:
-        occ_value = [v.magnitude for v in dos.total[spin].value[:len(occ_energy)]]
+        try:
+            spin_channel = dos.total[spin].value[:len(occ_energy)]
+        except IndexError:
+            raise IndexError('Check the no. spin-channels')
+        occ_value = [v.magnitude for v in spin_channel]
         dos_integrated += np.trapz(x=occ_energy, y=occ_value)
     return dos_integrated
 
@@ -108,6 +115,7 @@ def test_vasprunxml_static(parser):
 
 
 def test_vasprunxml_relax(parser):
+    """Test Ac1Ag1 system, computed by VASP 5.3.2"""
     archive = EntryArchive()
     parser.parse('tests/data/vasp/AgAc_relax/vasprun.xml.relax', archive, None)
 
@@ -127,6 +135,8 @@ def test_vasprunxml_relax(parser):
     assert sec_sccs[2].energy.highest_occupied.magnitude == approx(7.93702283e-19)
     assert [len(scc.eigenvalues) for scc in sec_sccs] == [0, 0, 1]
     assert [len(scc.dos_electronic) for scc in sec_sccs] == [0, 0, 1]
+    dos_integrated = integrate_dos(sec_sccs[-1].dos_electronic[0], True, sec_sccs[-1].energy.fermi)
+    assert pytest.approx(dos_integrated, abs=1) == 22.
 
 
 def test_vasprunxml_bands(parser):
@@ -166,7 +176,8 @@ def test_band_silicon(silicon_band):
 
 
 def test_dos_silicon(silicon_dos):
-    """Tests that the DOS of silicon is parsed correctly.
+    """Tests that the DOS of Si2 is parsed correctly.
+    Computed using VASP 5.2.2
     """
     scc = silicon_dos.run[-1].calculation[0]
     dos = scc.dos_electronic[-1]
@@ -189,6 +200,10 @@ def test_dos_silicon(silicon_dos):
     highest_occupied_index = lowest_unoccupied_index - 1
     gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
     assert gap == approx(0.83140)
+
+    # Check that the no. valence electrons is receovered
+    dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
+    assert pytest.approx(dos_integrated, abs=1e-2) == 8.
 
 
 def test_outcar(parser):
@@ -222,12 +237,20 @@ def test_outcar(parser):
     assert np.shape(sec_eigs.energies[0][144]) == (15,)
     assert sec_eigs.energies[0][9][14].magnitude == approx(1.41810256e-18)
     assert sec_eigs.occupations[0][49][9] == 2.0
+
+    # check DOS
     sec_dos = sec_scc.dos_electronic[0]
     assert len(sec_dos.energies) == 301
     assert sec_dos.total[0].value[282].magnitude == approx((.2545E+01 / ureg.eV).to(1 / ureg.joule).magnitude)
-    assert sec_dos.total[0].value_integrated[-1] == 30.0
     assert sec_dos.atom_projected[10].value[-15].magnitude == approx(1.51481425e+17)
     assert sec_dos.atom_projected[5].value[-16].magnitude == approx(1.71267009e+16)
+    assert sec_dos.total[0].value_integrated[-1] == 30.0 # This runs up to the conduction band
+#    BUG EMIN is stored in the fermi energy!!
+#    dos_integrated = integrate_dos(sec_dos, False, sec_scc.energy.fermi)
+#    try:
+#        assert pytest.approx(dos_integrated, abs=1) == 22.
+#    except AssertionError:
+#        raise AssertionError(sec_scc.energy.fermi)
 
 
 def test_broken_xml(parser):
