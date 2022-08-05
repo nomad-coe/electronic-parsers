@@ -17,7 +17,6 @@
 #
 
 import numpy as np
-from nomad.units import ureg
 
 
 def integrate_dos(dos, spin_pol, e_fermi=None):
