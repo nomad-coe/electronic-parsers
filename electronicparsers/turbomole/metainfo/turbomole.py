@@ -466,7 +466,7 @@ class BandEnergies(simulation.calculation.BandEnergies):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_turbomole_eigenvalues_irreducible_representation = Quantity(
-        type=np.dtype('U'),
+        type=np.dtype(np.int32),
         shape=['number_of_spin_channels', 'number_of_eigenvalues_kpoints', 'number_of_eigenvalues'],
         description='''
         Irreducible representation the eigenstates belong to.

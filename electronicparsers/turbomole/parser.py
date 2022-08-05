@@ -961,7 +961,7 @@ class TurbomoleParser:
                     occupations = np.reshape(np.array(
                         occupation, dtype=float), (len(eigenvalue_files), 1, len(occupation[0])))
                     irrep = np.reshape(np.array(
-                        irrep, dtype=np.dtype('U')), (len(eigenvalue_files), 1, len(irrep[0])))
+                        irrep, dtype=np.dtype(np.int32)), (len(eigenvalue_files), 1, len(irrep[0])))
                     sec_eigenvalues.energies = values
                     sec_eigenvalues.occupations = occupations
                     sec_eigenvalues.x_turbomole_eigenvalues_irreducible_representation = irrep
