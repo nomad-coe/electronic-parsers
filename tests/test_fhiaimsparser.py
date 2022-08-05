@@ -22,6 +22,7 @@ import numpy as np
 from nomad.datamodel import EntryArchive
 from nomad.units import ureg
 from electronicparsers.fhiaims import FHIAimsParser
+from tests.dos_integrator import integrate_dos
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -117,12 +118,15 @@ def test_band_spinpol(parser):
     assert sec_k_band.segment[1].energies[0][3][5].magnitude == approx(-1.54722007e-17)
     assert sec_k_band.segment[2].kpoints[14][2] == approx(0.5)
 
+    # test DOS
     sec_dos = sec_scc.dos_electronic[0]
     assert np.shape(sec_dos.energies) == (50,)
     assert np.shape(sec_dos.total[1].value) == (50,)
     assert sec_dos.energies[46].magnitude == approx(-1.1999976e-18)
     assert sec_dos.total[0].value[46].magnitude == approx((.18127036 / ureg.eV).to(1 / ureg.joule).magnitude)
     assert sec_dos.total[1].value[15].magnitude == approx((.57150097 / ureg.eV).to(1 / ureg.joule).magnitude)
+    dos_integrated = integrate_dos(sec_dos, True, sec_scc.energy.fermi)
+    assert pytest.approx(dos_integrated, abs=1) == 8.
 
     # v151211 test for the Fermi level
     assert sec_scc.energy.fermi.to('eV').magnitude == approx(-9.3842209)
@@ -163,6 +167,8 @@ def test_dos_silicon(silicon):
     dos = scc.dos_electronic[0]
     energies = dos.energies.to(ureg.electron_volt).magnitude
     values = np.array([d.value.magnitude for d in dos.total])
+    dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
+    assert pytest.approx(dos_integrated, abs=1e-2) == 4.
 
     # Check that an energy reference is reported
     energy_reference = scc.energy.fermi
@@ -195,6 +201,9 @@ def test_dos(parser):
     assert sec_species_dos[1].value[37].magnitude == approx(7.85534487e+17)
     assert sec_species_dos[4].value[3].magnitude == approx(4.49311696e+17)
     assert sec_species_dos[7].value[5].magnitude == approx(2.46401047e+16)
+
+    dos_integrated = integrate_dos(sec_dos, False, sec_scc.energy.fermi)
+    assert pytest.approx(dos_integrated, abs=1) == 3.  # 3rd valence shell
 
 
 def test_md(parser):

@@ -22,6 +22,7 @@ import numpy as np
 from nomad.units import ureg
 from nomad.datamodel import EntryArchive
 from electronicparsers.vasp import VASPParser
+from tests.dos_integrator import integrate_dos
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -45,29 +46,6 @@ def silicon_band(parser):
     archive = EntryArchive()
     parser.parse('tests/data/vasp/Si_dos_band/band_si.xml', archive, None)
     return archive
-
-
-def integrate_dos(dos, spin_pol, e_fermi=None):
-    """Integrate the DOS value over the spin channels stated in `spin_pol`.
-    When the sampling range is wide enough and `e_fermi` is given,
-    the integral should yield the number of valence electrons.
-    The explicit integral serves to check energy and value units."""
-    # Restrain integral to the occupied states
-    if e_fermi:
-        occ_energy = [e.magnitude for e in dos.energies if e <= e_fermi]
-    else:
-        occ_energy = [e.magnitude for e in dos.energies]
-    # Perofrm the integration
-    dos_integrated = 0.
-    spins = [0, 1] if spin_pol else [0]
-    for spin in spins:
-        try:
-            spin_channel = dos.total[spin].value[:len(occ_energy)]
-        except IndexError:
-            raise IndexError('Check the no. spin-channels')
-        occ_value = [v.magnitude for v in spin_channel]
-        dos_integrated += np.trapz(x=occ_energy, y=occ_value)
-    return dos_integrated
 
 
 def test_vasprunxml_static(parser):
@@ -244,7 +222,7 @@ def test_outcar(parser):
     assert sec_dos.total[0].value[282].magnitude == approx((.2545E+01 / ureg.eV).to(1 / ureg.joule).magnitude)
     assert sec_dos.atom_projected[10].value[-15].magnitude == approx(1.51481425e+17)
     assert sec_dos.atom_projected[5].value[-16].magnitude == approx(1.71267009e+16)
-    assert sec_dos.total[0].value_integrated[-1] == 30.0 # This runs up to the conduction band
+    assert sec_dos.total[0].value_integrated[-1] == 30.0  # This runs up to the conduction band
 #    BUG EMIN is stored in the fermi energy!!
 #    dos_integrated = integrate_dos(sec_dos, False, sec_scc.energy.fermi)
 #    try:
