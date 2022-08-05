@@ -19,6 +19,7 @@
 import numpy as np
 from nomad.units import ureg
 
+
 def integrate_dos(dos, spin_pol, e_fermi=None):
     """Integrate the DOS value over the spin channels stated in `spin_pol`.
     When the sampling range is wide enough and `e_fermi` is given,

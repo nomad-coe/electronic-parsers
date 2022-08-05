@@ -89,7 +89,7 @@ def test_vasprunxml_static(parser):
 
     # test DOS integrated
     dos_integrated = integrate_dos(sec_scc.dos_electronic[0], False, sec_scc.energy.fermi)
-    assert pytest.approx(dos_integrated, abs=1e-2) == 8. - 6. # dos starts from 6 electrons already
+    assert pytest.approx(dos_integrated, abs=1e-2) == 8. - 6.  # dos starts from 6 electrons already
 
 
 def test_vasprunxml_relax(parser):
