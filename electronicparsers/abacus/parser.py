@@ -42,7 +42,6 @@ from .metainfo.abacus import (
 
 # TODO determine if we can update regex to the following
 re_float = r'[-+]?\d+\.*\d*(?:[Ee][-+]\d+)?'
-#re_float = r'[\d\.\-\+Ee]+'
 
 
 class ABACUSInputParser(TextParser):
@@ -1314,7 +1313,7 @@ class ABACUSParser:
 
             # energies
             sec_energy = sec_scc.m_create(Energy)
-            vdw_m_dict = {'d2':'DFT-D2', 'd3_0':'DFT-D3(0)', 'd3_bj':'DFT-D3(BJ)'}
+            vdw_m_dict = {'d2': 'DFT-D2', 'd3_0': 'DFT-D3(0)', 'd3_bj': 'DFT-D3(BJ)'}
             # TODO AN: I do not quite understand this loop over scf_iterations
             # and the loop over iteration
             scf_iteration = sub_section.get('iteration')
@@ -1340,7 +1339,7 @@ class ABACUSParser:
                     correction=iteration.get('correction_hartree'))
                 sec_energy.hartree_fock_x_scaled = EnergyEntry(
                     value=iteration.get('hartree_fock_X_scaled'))
-            
+
                 sec_energy.total = EnergyEntry(
                     value=sub_section.get('total'))
                 sec_energy.fermi = sub_section.get('reference_fermi')
