@@ -94,6 +94,6 @@ def test_molecular_dynamics(parser):
     assert calc[8].temperature.magnitude == approx(71.351)
 
     md = archive.workflow[0].molecular_dynamics
-    assert md.ensemble_type == 'NVE'
+    assert md.thermodynamic_ensemble == 'NVE'
     assert md.x_cpmd_section_md_averaged_quantities[0].x_cpmd_density_functional_energy_mean == approx(-1.115075)
     assert md.x_cpmd_section_md_averaged_quantities[0].x_cpmd_ion_displacement_std == approx(.193303E-02)

@@ -344,7 +344,7 @@ class CPMDParser:
         elif self.mainfile_parser.molecular_dynamics is not None:
             sec_workflow.type = 'molecular_dynamics'
             sec_workflow.molecular_dynamics = MolecularDynamics(
-                ensemble_type=resolve_ensemble_type()
+                thermodynamic_ensemble=resolve_ensemble_type()
             )
             sec_averaged = sec_workflow.molecular_dynamics.m_create(x_cpmd_section_md_averaged_quantities)
             for value in self.mainfile_parser.molecular_dynamics.get('averaged', []):
@@ -390,7 +390,7 @@ class CPMDParser:
                     lattice_vectors=lattice_vectors
                 )
                 if len(trajectory[n_frame, :]) > 1:
-                    sec_system.atoms.velocities = trajectory[n_frame, :, 1, :] * ureg.bohr / (ureg.hbar / ureg.hartree)
+                    sec_system.atoms.velocities = trajectory[n_frame, :, 1, :] * ureg.bohr / (ureg.dirac_constant / ureg.hartree)
 
                 sec_calc = sec_run.m_create(Calculation)
                 if len(trajectory[n_frame, :]) > 2:
