@@ -1,0 +1,23 @@
+INPUT_PARAMETERS
+ntype                         2
+ecutwfc                       100
+scf_thr                       1e-08
+scf_nmax                      400
+basis_type                    lcao
+ks_solver                     genelpa
+smearing_method               gaussian
+smearing_sigma                0.02
+mixing_type                   pulay
+mixing_beta                   0.4
+pseudo_dir                    /home/jiyy/SG15_upf
+dft_functional                hse
+exx_opt_orb_ecut              100
+exx_opt_orb_tolerence         1e-12
+exx_ccp_rmesh_times           1.5
+exx_dm_threshold              0.0005
+exx_cauchy_threshold          1e-08
+exx_schwarz_threshold         5e-05
+exx_c_threshold               5e-05
+exx_pca_threshold             0.0001
+suffix                        test
+calculation                   scf

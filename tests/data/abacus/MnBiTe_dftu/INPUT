@@ -1,0 +1,67 @@
+INPUT_PARAMETERS
+#System variables
+suffix           ABACUS
+calculation      scf
+init_chg         atomic
+ntype            4
+tot_magnetization 0
+dft_functional   pbe
+pseudo_type      upf201
+
+#Input & Output variables
+stru_file        STRU
+kpoint_file      KPT
+pseudo_dir       /
+orbital_dir      /
+out_level        ie
+out_chg          1
+out_force        0
+out_mul          0
+out_band         0
+out_mat_hs2      0
+
+#Plane wave related variables
+ecutwfc          150
+pw_diag_thr      1e-4
+
+#Electronic structure
+basis_type       lcao
+ks_solver        genelpa
+#nbands          40 
+#nspin            4
+smearing_method  gauss
+smearing_sigma   1e-3
+mixing_type      pulay-kerker
+mixing_beta      0.7
+mixing_gg0       1.5
+gamma_only       0
+scf_nmax         200
+scf_thr          1e-8        
+
+#Geometry relaxation
+relax_nmax       100
+cal_force        1
+force_thr_ev     1e-3
+cal_stress       1
+stress_thr       0.01
+fixed_axes       None
+relax_method     cg
+
+#DOS
+out_dos          0
+dos_sigma        0.03
+
+#SOC
+noncolin         0
+lspinorb	 1
+
+#vdW correction
+vdw_method       none
+
+#DFT+U correction
+dft_plus_u       1
+omc              0
+orbital_corr     2    2    -1   -1
+hubbard_u        4.0  4.0  0.0  0.0
+hund_j           0.0  0.0  0.0  0.0
+

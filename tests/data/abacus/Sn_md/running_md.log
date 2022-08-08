@@ -1,0 +1,3342 @@
+                                                                                     
+                             WELCOME TO ABACUS                                       
+                                                                                     
+               'Atomic-orbital Based Ab-initio Computation at UStc'                  
+                                                                                     
+                     Website: http://abacus.ustc.edu.cn/                             
+                                                                                     
+    Version: Parallel, in development
+    Processor Number is 8
+    Start Time is Tue Jul  5 15:19:49 2022
+                                                                                     
+ ------------------------------------------------------------------------------------
+
+ READING GENERAL INFORMATION
+                           global_out_dir = OUT.ABACUS/
+                           global_in_card = INPUT
+                               pseudo_dir = 
+                              orbital_dir = 
+                              pseudo_type = upf
+                                    DRANK = 1
+                                    DSIZE = 8
+                                   DCOLOR = 1
+                                    GRANK = 1
+                                    GSIZE = 1
+
+
+
+
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ |                                                                    |
+ | Reading atom information in unitcell:                              |
+ | From the input file and the structure file we know the number of   |
+ | different elments in this unitcell, then we list the detail        |
+ | information for each element, especially the zeta and polar atomic |
+ | orbital number for each element. The total atom number is counted. |
+ | We calculate the nearest atom distance for each atom and show the  |
+ | Cartesian and Direct coordinates for each atom. We list the file   |
+ | address for atomic orbitals. The volume and the lattice vectors    |
+ | in real and reciprocal space is also shown.                        |
+ |                                                                    |
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
+ READING UNITCELL INFORMATION
+                                    ntype = 1
+                 atom label for species 1 = Sn
+                  lattice constant (Bohr) = 23.4538
+              lattice constant (Angstrom) = 12.4112
+
+ READING ATOM TYPE 1
+                               atom label = Sn
+                      L=0, number of zeta = 2
+                      L=1, number of zeta = 2
+                      L=2, number of zeta = 1
+             number of atom for this type = 64
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+                      start magnetization = FALSE
+
+                        TOTAL ATOM NUMBER = 64
+
+ DIRECT COORDINATES
+         atom                   x                   y                   z                 mag                  vx                  vy                  vz
+     taud_Sn1                   0                   0                   0                   0                   0                   0                   0
+     taud_Sn2                   0                0.25                0.25                   0                   0                   0                   0
+     taud_Sn3                0.25                   0                0.25                   0                   0                   0                   0
+     taud_Sn4                0.25                0.25                   0                   0                   0                   0                   0
+     taud_Sn5               0.375               0.125               0.375                   0                   0                   0                   0
+     taud_Sn6               0.125               0.125               0.125                   0                   0                   0                   0
+     taud_Sn7               0.125               0.375               0.375                   0                   0                   0                   0
+     taud_Sn8               0.375               0.375               0.125                   0                   0                   0                   0
+     taud_Sn9                 0.5                   0                   0                   0                   0                   0                   0
+    taud_Sn10                 0.5                0.25                0.25                   0                   0                   0                   0
+    taud_Sn11                0.75                   0                0.25                   0                   0                   0                   0
+    taud_Sn12                0.75                0.25                   0                   0                   0                   0                   0
+    taud_Sn13               0.875               0.125               0.375                   0                   0                   0                   0
+    taud_Sn14               0.625               0.125               0.125                   0                   0                   0                   0
+    taud_Sn15               0.625               0.375               0.375                   0                   0                   0                   0
+    taud_Sn16               0.875               0.375               0.125                   0                   0                   0                   0
+    taud_Sn17                   0                 0.5                   0                   0                   0                   0                   0
+    taud_Sn18                   0                0.75                0.25                   0                   0                   0                   0
+    taud_Sn19                0.25                 0.5                0.25                   0                   0                   0                   0
+    taud_Sn20                0.25                0.75                   0                   0                   0                   0                   0
+    taud_Sn21               0.375               0.625               0.375                   0                   0                   0                   0
+    taud_Sn22               0.125               0.625               0.125                   0                   0                   0                   0
+    taud_Sn23               0.125               0.875               0.375                   0                   0                   0                   0
+    taud_Sn24               0.375               0.875               0.125                   0                   0                   0                   0
+    taud_Sn25                 0.5                 0.5                   0                   0                   0                   0                   0
+    taud_Sn26                 0.5                0.75                0.25                   0                   0                   0                   0
+    taud_Sn27                0.75                 0.5                0.25                   0                   0                   0                   0
+    taud_Sn28                0.75                0.75                   0                   0                   0                   0                   0
+    taud_Sn29               0.875               0.625               0.375                   0                   0                   0                   0
+    taud_Sn30               0.625               0.625               0.125                   0                   0                   0                   0
+    taud_Sn31               0.625               0.875               0.375                   0                   0                   0                   0
+    taud_Sn32               0.875               0.875               0.125                   0                   0                   0                   0
+    taud_Sn33                   0                   0                 0.5                   0                   0                   0                   0
+    taud_Sn34                   0                0.25                0.75                   0                   0                   0                   0
+    taud_Sn35                0.25                   0                0.75                   0                   0                   0                   0
+    taud_Sn36                0.25                0.25                 0.5                   0                   0                   0                   0
+    taud_Sn37               0.375               0.125               0.875                   0                   0                   0                   0
+    taud_Sn38               0.125               0.125               0.625                   0                   0                   0                   0
+    taud_Sn39               0.125               0.375               0.875                   0                   0                   0                   0
+    taud_Sn40               0.375               0.375               0.625                   0                   0                   0                   0
+    taud_Sn41                 0.5                   0                 0.5                   0                   0                   0                   0
+    taud_Sn42                 0.5                0.25                0.75                   0                   0                   0                   0
+    taud_Sn43                0.75                   0                0.75                   0                   0                   0                   0
+    taud_Sn44                0.75                0.25                 0.5                   0                   0                   0                   0
+    taud_Sn45               0.875               0.125               0.875                   0                   0                   0                   0
+    taud_Sn46               0.625               0.125               0.625                   0                   0                   0                   0
+    taud_Sn47               0.625               0.375               0.875                   0                   0                   0                   0
+    taud_Sn48               0.875               0.375               0.625                   0                   0                   0                   0
+    taud_Sn49                   0                 0.5                 0.5                   0                   0                   0                   0
+    taud_Sn50                   0                0.75                0.75                   0                   0                   0                   0
+    taud_Sn51                0.25                 0.5                0.75                   0                   0                   0                   0
+    taud_Sn52                0.25                0.75                 0.5                   0                   0                   0                   0
+    taud_Sn53               0.375               0.625               0.875                   0                   0                   0                   0
+    taud_Sn54               0.125               0.625               0.625                   0                   0                   0                   0
+    taud_Sn55               0.125               0.875               0.875                   0                   0                   0                   0
+    taud_Sn56               0.375               0.875               0.625                   0                   0                   0                   0
+    taud_Sn57                 0.5                 0.5                 0.5                   0                   0                   0                   0
+    taud_Sn58                 0.5                0.75                0.75                   0                   0                   0                   0
+    taud_Sn59                0.75                 0.5                0.75                   0                   0                   0                   0
+    taud_Sn60                0.75                0.75                 0.5                   0                   0                   0                   0
+    taud_Sn61               0.875               0.625               0.875                   0                   0                   0                   0
+    taud_Sn62               0.625               0.625               0.625                   0                   0                   0                   0
+    taud_Sn63               0.625               0.875               0.875                   0                   0                   0                   0
+    taud_Sn64               0.875               0.875               0.625                   0                   0                   0                   0
+
+
+ READING ORBITAL FILE NAMES FOR LCAO
+ orbital file: ./Sn_pz-bhs_8.0au_16Ry_2s2p1d
+
+                          Volume (Bohr^3) = 12901.5
+                             Volume (A^3) = 1911.8
+
+ Lattice vectors: (Cartesian coordinate: in unit of a_0)
+                   +1                  +0                  +0
+                   +0                  +1                  +0
+                   +0                  +0                  +1
+ Reciprocal vectors: (Cartesian coordinate: in unit of 2 pi/a_0)
+                   +1                  +0                  +0
+                   +0                  +1                  +0
+                   +0                  +0                  +1
+
+
+
+
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ |                                                                    |
+ | Reading pseudopotentials files:                                    |
+ | The pseudopotential file is in UPF format. The 'NC' indicates that |
+ | the type of pseudopotential is 'norm conserving'. Functional of    |
+ | exchange and correlation is decided by 4 given parameters in UPF   |
+ | file.  We also read in the 'core correction' if there exists.      |
+ | Also we can read the valence electrons number and the maximal      |
+ | angular momentum used in this pseudopotential. We also read in the |
+ | trail wave function, trail atomic density and local-pseudopotential|
+ | on logrithmic grid. The non-local pseudopotential projector is also|
+ | read in if there is any.                                           |
+ |                                                                    |
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
+                PAO radial cut off (Bohr) = 15
+
+ Read in pseudopotential file is ./Sn.pz-bhs.UPF
+                     pseudopotential type = NC
+          exchange-correlation functional = PZ
+                 nonlocal core correction = 0
+                        valence electrons = 4
+                                     lmax = 1
+                           number of zeta = 2
+                     number of projectors = 2
+                           L of projector = 0
+                           L of projector = 1
+     initial pseudo atomic orbital number = 256
+                                   NLOCAL = 832
+
+
+
+
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ |                                                                    |
+ | Setup plane waves of charge/potential:                             |
+ | Use the energy cutoff and the lattice vectors to generate the      |
+ | dimensions of FFT grid. The number of FFT grid on each processor   |
+ | is 'nrxx'. The number of plane wave basis in reciprocal space is   |
+ | different for charege/potential and wave functions. We also set    |
+ | the 'sticks' for the parallel of FFT. The number of plane waves    |
+ | is 'npw' in each processor.                                        |
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
+
+ SETUP THE PLANE WAVE BASIS
+ energy cutoff for charge/potential (unit:Ry) = 120
+          [fft grid for charge/potential] = 90, 90, 90
+                      [fft grid division] = 2, 2, 2
+      [big fft grid for charge/potential] = 45, 45, 45
+                                     nbxx = 12150
+                                     nrxx = 97200
+
+ SETUP PLANE WAVES FOR CHARGE/POTENTIAL
+                    number of plane waves = 286241
+                         number of sticks = 5249
+
+ PARALLEL PW FOR CHARGE/POTENTIAL
+     PROC   COLUMNS(POT)             PW
+        1            656          35780
+        2            656          35780
+        3            656          35780
+        4            656          35780
+        5            656          35780
+        6            656          35780
+        7            656          35780
+        8            657          35781
+ --------------- sum -------------------
+        8           5249         286241
+                            number of |g| = 1379
+                                  max |g| = 1672
+                                  min |g| = 2
+
+ SETUP THE ELECTRONS NUMBER
+            electron number of element Sn = 4
+      total electron number of element Sn = 256
+                           occupied bands = 128
+                                   NLOCAL = 832
+                                   NBANDS = 600
+                                   NBANDS = 600
+ DONE : SETUP UNITCELL Time : 0.0896821 (SEC)
+
+
+
+
+
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ |                                                                    |
+ | Setup K-points                                                     |
+ | We setup the k-points according to input parameters.               |
+ | The reduced k-points are set according to symmetry operations.     |
+ | We treat the spin as another set of k-points.                      |
+ |                                                                    |
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
+
+ SETUP K-POINTS
+                                    nspin = 1
+                   Input type of k points = Monkhorst-Pack(Gamma)
+is_mp : 1
+                                   nkstot = 1
+                               nkstot_ibz = 1
+      IBZ             DirectX             DirectY             DirectZ              Weight    ibz2bz
+        1                   0                   0                   0                   1         0
+                               nkstot now = 1
+
+  KPOINTS            DIRECT_X            DIRECT_Y            DIRECT_Z              WEIGHT
+        1                   0                   0                   0                   1
+
+           k-point number in this process = 1
+       minimum distributed K point number = 1
+
+  KPOINTS         CARTESIAN_X         CARTESIAN_Y         CARTESIAN_Z              WEIGHT
+        1                   0                   0                   0                   2
+
+  KPOINTS            DIRECT_X            DIRECT_Y            DIRECT_Z              WEIGHT
+        1                   0                   0                   0                   2
+ DONE : INIT K-POINTS Time : 0.090919 (SEC)
+
+
+
+
+
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ |                                                                    |
+ | Setup plane waves of wave functions:                               |
+ | Use the energy cutoff and the lattice vectors to generate the      |
+ | dimensions of FFT grid. The number of FFT grid on each processor   |
+ | is 'nrxx'. The number of plane wave basis in reciprocal space is   |
+ | different for charege/potential and wave functions. We also set    |
+ | the 'sticks' for the parallel of FFT. The number of plane wave of  |
+ | each k-point is 'npwk[ik]' in each processor                       |
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
+
+ SETUP PLANE WAVES FOR WAVE FUNCTIONS
+     energy cutoff for wavefunc (unit:Ry) = 30
+            [fft grid for wave functions] = 90, 90, 90
+                    number of plane waves = 35825
+                         number of sticks = 1313
+
+ PARALLEL PW FOR WAVE FUNCTIONS
+     PROC   COLUMNS(POT)             PW
+        1            164           4478
+        2            164           4478
+        3            164           4478
+        4            164           4478
+        5            164           4478
+        6            164           4478
+        7            164           4478
+        8            165           4479
+ --------------- sum -------------------
+        8           1313          35825
+ DONE : INIT PLANEWAVE Time : 0.100032 (SEC)
+
+ DONE : INIT CHARGE Time : 0.18126 (SEC)
+
+                                 init_chg = atomic
+ DONE : INIT POTENTIAL Time : 0.219314 (SEC)
+
+
+
+
+
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ |                                                                    |
+ | Setup numerical orbitals:                                          |
+ | This part setup: numerical atomic orbitals, non-local projectors   |
+ | and neutral potential (1D). The atomic orbitals information        |
+ | including the radius, angular momentum and zeta number.            |
+ | The neutral potential is the sum of local part of pseudopotential  |
+ | and potential given by atomic charge, they will cancel out beyond  |
+ | a certain radius cutoff, because the Z/r character.                |
+ |                                                                    |
+ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
+
+ SETUP ONE DIMENSIONAL ORBITALS/POTENTIAL
+                        delta k  (1/Bohr) = 0.01
+                        delta r    (Bohr) = 0.01
+                        dr_uniform (Bohr) = 0.001
+                        rmax       (Bohr) = 30
+                                    kmesh = 551
+      ORBITAL  L  N      nr      dr    RCUT  CHECK_UNIT    NEW_UNIT
+            1  0  0     801    0.01       8           1           1
+            2  0  1     801    0.01       8           1           1
+            3  1  0     801    0.01       8           1           1
+            4  1  1     801    0.01       8           1           1
+            5  2  0     801    0.01       8           1           1
+ SET NONLOCAL PSEUDOPOTENTIAL PROJECTORS
+ max number of nonlocal projetors among all species is 2
+
+ SETUP THE TWO-CENTER INTEGRATION TABLES
+
+ SETUP THE DIVISION OF H/S MATRIX
+ divide the H&S matrix using 2D block algorithms.
+                                     nb2d = 32
+                  trace_loc_row dimension = 832
+                  trace_loc_col dimension = 832
+                                     nloc = 93184
+
+ -------------------------------------------
+ STEP OF MOLECULAR DYNAMICS : 0
+ -------------------------------------------
+              searching radius is (Bohr)) = 16
+         searching radius unit is (Bohr)) = 23.5
+        enter setAlltoallvParameter, nblk = 32
+checkpoint 2
+                                     pnum = 0
+                                     prow = 0
+                                     pcol = 0
+                             nRow_in_proc = 320
+                             nCol_in_proc = 175
+                                     pnum = 1
+                                     prow = 0
+                                     pcol = 1
+                             nRow_in_proc = 320
+                             nCol_in_proc = 162
+                                     pnum = 2
+                                     prow = 0
+                                     pcol = 2
+                             nRow_in_proc = 320
+                             nCol_in_proc = 145
+                                     pnum = 3
+                                     prow = 0
+                                     pcol = 3
+                             nRow_in_proc = 320
+                             nCol_in_proc = 142
+                                     pnum = 4
+                                     prow = 1
+                                     pcol = 0
+                             nRow_in_proc = 304
+                             nCol_in_proc = 175
+                                     pnum = 5
+                                     prow = 1
+                                     pcol = 1
+                             nRow_in_proc = 304
+                             nCol_in_proc = 162
+                                     pnum = 6
+                                     prow = 1
+                                     pcol = 2
+                             nRow_in_proc = 304
+                             nCol_in_proc = 145
+                                     pnum = 7
+                                     prow = 1
+                                     pcol = 3
+                             nRow_in_proc = 304
+                             nCol_in_proc = 142
+receiver_size is 389376 ; receiver_size of each process is:
+56000 51840 46400 45440 53200 49248 44080 43168 
+sender_size is 493993 ; sender_size of each process is:
+56000 58450 76171 71198 67776 67070 48032 49296 
+                         gamma_only_local = 1
+
+ LCAO ALGORITHM --------------- ION=   1  ELEC=   1--------------------------------
+
+vlocal exchange index is built
+                          buffer size(M): = 6
+                    buffer index size(M): = 6
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+              cal_dk_gamma_from_2D, NSPIN = 1
+ number of non-zero elements in sender_buffer = 493981
+                              sender_size = 493993
+                       last sender_buffer = 0.0389
+ number of non-zero elements in receiver_buffer = 389372
+                            receiver_size = 389376
+                     last receiver_buffer = 0.00101
+
+ Density error is 0.152165005489
+
+ LCAO ALGORITHM --------------- ION=   1  ELEC=   2--------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+              cal_dk_gamma_from_2D, NSPIN = 1
+ number of non-zero elements in sender_buffer = 493993
+                              sender_size = 493993
+                       last sender_buffer = 0.036974255332
+ number of non-zero elements in receiver_buffer = 389376
+                            receiver_size = 389376
+                     last receiver_buffer = 0.00104265192916
+
+ Density error is 0.084884794745
+
+ LCAO ALGORITHM --------------- ION=   1  ELEC=   3--------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+              cal_dk_gamma_from_2D, NSPIN = 1
+ number of non-zero elements in sender_buffer = 493993
+                              sender_size = 493993
+                       last sender_buffer = 0.0348334061029
+ number of non-zero elements in receiver_buffer = 389374
+                            receiver_size = 389376
+                     last receiver_buffer = 0.00106660407353
+
+ Density error is 0.00521043643324
+
+ LCAO ALGORITHM --------------- ION=   1  ELEC=   4--------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+              cal_dk_gamma_from_2D, NSPIN = 1
+ number of non-zero elements in sender_buffer = 493993
+                              sender_size = 493993
+                       last sender_buffer = 0.0349655200111
+ number of non-zero elements in receiver_buffer = 389376
+                            receiver_size = 389376
+                     last receiver_buffer = 0.001064497542
+
+ Density error is 0.000384810747834
+
+ LCAO ALGORITHM --------------- ION=   1  ELEC=   5--------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+              cal_dk_gamma_from_2D, NSPIN = 1
+ number of non-zero elements in sender_buffer = 493993
+                              sender_size = 493993
+                       last sender_buffer = 0.0349697307832
+ number of non-zero elements in receiver_buffer = 389374
+                            receiver_size = 389376
+                     last receiver_buffer = 0.00106438882429
+
+ Density error is 5.12257110362e-05
+
+ LCAO ALGORITHM --------------- ION=   1  ELEC=   6--------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+              cal_dk_gamma_from_2D, NSPIN = 1
+ number of non-zero elements in sender_buffer = 493993
+                              sender_size = 493993
+                       last sender_buffer = 0.0349691657443
+ number of non-zero elements in receiver_buffer = 389376
+                            receiver_size = 389376
+                     last receiver_buffer = 0.00106440166265
+
+ Density error is 9.70819655597e-07
+
+ charge density convergence is achieved
+ final etot is -6162.49643297 eV
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+    TOTAL-FORCE (eV/Angstrom)
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+     atom              x              y              z
+      Sn1              0              0              0
+      Sn2              0              0              0
+      Sn3              0              0              0
+      Sn4              0              0              0
+      Sn5 -2.8846192e-05 +2.8846219e-05 -2.8846197e-05
+      Sn6 +2.8846211e-05 +2.8846222e-05 +2.8846214e-05
+      Sn7 +2.8846212e-05 -2.8846192e-05   -2.88462e-05
+      Sn8 -2.8846192e-05 -2.8846193e-05 +2.8846215e-05
+      Sn9              0              0              0
+     Sn10              0              0              0
+     Sn11              0              0              0
+     Sn12              0              0              0
+     Sn13 -2.8846203e-05  +2.884622e-05   -2.88462e-05
+     Sn14 +2.8846185e-05 +2.8846221e-05 +2.8846214e-05
+     Sn15 +2.8846184e-05 -2.8846192e-05 -2.8846199e-05
+     Sn16 -2.8846203e-05 -2.8846194e-05 +2.8846214e-05
+     Sn17              0              0              0
+     Sn18              0              0              0
+     Sn19              0              0              0
+     Sn20              0              0              0
+     Sn21 -2.8846193e-05 +2.8846176e-05 -2.8846196e-05
+     Sn22 +2.8846211e-05 +2.8846174e-05 +2.8846216e-05
+     Sn23 +2.8846212e-05 -2.8846203e-05 -2.8846196e-05
+     Sn24 -2.8846192e-05 -2.8846202e-05 +2.8846214e-05
+     Sn25              0              0              0
+     Sn26              0              0              0
+     Sn27              0              0              0
+     Sn28              0              0              0
+     Sn29 -2.8846202e-05 +2.8846175e-05 -2.8846197e-05
+     Sn30 +2.8846184e-05 +2.8846174e-05 +2.8846214e-05
+     Sn31 +2.8846183e-05 -2.8846203e-05 -2.8846196e-05
+     Sn32 -2.8846203e-05 -2.8846201e-05 +2.8846214e-05
+     Sn33              0              0              0
+     Sn34              0              0              0
+     Sn35              0              0              0
+     Sn36              0              0              0
+     Sn37 -2.8846191e-05 +2.8846219e-05 -2.8846197e-05
+     Sn38 +2.8846213e-05 +2.8846218e-05 +2.8846181e-05
+     Sn39 +2.8846211e-05 -2.8846193e-05 -2.8846195e-05
+     Sn40 -2.8846192e-05 -2.8846191e-05 +2.8846181e-05
+     Sn41              0              0              0
+     Sn42              0              0              0
+     Sn43              0              0              0
+     Sn44              0              0              0
+     Sn45 -2.8846204e-05  +2.884622e-05 -2.8846195e-05
+     Sn46 +2.8846182e-05 +2.8846218e-05 +2.8846182e-05
+     Sn47 +2.8846184e-05 -2.8846192e-05 -2.8846196e-05
+     Sn48 -2.8846204e-05 -2.8846191e-05 +2.8846182e-05
+     Sn49              0              0              0
+     Sn50              0              0              0
+     Sn51              0              0              0
+     Sn52              0              0              0
+     Sn53 -2.8846191e-05 +2.8846176e-05   -2.88462e-05
+     Sn54 +2.8846213e-05 +2.8846177e-05  +2.884618e-05
+     Sn55 +2.8846212e-05 -2.8846202e-05 -2.8846199e-05
+     Sn56 -2.8846191e-05 -2.8846204e-05 +2.8846181e-05
+     Sn57              0              0              0
+     Sn58              0              0              0
+     Sn59              0              0              0
+     Sn60              0              0              0
+     Sn61 -2.8846204e-05 +2.8846175e-05 -2.8846198e-05
+     Sn62 +2.8846182e-05 +2.8846177e-05 +2.8846182e-05
+     Sn63 +2.8846183e-05 -2.8846202e-05 -2.8846199e-05
+     Sn64 -2.8846203e-05 -2.8846204e-05 +2.8846181e-05
+
+
+ ------------------------------------------------------------------------------------------------
+ Energy              Potential           Kinetic             Temperature         
+ -226.0566           -226.46749          0.41088955          1373                
+ ------------------------------------------------------------------------------------------------
+
+
+
+ -------------------------------------------
+ STEP OF MOLECULAR DYNAMICS : 1
+ -------------------------------------------
+ searching radius is (Bohr))              = 16.01
+ searching radius unit is (Bohr))         = 23.4538
+ enter setAlltoallvParameter, nblk        = 32
+checkpoint 2
+ pnum                                     = 0
+ prow                                     = 0
+ pcol                                     = 0
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 175
+ pnum                                     = 1
+ prow                                     = 0
+ pcol                                     = 1
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 162
+ pnum                                     = 2
+ prow                                     = 0
+ pcol                                     = 2
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 145
+ pnum                                     = 3
+ prow                                     = 0
+ pcol                                     = 3
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 142
+ pnum                                     = 4
+ prow                                     = 1
+ pcol                                     = 0
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 175
+ pnum                                     = 5
+ prow                                     = 1
+ pcol                                     = 1
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 162
+ pnum                                     = 6
+ prow                                     = 1
+ pcol                                     = 2
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 145
+ pnum                                     = 7
+ prow                                     = 1
+ pcol                                     = 3
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 142
+receiver_size is 389376 ; receiver_size of each process is:
+56000 51840 46400 45440 53200 49248 44080 43168 
+sender_size is 493993 ; sender_size of each process is:
+56000 58450 76171 71198 67776 67070 48032 49296 
+ gamma_only_local                         = 1
+
+ LCAO ALGORITHM --------------- ION=2     ELEC=1   --------------------------------
+
+vlocal exchange index is built
+ buffer size(M):                          = 6
+ buffer index size(M):                    = 6
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0349355
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106312
+
+ Density error is 0.00102152307363
+
+ LCAO ALGORITHM --------------- ION=2     ELEC=2   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0349173627136
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106431226524
+
+ Density error is 0.000567032466646
+
+ LCAO ALGORITHM --------------- ION=2     ELEC=3   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.034906397677
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106229588655
+
+ Density error is 0.000274700546995
+
+ LCAO ALGORITHM --------------- ION=2     ELEC=4   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0349236832528
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106354324747
+
+ Density error is 8.59016669501e-05
+
+ LCAO ALGORITHM --------------- ION=2     ELEC=5   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0349073672311
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106358778771
+
+ Density error is 5.9233570827e-05
+
+ LCAO ALGORITHM --------------- ION=2     ELEC=6   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0349157926222
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106346840271
+
+ Density error is 1.45288190097e-05
+
+ LCAO ALGORITHM --------------- ION=2     ELEC=7   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.034914697943
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106343797622
+
+ Density error is 5.60260796776e-06
+
+ charge density convergence is achieved
+ final etot is -6162.48542942 eV
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+    TOTAL-FORCE (eV/Angstrom)
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+ atom    x              y              z              
+ Sn1     -0.037470282   +0.037996857   +0.0068842873  
+ Sn2     -0.035560997   -0.047046906   -0.00062948712 
+ Sn3     +0.05879829    -0.044261884   +0.031735799   
+ Sn4     -0.0082538761  -0.0035773081  -0.032190112   
+ Sn5     +0.032023533   +0.0020665849  -0.070623441   
+ Sn6     -0.045758384   +0.0094673888  -0.033121532   
+ Sn7     +0.070710273   +0.025266772   +0.06097401    
+ Sn8     +0.031360793   +0.051402869   -0.084408965   
+ Sn9     +0.086954323   +0.02484707    +0.05627282    
+ Sn10    +0.044716401   -0.083353353   +0.065651064   
+ Sn11    +0.034274299   -0.03247444    +0.0018318116  
+ Sn12    +0.029587836   +0.0060127177  -0.031424526   
+ Sn13    +0.034930675   -0.016878421   -0.003141498   
+ Sn14    -0.078676217   -0.00032497669 -0.04578239    
+ Sn15    +0.0068752773  -0.059583577   +0.0074206145  
+ Sn16    +0.0068066468  -0.028021623   -0.067609283   
+ Sn17    +0.036405161   -0.045125924   +0.012434061   
+ Sn18    +0.10248456    +0.015246052   -0.014649851   
+ Sn19    -0.020553085   +0.030816004   +0.081833054   
+ Sn20    +0.05127526    -0.0076992991  +0.053556301   
+ Sn21    +0.058300449   -0.10313398    -0.016080695   
+ Sn22    -0.043010019   +0.029670915   -0.00054749653 
+ Sn23    -0.034541481   -0.0044322348  -0.030537181   
+ Sn24    -0.0311319     -0.04363       +0.044887407   
+ Sn25    -0.01507873    -0.05540382    -0.019012504   
+ Sn26    -0.0062700583  +0.03846025    -0.018574436   
+ Sn27    -0.0054712079  +0.030031251   +0.0052804365  
+ Sn28    +0.041345996   +0.049934614   -0.032183135   
+ Sn29    -0.077201229   +0.016478813   +0.092618835   
+ Sn30    -0.030843145   +0.0014162317  +0.027844655   
+ Sn31    -0.048942915   +0.011980796   -0.01914535    
+ Sn32    -0.057484013   +0.01067647    -0.033467655   
+ Sn33    -0.02236512    -0.014969186   -0.044881099   
+ Sn34    -0.026971311   -0.040176735   +0.032550262   
+ Sn35    -0.10058388    -0.05606906    +0.068201274   
+ Sn36    -0.088693476   +0.016046325   -0.0044994066  
+ Sn37    -0.0040568727  +0.067006155   -0.042361697   
+ Sn38    +0.066712462   +0.027203756   +0.0020093026  
+ Sn39    +0.036250818   +0.069177073   +0.0020901276  
+ Sn40    +0.034845501   +0.027130731   -0.029347305   
+ Sn41    +0.075923885   +0.044046794   -0.0014016618  
+ Sn42    -0.029771263   -0.10634268    -0.037996367   
+ Sn43    +0.0070844449  -0.013239061   -0.032998226   
+ Sn44    -0.016138196   +0.03292574    +0.027030785   
+ Sn45    +0.022539138   +0.046078253   +0.063318352   
+ Sn46    -0.051345089   +0.024787262   -0.021947775   
+ Sn47    +0.039375672   +0.041316822   +0.092861763   
+ Sn48    -0.070543002   -0.010099769   -0.011513209   
+ Sn49    +0.059594928   +0.038464483   -0.015134845   
+ Sn50    -0.01885909    -0.047117926   -0.028892853   
+ Sn51    -0.037601163   -0.076213104   +0.059644457   
+ Sn52    -0.0043007883  +0.043166718   +0.056035939   
+ Sn53    +0.013866521   +0.0070352481  +0.039733399   
+ Sn54    -0.06223746    +0.010445184   -0.043345641   
+ Sn55    +0.088950592   +0.10767879    -0.088760387   
+ Sn56    +0.017074551   -0.10940737    +0.046268771   
+ Sn57    -0.0987514     +0.047620428   -0.027963995   
+ Sn58    +0.013038382   +0.066000325   -0.064846582   
+ Sn59    +0.0069084068  +0.041619866   -0.011006742   
+ Sn60    +0.083050142   -0.037971913   -0.034915241   
+ Sn61    -0.042447643   +0.013693122   -0.023258477   
+ Sn62    +0.0093152394  -0.010748374   +0.071461212   
+ Sn63    -0.02327096    -0.05840788    +0.019465775   
+ Sn64    -0.027196204   -0.007503922   -0.011695528   
+
+
+ ------------------------------------------------------------------------------------------------
+ Energy              Potential           Kinetic             Temperature         
+ -226.0566           -226.46708          0.41048511          1371.6485           
+ ------------------------------------------------------------------------------------------------
+
+
+
+ -------------------------------------------
+ STEP OF MOLECULAR DYNAMICS : 2
+ -------------------------------------------
+ searching radius is (Bohr))              = 16.01
+ searching radius unit is (Bohr))         = 23.4538
+ enter setAlltoallvParameter, nblk        = 32
+checkpoint 2
+ pnum                                     = 0
+ prow                                     = 0
+ pcol                                     = 0
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 175
+ pnum                                     = 1
+ prow                                     = 0
+ pcol                                     = 1
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 162
+ pnum                                     = 2
+ prow                                     = 0
+ pcol                                     = 2
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 145
+ pnum                                     = 3
+ prow                                     = 0
+ pcol                                     = 3
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 142
+ pnum                                     = 4
+ prow                                     = 1
+ pcol                                     = 0
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 175
+ pnum                                     = 5
+ prow                                     = 1
+ pcol                                     = 1
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 162
+ pnum                                     = 6
+ prow                                     = 1
+ pcol                                     = 2
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 145
+ pnum                                     = 7
+ prow                                     = 1
+ pcol                                     = 3
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 142
+receiver_size is 389376 ; receiver_size of each process is:
+56000 51840 46400 45440 53200 49248 44080 43168 
+sender_size is 493993 ; sender_size of each process is:
+56000 58450 76171 71198 67776 67070 48032 49296 
+ gamma_only_local                         = 1
+
+ LCAO ALGORITHM --------------- ION=3     ELEC=1   --------------------------------
+
+vlocal exchange index is built
+ buffer size(M):                          = 6
+ buffer index size(M):                    = 6
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348803
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.0010625
+
+ Density error is 0.00102048684127
+
+ LCAO ALGORITHM --------------- ION=3     ELEC=2   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348611523339
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106355048105
+
+ Density error is 0.000567415454169
+
+ LCAO ALGORITHM --------------- ION=3     ELEC=3   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348554594025
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106165038108
+
+ Density error is 0.000273304365918
+
+ LCAO ALGORITHM --------------- ION=3     ELEC=4   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348643100126
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106282051475
+
+ Density error is 6.88671005906e-05
+
+ LCAO ALGORITHM --------------- ION=3     ELEC=5   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348555198219
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106285444686
+
+ Density error is 3.66822975009e-05
+
+ LCAO ALGORITHM --------------- ION=3     ELEC=6   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348617405972
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106272728303
+
+ Density error is 1.79117621616e-05
+
+ LCAO ALGORITHM --------------- ION=3     ELEC=7   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348596220197
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106272093635
+
+ Density error is 5.96529865691e-06
+
+ charge density convergence is achieved
+ final etot is -6162.45253059 eV
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+    TOTAL-FORCE (eV/Angstrom)
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+ atom    x              y              z              
+ Sn1     -0.075586479   +0.075914363   +0.013991114   
+ Sn2     -0.071289489   -0.095163966   -0.0020512555  
+ Sn3     +0.11845467    -0.088681803   +0.064459415   
+ Sn4     -0.015629738   -0.0070045408  -0.064297213   
+ Sn5     +0.06375541    +0.0029032279  -0.14256966    
+ Sn6     -0.091758788   +0.019671019   -0.06645357    
+ Sn7     +0.14148682    +0.051823304   +0.12263307    
+ Sn8     +0.061670344   +0.10193079    -0.17028339    
+ Sn9     +0.17466165    +0.048861972   +0.11293774    
+ Sn10    +0.091449685   -0.16804385    +0.13118578    
+ Sn11    +0.068082384   -0.065888357   +0.0037824054  
+ Sn12    +0.05763368    +0.011199639   -0.062620826   
+ Sn13    +0.069953833   -0.034368449   -0.0062220685  
+ Sn14    -0.15705221    +0.00042872731 -0.091640786   
+ Sn15    +0.013129955   -0.11863557    +0.014175334   
+ Sn16    +0.01409202    -0.056654869   -0.13572005    
+ Sn17    +0.073240614   -0.090142147   +0.025155286   
+ Sn18    +0.20466897    +0.031836486   -0.029774003   
+ Sn19    -0.041483927   +0.062145829   +0.16436134    
+ Sn20    +0.10299131    -0.016871736   +0.10731825    
+ Sn21    +0.11740906    -0.20497605    -0.033731522   
+ Sn22    -0.086055469   +0.059025461   -0.0020200859  
+ Sn23    -0.068869588   -0.0083846192  -0.060542992   
+ Sn24    -0.061799142   -0.086150966   +0.090504381   
+ Sn25    -0.030612107   -0.11124754    -0.038510249   
+ Sn26    -0.011555516   +0.076681861   -0.035690205   
+ Sn27    -0.011688272   +0.061214627   +0.011340216   
+ Sn28    +0.083118972   +0.10087253    -0.064296182   
+ Sn29    -0.15409442    +0.030867359   +0.18500708    
+ Sn30    -0.061677087   +0.0028191389  +0.056756694   
+ Sn31    -0.098071191   +0.023807608   -0.038898177   
+ Sn32    -0.11552383    +0.022371414   -0.066948763   
+ Sn33    -0.045668095   -0.03050741    -0.089912714   
+ Sn34    -0.05402415    -0.080197098   +0.064920173   
+ Sn35    -0.19819665    -0.10813088    +0.13300573    
+ Sn36    -0.17758056    +0.032514497   -0.0087240046  
+ Sn37    -0.0086094656  +0.13548206    -0.08371495    
+ Sn38    +0.13284632    +0.054664707   +0.0043885515  
+ Sn39    +0.071807113   +0.13742201    +0.0047016397  
+ Sn40    +0.069017112   +0.055101787   -0.05786336    
+ Sn41    +0.15292767    +0.086873495   -0.0054084479  
+ Sn42    -0.060843634   -0.21325873    -0.075941704   
+ Sn43    +0.014702644   -0.026304584   -0.065961935   
+ Sn44    -0.031712803   +0.06543713    +0.054753759   
+ Sn45    +0.045075048   +0.091986616   +0.12606723    
+ Sn46    -0.100705      +0.04969983    -0.043536668   
+ Sn47    +0.080135875   +0.08360331    +0.18694011    
+ Sn48    -0.14121528    -0.020265181   -0.022538739   
+ Sn49    +0.11907946    +0.077080924   -0.030766524   
+ Sn50    -0.038373833   -0.094882458   -0.05867651    
+ Sn51    -0.073490103   -0.1517273     +0.11770091    
+ Sn52    -0.009210693   +0.085942434   +0.11259325    
+ Sn53    +0.027239338   +0.013003834   +0.079481431   
+ Sn54    -0.12409094    +0.021739562   -0.086495599   
+ Sn55    +0.17309567    +0.21249277    -0.1739677     
+ Sn56    +0.031992677   -0.21962245    +0.091229603   
+ Sn57    -0.1962397     +0.094945347   -0.053756836   
+ Sn58    +0.028038983   +0.13080152    -0.13005869    
+ Sn59    +0.014040395   +0.082254563   -0.022019521   
+ Sn60    +0.16428878    -0.074470236   -0.068583131   
+ Sn61    -0.084281523   +0.027826157   -0.047078069   
+ Sn62    +0.017695296   -0.021167827   +0.14163558    
+ Sn63    -0.046342468   -0.11593302    +0.039915548   
+ Sn64    -0.054449597   -0.014566272   -0.023665517   
+
+
+ ------------------------------------------------------------------------------------------------
+ Energy              Potential           Kinetic             Temperature         
+ -226.0566           -226.46587          0.40927576          1367.6075           
+ ------------------------------------------------------------------------------------------------
+
+
+
+ -------------------------------------------
+ STEP OF MOLECULAR DYNAMICS : 3
+ -------------------------------------------
+ searching radius is (Bohr))              = 16.01
+ searching radius unit is (Bohr))         = 23.4538
+ enter setAlltoallvParameter, nblk        = 32
+checkpoint 2
+ pnum                                     = 0
+ prow                                     = 0
+ pcol                                     = 0
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 175
+ pnum                                     = 1
+ prow                                     = 0
+ pcol                                     = 1
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 162
+ pnum                                     = 2
+ prow                                     = 0
+ pcol                                     = 2
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 145
+ pnum                                     = 3
+ prow                                     = 0
+ pcol                                     = 3
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 142
+ pnum                                     = 4
+ prow                                     = 1
+ pcol                                     = 0
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 175
+ pnum                                     = 5
+ prow                                     = 1
+ pcol                                     = 1
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 162
+ pnum                                     = 6
+ prow                                     = 1
+ pcol                                     = 2
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 145
+ pnum                                     = 7
+ prow                                     = 1
+ pcol                                     = 3
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 142
+receiver_size is 389376 ; receiver_size of each process is:
+56000 51840 46400 45440 53200 49248 44080 43168 
+sender_size is 493993 ; sender_size of each process is:
+56000 58450 76171 71198 67776 67070 48032 49296 
+ gamma_only_local                         = 1
+
+ LCAO ALGORITHM --------------- ION=4     ELEC=1   --------------------------------
+
+vlocal exchange index is built
+ buffer size(M):                          = 6
+ buffer index size(M):                    = 6
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348253
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106201
+
+ Density error is 0.0010180937585
+
+ LCAO ALGORITHM --------------- ION=4     ELEC=2   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348041351992
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.0010630551398
+
+ Density error is 0.000567051866739
+
+ LCAO ALGORITHM --------------- ION=4     ELEC=3   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348054470495
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106110527184
+
+ Density error is 0.000270208796671
+
+ LCAO ALGORITHM --------------- ION=4     ELEC=4   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348037461269
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.0010623631883
+
+ Density error is 6.72997867024e-05
+
+ LCAO ALGORITHM --------------- ION=4     ELEC=5   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348065061105
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106229109279
+
+ Density error is 2.61559637458e-05
+
+ LCAO ALGORITHM --------------- ION=4     ELEC=6   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348030056206
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106223576335
+
+ Density error is 1.64635791853e-05
+
+ LCAO ALGORITHM --------------- ION=4     ELEC=7   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0348054534413
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106220737647
+
+ Density error is 7.16203007625e-06
+
+ charge density convergence is achieved
+ final etot is -6162.39799719 eV
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+    TOTAL-FORCE (eV/Angstrom)
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+ atom    x              y              z              
+ Sn1     -0.11017308    +0.1155536     +0.022049077   
+ Sn2     -0.10403758    -0.14178348    -0.0046083918  
+ Sn3     +0.17511961    -0.13153063    +0.098040324   
+ Sn4     -0.026089884   -0.0084304641  -0.095886985   
+ Sn5     +0.090541406   +0.0056957229  -0.21503275    
+ Sn6     -0.13825416    +0.033376363   -0.09968785    
+ Sn7     +0.21219196    +0.079659174   +0.18376145    
+ Sn8     +0.085948082   +0.15233755    -0.25675342    
+ Sn9     +0.2588203     +0.07286131    +0.16951279    
+ Sn10    +0.13698253    -0.25147668    +0.1974912     
+ Sn11    +0.10509315    -0.097598671   +0.0060008198  
+ Sn12    +0.088045856   +0.018406626   -0.092409257   
+ Sn13    +0.10959097    -0.049004908   -0.010027755   
+ Sn14    -0.2346629     +0.0054880752  -0.1366286     
+ Sn15    +0.018839574   -0.17758821    +0.019869354   
+ Sn16    +0.026708024   -0.085487862   -0.20358238    
+ Sn17    +0.11353354    -0.13685689    +0.039491105   
+ Sn18    +0.31029778    +0.047233024   -0.045822466   
+ Sn19    -0.066547333   +0.092267788   +0.24692998    
+ Sn20    +0.15215427    -0.029299419   +0.16199282    
+ Sn21    +0.17202763    -0.30846494    -0.054200783   
+ Sn22    -0.12893831    +0.08526272    -0.003944301   
+ Sn23    -0.10276354    -0.011910418   -0.090809684   
+ Sn24    -0.097317991   -0.12839133    +0.13622037    
+ Sn25    -0.04964204    -0.1682711     -0.057778336   
+ Sn26    -0.01981842    +0.11212307    -0.052501053   
+ Sn27    -0.014882866   +0.090944152   +0.017661544   
+ Sn28    +0.12818378    +0.14988069    -0.096197188   
+ Sn29    -0.22535975    +0.039783085   +0.27606306    
+ Sn30    -0.092570956   +0.0010374001  +0.086115163   
+ Sn31    -0.14732951    +0.035929772   -0.059357193   
+ Sn32    -0.16867062    +0.034582589   -0.10017581    
+ Sn33    -0.066002794   -0.044562927   -0.13574924    
+ Sn34    -0.077309293   -0.11819352    +0.097422433   
+ Sn35    -0.29540506    -0.1542134     +0.19452304    
+ Sn36    -0.26907086    +0.050808851   -0.01308133    
+ Sn37    -0.018915295   +0.20720514    -0.1247451     
+ Sn38    +0.19949349    +0.084828875   +0.0069427434  
+ Sn39    +0.10657583    +0.20444729    +0.0088651069  
+ Sn40    +0.098170876   +0.082634099   -0.086191204   
+ Sn41    +0.22699716    +0.13149681    -0.011585222   
+ Sn42    -0.096962555   -0.31918864    -0.11479633    
+ Sn43    +0.025435613   -0.037684456   -0.098980646   
+ Sn44    -0.044146049   +0.099576694   +0.081993222   
+ Sn45    +0.072800645   +0.14057472    +0.18893545    
+ Sn46    -0.14915951    +0.077601048   -0.065557663   
+ Sn47    +0.12239561    +0.12771136    +0.28244664    
+ Sn48    -0.20765912    -0.030256737   -0.033725911   
+ Sn49    +0.18143921    +0.11381264    -0.048245381   
+ Sn50    -0.055246      -0.14502814    -0.088879048   
+ Sn51    -0.11071146    -0.22852215    +0.17462645    
+ Sn52    -0.018349473   +0.12686555    +0.16877577    
+ Sn53    +0.035936031   +0.016054364   +0.12043661    
+ Sn54    -0.18568977    +0.031418389   -0.12980679    
+ Sn55    +0.25334444    +0.31453029    -0.25479876    
+ Sn56    +0.04002461    -0.32926279    +0.13546669    
+ Sn57    -0.29532935    +0.13886742    -0.078055933   
+ Sn58    +0.041594628   +0.19285954    -0.19439531    
+ Sn59    +0.024433929   +0.12034413    -0.032485428   
+ Sn60    +0.24728456    -0.11153842    -0.10102328    
+ Sn61    -0.12134356    +0.039495285   -0.070458084   
+ Sn62    +0.025367987   -0.034095116   +0.21100647    
+ Sn63    -0.070000557   -0.17344374    +0.061350024   
+ Sn64    -0.077013463   -0.021470167   -0.036024819   
+
+
+ ------------------------------------------------------------------------------------------------
+ Energy              Potential           Kinetic             Temperature         
+ -226.05659          -226.46387          0.40727585          1360.9247           
+ ------------------------------------------------------------------------------------------------
+
+
+
+ -------------------------------------------
+ STEP OF MOLECULAR DYNAMICS : 4
+ -------------------------------------------
+ searching radius is (Bohr))              = 16.01
+ searching radius unit is (Bohr))         = 23.4538
+ enter setAlltoallvParameter, nblk        = 32
+checkpoint 2
+ pnum                                     = 0
+ prow                                     = 0
+ pcol                                     = 0
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 175
+ pnum                                     = 1
+ prow                                     = 0
+ pcol                                     = 1
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 162
+ pnum                                     = 2
+ prow                                     = 0
+ pcol                                     = 2
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 145
+ pnum                                     = 3
+ prow                                     = 0
+ pcol                                     = 3
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 142
+ pnum                                     = 4
+ prow                                     = 1
+ pcol                                     = 0
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 175
+ pnum                                     = 5
+ prow                                     = 1
+ pcol                                     = 1
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 162
+ pnum                                     = 6
+ prow                                     = 1
+ pcol                                     = 2
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 145
+ pnum                                     = 7
+ prow                                     = 1
+ pcol                                     = 3
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 142
+receiver_size is 389376 ; receiver_size of each process is:
+56000 51840 46400 45440 53200 49248 44080 43168 
+sender_size is 493993 ; sender_size of each process is:
+56000 58450 76171 71198 67776 67070 48032 49296 
+ gamma_only_local                         = 1
+
+ LCAO ALGORITHM --------------- ION=5     ELEC=1   --------------------------------
+
+vlocal exchange index is built
+ buffer size(M):                          = 6
+ buffer index size(M):                    = 6
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0347637
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106177
+
+ Density error is 0.00101832271713
+
+ LCAO ALGORITHM --------------- ION=5     ELEC=2   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0347568675235
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106267386873
+
+ Density error is 0.000565626013019
+
+ LCAO ALGORITHM --------------- ION=5     ELEC=3   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0347244030437
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106108094002
+
+ Density error is 0.000334939138887
+
+ LCAO ALGORITHM --------------- ION=5     ELEC=4   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0347686382866
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106166898283
+
+ Density error is 0.000159280201005
+
+ LCAO ALGORITHM --------------- ION=5     ELEC=5   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.034743359485
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106213138549
+
+ Density error is 6.01888465319e-05
+
+ LCAO ALGORITHM --------------- ION=5     ELEC=6   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0347496237858
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106194429206
+
+ Density error is 1.24115399731e-05
+
+ LCAO ALGORITHM --------------- ION=5     ELEC=7   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0347494273413
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106190147014
+
+ Density error is 5.50196893927e-06
+
+ charge density convergence is achieved
+ final etot is -6162.32221799 eV
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+    TOTAL-FORCE (eV/Angstrom)
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+ atom    x              y              z              
+ Sn1     -0.14900778    +0.15241266    +0.029237304   
+ Sn2     -0.14187748    -0.19137295    -0.0079546061  
+ Sn3     +0.23612502    -0.17760906    +0.1329833     
+ Sn4     -0.032323063   -0.012548364   -0.1290042     
+ Sn5     +0.12349015    +0.0039961382  -0.28572052    
+ Sn6     -0.18562387    +0.04393442    -0.13383589    
+ Sn7     +0.28240704    +0.10888473    +0.24592323    
+ Sn8     +0.11516303    +0.2027552     -0.34440941    
+ Sn9     +0.34718213    +0.091894795   +0.22383379    
+ Sn10    +0.18945089    -0.33797419    +0.26536513    
+ Sn11    +0.13777019    -0.13201482    +0.0091213125  
+ Sn12    +0.11351453    +0.023118973   -0.12239818    
+ Sn13    +0.14257047    -0.067318399   -0.013023424   
+ Sn14    -0.31086483    +0.0083310281  -0.18140007    
+ Sn15    +0.024226594   -0.23646567    +0.026272265   
+ Sn16    +0.033612235   -0.11452666    -0.27202123    
+ Sn17    +0.14905039    -0.18069233    +0.053691052   
+ Sn18    +0.41129198    +0.066038661   -0.062065932   
+ Sn19    -0.08807633    +0.12597188    +0.32996664    
+ Sn20    +0.20641416    -0.04020168    +0.21585213    
+ Sn21    +0.23287768    -0.40696037    -0.075878709   
+ Sn22    -0.17170616    +0.1149178     -0.0069540459  
+ Sn23    -0.13653452    -0.015172734   -0.11963609    
+ Sn24    -0.12670614    -0.17053642    +0.18089493    
+ Sn25    -0.064012424   -0.22141113    -0.078525931   
+ Sn26    -0.023273996   +0.14926604    -0.068655373   
+ Sn27    -0.022630905   +0.12360669    +0.024710394   
+ Sn28    +0.16873329    +0.20135089    -0.12979956    
+ Sn29    -0.30168264    +0.049835936   +0.36739319    
+ Sn30    -0.12337218    +0.0025697838  +0.11473237    
+ Sn31    -0.19635519    +0.048472547   -0.078667013   
+ Sn32    -0.22772068    +0.047341562   -0.13388223    
+ Sn33    -0.091237966   -0.061938668   -0.18055589    
+ Sn34    -0.10451249    -0.15878058    +0.12971532    
+ Sn35    -0.38433019    -0.198883      +0.25220438    
+ Sn36    -0.35500566    +0.066262905   -0.015562738   
+ Sn37    -0.024165886   +0.27524652    -0.16750277    
+ Sn38    +0.26659581    +0.11098173    +0.01070765    
+ Sn39    +0.14010363    +0.26988907    +0.012957229   
+ Sn40    +0.1333187     +0.10924764    -0.1135751     
+ Sn41    +0.30599101    +0.17359558    -0.017817409   
+ Sn42    -0.13026553    -0.42873256    -0.15542542    
+ Sn43    +0.031466324   -0.052096188   -0.13261428    
+ Sn44    -0.061307954   +0.13059314    +0.11034806    
+ Sn45    +0.094836977   +0.18526912    +0.25035984    
+ Sn46    -0.19673738    +0.10188198    -0.087292786   
+ Sn47    +0.16652533    +0.17378513    +0.37749445    
+ Sn48    -0.28085197    -0.039934702   -0.044193946   
+ Sn49    +0.23857335    +0.15341205    -0.065816227   
+ Sn50    -0.077524127   -0.1927839     -0.12019724    
+ Sn51    -0.14164059    -0.30201687    +0.22974594    
+ Sn52    -0.024366806   +0.17053249    +0.22609866    
+ Sn53    +0.051217483   +0.02290952    +0.16105569    
+ Sn54    -0.24732259    +0.04604079    -0.17255218    
+ Sn55    +0.32950261    +0.41403579    -0.33290437    
+ Sn56    +0.05219518    -0.43773516    +0.18001821    
+ Sn57    -0.38788178    +0.18360532    -0.099143488   
+ Sn58    +0.061794427   +0.2569382     -0.25809949    
+ Sn59    +0.030415994   +0.16060328    -0.042838054   
+ Sn60    +0.32452184    -0.14451953    -0.1302766     
+ Sn61    -0.16481165    +0.055130946   -0.095035248   
+ Sn62    +0.032789971   -0.04299545    +0.2805219     
+ Sn63    -0.09410222    -0.23106462    +0.081984695   
+ Sn64    -0.10589544    -0.028374952   -0.047953409   
+
+
+ ------------------------------------------------------------------------------------------------
+ Energy              Potential           Kinetic             Temperature         
+ -226.05658          -226.46108          0.40450091          1351.6522           
+ ------------------------------------------------------------------------------------------------
+
+
+
+ -------------------------------------------
+ STEP OF MOLECULAR DYNAMICS : 5
+ -------------------------------------------
+ searching radius is (Bohr))              = 16.01
+ searching radius unit is (Bohr))         = 23.4538
+ enter setAlltoallvParameter, nblk        = 32
+checkpoint 2
+ pnum                                     = 0
+ prow                                     = 0
+ pcol                                     = 0
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 175
+ pnum                                     = 1
+ prow                                     = 0
+ pcol                                     = 1
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 162
+ pnum                                     = 2
+ prow                                     = 0
+ pcol                                     = 2
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 145
+ pnum                                     = 3
+ prow                                     = 0
+ pcol                                     = 3
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 142
+ pnum                                     = 4
+ prow                                     = 1
+ pcol                                     = 0
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 175
+ pnum                                     = 5
+ prow                                     = 1
+ pcol                                     = 1
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 162
+ pnum                                     = 6
+ prow                                     = 1
+ pcol                                     = 2
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 145
+ pnum                                     = 7
+ prow                                     = 1
+ pcol                                     = 3
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 142
+receiver_size is 389376 ; receiver_size of each process is:
+56000 51840 46400 45440 53200 49248 44080 43168 
+sender_size is 493993 ; sender_size of each process is:
+56000 58450 76171 71198 67776 67070 48032 49296 
+ gamma_only_local                         = 1
+
+ LCAO ALGORITHM --------------- ION=6     ELEC=1   --------------------------------
+
+vlocal exchange index is built
+ buffer size(M):                          = 6
+ buffer index size(M):                    = 6
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0347109
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106166
+
+ Density error is 0.00101275007003
+
+ LCAO ALGORITHM --------------- ION=6     ELEC=2   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0346955700058
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.0010625834966
+
+ Density error is 0.000562911428517
+
+ LCAO ALGORITHM --------------- ION=6     ELEC=3   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0346863537121
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106083573892
+
+ Density error is 0.000276879107473
+
+ LCAO ALGORITHM --------------- ION=6     ELEC=4   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0347013931725
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106178563771
+
+ Density error is 8.35019694325e-05
+
+ LCAO ALGORITHM --------------- ION=6     ELEC=5   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0346878257998
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106200565211
+
+ Density error is 5.76922974422e-05
+
+ LCAO ALGORITHM --------------- ION=6     ELEC=6   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0346949326595
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106180576383
+
+ Density error is 1.48758364314e-05
+
+ LCAO ALGORITHM --------------- ION=6     ELEC=7   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0346939242671
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106178790922
+
+ Density error is 5.56716091472e-06
+
+ charge density convergence is achieved
+ final etot is -6162.22570446 eV
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+    TOTAL-FORCE (eV/Angstrom)
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+ atom    x              y              z              
+ Sn1     -0.18616555    +0.18986692    +0.037378927   
+ Sn2     -0.17839659    -0.24053       -0.012482186   
+ Sn3     +0.29579666    -0.2231238     +0.16853178    
+ Sn4     -0.039793046   -0.015742106   -0.16150001    
+ Sn5     +0.1539751     +0.0025874518  -0.35694199    
+ Sn6     -0.23328734    +0.056279254   -0.16779693    
+ Sn7     +0.35231181    +0.13922425    +0.30740132    
+ Sn8     +0.14084073    +0.25267496    -0.43236373    
+ Sn9     +0.43364858    +0.10995397    +0.27819681    
+ Sn10    +0.2423434     -0.42413298    +0.33347938    
+ Sn11    +0.17163234    -0.16577178    +0.012304749   
+ Sn12    +0.139444      +0.028481832   -0.15089046    
+ Sn13    +0.17744552    -0.084473125   -0.016786677   
+ Sn14    -0.38600587    +0.013683269   -0.22525704    
+ Sn15    +0.028987429   -0.29502938    +0.031558598   
+ Sn16    +0.043221368   -0.14391017    -0.34014049    
+ Sn17    +0.18615107    -0.22505798    +0.069312696   
+ Sn18    +0.51340399    +0.084872412   -0.079150241   
+ Sn19    -0.11171305    +0.15946326    +0.41270765    
+ Sn20    +0.25976834    -0.053102806   +0.27056927    
+ Sn21    +0.29166059    -0.5050292     -0.10010541    
+ Sn22    -0.21414055    +0.14297951    -0.010326056   
+ Sn23    -0.1697791     -0.017965172   -0.14869793    
+ Sn24    -0.1581352     -0.2121299     +0.22575195    
+ Sn25    -0.080032894   -0.27455102    -0.098869845   
+ Sn26    -0.027905167   +0.18479969    -0.084405387   
+ Sn27    -0.029245939   +0.15587225    +0.031987556   
+ Sn28    +0.21063229    +0.25202457    -0.16293064    
+ Sn29    -0.37473496    +0.05627692    +0.45721122    
+ Sn30    -0.15421315    +0.0026588905  +0.14375574    
+ Sn31    -0.24529389    +0.061187778   -0.098812624   
+ Sn32    -0.28430606    +0.060721683   -0.16717446    
+ Sn33    -0.11534535    -0.07894512    -0.22608052    
+ Sn34    -0.12971181    -0.19829702    +0.16220799    
+ Sn35    -0.47109485    -0.23885747    +0.30681424    
+ Sn36    -0.44148407    +0.08253288    -0.018278166   
+ Sn37    -0.03258035    +0.34477493    -0.20952003    
+ Sn38    +0.33378744    +0.13813789    +0.01464818    
+ Sn39    +0.17276936    +0.33386132    +0.018543757   
+ Sn40    +0.16574596    +0.13542812    -0.14064446    
+ Sn41    +0.38370491    +0.21615353    -0.026387907   
+ Sn42    -0.16656821    -0.53796257    -0.1965777     
+ Sn43    +0.038864848   -0.065772436   -0.16604234    
+ Sn44    -0.07701195    +0.1619012     +0.13811801    
+ Sn45    +0.11933841    +0.23089795    +0.3118687     
+ Sn46    -0.24307815    +0.12742885    -0.10935125    
+ Sn47    +0.21204212    +0.22132807    +0.47374394    
+ Sn48    -0.35201751    -0.049442379   -0.054732575   
+ Sn49    +0.29664752    +0.19219107    -0.085057496   
+ Sn50    -0.098905698   -0.24161438    -0.1519245     
+ Sn51    -0.17217017    -0.37551607    +0.28359856    
+ Sn52    -0.03275367    +0.21317266    +0.28268485    
+ Sn53    +0.064335224   +0.028279462   +0.20269563    
+ Sn54    -0.30851236    +0.060470586   -0.21534333    
+ Sn55    +0.4016229     +0.51084174    -0.40659922    
+ Sn56    +0.060084988   -0.54537662    +0.22363721    
+ Sn57    -0.47996499    +0.22609087    -0.11888315    
+ Sn58    +0.082195379   +0.31912046    -0.32077292    
+ Sn59    +0.03785744    +0.19926344    -0.052567271   
+ Sn60    +0.40147531    -0.17685798    -0.15843045    
+ Sn61    -0.20584068    +0.06983529    -0.11908452    
+ Sn62    +0.039509321   -0.052750893   +0.34882354    
+ Sn63    -0.11853048    -0.28830448    +0.10370694    
+ Sn64    -0.13252568    -0.035072349   -0.060329245   
+
+
+ ------------------------------------------------------------------------------------------------
+ Energy              Potential           Kinetic             Temperature         
+ -226.05657          -226.45754          0.40097             1339.8535           
+ ------------------------------------------------------------------------------------------------
+
+
+
+ -------------------------------------------
+ STEP OF MOLECULAR DYNAMICS : 6
+ -------------------------------------------
+ searching radius is (Bohr))              = 16.01
+ searching radius unit is (Bohr))         = 23.4538
+ enter setAlltoallvParameter, nblk        = 32
+checkpoint 2
+ pnum                                     = 0
+ prow                                     = 0
+ pcol                                     = 0
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 175
+ pnum                                     = 1
+ prow                                     = 0
+ pcol                                     = 1
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 162
+ pnum                                     = 2
+ prow                                     = 0
+ pcol                                     = 2
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 145
+ pnum                                     = 3
+ prow                                     = 0
+ pcol                                     = 3
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 142
+ pnum                                     = 4
+ prow                                     = 1
+ pcol                                     = 0
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 175
+ pnum                                     = 5
+ prow                                     = 1
+ pcol                                     = 1
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 162
+ pnum                                     = 6
+ prow                                     = 1
+ pcol                                     = 2
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 145
+ pnum                                     = 7
+ prow                                     = 1
+ pcol                                     = 3
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 142
+receiver_size is 389376 ; receiver_size of each process is:
+56000 51840 46400 45440 53200 49248 44080 43168 
+sender_size is 493993 ; sender_size of each process is:
+56000 58450 76171 71198 67776 67070 48032 49296 
+ gamma_only_local                         = 1
+
+ LCAO ALGORITHM --------------- ION=7     ELEC=1   --------------------------------
+
+vlocal exchange index is built
+ buffer size(M):                          = 6
+ buffer index size(M):                    = 6
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.034655
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106171
+
+ Density error is 0.00100817278645
+
+ LCAO ALGORITHM --------------- ION=7     ELEC=2   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0346393211505
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106266210056
+
+ Density error is 0.000560672959549
+
+ LCAO ALGORITHM --------------- ION=7     ELEC=3   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0346329407271
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106079143358
+
+ Density error is 0.000270887684574
+
+ LCAO ALGORITHM --------------- ION=7     ELEC=4   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0346440524408
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106195541689
+
+ Density error is 7.04651049501e-05
+
+ LCAO ALGORITHM --------------- ION=7     ELEC=5   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0346333118431
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106194894519
+
+ Density error is 4.20396588054e-05
+
+ LCAO ALGORITHM --------------- ION=7     ELEC=6   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0346403536207
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.0010618645964
+
+ Density error is 1.73223722851e-05
+
+ LCAO ALGORITHM --------------- ION=7     ELEC=7   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0346383748177
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.001061836904
+
+ Density error is 5.78241781509e-06
+
+ charge density convergence is achieved
+ final etot is -6162.10908997 eV
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+    TOTAL-FORCE (eV/Angstrom)
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+ atom    x              y              z              
+ Sn1     -0.22288593    +0.22713295    +0.045082182   
+ Sn2     -0.21495957    -0.2898058     -0.017705089   
+ Sn3     +0.35530604    -0.26882074    +0.20511048    
+ Sn4     -0.047262296   -0.018754804   -0.19479335    
+ Sn5     +0.18393173    +0.00049408135 -0.42698717    
+ Sn6     -0.28123991    +0.069289913   -0.20214224    
+ Sn7     +0.42172468    +0.17060401    +0.36935244    
+ Sn8     +0.16488827    +0.3021358     -0.52098094    
+ Sn9     +0.51935373    +0.12613356    +0.33098633    
+ Sn10    +0.29698056    -0.51043815    +0.40237443    
+ Sn11    +0.20530877    -0.19944309    +0.016074185   
+ Sn12    +0.16456894    +0.033865198   -0.17915662    
+ Sn13    +0.2121678     -0.1014082     -0.020006338   
+ Sn14    -0.45984542    +0.020486387   -0.26866511    
+ Sn15    +0.03312859    -0.35324663    +0.037127646   
+ Sn16    +0.053574204   -0.17355227    -0.40840307    
+ Sn17    +0.22330119    -0.26912174    +0.085031629   
+ Sn18    +0.61510261    +0.10436063    -0.096566216   
+ Sn19    -0.13608623    +0.19349993    +0.49543421    
+ Sn20    +0.31353759    -0.06717709    +0.32471951    
+ Sn21    +0.35014065    -0.60149457    -0.1254988     
+ Sn22    -0.25615607    +0.17046758    -0.014597852   
+ Sn23    -0.2024635     -0.02030004    -0.17665551    
+ Sn24    -0.18968045    -0.25324907    +0.26997238    
+ Sn25    -0.096215573   -0.32667548    -0.12011668    
+ Sn26    -0.032445233   +0.2193517     -0.099369565   
+ Sn27    -0.036019142   +0.18831654    +0.039926146   
+ Sn28    +0.25237594    +0.302411      -0.19697994    
+ Sn29    -0.44626236    +0.060159664   +0.54667333    
+ Sn30    -0.18504299    +0.0023113658  +0.1723553     
+ Sn31    -0.29403247    +0.074114495   -0.1183433     
+ Sn32    -0.3401547     +0.074623442   -0.20058872    
+ Sn33    -0.13959043    -0.096299043   -0.2708834     
+ Sn34    -0.15417691    -0.23743676    +0.19442704    
+ Sn35    -0.5541813     -0.27496763    +0.35788735    
+ Sn36    -0.52681269    +0.098800723   -0.019814058   
+ Sn37    -0.04227609    +0.41444205    -0.25229375    
+ Sn38    +0.40110694    +0.16512497    +0.019394017   
+ Sn39    +0.20447917    +0.39621925    +0.02432298    
+ Sn40    +0.19741697    +0.16091237    -0.16684862    
+ Sn41    +0.46132258    +0.25856996    -0.035692404   
+ Sn42    -0.20444027    -0.64750275    -0.23887624    
+ Sn43    +0.046129229   -0.079470843   -0.19974644    
+ Sn44    -0.09272477    +0.19270505    +0.16655856    
+ Sn45    +0.1443829     +0.27635477    +0.37210092    
+ Sn46    -0.28828378    +0.15315279    -0.13117228    
+ Sn47    +0.25893316    +0.27035546    +0.56963437    
+ Sn48    -0.42304106    -0.058727819   -0.06476487    
+ Sn49    +0.35412397    +0.23083732    -0.10463444    
+ Sn50    -0.1207545     -0.290647      -0.18451471    
+ Sn51    -0.20091224    -0.44820829    +0.33566653    
+ Sn52    -0.042188444   +0.25549855    +0.33972765    
+ Sn53    +0.077325662   +0.033344602   +0.24403859    
+ Sn54    -0.36921643    +0.075739769   -0.25753954    
+ Sn55    +0.46983525    +0.60501455    -0.47721692    
+ Sn56    +0.065697138   -0.65177868    +0.26707189    
+ Sn57    -0.57001189    +0.2668386     -0.13597681    
+ Sn58    +0.10409071    +0.38015988    -0.3826936     
+ Sn59    +0.045321145   +0.23707714    -0.062077662   
+ Sn60    +0.47674266    -0.20782127    -0.18403989    
+ Sn61    -0.24640586    +0.084582739   -0.14381172    
+ Sn62    +0.045606978   -0.062338714   +0.41654229    
+ Sn63    -0.14333333    -0.34519755    +0.12508253    
+ Sn64    -0.15880392    -0.041604769   -0.072521037   
+
+
+ ------------------------------------------------------------------------------------------------
+ Energy              Potential           Kinetic             Temperature         
+ -226.05654          -226.45325          0.39671198          1325.6252           
+ ------------------------------------------------------------------------------------------------
+
+
+
+ -------------------------------------------
+ STEP OF MOLECULAR DYNAMICS : 7
+ -------------------------------------------
+ searching radius is (Bohr))              = 16.01
+ searching radius unit is (Bohr))         = 23.4538
+ enter setAlltoallvParameter, nblk        = 32
+checkpoint 2
+ pnum                                     = 0
+ prow                                     = 0
+ pcol                                     = 0
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 175
+ pnum                                     = 1
+ prow                                     = 0
+ pcol                                     = 1
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 162
+ pnum                                     = 2
+ prow                                     = 0
+ pcol                                     = 2
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 145
+ pnum                                     = 3
+ prow                                     = 0
+ pcol                                     = 3
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 142
+ pnum                                     = 4
+ prow                                     = 1
+ pcol                                     = 0
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 175
+ pnum                                     = 5
+ prow                                     = 1
+ pcol                                     = 1
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 162
+ pnum                                     = 6
+ prow                                     = 1
+ pcol                                     = 2
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 145
+ pnum                                     = 7
+ prow                                     = 1
+ pcol                                     = 3
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 142
+receiver_size is 389376 ; receiver_size of each process is:
+56000 51840 46400 45440 53200 49248 44080 43168 
+sender_size is 493993 ; sender_size of each process is:
+56000 58450 76171 71198 67776 67070 48032 49296 
+ gamma_only_local                         = 1
+
+ LCAO ALGORITHM --------------- ION=8     ELEC=1   --------------------------------
+
+vlocal exchange index is built
+ buffer size(M):                          = 6
+ buffer index size(M):                    = 6
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0345994
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106193
+
+ Density error is 0.00100278587188
+
+ LCAO ALGORITHM --------------- ION=8     ELEC=2   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0345826560607
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106283127431
+
+ Density error is 0.000558167328078
+
+ LCAO ALGORITHM --------------- ION=8     ELEC=3   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0345812291437
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.0010610728587
+
+ Density error is 0.000267742294667
+
+ LCAO ALGORITHM --------------- ION=8     ELEC=4   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0345849582561
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106207763113
+
+ Density error is 6.4932664397e-05
+
+ LCAO ALGORITHM --------------- ION=8     ELEC=5   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0345819808489
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106223777914
+
+ Density error is 2.61693509065e-05
+
+ LCAO ALGORITHM --------------- ION=8     ELEC=6   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0345840134334
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106196298547
+
+ Density error is 1.67218681704e-05
+
+ LCAO ALGORITHM --------------- ION=8     ELEC=7   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 493993
+ sender_size                              = 493993
+ last sender_buffer                       = 0.0345831344687
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106206585761
+
+ Density error is 6.9448149721e-06
+
+ charge density convergence is achieved
+ final etot is -6161.97312354 eV
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+    TOTAL-FORCE (eV/Angstrom)
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+ atom    x              y              z              
+ Sn1     -0.25990451    +0.26371326    +0.055461106   
+ Sn2     -0.25219553    -0.33888093    -0.02460334    
+ Sn3     +0.41442734    -0.31499515    +0.24153049    
+ Sn4     -0.054800949   -0.021375249   -0.2256485     
+ Sn5     +0.21372167    -0.0024509429  -0.49888913    
+ Sn6     -0.32993591    +0.082740912   -0.23533676    
+ Sn7     +0.48989634    +0.20330616    +0.42871313    
+ Sn8     +0.18774476    +0.35137303    -0.6086454     
+ Sn9     +0.60494068    +0.1401629     +0.38542123    
+ Sn10    +0.35395181    -0.59656001    +0.47073245    
+ Sn11    +0.23883083    -0.23340656    +0.019259722   
+ Sn12    +0.1889513     +0.039360166   -0.20398014    
+ Sn13    +0.2462438     -0.11827626    -0.025620721   
+ Sn14    -0.53166103    +0.028492997   -0.31016918    
+ Sn15    +0.037270722   -0.41055427    +0.039984315   
+ Sn16    +0.064193267   -0.20301556    -0.4752716     
+ Sn17    +0.25971258    -0.31239299    +0.10393206    
+ Sn18    +0.71534204    +0.12428405    -0.11537307    
+ Sn19    -0.16125007    +0.22836839    +0.57697333    
+ Sn20    +0.36743371    -0.082518134   +0.38136514    
+ Sn21    +0.40872241    -0.69600534    -0.15484385    
+ Sn22    -0.29835996    +0.1975006     -0.018270911   
+ Sn23    -0.23514195    -0.02258524    -0.20646639    
+ Sn24    -0.22080169    -0.29416563    +0.3151145     
+ Sn25    -0.11178208    -0.37737187    -0.1390252     
+ Sn26    -0.036099761   +0.25274344    -0.11455502    
+ Sn27    -0.042815886   +0.22133591    +0.047432914   
+ Sn28    +0.29407863    +0.3522798     -0.22866592    
+ Sn29    -0.51667031    +0.061791334   +0.63267799    
+ Sn30    -0.21517314    +0.0017519226  +0.20198791    
+ Sn31    -0.34185281    +0.086713203   -0.1402719     
+ Sn32    -0.39563935    +0.088569205   -0.23264137    
+ Sn33    -0.16471566    -0.11435451    -0.3180359     
+ Sn34    -0.17863427    -0.27593129    +0.22739561    
+ Sn35    -0.6337725     -0.30778903    +0.40659874    
+ Sn36    -0.61104421    +0.11532349    -0.023418897   
+ Sn37    -0.052772686   +0.48400289    -0.29260596    
+ Sn38    +0.46769165    +0.19171313    +0.023396922   
+ Sn39    +0.23461913    +0.45731401    +0.033251019   
+ Sn40    +0.22864748    +0.18616103    -0.19357298    
+ Sn41    +0.53949035    +0.30026156    -0.048894615   
+ Sn42    -0.24296676    -0.75692888    -0.28099194    
+ Sn43    +0.053406098   -0.093541546   -0.23251877    
+ Sn44    -0.1082331     +0.2231284     +0.19244468    
+ Sn45    +0.16943012    +0.32135941    +0.4339604     
+ Sn46    -0.33156654    +0.1787986     -0.15412049    
+ Sn47    +0.30768836    +0.32108445    +0.66799234    
+ Sn48    -0.494214      -0.067371368   -0.075774009   
+ Sn49    +0.41017565    +0.26969679    -0.12763792    
+ Sn50    -0.14374955    -0.3399493     -0.21677358    
+ Sn51    -0.22804117    -0.51956791    +0.38691525    
+ Sn52    -0.052713974   +0.2971668     +0.39392152    
+ Sn53    +0.090595825   +0.038201485   +0.28791705    
+ Sn54    -0.42992379    +0.091934563   -0.30050687    
+ Sn55    +0.53347482    +0.69615584    -0.54177586    
+ Sn56    +0.069543335   -0.75730186    +0.30871726    
+ Sn57    -0.65713387    +0.30634912    -0.15366804    
+ Sn58    +0.12810874    +0.43974887    -0.44274966    
+ Sn59    +0.052922665   +0.27441761    -0.070345464   
+ Sn60    +0.55031233    -0.23762322    -0.21033534    
+ Sn61    -0.28681266    +0.099540954   -0.16614358    
+ Sn62    +0.051678728   -0.071537902   +0.48195084    
+ Sn63    -0.16774073    -0.40201545    +0.14906016    
+ Sn64    -0.1851268     -0.048379895   -0.085959792   
+
+
+ ------------------------------------------------------------------------------------------------
+ Energy              Potential           Kinetic             Temperature         
+ -226.05649          -226.44825          0.39175948          1309.0763           
+ ------------------------------------------------------------------------------------------------
+
+
+
+ -------------------------------------------
+ STEP OF MOLECULAR DYNAMICS : 8
+ -------------------------------------------
+ searching radius is (Bohr))              = 16.01
+ searching radius unit is (Bohr))         = 23.4538
+ enter setAlltoallvParameter, nblk        = 32
+checkpoint 2
+ pnum                                     = 0
+ prow                                     = 0
+ pcol                                     = 0
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 175
+ pnum                                     = 1
+ prow                                     = 0
+ pcol                                     = 1
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 162
+ pnum                                     = 2
+ prow                                     = 0
+ pcol                                     = 2
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 145
+ pnum                                     = 3
+ prow                                     = 0
+ pcol                                     = 3
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 142
+ pnum                                     = 4
+ prow                                     = 1
+ pcol                                     = 0
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 175
+ pnum                                     = 5
+ prow                                     = 1
+ pcol                                     = 1
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 162
+ pnum                                     = 6
+ prow                                     = 1
+ pcol                                     = 2
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 145
+ pnum                                     = 7
+ prow                                     = 1
+ pcol                                     = 3
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 142
+receiver_size is 389376 ; receiver_size of each process is:
+56000 51840 46400 45440 53200 49248 44080 43168 
+sender_size is 497605 ; sender_size of each process is:
+56000 62062 76171 71198 67776 67070 48032 49296 
+ gamma_only_local                         = 1
+
+ LCAO ALGORITHM --------------- ION=9     ELEC=1   --------------------------------
+
+vlocal exchange index is built
+ buffer size(M):                          = 6
+ buffer index size(M):                    = 6
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 497605
+ sender_size                              = 497605
+ last sender_buffer                       = 0.0345428
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.0010621
+
+ Density error is 0.000997397050941
+
+ LCAO ALGORITHM --------------- ION=9     ELEC=2   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 497605
+ sender_size                              = 497605
+ last sender_buffer                       = 0.0345280908488
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106337350213
+
+ Density error is 0.000555605438765
+
+ LCAO ALGORITHM --------------- ION=9     ELEC=3   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 497605
+ sender_size                              = 497605
+ last sender_buffer                       = 0.0345233619145
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106068293754
+
+ Density error is 0.000281460836996
+
+ LCAO ALGORITHM --------------- ION=9     ELEC=4   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 497605
+ sender_size                              = 497605
+ last sender_buffer                       = 0.034532189863
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106302760291
+
+ Density error is 0.000118783802979
+
+ LCAO ALGORITHM --------------- ION=9     ELEC=5   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 497605
+ sender_size                              = 497605
+ last sender_buffer                       = 0.0345262017117
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106214296671
+
+ Density error is 6.6589894057e-05
+
+ LCAO ALGORITHM --------------- ION=9     ELEC=6   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 497605
+ sender_size                              = 497605
+ last sender_buffer                       = 0.0345281100823
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106242836284
+
+ Density error is 1.30290590936e-05
+
+ LCAO ALGORITHM --------------- ION=9     ELEC=7   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 497605
+ sender_size                              = 497605
+ last sender_buffer                       = 0.0345281827625
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106234716955
+
+ Density error is 5.55338365832e-06
+
+ charge density convergence is achieved
+ final etot is -6161.8186647 eV
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+    TOTAL-FORCE (eV/Angstrom)
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+ atom    x              y              z              
+ Sn1     -0.2937259     +0.30121588    +0.061862943   
+ Sn2     -0.28679069    -0.38781965    -0.031209142   
+ Sn3     +0.47245674    -0.36014884    +0.27986479    
+ Sn4     -0.063203125   -0.023889378   -0.26084806    
+ Sn5     +0.24070763    -0.0051915824  -0.56571328    
+ Sn6     -0.37750831    +0.097478709   -0.27053059    
+ Sn7     +0.55873492    +0.23600837    +0.49148046    
+ Sn8     +0.20663208    +0.3992882     -0.69818062    
+ Sn9     +0.68669621    +0.15324558    +0.43438898    
+ Sn10    +0.4097955     -0.68253367    +0.54089436    
+ Sn11    +0.27272136    -0.2658176     +0.024071554   
+ Sn12    +0.21329552    +0.044951229   -0.23199007    
+ Sn13    +0.28227665    -0.13403964    -0.027474749   
+ Sn14    -0.60315544    +0.038576192   -0.35268611    
+ Sn15    +0.039350772   -0.46835769    +0.04651769    
+ Sn16    +0.07781529    -0.2335393     -0.54377664    
+ Sn17    +0.29856332    -0.35638434    +0.11933771    
+ Sn18    +0.81747311    +0.14470228    -0.13331396    
+ Sn19    -0.18779045    +0.2626244     +0.65909636    
+ Sn20    +0.42109239    -0.098802425   +0.43380115    
+ Sn21    +0.46434507    -0.78938843    -0.18191471    
+ Sn22    -0.338561      +0.22312867    -0.024435993   
+ Sn23    -0.2657675     -0.023566796   -0.23185442    
+ Sn24    -0.25429261    -0.33380865    +0.35749716    
+ Sn25    -0.12993716    -0.42776208    -0.16226587    
+ Sn26    -0.042500585   +0.28509614    -0.12809071    
+ Sn27    -0.048979425   +0.25307259    +0.056587453   
+ Sn28    +0.33589953    +0.40157721    -0.26483987    
+ Sn29    -0.58287054    +0.06024174    +0.72139628    
+ Sn30    -0.24658537    -1.7897715e-05 +0.22903162    
+ Sn31    -0.39057909    +0.10048635    -0.15814853    
+ Sn32    -0.4477299     +0.10380182    -0.26639372    
+ Sn33    -0.1871671     -0.13160359    -0.36077673    
+ Sn34    -0.19963348    -0.31394559    +0.25907925    
+ Sn35    -0.7102153     -0.33585647    +0.45086419    
+ Sn36    -0.69422415    +0.13159805    -0.022258583   
+ Sn37    -0.066881607   +0.5539157     -0.33713991    
+ Sn38    +0.53584822    +0.21871257    +0.029988068   
+ Sn39    +0.26506764    +0.5157133     +0.039045268   
+ Sn40    +0.25683155    +0.20945778    -0.217835      
+ Sn41    +0.6145014     +0.34316549    -0.058910947   
+ Sn42    -0.28548302    -0.8664353     -0.32544849    
+ Sn43    +0.061012813   -0.10654023    -0.26656264    
+ Sn44    -0.12327104    +0.25287604    +0.22236251    
+ Sn45    +0.19730305    +0.36687667    +0.49124038    
+ Sn46    -0.37527209    +0.20529274    -0.17520256    
+ Sn47    +0.35627784    +0.37237208    +0.76223209    
+ Sn48    -0.56275183    -0.076454754   -0.084522441   
+ Sn49    +0.46795299    +0.30721924    -0.14734423    
+ Sn50    -0.16462087    -0.3891904     -0.25096799    
+ Sn51    -0.2540968     -0.59113431    +0.43532195    
+ Sn52    -0.064956658   +0.33850134    +0.45175994    
+ Sn53    +0.10162406    +0.04222539    +0.32820845    
+ Sn54    -0.48877247    +0.10811652    -0.34108542    
+ Sn55    +0.59493587    +0.7855899     -0.60661337    
+ Sn56    +0.068987339   -0.85992727    +0.35211163    
+ Sn57    -0.74450336    +0.34259358    -0.16533177    
+ Sn58    +0.15083637    +0.49823746    -0.502733      
+ Sn59    +0.061149108   +0.30978116    -0.079277939   
+ Sn60    +0.62284098    -0.26596844    -0.23039283    
+ Sn61    -0.32450968    +0.11361799    -0.19233068    
+ Sn62    +0.055940359   -0.081347019   +0.54859401    
+ Sn63    -0.19395838    -0.45761325    +0.16925979    
+ Sn64    -0.20867075    -0.054273787   -0.097494493   
+
+
+ ------------------------------------------------------------------------------------------------
+ Energy              Potential           Kinetic             Temperature         
+ -226.05643          -226.44258          0.38615042          1290.3334           
+ ------------------------------------------------------------------------------------------------
+
+
+
+ -------------------------------------------
+ STEP OF MOLECULAR DYNAMICS : 9
+ -------------------------------------------
+ searching radius is (Bohr))              = 16.01
+ searching radius unit is (Bohr))         = 23.4538
+ enter setAlltoallvParameter, nblk        = 32
+checkpoint 2
+ pnum                                     = 0
+ prow                                     = 0
+ pcol                                     = 0
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 175
+ pnum                                     = 1
+ prow                                     = 0
+ pcol                                     = 1
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 162
+ pnum                                     = 2
+ prow                                     = 0
+ pcol                                     = 2
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 145
+ pnum                                     = 3
+ prow                                     = 0
+ pcol                                     = 3
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 142
+ pnum                                     = 4
+ prow                                     = 1
+ pcol                                     = 0
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 175
+ pnum                                     = 5
+ prow                                     = 1
+ pcol                                     = 1
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 162
+ pnum                                     = 6
+ prow                                     = 1
+ pcol                                     = 2
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 145
+ pnum                                     = 7
+ prow                                     = 1
+ pcol                                     = 3
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 142
+receiver_size is 389376 ; receiver_size of each process is:
+56000 51840 46400 45440 53200 49248 44080 43168 
+sender_size is 499971 ; sender_size of each process is:
+56000 64428 76171 71198 67776 67070 48032 49296 
+ gamma_only_local                         = 1
+
+ LCAO ALGORITHM --------------- ION=10    ELEC=1   --------------------------------
+
+vlocal exchange index is built
+ buffer size(M):                          = 6
+ buffer index size(M):                    = 6
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344855
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.0010627
+
+ Density error is 0.000990837451721
+
+ LCAO ALGORITHM --------------- ION=10    ELEC=2   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344748033511
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106350313494
+
+ Density error is 0.000550767631003
+
+ LCAO ALGORITHM --------------- ION=10    ELEC=3   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344622555861
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106194444761
+
+ Density error is 0.000274325291223
+
+ LCAO ALGORITHM --------------- ION=10    ELEC=4   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344835473784
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106265270542
+
+ Density error is 9.14751016953e-05
+
+ LCAO ALGORITHM --------------- ION=10    ELEC=5   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344651011903
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106305579599
+
+ Density error is 6.26774967629e-05
+
+ LCAO ALGORITHM --------------- ION=10    ELEC=6   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344741145182
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106277277129
+
+ Density error is 1.43347077737e-05
+
+ LCAO ALGORITHM --------------- ION=10    ELEC=7   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344730254511
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106276374058
+
+ Density error is 5.54527279314e-06
+
+ charge density convergence is achieved
+ final etot is -6161.6466757 eV
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+    TOTAL-FORCE (eV/Angstrom)
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+ atom    x              y              z              
+ Sn1     -0.32975443    +0.33721879    +0.070541177   
+ Sn2     -0.3238348     -0.43592719    -0.039184059   
+ Sn3     +0.53045473    -0.40636082    +0.3179693     
+ Sn4     -0.071081674   -0.025544762   -0.29390468    
+ Sn5     +0.26922605    -0.0089777878  -0.63384511    
+ Sn6     -0.4265478     +0.11226083    -0.30453305    
+ Sn7     +0.62507405    +0.27058787    +0.55186206    
+ Sn8     +0.22614884    +0.44753802    -0.7864968     
+ Sn9     +0.77003944    +0.16363269    +0.48466677    
+ Sn10    +0.4696204     -0.76759047    +0.61030382    
+ Sn11    +0.3057003     -0.29910923    +0.028347184   
+ Sn12    +0.23628508    +0.05094681    -0.25684126    
+ Sn13    +0.31574108    -0.14992862    -0.031285958   
+ Sn14    -0.67141497    +0.04941683    -0.39333206    
+ Sn15    +0.042380064   -0.52424408    +0.050780113   
+ Sn16    +0.089838998   -0.26305962    -0.61082367    
+ Sn17    +0.334629      -0.39874464    +0.137417      
+ Sn18    +0.91571528    +0.16506371    -0.152388      
+ Sn19    -0.21433939    +0.29830226    +0.73990473    
+ Sn20    +0.47520974    -0.1165931     +0.488237      
+ Sn21    +0.52169912    -0.8802672     -0.21217211    
+ Sn22    -0.37979568    +0.24849588    -0.03000377    
+ Sn23    -0.29726179    -0.025283082   -0.25869236    
+ Sn24    -0.2853776     -0.37389757    +0.40067827    
+ Sn25    -0.14544522    -0.47591655    -0.1833715     
+ Sn26    -0.046078073   +0.3158832     -0.14161167    
+ Sn27    -0.055741763   +0.28598941    +0.065444473   
+ Sn28    +0.37697755    +0.44980121    -0.29873624    
+ Sn29    -0.649576      +0.056988302   +0.80678688    
+ Sn30    -0.27626836    -0.001650375   +0.25689207    
+ Sn31    -0.43724248    +0.11299262    -0.17805488    
+ Sn32    -0.50107131    +0.11819151    -0.29875966    
+ Sn33    -0.21237939    -0.15015479    -0.40537398    
+ Sn34    -0.22251305    -0.35075997    +0.29130023    
+ Sn35    -0.78270572    -0.36168203    +0.49288746    
+ Sn36    -0.77543186    +0.1485968     -0.022909913   
+ Sn37    -0.079905882   +0.62323312    -0.37935259    
+ Sn38    +0.60194758    +0.24495691    +0.035869386   
+ Sn39    +0.29295326    +0.5735144     +0.047490633   
+ Sn40    +0.28622049    +0.23328923    -0.24246012    
+ Sn41    +0.69177256    +0.38445625    -0.072387566   
+ Sn42    -0.32638168    -0.97494516    -0.36959856    
+ Sn43    +0.068036291   -0.1204689     -0.29966752    
+ Sn44    -0.13858119    +0.2825028     +0.24995933    
+ Sn45    +0.22320851    +0.41154984    +0.54964808    
+ Sn46    -0.41593332    +0.23138043    -0.19722082    
+ Sn47    +0.40743029    +0.42577825    +0.85814484    
+ Sn48    -0.63294834    -0.084107198   -0.094161145   
+ Sn49    +0.52220773    +0.34551913    -0.16996075    
+ Sn50    -0.18841775    -0.43889904    -0.28488601    
+ Sn51    -0.27803772    -0.66046567    +0.48263302    
+ Sn52    -0.077578811   +0.37849504    +0.50677845    
+ Sn53    +0.11469042    +0.046219404   +0.37042097    
+ Sn54    -0.54834636    +0.12523756    -0.3821896     
+ Sn55    +0.65095403    +0.87129521    -0.66589164    
+ Sn56    +0.068599458   -0.96215255    +0.39371816    
+ Sn57    -0.8267784     +0.37836081    -0.17742021    
+ Sn58    +0.17732934    +0.55467424    -0.56093509    
+ Sn59    +0.068862389   +0.34527341    -0.087112636   
+ Sn60    +0.69289015    -0.29359126    -0.25096976    
+ Sn61    -0.36361211    +0.12803863    -0.21631512    
+ Sn62    +0.061126938   -0.090555002   +0.61271415    
+ Sn63    -0.21861921    -0.51366549    +0.19164624    
+ Sn64    -0.23396702    -0.061139251   -0.11019191    
+
+
+ ------------------------------------------------------------------------------------------------
+ Energy              Potential           Kinetic             Temperature         
+ -226.05633          -226.43626          0.37992598          1269.5343           
+ ------------------------------------------------------------------------------------------------
+
+
+
+ -------------------------------------------
+ STEP OF MOLECULAR DYNAMICS : 10
+ -------------------------------------------
+ searching radius is (Bohr))              = 16.01
+ searching radius unit is (Bohr))         = 23.4538
+ enter setAlltoallvParameter, nblk        = 32
+checkpoint 2
+ pnum                                     = 0
+ prow                                     = 0
+ pcol                                     = 0
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 175
+ pnum                                     = 1
+ prow                                     = 0
+ pcol                                     = 1
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 162
+ pnum                                     = 2
+ prow                                     = 0
+ pcol                                     = 2
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 145
+ pnum                                     = 3
+ prow                                     = 0
+ pcol                                     = 3
+ nRow_in_proc                             = 320
+ nCol_in_proc                             = 142
+ pnum                                     = 4
+ prow                                     = 1
+ pcol                                     = 0
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 175
+ pnum                                     = 5
+ prow                                     = 1
+ pcol                                     = 1
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 162
+ pnum                                     = 6
+ prow                                     = 1
+ pcol                                     = 2
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 145
+ pnum                                     = 7
+ prow                                     = 1
+ pcol                                     = 3
+ nRow_in_proc                             = 304
+ nCol_in_proc                             = 142
+receiver_size is 389376 ; receiver_size of each process is:
+56000 51840 46400 45440 53200 49248 44080 43168 
+sender_size is 499971 ; sender_size of each process is:
+56000 64428 76171 71198 67776 67070 48032 49296 
+ gamma_only_local                         = 1
+
+ LCAO ALGORITHM --------------- ION=11    ELEC=1   --------------------------------
+
+vlocal exchange index is built
+ buffer size(M):                          = 6
+ buffer index size(M):                    = 6
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344304
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106313
+
+ Density error is 0.000983592892687
+
+ LCAO ALGORITHM --------------- ION=11    ELEC=2   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344187368647
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106403326788
+
+ Density error is 0.000546320475999
+
+ LCAO ALGORITHM --------------- ION=11    ELEC=3   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344109014635
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106218107371
+
+ Density error is 0.000269146040073
+
+ LCAO ALGORITHM --------------- ION=11    ELEC=4   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344253296399
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106336933441
+
+ Density error is 8.37800201138e-05
+
+ LCAO ALGORITHM --------------- ION=11    ELEC=5   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344128076257
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106331105123
+
+ Density error is 5.85968051535e-05
+
+ LCAO ALGORITHM --------------- ION=11    ELEC=6   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344190636723
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106327145234
+
+ Density error is 1.44721704083e-05
+
+ LCAO ALGORITHM --------------- ION=11    ELEC=7   --------------------------------
+ vlocal data are put in sender_buffer, size(M): = 2
+ vlocal data are exchanged, received size(M): = 3
+
+K-S equation was solved by genelpa2
+
+eigenvalues were copied to ekb
+ cal_dk_gamma_from_2D, NSPIN              = 1
+ number of non-zero elements in sender_buffer = 499971
+ sender_size                              = 499971
+ last sender_buffer                       = 0.0344182845692
+ number of non-zero elements in receiver_buffer = 389376
+ receiver_size                            = 389376
+ last receiver_buffer                     = 0.00106322110878
+
+ Density error is 5.52811657788e-06
+
+ charge density convergence is achieved
+ final etot is -6161.45821682 eV
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+    TOTAL-FORCE (eV/Angstrom)
+
+ ><><><><><><><><><><><><><><><><><><><><><><
+
+ atom    x              y              z              
+ Sn1     -0.36411476    +0.37307342    +0.07862086    
+ Sn2     -0.35942531    -0.48483414    -0.047634241   
+ Sn3     +0.58825448    -0.45224442    +0.35667822    
+ Sn4     -0.078580739   -0.028098813   -0.32765938    
+ Sn5     +0.29655561    -0.014025034   -0.70022789    
+ Sn6     -0.47436397    +0.12671676    -0.33863089    
+ Sn7     +0.69151545    +0.30475258    +0.612352      
+ Sn8     +0.2435834     +0.49393325    -0.87468257    
+ Sn9     +0.85090232    +0.17255686    +0.53314005    
+ Sn10    +0.52937811    -0.85327797    +0.67982747    
+ Sn11    +0.33775643    -0.33180634    +0.032999128   
+ Sn12    +0.25800064    +0.055723289   -0.28143691    
+ Sn13    +0.34928112    -0.16620504    -0.034358161   
+ Sn14    -0.73893728    +0.060639392   -0.43338977    
+ Sn15    +0.043642066   -0.58036121    +0.05555684    
+ Sn16    +0.10293656    -0.29371604    -0.67769534    
+ Sn17    +0.37158891    -0.44070101    +0.15519504    
+ Sn18    +1.0137603     +0.18699299    -0.17160131    
+ Sn19    -0.24094583    +0.33404442    +0.82004285    
+ Sn20    +0.52982357    -0.13408504    +0.54171481    
+ Sn21    +0.57788895    -0.96817812    -0.24280669    
+ Sn22    -0.419264      +0.27382554    -0.036310446   
+ Sn23    -0.32687387    -0.025540465   -0.28423123    
+ Sn24    -0.31677174    -0.41229123    +0.442999      
+ Sn25    -0.16203208    -0.52292741    -0.20520296    
+ Sn26    -0.050811867   +0.34676765    -0.15429114    
+ Sn27    -0.062996385   +0.31855635    +0.074891752   
+ Sn28    +0.41709007    +0.49851096    -0.33332783    
+ Sn29    -0.71386585    +0.05240725    +0.89150655    
+ Sn30    -0.30684332    -0.0028857987  +0.28391559    
+ Sn31    -0.48437812    +0.12645966    -0.19714432    
+ Sn32    -0.55274972    +0.13389143    -0.33104965    
+ Sn33    -0.23640183    -0.16868718    -0.44884179    
+ Sn34    -0.24346295    -0.38801165    +0.32317335    
+ Sn35    -0.8512519     -0.3841714     +0.53181577    
+ Sn36    -0.85446432    +0.16440649    -0.022473838   
+ Sn37    -0.094530358   +0.69135507    -0.42205007    
+ Sn38    +0.66873627    +0.27006647    +0.042429314   
+ Sn39    +0.32088816    +0.6284691     +0.055841956   
+ Sn40    +0.31412577    +0.25527737    -0.26617272    
+ Sn41    +0.76720353    +0.42559139    -0.086170737   
+ Sn42    -0.36933369    -1.0840652     -0.41441598    
+ Sn43    +0.074417833   -0.13403227    -0.33273291    
+ Sn44    -0.15421668    +0.3102352     +0.27809444    
+ Sn45    +0.24983696    +0.45510671    +0.6064558     
+ Sn46    -0.45632672    +0.25674334    -0.21885617    
+ Sn47    +0.458372      +0.47911351    +0.95275328    
+ Sn48    -0.70196609    -0.092415475   -0.10326029    
+ Sn49    +0.57656271    +0.38321754    -0.1924638     
+ Sn50    -0.21137874    -0.48727515    -0.31949613    
+ Sn51    -0.29996759    -0.72878778    +0.52798899    
+ Sn52    -0.090529997   +0.41889766    +0.5617179     
+ Sn53    +0.12721331    +0.050596635   +0.4118461     
+ Sn54    -0.60603204    +0.14354799    -0.42237739    
+ Sn55    +0.70449315    +0.95550062    -0.72243831    
+ Sn56    +0.06582645    -1.0613721     +0.43505204    
+ Sn57    -0.90767419    +0.41213603    -0.18713051    
+ Sn58    +0.20369707    +0.61083274    -0.61810633    
+ Sn59    +0.076094615   +0.37956141    -0.094633723   
+ Sn60    +0.76049611    -0.31874082    -0.26903833    
+ Sn61    -0.40149115    +0.14298836    -0.24082042    
+ Sn62    +0.064713317   -0.09883814    +0.67581361    
+ Sn63    -0.24444869    -0.56801768    +0.21341071    
+ Sn64    -0.2582034     -0.066902471   -0.12267323    
+
+
+ ------------------------------------------------------------------------------------------------
+ Energy              Potential           Kinetic             Temperature         
+ -226.0562           -226.42933          0.37313048          1246.8269           
+ ------------------------------------------------------------------------------------------------
+
+
+
+
+ --------------------------------------------
+ !FINAL_ETOT_IS -6161.458216817956 eV
+ --------------------------------------------
+
+
+
+
+
+
+  |CLASS_NAME---------|NAME---------------|TIME(Sec)-----|CALLS----|AVG------|PER%-------
+                       total               233.72         11        21        1e+02     %
+   Run_lcao            lcao_line           233.67         1         2.3e+02   1e+02     %
+   PW_Basis            setup_struc_factor  0.85917        11        0.078     0.37      %
+   Potential           init_pot            0.72338        22        0.033     0.31      %
+   Potential           set_local_pot       0.44917        22        0.02      0.19      %
+   PW_Basis            recip2real          0.72138        141       0.0051    0.31      %
+   PW_Basis            gathers_scatterp    0.54397        141       0.0039    0.23      %
+   Charge              atomic_rho          0.31416        21        0.015     0.13      %
+   Potential           v_of_rho            1.0012         98        0.01      0.43      %
+   XC_Functional       v_xc                0.48257        109       0.0044    0.21      %
+   H_Hartree_pw        v_hartree           0.52881        98        0.0054    0.23      %
+   PW_Basis            real2recip          0.59128        283       0.0021    0.25      %
+   PW_Basis            gatherp_scatters    0.24506        283       0.00087   0.1       %
+   ORB_control         set_orb_tables      0.5757         1         0.58      0.25      %
+   ORB_gen_tables      gen_tables          0.57569        1         0.58      0.25      %
+   ORB_table_phi       init_Table          0.37511        1         0.38      0.16      %
+   ORB_table_phi       cal_ST_Phi12_R      0.37065        70        0.0053    0.16      %
+   Run_MD_LCAO         opt_ions            232.86         1         2.3e+02   1e+02     %
+   NVT_NHC             setup               19.336         1         19        8.3       %
+   MD_func             force_stress        231.58         11        21        99        %
+   ESolver_KS_LCAO     Run                 166.78         11        15        71        %
+   ESolver_KS_LCAO     beforescf           7.5968         11        0.69      3.3       %
+   ESolver_KS_LCAO     beforesolver        104.89         6         17        45        %
+   ESolver_KS_LCAO     set_matrix_grid     0.41773        11        0.038     0.18      %
+   Grid_Technique      init                0.37592        11        0.034     0.16      %
+   Grid_BigCell        grid_expansion_index0.19856        22        0.009     0.085     %
+   LCAO_Hamilt         set_lcao_matrices   6.8532         11        0.62      2.9       %
+   LCAO_gen_fixedH     calculate_S_no      0.56461        11        0.051     0.24      %
+   LCAO_gen_fixedH     build_Nonlocal_beta_new5.6787         11        0.52      2.4       %
+   ORB_gen_tables      snap_psibeta_half   1.4196         645216    2.2e-06   0.61      %
+   H_Ewald_pw          compute_ewald       0.25983        11        0.024     0.11      %
+   HSolverLCAO         solve               157.23         76        2.1       67        %
+   HamiltLCAO          updateHk            67.764         76        0.89      29        %
+   LCAO_Hamilt         cal_Hgamma          67.716         76        0.89      29        %
+   Gint_interface      cal_gint            173.07         163       1.1       74        %
+   Gint_Gamma          distri_vl_index     0.1357         11        0.012     0.058     %
+   Gint_Gamma          distri_vl_value     1.6244         76        0.021     0.7       %
+   Gint_Gamma          distri_vl           113.1          38        3         48        %
+   DiagoElpa           elpa_solve          10.8           76        0.14      4.6       %
+   ElecStateLCAO       psiToRho            78.657         76        1         34        %
+   ElecStateLCAO       cal_dm_2d           0.60509        76        0.008     0.26      %
+    Local_Orbital_wfc  wfc_2d_to_grid      0.14331        76        0.0019    0.061     %
+   LCAO_Charge         dm_2dTOgrid         0.73036        76        0.0096    0.31      %
+   Charge              mix_rho             0.62344        65        0.0096    0.27      %
+   Force_Stress_LCAO   getForceStress      64.794         11        5.9       28        %
+   Forces              cal_force_loc       0.65492        11        0.06      0.28      %
+   Forces              cal_force_ew        0.64369        11        0.059     0.28      %
+   Force_LCAO_gamma    ftable_gamma        62.594         11        5.7       27        %
+   Force_LCAO_gamma    allocate_gamma      14.874         11        1.4       6.4       %
+   LCAO_gen_fixedH     build_Nonlocal_mu_new9.999          11        0.91      4.3       %
+   Force_LCAO_gamma    cal_foverlap        1.2472         11        0.11      0.53      %
+   Force_LCAO_gamma    cal_edm_2d          1.2192         11        0.11      0.52      %
+   Force_LCAO_gamma    cal_fvnl_dbeta_new  13.231         11        1.2       5.7       %
+   Force_LCAO_gamma    cal_fvl_dphi        33.158         11        3         14        %
+ ----------------------------------------------------------------------------------------
+
+ CLASS_NAME---------|NAME---------------|MEMORY(MB)--------
+                                         428.1
+ ORB_table_phi       Jl(x)               75.79          
+ Charge_Pulay        Rrho                5.933          
+ Charge_Pulay        dRrho               5.191          
+ Charge_Pulay        drho                5.191          
+ LocalOrbital_Charge Density_Kernal      2.971          
+ force_lo            dS                  2.133          
+ force_lo            dTVNL               2.133          
+ Grid_Meshcell       index2normal        1.81           
+ Grid_Meshcell       index2ucell         1.81           
+ ORB_table_phi       Table_SR&TR         1.225          
+ ----------------------------------------------------------
+
+ Start  Time  : Tue Jul  5 15:19:49 2022
+ Finish Time  : Tue Jul  5 15:23:43 2022
+ Total  Time  : 0 h 3 mins 54 secs 

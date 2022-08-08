@@ -31,6 +31,7 @@ This is a collection of the NOMAD parsers for the following electronic structure
 30. [WIEN2k](http://www.wien2k.at/)
 31. [YAMBO](https://www.yambo-code.org/)
 32. [OpenMX](http://www.openmx-square.org/)
+33. [ABACUS](http://abacus.ustc.edu.cn/)
 
 Each of the parsers will read the relevant input and output files and provide all information in
 NOMAD's unified Metainfo based Archive format.
