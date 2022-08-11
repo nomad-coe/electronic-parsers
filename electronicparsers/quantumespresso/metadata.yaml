@@ -1,5 +1,5 @@
-codeLabel: QUANTUM ESPRESSO
-codeLabelStyle: All in capitals, separated by space
+codeLabel: QuantumESPRESSO
+codeLabelStyle: Capitals Q, E, S, P, R, E, S, S, O
 codeName: quantum-espresso
 codeUrl: http://www.quantum-espresso.org/
 parserDirName: dependencies/electronic/electronicparsers/quantum-espresso/

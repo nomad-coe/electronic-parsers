@@ -1,5 +1,5 @@
-codeLabel: QBALL
-codeLabelStyle: all in capitals
+codeLabel: Qball
+codeLabelStyle: 'Capitals: Q'
 codeName: qball
 codeUrl: https://github.com/LLNL/qball
 parserDirName: dependencies/electronic/electronicparsers/qball/
