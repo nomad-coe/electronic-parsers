@@ -1,6 +1,7 @@
 codeLabel: Molcas
 codeLabelStyle: 'Capitals: M; also seen all in capitals'
 codeName: molcas
+codeCategory: Electronic structure
 codeUrl: http://molcas.org/
 parserDirName: dependencies/electronic/electronicparsers/molcas/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

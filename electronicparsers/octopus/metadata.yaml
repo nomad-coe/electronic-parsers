@@ -1,6 +1,7 @@
 codeLabel: Octopus
 codeLabelStyle: 'Capitals: O'
 codeName: octopus
+codeCategory: Electronic structure
 codeUrl: https://octopus-code.org/
 parserDirName: dependencies/electronic/electronicparsers/octopus/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

@@ -1,5 +1,7 @@
 codeLabel: WIEN2k
 codeLabelStyle: All in capitals, except k
+codeName: wien2k
+codeCategory: Electronic structure
 codeUrl: http://www.wien2k.at/
 parserDirName: dependencies/electronic/electronicparsers/wien2k/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

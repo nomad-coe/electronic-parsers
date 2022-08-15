@@ -1,6 +1,7 @@
 codeLabel: ONETEP
 codeLabelStyle: All in capitals
 codeName: onetep
+codeCategory: Electronic structure
 codeUrl: https://www.onetep.org/
 parserDirName: dependencies/electronic/electronicparsers/onetep/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

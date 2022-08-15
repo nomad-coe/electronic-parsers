@@ -1,6 +1,7 @@
 codeLabel: CASTEP
 codeLabelStyle: all in capitals
 codeName: castep
+codeCategory: Electronic structure
 codeUrl: http://www.castep.org/
 parserDirName: dependencies/electronic/electronicparsers/castep/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

@@ -1,6 +1,7 @@
 codeLabel: FHI-aims
 codeLabelStyle: 'Capitals: FHI, the rest in lowercase; use dash.'
 codeName: fhi-aims
+codeCategory: Electronic structure
 codeUrl: https://aimsclub.fhi-berlin.mpg.de/
 parserDirName: dependencies/electronic/electronicparsers/fhi-aims/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

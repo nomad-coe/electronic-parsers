@@ -1,6 +1,7 @@
 codeLabel: MOPAC
 codeLabelStyle: All in capitals
 codeName: mopac
+codeCategory: Electronic structure
 codeUrl: http://openmopac.net/
 parserDirName: dependencies/parsers/atomistic/atomisticparsers/mopac/
 parserGitUrl: https://github.com/nomad-coe/atomistic-parsers.git

@@ -1,6 +1,7 @@
 codeLabel: YAMBO
 codeLabelStyle: all in capitals
 codeName: yambo
+codeCategory: Electronic structure
 codeUrl: https://www.yambo-code.org/
 parserDirName: dependencies/electronic/electronicparsers/yambo/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
