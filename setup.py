@@ -28,7 +28,7 @@ def main():
         packages=find_packages(exclude=['tests']),
         install_requires=['nomad-lab'],
         include_package_data=True,
-        package_data={'': ['*/metadata.yaml']},
+        package_data={'electronicparsers': ['*/metadata.yaml']},
     )
 
 
