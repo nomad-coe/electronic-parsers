@@ -17,5 +17,7 @@
 # limitations under the License.
 #
 from nomad.metainfo import Environment
+from . import band
 
 m_env = Environment()
+m_env.m_add_sub_section(Environment.packages, band.m_package)

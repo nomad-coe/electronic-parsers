@@ -20,7 +20,7 @@ import pytest
 import numpy as np
 
 from nomad.datamodel import EntryArchive
-from abacusparser import ABACUSParser
+from electronicparsers.abacus import ABACUSParser
 
 
 def approx(value, abs=0, rel=1e-6):
