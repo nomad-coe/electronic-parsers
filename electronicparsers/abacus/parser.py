@@ -337,7 +337,7 @@ class ABACUSOutParser(TextParser):
             ),
             Quantity(
                 'start_magnetization', r'start magnetization\s*=\s*(\w+)', repeats=True,
-                str_operation=lambda x: True if x == 'TRUE' else False
+                str_operation=lambda x: x == 'TRUE'
             ),
             Quantity(
                 'noncollinear_magnetization',
@@ -1037,14 +1037,14 @@ class ABACUSOutParser(TextParser):
                 sub_parser=TextParser(quantities=relax_quantities), repeats=True
             ),
             Quantity(
-                'ion_converged', r'Ion relaxation (is converged!)', str_operation=lambda x: True if x else False
+                'ion_converged', r'Ion relaxation \(is converged!\)', str_operation=lambda x: True
             ),
             Quantity(
                 'force_threshold',
                 rf'Ion relaxation is not converged yet \(threshold is\s*({re_float})\)', unit='eV/angstrom', repeats=False
             ),
             Quantity(
-                'lattice_converged', r'Lattice relaxation (is converged!)', str_operation=lambda x: True if x else False
+                'lattice_converged', r'Lattice relaxation \(is converged!\)', str_operation=lambda x: True
             ),
             Quantity(
                 'stress_threshold',

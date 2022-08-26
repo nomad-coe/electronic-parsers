@@ -1,9 +1,9 @@
-codeLabel: BAND
+codeLabel: AMS
 codeLabelStyle: all in capitals
-codeName: band
+codeName: ams
 codeCategory: Electronic structure
-codeUrl: https://www.scm.com/product/band_periodicdft/
-parserDirName: dependencies/electronic/electronicparsers/band/
+codeUrl: https://www.scm.com
+parserDirName: dependencies/electronic/electronicparsers/ams/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
 preamble: ''

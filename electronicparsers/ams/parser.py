@@ -16,7 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import enum
 import os
 import numpy as np
 import logging
@@ -122,7 +121,7 @@ class OutParser(TextParser):
                         'relativistic_corrections',
                         r'Relativistic Corrections\:\s*(.+?)  ', dtype=str, flatten=False),
                     Quantity(
-                        'x_band_nuclear_charge_density_model',
+                        'x_ams_nuclear_charge_density_model',
                         rf'Nuclear Charge Density Model\:\s*(.+?){re_n}',
                         str_operation=lambda x: x.strip(), dtype=str, flatten=False
                     )
@@ -133,12 +132,12 @@ class OutParser(TextParser):
                 r'C O N F I N E M E N T\s+\=+\s+([\s\S]+?)\={10}',
                 sub_parser=TextParser(quantities=[
                     Quantity(
-                        'x_band_basis_functions_confinement_radius',
+                        'x_ams_basis_functions_confinement_radius',
                         rf'Basis functions confinement radius\s+({re_float})',
                         dtype=np.float64
                     ),
                     Quantity(
-                        'x_band_basis_functions_confinement_width',
+                        'x_ams_basis_functions_confinement_width',
                         rf'Basis functions confinement radius\s+({re_float})',
                         dtype=np.float64
                     ),
@@ -149,12 +148,12 @@ class OutParser(TextParser):
                 r'(T Y P E +\d+\s+\-+[\s\S]+?NR\. OF RADIAL FIT FUNCTIONS.+)',
                 repeats=True, sub_parser=TextParser(quantities=[
                     Quantity(
-                        'x_band_radial_points',
+                        'x_ams_radial_points',
                         r'RADIAL POINTS\s+(\d+)', dtype=np.int32
                     ),
                     Quantity('label', r'\*\*> +(\w+) +<\*\*', dtype=str),
                     Quantity(
-                        'x_band_nuclear_charge',
+                        'x_ams_nuclear_charge',
                         rf'NUCLEAR CHARGE\s+({re_float})', dtype=np.float64
                     ),
                     Quantity(
@@ -171,40 +170,40 @@ class OutParser(TextParser):
                         str_operation=lambda x: np.transpose([v.strip().split() for v in x.strip().splitlines()])
                     ),
                     Quantity(
-                        'x_band_energy_sum_eigenvalues',
+                        'x_ams_energy_sum_eigenvalues',
                         rf'Sum \(energy eigenvalues\)\s+({re_float})',
                         dtype=np.float64, unit=ureg.hartree
                     ),
                     Quantity(
-                        'x_band_energy_total_lda',
+                        'x_ams_energy_total_lda',
                         rf'Total energy LDA\s+({re_float})',
                         dtype=np.float64, unit=ureg.hartree
                     ),
                     Quantity(
-                        'x_band_energy_kinetic',
+                        'x_ams_energy_kinetic',
                         rf'Kinetic energy\s+({re_float})',
                         dtype=np.float64, unit=ureg.hartree
                     ),
                     Quantity(
-                        'x_band_energy_classical_electron_electron_repulsion',
+                        'x_ams_energy_classical_electron_electron_repulsion',
                         rf'Classical e\-e repulsion\s+({re_float})',
                         dtype=np.float64, unit=ureg.hartree
                     ),
                     Quantity(
-                        'x_band_energy_electron_nucleus_repulsion',
+                        'x_ams_energy_electron_nucleus_repulsion',
                         rf'Classical e\-e repulsion\s+({re_float})',
                         dtype=np.float64, unit=ureg.hartree
                     ),
                     Quantity(
-                        'x_band_n_radial_valence_orbitals',
+                        'x_ams_n_radial_valence_orbitals',
                         r'NR\. OF RADIAL VALENCE ORBITALS\s+(\d+)', dtype=np.int32
                     ),
                     Quantity(
-                        'x_band_n_radial_core_orbitals',
+                        'x_ams_n_radial_core_orbitals',
                         r'NR\. OF RADIAL CORE ORBITALS\s+(\d+)', dtype=np.int32
                     ),
                     Quantity(
-                        'x_band_n_radial_fit_functions',
+                        'x_ams_n_radial_fit_functions',
                         r'NR\. OF RADIAL FIT FUNCTIONS\s+(\d+)', dtype=np.int32
                     ),
                 ])
@@ -225,7 +224,7 @@ class OutParser(TextParser):
                 ])
             ),
             Quantity(
-                'x_band_run_config',
+                'x_ams_run_config',
                 r'R U N    C O N F I G\s+\=+\s+((?:\w.+\s+)+)',
                 str_operation=to_run_config
             ),
@@ -234,19 +233,19 @@ class OutParser(TextParser):
                 r'(?:K \- S P A C E   S A M P L I N G|K\-space integration)([\s\S]+?)\={5}',
                 sub_parser=TextParser(quantities=[
                     Quantity(
-                        'x_band_general_integration_parameter',
+                        'x_ams_general_integration_parameter',
                         r'General integration parameter\s+(\d+)', dtype=np.int32
                     ),
                     Quantity(
-                        'x_band_bz_volume_total',
+                        'x_ams_bz_volume_total',
                         rf'Total volume\s+({re_float})', dtype=np.float64
                     ),
                     Quantity(
-                        'x_band_bz_volume_irreducible',
+                        'x_ams_bz_volume_irreducible',
                         rf'Irreducible.+\s+({re_float})', dtype=np.float64
                     ),
                     Quantity(
-                        'x_band_bz_volume_numerical_integration',
+                        'x_ams_bz_volume_numerical_integration',
                         rf'Numerical integration\s+({re_float})', dtype=np.float64
                     ),
                     Quantity(
@@ -254,15 +253,15 @@ class OutParser(TextParser):
                         r'Total nr\. of K\-points\s+(\d+)'
                     ),
                     Quantity(
-                        'x_band_n_points_unique',
+                        'x_ams_n_points_unique',
                         r'Nr\. of symmetry unique points\s+(\d+)', dtype=np.int32
                     ),
                     Quantity(
-                        'x_band_n_simplices',
+                        'x_ams_n_simplices',
                         r'Nr\. of simplices\s+(\d+)', dtype=np.int32
                     ),
                     Quantity(
-                        'x_band_n_points_per_simplex',
+                        'x_ams_n_points_per_simplex',
                         r'Nr\. of points per simplex\s+(\d+)', dtype=np.int32
                     ),
                     Quantity(
@@ -278,139 +277,139 @@ class OutParser(TextParser):
                 r'S\. C\. F\.   O P T I O N S([\s\S]+?)\*\*',
                 sub_parser=TextParser(quantities=[
                     Quantity(
-                        'x_band_diis_settings_dirac',
+                        'x_ams_diis_settings_dirac',
                         r'DIIS settings info for DIRAC +\*\s+((?:[\w ]+?  \w\S*\s+)+)',
                         str_operation=to_parameters
                     ),
                     Quantity(
-                        'x_band_diis_settings_scf',
+                        'x_ams_diis_settings_scf',
                         r'DIIS settings info for SCF +\*\s+((?:[\w ]+?  \w\S*\s+)+)',
                         str_operation=to_parameters
                     ),
                     Quantity(
-                        'x_band_growth_factor',
+                        'x_ams_growth_factor',
                         rf'growth factor\s*({re_float})', dtype=np.float64
                     ),
                     Quantity(
-                        'x_band_shrink_factor',
+                        'x_ams_shrink_factor',
                         rf'shrink factor\s*({re_float})', dtype=np.float64
                     ),
                     Quantity(
-                        'x_band_mix',
+                        'x_ams_mix',
                         rf'Mix\s*({re_float})', dtype=np.float64
                     ),
                     Quantity(
-                        'x_band_degenerate',
+                        'x_ams_degenerate',
                         r'Degenerate\s*(.)', str_operation=lambda x: x == 'T'
                     ),
                     Quantity(
-                        'x_band_edegen',
+                        'x_ams_edegen',
                         rf'Edegen\s*({re_float})', dtype=np.float64
                     ),
                     Quantity(
-                        'x_band_scfrtx',
+                        'x_ams_scfrtx',
                         rf'SCFRTX\s*({re_float})', dtype=np.float64
                     ),
                     Quantity(
-                        'x_band_convrg',
+                        'x_ams_convrg',
                         rf'Convrg\s*({re_float})', dtype=np.float64
                     ),
                     Quantity(
-                        'x_band_ncyclx',
+                        'x_ams_ncyclx',
                         r'Ncyclx\s*(\d+)', dtype=np.int32
                     ),
                     Quantity(
-                        'x_band_vsplit',
+                        'x_ams_vsplit',
                         rf'Vsplit\s*({re_float})', dtype=np.float64
                     ),
 
                 ])
             ),
             Quantity(
-                'x_band_dftb_resources_dir',
+                'x_ams_dftb_resources_dir',
                 r'DFTB Resources dir\s*(.+)', dtype=str, flatten=False
             ),
             Quantity(
-                'x_band_scc_convergence_enabled',
+                'x_ams_scc_convergence_enabled',
                 r'SCC convergence (\w+)', str_operation=lambda x: x == 'enabled'
             ),
             Quantity(
-                'x_band_max_scc_cycles',
+                'x_ams_max_scc_cycles',
                 r'Maximum SCC cycles \ſ*(\d+)', dtype=np.int32
             ),
             Quantity(
-                'x_band_scc_charge_convergence',
+                'x_ams_scc_charge_convergence',
                 rf'SCC charge convergence\s*({re_float})', dtype=np.float64
             ),
             Quantity(
-                'x_band_scc_charge_mixing',
+                'x_ams_scc_charge_mixing',
                 rf'SCC charge mixing\s*({re_float})', dtype=np.float64
             ),
             Quantity(
-                'x_band_diis_max_dimension',
+                'x_ams_diis_max_dimension',
                 r'DIIS max dimension\s*(\d+)', dtype=np.int32
             ),
             Quantity(
-                'x_band_diis_max_coeff',
+                'x_ams_diis_max_coeff',
                 rf'DIIS maximum coeff\.\s*({re_float})', dtype=np.float64
             ),
             Quantity(
-                'x_band_adaptive_scc_charge_mixing',
+                'x_ams_adaptive_scc_charge_mixing',
                 r'Adaptive SCC charge mixing\s*(.)', str_operation=lambda x: x == 'T'
             ),
             Quantity(
-                'x_band_adaptive_scc_mixing_strategy',
+                'x_ams_adaptive_scc_mixing_strategy',
                 r'Adaptive SCC mixing strategy\s*(\d+)', dtype=np.int32
             ),
             Quantity(
-                'x_band_spin_polarization',
+                'x_ams_spin_polarization',
                 r'Spin polarization\s*(.)', str_operation=lambda x: x == 'T'
             ),
             Quantity(
-                'x_band_orbital_dependent_scc',
+                'x_ams_orbital_dependent_scc',
                 r'Orbital\-dependent SCC\s*(.)', str_operation=lambda x: x == 'T'
             ),
             Quantity(
-                'x_band_orbital_fill_strategy',
+                'x_ams_orbital_fill_strategy',
                 r'Orbital fill strategy\s*(.+)', dtype=str, flatten=False
             ),
             Quantity(
-                'x_band_fermi_temperature',
+                'x_ams_fermi_temperature',
                 rf'Fermi temperature \(kelvin\)\s*({re_float})',
                 dtype=np.float64, unit=ureg.kelvin
             ),
             Quantity(
-                'x_band_use_symmetry',
+                'x_ams_use_symmetry',
                 r'Use of symmetry\s*(.)', str_operation=lambda x: x == 'T'
             ),
             Quantity(
-                'x_band_radial_function_extrapolation_method',
+                'x_ams_radial_function_extrapolation_method',
                 r'Radial function extrapolation method\s*(.+)', dtype=str, flatten=False
             ),
             Quantity(
-                'x_band_grimme_d3_dispersion_correction',
+                'x_ams_grimme_d3_dispersion_correction',
                 r'Settings for Grimme .+ dispersion correction\s+'
                 r'((?:\w+ +\S+\s+)+)', str_operation=to_parameters
             ),
             Quantity(
-                'x_band_other_parameters',
+                'x_ams_other_parameters',
                 r'Other \(technical\) parameters\s+'
                 r'((?:\w+ +\S+\s+)+)', str_operation=to_parameters
             ),
             Quantity(
-                'x_band_assume_insulator',
+                'x_ams_assume_insulator',
                 r'Assume insulator\s*(.)', str_operation=lambda x: x == 'T'
             ),
             Quantity(
-                'x_band_ewald_tolerance',
+                'x_ams_ewald_tolerance',
                 rf'Ewald tolerance\s*({re_float})', dtype=np.float64
             ),
             Quantity(
-                'x_band_ewald_range_factor',
+                'x_ams_ewald_range_factor',
                 rf'Ewald range factor\s*({re_float})', dtype=np.float64
             ),
             Quantity(
-                'x_band_bzstruct_config',
+                'x_ams_bzstruct_config',
                 r'BZStruct config\s*\-+\s*((?:\w+ ))', str_operation=to_parameters
             )
         ]
@@ -441,19 +440,19 @@ class OutParser(TextParser):
                         'electrostatic',
                         rf'Electrostatic\s*({re_float})', dtype=float, unit=ureg.hartree),
                     Quantity(
-                        'x_band_v_atomic_def',
+                        'x_ams_v_atomic_def',
                         rf'V\(atomic\)\*def\s*({re_float})', dtype=float, unit=ureg.hartree),
                     Quantity(
-                        'x_band_v_def_def',
+                        'x_ams_v_def_def',
                         rf'V\(def\)\*def\s*({re_float})', dtype=float, unit=ureg.hartree),
                     Quantity(
-                        'x_band_dispersion',
+                        'x_ams_dispersion',
                         rf'Dispersion\s*({re_float})', dtype=float, unit=ureg.hartree),
                     Quantity(
                         'total',
                         rf'Final bond energy \(.+\)\s*({re_float})', dtype=float, unit=ureg.hartree),
                     Quantity(
-                        'x_band_fit_error_correction',
+                        'x_ams_fit_error_correction',
                         rf'Fit error correction.+?\s*({re_float})', dtype=float, unit=ureg.hartree)
                 ])
             ),
@@ -478,7 +477,7 @@ class OutParser(TextParser):
                         rf'Repulsion Energy \(hartree\)\s*({re_float})', dtype=float, unit=ureg.hartree
                     ),
                     Quantity(
-                        'x_band_dispersion',
+                        'x_ams_dispersion',
                         rf'Dispersion Energy \(hartree\)\s*({re_float})', dtype=float, unit=ureg.hartree
                     ),
                 ])
@@ -613,7 +612,7 @@ class OutParser(TextParser):
                 'atom_charge_analysis',
                 r'(Atomic Charge Analysis.*\s*\=+[\s\S]+?)\={10}',
                 repeats=True, sub_parser=TextParser(quantities=[
-                    Quantity('spin', '(Spin Up \- Spin Down)', str_operation=lambda x: True),
+                    Quantity('spin', r'(Spin Up \- Spin Down)', str_operation=lambda x: True),
                     Quantity('methods', r'Atom +([\w ]+)',),
                     Quantity(
                         'atom_charges',
@@ -640,23 +639,23 @@ class OutParser(TextParser):
                 rf'Band gap information\s+\-([\s\S]+?){re_n} *{re_n}',
                 sub_parser=TextParser(quantities=[
                     Quantity(
-                        'x_band_n_valence_electrons',
+                        'x_ams_n_valence_electrons',
                         r'Number of valence electrons\s+(\d+)', dtype=np.int32
                     ),
                     Quantity(
-                        'x_band_valence_band_index',
+                        'x_ams_valence_band_index',
                         r'Valence band index\s+(\d+)', dtype=np.int32
                     ),
                     Quantity(
-                        'x_band_valence_band_spin_index',
+                        'x_ams_valence_band_spin_index',
                         r'Valence band spin index\s+(\d+)', dtype=np.int32
                     ),
                     Quantity(
-                        'x_band_conduction_band_index',
+                        'x_ams_conduction_band_index',
                         r'Conduction band index\s+(\d+)', dtype=np.int32
                     ),
                     Quantity(
-                        'x_band_conduction_band_spin_index',
+                        'x_ams_conduction_band_spin_index',
                         r'Conduction band spin index\s+(\d+)', dtype=np.int32
                     ),
                     Quantity(
@@ -697,18 +696,18 @@ class OutParser(TextParser):
                         'method',
                         r'Optimization Method\s*(.+)', flatten=False),
                     Quantity(
-                        'x_band_optimization_coordinates',
+                        'x_ams_optimization_coordinates',
                         r'Optimization Coordinates +(.+)',
                         type=str, flatten=False),
                     Quantity(
-                        'x_band_optimize_lattice',
+                        'x_ams_optimize_lattice',
                         r'Optimize lattice +(.)', str_operation=lambda x: x == 'T'),
                     Quantity(
                         'convergence_tolerance_force_maximum',
                         rf'Maximum gradient\s*({re_float})',
                         dtype=float, unit=ureg.hartree / ureg.bohr),
                     Quantity(
-                        'x_band_maximum_rms_gradient',
+                        'x_ams_maximum_rms_gradient',
                         rf'Maximum rms gradient\s*({re_float})',
                         dtype=np.float64
                     ),
@@ -721,51 +720,51 @@ class OutParser(TextParser):
                         rf'Maximum step allowed\s*({re_float})',
                         dtype=float, unit=ureg.bohr),
                     Quantity(
-                        'x_band_maximum_rms_step_allowed',
+                        'x_ams_maximum_rms_step_allowed',
                         rf'Maximum rms step allowed\s*({re_float})',
                         dtype=np.float64
                     ),
                     Quantity(
-                        'x_band_maximum_stress_energy_allowed',
+                        'x_ams_maximum_stress_energy_allowed',
                         rf'Maximum stress energy allowe\s*({re_float})',
                         dtype=str
                     ),
                     Quantity(
-                        'x_band_initial_model_hessian',
+                        'x_ams_initial_model_hessian',
                         r'Initial model Hessian\s*(.+)', dtype=str, flatten=False),
                     Quantity(
-                        'x_band_hessian_update_method',
+                        'x_ams_hessian_update_method',
                         r'Hessian Update Method\s*(.+)', dtype=str, flatten=False),
                     Quantity(
                         'optimization_steps_maximum',
-                        r'Maximum number of steps\s*(\d+)', dtype=np.int32
+                        r'Maximum number of steps\s*(\d+)'
                     ),
                     Quantity(
-                        'x_band_first_gdiis_cycle',
+                        'x_ams_first_gdiis_cycle',
                         r'First GDIIS cycle\s*(\d+)', dtype=np.int32
                     ),
                     Quantity(
-                        'x_band_maximum_gdiis_vectors',
+                        'x_ams_maximum_gdiis_vectors',
                         r'Maximum GDIIS vectors\s*(\d+)', dtype=np.int32
                     ),
                     Quantity(
-                        'x_band_trust_radius',
+                        'x_ams_trust_radius',
                         rf'Trust radius \(bohr\)\s*({re_float})', dtype=np.int32, unit=ureg.bohr
                     ),
                     Quantity(
-                        'x_band_trust_radius_varies',
+                        'x_ams_trust_radius_varies',
                         r'Trust radius varies\s*(.)', str_operation=lambda x: x == 'T'
                     ),
                     Quantity(
-                        'x_band_constraints_converged_at_all_steps',
+                        'x_ams_constraints_converged_at_all_steps',
                         r'Constraints converged at all steps\s*(.)', str_operation=lambda x: x == 'T'
                     ),
                     Quantity(
-                        'x_band_use_projector',
+                        'x_ams_use_projector',
                         r'Use projector\s*(.)', str_operation=lambda x: x == 'T'
                     ),
                     Quantity(
-                        'x_band_symmetrize_steps',
+                        'x_ams_symmetrize_steps',
                         r'Symmetrize steps\s*(.)', str_operation=lambda x: x == 'T'),
                 ])
             ),
@@ -780,7 +779,7 @@ class OutParser(TextParser):
         ]
 
 
-class BandParser:
+class AMSParser:
     def __init__(self):
         self.out_parser = OutParser()
         self._relativity_map = {
@@ -816,7 +815,7 @@ class BandParser:
             # forces
             sec_forces = sec_scc.m_create(Forces)
             for key, val in source.get('forces', dict()).items():
-                key = key if key == 'total' else f'x_band_{key}'
+                key = key if key == 'total' else f'x_ams_{key}'
                 setattr(sec_forces, key, ForcesEntry(value=val))
 
             # self consistency
@@ -888,9 +887,9 @@ class BandParser:
             band_energies = source.get('band_energy_ranges')
             if band_energies is not None:
                 sec_band_energies = sec_scc.m_create(BandEnergies)
-                sec_band_energies.x_band_energy_min = band_energies[0] * ureg.hartree
-                sec_band_energies.x_band_energy_max = band_energies[1] * ureg.hartree
-                sec_band_energies.x_band_occupations = band_energies[2]
+                sec_band_energies.x_ams_energy_min = band_energies[0] * ureg.hartree
+                sec_band_energies.x_ams_energy_max = band_energies[1] * ureg.hartree
+                sec_band_energies.x_ams_occupations = band_energies[2]
 
                 # band gap
                 band_gap_info = source.get('band_gap_info')
@@ -936,8 +935,8 @@ class BandParser:
                     if key == 'orbital_parameters':
                         sec_atom_param.orbitals = [str(v) for v in val[0]]
                         sec_atom_param.charges = val[1]
-                        sec_atom_param.x_band_orbital_energies = np.array(val[2], np.float64) * ureg.hartree
-                        sec_atom_param.x_band_orbital_radii = np.array(val[4])
+                        sec_atom_param.x_ams_orbital_energies = np.array(val[2], np.float64) * ureg.hartree
+                        sec_atom_param.x_ams_orbital_radii = np.array(val[4])
                     else:
                         setattr(sec_atom_param, key, val)
 
@@ -946,7 +945,7 @@ class BandParser:
                 for sec_atom_param in sec_method.atom_parameters:
                     if sec_atom_param.label == atom_type[0]:
                         for n, key in enumerate(['valence', 'core', 'valence_kinetic', 'core_kinetic']):
-                            setattr(sec_atom_param, f'x_band_cutoff_{key}', atom_type[n + 1])
+                            setattr(sec_atom_param, f'x_ams_cutoff_{key}', atom_type[n + 1])
                         break
 
             sec_dft = sec_method.m_create(DFT)
@@ -970,7 +969,7 @@ class BandParser:
 
             sec_electronic = sec_method.m_create(Electronic)
             model_parameters = source.get('model_parameters', {})
-            spin = source.get('x_band_spin_polarization', model_parameters.get('spin'))
+            spin = source.get('x_ams_spin_polarization', model_parameters.get('spin'))
             sec_electronic.n_spin_channels = 2 if spin else 1
             sec_electronic.relativity_method = self._relativity_map.get(model_parameters.get('relativistic_corrections'))
             for key, val in model_parameters.items():
@@ -1029,7 +1028,7 @@ class BandParser:
         self.init_parser()
 
         sec_run = self.archive.m_create(Run)
-        sec_run.program = Program(name='BAND', version=self.out_parser.get('program_version', ''))
+        sec_run.program = Program(name='AMS', version=self.out_parser.get('program_version', ''))
 
         if self.out_parser.get('time_start') is not None:
             dt = datetime.strptime(self.out_parser.time_start, '%b%d-%Y %H:%M:%S') - datetime(1970, 1, 1)

@@ -18,7 +18,7 @@
 #
 from .abinit.parser import AbinitParser
 from .atk.parser import ATKParser
-from .band.parser import BandParser
+from .ams.parser import AMSParser
 from .bigdft.parser import BigDFTParser
 from .castep.parser import CastepParser
 from .charmm.parser import CharmmParser
