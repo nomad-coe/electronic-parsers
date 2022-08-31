@@ -36,7 +36,7 @@ def parser():
 @pytest.fixture(scope='module')
 def silicon_gw(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/exciting/Si_gw/INFO.OUT', archive, None)
+    parser.parse('tests/data/exciting/Si_gw/GW_INFO.OUT', archive, None)
     return archive
 
 
@@ -173,26 +173,26 @@ def test_xs_bse(parser):
 def test_gw(silicon_gw):
     """Basic tests for a GW calculation."""
     sec_methods = silicon_gw.run[0].method
-    assert len(sec_methods) == 2
-    assert sec_methods[1].gw.mixed_basis_gmax.magnitude == approx(226767134954.67346)
-    assert sec_methods[1].gw.self_energy_singularity_treatment == 'mpb'
-    assert sec_methods[1].gw.number_of_frequencies == 32
-    assert sec_methods[1].gw.frequency_values[-1].magnitude == approx(8.22665908e-16)
+    assert len(sec_methods) == 1
+    assert sec_methods[0].gw.mixed_basis_gmax.magnitude == approx(226767134954.67346)
+    assert sec_methods[0].gw.self_energy_singularity_treatment == 'mpb'
+    assert sec_methods[0].gw.number_of_frequencies == 32
+    assert sec_methods[0].gw.frequency_values[-1].magnitude == approx(8.22665908e-16)
 
     sec_sccs = silicon_gw.run[0].calculation
-    assert len(sec_sccs) == 2
+    assert len(sec_sccs) == 1
 
     # Check GW properties
-    assert approx(sec_sccs[1].energy.fermi.magnitude, 1.09865567e-19)
-    assert approx(sec_sccs[1].eigenvalues[0].band_gap[0].value_fundamental.magnitude, 3.42913865e-19)
-    assert approx(sec_sccs[1].eigenvalues[0].band_gap[0].value_optical.magnitude, 6.45981597e-19)
-    assert np.shape(sec_sccs[1].eigenvalues[0].energies[0][2]) == (20,)
-    assert sec_sccs[1].eigenvalues[0].kpoints[-3][1] == 0.0
-    assert sec_sccs[1].eigenvalues[0].energies[0][2][9].magnitude == approx(1.769533187849446e-18, abs=1e-20)
-    assert sec_sccs[1].eigenvalues[0].qp_linearization_prefactor[0][2][9] == approx(0.79935)
-    assert sec_sccs[1].eigenvalues[0].value_exchange[0][2][0].magnitude == approx(-2.855981572623473e-18, abs=1e-20)
-    assert sec_sccs[1].eigenvalues[0].value_correlation[0][2][14].magnitude == approx(-1.0879742954267992e-18, abs=1e-20)
-    assert sec_sccs[1].eigenvalues[0].value_xc_potential[0][2][6].magnitude == approx(-2.1691473890869554e-18, abs=1e-20)
+    assert approx(sec_sccs[0].energy.fermi.magnitude, 1.09865567e-19)
+    assert approx(sec_sccs[0].eigenvalues[0].band_gap[0].value_fundamental.magnitude, 3.42913865e-19)
+    assert approx(sec_sccs[0].eigenvalues[0].band_gap[0].value_optical.magnitude, 6.45981597e-19)
+    assert np.shape(sec_sccs[0].eigenvalues[0].energies[0][2]) == (20,)
+    assert sec_sccs[0].eigenvalues[0].kpoints[-3][1] == 0.0
+    assert sec_sccs[0].eigenvalues[0].energies[0][2][9].magnitude == approx(1.769533187849446e-18, abs=1e-20)
+    assert sec_sccs[0].eigenvalues[0].qp_linearization_prefactor[0][2][9] == approx(0.79935)
+    assert sec_sccs[0].eigenvalues[0].value_exchange[0][2][0].magnitude == approx(-2.855981572623473e-18, abs=1e-20)
+    assert sec_sccs[0].eigenvalues[0].value_correlation[0][2][14].magnitude == approx(-1.0879742954267992e-18, abs=1e-20)
+    assert sec_sccs[0].eigenvalues[0].value_xc_potential[0][2][6].magnitude == approx(-2.1691473890869554e-18, abs=1e-20)
 
 
 def test_band_gw_silicon(silicon_gw):
@@ -200,8 +200,8 @@ def test_band_gw_silicon(silicon_gw):
     calculation.
     """
     sccs = silicon_gw.run[-1].calculation
-    assert len(sccs) == 2
-    gaps = [0.446307, 1.2553776]
+    assert len(sccs) == 1
+    gaps = [1.2553776]
     for gap_assumed, scc in zip(gaps, sccs):
         band = scc.band_structure_electronic[0]
         segments = band.segment
@@ -229,8 +229,8 @@ def test_dos_gw_silicon(silicon_gw):
     """Tests that the DOS of silicon is parsed correctly from a GW calculation.
     """
     sccs = silicon_gw.run[-1].calculation
-    assert len(sccs) == 2
-    gaps = [0.5442277, 1.360569]
+    assert len(sccs) == 1
+    gaps = [1.360569]
     for gap_assumed, scc in zip(gaps, sccs):
         dos = scc.dos_electronic[0]
         energies = dos.energies.to(ureg.electron_volt).magnitude

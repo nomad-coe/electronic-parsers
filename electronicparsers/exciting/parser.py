@@ -21,6 +21,7 @@ import os
 import re
 import logging
 
+import nomad.config
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program
@@ -1791,21 +1792,19 @@ class ExcitingParser:
     def parse_gw(self):
         sec_run = self.archive.run[-1]
 
-        # two versions of gw info files
-        gw_info_files = ['GW_INFO.OUT', 'GWINFO.OUT']
-        for f in gw_info_files:
-            if self.get_exciting_files(f):
-                self._calculation_type = 'gw'
-                gw_info_file = f
-                break
-
         if not self._calculation_type == 'gw':
             return
 
         sec_method = sec_run.m_create(Method)
-        sec_method_ref = self.archive.run[-1].method[0]
-        sec_method.starting_method_ref = sec_method_ref
-        sec_method.methods_ref = [sec_method_ref]
+
+        # get reference to reference dft calculation
+        dft_archive = None
+        if self.archive.m_context is not None:
+            try:
+                dft_archive = self.archive.m_context.resolve_archive(f'../upload/archive/mainfile/INFO.OUT')
+                self._workflows_ref.append(dft_archive.workflow[0].m_copy())
+            except Exception as e:
+                self.logger.error('Could not resolve reference DFT calculation.', exc_info=e)
 
         # parse input xml file, there seems to be two versions, input_gw.xml and input-gw.xml
         for f in ['input_gw.xml', 'input-gw.xml', 'input.xml']:
@@ -1816,18 +1815,14 @@ class ExcitingParser:
 
         sec_scc = sec_run.m_create(Calculation)
         sec_scc.method_ref = sec_method
-        if sec_run.system:
-            sec_scc.system_ref = sec_run.system[-1]
-        sec_scc_ref = sec_run.calculation[0]
-        sec_scc.starting_calculation_ref = sec_scc_ref
-        sec_scc.calculations_ref = [sec_scc_ref]
+        if dft_archive:
+            # trying to resolve system from archive does not seem to work
+            sec_scc.system_ref = self.parse_system(self.info_parser.get('groundstate'))
+            # sec_run.system.append(archive.run[0].system[0].m_copy())
+            # sec_scc.system_ref = sec_run.system[-1]
 
         # parse properties
-        gw_info_files = self.get_exciting_files(gw_info_file)
-        if len(gw_info_files) > 1:
-            self.logger.warn('Found multiple GW info files, will read only first!')
-
-        self.info_gw_parser.mainfile = gw_info_files[0]
+        self.info_gw_parser.mainfile = self._gw_info_file
 
         fermi_energy = self.info_gw_parser.get('fermi_energy', None)
         if fermi_energy is not None:
@@ -1864,18 +1859,20 @@ class ExcitingParser:
         if optical_band_gap is not None:
             sec_gap.value_optical = optical_band_gap
 
-    def parse_miscellaneous(self):
-        sec_worfklow = self.archive.m_create(Workflow)
+    def parse_workflow(self):
+        sec_workflow = self.archive.m_create(Workflow)
 
-        sec_worfklow.type = 'single_point'
+        sec_workflow.type = 'single_point'
 
         structure_optimization = self.info_parser.get('structure_optimization')
         if structure_optimization is not None:
-            sec_worfklow.type = 'geometry_optimization'
-            sec_geometry_opt = sec_worfklow.m_create(GeometryOptimization)
+            sec_workflow.type = 'geometry_optimization'
+            sec_geometry_opt = sec_workflow.m_create(GeometryOptimization)
             threshold_force = structure_optimization.get(
                 'optimization_step', [{}])[0].get('force_convergence', [0., 0.])[-1]
             sec_geometry_opt.input_force_maximum_tolerance = threshold_force
+
+        # sec_workflow.workflows_ref = self._workflows_ref
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
@@ -2259,6 +2256,7 @@ class ExcitingParser:
         self.input_xml_parser.logger = self.logger
         self.data_xs_parser.logger = self.logger
         self.data_clathrate_parser.logger = self.logger
+        self._workflows_ref = []
 
     def reuse_parser(self, parser):
         self.info_parser.quantities = parser.info_parser.quantities
@@ -2268,11 +2266,19 @@ class ExcitingParser:
         self.info_gw_parser.quantities = parser.info_gw_parser.quantities
 
     def parse(self, filepath, archive, logger):
+        # GW will be dealt as a separate entry
+        self._calculation_type = None
+        if os.path.basename(filepath).startswith('GW'):
+            self._calculation_type = 'gw'
+            # read method params from INFO.OUT
+            self._gw_info_file = filepath
+            filepath = os.path.join(os.path.dirname(filepath), 'INFO.OUT')
+            if not os.path.isfile(filepath):
+                return
+
         self.filepath = filepath
         self.archive = archive
         self.logger = logger if logger is not None else logging
-
-        self._calculation_type = None
 
         self.init_parser()
 
@@ -2282,12 +2288,12 @@ class ExcitingParser:
             name='exciting', version=self.info_parser.get('program_version', '').strip())
 
         # method goes first since reference needed for sec_scc
-        self.parse_method()
+        if self._calculation_type == 'gw':
+            self.parse_gw()
 
-        self.parse_configurations()
+        else:
+            self.parse_method()
+            self.parse_configurations()
+            self.parse_xs()
 
-        self.parse_gw()
-
-        self.parse_xs()
-
-        self.parse_miscellaneous()
+        self.parse_workflow()
