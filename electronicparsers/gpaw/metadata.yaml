@@ -1,7 +1,7 @@
 codeLabel: GPAW
 codeLabelStyle: All in capitals
 codeName: gpaw
-codeCategory: Electronic structure
+codeCategory: Atomistic
 codeUrl: https://wiki.fysik.dtu.dk/gpaw/
 parserDirName: dependencies/electronic/electronicparsers/gpaw/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

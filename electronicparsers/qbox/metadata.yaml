@@ -1,7 +1,7 @@
 codeLabel: Qbox
 codeLabelStyle: 'Capitals: Q'
 codeName: qbox
-codeCategory: Electronic structure
+codeCategory: Atomistic
 codeUrl: http://qboxcode.org/
 parserDirName: dependencies/electronic/electronicparsers/qbox/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

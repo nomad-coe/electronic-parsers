@@ -1,7 +1,7 @@
 codeLabel: Psi4
 codeLabelStyle: 'Capitals: P'
 codeName: psi4
-codeCategory: Electronic structure
+codeCategory: Atomistic
 codeUrl: https://psicode.org/
 parserDirName: dependencies/electronic/electronicparsers/psi4/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

@@ -1,7 +1,7 @@
 codeLabel: CHARMM
 codeLabelStyle: all in capitals
 codeName: charmm
-codeCategory: Electronic structure
+codeCategory: Atomistic
 codeUrl: https://www.charmm.org
 parserDirName: dependencies/electronic/electronicparsers/charmm/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

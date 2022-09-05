@@ -1,7 +1,7 @@
 codeLabel: ABACUS
 codeLabelStyle: 'All in capitals'
 codeName: abacus
-codeCategory: Electronic structure
+codeCategory: Atomistic
 codeUrl: http://abacus.ustc.edu.cn/
 parserDirName: dependencies/parsers/abacus/
 parserGitUrl: https://github.com/nomad-coe/nomad-parser-abacus.git
