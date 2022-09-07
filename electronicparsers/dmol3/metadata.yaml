@@ -1,6 +1,6 @@
 codeLabel: 'DMol3'
 codeLabelStyle: 'Capitals: D, M'
-codeName: dmol3
+codeName: dmol
 codeCategory: Atomistic code
 status: production
 codeUrl: http://dmol3.web.psi.ch/
