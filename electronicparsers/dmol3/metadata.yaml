@@ -1,7 +1,7 @@
 codeLabel: 'DMol3'
 codeLabelStyle: 'Capitals: D, M'
 codeName: dmol3
-codeCategory: Atomistic
+codeCategory: Atomistic code
 codeUrl: http://dmol3.web.psi.ch/
 parserDirName: dependencies/electronic/electronicparsers/dmol3/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

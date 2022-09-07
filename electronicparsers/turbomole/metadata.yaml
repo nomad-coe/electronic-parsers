@@ -1,7 +1,7 @@
 codeLabel: TURBOMOLE
 codeLabelStyle: All in capitals
 codeName: turbomole
-codeCategory: Atomistic
+codeCategory: Atomistic code
 codeUrl: https://www.turbomole.org/
 parserDirName: dependencies/electronic/electronicparsers/turbomole/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

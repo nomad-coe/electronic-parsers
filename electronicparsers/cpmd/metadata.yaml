@@ -1,7 +1,7 @@
 codeLabel: CPMD
 codeLabelStyle: all in capitals
 codeName: cpmd
-codeCategory: Atomistic
+codeCategory: Atomistic code
 codeUrl: https://www.cpmd.org/
 parserDirName: dependencies/electronic/electronicparsers/cpmd/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

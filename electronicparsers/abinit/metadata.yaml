@@ -1,7 +1,7 @@
 codeLabel: ABINIT
 codeLabelStyle: all in capitals
 codeName: abinit
-codeCategory: Atomistic
+codeCategory: Atomistic code
 codeUrl: https://www.abinit.org/
 parserDirName: dependencies/electronic/electronicparsers/abinit/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

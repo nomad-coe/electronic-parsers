@@ -1,7 +1,7 @@
 codeLabel: exciting
 codeLabelStyle: All in LOWER case
 codeName: exciting
-codeCategory: Atomistic
+codeCategory: Atomistic code
 codeUrl: http://exciting-code.org/
 parserDirName: dependencies/electronic/electronicparsers/exciting/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

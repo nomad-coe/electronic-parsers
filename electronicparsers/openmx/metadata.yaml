@@ -1,7 +1,7 @@
 codeLabel: OpenMX
 codeLabelStyle: First and last two characters in capitals
 codeName: openmx
-codeCategory: Atomistic
+codeCategory: Atomistic code
 codeUrl: http://www.openmx-square.org/
 parserDirName: dependencies/electronic/electronicparsers/openmx/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

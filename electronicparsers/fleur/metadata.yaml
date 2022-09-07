@@ -1,7 +1,7 @@
 codeLabel: FLEUR
 codeLabelStyle: 'Found: 1) only F in capitals, 2) all in capitals.'
 codeName: fleur
-codeCategory: Atomistic
+codeCategory: Atomistic code
 codeUrl: https://www.flapw.de/
 parserDirName: dependencies/electronic/electronicparsers/fleur/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
