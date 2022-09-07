@@ -2,6 +2,7 @@ codeLabel: GAMESS
 codeLabelStyle: All in capitals
 codeName: gamess
 codeCategory: Atomistic code
+status: production
 codeUrl: https://www.msg.chem.iastate.edu/
 parserDirName: dependencies/electronic/electronicparsers/gamess/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

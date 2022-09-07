@@ -2,6 +2,7 @@ codeLabel: CRYSTAL
 codeLabelStyle: all in capitals
 codeName: crystal
 codeCategory: Atomistic code
+status: production
 codeUrl: https://www.crystal.unito.it/
 parserDirName: dependencies/electronic/electronicparsers/crystal/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

@@ -2,6 +2,7 @@ codeLabel: Qbox
 codeLabelStyle: 'Capitals: Q'
 codeName: qbox
 codeCategory: Atomistic code
+status: production
 codeUrl: http://qboxcode.org/
 parserDirName: dependencies/electronic/electronicparsers/qbox/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

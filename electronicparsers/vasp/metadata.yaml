@@ -2,6 +2,7 @@ codeLabel: VASP
 codeLabelStyle: All in capitals
 codeName: vasp
 codeCategory: Atomistic code
+status: production
 codeUrl: https://www.vasp.at/
 parserDirName: dependencies/electronic/electronicparsers/vasp/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

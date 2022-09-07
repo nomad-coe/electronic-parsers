@@ -2,6 +2,7 @@ codeLabel: ONETEP
 codeLabelStyle: All in capitals
 codeName: onetep
 codeCategory: Atomistic code
+status: production
 codeUrl: https://www.onetep.org/
 parserDirName: dependencies/electronic/electronicparsers/onetep/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

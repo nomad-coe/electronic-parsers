@@ -2,6 +2,7 @@ codeLabel: AMS
 codeLabelStyle: all in capitals
 codeName: ams
 codeCategory: Atomistic code
+status: production
 codeUrl: https://www.scm.com
 parserDirName: dependencies/electronic/electronicparsers/ams/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
