@@ -1,7 +1,8 @@
 codeLabel: ORCA
 codeLabelStyle: All in capitals
 codeName: orca
-codeCategory: Electronic structure
+codeCategory: Atomistic code
+status: production
 codeUrl: https://www.faccts.de/orca/
 parserDirName: dependencies/electronic/electronicparsers/orca/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

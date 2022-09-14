@@ -1,7 +1,8 @@
 codeLabel: Qball
 codeLabelStyle: 'Capitals: Q'
 codeName: qball
-codeCategory: Electronic structure
+codeCategory: Atomistic code
+status: production
 codeUrl: https://github.com/LLNL/qball
 parserDirName: dependencies/electronic/electronicparsers/qball/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

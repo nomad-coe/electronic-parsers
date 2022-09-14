@@ -1,7 +1,8 @@
 codeLabel: QuantumESPRESSO
 codeLabelStyle: Capitals Q, E, S, P, R, E, S, S, O
-codeName: quantum-espresso
-codeCategory: Electronic structure
+codeName: quantumespresso
+codeCategory: Atomistic code
+status: production
 codeUrl: http://www.quantum-espresso.org/
 parserDirName: dependencies/electronic/electronicparsers/quantum-espresso/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

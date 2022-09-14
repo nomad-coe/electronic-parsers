@@ -1,7 +1,8 @@
 codeLabel: CP2K
 codeLabelStyle: all in capitals
 codeName: cp2k
-codeCategory: Electronic structure
+codeCategory: Atomistic code
+status: production
 codeUrl: https://www.cp2k.org/
 parserDirName: dependencies/electronic/electronicparsers/cp2k/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

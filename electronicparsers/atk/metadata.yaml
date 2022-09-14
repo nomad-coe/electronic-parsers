@@ -1,7 +1,8 @@
 codeLabel: QuantumATK
 codeLabelStyle: 'capitals: Q, A, T, K'
 codeName: atk
-codeCategory: Electronic structure
+codeCategory: Atomistic code
+status: production
 codeUrl: https://www.synopsys.com/silicon/quantumatk.html
 parserDirName: dependencies/electronic/electronicparsers/atk/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
