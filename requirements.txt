@@ -6,6 +6,6 @@ pytest==3.10.0
 pytest-timeout
 pytest-cov==2.7.1
 lxml
-pyscf
+pyscf==2.0.1; sys_platform == 'darwin'
 matid
 netCDF4
