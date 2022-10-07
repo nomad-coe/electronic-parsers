@@ -32,6 +32,7 @@ This is a collection of the NOMAD parsers for the following electronic structure
 31. [YAMBO](https://www.yambo-code.org/)
 32. [OpenMX](http://www.openmx-square.org/)
 33. [ABACUS](http://abacus.ustc.edu.cn/)
+34. [Wannier90](http://www.wannier.org/)
 
 Each of the parsers will read the relevant input and output files and provide all information in
 NOMAD's unified Metainfo based Archive format.
