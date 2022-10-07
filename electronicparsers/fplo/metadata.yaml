@@ -1,7 +1,8 @@
 codeLabel: FPLO
 codeLabelStyle: All in capitals
 codeName: fplo
-codeCategory: Electronic structure
+codeCategory: Atomistic code
+status: production
 codeUrl: https://www.fplo.de/
 parserDirName: dependencies/electronic/electronicparsers/fplo/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

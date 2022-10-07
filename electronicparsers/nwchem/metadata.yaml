@@ -1,7 +1,8 @@
 codeLabel: NWChem
 codeLabelStyle: 'Capitals: N, W, C'
 codeName: nwchem
-codeCategory: Electronic structure
+codeCategory: Atomistic code
+status: production
 codeUrl: https://nwchemgit.github.io/
 parserDirName: dependencies/electronic/electronicparsers/nwchem/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

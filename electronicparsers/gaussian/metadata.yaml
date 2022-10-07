@@ -1,7 +1,8 @@
 codeLabel: Gaussian
 codeLabelStyle: 'Capitals: G'
 codeName: gaussian
-codeCategory: Electronic structure
+codeCategory: Atomistic code
+status: production
 codeUrl: http://gaussian.com
 parserDirName: dependencies/electronic/electronicparsers/gaussian/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
