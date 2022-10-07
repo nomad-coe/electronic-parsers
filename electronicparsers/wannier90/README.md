@@ -12,3 +12,5 @@ calculations (remember that you can provide more files if you want):
 | `*band.dat` | band structure output file |
 | `*dos.dat` | dos output file |
 | `*hr.dat` | hopping matrices (written if write_hr *.win is true) |
+
+Last update: 07.10.2022
