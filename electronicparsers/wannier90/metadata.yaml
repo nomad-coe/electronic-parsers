@@ -7,6 +7,8 @@ codeUrl: http://www.wannier.org/
 parserDirName: dependencies/electronic/electronicparsers/wannier90/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
+codeVersions: '3.1.0'
+parserLastUpdate: '07.10.2022'
 preamble: ''
 tableOfFiles: |
   | Input Filename | Description |
