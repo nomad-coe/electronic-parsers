@@ -1872,7 +1872,7 @@ class ExcitingParser:
                 'optimization_step', [{}])[0].get('force_convergence', [0., 0.])[-1]
             sec_geometry_opt.input_force_maximum_tolerance = threshold_force
 
-        # sec_workflow.workflows_ref = self._workflows_ref
+        sec_workflow.workflows_ref = self._workflows_ref
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
@@ -2265,7 +2265,12 @@ class ExcitingParser:
         self.evalqp_parser.quantities = parser.evalqp_parser.quantities
         self.info_gw_parser.quantities = parser.info_gw_parser.quantities
 
-    def parse(self, filepath, archive, logger):
+    def get_mainfile_keys(self, filename):
+        if filename.startswith('GW'):
+            return [f'GW_workflow']
+        return True
+
+    def parse(self, filepath, archive, logger, **kwargs):
         # GW will be dealt as a separate entry
         self._calculation_type = None
         if os.path.basename(filepath).startswith('GW'):
@@ -2297,3 +2302,11 @@ class ExcitingParser:
             self.parse_xs()
 
         self.parse_workflow()
+
+        # generate gw workflow to link gw calc and dft
+        if self._calculation_type == 'gw':
+            for child_archive in kwargs.get('child_archives', []):
+                sec_workflow = child_archive.m_create(Workflow)
+                sec_workflow.workflows_ref.extend(archive.workflow)
+                sec_workflow.workflows_ref.extend(self._workflows_ref)
+                # create task
