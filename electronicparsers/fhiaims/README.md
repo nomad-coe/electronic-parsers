@@ -18,5 +18,4 @@ calculations (remember that you can provide more files if you want):
 |`atom_proj_dos_<atom_name><index>_raw.dat`  | Atom-projected DOS @ vacuum|
 |`atom_projected_dos_<atom_name><index>.dat`  | Atom-projected DOS @ Fermi Energy|
 |`band<spin><segment>.out` | bandstructure file |
-
-
+|`GW_band<spin><segment>.out` | GW bandstructure file |

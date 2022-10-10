@@ -7,6 +7,7 @@ codeUrl: https://aimsclub.fhi-berlin.mpg.de/
 parserDirName: dependencies/electronic/electronicparsers/fhi-aims/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
+parserLastUpdate: '10.10.2022'
 preamble: ''
 tableOfFiles: |
   |Input Filename| Description|
@@ -23,3 +24,4 @@ tableOfFiles: |
   |`atom_proj_dos_<atom_name><index>_raw.dat`  | Atom-projected DOS @ vacuum|
   |`atom_projected_dos_<atom_name><index>.dat`  | Atom-projected DOS @ Fermi Energy|
   |`band<spin><segment>.out` | bandstructure file |
+  |`GW_band<spin><segment>` | GW bandstructure file |

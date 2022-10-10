@@ -20,7 +20,7 @@ import numpy as np            # pylint: disable=unused-import
 import typing                 # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference
+    Reference, MEnum
 )
 from nomad.datamodel.metainfo import simulation
 
@@ -397,19 +397,6 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
         ''')
 
 
-class x_fhi_aims_section_eigenvalues_group_perturbativeGW(MSection):
-    '''
-    section for full list of eigenvalues for different spin and kpoints from a
-    perturbative GW calculation
-    '''
-
-    m_def = Section(validate=False)
-
-    x_fhi_aims_section_eigenvalues_spin_perturbativeGW = SubSection(
-        sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_spin_perturbativeGW'),
-        repeats=True)
-
-
 class x_fhi_aims_section_eigenvalues_group_ZORA(MSection):
     '''
     section for full list of eigenvalues for different spin and kpoints of scaled ZORA
@@ -432,62 +419,6 @@ class x_fhi_aims_section_eigenvalues_group(MSection):
     x_fhi_aims_section_eigenvalues_spin = SubSection(
         sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_spin'),
         repeats=True)
-
-
-class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
-    '''
-    section for one list of eigenvalues from a perturbative GW calculation
-    '''
-
-    m_def = Section(validate=False)
-
-    x_fhi_aims_eigenvalue_correlation_perturbativeGW = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='joule',
-        description='''
-        Correlation energy at a given eigenstate from perturbative GW
-        ''')
-
-    x_fhi_aims_eigenvalue_ExactExchange_perturbativeGW = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='joule',
-        description='''
-        Exact exchange energy at given eigenstate from perturbative GW
-        ''')
-
-    x_fhi_aims_eigenvalue_ks_ExchangeCorrelation = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='joule',
-        description='''
-        KS exchange correlation energy at a given eigenstate needed to calculate the
-        quasi-particle energy in perturbative GW
-        ''')
-
-    x_fhi_aims_eigenvalue_ks_GroundState = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='joule',
-        description='''
-        KS ground state energy at a given eigenstate needed in perturbative GW
-        ''')
-
-    x_fhi_aims_eigenvalue_occupation_perturbativeGW = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Occupation of single eigenfunction of perturbative GW
-        ''')
-
-    x_fhi_aims_eigenvalue_quasiParticle_energy = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='joule',
-        description='''
-        Quasiparticle energy at a given eigenstate from perturbative GW
-        ''')
 
 
 class x_fhi_aims_section_eigenvalues_list_ZORA(MSection):
@@ -534,14 +465,6 @@ class x_fhi_aims_section_eigenvalues_list(MSection):
         description='''
         Occupation of single eigenfunction
         ''')
-
-
-class x_fhi_aims_section_eigenvalues_spin_perturbativeGW(MSection):
-    '''
-    section for one spin orientation from a perturbative GW calculation
-    '''
-
-    m_def = Section(validate=False)
 
 
 class x_fhi_aims_section_eigenvalues_spin_ZORA(MSection):
@@ -710,6 +633,83 @@ class x_fhi_aims_section_vdW_TS(MSection):
         description='''
         -
         ''')
+
+
+class x_fhi_aims_section_eigenvalues_group_perturbativeGW(MSection):
+    '''
+    section for full list of eigenvalues for different spin and kpoints from a
+    perturbative GW calculation
+    '''
+
+    m_def = Section(validate=False)
+
+    x_fhi_aims_section_eigenvalues_spin_perturbativeGW = SubSection(
+        sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_spin_perturbativeGW'),
+        repeats=True)
+
+
+class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
+    '''
+    section for one list of eigenvalues from a perturbative GW calculation
+    '''
+
+    m_def = Section(validate=False)
+
+    x_fhi_aims_eigenvalue_correlation_perturbativeGW = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='joule',
+        description='''
+        Correlation energy at a given eigenstate from perturbative GW
+        ''')
+
+    x_fhi_aims_eigenvalue_ExactExchange_perturbativeGW = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='joule',
+        description='''
+        Exact exchange energy at given eigenstate from perturbative GW
+        ''')
+
+    x_fhi_aims_eigenvalue_ks_ExchangeCorrelation = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='joule',
+        description='''
+        KS exchange correlation energy at a given eigenstate needed to calculate the
+        quasi-particle energy in perturbative GW
+        ''')
+
+    x_fhi_aims_eigenvalue_ks_GroundState = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='joule',
+        description='''
+        KS ground state energy at a given eigenstate needed in perturbative GW
+        ''')
+
+    x_fhi_aims_eigenvalue_occupation_perturbativeGW = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        Occupation of single eigenfunction of perturbative GW
+        ''')
+
+    x_fhi_aims_eigenvalue_quasiParticle_energy = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='joule',
+        description='''
+        Quasiparticle energy at a given eigenstate from perturbative GW
+        ''')
+
+
+class x_fhi_aims_section_eigenvalues_spin_perturbativeGW(MSection):
+    '''
+    section for one spin orientation from a perturbative GW calculation
+    '''
+
+    m_def = Section(validate=False)
 
 
 class Calculation(simulation.calculation.Calculation):

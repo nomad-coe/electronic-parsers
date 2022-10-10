@@ -197,28 +197,6 @@ class FHIAimsOutParser(TextParser):
                     break
             return files, list(set(species))
 
-        def str_to_gw_eigs(val_in):
-            val = [v.split() for v in val_in.splitlines()]
-            keys = val[0]
-            data = []
-            for v in val[1:]:
-                if len(keys) == len(v) and v[0].isdecimal():
-                    data.append(v)
-            data = np.array(data, dtype=float)
-            data = np.transpose(data)
-            res = {keys[i]: data[i] for i in range(len(data))}
-            return res
-
-        def str_to_gw_scf(val_in):
-            val = [v.split(':') for v in val_in.splitlines()]
-            data = {}
-            for v in val:
-                if len(v) == 2:
-                    data[v[0].strip(' |')] = float(v[1].split()[0]) * ureg.eV
-                if 'Fit accuracy for G' in v[0]:
-                    data['Fit accuracy for G(w)'] = float(v[0].split()[-1])
-            return data
-
         def str_to_array_size_parameters(val_in):
             val = [v.lstrip(' |').split(':') for v in val_in.strip().splitlines()]
             return {v[0].strip(): int(v[1]) for v in val if len(v) == 2}
@@ -363,6 +341,36 @@ class FHIAimsOutParser(TextParser):
                     data[key].extend([float(vi) for vi in v[-1].split()])
             return data
 
+        def str_to_gw_analytical_continuation(val_in):
+            return [x.lower() for v in val_in.split(' ') for x in v.split('-')]
+
+        def str_to_frequency(val_in):
+            val = [v.split() for v in val_in.split('\n')]
+            val = np.transpose(np.array([v for v in val if len(v) == 2], float))
+            return [int(val[0]), val[1]]
+
+        def str_to_gw_eigs(val_in):
+            val = [v.split() for v in val_in.splitlines()]
+            keys = val[0]
+            data = []
+            for v in val[1:]:
+                if len(keys) == len(v) and v[0].isdecimal():
+                    data.append(v)
+            data = np.array(data, dtype=float)
+            data = np.transpose(data)
+            res = {keys[i]: data[i] for i in range(len(data))}
+            return res
+
+        def str_to_gw_scf(val_in):
+            val = [v.split(':') for v in val_in.splitlines()]
+            data = {}
+            for v in val:
+                if len(v) == 2:
+                    data[v[0].strip(' |')] = float(v[1].split()[0]) * ureg.eV
+                if 'Fit accuracy for G' in v[0]:
+                    data['Fit accuracy for G(w)'] = float(v[0].split()[-1])
+            return data
+
         calculation_quantities = [
             Quantity(
                 'self_consistency',
@@ -376,9 +384,6 @@ class FHIAimsOutParser(TextParser):
                     'scf_convergence', r'([\s\S]+)', str_operation=str_to_scf_convergence2,
                     repeats=False, convert=False)])),
             Quantity(
-                'gw_self_consistency', r'GW Total Energy Calculation([\s\S]+?)\-{5}',
-                repeats=True, str_operation=str_to_gw_scf, convert=False),
-            Quantity(
                 'date_time', rf'{re_n} *Date\s*:(\s*\d+), Time\s*:(\s*[\d\.]+)\s*', repeats=False,
                 convert=False),
             Quantity(
@@ -389,7 +394,7 @@ class FHIAimsOutParser(TextParser):
                 'structure',
                 rf'{re_n} *(atom +{re_float}[\s\S]+?(?:{re_n} *{re_n}|\-\-\-))',
                 repeats=False, convert=False, sub_parser=TextParser(quantities=structure_quantities)),
-            Quantity(
+            Quantity(  # This quantity is double defined in self._quantities
                 'lattice_vectors',
                 rf'{re_n} *lattice_vector([\d\.\- ]+){re_n} *lattice_vector([\d\.\- ]+){re_n} *lattice_vector([\d\.\- ]+)',
                 unit='angstrom', repeats=False, shape=(3, 3), dtype=float),
@@ -429,9 +434,6 @@ class FHIAimsOutParser(TextParser):
             Quantity(
                 'species_projected_dos_files', r'Calculating angular momentum projected density of states([\s\S]+?)\-{5}',
                 str_operation=str_to_dos_files, repeats=False, convert=False),
-            Quantity(
-                'gw_eigenvalues', r'(state\s*occ_num\s*e_gs[\s\S]+?)\s*\| Total time',
-                str_operation=str_to_gw_eigs, repeats=False, convert=False),
             Quantity(
                 'vdW_TS',
                 rf'(Evaluating non\-empirical van der Waals correction[\s\S]+?)(?:\|\s*Converged\.|\-{5}{re_n}{re_n})',
@@ -552,6 +554,36 @@ class FHIAimsOutParser(TextParser):
                     Quantity(
                         'species', r'Reading configuration options for (species[\s\S]+?)grid points\.',
                         repeats=True, str_operation=str_to_species)])),
+            # GW input quantities
+            Quantity(
+                'gw_flag', rf'{re_n}\s*qpe_calc\s*([\w]+)', repeats=False),
+            Quantity(
+                'gw_sfc_flag', rf'{re_n}\s*sc_self_energy\s*([\w]+)', repeats=False),
+            Quantity(
+                'gw_analytical_continuation',
+                rf'{re_n} (?:Using)*\s*([\w\-\s]+) for analytical continuation',
+                repeats=False, flatten=True, str_operation=str_to_gw_analytical_continuation),
+            Quantity(
+                'k_grid',
+                rf'{re_n} *k\_grid\s*([\d ]+)', repeats=False),
+            Quantity(
+                'freq_grid_type', rf'{re_n}\s*Initialising transformed\s([\w\-]+)\s*time and frequency grids',
+                repeats=False),
+            Quantity(
+                'n_freq', rf'{re_n}\s*frequency_points\s*(\d+)', repeats=False,
+                dtype=int),
+            Quantity(
+                'frequency_data', r'\s*\|*\s*i_freq\s*([\d*\s*.+eE\-\+]+)',
+                repeats=True, str_operation=str_to_frequency),
+            Quantity(
+                'frozen_core', rf'{re_n}\s*frozen_core_scf\s*(\d+)', repeats=False,
+                dtype=int),
+            Quantity(
+                'gw_self_consistency', r'GW Total Energy Calculation([\s\S]+?)\-{5}',
+                repeats=True, str_operation=str_to_gw_scf, convert=False),
+            Quantity(
+                'gw_eigenvalues', r'(state\s*occ_num\s*e_gs[\s\S]+?)\s*\| Total time',
+                str_operation=str_to_gw_eigs, repeats=False, convert=False),
             # assign the initial geometry to full scf as no change in structure is done
             # during the initial scf step
             Quantity(
@@ -563,6 +595,11 @@ class FHIAimsOutParser(TextParser):
                 'structure',
                 rf'Atomic structure.*:\s+.*x \[A\]\s*y \[A\]\s*z \[A\]([\s\S]+?Species[\s\S]+?(?:{re_n} *{re_n}| 1\: ))',
                 repeats=False, convert=False, sub_parser=TextParser(quantities=structure_quantities)),
+            Quantity(
+                'lattice_vectors_reciprocal',
+                r'Quantities derived from the lattice vectors:\s*'
+                r'\s*\|\s*Reciprocal lattice vector \d:([\d\.\-\+eE\s]+)\s*\|\s*Reciprocal lattice vector \d:([\d\.\-\+eE\s]+)\s*\|\s*Reciprocal lattice vector \d:([\d\.\-\+eE\s]+)',
+                repeats=False, unit='1/angstrom', shape=(3, 3), dtype=float),
             Quantity(
                 'full_scf',
                 r'Begin self-consistency loop: Initialization'
@@ -707,6 +744,16 @@ class FHIAimsParser:
             'Hirshfeld charge': 'x_fhi_aims_hirschfeld_charge',
             'Hirshfeld volume': 'x_fhi_aims_hirschfeld_volume'
         }
+
+        self._gw_qp_energies_map = {
+            'occ_num': 'occupations',
+            'e_gs': 'value_ks',
+            'e_x^ex': 'value_exchange',
+            'e_xc^gs': 'value_ks_xc',
+            'e_c^nloc': 'value_correlation',
+            'e_qp': 'value_qp'
+        }
+
         self._frame_rate = None
         # max cumulative number of atoms for all parsed trajectories to calculate sampling rate
         self._cum_max_atoms = 100000
@@ -736,59 +783,161 @@ class FHIAimsParser:
         files.sort()
         return files
 
-    def parse_configurations(self):
+    def parse_bandstructure(self, energy_fermi):
         sec_run = self.archive.run[-1]
 
-        def parse_bandstructure():
-            band_segments_points = self.out_parser.get('band_segment_points')
-            if band_segments_points is None:
-                return
+        band_segments_points = self.out_parser.get('band_segment_points')
+        if band_segments_points is None:
+            return
 
-            # band structure, unlike dos is not a property of a section_scc but of the
-            # the whole run. dos output file is contained in a section
-            sec_scc = sec_run.calculation[-1]
+        # band structure, unlike dos is not a property of a section_scc but of the
+        # the whole run. dos output file is contained in a section
+        sec_scc = sec_run.calculation[-1]
 
-            # get the fermi energy for this SCC: if it is not found, the band
-            # structure cannot be reported.
-            energy_fermi = sec_scc.energy.fermi
-            if energy_fermi is None:
-                return
-            energy_fermi_ev = energy_fermi.to(ureg.electron_volt).magnitude
-            sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
-            sec_k_band.energy_fermi = energy_fermi
+        energy_fermi_ev = energy_fermi.to(ureg.electron_volt).magnitude
+        sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
+        sec_k_band.energy_fermi = energy_fermi
 
-            nspin = self.out_parser.get_number_of_spin_channels()
-            nbands = None
-            for n in range(len(band_segments_points)):
-                bandstructure_files = [os.path.join(
-                    self.out_parser.maindir, 'band%d%03d.out' % (s + 1, n + 1)) for s in range(nspin)]
-                data = []
-                for band_file in bandstructure_files:
-                    self.bandstructure_parser.mainfile = band_file
-                    if self.bandstructure_parser.data is None:
-                        break
-                    data.append(self.bandstructure_parser.data)
+        nspin = self.out_parser.get_number_of_spin_channels()
+        nbands = None
+        for n in range(len(band_segments_points)):
+            if self._method_type == 'DFT':
+                bs_files = [
+                    os.path.join(self.out_parser.maindir, 'band%d%03d.out' % (s + 1, n + 1))
+                    for s in range(nspin)
+                ]
+            elif self._method_type == 'GW':
+                bs_files = [
+                    os.path.join(self.out_parser.maindir, 'GW_band%d%03d.out' % (s + 1, n + 1))
+                    for s in range(nspin)
+                ]
+            else:
+                self.logger.warning('_method_type not found. Only DFT or GW allowed.')
 
-                if len(data) == 0:
-                    continue
+            data = []
+            for band_file in bs_files:
+                self.bandstructure_parser.mainfile = band_file
+                if self.bandstructure_parser.data is None:
+                    break
+                data.append(self.bandstructure_parser.data)
 
-                data = np.transpose(data)
-                eigs = (np.transpose(
-                    data[5::2]) + energy_fermi_ev) * ureg.eV
-                nbands = np.shape(eigs)[-1] if n == 0 else nbands if nbands is not None else np.shape(eigs)[-1]
-                if nbands != np.shape(eigs)[-1]:
-                    self.logger.warning('Inconsistent number of bands found in bandstructure data.')
-                    continue
+            if len(data) == 0:
+                continue
 
-                sec_k_band_segment = sec_k_band.m_create(BandEnergies)
-                sec_k_band_segment.kpoints = np.transpose(data[1:4])[0]
-                occs = np.transpose(data[4::2])
-                # the band energies stored in the band*.out files have already
-                # been shifted to the fermi energy. This shift is undone so
-                # that the energy scales for for energy_reference_fermi, band
-                # energies and the DOS energies match.
-                sec_k_band_segment.energies = eigs
-                sec_k_band_segment.occupations = occs
+            data = np.transpose(data)
+            eigs = (np.transpose(data[5::2]) + energy_fermi_ev) * ureg.eV
+            nbands = np.shape(eigs)[-1] if n == 0 else nbands if nbands is not None else np.shape(eigs)[-1]
+            if nbands != np.shape(eigs)[-1]:
+                self.logger.warning('Inconsistent number of bands found in bandstructure data.')
+                continue
+
+            sec_k_band_segment = sec_k_band.m_create(BandEnergies)
+            sec_k_band_segment.kpoints = np.transpose(data[1:4])[0]
+            occs = np.transpose(data[4::2])
+            # the band energies stored in the band*.out files have already
+            # been shifted to the fermi energy. This shift is undone so
+            # that the energy scales for for energy_reference_fermi, band
+            # energies and the DOS energies match.
+            sec_k_band_segment.energies = eigs
+            sec_k_band_segment.occupations = occs
+
+    def parse_gw(self):
+        sec_run = self.archive.run[-1]
+
+        # band files recognize as GW main files
+        gw_flag = self.out_parser.get('gw_flag', None)
+        gw_sfc_flag = self.out_parser.get('gw_sfc_flag', None)
+        gw_bs_files = [f for f in os.listdir(self.maindir) if f.startswith('GW')]
+        if gw_flag == 'gw' or gw_flag == 'gw_expt' or gw_flag == 'ev_scgw' or \
+           gw_flag == 'ev_scgw0' or gw_sfc_flag == 'scgw' or gw_bs_files:
+            self._method_type = 'GW'
+
+        if not self._method_type == 'GW':
+            return
+
+        sec_method = sec_run.m_create(Method)
+        sec_method_ref = self.archive.run[-1].method[0]
+        sec_method.starting_method_ref = sec_method_ref
+        sec_method.methods_ref = [sec_method_ref]
+
+        # GW method
+        sec_gw = sec_method.m_create(GWMethod)
+        if gw_flag == 'gw' or gw_flag == 'gw_expt':
+            sec_gw.type = 'G0W0'
+        elif gw_flag == 'ev_scgw0' or gw_flag == 'ev_scgw':
+            sec_gw.type = 'ev-scGW'
+        if gw_sfc_flag == 'scgw':
+            sec_gw.type = 'scGW'
+
+        if sec_method_ref.dft.xc_functional is not None:
+            sec_gw.starting_point = sec_method_ref.dft.xc_functional
+        if sec_method_ref.basis_set is not None:
+            sec_gw.basis_set = sec_method_ref.basis_set
+
+        # TODO check this with FHIaims GW developers
+        sec_gw.kgrid = self.out_parser.get('k_grid', None)
+        sec_gw.qgrid = sec_gw.kgrid
+        if self.out_parser.get('frozen_core', None) is not None:
+            sec_gw.core_treatment = 'fc'
+        sec_gw.dielectric_function_treatment = 'rpa'
+
+        if 'pade' in self.out_parser.get('gw_analytical_continuation', 'pade'):
+            sec_gw.self_energy_analytical_continuation = 'pade'
+        elif 'pole' in self.out_parser.get('gw_analytical_continuation', 'pade'):
+            sec_gw.self_energy_analytical_continuation = 'multi-pole'
+        elif 'contour' in self.out_parser.get('gw_analytical_continuation', 'pade'):
+            sec_gw.self_energy_analytical_continuation = 'CD'
+        else:
+            self.logger.warn(
+                'Analytical continuation approximation for the GW self-energy not found')
+        sec_gw.number_of_frequencies = self.out_parser.get('n_freq', 100)
+        frequency_data = self.out_parser.get('frequency_data', None)
+        if frequency_data is not None:
+            sec_gw.frequency_values = [f[1] for f in frequency_data]
+
+        # GW calculation
+        sec_scc = sec_run.m_create(Calculation)
+        sec_scc.method_ref = sec_method
+        if sec_run.system:
+            sec_scc.system_ref = sec_run.system[-1]
+        sec_scc_ref = sec_run.calculation[0]
+        sec_scc.starting_calculation_ref = sec_scc_ref
+        sec_scc.calculations_ref = [sec_scc_ref]
+
+        # assign Fermi level from the last DFT iteration
+        sec_energy = sec_scc.m_create(Energy)
+        sec_energy.fermi = sec_scc_ref.energy.fermi
+        self.parse_bandstructure(sec_energy.fermi)
+
+        # scGW calculation
+        gw_scf_energies = self.out_parser.get('gw_self_consistency')
+        gw_eigenvalues = self.out_parser.get('gw_eigenvalues')
+        if gw_scf_energies is None and gw_eigenvalues is None:
+            return
+
+        if gw_scf_energies is not None:
+            sec_gw_scf_iteration = sec_scc.m_create(ScfIteration)
+            for energies in gw_scf_energies:
+                sec_gw_scf_iteration = sec_scc.m_create(ScfIteration)
+                for key, val in energies.items():
+                    metainfo_key = self._energy_map.get(key, None)
+                    if metainfo_key is not None:
+                        try:
+                            setattr(sec_gw_scf_iteration, metainfo_key, val)
+                        except Exception:
+                            self.logger.warn(
+                                'Error setting scGW metainfo.',
+                                data=dict(key=metainfo_key))
+
+        if gw_eigenvalues is not None:
+            sec_eigs_gw = sec_scc.m_create(BandEnergies)
+            for key, name in self._gw_qp_energies_map.items():
+                # TODO verify shape of eigenvalues
+                val = gw_eigenvalues[key] if key == 'occ_num' else gw_eigenvalues[key] * ureg.eV
+                setattr(sec_eigs_gw, name, np.reshape(val, (1, 1, len(val))))
+
+    def parse_configurations(self):
+        sec_run = self.archive.run[-1]
 
         def read_dos(dos_file):
             dos_file = self.get_fhiaims_file(dos_file)
@@ -976,38 +1125,6 @@ class FHIAimsParser:
                 sec_thermo = sec_scf.m_create(Thermodynamics)
                 sec_thermo.pressure = pressure
 
-        def parse_gw(section):
-            gw_scf_energies = section.get('gw_self_consistency')
-            gw_eigenvalues = section.get('gw_eigenvalues')
-
-            if gw_scf_energies is None and gw_eigenvalues is None:
-                return
-
-            sec_scc = sec_run.m_create(Calculation)
-            sec_scf_iteration = sec_scc.m_create(ScfIteration)
-            if gw_scf_energies is not None:
-                for energies in gw_scf_energies:
-                    sec_scf_iteration = sec_scc.m_create(ScfIteration)
-                    for key, val in energies.items():
-                        metainfo_key = self._energy_map.get(key, None)
-                        if metainfo_key is not None:
-                            try:
-                                setattr(sec_scf_iteration, metainfo_key, val)
-                            except Exception:
-                                self.logger.warning('Error setting gw metainfo.', data=dict(key=metainfo_key))
-
-                self._electronic_structure_method = 'scGW' if len(gw_scf_energies) > 1 else 'G0W0'
-
-            metainfo_map = {
-                'occ_num': 'occupations', 'e_gs': 'value_ks', 'e_x^ex': 'value_exchange',
-                'e_xc^gs': 'value_ks_xc', 'e_c^nloc': 'value_correlation', 'e_qp': 'value_qp'}
-            if gw_eigenvalues is not None:
-                sec_eigs_gw = sec_scc.m_create(BandEnergies)
-                for key, name in metainfo_map.items():
-                    # TODO verify shape of eigenvalues
-                    val = gw_eigenvalues[key] if key == 'occ_num' else gw_eigenvalues[key] * ureg.eV
-                    setattr(sec_eigs_gw, name, np.reshape(val, (1, 1, len(val))))
-
         def parse_vdW(section):
             # these are not actually vdW outputs but vdW control parameters but are
             # printed within the calculation section.
@@ -1036,12 +1153,14 @@ class FHIAimsParser:
                             except Exception:
                                 self.logger.warning('Error setting vdW metainfo.', data=dict(key=metainfo_name))
                             # TODO add the remanining properties
-            self._electronic_structure_method = 'DFT'
             sec_run.method[-1].electronic.van_der_waals_method = 'TS'
 
         def parse_section(section):
             lattice_vectors = section.get(
                 'lattice_vectors', self.out_parser.get('lattice_vectors'))
+            lattice_vectors_reciprocal = section.get(
+                'lattice_vectors_reciprocal',
+                self.out_parser.get('lattice_vectors_reciprocal', ''))
 
             structure = section.get(
                 'structure', self.out_parser.get('structure'))
@@ -1053,6 +1172,8 @@ class FHIAimsParser:
             sec_atoms = sec_system.m_create(Atoms)
             if lattice_vectors is not None:
                 sec_atoms.lattice_vectors = lattice_vectors
+            if lattice_vectors_reciprocal is not None:
+                sec_atoms.lattice_vectors_reciprocal = lattice_vectors_reciprocal
 
             sec_atoms.periodic = pbc
             sec_atoms.labels = structure.get('labels')
@@ -1133,22 +1254,8 @@ class FHIAimsParser:
                 fermi_energy = fermi_energy.to('joule').magnitude if fermi_energy else 0.0
             sec_scc.energy.fermi = fermi_energy
 
-            # gw
-            parse_gw(section)
-
             # vdW parameters
             parse_vdW(section)
-
-            if self._electronic_structure_method in ['DFT', 'G0W0', 'scGW']:
-                sec_method = sec_run.m_create(Method)
-                sec_scc.method_ref = sec_run.method[-1]
-                sec_method.electronic = Electronic(method=self._electronic_structure_method)
-                if self._electronic_structure_method == 'DFT':
-                    sec_method.core_method_ref = sec_run.method[0]
-                else:
-                    sec_method.gw = GWMethod(type=self._electronic_structure_method)
-                    sec_method.starting_method_ref = sec_run.method[0]
-                sec_method.methods_ref = [sec_run.method[0]]
 
         for n, section in enumerate(self.out_parser.get('full_scf', [])):
             # skip frames for large trajectories
@@ -1172,7 +1279,8 @@ class FHIAimsParser:
             return
 
         # bandstructure
-        parse_bandstructure()
+        fermi_energy = sec_run.calculation[0].energy.fermi
+        self.parse_bandstructure(fermi_energy)
 
         # sampling method
         sec_workflow = self.archive.m_create(Workflow)
@@ -1181,10 +1289,11 @@ class FHIAimsParser:
     def parse_method(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
+
         sec_method.basis_set.append(BasisSet(type='numeric AOs'))
-        sec_electronic = sec_method.m_create(Electronic)
-        sec_electronic.method = self._electronic_structure_method
         sec_dft = sec_method.m_create(DFT)
+        sec_electronic = sec_method.m_create(Electronic)
+        sec_electronic.method = 'DFT'
 
         # control parameters from out file
         self.control_parser.mainfile = self.filepath
@@ -1438,12 +1547,14 @@ class FHIAimsParser:
         self.control_parser.quantities = parser.control_parser.quantities
 
     def parse(self, filepath, archive, logger):
-        self.filepath = os.path.abspath(filepath)
+        self.filepath = filepath
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
 
-        self._electronic_structure_method = 'DFT'
+        # 'DFT' (ab initio) being the initial method
+        self._method_type = 'DFT'
+
         self.init_parser()
 
         sec_run = self.archive.m_create(Run)
@@ -1481,3 +1592,5 @@ class FHIAimsParser:
         self.parse_method()
 
         self.parse_configurations()
+
+        self.parse_gw()
