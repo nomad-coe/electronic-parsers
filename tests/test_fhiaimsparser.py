@@ -238,7 +238,8 @@ def test_gw(parser):
 
     sec_methods = archive.run[0].method
     assert len(sec_methods) == 2
-    assert sec_methods[1].electronic.method == 'scGW'
+    assert sec_methods[1].gw.type == 'scGW'
+    assert sec_methods[1].gw.n_frequencies == len(sec_methods[1].gw.frequency_values)
 
     sec_scfs = archive.run[0].calculation[1].scf_iteration
     assert len(sec_scfs) == 6
@@ -276,3 +277,19 @@ def test_dftu(parser):
     assert sec_hubb.orbital == '4f'
     assert approx(sec_hubb.u_effective.to('eV').magnitude) == 4.5
     assert sec_hubb.method == 'Dudarev'
+
+
+def test_gw_bands(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/fhiaims/Si_gw_bands/aims.out', archive, None)
+
+    sec_scc = archive.run[0].calculation
+    # test last energy.fermi in DFT coincides with GW energy.fermi
+    sec_scf_iteration = sec_scc[0].scf_iteration
+    i_last = len(sec_scf_iteration) - 1
+    energy_fermi_dft_last = sec_scf_iteration[i_last].energy.fermi
+    energy_fermi_gw = archive.run[0].calculation[1].energy.fermi
+    assert abs(energy_fermi_dft_last - energy_fermi_gw) == approx(0.)
+    # test band structure segments sizes
+    assert len(sec_scc[1].band_structure_electronic[0].segment[0].kpoints) == 17
+    assert len(sec_scc[1].band_structure_electronic[0].segment[6].kpoints) == 6

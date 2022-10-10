@@ -890,7 +890,7 @@ class FHIAimsParser:
         else:
             self.logger.warn(
                 'Analytical continuation approximation for the GW self-energy not found')
-        sec_gw.number_of_frequencies = self.out_parser.get('n_freq', 100)
+        sec_gw.n_frequencies = self.out_parser.get('n_freq', 100)
         frequency_data = self.out_parser.get('frequency_data', None)
         if frequency_data is not None:
             sec_gw.frequency_values = [f[1] for f in frequency_data]
