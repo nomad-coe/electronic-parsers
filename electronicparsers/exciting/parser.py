@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from genericpath import isfile
 import numpy as np
 import os
 import re
@@ -36,7 +37,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, EnergyEntry, Charges,
     Forces, ForcesEntry, ScfIteration, BandGap
 )
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
+from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, Task, GW
 
 from .metainfo.exciting import x_exciting_section_MT_charge_atom, x_exciting_section_MT_moment_atom,\
     x_exciting_section_spin, x_exciting_section_fermi_surface,\
@@ -1079,6 +1080,7 @@ class ExcitingParser:
         self.input_xml_parser = XMLParser()
         self.data_xs_parser = DataTextParser()
         self.data_clathrate_parser = DataTextParser(dtype=str)
+        self._child_archives = {}
 
         # different names for different versions of exciting
         self._energy_keys_mapping = {
@@ -1792,19 +1794,17 @@ class ExcitingParser:
     def parse_gw(self):
         sec_run = self.archive.run[-1]
 
-        if not self._calculation_type == 'gw':
-            return
-
         sec_method = sec_run.m_create(Method)
 
         # get reference to reference dft calculation
-        dft_archive = None
-        if self.archive.m_context is not None:
-            try:
-                dft_archive = self.archive.m_context.resolve_archive(f'../upload/archive/mainfile/INFO.OUT')
-                self._workflows_ref.append(dft_archive.workflow[0].m_copy())
-            except Exception as e:
-                self.logger.error('Could not resolve reference DFT calculation.', exc_info=e)
+        # dft_archive = None
+        # if self.archive.m_context is not None:
+        #     try:
+        #         dirname = os.path.basename(os.path.dirname(self.filepath))
+        #         dft_archive = self.archive.m_context.resolve_archive(f'../upload/archive/mainfile/{dirname}/INFO.OUT')
+        #         self._archives_ref.append(dft_archive)
+        #     except Exception as e:
+        #         self.logger.error('Could not resolve reference DFT calculation.', exc_info=e)
 
         # parse input xml file, there seems to be two versions, input_gw.xml and input-gw.xml
         for f in ['input_gw.xml', 'input-gw.xml', 'input.xml']:
@@ -1815,11 +1815,13 @@ class ExcitingParser:
 
         sec_scc = sec_run.m_create(Calculation)
         sec_scc.method_ref = sec_method
-        if dft_archive:
-            # trying to resolve system from archive does not seem to work
-            sec_scc.system_ref = self.parse_system(self.info_parser.get('groundstate'))
-            # sec_run.system.append(archive.run[0].system[0].m_copy())
-            # sec_scc.system_ref = sec_run.system[-1]
+        # if dft_archive:
+        #     # trying to resolve system from archive does not seem to work
+        #     sec_scc.system_ref = self.parse_system(self.info_parser.get('groundstate'))
+        #     # sec_run.system.append(archive.run[0].system[0].m_copy())
+        #     # sec_scc.system_ref = sec_run.system[-1]
+        self.parse_system(self.info_parser.get('groundstate'))
+        sec_scc.system_ref = sec_run.system[-1]
 
         # parse properties
         self.info_gw_parser.mainfile = self._gw_info_file
@@ -1863,7 +1865,7 @@ class ExcitingParser:
         sec_workflow = self.archive.m_create(Workflow)
 
         sec_workflow.type = 'single_point'
-
+        sec_workflow.calculations_ref = self.archive.run[-1].calculation
         structure_optimization = self.info_parser.get('structure_optimization')
         if structure_optimization is not None:
             sec_workflow.type = 'geometry_optimization'
@@ -1871,8 +1873,6 @@ class ExcitingParser:
             threshold_force = structure_optimization.get(
                 'optimization_step', [{}])[0].get('force_convergence', [0., 0.])[-1]
             sec_geometry_opt.input_force_maximum_tolerance = threshold_force
-
-        sec_workflow.workflows_ref = self._workflows_ref
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
@@ -2256,7 +2256,7 @@ class ExcitingParser:
         self.input_xml_parser.logger = self.logger
         self.data_xs_parser.logger = self.logger
         self.data_clathrate_parser.logger = self.logger
-        self._workflows_ref = []
+        self._archives_ref = []
 
     def reuse_parser(self, parser):
         self.info_parser.quantities = parser.info_parser.quantities
@@ -2265,19 +2265,22 @@ class ExcitingParser:
         self.evalqp_parser.quantities = parser.evalqp_parser.quantities
         self.info_gw_parser.quantities = parser.info_gw_parser.quantities
 
-    def get_mainfile_keys(self, filename):
-        if filename.startswith('GW'):
-            return [f'GW_workflow']
+    def get_mainfile_keys(self, filepath):
+        basename = os.path.basename(filepath)
+        if os.path.isfile(os.path.join(os.path.dirname(filepath), f'GW_{basename}')):
+            return ['GW', 'GW_workflow']
         return True
 
     def parse(self, filepath, archive, logger, **kwargs):
         # GW will be dealt as a separate entry
         self._calculation_type = None
-        if os.path.basename(filepath).startswith('GW'):
+        basename = os.path.basename(filepath)
+        dirname = os.path.dirname(filepath)
+        if basename.startswith('GW'):
             self._calculation_type = 'gw'
             # read method params from INFO.OUT
             self._gw_info_file = filepath
-            filepath = os.path.join(os.path.dirname(filepath), 'INFO.OUT')
+            filepath = os.path.join(dirname, basename.lstrip('GW_'))
             if not os.path.isfile(filepath):
                 return
 
@@ -2303,10 +2306,47 @@ class ExcitingParser:
 
         self.parse_workflow()
 
-        # generate gw workflow to link gw calc and dft
-        if self._calculation_type == 'gw':
-            for child_archive in kwargs.get('child_archives', []):
-                sec_workflow = child_archive.m_create(Workflow)
-                sec_workflow.workflows_ref.extend(archive.workflow)
-                sec_workflow.workflows_ref.extend(self._workflows_ref)
-                # create task
+        # TODO get child_archives from parse
+        gw_archive = self._child_archives.get('GW')
+        if gw_archive is not None:
+            # parse gw single point
+            ExcitingParser().parse(os.path.join(dirname, f'GW_{basename}'), gw_archive, logger)
+
+            # parser gw workflow
+            gw_workflow_archive = self._child_archives.get('GW_workflow')
+
+            def extract_dos(archive):
+                try:
+                    dos = archive.run[-1].calculation[-1].dos_electronic[0]
+                    print(dos)
+                    return Dos(energies=dos.energies, total=[d.m_copy() for d in dos.total])
+                except Exception:
+                    return
+
+            sec_run = gw_workflow_archive.m_create(Run)
+            sec_run.program = self.archive.run[-1].program.m_copy()
+            # set system to be the dft initial system
+            sec_run.system = [self.archive.run[-1].system[-1].m_copy()]
+
+            sec_workflow = gw_workflow_archive.m_create(Workflow)
+            sec_workflow.type = 'gw'
+            # dft and gw single point workflows
+            sec_workflow.workflows_ref = [self.archive.workflow[0], gw_archive.workflow[0]]
+
+            # create task to link dft and gw
+            # TODO description can be improved
+            sec_workflow.task = [
+                Task(
+                    input_workflow=sec_workflow, output_workflow=self.archive.workflow[0],
+                    description='Perform DFT calculation on initial structure.'),
+                Task(
+                    input_workflow=self.archive.workflow[0], output_workflow=gw_archive.workflow[0],
+                    description='Perfrom GW calculation starting from DFT wavefunctions.'),
+                Task(
+                    input_workflow=gw_archive.workflow[0], output_workflow=sec_workflow,
+                    description='Save GW results.')
+            ]
+            # add dft and gw data (total dos and bandstructure)
+            sec_gw = sec_workflow.m_create(GW)
+            sec_gw.dos_dft = extract_dos(self.archive)
+            sec_gw.dos_gw = extract_dos(gw_archive)
