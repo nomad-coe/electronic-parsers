@@ -2318,15 +2318,15 @@ class ExcitingParser:
             def extract_dos(archive):
                 try:
                     dos = archive.run[-1].calculation[-1].dos_electronic[0]
-                    print(dos)
-                    return Dos(energies=dos.energies, total=[d.m_copy() for d in dos.total])
+                    return dos
+                    # return Dos(energies=dos.energies, total=[d.m_copy() for d in dos.total])
                 except Exception:
                     return
 
             sec_run = gw_workflow_archive.m_create(Run)
-            sec_run.program = self.archive.run[-1].program.m_copy()
+            sec_run.program = self.archive.run[-1].program
             # set system to be the dft initial system
-            sec_run.system = [self.archive.run[-1].system[-1].m_copy()]
+            sec_run.system = self.archive.run[-1].system[-1:]
 
             sec_workflow = gw_workflow_archive.m_create(Workflow)
             sec_workflow.type = 'gw'
