@@ -51,3 +51,4 @@ from .vasp.parser import VASPParser
 from .wien2k.parser import Wien2kParser
 from .yambo.parser import YamboParser
 from .abacus.parser import ABACUSParser
+from .wannier90.parser import Wannier90Parser

@@ -1,0 +1,20 @@
+codeLabel: Wannier90
+codeLabelStyle: First letter in capitals, rest in lower case
+codeName: wannier90
+codeCategory: Atomistic code
+status: production
+codeUrl: http://www.wannier.org/
+parserDirName: dependencies/electronic/electronicparsers/wannier90/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+parserSpecific: ''
+codeVersions: '3.1.0'
+parserLastUpdate: '07.10.2022'
+preamble: ''
+tableOfFiles: |
+  | Input Filename | Description |
+  | --- | --- |
+  | `*.wout` | **Mainfile**: output text file w/ arbitrary name |
+  | `*.win` | input text file |
+  | `*band.dat` | band structure output file |
+  | `*dos.dat` | dos output file |
+  | `*hr.dat` | hopping matrices (written if write_hr *.win is true) |
