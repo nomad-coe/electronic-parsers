@@ -1,0 +1,18 @@
+codeLabel: ALF
+codeLabelStyle: All in capitals
+codeName: alf
+codeCategory: Atomistic code
+status: production
+codeUrl: https://git.physik.uni-wuerzburg.de/ALF/ALF
+parserDirName: dependencies/electronic/electronicparsers/alf/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+parserSpecific: ''
+parserLastUpdate: '26.10.2022'
+preamble: ''
+tableOfFiles: |
+  | Input Filename  | Description |
+  | --- | --- |
+  | `data.h5` | **Mainfile**: output hdf5 file  |
+  | `confout.h5`  | output hdf5 with HS and bosonic configurations |
+  | `info`  | output text with model parameters and simulation info |
+  | `parameters`  | input text file |

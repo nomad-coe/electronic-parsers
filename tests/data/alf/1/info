@@ -1,0 +1,44 @@
+ =====================================
+ Model is      : Hubbard                                                         
+ Lattice is    : Square                                                          
+ # unit cells  :           16
+ # of orbitals :            1
+ Flux_1        :    0.0000000000000000     
+ Flux_2        :    0.0000000000000000     
+ Twist as phase factor in bulk
+ HS  couples to z-component of spin
+ Checkerboard  :  T
+ Symm. decomp  :  T
+ Finite temperture version
+ Beta          :    5.0000000000000000     
+ dtau,Ltrot_eff:   0.10000000000000001               50
+ N_SUN         :            2
+ N_FL          :            2
+ t             :    1.0000000000000000     
+ Ham_U         :    4.0000000000000000     
+ t2            :    1.0000000000000000     
+ Ham_U2        :    4.0000000000000000     
+ Ham_tperp     :    1.0000000000000000     
+ Ham_chem      :    0.0000000000000000     
+ No initial configuration, Seed_in      790789
+ Sweeps                              :           20
+ Prog will stop after hours:    0.0200
+ Measure Int.                        :            1          50
+ Stabilization,Wrap                  :           10
+ Nstm                                :            5
+ Ltau                                :            1
+ # of interacting Ops per time slice :           16
+ Default sequential updating 
+ This executable represents commit 8cdcc2d7 of branch 196-write-parameters-to-hdf5-file.
+  Precision Green  Mean, Max :    3.1555002823327097E-011   7.9478641445973608E-007
+  Precision Phase, Max       :    0.0000000000000000     
+  Precision tau    Mean, Max :    8.0320307249588644E-012   4.3422911091828276E-007
+  Acceptance                 :   0.42741989436619721     
+  Effective Acceptance       :   0.42741989436619721     
+  Acceptance_Glob              :    0.0000000000000000     
+  Mean Phase diff Glob         :    0.0000000000000000     
+  Max  Phase diff Glob         :    0.0000000000000000     
+  Average cluster size         :    0.0000000000000000     
+  Average accepted cluster size:    0.0000000000000000     
+  CPU Time                   :    71.849956297999995     
+  Effective number of bins   :          213
