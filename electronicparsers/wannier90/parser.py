@@ -28,7 +28,7 @@ from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy
 )
-from nomad.datamodel.metainfo.simulation.method import Method, KMesh, Projections
+from nomad.datamodel.metainfo.simulation.method import Method, KMesh, Projection
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from .metainfo.wannier90 import x_wannier90_hopping_parameters
 
@@ -137,8 +137,8 @@ class Wannier90Parser:
         self.hr_parser = HrParser()
 
         self._input_projection_mapping = {
-            'Nwannier': 'number_of_projected_orbitals',
-            'Nband': 'number_of_bands',
+            'Nwannier': 'n_projected_orbitals',
+            'Nband': 'n_bands',
             'conv_tol': 'convergence_tolerance_ml'
         }
 
@@ -161,7 +161,7 @@ class Wannier90Parser:
     def parse_method(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
-        sec_proj = sec_method.m_create(Projections)
+        sec_proj = sec_method.m_create(Projection)
 
         # k_mesh section
         sec_k_mesh = sec_proj.m_create(KMesh)
