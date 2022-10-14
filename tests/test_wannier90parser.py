@@ -17,6 +17,7 @@
 #
 
 import pytest
+import numpy as np
 
 from nomad.datamodel import EntryArchive
 from electronicparsers.wannier90 import Wannier90Parser
@@ -32,21 +33,28 @@ def parser():
     return Wannier90Parser()
 
 
-def test_hoppings(parser):
+def test_lco(parser):
     archive = EntryArchive()
     parser.parse('tests/data/wannier90/lco_mlwf/lco.wout', archive, None)
 
-    sec_hoppings = archive.run[0].calculation[0].x_wannier90_hoppings
-    assert sec_hoppings.nrpts == 397
-    assert sec_hoppings.nrpts == len(sec_hoppings.degeneracy_factors)
-    assert sec_hoppings.hopping_matrix.shape[0] == sec_hoppings.nrpts
-    assert sec_hoppings.hopping_matrix.shape[1] == 7
+    sec_program = archive.run[0].program
+    assert sec_program.name == 'Wannier90'
+    assert sec_program.version == '3.1.0'
 
+    sec_system = archive.run[0].system
+    assert len(sec_system) == 1
+    assert sec_system[0].atoms.labels[-1] == 'O'
+    assert (sec_system[0].atoms.positions[2].magnitude == np.array([0., 0., 0.])).all()
+    assert sec_system[0].atoms.lattice_vectors[0][0].magnitude == approx(-1.909145e-10)
+    assert sec_system[0].atoms.periodic == [True, True, True]
 
-def test_bands(parser):
-    archive = EntryArchive()
-    parser.parse('tests/data/wannier90/lco_mlwf/lco.wout', archive, None)
+    sec_projection = archive.run[0].method[0].projection
+    assert sec_projection.n_projected_orbitals == 1
+    assert sec_projection.n_bands == 5
+    assert sec_projection.is_maximally_localise is True
+    assert sec_projection.k_mesh.n_points == 343
 
+    # Band tests
     sec_scc = archive.run[0].calculation
     assert len(sec_scc) == 1
     assert len(sec_scc[0].band_structure_electronic[0].segment) == 4
@@ -54,29 +62,17 @@ def test_bands(parser):
     assert sec_scc[0].band_structure_electronic[0].segment[0].n_kpoints == \
         len(sec_scc[0].band_structure_electronic[0].segment[0].energies[0])
     assert sec_scc[0].energy.fermi == sec_scc[0].band_structure_electronic[0].energy_fermi
-    assert sec_scc[0].band_structure_electronic[0].energy_fermi.to('eV').magnitude == 11.375
-
-
-def test_dos(parser):
-    archive = EntryArchive()
-    parser.parse('tests/data/wannier90/lco_mlwf/lco.wout', archive, None)
-
-    sec_scc = archive.run[0].calculation
-    assert len(sec_scc) == 1
+    assert sec_scc[0].band_structure_electronic[0].energy_fermi.to('eV').magnitude == approx(11.375)
+    # DOS tests
     sec_dos = sec_scc[0].dos_electronic
     assert len(sec_dos) == 1
     assert sec_dos[0].n_energies == 692
     assert sec_dos[0].n_energies == len(sec_dos[0].energies)
     assert sec_dos[0].energy_shift == sec_dos[0].energy_fermi
     assert len(sec_dos[0].total[0].value) == sec_dos[0].n_energies
-
-
-def test_projection_metainfo(parser):
-    archive = EntryArchive()
-    parser.parse('tests/data/wannier90/lco_mlwf/lco.wout', archive, None)
-
-    sec_projection = archive.run[0].method[0].projection
-    assert sec_projection.number_of_projected_orbitals == 1
-    assert sec_projection.number_of_bands == 5
-    assert sec_projection.is_maximally_localise is True
-    assert sec_projection.k_mesh.n_points == 343
+    # x_wannier90 tests
+    sec_hoppings = sec_scc[0].x_wannier90_hoppings
+    assert sec_hoppings.nrpts == 397
+    assert sec_hoppings.nrpts == len(sec_hoppings.degeneracy_factors)
+    assert sec_hoppings.hopping_matrix.shape[0] == sec_hoppings.nrpts
+    assert sec_hoppings.hopping_matrix.shape[1] == 7

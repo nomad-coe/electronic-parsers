@@ -126,7 +126,7 @@ class HrParser(TextParser):
 
 
 class Wannier90Parser:
-    # level defined w.r.t. DFT calculation (default, level = 0)
+    # TODO check if level defined w.r.t. DFT calculation (default, level = 0)
     level = 1
 
     def __init__(self):
@@ -192,11 +192,11 @@ class Wannier90Parser:
         sec_wannier.hopping_matrix = np.array(np.array_split(full_hoppings, sec_wannier.nrpts))
 
     def get_k_points(self):
-        reciprocal_lattice_vectors = np.vstack(self.wout_parser.get('reciprocal_lattice_vectors'))
-        if reciprocal_lattice_vectors is None:
+        if self.wout_parser.get('reciprocal_lattice_vectors') is None:
             return
+        reciprocal_lattice_vectors = np.vstack(self.wout_parser.get('reciprocal_lattice_vectors'))
 
-        n_k_segments = self.wout_parser.get('n_k_segments')
+        n_k_segments = self.wout_parser.get('n_k_segments', [])
         k_symm_points = []
         k_symm_points_cart = []
         for ns in range(n_k_segments):
@@ -242,6 +242,8 @@ class Wannier90Parser:
         sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
         sec_k_band.energy_fermi = energy_fermi
 
+        if self.band_dat_parser.data is None:
+            return
         data = np.transpose(self.band_dat_parser.data)
 
         (n_kpoints, band_segments_points, kpoints) = self.get_k_points()
