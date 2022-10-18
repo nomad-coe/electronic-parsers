@@ -2315,11 +2315,9 @@ class ExcitingParser:
             # parser gw workflow
             gw_workflow_archive = self._child_archives.get('GW_workflow')
 
-            def extract_dos(archive):
+            def extract_section(archive, name):
                 try:
-                    dos = archive.run[-1].calculation[-1].dos_electronic[0]
-                    return dos
-                    # return Dos(energies=dos.energies, total=[d.m_copy() for d in dos.total])
+                    return getattr(archive.run[-1].calculation[-1], name)[-1]
                 except Exception:
                     return
 
@@ -2329,7 +2327,7 @@ class ExcitingParser:
             sec_run.system = self.archive.run[-1].system[-1:]
 
             sec_workflow = gw_workflow_archive.m_create(Workflow)
-            sec_workflow.type = 'gw'
+            sec_workflow.type = 'GW'
             # dft and gw single point workflows
             sec_workflow.workflows_ref = [self.archive.workflow[0], gw_archive.workflow[0]]
 
@@ -2348,5 +2346,7 @@ class ExcitingParser:
             ]
             # add dft and gw data (total dos and bandstructure)
             sec_gw = sec_workflow.m_create(GW)
-            sec_gw.dos_dft = extract_dos(self.archive)
-            sec_gw.dos_gw = extract_dos(gw_archive)
+            sec_gw.dos_dft = extract_section(self.archive, 'dos_electronic')
+            sec_gw.dos_gw = extract_section(gw_archive, 'dos_electronic')
+            sec_gw.band_structure_dft = extract_section(self.archive, 'band_structure_electronic')
+            sec_gw.band_structure_gw = extract_section(gw_archive, 'band_structure_electronic')
