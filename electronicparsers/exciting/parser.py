@@ -56,7 +56,7 @@ class GWInfoParser(TextParser):
             val = [v.split() for v in val_in.split('\n')]
             val = np.transpose(np.array([v for v in val if len(v) == 3], float))
             return dict(
-                number=np.array(val[0], dtype=int), values=val[1] * ureg.hartree,
+                number=np.array(val[0], dtype=int), values=val[1],
                 weights=val[2])
 
         # TODO Read also input parameters here if input_GW.xml does not exist
@@ -1750,42 +1750,42 @@ class ExcitingParser:
     def _parse_input_gw(self, sec_method):
         sec_gw = sec_method.m_create(GWMethod)
         sec_gw.type = 'G0W0'
-        gmaxvr = self.info_parser.get_initialization_parameter('x_exciting_gmaxvr', 0)
         sec_gw.core_treatment = self.input_xml_parser.get(
             'gw/coreflag', 'all')
-        sec_gw.polarizability_number_of_empty_states = int(
+        sec_gw.n_empty_states_polarizability = int(
             self.input_xml_parser.get('gw/nempty', 0))
-        sec_gw.ngridq = self.input_xml_parser.get('gw/ngridq', [1, 1, 1])
-        sec_gw.basis_set = 'mixed'
-        sec_gw.qp_equation_treatment = 'linearization'
-        sec_gw.max_frequency = self.input_xml_parser.get(
-            'gw/freqgrid/freqmax', 1.0)
-        sec_gw.frequency_grid_type = self.input_xml_parser.get(
-            'gw/freqgrid/fgrid', 'gaule2')
-        sec_gw.number_of_frequencies = int(self.input_xml_parser.get(
+        sec_gw.gridq = self.input_xml_parser.get('gw/ngridq', [1, 1, 1])
+        sec_gw.n_frequencies = int(self.input_xml_parser.get(
             'gw/freqgrid/nomeg', 16))
-        sec_gw.self_energy_c_number_of_poles = int(self.input_xml_parser.get(
-            'gw/selfenergy/npol', 0))
-        sec_gw.self_energy_c_number_of_empty_states = int(self.input_xml_parser.get(
-            'gw/selfenergy/nempty', 0))
-        sec_gw.self_energy_singularity_treatment = self.input_xml_parser.get(
-            'gw/selfenergy/singularity', 'mpd')
-        sec_gw.self_energy_c_analytical_continuation = self.input_xml_parser.get(
+        sec_gw.self_energy_analytical_continuation = self.input_xml_parser.get(
             'gw/selfenergy/actype', 'pade')
-        sec_gw.mixed_basis_lmax = int(self.input_xml_parser.get(
+        sec_gw.dielectric_function_treatment = self.input_xml_parser.get(
+            'gw/scrcoul/scrtype', 'rpa')
+        sec_gw.n_empty_states_self_energy = int(self.input_xml_parser.get(
+            'gw/selfenergy/nempty', 0))
+
+        gmaxvr = self.info_parser.get_initialization_parameter('x_exciting_gmaxvr', 0)
+        sec_gw.x_exciting_qp_equation_treatment = 'linearization'
+        sec_gw.x_exciting_max_frequency = self.input_xml_parser.get(
+            'gw/freqgrid/freqmax', 1.0)
+        sec_gw.x_exciting_frequency_grid_type = self.input_xml_parser.get(
+            'gw/freqgrid/fgrid', 'gaule2')
+        sec_gw.x_exciting_self_energy_c_number_of_poles = int(self.input_xml_parser.get(
+            'gw/selfenergy/npol', 0))
+        sec_gw.x_exciting_self_energy_singularity_treatment = self.input_xml_parser.get(
+            'gw/selfenergy/singularity', 'mpd')
+        sec_gw.x_exciting_mixed_basis_lmax = int(self.input_xml_parser.get(
             'gw/mixbasis/lmaxmb', 3))
-        sec_gw.mixed_basis_tolerance = self.input_xml_parser.get(
+        sec_gw.x_exciting_mixed_basis_tolerance = self.input_xml_parser.get(
             'gw/mixbasis/epsmb', 0.0001)
         gmb = self.input_xml_parser.get('gw/mixbasis/gmb', 1.0)
-        sec_gw.mixed_basis_gmax = gmb * gmaxvr
+        sec_gw.x_exciting_mixed_basis_gmax = gmb * gmaxvr
         pwm = self.input_xml_parser.get('gw/barecoul/pwm', 2.0)
-        sec_gw.bare_coulomb_gmax = pwm * gmb * gmaxvr
-        sec_gw.bare_coulomb_cutofftype = self.input_xml_parser.get(
+        sec_gw.x_exciting_bare_coulomb_gmax = pwm * gmb * gmaxvr
+        sec_gw.x_exciting_bare_coulomb_cutofftype = self.input_xml_parser.get(
             'gw/barecoul/cutofftype', 'none')
-        sec_gw.screened_coulomb_volume_average = self.input_xml_parser.get(
+        sec_gw.x_exciting_screened_coulomb_volume_average = self.input_xml_parser.get(
             'gw/scrcoul/sciavtype', 'isotropic')
-        sec_gw.screened_Coulomb = self.input_xml_parser.get(
-            'gw/scrcoul/scrtype', 'rpa')
 
     def parse_gw(self):
         sec_run = self.archive.run[-1]
@@ -1806,8 +1806,10 @@ class ExcitingParser:
         for f in ['input_gw.xml', 'input-gw.xml', 'input.xml']:
             self.parse_file(f, sec_method)
 
-        xc_functional_name = ' '.join(self.info_parser.get_xc_functional_name())
-        sec_method.gw.starting_point = xc_functional_name
+        if sec_method_ref.dft.xc_functional is not None:
+            sec_method.gw.starting_point = sec_method_ref.dft.xc_functional
+        if sec_method_ref.basis_set is not None:
+            sec_method.gw.basis_set = sec_method_ref.basis_set
 
         sec_scc = sec_run.m_create(Calculation)
         sec_scc.method_ref = sec_method
@@ -1841,10 +1843,10 @@ class ExcitingParser:
         frequency_data = self.info_gw_parser.get('frequency_data', None)
         if frequency_data is not None:
             number = frequency_data.get('number')
-            sec_method.gw.number_of_frequencies = len(number)
-            sec_method.gw.frequency_number = number
-            sec_method.gw.frequency_values = frequency_data.get('values')
-            sec_method.gw.frequency_weights = frequency_data.get('weights')
+            sec_method.gw.n_frequencies = len(number)
+            sec_method.gw.frequency_values = frequency_data.get('values') * ureg.hartree
+            sec_method.gw.x_exciting_frequency_number = number
+            sec_method.gw.x_exciting_frequency_weights = frequency_data.get('weights')
 
         fundamental_band_gap = self.info_gw_parser.get('direct_band_gap', None)
         if fundamental_band_gap is None:
