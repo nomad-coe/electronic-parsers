@@ -893,7 +893,7 @@ class FHIAimsParser:
         sec_gw.n_frequencies = self.out_parser.get('n_freq', 100)
         frequency_data = self.out_parser.get('frequency_data', None)
         if frequency_data is not None:
-            sec_gw.frequency_values = [f[1] for f in frequency_data]
+            sec_gw.frequency_values = [f[1] * ureg.hartree for f in frequency_data]
 
         # GW calculation
         sec_scc = sec_run.m_create(Calculation)
@@ -1250,7 +1250,11 @@ class FHIAimsParser:
             # fermi level
             fermi_energy = 0.0
             if scf_iterations:
-                fermi_energy = scf_iterations[-1].get('fermi_level')
+                if scf_iterations[-1].get('fermi_level_old') is not None:
+                    fermi_energy = scf_iterations[-1].get('fermi_level_old')
+                else:
+                    if scf_iterations[-1].get('fermi_level') is not None:
+                        fermi_energy = scf_iterations[-1].get('fermi_level')
                 fermi_energy = fermi_energy.to('joule').magnitude if fermi_energy else 0.0
             sec_scc.energy.fermi = fermi_energy
 
