@@ -22,7 +22,7 @@ import logging
 
 from nomad.utils import configure_logging
 from nomad.datamodel import EntryArchive
-from abacusparser import ABACUSParser
+from electronicparsers.abacus import ABACUSParser
 
 
 if __name__ == "__main__":
