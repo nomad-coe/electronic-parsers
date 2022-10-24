@@ -194,16 +194,18 @@ def test_dos(parser):
     sec_dos = sec_scc.dos_electronic[0]
     assert np.shape(sec_dos.energies) == (50,)
     assert np.shape(sec_dos.total[0].value) == (50,)
-
-    sec_species_dos = sec_dos.species_projected
-    assert np.shape(sec_species_dos[7].value) == (50,)
-    assert sec_species_dos[0].value[44].magnitude == approx(3.89674869e+18)
-    assert sec_species_dos[1].value[37].magnitude == approx(7.85534487e+17)
-    assert sec_species_dos[4].value[3].magnitude == approx(4.49311696e+17)
-    assert sec_species_dos[7].value[5].magnitude == approx(2.46401047e+16)
+    assert sec_dos.total[0].value[0].to(1/ureg.eV).magnitude == approx(0.00233484)
+    assert sec_dos.total[0].value[-1].to(1/ureg.eV).magnitude == approx(0.49471595)
 
     dos_integrated = integrate_dos(sec_dos, False, sec_scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 3.  # 3rd valence shell
+
+    sec_species_dos = sec_dos.species_projected
+    assert np.shape(sec_species_dos[7].value) == (50,)
+    assert sec_species_dos[0].value[44].to(1/ureg.eV).magnitude == approx(0.62432797) # Na total
+    assert sec_species_dos[1].value[37].to(1/ureg.eV).magnitude == approx(0.12585650) # Cl total
+    assert sec_species_dos[4].value[3].to(1/ureg.eV).magnitude == approx(0.07198767) # Na l=1
+    assert sec_species_dos[7].value[5].to(1/ureg.eV).magnitude == approx(0.00394778) # Cl l=2
 
 
 def test_md(parser):
