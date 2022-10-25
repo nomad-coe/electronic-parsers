@@ -51,7 +51,7 @@ def test_lco(parser):
     sec_projection = archive.run[0].method[0].projection
     assert sec_projection.n_projected_orbitals == 1
     assert sec_projection.n_bands == 5
-    assert sec_projection.is_maximally_localise is True
+    assert sec_projection.is_maximally_localized is True
     assert sec_projection.k_mesh.n_points == 343
 
     # Band tests

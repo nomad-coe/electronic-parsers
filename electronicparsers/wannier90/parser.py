@@ -172,9 +172,9 @@ class Wannier90Parser:
         for key in self._input_projection_mapping.keys():
             setattr(sec_proj, self._input_projection_mapping[key], self.wout_parser.get(key))
         if self.wout_parser.get('Niter') is not None:
-            sec_proj.is_maximally_localise = False
+            sec_proj.is_maximally_localized = False
             if self.wout_parser.get('Niter') > 1:
-                sec_proj.is_maximally_localise = True
+                sec_proj.is_maximally_localized = True
         sec_proj.outer_energy_window = self.wout_parser.get('energy_windows').outer
         sec_proj.inner_energy_window = self.wout_parser.get('energy_windows').inner
 
