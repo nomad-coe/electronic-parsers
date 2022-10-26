@@ -59,10 +59,3 @@ class x_wannier90_hopping_parameters(MSection):
         (orb_1, orb_2) indicates the hopping amplitude between orb_1 and orb_2, and the
         real and imaginary parts of the hopping in electron_volt.
         ''')
-
-
-class Calculation(simulation.run.Calculation):
-
-    m_def = Section(validate=False, extends_base_section=True)
-
-    x_wannier90_hoppings = SubSection(sub_section=x_wannier90_hopping_parameters, repeats=False)

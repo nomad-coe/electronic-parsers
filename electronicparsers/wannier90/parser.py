@@ -26,7 +26,7 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.calculation import (
-    Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy
+    Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, HoppingMatrix
 )
 from nomad.datamodel.metainfo.simulation.method import Method, KMesh, Projection
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
@@ -73,7 +73,7 @@ class WOutParser(TextParser):
                 'reciprocal_lattice_vectors', r'\s*b_\d\s*([\d\-\s\.]+)',
                 repeats=True),
             Quantity(
-                'structure', rf'(\s*Fractional Coordinate[\s\S]+?)(?:{re_n}\s*PROJECTIONS)',
+                'structure', rf'(\s*Fractional Coordinate[\s\S]+?)(?:{re_n}\s*(PROJECTIONS|K-POINT GRID))',
                 repeats=False, sub_parser=TextParser(quantities=structure_quantities)),
             # Method quantities
             Quantity(
@@ -139,7 +139,7 @@ class Wannier90Parser:
         self._input_projection_mapping = {
             'Nwannier': 'n_projected_orbitals',
             'Nband': 'n_bands',
-            'conv_tol': 'convergence_tolerance_ml'
+            'conv_tol': 'convergence_tolerance_max_localization'
         }
 
     def parse_system(self):
@@ -165,31 +165,42 @@ class Wannier90Parser:
 
         # k_mesh section
         sec_k_mesh = sec_proj.m_create(KMesh)
-        sec_k_mesh.n_points = self.wout_parser.get('k_mesh', None).n_points
-        sec_k_mesh.points = self.wout_parser.get('k_mesh', None).k_points[::2]
+        sec_k_mesh.n_points = self.wout_parser.get('k_mesh', None).get('n_points')
+        if self.wout_parser.get('k_mesh', None).get('k_points') is not None:
+            sec_k_mesh.points = self.wout_parser.get('k_mesh', None).k_points[::2]
 
         # Wannier90 section
         for key in self._input_projection_mapping.keys():
             setattr(sec_proj, self._input_projection_mapping[key], self.wout_parser.get(key))
         if self.wout_parser.get('Niter') is not None:
-            sec_proj.is_maximally_localized = False
-            if self.wout_parser.get('Niter') > 1:
-                sec_proj.is_maximally_localized = True
-        sec_proj.outer_energy_window = self.wout_parser.get('energy_windows').outer
-        sec_proj.inner_energy_window = self.wout_parser.get('energy_windows').inner
+            sec_proj.is_maximally_localized = self.wout_parser.get('Niter', 0) > 1
+        sec_proj.energy_window_outer = self.wout_parser.get('energy_windows').outer
+        sec_proj.energy_window_inner = self.wout_parser.get('energy_windows').inner
 
-    def parse_hoppings(self, sec_scc):
+    def parse_hoppings(self):
         hr_files = [f for f in os.listdir(self.maindir) if f.endswith('hr.dat')]
         if not hr_files:
             return
 
-        self.hr_parser.mainfile = os.path.join(self.maindir, hr_files[0])
-        sec_wannier = sec_scc.m_create(x_wannier90_hopping_parameters)
+        sec_scc = self.archive.run[-1].calculation[-1]
 
-        sec_wannier.nrpts = self.hr_parser.get('degeneracy_factors')[1]
-        sec_wannier.degeneracy_factors = self.hr_parser.get('degeneracy_factors')[2:]
+        self.hr_parser.mainfile = os.path.join(self.maindir, hr_files[0])
+        sec_hopping_matrix = sec_scc.m_create(HoppingMatrix)
+
+        # Assuming method.projection is parsed before
+        sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].projection.n_projected_orbitals
+        sec_hopping_matrix.n_wigner_seitz_points = self.hr_parser.get('degeneracy_factors')[1]
+        sec_hopping_matrix.degeneracy_factors = self.hr_parser.get('degeneracy_factors')[2:]
         full_hoppings = np.array(self.hr_parser.get('hoppings'))
-        sec_wannier.hopping_matrix = np.array(np.array_split(full_hoppings, sec_wannier.nrpts))
+        sec_hopping_matrix.value = np.reshape(
+            full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
+
+        sec_scc_energy = sec_scc.m_create(Energy)
+        # Setting Fermi level to the first orbital onsite energy
+        n_wigner_seitz_points_half = int(0.5 * sec_hopping_matrix.n_wigner_seitz_points)
+        energy_fermi = sec_hopping_matrix.value[n_wigner_seitz_points_half][0][5] * ureg.eV
+        sec_scc_energy.fermi = energy_fermi
+        sec_scc_energy.highest_occupied = energy_fermi
 
     def get_k_points(self):
         if self.wout_parser.get('reciprocal_lattice_vectors') is None:
@@ -225,10 +236,12 @@ class Wannier90Parser:
 
         return (n_kpoints, band_segments_points, kpoints)
 
-    def parse_bandstructure(self, sec_scc):
-        energy_fermi = sec_scc.energy.fermi
-        if energy_fermi is None:
+    def parse_bandstructure(self):
+        sec_scc = self.archive.run[-1].calculation[-1]
+
+        if sec_scc.energy.fermi is None:
             return
+        energy_fermi = sec_scc.energy.fermi
         energy_fermi_eV = energy_fermi.to('electron_volt').magnitude
 
         band_files = [f for f in os.listdir(self.maindir) if f.endswith('band.dat')]
@@ -269,10 +282,12 @@ class Wannier90Parser:
             sec_k_band_segment.energies = energies * ureg.eV
             sec_k_band_segment.occupations = occs
 
-    def parse_dos(self, sec_scc):
-        energy_fermi = sec_scc.energy.fermi
-        if energy_fermi is None:
+    def parse_dos(self):
+        sec_scc = self.archive.run[-1].calculation[-1]
+
+        if sec_scc.energy.fermi is None:
             return
+        energy_fermi = sec_scc.energy.fermi
 
         dos_files = [f for f in os.listdir(self.maindir) if f.endswith('dos.dat')]
         if not dos_files:
@@ -301,24 +316,14 @@ class Wannier90Parser:
         sec_scc.method_ref = sec_run.method[-1]
         sec_scc.system_ref = sec_run.system[-1]
 
-        # TODO extract Fermi level from output?
-        win_files = [f for f in os.listdir(self.maindir) if f.endswith('.win')]
-        if win_files:
-            self.win_parser.mainfile = os.path.join(self.maindir, win_files[0])
-            energy_fermi = self.win_parser.get('energy_fermi', None) * ureg.eV
-            sec_scc_energy = sec_scc.m_create(Energy)
-            sec_scc_energy.fermi = energy_fermi
-            # Define highest_occupied as energy_fermi to correctly plot via .js
-            sec_scc_energy.highest_occupied = energy_fermi
+        # Wannier90 hoppings section
+        self.parse_hoppings()
 
         # Wannier band structure
-        self.parse_bandstructure(sec_scc)
+        self.parse_bandstructure()
 
         # Wannier DOS
-        self.parse_dos(sec_scc)
-
-        # Wannier90 hoppings section
-        self.parse_hoppings(sec_scc)
+        self.parse_dos()
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath

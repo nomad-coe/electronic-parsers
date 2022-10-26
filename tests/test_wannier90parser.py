@@ -62,7 +62,7 @@ def test_lco(parser):
     assert sec_scc[0].band_structure_electronic[0].segment[0].n_kpoints == \
         len(sec_scc[0].band_structure_electronic[0].segment[0].energies[0])
     assert sec_scc[0].energy.fermi == sec_scc[0].band_structure_electronic[0].energy_fermi
-    assert sec_scc[0].band_structure_electronic[0].energy_fermi.to('eV').magnitude == approx(11.375)
+    assert sec_scc[0].band_structure_electronic[0].energy_fermi.to('eV').magnitude == approx(12.895622)
     # DOS tests
     sec_dos = sec_scc[0].dos_electronic
     assert len(sec_dos) == 1
@@ -71,8 +71,10 @@ def test_lco(parser):
     assert sec_dos[0].energy_shift == sec_dos[0].energy_fermi
     assert len(sec_dos[0].total[0].value) == sec_dos[0].n_energies
     # x_wannier90 tests
-    sec_hoppings = sec_scc[0].x_wannier90_hoppings
-    assert sec_hoppings.nrpts == 397
-    assert sec_hoppings.nrpts == len(sec_hoppings.degeneracy_factors)
-    assert sec_hoppings.hopping_matrix.shape[0] == sec_hoppings.nrpts
-    assert sec_hoppings.hopping_matrix.shape[1] == 7
+    sec_hoppings = sec_scc[0].hopping_matrix[0]
+    assert sec_hoppings.n_wigner_seitz_points == 397
+    assert sec_hoppings.n_wigner_seitz_points == len(sec_hoppings.degeneracy_factors)
+    assert sec_hoppings.n_orbitals == sec_projection.n_projected_orbitals
+    assert sec_hoppings.value.shape[0] == sec_hoppings.n_wigner_seitz_points
+    assert sec_hoppings.value.shape[1] == sec_hoppings.n_orbitals
+    assert sec_hoppings.value.shape[2] == 7
