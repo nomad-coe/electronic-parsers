@@ -1,0 +1,11 @@
+#=======================================================
+#FHI-aims file: /mnt/lxfs2/scratch/bieniek/binaries/monomers_unrelaxed/pbe/really_tight/minimal/atomic_zora/8/14_Si/geometry.in
+#Created using the Atomic Simulation Environment (ASE)
+#=======================================================
+lattice_vector 3.8670900000000001 0.0000000000000000 0.0000000000000000 
+lattice_vector 1.9335450000000005 3.3489981787207648 0.0000000000000000 
+lattice_vector 1.9335450000000005 1.1163327262402551 3.1574657631397995 
+atom 0.0000000000000000 0.0000000000000000 0.0000000000000000 Si
+initial_moment         0.000000
+atom 1.9335450000000003 1.1163327262402549 0.7893664407849499 Si
+initial_moment         0.000000

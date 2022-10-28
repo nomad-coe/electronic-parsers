@@ -36,9 +36,13 @@ def parser():
 
 @pytest.fixture(scope='module')
 def silicon(parser):
-    archive = EntryArchive()
-    parser.parse('tests/data/fhiaims/Si_band_dos/aims_CC.out', archive, None)
-    return archive
+    Si = {}
+    for version in ['v071914_7', 'v171221_1']:
+        archive = EntryArchive()
+        parser.parse('tests/data/fhiaims/Si_band_dos_' + version + '/aims_CC.out',
+                     archive, None)
+        Si[version] = archive
+    return Si
 
 
 def test_scf_spinpol(parser):
@@ -136,7 +140,7 @@ def test_band_spinpol(parser):
 def test_band_silicon(silicon):
     """Tests that the band structure of silicon is parsed correctly.
     """
-    scc = silicon.run[-1].calculation[0]
+    scc = silicon['v071914_7'].run[-1].calculation[0]
     band = scc.band_structure_electronic[0]
     segments = band.segment
     energies = np.array([s.energies.to(ureg.electron_volt).magnitude for s in segments])
@@ -163,27 +167,28 @@ def test_band_silicon(silicon):
 def test_dos_silicon(silicon):
     """Tests that the DOS of silicon is parsed correctly.
     """
-    scc = silicon.run[-1].calculation[0]
-    dos = scc.dos_electronic[0]
-    energies = dos.energies.to(ureg.electron_volt).magnitude
-    values = np.array([d.value.magnitude for d in dos.total])
-    dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
-    assert pytest.approx(dos_integrated, abs=1e-2) == 4.
+    for Si in silicon.values():
+        scc = Si.run[-1].calculation[0]
+        dos = scc.dos_electronic[0]
+        energies = dos.energies.to(ureg.electron_volt).magnitude
+        values = np.array([d.value.magnitude for d in dos.total])
+        dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
+        assert pytest.approx(dos_integrated, abs=5e-2) == 8.
 
-    # Check that an energy reference is reported
-    energy_reference = scc.energy.fermi
-    assert energy_reference is not None
-    energy_reference = energy_reference.to(ureg.electron_volt).magnitude
+        # Check that an energy reference is reported
+        energy_reference = scc.energy.fermi
+        assert energy_reference is not None
+        energy_reference = energy_reference.to(ureg.electron_volt).magnitude
 
-    # Check that an approporiately sized band gap is found at the given
-    # reference energy
-    nonzero = np.unique(values.nonzero())
-    energies = energies[nonzero]
-    energies.sort()
-    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")
-    highest_occupied_index = lowest_unoccupied_index - 1
-    gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
-    assert gap == approx(0.54054054)
+        # Check that an approporiately sized band gap is found at the given
+        # reference energy
+        nonzero = np.unique(values.nonzero())
+        energies = energies[nonzero]
+        energies.sort()
+        lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")
+        highest_occupied_index = lowest_unoccupied_index - 1
+        gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
+        assert gap == approx(0.54054054)
 
 
 def test_dos(parser):
@@ -194,18 +199,18 @@ def test_dos(parser):
     sec_dos = sec_scc.dos_electronic[0]
     assert np.shape(sec_dos.energies) == (50,)
     assert np.shape(sec_dos.total[0].value) == (50,)
-    assert sec_dos.total[0].value[0].to(1/ureg.eV).magnitude == approx(0.00233484)
-    assert sec_dos.total[0].value[-1].to(1/ureg.eV).magnitude == approx(0.49471595)
+    assert sec_dos.total[0].value[0].to(1 / ureg.eV).magnitude == approx(0.00233484)
+    assert sec_dos.total[0].value[-1].to(1 / ureg.eV).magnitude == approx(0.49471595)
 
     dos_integrated = integrate_dos(sec_dos, False, sec_scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 3.  # 3rd valence shell
 
     sec_species_dos = sec_dos.species_projected
     assert np.shape(sec_species_dos[7].value) == (50,)
-    assert sec_species_dos[0].value[44].to(1/ureg.eV).magnitude == approx(0.62432797) # Na total
-    assert sec_species_dos[1].value[37].to(1/ureg.eV).magnitude == approx(0.12585650) # Cl total
-    assert sec_species_dos[4].value[3].to(1/ureg.eV).magnitude == approx(0.07198767) # Na l=1
-    assert sec_species_dos[7].value[5].to(1/ureg.eV).magnitude == approx(0.00394778) # Cl l=2
+    assert sec_species_dos[0].value[44].to(1 / ureg.eV).magnitude == approx(0.62432797)  # Na total
+    assert sec_species_dos[1].value[37].to(1 / ureg.eV).magnitude == approx(0.12585650)  # Cl total
+    assert sec_species_dos[4].value[3].to(1 / ureg.eV).magnitude == approx(0.07198767)  # Na l=1
+    assert sec_species_dos[7].value[5].to(1 / ureg.eV).magnitude == approx(0.00394778)  # Cl l=2
 
 
 def test_md(parser):
