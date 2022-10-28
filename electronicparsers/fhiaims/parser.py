@@ -837,9 +837,13 @@ class FHIAimsParser:
             return energies, dos
 
         def parse_dos(section):
+            version_normalization_cutoff = 71914.7
+            version_normalization = 2
+
             sec_scc = sec_run.calculation[-1]
             sec_dos = None
             energies = None
+
             n_spin = self.out_parser.get_number_of_spin_channels()
             # parse total first, we expect only one file
             total_dos_files, _ = section.get('total_dos_files', [['KS_DOS_total_raw.dat'], []])
@@ -856,6 +860,9 @@ class FHIAimsParser:
                 for spin in range(len(dos)):
                     sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
                     sec_dos_values.spin = spin
+                    if float(sec_run.program.version) <= version_normalization_cutoff:
+                        sec_dos_values.raw_data_normalization_factor = version_normalization
+                        dos[spin] *= version_normalization
                     sec_dos_values.value = dos[spin]
 
             # parse projected
