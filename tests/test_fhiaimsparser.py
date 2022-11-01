@@ -226,3 +226,12 @@ def test_gw_eigs(parser):
     assert sec_eigs_gw.value_exchange[0][0][7].magnitude == approx(-1.16615227e-17)
     assert sec_eigs_gw.value_qp[0][0][71].magnitude == approx(-2.60353703e-20)
     assert sec_eigs_gw.occupations[0][0][64] == 2.0
+
+
+def test_hybrid(parser):
+    """"Taken from the official test files in FHI-aims v210716_3"""
+    archive = EntryArchive()
+    parser.parse('tests/data/fhiaims/GaAs_HSE06+SOC/aims.out', archive, None)
+
+    sec_xc_functional = archive.run[0].method[0].dft.xc_functional
+    assert sec_xc_functional.hybrid[0].parameters['exact_exchange_mixing_factor'] == .25
