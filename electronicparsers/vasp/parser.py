@@ -43,7 +43,7 @@ from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, BasisSetCellDependent, DFT, AtomParameters, XCFunctional,
+    Method, BasisSet, BasisSetCellDependent, DFT, HubbardModel, AtomParameters, XCFunctional,
     Functional, Electronic, Scf
 )
 from nomad.datamodel.metainfo.simulation.system import (
@@ -892,6 +892,9 @@ class RunContentParser(ContentParser):
             self._incar = dict(incar=None, incar_out=None)
         incar.update(self._get_key_values('/modeling[0]/parameters[0]/i'))
         incar.update(self._get_key_values('/modeling[0]/parameters[0]/v'))
+        for hubbard_tag in ('LDAUL', 'LDAUU', 'LDAUJ'):
+            if hubbard_tag in incar:
+                incar[hubbard_tag] = self._get_key_values('/modeling[0]/incar[0]/v')[hubbard_tag]
 
         self._incar['incar_out'] = incar
         self._fix_incar(incar)
@@ -1175,7 +1178,23 @@ class VASPParser:
                 except Exception:
                     self.logger.warn('Error setting metainfo', data=dict(key=key))
 
-        # atom properties
+        # atom properties & hubbard correction
+        # based on https://www.vasp.at/wiki/index.php/LDAUTYPE (08/07/2022)
+        hubbard_method_type = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
+        hubbard_orbital_type = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
+        hubbard_present = False
+
+        # try parsing vasprun.xml, incar, outcar (abbreviated settings)
+        for file_type, parser_type in zip(['incar_out', 'incar', 'incar', 'incar_out'],
+                                          [RunContentParser, RunContentParser, OutcarContentParser, OutcarContentParser]):
+            self.parser.incar
+            parsed_file = self.parser._incar[file_type]
+            if not (type(self.parser) is parser_type and parsed_file): continue
+            # check minimum requirements to define hubbard_model
+            if (file_type == 'incar' and parsed_file.get('LDAU')) or (parsed_file.get('LDAUL')):
+                hubbard_present = True
+                break
+
         atomtypes = self.parser.atom_info.get('atomtypes', {})
         element = atomtypes.get('element', [])
         atom_counts = {e: 0 for e in element}
@@ -1193,6 +1212,15 @@ class VASPParser:
             pseudopotential = ' '.join(pseudopotential) if isinstance(
                 pseudopotential, list) else pseudopotential
             sec_method_atom_kind.pseudopotential_name = str(pseudopotential)
+            if hubbard_present:
+                orbital = hubbard_orbital_type[int(parsed_file.get('LDAUL')[i])]
+                if orbital:
+                    sec_hubb = sec_method_atom_kind.m_create(HubbardModel)
+                    sec_hubb.orbital = orbital
+                    sec_hubb.U = float(parsed_file.get('LDAUU')[i]) * ureg.eV
+                    sec_hubb.J = float(parsed_file.get('LDAUJ')[i]) * ureg.eV
+                    sec_hubb.method = hubbard_method_type[parsed_file.get('LDAUTYPE')]
+                    sec_hubb.projection_type = 'on-site'
             atom_counts[element[i]] += 1
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
 
