@@ -36,20 +36,20 @@ def parser():
 @pytest.fixture(scope='module')
 def silicon_dos(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/vasp/dos_si.xml', archive, None)
+    parser.parse('tests/data/vasp/Si_dos_band/dos_si.xml', archive, None)
     return archive
 
 
 @pytest.fixture(scope='module')
 def silicon_band(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/vasp/band_si.xml', archive, None)
+    parser.parse('tests/data/vasp/Si_dos_band/band_si.xml', archive, None)
     return archive
 
 
 def test_vasprunxml_static(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/vasp/vasprun.xml.static', archive, None)
+    parser.parse('tests/data/vasp/Mg_bands/vasprun.xml.static', archive, None)
 
     assert len(archive.run) == 1
 
@@ -86,7 +86,7 @@ def test_vasprunxml_static(parser):
 
 def test_vasprunxml_relax(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/vasp/vasprun.xml.relax', archive, None)
+    parser.parse('tests/data/vasp/AgAc_relax/vasprun.xml.relax', archive, None)
 
     assert len(archive.run[0].method) == 1
 
@@ -108,7 +108,7 @@ def test_vasprunxml_relax(parser):
 
 def test_vasprunxml_bands(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/vasp/vasprun.xml.bands', archive, None)
+    parser.parse('tests/data/vasp/Mg_bands/vasprun.xml.bands', archive, None)
 
     sec_k_band = archive.run[0].calculation[0].band_structure_electronic[0]
     assert len(sec_k_band.segment) == 6
@@ -170,7 +170,7 @@ def test_dos_silicon(silicon_dos):
 
 def test_outcar(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/vasp/OUTCAR', archive, None)
+    parser.parse('tests/data/vasp/AgAc_relax/OUTCAR', archive, None)
 
     sec_run = archive.run[0]
     assert sec_run.program.version == '5.3.2 13Sep12 complex serial LinuxIFC'
