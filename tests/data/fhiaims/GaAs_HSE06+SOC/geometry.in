@@ -1,0 +1,7 @@
+# Zincblende structure with experimental lattice parameter a = 5.65315 AA.
+lattice_vector    0.0        2.826575   2.826575
+lattice_vector    2.826575   0.0        2.826575
+lattice_vector    2.826575   2.826575   0.0 
+
+atom_frac          0.0    0.0    0.0   Ga
+atom_frac          0.25   0.25   0.25  As
