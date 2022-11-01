@@ -1220,7 +1220,7 @@ class VASPParser:
             else:
                 sec_xc_functional.hybrid.append(Functional(
                     name='HYB_GGA_XC_%s' % gga, parameters=dict(
-                        aexx=aexx, aggax=aggax, aggac=aggac, aldac=aldac)))
+                        aggax=aggax, aggac=aggac, aldac=aldac)))
 
         else:
             metagga = self.parser.incar.get('METAGGA')
@@ -1237,6 +1237,12 @@ class VASPParser:
                     sec_xc_functional.hybrid.append(Functional(name=xc_functional))
                 else:
                     sec_xc_functional.contributions.append(Functional(name=xc_functional))
+
+        # save hybrid parameters
+        if len(sec_xc_functional.hybrid):
+            if not sec_xc_functional.hybrid[-1].parameters:
+                sec_xc_functional.hybrid[-1].parameters = dict()
+            sec_xc_functional.hybrid[-1].parameters['exact_exchange_mixing_factor'] = aexx
 
         # convergence thresholds
         tolerance = self.parser.incar.get('EDIFF')

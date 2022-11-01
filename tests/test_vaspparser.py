@@ -218,6 +218,7 @@ def test_hybrid(parser):
 
     sec_xc_functional = archive.run[-1].method[-1].dft.xc_functional
     assert sec_xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE06'
+    assert sec_xc_functional.hybrid[0].parameters['exact_exchange_mixing_factor'] == .25
 
 
 def test_metagga(parser):
