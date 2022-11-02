@@ -7,7 +7,7 @@ codeUrl: https://git.physik.uni-wuerzburg.de/ALF/ALF
 parserDirName: dependencies/electronic/electronicparsers/alf/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
-parserLastUpdate: '26.10.2022'
+parserLastUpdate: '02.11.2022'
 preamble: ''
 tableOfFiles: |
   | Input Filename  | Description |

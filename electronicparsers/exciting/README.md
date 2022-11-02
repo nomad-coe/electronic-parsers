@@ -1,8 +1,8 @@
 This is a NOMAD parser for [exciting](http://exciting-code.org/). It will read exciting input and
 output files and provide all information in NOMAD's unified Metainfo based Archive format.
 
-For exciting please provide at least the files from this table if applicable to your
-calculations (remember that you can provide more files if you want):
+For exciting please provide at least the files from this table, if applicable
+(remember that you always can provide additional files if you want):
 
 |Input Filename| Description|
 |--- | --- |
@@ -36,5 +36,3 @@ calculations (remember that you can provide more files if you want):
 |`input.xml`|(GSFile) |
 |`input.xml`| (XSFile)|
 |`str.out`| |
-
-

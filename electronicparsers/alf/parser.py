@@ -24,7 +24,9 @@ import re
 
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.calculation import Calculation
+from nomad.datamodel.metainfo.simulation.calculation import (
+    Calculation, HoppingMatrix
+)
 from nomad.datamodel.metainfo.simulation.method import Method, QMC
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -100,6 +102,19 @@ class ALFParser:
             }
         }
 
+    def parse_initial_model(self, data):
+        sec_run = self.archive.run[-1]
+        sec_scc = sec_run.m_create(Calculation)
+        #sec_hoppings = sec_scc.m_create(HoppingMatrix)
+
+        #sec_hoppings.n_orbitals = data['lattice'].attrs.get('Norb', None)
+
+        #sec_hoppings.n_wigner_seitz_points =
+        #sec_hoppings.value =
+
+        #sec_scc.n_references = 1
+        #sec_scc.calculations_ref = [sec_hoppings]
+
     def parse_system(self, data):
         sec_run = self.archive.run[-1]
         sec_system = sec_run.m_create(System)
@@ -107,12 +122,28 @@ class ALFParser:
         for keys in data['lattice'].attrs.keys():
             setattr(sec_system, f'x_alf_{self._lattice_map[keys]}', data['lattice'].attrs[keys])
 
+        sec_var_lattice = sec_system.m_create(x_alf_parameters_var_lattice)
         for keys in data['parameters']['var_lattice'].attrs.keys():
-            sec_var_lattice = sec_system.m_create(x_alf_parameters_var_lattice)
             val = data['parameters']['var_lattice'].attrs[keys]
             if keys == 'lattice_type' or keys == 'model':
                 val = val.decode('UTF-8') # from binary data to str
             setattr(sec_var_lattice, f'x_alf_{keys}', val)
+
+        # Parse the lattice model as system
+        sec_system.name = sec_system.x_alf_var_lattice.x_alf_lattice_type
+        sec_system.type = '2D'
+        sec_atoms = sec_system.m_create(Atoms)
+        sec_atoms.lattice_vectors = np.vstack((
+            np.append(sec_system.x_alf_a1, 0.0),
+            np.append(sec_system.x_alf_a2, 0.0),
+            np.array([0.0, 0.0, 1.0])))
+        sec_atoms.periodic = [sec_atoms.lattice_vectors is not None] * 3
+        sec_atoms.supercell_matrix = np.vstack((
+            np.append(sec_system.x_alf_l1, 0.0),
+            np.append(sec_system.x_alf_l2, 0.0),
+            np.array([0.0, 0.0, 1.0])))
+        #sec_atoms.labels
+        #sec_atoms.positions
 
     def parse_method(self, data):
         sec_run = self.archive.run[-1]
@@ -126,7 +157,7 @@ class ALFParser:
 
         # QMC metainfo
         sec_qmc = sec_method.m_create(QMC)
-        sec_qmc.t0 = sec_method.x_alf_var_hubbard.x_alf_ham_t
+        # sec_qmc.t0 = sec_method.x_alf_var_hubbard.x_alf_ham_t
         sec_qmc.U = sec_method.x_alf_var_hubbard.x_alf_ham_u
         sec_qmc.chemical_potential = sec_method.x_alf_var_hubbard.x_alf_ham_chem
         sec_qmc.inverse_temperature = sec_method.x_alf_var_model_generic.x_alf_beta
@@ -140,15 +171,9 @@ class ALFParser:
             sec_qmc.n_bins = self.info_parser.get('number_of_bins')
             sec_qmc.n_sweeps = self.info_parser.get('number_of_sweeps')
             sec_qmc.n_wraps = self.info_parser.get('number_of_wraps')
-
-            print(self.info_parser.get('parameters'))
-            x = {}
-            for k, v in enumerate(self.info_parser.get('parameters')):
-                key = v[0]
-                val = v[1]
-                x.update({key: val})
-            #if 'Precision Phase, Max' in self.info_parser.get('parameters'):
-            #    print("hey")
+        if sec_run.system[0].x_alf_var_lattice is not None:
+            model_name = [sec_run.system[0].x_alf_var_lattice.x_alf_lattice_type, sec_run.system[0].x_alf_var_lattice.x_alf_model]
+            sec_qmc.model_name = ' '.join(model_name)
 
     def parse_scc(self, data):
         sec_run = self.archive.run[-1]
@@ -207,6 +232,9 @@ class ALFParser:
             branch = self.info_parser.get('program_branch', '')
             if branch:
                 sec_program.x_alf_commit_branch = branch
+
+        # reference to an input hopping model
+        self.parse_initial_model(data)
 
         self.parse_system(data)
 
