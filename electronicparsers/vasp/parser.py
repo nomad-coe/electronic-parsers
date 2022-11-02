@@ -60,7 +60,7 @@ from nomad.datamodel.metainfo.workflow import (
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
     data = {}
-    pattern = re.compile(r'([A-Z_]+)\s*=\s*([\w\-]+\s{0,3}[\d\. ]*[E\-\+\d]*)')
+    pattern = re.compile(r'([A-Z_]+)\s*=\s*([a-zA-Z]*[\d\-\.\+\sE]+)')
 
     def convert(v):
         if isinstance(v, list):
@@ -892,9 +892,7 @@ class RunContentParser(ContentParser):
             self._incar = dict(incar=None, incar_out=None)
         incar.update(self._get_key_values('/modeling[0]/parameters[0]/i'))
         incar.update(self._get_key_values('/modeling[0]/parameters[0]/v'))
-        for hubbard_tag in ('LDAUL', 'LDAUU', 'LDAUJ'):
-            if hubbard_tag in incar:
-                incar[hubbard_tag] = self._get_key_values('/modeling[0]/incar[0]/v')[hubbard_tag]
+        incar.update(self._get_key_values('/modeling[0]/incar[0]/v'))
 
         self._incar['incar_out'] = incar
         self._fix_incar(incar)
