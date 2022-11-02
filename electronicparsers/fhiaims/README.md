@@ -1,8 +1,8 @@
 This is a NOMAD parser for [FHI-aims](https://aimsclub.fhi-berlin.mpg.de/). It will read FHI-aims input and
 output files and provide all information in NOMAD's unified Metainfo based Archive format.
 
-For FHI-aims please provide at least the files from this table if applicable to your
-calculations (remember that you can provide more files if you want):
+For FHI-aims please provide at least the files from this table, if applicable
+(remember that you always can provide additional files if you want):
 
 |Input Filename| Description|
 |--- | --- |
@@ -18,5 +18,3 @@ calculations (remember that you can provide more files if you want):
 |`atom_proj_dos_<atom_name><index>_raw.dat`  | Atom-projected DOS @ vacuum|
 |`atom_projected_dos_<atom_name><index>.dat`  | Atom-projected DOS @ Fermi Energy|
 |`band<spin><segment>.out` | bandstructure file |
-
-

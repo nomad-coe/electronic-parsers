@@ -1,8 +1,5 @@
-This is a NOMAD parser for [Fleur](https://www.flapw.de/). It will read Fleur input and
+This is a NOMAD parser for [FLEUR](https://www.flapw.de/). It will read FLEUR input and
 output files and provide all information in NOMAD's unified Metainfo based Archive format.
 
-For Fleur please provide at least the files from this table if applicable to your
-calculations (remember that you can provide more files if you want):
-
-
-
+For FLEUR please provide at least the files from this table, if applicable
+(remember that you always can provide additional files if you want):
