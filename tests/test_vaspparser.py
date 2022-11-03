@@ -239,17 +239,17 @@ def test_dftu_static(parser):
     for mainfile in ['vasprun.xml', 'OUTCAR']:
         parser.parse(reference_dir + mainfile, archive, None)
         params = archive.run[-1].method[-1].atom_parameters
-        references = {'orbital': ('d', 'd'), 'U': (3.25, 2.), 'J': (0., 1.)}
+        references = {'orbital': ('d', 'd'), 'u': (3.25, 2.), 'j': (0., 1.)}
         slice = 0
         for param in params:
             if 'hubbard_model' in param.__dict__.keys():
-                assert param.hubbard_model['method'] == 'Dudarev'
-                assert param.hubbard_model['orbital'] == references['orbital'][slice]
-                assert approx(param.hubbard_model['U'].to(ureg.eV).magnitude) == references['U'][slice]
-                assert approx(param.hubbard_model['J'].to(ureg.eV).magnitude) == references['J'][slice]
+                assert param.hubbard_model.method == 'Dudarev'
+                assert param.hubbard_model.orbital == references['orbital'][slice]
+                assert approx(param.hubbard_model.u.to(ureg.eV).magnitude) == references['u'][slice]
+                assert approx(param.hubbard_model.j.to(ureg.eV).magnitude) == references['j'][slice]
                 slice += 1
 
     # check the OUTCAR value when no INCAR is present
     parser.parse('tests/data/vasp/Mg4V2Bi2O12_dftu_no_incar/OUTCAR', archive, None)
     params = archive.run[-1].method[-1].atom_parameters
-    assert approx(params[1].hubbard_model['U'].to(ureg.eV).magnitude) == 3.2
+    assert approx(params[1].hubbard_model.u.to(ureg.eV).magnitude) == 3.2

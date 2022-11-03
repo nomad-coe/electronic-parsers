@@ -1215,8 +1215,8 @@ class VASPParser:
                 if orbital:
                     sec_hubb = sec_method_atom_kind.m_create(HubbardModel)
                     sec_hubb.orbital = orbital
-                    sec_hubb.U = float(parsed_file.get('LDAUU')[i]) * ureg.eV
-                    sec_hubb.J = float(parsed_file.get('LDAUJ')[i]) * ureg.eV
+                    sec_hubb.u = float(parsed_file.get('LDAUU')[i]) * ureg.eV
+                    sec_hubb.j = float(parsed_file.get('LDAUJ')[i]) * ureg.eV
                     sec_hubb.method = hubbard_method_type[parsed_file.get('LDAUTYPE')]
                     sec_hubb.projection_type = 'on-site'
             atom_counts[element[i]] += 1

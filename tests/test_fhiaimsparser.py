@@ -236,5 +236,5 @@ def test_dftu(parser):
 
     sec_hubb = archive.run[-1].method[0].atom_parameters[0].hubbard_model
     assert sec_hubb.orbital == '4f'
-    assert approx(sec_hubb.U_effective.to(ureg.eV).magnitude) == 4.5
+    assert approx(sec_hubb.u_effective.to(ureg.eV).magnitude) == 4.5
     assert sec_hubb.method == 'Dudarev'
