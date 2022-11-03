@@ -19,8 +19,7 @@
 import numpy as np            # pylint: disable=unused-import
 
 from nomad.metainfo import (  # pylint: disable=unused-import
-    MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference, JSON
+    MSection, Package, Quantity, Section, SubSection, JSON
 )
 from nomad.datamodel.metainfo import simulation
 
@@ -404,8 +403,3 @@ class Calculation(simulation.calculation.Calculation):
     x_alf_spinz_eq = SubSection(sub_section=x_alf_observable_eqtau_data)
 
     x_alf_spinz_tau = SubSection(sub_section=x_alf_observable_eqtau_data)
-
-
-class Run(simulation.run.Run):
-
-    m_def = Section(validate=False, extends_base_section=True)

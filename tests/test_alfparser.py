@@ -17,9 +17,10 @@
 #
 
 import pytest
+import numpy as np
 
 from nomad.datamodel import EntryArchive
-from developmentalparsers.alf import ALFParser
+from electronicparsers.alf import ALFParser
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -31,9 +32,47 @@ def parser():
     return ALFParser()
 
 
-def test_1(parser):
+def test_qmc(parser):
     archive = EntryArchive()
     parser.parse('tests/data/alf/1/data.h5', archive, None)
 
-    sec_calc = archive.run[0].calculation
-    assert sec_calc[0].x_alf_green_eq.x_alf_obser[7][0][0][0][15][1] == approx(9.52599362e-17)
+    # program tests
+    sec_program = archive.run[0].program
+    assert sec_program.name == 'ALF'
+    assert sec_program.x_alf_commit_hash == '8cdcc2d7'
+    assert sec_program.x_alf_commit_branch == '196-write-parameters-to-hdf5-file'
+    # system tests
+    sec_system = archive.run[0].system
+    assert len(sec_system) == 1
+    assert sec_system[0].name == 'Square'
+    assert sec_system[0].type == '2D'
+    assert sec_system[0].is_representative
+    assert len(sec_system[0].atoms.labels) == 16
+    assert len(sec_system[0].atoms.labels) == len(sec_system[0].atoms.positions)
+    assert (sec_system[0].atoms.lattice_vectors.to('angstrom').magnitude[0] == np.array([1., 0., 0.])).all()
+    # method tests
+    sec_method = archive.run[0].method
+    assert len(sec_method) == 1
+    assert sec_method[0].qmc.model_name == 'Square Hubbard'
+    assert sec_method[0].qmc.u_0 == 4.0
+    assert sec_method[0].qmc.chemical_potential == 0.0
+    assert sec_method[0].qmc.n_bins == 213
+    # calculation tests
+    sec_scc = archive.run[0].calculation
+    assert len(sec_scc) == 2
+    assert sec_scc[0].system_ref == sec_scc[1].system_ref
+    assert sec_scc[0].method_ref == sec_scc[1].method_ref
+    assert sec_scc[0].hopping_matrix[0].n_orbitals == 2
+    assert sec_scc[1].calculations_ref[0] == sec_scc[0]
+    assert sec_scc[1].x_alf_ener_scal.x_alf_obser.shape == (213, 1, 2)
+    assert sec_scc[1].x_alf_green_eq.x_alf_obser[0][0][0][0][0][0] == approx(0.99999999999)
+    assert sec_scc[1].x_alf_green_eq.x_alf_obser[0][0][0][0][0][1] == approx(2.07957262521e-12)
+    assert sec_scc[1].energy.total.value[0].to('eV').magnitude == approx(-12.9660786)
+    assert sec_scc[1].energy.kinetic.value[-1].to('eV').magnitude == approx(-21.261728298)
+    assert sec_scc[1].energy.potential.value.shape[0] == 213
+    assert sec_scc[1].electronic_correlations[0].n_supercell == 16
+    assert sec_scc[1].electronic_correlations[0].n_bins == 213
+    assert sec_scc[1].electronic_correlations[0].spin_spin_value.shape == (3, 213, 16)
+    # workflow tests
+    sec_workflow = archive.workflow[0]
+    assert sec_workflow.type == 'single_point'
