@@ -1243,6 +1243,7 @@ class VASPParser:
             if not sec_xc_functional.hybrid[-1].parameters:
                 sec_xc_functional.hybrid[-1].parameters = dict()
             sec_xc_functional.hybrid[-1].parameters['exact_exchange_mixing_factor'] = aexx
+            sec_xc_functional.normalize_hybrid()
 
         # convergence thresholds
         tolerance = self.parser.incar.get('EDIFF')
