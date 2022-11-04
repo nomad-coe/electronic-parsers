@@ -1320,7 +1320,8 @@ class FHIAimsParser:
                     hybrid_coeff = 0.25 if hybrid_coeff is None else hybrid_coeff
                     xc_parameters.setdefault('$\\omega$ in m^-1', hse_omega.to('1/m').magnitude)
                 if hybrid_coeff is not None:
-                    xc_parameters.setdefault('hybrid coefficient $\\alpha$', hybrid_coeff)
+                    xc_parameters.setdefault('exact_exchange_mixing_factor', hybrid_coeff)
+                    sec_xc_functional.normalize_hybrid()
                 if xc_parameters:
                     functional.parameters = xc_parameters
                 if '_X_' in name or name.endswith('_X'):
