@@ -21,7 +21,6 @@ import numpy as np
 
 from nomad.datamodel import EntryArchive
 from electronicparsers.wannier90 import Wannier90Parser
-from nomad.units import ureg
 
 
 def approx(value, abs=0, rel=1e-6):
