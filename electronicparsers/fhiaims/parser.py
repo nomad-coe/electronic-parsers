@@ -1359,7 +1359,7 @@ class FHIAimsParser:
                     sec_atom_species.x_fhi_aims_controlInOut_species_cut_pot_scale = val[0][2]
                 elif "request for '+U'" in key:
                     sec_hubbard = sec_atom_type.m_create(HubbardModel)
-                    sec_hubbard.orbital = str(val[0][0]) + val[0][1]
+                    sec_hubbard.orbital = f'{val[0][0]}{val[0][1]}'
                     sec_hubbard.u_effective = val[0][-2] * ureg.eV
                     sec_hubbard.method = 'Dudarev'
                     sec_hubbard.projection_type = 'Mulliken (dual)'

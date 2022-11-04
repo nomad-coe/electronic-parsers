@@ -242,7 +242,7 @@ def test_dftu_static(parser):
         references = {'orbital': ('d', 'd'), 'u': (3.25, 2.), 'j': (0., 1.)}
         slice = 0
         for param in params:
-            if 'hubbard_model' in param.__dict__.keys():
+            if param.hubbard_model:
                 assert param.hubbard_model.method == 'Dudarev'
                 assert param.hubbard_model.orbital == references['orbital'][slice]
                 assert approx(param.hubbard_model.u.to(ureg.eV).magnitude) == references['u'][slice]

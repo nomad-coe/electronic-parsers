@@ -1122,6 +1122,8 @@ class VASPParser:
     def __init__(self):
         self._vasprun_parser = RunContentParser()
         self._outcar_parser = OutcarContentParser()
+        self.hubbard_method_types = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
+        self.hubbard_orbital_types = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
 
     def init_parser(self, filepath, logger):
         self.parser = self._vasprun_parser if '.xml' in filepath else self._outcar_parser
@@ -1178,14 +1180,11 @@ class VASPParser:
 
         # atom properties & hubbard correction
         # based on https://www.vasp.at/wiki/index.php/LDAUTYPE (08/07/2022)
-        hubbard_method_type = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
-        hubbard_orbital_type = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
         hubbard_present = False
-
         # try parsing vasprun.xml, incar, outcar (abbreviated settings)
         for file_type, parser_type in zip(['incar_out', 'incar', 'incar', 'incar_out'],
                                           [RunContentParser, RunContentParser, OutcarContentParser, OutcarContentParser]):
-            self.parser.incar
+            # self.parser.incar  ## in case the keys are not being found: put this line back in
             parsed_file = self.parser._incar[file_type]
             if not (type(self.parser) is parser_type and parsed_file): continue
             # check minimum requirements to define hubbard_model
@@ -1211,13 +1210,13 @@ class VASPParser:
                 pseudopotential, list) else pseudopotential
             sec_method_atom_kind.pseudopotential_name = str(pseudopotential)
             if hubbard_present:
-                orbital = hubbard_orbital_type[int(parsed_file.get('LDAUL')[i])]
+                orbital = self.hubbard_orbital_types[int(parsed_file.get('LDAUL')[i])]
                 if orbital:
                     sec_hubb = sec_method_atom_kind.m_create(HubbardModel)
                     sec_hubb.orbital = orbital
                     sec_hubb.u = float(parsed_file.get('LDAUU')[i]) * ureg.eV
                     sec_hubb.j = float(parsed_file.get('LDAUJ')[i]) * ureg.eV
-                    sec_hubb.method = hubbard_method_type[parsed_file.get('LDAUTYPE')]
+                    sec_hubb.method = self.hubbard_method_types[parsed_file.get('LDAUTYPE')]
                     sec_hubb.projection_type = 'on-site'
             atom_counts[element[i]] += 1
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
