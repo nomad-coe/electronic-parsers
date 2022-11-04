@@ -18,7 +18,6 @@
 #
 import os
 import logging
-import re
 import numpy as np
 
 from nomad.units import ureg
@@ -30,7 +29,6 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 )
 from nomad.datamodel.metainfo.simulation.method import Method, KMesh, Projection
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from .metainfo.wannier90 import x_wannier90_hopping_parameters
 
 re_n = r'[\n\r]'
 

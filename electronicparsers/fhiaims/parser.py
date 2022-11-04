@@ -26,7 +26,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
-    Electronic, Method, XCFunctional, Functional, AtomParameters, DFT,
+    Electronic, Method, XCFunctional, Functional, HubbardModel, AtomParameters, DFT,
     BasisSet, GW as GWMethod
 )
 from nomad.datamodel.metainfo.simulation.system import (
@@ -235,6 +235,8 @@ class FHIAimsOutParser(TextParser):
                 elif not val[i].startswith('| Found'):
                     continue
                 val[i] = val[i].split(':')
+                if len(val[i]) == 1:
+                    val[i] = val[i][0].split('treatment for')
                 if len(val[i]) < 2:
                     continue
                 k = val[i][0].split('Found')[1].strip()
@@ -260,6 +262,8 @@ class FHIAimsOutParser(TextParser):
                 elif not val[i].startswith('| Found'):
                     continue
                 val[i] = val[i].split(':')
+                if len(val[i]) == 1:
+                    val[i] = val[i][0].split('treatment for')
                 if len(val[i]) < 2:
                     continue
                 k = val[i][0].split('Found')[1].strip()
@@ -517,6 +521,10 @@ class FHIAimsOutParser(TextParser):
                 xsection_method.x_fhi_aims_controlInOut_xc,
                 rf'{re_n} *XC:\s*(?:Using)*\s*([\w\- ]+) with OMEGA =\s*([\d\.Ee\-\+]+)',
                 repeats=False, dtype=None),
+            Quantity(
+                'petukhov',
+                rf'{re_n} *Fixing petukhov mixing factor to\s+(\d?\.[\d]+)', repeats=False,
+                dtype=np.dtype(np.float64)),
             Quantity(
                 xsection_method.x_fhi_aims_controlInOut_xc,
                 r'XC: (?:Running|Using) ([\-\w \(\) ]+)', repeats=False),
@@ -1350,6 +1358,13 @@ class FHIAimsParser:
                     sec_atom_species.x_fhi_aims_controlInOut_species_cut_pot = val[0][0] * ureg.angstrom
                     sec_atom_species.x_fhi_aims_controlInOut_species_cut_pot_width = val[0][1] * ureg.angstrom
                     sec_atom_species.x_fhi_aims_controlInOut_species_cut_pot_scale = val[0][2]
+                elif "request for '+U'" in key:
+                    sec_hubbard = sec_atom_type.m_create(HubbardModel)
+                    sec_hubbard.orbital = f'{val[0][0]}{val[0][1]}'
+                    sec_hubbard.u_effective = val[0][-2] * ureg.eV
+                    sec_hubbard.method = 'Dudarev'
+                    sec_hubbard.projection_type = 'Mulliken (dual)'
+                    sec_hubbard.x_fhi_aims_petukhov_mixing_factor = self.out_parser.get('petukhov')
                 elif 'free-atom' in key or 'free-ion' in key:
                     for i in range(len(val)):
                         sec_basis_func = sec_atom_species.m_create(
