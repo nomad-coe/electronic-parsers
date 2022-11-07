@@ -123,7 +123,7 @@ class Method(simulation.method.Method):
         ''')
 
 
-class DFTPlusU(simulation.method.DFTPlusU):
+class HubbardModel(simulation.method.HubbardModel):
 
     m_def = Section(validate=False, extends_base_section=True)
 

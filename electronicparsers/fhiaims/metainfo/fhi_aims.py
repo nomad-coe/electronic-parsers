@@ -1426,3 +1426,15 @@ class AtomParameters(simulation.method.AtomParameters):
     x_fhi_aims_section_controlInOut_atom_species = SubSection(
         sub_section=SectionProxy('x_fhi_aims_section_controlInOut_atom_species'),
         repeats=True)
+
+
+class HubbardModel(simulation.method.HubbardModel):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_fhi_aims_petukhov_mixing_factor = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        Mixing term to correct for double counting in DFT+U
+        ''')

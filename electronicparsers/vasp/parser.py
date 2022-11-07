@@ -43,7 +43,7 @@ from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, BasisSetCellDependent, DFT, AtomParameters, XCFunctional,
+    Method, BasisSet, BasisSetCellDependent, DFT, HubbardModel, AtomParameters, XCFunctional,
     Functional, Electronic, Scf
 )
 from nomad.datamodel.metainfo.simulation.system import (
@@ -60,7 +60,7 @@ from nomad.datamodel.metainfo.workflow import (
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
     data = {}
-    pattern = re.compile(r'([A-Z_]+)\s*=\s*([\w\-]+\s{0,3}[\d\. ]*[E\-\+\d]*)')
+    pattern = re.compile(r'([A-Z_]+)\s*=\s*([a-zA-Z]*[\d\-\.\+\sE]+)')
 
     def convert(v):
         if isinstance(v, list):
@@ -892,6 +892,7 @@ class RunContentParser(ContentParser):
             self._incar = dict(incar=None, incar_out=None)
         incar.update(self._get_key_values('/modeling[0]/parameters[0]/i'))
         incar.update(self._get_key_values('/modeling[0]/parameters[0]/v'))
+        incar.update(self._get_key_values('/modeling[0]/incar[0]/v'))
 
         self._incar['incar_out'] = incar
         self._fix_incar(incar)
@@ -1121,6 +1122,8 @@ class VASPParser:
     def __init__(self):
         self._vasprun_parser = RunContentParser()
         self._outcar_parser = OutcarContentParser()
+        self.hubbard_method_types = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
+        self.hubbard_orbital_types = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
 
     def init_parser(self, filepath, logger):
         self.parser = self._vasprun_parser if '.xml' in filepath else self._outcar_parser
@@ -1175,7 +1178,20 @@ class VASPParser:
                 except Exception:
                     self.logger.warn('Error setting metainfo', data=dict(key=key))
 
-        # atom properties
+        # atom properties & hubbard correction
+        # based on https://www.vasp.at/wiki/index.php/LDAUTYPE (08/07/2022)
+        hubbard_present = False
+        # try parsing vasprun.xml, incar, outcar (abbreviated settings)
+        for file_type, parser_type in zip(['incar_out', 'incar', 'incar', 'incar_out'],
+                                          [RunContentParser, RunContentParser, OutcarContentParser, OutcarContentParser]):
+            # self.parser.incar  ## in case the keys are not being found: put this line back in
+            parsed_file = self.parser._incar[file_type]
+            if not (type(self.parser) is parser_type and parsed_file): continue
+            # check minimum requirements to define hubbard_model
+            if (file_type == 'incar' and parsed_file.get('LDAU')) or (parsed_file.get('LDAUL')):
+                hubbard_present = True
+                break
+
         atomtypes = self.parser.atom_info.get('atomtypes', {})
         element = atomtypes.get('element', [])
         atom_counts = {e: 0 for e in element}
@@ -1193,6 +1209,15 @@ class VASPParser:
             pseudopotential = ' '.join(pseudopotential) if isinstance(
                 pseudopotential, list) else pseudopotential
             sec_method_atom_kind.pseudopotential_name = str(pseudopotential)
+            if hubbard_present:
+                orbital = self.hubbard_orbital_types[int(parsed_file.get('LDAUL')[i])]
+                if orbital:
+                    sec_hubb = sec_method_atom_kind.m_create(HubbardModel)
+                    sec_hubb.orbital = orbital
+                    sec_hubb.u = float(parsed_file.get('LDAUU')[i]) * ureg.eV
+                    sec_hubb.j = float(parsed_file.get('LDAUJ')[i]) * ureg.eV
+                    sec_hubb.method = self.hubbard_method_types[parsed_file.get('LDAUTYPE')]
+                    sec_hubb.projection_type = 'on-site'
             atom_counts[element[i]] += 1
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
 
@@ -1220,7 +1245,7 @@ class VASPParser:
             else:
                 sec_xc_functional.hybrid.append(Functional(
                     name='HYB_GGA_XC_%s' % gga, parameters=dict(
-                        aexx=aexx, aggax=aggax, aggac=aggac, aldac=aldac)))
+                        aggax=aggax, aggac=aggac, aldac=aldac)))
 
         else:
             metagga = self.parser.incar.get('METAGGA')
@@ -1237,6 +1262,13 @@ class VASPParser:
                     sec_xc_functional.hybrid.append(Functional(name=xc_functional))
                 else:
                     sec_xc_functional.contributions.append(Functional(name=xc_functional))
+
+        # save hybrid parameters
+        if len(sec_xc_functional.hybrid):
+            if not sec_xc_functional.hybrid[-1].parameters:
+                sec_xc_functional.hybrid[-1].parameters = dict()
+            sec_xc_functional.hybrid[-1].parameters['exact_exchange_mixing_factor'] = aexx
+            sec_xc_functional.normalize_hybrid()
 
         # convergence thresholds
         tolerance = self.parser.incar.get('EDIFF')
