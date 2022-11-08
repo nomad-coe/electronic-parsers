@@ -70,9 +70,9 @@ def test_qmc(parser):
     assert sec_scc[1].energy.total.value[0].to('eV').magnitude == approx(-12.9660786)
     assert sec_scc[1].energy.kinetic.value[-1].to('eV').magnitude == approx(-21.261728298)
     assert sec_scc[1].energy.potential.value.shape[0] == 213
-    assert sec_scc[1].electronic_correlations[0].n_supercell == 16
-    assert sec_scc[1].electronic_correlations[0].n_bins == 213
-    assert sec_scc[1].electronic_correlations[0].spin_spin_value.shape == (3, 213, 16)
+    assert sec_scc[1].correlations_electronic[0].n_x * sec_scc[1].correlations_electronic[0].n_y == 16
+    assert sec_scc[1].correlations_electronic[0].n_bins == 213
+    assert sec_scc[1].correlations_electronic[0].spin_spin_value.shape == (3, 213, 1, 1, 16)
     # workflow tests
     sec_workflow = archive.workflow[0]
     assert sec_workflow.type == 'single_point'

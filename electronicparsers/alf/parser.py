@@ -171,22 +171,6 @@ class ALFParser:
         sec_atoms.labels = labels
         sec_atoms.positions = np.vstack(positions * ureg.angstrom)
 
-    def parse_initial_model(self, data):
-        sec_run = self.archive.run[-1]
-
-        sec_scc = sec_run.m_create(Calculation)
-        sec_scc.method_ref = sec_run.method[-1]
-        sec_scc.system_ref = sec_run.system[-1]
-        sec_hoppings = sec_scc.m_create(HoppingMatrix)
-
-        # TODO populate after talking with Jefferson and Jonas
-        if sec_run.system is not None:
-            sec_hoppings.n_orbitals = sec_run.system[0].x_alf_n_orb
-
-            # hr = [x, y, z, orb1, orb2, ret]
-            # sec_hoppings.n_wigner_seitz_points =
-            # sec_hoppings.value = ...
-
     def parse_method(self, data):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
@@ -199,12 +183,11 @@ class ALFParser:
 
         # QMC metainfo
         sec_qmc = sec_method.m_create(QMC)
-        # sec_qmc.t0 = sec_method.x_alf_var_hubbard.x_alf_ham_t
         sec_qmc.u_0 = sec_method.x_alf_var_hubbard.x_alf_ham_u
         sec_qmc.chemical_potential = sec_method.x_alf_var_hubbard.x_alf_ham_chem
         sec_qmc.inverse_temperature = sec_method.x_alf_var_model_generic.x_alf_beta
         sec_qmc.dtau = sec_method.x_alf_var_model_generic.x_alf_dtau
-        info_files = [f for f in os.listdir(self.maindir) if f.endswith('info')]
+        info_files = [f for f in os.listdir(self.maindir) if f.startswith('info')]
         if info_files:
             if len(info_files) > 1:
                 self.logger.warn('Multiple info output files found.')
@@ -216,6 +199,100 @@ class ALFParser:
         if sec_run.system[0].x_alf_var_lattice is not None:
             model_name = [sec_run.system[0].x_alf_var_lattice.x_alf_lattice_type, sec_run.system[0].x_alf_var_lattice.x_alf_model]
             sec_qmc.model_name = ' '.join(model_name)
+
+    def parse_initial_model(self, data):
+        sec_run = self.archive.run[-1]
+
+        sec_scc = sec_run.m_create(Calculation)
+        sec_scc.method_ref = sec_run.method[-1]
+        sec_scc.system_ref = sec_run.system[-1]
+
+        # Empty Wigner-Seitz hopping matrix
+        def wigner_seitz_matrix(n_orb, wigner_seitz_points):
+            hr = np.zeros((wigner_seitz_points.shape[0], n_orb, n_orb, 7))
+            for no1 in range(n_orb):
+                for no2 in range(n_orb):
+                    hr[:, no1, no2, :] = np.array([np.append(wigner_seitz[ws], [no1 + 1, no2 + 1, 0, 0]) for ws in range(sec_hoppings.n_wigner_seitz_points)])
+            return np.reshape(hr, (sec_hoppings.n_wigner_seitz_points, n_orb * n_orb, 7))
+
+        # Parameters from ALF
+        n_orb = sec_scc.system_ref.x_alf_n_orb
+        name = sec_scc.system_ref.x_alf_var_lattice.x_alf_lattice_type
+        t_1 = sec_scc.method_ref.x_alf_var_hubbard.x_alf_ham_t  # layer 1
+        # t_2 = sec_scc.method_ref.x_alf_var_hubbard.x_alf_ham_t2  # layer 2
+        t_perp = sec_scc.method_ref.x_alf_var_hubbard.x_alf_ham_tperp  # interlayer
+
+        # Layer names from ALF
+        unid_names = ['N_leg_ladder']
+        bidid_names = ['Square', 'Honeycomb']
+        trid_names = ['Bilayer_square', 'Bilayer_honeycomb']
+
+        # Populating HoppingMatrix in Wannier90 notation
+        # TODO parse correctly 'N_leg_ladder' and 'Bilayer_honeycomb'
+        sec_hoppings = sec_scc.m_create(HoppingMatrix)
+        if sec_run.system is not None:
+            sec_hoppings.n_orbitals = sec_run.system[0].x_alf_n_orb
+
+            if name in unid_names:
+                sec_hoppings.n_wigner_seitz_points = 3
+            elif name in bidid_names:
+                if name == 'Square':
+                    sec_hoppings.n_wigner_seitz_points = 5
+                    wigner_seitz = np.array([
+                        [0, 1, 0],
+                        [1, 0, 0],
+                        [0, 0, 0],
+                        [-1, 0, 0],
+                        [0, -1, 0]])
+                    hr = wigner_seitz_matrix(n_orb, wigner_seitz)
+
+                    for ws in range(sec_hoppings.n_wigner_seitz_points):
+                        hr[ws, :, 5] = [t_1 if ws != 2 else 0.0 for i in range(n_orb) for j in range(n_orb)]
+                    sec_hoppings.value = hr
+                if name == 'Honeycomb':
+                    sec_hoppings.n_wigner_seitz_points = 3
+                    wigner_seitz = np.array([
+                        [0, -1, 0],
+                        [-1, 0, 0],
+                        [0, 0, 0]])
+                    hr = wigner_seitz_matrix(n_orb, wigner_seitz)
+
+                    for ws in range(sec_hoppings.n_wigner_seitz_points):
+                        hr[ws, :, 5] = [
+                            t_1 if (((i + 1) % 2 != 0 and (j + 1) % 2 == 0) or ((i + 1) % 2 == 0 and (j + 1) % 2 != 0))
+                            else 0.0 for i in range(n_orb) for j in range(n_orb)]
+                    sec_hoppings.value = hr
+            elif name in trid_names:
+                if name == 'Bilayer_square':
+                    sec_hoppings.n_wigner_seitz_points = 7
+                    wigner_seitz = np.array([
+                        [0, 1, 0],
+                        [1, 0, 0],
+                        [0, 0, 0],
+                        [-1, 0, 0],
+                        [0, -1, 0],
+                        [0, 0, 1],
+                        [0, 0, -1]])
+                    hr = wigner_seitz_matrix(n_orb, wigner_seitz)
+
+                    for ws in range(sec_hoppings.n_wigner_seitz_points):
+                        if ws < 5:
+                            hr[ws, :, 5] = [t_1 if ws != 2 else 0.0 for i in range(n_orb) for j in range(n_orb)]
+                        else:
+                            hr[ws, :, 5] = [t_perp for i in range(n_orb) for j in range(n_orb)]
+                    sec_hoppings.value = hr
+                if name == 'Bilayer_honeycomb':
+                    sec_hoppings.n_wigner_seitz_points = 5
+                    wigner_seitz = np.array([
+                        [0, -1, 0],
+                        [-1, 0, 0],
+                        [0, 0, 0],
+                        [0, 0, 1],
+                        [0, 0, -1]])
+                    hr = wigner_seitz_matrix(n_orb, wigner_seitz)
+                    sec_hoppings.value = hr
+            else:
+                self.logger.warn('Lattice model is not pre-defined as done in ALF.')
 
     def parse_scc(self, data):
         sec_run = self.archive.run[-1]
