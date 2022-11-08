@@ -1,6 +1,8 @@
 codeLabel: SIESTA
 codeLabelStyle: All in capitals
 codeName: siesta
+codeCategory: Atomistic code
+status: production
 codeUrl: https://siesta-project.org/siesta
 parserDirName: dependencies/electronic/electronicparsers/siesta/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git

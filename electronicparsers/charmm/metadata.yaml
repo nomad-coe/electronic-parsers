@@ -1,6 +1,8 @@
 codeLabel: CHARMM
 codeLabelStyle: all in capitals
 codeName: charmm
+codeCategory: Atomistic code
+status: production
 codeUrl: https://www.charmm.org
 parserDirName: dependencies/electronic/electronicparsers/charmm/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
