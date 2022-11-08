@@ -174,11 +174,11 @@ def test_xs_bse(parser):
 def test_gw(silicon_gw):
     """Basic tests for a GW calculation."""
     sec_methods = silicon_gw.run[0].method
-    assert len(sec_methods) == 2
-    assert sec_methods[1].gw.x_exciting_mixed_basis_gmax.magnitude == approx(226767134954.67346)
-    assert sec_methods[1].gw.x_exciting_self_energy_singularity_treatment == 'mpb'
-    assert sec_methods[1].gw.n_frequencies == 32
-    assert sec_methods[1].gw.frequency_values[-1].magnitude == approx(8.22665908e-16)
+    assert len(sec_methods) == 1
+    assert sec_methods[-1].gw.x_exciting_mixed_basis_gmax.magnitude == approx(226767134954.67346)
+    assert sec_methods[-1].gw.x_exciting_self_energy_singularity_treatment == 'mpb'
+    assert sec_methods[-1].gw.n_frequencies == 32
+    assert sec_methods[-1].gw.frequency_values[-1].magnitude == approx(8.22665908e-16)
 
     sec_sccs = silicon_gw.run[0].calculation
     assert len(sec_sccs) == 1
@@ -196,7 +196,7 @@ def test_gw(silicon_gw):
     assert sec_sccs[0].eigenvalues[0].value_xc_potential[0][2][6].magnitude == approx(-2.1691473890869554e-18, abs=1e-20)
 
 
-def test_band_gw_silicon(silicon_gw):
+def test_gw_band_silicon(silicon_gw):
     """Tests that the band structure of silicon is parsed correctly from a GW
     calculation.
     """
@@ -226,7 +226,7 @@ def test_band_gw_silicon(silicon_gw):
         assert gap == approx(gap_assumed)
 
 
-def test_dos_gw_silicon(silicon_gw):
+def test_gw_dos_silicon(silicon_gw):
     """Tests that the DOS of silicon is parsed correctly from a GW calculation.
     """
     sccs = silicon_gw.run[-1].calculation

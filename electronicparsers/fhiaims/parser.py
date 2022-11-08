@@ -37,7 +37,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     ScfIteration, Energy, EnergyEntry, Stress, StressEntry, Thermodynamics,
     Forces, ForcesEntry
 )
-from nomad.datamodel.metainfo.workflow import Workflow
+from nomad.datamodel.metainfo.workflow import Workflow, Task, GW as GWWorkflow
 
 from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_parallel_task_assignement, x_fhi_aims_section_parallel_tasks,\
@@ -558,7 +558,7 @@ class FHIAimsOutParser(TextParser):
             Quantity(
                 'gw_flag', rf'{re_n}\s*qpe_calc\s*([\w]+)', repeats=False),
             Quantity(
-                'gw_sfc_flag', rf'{re_n}\s*sc_self_energy\s*([\w]+)', repeats=False),
+                'gw_flag', rf'{re_n}\s*sc_self_energy\s*([\w]+)', repeats=False),
             Quantity(
                 'gw_analytical_continuation',
                 rf'{re_n} (?:Using)*\s*([\w\-\s]+) for analytical continuation',
@@ -621,14 +621,6 @@ class FHIAimsOutParser(TextParser):
     def get_number_of_spin_channels(self):
         return self.get('array_size_parameters', {}).get('Number of spin channels', 1)
 
-    def get_calculation_type(self):
-        calculation_type = 'single_point'
-        if self.get('geometry_optimization') is not None:
-            calculation_type = 'geometry_optimization'
-        elif self.get('molecular_dynamics', None) is not None:
-            calculation_type = 'molecular_dynamics'
-        return calculation_type
-
 
 class FHIAimsParser:
     def __init__(self):
@@ -636,6 +628,8 @@ class FHIAimsParser:
         self.control_parser = FHIAimsControlParser()
         self.dos_parser = DataTextParser()
         self.bandstructure_parser = DataTextParser()
+        self._child_archives = {}
+        self._calculation_type = 'dft'
 
         self._xc_map = {
             'Perdew-Wang parametrisation of Ceperley-Alder LDA': [
@@ -745,6 +739,8 @@ class FHIAimsParser:
             'Hirshfeld volume': 'x_fhi_aims_hirschfeld_volume'
         }
 
+        self._gw_flag_names = ['gw', 'gw_expt', 'ev_scgw', 'ev_scgw0', 'scgw']
+
         self._gw_qp_energies_map = {
             'occ_num': 'occupations',
             'e_gs': 'value_ks',
@@ -801,18 +797,18 @@ class FHIAimsParser:
         nspin = self.out_parser.get_number_of_spin_channels()
         nbands = None
         for n in range(len(band_segments_points)):
-            if self._method_type == 'DFT':
+            if self._calculation_type == 'dft':
                 bs_files = [
                     os.path.join(self.out_parser.maindir, 'band%d%03d.out' % (s + 1, n + 1))
                     for s in range(nspin)
                 ]
-            elif self._method_type == 'GW':
+            elif self._calculation_type == 'gw':
                 bs_files = [
                     os.path.join(self.out_parser.maindir, 'GW_band%d%03d.out' % (s + 1, n + 1))
                     for s in range(nspin)
                 ]
             else:
-                self.logger.warning('_method_type not found. Only DFT or GW allowed.')
+                self.logger.warning('_calculation_type not found. Only DFT or GW allowed.')
 
             data = []
             for band_file in bs_files:
@@ -842,37 +838,29 @@ class FHIAimsParser:
             sec_k_band_segment.occupations = occs
 
     def parse_gw(self):
+        # __Chema comment__:
+        # What is more safe?
+        # 1- Obtain certain sections and quantities again in self.parse_gw()
+        # or 2- Try to work out for dft references IF the data is present in the upload
+        # I think it will be good to have 2-, as this also allows us to keep track whether
+        # an upload is complete or have some missing information.
+        # For now I kept it as having to extract the section 'system' and 'energy.fermi'
+        # again by regex of the output file.
         sec_run = self.archive.run[-1]
 
-        # band files recognize as GW main files
-        gw_flag = self.out_parser.get('gw_flag', None)
-        gw_sfc_flag = self.out_parser.get('gw_sfc_flag', None)
-        gw_bs_files = [f for f in os.listdir(self.maindir) if f.startswith('GW')]
-        if gw_flag == 'gw' or gw_flag == 'gw_expt' or gw_flag == 'ev_scgw' or \
-           gw_flag == 'ev_scgw0' or gw_sfc_flag == 'scgw' or gw_bs_files:
-            self._method_type = 'GW'
-
-        if not self._method_type == 'GW':
-            return
-
-        sec_method = sec_run.m_create(Method)
-        sec_method_ref = self.archive.run[-1].method[0]
-        sec_method.starting_method_ref = sec_method_ref
-        sec_method.methods_ref = [sec_method_ref]
-
         # GW method
+        sec_method = sec_run.m_create(Method)
         sec_gw = sec_method.m_create(GWMethod)
+        gw_flag = self.out_parser.get('gw_flag', None)
         if gw_flag == 'gw' or gw_flag == 'gw_expt':
             sec_gw.type = 'G0W0'
         elif gw_flag == 'ev_scgw0' or gw_flag == 'ev_scgw':
             sec_gw.type = 'ev-scGW'
-        if gw_sfc_flag == 'scgw':
+        elif gw_flag == 'scgw':
             sec_gw.type = 'scGW'
 
-        if sec_method_ref.dft.xc_functional is not None:
-            sec_gw.starting_point = sec_method_ref.dft.xc_functional
-        if sec_method_ref.basis_set is not None:
-            sec_gw.basis_set = sec_method_ref.basis_set
+        sec_gw.basis_set = BasisSet(type='numeric AOs')
+        self.parse_xc_functional(sec_method, sec_gw)
 
         # TODO check this with FHIaims GW developers
         sec_gw.kgrid = self.out_parser.get('k_grid', None)
@@ -893,20 +881,32 @@ class FHIAimsParser:
         sec_gw.n_frequencies = self.out_parser.get('n_freq', 100)
         frequency_data = self.out_parser.get('frequency_data', None)
         if frequency_data is not None:
-            sec_gw.frequency_values = [f[1] * ureg.hartree for f in frequency_data]
+            sec_gw.frequency_values = np.array(frequency_data)[:, 1] * ureg.hartree
 
         # GW calculation
         sec_scc = sec_run.m_create(Calculation)
-        sec_scc.method_ref = sec_method
-        if sec_run.system:
-            sec_scc.system_ref = sec_run.system[-1]
-        sec_scc_ref = sec_run.calculation[0]
-        sec_scc.starting_calculation_ref = sec_scc_ref
-        sec_scc.calculations_ref = [sec_scc_ref]
-
-        # assign Fermi level from the last DFT iteration
+        # References
         sec_energy = sec_scc.m_create(Energy)
-        sec_energy.fermi = sec_scc_ref.energy.fermi
+        for n, section in enumerate(self.out_parser.get('full_scf', [])):
+            # skip frames for large trajectories
+            if (n % self.frame_rate) > 0:
+                continue
+            self.parse_system(section)
+
+            # Fermi level
+            scf_iterations = section.get('self_consistency', [])
+            last_scf_iteration = scf_iterations[len(scf_iterations) - 1]
+            if last_scf_iteration.get('fermi_level') is not None:
+                sec_energy.fermi = last_scf_iteration.get('fermi_level')
+                try:
+                    last_scf_iteration.get('fermi_level').units
+                except Exception:
+                    self.logger.warn('Erorr setting the Fermi level: no units')
+        sec_scc.method_ref = sec_method
+        if sec_run.system is not None:
+            sec_scc.system_ref = sec_run.system[-1]
+
+        # Parse GW band structure
         self.parse_bandstructure(sec_energy.fermi)
 
         # scGW calculation
@@ -916,7 +916,6 @@ class FHIAimsParser:
             return
 
         if gw_scf_energies is not None:
-            sec_gw_scf_iteration = sec_scc.m_create(ScfIteration)
             for energies in gw_scf_energies:
                 sec_gw_scf_iteration = sec_scc.m_create(ScfIteration)
                 for key, val in energies.items():
@@ -935,6 +934,70 @@ class FHIAimsParser:
                 # TODO verify shape of eigenvalues
                 val = gw_eigenvalues[key] if key == 'occ_num' else gw_eigenvalues[key] * ureg.eV
                 setattr(sec_eigs_gw, name, np.reshape(val, (1, 1, len(val))))
+
+    def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
+        sec_run = gw_workflow_archive.m_create(Run)
+        sec_run.program = self.archive.run[-1].program
+        setattr(sec_run, 'system', self.archive.run[-1].system)
+
+        sec_workflow = gw_workflow_archive.m_create(Workflow)
+        sec_workflow.type = 'GW'
+        sec_workflow.workflows_ref = [self.archive.workflow[0], gw_archive.workflow[0]]
+
+        # Tasks linking dft and gw
+        sec_workflow.task = [
+            Task(
+                input_workflow=sec_workflow, output_workflow=self.archive.workflow[0],
+                description='DFT calculation performed in an input structure.'),
+            Task(
+                input_workflow=self.archive.workflow[0], output_workflow=gw_archive.workflow[0],
+                description='GW calculation performed from input DFT calculation.'),
+            Task(
+                input_workflow=gw_archive.workflow[0], output_workflow=sec_workflow,
+                description='Comparison between DFT and GW.')
+        ]
+
+        # Include DFT and GW band structures and DOS (if present) for comparison.
+        def extract_section(archive, name):
+            try:
+                return getattr(archive.run[-1].calculation[-1], name)[-1]
+            except Exception:
+                return
+
+        sec_gw = sec_workflow.m_create(GWWorkflow)
+        sec_gw.dos_dft = extract_section(self.archive, 'dos_electronic')
+        sec_gw.dos_gw = extract_section(gw_archive, 'dos_electronic')
+        sec_gw.band_structure_dft = extract_section(self.archive, 'band_structure_electronic')
+        sec_gw.band_structure_gw = extract_section(gw_archive, 'band_structure_electronic')
+
+    def parse_system(self, section):
+        sec_run = self.archive.run[-1]
+
+        lattice_vectors = section.get(
+            'lattice_vectors', self.out_parser.get('lattice_vectors'))
+        lattice_vectors_reciprocal = section.get(
+            'lattice_vectors_reciprocal',
+            self.out_parser.get('lattice_vectors_reciprocal', ''))
+
+        structure = section.get(
+            'structure', self.out_parser.get('structure'))
+        pbc = [lattice_vectors is not None] * 3
+        if structure is None:
+            return
+
+        sec_system = sec_run.m_create(System)
+        sec_atoms = sec_system.m_create(Atoms)
+        if lattice_vectors is not None:
+            sec_atoms.lattice_vectors = lattice_vectors
+        if lattice_vectors_reciprocal is not None:
+            sec_atoms.lattice_vectors_reciprocal = lattice_vectors_reciprocal
+
+        sec_atoms.periodic = pbc
+        sec_atoms.labels = structure.get('labels')
+        sec_atoms.positions = structure.get('positions') * ureg.angstrom
+        velocities = structure.get('velocities')
+        if velocities is not None:
+            sec_atoms.velocities = velocities * ureg.angstrom / ureg.ps
 
     def parse_configurations(self):
         sec_run = self.archive.run[-1]
@@ -1156,34 +1219,10 @@ class FHIAimsParser:
             sec_run.method[-1].electronic.van_der_waals_method = 'TS'
 
         def parse_section(section):
-            lattice_vectors = section.get(
-                'lattice_vectors', self.out_parser.get('lattice_vectors'))
-            lattice_vectors_reciprocal = section.get(
-                'lattice_vectors_reciprocal',
-                self.out_parser.get('lattice_vectors_reciprocal', ''))
-
-            structure = section.get(
-                'structure', self.out_parser.get('structure'))
-            pbc = [lattice_vectors is not None] * 3
-            if structure is None:
-                return
-
-            sec_system = sec_run.m_create(System)
-            sec_atoms = sec_system.m_create(Atoms)
-            if lattice_vectors is not None:
-                sec_atoms.lattice_vectors = lattice_vectors
-            if lattice_vectors_reciprocal is not None:
-                sec_atoms.lattice_vectors_reciprocal = lattice_vectors_reciprocal
-
-            sec_atoms.periodic = pbc
-            sec_atoms.labels = structure.get('labels')
-            sec_atoms.positions = structure.get('positions') * ureg.angstrom
-            velocities = structure.get('velocities')
-            if velocities is not None:
-                sec_atoms.velocities = velocities * ureg.angstrom / ureg.ps
+            self.parse_system(section)
 
             sec_scc = sec_run.m_create(Calculation)
-            sec_scc.system_ref = sec_system
+            sec_scc.system_ref = sec_run.system[-1]
 
             sec_energy = sec_scc.m_create(Energy)
             energy = section.get('energy', {})
@@ -1250,11 +1289,8 @@ class FHIAimsParser:
             # fermi level
             fermi_energy = 0.0
             if scf_iterations:
-                if scf_iterations[-1].get('fermi_level_old') is not None:
-                    fermi_energy = scf_iterations[-1].get('fermi_level_old')
-                else:
-                    if scf_iterations[-1].get('fermi_level') is not None:
-                        fermi_energy = scf_iterations[-1].get('fermi_level')
+                if scf_iterations[-1].get('fermi_level') is not None:
+                    fermi_energy = scf_iterations[-1].get('fermi_level')
                 fermi_energy = fermi_energy.to('joule').magnitude if fermi_energy else 0.0
             sec_scc.energy.fermi = fermi_energy
 
@@ -1286,9 +1322,14 @@ class FHIAimsParser:
         fermi_energy = sec_run.calculation[0].energy.fermi
         self.parse_bandstructure(fermi_energy)
 
-        # sampling method
+    def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)
-        sec_workflow.type = self.out_parser.get_calculation_type()
+        sec_workflow.type = 'single_point'
+        sec_workflow.calculations_ref = self.archive.run[-1].calculation
+        if self.out_parser.get('geometry_optimization') is not None:
+            sec_workflow.type = 'geometry_optimization'
+        elif self.out_parser.get('molecular_dynamics', None) is not None:
+            sec_workflow.type = 'molecular_dynamics'
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
@@ -1413,26 +1454,29 @@ class FHIAimsParser:
         self.parse_topology()
 
         # xc functional from output
+        self.parse_xc_functional(sec_method, sec_dft)
+
+    def parse_xc_functional(self, section, subsection):
         xc_inout = self.out_parser.get('x_fhi_aims_controlInOut_xc', None)
         if xc_inout is not None:
             xc_inout = [xc_inout] if isinstance(xc_inout, str) else xc_inout
             xc = ' '.join([v for v in xc_inout if isinstance(v, str)])
-            sec_method.x_fhi_aims_controlInOut_xc = str(xc)
+            section.x_fhi_aims_controlInOut_xc = str(xc)
 
             # hse func
             hse_omega = None
             if not isinstance(xc_inout[-1], str) and xc.lower().startswith('hse'):
                 unit = self.out_parser.get('x_fhi_aims_controlInOut_hse_unit')
                 hse_omega = xc_inout[-1] * unit if unit else xc_inout[-1]
-                sec_method.x_fhi_aims_controlInOut_hse_omega = hse_omega
+                section.x_fhi_aims_controlInOut_hse_omega = hse_omega
 
             hybrid_coeff = self.out_parser.get('x_fhi_aims_controlInOut_hybrid_xc_coeff')
             if hybrid_coeff is not None:
-                sec_method.x_fhi_aims_controlIn_hybrid_xc_coeff = hybrid_coeff
+                section.x_fhi_aims_controlIn_hybrid_xc_coeff = hybrid_coeff
 
             # convert parsed xc to meta info
             xc_meta_list = self._xc_map.get(xc, [])
-            sec_xc_functional = sec_dft.m_create(XCFunctional)
+            sec_xc_functional = subsection.m_create(XCFunctional)
             for xc_meta in xc_meta_list:
                 name = xc_meta.get('name')
                 functional = Functional(name=name)
@@ -1550,14 +1594,18 @@ class FHIAimsParser:
         self.out_parser.quantities = parser.out_parser.quantities
         self.control_parser.quantities = parser.control_parser.quantities
 
+    def get_mainfile_keys(self, filepath):
+        self.out_parser.mainfile = filepath
+        gw_flag = self.out_parser.get('gw_flag', None)
+        if gw_flag in self._gw_flag_names:
+            return ['GW', 'GW_workflow']
+        return True
+
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
-
-        # 'DFT' (ab initio) being the initial method
-        self._method_type = 'DFT'
 
         self.init_parser()
 
@@ -1593,8 +1641,23 @@ class FHIAimsParser:
             sec_parallel_task_assignement.x_fhi_aims_parallel_task_nr = task_nrs[i]
             sec_parallel_task_assignement.x_fhi_aims_parallel_task_host = task_hosts[i]
 
-        self.parse_method()
+        if self._calculation_type == 'gw':
+            self.parse_gw()
+        else:
+            self.parse_method()
+            self.parse_configurations()
 
-        self.parse_configurations()
+        self.parse_workflow()
 
-        self.parse_gw()
+        gw_flag = self.out_parser.get('gw_flag', None)
+        gw_archive = self._child_archives.get('GW')
+        if gw_archive is not None:
+            if gw_flag in self._gw_flag_names:
+                # GW single point
+                p = FHIAimsParser()
+                p._calculation_type = 'gw'
+                p.parse(filepath, gw_archive, logger)
+
+                # GW workflow
+                gw_workflow_archive = self._child_archives.get('GW_workflow')
+                self.parse_gw_workflow(gw_archive, gw_workflow_archive)
