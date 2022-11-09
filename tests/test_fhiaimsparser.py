@@ -20,7 +20,6 @@ import pytest
 import numpy as np
 
 from nomad.datamodel import EntryArchive
-from nomad.units import ureg
 from electronicparsers.fhiaims import FHIAimsParser
 from tests.dos_integrator import integrate_dos
 
@@ -79,7 +78,6 @@ def test_scf_spinpol(parser):
     sec_scfs = sec_scc.scf_iteration
     assert len(sec_scfs) == 15
     assert sec_scfs[12].energy.total_t0.value.magnitude == approx(-5.56048676e-15)
-    # assert sec_scfs[5].energy_reference_lowest_unoccupied[0].magnitude == approx(-1.42557688e-18)
     assert sec_scfs[7].energy.change.magnitude == approx(9.43361602e-22)
     sec_eig = sec_scc.eigenvalues[0]
     assert np.shape(sec_eig.kpoints) == (4, 3)
