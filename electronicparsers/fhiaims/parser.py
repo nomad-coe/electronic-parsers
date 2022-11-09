@@ -336,8 +336,13 @@ class FHIAimsOutParser(TextParser):
                 'lumo', r'Lowest unoccupied state \(CBM\) at\s*([\d\.\-\+Ee ]+) (?P<__unit>\w+)',
                 repeats=False, dtype=float),
             Quantity(
-                'fermi_level', rf'{re_n} *\| Chemical potential \(Fermi level\) in (?P<__unit>\w+)\s*:([\d\.\-\+Ee ]+)',
-                repeats=False, dtype=float)]
+                'fermi_level',  # older version
+                rf'{re_n} *\| Chemical potential \(Fermi level\) in (\w+)\s*:([\d\.\-\+Ee ]+)',
+                str_operation=lambda x: float(x.split()[1]) * units_mapping.get(x.split()[0])),
+            Quantity(
+                'fermi_level',  # newer version
+                rf'{re_n} *\| Chemical potential \(Fermi level\)\:\s*([\-\d\.]+)\s*(\w+)',
+                str_operation=lambda x: float(x.split()[0]) * units_mapping.get(x.split()[1], 1))]
 
         def str_to_scf_convergence2(val_in):
             val = val_in.split('|')
@@ -943,6 +948,10 @@ class FHIAimsParser:
 
             if iteration.get('fermi_level') is not None:
                 sec_energy.fermi = iteration.get('fermi_level')
+                try:
+                    iteration.get('fermi_level').units
+                except Exception:
+                    self.logger.warn('Erorr setting the Fermi level: no units')
 
             # eigenvalues scf iteration
             eigenvalues = get_eigenvalues(iteration)
