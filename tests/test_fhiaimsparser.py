@@ -34,9 +34,14 @@ def parser():
 
 
 @pytest.fixture(scope='module')
-def silicons(parser):
+def silicon_versions():
+    return ('v071914_7', 'v171221_1')
+
+
+@pytest.fixture(scope='module')
+def silicon(parser, silicon_versions):
     silicon = {}
-    for version in ['v071914_7', 'v171221_1']:
+    for version in silicon_versions:
         archive = EntryArchive()
         parser.parse('tests/data/fhiaims/Si_band_dos_' + version + '/aims_CC.out',
                      archive, None)
@@ -135,52 +140,52 @@ def test_band_spinpol(parser):
     assert sec_k_band.energy_fermi == sec_scc.energy.fermi
 
 
-def test_band_silicon(silicons):
+@pytest.mark.parametrize("version", silicon_versions())
+def test_band_silicon(silicon, version):
     """Tests that the band structure of silicon is parsed correctly.
     """
-    for silicon in silicons.values():
-        scc = silicon.run[-1].calculation[0]
-        band = scc.band_structure_electronic[0]
-        segments = band.segment
-        energies = np.array([s.energies.to('eV').magnitude for s in segments])
+    scc = silicon[version].run[-1].calculation[0]
+    band = scc.band_structure_electronic[0]
+    segments = band.segment
+    energies = np.array([s.energies.to('eV').magnitude for s in segments])
 
-        # Check that an energy reference is reported
-        energy_reference = scc.energy.fermi.to('eV').magnitude
-        assert energy_reference == approx(-5.7308573, abs=1e-5)
-        assert band.energy_fermi.to('eV').magnitude == energy_reference
+    # Check that an energy reference is reported
+    energy_reference = scc.energy.fermi.to('eV').magnitude
+    assert energy_reference == approx(-5.7308573, abs=1e-5)
+    assert band.energy_fermi.to('eV').magnitude == energy_reference
 
-        # Check that an approporiately sized band gap is found at the given
-        # reference energy
-        energies = energies.flatten()
-        energies.sort()
-        lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")
-        highest_occupied_index = lowest_unoccupied_index - 1
-        gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
-        assert gap == approx(0.60684)
+    # Check that an approporiately sized band gap is found at the given
+    # reference energy
+    energies = energies.flatten()
+    energies.sort()
+    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")
+    highest_occupied_index = lowest_unoccupied_index - 1
+    gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
+    assert gap == approx(0.60684)
 
 
-def test_dos_silicon(silicons):
+@pytest.mark.parametrize("version", silicon_versions())
+def test_dos_silicon(silicon, version):
     """Tests that the DOS of silicon is parsed correctly.
     """
-    for silicon in silicons.values():
-        scc = silicon.run[-1].calculation[0]
-        dos = scc.dos_electronic[0]
-        energy_reference = scc.energy.fermi.to('eV').magnitude
-        energies = dos.energies.to('eV').magnitude
-        values = np.array([d.value.magnitude for d in dos.total])
-        dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
+    scc = silicon[version].run[-1].calculation[0]
+    dos = scc.dos_electronic[0]
+    energy_reference = scc.energy.fermi.to('eV').magnitude
+    energies = dos.energies.to('eV').magnitude
+    values = np.array([d.value.magnitude for d in dos.total])
+    dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
 
-        assert pytest.approx(dos_integrated, abs=5e-2) == 8
+    assert pytest.approx(dos_integrated, abs=5e-2) == 8
 
-        # Check that an approporiately sized band gap is found at the given
-        # reference energy
-        nonzero = np.unique(values.nonzero())
-        energies = energies[nonzero]
-        energies.sort()
-        lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")
-        highest_occupied_index = lowest_unoccupied_index - 1
-        gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
-        assert gap == approx(0.54054054, abs=.04)  # TODO increase accuracy
+    # Check that an approporiately sized band gap is found at the given
+    # reference energy
+    nonzero = np.unique(values.nonzero())
+    energies = energies[nonzero]
+    energies.sort()
+    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")
+    highest_occupied_index = lowest_unoccupied_index - 1
+    gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
+    assert gap == approx(0.54054054, abs=.04)  # TODO increase accuracy
 
 
 def test_dos(parser):
