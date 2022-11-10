@@ -124,6 +124,10 @@ def test_band_spinpol(parser):
     assert sec_dos.total[0].value[46].magnitude == approx(1.2418253e-11)
     assert sec_dos.total[1].value[15].magnitude == approx(3.91517047e-11)
 
+    # v151211 test for the Fermi level
+    assert sec_scc.energy.fermi.to('eV').magnitude == approx(-9.3842209)
+    assert sec_k_band.energy_fermi == sec_scc.energy.fermi
+
 
 def test_band_silicon(silicon):
     """Tests that the band structure of silicon is parsed correctly.
@@ -146,6 +150,10 @@ def test_band_silicon(silicon):
     highest_occupied_index = lowest_unoccupied_index - 1
     gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
     assert gap == approx(0.60684)
+
+    # v071914_7 test for the Fermi level
+    assert scc.energy.fermi.to('eV').magnitude == approx(-5.7308573)
+    assert band.energy_fermi == scc.energy.fermi
 
 
 def test_dos_silicon(silicon):
