@@ -1180,7 +1180,6 @@ class ExcitingParser:
         sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
         sec_dos.n_energies = self.dos_parser.number_of_dos
         sec_dos.energies = self.dos_parser.energies + energy_fermi
-        volume = self.info_parser.get_unit_cell_volume()
         totaldos = self.dos_parser.get('totaldos')
         for spin in range(len(totaldos)):
             sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
