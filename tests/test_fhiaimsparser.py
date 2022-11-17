@@ -62,7 +62,7 @@ def test_scf_spinpol(parser):
     assert archive.run[0].program.version == '151211'
     assert archive.run[0].time_run.wall_start.magnitude == approx(2.23485023e+08)
 
-    assert len(archive.run[0].method) == 1
+    assert len(archive.run[0].method) == 2
     sec_method = archive.run[0].method[0]
     assert sec_method.electronic.n_spin_channels == 2
     assert sec_method.electronic.relativity_method == 'scalar_relativistic_atomic_ZORA'
@@ -101,9 +101,9 @@ def test_geomopt(parser):
     archive = EntryArchive()
     parser.parse('tests/data/fhiaims/Si_geomopt/out.out', archive, None)
 
-    # sec_methods = archive.run[0].method
+    sec_methods = archive.run[0].method
     # one more since 0 is core settings
-    # assert len(sec_methods) == 7
+    assert len(sec_methods) == 7
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 6
@@ -235,7 +235,6 @@ def test_md(parser):
 def test_hybrid(parser):
     """"Taken from the official test files in FHI-aims v210716_3"""
     archive = EntryArchive()
-    parser._calculation_type = 'dft'  # resetting _calculation_type to 'dft' for next tests
     parser.parse('tests/data/fhiaims/GaAs_HSE06+SOC/aims.out', archive, None)
 
     sec_xc_functional = archive.run[0].method[0].dft.xc_functional

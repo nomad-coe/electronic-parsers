@@ -341,9 +341,6 @@ class FHIAimsOutParser(TextParser):
                     data[key].extend([float(vi) for vi in v[-1].split()])
             return data
 
-        def str_to_gw_analytical_continuation(val_in):
-            return [x.lower() for v in val_in.split(' ') for x in v.split('-')]
-
         def str_to_frequency(val_in):
             val = [v.split() for v in val_in.split('\n')]
             val = np.transpose(np.array([v for v in val if len(v) == 2], float))
@@ -562,7 +559,7 @@ class FHIAimsOutParser(TextParser):
             Quantity(
                 'gw_analytical_continuation',
                 rf'{re_n} (?:Using)*\s*([\w\-\s]+) for analytical continuation',
-                repeats=False, flatten=True, str_operation=str_to_gw_analytical_continuation),
+                repeats=False, flatten=True, str_operation=lambda x: [y.lower() for v in x.split(' ') for y in v.split('-')]),
             Quantity(
                 'k_grid',
                 rf'{re_n} *k\_grid\s*([\d ]+)', repeats=False),
@@ -739,7 +736,19 @@ class FHIAimsParser:
             'Hirshfeld volume': 'x_fhi_aims_hirschfeld_volume'
         }
 
-        self._gw_flag_names = ['gw', 'gw_expt', 'ev_scgw', 'ev_scgw0', 'scgw']
+        self._gw_flag_map = {
+            'gw': 'G0W0',
+            'gw_expt': 'G0W0',
+            'ev_scgw0': 'ev-scGW',
+            'ev_scgw': 'ev-scGW',
+            'scgw': 'scGW'
+        }
+
+        self._gw_analytical_continuation_map = {
+            'pade': 'pade',
+            'pole': 'multi-pole',
+            'countour': 'CD'
+        }
 
         self._gw_qp_energies_map = {
             'occ_num': 'occupations',
@@ -851,13 +860,7 @@ class FHIAimsParser:
         # GW method
         sec_method = sec_run.m_create(Method)
         sec_gw = sec_method.m_create(GWMethod)
-        gw_flag = self.out_parser.get('gw_flag', None)
-        if gw_flag == 'gw' or gw_flag == 'gw_expt':
-            sec_gw.type = 'G0W0'
-        elif gw_flag == 'ev_scgw0' or gw_flag == 'ev_scgw':
-            sec_gw.type = 'ev-scGW'
-        elif gw_flag == 'scgw':
-            sec_gw.type = 'scGW'
+        sec_gw.type = self._gw_flag_map.get(self.out_parser.get('gw_flag'), None)
 
         sec_gw.basis_set = BasisSet(type='numeric AOs')
         self.parse_xc_functional(sec_method, sec_gw)
@@ -869,12 +872,9 @@ class FHIAimsParser:
             sec_gw.core_treatment = 'fc'
         sec_gw.dielectric_function_treatment = 'rpa'
 
-        if 'pade' in self.out_parser.get('gw_analytical_continuation', 'pade'):
-            sec_gw.self_energy_analytical_continuation = 'pade'
-        elif 'pole' in self.out_parser.get('gw_analytical_continuation', 'pade'):
-            sec_gw.self_energy_analytical_continuation = 'multi-pole'
-        elif 'contour' in self.out_parser.get('gw_analytical_continuation', 'pade'):
-            sec_gw.self_energy_analytical_continuation = 'CD'
+        if any(x in self.out_parser.get('gw_analytical_continuation', 'pade') for x in self._gw_analytical_continuation_map.keys()):
+            sec_gw.self_energy_analytical_continuation = self._gw_analytical_continuation_map.get([
+                i for i in self.out_parser.get('gw_analytical_continuation') for x in self._gw_analytical_continuation_map.keys() if i == x][0])
         else:
             self.logger.warn(
                 'Analytical continuation approximation for the GW self-energy not found')
@@ -910,23 +910,22 @@ class FHIAimsParser:
         self.parse_bandstructure(sec_energy.fermi)
 
         # scGW calculation
-        gw_scf_energies = self.out_parser.get('gw_self_consistency')
-        gw_eigenvalues = self.out_parser.get('gw_eigenvalues')
+        gw_scf_energies = self.out_parser.get('gw_self_consistency', [])
+        gw_eigenvalues = self.out_parser.get('gw_eigenvalues', None)
         if gw_scf_energies is None and gw_eigenvalues is None:
             return
 
-        if gw_scf_energies is not None:
-            for energies in gw_scf_energies:
-                sec_gw_scf_iteration = sec_scc.m_create(ScfIteration)
-                for key, val in energies.items():
-                    metainfo_key = self._energy_map.get(key, None)
-                    if metainfo_key is not None:
-                        try:
-                            setattr(sec_gw_scf_iteration, metainfo_key, val)
-                        except Exception:
-                            self.logger.warn(
-                                'Error setting scGW metainfo.',
-                                data=dict(key=metainfo_key))
+        for energies in gw_scf_energies:
+            sec_gw_scf_iteration = sec_scc.m_create(ScfIteration)
+            for key, val in energies.items():
+                metainfo_key = self._energy_map.get(key, None)
+                if metainfo_key is not None:
+                    try:
+                        setattr(sec_gw_scf_iteration, metainfo_key, val)
+                    except Exception:
+                        self.logger.warn(
+                            'Error setting scGW metainfo.',
+                            data=dict(key=metainfo_key))
 
         if gw_eigenvalues is not None:
             sec_eigs_gw = sec_scc.m_create(BandEnergies)
@@ -1297,6 +1296,13 @@ class FHIAimsParser:
             # vdW parameters
             parse_vdW(section)
 
+            if self._calculation_type == 'dft':
+                sec_method = sec_run.m_create(Method)
+                sec_scc.method_ref = sec_run.method[-1]
+                sec_method.electronic = Electronic(method='DFT')
+                sec_method.core_method_ref = sec_run.method[0]
+                sec_method.methods_ref = [sec_run.method[0]]
+
         for n, section in enumerate(self.out_parser.get('full_scf', [])):
             # skip frames for large trajectories
             if (n % self.frame_rate) > 0:
@@ -1596,8 +1602,7 @@ class FHIAimsParser:
 
     def get_mainfile_keys(self, filepath):
         self.out_parser.mainfile = filepath
-        gw_flag = self.out_parser.get('gw_flag', None)
-        if gw_flag in self._gw_flag_names:
+        if self.out_parser.get('gw_flag', None) in self._gw_flag_map.keys():
             return ['GW', 'GW_workflow']
         return True
 
@@ -1649,15 +1654,13 @@ class FHIAimsParser:
 
         self.parse_workflow()
 
-        gw_flag = self.out_parser.get('gw_flag', None)
         gw_archive = self._child_archives.get('GW')
-        if gw_archive is not None:
-            if gw_flag in self._gw_flag_names:
-                # GW single point
-                p = FHIAimsParser()
-                p._calculation_type = 'gw'
-                p.parse(filepath, gw_archive, logger)
+        if gw_archive is not None and self.out_parser.get('gw_flag', None) in self._gw_flag_map.keys():
+            # GW single point
+            p = FHIAimsParser()
+            p._calculation_type = 'gw'
+            p.parse(filepath, gw_archive, logger)
 
-                # GW workflow
-                gw_workflow_archive = self._child_archives.get('GW_workflow')
-                self.parse_gw_workflow(gw_archive, gw_workflow_archive)
+            # GW workflow
+            gw_workflow_archive = self._child_archives.get('GW_workflow')
+            self.parse_gw_workflow(gw_archive, gw_workflow_archive)
