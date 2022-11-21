@@ -26,7 +26,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextP
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional,
-    GW as GWMethod, Scf, BasisSet
+    GW as GWMethod, Scf, BasisSet, KMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1750,11 +1750,13 @@ class ExcitingParser:
     def _parse_input_gw(self, sec_method):
         sec_gw = sec_method.m_create(GWMethod)
         sec_gw.type = 'G0W0'
+        sec_q_grid = sec_gw.m_create(KMesh)
+        sec_q_grid.grid = self.input_xml_parser.get('gw/ngridq', [1, 1, 1])
+        sec_gw.q_grid = sec_q_grid
         sec_gw.core_treatment = self.input_xml_parser.get(
             'gw/coreflag', 'all')
         sec_gw.n_empty_states_polarizability = int(
             self.input_xml_parser.get('gw/nempty', 0))
-        sec_gw.gridq = self.input_xml_parser.get('gw/ngridq', [1, 1, 1])
         sec_gw.n_frequencies = int(self.input_xml_parser.get(
             'gw/freqgrid/nomeg', 16))
         sec_gw.self_energy_analytical_continuation = self.input_xml_parser.get(
@@ -1797,7 +1799,7 @@ class ExcitingParser:
         for f in ['input_gw.xml', 'input-gw.xml', 'input.xml']:
             self.parse_file(f, sec_method)
 
-        sec_method.gw.basis_set = BasisSet(type='(L)APW+lo')
+        sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
         sec_starting_point = sec_method.gw.m_create(XCFunctional)
         self.parse_xc_functional(sec_starting_point)
 

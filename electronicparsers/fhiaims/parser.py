@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Electronic, Method, XCFunctional, Functional, HubbardModel, AtomParameters, DFT,
-    BasisSet, GW as GWMethod
+    BasisSet, GW as GWMethod, KMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -862,17 +862,18 @@ class FHIAimsParser:
         sec_gw = sec_method.m_create(GWMethod)
         sec_gw.type = self._gw_flag_map.get(self.out_parser.get('gw_flag'), None)
 
-        sec_gw.basis_set = BasisSet(type='numeric AOs')
+        sec_method.basis_set.append(BasisSet(type='numeric AOs'))
         self.parse_xc_functional(sec_method, sec_gw)
 
         # TODO check this with FHIaims GW developers
-        sec_gw.kgrid = self.out_parser.get('k_grid', None)
-        sec_gw.qgrid = sec_gw.kgrid
+        sec_k_mesh = sec_method.m_create(KMesh)
+        sec_k_mesh.grid = self.out_parser.get('k_grid', [1, 1, 1])
+        sec_gw.q_grid = sec_k_mesh
         if self.out_parser.get('frozen_core', None) is not None:
             sec_gw.core_treatment = 'fc'
         sec_gw.dielectric_function_treatment = 'rpa'
 
-        if any(x in self.out_parser.get('gw_analytical_continuation', 'pade') for x in self._gw_analytical_continuation_map.keys()):
+        if self.out_parser.get('gw_analytical_continuation') is not None:
             sec_gw.self_energy_analytical_continuation = self._gw_analytical_continuation_map.get([
                 i for i in self.out_parser.get('gw_analytical_continuation') for x in self._gw_analytical_continuation_map.keys() if i == x][0])
         else:
