@@ -49,6 +49,12 @@ def silicon(parser, silicon_versions):
     return silicon
 
 
+@pytest.fixture(scope='module')
+def silicon_normalization_factors(silicon_versions):
+    normalization_factors = [.5, 1]
+    return dict(zip(silicon_versions, normalization_factors))
+
+
 def test_scf_spinpol(parser):
     archive = EntryArchive()
     parser.parse('tests/data/fhiaims/Fe_scf_spinpol/out.out', archive, None)
@@ -130,8 +136,8 @@ def test_band_spinpol(parser):
     assert np.shape(sec_dos.energies) == (50,)
     assert np.shape(sec_dos.total[1].value) == (50,)
     assert sec_dos.energies[46].magnitude == approx(-1.1999976e-18)
-    assert sec_dos.total[0].value[46].to('1/eV').magnitude == approx(.18127036)
-    assert sec_dos.total[1].value[15].to('1/eV').magnitude == approx(.57150097)
+    assert sec_dos.total[0].value[46].to('1 / eV').magnitude == approx(.18127036)
+    assert sec_dos.total[1].value[15].to('1 / eV').magnitude == approx(.57150097)
     dos_integrated = integrate_dos(sec_dos, True, sec_scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 8.
 
@@ -165,7 +171,7 @@ def test_band_silicon(silicon, version):
 
 
 @pytest.mark.parametrize("version", silicon_versions())
-def test_dos_silicon(silicon, version):
+def test_dos_silicon(silicon, version, silicon_normalization_factors):
     """Tests that the DOS of silicon is parsed correctly.
     """
     scc = silicon[version].run[-1].calculation[0]
@@ -176,6 +182,7 @@ def test_dos_silicon(silicon, version):
     dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
 
     assert pytest.approx(dos_integrated, abs=5e-2) == 8
+    assert dos.total[0].x_fhi_aims_normalization_factor_raw_data == silicon_normalization_factors[version]
 
     # Check that an approporiately sized band gap is found at the given
     # reference energy
@@ -196,18 +203,18 @@ def test_dos(parser):
     sec_dos = sec_scc.dos_electronic[0]
     assert np.shape(sec_dos.energies) == (50,)
     assert np.shape(sec_dos.total[0].value) == (50,)
-    assert sec_dos.total[0].value[0].to('1/eV').magnitude == approx(0.00233484)
-    assert sec_dos.total[0].value[-1].to('1/eV').magnitude == approx(0.49471595)
+    assert sec_dos.total[0].value[0].to('1 / eV').magnitude == approx(0.00233484)
+    assert sec_dos.total[0].value[-1].to('1 / eV').magnitude == approx(0.49471595)
 
     dos_integrated = integrate_dos(sec_dos, False, sec_scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 3.  # 3rd valence shell
 
     sec_species_dos = sec_dos.species_projected
     assert np.shape(sec_species_dos[7].value) == (50,)
-    assert sec_species_dos[0].value[44].to('1/eV').magnitude == approx(0.62432797)  # Na total
-    assert sec_species_dos[1].value[37].to('1/eV').magnitude == approx(0.12585650)  # Cl total
-    assert sec_species_dos[4].value[3].to('1/eV').magnitude == approx(0.07198767)  # Na l=1
-    assert sec_species_dos[7].value[5].to('1/eV').magnitude == approx(0.00394778)  # Cl l=2
+    assert sec_species_dos[0].value[44].to('1 / eV').magnitude == approx(0.62432797)  # Na total
+    assert sec_species_dos[1].value[37].to('1 / eV').magnitude == approx(0.12585650)  # Cl total
+    assert sec_species_dos[4].value[3].to('1 / eV').magnitude == approx(0.07198767)  # Na l=1
+    assert sec_species_dos[7].value[5].to('1 / eV').magnitude == approx(0.00394778)  # Cl l=2
 
 
 def test_md(parser):

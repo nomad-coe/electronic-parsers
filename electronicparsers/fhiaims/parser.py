@@ -838,7 +838,7 @@ class FHIAimsParser:
 
         def parse_dos(section):
             version_normalization_cutoff = 71914.7
-            version_normalization = 2
+            version_normalization = .5
 
             sec_scc = sec_run.calculation[-1]
             sec_dos = None
@@ -861,8 +861,8 @@ class FHIAimsParser:
                     sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
                     sec_dos_values.spin = spin
                     if float(sec_run.program.version) <= version_normalization_cutoff:
-                        sec_dos_values.raw_data_normalization_factor = version_normalization
-                        dos[spin] *= version_normalization
+                        sec_dos_values.x_fhi_aims_normalization_factor_raw_data = version_normalization
+                        dos[spin] /= version_normalization
                     sec_dos_values.value = dos[spin]
 
             # parse projected
