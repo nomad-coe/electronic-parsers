@@ -777,7 +777,7 @@ class FHIAimsParser:
                     data[5::2]) + energy_fermi_ev) * ureg.eV
                 nbands = np.shape(eigs)[-1] if n == 0 else nbands if nbands is not None else np.shape(eigs)[-1]
                 if nbands != np.shape(eigs)[-1]:
-                    self.logger.warn('Inconsistent number of bands found in bandstructure data.')
+                    self.logger.warning('Inconsistent number of bands found in bandstructure data.')
                     continue
 
                 sec_k_band_segment = sec_k_band.m_create(BandEnergies)
@@ -837,14 +837,13 @@ class FHIAimsParser:
             return energies, dos
 
         def parse_dos(section):
+            version_normalization_cutoff = 71914.7
+            version_normalization = .5
+
             sec_scc = sec_run.calculation[-1]
             sec_dos = None
             energies = None
-            lattice_vectors = section.get(
-                'lattice_vectors', self.out_parser.get('lattice_vectors'))
-            if lattice_vectors is None:
-                lattice_vectors = np.eye(3) * ureg.angstrom
-            volume = np.abs(np.linalg.det(lattice_vectors.magnitude)) * ureg.angstrom ** 3
+
             n_spin = self.out_parser.get_number_of_spin_channels()
             # parse total first, we expect only one file
             total_dos_files, _ = section.get('total_dos_files', [['KS_DOS_total_raw.dat'], []])
@@ -857,10 +856,13 @@ class FHIAimsParser:
                 sec_dos.n_energies = len(energies)
                 sec_dos.energies = energies
                 # dos unit is 1/(eV-cell volume)
-                dos = data[1: n_spin + 1] * (1 / ureg.eV) * volume.to('m**3').magnitude
+                dos = data[1: n_spin + 1] / ureg.eV
                 for spin in range(len(dos)):
                     sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
                     sec_dos_values.spin = spin
+                    if float(sec_run.program.version) <= version_normalization_cutoff:
+                        sec_dos_values.x_fhi_aims_normalization_factor_raw_data = version_normalization
+                        dos[spin] /= version_normalization
                     sec_dos_values.value = dos[spin]
 
             # parse projected
@@ -903,7 +905,7 @@ class FHIAimsParser:
 
             kpts = data.get('kpoints', [np.zeros(3)] * n_spin)
             if len(kpts) % n_spin != 0:
-                self.logger.warn('Inconsistent number of spin channels found.')
+                self.logger.warning('Inconsistent number of spin channels found.')
                 n_spin -= 1
             kpts = np.reshape(kpts, (len(kpts) // n_spin, n_spin, 3))
             kpts = np.transpose(kpts, axes=(1, 0, 2))[0]
@@ -939,12 +941,12 @@ class FHIAimsParser:
                             setattr(sec_energy, metainfo_key.replace('energy_', ''), EnergyEntry(
                                 value=val, value_per_atom=energies.get('%s_per_atom' % metainfo_key)))
                         except Exception:
-                            self.logger.warn('Error setting scf energy metainfo.', data=dict(key=metainfo_key))
+                            self.logger.warning('Error setting scf energy metainfo.', data=dict(key=metainfo_key))
                     else:
                         try:
                             setattr(sec_scf, metainfo_key, val)
                         except Exception:
-                            self.logger.warn('Error setting scf energy metainfo.', data=dict(key=metainfo_key))
+                            self.logger.warning('Error setting scf energy metainfo.', data=dict(key=metainfo_key))
 
             if iteration.get('fermi_level') is not None:
                 sec_energy.fermi = iteration.get('fermi_level')
@@ -992,7 +994,7 @@ class FHIAimsParser:
                             try:
                                 setattr(sec_scf_iteration, metainfo_key, val)
                             except Exception:
-                                self.logger.warn('Error setting gw metainfo.', data=dict(key=metainfo_key))
+                                self.logger.warning('Error setting gw metainfo.', data=dict(key=metainfo_key))
 
                 self._electronic_structure_method = 'scGW' if len(gw_scf_energies) > 1 else 'G0W0'
 
@@ -1032,7 +1034,7 @@ class FHIAimsParser:
                             try:
                                 setattr(sec_vdW_ts, metainfo_name, val)
                             except Exception:
-                                self.logger.warn('Error setting vdW metainfo.', data=dict(key=metainfo_name))
+                                self.logger.warning('Error setting vdW metainfo.', data=dict(key=metainfo_name))
                             # TODO add the remanining properties
             self._electronic_structure_method = 'DFT'
             sec_run.method[-1].electronic.van_der_waals_method = 'TS'
@@ -1080,7 +1082,7 @@ class FHIAimsParser:
                         setattr(sec_energy, metainfo_key.replace('energy_', ''), EnergyEntry(
                             value=val, value_per_atom=energy.get('%s_per_atom' % metainfo_key)))
                     except Exception:
-                        self.logger.warn('Error setting energy metainfo.', data=dict(key=key))
+                        self.logger.warning('Error setting energy metainfo.', data=dict(key=key))
 
             # eigenvalues
             eigenvalues = get_eigenvalues(section)
@@ -1106,7 +1108,7 @@ class FHIAimsParser:
                         # see calc_id=a8r8KkvKXWams50UhzMGCxY0IGqH
                         sec_forces.free.value_raw = forces_raw[-len(forces):] * ureg.eV / ureg.angstrom
                     except Exception:
-                        self.logger.warn('Error setting raw forces.')
+                        self.logger.warning('Error setting raw forces.')
 
             time_calculation = section.get('time_force_evaluation')
             if time_calculation is not None:
@@ -1221,7 +1223,7 @@ class FHIAimsParser:
                     try:
                         setattr(sec_basis_set, 'x_fhi_aims_controlIn_%s' % key, val[0])
                     except Exception:
-                        self.logger.warn('Error setting controlIn metainfo.', data=dict(key=key))
+                        self.logger.warning('Error setting controlIn metainfo.', data=dict(key=key))
 
             # is the number of basis functions equal to number of divisions?
             division = species.get('division', None)
@@ -1239,7 +1241,7 @@ class FHIAimsParser:
                         val = str(val)
                     setattr(sec_method, key, val)
                 except Exception:
-                    self.logger.warn('Error setting controlIn metainfo.', data=dict(key=key))
+                    self.logger.warning('Error setting controlIn metainfo.', data=dict(key=key))
             elif key == 'occupation_type':
                 sec_method.x_fhi_aims_controlIn_occupation_type = val[0]
                 sec_method.x_fhi_aims_controlIn_occupation_width = val[1]
@@ -1278,7 +1280,7 @@ class FHIAimsParser:
                     try:
                         setattr(sec_method, key, self.out_parser.get(key))
                     except Exception:
-                        self.logger.warn('Error setting controlInOut metainfo.', data=dict(key=key))
+                        self.logger.warning('Error setting controlInOut metainfo.', data=dict(key=key))
 
         nspin = self.out_parser.get_number_of_spin_channels()
         sec_method.x_fhi_aims_controlInOut_number_of_spin_channels = nspin
@@ -1463,7 +1465,7 @@ class FHIAimsParser:
             try:
                 setattr(sec_run, key, value)
             except Exception:
-                self.logger.warn('Error setting run metainfo', data=dict(key=key))
+                self.logger.warning('Error setting run metainfo', data=dict(key=key))
 
         sec_parallel_tasks = sec_run.m_create(x_fhi_aims_section_parallel_tasks)
         # why embed section not just let task be an array

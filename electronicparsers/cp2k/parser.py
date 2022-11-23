@@ -56,7 +56,7 @@ from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings, x_cp2k_sec
 try:
     import mdtraj
 except ImportError:
-    logging.getLogger(__name__).warn('Required MDTraj module not found.')
+    logging.getLogger(__name__).warning('Required MDTraj module not found.')
     mdtraj = False
 
 
@@ -294,10 +294,10 @@ class InpValue:
 class InpParser(FileParser):
     def __init__(self):
         super().__init__()
-        self._re_open = re.compile(r'&(\w+)\s*(.*)[#!]*')
+        self._re_open = re.compile(r'&(\w+)\s*(.*?)[#!\n]')
         self._re_close = re.compile(r'&END')
-        self._re_key_value = re.compile(r'(\w+)\s+(.+)[#!]*')
-        self._re_variable = re.compile(r'@SET (\w+)\s+(.+)[#!]*')
+        self._re_key_value = re.compile(r'(\w+)\s+(.+?)[#!\n]')
+        self._re_variable = re.compile(r'@SET (\w+)\s+(.+?)[#!\n]')
 
     @property
     def tree(self):
@@ -316,7 +316,7 @@ class InpParser(FileParser):
                 line = self.mainfile_obj.readline()
                 # comments
                 strip = line.strip()
-                if not strip or strip[0] in ('#', '#', '!'):
+                if not strip or strip[0] in ('#', '!'):
                     continue
                 variable = self._re_variable.search(line)
                 if variable:
@@ -1088,7 +1088,7 @@ class CP2KParser:
 
         atom_forces = source.get('atom_forces', self.get_forces(source._frame))
         if atom_forces is not None:
-            atom_forces = np.array(atom_forces) * ureg.hartree / ureg.bohr
+            atom_forces = np.array(atom_forces, np.float64) * ureg.hartree / ureg.bohr
             sec_forces = sec_scc.m_create(Forces)
             sec_forces.total = ForcesEntry(value=atom_forces)
 
@@ -1125,8 +1125,8 @@ class CP2KParser:
 
         if lattice_vectors is not None:
             sec_atoms.lattice_vectors = lattice_vectors
-        periodic = self.inp_parser.get('FORCE_EVAL/SUBSYS/CELL/PERIODIC', 'xyz').lower()
-        sec_atoms.periodic = [v in periodic for v in ('x', 'y', 'z')]
+            periodic = self.inp_parser.get('FORCE_EVAL/SUBSYS/CELL/PERIODIC', 'xyz').lower()
+            sec_atoms.periodic = [v in periodic for v in ('x', 'y', 'z')]
 
         # TODO test this I cannot find an example
         # velocities

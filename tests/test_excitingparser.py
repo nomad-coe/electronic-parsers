@@ -104,20 +104,21 @@ def test_dos_spinpol(parser):
     archive = EntryArchive()
     parser.parse('tests/data/exciting/CeO_dos/INFO.OUT', archive, None)
 
-    sec_dos = archive.run[0].calculation[0].dos_electronic[0]
+    sec_scc = archive.run[0].calculation[0]
+    sec_dos = sec_scc.dos_electronic[0]
 
     assert np.shape(sec_dos.total[0].value) == (500,)
-    assert sec_dos.energies[79].magnitude == approx(-1.70772016e-18)
-    assert sec_dos.total[0].value[126].magnitude == approx(1.89251269e-10)
-    assert sec_dos.total[1].value[136].magnitude == approx(1.91606129e-11)
-    assert sec_dos.energies[240].magnitude == approx(1.09995544e-18)
-    assert sec_dos.total[0].value[220].magnitude == approx(5.63875822e-10)
-    assert sec_dos.total[1].value[78].magnitude == approx(4.3335912e-10)
+    assert (sec_dos.energies[79].to('Ha') - sec_scc.energy.fermi.to('Ha')).magnitude == approx(-0.684)
+    assert sec_dos.total[0].value[126].to('1/Ha').magnitude == approx(20.83182629)
+    assert sec_dos.total[1].value[136].to('1/Ha').magnitude == approx(2.109103733)
+    assert (sec_dos.energies[240].to('Ha') - sec_scc.energy.fermi.to('Ha')).magnitude == approx(-0.4e-01)
+    assert sec_dos.total[0].value[220].to('1/Ha').magnitude == approx(62.06860954)
+    assert sec_dos.total[1].value[78].to('1/Ha').magnitude == approx(47.70198869)
 
     assert len(sec_dos.atom_projected) == 150
     assert np.shape(sec_dos.atom_projected[149].value) == (500,)
-    assert sec_dos.atom_projected[7].value[116].magnitude == approx(1.07677456e+16)
-    assert sec_dos.atom_projected[123].value[85].magnitude == approx(7.81205293e+11)
+    assert sec_dos.atom_projected[7].value[116].to('1/Ha').magnitude == approx(0.04694462204)  # atom_index=1, spin=1, l=1, m=0
+    assert sec_dos.atom_projected[123].value[85].to('1/Ha').magnitude == approx(3.405855654e-06)  # atom_index=0, spin=1, l=20, m=0
 
 
 def test_xs_tddft(parser):

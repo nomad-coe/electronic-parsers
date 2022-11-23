@@ -22,6 +22,7 @@ import numpy as np
 from nomad.units import ureg
 from nomad.datamodel import EntryArchive
 from electronicparsers.vasp import VASPParser
+from tests.dos_integrator import integrate_dos
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -48,6 +49,7 @@ def silicon_band(parser):
 
 
 def test_vasprunxml_static(parser):
+    """Test Mg1 system, computed in VASP 4.6.35"""
     archive = EntryArchive()
     parser.parse('tests/data/vasp/Mg_bands/vasprun.xml.static', archive, None)
 
@@ -76,15 +78,22 @@ def test_vasprunxml_static(parser):
     assert sec_scc.energy.total.value.magnitude == approx(-2.3264377e-19)
     assert np.shape(sec_scc.forces.total.value) == (1, 3)
     assert sec_scc.stress.total.value[2][2].magnitude == approx(-2.78384438e+08)
+
+    # test DOS values
     assert len(sec_scc.dos_electronic[0].energies) == 5000
-    assert sec_scc.dos_electronic[0].total[0].value[1838].magnitude == approx(1.94581094e-11)
+    assert sec_scc.dos_electronic[0].total[0].value[1838].magnitude == approx((.1369 / ureg.eV).to(1 / ureg.joule).magnitude)
     assert len(sec_scc.dos_electronic[0].atom_projected) == 9
     assert sec_scc.dos_electronic[0].atom_projected[0].value[-1].magnitude == approx(3.40162245e+17)
     assert np.shape(sec_scc.eigenvalues[0].energies[0][887]) == (37,)
     assert sec_scc.scf_iteration[2].energy.total_t0.value.magnitude == approx(-2.27580485e-19,)
 
+    # test DOS integrated
+    dos_integrated = integrate_dos(sec_scc.dos_electronic[0], False, sec_scc.energy.fermi)
+    assert pytest.approx(dos_integrated, abs=1e-2) == 8. - 6.  # dos starts from 6 electrons already
+
 
 def test_vasprunxml_relax(parser):
+    """Test Ac1Ag1 system, computed by VASP 5.3.2"""
     archive = EntryArchive()
     parser.parse('tests/data/vasp/AgAc_relax/vasprun.xml.relax', archive, None)
 
@@ -104,6 +113,8 @@ def test_vasprunxml_relax(parser):
     assert sec_sccs[2].energy.highest_occupied.magnitude == approx(7.93702283e-19)
     assert [len(scc.eigenvalues) for scc in sec_sccs] == [0, 0, 1]
     assert [len(scc.dos_electronic) for scc in sec_sccs] == [0, 0, 1]
+    dos_integrated = integrate_dos(sec_sccs[-1].dos_electronic[0], True, sec_sccs[-1].energy.fermi)
+    assert pytest.approx(dos_integrated, abs=1) == 22.
 
 
 def test_vasprunxml_bands(parser):
@@ -143,12 +154,13 @@ def test_band_silicon(silicon_band):
 
 
 def test_dos_silicon(silicon_dos):
-    """Tests that the DOS of silicon is parsed correctly.
+    """Tests that the DOS of Si2 is parsed correctly.
+    Computed using VASP 5.2.2
     """
     scc = silicon_dos.run[-1].calculation[0]
     dos = scc.dos_electronic[-1]
     energies = dos.energies.to(ureg.electron_volt).magnitude
-    values = np.array([d.value for d in dos.total])
+    values = np.array([d.value.magnitude for d in dos.total])
 
     # Check that an energy reference is reported
     energy_reference = scc.energy.fermi
@@ -166,6 +178,10 @@ def test_dos_silicon(silicon_dos):
     highest_occupied_index = lowest_unoccupied_index - 1
     gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
     assert gap == approx(0.83140)
+
+    # Check that the no. valence electrons is receovered
+    dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
+    assert pytest.approx(dos_integrated, abs=1e-2) == 8.
 
 
 def test_outcar(parser):
@@ -199,12 +215,20 @@ def test_outcar(parser):
     assert np.shape(sec_eigs.energies[0][144]) == (15,)
     assert sec_eigs.energies[0][9][14].magnitude == approx(1.41810256e-18)
     assert sec_eigs.occupations[0][49][9] == 2.0
+
+    # check DOS
     sec_dos = sec_scc.dos_electronic[0]
     assert len(sec_dos.energies) == 301
-    assert sec_dos.total[0].value[282].magnitude == approx(9.84995713e+20)
-    assert sec_dos.total[0].value_integrated[-1] == 30.0
+    assert sec_dos.total[0].value[282].magnitude == approx((.2545E+01 / ureg.eV).to(1 / ureg.joule).magnitude)
     assert sec_dos.atom_projected[10].value[-15].magnitude == approx(1.51481425e+17)
     assert sec_dos.atom_projected[5].value[-16].magnitude == approx(1.71267009e+16)
+    assert sec_dos.total[0].value_integrated[-1] == 30.0  # This runs up to the conduction band
+#    BUG EMIN is stored in the fermi energy!!
+#    dos_integrated = integrate_dos(sec_dos, False, sec_scc.energy.fermi)
+#    try:
+#        assert pytest.approx(dos_integrated, abs=1) == 22.
+#    except AssertionError:
+#        raise AssertionError(sec_scc.energy.fermi)
 
 
 def test_broken_xml(parser):

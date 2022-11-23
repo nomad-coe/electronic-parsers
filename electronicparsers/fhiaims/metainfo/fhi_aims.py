@@ -897,6 +897,19 @@ class ScfIeration(simulation.calculation.ScfIteration):
         type=float, unit='eV')
 
 
+class DosValues(simulation.calculation.DosValues):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_fhi_aims_normalization_factor_raw_data = Quantity(
+        type=np.dtype(np.float64),
+        default=1,
+        shape=[],
+        description='''
+        Normalization factor to reobtain the DOS values as presented in the raw data files.
+        ''')
+
+
 class BandStructure(simulation.calculation.BandStructure):
 
     m_def = Section(validate=False, extends_base_section=True)

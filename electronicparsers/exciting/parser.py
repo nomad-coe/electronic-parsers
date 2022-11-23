@@ -1180,8 +1180,7 @@ class ExcitingParser:
         sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
         sec_dos.n_energies = self.dos_parser.number_of_dos
         sec_dos.energies = self.dos_parser.energies + energy_fermi
-        volume = self.info_parser.get_unit_cell_volume()
-        totaldos = self.dos_parser.get('totaldos') * volume.to('m**3').magnitude
+        totaldos = self.dos_parser.get('totaldos')
         for spin in range(len(totaldos)):
             sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
             sec_dos_values.spin = spin
@@ -1338,8 +1337,7 @@ class ExcitingParser:
         data = np.transpose(data, axes=(2, 0, 1))
 
         sec_dos.energies = data[0][0] * ureg.hartree + energy_fermi
-        volume = self.info_parser.get_unit_cell_volume()
-        dos = data[1] * (1 / ureg.hartree) * volume.to('m**3').magnitude
+        dos = data[1] * (1 / ureg.hartree)
         for spin in range(len(dos)):
             sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
             sec_dos_values.spin = spin
@@ -1435,7 +1433,7 @@ class ExcitingParser:
 
         files = self.get_exciting_files(name)
         if len(files) > 1:
-            self.logger.warn('Found multiple files. Will read all!', data=dict(file=name))
+            self.logger.warning('Found multiple files. Will read all!', data=dict(file=name))
 
         for n in range(len(files)):
             parser.mainfile = files[n]
@@ -1637,7 +1635,7 @@ class ExcitingParser:
                     sec_scc = sccs[i]
                     if sec_scc is None:
                         # This is the case when there is a mismatch between files
-                        self.logger.warn(
+                        self.logger.warning(
                             'Mismatch in EXCITON and file type', data=dict(file=quantity))
                         sec_scc = sec_run.m_create(Calculation)
 
@@ -2130,7 +2128,7 @@ class ExcitingParser:
                 try:
                     setattr(sec_system, name, val)
                 except Exception:
-                    self.logger.warn('Error setting metainfo.')
+                    self.logger.warning('Error setting metainfo.')
 
         # species
         species = self.info_parser.get_initialization_parameter('species', [])
