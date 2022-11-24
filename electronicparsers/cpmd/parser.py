@@ -402,7 +402,7 @@ class CPMDParser:
             def write_energies(source, target):
                 target.energy = Energy(total=EnergyEntry(
                     value=source[5] * ureg.hartree,
-                potential=source[3] * ureg.hartree,
+                    potential=source[3] * ureg.hartree,
                     kinetic=source[1] * ureg.hartree))
                 target.time_calculation = source[7] * ureg.s
                 target.temperature = source[2] * ureg.kelvin
