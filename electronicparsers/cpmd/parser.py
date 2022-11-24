@@ -18,6 +18,7 @@
 #
 
 import os
+import re
 import logging
 import numpy as np
 from datetime import datetime
@@ -176,7 +177,7 @@ class MainfileParser(TextParser):
                     Quantity(
                         'frame',
                         rf'((?:\d+ +{re_f} +{re_f} +{re_f} +{re_f} +{re_f} +{re_f} +{re_f}\s+)+)',
-                        dtype=np.dtype(np.float64)
+                        dtype=np.dtype(np.float64), repeats=True
                     ),
                     Quantity(
                         'averaged',
@@ -354,21 +355,37 @@ class CPMDParser:
 
             # TODO read trajectory from other file formats dcd
             # read atom positions and velocities from (F)TRAJECTORY
-            self.trajectory_parser.mainfile = os.path.join(self.maindir, 'FTRAJECTORY')
-            if self.trajectory_parser.mainfile is None:
-                self.trajectory_parser.mainfile = os.path.join(self.maindir, 'TRAJECTORY')
-            if self.trajectory_parser.data is None:
-                # read from xyz file
-                self.xyz_parser.mainfile = os.path.join(self.maindir, 'TRAJEC.xyz')
+
+            def read_xyz_trajectory(filename):
+                self.xyz_parser.mainfile = os.path.join(self.maindir, filename)
                 trajectory = [step.get('positions') for step in self.xyz_parser.get('step', [])]
                 if trajectory:
                     # reshape to conform with trajectory parser
                     trajectory = np.reshape(trajectory, (len(trajectory), len(trajectory[0]), 1, 3))
-            else:
-                trajectory = self.trajectory_parser.data
-                trajectory = [] if trajectory is None else trajectory
+                return trajectory
+
+            trajectory = None
+            trajectory_files = [f for f in os.listdir(self.maindir) if re.search(r'.*TRAJECTORY', f, re.IGNORECASE)]
+            if trajectory_files:
+                self.trajectory_parser.mainfile = os.path.join(self.maindir, trajectory_files[0])
+                if self.trajectory_parser.data is None:
+                    # maybe this is an xyz file (nomad #1196)
+                    trajectory = read_xyz_trajectory(trajectory_files[0])
+
+            if trajectory is None:
+                trajectory_files = [f for f in os.listdir(self.maindir) if re.search(r'.*\.xyz', f, re.IGNORECASE)]
+                if self.trajectory_parser.data is None and trajectory_files:
+                    # read from xyz file
+                    trajectory = read_xyz_trajectory(trajectory_files[0])
+                else:
+                    trajectory = self.trajectory_parser.data
+                    trajectory = [] if trajectory is None else trajectory
+
             # we also initialize energies parser
-            self.energies_parser.mainfile = os.path.join(self.maindir, 'ENERGIES')
+            energies = None
+            energy_files = [f for f in os.listdir(self.maindir) if re.search(r'.*ENERGIES', f, re.IGNORECASE)]
+            if energy_files:
+                self.energies_parser.mainfile = os.path.join(self.maindir, energy_files[0])
             if self.energies_parser.mainfile is None:
                 # get energies from mainfile
                 energies = self.mainfile_parser.molecular_dynamics.get('frame', [])
@@ -377,8 +394,18 @@ class CPMDParser:
                 energies = [] if energies is None else energies
 
             # assert that energies and trajectory data match
+            match = True
+            start = 0
             if len(energies) != len(trajectory):
                 self.logger.warning('Trajectory and energies files do not match.')
+
+            def write_energies(source, target):
+                target.energy = Energy(total=EnergyEntry(
+                    value=source[5] * ureg.hartree,
+                potential=source[3] * ureg.hartree,
+                    kinetic=source[1] * ureg.hartree))
+                target.time_calculation = source[7] * ureg.s
+                target.temperature = source[2] * ureg.kelvin
 
             lattice_vectors = self.mainfile_parser.get('supercell', {}).get('lattice_vectors')
             lattice_vectors = lattice_vectors * ureg.bohr if lattice_vectors else lattice_vectors
@@ -387,21 +414,24 @@ class CPMDParser:
                 sec_system.atoms = Atoms(
                     labels=[atom[1] for atom in self.mainfile_parser.get('atoms', [])],
                     positions=trajectory[n_frame, :, 0, :] * ureg.bohr,
-                    lattice_vectors=lattice_vectors
+                    lattice_vectors=lattice_vectors,
+                    periodic=None if lattice_vectors is None else [True, True, True]
                 )
-                if len(trajectory[n_frame, :]) > 1:
+                if len(trajectory[n_frame][0]) > 1:
                     sec_system.atoms.velocities = trajectory[n_frame, :, 1, :] * ureg.bohr / (ureg.dirac_constant / ureg.hartree)
 
                 sec_calc = sec_run.m_create(Calculation)
-                if len(trajectory[n_frame, :]) > 2:
+                if len(trajectory[n_frame][0]) > 2:
                     sec_calc.forces = trajectory[n_frame, :, 1, :] * ureg.hartree / ureg.bohr
 
-                sec_calc.energy = Energy(total=EnergyEntry(
-                    value=energies[n_frame][5] * ureg.hartree,
-                    potential=energies[n_frame][3] * ureg.hartree,
-                    kinetic=energies[n_frame][1] * ureg.hartree))
-                sec_calc.time_calculation = energies[n_frame][7] * ureg.s
-                sec_calc.temperature = energies[n_frame][2] * ureg.kelvin
+                if match:
+                    write_energies(energies[n_frame], sec_calc)
+                else:
+                    for energies_n in range(start, len(energies)):
+                        if n_frame == int(energies[energies_n][0]):
+                            start = energies_n
+                            write_energies(energies[energies_n], sec_calc)
+                            break
 
         sec_method = sec_run.m_create(Method)
         sec_basis = sec_method.m_create(BasisSet)
