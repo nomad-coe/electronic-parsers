@@ -282,7 +282,7 @@ def test_gw_eigs(parser):
 
     assert archive.run[0].system[0].atoms.labels[0] == 'O'
     assert archive.run[0].method[0].gw.type == 'G0W0'
-    assert archive.run[0].method[0].gw.basis_set[0].type == 'numeric AOs'
+    assert archive.run[0].method[0].basis_set[0].type == 'numeric AOs'
 
     sec_eigs_gw = archive.run[0].calculation[0].eigenvalues[0]
     assert sec_eigs_gw.value_qp.shape == (1, 1, 81)
