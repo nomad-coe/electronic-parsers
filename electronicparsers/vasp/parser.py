@@ -1371,7 +1371,8 @@ class VASPParser:
             sec_scc.energy.highest_occupied = max(valence_max) * ureg.eV
             sec_scc.energy.lowest_unoccupied = min(conduction_min) * ureg.eV
 
-            if self.parser.kpoints_info.get('x_vasp_k_points_generation_method', None) == 'listgenerated':
+            k_points_generation_method = self.parser.kpoints_info.get('x_vasp_k_points_generation_method', None)
+            if k_points_generation_method == 'listgenerated' or not k_points_generation_method:
                 # I removed normalization since imho it should be done by normalizer
                 sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
                 for n in range(len(eigs)):
