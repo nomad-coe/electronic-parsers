@@ -333,6 +333,18 @@ class OutcarTextParser(TextParser):
                 r'k-points in reciprocal lattice and weights:[\s\S]+?\n([\d\.\s\-]+)',
                 repeats=False, dtype=float),
             Quantity(
+                'kpoints_method',
+                r'(interpolating k-points between supplied coordinates)',
+                repeats=False, dtype=str, str_operation=lambda x: 'listgenerated'),
+            Quantity(
+                'kpoints_method',
+                r'(Automated generation of k-mesh)',
+                repeats=False, dtype=str, str_operation=lambda x: 'automatic'),
+            Quantity(
+                'kpoints_method',
+                r'(k-points in reciprocal lattice)',
+                repeats=False, dtype=str, str_operation=lambda x: ''),  # the position here matters: this option gets tried last
+            Quantity(
                 'nbands', r'NBANDS\s*=\s*(\d+)', dtype=int, repeats=False),
             Quantity(
                 'lattice_vectors',
@@ -430,6 +442,7 @@ class OutcarContentParser(ContentParser):
                 kpts_occs = np.reshape(kpts_occs, (len(kpts_occs) // 4, 4)).T
                 self._kpoints_info['k_mesh_points'] = kpts_occs[0:3].T
                 self._kpoints_info['k_mesh_weights'] = kpts_occs[3].T
+            self._kpoints_info['x_vasp_k_points_generation_method'] = self.parser.get('kpoints_method', 'unavailable')
 
         return self._kpoints_info
 
