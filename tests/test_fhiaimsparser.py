@@ -232,30 +232,6 @@ def test_md(parser):
     assert sec_systems[4].atoms.positions[2][0].magnitude == approx(2.00130424e-10)
 
 
-def test_gw(parser):
-    archive = EntryArchive()
-    parser.parse('tests/data/fhiaims/He_gw/He_scGW_ontop_PBE.out', archive, None)
-
-    sec_methods = archive.run[0].method
-    assert len(sec_methods) == 2
-    assert sec_methods[1].electronic.method == 'scGW'
-
-    sec_scfs = archive.run[0].calculation[1].scf_iteration
-    assert len(sec_scfs) == 6
-    assert sec_scfs[1].x_fhi_aims_scgw_galitskii_migdal_total_energy.magnitude == approx(-1.28528018e-17)
-    assert sec_scfs[4].x_fhi_aims_single_particle_energy.magnitude == approx(-4.96262869e-18)
-
-
-def test_gw_eigs(parser):
-    archive = EntryArchive()
-    parser.parse('tests/data/fhiaims/CHN_gw/output.out', archive, None)
-
-    sec_eigs_gw = archive.run[0].calculation[1].eigenvalues[0]
-    assert sec_eigs_gw.value_exchange[0][0][7].magnitude == approx(-1.16615227e-17)
-    assert sec_eigs_gw.value_qp[0][0][71].magnitude == approx(-2.60353703e-20)
-    assert sec_eigs_gw.occupations[0][0][64] == 2.0
-
-
 def test_hybrid(parser):
     """"Taken from the official test files in FHI-aims v210716_3"""
     archive = EntryArchive()
@@ -276,3 +252,61 @@ def test_dftu(parser):
     assert sec_hubb.orbital == '4f'
     assert approx(sec_hubb.u_effective.to('eV').magnitude) == 4.5
     assert sec_hubb.method == 'Dudarev'
+
+
+def test_gw(parser):
+    """Tests for GW calculations in an atom, He"""
+    archive = EntryArchive()
+    parser._calculation_type = 'gw'
+    parser.parse('tests/data/fhiaims/He_gw/He_scGW_ontop_PBE.out', archive, None)
+
+    assert archive.run[0].system[0].atoms.labels == ['He']
+    assert archive.run[0].system[0].atoms.periodic == [False, False, False]
+
+    sec_method = archive.run[0].method
+    assert len(sec_method) == 1
+    assert sec_method[0].gw.type == 'scGW'
+    assert sec_method[0].gw.n_frequencies == len(sec_method[0].gw.frequency_values)
+    assert sec_method[0].gw.frequency_values.to('hartree')[-1].magnitude == approx(3571.4288641158605)
+
+    sec_scf = archive.run[0].calculation[0].scf_iteration
+    assert len(sec_scf) == 5
+    assert sec_scf[0].x_fhi_aims_energy_scgw_correlation_energy.to('eV').magnitude == approx(-2.392295)
+    assert sec_scf[-1].x_fhi_aims_energy_scgw_correlation_energy.to('eV').magnitude == approx(-1.73791)
+
+
+def test_gw_eigs(parser):
+    """Tests for GW calculations in a molecule, CHN"""
+    archive = EntryArchive()
+    parser.parse('tests/data/fhiaims/CHN_gw/output.out', archive, None)
+
+    assert archive.run[0].system[0].atoms.labels[0] == 'O'
+    assert archive.run[0].method[0].gw.type == 'G0W0'
+    assert archive.run[0].method[0].basis_set[0].type == 'numeric AOs'
+
+    sec_eigs_gw = archive.run[0].calculation[0].eigenvalues[0]
+    assert sec_eigs_gw.value_qp.shape == (1, 1, 81)
+    assert sec_eigs_gw.value_correlation[-1][0][0].to('eV').magnitude == approx(10.4622)
+    assert sec_eigs_gw.value_exchange[-1][0][0].to('eV').magnitude == approx(-99.6569)
+    assert sec_eigs_gw.value_qp[-1][0][0].to('eV').magnitude == approx(-550.2817)
+    assert sec_eigs_gw.value_ks[-1][0][0].to('eV').magnitude == approx(-524.2553)
+    assert sec_eigs_gw.value_ks_xc[-1][0][0].to('eV').magnitude == approx(-63.1682)
+
+
+def test_gw_bands(parser):
+    """Tests for GW calculations in a solid, Si2"""
+    archive = EntryArchive()
+    parser.parse('tests/data/fhiaims/Si_pbe_vs_gw_bands/aims.out', archive, None)
+
+    assert archive.run[0].system[0].atoms.labels == ['Si', 'Si']
+    assert archive.run[0].method[0].gw.type == 'G0W0'
+    # assert archive.run[0].method[0].gw.starting_point.exchange[0].name == 'GGA_X_PBE'
+    # assert archive.run[0].method[0].gw.starting_point.correlation[0].name == 'GGA_C_PBE'
+
+    sec_scc = archive.run[0].calculation[0]
+    assert sec_scc.energy.fermi.to('eV').magnitude == approx(-5.73695796)
+    assert len(sec_scc.band_structure_electronic[0].segment) == 10
+    assert sec_scc.band_structure_electronic[0].segment[0].kpoints.shape == (17, 3)
+    assert sec_scc.band_structure_electronic[0].segment[-1].occupations.shape == (1, 6, 24)
+
+# WATCH OUT: reset (if needed) self._calculation_type accordingly after the GW tests!
