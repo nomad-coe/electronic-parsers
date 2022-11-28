@@ -20,8 +20,8 @@ import pytest
 import numpy as np
 
 from nomad.datamodel import EntryArchive
+from nomad.normalizing.dos_integrator import integrate_dos
 from electronicparsers.fhiaims import FHIAimsParser
-from tests.dos_integrator import integrate_dos
 
 
 def approx(value, abs=0, rel=1e-6):

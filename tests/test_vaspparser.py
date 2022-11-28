@@ -21,8 +21,8 @@ import numpy as np
 
 from nomad.units import ureg
 from nomad.datamodel import EntryArchive
+from nomad.normalizing.dos_integrator import integrate_dos
 from electronicparsers.vasp import VASPParser
-from tests.dos_integrator import integrate_dos
 
 
 def approx(value, abs=0, rel=1e-6):
