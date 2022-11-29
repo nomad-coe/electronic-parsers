@@ -88,7 +88,7 @@ def test_vasprunxml_static(parser):
     assert sec_scc.scf_iteration[2].energy.total_t0.value.magnitude == approx(-2.27580485e-19,)
 
     # test DOS integrated
-    dos_integrated = integrate_dos(sec_scc.dos_electronic[0], False, sec_scc.energy.fermi)
+    dos_integrated = integrate_dos(sec_scc.dos_electronic[0])
     assert pytest.approx(dos_integrated, abs=1e-2) == 8. - 6.  # dos starts from 6 electrons already
 
 
@@ -113,7 +113,7 @@ def test_vasprunxml_relax(parser):
     assert sec_sccs[2].energy.highest_occupied.magnitude == approx(7.93702283e-19)
     assert [len(scc.eigenvalues) for scc in sec_sccs] == [0, 0, 1]
     assert [len(scc.dos_electronic) for scc in sec_sccs] == [0, 0, 1]
-    dos_integrated = integrate_dos(sec_sccs[-1].dos_electronic[0], True, sec_sccs[-1].energy.fermi)
+    dos_integrated = integrate_dos(sec_sccs[-1].dos_electronic[0])
     assert pytest.approx(dos_integrated, abs=1) == 22.
 
 
@@ -180,7 +180,7 @@ def test_dos_silicon(silicon_dos):
     assert gap == approx(0.83140)
 
     # Check that the no. valence electrons is receovered
-    dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
+    dos_integrated = integrate_dos(dos)
     assert pytest.approx(dos_integrated, abs=1e-2) == 8.
 
 

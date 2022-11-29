@@ -138,7 +138,7 @@ def test_band_spinpol(parser):
     assert sec_dos.energies[46].magnitude == approx(-1.1999976e-18)
     assert sec_dos.total[0].value[46].to('1 / eV').magnitude == approx(.18127036)
     assert sec_dos.total[1].value[15].to('1 / eV').magnitude == approx(.57150097)
-    dos_integrated = integrate_dos(sec_dos, True, sec_scc.energy.fermi)
+    dos_integrated = integrate_dos(sec_dos, efermi=sec_scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 8.
 
     # v151211 test for the Fermi level
@@ -179,7 +179,7 @@ def test_dos_silicon(silicon, version, silicon_normalization_factors):
     energy_reference = scc.energy.fermi.to('eV').magnitude
     energies = dos.energies.to('eV').magnitude
     values = np.array([d.value.magnitude for d in dos.total])
-    dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
+    dos_integrated = integrate_dos(dos, efermi=scc.energy.fermi)
 
     assert pytest.approx(dos_integrated, abs=5e-2) == 8
     assert dos.total[0].x_fhi_aims_normalization_factor_raw_data == silicon_normalization_factors[version]
@@ -206,7 +206,7 @@ def test_dos(parser):
     assert sec_dos.total[0].value[0].to('1 / eV').magnitude == approx(0.00233484)
     assert sec_dos.total[0].value[-1].to('1 / eV').magnitude == approx(0.49471595)
 
-    dos_integrated = integrate_dos(sec_dos, False, sec_scc.energy.fermi)
+    dos_integrated = integrate_dos(sec_dos, efermi=sec_scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 3.  # 3rd valence shell
 
     sec_species_dos = sec_dos.species_projected
