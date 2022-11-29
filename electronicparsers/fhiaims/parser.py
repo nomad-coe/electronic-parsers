@@ -1188,6 +1188,38 @@ class FHIAimsParser:
                 sec_thermo = sec_scf.m_create(Thermodynamics)
                 sec_thermo.pressure = pressure
 
+        def parse_gw(section):
+            gw_scf_energies = section.get('gw_self_consistency')
+            gw_eigenvalues = section.get('gw_eigenvalues')
+
+            if gw_scf_energies is None and gw_eigenvalues is None:
+                return
+
+            sec_scc = sec_run.m_create(Calculation)
+            sec_scf_iteration = sec_scc.m_create(ScfIteration)
+            if gw_scf_energies is not None:
+                for energies in gw_scf_energies:
+                    sec_scf_iteration = sec_scc.m_create(ScfIteration)
+                    for key, val in energies.items():
+                        metainfo_key = self._energy_map.get(key, None)
+                        if metainfo_key is not None:
+                            try:
+                                setattr(sec_scf_iteration, metainfo_key, val)
+                            except Exception:
+                                self.logger.warning('Error setting gw metainfo.', data=dict(key=metainfo_key))
+
+                self._electronic_structure_method = 'scGW' if len(gw_scf_energies) > 1 else 'G0W0'
+
+            metainfo_map = {
+                'occ_num': 'occupations', 'e_gs': 'value_ks', 'e_x^ex': 'value_exchange',
+                'e_xc^gs': 'value_ks_xc', 'e_c^nloc': 'value_correlation', 'e_qp': 'value_qp'}
+            if gw_eigenvalues is not None:
+                sec_eigs_gw = sec_scc.m_create(BandEnergies)
+                for key, name in metainfo_map.items():
+                    # TODO verify shape of eigenvalues
+                    val = gw_eigenvalues[key] if key == 'occ_num' else gw_eigenvalues[key] * ureg.eV
+                    setattr(sec_eigs_gw, name, np.reshape(val, (1, 1, len(val))))
+
         def parse_vdW(section):
             # these are not actually vdW outputs but vdW control parameters but are
             # printed within the calculation section.
