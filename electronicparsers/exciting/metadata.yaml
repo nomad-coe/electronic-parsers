@@ -7,6 +7,7 @@ codeUrl: http://exciting-code.org/
 parserDirName: dependencies/electronic/electronicparsers/exciting/
 parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
 parserSpecific: ''
+parserLastUpdate: '18.10.2022'
 preamble: ''
 tableOfFiles: |
   |Input Filename| Description|

@@ -409,6 +409,117 @@ class x_exciting_section_xc(MSection):
         ''')
 
 
+class GW(simulation.method.GW):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_exciting_frequency_number = Quantity(
+        type=np.dtype(np.int32),
+        shape=['n_frequencies'],
+        description='''
+        Number referring to the frequency used in the calculation of the self energy.
+        ''')
+
+    x_exciting_frequency_weights = Quantity(
+        type=np.dtype(np.float64),
+        shape=['n_frequencies'],
+        description='''
+        Weights of the frequency used in the calculation of the self energy.
+        ''')
+
+    x_exciting_frequency_grid_type = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Frequency integration grid type for the correlational self energy: 'eqdis' -
+        equidistant frequencies from 0 to freqmax; 'gaulag' - Gauss-Laguerre quadrature
+        from 0 to infinity; 'gauleg' - Gauss-Legendre quadrature from 0 to freqmax;
+        'gaule2' (default) - double Gauss-Legendre quadrature from 0 to freqmax and from
+        freqmax to infinity.
+        ''')
+
+    x_exciting_max_frequency = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        Maximum frequency for the calculation of the self energy.
+        ''')
+
+    x_exciting_bare_coulomb_cutofftype = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Cutoff type for the calculation of the bare Coulomb potential: none, 0d, 1d, 2d.
+        See Rozzi et al., PRB 73, 205119 (2006)
+        ''')
+
+    x_exciting_bare_coulomb_gmax = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='1 / meter',
+        description='''
+        Maximum G for the pw basis for the Coulomb potential.
+        ''')
+
+    x_exciting_mixed_basis_gmax = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='1 / meter',
+        description='''
+        Cut-off parameter for the truncation of the expansion of the plane waves in the
+        interstitial region.
+        ''')
+
+    x_exciting_mixed_basis_lmax = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        Maximum l value used for the radial functions within the muffin-tin.
+        ''')
+
+    x_exciting_mixed_basis_tolerance = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        Eigenvalue threshold below which the egenvectors are discarded in the construction
+        of the radial basis set.
+        ''')
+
+    x_exciting_self_energy_c_number_of_poles = Quantity(
+        type=int,
+        shape=[],
+        description='''
+        Number of poles used in the analytical continuation.
+        ''')
+
+    x_exciting_self_energy_singularity_treatment = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Treatment of the integrable singular terms in the calculation of the self energy.
+        Values: 'mpb' - Auxiliary function method by S. Massidda, M. Posternak, and A.
+        Baldereschi, PRB 48, 5058 (1993); 'crg' - Auxiliary function method by P. Carrier,
+        S. Rohra, and A. Goerling, PRB 75, 205126 (2007).
+        ''')
+
+    x_exciting_screened_coulomb_volume_average = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Type of volume averaging for the dynamically screened Coulomb potential: isotropic
+        - Simple averaging along a specified direction using only diagonal components of
+        the dielectric tensor; anisotropic - Anisotropic screening by C. Freysoldt et al.,
+        CPC 176, 1-13 (2007)
+        ''')
+
+    x_exciting_qp_equation_treatment = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Methods to solve the quasi-particle equation: 'linearization', 'self-consistent'
+        ''')
+
+
 class Calculation(simulation.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
