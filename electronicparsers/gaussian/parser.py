@@ -828,6 +828,8 @@ class GaussianParser:
             sec_thermochem = sec_run.m_create(x_gaussian_section_thermochem)
             sec_thermo.temperature = temperature_pressure[0]
             sec_thermo.pressure = (temperature_pressure[1] * ureg.atm).to('N/m**2')
+            sec_scc.temperature = temperature_pressure[0]
+            sec_scc.pressure = (temperature_pressure[1] * ureg.atm).to('N/m**2')
             moments = section.get('moments')
             if moments is not None:
                 sec_thermochem.x_gaussian_moments = moments.to('kg*m**2').magnitude

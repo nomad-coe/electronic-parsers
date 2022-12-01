@@ -35,6 +35,9 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     ExcitedStates
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
+from nomad.datamodel.metainfo.simulation.workflow import (
+    GeometryOptimization as GeometryOptimizaton2, GeometryOptimizationMethod
+)
 
 
 class OutParser(TextParser):
@@ -832,6 +835,7 @@ class OrcaParser:
         parse_configuration(self.out_parser.get('single_point'))
 
         sec_workflow = self.archive.m_create(Workflow)
+        workflow = None
 
         geometry_optimization = self.out_parser.get('geometry_optimization')
         if geometry_optimization is not None:
@@ -842,22 +846,31 @@ class OrcaParser:
 
             sec_workflow.type = 'geometry_optimization'
             sec_geometry_opt = sec_workflow.m_create(GeometryOptimization)
+            workflow = GeometryOptimizaton2(method=GeometryOptimizationMethod())
             for key, val in geometry_optimization.items():
                 if key in ['cycle', 'final_energy_evaluation'] or val is None:
                     continue
                 if key.endswith('tol'):
                     if 'gradient' in key:
                         val[1] = (val[1] * ureg.hartree / ureg.bohr).to('joule/meter').magnitude
+                        if 'max' in key:
+                            workflow.method.convergence_tolerance_force_maximum = val[1]
                     elif 'displacement' in key:
                         val[1] = (val[1] * ureg.bohr).to('meter').magnitude
+                        if 'max' in key:
+                            workflow.method.convergence_tolerance_displacement_maximum = val[1]
                     else:
                         val[1] = (val[1] * ureg.hartree).to('joule').magnitude
+                        if 'energy' in key:
+                            workflow.method.convergence_tolerance_energy_difference = val[1]
                     setattr(sec_geometry_opt, 'x_orca_%s_value' % key, val[1])
                     val = val[0]
                 elif key in ['update_method', 'coords_choice', 'initial_hessian']:
                     setattr(sec_geometry_opt, 'x_orca_%s_name' % key, ' '.join(val[1:]))
                     val = val[0]
                 setattr(sec_geometry_opt, 'x_orca_%s' % key, val)
+
+        self.archive.workflow2 = workflow
 
     def init_parser(self, filepath, logger):
         self.out_parser.mainfile = filepath

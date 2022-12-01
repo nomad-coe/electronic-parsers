@@ -55,6 +55,9 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 )
 from nomad.datamodel.metainfo.workflow import (
     Workflow, GeometryOptimization, SinglePoint, MolecularDynamics)
+from nomad.datamodel.metainfo.simulation.workflow import (
+    SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
+    GeometryOptimizationMethod, MolecularDynamics as MolecularDynamics2)
 
 
 def get_key_values(val_in):
@@ -1277,12 +1280,15 @@ class VASPParser:
             nsw = incar.get('NSW')
             ibrion = -1 if nsw == 0 else incar.get('IBRION', 0)
 
+        workflow2 = None
         if ibrion == -1:
             sec_workflow.type = 'single_point'
             sec_workflow.m_create(SinglePoint)
+            workflow2 = SinglePoint2()
         elif ibrion == 0:
             sec_workflow.type = 'molecular_dynamics'
             sec_workflow.m_create(MolecularDynamics)
+            workflow2 = MolecularDynamics2()
         else:
             sec_workflow.type = 'geometry_optimization'
             task = sec_workflow.m_create(GeometryOptimization)
@@ -1292,6 +1298,13 @@ class VASPParser:
                     task.convergence_tolerance_energy_difference = tolerance * ureg.eV
                 else:
                     task.convergence_tolerance_force_maximum = abs(tolerance) * ureg.eV / ureg.angstrom
+            workflow2 = GeometryOptimization2(
+                method=GeometryOptimizationMethod(
+                    convergence_tolerance_energy_difference=tolerance * ureg.eV,
+                    convergence_tolerance_force_maximum=abs(tolerance) * ureg.eV / ureg.angstrom
+                )
+            )
+        self.archive.workflow2 = workflow2
 
     def parse_configurations(self):
         sec_run = self.archive.run[-1]

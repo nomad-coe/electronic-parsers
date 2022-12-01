@@ -37,6 +37,9 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     StressEntry, Multipoles, MultipolesEntry, Charges, ChargesValue
 )
 from nomad.datamodel.metainfo.workflow import Workflow
+from nomad.datamodel.metainfo.simulation.workflow import (
+    GeometryOptimization, SinglePoint
+)
 
 
 re_n = r'[\n\r]'
@@ -449,11 +452,13 @@ class SiestaParser:
         if self.out_parser.single_point is not None:
             parse_configurations(self.out_parser.single_point)
             workflow.type = 'single_point'
+            archive.workflow2 = SinglePoint()
 
         if self.out_parser.geometry_optimization is not None:
             for step in self.out_parser.geometry_optimization.get('step', []):
                 parse_configurations(step)
             workflow.type = 'geometry_optimization'
+            archive.workflow2 = GeometryOptimization()
 
         # final properties
         calc = parse_calculation(self.out_parser)

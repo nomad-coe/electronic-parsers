@@ -38,6 +38,9 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Forces, ForcesEntry
 )
 from nomad.datamodel.metainfo.workflow import Workflow, Task, GW as GWWorkflow
+from nomad.datamodel.metainfo.simulation.workflow import (
+    SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
+    MolecularDynamics as MolecularDynamics2, GW as GW2, GWResults)
 
 from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_parallel_task_assignement, x_fhi_aims_section_parallel_tasks,\
@@ -969,6 +972,12 @@ class FHIAimsParser:
         sec_gw.dos_gw = extract_section(gw_archive, 'dos_electronic')
         sec_gw.band_structure_dft = extract_section(self.archive, 'band_structure_electronic')
         sec_gw.band_structure_gw = extract_section(gw_archive, 'band_structure_electronic')
+        workflow = GW2(results=GWResults())
+        workflow.results.dos_dft = extract_section(self.archive, 'dos_electronic')
+        workflow.results.dos_gw = extract_section(gw_archive, 'dos_electronic')
+        workflow.results.band_structure_dft = extract_section(self.archive, 'band_structure_electronic')
+        workflow.results.band_structure_gw = extract_section(gw_archive, 'band_structure_electronic')
+        gw_workflow_archive.workflow2 = workflow
 
     def parse_system(self, section):
         sec_run = self.archive.run[-1]
@@ -1331,12 +1340,16 @@ class FHIAimsParser:
 
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)
+        workflow = SinglePoint2()
         sec_workflow.type = 'single_point'
         sec_workflow.calculations_ref = self.archive.run[-1].calculation
         if self.out_parser.get('geometry_optimization') is not None:
             sec_workflow.type = 'geometry_optimization'
+            workflow = GeometryOptimization2()
         elif self.out_parser.get('molecular_dynamics', None) is not None:
             sec_workflow.type = 'molecular_dynamics'
+            workflow = MolecularDynamics2()
+        self.archive.workflow2 = workflow
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
