@@ -13,7 +13,6 @@ dependencies = [
     # "nomad-lab[infrastrucutre]",
     "lxml==4.7.1",
     "pyscf==2.0.1; sys_platform == 'darwin'",
-    "matid",
     "netCDF4==1.5.4",
 ]
 
