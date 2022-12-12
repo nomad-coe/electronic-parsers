@@ -2339,6 +2339,7 @@ class QuantumEspressoParser:
             if value is None:
                 return
             units = source.get(units_key) if units is None else units
+            units = units.lower()
             alat = run.get_header('alat', 1.0)
             value = np.array(value, dtype=float)
             if units in ['alat', 'a_0']:
@@ -2347,6 +2348,12 @@ class QuantumEspressoParser:
                 value = value * units_mapping.get(units)
             elif units == '2 pi/alat':
                 value *= (2 * np.pi / alat)
+            elif units == 'crystal':
+                cell = _convert('simulation_cell', calculation)
+                if cell is None:
+                    cell = _convert('simulation_cell', run.get('header', {}))
+                if cell is not None:
+                    value = np.dot(value, cell)
             return value
 
         sec_run = self.archive.run[-1]

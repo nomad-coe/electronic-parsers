@@ -17,6 +17,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install nomad-lab==1.0.8 --extra-index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install .[tests]
     - name: pycodestyle
       run: |
         python -m pycodestyle --ignore=E501,E701,E731 *parsers tests
