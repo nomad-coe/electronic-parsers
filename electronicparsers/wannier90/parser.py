@@ -238,7 +238,7 @@ class Wannier90Parser:
         sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].projection.n_projected_orbitals
         sec_hopping_matrix.n_wigner_seitz_points = self.hr_parser.get('degeneracy_factors')[1]
         sec_hopping_matrix.degeneracy_factors = self.hr_parser.get('degeneracy_factors')[2:]
-        full_hoppings = np.array(self.hr_parser.get('hoppings'))
+        full_hoppings = self.hr_parser.get('hoppings')
         sec_hopping_matrix.value = np.reshape(
             full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
 
