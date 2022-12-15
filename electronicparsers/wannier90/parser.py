@@ -140,21 +140,21 @@ class Wannier90Parser:
             'conv_tol': 'convergence_tolerance_max_localization'
         }
 
-    def parse_system(self):
-        sec_run = self.archive.run[-1]
+    def parse_system(self, archive, wout_parser):
+        sec_run = archive.run[-1]
         sec_system = sec_run.m_create(System)
 
         sec_atoms = sec_system.m_create(Atoms)
-        if self.wout_parser.get('lattice_vectors') is not None:
-            sec_atoms.lattice_vectors = np.vstack(self.wout_parser.get('lattice_vectors')) * ureg.angstrom
-        if self.wout_parser.get('reciprocal_lattice_vectors') is not None:
-            sec_atoms.lattice_vectors_reciprocal = np.vstack(self.wout_parser.get('reciprocal_lattice_vectors')) / ureg.angstrom
+        if wout_parser.get('lattice_vectors') is not None:
+            sec_atoms.lattice_vectors = np.vstack(wout_parser.get('lattice_vectors')) * ureg.angstrom
+        if wout_parser.get('reciprocal_lattice_vectors') is not None:
+            sec_atoms.lattice_vectors_reciprocal = np.vstack(wout_parser.get('reciprocal_lattice_vectors')) / ureg.angstrom
 
-        pbc = [np.vstack(self.wout_parser.get('lattice_vectors')) is not None] * 3
+        pbc = [np.vstack(wout_parser.get('lattice_vectors')) is not None] * 3
         sec_atoms.periodic = pbc
 
-        sec_atoms.labels = self.wout_parser.get('structure').get('labels')
-        sec_atoms.positions = self.wout_parser.get('structure').get('positions') * ureg.angstrom
+        sec_atoms.labels = wout_parser.get('structure').get('labels')
+        sec_atoms.positions = wout_parser.get('structure').get('positions') * ureg.angstrom
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
@@ -344,7 +344,7 @@ class Wannier90Parser:
             name='Wannier90', version=self.wout_parser.get('version', ''))
         # TODO TimeRun section
 
-        self.parse_system()
+        self.parse_system(self.archive, self.wout_parser)
 
         self.parse_method()
 
