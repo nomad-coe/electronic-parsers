@@ -29,6 +29,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 )
 from nomad.datamodel.metainfo.simulation.method import Method, KMesh, Projection
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
+from nomad.datamodel.metainfo.workflow import Workflow
 
 re_n = r'[\n\r]'
 
@@ -294,7 +295,7 @@ class Wannier90Parser:
         if not band_files:
             return
         if len(band_files) > 1:
-            self.logger.warn('Multiple bandstructure data files found.')
+            self.logger.warning('Multiple bandstructure data files found.')
         # Parsing only first *_band.dat file
         self.band_dat_parser.mainfile = os.path.join(self.maindir, band_files[0])
 
@@ -339,7 +340,7 @@ class Wannier90Parser:
         if not dos_files:
             return
         if len(dos_files) > 1:
-            self.logger.warn('Multiple dos data files found.')
+            self.logger.warning('Multiple dos data files found.')
         # Parsing only first *_band.dat file
         self.dos_dat_parser.mainfile = os.path.join(self.maindir, dos_files[0])
 
@@ -385,6 +386,8 @@ class Wannier90Parser:
         if not wout_files:
             self.logger.error('Error finding the woutput file.')
 
+        self.wout_parser.mainfile = os.path.join(self.maindir, wout_files[0])
+
         # Program section
         sec_run.program = Program(
             name='Wannier90', version=self.wout_parser.get('version', ''))
@@ -395,3 +398,6 @@ class Wannier90Parser:
         self.parse_method()
 
         self.parse_scc()
+
+        sec_workflow = self.archive.m_create(Workflow)
+        sec_workflow.type = 'single_point'
