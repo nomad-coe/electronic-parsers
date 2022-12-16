@@ -60,12 +60,6 @@ class WOutParser(TextParser):
             Quantity(
                 'positions', rf'\|\s*([\-\d\.]+)\s*([\-\d\.]+)\s*([\-\d\.]+)', repeats=True)]
 
-        orbitals_quantities = [
-            Quantity(
-                'names', r'\|\s*([A-Za-z\.\s\-\/]+)\|', repeats=False),
-            Quantity(
-                'parameters', r'\|\s*([\d\.\s\-\/]*)\|', repeats=True)]
-
         self._quantities = [
             # Program quantities
             Quantity(
@@ -84,9 +78,6 @@ class WOutParser(TextParser):
             Quantity(
                 'k_mesh', rf'\s*(K-POINT GRID[\s\S]+?)(?:-\s*MAIN)', repeats=False,
                 sub_parser=TextParser(quantities=kmesh_quantities)),
-            Quantity(
-                'orbitals', rf'\s*(PROJECTIONS[\s\S]+?)(?:\s*K-POINT GRID)', repeats=False,
-                sub_parser=TextParser(quantities=orbitals_quantities)),
             Quantity(
                 'Nwannier', r'\|\s*Number of Wannier Functions\s*\:\s*(\d+)',
                 repeats=False),
@@ -148,45 +139,6 @@ class Wannier90Parser:
             'Nwannier': 'n_projected_orbitals',
             'Nband': 'n_bands',
             'conv_tol': 'convergence_tolerance_max_localization'
-        }
-
-        self._angular_momentum_table = {
-            's': [0, 1],
-            'pz': [1, 1],
-            'px': [1, 2],
-            'py': [1, 3],
-            'dz2': [2, 1],
-            'dxz': [2, 2],
-            'dyz': [2, 3],
-            'dx2-y2': [2, 4],
-            'dxy': [2, 5],
-            'fz3': [3, 1],
-            'fxz2': [3, 2],
-            'fyz2': [3, 3],
-            'fz(x2-y2)': [3, 4],
-            'fxyz': [3, 5],
-            'fx(x2-3y2)': [3, 6],
-            'fy(3x2-y2)': [3, 7],
-            'sp-1': [-1, 1],
-            'sp-2': [-1, 2],
-            'sp2-1': [-2, 1],
-            'sp2-2': [-2, 2],
-            'sp2-3': [-2, 3],
-            'sp3-1': [-3, 1],
-            'sp3-2': [-3, 2],
-            'sp3-3': [-3, 3],
-            'sp3-4': [-3, 4],
-            'sp3d-1': [-4, 1],
-            'sp3d-2': [-4, 2],
-            'sp3d-3': [-4, 3],
-            'sp3d-4': [-4, 4],
-            'sp3d-5': [-4, 5],
-            'sp3d2-1': [-5, 1],
-            'sp3d2-2': [-5, 2],
-            'sp3d2-3': [-5, 3],
-            'sp3d2-4': [-5, 4],
-            'sp3d2-5': [-5, 5],
-            'sp3d2-6': [-5, 6]
         }
 
     def parse_system(self, archive, wout_parser):
