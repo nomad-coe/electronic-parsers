@@ -29,6 +29,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 )
 from nomad.datamodel.metainfo.simulation.method import Method, KMesh, Projection
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
+from nomad.datamodel.metainfo.workflow import Workflow
 
 re_n = r'[\n\r]'
 
@@ -140,21 +141,21 @@ class Wannier90Parser:
             'conv_tol': 'convergence_tolerance_max_localization'
         }
 
-    def parse_system(self):
-        sec_run = self.archive.run[-1]
+    def parse_system(self, archive, wout_parser):
+        sec_run = archive.run[-1]
         sec_system = sec_run.m_create(System)
 
         sec_atoms = sec_system.m_create(Atoms)
-        if self.wout_parser.get('lattice_vectors') is not None:
-            sec_atoms.lattice_vectors = np.vstack(self.wout_parser.get('lattice_vectors')) * ureg.angstrom
-        if self.wout_parser.get('reciprocal_lattice_vectors') is not None:
-            sec_atoms.lattice_vectors_reciprocal = np.vstack(self.wout_parser.get('reciprocal_lattice_vectors')) / ureg.angstrom
+        if wout_parser.get('lattice_vectors') is not None:
+            sec_atoms.lattice_vectors = np.vstack(wout_parser.get('lattice_vectors')) * ureg.angstrom
+        if wout_parser.get('reciprocal_lattice_vectors') is not None:
+            sec_atoms.lattice_vectors_reciprocal = np.vstack(wout_parser.get('reciprocal_lattice_vectors')) / ureg.angstrom
 
-        pbc = [np.vstack(self.wout_parser.get('lattice_vectors')) is not None] * 3
+        pbc = [np.vstack(wout_parser.get('lattice_vectors')) is not None] * 3
         sec_atoms.periodic = pbc
 
-        sec_atoms.labels = self.wout_parser.get('structure').get('labels')
-        sec_atoms.positions = self.wout_parser.get('structure').get('positions') * ureg.angstrom
+        sec_atoms.labels = wout_parser.get('structure').get('labels')
+        sec_atoms.positions = wout_parser.get('structure').get('positions') * ureg.angstrom
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
@@ -189,7 +190,7 @@ class Wannier90Parser:
         sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].projection.n_projected_orbitals
         sec_hopping_matrix.n_wigner_seitz_points = self.hr_parser.get('degeneracy_factors')[1]
         sec_hopping_matrix.degeneracy_factors = self.hr_parser.get('degeneracy_factors')[2:]
-        full_hoppings = np.array(self.hr_parser.get('hoppings'))
+        full_hoppings = self.hr_parser.get('hoppings')
         sec_hopping_matrix.value = np.reshape(
             full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
 
@@ -246,7 +247,7 @@ class Wannier90Parser:
         if not band_files:
             return
         if len(band_files) > 1:
-            self.logger.warn('Multiple bandstructure data files found.')
+            self.logger.warning('Multiple bandstructure data files found.')
         # Parsing only first *_band.dat file
         self.band_dat_parser.mainfile = os.path.join(self.maindir, band_files[0])
 
@@ -291,7 +292,7 @@ class Wannier90Parser:
         if not dos_files:
             return
         if len(dos_files) > 1:
-            self.logger.warn('Multiple dos data files found.')
+            self.logger.warning('Multiple dos data files found.')
         # Parsing only first *_band.dat file
         self.dos_dat_parser.mainfile = os.path.join(self.maindir, dos_files[0])
 
@@ -344,8 +345,11 @@ class Wannier90Parser:
             name='Wannier90', version=self.wout_parser.get('version', ''))
         # TODO TimeRun section
 
-        self.parse_system()
+        self.parse_system(self.archive, self.wout_parser)
 
         self.parse_method()
 
         self.parse_scc()
+
+        sec_workflow = self.archive.m_create(Workflow)
+        sec_workflow.type = 'single_point'
