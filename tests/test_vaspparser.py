@@ -75,6 +75,8 @@ def test_vasprunxml_static(parser):
     assert sec_system.atoms.lattice_vectors[0][0].magnitude == approx(-1.78559323e-10)
 
     sec_scc = sec_run.calculation[-1]
+    assert sec_method.basis_set[0].cell_dependent[0].planewave_cutoff.to(ureg.electron_volt).magnitude == approx(512.24180000,)
+    assert sec_scc.scf_iteration[2].energy.total_t0.value.magnitude == approx(-2.27580485e-19,)
     assert sec_scc.energy.total.value.magnitude == approx(-2.3264377e-19)
     assert np.shape(sec_scc.forces.total.value) == (1, 3)
     assert sec_scc.stress.total.value[2][2].magnitude == approx(-2.78384438e+08)
@@ -85,12 +87,10 @@ def test_vasprunxml_static(parser):
     assert len(sec_scc.dos_electronic[0].atom_projected) == 9
     assert sec_scc.dos_electronic[0].atom_projected[0].value[-1].magnitude == approx(3.40162245e+17)
     assert np.shape(sec_scc.eigenvalues[0].energies[0][887]) == (37,)
-    assert sec_scc.scf_iteration[2].energy.total_t0.value.magnitude == approx(-2.27580485e-19,)
 
     # test DOS integrated
     dos_integrated = integrate_dos(sec_scc.dos_electronic[0], False, sec_scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1e-2) == 8. - 6.  # dos starts from 6 electrons already
-
 
 def test_vasprunxml_relax(parser):
     """Test Ac1Ag1 system, computed by VASP 5.3.2"""
@@ -229,7 +229,6 @@ def test_outcar(parser):
 #        assert pytest.approx(dos_integrated, abs=1) == 22.
 #    except AssertionError:
 #        raise AssertionError(sec_scc.energy.fermi)
-
 
 def test_broken_xml(parser):
     archive = EntryArchive()

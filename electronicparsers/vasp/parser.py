@@ -1139,13 +1139,12 @@ class VASPParser:
             self.logger.warning('Error setting metainfo defintion x_vasp_incar_out', data=dict(
                 incar=incar_parameters))
 
-        prec = 1.3 if 'acc' in self.parser.incar.get('PREC', '') else 1.0
         sec_basis = sec_method.m_create(BasisSet)
         sec_basis.type = 'plane waves'
         sec_basis_set_cell_dependent = sec_basis.m_create(BasisSetCellDependent)
         sec_basis_set_cell_dependent.kind = 'plane waves'
         sec_basis_set_cell_dependent.planewave_cutoff = self.parser.incar.get(
-            'ENMAX', self.parser.incar.get('ENCUT', 0.0)) * prec * ureg.eV
+            'ENMAX', self.parser.incar.get('ENCUT', 0.0)) * ureg.eV
 
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)
