@@ -117,7 +117,7 @@ def test_band(parser):
     assert sec_k_band_segment.energies.shape == (1, 101, 8)
     assert sec_k_band_segment.energies[0][4][4].magnitude == approx(1.14715847e-18)
 
-    assert archive.workflow[0].type == 'geometry_optimization'
+    assert archive.workflow[0].type == 'single_point'
 
 
 # TODO iteration is None in sub_section
@@ -234,7 +234,7 @@ def test_md(parser):
     assert sec_method.x_abacus_mixing_beta == approx(0.4)
     sec_workflow = archive.workflow[0]
     assert sec_workflow.type == 'molecular_dynamics'
-    assert sec_workflow.molecular_dynamics.ensemble_type == 'NVT'
+    assert sec_workflow.molecular_dynamics.thermodynamic_ensemble == 'NVT'
 
     sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 11

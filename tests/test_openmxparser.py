@@ -199,7 +199,7 @@ def test_C2N2(parser):
 
     workflow = archive.workflow[0]
     assert workflow.type == "molecular_dynamics"
-    assert workflow.molecular_dynamics.ensemble_type == "NVT"
+    assert workflow.molecular_dynamics.thermodynamic_ensemble == "NVT"
 
     system = run.system[0]
     assert np.shape(system.atoms.velocities) == (4, 3)

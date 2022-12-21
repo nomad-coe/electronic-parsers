@@ -1491,7 +1491,7 @@ class ABACUSParser:
             if cutoff is None:
                 continue
             sec_method_basis_set = sec_method.m_create(BasisSet)
-            sec_method_basis_set.type = 'numeric AOs' if header.get(
+            sec_method_basis_set.type = 'Numeric AOs' if header.get(
                 'orbital_settings') else 'plane waves'
             sec_method_basis_set.kind = name
             sec_basis_set = sec_method_basis_set.m_create(
@@ -1690,6 +1690,7 @@ class ABACUSParser:
                 workflow = SinglePoint2(method=SinglePointMethod())
                 workflow.method.method = archive.run[-1].method[-1].electronic.method
             archive.workflow2 = workflow
+        print(sec_worflow.type)
 
         # start date
         date_time = self.out_parser.get('start_date_time')

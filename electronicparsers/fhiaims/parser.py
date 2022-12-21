@@ -986,7 +986,7 @@ class FHIAimsParser:
             'lattice_vectors', self.out_parser.get('lattice_vectors'))
         lattice_vectors_reciprocal = section.get(
             'lattice_vectors_reciprocal',
-            self.out_parser.get('lattice_vectors_reciprocal', ''))
+            self.out_parser.get('lattice_vectors_reciprocal'))
 
         structure = section.get(
             'structure', self.out_parser.get('structure'))

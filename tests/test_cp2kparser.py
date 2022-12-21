@@ -109,7 +109,7 @@ def test_molecular_dynamics(parser):
     parser.parse('tests/data/cp2k/molecular_dynamics/H2O-32.out', archive, None)
 
     sec_workflow = archive.workflow[0]
-    assert sec_workflow.molecular_dynamics.ensemble_type == 'NVE'
+    assert sec_workflow.molecular_dynamics.thermodynamic_ensemble == 'NVE'
     assert sec_workflow.x_cp2k_section_md_settings[0].x_cp2k_md_print_frequency == 1
 
     sec_sccs = archive.run[0].calculation
