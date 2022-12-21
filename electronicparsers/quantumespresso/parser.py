@@ -37,6 +37,9 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Thermodynamics, BandEnergies, ScfIteration, Dos, DosValues
 )
 from nomad.datamodel.metainfo.workflow import Workflow
+from nomad.datamodel.metainfo.simulation.workflow import (
+    GeometryOptimization as GeometryOptimization2, MolecularDynamics as MolecularDynamics2
+)
 from .metainfo.quantum_espresso import (
     x_qe_section_scf_diagonalization, x_qe_section_bands_diagonalization,
     x_qe_section_compile_options, x_qe_section_parallel)
@@ -2751,6 +2754,10 @@ class QuantumEspressoParser:
             if self.sampling_method is not None:
                 sec_workflow = self.archive.m_create(Workflow)
                 sec_workflow.type = self.sampling_method
+                if self.sampling_method == 'geometry_optimization':
+                    self.archive.workflow2 = GeometryOptimization2()
+                elif self.sampling_method.endswith('dynamics'):
+                    self.archive.workflow2 = MolecularDynamics2()
 
             profiling = run.get('profiling')
             if profiling is not None:

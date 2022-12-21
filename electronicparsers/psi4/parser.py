@@ -32,6 +32,10 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, ScfIteration, BandEnergies,
     Multipoles, MultipolesEntry, Charges, ChargesValue)
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
+from nomad.datamodel.metainfo.simulation.workflow import (
+    SinglePoint as SinglePoint2,
+    GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod
+)
 from .metainfo.psi4 import x_psi4_root_information
 from .metainfo import m_env
 
@@ -871,6 +875,7 @@ class Psi4Parser:
             workflow.type = 'single_point'
             workflow.calculations_ref = calculations_ref
             workflow.calculation_result_ref = calc
+            self.archive.workflow2 = SinglePoint2()
 
             if module.optking is not None:
                 self.parse_system(module.optking)
@@ -896,3 +901,8 @@ class Psi4Parser:
                 geometry_opt.convergence_tolerance_energy_difference = convergence[0] * ureg.hartree
                 geometry_opt.convergence_tolerance_force_maximum = convergence[1] * ureg.hartree / ureg.bohr
                 geometry_opt.convergence_tolerance_displacement_maximum = convergence[2] * ureg.bohr
+            workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
+            workflow.method.convergence_tolerance_energy_difference = convergence[0] * ureg.hartree
+            workflow.method.convergence_tolerance_force_maximum = convergence[1] * ureg.hartree / ureg.bohr
+            workflow.method.convergence_tolerance_displacement_maximum = convergence[2] * ureg.bohr
+            self.archive.workflow2 = workflow

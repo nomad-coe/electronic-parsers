@@ -38,6 +38,8 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     BandEnergies, Dos, DosValues
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
+from nomad.datamodel.metainfo.simulation.workflow import (
+    GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod)
 from .metainfo.crystal import x_crystal_section_shell
 
 
@@ -896,10 +898,13 @@ class CrystalParser:
             steps = geo_opt["geo_opt_step"]  # pylint: disable=E1136
             if steps is not None:
                 workflow = archive.m_create(Workflow)
+                archive.workflow2 = GeometryOptimization2(method=GeometryOptimizationMethod())
                 workflow.type = "geometry_optimization"
                 geometry_opt = workflow.m_create(GeometryOptimization)
                 geometry_opt.convergence_tolerance_energy_difference = out["energy_change"]
                 geometry_opt.convergence_tolerance_displacement_maximum = out["geometry_change"]
+                archive.workflow2.method.convergence_tolerance_energy_difference = out["energy_change"]
+                archive.workflow2.method.convergence_tolerance_displacement_maximum = out["geometry_change"]
 
                 # First step is special: it refers to the initial system which
                 # was printed before entering the geometry optimization loop.

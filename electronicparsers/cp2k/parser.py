@@ -42,6 +42,10 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 from nomad.datamodel.metainfo.workflow import (
     Workflow, GeometryOptimization, MolecularDynamics
 )
+from nomad.datamodel.metainfo.simulation.workflow import (
+    GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod,
+    MolecularDynamics as MolecularDynamics2, MolecularDynamicsMethod
+)
 
 from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings, x_cp2k_section_dbcsr,\
     x_cp2k_section_startinformation, x_cp2k_section_end_information, x_cp2k_section_program_information,\
@@ -1384,15 +1388,18 @@ class CP2KParser:
         # TODO add vdW
         sec_workflow = self.archive.m_create(Workflow)
         sec_workflow.type = self.sampling_method
+        workflow = None
 
         if self.sampling_method == 'geometry_optimization':
             sec_geometry_optimization = sec_workflow.m_create(GeometryOptimization)
+            workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
             optimization = self.out_parser.get(self._calculation_type).geometry_optimization
             if optimization.method is not None:
                 method = self._optimization_method_map.get(optimization.method, '')
                 if not method:
                     self.logger.error('Cannot resolve optimization method.')
                 sec_geometry_optimization.method = method
+                workflow.method.method = method
             sec_geometry_opt = sec_workflow.m_create(x_cp2k_section_geometry_optimization)
             for step in optimization.get('optimization_step', []):
                 information = step.information
@@ -1418,16 +1425,21 @@ class CP2KParser:
             if sec_geometry_opt.x_cp2k_section_geometry_optimization_step:
                 geometry_change = sec_geometry_opt_step.x_cp2k_optimization_step_size_convergence_limit
                 if geometry_change is not None:
-                    sec_geometry_optimization.input_displacement_maximum_tolerance = geometry_change
+                    sec_geometry_optimization.convergence_tolerance_displacement_maximum = geometry_change
+                    workflow.method.convergence_tolerance_displacement_maximum
                 threshold_force = sec_geometry_opt_step.x_cp2k_optimization_gradient_convergence_limit
                 if threshold_force is not None:
-                    sec_geometry_optimization.input_force_maximum_tolerance = threshold_force
+                    sec_geometry_optimization.convergence_tolerance_force_maximum = threshold_force
+                    workflow.method.convergence_tolerance_force_maximum = threshold_force
 
         elif self.sampling_method == 'molecular_dynamics':
             # Parse common MD information
             sec_md = sec_workflow.m_create(MolecularDynamics)
-            sec_md.ensemble_type = self._ensemble_map.get(self.get_ensemble_type(0), None)
-            sec_md.time_step = self.get_time_step()
+            workflow = MolecularDynamics2(method=MolecularDynamicsMethod())
+            workflow.method.thermodynamic_ensemble = self._ensemble_map.get(self.get_ensemble_type(0), None)
+            sec_md.thermodynamic_ensemble = self._ensemble_map.get(self.get_ensemble_type(0), None)
+            sec_md.integration_timestep = self.get_time_step()
+            workflow.method.integration_timestep = self.get_time_step()
             sec_md_settings = sec_workflow.m_create(x_cp2k_section_md_settings)
 
             # Parse code specific MD information
@@ -1443,6 +1455,8 @@ class CP2KParser:
                     setattr(sec_md_settings, 'x_cp2k_md_%s' % key, int(val.split()[0]))
                 else:
                     setattr(sec_md_settings, 'x_cp2k_md_%s' % key, val)
+
+        self.archive.workflow2 = workflow
 
     def parse_input(self):
         # TODO include extended input

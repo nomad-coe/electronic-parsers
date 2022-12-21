@@ -33,6 +33,10 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     MultipolesEntry, VibrationalFrequencies
 )
 from nomad.datamodel.metainfo.workflow import Workflow, Thermodynamics, GeometryOptimization
+from nomad.datamodel.metainfo.simulation.workflow import (
+    GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod,
+    Thermodynamics as Thermodynamics2, ThermodynamicsResults
+)
 
 from .metainfo import dmol3  # pylint: disable=unused-import
 
@@ -424,23 +428,29 @@ class Dmol3Parser:
 
             return target
 
+        workflow = None
         if self.mainfile_parser.optimization is not None:
             for scf in self.mainfile_parser.optimization.get('scf', []):
                 sec_system = parse_system(scf)
                 sec_calc = parse_calculation(scf)
                 sec_calc.system_ref = sec_system
             sec_workflow = archive.m_create(Workflow)
+            workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
             sec_workflow.type = 'geometry_optimization'
             sec_opt = sec_workflow.m_create(GeometryOptimization)
             tolerance = self.mainfile_parser.optimization.get('geometry', [{}])[0].get('tolerance', [0, 0, 0])
             sec_opt.convergence_tolerance_energy_difference = tolerance[0] * ureg.hartree
             sec_opt.convergence_tolerance_force_maximum = tolerance[1] * ureg.hartree / ureg.bohr
             sec_opt.convergence_tolerance_displacement_maximum = tolerance[2] * ureg.bohr
+            workflow.method.convergence_tolerance_energy_difference = tolerance[0] * ureg.hartree
+            workflow.method.convergence_tolerance_force_maximum = tolerance[1] * ureg.hartree / ureg.bohr
+            workflow.method.convergence_tolerance_displacement_maximum = tolerance[2] * ureg.bohr
 
         if self.mainfile_parser.properties is not None:
             parse_calculation(self.mainfile_parser.properties, sec_run.calculation[-1])
 
         if self.mainfile_parser.vibrations is not None:
+            workflow = Thermodynamics2(results=ThermodynamicsResults())
             for scf in self.mainfile_parser.vibrations.get('scf', []):
                 sec_system = parse_system(scf)
                 sec_calc = parse_calculation(scf)
@@ -459,3 +469,8 @@ class Dmol3Parser:
                 sec_thermodynamics.heat_capacity_c_p = thermo_data[3] * ureg.J * 4.184 / ureg.K / MOL
                 sec_thermodynamics.enthalpy = thermo_data[4] * ureg.J * 4184.0 / MOL
                 sec_thermodynamics.gibbs_free_energy = thermo_data[5] * ureg.J * 4184.0 / MOL
+                workflow.results.temperature = thermo_data[1]
+                workflow.results.entropy = thermo_data[2] * ureg.J * 4.184 / ureg.K / MOL
+                workflow.results.heat_capacity_c_p = thermo_data[3] * ureg.J * 4.184 / ureg.K / MOL
+                workflow.results.enthalpy = thermo_data[4] * ureg.J * 4184.0 / MOL
+                workflow.results.gibbs_free_energy = thermo_data[5] * ureg.J * 4184.0 / MOL
