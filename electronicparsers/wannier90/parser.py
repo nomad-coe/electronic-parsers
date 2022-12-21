@@ -27,7 +27,7 @@ from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, HoppingMatrix
 )
-from nomad.datamodel.metainfo.simulation.method import Method, KMesh, Projection
+from nomad.datamodel.metainfo.simulation.method import Method, KMesh, Wannier, Projection
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.workflow import Workflow
 
@@ -161,20 +161,21 @@ class Wannier90Parser:
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
         sec_proj = sec_method.m_create(Projection)
+        sec_wann = sec_proj.m_create(Wannier)
 
         # k_mesh section
-        sec_k_mesh = sec_proj.m_create(KMesh)
+        sec_k_mesh = sec_wann.m_create(KMesh)
         sec_k_mesh.n_points = self.wout_parser.get('k_mesh', None).get('n_points')
         if self.wout_parser.get('k_mesh', None).get('k_points') is not None:
             sec_k_mesh.points = self.wout_parser.get('k_mesh', None).k_points[::2]
 
         # Wannier90 section
         for key in self._input_projection_mapping.keys():
-            setattr(sec_proj, self._input_projection_mapping[key], self.wout_parser.get(key))
+            setattr(sec_wann, self._input_projection_mapping[key], self.wout_parser.get(key))
         if self.wout_parser.get('Niter') is not None:
-            sec_proj.is_maximally_localized = self.wout_parser.get('Niter', 0) > 1
-        sec_proj.energy_window_outer = self.wout_parser.get('energy_windows').outer
-        sec_proj.energy_window_inner = self.wout_parser.get('energy_windows').inner
+            sec_wann.is_maximally_localized = self.wout_parser.get('Niter', 0) > 1
+        sec_wann.energy_window_outer = self.wout_parser.get('energy_windows').outer
+        sec_wann.energy_window_inner = self.wout_parser.get('energy_windows').inner
 
     def parse_hoppings(self):
         hr_files = [f for f in os.listdir(self.maindir) if f.endswith('hr.dat')]
@@ -187,7 +188,7 @@ class Wannier90Parser:
         sec_hopping_matrix = sec_scc.m_create(HoppingMatrix)
 
         # Assuming method.projection is parsed before
-        sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].projection.n_projected_orbitals
+        sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].projection.wannier.n_projected_orbitals
         sec_hopping_matrix.n_wigner_seitz_points = self.hr_parser.get('degeneracy_factors')[1]
         sec_hopping_matrix.degeneracy_factors = self.hr_parser.get('degeneracy_factors')[2:]
         full_hoppings = self.hr_parser.get('hoppings')
