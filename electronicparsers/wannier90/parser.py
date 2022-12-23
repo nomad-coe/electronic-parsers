@@ -147,11 +147,11 @@ class Wannier90Parser:
 
         sec_atoms = sec_system.m_create(Atoms)
         if wout_parser.get('lattice_vectors') is not None:
-            sec_atoms.lattice_vectors = np.vstack(wout_parser.get('lattice_vectors')) * ureg.angstrom
+            sec_atoms.lattice_vectors = np.vstack(wout_parser.get('lattice_vectors')[-3:]) * ureg.angstrom
         if wout_parser.get('reciprocal_lattice_vectors') is not None:
-            sec_atoms.lattice_vectors_reciprocal = np.vstack(wout_parser.get('reciprocal_lattice_vectors')) / ureg.angstrom
+            sec_atoms.lattice_vectors_reciprocal = np.vstack(wout_parser.get('reciprocal_lattice_vectors')[-3:]) / ureg.angstrom
 
-        pbc = [np.vstack(wout_parser.get('lattice_vectors')) is not None] * 3
+        pbc = [np.vstack(wout_parser.get('lattice_vectors')[-3:]) is not None] * 3
         sec_atoms.periodic = pbc
 
         sec_atoms.labels = wout_parser.get('structure').get('labels')
