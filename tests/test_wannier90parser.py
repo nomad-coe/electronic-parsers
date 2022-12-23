@@ -47,11 +47,11 @@ def test_lco(parser):
     assert sec_system[0].atoms.lattice_vectors[0][0].magnitude == approx(-1.909145e-10)
     assert sec_system[0].atoms.periodic == [True, True, True]
 
-    sec_projection = archive.run[0].method[0].projection
-    assert sec_projection.n_projected_orbitals == 1
-    assert sec_projection.n_bands == 5
-    assert sec_projection.is_maximally_localized is True
-    assert sec_projection.k_mesh.n_points == 343
+    sec_wannier = archive.run[0].method[0].projection.wannier
+    assert sec_wannier.n_projected_orbitals == 1
+    assert sec_wannier.n_bands == 5
+    assert sec_wannier.is_maximally_localized is True
+    assert sec_wannier.k_mesh.n_points == 343
 
     # Band tests
     sec_scc = archive.run[0].calculation
@@ -73,7 +73,7 @@ def test_lco(parser):
     sec_hoppings = sec_scc[0].hopping_matrix[0]
     assert sec_hoppings.n_wigner_seitz_points == 397
     assert sec_hoppings.n_wigner_seitz_points == len(sec_hoppings.degeneracy_factors)
-    assert sec_hoppings.n_orbitals == sec_projection.n_projected_orbitals
+    assert sec_hoppings.n_orbitals == sec_wannier.n_projected_orbitals
     assert sec_hoppings.value.shape[0] == sec_hoppings.n_wigner_seitz_points
     assert sec_hoppings.value.shape[1] == sec_hoppings.n_orbitals
     assert sec_hoppings.value.shape[2] == 7
