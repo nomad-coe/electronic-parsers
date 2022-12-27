@@ -121,7 +121,7 @@ class W2DynamicsParser:
                 setattr(target, f'x_w2dynamics_{name}', value[:])
             # mu is a single value
             if key == 'mu':
-                setattr(target, f'x_w2dynamics_{name}', value)
+                target.x_w2dynamics_mu = value
 
     def parse_system(self):
         wann90_files = [f for f in os.listdir(self.maindir) if f.endswith('.wout')]
