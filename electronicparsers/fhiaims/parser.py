@@ -938,47 +938,6 @@ class FHIAimsParser:
                 val = gw_eigenvalues[key] if key == 'occ_num' else gw_eigenvalues[key] * ureg.eV
                 setattr(sec_eigs_gw, name, np.reshape(val, (1, 1, len(val))))
 
-    def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
-        sec_run = gw_workflow_archive.m_create(Run)
-        sec_run.program = self.archive.run[-1].program
-        setattr(sec_run, 'system', self.archive.run[-1].system)
-
-        sec_workflow = gw_workflow_archive.m_create(Workflow)
-        sec_workflow.type = 'GW'
-        sec_workflow.workflows_ref = [self.archive.workflow[0], gw_archive.workflow[0]]
-
-        # Tasks linking dft and gw
-        sec_workflow.task = [
-            Task(
-                input_workflow=sec_workflow, output_workflow=self.archive.workflow[0],
-                description='DFT calculation performed in an input structure.'),
-            Task(
-                input_workflow=self.archive.workflow[0], output_workflow=gw_archive.workflow[0],
-                description='GW calculation performed from input DFT calculation.'),
-            Task(
-                input_workflow=gw_archive.workflow[0], output_workflow=sec_workflow,
-                description='Comparison between DFT and GW.')
-        ]
-
-        # Include DFT and GW band structures and DOS (if present) for comparison.
-        def extract_section(archive, name):
-            try:
-                return getattr(archive.run[-1].calculation[-1], name)[-1]
-            except Exception:
-                return
-
-        sec_gw = sec_workflow.m_create(GWWorkflow)
-        sec_gw.dos_dft = extract_section(self.archive, 'dos_electronic')
-        sec_gw.dos_gw = extract_section(gw_archive, 'dos_electronic')
-        sec_gw.band_structure_dft = extract_section(self.archive, 'band_structure_electronic')
-        sec_gw.band_structure_gw = extract_section(gw_archive, 'band_structure_electronic')
-        workflow = GW2(results=GWResults())
-        workflow.results.dos_dft = extract_section(self.archive, 'dos_electronic')
-        workflow.results.dos_gw = extract_section(gw_archive, 'dos_electronic')
-        workflow.results.band_structure_dft = extract_section(self.archive, 'band_structure_electronic')
-        workflow.results.band_structure_gw = extract_section(gw_archive, 'band_structure_electronic')
-        gw_workflow_archive.workflow2 = workflow
-
     def parse_system(self, section):
         sec_run = self.archive.run[-1]
 
@@ -1351,6 +1310,48 @@ class FHIAimsParser:
             workflow = MolecularDynamics2()
         self.archive.workflow2 = workflow
 
+    def parse_gw_workflow(self, gw_archive):
+        sec_workflow = gw_archive.m_create(Workflow)
+        sec_workflow.type = 'GW'
+        sec_workflow.workflows_ref = [self.archive.workflow[0], gw_archive.workflow[0]]
+
+        # Tasks linking dft and gw
+        sec_workflow.task = [
+            Task(
+                input_workflow=sec_workflow, output_workflow=self.archive.workflow[0],
+                description='DFT calculation performed in an input structure.'),
+            Task(
+                input_workflow=self.archive.workflow[0], output_workflow=gw_archive.workflow[0],
+                description='GW calculation performed from input DFT calculation.'),
+            Task(
+                input_workflow=gw_archive.workflow[0], output_workflow=sec_workflow,
+                description='Comparison between DFT and GW.')
+        ]
+
+        # Include DFT and GW band structures and DOS (if present) for comparison.
+        def extract_section(archive, name):
+            try:
+                return getattr(archive.run[-1].calculation[-1], name)[-1]
+            except Exception:
+                return
+
+        sec_gw = sec_workflow.m_create(GWWorkflow)
+        sec_gw.dos_dft = extract_section(self.archive, 'dos_electronic')
+        sec_gw.dos_gw = extract_section(gw_archive, 'dos_electronic')
+        sec_gw.band_structure_dft = extract_section(self.archive, 'band_structure_electronic')
+        sec_gw.band_structure_gw = extract_section(gw_archive, 'band_structure_electronic')
+
+        workflow = GW2(results=GWResults())
+        workflow.results.dos_dft = extract_section(self.archive, 'dos_electronic')
+        workflow.results.dos_gw = extract_section(gw_archive, 'dos_electronic')
+        workflow.results.band_structure_dft = extract_section(self.archive, 'band_structure_electronic')
+        workflow.results.band_structure_gw = extract_section(gw_archive, 'band_structure_electronic')
+        gw_archive.workflow2 = workflow
+
+        # deleting extra single_point workflow section for GW
+        if len(gw_archive.workflow) > 1 and hasattr(gw_archive.workflow[0], 'single_point'):
+            del gw_archive.workflow[0]
+
     def parse_method(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
@@ -1617,7 +1618,7 @@ class FHIAimsParser:
     def get_mainfile_keys(self, filepath):
         self.out_parser.mainfile = filepath
         if self.out_parser.get('gw_flag', None) in self._gw_flag_map.keys():
-            return ['GW', 'GW_workflow']
+            return ['GW']
         return True
 
     def parse(self, filepath, archive, logger):
@@ -1676,5 +1677,4 @@ class FHIAimsParser:
             p.parse(filepath, gw_archive, logger)
 
             # GW workflow
-            gw_workflow_archive = self._child_archives.get('GW_workflow')
-            self.parse_gw_workflow(gw_archive, gw_workflow_archive)
+            self.parse_gw_workflow(gw_archive)
