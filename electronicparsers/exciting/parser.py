@@ -1866,12 +1866,25 @@ class ExcitingParser:
         self.parse_system(self.info_parser.get('groundstate'))
         sec_scc.system_ref = sec_run.system[-1]
 
-    def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
-        sec_run = gw_workflow_archive.m_create(Run)
-        sec_run.program = self.archive.run[-1].program
-        setattr(sec_run, 'system', self.archive.run[-1].system)
+    def parse_workflow(self):
+        sec_workflow = self.archive.m_create(Workflow)
 
-        sec_workflow = gw_workflow_archive.m_create(Workflow)
+        sec_workflow.type = 'single_point'
+        workflow = SinglePoint2()
+        sec_workflow.calculations_ref = self.archive.run[-1].calculation
+        structure_optimization = self.info_parser.get('structure_optimization')
+        if structure_optimization is not None:
+            sec_workflow.type = 'geometry_optimization'
+            sec_geometry_opt = sec_workflow.m_create(GeometryOptimization)
+            workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
+            threshold_force = structure_optimization.get(
+                'optimization_step', [{}])[0].get('force_convergence', [0., 0.])[-1]
+            sec_geometry_opt.convergence_tolerance_force_maximum = threshold_force
+            workflow.method.convergence_tolerance_force_maximum = threshold_force
+        self.archive.workflow2 = workflow
+
+    def parse_gw_workflow(self, gw_archive):
+        sec_workflow = gw_archive.m_create(Workflow)
         sec_workflow.type = 'GW'
         sec_workflow.workflows_ref = [self.archive.workflow[0], gw_archive.workflow[0]]
 
@@ -1906,24 +1919,11 @@ class ExcitingParser:
         workflow.results.dos_gw = extract_section(gw_archive, 'dos_electronic')
         workflow.results.band_structure_dft = extract_section(self.archive, 'band_structure_electronic')
         workflow.results.band_structure_gw = extract_section(gw_archive, 'band_structure_electronic')
-        gw_workflow_archive.workflow2 = workflow
+        gw_archive.workflow2 = workflow
 
-    def parse_workflow(self):
-        sec_workflow = self.archive.m_create(Workflow)
-
-        sec_workflow.type = 'single_point'
-        workflow = SinglePoint2()
-        sec_workflow.calculations_ref = self.archive.run[-1].calculation
-        structure_optimization = self.info_parser.get('structure_optimization')
-        if structure_optimization is not None:
-            sec_workflow.type = 'geometry_optimization'
-            sec_geometry_opt = sec_workflow.m_create(GeometryOptimization)
-            workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
-            threshold_force = structure_optimization.get(
-                'optimization_step', [{}])[0].get('force_convergence', [0., 0.])[-1]
-            sec_geometry_opt.convergence_tolerance_force_maximum = threshold_force
-            workflow.method.convergence_tolerance_force_maximum = threshold_force
-        self.archive.workflow2 = workflow
+        # deleting extra single_point workflow section for GW
+        if len(gw_archive.workflow) > 1 and hasattr(gw_archive.workflow[0], 'single_point'):
+            del gw_archive.workflow[0]
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
@@ -2322,7 +2322,7 @@ class ExcitingParser:
     def get_mainfile_keys(self, filepath):
         basename = os.path.basename(filepath)
         if os.path.isfile(os.path.join(os.path.dirname(filepath), f'GW_{basename}')):
-            return ['GW', 'GW_workflow']
+            return ['GW']
         return True
 
     def parse(self, filepath, archive, logger, **kwargs):
@@ -2352,7 +2352,6 @@ class ExcitingParser:
         # method goes first since reference needed for sec_scc
         if self._calculation_type == 'gw':
             self.parse_gw()
-
         else:
             self.parse_method()
             self.parse_configurations()
@@ -2368,5 +2367,4 @@ class ExcitingParser:
             p.parse(os.path.join(dirname, f'GW_{basename}'), gw_archive, logger)
 
             # parser gw workflow
-            gw_workflow_archive = self._child_archives.get('GW_workflow')
-            self.parse_gw_workflow(gw_archive, gw_workflow_archive)
+            self.parse_gw_workflow(gw_archive)
