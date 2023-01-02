@@ -1,0 +1,20 @@
+codeLabel: w2dynamics
+codeLabelStyle: All in lowercase
+codeName: w2dynamics
+codeCategory: Atomistic code
+status: production
+codeUrl: https://github.com/w2dynamics/w2dynamics
+parserDirName: dependencies/parsers/electronic/electronicparsers/w2dynamics/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+parserSpecific: ''
+codeVersion: ''
+parserLastUpdate: '02.11.2022'
+preamble: ''
+tableOfFiles: |
+  | Input Filename | Description |
+  | --- | --- |
+  | `*.hdf5` | **Mainfile:** hdf5 file containing all i/o parameters w/ arbitrary name |
+  | `*.in` | input text file containing [general], [atoms], and [QMC] input parameters |
+  | `epsk` | plain text, discrete bath levels |
+  | `Vk` | plain text, hybridizations |
+  | `w2d.log` | output log error file |

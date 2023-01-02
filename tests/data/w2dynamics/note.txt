@@ -1,0 +1,4 @@
+Please, contact Jose Pizarro, jose.pizarro@physik.hu-berlin.de, in order to get the data files
+to perform the testing of w2dynamics.
+
+The reason for not including it in the repo is because the files are too big, >100Mb.
