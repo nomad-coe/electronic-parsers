@@ -201,7 +201,10 @@ class W2DynamicsParser:
         for key in self._dmft_qmc_map.keys():
             parameters = data.attrs.get(f'qmc.{key}')
             setattr(sec_dmft, self._dmft_qmc_map.get(key), parameters)
-        sec_dmft.n_correlated_bands = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[0].x_w2dynamics_nd
+        corr_orbs_per_atoms = []
+        for i in range(sec_dmft.n_atoms_per_unit_cell):
+            corr_orbs_per_atoms.append(sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_nd)
+        sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
         sec_dmft.impurity_solver = 'CT-HYB'
 
     def parse_scc(self, data):

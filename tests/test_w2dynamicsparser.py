@@ -56,13 +56,13 @@ def test_srvo3_highstat(parser):
     sec_lattice_model = sec_run.method[0].lattice_model_hamiltonian[0]
     assert hasattr(sec_lattice_model, 'hopping_matrix')
     assert hasattr(sec_lattice_model, 'hubbard_kanamori_model')
-    assert sec_lattice_model.hubbard_kanamori_model.orbital == 'd'
-    u = sec_lattice_model.hubbard_kanamori_model.u.to('eV').magnitude
-    jh = sec_lattice_model.hubbard_kanamori_model.jh.to('eV').magnitude
+    assert sec_lattice_model.hubbard_kanamori_model[0].orbital == 'd'
+    u = sec_lattice_model.hubbard_kanamori_model[0].u.to('eV').magnitude
+    jh = sec_lattice_model.hubbard_kanamori_model[0].jh.to('eV').magnitude
     assert u == approx(4.0)
     assert jh == approx(0.6)
-    up = sec_lattice_model.hubbard_kanamori_model.up.to('eV').magnitude
-    j = sec_lattice_model.hubbard_kanamori_model.j.to('eV').magnitude
+    up = sec_lattice_model.hubbard_kanamori_model[0].up.to('eV').magnitude
+    j = sec_lattice_model.hubbard_kanamori_model[0].j.to('eV').magnitude
     # testing rotational invariance
     assert up == approx(u - 2 * jh)
     assert j == approx(jh)
@@ -70,7 +70,8 @@ def test_srvo3_highstat(parser):
     assert sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_beta == 60.0
     assert sec_run.method[1].starting_method_ref == sec_run.method[0]
     sec_dmft = sec_run.method[1].dmft
-    assert sec_dmft.n_correlated_bands == 3
+    assert sec_dmft.n_correlated_orbitals.shape == (1,)
+    assert sec_dmft.n_correlated_orbitals[0] == 3
     assert sec_dmft.n_correlated_electrons == approx(1.0)
     assert sec_dmft.inverse_temperature == approx(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_beta)
     assert sec_run.x_w2dynamics_axes.x_w2dynamics_iw.shape[0] == approx(2 * sec_dmft.n_matsubara_freq)
@@ -88,7 +89,7 @@ def test_srvo3_highstat(parser):
     assert sec_gfs.self_energy_iw.dtype == 'complex128'
     assert sec_gfs.self_energy_iw.shape == (3, 2, 2400)
     assert sec_gfs.greens_function_iw[2][0][1450] == approx(-0.0019482734893255288 - 0.03783597807548039j)
-    assert sec_gfs.chemical_potential == approx(7.877904086990344)
+    assert sec_gfs.chemical_potential.magnitude == approx(7.877904086990344)
     # SCF tests
     sec_scf = sec_scc.scf_iteration
     assert len(sec_scf) == 11
