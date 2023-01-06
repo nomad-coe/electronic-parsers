@@ -29,7 +29,7 @@ m_package = Package()
 
 class x_soliddmft_general_parameters(MSection):
     '''
-    Section containing the general parameters of solid_dmft
+    Section containing the general parameters of solid_dmft.
     '''
 
     m_def = Section(validate=False)
@@ -47,12 +47,12 @@ class x_soliddmft_general_parameters(MSection):
         ''')
 
     x_soliddmft_afm_mapping = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         ''')
 
     x_soliddmft_afm_order = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Copy self energies instead of solving explicitly for afm order.
         ''')
@@ -64,7 +64,7 @@ class x_soliddmft_general_parameters(MSection):
         ''')
 
     x_soliddmft_block_suppress_orbital_symm = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Should blocks be checked if symmetry-equiv. between orbitals? Does not affect spin symmetries.
         ''')
@@ -76,7 +76,7 @@ class x_soliddmft_general_parameters(MSection):
         ''')
 
     x_soliddmft_calc_energies = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Calc energies explicitly within the dmft loop.
         ''')
@@ -88,24 +88,24 @@ class x_soliddmft_general_parameters(MSection):
         ''')
 
     x_soliddmft_csc = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Are we doing a CSC calculation?
         ''')
 
     x_soliddmft_cthyb_delta_interface = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         ''')
 
     x_soliddmft_dc = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         dc correction on yes or no?
         ''')
 
     x_soliddmft_dc_dmft = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Whether to use DMFT or DFT occupations:
             DC with DMFT occupation in each iteration -> True
@@ -127,7 +127,7 @@ class x_soliddmft_general_parameters(MSection):
         ''')
 
     x_soliddmft_diag_delta = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Option to remove off-diagonal terms in the hybridization function.
         ''')
@@ -140,7 +140,7 @@ class x_soliddmft_general_parameters(MSection):
         ''')
 
     x_soliddmft_enforce_off_diag = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Enforce off diagonal elements in block structure finder.
         ''')
@@ -206,12 +206,12 @@ class x_soliddmft_general_parameters(MSection):
         ''')
 
     x_soliddmft_legendre_fit = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         ''')
 
     x_soliddmft_load_sigma = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Load a old sigma from h5 file.
         ''')
@@ -225,13 +225,13 @@ class x_soliddmft_general_parameters(MSection):
         ''')
 
     x_soliddmft_magnetic = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Are we doing a magnetic calculations? If yes put magnetic to True. Not implemented for CSC calculations
         ''')
 
     x_soliddmft_measure_chi_SzSz = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Measure the dynamic spin suszeptibility chi(sz,sz(tau))
         triqs.github.io/cthyb/unstable/guide/dynamic_susceptibility_notebook.html.
@@ -307,7 +307,7 @@ class x_soliddmft_general_parameters(MSection):
         ''')
 
     x_soliddmft_oneshot_postproc_gamma_file = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Write the GAMMA file for vasp after completed one-shot calculations.
         ''')
@@ -365,14 +365,14 @@ class x_soliddmft_general_parameters(MSection):
         ''')
 
     x_soliddmft_store_solver = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         ''')
 
 
 class x_soliddmft_solver_parameters(MSection):
     '''
-    Section containing the solver parameters of solid_dmft
+    Section containing the solver parameters of solid_dmft.
     '''
 
     m_def = Section(validate=False)
@@ -409,19 +409,19 @@ class x_soliddmft_solver_parameters(MSection):
         ''')
 
     x_soliddmft_measure_G_l = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Measure Legendre Greens function.
         ''')
 
     x_soliddmft_measure_density_matrix = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Measures the impurity density matrix and sets also use_norm_as_weight to true.
         ''')
 
     x_soliddmft_measure_pert_order = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Measure perturbation order histograms: triqs.github.io/cthyb/latest/guide/perturbation_order_notebook.html
 
@@ -430,13 +430,13 @@ class x_soliddmft_solver_parameters(MSection):
         ''')
 
     x_soliddmft_move_double = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Double moves in solver.
         ''')
 
     x_soliddmft_move_shift = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         ''')
 
@@ -459,20 +459,20 @@ class x_soliddmft_solver_parameters(MSection):
         ''')
 
     x_soliddmft_perform_tail_fit = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         Tail fitting if legendre is off?
         ''')
 
     x_soliddmft_use_norm_as_weight = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         ''')
 
 
 class x_soliddmft_advanced_parameters(MSection):
     '''
-    Section containing the advanced parameters of solid_dmft
+    Section containing the advanced parameters of solid_dmft.
     '''
 
     m_def = Section(validate=False)
@@ -512,7 +512,7 @@ class x_soliddmft_advanced_parameters(MSection):
         ''')
 
     x_soliddmft_dc_nominal = Quantity(
-        type=bool,
+        type=np.bool_,
         description='''
         ''')
 
@@ -525,12 +525,284 @@ class x_soliddmft_advanced_parameters(MSection):
         ''')
 
 
+class x_soliddmft_impurity_parameters(MSection):
+    '''
+    Section containing the impurity parameters.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_soliddmft_SO = Quantity(
+        type=np.float64,
+        description='''
+        1 if spin-orbit interaction is included, 0 otherwise.
+        ''')
+
+    x_soliddmft_atom = Quantity(
+        type=np.float64,
+        description='''
+        Atom index.
+        ''')
+
+    x_soliddmft_dim = Quantity(
+        type=np.float64,
+        description='''
+        Number of orbitals in the atom.
+        ''')
+
+    x_soliddmft_irep = Quantity(
+        type=np.float64,
+        description='''
+        Dummy integer 0.
+        ''')
+
+    x_soliddmft_l = Quantity(
+        type=np.float64,
+        description='''
+        Angular quantum number.
+        ''')
+
+    x_soliddmft_sort = Quantity(
+        type=np.float64,
+        description='''
+        Defines the equivalency of the atoms.
+        ''')
+
+
+class x_soliddmft_dft_input_parameters(MSection):
+    '''
+    Section containing the DFT input parameters of solid_dmft (as coming from DFFTools).
+    '''
+
+    m_def = Section(validate=False)
+
+    x_soliddmft_SO = Quantity(
+        type=np.int64,
+        description='''
+        1 if spin-orbit interaction is included, 0 otherwise.
+        ''')
+
+    x_soliddmft_SP = Quantity(
+        type=np.int64,
+        description='''
+        1 for spin-polarised Hamiltonian, 0 for paramagnetic Hamiltonian.
+        ''')
+
+    x_soliddmft_T = Quantity(
+        type=np.complex128,
+        description='''
+        Transformation matrix from the spherical harmonics to impurity problem basis
+        normally the real cubic harmonics). This matrix can be used to calculate the
+        4-index U matrix, not automatically done.
+            dim n_inequiv_corr_shell x [max(corr_shell[‘dim’]),max(corr_shell[‘dim’])]
+        ''')
+
+    x_soliddmft_bz_weights = Quantity(
+        type=np.float64,
+        description='''
+        Weights of the k-points for the k summation. Soon be replaced by kpt_weights.
+            dim n_k
+        ''')
+
+    x_soliddmft_charge_below = Quantity(
+        type=np.float64,
+        description='''
+        Number of electrons in the crystal below the correlated orbitals. Note that this
+        is for compatibility with dmftproj, otherwise set to 0.
+        ''')
+
+    x_soliddmft_corr_to_inequiv = Quantity(
+        type=np.int64,
+        description='''
+        Mapping from correlated shells to inequivalent correlated shells. A list of
+        length n_corr_shells containing integers, where same numbers mark equivalent
+        sites.
+        ''')
+
+    x_soliddmft_density_required = Quantity(
+        type=np.float64,
+        description='''
+        Required total electron density. Needed to determine the chemical potential. The
+        density in the projection window is then density_required-charge_below.
+        ''')
+
+    x_soliddmft_energy_unit = Quantity(
+        type=np.float64,
+        description='''
+        Unit of energy used for the calculation.
+        ''')
+
+    x_soliddmft_hopping = Quantity(
+        type=np.complex128,
+        description='''
+        Non-interacting Hamiltonian matrix for each k point. As for proj_mat, all matrices
+        have to be of the same size.
+            dim [n_k,SP+1-SO,max(n_orbitals),max(n_orbitals)]
+        ''')
+
+    x_soliddmft_inequiv_to_corr = Quantity(
+        type=np.int64,
+        description='''
+        A list of length n_inequiv_shells containing list indices as integers pointing
+        to the corresponding sites in corr_to_inequiv.
+        ''')
+
+    x_soliddmft_k_dep_projection = Quantity(
+        type=np.int64,
+        description='''
+        1 if the dimension of the projection operators depend on the k-point, 0 otherwise.
+        ''')
+
+    x_soliddmft_kpt_basis = Quantity(
+        type=np.float64,
+        description='''
+        Basis for the k-point mesh, reciprocal lattice vectors.
+            dim [3, 3]
+        ''')
+
+    x_soliddmft_kpt_weights = Quantity(
+        type=np.float64,
+        description='''
+        Weights of the k-points for the k summation.
+            dim [n_k]
+        ''')
+
+    x_soliddmft_kpts = Quantity(
+        type=np.float64,
+        description='''
+        k-points given in reciprocal coordinates.
+            dim [n_k, 3]
+        ''')
+
+    x_soliddmft_n_corr_shells = Quantity(
+        type=np.int64,
+        description='''
+        Number of correlated atomic shells. If there are two correlated equivalent atoms
+        in the unit cell, n_corr_shells is 2.
+        ''')
+
+    x_soliddmft_n_inequiv_shells = Quantity(
+        type=np.int64,
+        description='''
+        Number of inequivalent atomic shells. Needs to be smaller than n_corr_shells. The
+        up / downfolding routines mediate between all correlated shells and the actual
+        inequivalent shells, by using the self-energy etc. for all equal shells belonging
+        to the same class of inequivalent shells. The mapping is performed with information
+        stored in corr_to_inequiv and inequiv_to_corr.
+        ''')
+
+    x_soliddmft_n_k = Quantity(
+        type=np.int64,
+        description='''
+        Number of k-points used for the BZ integration.
+        ''')
+
+    x_soliddmft_n_orbitals = Quantity(
+        type=np.int64,
+        description='''
+        Number of Bloch bands included in the projection window for each k-point. If
+        SP+1-SO=2, the number of included bands may depend on the spin projection up/down.
+            dim [n_k,SP+1-SO]
+        ''')
+
+    x_soliddmft_n_reps = Quantity(
+        type=np.int64,
+        description='''
+        Number of irreducible representations of the correlated shell. e.g. 2 if eg/t2g
+        splitting is used.
+        ''')
+
+    x_soliddmft_n_shells = Quantity(
+        type=np.int64,
+        description='''
+        Number of atomic shells for which post-processing is possible. Note: this is not
+        the number of correlated orbitals! If there are two equivalent atoms in the unit
+        cell, n_shells is 2.
+        ''')
+
+    x_soliddmft_proj_mat = Quantity(
+        type=np.complex128,
+        description='''
+        Projection matrices from Bloch bands to Wannier orbitals. For efficient storage
+        reasons, all matrices must be of the same size (given by last two indices). For
+        k-points with fewer bands, only the first entries are used, the rest are zero. e.g.
+        if number of Bloch bands ranges from 4-6, all matrices are of size 6.
+            dim [n_k,SP+1-SO,n_corr_shells,max(corr_shell[‘dim’]),max(n_orbitals)]
+        ''')
+
+    x_soliddmft_proj_or_hk = Quantity(
+        type=str,
+        description='''
+        Switch determining whether the Vasp converter is running in projection mode proj,
+        or in Hamiltonian mode hk. In Hamiltonian mode, the hopping matrix is written in
+        orbital basis, whereas in projection mode hopping is written in band basis.
+        ''')
+
+    x_soliddmft_rot_mat = Quantity(
+        type=np.float64,
+        description='''
+        Rotation matrices for correlated shells, if use_rotations. These rotations are
+        automatically applied for up / downfolding. Set to the unity matrix if no rotations
+        are used.
+            dim n_corr_shells x [corr_shells[‘dim’],corr_shells[‘dim’]]
+        ''')
+
+    x_soliddmft_rot_mat_time_inv = Quantity(
+        type=np.int64,
+        description='''
+        If SP is 1, 1 if the coordinate transformation contains inversion, 0 otherwise.
+        If use_rotations or SP is 0, give a list of zeros.
+        ''')
+
+    x_soliddmft_symm_op = Quantity(
+        type=np.int64,
+        description='''
+        1 if symmetry operations are used for the BZ sums, 0 if all k-points are directly
+        included in the input.
+        ''')
+
+    x_soliddmft_use_rotations = Quantity(
+        type=np.int64,
+        description='''
+        1 if local and global coordinate systems are used, 0 otherwise.
+        ''')
+
+    x_soliddmft_band_window = Quantity(
+        type=np.int64,
+        description='''
+        Band windows as KS band indices in Vasp for each spin channel, and k-point. Needed
+        for writing out the GAMMA file.
+            dim [n_k, 2]
+        ''')
+
+    x_soliddmft_dft_fermi_weights = Quantity(
+        type=np.float64,
+        description='''
+        DFT fermi weights (occupations) of KS eigenstates for each k-point for calculation
+        of density matrix correction.
+            dim [n_k, SP+1-SO, max(n_orbitals)]
+        ''')
+
+    x_soliddmft_kpts_cart = Quantity(
+        type=np.float64,
+        description='''
+        ''')
+
+    x_soliddmft_shells = SubSection(sub_section=x_soliddmft_impurity_parameters.m_def, repeats=True)
+
+    x_soliddmft_corr_shells = SubSection(sub_section=x_soliddmft_impurity_parameters.m_def, repeats=True)
+
+    x_soliddmft_dim_reps = SubSection(sub_section=x_soliddmft_impurity_parameters.m_def, repeats=True)
+
+
 class Method(simulation.run.Method):
     '''
     Contains the specifications of the method.
     '''
 
     m_def = Section(validate=False, extends_base_section=True)
+
+    x_soliddmft_dft_input = SubSection(sub_section=x_soliddmft_dft_input_parameters.m_def, repeats=False)
 
     x_soliddmft_general = SubSection(sub_section=x_soliddmft_general_parameters.m_def, repeats=False)
 
@@ -546,14 +818,32 @@ class Program(simulation.run.Program):
 
     m_def = Section(validate=False, extends_base_section=True)
 
+    x_soliddmft_solid_dmft_hash = Quantity(
+        type=str,
+        description='''
+        Hash label for the solid_dmft repository branch used.
+        ''')
+
     x_soliddmft_solver_hash = Quantity(
         type=str,
         description='''
-        Hash label from the solver repository branch used.
+        Hash label for the solver repository branch used.
         ''')
 
     x_soliddmft_triqs_hash = Quantity(
         type=str,
         description='''
-        Hash label from the TRIQS repository branch used.
+        Hash label for the TRIQS repository branch used.
+        ''')
+
+    x_soliddmft_solver_version = Quantity(
+        type=str,
+        description='''
+        Version tag of solver.
+        ''')
+
+    x_soliddmft_triqs_version = Quantity(
+        type=str,
+        description='''
+        Version tag of TRIQS.
         ''')
