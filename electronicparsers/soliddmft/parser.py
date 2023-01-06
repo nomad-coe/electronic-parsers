@@ -34,7 +34,8 @@ from nomad.datamodel.metainfo.simulation.method import (
 from nomad.datamodel.metainfo.workflow import Workflow
 from .metainfo.soliddmft import (
     x_soliddmft_general_parameters, x_soliddmft_solver_parameters, x_soliddmft_advanced_parameters,
-    x_soliddmft_dft_input_parameters
+    x_soliddmft_dft_input_parameters, x_soliddmft_iter_parameters, x_soliddmft_convergence_obs_parameters,
+    x_soliddmft_observables_parameters
 )
 #from ..wannier90.parser import Wannier90Parser, WOutParser, HrParser
 
@@ -150,13 +151,25 @@ class SolidDMFTParser:
 
         # DMFT
         sec_dmft = sec_method.m_create(DMFT)
-        sec_dmft.n_atoms_per_unit_cell = data.get('dft_input').get('n_inequiv_shells', 1)[()]
+        sec_dmft.n_atoms_per_unit_cell = self.dft_input.get('n_inequiv_shells', 1)[()]
         corr_orbs_per_atoms = []
+        occ_per_atoms = []
         for i in range(sec_dmft.n_atoms_per_unit_cell):
             corr_orbs_per_atoms.append(
                 self.dft_input.get('corr_shells')[str(i)].get('dim', 1)[()])
+            if sec_method.x_soliddmft_general.x_soliddmft_magnetic:
+                try:
+                    occ_per_atoms.append(
+                        self.dmft_results['observables']['imp_occ'][str(i)]['down']['0'][()] +
+                        self.dmft_results['observables']['imp_occ'][str(i)]['up']['0'][()])
+                except Exception:
+                    self.logger.warning('The magnetic flag is true, but the occupation \
+                        per atom is spin independent. Please check your outputs.')
+                    occ_per_atoms.append(self.dmft_results['observables']['imp_occ'][str(i)]['0'][()])
+            else:
+                occ_per_atoms.append(self.dmft_results['observables']['imp_occ'][str(i)]['0'][()])
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
-        # sec_dmft.n_correlated_electrons = ?
+        sec_dmft.n_correlated_electrons = occ_per_atoms
         sec_dmft.inverse_temperature = sec_method.x_soliddmft_general.x_soliddmft_beta
         if sec_method.x_soliddmft_general.x_soliddmft_magnetic:
             if all(signs == 1.0 for signs in np.sign(sec_method.x_soliddmft_general.x_soliddmft_magmom)):
@@ -180,6 +193,50 @@ class SolidDMFTParser:
             sec_scc.system_ref = sec_run.system[-1]
         sec_scc.method_ref = sec_run.method[-1]  # ref to DMFT
 
+        # SCF steps
+        scf_keys = [int(key.lstrip('it_')) for key in data['DMFT_results'].keys() if key.startswith('it_')]
+        scf_keys.sort()
+        scf_keys_sorted = ['it_' + str(key) for key in scf_keys]
+        scf_keys_sorted.append('last_iter')
+
+        for keys in scf_keys_sorted:
+            sec_scf_iteration = sec_scc.m_create(ScfIteration)
+        '''
+        for n in range(15):
+            sec_observables = sec_scc.scf_iteration[n].m_create(x_soliddmft_observables_parameters)
+            for obs_key in self.dmft_results['observables'].keys():
+                if obs_key.startswith('E_'):
+                    value = []
+                    for i in self.dmft_results['observables'][obs_key].keys():
+                        value.append(
+                            self.dmft_results['observables'][obs_key][i].get(keys.lstrip('it_'), 0.0)[()])
+                elif obs_key == 'mu':
+                    value = self.dmft_results['observables'][obs_key].get(keys.lstrip('it_'), 0.0)[()]
+                else:
+
+                if isinstance(value, list):
+                    # if value is list, this is for each atom, hence all elements of value
+                    # will be either arrays or scalars
+                    if isinstance(value[0], np.ndarray):
+                        setattr(sec_observables, f'x_soliddmft_{obs_key}', value[:])
+                    else:
+                        setattr(sec_observables, f'x_soliddmft_{obs_key}', value)
+                else:
+                    if isinstance(value, np.ndarray):
+                        setattr(sec_observables, f'x_soliddmft_{obs_key}', value[:])
+                    else:
+                        setattr(sec_observables, f'x_soliddmft_{obs_key}', value)
+
+        # Quantities differences for convergence in each iteration step
+        #for i in range(data['DMFT_results'].get('iteration_count', 1)[()]):
+            #sec_conv_obs = sec_scc.scf_iteration[i].m_create(...)
+            #self.parse_dataset(self.dmft_results.get('convergence_obs'), sec_conv_obs)
+            #for keys in data['DMFT_results']['convergence_obs'].keys():
+            #    setattr(sec_conv_obs, f'x_soliddmft_{keys}', value)
+
+        # Postprocessed observables
+    '''
+
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
@@ -197,8 +254,9 @@ class SolidDMFTParser:
         try:
             self.dft_input = data.get('dft_input')
             self.dmft_input = data.get('DMFT_input')
+            self.dmft_results = data.get('DMFT_results')
         except Exception:
-            self.logger.error('dft_input or DMFT_input Groups not found in the output file.')
+            self.logger.error('dft_input, DMFT_input or DMFT_results Groups not found in the output file.')
 
         sec_run = archive.m_create(Run)
 
@@ -216,7 +274,6 @@ class SolidDMFTParser:
                         sec_program.version = version[()].decode()
                     else:
                         setattr(sec_program, f'x_soliddmft_{name}_version', version[()].decode())
-
 
         # System section
         # self.parse_system(data)
