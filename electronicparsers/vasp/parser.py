@@ -1145,7 +1145,7 @@ class VASPParser:
         sec_basis_set_cell_dependent.kind = 'plane waves'
         try:
             sec_basis_set_cell_dependent.planewave_cutoff = self.parser.incar.get(
-                'ENMAX', self.parser.incar.get('ENCUT')) * ureg.eV
+                'ENCUT', self.parser.incar.get('ENMAX')) * ureg.eV
         except TypeError:
             pass
 
