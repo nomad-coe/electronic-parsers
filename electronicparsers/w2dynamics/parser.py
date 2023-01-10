@@ -72,7 +72,6 @@ class W2DynamicsParser:
 
         self._dmft_map = {
             'nat': 'n_atoms_per_unit_cell',
-            'totdens': 'n_correlated_electrons',
             'beta': 'inverse_temperature',
             'magnetism': 'magnetic_state',
             'dc': 'double_counting_correction'
@@ -91,8 +90,7 @@ class W2DynamicsParser:
         self._inequivalent_atom_map = {
             'self_energy_iw': 'x_w2dynamics_siw',
             'greens_function_iw': 'x_w2dynamics_giw',
-            'greens_function_tau': 'x_w2dynamics_gtau',
-            'occupancies': 'x_w2dynamics_occ'
+            'greens_function_tau': 'x_w2dynamics_gtau'
         }
 
     def parse_program_version(self):
@@ -202,9 +200,12 @@ class W2DynamicsParser:
             parameters = data.attrs.get(f'qmc.{key}')
             setattr(sec_dmft, self._dmft_qmc_map.get(key), parameters)
         corr_orbs_per_atoms = []
+        occ_per_atoms = []
         for i in range(sec_dmft.n_atoms_per_unit_cell):
             corr_orbs_per_atoms.append(sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_nd)
+            occ_per_atoms.append(sec_method.x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_totdens)
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
+        sec_dmft.n_correlated_electrons = occ_per_atoms
         sec_dmft.impurity_solver = 'CT-HYB'
 
     def parse_scc(self, data):
@@ -243,10 +244,25 @@ class W2DynamicsParser:
                 sec_gf.matsubara_freq = sec_run.x_w2dynamics_axes.x_w2dynamics_iw
                 sec_gf.tau = sec_run.x_w2dynamics_axes.x_w2dynamics_tau
                 sec_gf.chemical_potential = data.get(key)['mu']['value']
-                for key in self._inequivalent_atom_map.keys():
-                    parameters = getattr(
-                        sec_scf_iteration.x_w2dynamics_ineq[0], self._inequivalent_atom_map.get(key, []))
-                    setattr(sec_gf, key, parameters)
+                nat = sec_scc.method_ref.dmft.n_atoms_per_unit_cell
+                norb = sec_scc.method_ref.dmft.n_correlated_orbitals
+                for subkey in self._inequivalent_atom_map.keys():
+                    parameters = []
+                    for i in range(nat):
+                        parameters.append(getattr(
+                            sec_scf_iteration.x_w2dynamics_ineq[i], self._inequivalent_atom_map.get(subkey, [])))
+                    if np.all(norb != norb[0]):
+                        self.logger.warning("Green's function matrices are set up using the number \
+                            of orbitals from the impurity 0. We found different number of orbitals \
+                            per impurity. Is this physically correct?")
+                    parameters = np.array(parameters)
+                    # reordering calculation matrices to standarize w2dynamics and solid_dmft
+                    # (and potentially, other DMFT codes)
+                    parameters_reorder = np.array([[[
+                        parameters[i, no, ns, :] for no in range(norb[0])] for ns in range(2)] for i in range(nat)])
+                    setattr(sec_gf, subkey, parameters_reorder)
+                sec_gf.occupancies = np.array([[
+                    sec_scf_iteration.x_w2dynamics_ineq[0].x_w2dynamics_occ[no, ns, no, ns] for no in range(3)] for ns in range(2)])
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
