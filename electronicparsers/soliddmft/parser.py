@@ -23,13 +23,12 @@ import h5py
 import re
 
 from nomad.units import ureg
-from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, GreensFunctions
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, HoppingMatrix, HubbardKanamoriModel, LatticeModelHamiltonian, DMFT, KMesh
+    Method, HubbardKanamoriModel, LatticeModelHamiltonian, DMFT, KMesh
 )
 from nomad.datamodel.metainfo.workflow import Workflow
 from .metainfo.soliddmft import (
@@ -282,6 +281,11 @@ class SolidDMFTParser:
                         for s in self.dmft_results['observables'][keys][i].keys():
                             param.append(self.dmft_results['observables'][keys][i][s][str(it)][()])
                 setattr(sec_obs, f'x_soliddmft_{keys}', param)
+
+            # Chemical potential
+            if hasattr(sec_scc.scf_iteration[it], 'x_soliddmft_observables') and sec_scc.scf_iteration[it].x_soliddmft_observables.x_soliddmft_mu is not None:
+                sec_energy = sec_scc.scf_iteration[it].m_create(Energy)
+                sec_energy.fermi = sec_scc.scf_iteration[it].x_soliddmft_observables.x_soliddmft_mu * ureg.eV
 
         # Greens functions quantities
         sec_gf = sec_scc.m_create(GreensFunctions)
