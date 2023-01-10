@@ -1143,8 +1143,11 @@ class VASPParser:
         sec_basis.type = 'plane waves'
         sec_basis_set_cell_dependent = sec_basis.m_create(BasisSetCellDependent)
         sec_basis_set_cell_dependent.kind = 'plane waves'
-        sec_basis_set_cell_dependent.planewave_cutoff = self.parser.incar.get(
-            'ENMAX', self.parser.incar.get('ENCUT', 0.0)) * ureg.eV
+        try:
+            sec_basis_set_cell_dependent.planewave_cutoff = self.parser.incar.get(
+                'ENMAX', self.parser.incar.get('ENCUT')) * ureg.eV
+        except TypeError:
+            pass
 
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)
