@@ -187,8 +187,18 @@ class x_soliddmft_general_parameters(MSection):
         Magnetic field.
         ''')
 
-    x_soliddmft_h_int_type = Quantity(
+    x_soliddmft_h_field_it = Quantity(
+        type=np.int64,
+        description='''
+        ''')
+
+    x_soliddmft_h_int_basis = Quantity(
         type=str,
+        description='''
+        ''')
+
+    x_soliddmft_h_int_type = Quantity(
+        type=np.str_,
         description='''
         Interaction type:
             density_density: used for full d-shell or eg- or t2g-subset
@@ -250,6 +260,11 @@ class x_soliddmft_general_parameters(MSection):
         lattice spectral function to put the chemical potential into the middle of the gap.
         Does not work if system completely full or empty, mu mixing is not applied to it.
         Recommended value 0.01.
+        ''')
+
+    x_soliddmft_mu_initial_guess = Quantity(
+        type=np.float64,
+        description='''
         ''')
 
     x_soliddmft_mu_mix_const = Quantity(
@@ -522,6 +537,11 @@ class x_soliddmft_advanced_parameters(MSection):
         Additional manual mapping of the solver block structure, applied after the block
         structure finder for each impurity. Give exactly one dict per ineq impurity. see
         also triqs.github.io/dft_tools/latest/_python_api/triqs_dft_tools.block_structure.BlockStructure.map_gf_struct_solver.html
+        ''')
+
+    x_soliddmft_pick_solver_struct = Quantity(
+        type=str,
+        description='''
         ''')
 
 
@@ -818,7 +838,7 @@ class Program(simulation.run.Program):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_soliddmft_solid_dmft_hash = Quantity(
+    x_soliddmft_hash = Quantity(
         type=str,
         description='''
         Hash label for the solid_dmft repository branch used.

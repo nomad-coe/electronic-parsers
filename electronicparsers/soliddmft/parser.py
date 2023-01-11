@@ -42,14 +42,22 @@ class SolidDMFTParser:
     def __init__(self):
         self._re_namesafe = re.compile(r'[^\w]')
         self._calculation_type = 'dmft'
+
         self.code_keys = ['solid_dmft', 'solver', 'triqs']
+
+        # These keys are parsed somewhere else differently
         self.skip_dataset_keys = ['afm_mapping', 'corr_shells', 'dim_reps', 'shells']
+
         self.input_params = {
             'general_params': x_soliddmft_general_parameters,
             'solver_params': x_soliddmft_solver_parameters,
             'advanced_params': x_soliddmft_advanced_parameters
         }
+
+        self.angular_momentum = ['s', 'p', 'd', 'f']
+
         self.dc_type = ['fll', 'held_formula', 'amf', 'fll_eg_orbitals']
+
         self._solver_map = {
             'cthyb': 'CT-HYB',
             'ctint': 'CT-INT',
@@ -57,11 +65,14 @@ class SolidDMFTParser:
             'hubbardI': 'hubbard_I',
             'ctseg': 'CT-HYB'
         }
-        self.angular_momentum = ['s', 'p', 'd', 'f']
-        self.iter_quantities = [[
+
+        self.iteration_energies = [
             'DC_energ', 'DC_pot', 'dens_mat_pre', 'dens_mat_post', 'chemical_potential_pre',
-            'chemical_potential_post'],
-            ['Delta_time', 'G0_freq', 'Gimp_freq', 'Gimp_time', 'Sigma_freq']]
+            'chemical_potential_post'
+        ]
+
+        self.iteration_gfs = ['Delta_time', 'G0_freq', 'Gimp_freq', 'Gimp_time', 'Sigma_freq']
+
         self._gf_map = {
             'Sigma_freq': 'self_energy_iw',
             'Gimp_freq': 'greens_function_iw',
@@ -72,33 +83,11 @@ class SolidDMFTParser:
         return data[:, :, 0] + data[:, :, 1] * 1j
 
     def parse_dataset(self, source, target):
-        for key in source.keys():
-            name = key.replace('-', '_')
-            # skip afm_mapping and impurities info
-            if name in self.skip_dataset_keys:
-                continue
-
-            # groups are of length = number of impurities, each one giving the value
-            if isinstance(source[key], h5py.Group):
-                value = []
-                for i in source[key].keys():
-                    value.append(source[key][i][()])
-                # decoding bytes
-                if all(isinstance(x, (bytes, bytearray)) for x in value):
-                    value = [x.decode() for x in value]
-                    if all(v == 'none' for v in value):
-                        continue
-            if isinstance(source[key], h5py.Dataset):
-                value = source[key][()]
-            # decoding bytes
-                if isinstance(value, (bytes, bytearray)):
-                    value = value.decode()
-                    if value == 'none':
-                        continue
+        def setattr_to_target(target, name, value):
+            # if value is list, this is for each atom, hence all elements of value
+            # will be either arrays or scalars
             if isinstance(value, list):
-                # if value is list, this is for each atom, hence all elements of value
-                # will be either arrays or scalars
-                if isinstance(value[0], np.ndarray):
+                if isinstance(value[0], np.ndarray) or name == 'h_int_type':
                     setattr(target, f'x_soliddmft_{name}', value[:])
                 else:
                     setattr(target, f'x_soliddmft_{name}', value)
@@ -107,6 +96,32 @@ class SolidDMFTParser:
                     setattr(target, f'x_soliddmft_{name}', value[:])
                 else:
                     setattr(target, f'x_soliddmft_{name}', value)
+
+        # scanning the keys
+        for key in source.keys():
+            name = key.replace('-', '_')
+            # skip afm_mapping and impurities info
+            if name in self.skip_dataset_keys:
+                continue
+
+            if isinstance(source[key], h5py.Dataset):
+                value = source[key][()]
+                if isinstance(value, bytes):  # decoding bytes to str
+                    value = value.decode()
+                    if value == 'none':
+                        continue
+            # groups are of length = number of impurities, each one giving the value
+            elif isinstance(source[key], h5py.Group):
+                value = []
+                for i in source[key].keys():
+                    if not hasattr(source[key], i):  # to avoid empty groups (e.g. 'magmom' for PM calc)
+                        continue
+                    value.append(source[key][i][()])
+                if all(isinstance(x, bytes) for x in value):  # decoding bytes to str
+                    value = [x.decode() for x in value]
+                    if all(v == 'none' for v in value):
+                        continue
+            setattr_to_target(target, name, value)
 
     def parse_system(self, data):
         # TODO speak with solid_dmft devs to include this info in the output
@@ -120,7 +135,7 @@ class SolidDMFTParser:
         # DFTTools code-specific input
         sec_dft_param = sec_method.m_create(x_soliddmft_dft_input_parameters)
         for param in ['dft_input', 'dft_misc_input']:
-            self.parse_dataset(data.get(param), sec_dft_param)
+            self.parse_dataset(data[param], sec_dft_param)
 
         # HoppingMatrix || ProjectionMatrix
         sec_hamiltonian.projection_matrix = sec_dft_param.x_soliddmft_proj_mat
@@ -132,14 +147,19 @@ class SolidDMFTParser:
             sec_hubbard_kanamori_model = sec_hamiltonian.m_create(HubbardKanamoriModel)
 
             sec_hubbard_kanamori_model.orbital = self.angular_momentum[
-                self.dft_input.get('corr_shells')[str(i)].get('l', 0)[()]]
-            sec_hubbard_kanamori_model.u = self.dmft_input.get('general_params').get('U')[str(i)][()]
-            sec_hubbard_kanamori_model.jh = self.dmft_input.get('general_params').get('J')[str(i)][()]
+                self.dft_input['corr_shells'][str(i)].get('l', 2)[()]]
+            sec_hubbard_kanamori_model.u = self.dmft_input['general_params']['U'][str(i)][()]
+            sec_hubbard_kanamori_model.jh = self.dmft_input['general_params']['J'][str(i)][()]
             # solid_dmft keeps spin-rotational invariance
             sec_hubbard_kanamori_model.up = sec_hubbard_kanamori_model.u - 2.0 * sec_hubbard_kanamori_model.jh
-            if self.dmft_input.get('general_params').get('h_int_type')[()].decode() == 'density_density':
+            # issue with def of 'h_int_type' in the output h5 in different versions
+            if isinstance(self.dmft_input['general_params']['h_int_type'], h5py.Dataset):
+                h_int_type = self.dmft_input['general_params']['h_int_type'][()]
+            elif isinstance(self.dmft_input['general_params']['h_int_type'], h5py.Group):
+                h_int_type = self.dmft_input['general_params']['h_int_type'][str(i)][()]
+            if h_int_type == b'density_density':
                 sec_hubbard_kanamori_model.j = 0.0
-            elif self.dmft_input.get('general_params').get('h_int_type')[()].decode() == 'kanamori':
+            elif h_int_type == b'kanamori':
                 sec_hubbard_kanamori_model.j = sec_hubbard_kanamori_model.jh
 
     def parse_method(self, data):
@@ -151,7 +171,7 @@ class SolidDMFTParser:
         # Code-specific
         for param in self.input_params.keys():
             sec_param = sec_method.m_create(self.input_params[param])
-            self.parse_dataset(self.dmft_input.get(param), sec_param)
+            self.parse_dataset(self.dmft_input[param], sec_param)
 
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
@@ -166,7 +186,7 @@ class SolidDMFTParser:
         occ_per_atoms = []
         for i in range(sec_dmft.n_atoms_per_unit_cell):
             corr_orbs_per_atoms.append(
-                self.dft_input.get('corr_shells')[str(i)].get('dim', 1)[()])
+                self.dft_input['corr_shells'][str(i)].get('dim', 1)[()])
             if sec_method.x_soliddmft_general.x_soliddmft_magnetic:
                 try:
                     total_occupation = self.dmft_results['observables']['imp_occ'][str(i)]['down']['0'][()] + \
@@ -182,10 +202,15 @@ class SolidDMFTParser:
         sec_dmft.n_correlated_electrons = occ_per_atoms
         sec_dmft.inverse_temperature = sec_method.x_soliddmft_general.x_soliddmft_beta
         if sec_method.x_soliddmft_general.x_soliddmft_magnetic:
-            if all(signs == 1.0 for signs in np.sign(sec_method.x_soliddmft_general.x_soliddmft_magmom)):
-                sec_dmft.magnetic_state = 'ferromagnetic'
+            if sec_method.x_soliddmft_general.x_soliddmft_magmom is None:
+                self.logger.warning('The magnetic flag is set to true, but the initial magnetic \
+                    moment is not resolved. Is this really a magnetic calculation without \
+                    an initial magmom seed?')
             else:
-                sec_dmft.magnetic_state = 'antiferromagnetic'
+                if all(signs == 1.0 for signs in np.sign(sec_method.x_soliddmft_general.x_soliddmft_magmom)):
+                    sec_dmft.magnetic_state = 'ferromagnetic'
+                else:
+                    sec_dmft.magnetic_state = 'antiferromagnetic'
         else:
             sec_dmft.magnetic_state = 'paramagnetic'
         sec_dmft.n_matsubara_freq = sec_method.x_soliddmft_general.x_soliddmft_n_iw
@@ -203,76 +228,81 @@ class SolidDMFTParser:
             sec_scc.system_ref = sec_run.system[-1]
         sec_scc.method_ref = sec_run.method[-1]  # ref to DMFT
 
+        def parse_iteration_quantities(scf_section, it_key):
+            sec_iter = scf_section.m_create(x_soliddmft_iter_parameters)
+            for en_key in self.iteration_energies:
+                if isinstance(self.dmft_results[it_key][en_key], h5py.Dataset):
+                    param = self.dmft_results[it_key][en_key][()]
+                    setattr(sec_iter, f'x_soliddmft_{en_key}', param)
+                elif isinstance(self.dmft_results[it_key][en_key], h5py.Group):
+                    param = []
+                    for i in self.dmft_results[it_key][en_key].keys():  # atom index
+                        if isinstance(self.dmft_results[it_key][en_key][i], h5py.Group):
+                            for s in self.dmft_results[it_key][en_key][i].keys():  # spin index
+                                param.append(self.dmft_results[it_key][en_key][i][s][()])
+                        else:
+                            param.append(self.dmft_results[it_key][en_key][i][()])
+                    param = np.array(param)
+                    if en_key.startswith('DC'):
+                        setattr(sec_iter, f'x_soliddmft_{en_key}', param)
+                    else:  # deleting useless indices
+                        setattr(sec_iter, f'x_soliddmft_{en_key}', param[:, 0, 0, :])
+            for gf_key in self.iteration_gfs:
+                param = []
+                for i in range(sec_scc.method_ref.dmft.n_atoms_per_unit_cell):  # atom index
+                    gf_key_mod = gf_key + '_' + str(i)
+                    for s in self.dmft_results[it_key][gf_key_mod].keys():
+                        if s == 'block_names':
+                            continue
+                        param.append(self.dmft_results[it_key][gf_key_mod][s]['data'][()])
+                param = np.array(param)
+                setattr(sec_iter, f'x_soliddmft_{gf_key}', param[:, :, 0, 0, :])
+
         # SCF steps
-        scf_keys = [int(key.lstrip('it_')) for key in data['DMFT_results'].keys() if key.startswith('it_')]
+        scf_keys = [int(key.lstrip('it_')) for key in self.dmft_results.keys() if key.startswith('it_')]
         scf_keys.sort()
         scf_keys_sorted = ['it_' + str(key) for key in scf_keys]
-        scf_keys_sorted.append('last_iter')
 
-        for keys in scf_keys_sorted:
+        # We store the last post-processed step for observables
+        total_iterations = self.dmft_results.get('iteration_count', 1)[()]
+        for it in range(total_iterations + 1):
             sec_scf_iteration = sec_scc.m_create(ScfIteration)
 
-            # iterations quantities
-            sec_iter = sec_scf_iteration.m_create(x_soliddmft_iter_parameters)
-            for j in range(2):
-                for iter_keys in self.iter_quantities[j]:
-                    if j == 0:
-                        if isinstance(self.dmft_results[keys][iter_keys], h5py.Dataset):
-                            param = self.dmft_results[keys][iter_keys][()]
-                            setattr(sec_iter, f'x_soliddmft_{iter_keys}', param)
-                        else:
-                            param = []
-                            for i in range(sec_scc.method_ref.dmft.n_atoms_per_unit_cell):
-                                if isinstance(self.dmft_results[keys][iter_keys][str(i)], h5py.Group):
-                                    for s in self.dmft_results[keys][iter_keys][str(i)].keys():
-                                        param.append(self.dmft_results[keys][iter_keys][str(i)][s][()])
-                                else:
-                                    param.append(self.dmft_results[keys][iter_keys][str(i)][()])
-                            param = np.array(param)
-                            if iter_keys.startswith('DC'):
-                                setattr(sec_iter, f'x_soliddmft_{iter_keys}', param)
-                            else:  # deleting useless indices
-                                setattr(sec_iter, f'x_soliddmft_{iter_keys}', param[:, 0, 0, :])
-                    else:
-                        param = []
-                        for i in range(sec_scc.method_ref.dmft.n_atoms_per_unit_cell):
-                            iter_subkey = iter_keys + '_' + str(i)
-                            for s in self.dmft_results[keys][iter_subkey].keys():
-                                if s == 'block_names':
-                                    continue
-                                param.append(self.dmft_results[keys][iter_subkey][s]['data'][()])
-                        param = np.array(param)
-                        setattr(sec_iter, f'x_soliddmft_{iter_keys}', param[:, :, 0, 0, :])
+            if it < total_iterations:
+                # iterations quantities
+                it_key = 'it_' + str(it + 1)
+                if it_key in scf_keys_sorted:
+                    parse_iteration_quantities(sec_scf_iteration, it_key)
 
-        for it in range(self.dmft_results.get('iteration_count', 1)[()] + 1):  # We store the last post-processed step for observables
-            if it < 15:
                 # convergence of observable quantities
                 sec_conv_obs = sec_scc.scf_iteration[it].m_create(x_soliddmft_convergence_obs_parameters)
                 for keys in self.dmft_results['convergence_obs'].keys():
-                    if keys == 'd_Etot' or keys == 'iteration':  # skipping unused keys
+                    if keys == 'iteration':  # skipping unused keys
                         continue
-                    if keys == 'd_mu':
-                        param = self.dmft_results['convergence_obs'][keys][str(it)][()]
-                    else:
-                        param = []
-                        for i in self.dmft_results['convergence_obs'][keys].keys():
-                            param.append(self.dmft_results['convergence_obs'][keys][i][str(it)][()])
-                    setattr(sec_conv_obs, f'x_soliddmft_{keys}', param)
+                    if len(self.dmft_results['convergence_obs'][keys]) > 0:
+                        if keys == 'd_Etot' or keys == 'd_mu':
+                            param = self.dmft_results['convergence_obs'][keys][str(it)][()]
+                        else:
+                            param = []
+                            for i in self.dmft_results['convergence_obs'][keys].keys():
+                                param.append(self.dmft_results['convergence_obs'][keys][i][str(it)][()])
+                        setattr(sec_conv_obs, f'x_soliddmft_{keys}', param)
 
             # observables quantities
             sec_obs = sec_scc.scf_iteration[it].m_create(x_soliddmft_observables_parameters)
             for keys in self.dmft_results['observables'].keys():
-                if keys == 'E_int' or keys == 'iteration':  # skipping unused keys
+                if keys == 'iteration':  # skipping unused keys
                     continue
                 if keys.startswith('E_'):
-                    if len(self.dmft_results['observables'][keys]) == sec_scc.method_ref.dmft.n_atoms_per_unit_cell:
-                        param = []
-                        for i in self.dmft_results['observables'][keys].keys():
-                            if self.dmft_results['observables'][keys][i][str(it)][()] != b'none':
-                                param.append(self.dmft_results['observables'][keys][i][str(it)][()])
-                    else:
+                    if len(self.dmft_results['observables'][keys]) > sec_scc.method_ref.dmft.n_atoms_per_unit_cell:
                         if self.dmft_results['observables'][keys][str(it)][()] != b'none':
                             param = self.dmft_results['observables'][keys][str(it)][()]
+                    else:
+                        param = []
+                        for i in self.dmft_results['observables'][keys].keys():
+                            if len(self.dmft_results['observables'][keys][i]) == total_iterations + 1:
+                                if self.dmft_results['observables'][keys][i][str(it)][()] != b'none':
+                                    param.append(self.dmft_results['observables'][keys][i][str(it)][()])
                 elif keys == 'mu':
                     param = self.dmft_results['observables']['mu'][str(it)]
                 else:
@@ -286,6 +316,9 @@ class SolidDMFTParser:
             if hasattr(sec_scc.scf_iteration[it], 'x_soliddmft_observables') and sec_scc.scf_iteration[it].x_soliddmft_observables.x_soliddmft_mu is not None:
                 sec_energy = sec_scc.scf_iteration[it].m_create(Energy)
                 sec_energy.fermi = sec_scc.scf_iteration[it].x_soliddmft_observables.x_soliddmft_mu * ureg.eV
+
+        # last iteration quantities
+        parse_iteration_quantities(sec_scf_iteration, 'last_iter')
 
         # Greens functions quantities
         sec_gf = sec_scc.m_create(GreensFunctions)
@@ -338,20 +371,23 @@ class SolidDMFTParser:
         # Program section
         sec_program = sec_run.m_create(Program)
         sec_program.name = 'solid_dmft'
-        if self.dmft_input.get('version') is not None:
+        if self.dmft_input['version'] is not None:
             for name in self.code_keys:
-                hash = self.dmft_input.get('version').get(f'{name}_hash', None)
-                version = self.dmft_input.get('version').get(f'{name}_version', None)
+                hash = self.dmft_input['version'].get(f'{name}_hash', None)
+                version = self.dmft_input['version'].get(f'{name}_version', None)
                 if hash is not None:
-                    setattr(sec_program, f'x_soliddmft_{name}_hash', hash[()].decode())
+                    if name == 'solid_dmft':
+                        sec_program.x_soliddmft_hash = hash[()].decode()
+                    else:
+                        setattr(sec_program, f'x_soliddmft_{name}_hash', hash[()].decode())
                 if version is not None:
-                    if version[()].decode() == 'solid_dmft':
+                    if name == 'solid_dmft':
                         sec_program.version = version[()].decode()
                     else:
                         setattr(sec_program, f'x_soliddmft_{name}_version', version[()].decode())
 
         # System section
-        # self.parse_system(data)
+        self.parse_system(data)
 
         # Method.DMFT section with inputs (HoppingMatrix + InteractionModel)
         self.parse_input_model(data)
