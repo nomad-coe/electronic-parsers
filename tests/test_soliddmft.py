@@ -18,6 +18,7 @@
 
 import pytest
 
+import numpy as np
 from nomad.datamodel import EntryArchive
 from electronicparsers.soliddmft import SolidDMFTParser
 
@@ -31,69 +32,76 @@ def parser():
     return SolidDMFTParser()
 
 
-@pytest.mark.skip('Disabled as the data is too big for the repo. Please contact Jose Pizarro if you would like to obtain the data')
-def test_srvo3_highstat(parser):
+def test_srvo3(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/w2dynamics/srvo3/SrVO3_beta60_high-stat-2022-09-29-Thu-15-29-40.hdf5', archive, None)
+    parser.parse('tests/data/soliddmft/srvo3/svo_example.h5', archive, None)
 
     # Run tests
     assert len(archive.run) == 1
     sec_run = archive.run[-1]
-    assert len(sec_run.x_w2dynamics_axes) == 14
-    assert sec_run.x_w2dynamics_axes.x_w2dynamics_iw.shape[0] == 2400
-    assert sec_run.x_w2dynamics_axes.x_w2dynamics_tau.shape[0] == 1000
-    assert sec_run.x_w2dynamics_axes.x_w2dynamics_w_dos.shape[0] == 2794
-
     # Program tests
-    assert sec_run.program.name == 'w2dynamics'
+    assert sec_run.program.name == 'solid_dmft'
+    assert sec_run.program.version == '3.1.2'
+    assert sec_run.program.x_soliddmft_hash == 'ae0794c4e3678d367ad340b25e1a64a5c0f23a9f'
 
     # System tests (SrVO3 crystal)
-    assert sec_run.system[-1].atoms.labels == ['Sr', 'V', 'O', 'O', 'O']
-    assert sec_run.system[-1].atoms.periodic == [True, True, True]
+    # unknown: we need this info from the devs
 
     # Method tests
     assert len(sec_run.method) == 2  # 2 methods: [0] input Hamiltonian, [1] input DMFT parameters
+    # input Hamiltonian
     sec_lattice_model = sec_run.method[0].lattice_model_hamiltonian[0]
-    assert hasattr(sec_lattice_model, 'hopping_matrix')
+    assert hasattr(sec_lattice_model, 'projection_matrix')
+    assert sec_lattice_model.projection_matrix.shape == (729, 1, 1, 3, 5, 2)
     assert hasattr(sec_lattice_model, 'hubbard_kanamori_model')
-    assert sec_lattice_model.hubbard_kanamori_model.orbital == 'd'
-    u = sec_lattice_model.hubbard_kanamori_model.u.to('eV').magnitude
-    jh = sec_lattice_model.hubbard_kanamori_model.jh.to('eV').magnitude
-    assert u == approx(4.0)
-    assert jh == approx(0.6)
-    up = sec_lattice_model.hubbard_kanamori_model.up.to('eV').magnitude
-    j = sec_lattice_model.hubbard_kanamori_model.j.to('eV').magnitude
+    assert len(sec_lattice_model.hubbard_kanamori_model) == 1
+    assert sec_lattice_model.hubbard_kanamori_model[0].orbital == 'd'
+    u = sec_lattice_model.hubbard_kanamori_model[0].u.to('eV').magnitude
+    jh = sec_lattice_model.hubbard_kanamori_model[0].jh.to('eV').magnitude
+    assert u == approx(8.0)
+    assert jh == approx(0.65)
+    up = sec_lattice_model.hubbard_kanamori_model[0].up.to('eV').magnitude
+    j = sec_lattice_model.hubbard_kanamori_model[0].j.to('eV').magnitude
     # testing rotational invariance
     assert up == approx(u - 2 * jh)
     assert j == approx(jh)
-    assert len(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general) == 58
-    assert sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_beta == 60.0
+    # input DMFT
+    assert len(sec_run.method[1].x_soliddmft_general) == 55
+    assert len(sec_run.method[1].x_soliddmft_solver) == 15
+    assert len(sec_run.method[1].x_soliddmft_advanced) == 8
     assert sec_run.method[1].starting_method_ref == sec_run.method[0]
     sec_dmft = sec_run.method[1].dmft
-    assert sec_dmft.n_correlated_bands == 3
-    assert sec_dmft.n_correlated_electrons == approx(1.0)
-    assert sec_dmft.inverse_temperature == approx(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_beta)
-    assert sec_run.x_w2dynamics_axes.x_w2dynamics_iw.shape[0] == approx(2 * sec_dmft.n_matsubara_freq)
-    assert sec_run.x_w2dynamics_axes.x_w2dynamics_tau.shape[0] == approx(sec_dmft.n_tau)
+    assert sec_dmft.n_atoms_per_unit_cell == 1
+    assert sec_dmft.n_correlated_orbitals[0] == 3
+    assert sec_dmft.n_correlated_electrons == approx(1.0000225214138097)
+    assert sec_dmft.inverse_temperature == approx(10.0)
+    assert sec_dmft.inverse_temperature == approx(sec_run.method[1].x_soliddmft_general.x_soliddmft_beta)
+    assert sec_dmft.n_matsubara_freq == 501
+    assert sec_dmft.n_tau == 10001
+    assert sec_dmft.double_counting_correction == 'held_formula'
     assert sec_dmft.impurity_solver == 'CT-HYB'
+    sec_k_mesh = sec_run.method[1].k_mesh
+    assert sec_k_mesh.n_points == 729
 
     # Calculation tests
     assert len(sec_run.calculation) == 1
     sec_scc = sec_run.calculation[0]
-    assert sec_scc.system_ref == sec_run.system[0]
+    # assert sec_scc.system_ref == sec_run.system[0]
     assert sec_scc.method_ref == sec_run.method[1]
     sec_gfs = sec_scc.greens_functions[0]
-    assert sec_gfs.matsubara_freq[0] == approx(-125.61134626603189)
-    assert sec_gfs.matsubara_freq[-1] == approx(125.61134626603189)
+    assert sec_gfs.matsubara_freq[0] == approx(-100.1)
+    assert sec_gfs.matsubara_freq[-1] == approx(100.1)
+    assert sec_gfs.tau.shape[0] == sec_dmft.n_tau
     assert sec_gfs.self_energy_iw.dtype == 'complex128'
-    assert sec_gfs.self_energy_iw.shape == (3, 2, 2400)
-    assert sec_gfs.greens_function_iw[2][0][1450] == approx(-0.0019482734893255288 - 0.03783597807548039j)
-    assert sec_gfs.chemical_potential == approx(7.877904086990344)
+    assert sec_gfs.self_energy_iw.shape == (1, 2, 3, 1002)
+    assert sec_gfs.greens_function_tau[0][1][1][1025] == approx(-0.14109113749664728 + 0j)
+    assert sec_gfs.chemical_potential.magnitude == approx(0.0378235342396917)
+    assert np.sum(sec_gfs.occupancies) == approx(1.008321846227956)
+    assert sec_gfs.quasiparticle_weights.shape == (1, 2, 3)
+    assert sec_gfs.quasiparticle_weights[0][0][0] == approx(0.16195076915540912)
     # SCF tests
     sec_scf = sec_scc.scf_iteration
-    assert len(sec_scf) == 11
-    assert sec_scf[0].energy.fermi.to('eV').magnitude == approx(7.877920164769436)
-    assert sec_scf[-1].energy.fermi.to('eV').magnitude == approx(7.877904086990344)
-    assert sec_scf[1].x_w2dynamics_ineq[0].x_w2dynamics_fiw.dtype == 'complex128'
-    assert sec_scf[1].x_w2dynamics_ineq[0].x_w2dynamics_fiw.shape == (3, 2, 2400)
-    assert sec_scf[10].x_w2dynamics_ineq[0].x_w2dynamics_fiw[1][1][100] == approx(-2.4387509114487393e-05 - 0.0026711105507501998j)
+    assert len(sec_scf) == 3
+    assert sec_scf[0].energy.fermi.to('eV').magnitude == approx(-0.027041)
+    assert sec_scf[-1].energy.fermi.to('eV').magnitude == approx(sec_gfs.chemical_potential.magnitude)
+    assert sec_scf[1].x_soliddmft_convergence_obs.x_soliddmft_d_G0[0] == 0.03463529305810029
