@@ -31,12 +31,13 @@ This is a collection of the NOMAD parsers for the following electronic codes:
 29. [Qbox](http://qboxcode.org/)
 30. [QuantumESPRESSO](http://www.quantum-espresso.org/)
 31. [SIESTA](https://siesta-project.org/siesta)
-32. [TURBOMOLE](https://www.turbomole.org/)
-33. [VASP](https://www.vasp.at/)
-34. [w2dynamics](https://github.com/w2dynamics/w2dynamics)
-35. [Wannier90](http://www.wannier.org/)
-36. [WIEN2k](http://www.wien2k.at/)
-37. [YAMBO](https://www.yambo-code.org/)
+32. [soliddmft](https://github.com/TRIQS/solid_dmft)
+33. [TURBOMOLE](https://www.turbomole.org/)
+34. [VASP](https://www.vasp.at/)
+35. [w2dynamics](https://github.com/w2dynamics/w2dynamics)
+36. [Wannier90](http://www.wannier.org/)
+37. [WIEN2k](http://www.wien2k.at/)
+38. [YAMBO](https://www.yambo-code.org/)
 
 ## Preparing code input and output file for uploading to NOMAD
 
