@@ -193,8 +193,8 @@ class SolidDMFTParser:
                         self.dmft_results['observables']['imp_occ'][str(i)]['up']['0'][()]
                     occ_per_atoms.append(total_occupation)
                 except Exception:
-                    self.logger.warning('The magnetic flag is true, but the occupation \
-                        per atom is spin independent. Please check your outputs.')
+                    self.logger.warning('The magnetic flag is true, but the occupation per atom is spin independent. '
+                                        'Please check your outputs.')
                     occ_per_atoms.append(self.dmft_results['observables']['imp_occ'][str(i)]['0'][()])
             else:
                 occ_per_atoms.append(self.dmft_results['observables']['imp_occ'][str(i)]['0'][()])
@@ -203,9 +203,8 @@ class SolidDMFTParser:
         sec_dmft.inverse_temperature = sec_method.x_soliddmft_general.x_soliddmft_beta
         if sec_method.x_soliddmft_general.x_soliddmft_magnetic:
             if sec_method.x_soliddmft_general.x_soliddmft_magmom is None:
-                self.logger.warning('The magnetic flag is set to true, but the initial magnetic \
-                    moment is not resolved. Is this really a magnetic calculation without \
-                    an initial magmom seed?')
+                self.logger.warning('The magnetic flag is set to true, but the initial magnetic moment is not resolved. '
+                                    'Is this really a magnetic calculation without an initial magmom seed?')
             else:
                 if all(signs == 1.0 for signs in np.sign(sec_method.x_soliddmft_general.x_soliddmft_magmom)):
                     sec_dmft.magnetic_state = 'ferromagnetic'
@@ -337,9 +336,8 @@ class SolidDMFTParser:
             else:
                 naxis = n_tau
             if np.all(norb != norb[0]):
-                self.logger.warning("Green's function matrices are set up using the number \
-                    of orbitals from the impurity 0. We found different number of orbitals \
-                    per impurity. Is this physically correct?")
+                self.logger.warning('Greens function matrices are set up using the number of orbitals from the impurity 0. '
+                                    'We found different number of orbitals per impurity. Is this physically correct?')
             setattr(sec_gf, self._gf_map[keys], np.reshape(funct, (nat, 2, norb[0], naxis)))
         sec_gf.occupancies = np.reshape(sec_scc.scf_iteration[-1].x_soliddmft_observables.x_soliddmft_orb_occ, (nat, 2, norb[0]))
         sec_gf.quasiparticle_weights = np.reshape(sec_scc.scf_iteration[-1].x_soliddmft_observables.x_soliddmft_orb_Z, (nat, 2, norb[0]))

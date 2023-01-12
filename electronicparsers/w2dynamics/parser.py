@@ -252,9 +252,8 @@ class W2DynamicsParser:
                         parameters.append(getattr(
                             sec_scf_iteration.x_w2dynamics_ineq[i], self._inequivalent_atom_map.get(subkey, [])))
                     if np.all(norb != norb[0]):
-                        self.logger.warning("Green's function matrices are set up using the number \
-                            of orbitals from the impurity 0. We found different number of orbitals \
-                            per impurity. Is this physically correct?")
+                        self.logger.warning('Greens function matrices are set up using the number of orbitals from the impurity 0. '
+                                            'We found different number of orbitals per impurity. Is this physically correct?')
                     parameters = np.array(parameters)
                     # reordering calculation matrices to standarize w2dynamics and solid_dmft
                     # (and potentially, other DMFT codes)
