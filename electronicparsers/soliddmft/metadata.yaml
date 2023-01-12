@@ -14,5 +14,3 @@ tableOfFiles: |
   | Input Filename | Description |
   | --- | --- |
   | `*.h5` | **Mainfile:** h5 file containing all i/o parameters w/ arbitrary name |
-  | `*.ini` | input text file containing [general], [solver], [dft], and [advanced] input parameters |
-  | `*imp*.dat` | ouput data files containing impurity values |
