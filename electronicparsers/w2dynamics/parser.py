@@ -260,8 +260,12 @@ class W2DynamicsParser:
                     parameters_reorder = np.array([[[
                         parameters[i, no, ns, :] for no in range(norb[0])] for ns in range(2)] for i in range(nat)])
                     setattr(sec_gf, subkey, parameters_reorder)
-                sec_gf.occupancies = np.array([[
-                    sec_scf_iteration.x_w2dynamics_ineq[0].x_w2dynamics_occ[no, ns, no, ns] for no in range(3)] for ns in range(2)])
+                # summing over atoms per unit cell to keep same array dimensions
+                parameters = []
+                for i in range(nat):
+                    parameters.append([[
+                        sec_scf_iteration.x_w2dynamics_ineq[0].x_w2dynamics_occ[no, ns, no, ns] for no in range(3)] for ns in range(2)])
+                sec_gf.occupancies = np.array(parameters)
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
