@@ -74,8 +74,7 @@ class W2DynamicsParser:
             'nat': 'n_atoms_per_unit_cell',
             'totdens': 'n_correlated_electrons',
             'beta': 'inverse_temperature',
-            'magnetism': 'magnetic_state',
-            'dc': 'double_counting_correction'
+            'magnetism': 'magnetic_state'
         }
 
         self._dmft_qmc_map = {
@@ -170,6 +169,8 @@ class W2DynamicsParser:
                 sec_hubbard_kanamori_model.j = 0.0
             elif data.attrs.get(f'atoms.{n+1}.hamiltonian') == 'Kanamori':
                 sec_hubbard_kanamori_model.j = sec_hubbard_kanamori_model.jh
+
+            sec_hubbard_kanamori_model.double_counting_correction = data.attrs.get('general.dc')
 
     def parse_method(self, data):
         sec_run = self.archive.run[0]
