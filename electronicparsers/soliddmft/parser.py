@@ -137,7 +137,8 @@ class SolidDMFTParser:
             self.parse_dataset(data[param], sec_dft_param)
 
         # HoppingMatrix || ProjectionMatrix
-        sec_hamiltonian.projection_matrix = sec_dft_param.x_soliddmft_proj_mat
+        sec_hamiltonian.projection_matrix = self.dft_input.get('proj_mat')[()][:, 0, :, :, :, 0] \
+            + self.dft_input.get('proj_mat')[()][:, 0, :, :, :, 1] * 1j
 
         # HubbardKanamoriModel
         # TODO add parse for full_slater

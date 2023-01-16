@@ -654,6 +654,7 @@ class x_soliddmft_dft_input_parameters(MSection):
 
     x_soliddmft_hopping = Quantity(
         type=np.complex128,
+        shape=['*', '*', '*', '*', '*'],
         description='''
         Non-interacting Hamiltonian matrix for each k point. As for proj_mat, all matrices
         have to be of the same size.
@@ -742,6 +743,7 @@ class x_soliddmft_dft_input_parameters(MSection):
 
     x_soliddmft_proj_mat = Quantity(
         type=np.complex128,
+        shape=[],
         description='''
         Projection matrices from Bloch bands to Wannier orbitals. For efficient storage
         reasons, all matrices must be of the same size (given by last two indices). For
@@ -999,7 +1001,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_orb_Z = Quantity(
         type=np.float64,
-        shape=['*'],
+        shape=['*', '*'],
         description='''
         Orbital resolved quasiparticle weight (eff_mass / renormalized_mass). As obtained
         by linearizing the self-energy around w=0:
@@ -1008,7 +1010,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_orb_gb2 = Quantity(
         type=np.float64,
-        shape=['*'],
+        shape=['*', '*'],
         description='''
         Orbital resolved G(beta/2), proxy for projected density of states at the Fermi
         level. Low value of orb_gb2 correlated with the presence of a gap.
@@ -1016,7 +1018,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_orb_occ = Quantity(
         type=np.float64,
-        shape=['*'],
+        shape=['*', '*'],
         description='''
         Orbital mean site occupation.
         ''')
@@ -1031,14 +1033,14 @@ class x_soliddmft_iter_parameters(MSection):
 
     x_soliddmft_DC_energ = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*'],
         description='''
         Double counting correction. After parser dim = ['n_inequiv_shells']
         ''')
 
     x_soliddmft_DC_pot = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*', '*', '*'],
         description='''
         Double counting potential. After parser dim = ['2 * n_inequiv_shells',
         'n_correlated_orbitals', 'n_correlated_orbitals'].
@@ -1046,7 +1048,7 @@ class x_soliddmft_iter_parameters(MSection):
 
     x_soliddmft_Delta_time = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*', '*', '*'],
         description='''
         Imaginary time hybridization function.
             dim n_inequiv_shells x corr_shells.dim x n_tau x 2 (real+imag)
@@ -1054,7 +1056,7 @@ class x_soliddmft_iter_parameters(MSection):
 
     x_soliddmft_G0_freq = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*', '*', '*'],
         description='''
         Imaginary frequency Weiss field.
             dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
@@ -1062,7 +1064,7 @@ class x_soliddmft_iter_parameters(MSection):
 
     x_soliddmft_Gimp_freq = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*', '*', '*'],
         description='''
         Imaginary frequency impurity green function.
             dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
@@ -1070,7 +1072,7 @@ class x_soliddmft_iter_parameters(MSection):
 
     x_soliddmft_Gimp_time = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*', '*', '*'],
         description='''
         Imaginary time representation of the impurity green function.
             dim n_inequiv_shells x corr_shells.dim x n_tau x 2 (real+imag)
@@ -1078,7 +1080,7 @@ class x_soliddmft_iter_parameters(MSection):
 
     x_soliddmft_Sigma_freq = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*', '*', '*'],
         description='''
         Imaginary frequency self-energy obtained from the Dyson equation.
             dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
@@ -1100,7 +1102,7 @@ class x_soliddmft_iter_parameters(MSection):
 
     x_soliddmft_dens_mat_pre = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*', '*'],
         description='''
         Density matrix before the solver iteration. After parser dim = ['2 * n_inequiv_shells * n_correlated_orbitals',
         '2'], where the second index goes for real and imaginary
@@ -1108,7 +1110,7 @@ class x_soliddmft_iter_parameters(MSection):
 
     x_soliddmft_dens_mat_post = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*', '*'],
         description='''
         Density matrix after the solver iteration.
         ''')
