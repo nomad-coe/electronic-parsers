@@ -30,6 +30,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 from nomad.datamodel.metainfo.simulation.method import (
     Method, HubbardKanamoriModel, LatticeModelHamiltonian, DMFT, KMesh
 )
+from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.workflow import Workflow
 from .metainfo.soliddmft import (
     x_soliddmft_general_parameters, x_soliddmft_solver_parameters, x_soliddmft_advanced_parameters,
@@ -66,11 +67,6 @@ class SolidDMFTParser:
             'ctseg': 'CT-HYB'
         }
 
-        self.iteration_energies = [
-            'DC_energ', 'DC_pot', 'dens_mat_pre', 'dens_mat_post', 'chemical_potential_pre',
-            'chemical_potential_post'
-        ]
-
         self.iteration_gfs = ['Delta_time', 'G0_freq', 'Gimp_freq', 'Gimp_time', 'Sigma_freq']
 
         self._gf_map = {
@@ -78,9 +74,6 @@ class SolidDMFTParser:
             'Gimp_freq': 'greens_function_iw',
             'Gimp_time': 'greens_function_tau'
         }
-
-    def dataset_to_complex(self, data):
-        return data[:, :, 0] + data[:, :, 1] * 1j
 
     def parse_dataset(self, source, target):
         def setattr_to_target(target, name, value):
@@ -125,7 +118,13 @@ class SolidDMFTParser:
 
     def parse_system(self, data):
         # TODO speak with solid_dmft devs to include this info in the output
-        pass
+        sec_run = self.archive.run[-1]
+        if self.dft_input.get('kpt_basis'):
+            sec_system = sec_run.m_create(System)
+            sec_atoms = sec_system.m_create(Atoms)
+            sec_atoms.lattice_vectors_reciprocal = self.dft_input.get('kpt_basis')[()] / ureg.angstrom
+        else:
+            pass
 
     def parse_input_model(self, data):
         sec_run = self.archive.run[-1]
@@ -223,44 +222,47 @@ class SolidDMFTParser:
     def parse_scc(self, data):
         sec_run = self.archive.run[-1]
         sec_scc = sec_run.m_create(Calculation)
-        if hasattr(self.archive.run[-1], 'system') and len(self.archive.run[-1].system) > 0:
-            sec_scc.system_ref = sec_run.system[-1]
+        sec_scc.system_ref = sec_run.system[-1] if sec_run.system else None
         sec_scc.method_ref = sec_run.method[-1]  # ref to DMFT
 
         def parse_iteration_quantities(scf_section, it_key):
             sec_iter = scf_section.m_create(x_soliddmft_iter_parameters)
-            for en_key in self.iteration_energies:
-                if isinstance(self.dmft_results[it_key][en_key], h5py.Dataset):
-                    param = self.dmft_results[it_key][en_key][()]
-                    setattr(sec_iter, f'x_soliddmft_{en_key}', param)
-                elif isinstance(self.dmft_results[it_key][en_key], h5py.Group):
-                    param = []
-                    for i in self.dmft_results[it_key][en_key].keys():  # atom index
-                        if isinstance(self.dmft_results[it_key][en_key][i], h5py.Group):
-                            for s in self.dmft_results[it_key][en_key][i].keys():  # spin index
-                                param.append(self.dmft_results[it_key][en_key][i][s][()])
-                        else:
-                            param.append(self.dmft_results[it_key][en_key][i][()])
-                    param = np.array(param)
-                    if en_key.startswith('DC'):
-                        setattr(sec_iter, f'x_soliddmft_{en_key}', param)
-                    else:  # deleting useless indices
-                        setattr(sec_iter, f'x_soliddmft_{en_key}', param[:, 0, 0, :])
+            # DC_energ
+            param = []
+            for i in self.dmft_results[it_key]['DC_energ'].keys():
+                param.append(self.dmft_results[it_key]['DC_energ'][i][()])
+            sec_iter.x_soliddmft_DC_energ = param
+            # DC_pot
+            param = []
+            for i in self.dmft_results[it_key]['DC_pot'].keys():
+                for s in self.dmft_results[it_key]['DC_pot'][i].keys():
+                    param.append(self.dmft_results[it_key]['DC_pot'][i][s][()])
+            sec_iter.x_soliddmft_DC_pot = param
+            # chemical_potential_pre and _post
+            sec_iter.x_soliddmft_chemical_potential_pre = self.dmft_results[it_key]['chemical_potential_pre'][()]
+            sec_iter.x_soliddmft_chemical_potential_post = self.dmft_results[it_key]['chemical_potential_post'][()]
+            # dens_mat_pre and _post
+            for key in ['dens_mat_pre', 'dens_mat_post']:
+                param = []
+                for i in self.dmft_results[it_key][key].keys():
+                    for s in self.dmft_results[it_key][key][i].keys():
+                        param.append(self.dmft_results[it_key][key][i][s][()])
+                setattr(sec_iter, f'x_soliddmft_{key}', np.array(param)[:, 0, 0, :])  # deleting useless indices
+            # GF quantities
             for gf_key in self.iteration_gfs:
                 param = []
                 for i in range(sec_scc.method_ref.dmft.n_atoms_per_unit_cell):  # atom index
-                    gf_key_mod = gf_key + '_' + str(i)
+                    gf_key_mod = f'{gf_key}_{i}'
                     for s in self.dmft_results[it_key][gf_key_mod].keys():
                         if s == 'block_names':
                             continue
                         param.append(self.dmft_results[it_key][gf_key_mod][s]['data'][()])
-                param = np.array(param)
-                setattr(sec_iter, f'x_soliddmft_{gf_key}', param[:, :, 0, 0, :])
+                setattr(sec_iter, f'x_soliddmft_{gf_key}', np.array(param)[:, :, 0, 0, :])
 
         # SCF steps
         scf_keys = [int(key.lstrip('it_')) for key in self.dmft_results.keys() if key.startswith('it_')]
         scf_keys.sort()
-        scf_keys_sorted = ['it_' + str(key) for key in scf_keys]
+        scf_keys_sorted = [f'it_{key}' for key in scf_keys]
 
         # We store the last post-processed step for observables
         total_iterations = self.dmft_results.get('iteration_count', 1)[()]
@@ -269,7 +271,7 @@ class SolidDMFTParser:
 
             if it < total_iterations:
                 # iterations quantities
-                it_key = 'it_' + str(it + 1)
+                it_key = f'it__{it + 1}'
                 if it_key in scf_keys_sorted:
                     parse_iteration_quantities(sec_scf_iteration, it_key)
 
@@ -312,7 +314,7 @@ class SolidDMFTParser:
                 setattr(sec_obs, f'x_soliddmft_{keys}', param)
 
             # Chemical potential
-            if hasattr(sec_scc.scf_iteration[it], 'x_soliddmft_observables') and sec_scc.scf_iteration[it].x_soliddmft_observables.x_soliddmft_mu is not None:
+            if sec_scc.scf_iteration[it].x_soliddmft_observables.x_soliddmft_mu:
                 sec_energy = sec_scc.scf_iteration[it].m_create(Energy)
                 sec_energy.fermi = sec_scc.scf_iteration[it].x_soliddmft_observables.x_soliddmft_mu * ureg.eV
 
@@ -330,7 +332,8 @@ class SolidDMFTParser:
         nat = sec_scc.method_ref.dmft.n_atoms_per_unit_cell
         norb = sec_scc.method_ref.dmft.n_correlated_orbitals
         for keys in self._gf_map.keys():
-            funct = self.dataset_to_complex(getattr(sec_scc.scf_iteration[-1].x_soliddmft_iter, f'x_soliddmft_{keys}'))
+            funct = getattr(sec_scc.scf_iteration[-1].x_soliddmft_iter, f'x_soliddmft_{keys}')[:, :, 0] \
+                + getattr(sec_scc.scf_iteration[-1].x_soliddmft_iter, f'x_soliddmft_{keys}')[:, :, 1] * 1j
             if keys.endswith('freq'):
                 naxis = 2 * n_iw
             else:
@@ -353,8 +356,6 @@ class SolidDMFTParser:
         except Exception:
             self.logger.error('Error opening h5 file.')
             data = None
-
-        if data is None:
             return
 
         try:

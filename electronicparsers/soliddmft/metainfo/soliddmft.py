@@ -1084,13 +1084,6 @@ class x_soliddmft_iter_parameters(MSection):
             dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
         ''')
 
-    x_soliddmft_chemical_potential_post = Quantity(
-        type=np.float64,
-        shape=[],
-        description='''
-        Chemical potential after the solver iteration.
-        ''')
-
     x_soliddmft_chemical_potential_pre = Quantity(
         type=np.float64,
         shape=[],
@@ -1098,11 +1091,11 @@ class x_soliddmft_iter_parameters(MSection):
         Chemical potential before the solver iteration.
         ''')
 
-    x_soliddmft_dens_mat_post = Quantity(
+    x_soliddmft_chemical_potential_post = Quantity(
         type=np.float64,
         shape=[],
         description='''
-        Density matrix after the solver iteration.
+        Chemical potential after the solver iteration.
         ''')
 
     x_soliddmft_dens_mat_pre = Quantity(
@@ -1111,6 +1104,13 @@ class x_soliddmft_iter_parameters(MSection):
         description='''
         Density matrix before the solver iteration. After parser dim = ['2 * n_inequiv_shells * n_correlated_orbitals',
         '2'], where the second index goes for real and imaginary
+        ''')
+
+    x_soliddmft_dens_mat_post = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Density matrix after the solver iteration.
         ''')
 
 
