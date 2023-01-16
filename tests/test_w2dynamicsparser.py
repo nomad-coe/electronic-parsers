@@ -87,8 +87,8 @@ def test_srvo3_highstat(parser):
     assert sec_gfs.matsubara_freq[0] == approx(-125.61134626603189)
     assert sec_gfs.matsubara_freq[-1] == approx(125.61134626603189)
     assert sec_gfs.self_energy_iw.dtype == 'complex128'
-    assert sec_gfs.self_energy_iw.shape == (3, 2, 2400)
-    assert sec_gfs.greens_function_iw[2][0][1450] == approx(-0.0019482734893255288 - 0.03783597807548039j)
+    assert sec_gfs.self_energy_iw.shape == (1, 2, 3, 2400)
+    assert sec_gfs.greens_function_iw[0][0][2][1450] == approx(-0.0019482734893255288 - 0.03783597807548039j)
     assert sec_gfs.chemical_potential.magnitude == approx(7.877904086990344)
     # SCF tests
     sec_scf = sec_scc.scf_iteration
