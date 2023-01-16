@@ -161,7 +161,7 @@ class W2DynamicsParser:
             sec_hubbard_kanamori_model.double_counting_correction = data.attrs.get('general.dc', None)
             # w2dynamics keeps spin-rotational invariance
             for key in self._hubbard_kanamori_map.keys():
-                parameters = data.attrs.get(f'atoms.{n+1}.{key}{angular_momentum}{angular_momentum}', None)
+                parameters = data.attrs.get(f'atoms.{n+1}.{key}{angular_momentum}{angular_momentum}', None) * ureg.eV
                 setattr(sec_hubbard_kanamori_model, self._hubbard_kanamori_map.get(key), parameters)
 
             if data.attrs.get(f'atoms.{n+1}.hamiltonian') == 'Density':
