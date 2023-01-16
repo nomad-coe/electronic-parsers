@@ -984,7 +984,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_imp_gb2 = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*'],
         description='''
         Site G(beta/2), proxy for total density of states at the Fermi level. Low values
         correlate with the presence of a gap.
@@ -992,14 +992,14 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_imp_occ = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*'],
         description='''
         Total mean site occupation.
         ''')
 
     x_soliddmft_orb_Z = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*'],
         description='''
         Orbital resolved quasiparticle weight (eff_mass / renormalized_mass). As obtained
         by linearizing the self-energy around w=0:
@@ -1008,7 +1008,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_orb_gb2 = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*'],
         description='''
         Orbital resolved G(beta/2), proxy for projected density of states at the Fermi
         level. Low value of orb_gb2 correlated with the presence of a gap.
@@ -1016,7 +1016,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_orb_occ = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*'],
         description='''
         Orbital mean site occupation.
         ''')

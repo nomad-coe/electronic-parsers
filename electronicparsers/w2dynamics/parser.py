@@ -73,8 +73,7 @@ class W2DynamicsParser:
         self._dmft_map = {
             'nat': 'n_atoms_per_unit_cell',
             'beta': 'inverse_temperature',
-            'magnetism': 'magnetic_state',
-            'dc': 'double_counting_correction'
+            'magnetism': 'magnetic_state'
         }
 
         self._dmft_qmc_map = {
@@ -159,6 +158,7 @@ class W2DynamicsParser:
 
             angular_momentum = 'd'
             sec_hubbard_kanamori_model.orbital = angular_momentum
+            sec_hubbard_kanamori_model.double_counting_correction = data.attrs.get('general.dc', None)
             # w2dynamics keeps spin-rotational invariance
             for key in self._hubbard_kanamori_map.keys():
                 parameters = data.attrs.get(f'atoms.{n+1}.{key}{angular_momentum}{angular_momentum}', None)

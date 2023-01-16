@@ -78,7 +78,6 @@ def test_srvo3(parser):
     assert sec_dmft.inverse_temperature == approx(sec_run.method[1].x_soliddmft_general.x_soliddmft_beta)
     assert sec_dmft.n_matsubara_freq == 501
     assert sec_dmft.n_tau == 10001
-    assert sec_dmft.double_counting_correction == 'held_formula'
     assert sec_dmft.impurity_solver == 'CT-HYB'
     sec_k_mesh = sec_run.method[1].k_mesh
     assert sec_k_mesh.n_points == 729

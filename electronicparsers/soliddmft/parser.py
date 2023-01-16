@@ -160,6 +160,8 @@ class SolidDMFTParser:
                 sec_hubbard_kanamori_model.j = 0.0
             elif h_int_type == b'kanamori':
                 sec_hubbard_kanamori_model.j = sec_hubbard_kanamori_model.jh
+            sec_hubbard_kanamori_model.double_counting_correction = self.dc_type[
+                self.dmft_input['general_params'].get('dc_type', 0)[()]]  # set to 'fll' by default
 
     def parse_method(self, data):
         sec_run = self.archive.run[-1]
@@ -213,7 +215,6 @@ class SolidDMFTParser:
             sec_dmft.magnetic_state = 'paramagnetic'
         sec_dmft.n_matsubara_freq = sec_method.x_soliddmft_general.x_soliddmft_n_iw
         sec_dmft.n_tau = sec_method.x_soliddmft_general.x_soliddmft_n_tau
-        sec_dmft.double_counting_correction = self.dc_type[sec_method.x_soliddmft_general.x_soliddmft_dc_type]
         for keys in self._solver_map.keys():
             if sec_method.x_soliddmft_general.x_soliddmft_solver_type == keys:
                 sec_dmft.impurity_solver = self._solver_map[keys]
