@@ -51,7 +51,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry,
-    BandEnergies, DosValues, ScfIteration, BandStructure, BandGap, Dos
+    BandEnergies, DosValues, ScfIteration, BandStructure, BandGap, Dos, Density
 )
 from nomad.datamodel.metainfo.workflow import (
     Workflow, GeometryOptimization, SinglePoint, MolecularDynamics)
@@ -1124,6 +1124,7 @@ class VASPParser:
     def init_parser(self, filepath, logger):
         self.parser = self._vasprun_parser if '.xml' in filepath else self._outcar_parser
         self.parser.init_parser(filepath, logger)
+        self.maindir = os.path.dirname(os.path.abspath(filepath))
 
     def parse_incarsout(self):
         sec_method = self.archive.run[-1].method[-1]
@@ -1452,6 +1453,7 @@ class VASPParser:
             if efermi is not None:
                 sec_run.calculation[-1].energy.fermi = efermi * ureg.eV
 
+        sec_scc = None
         for n in range(self.parser.n_calculations):
             # energies
             sec_scc = parse_energy(n, None)
@@ -1487,6 +1489,33 @@ class VASPParser:
             converged = self.parser.is_converged(n)
             if converged:
                 sec_scc.single_configuration_calculation_converged = converged
+
+        # parse charge density
+        # TODO add test data
+        chgcar_file = os.path.join(self.maindir, 'CHGCAR')
+        if sec_scc and os.path.isfile(chgcar_file):
+            grid = None
+            n_points = 0
+            charge_density: List[float] = []
+            re_grid = re.compile(r' *\d+ +\d+ +\d+\s+')
+            for line in open(chgcar_file):
+                if not line.strip():
+                    grid = []
+                if grid is None:
+                    continue
+
+                match = re_grid.match(line)
+                if match and n_points == 0:
+                    grid = [int(i) for i in line.strip().split()]
+                    n_points = grid[0] * grid[1] * grid[2]
+                elif len(charge_density) < n_points:
+                    charge_density.extend([float(v) for v in line.strip().split()])
+                if charge_density and len(charge_density) == n_points:
+                    sec_scc.density_charge.append(Density(
+                        value_hdf5=np.reshape(np.array(charge_density, np.float64), grid)))
+                    grid = []
+                    n_points = 0
+                    charge_density = []
 
         if self.parser.n_calculations == 0:
             self.logger.warning('No calculation was parsed.')
