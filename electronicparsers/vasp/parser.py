@@ -43,7 +43,7 @@ from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, BasisSetCellDependent, DFT, HubbardModel, AtomParameters, XCFunctional,
+    Method, BasisSet, BasisSetCellDependent, DFT, HubbardKanamoriModel, AtomParameters, XCFunctional,
     Functional, Electronic, Scf
 )
 from nomad.datamodel.metainfo.simulation.system import (
@@ -1118,7 +1118,7 @@ class VASPParser:
     def __init__(self):
         self._vasprun_parser = RunContentParser()
         self._outcar_parser = OutcarContentParser()
-        self.hubbard_method_types = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
+        self.hubbard_dc_corrections = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
         self.hubbard_orbital_types = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
 
     def init_parser(self, filepath, logger):
@@ -1209,12 +1209,12 @@ class VASPParser:
             if hubbard_present:
                 orbital = self.hubbard_orbital_types[int(parsed_file.get('LDAUL')[i])]
                 if orbital:
-                    sec_hubb = sec_method_atom_kind.m_create(HubbardModel)
+                    sec_hubb = sec_method_atom_kind.m_create(HubbardKanamoriModel)
                     sec_hubb.orbital = orbital
-                    sec_hubb.u = float(parsed_file.get('LDAUU')[i]) * ureg.eV
-                    sec_hubb.j = float(parsed_file.get('LDAUJ')[i]) * ureg.eV
-                    sec_hubb.method = self.hubbard_method_types[parsed_file.get('LDAUTYPE')]
-                    sec_hubb.projection_type = 'on-site'
+                    sec_hubb.u = float(parsed_file.get('LDAUU')[i])
+                    sec_hubb.j = float(parsed_file.get('LDAUJ')[i])
+                    sec_hubb.double_counting_correction = self.hubbard_dc_corrections[parsed_file.get('LDAUTYPE')]
+                    sec_hubb.x_vasp_projection_type = 'on-site'
             atom_counts[element[i]] += 1
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
 

@@ -249,9 +249,9 @@ def test_dftu(parser):
     parser.parse('tests/data/fhiaims/CeO2_dftu/aims_CC.out', archive, None)
 
     sec_hubb = archive.run[-1].method[0].atom_parameters[0].hubbard_model
-    assert sec_hubb.orbital == '4f'
-    assert approx(sec_hubb.u_effective.to('eV').magnitude) == 4.5
-    assert sec_hubb.method == 'Dudarev'
+    assert sec_hubb.orbital == 'f'
+    assert approx(sec_hubb.u_effective.magnitude) == 4.5
+    assert sec_hubb.double_counting_correction == 'Dudarev'
 
 
 def test_gw(parser):

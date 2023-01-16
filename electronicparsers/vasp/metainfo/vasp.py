@@ -134,3 +134,15 @@ class System(simulation.system.System):
         description='''
         Boolean array to eiter allow or forbid coordinate modifications during relaxation
         ''')
+
+
+class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_vasp_projection_type = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Type of orbitals used for projection in order to calculate occupation numbers.
+        ''')
