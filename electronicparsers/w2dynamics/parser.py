@@ -70,12 +70,6 @@ class W2DynamicsParser:
             'v': 'up'
         }
 
-        self._dmft_map = {
-            'nat': 'n_atoms_per_unit_cell',
-            'beta': 'inverse_temperature',
-            'magnetism': 'magnetic_state'
-        }
-
         self._dmft_qmc_map = {
             'ntau': 'n_tau',
             'niw': 'n_matsubara_freq'
@@ -161,7 +155,7 @@ class W2DynamicsParser:
             sec_hubbard_kanamori_model.double_counting_correction = data.attrs.get('general.dc', None)
             # w2dynamics keeps spin-rotational invariance
             for key in self._hubbard_kanamori_map.keys():
-                parameters = data.attrs.get(f'atoms.{n+1}.{key}{angular_momentum}{angular_momentum}', None)
+                parameters = data.attrs.get(f'atoms.{n+1}.{key}{angular_momentum}{angular_momentum}', None) * ureg.eV
                 setattr(sec_hubbard_kanamori_model, self._hubbard_kanamori_map.get(key), parameters)
 
             if data.attrs.get(f'atoms.{n+1}.hamiltonian') == 'Density':
@@ -193,11 +187,9 @@ class W2DynamicsParser:
 
         # DMFT section
         sec_dmft = sec_method.m_create(DMFT)
-        for key in self._dmft_map.keys():
-            parameters = data.attrs.get(f'general.{key}')
-            if key == 'magnetism':
-                parameters += 'magnetic'
-            setattr(sec_dmft, self._dmft_map.get(key), parameters)
+        sec_dmft.n_atoms_per_unit_cell = data.attrs.get(f'general.nat')
+        sec_dmft.inverse_temperature = data.attrs.get(f'general.beta') / ureg.eV
+        sec_dmft.magnetic_state = data.attrs.get(f'general.magnetism') + 'magnetic'
         for key in self._dmft_qmc_map.keys():
             parameters = data.attrs.get(f'qmc.{key}')
             setattr(sec_dmft, self._dmft_qmc_map.get(key), parameters)

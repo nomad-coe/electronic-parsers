@@ -148,8 +148,8 @@ class SolidDMFTParser:
 
             sec_hubbard_kanamori_model.orbital = self.angular_momentum[
                 self.dft_input['corr_shells'][str(i)].get('l', 2)[()]]
-            sec_hubbard_kanamori_model.u = self.dmft_input['general_params']['U'][str(i)][()]
-            sec_hubbard_kanamori_model.jh = self.dmft_input['general_params']['J'][str(i)][()]
+            sec_hubbard_kanamori_model.u = self.dmft_input['general_params']['U'][str(i)][()] * ureg.eV
+            sec_hubbard_kanamori_model.jh = self.dmft_input['general_params']['J'][str(i)][()] * ureg.eV
             # solid_dmft keeps spin-rotational invariance
             sec_hubbard_kanamori_model.up = sec_hubbard_kanamori_model.u - 2.0 * sec_hubbard_kanamori_model.jh
             # issue with def of 'h_int_type' in the output h5 in different versions
@@ -202,7 +202,7 @@ class SolidDMFTParser:
                 occ_per_atoms.append(self.dmft_results['observables']['imp_occ'][str(i)]['0'][()])
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
         sec_dmft.n_correlated_electrons = occ_per_atoms
-        sec_dmft.inverse_temperature = sec_method.x_soliddmft_general.x_soliddmft_beta
+        sec_dmft.inverse_temperature = sec_method.x_soliddmft_general.x_soliddmft_beta / ureg.eV
         if sec_method.x_soliddmft_general.x_soliddmft_magnetic:
             if sec_method.x_soliddmft_general.x_soliddmft_magmom is None:
                 self.logger.warning('The magnetic flag is set to true, but the initial magnetic moment is not resolved. '

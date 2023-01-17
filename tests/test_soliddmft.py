@@ -52,7 +52,7 @@ def test_srvo3(parser):
     # input Hamiltonian
     sec_lattice_model = sec_run.method[0].lattice_model_hamiltonian[0]
     assert hasattr(sec_lattice_model, 'projection_matrix')
-    assert sec_lattice_model.projection_matrix.shape == (729, 1, 1, 3, 5, 2)
+    assert sec_lattice_model.projection_matrix.shape == (729, 1, 3, 5)
     assert hasattr(sec_lattice_model, 'hubbard_kanamori_model')
     assert len(sec_lattice_model.hubbard_kanamori_model) == 1
     assert sec_lattice_model.hubbard_kanamori_model[0].orbital == 'd'
@@ -74,8 +74,8 @@ def test_srvo3(parser):
     assert sec_dmft.n_atoms_per_unit_cell == 1
     assert sec_dmft.n_correlated_orbitals[0] == 3
     assert sec_dmft.n_correlated_electrons == approx(1.0000225214138097)
-    assert sec_dmft.inverse_temperature == approx(10.0)
-    assert sec_dmft.inverse_temperature == approx(sec_run.method[1].x_soliddmft_general.x_soliddmft_beta)
+    assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(10.0)
+    assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(sec_run.method[1].x_soliddmft_general.x_soliddmft_beta)
     assert sec_dmft.n_matsubara_freq == 501
     assert sec_dmft.n_tau == 10001
     assert sec_dmft.impurity_solver == 'CT-HYB'
