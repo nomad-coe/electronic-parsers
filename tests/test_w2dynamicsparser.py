@@ -73,7 +73,7 @@ def test_srvo3_highstat(parser):
     assert sec_dmft.n_correlated_orbitals.shape == (1,)
     assert sec_dmft.n_correlated_orbitals[0] == 3
     assert sec_dmft.n_correlated_electrons == approx(1.0)
-    assert sec_dmft.inverse_temperature == approx(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_beta)
+    assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_beta)
     assert sec_run.x_w2dynamics_axes.x_w2dynamics_iw.shape[0] == approx(2 * sec_dmft.n_matsubara_freq)
     assert sec_run.x_w2dynamics_axes.x_w2dynamics_tau.shape[0] == approx(sec_dmft.n_tau)
     assert sec_dmft.impurity_solver == 'CT-HYB'
