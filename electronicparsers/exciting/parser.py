@@ -36,6 +36,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Forces, ForcesEntry, ScfIteration, BandGap
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, Task, GW as GWWorkflow
+from nomad.datamodel.metainfo.workflow2 import TaskReference, Link
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, GW as GW2, GWResults
@@ -1889,23 +1890,60 @@ class ExcitingParser:
         ]
 
         # Include DFT and GW band structures and DOS (if present) for comparison.
-        def extract_section(archive, name):
+        def extract_section(source, path):
+            path_segments = path.split('/', 1)
             try:
-                return getattr(archive.run[-1].calculation[-1], name)[-1]
+                value = getattr(source, path_segments[0])
+                value = value[-1] if isinstance(value, list) else value
             except Exception:
                 return
 
+            if len(path_segments) == 1:
+                return value
+            else:
+                return extract_section(value, path_segments[1])
+
         sec_gw = sec_workflow.m_create(GWWorkflow)
-        sec_gw.dos_dft = extract_section(self.archive, 'dos_electronic')
-        sec_gw.dos_gw = extract_section(gw_archive, 'dos_electronic')
-        sec_gw.band_structure_dft = extract_section(self.archive, 'band_structure_electronic')
-        sec_gw.band_structure_gw = extract_section(gw_archive, 'band_structure_electronic')
+        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
+        dos_gw = extract_section(gw_archive, 'run/calculation/dos_electronic')
+        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
+        bs_gw = extract_section(gw_archive, 'run/calculation/band_structure_electronic')
+        sec_gw.dos_dft = dos_dft
+        sec_gw.dos_gw = dos_gw
+        sec_gw.band_structure_dft = bs_dft
+        sec_gw.band_structure_gw = bs_gw
 
         workflow = GW2(results=GWResults())
-        workflow.results.dos_dft = extract_section(self.archive, 'dos_electronic')
-        workflow.results.dos_gw = extract_section(gw_archive, 'dos_electronic')
-        workflow.results.band_structure_dft = extract_section(self.archive, 'band_structure_electronic')
-        workflow.results.band_structure_gw = extract_section(gw_archive, 'band_structure_electronic')
+        workflow.results.dos_dft = dos_dft
+        workflow.results.dos_gw = dos_gw
+        workflow.results.band_structure_dft = bs_dft
+        workflow.results.band_structure_gw = bs_gw
+
+        input_structure = extract_section(self.archive, 'run/system')
+        if input_structure:
+            workflow.inputs = [Link(name='Input structure', section=input_structure)]
+        output_calculation = extract_section(gw_archive, 'run/calculation')
+        if output_calculation:
+            workflow.outputs = [Link(name='Output calculation', section=output_calculation)]
+
+        # output of dft and input for gw
+        input_calculation = extract_section(self.archive, 'run/calculation')
+        if self.archive.workflow2:
+            task = TaskReference(task=self.archive.workflow2)
+            if input_structure:
+                task.inputs = [Link(name='Input structure', section=input_structure)]
+            if input_calculation:
+                task.outputs = [Link(name='Output calculation', section=input_calculation)]
+            workflow.tasks.append(task)
+
+        if gw_archive.workflow2:
+            task = TaskReference(task=gw_archive.workflow2)
+            if input_calculation:
+                task.inputs = [Link(name='Input calculation', section=input_calculation)]
+            if output_calculation:
+                task.outputs = [Link(name='Output calculation', section=output_calculation)]
+            workflow.tasks.append(task)
+
         gw_workflow_archive.workflow2 = workflow
 
     def parse_workflow(self):
