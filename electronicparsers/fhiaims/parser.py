@@ -26,7 +26,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
-    Electronic, Method, XCFunctional, Functional, HubbardModel, AtomParameters, DFT,
+    Electronic, Method, XCFunctional, Functional, HubbardKanamoriModel, AtomParameters, DFT,
     BasisSet, GW as GWMethod, KMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
@@ -1586,11 +1586,11 @@ class FHIAimsParser:
                     sec_atom_species.x_fhi_aims_controlInOut_species_cut_pot_width = val[0][1] * ureg.angstrom
                     sec_atom_species.x_fhi_aims_controlInOut_species_cut_pot_scale = val[0][2]
                 elif "request for '+U'" in key:
-                    sec_hubbard = sec_atom_type.m_create(HubbardModel)
+                    sec_hubbard = sec_atom_type.m_create(HubbardKanamoriModel)
                     sec_hubbard.orbital = f'{val[0][0]}{val[0][1]}'
                     sec_hubbard.u_effective = val[0][-2] * ureg.eV
-                    sec_hubbard.method = 'Dudarev'
-                    sec_hubbard.projection_type = 'Mulliken (dual)'
+                    sec_hubbard.double_counting_correction = 'Dudarev'
+                    sec_hubbard.x_fhi_aims_projection_type = 'Mulliken (dual)'
                     sec_hubbard.x_fhi_aims_petukhov_mixing_factor = self.out_parser.get('petukhov')
                 elif 'free-atom' in key or 'free-ion' in key:
                     for i in range(len(val)):

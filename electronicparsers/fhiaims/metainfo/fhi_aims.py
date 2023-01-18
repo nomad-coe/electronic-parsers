@@ -1441,9 +1441,16 @@ class AtomParameters(simulation.method.AtomParameters):
         repeats=True)
 
 
-class HubbardModel(simulation.method.HubbardModel):
+class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):
 
     m_def = Section(validate=False, extends_base_section=True)
+
+    x_fhi_aims_projection_type = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Type of orbitals used for projection in order to calculate occupation numbers.
+        ''')
 
     x_fhi_aims_petukhov_mixing_factor = Quantity(
         type=np.dtype(np.float64),

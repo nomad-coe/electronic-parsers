@@ -267,14 +267,14 @@ def test_dftu_static(parser):
         references = {'orbital': ('d', 'd'), 'u': (3.25, 2.), 'j': (0., 1.)}
         slice = 0
         for param in params:
-            if param.hubbard_model:
-                assert param.hubbard_model.method == 'Dudarev'
-                assert param.hubbard_model.orbital == references['orbital'][slice]
-                assert approx(param.hubbard_model.u.to(ureg.eV).magnitude) == references['u'][slice]
-                assert approx(param.hubbard_model.j.to(ureg.eV).magnitude) == references['j'][slice]
+            if param.hubbard_kanamori_model:
+                assert param.hubbard_kanamori_model.double_counting_correction == 'Dudarev'
+                assert param.hubbard_kanamori_model.orbital == references['orbital'][slice]
+                assert approx(param.hubbard_kanamori_model.u.to('eV').magnitude) == references['u'][slice]
+                assert approx(param.hubbard_kanamori_model.j.to('eV').magnitude) == references['j'][slice]
                 slice += 1
 
     # check the OUTCAR value when no INCAR is present
     parser.parse('tests/data/vasp/Mg4V2Bi2O12_dftu_no_incar/OUTCAR', archive, None)
     params = archive.run[-1].method[-1].atom_parameters
-    assert approx(params[1].hubbard_model.u.to(ureg.eV).magnitude) == 3.2
+    assert approx(params[1].hubbard_kanamori_model.u.to('eV').magnitude) == 3.2
