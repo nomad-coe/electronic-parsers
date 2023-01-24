@@ -189,17 +189,9 @@ class SolidDMFTParser:
         for i in range(sec_dmft.n_atoms_per_unit_cell):
             corr_orbs_per_atoms.append(
                 self.dft_input['corr_shells'][str(i)].get('dim', 1)[()])
-            if sec_method.x_soliddmft_general.x_soliddmft_magnetic:
-                try:
-                    total_occupation = self.dmft_results['observables']['imp_occ'][str(i)]['down']['0'][()] + \
-                        self.dmft_results['observables']['imp_occ'][str(i)]['up']['0'][()]
-                    occ_per_atoms.append(total_occupation)
-                except Exception:
-                    self.logger.warning('The magnetic flag is true, but the occupation per atom is spin independent. '
-                                        'Please check your outputs.')
-                    occ_per_atoms.append(self.dmft_results['observables']['imp_occ'][str(i)]['0'][()])
-            else:
-                occ_per_atoms.append(self.dmft_results['observables']['imp_occ'][str(i)]['0'][()])
+            total_occupation = self.dmft_results['observables']['imp_occ'][str(i)]['down']['0'][()] + \
+                self.dmft_results['observables']['imp_occ'][str(i)]['up']['0'][()]
+            occ_per_atoms.append(total_occupation)
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
         sec_dmft.n_correlated_electrons = occ_per_atoms
         sec_dmft.inverse_temperature = sec_method.x_soliddmft_general.x_soliddmft_beta / ureg.eV
