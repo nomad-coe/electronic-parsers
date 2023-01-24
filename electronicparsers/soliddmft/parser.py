@@ -336,7 +336,7 @@ class SolidDMFTParser:
                 self.logger.warning('Greens function matrices are set up using the number of orbitals from the impurity 0. '
                                     'We found different number of orbitals per impurity. Is this physically correct?')
             setattr(sec_gf, self._gf_map[keys], np.reshape(funct, (nat, 2, norb[0], naxis)))
-        sec_gf.occupancies = np.reshape(sec_scc.scf_iteration[-1].x_soliddmft_observables.x_soliddmft_orb_occ, (nat, 2, norb[0]))
+        sec_gf.orbital_occupations = np.reshape(sec_scc.scf_iteration[-1].x_soliddmft_observables.x_soliddmft_orb_occ, (nat, 2, norb[0]))
         sec_gf.quasiparticle_weights = np.reshape(sec_scc.scf_iteration[-1].x_soliddmft_observables.x_soliddmft_orb_Z, (nat, 2, norb[0]))
 
     def parse(self, filepath, archive, logger):
