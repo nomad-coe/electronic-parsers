@@ -231,7 +231,7 @@ class Wannier90Parser:
 
         # TODO check having to add manually last point (?)
         band_segments_points[-1] = band_segments_points[-1] + 1
-        kpoints[3].append(k_symm_points[-1])
+        kpoints[-1].append(k_symm_points[-1])
         n_kpoints = sum(band_segments_points)
 
         return (n_kpoints, band_segments_points, kpoints)
@@ -239,9 +239,11 @@ class Wannier90Parser:
     def parse_bandstructure(self):
         sec_scc = self.archive.run[-1].calculation[-1]
 
-        if sec_scc.energy.fermi is None:
-            return
-        energy_fermi = sec_scc.energy.fermi
+        try:
+            energy_fermi = sec_scc.energy.fermi
+        except Exception:
+            self.logger.warn('Error setting the Fermi level: not found from hoppings. Setting it to 0 eV')
+            energy_fermi = 0.0 * ureg.eV
         energy_fermi_eV = energy_fermi.to('electron_volt').magnitude
 
         band_files = [f for f in os.listdir(self.maindir) if f.endswith('band.dat')]
@@ -254,6 +256,10 @@ class Wannier90Parser:
 
         sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
         sec_k_band.energy_fermi = energy_fermi
+        try:
+            sec_k_band.reciprocal_cell = self.archive.run[-1].system[0].atoms.lattice_vectors_reciprocal
+        except Exception:
+            self.logger.warning('Reciprocal cell in band_structure_electronic not set up.')
 
         if self.band_dat_parser.data is None:
             return
@@ -264,30 +270,33 @@ class Wannier90Parser:
         n_bands = round((len(data[0])) / n_kpoints)
         n_spin = 1
 
-        j = 0
+        # reshaping bands into the NOMAD band_structure style
+        bands = np.transpose(np.reshape(data[1], (n_bands, n_kpoints)))
+        bkp_init = 0
         for n in range(n_segments):
             sec_k_band_segment = sec_k_band.m_create(BandEnergies)
             sec_k_band_segment.n_kpoints = band_segments_points[n]
             sec_k_band_segment.kpoints = kpoints[n]
 
-            energies = [[[
-                data[1][i + s * b * n_kpoints] for b in range(n_bands)]
-                for i in range(j, j + band_segments_points[n])]
-                for s in range(n_spin)]
-            occs = [[[
-                2.0 if data[1][i + s * b * n_kpoints] < energy_fermi_eV else 0.0
-                for b in range(n_bands)] for i in range(j, j + band_segments_points[n])]
-                for s in range(n_spin)]
-            j += band_segments_points[n]
+            bkp_last = bkp_init + band_segments_points[n]
+            energies = np.reshape(bands[bkp_init:bkp_last, :], (n_spin, band_segments_points[n], n_bands))
+            occs = np.reshape(
+                np.array([
+                    2.0 if energies[i, j, k] < energy_fermi_eV else 0.0
+                    for i in range(n_spin) for j in range(band_segments_points[n])
+                    for k in range(n_bands)]), (n_spin, band_segments_points[n], n_bands))
+            bkp_init = bkp_last
             sec_k_band_segment.energies = energies * ureg.eV
             sec_k_band_segment.occupations = occs
 
     def parse_dos(self):
         sec_scc = self.archive.run[-1].calculation[-1]
 
-        if sec_scc.energy.fermi is None:
-            return
-        energy_fermi = sec_scc.energy.fermi
+        try:
+            energy_fermi = sec_scc.energy.fermi
+        except Exception:
+            self.logger.warn('Error setting the Fermi level: not found from hoppings. Setting it to 0 eV')
+            energy_fermi = 0.0 * ureg.eV
 
         dos_files = [f for f in os.listdir(self.maindir) if f.endswith('dos.dat')]
         if not dos_files:
