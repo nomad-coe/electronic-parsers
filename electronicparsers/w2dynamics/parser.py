@@ -259,7 +259,7 @@ class W2DynamicsParser:
                 for i in range(nat):
                     parameters.append([[
                         sec_scf_iteration.x_w2dynamics_ineq[0].x_w2dynamics_occ[no, ns, no, ns] for no in range(3)] for ns in range(2)])
-                sec_gf.occupancies = np.array(parameters)
+                sec_gf.orbital_occupations = np.array(parameters)
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath

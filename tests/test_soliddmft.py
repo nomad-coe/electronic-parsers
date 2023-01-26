@@ -95,7 +95,7 @@ def test_srvo3(parser):
     assert sec_gfs.self_energy_iw.shape == (1, 2, 3, 1002)
     assert sec_gfs.greens_function_tau[0][1][1][1025] == approx(-0.14109113749664728 + 0j)
     assert sec_gfs.chemical_potential.magnitude == approx(0.0378235342396917)
-    assert np.sum(sec_gfs.occupancies) == approx(1.008321846227956)
+    assert np.sum(sec_gfs.orbital_occupations) == approx(1.008321846227956)
     assert sec_gfs.quasiparticle_weights.shape == (1, 2, 3)
     assert sec_gfs.quasiparticle_weights[0][0][0] == approx(0.16195076915540912)
     # SCF tests
