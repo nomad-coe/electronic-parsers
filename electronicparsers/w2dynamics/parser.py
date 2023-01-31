@@ -183,7 +183,7 @@ class W2DynamicsParser:
                     keys_mod = (key.replace('-', '_')).split('.')
                     setattr(sec_config_subsection, f'x_w2dynamics_{keys_mod[-1]}', parameters)
         # Parse Method.x_w2dynamics_config atoms quantities
-        for i in range(data.attrs.get(f'general.nat')):
+        for i in range(data.attrs.get(f'general.nat', 0)):
             sec_config_subsection = sec_config.m_create(x_w2dynamics_config_atoms_parameters)
             for key in data.attrs.keys():
                 if key.startswith(f'atoms.{i+1}'):
@@ -193,7 +193,7 @@ class W2DynamicsParser:
 
         # DMFT section
         sec_dmft = sec_method.m_create(DMFT)
-        sec_dmft.n_atoms_per_unit_cell = data.attrs.get(f'general.nat')
+        sec_dmft.n_atoms_per_unit_cell = data.attrs.get(f'general.nat', 0)
         sec_dmft.inverse_temperature = data.attrs.get(f'general.beta') / ureg.eV
         sec_dmft.magnetic_state = data.attrs.get(f'general.magnetism') + 'magnetic'
         for key in self._dmft_qmc_map.keys():
@@ -202,7 +202,8 @@ class W2DynamicsParser:
         corr_orbs_per_atoms = []
         occ_per_atoms = []
         for i in range(sec_dmft.n_atoms_per_unit_cell):
-            corr_orbs_per_atoms.append(sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_nd + sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_np)
+            corr_orbs_per_atoms.append(sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_nd
+                                       + sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_np)
             occ_per_atoms.append(sec_method.x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_totdens)
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
         sec_dmft.n_correlated_electrons = occ_per_atoms
@@ -224,6 +225,7 @@ class W2DynamicsParser:
         for keys in data[calc_keys[0]]:
             if keys.startswith('ineq'):
                 n_ineq += 1
+        n_atoms = sec_run.method[-1].dmft.n_atoms_per_unit_cell
 
         calc_quantities = [
             'dc-latt', 'gdensnew', 'gdensold', 'glocnew-lattice', 'glocold-lattice', 'mu']
@@ -249,14 +251,28 @@ class W2DynamicsParser:
                 norb = data['.config'].attrs.get('atoms.1.nd')
                 for subkey in self._inequivalent_atom_map.keys():
                     parameters = []
-                    for i in range(n_ineq):
-                        parameters.append(getattr(
-                            sec_scf_iteration.x_w2dynamics_ineq[i], self._inequivalent_atom_map.get(subkey, [])))
+                    if n_ineq == n_atoms:
+                        for i in range(n_ineq):
+                            parameters.append(getattr(
+                                sec_scf_iteration.x_w2dynamics_ineq[i], self._inequivalent_atom_map.get(subkey, [])))
+                    else:  # TODO check whether there are more complicated cases where this is not true
+                        if n_atoms % n_ineq == 0 and n_ineq > 1:
+                            for i in range(n_atoms):
+                                parameters.append(getattr(
+                                    sec_scf_iteration.x_w2dynamics_ineq[i % n_ineq], self._inequivalent_atom_map.get(subkey, [])))
+                        elif n_ineq == 1:
+                            for i in range(n_atoms):
+                                parameters.append(getattr(
+                                    sec_scf_iteration.x_w2dynamics_ineq[0], self._inequivalent_atom_map.get(subkey, [])))
+                        else:
+                            self.logger.warning('Number of inequivalent atoms and number of atoms per unit cell '
+                                                'is neither equal nor multiples. Please, revise the output.')
+
                     parameters = np.array(parameters)
                     # reordering calculation matrices to standarize w2dynamics and solid_dmft
                     # (and potentially, other DMFT codes)
                     parameters_reorder = np.array([[[
-                        parameters[i, no, ns, :] for no in range(norb)] for ns in range(2)] for i in range(n_ineq)])
+                        parameters[i, no, ns, :] for no in range(norb)] for ns in range(2)] for i in range(n_atoms)])
                     setattr(sec_gf, subkey, parameters_reorder)
                 # summing over atoms per unit cell to keep same array dimensions
                 parameters = []
