@@ -202,8 +202,9 @@ class W2DynamicsParser:
         corr_orbs_per_atoms = []
         occ_per_atoms = []
         for i in range(sec_dmft.n_atoms_per_unit_cell):
-            corr_orbs_per_atoms.append(sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_nd
-                                       + sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_np)
+            nd = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_nd
+            np = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_np
+            corr_orbs_per_atoms.append(nd + np)
             occ_per_atoms.append(sec_method.x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_totdens)
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
         sec_dmft.n_correlated_electrons = occ_per_atoms
