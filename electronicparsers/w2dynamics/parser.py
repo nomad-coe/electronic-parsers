@@ -268,6 +268,7 @@ class W2DynamicsParser:
                         else:
                             self.logger.warning('Number of inequivalent atoms and number of atoms per unit cell '
                                                 'is neither equal nor multiples. Please, revise the output.')
+                            break
 
                     parameters = np.array(parameters)
                     # reordering calculation matrices to standarize w2dynamics and solid_dmft
@@ -277,9 +278,23 @@ class W2DynamicsParser:
                     setattr(sec_gf, subkey, parameters_reorder)
                 # summing over atoms per unit cell to keep same array dimensions
                 parameters = []
-                for i in range(n_ineq):
-                    parameters.append([[
-                        sec_scf_iteration.x_w2dynamics_ineq[i].x_w2dynamics_occ[no, ns, no, ns] for no in range(norb)] for ns in range(2)])
+                if n_ineq == n_atoms:
+                    for i in range(n_ineq):
+                        parameters.append([[
+                            sec_scf_iteration.x_w2dynamics_ineq[i].x_w2dynamics_occ[no, ns, no, ns]
+                            for no in range(norb)] for ns in range(2)])
+
+                else:
+                    if n_atoms % n_ineq == 0 and n_ineq > 1:
+                        for i in range(n_atoms):
+                            parameters.append([[
+                                sec_scf_iteration.x_w2dynamics_ineq[i % n_ineq].x_w2dynamics_occ[no, ns, no, ns]
+                                for no in range(norb)] for ns in range(2)])
+                    elif n_ineq == 1:
+                        for i in range(n_atoms):
+                            parameters.append([[
+                                sec_scf_iteration.x_w2dynamics_ineq[0].x_w2dynamics_occ[no, ns, no, ns]
+                                for no in range(norb)] for ns in range(2)])
                 sec_gf.orbital_occupations = np.array(parameters)
 
     def parse(self, filepath, archive, logger):
