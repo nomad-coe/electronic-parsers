@@ -172,22 +172,28 @@ class W2DynamicsParser:
         # ref to the Non- and InteractionHamiltonian
         sec_method.starting_method_ref = sec_run.method[0]
 
-        # Parse Method.x_w2dynamics_config quantities
+        # Parse Method.x_w2dynamics_config general and qmc quantities
         sec_config = sec_method.m_create(x_w2dynamics_config_parameters)
-        config_sections = [
-            x_w2dynamics_config_atoms_parameters, x_w2dynamics_config_general_parameters,
-            x_w2dynamics_config_qmc_parameters]
+        config_sections = [x_w2dynamics_config_general_parameters, x_w2dynamics_config_qmc_parameters]
         for subsection in config_sections:
             sec_config_subsection = sec_config.m_create(subsection)
             for key in data.attrs.keys():
-                parameters = data.attrs.get(key)
-                keys_mod = (key.replace('-', '_')).split('.')
-                # TODO parse correctly sec_config_atoms as a repeat subsection
-                setattr(sec_config_subsection, f'x_w2dynamics_{keys_mod[-1]}', parameters)
+                if not key.startswith(f'atoms'):
+                    parameters = data.attrs.get(key)
+                    keys_mod = (key.replace('-', '_')).split('.')
+                    setattr(sec_config_subsection, f'x_w2dynamics_{keys_mod[-1]}', parameters)
+        # Parse Method.x_w2dynamics_config atoms quantities
+        for i in range(data.attrs.get(f'general.nat', 0)):
+            sec_config_subsection = sec_config.m_create(x_w2dynamics_config_atoms_parameters)
+            for key in data.attrs.keys():
+                if key.startswith(f'atoms.{i+1}'):
+                    keys_mod = (key.replace('-', '_')).split('.')
+                    parameters = data.attrs.get(key)
+                    setattr(sec_config_subsection, f'x_w2dynamics_{keys_mod[-1]}', parameters)
 
         # DMFT section
         sec_dmft = sec_method.m_create(DMFT)
-        sec_dmft.n_atoms_per_unit_cell = data.attrs.get(f'general.nat')
+        sec_dmft.n_atoms_per_unit_cell = data.attrs.get(f'general.nat', 0)
         sec_dmft.inverse_temperature = data.attrs.get(f'general.beta') / ureg.eV
         sec_dmft.magnetic_state = data.attrs.get(f'general.magnetism') + 'magnetic'
         for key in self._dmft_qmc_map.keys():
@@ -196,7 +202,9 @@ class W2DynamicsParser:
         corr_orbs_per_atoms = []
         occ_per_atoms = []
         for i in range(sec_dmft.n_atoms_per_unit_cell):
-            corr_orbs_per_atoms.append(sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_nd)
+            nd = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_nd
+            np = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_np
+            corr_orbs_per_atoms.append(nd + np)
             occ_per_atoms.append(sec_method.x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_totdens)
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
         sec_dmft.n_correlated_electrons = occ_per_atoms
@@ -213,9 +221,12 @@ class W2DynamicsParser:
         calc_keys = [key for key in data.keys() if key.startswith('dmft-') or key.startswith('stat-')]
         calc_keys.sort()
 
-        # TODO ask about these 2 groups to Wurzburg
-        # calc_keys.insert(0, 'start')
-        # calc_keys.insert(-1, 'finish')
+        # calculating how many inequivalent atoms are per unit cell
+        n_ineq = 0
+        for keys in data[calc_keys[0]]:
+            if keys.startswith('ineq'):
+                n_ineq += 1
+        n_atoms = sec_run.method[-1].dmft.n_atoms_per_unit_cell
 
         calc_quantities = [
             'dc-latt', 'gdensnew', 'gdensold', 'glocnew-lattice', 'glocold-lattice', 'mu']
@@ -238,27 +249,52 @@ class W2DynamicsParser:
                 sec_gf.matsubara_freq = sec_run.x_w2dynamics_axes.x_w2dynamics_iw
                 sec_gf.tau = sec_run.x_w2dynamics_axes.x_w2dynamics_tau
                 sec_gf.chemical_potential = data.get(key)['mu']['value']
-                nat = sec_scc.method_ref.dmft.n_atoms_per_unit_cell
-                norb = sec_scc.method_ref.dmft.n_correlated_orbitals
+                norb = data['.config'].attrs.get('atoms.1.nd')
                 for subkey in self._inequivalent_atom_map.keys():
                     parameters = []
-                    for i in range(nat):
-                        parameters.append(getattr(
-                            sec_scf_iteration.x_w2dynamics_ineq[i], self._inequivalent_atom_map.get(subkey, [])))
-                    if np.all(norb != norb[0]):
-                        self.logger.warning('Greens function matrices are set up using the number of orbitals from the impurity 0. '
-                                            'We found different number of orbitals per impurity. Is this physically correct?')
+                    if n_ineq == n_atoms:
+                        for i in range(n_ineq):
+                            parameters.append(getattr(
+                                sec_scf_iteration.x_w2dynamics_ineq[i], self._inequivalent_atom_map.get(subkey, [])))
+                    else:  # TODO check whether there are more complicated cases where this is not true
+                        if n_atoms % n_ineq == 0 and n_ineq > 1:
+                            for i in range(n_atoms):
+                                parameters.append(getattr(
+                                    sec_scf_iteration.x_w2dynamics_ineq[i % n_ineq], self._inequivalent_atom_map.get(subkey, [])))
+                        elif n_ineq == 1:
+                            for i in range(n_atoms):
+                                parameters.append(getattr(
+                                    sec_scf_iteration.x_w2dynamics_ineq[0], self._inequivalent_atom_map.get(subkey, [])))
+                        else:
+                            self.logger.warning('Number of inequivalent atoms and number of atoms per unit cell '
+                                                'is neither equal nor multiples. Please, revise the output.')
+                            break
+
                     parameters = np.array(parameters)
                     # reordering calculation matrices to standarize w2dynamics and solid_dmft
                     # (and potentially, other DMFT codes)
                     parameters_reorder = np.array([[[
-                        parameters[i, no, ns, :] for no in range(norb[0])] for ns in range(2)] for i in range(nat)])
+                        parameters[i, no, ns, :] for no in range(norb)] for ns in range(2)] for i in range(n_atoms)])
                     setattr(sec_gf, subkey, parameters_reorder)
                 # summing over atoms per unit cell to keep same array dimensions
                 parameters = []
-                for i in range(nat):
-                    parameters.append([[
-                        sec_scf_iteration.x_w2dynamics_ineq[0].x_w2dynamics_occ[no, ns, no, ns] for no in range(3)] for ns in range(2)])
+                if n_ineq == n_atoms:
+                    for i in range(n_ineq):
+                        parameters.append([[
+                            sec_scf_iteration.x_w2dynamics_ineq[i].x_w2dynamics_occ[no, ns, no, ns]
+                            for no in range(norb)] for ns in range(2)])
+
+                else:
+                    if n_atoms % n_ineq == 0 and n_ineq > 1:
+                        for i in range(n_atoms):
+                            parameters.append([[
+                                sec_scf_iteration.x_w2dynamics_ineq[i % n_ineq].x_w2dynamics_occ[no, ns, no, ns]
+                                for no in range(norb)] for ns in range(2)])
+                    elif n_ineq == 1:
+                        for i in range(n_atoms):
+                            parameters.append([[
+                                sec_scf_iteration.x_w2dynamics_ineq[0].x_w2dynamics_occ[no, ns, no, ns]
+                                for no in range(norb)] for ns in range(2)])
                 sec_gf.orbital_occupations = np.array(parameters)
 
     def parse(self, filepath, archive, logger):
