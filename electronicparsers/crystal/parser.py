@@ -1130,7 +1130,7 @@ def to_libxc(exchange, correlation, exchange_correlation):
             "PBE0": ["HYB_GGA_XC_PBEH"],
             "B3LYP": ["HYB_GGA_XC_B3LYP"],
             "HSE06": ["HYB_GGA_XC_HSE06"],
-            "M06": ["HYB_MGGA_XC_M06"],
+            "M06": ["MGGA_C_M06", "HYB_MGGA_X_M06"],
             "M05-2X": ["HYB_MGGA_XC_M05_2X"],
             "LC-WPBE": ["HYB_GGA_XC_LRC_WPBE"],
         }

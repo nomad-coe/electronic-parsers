@@ -659,7 +659,7 @@ _exchange_gradient_correction_map = [
     },
     {
         'xc_terms': [{
-            'XC_functional_name': 'GGA_X_OPTB86_VDW',
+            'XC_functional_name': 'GGA_X_OPTB86B_VDW',
         }],
         'xc_terms_remove': [{
             'XC_functional_name': 'LDA_X',

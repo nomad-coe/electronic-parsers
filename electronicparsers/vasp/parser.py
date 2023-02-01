@@ -128,7 +128,7 @@ class ContentParser:
             'CO': [], 'OR': ['GGA_X_OPTPBE_VDW'],
             'BO': ['GGA_X_OPTB88_VDW'], 'RA': ['LDA_C_PW_RPA'],
             'RP': ['GGA_X_RPBE', 'GGA_C_PBE'], 'PS': ['GGA_C_PBE_SOL', 'GGA_X_PBE_SOL'],
-            'MK': ['GGA_X_OPTB86_VDW'], '--': ['GGA_X_PBE', 'GGA_C_PBE'],
+            'MK': ['GGA_X_OPTB86B_VDW'], '--': ['GGA_X_PBE', 'GGA_C_PBE'],
             'TPSS': ['MGGA_X_TPSS', 'MGGA_C_TPSS'], 'RTPSS': ['MGGA_X_RTPSS'],
             'M06L': ['MGGA_C_M06_L'], 'MBJ': ['MGGA_X_BJ06'], 'MS0': ['MGGA_X_MS0'],
             'MS1': ['MGGA_X_MS1'], 'MS2': ['MGGA_X_MS2'],
@@ -1236,7 +1236,7 @@ class VASPParser:
             elif gga == 'B3' and aexx == 0.2 and aggax == 0.72 and aggac == 0.81 and aldac == 0.19:
                 sec_xc_functional.hybrid.append(Functional(name='HYB_GGA_XC_B3LYP3'))
             elif aexx == 1.0 and aldac == 0.0 and aggac == 0.0:
-                sec_xc_functional.contributions.append(Functional(name='X_HF'))
+                sec_xc_functional.contributions.append(Functional(name='HF_X'))
             elif gga == 'PE':
                 sec_xc_functional.hybrid.append(Functional(name='HYB_GGA_XC_PBEH'))
             else:

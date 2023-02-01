@@ -677,16 +677,16 @@ class FHIAimsParser:
                 {'name': 'GGA_C_PBE_SOL'}, {
                     'name': 'GGA_X_PBE_SOL', 'weight': lambda x: 0.75 if x is None else 1.0 - x},
                 {'name': 'HF_X', 'weight': lambda x: 0.25 if x is None else x}],
-            'Hybrid M06 gradient-corrected functionals': [{'name': 'HYB_MGGA_XC_M06'}],
+            'Hybrid M06 gradient-corrected functionals': [{'name': 'MGGA_C_M06'}, {'name': 'HYB_MGGA_X_M06'}],
             'Hybrid M06-2X gradient-corrected functionals': [
-                {'name': 'HYB_MGGA_XC_M06_2X'}],
+                {'name': 'MGGA_C_M06_2X'}, {'name': 'HYB_MGGA_X_M06'}],
             'Hybrid M06-HF gradient-corrected functionals': [
-                {'name': 'HYB_MGGA_XC_M06_HF'}],
+                {'name': 'MGGA_C_M06_HF'}, {'name': 'HYB_MGGA_X_M06'}],
             'Hybrid M08-HX gradient-corrected functionals': [
-                {'name': 'HYB_MGGA_XC_M08_HX'}],
+                {'name': 'MGGA_C_M08_HX'}, {'name': 'HYB_MGGA_X_M08_HX'}],
             'Hybrid M08-SO gradient-corrected functionals': [
-                {'name': 'HYB_MGGA_XC_M08_SO'}],
-            'Hybrid M11 gradient-corrected functionals': [{'name': 'HYB_MGGA_XC_M11'}]}
+                {'name': 'MGGA_C_M08_SO'}, {'name': 'HYB_MGGA_X_M08_SO'}],
+            'Hybrid M11 gradient-corrected functionals': [{'name': 'MGGA_C_M11'}, {'name': 'HYB_MGGA_X_M11'}]}
 
         # TODO update metainfo to reflect all energy corrections
         # why section_vdW_TS under x_fhi_aims_section_controlInOut_atom_species?
