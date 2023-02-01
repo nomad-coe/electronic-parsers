@@ -573,7 +573,7 @@ class CastepParser:
 
         self._xc_functional_map = {
             'Perdew Burke Ernzerhof': ['GGA_X_PBE', 'GGA_C_PBE'],
-            'Local Density Approximation': ['LDA_C_PZ_LDA_X_PZ'],
+            'Local Density Approximation': ['LDA_C_PZ', 'LDA_X_PZ'],
             'Perdew Wang (1991)': ['GGA_X_PW91', 'GGA_C_PW91'],
             'revised Perdew Burke Ernzerhof': ['GGA_X_RPBE'],
             'PBE for solids (2008)': ['GGA_X_PBE_SOL'],
