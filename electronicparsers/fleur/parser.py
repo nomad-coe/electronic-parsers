@@ -19,11 +19,13 @@
 import os
 import logging
 import numpy as np
+from datetime import datetime
+import re
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import (
-    Run, Program
+    Run, Program, TimeRun
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -38,24 +40,207 @@ from .metainfo.fleur import x_fleur_header
 
 
 re_n = r'[\n\r]'
-re_f = r'[-+]?\d+\.\d*(?:[DdEe][-+]\d+)?'
+re_f = r'[-+]?\d*\.\d*(?:[DdEe][-+]\d+)?'
+
+
+def _eval(exp, variables=dict()):
+    # TODO implementation can be improved
+    operators = {
+        '**': lambda x, y: x ** y,
+        '*': lambda x, y: x * y,
+        '/': lambda x, y: x / y,
+        '+': lambda x, y: x + y,
+        '-': lambda x, y: x + y
+    }
+    exp = exp.replace(' ', '')
+    if not exp:
+        return 0
+
+    for key, operation in operators.items():
+        if key not in exp:
+            continue
+
+        segments = exp.rsplit(key, 1)
+        if len(segments) == 2:
+            return operation(_eval(segments[0], variables), _eval(segments[1], variables))
+
+    value = variables.get(exp)
+    if value:
+        return value
+
+    try:
+        return float(exp)
+    except Exception as e:
+        raise e
 
 
 class XMLParser(TextParser):
+
     def init_quantities(self):
+        re_bulk_lattice = re.compile(r'bulkLattice scale="(.+?)"(?: latnam="(.+?)")*')
+        re_lattice_constant = re.compile(r'<(.+?) scale="(.+?)"\>(.+?)\<\/')
+        re_lattice_vector = re.compile(rf'\<row\-(\d)\>(\S+ +\S+ +\S+)\<')
+
+        def to_cell(val_in):
+            bulk = re_bulk_lattice.findall(val_in)
+            lattice_constant = re_lattice_constant.findall(val_in)
+
+            if re_bulk_lattice:
+                scale, lattice = bulk[0]
+                if lattice == 'squ':
+                    if not lattice_constant:
+                        return
+                    # TODO why is c specified for squ lattice
+                    a = float(lattice_constant[0][1]) * float(lattice_constant[0][2])
+                    return np.diag((a, a, a)) * float(scale) * ureg.bohr
+
+                else:
+                    lattice_vector = re_lattice_vector.findall(val_in)
+                    if not lattice_vector:
+                        return
+
+                    cell = np.zeros((3, 3))
+                    for vector in lattice_vector:
+                        cell[int(vector[0]) - 1][:] = vector[1].split()
+                    return cell * ureg.bohr
+
         self._quantities = [
             Quantity(
                 'header',
-                r'(\<programVersion[\s\S]+?\<\/programVersion\>',
+                r'\<programVersion([\s\S]+?)\<\/programVersion\>',
                 sub_parser=TextParser(quantities=[
-                    Quantity('program_version', r'programVersion version=\"fleur (\S+)\"', dtype=str),
-                    Quantity('x_fleur_precision', r'precision type=\"\S+\"', dtype=str),
-                    Quantity(
-                        'x_fleur_structure_class',
-                        r'\<targetStructureClass\>(.+?)\<\/targetStructureClass\>',)
+                    Quantity('program_version', r'version=\"(fleur \S+)\"', dtype=str, flatten=False),
+                    Quantity('x_fleur_precision', r'precision type=\"(\S+)\"', dtype=str),
+                    Quantity('x_fleur_structure_class', r'\<targetStructureClass\>(.+?)\<', dtype=str),
+                    Quantity('x_fleur_additional_flags', r'\<additionalCompilerFlags\>(.+?)\<', dtype=str)
                 ])
             ),
+            Quantity('start_time', r'date="(.+?)" time="(.+?)" zone="(.+?)"', flatten=False, dtype=str),
+            Quantity(
+                'input',
+                r'\<inputData\>([\s\S]+?)\<\/inputData\>',
+                sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'parameters', r'\<calculationSetup\>([\s\S]+?)\<\/calculationSetup\>',
+                        sub_parser=TextParser(quantities=[
+                            Quantity(
+                                'key_val', r' (\S+=)\"(.+?)\"',
+                                str_operation=lambda x: x.split('='), repeats=True
+                            )
+                        ])
+                    ),
+                    Quantity(
+                        'cell',
+                        r'\<cell\>([\s\S]+?)\<\/cell\>',
+                        str_operation=to_cell
+                    ),
+                    Quantity(
+                        'xc_functional',
+                        r'<xcFunctional name="(.+?)" relativisticCorrections="(.)"',
+                        dtype=str
+                    ),
+                    Quantity(
+                        'atom',
+                        r'\<atomGroup([\s\S]+?)\<\/atomGroup\>', repeats=True,
+                        # TODO parse more quantities
+                        sub_parser=TextParser(quantities=[
+                            Quantity('species', r'species="([A-Z][a-z]*)', dtype=str),
+                            Quantity(
+                                'position', r'\<relPos.*?\>(.+?)\<\/relPos\>',
+                                str_operation=lambda x: [_eval(v) for v in x.strip().split()]
+                            )
+                        ])
+                    ),
+                    Quantity(
+                        'output_parameters',
+                        r'\<output([\s\S]+?)\<\/output\>',
+                        sub_parser=TextParser(quantities=[
+                            Quantity(
+                                'key_val', r' (\S+=)\"(.+?)\"',
+                                str_operation=lambda x: x.split('='), repeats=True
+                            )
+                        ])
+                    )
+                ])
+            ),
+            Quantity(
+                'numerical_parameters',
+                r'\<numericalParameters\>([\s\S]+?)\<\/numericalParameters\>',
+                sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'key_val', r' (\S+=)\"(.+?)\"',
+                        str_operation=lambda x: x.split('='), repeats=True
+                    )
+                ])
+            ),
+            Quantity(
+                'scf_iteration',
+                r'\<iteration([\s\S]+?)\<\/iteration\>', repeats=True,
+                sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'energy_total',
+                        rf'totalEnergy +value=" *({re_f})', dtype=np.float64, unit=ureg.hartree
+                    ),
+                    Quantity(
+                        'energy_sum_eigenvalues',
+                        rf'sumOfEigenvalues +value=" *({re_f})', dtype=np.float64, unit=ureg.hartree
+                    ),
+                    Quantity(
+                        'energy_x_fleur_density_coulomb_potential',
+                        rf'densityCoulombPotentialIntegral +value=" *({re_f})', dtype=np.float64, unit=ureg.hartree
+                    ),
+                    Quantity(
+                        'energy_x_fleur_density_effective_potential',
+                        rf'densityEffectivePotentialIntegral +value=" *({re_f})', dtype=np.float64, unit=ureg.hartree
+                    ),
+                    Quantity(
+                        'energy_x_fleur_charge_density_xc',
+                        rf'chargeDenXCDenIntegral +value=" *({re_f})', dtype=np.float64, unit=ureg.hartree
+                    ),
+                    Quantity(
+                        'energy_free',
+                        rf'freeEnergy +value=" *({re_f})', dtype=np.float64, unit=ureg.hartree
+                    ),
+                    Quantity(
+                        'energy_total_t0',
+                        rf'extrapolationTo0K +value=" *({re_f})', dtype=np.float64, unit=ureg.hartree
+                    ),
+                    Quantity(
+                        'fermi',
+                        rf'FermiEnergy +value=" *({re_f})', dtype=np.float64, unit=ureg.hartree
+                    ),
+                    Quantity(
+                        'eigenvalues_kpts',
+                        r'\<eigenvaluesAt([\s\S]+?\<)\/eigenvaluesAt\>',
+                        repeats=True, sub_parser=TextParser(quantities=[
+                            Quantity(
+                                'kpt',
+                                rf'spin="1" ikpt="\d+" k_x="({re_f})" k_y="({re_f})" k_z="({re_f})"',
+                                dtype=np.dtype(np.float64)
+                            ),
+                            Quantity('energies', rf'\>([\s\S]+?)\<', dtype=np.dtype(np.float64))
+                        ])
+                    )
+                    # TODO parse other quantities
+                ])
+            )
         ]
+
+    def get_xc_functional(self):
+        xc_functional = self.get('input', {}).get('xc_functional')
+        if xc_functional is not None:
+            return f'{xc_functional[0]} {"non-" if xc_functional[1] == "F" else ""}relativistic correction'
+
+    def get_system(self):
+        input = self.input
+        if not input:
+            return None, None, None
+
+        cell = input.cell
+        atoms = input.get('atom', [])
+        labels = [atom.species for atom in atoms]
+        positions = np.dot([atom.position for atom in atoms], cell)
+        return labels, positions, cell
 
 
 class OutParser(TextParser):
@@ -259,10 +444,22 @@ class OutParser(TextParser):
             )
         ]
 
+    def get_xc_functional(self):
+        return self.get('system', {}).get('exchange_correlation')
+
+    def get_system(self):
+        system = self.get('system')
+        if not system:
+            return None, None, None
+
+        atoms = system.get('atoms', [None, None])
+        return atoms[0], atoms[1], system.cell
+
 
 class FleurParser:
     def __init__(self):
-        self.out_parser = OutParser()
+        self._out_parser = OutParser()
+        self._xml_parser = XMLParser()
         self._xc_map = {
             'pbe': ['GGA_X_PBE', 'GGA_C_PBE'],
             'rpbe': ['GGA_X_PBE', 'GGA_C_PBE'],
@@ -282,8 +479,9 @@ class FleurParser:
         # TODO implement xml parser
 
     def init_parser(self):
-        self.out_parser.mainfile = self.filepath
-        self.out_parser.logger = self.logger
+        self.parser = self._xml_parser if self.filepath.endswith('.xml') else self._out_parser
+        self.parser.mainfile = self.filepath
+        self.parser.logger = self.logger
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
@@ -292,7 +490,7 @@ class FleurParser:
         self.maindir = os.path.dirname(self.filepath)
         self.init_parser()
 
-        header = self.out_parser.get('header', {})
+        header = self.parser.get('header', {})
         sec_run = self.archive.m_create(Run)
         sec_run.program = Program(name='fleur', version=header.get('program_version'))
         sec_header = sec_run.m_create(x_fleur_header)
@@ -300,23 +498,31 @@ class FleurParser:
             if key.startswith('x_fleur'):
                 setattr(sec_header, key, val)
 
+        if self.parser.start_time:
+            dt = datetime.strptime(self.parser.start_time, '%Y/%m/%d %H:%M:%S %z')
+            sec_run.time_run = TimeRun(date_start=dt.timestamp())
+
         sec_method = sec_run.m_create(Method)
         sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
-        input = self.out_parser.get('input')
+        input = self.parser.get('input')
         if input is not None:
             for key in ['parameters', 'input_parameters']:
                 setattr(sec_method, f'x_fleur_{key}', {
                     key: list([float(v) for v in val]) if isinstance(
                         val, np.ndarray) else val for key, val in input.get(key, {}).get('key_val', [])})
+        if not sec_method.x_fleur_parameters:
+            sec_method.x_fleur_parameters = {}
+        sec_method.x_fleur_parameters.update(input.get('output_parameters', {}))
+        sec_method.x_fleur_parameters.update(self.parser.get('numerical_parameters', {}))
 
-        electronic = self.out_parser.electronic
+        electronic = self.parser.electronic
         if electronic is not None:
             sec_method.x_fleur_eigenvalues_parameters = {
                 key: val for key, val in electronic.get('eigenvalues_parameters', {}).get('key_val')}
             sec_method.electronic = Electronic(smearing=Smearing(
                 kind=electronic.smearing, width=electronic.width))
 
-        exchange_correlation = self.out_parser.get('system', {}).get('exchange_correlation')
+        exchange_correlation = self.parser.get_xc_functional()
         if exchange_correlation is not None:
             exchange_correlation = [xc.strip() for xc in exchange_correlation.strip().split(' ', 1)]
             sec_method.dft = DFT()
@@ -330,21 +536,22 @@ class FleurParser:
                     sec_xc_functional.hybrid.append(Functional(name=xc_functional))
                 else:
                     sec_xc_functional.contributions.append(Functional(name=xc_functional))
+
             sec_xc_functional.x_fleur_xc_correction = exchange_correlation[1]
 
-        electric_field = self.out_parser.electic_field_parameters
+        electric_field = self.parser.electic_field_parameters
         if electric_field is not None:
             for key, val in electric_field.items():
                 setattr(sec_method, key, val)
 
-        system = self.out_parser.system
-        if system is not None:
-            sec_system = sec_run.m_create(System)
+        labels, positions, lattice_vectors = self.parser.get_system()
+        sec_system = sec_run.m_create(System)
+        sec_system.x_fleur_parameters = dict()
+        if labels is not None:
             sec_system.atoms = Atoms(
-                lattice_vectors=system.cell,
-                labels=system.get('atoms', [None, None])[0],
-                positions=system.get('atoms', [None, None])[1])
+                lattice_vectors=lattice_vectors, labels=labels, positions=positions)
 
+            system = self.parser.get('system', {})
             sec_system.x_fleur_parameters = {key: val for key, val in system.get('parameters', {}).get('key_val', [])}
 
             for key, val in system.items():
@@ -353,12 +560,14 @@ class FleurParser:
 
         sec_scc = sec_run.m_create(Calculation)
         sec_scc.system_ref = sec_system
+
         scf = None
-        for scf in self.out_parser.get('scf_iteration', []):
+        nspin = sec_method.x_fleur_parameters.get('jspins', sec_system.x_fleur_parameters.get('jspins', 1))
+        for scf in self.parser.get('scf_iteration', []):
             sec_scf = sec_scc.m_create(ScfIteration)
             sec_scf_energy = sec_scf.m_create(Energy)
             sec_eigenvalues = sec_scf.m_create(BandEnergies)
-            nspin = self.out_parser.get('system', {}).get('parameters', {}).get('jspins', 1)
+
             for key, val in scf.items():
                 if val is None:
                     continue
@@ -372,6 +581,11 @@ class FleurParser:
                     sec_eigenvalues.kpoints = val
                 elif key == 'eigenvalues':
                     sec_eigenvalues.energies = np.reshape(val, (nspin, len(val) // nspin, len(val[0]))) * ureg.hartree
+                elif key == 'eigenvalues_kpts':
+                    sec_eigenvalues.kpoints = [v.kpt for v in val]
+                    # it seems that it only shows the eigenvalues for spin 1
+                    energies = [v.energies for v in val]
+                    sec_eigenvalues.energies = np.reshape(energies, (1, len(energies), len(energies[0]))) * ureg.hartree
                 elif key.startswith('x_fleur'):
                     setattr(sec_scf, key, val)
 

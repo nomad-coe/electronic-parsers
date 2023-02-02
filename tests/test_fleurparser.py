@@ -73,3 +73,33 @@ def test_scf(parser):
     assert sec_scc[0].energy.fermi.magnitude == approx(9.64676355e-19)
     assert sec_scc[0].eigenvalues[0].kpoints[5][0] == approx(-0.111111)
     assert sec_scc[0].eigenvalues[0].energies[0][15][1].magnitude == approx(-2.58602618e-19)
+
+
+def test_xml(parser):
+    archive = EntryArchive()
+
+    parser.parse('tests/data/fleur/Si/out.xml', archive, None)
+
+    sec_run = archive.run
+    assert sec_run[0].program.version == 'fleur 27'
+    assert sec_run[0].x_fleur_header[0].x_fleur_precision == 'DOUBLE'
+
+    sec_method = sec_run[0].method
+    assert sec_method[0].x_fleur_parameters['Gmax'] == approx(11.07772533)
+    assert sec_method[0].x_fleur_parameters['kcrel'] == 0
+    assert sec_method[0].dft.xc_functional.correlation[0].name == 'GGA_C_PBE'
+    assert sec_method[0].dft.xc_functional.x_fleur_xc_correction == 'non-relativistic correction'
+
+    sec_system = sec_run[0].system
+    assert sec_system[0].atoms.lattice_vectors[0][1].to('bohr').magnitude == approx(5.167355275190)
+    assert sec_system[0].atoms.labels == ['Si', 'Si']
+    assert sec_system[0].atoms.positions[0][1].to('bohr').magnitude == approx(1.29183882)
+
+    sec_scc = sec_run[0].calculation
+    assert len(sec_scc[0].scf_iteration) == 20
+    assert sec_scc[0].scf_iteration[18].energy.total.value.to('hartree').magnitude == approx(-580.0715443342)
+    assert sec_scc[0].scf_iteration[4].energy.free.value.to('hartree').magnitude == approx(-580.0715457719)
+    assert sec_scc[0].energy.total_t0.value.to('hartree').magnitude == approx(-580.0715444304)
+    assert sec_scc[0].energy.fermi.to('hartree').magnitude == approx(0.2212693414)
+    assert sec_scc[0].eigenvalues[0].kpoints[5][0] == approx(-0.111111)
+    assert sec_scc[0].eigenvalues[0].energies[0][15][1].to('hartree').magnitude == approx(-0.0593160948)
