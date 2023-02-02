@@ -1,0 +1,22 @@
+codeLabel: OCEAN
+codeLabelStyle: All in capitals
+codeName: ocean
+codeCategory: Atomistic code
+status: production
+codeUrl: https://feff.phys.washington.edu/OCEAN/index.html
+parserDirName: dependencies/electronic/electronicparsers/ocean/
+parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+parserSpecific: ''
+preamble: ''
+tableOfFiles: |
+  | Input Filename | Description |
+  | --- | --- |
+  | `*.out` | **Mainfile:** text output file containing the identifiers for OCEAN |
+  | `*.in` | input file with all parameters |
+  | `absspct*` | output data file with the Absorption Spectra |
+  | `xesspct*` | output data file with the Emission Spectra |
+  | `rxsspct*` | output data file with the RIXS |
+  | `photon*` | electron-photon operator |
+  | `*.fhi*` | pseudopotentials |
+  | `*fill*` | auxiliary files for targeted element |
+  | `*opts*` | auxiliary files for targeted element |
