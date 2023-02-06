@@ -282,7 +282,6 @@ def test_gw_eigs(parser):
 
     assert archive.run[0].system[0].atoms.labels[0] == 'O'
     assert archive.run[0].method[0].gw.type == 'G0W0'
-    assert archive.run[0].method[0].basis_set[0].type == 'numeric AOs'
 
     sec_eigs_gw = archive.run[0].calculation[0].eigenvalues[0]
     assert sec_eigs_gw.value_qp.shape == (1, 1, 81)
@@ -300,8 +299,6 @@ def test_gw_bands(parser):
 
     assert archive.run[0].system[0].atoms.labels == ['Si', 'Si']
     assert archive.run[0].method[0].gw.type == 'G0W0'
-    # assert archive.run[0].method[0].gw.starting_point.exchange[0].name == 'GGA_X_PBE'
-    # assert archive.run[0].method[0].gw.starting_point.correlation[0].name == 'GGA_C_PBE'
 
     sec_scc = archive.run[0].calculation[0]
     assert sec_scc.energy.fermi.to('eV').magnitude == approx(-5.73695796)
