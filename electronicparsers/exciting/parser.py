@@ -1804,10 +1804,6 @@ class ExcitingParser:
         for f in ['input_gw.xml', 'input-gw.xml', 'input.xml']:
             self.parse_file(f, sec_method)
 
-        sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
-        sec_starting_point = sec_method.gw.m_create(XCFunctional)
-        self.parse_xc_functional(sec_starting_point)
-
         # get reference to reference dft calculation
         # dft_archive = None
         # if self.archive.m_context is not None:
