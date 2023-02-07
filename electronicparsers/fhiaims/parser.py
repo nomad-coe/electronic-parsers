@@ -1334,13 +1334,6 @@ class FHIAimsParser:
             # vdW parameters
             parse_vdW(section)
 
-            if self._calculation_type == 'dft':
-                sec_method = sec_run.m_create(Method)
-                sec_scc.method_ref = sec_run.method[-1]
-                sec_method.electronic = Electronic(method='DFT')
-                sec_method.core_method_ref = sec_run.method[0]
-                sec_method.methods_ref = [sec_run.method[0]]
-
         for n, section in enumerate(self.out_parser.get('full_scf', [])):
             # skip frames for large trajectories
             if (n % self.frame_rate) > 0:
