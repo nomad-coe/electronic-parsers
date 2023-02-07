@@ -851,23 +851,12 @@ class FHIAimsParser:
             sec_k_band_segment.occupations = occs
 
     def parse_gw(self):
-        # __Chema comment__:
-        # What is more safe?
-        # 1- Obtain certain sections and quantities again in self.parse_gw()
-        # or 2- Try to work out for dft references IF the data is present in the upload
-        # I think it will be good to have 2-, as this also allows us to keep track whether
-        # an upload is complete or have some missing information.
-        # For now I kept it as having to extract the section 'system' and 'energy.fermi'
-        # again by regex of the output file.
         sec_run = self.archive.run[-1]
 
         # GW method
         sec_method = sec_run.m_create(Method)
         sec_gw = sec_method.m_create(GWMethod)
         sec_gw.type = self._gw_flag_map.get(self.out_parser.get('gw_flag'), None)
-
-        sec_method.basis_set.append(BasisSet(type='numeric AOs'))
-        self.parse_xc_functional(sec_method, sec_gw)
 
         # TODO check this with FHIaims GW developers
         sec_k_mesh = sec_method.m_create(KMesh)
