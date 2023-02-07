@@ -1260,6 +1260,7 @@ class FHIAimsParser:
 
             sec_scc = sec_run.m_create(Calculation)
             sec_scc.system_ref = sec_run.system[-1]
+            sec_scc.method_ref = sec_run.method[-1]
 
             sec_energy = sec_scc.m_create(Energy)
             energy = section.get('energy', {})
