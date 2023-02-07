@@ -62,7 +62,7 @@ def test_scf_spinpol(parser):
     assert archive.run[0].program.version == '151211'
     assert archive.run[0].time_run.wall_start.magnitude == approx(2.23485023e+08)
 
-    assert len(archive.run[0].method) == 2
+    assert len(archive.run[0].method) == 1
     sec_method = archive.run[0].method[0]
     assert sec_method.electronic.n_spin_channels == 2
     assert sec_method.electronic.relativity_method == 'scalar_relativistic_atomic_ZORA'
@@ -102,8 +102,7 @@ def test_geomopt(parser):
     parser.parse('tests/data/fhiaims/Si_geomopt/out.out', archive, None)
 
     sec_methods = archive.run[0].method
-    # one more since 0 is core settings
-    assert len(sec_methods) == 7
+    assert len(sec_methods) == 1
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 6
