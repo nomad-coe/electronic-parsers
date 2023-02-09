@@ -232,6 +232,7 @@ def test_outcar(parser):
     assert np.shape(sec_eigs.energies[0][144]) == (15,)
     assert sec_eigs.energies[0][9][14].magnitude == approx(1.41810256e-18)
     assert sec_eigs.occupations[0][49][9] == 2.0
+    assert sec_eigs.kpoints_multiplicities[1] == 8
 
     # check DOS
     sec_dos = sec_scc.dos_electronic[0]
