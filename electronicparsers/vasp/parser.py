@@ -914,6 +914,9 @@ class RunContentParser(ContentParser):
                 self._kpoints_info['x_vasp_k_points_generation_method'] = method['param']
             divisions = self._get_key_values(
                 '/modeling[0]/kpoints[0]/generation[0]/v[@name="divisions"]')
+            if not divisions:
+                divisions = self._get_key_values(
+                    '/modeling[0]/kpoints[0]/generation[0]/i[@name="divisions"]')
             if divisions:
                 self._kpoints_info['divisions'] = divisions['divisions']
             volumeweight = self._get_key_values('/modeling[0]/kpoints[0]/generation[0]/i[@name="volumeweight"]')
