@@ -1513,8 +1513,13 @@ class VASPParser:
                 if charge_density and len(charge_density) == n_points:
                     # TODO remove temporary fix
                     if hasattr(Density, 'value_hdf5'):
-                        sec_scc.density_charge.append(Density(
-                            value_hdf5=np.reshape(np.array(charge_density, np.float64), grid)))
+                        from nomad.parsing.parser import to_hdf5
+                        filename = f'{os.path.basename(self.filepath)}.archive.hdf5'
+                        farg = 'r+b' if os.path.isfile(os.path.join(os.path.dirname(self.filepath), filename)) else 'wb'
+                        sec_density = sec_scc.m_create(Density)
+                        if self.archive.m_context:
+                            with self.archive.m_context.raw_file(filename, farg) as f:
+                                sec_density.value_hdf5 = to_hdf5(np.reshape(np.array(charge_density, np.float64), grid), f, f'{sec_density.m_path()}/value_hdf5')
                     else:
                         sec_scc.density_charge.append(Density(
                             value=np.reshape(np.array(charge_density, np.float64), grid)))
