@@ -308,8 +308,6 @@ class W2DynamicsParser:
         except Exception:
             self.logger.error('Error opening hdf5 file.')
             data = None
-
-        if data is None:
             return
 
         sec_run = archive.m_create(Run)
