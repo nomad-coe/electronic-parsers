@@ -676,7 +676,7 @@ class AbinitOutParser(TextParser):
                 self._input_vars.setdefault(key, [None] * self.n_datasets)
 
                 try:
-                    m_quantity = getattr(x_abinit_section_input, 'x_abinit_var_%s' % key)
+                    m_quantity = getattr(x_abinit_section_input, f'x_abinit_var_{key}')
                 except Exception:
                     continue
 
@@ -708,6 +708,17 @@ class AbinitParser:
     def __init__(self):
         self.out_parser = AbinitOutParser()
         self.dos_parser = DataTextParser()
+
+    def parse_var(self):
+        # TODO reshape input_var arrays
+        sec_run = self.archive.run[-1]
+        for i in range(len(self.out_parser.get('dataset', []))):
+            sec_dataset = sec_run.m_create(x_abinit_section_dataset)
+            sec_input = sec_dataset.m_create(x_abinit_section_input)
+            for key, val in self.out_parser.input_vars.items():
+                if val[i] is None:
+                    continue
+                setattr(sec_input, f'x_abinit_var_{key}', val[i])
 
     def parse_system(self, n_dataset, section):
         dataset = self.out_parser.get('dataset')[n_dataset]
@@ -976,17 +987,6 @@ class AbinitParser:
         for step in relaxation:
             parse_configurations(step)
             parse_scf(step)
-
-    def parse_var(self):
-        # TODO reshape input_var arrays
-        sec_run = self.archive.run[-1]
-        for i in range(len(self.out_parser.get('dataset', []))):
-            sec_dataset = sec_run.m_create(x_abinit_section_dataset)
-            sec_input = sec_dataset.m_create(x_abinit_section_input)
-            for key, val in self.out_parser.input_vars.items():
-                if val[i] is None:
-                    continue
-                setattr(sec_input, 'x_abinit_var_%s' % (key), val[i])
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath

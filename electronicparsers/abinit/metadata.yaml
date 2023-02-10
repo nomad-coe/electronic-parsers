@@ -11,11 +11,13 @@ preamble: ''
 tableOfFiles: |
   |Input Filename| Description|
   |--- | --- |
-  |`*.out` | **Mainfile:** a plain text file w/ **user-defined** name|
-  |`*.files`|plain text; user-defined filenames |
-  |`*.in`| plain text, input parameters|
-  |`*_o_DDB`|binary file, Derivative DataBases of total energy|
-  |`*_o_DEN`|binary file, charge density|
-  |`*_o_EIG`|text file, eigenvalues|
-  |`*_o_WFK`|binary file, wavefunction|
+  |`*.*o*` | **Mainfile:** a plain text file w/ **user-defined** name|
+  |`*.files`| plain text; user-defined filenames |
+  |`*.*i*`| plain text, input parameters|
+  |`*_o_DDB`| netcdf binary file, Derivative DataBases of total energy|
+  |`*_o_DEN`| netcdf binary file, charge density|
+  |`*_o_EIG`| text file, eigenvalues|
+  |`*_o_WFK`| netcdf binary file, wavefunction|
+  |`*o_SCR`| netcdf binary file, RPA inverse dielectric screening |
+  |`*o_SIGRES`| netcdf binary file, GW self-energy correction |
   |`log` | plain text, redirection of screen output (`stdout`)|
