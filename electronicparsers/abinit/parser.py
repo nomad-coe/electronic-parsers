@@ -721,72 +721,35 @@ class AbinitParser:
                 setattr(sec_input, f'x_abinit_var_{key}', val[i])
 
     def parse_system(self, n_dataset, section):
-        dataset = self.out_parser.get('dataset')[n_dataset]
         sec_run = self.archive.run[-1]
 
-        nd = dataset.get('x_abinit_dataset_number')
+        dataset = self.out_parser.get('dataset')[n_dataset]
+        nd = dataset.get('x_abinit_dataset_number', 1)
         atom_labels = self.out_parser.get_atom_labels(nd)
         atom_positions = section.get('cartesian_coordinates')
         if atom_labels is None or atom_positions is None:
             return
+        lattice_vectors = dataset.get('x_abinit_vprim') * ureg.bohr
+        pbc = [l is not None for l in lattice_vectors]
 
         sec_system = sec_run.m_create(System)
         sec_atoms = sec_system.m_create(Atoms)
         sec_atoms.labels = atom_labels
         sec_atoms.positions = atom_positions
-        sec_atoms.periodic = [True, True, True]
+        sec_atoms.periodic = pbc
         sec_atoms.n_atoms = len(atom_labels)
-        lattice_vectors = dataset.get('x_abinit_vprim')
-        lattice_vectors = np.eye(3) if lattice_vectors is None else lattice_vectors * ureg.bohr
         sec_atoms.lattice_vectors = lattice_vectors
 
-        return sec_system
-
-    def parse_scc(self, n_dataset, section):
+    def parse_method(self):
         sec_run = self.archive.run[-1]
-        sec_scc = sec_run.m_create(Calculation)
-
-        sec_energy = sec_scc.m_create(Energy)
-        for key in self.out_parser.energy_components.keys():
-            energy = section.get(key)
-            if energy is None:
-                continue
-            key = key.lstrip('energy_')
-            if key == 'internal':
-                sec_energy.internatl = energy
-            elif hasattr(Energy, key):
-                sec_energy.m_add_sub_section(getattr(Energy, key), EnergyEntry(value=energy))
-
-            else:
-                sec_energy.contributions.append(EnergyEntry(kind=key, value=energy))
-
-        forces = section.get('cartesian_forces')
-        if forces is not None:
-            sec_forces = sec_scc.m_create(Forces)
-            sec_forces.total = ForcesEntry(value_raw=forces)
-
-        stress_tensor = section.get('stress_tensor')
-        if stress_tensor is not None:
-            sec_stress = sec_scc.m_create(Stress)
-            sec_stress.total = StressEntry(value=stress_tensor)
-
-        fermi_energy = section.get('fermi_energy')
-        if fermi_energy is not None:
-            sec_energy.fermi = fermi_energy
-
-        return sec_scc
-
-    def parse_method(self, n_dataset):
-        dataset = self.out_parser.get('dataset')[n_dataset]
-        sec_run = self.archive.run[-1]
+        dataset = self.out_parser.get('dataset')[0]
         smearing_kinds = [
             '', '', '', 'fermi', 'marzari-vanderbilt', 'marzari-vanderbilt',
             'methfessel-paxton', 'gaussian', '']
         nd = dataset.get('x_abinit_dataset_number')
+
         sec_method = sec_run.m_create(Method)
-
         sec_dft = sec_method.m_create(DFT)
-
         sec_electronic = sec_method.m_create(Electronic)
         sec_electronic.method = 'DFT'
         sec_electronic.n_spin_channels = int(self.out_parser.get_input_var('nsppol', nd, 1))
@@ -845,7 +808,39 @@ class AbinitParser:
                 else:
                     sec_xc_functional.contributions.append(Functional(name=value))
 
-        return sec_method
+    def parse_scc(self, n_dataset, section):
+        sec_run = self.archive.run[-1]
+        sec_scc = sec_run.m_create(Calculation)
+
+        sec_energy = sec_scc.m_create(Energy)
+        for key in self.out_parser.energy_components.keys():
+            energy = section.get(key)
+            if energy is None:
+                continue
+            key = key.lstrip('energy_')
+            if key == 'internal':
+                sec_energy.internatl = energy
+            elif hasattr(Energy, key):
+                sec_energy.m_add_sub_section(getattr(Energy, key), EnergyEntry(value=energy))
+
+            else:
+                sec_energy.contributions.append(EnergyEntry(kind=key, value=energy))
+
+        forces = section.get('cartesian_forces')
+        if forces is not None:
+            sec_forces = sec_scc.m_create(Forces)
+            sec_forces.total = ForcesEntry(value_raw=forces)
+
+        stress_tensor = section.get('stress_tensor')
+        if stress_tensor is not None:
+            sec_stress = sec_scc.m_create(Stress)
+            sec_stress.total = StressEntry(value=stress_tensor)
+
+        fermi_energy = section.get('fermi_energy')
+        if fermi_energy is not None:
+            sec_energy.fermi = fermi_energy
+
+        return sec_scc
 
     def parse_workflow(self, n_dataset):
         dataset = self.out_parser.get('dataset')[n_dataset]
@@ -891,20 +886,17 @@ class AbinitParser:
         nd = dataset.get('x_abinit_dataset_number')
         sec_run = self.archive.run[-1]
 
-        # one section_method per dataset
-        sec_method = self.parse_method(n_dataset)
-
         self.parse_workflow(n_dataset)
 
         def parse_configurations(section):
-            sec_system = self.parse_system(n_dataset, section)
+            self.parse_system(n_dataset, section)
             sec_scc = self.parse_scc(n_dataset, section)
 
             if sec_scc is None:
                 return
 
-            if sec_system is not None:
-                sec_scc.system_ref = sec_system
+            #if sec_system is not None:
+            #    sec_scc.system_ref = sec_system
             sec_scc.method_ref = sec_method
 
         def parse_dos():
@@ -1030,7 +1022,14 @@ class AbinitParser:
         sec_run.time_run = TimeRun(
             date_start=(abi_time - datetime(1970, 1, 1)).total_seconds())
 
+        # Parsing ABINIT input variables
         self.parse_var()
 
-        for n in range(len(self.out_parser.get('dataset', []))):
-            self.parse_dataset(n)
+        # Parse initial system from dataset 1
+        self.parse_system(0, self.out_parser.get('dataset')[0].get('results'))
+
+        # Parse DFT method
+        self.parse_method()
+
+        #for n in range(len(self.out_parser.get('dataset', []))):
+        #    self.parse_dataset(n)
