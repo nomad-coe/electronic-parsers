@@ -32,7 +32,7 @@ from nomad.datamodel.metainfo.simulation.method import (
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry, Dos,
-    DosValues, BandEnergies, ScfIteration)
+    DosValues, BandStructure, BandEnergies, ScfIteration)
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod,
@@ -723,15 +723,15 @@ class AbinitParser:
                     continue
                 setattr(sec_input, f'x_abinit_var_{key}', val[i])
 
-    def parse_system(self, n_dataset, section):
+    def parse_system(self, section):
         sec_run = self.archive.run[-1]
 
-        nd = self.dataset[n_dataset].get('x_abinit_dataset_number', 1)
+        nd = self.dataset[0].get('x_abinit_dataset_number', 1)
         atom_labels = self.out_parser.get_atom_labels(nd)
         atom_positions = section.get('cartesian_coordinates')
         if atom_labels is None or atom_positions is None:
             return
-        lattice_vectors = self.dataset[n_dataset].get('x_abinit_vprim') * ureg.bohr
+        lattice_vectors = self.dataset[0].get('x_abinit_vprim') * ureg.bohr
         pbc = [v is not None for v in lattice_vectors]
 
         sec_system = sec_run.m_create(System)
@@ -845,17 +845,47 @@ class AbinitParser:
 
         self.archive.workflow2 = workflow
 
-    def parse_dataset(self, n_dataset, dataset):
-        dataset = self.out_parser.get('dataset')[n_dataset]
-        nd = dataset.get('x_abinit_dataset_number')
+    def parse_bandstructure(self):
+        sec_run = self.archive.run[-1]
+        sec_scc = sec_run.calculation[-1]  # saving band structure after the dataset 2
+        sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
+        if not sec_scc.energy.fermi:
+            self.logger.warning('Energy fermi not found. Skipping band structure parsing.')
+            return
+        sec_k_band.energy_fermi = sec_scc.energy.fermi
+        data = self.dataset[1].get('results').get('eigenvalues', None)
+        if data is None:
+            return
+        sec_k_band_segment = sec_k_band.m_create(BandEnergies)
+        nd = self.dataset[1].get('x_abinit_dataset_number', 1)
+        nsppol = self.out_parser.get_input_var('nsppol', nd, 1)
+        data = np.reshape(data, (nsppol, len(data) // nsppol, np.size(data) // len(data)))
+
+        nband = int(data.T[1].T[0][0])
+        kpts = data.T[3:6].T[0]
+        eigs = data.T[6:6 + nband].T
+        occs = self.dataset[1].get('results').get('occupation_numbers')
+        if occs is not None:
+            occs = np.reshape(occs, (nsppol, len(occs) // nsppol, np.size(occs) // len(occs)))
+
+        sec_k_band_segment.n_kpoints = len(kpts)
+        sec_k_band_segment.kpoints = kpts
+        sec_k_band_segment.n_bands = nband
+        sec_k_band_segment.energies = eigs * ureg.hartree
+        if occs is not None:
+            sec_k_band_segment.occupations = occs
+
+    def parse_configurations(self):
         sec_run = self.archive.run[-1]
 
-        self.parse_workflow(n_dataset)
+        def parse_eigenvalues(nd, section):
+            if not section:
+                return
 
-
-        def parse_scc(self, n_dataset, section):
-            sec_run = self.archive.run[-1]
             sec_scc = sec_run.m_create(Calculation)
+            if sec_run.system is not None:
+                sec_scc.system_ref = sec_run.system[-1]
+            sec_scc.method_ref = sec_run.method[-1]
 
             sec_energy = sec_scc.m_create(Energy)
             for key in self.out_parser.energy_components.keys():
@@ -885,24 +915,48 @@ class AbinitParser:
             if fermi_energy is not None:
                 sec_energy.fermi = fermi_energy
 
-            return sec_scc
+            # last data is the final bands
+            data = section.get('eigenvalues', None)
+            if data is None:
+                return
+            nsppol = self.out_parser.get_input_var('nsppol', nd, 1)
+            data = np.reshape(data, (nsppol, len(data) // nsppol, np.size(data) // len(data)))
 
-        def parse_configurations(section):
-            self.parse_system(n_dataset, section)
-            sec_scc = self.parse_scc(n_dataset, section)
+            nband = int(data.T[1].T[0][0])
+            kpts = data.T[3:6].T[0]
+            eigs = data.T[6:6 + nband].T
+            occs = section.get('occupation_numbers')
+            if occs is not None:
+                occs = np.reshape(occs, (nsppol, len(occs) // nsppol, np.size(occs) // len(occs)))
 
-            if sec_scc is None:
+            sec_scc = sec_run.calculation[-1]
+            sec_eigenvalues = sec_scc.m_create(BandEnergies)
+            sec_eigenvalues.n_kpoints = len(kpts)
+            sec_eigenvalues.kpoints = kpts
+            sec_eigenvalues.n_bands = nband
+            sec_eigenvalues.energies = eigs * ureg.hartree
+            if occs is not None:
+                sec_eigenvalues.occupations = occs
+
+        def parse_scf(section):
+            if not sec_run.calculation or not section:
                 return
 
-            #if sec_system is not None:
-            #    sec_scc.system_ref = sec_system
-            sec_scc.method_ref = sec_method
+            sec_scc = sec_run.calculation[-1]
+            if section.get('convergence', None) in ['converged', 'is converged', 'are converged']:
+                sec_scc.calculation_converged = True
 
-        def parse_dos():
+            energy_total_scf_iteration = section.get('energy_total_scf_iteration', [])
+            for energy in energy_total_scf_iteration:
+                sec_scf_iteration = sec_scc.m_create(ScfIteration)
+                sec_energy = sec_scf_iteration.m_create(Energy)
+                sec_energy.total = EnergyEntry(value=energy[0] * ureg.hartree)
+
+        def parse_dos(nd):
             file_root = self.out_parser.get('x_abinit_output_files_root')
             if file_root is None:
-                file_root = '%s_o' % os.path.basename(self.filepath).rstrip('.out')
-            dos_file = os.path.join(self.maindir, '%s_DS%d_DOS' % (file_root, nd))
+                file_root = f"{os.path.basename(self.filepath).rstrip('.out')}_o"
+            dos_file = os.path.join(self.maindir, f'{file_root}_DS{nd}_DOS')
             if not os.path.isfile(dos_file):
                 return
 
@@ -924,60 +978,18 @@ class AbinitParser:
                 sec_dos_values.value = dos[spin][1] * (1 / ureg.hartree)
                 sec_dos_values.value_integrated = dos[spin][2]
 
-        def parse_eigenvalues():
-            data = dataset.get('results', {}).get('eigenvalues', None)
-            if data is None:
-                return
+        # results of the single point calculation for the 2 first datasets
+        for n in range(len(self.dataset)):
+            parse_eigenvalues(n + 1, self.dataset[n].get('results'))
+            parse_scf(self.dataset[n].get('self_consistent'))
+            parse_dos(n + 1)
 
-            nsppol = self.out_parser.get_input_var('nsppol', nd, 1)
-            data = np.reshape(data, (nsppol, len(data) // nsppol, np.size(data) // len(data)))
-
-            nband = int(data.T[1].T[0][0])
-            kpts = data.T[3:6].T[0]
-            eigs = data.T[6:6 + nband].T
-            occs = dataset.get('results', {}).get('occupation_numbers')
-            if occs is not None:
-                occs = np.reshape(occs, (nsppol, len(occs) // nsppol, np.size(occs) // len(occs)))
-
-            sec_scc = sec_run.calculation[-1]
-            sec_eigenvalues = sec_scc.m_create(BandEnergies)
-            sec_eigenvalues.n_kpoints = len(kpts)
-            sec_eigenvalues.kpoints = kpts
-            sec_eigenvalues.n_bands = nband
-            sec_eigenvalues.energies = eigs * ureg.hartree
-            if occs is not None:
-                sec_eigenvalues.occupations = occs
-
-        def parse_scf(section):
-            if not sec_run.calculation:
-                return
-
-            sec_scc = sec_run.calculation[-1]
-
-            self_consistent = section.get('self_consistent', {})
-            if self_consistent.get('convergence', None) in ['converged', 'is converged', 'are converged']:
-                sec_scc.calculation_converged = True
-
-            energy_total_scf_iteration = self_consistent.get('energy_total_scf_iteration', [])
-            for energy in energy_total_scf_iteration:
-                sec_scf_iteration = sec_scc.m_create(ScfIteration)
-                sec_energy = sec_scf_iteration.m_create(Energy)
-                sec_energy.total = EnergyEntry(value=energy[0] * ureg.hartree)
-
-        # results of the single point calculation
-        results = dataset.get('results')
-        parse_configurations(results)
-        # add scf iterations
-        parse_scf(dataset)
-        # add dos and eigenvalues to full-scf calculation
-        parse_dos()
-        parse_eigenvalues()
-
-        # relaxations
-        relaxation = dataset.get('relaxation', [])
-        for step in relaxation:
-            parse_configurations(step)
-            parse_scf(step)
+            # relaxations
+            for step in self.dataset[n].get('relaxation', []):
+                self.parse_system(step)
+                parse_eigenvalues(n + 1, step)
+                parse_scf(step)
+        self.parse_bandstructure()
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
@@ -1038,7 +1050,7 @@ class AbinitParser:
         self.parse_var()
 
         # Parse initial system from dataset 1
-        self.parse_system(0, self.dataset[0].get('results'))
+        self.parse_system(self.dataset[0].get('results'))
 
         # Parse DFT method
         if self._calculation_type == 'gw':
@@ -1046,11 +1058,9 @@ class AbinitParser:
             pass
         else:
             self.parse_method()
+            self.parse_configurations()
 
         self.parse_workflow()
-
-        # for n in range(len(self.out_parser.get('dataset', []))):
-        #    self.parse_dataset(n)
 
         # gw_archive = self._child_archives.get('GW')
         # if gw_archive is not None and self.out_parser.get('gw_flag', None) in self._gw_flag_map.keys():
