@@ -623,7 +623,7 @@ class AbinitOutParser(TextParser):
 
         self._quantities.append(Quantity(
             'dataset',
-            r'==\s*(DATASET\s*\d+\s*==[\s\S]+?)(?:\-Cartesian components of stress tensor \(GPa\)|== END DATASET)',
+            r'==\s*(DATASET\s*\d+\s*==[\s\S]+?)(?:\-Cartesian components of stress tensor \(GPa\)|\s*prteigrs\s*\:\s*prtvol\=[\w\s\,\-\.\n]*===|\s*Average fulfillment[\s\w\[\]\-\:\.\%]*===|== END DATASET)',
             repeats=True, sub_parser=TextParser(quantities=[
                 Quantity(
                     'x_abinit_dataset_number',
