@@ -28,7 +28,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataText
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, Electronic, Smearing, Scf, DFT, XCFunctional,
-    Functional)
+    Functional, GW as GWMethod)
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry, Dos,
@@ -572,7 +572,7 @@ class AbinitOutParser(TextParser):
                 dtype=float, unit=ureg.hartree)]
 
         energy_components = [Quantity(
-            key, r'\s*%s\s*=\s*([\d\.E\-\+]+)' % val, repeats=False, dtype=float,
+            key, rf'\s*{val}\s*=\s*([\d\.E\-\+]+)', repeats=False, dtype=float,
             unit=ureg.hartree) for key, val in self.energy_components.items()]
 
         results = [
@@ -751,7 +751,12 @@ class AbinitParser:
         sec_dft = sec_method.m_create(DFT)
         sec_electronic = sec_method.m_create(Electronic)
         sec_electronic.method = 'DFT'
-        sec_electronic.n_spin_channels = int(self.out_parser.get_input_var('nsppol', 2, 1))  # defined in DATASET 2
+        # defined in DATASET 2
+        if len(self.dataset) == 1:
+            nsppol = int(self.out_parser.get_input_var('nsppol', 1, 1))
+        else:
+            nsppol = int(self.out_parser.get_input_var('nsppol', 2, 1))
+        sec_electronic.n_spin_channels = nsppol
 
         sec_scf = sec_method.m_create(Scf)
         sec_scf.n_max_iteration = int(self.out_parser.get_input_var('nstep', 1, 1))
@@ -804,6 +809,11 @@ class AbinitParser:
                 else:
                     sec_xc_functional.contributions.append(Functional(name=value))
 
+    def parse_gw(self):
+        sec_run = self.archive.run[-1]
+        sec_method = sec_run.m_create(Method)
+        sec_gw = sec_method.m_create(GWMethod)
+
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)
         workflow = None
@@ -843,6 +853,87 @@ class AbinitParser:
             pass
 
         self.archive.workflow2 = workflow
+
+    def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
+        sec_run = gw_workflow_archive.m_create(Run)
+        '''
+        sec_run.program = self.archive.run[-1].program
+        setattr(sec_run, 'system', self.archive.run[-1].system)
+
+        sec_workflow = gw_workflow_archive.m_create(Workflow)
+        sec_workflow.type = 'GW'
+        sec_workflow.workflows_ref = [self.archive.workflow[0], gw_archive.workflow[0]]
+
+        # Tasks linking dft and gw
+        sec_workflow.task = [
+            Task(
+                input_workflow=sec_workflow, output_workflow=self.archive.workflow[0],
+                description='DFT calculation performed in an input structure.'),
+            Task(
+                input_workflow=self.archive.workflow[0], output_workflow=gw_archive.workflow[0],
+                description='GW calculation performed from input DFT calculation.'),
+            Task(
+                input_workflow=gw_archive.workflow[0], output_workflow=sec_workflow,
+                description='Comparison between DFT and GW.')
+        ]
+
+        # Include DFT and GW band structures and DOS (if present) for comparison.
+        def extract_section(source, path):
+            path_segments = path.split('/', 1)
+            try:
+                value = getattr(source, path_segments[0])
+                value = value[-1] if isinstance(value, list) else value
+            except Exception:
+                return
+
+            if len(path_segments) == 1:
+                return value
+            else:
+                return extract_section(value, path_segments[1])
+
+        sec_gw = sec_workflow.m_create(GWWorkflow)
+        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
+        dos_gw = extract_section(gw_archive, 'run/calculation/dos_electronic')
+        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
+        bs_gw = extract_section(gw_archive, 'run/calculation/band_structure_electronic')
+        sec_gw.dos_dft = dos_dft
+        sec_gw.dos_gw = dos_gw
+        sec_gw.band_structure_dft = bs_dft
+        sec_gw.band_structure_gw = bs_gw
+
+        workflow = GW2(results=GWResults())
+        workflow.results.dos_dft = dos_dft
+        workflow.results.dos_gw = dos_gw
+        workflow.results.band_structure_dft = bs_dft
+        workflow.results.band_structure_gw = bs_gw
+
+        input_structure = extract_section(self.archive, 'run/system')
+        if input_structure:
+            workflow.inputs = [Link(name='Input structure', section=input_structure)]
+        output_calculation = extract_section(gw_archive, 'run/calculation')
+        if output_calculation:
+            workflow.outputs = [Link(name='Output calculation', section=output_calculation)]
+
+        # output of dft and input for gw
+        input_calculation = extract_section(self.archive, 'run/calculation')
+        if self.archive.workflow2:
+            task = TaskReference(task=self.archive.workflow2)
+            if input_structure:
+                task.inputs = [Link(name='Input structure', section=input_structure)]
+            if input_calculation:
+                task.outputs = [Link(name='Output calculation', section=input_calculation)]
+            workflow.tasks.append(task)
+
+        if gw_archive.workflow2:
+            task = TaskReference(task=gw_archive.workflow2)
+            if input_calculation:
+                task.inputs = [Link(name='Input calculation', section=input_calculation)]
+            if output_calculation:
+                task.outputs = [Link(name='Output calculation', section=output_calculation)]
+            workflow.tasks.append(task)
+
+        gw_workflow_archive.workflow2 = workflow
+        '''
 
     def parse_bandstructure(self, nd, energy_fermi):
         sec_run = self.archive.run[-1]
@@ -957,21 +1048,30 @@ class AbinitParser:
                 sec_dos_values.value = dos[spin][1] * (1 / ureg.hartree)
                 sec_dos_values.value_integrated = dos[spin][2]
 
-        # results of the single point calculation for the 2 first datasets
-        for nd in range(2):
+        # only one dataset
+        if len(self.dataset) == 1:
+            nd = 0
             parse_configurations(self.dataset[nd].get('results'))
-            parse_scf(self.dataset[nd].get('results'))
+            parse_scf(sec_run.calculation[-1], self.dataset[nd].get('results'))
 
             # relaxations
             for step in self.dataset[nd].get('relaxation', []):
                 self.parse_system(step)
-                sec_scc = sec_run.m_create(Calculation)
-                if sec_run.system is not None:
-                    sec_scc.system_ref = sec_run.system[-1]
-                sec_scc.method_ref = sec_run.method[-1]
-                parse_scf(sec_scc, step)
+                parse_configurations(step)
+                parse_scf(sec_run.calculation[-1], step)
+        # results of the single point calculation for the 2 first datasets
+        else:
+            for nd in range(2):
+                parse_configurations(self.dataset[nd].get('results'))
+                parse_scf(sec_run.calculation[-1], self.dataset[nd].get('results'))
+
+                # relaxations
+                for step in self.dataset[nd].get('relaxation', []):
+                    self.parse_system(step)
+                    parse_configurations(step)
+                    parse_scf(sec_run.calculation[-1], step)
         parse_dos()
-        self.parse_bandstructure(2, sec_run.calculation[-1].energy.fermi)
+        self.parse_bandstructure(nd + 1, sec_run.calculation[-1].energy.fermi)
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
@@ -982,11 +1082,11 @@ class AbinitParser:
     def reuse_parser(self, parser):
         self.out_parser.quantities = parser.out_parser.quantities
 
-    # def get_mainfile_keys(self, filepath):
-        # self.out_parser.mainfile = filepath
-        # if self.out_parser.get('gw_flag', None) in self._gw_flag_map.keys():
-        #    return ['GW', 'GW_workflow']
-        # return True
+    def get_mainfile_keys(self, filepath):
+        self.out_parser.mainfile = filepath
+        if len(self.optdriver) == 4 and self.optdriver[-1] == 4 or self.optdriver[-1] == 66:
+            return ['GW', 'GW_workflow']
+        return True
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
@@ -1035,23 +1135,23 @@ class AbinitParser:
 
         # Parse DFT method
         if self._calculation_type == 'gw':
-            # self.parse_gw()
-            pass
+            self.parse_gw()
         else:
             self.parse_method()
             self.parse_datasets()
 
         self.parse_workflow()
 
-        # gw_archive = self._child_archives.get('GW')
-        # if gw_archive is not None and self.out_parser.get('gw_flag', None) in self._gw_flag_map.keys():
-        #    GW single point
-        #    p = AbinitParser()
-        #    p._calculation_type = 'gw'
-        #    p.parse(filepath, gw_archive, logger)
+        self.optdriver = self.out_parser.input_vars.get('optdriver', [])
+        gw_archive = self._child_archives.get('GW')
+        if gw_archive is not None:
+            # GW single point
+            p = AbinitParser()
+            p._calculation_type = 'gw'
+            p.parse(filepath, gw_archive, logger)
 
-        #    GW workflow
-        #    gw_workflow_archive = self._child_archives.get('GW_workflow')
-        #    self.parse_gw_workflow(gw_archive, gw_workflow_archive)
+            # GW workflow
+            # gw_workflow_archive = self._child_archives.get('GW_workflow')
+            # self.parse_gw_workflow(gw_archive, gw_workflow_archive)
 
         print("finished")
