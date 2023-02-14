@@ -28,7 +28,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataText
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, Electronic, Smearing, Scf, DFT, XCFunctional,
-    Functional, GW as GWMethod)
+    Functional, KMesh, GW as GWMethod)
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry, Dos,
@@ -809,6 +809,21 @@ class AbinitParser:
                 else:
                     sec_xc_functional.contributions.append(Functional(name=value))
 
+        # Parsing KMesh
+        if self.out_parser.get_input_var('kptopt', 1, 4) < 0:  # negative kptopt sets band structure
+            return
+        sec_k_mesh = sec_method.m_create(KMesh)
+        # Two exclusive input vars: ngkpt and kptrlatt
+        for key_var in ['ngkpt', 'kptrlatt']:
+            value = self.out_parser.get_input_var(key_var, 1)
+            if value is not None:
+                if key_var == 'ngkpt':
+                    sec_k_mesh.generation_method = 'Monkhorst-Pack'
+                    sec_k_mesh.grid = value
+                    sec_k_mesh.n_points = np.prod(value)
+                elif key_var == 'kptrlatt':  # TODO cover kptrlatt and nshift=1, 2, 4, 8 situations
+                    pass
+
     def parse_gw(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
@@ -936,6 +951,8 @@ class AbinitParser:
         '''
 
     def parse_bandstructure(self, nd, energy_fermi):
+        if self.out_parser.get_input_var('kptopt', 1, 4) > 0:  # negative kptopt sets band structure
+            return
         sec_run = self.archive.run[-1]
         sec_scc = sec_run.calculation[-1]  # saving band structure after the dataset 2
 

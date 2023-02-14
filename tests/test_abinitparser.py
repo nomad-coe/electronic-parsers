@@ -67,11 +67,6 @@ def test_scf(parser):
     assert sec_scc.energy.kinetic_electronic.value.magnitude == approx(1.3343978e-17)
     assert len(sec_scc.scf_iteration) == 5
     assert sec_scc.scf_iteration[1].energy.total.value.magnitude == approx(-3.86541222e-17)
-    sec_bands = sec_scc.band_structure_electronic[0]
-    assert sec_bands.energy_fermi.magnitude == approx(8.450493195054157e-19)
-    assert len(sec_bands.segment) == 1
-    assert sec_bands.segment[0].n_bands == 5
-    assert sec_bands.segment[0].n_kpoints == 2
 
 
 def test_relax(parser):
