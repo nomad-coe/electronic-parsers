@@ -939,10 +939,7 @@ class AbinitParser:
         sec_run = self.archive.run[-1]
         sec_scc = sec_run.calculation[-1]  # saving band structure after the dataset 2
 
-        sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
-        sec_k_band.energy_fermi = energy_fermi
-
-        data = self.dataset[nd - 1].get('results').get('eigenvalues', None)
+        data = self.dataset[nd - 1].get('results', {}).get('eigenvalues', None)
         if data is None:
             return
         nsppol = self.out_parser.get_input_var('nsppol', nd, 1)
@@ -958,6 +955,8 @@ class AbinitParser:
             occs = np.reshape(occs, (nsppol, len(occs) // nsppol, np.size(occs) // len(occs)))
 
         # TODO is this is good enough or should we parse ndivsm?
+        sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
+        sec_k_band.energy_fermi = energy_fermi
         for k in range(len(kpts)):
             if k > 0:
                 sec_k_band_segment = sec_k_band.m_create(BandEnergies)
@@ -1022,8 +1021,10 @@ class AbinitParser:
                 sec_energy = sec_scf_iteration.m_create(Energy)
                 sec_energy.total = EnergyEntry(value=energy[0] * ureg.hartree)
 
-        def parse_dos():
-            sec_scc = sec_run.calculation[-1]
+        def parse_dos(sec_scc):
+            if not sec_scc:
+                return
+
             # Identifying the DS2_DOS files
             file_root = self.out_parser.get('x_abinit_output_files_root')
             if file_root is None:
@@ -1052,7 +1053,7 @@ class AbinitParser:
         if len(self.dataset) == 1:
             nd = 0
             parse_configurations(self.dataset[nd].get('results'))
-            parse_scf(sec_run.calculation[-1], self.dataset[nd].get('results'))
+            parse_scf(sec_run.calculation[-1], self.dataset[nd])
 
             # relaxations
             for step in self.dataset[nd].get('relaxation', []):
@@ -1070,8 +1071,9 @@ class AbinitParser:
                     self.parse_system(step)
                     parse_configurations(step)
                     parse_scf(sec_run.calculation[-1], step)
-        parse_dos()
-        self.parse_bandstructure(nd + 1, sec_run.calculation[-1].energy.fermi)
+        parse_dos(sec_run.calculation[-1])
+        if sec_run.calculation[-1].energy.fermi and self.dataset[nd].get('results'):
+            self.parse_bandstructure(nd + 1, sec_run.calculation[-1].energy.fermi)
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
@@ -1084,12 +1086,13 @@ class AbinitParser:
 
     def get_mainfile_keys(self, filepath):
         self.out_parser.mainfile = filepath
-        if len(self.optdriver) == 4 and self.optdriver[-1] == 4 or self.optdriver[-1] == 66:
+        optdriver = self.out_parser.input_vars.get('optdriver', [])
+        if len(optdriver) == 4 and (optdriver[-1] == 4 or optdriver[-1] == 66):
             return ['GW', 'GW_workflow']
         return True
 
     def parse(self, filepath, archive, logger):
-        self.filepath = os.path.abspath(filepath)
+        self.filepath = filepath
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
@@ -1142,16 +1145,14 @@ class AbinitParser:
 
         self.parse_workflow()
 
-        self.optdriver = self.out_parser.input_vars.get('optdriver', [])
         gw_archive = self._child_archives.get('GW')
-        if gw_archive is not None:
+        optdriver = self.out_parser.input_vars.get('optdriver', [])
+        if gw_archive is not None and len(optdriver) == 4 and (optdriver[-1] == 4 or optdriver[-1] == 66):
             # GW single point
             p = AbinitParser()
             p._calculation_type = 'gw'
             p.parse(filepath, gw_archive, logger)
 
             # GW workflow
-            # gw_workflow_archive = self._child_archives.get('GW_workflow')
-            # self.parse_gw_workflow(gw_archive, gw_workflow_archive)
-
-        print("finished")
+            gw_workflow_archive = self._child_archives.get('GW_workflow')
+            self.parse_gw_workflow(gw_archive, gw_workflow_archive)
