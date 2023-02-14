@@ -32,7 +32,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, ScfIteration, BandEnergies, Charges, ChargesValue,
-    ExcitedStates
+    Spectra
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
@@ -806,12 +806,12 @@ class OrcaParser:
         # excitations
         spectrum = section.get('tddft', {}).get('absorption_spectrum_electric')
         if spectrum is not None:
-            sec_excited = sec_scc.m_create(ExcitedStates)
+            sec_spectra = sec_scc.m_create(Spectra)
             spectrum = [val for val in spectrum if len(val) == 8]
             spectrum = np.transpose(spectrum)
-            sec_excited.excitation_energies = (spectrum[1] * ureg.c * ureg.h / ureg.cm)
-            sec_excited.oscillator_strengths = spectrum[3]
-            sec_excited.transition_dipole_moments = np.transpose(
+            sec_spectra.excitation_energies = (spectrum[1] * ureg.c * ureg.h / ureg.cm)
+            sec_spectra.oscillator_strengths = spectrum[3]
+            sec_spectra.transition_dipole_moments = np.transpose(
                 spectrum[5:7]) * ureg.elementary_charge * ureg.bohr
 
         # timings
