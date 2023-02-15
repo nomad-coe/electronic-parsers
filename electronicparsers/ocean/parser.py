@@ -23,15 +23,9 @@ import logging
 from ase.data import chemical_symbols
 
 from nomad.units import ureg
-from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.method import (
-    Method, DFT, Electronic, Smearing, XCFunctional, Functional,
-    GW as GWMethod, Scf, BasisSet, KMesh
-)
-from nomad.datamodel.metainfo.simulation.system import (
-    System, Atoms
-)
+from nomad.datamodel.metainfo.simulation.system import System, Atoms
+from nomad.datamodel.metainfo.simulation.method import Method, BSE, KMesh
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, EnergyEntry, Charges,
     Forces, ForcesEntry, ScfIteration, BandGap
@@ -42,6 +36,10 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, GW as GW2, GWResults
 )
+from .metainfo.ocean import (
+    x_ocean_bse_parameters, x_ocean_screen_parameters, x_ocean_core_haydock_parameters,
+    x_ocean_core_gmres_parameters
+)
 
 
 class OceanParser:
@@ -51,6 +49,11 @@ class OceanParser:
             'qe': 'QuantumESPRESSO',
             'abi': 'ABINIT'
         }
+        self._type_bse_map = {
+            'haydock': 'lanczos-haydock',
+            'gmres': 'gmres'
+        }
+        self.mode_bse = ['emission', 'absorption']
 
     def parse_system(self, data):
         sec_run = self.archive.run[-1]
@@ -66,7 +69,53 @@ class OceanParser:
             sec_atoms.positions = data.get('xangst') * ureg.angstrom
 
     def parse_method(self, data):
-        pass
+        sec_run = self.archive.run[-1]
+        sec_method = sec_run.m_create(Method)
+
+        # KMesh section
+        sec_k_mesh = sec_method.m_create(KMesh)
+        sec_k_mesh.grid = data['bse'].get('kmesh')
+
+        # BSE section
+        sec_bse = sec_method.m_create(BSE)
+        sec_bse.type = self._type_bse_map[data['bse']['core'].get('solver')]
+        sec_bse.mode = self.mode_bse[data['bse']['core'].get('strength')]
+        sec_bse.n_empty_states = data['bse'].get('nbands')
+        sec_bse.core_hole_broadening = data['bse']['core'].get('broaden')
+        # screening parsing
+        sec_bse.screening_type = data['screen'].get('mode')
+        sec_bse.dielectric_infinity = data['structure'].get('epsilon')
+        sec_bse.n_empty_states_screening = data['screen'].get('nbands')
+        sec_bse.k_mesh_screening = KMesh(grid=data['screen'].get('kmesh'))
+
+        # code-specific parameters
+        # BSE
+        sec_bse_ocean = sec_method.m_create(x_ocean_bse_parameters)
+        sec_bse_ocean.x_ocean_screen_radius = data['bse']['core'].get('screen_radius')
+        sec_bse_ocean.x_ocean_xmesh = data['bse'].get('xmesh')
+        if sec_bse.type == 'lanczos-haydock':
+            sec_haydock = sec_bse_ocean.m_create(x_ocean_core_haydock_parameters)
+            sec_haydock.x_ocean_converge_spacing = data['bse']['core']['haydock']['converge'].get('spacing')
+            sec_haydock.x_ocean_converge_thresh = data['bse']['core']['haydock']['converge'].get('thresh')
+            sec_haydock.x_ocean_niter = data['bse']['core']['haydock'].get('niter')
+        elif sec_bse.type == 'gmres':
+            sec_gmres = sec_bse_ocean.m_create(x_ocean_core_gmres_parameters)
+            gmres_keys = ['echamp', 'elist', 'erange', 'estyle', 'ffff', 'gprc', 'nloop']
+            for key in gmres_keys:
+                setattr(sec_gmres, f'x_ocean_{key}', data['bse']['core']['gmres'].get(key))
+        # screening
+        sec_bse_screen = sec_method.m_create(x_ocean_screen_parameters)
+        screen_keys = [
+            'all_augment', 'augment', 'convertstyle', 'dft_energy_range', 'inversionstyle',
+            'kshift', 'mimic_exciting_bands', 'shells']
+        screen_dicts = [
+            'core_offset', 'final', 'grid']
+        for key in screen_keys:
+            setattr(sec_bse_screen, f'x_ocean_{key}', data['screen'].get(key))
+        for keys in screen_dicts:
+            for subkeys in data['screen'][keys].keys():
+                setattr(sec_bse_screen, f'x_ocean_{keys}_{subkeys}', data['screen'][keys].get(subkeys))
+        sec_bse_screen.x_ocean_model_flavor = data['screen']['model'].get('flavor')
 
     def parse_scc(self, data):
         pass
