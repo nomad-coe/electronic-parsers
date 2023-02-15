@@ -40,3 +40,10 @@ class Program(simulation.run.Program):
         description='''
         Commit hash label from the OCEAN git repository.
         ''')
+
+    x_ocean_original_dft_code = Quantity(
+        type=str,
+        description='''
+        DFT code (QuantumESPRESSO or ABINIT) used in the initial step.
+        '''
+    )

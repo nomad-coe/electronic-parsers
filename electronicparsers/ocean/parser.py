@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 import numpy as np
+import json
 import os
 import logging
 from ase.data import chemical_symbols
@@ -43,102 +44,62 @@ from nomad.datamodel.metainfo.simulation.workflow import (
 )
 
 
-class OutParser(TextParser):
-    def __init__(self):
-        super().__init__(None)
-
-    def init_quantities(self):
-        self._quantities = [
-            Quantity(
-                'program_version', r'\s*Version\s*([0-9.]+)',
-                dtype=str, flatten=False),
-            Quantity(
-                'commit_hash', r'\s*commit hash:\s*(\w+)'
-            )
-        ]
-
-
-class InParser(TextParser):
-    def __init__(self):
-        super().__init__(None)
-
-    def init_quantities(self):
-        self._quantities = [
-            Quantity(
-                'acell', r'[\n\r]acell\s*\{\s*([\d\.\s]+)\s*\}', repeats=False),
-            Quantity(
-                'rprim', r'[\n\r]rprim\s*\{([\s\S]+?)(?:[\n\r]\s*\}[\n\r]ntypat)', repeats=False),
-            Quantity(
-                'znucl', r'[\n\r]znucl\s*\{\s*([\d\s]+)\s*\}', repeats=False),
-            Quantity(
-                'typat', r'[\n\r]typat\s*\{\s*([\d\s]+)\s*\}', repeats=False)
-            # Quantity(
-            #    'xred')
-        ]
-
-
 class OceanParser:
     def __init__(self):
         self._calculation_type = 'bse'
-        self.out_parser = OutParser()
-        self.in_parser = InParser()
+        self._dft_code_map = {
+            'qe': 'QuantumESPRESSO',
+            'abi': 'ABINIT'
+        }
 
-    def parse_system(self):
+    def parse_system(self, data):
         sec_run = self.archive.run[-1]
-        if not self.in_parser.mainfile:
-            return
         sec_atoms = sec_run.m_create(System).m_create(Atoms)
 
-        # System in the input file in ABINIT style
-        acell = self.in_parser.get('acell', None)
-        rprim = np.reshape(self.in_parser.get('rprim', None), (3, 3))
-        if acell and rprim:
-            sec_atoms.lattice_vectors = acell[:] * rprim[:] * ureg.bohr
-            sec_atoms.periodic = [acell[:] * rprim[:] is not None] * 3
+        if data.get('avecs'):
+            sec_atoms.lattice_vectors = data.get('avecs')
+            sec_atoms.periodic = [data.get('avecs')[:] is not None] * 3
+            sec_atoms.lattice_vectors_reciprocal = data.get('bvecs')
 
-        znucl = self.in_parser.get('znucl', None)
-        typat = self.in_parser.get('typat', None)
-        if znucl and typat:
-            sec_atoms.labels = [chemical_symbols[int(znucl[n_at - 1])] for n_at in typat]
-        # xred = self.in_parser.get('xred', [])
-        # if xred:
-            # sec_atoms.positions = ...
+        if data.get('znucl') and data.get('typat'):
+            sec_atoms.labels = [chemical_symbols[int(data.get('znucl')[n_at - 1])] for n_at in data.get('typat')]
+            sec_atoms.positions = data.get('xangst') * ureg.angstrom
 
-    def parse_method(self):
+    def parse_method(self, data):
         pass
 
-    def parse_scc(self):
+    def parse_scc(self, data):
         pass
 
-    def parse(self, filepath, archive, logger, **kwargs):
+    def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.maindir = os.path.dirname(self.filepath)
         self.archive = archive
         self.logger = logger if logger is not None else logging
 
-        in_files = [f for f in os.listdir(self.maindir) if f.endswith('.in')]
-        if len(in_files) > 0:
-            if len(in_files) > 1:
-                self.logger.warning('Found more than one input files -> using the first one in the parser. '
-                                    'Please, check it out!')
-            self.in_parser.mainfile = os.path.join(self.maindir, in_files[0])
+        try:
+            data = json.load(open(self.filepath))
+        except Exception:
+            self.logger.error('Error opening json output file.')
+            data = None
 
         sec_run = self.archive.m_create(Run)
 
         # Program
         sec_program = sec_run.m_create(Program)
         sec_program.name = 'OCEAN'
-        sec_program.version = self.out_parser.get('program_version', '')
-        sec_program.x_ocean_commit_hash = self.out_parser.get('commit_hash', '')
+        sec_program.version = data['version'].get('.')
+        sec_program.x_ocean_commit_hash = data['version'].get('hash')
+        sec_program.x_ocean_original_dft_code = self._dft_code_map.get(data['dft'].get('program'))
 
         # System
-        self.parse_system()
+        self.parse_system(data['structure'])
 
         # Method
-        self.parse_method()
+        self.parse_method(data)
 
         # Calculation
-        self.parse_scc()
+        self.parse_scc(data)
 
         # Workflow
         sec_workflow = self.archive.m_create(Workflow)
