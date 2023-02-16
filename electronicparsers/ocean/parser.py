@@ -184,7 +184,7 @@ class OceanParser:
                 sec_spectra = sec_scc.m_create(Spectra)
                 sec_spectra.type = self.data['calc'].get('mode').upper()
                 sec_spectra.n_energies = len(data_spct)
-                sec_spectra.excitation_energies = data_spct[:, 0]
+                sec_spectra.excitation_energies = data_spct[:, 0] * ureg.eV
                 sec_spectra.intensities = data_spct[:, 2]
 
                 ifile += 1

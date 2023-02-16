@@ -283,6 +283,7 @@ class x_ocean_photon_parameters(MSection):
 
     x_ocean_photon_energy = Quantity(
         type=np.float64,
+        unit='electron_volt',
         description='''
         Approximate energy of the edge which only matters for 'quad' where it is converted
         into a momentum magnitude for the quadrupole term.
