@@ -44,7 +44,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, DFT, HubbardKanamoriModel, AtomParameters, XCFunctional,
-    Functional, Electronic, Scf
+    Functional, Electronic, Scf, KMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -333,7 +333,7 @@ class OutcarTextParser(TextParser):
                 str_operation=str_to_mass_valence),
             Quantity(
                 'kpoints',
-                r'k-points in reciprocal lattice and weights:[\s\S]+?\n([\d\.\s\-]+)',
+                r'Following reciprocal coordinates:[\s\S]+?\n([\d\.\s\-]+)',
                 repeats=False, dtype=float),
             Quantity(
                 'nbands', r'NBANDS\s*=\s*(\d+)', dtype=int, repeats=False),
@@ -432,8 +432,9 @@ class OutcarContentParser(ContentParser):
             if kpts_occs is not None:
                 kpts_occs = np.reshape(kpts_occs, (len(kpts_occs) // 4, 4)).T
                 self._kpoints_info['k_mesh_points'] = kpts_occs[0:3].T
-                self._kpoints_info['k_mesh_weights'] = kpts_occs[3].T
-
+                k_mults = kpts_occs[3].T
+                self._kpoints_info['k_mesh_multiplicities'] = k_mults
+                self._kpoints_info['k_mesh_weights'] = k_mults / np.sum(k_mults)
         return self._kpoints_info
 
     @property
@@ -913,7 +914,10 @@ class RunContentParser(ContentParser):
             if method:
                 self._kpoints_info['x_vasp_k_points_generation_method'] = method['param']
             divisions = self._get_key_values(
-                '/modeling[0]/kpoints[0]/generation[0]/i[@name="divisions"]')
+                '/modeling[0]/kpoints[0]/generation[0]/v[@name="divisions"]')
+            if not divisions:
+                divisions = self._get_key_values(
+                    '/modeling[0]/kpoints[0]/generation[0]/i[@name="divisions"]')
             if divisions:
                 self._kpoints_info['divisions'] = divisions['divisions']
             volumeweight = self._get_key_values('/modeling[0]/kpoints[0]/generation[0]/i[@name="volumeweight"]')
@@ -1168,6 +1172,12 @@ class VASPParser:
             'LDAU', False) else 'DFT')
 
         # kpoints
+        k_mesh_generation_method = self.parser.kpoints_info.get('x_vasp_k_points_generation_method', None)
+        if k_mesh_generation_method in ['Gamma', 'Monkhorst-Pack']:
+            sec_kmesh = sec_method.m_create(KMesh)
+            sec_kmesh.generation_method = k_mesh_generation_method
+            sec_kmesh.grid = self.parser.kpoints_info.get('divisions', None)
+            sec_method.k_mesh = sec_kmesh
         for key, val in self.parser.kpoints_info.items():
             if val is not None:
                 try:
@@ -1412,6 +1422,8 @@ class VASPParser:
                 eigs = eigs * ureg.eV
                 sec_eigenvalues = sec_scc.m_create(BandEnergies)
                 sec_eigenvalues.kpoints = kpoints
+                sec_eigenvalues.kpoints_weights = self.parser.kpoints_info.get('k_mesh_weights', [])
+                sec_eigenvalues.kpoints_multiplicities = self.parser.kpoints_info.get('k_mesh_multiplicities', [])
                 sec_eigenvalues.energies = eigs
                 sec_eigenvalues.occupations = occs
 

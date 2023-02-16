@@ -79,6 +79,11 @@ def test_vasprunxml_static(parser):
     assert np.shape(sec_scc.forces.total.value) == (1, 3)
     assert sec_scc.stress.total.value[2][2].magnitude == approx(-2.78384438e+08)
 
+    # Check the k-point sampling
+    k_mesh = sec_run.method[-1].k_mesh
+    assert all(k_mesh.grid == [32] * 3)
+    assert k_mesh.generation_method == "Monkhorst-Pack"
+
     # test DOS values
     assert len(sec_scc.dos_electronic[0].energies) == 5000
     assert sec_scc.dos_electronic[0].total[0].value[1838].magnitude == approx((.1369 / ureg.eV).to(1 / ureg.joule).magnitude)
@@ -99,9 +104,15 @@ def test_vasprunxml_relax(parser):
 
     assert len(archive.run[0].method) == 1
 
+    sec_run = archive.run[0]
     sec_systems = archive.run[0].system
     assert len(sec_systems) == 3
     assert sec_systems[1].atoms.positions[1][0].magnitude == approx(3.2771907e-10)
+
+    # Check the k-point sampling
+    k_mesh = sec_run.method[-1].k_mesh
+    assert all(k_mesh.grid == [16] * 3)
+    assert k_mesh.generation_method == "Gamma"
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 3
@@ -157,10 +168,16 @@ def test_dos_silicon(silicon_dos):
     """Tests that the DOS of Si2 is parsed correctly.
     Computed using VASP 5.2.2
     """
+
     scc = silicon_dos.run[-1].calculation[0]
+    k_mesh = silicon_dos.run[-1].method[-1].k_mesh
     dos = scc.dos_electronic[-1]
     energies = dos.energies.to(ureg.electron_volt).magnitude
     values = np.array([d.value.magnitude for d in dos.total])
+
+    # Check the k-point sampling
+    assert all(k_mesh.grid == [15] * 3)
+    assert k_mesh.generation_method == "Monkhorst-Pack"
 
     # Check that an energy reference is reported
     energy_reference = scc.energy.fermi
@@ -215,6 +232,7 @@ def test_outcar(parser):
     assert np.shape(sec_eigs.energies[0][144]) == (15,)
     assert sec_eigs.energies[0][9][14].magnitude == approx(1.41810256e-18)
     assert sec_eigs.occupations[0][49][9] == 2.0
+    assert sec_eigs.kpoints_multiplicities[1] == 8
 
     # check DOS
     sec_dos = sec_scc.dos_electronic[0]
@@ -240,7 +258,15 @@ def test_hybrid(parser):
     archive = EntryArchive()
     parser.parse('tests/data/vasp/hybrid_vasprun.xml.gz', archive, None)
 
-    sec_xc_functional = archive.run[-1].method[-1].dft.xc_functional
+    sec_run = archive.run[-1]
+    sec_method = sec_run.method[-1]
+    k_mesh = sec_method.k_mesh
+
+    # Check the k-point sampling
+    assert all(k_mesh.grid == [1] * 3)
+    assert k_mesh.generation_method == "Gamma"
+
+    sec_xc_functional = sec_method.dft.xc_functional
     assert sec_xc_functional.hybrid[0].parameters['exact_exchange_mixing_factor'] == .25
     assert sec_xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE06'
 
@@ -249,7 +275,15 @@ def test_metagga(parser):
     archive = EntryArchive()
     parser.parse('tests/data/vasp/hle17_vasprun.xml.gz', archive, None)
 
-    sec_xc_functional = archive.run[-1].method[-1].dft.xc_functional
+    sec_run = archive.run[-1]
+    sec_method = sec_run.method[-1]
+    k_mesh = sec_method.k_mesh
+
+    # Check the k-point sampling
+    assert all(k_mesh.grid == [1] * 3)
+    assert k_mesh.generation_method == "Gamma"
+
+    sec_xc_functional = sec_method.dft.xc_functional
     assert sec_xc_functional.contributions[0].name == 'MGGA_XC_HLE17'
 
 
