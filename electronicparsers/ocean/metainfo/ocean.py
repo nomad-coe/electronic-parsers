@@ -17,10 +17,8 @@
 # limitations under the License.
 #
 import numpy as np            # pylint: disable=unused-import
-import typing                 # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
-    MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference
+    MSection, Package, Quantity, Section, SubSection, MEnum
 )
 from nomad.datamodel.metainfo import simulation
 
@@ -108,7 +106,7 @@ class x_ocean_core_gmres_parameters(MSection):
 
 class x_ocean_bse_parameters(MSection):
     '''
-    Input parameters for the BSE type of calculation: haydock or gmres
+    Input parameters for the BSE type of calculation: haydock or gmres.
     '''
 
     m_def = Section(validate=False)
@@ -135,7 +133,7 @@ class x_ocean_bse_parameters(MSection):
 
 class x_ocean_screen_parameters(MSection):
     '''
-    Input parameters for the screening
+    Input parameters for the screening.
     '''
 
     m_def = Section(validate=False)
@@ -226,7 +224,6 @@ class x_ocean_screen_parameters(MSection):
 
     x_ocean_inversionstyle = Quantity(
         type=str,
-        shape=['*'],
         description='''
         ''')
 
@@ -253,9 +250,49 @@ class x_ocean_screen_parameters(MSection):
         ''')
 
 
+class x_ocean_photon_parameters(MSection):
+    '''
+    Input photon parameters.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_ocean_operator = Quantity(
+        type=MEnum(["dipole", "quad", "NRIXS"]),
+        description='''
+        Photon operator:
+            dipole: e . r
+            quad: e . r + i / (2 * (e . r) * (q . r))
+            NRIXS: exp(i q . r)
+        ''')
+
+    x_ocean_polarization_direction = Quantity(
+        type=np.float64,
+        shape=[3],
+        description='''
+        Polarization direction.
+        ''')
+
+    x_ocean_momentum_transfer = Quantity(
+        type=np.float64,
+        shape=[3],
+        description='''
+        Momentum transfer which would be important for 'quad' or for non-resonant
+        inelastic x-ray scattering or x-ray Raman scattering 'qRaman'.
+        ''')
+
+    x_ocean_photon_energy = Quantity(
+        type=np.float64,
+        description='''
+        Approximate energy of the edge which only matters for 'quad' where it is converted
+        into a momentum magnitude for the quadrupole term.
+        ''')
+
+
 class Method(simulation.run.Method):
     '''
-    Contains the specifications of the program.
+    Section containing the various parameters that define the theory and the
+    approximations (convergence, thresholds, etc.) behind the calculation.
     '''
 
     m_def = Section(validate=False, extends_base_section=True)
@@ -263,6 +300,79 @@ class Method(simulation.run.Method):
     x_ocean_bse = SubSection(sub_section=x_ocean_bse_parameters.m_def, repeats=False)
 
     x_ocean_screen = SubSection(sub_section=x_ocean_screen_parameters.m_def, repeats=False)
+
+    x_ocean_edges = Quantity(
+        type=np.int32,
+        shape=['*'],
+        description='''
+        Each edge entry consists of 3 integers. When the first is greater than 0 it denotes the index
+        of the atom (in the order set by XRED), and when it is less than zero it sets the (negative) Z,
+        allowing you to specify all of a given element. The second and third numbers are the principle
+        and angular quantum number. For instance ` 1 2 1 ` would run the L 2,3 edge of the first atom
+        in the input, while ` -22 2 1 ` would run the L 2,3 edges of every titanium atom in the system.
+        ''')
+
+    x_ocean_photon = SubSection(sub_section=x_ocean_photon_parameters.m_def, repeats=True)
+
+
+class x_ocean_lanczos_results(MSection):
+    '''
+    Results from the Lanczos calculation.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_ocean_n_tridiagonal_matrix = Quantity(
+        type=np.int32,
+        description='''
+        Size of the triagonal matrix.
+        ''')
+
+    x_ocean_scaling_factor = Quantity(
+        type=np.float64,
+        description='''
+        The scaling factor is because the Lanczos algorithm is done by setting the norm of
+        the initial vector to 1.
+        ''')
+
+    x_ocean_tridiagonal_matrix = Quantity(
+        type=np.float64,
+        shape=['x_ocean_n_tridiagonal_matrix', 2],
+        description='''
+        a's and b's values of the tri-diagonal matrix. Order is:
+        [
+            [a1, 0],
+            [a2, b1],
+            [a3, b2],
+            ...
+            [aN, bN-1],
+            [0, bN]
+        ]
+        with N being between 1 and n_tridiagonal_matrix - 1
+        ''')
+
+    x_ocean_eigenvalues = Quantity(
+        type=np.float64,
+        shape=['x_ocean_n_tridiagonal_matrix', 3],
+        description='''
+        (i, j, E_n) eigenvalues of the tri-diagonal matrix.
+        ''')
+
+
+class Calculation(simulation.run.Calculation):
+    '''
+    Contains computed properties of a configuration as defined by the corresponding
+    section system and with the simulation method defined by section method. The
+    references to the system and method sections are given by system_ref and method_ref,
+    respectively.
+
+    Properties derived from a group of configurations are not included in this section but
+    can be accessed in section workflow.
+    '''
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_ocean_lanczos = SubSection(sub_section=x_ocean_lanczos_results.m_def, repeats=True)
 
 
 class Program(simulation.run.Program):
