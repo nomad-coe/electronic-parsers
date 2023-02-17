@@ -83,18 +83,22 @@ class OceanParser:
         sec_atoms = sec_run.m_create(System).m_create(Atoms)
 
         if data.get('avecs'):
-            sec_atoms.lattice_vectors = data.get('avecs') * ureg.angstrom
+            sec_atoms.lattice_vectors = data.get('avecs') * ureg.bohr
             sec_atoms.periodic = [data.get('avecs')[:] is not None] * 3
-            sec_atoms.lattice_vectors_reciprocal = data.get('bvecs') / ureg.angstrom
+            sec_atoms.lattice_vectors_reciprocal = np.array(data.get('bvecs')) / ureg.bohr
 
         if data.get('znucl') and data.get('typat'):
             sec_atoms.labels = [chemical_symbols[int(data.get('znucl')[n_at - 1])] for n_at in data.get('typat')]
-            sec_atoms.positions = data.get('xangst') * ureg.angstrom
+            sec_atoms.positions = data.get('xangst') * ureg.bohr
 
-    def parse_photon_polarization(self, archive):
+    def parse_photon_polarization(self, archive, files, index):
         sec_run = archive.run[-1]
         sec_photon = sec_run.m_create(Method).m_create(Photon)
 
+        # NOT IDEAL: photonN should be in the same folder: patch due for the upload mr5PRdbVQUm-d7awz3Q9Uw
+        if len(files[1]) == 0:
+            return
+        self.photon_parser.mainfile = os.path.join(self.maindir, files[1][index])
         sec_photon.multipole_type = self.photon_parser.get('operator')
         sec_photon.polarization = self.photon_parser.get('vectors')[0]
         if sec_photon.multipole_type in ['quad', 'NRIXS', 'qRaman']:
@@ -162,13 +166,16 @@ class OceanParser:
         # setting the core level (either K=1s or L23=2p depenging on the first edge found)
         sec_bse.core_level = self._core_level_map[str(edges[0][-2:])]
 
-    def parse_scc(self, archive):
+    def parse_scc(self, archive, files, index):
         sec_run = archive.run[-1]
         sec_scc = sec_run.m_create(Calculation)
         sec_scc.system_ref = sec_run.system[-1]
         sec_scc.method_ref = sec_run.method[-1]  # ref to BSE method section
 
         # absorption spectra (main calculation)
+        if len(files[0]) == 0:
+            return
+        self.spectra_parser.mainfile = os.path.join(self.maindir, files[0][index])
         data_spct = self.spectra_parser.data
         sec_spectra = sec_scc.m_create(Spectra)
         sec_spectra.type = self.data['calc'].get('mode').upper()
@@ -177,6 +184,9 @@ class OceanParser:
         sec_spectra.intensities = data_spct[:, 2]
 
         # lanczos matrices
+        if len(files[2]) == 0:
+            return
+        self.lanczos_parser.mainfile = os.path.join(self.maindir, files[2][index])
         data_lancz = self.lanczos_parser.get('data')
         sec_lanczos = sec_scc.m_create(x_ocean_lanczos_results)
         n_dimension = int(data_lancz[0][0]) + 1
@@ -189,10 +199,7 @@ class OceanParser:
         sec_lanczos.x_ocean_eigenvalues = data_lancz[n_dimension + 1:]
 
     def parse_spectra_entries(self, archive, files, index):
-        self.spectra_parser.mainfile = os.path.join(self.maindir, files[0][index])
-        self.photon_parser.mainfile = os.path.join(self.maindir, files[1][index])
-        self.lanczos_parser.mainfile = os.path.join(self.maindir, files[2][index])
-
+        # For each spectra, we parse the data in one entry
         try:
             data = json.load(open(self.filepath))
         except Exception:
@@ -214,11 +221,11 @@ class OceanParser:
         self.parse_system(archive, self.data['structure'])
 
         # Method
-        self.parse_photon_polarization(archive)
+        self.parse_photon_polarization(archive, files, index)
         self.parse_method(archive)
 
         # Calculation
-        self.parse_scc(archive)
+        self.parse_scc(archive, files, index)
 
         # Workflow
         sec_workflow = archive.m_create(Workflow)
@@ -229,7 +236,7 @@ class OceanParser:
     def get_mainfile_keys(self, filepath):
         absspct_files = [f for f in os.listdir(os.path.dirname(filepath)) if f.startswith('absspct')]
         absspct_files.sort()
-        if absspct_files:
+        if len(absspct_files) > 1:
             keys = []
             for f in absspct_files:
                 keys.append(f'BSE{f[-2:]}')
@@ -262,3 +269,4 @@ class OceanParser:
                 else:
                     bse_archive = self._child_archives.get(f'BSE0{index + 1}')
                     self.parse_spectra_entries(bse_archive, files, index)
+        print('hey')
