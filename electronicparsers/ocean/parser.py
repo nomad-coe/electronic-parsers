@@ -26,17 +26,13 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import DataTextParser, TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.method import Method, BSE, KMesh
+from nomad.datamodel.metainfo.simulation.method import Method, Photon, BSE, KMesh
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Spectra
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, Task, GW as GWWorkflow
-from nomad.datamodel.metainfo.workflow2 import TaskReference, Link
-from nomad.datamodel.metainfo.simulation.workflow import (
-    SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
-    GeometryOptimizationMethod, GW as GW2, GWResults
-)
+from nomad.datamodel.metainfo.workflow import Workflow
+from nomad.datamodel.metainfo.simulation.workflow import SinglePoint as SinglePoint2
 from .metainfo.ocean import (
     x_ocean_bse_parameters, x_ocean_screen_parameters, x_ocean_core_haydock_parameters,
-    x_ocean_core_gmres_parameters, x_ocean_photon_parameters, x_ocean_lanczos_results
+    x_ocean_core_gmres_parameters, x_ocean_lanczos_results
 )
 
 
@@ -65,7 +61,9 @@ class OceanParser:
         self.photon_parser = PhotonParser()
         self.spectra_parser = DataTextParser()
         self.lanczos_parser = LanczosParser()
+        self._child_archives = {}
         self._calculation_type = 'bse'
+        self._photon_workflow_level = 0
         self._dft_code_map = {
             'qe': 'QuantumESPRESSO',
             'abi': 'ABINIT'
@@ -80,22 +78,37 @@ class OceanParser:
             '[2, 1]': 'L23'
         }
 
-    def parse_system(self, data):
-        sec_run = self.archive.run[-1]
+    def parse_system(self, archive, data):
+        sec_run = archive.run[-1]
         sec_atoms = sec_run.m_create(System).m_create(Atoms)
 
         if data.get('avecs'):
-            sec_atoms.lattice_vectors = data.get('avecs')
+            sec_atoms.lattice_vectors = data.get('avecs') * ureg.angstrom
             sec_atoms.periodic = [data.get('avecs')[:] is not None] * 3
-            sec_atoms.lattice_vectors_reciprocal = data.get('bvecs')
+            sec_atoms.lattice_vectors_reciprocal = data.get('bvecs') / ureg.angstrom
 
         if data.get('znucl') and data.get('typat'):
             sec_atoms.labels = [chemical_symbols[int(data.get('znucl')[n_at - 1])] for n_at in data.get('typat')]
             sec_atoms.positions = data.get('xangst') * ureg.angstrom
 
-    def parse_method(self):
-        sec_run = self.archive.run[-1]
+    def parse_photon_polarization(self, archive):
+        sec_run = archive.run[-1]
+        sec_photon = sec_run.m_create(Method).m_create(Photon)
+
+        sec_photon.multipole_type = self.photon_parser.get('operator')
+        sec_photon.polarization = self.photon_parser.get('vectors')[0]
+        if sec_photon.multipole_type in ['quad', 'NRIXS', 'qRaman']:
+            sec_photon.momentum_transfer = self.photon_parser.get('vectors')[1]
+        sec_photon.energy = self.photon_parser.get('photon_energy') * ureg.electron_volt
+
+    def parse_method(self, archive):
+        sec_run = archive.run[-1]
         sec_method = sec_run.m_create(Method)
+        if sec_run.m_xpath('method[0].photon'):
+            sec_method.starting_method_ref = sec_run.method[0]
+        else:
+            self.logger.warning('photonN file not found, please check if the files are all '
+                                'in the same folder.')
 
         # KMesh section
         sec_k_mesh = sec_method.m_create(KMesh)
@@ -148,75 +161,37 @@ class OceanParser:
         sec_method.x_ocean_edges = edges
         # setting the core level (either K=1s or L23=2p depenging on the first edge found)
         sec_bse.core_level = self._core_level_map[str(edges[0][-2:])]
-        # photons
-        photon_files = [f for f in os.listdir(self.maindir) if f.startswith('photon')]
-        photon_files.sort()  # making sure 1, 2, 3... are correctly ordered
-        if photon_files:
-            for f in photon_files:
-                self.photon_parser.mainfile = os.path.join(self.maindir, f)
-                sec_photon = sec_method.m_create(x_ocean_photon_parameters)
-                for keys in ['operator', 'photon_energy']:
-                    setattr(sec_photon, f'x_ocean_{keys}', self.photon_parser.get(keys))
-                sec_photon.x_ocean_polarization_direction = self.photon_parser.get('vectors')[0]
-                sec_photon.x_ocean_momentum_transfer = self.photon_parser.get('vectors')[1]
 
-    def parse_scc(self):
-        sec_run = self.archive.run[-1]
+    def parse_scc(self, archive):
+        sec_run = archive.run[-1]
+        sec_scc = sec_run.m_create(Calculation)
+        sec_scc.system_ref = sec_run.system[-1]
+        sec_scc.method_ref = sec_run.method[-1]  # ref to BSE method section
 
-        def initiate_section_calculation(sec_run, i):
-            if sec_run.m_xpath(f'calculation{[i]}'):
-                return sec_run.calculation[i]
-            else:
-                return sec_run.m_create(Calculation)
-
-        # absorption files
-        absspct_files = [f for f in os.listdir(self.maindir) if f.startswith('absspct')]
-        absspct_files.sort()
-        if absspct_files:  # parse absorption spectra
-            ifile = 0
-            for f in absspct_files:
-                self.spectra_parser.mainfile = os.path.join(self.maindir, f)
-                data_spct = self.spectra_parser.data
-
-                # Check whether section calculation is present already from previous files
-                sec_scc = initiate_section_calculation(sec_run, ifile)
-
-                sec_spectra = sec_scc.m_create(Spectra)
-                sec_spectra.type = self.data['calc'].get('mode').upper()
-                sec_spectra.n_energies = len(data_spct)
-                sec_spectra.excitation_energies = data_spct[:, 0] * ureg.eV
-                sec_spectra.intensities = data_spct[:, 2]
-
-                ifile += 1
+        # absorption spectra (main calculation)
+        data_spct = self.spectra_parser.data
+        sec_spectra = sec_scc.m_create(Spectra)
+        sec_spectra.type = self.data['calc'].get('mode').upper()
+        sec_spectra.n_energies = len(data_spct)
+        sec_spectra.excitation_energies = data_spct[:, 0] * ureg.eV
+        sec_spectra.intensities = data_spct[:, 2]
 
         # lanczos matrices
-        abslanc_files = [f for f in os.listdir(self.maindir) if f.startswith('abslanc')]
-        abslanc_files.sort()
-        if abslanc_files:  # parse absorption spectra
-            ifile = 0
-            for f in abslanc_files:
-                self.lanczos_parser.mainfile = os.path.join(self.maindir, f)
-                data_lancz = self.lanczos_parser.get('data')
+        data_lancz = self.lanczos_parser.get('data')
+        sec_lanczos = sec_scc.m_create(x_ocean_lanczos_results)
+        n_dimension = int(data_lancz[0][0]) + 1
+        sec_lanczos.x_ocean_n_tridiagonal_matrix = n_dimension
+        sec_lanczos.x_ocean_scaling_factor = data_lancz[0][1]
+        matrix = [[data_lancz[1], 0.0]]
+        for n in range(2, n_dimension + 1):
+            matrix.append([data_lancz[n][0], data_lancz[n][1]])
+        sec_lanczos.x_ocean_tridiagonal_matrix = matrix
+        sec_lanczos.x_ocean_eigenvalues = data_lancz[n_dimension + 1:]
 
-                # Check whether section calculation is present already from previous files
-                sec_scc = initiate_section_calculation(sec_run, ifile)
-
-                sec_lanczos = sec_scc.m_create(x_ocean_lanczos_results)
-                n_dimension = int(data_lancz[0][0]) + 1
-                sec_lanczos.x_ocean_n_tridiagonal_matrix = n_dimension
-                sec_lanczos.x_ocean_scaling_factor = data_lancz[0][1]
-                matrix = [[data_lancz[1], 0.0]]
-                for n in range(2, n_dimension + 1):
-                    matrix.append([data_lancz[n][0], data_lancz[n][1]])
-                sec_lanczos.x_ocean_tridiagonal_matrix = matrix
-                sec_lanczos.x_ocean_eigenvalues = data_lancz[n_dimension + 1:]
-                ifile += 1
-
-    def parse(self, filepath, archive, logger):
-        self.filepath = filepath
-        self.maindir = os.path.dirname(self.filepath)
-        self.archive = archive
-        self.logger = logger if logger is not None else logging
+    def parse_spectra_entries(self, archive, files, index):
+        self.spectra_parser.mainfile = os.path.join(self.maindir, files[0][index])
+        self.photon_parser.mainfile = os.path.join(self.maindir, files[1][index])
+        self.lanczos_parser.mainfile = os.path.join(self.maindir, files[2][index])
 
         try:
             data = json.load(open(self.filepath))
@@ -226,7 +201,7 @@ class OceanParser:
             return
         self.data = data
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = archive.m_create(Run)
 
         # Program
         sec_program = sec_run.m_create(Program)
@@ -236,14 +211,54 @@ class OceanParser:
         sec_program.x_ocean_original_dft_code = self._dft_code_map.get(data['dft'].get('program'))
 
         # System
-        self.parse_system(self.data['structure'])
+        self.parse_system(archive, self.data['structure'])
 
         # Method
-        self.parse_method()
+        self.parse_photon_polarization(archive)
+        self.parse_method(archive)
 
         # Calculation
-        self.parse_scc()
+        self.parse_scc(archive)
 
         # Workflow
-        sec_workflow = self.archive.m_create(Workflow)
+        sec_workflow = archive.m_create(Workflow)
         sec_workflow.type = 'single_point'
+        workflow = SinglePoint2()
+        archive.workflow2 = workflow
+
+    def get_mainfile_keys(self, filepath):
+        absspct_files = [f for f in os.listdir(os.path.dirname(filepath)) if f.startswith('absspct')]
+        absspct_files.sort()
+        if absspct_files:
+            keys = []
+            for f in absspct_files:
+                keys.append(f'BSE{f[-2:]}')
+            keys.remove('BSE01')  # removing BSE01 as this will be save in the initial call of parse()
+            return keys
+        return True
+
+    def parse(self, filepath, archive, logger):
+        self.filepath = filepath
+        self.archive = archive
+        self.maindir = os.path.dirname(self.filepath)
+        self.logger = logger if logger is not None else logging
+
+        def finding_files(names):
+            if not isinstance(names, list):
+                self.logger.warning('Please, define your attribute names as a list.')
+                return
+            aux_files = []
+            for n in names:
+                files = [f for f in os.listdir(self.maindir) if f.startswith(n)]
+                files.sort()
+                aux_files.append(files)
+            return aux_files
+
+        files = finding_files(['absspct', 'photon', 'abslanc'])
+        if files:
+            for index in range(len(files[0])):
+                if index == 0:
+                    self.parse_spectra_entries(archive, files, index)
+                else:
+                    bse_archive = self._child_archives.get(f'BSE0{index + 1}')
+                    self.parse_spectra_entries(bse_archive, files, index)

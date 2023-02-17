@@ -250,46 +250,6 @@ class x_ocean_screen_parameters(MSection):
         ''')
 
 
-class x_ocean_photon_parameters(MSection):
-    '''
-    Input photon parameters.
-    '''
-
-    m_def = Section(validate=False)
-
-    x_ocean_operator = Quantity(
-        type=MEnum(["dipole", "quad", "NRIXS"]),
-        description='''
-        Photon operator:
-            dipole: e . r
-            quad: e . r + i / (2 * (e . r) * (q . r))
-            NRIXS: exp(i q . r)
-        ''')
-
-    x_ocean_polarization_direction = Quantity(
-        type=np.float64,
-        shape=[3],
-        description='''
-        Polarization direction.
-        ''')
-
-    x_ocean_momentum_transfer = Quantity(
-        type=np.float64,
-        shape=[3],
-        description='''
-        Momentum transfer which would be important for 'quad' or for non-resonant
-        inelastic x-ray scattering or x-ray Raman scattering 'qRaman'.
-        ''')
-
-    x_ocean_photon_energy = Quantity(
-        type=np.float64,
-        unit='electron_volt',
-        description='''
-        Approximate energy of the edge which only matters for 'quad' where it is converted
-        into a momentum magnitude for the quadrupole term.
-        ''')
-
-
 class Method(simulation.run.Method):
     '''
     Section containing the various parameters that define the theory and the
@@ -312,8 +272,6 @@ class Method(simulation.run.Method):
         and angular quantum number. For instance ` 1 2 1 ` would run the L 2,3 edge of the first atom
         in the input, while ` -22 2 1 ` would run the L 2,3 edges of every titanium atom in the system.
         ''')
-
-    x_ocean_photon = SubSection(sub_section=x_ocean_photon_parameters.m_def, repeats=True)
 
 
 class x_ocean_lanczos_results(MSection):
