@@ -1526,7 +1526,7 @@ class VASPParser:
                     # TODO remove temporary fix
                     if hasattr(Density, 'value_hdf5'):
                         from nomad.parsing.parser import to_hdf5
-                        filename = f'{os.path.basename(self.filepath)}.archive.hdf5'
+                        filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), f'{os.path.basename(self.filepath)}.archive.hdf5')
                         farg = 'r+b' if os.path.isfile(os.path.join(os.path.dirname(self.filepath), filename)) else 'wb'
                         sec_density = sec_scc.m_create(Density)
                         if self.archive.m_context:
