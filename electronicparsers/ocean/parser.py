@@ -269,4 +269,3 @@ class OceanParser:
                 else:
                     bse_archive = self._child_archives.get(f'BSE0{index + 1}')
                     self.parse_spectra_entries(bse_archive, files, index)
-        print('hey')
