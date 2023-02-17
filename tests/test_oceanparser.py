@@ -48,13 +48,18 @@ def test_tio2(parser):
     sec_system = sec_run.system[0]
     assert sec_system.atoms.labels[0] == 'Ti'
     assert sec_system.atoms.labels[4] == 'O'
-    assert sec_system.atoms.positions[0][0].magnitude == approx(1.6666840232882102e-10)
+    assert sec_system.atoms.positions[0][0].magnitude == approx(8.819712029018749e-11)
 
     # Method
     sec_method = sec_run.method
-    assert len(sec_method) == 1
-    assert (sec_method[0].k_mesh.grid == np.array([1, 1, 1])).all()
-    sec_bse = sec_method[0].bse
+    assert len(sec_method) == 2
+    assert sec_method[0].m_xpath('photon')
+    sec_photon = sec_method[0].photon[0]
+    assert sec_photon.multipole_type == 'dipole'
+    assert sec_photon.energy.to('eV').magnitude == approx(4966.0)
+    assert (sec_method[-1].k_mesh.grid == np.array([1, 1, 1])).all()
+    assert sec_method[-1].m_xpath('bse')
+    sec_bse = sec_method[-1].bse
     assert sec_bse.type == 'lanczos-haydock'
     assert sec_bse.mode == 'absorption'
     assert sec_bse.n_empty_states == 119
@@ -64,16 +69,14 @@ def test_tio2(parser):
     assert sec_bse.dielectric_infinity == 1000000
     assert sec_bse.n_empty_states_screening == 472
     assert (sec_bse.k_mesh_screening.grid == np.array([3, 3, 2])).all()
-    assert (sec_method[0].x_ocean_edges[0] == np.array([1, 1, 0])).all()
-    assert len(sec_method[0].x_ocean_photon) == 3
-    assert sec_method[0].x_ocean_photon[0].x_ocean_photon_energy.magnitude == approx(sec_method[0].x_ocean_photon[1].x_ocean_photon_energy.magnitude)
-    sec_ocean_screen = sec_method[0].x_ocean_screen
+    assert (sec_method[-1].x_ocean_edges[0] == np.array([1, 1, 0])).all()
+    sec_ocean_screen = sec_method[-1].x_ocean_screen
     assert sec_ocean_screen.m_mod_count == 22
     assert sec_ocean_screen.x_ocean_dft_energy_range == approx(150.0)
 
     # Calculation
     sec_scc = sec_run.calculation
-    assert len(sec_scc) == 3
+    assert len(sec_scc) == 1
     assert sec_scc[0].m_xpath('spectra')
     sec_spectra = sec_scc[0].spectra[0]
     assert sec_spectra.type == 'XAS'

@@ -1,0 +1,49 @@
+nkpt { 1 1 1 }
+bse.mimic_exciting_bands true
+metal .true.
+dft { qe }
+dft_energy_range { 50 }
+diemac { 1000000 }
+ecut { -1 }
+ecut.quality { high }
+edges { -22 1 0 }
+opf.program { hamann }
+para_prefix { mpirun -n 64 }
+pp_database { ONCVPSP-PBE-PDv0.4-stringent }
+screen_energy_range { 150 }
+cnbse.broaden { 0.89 }
+core_offset { 225.10 }
+cnbse.spect_range { 1000 -20 80 }
+screen.nkpt { -2.55 }
+screen.final.dr { 0.02 }
+screen.grid.rmax { 10 }
+screen.grid.rmode { lagrange uniform }
+screen.grid.ang { 5 11 11 9 7 }
+screen.grid.deltar { 0.10 0.15 0.25 0.25 0.25 }
+screen.grid.shells {  -1 4 6 8 10 }
+screen.lmax { 2 }
+cnbse.rad { 5.5 }
+screen.shells { 3.5 4.0 4.5 5.0 5.5 6.0 }
+cnbse.niter { 1000 }
+haydock_convergence {  0.0001 5  }
+nbands { -80 }
+ngkpt { 6 6 6 }
+toldfe { 9e-10 }
+znucl { 8 22 }
+typat{
+ 2 2 2 2 1 1 1 1 1 }
+xred {
+0.3924320000 0.7835630000 0.1759950000
+0.7835630000 0.6075680000 0.3911320000
+0.2164370000 0.3924320000 0.6088680000
+0.6075680000 0.2164370000 0.8240050000
+0.0914580000 0.6899980000 0.7814550000
+0.6899980000 0.9085420000 0.5985400000
+0.3100020000 0.0914580000 0.4014600000
+0.9085420000 0.3100020000 0.2185450000
+0.5000000000 0.5000000000 0.0000000000
+}
+acell { 1.8897261258369282 1.8897261258369282 1.8897261258369282 } 
+rprim { -3.31902000000000 3.31902000000000 2.09388000000000
+        3.31902000000000 -3.31902000000000 2.09388000000000
+        3.31902000000000 3.31902000000000 -2.09388000000000  }
