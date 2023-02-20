@@ -87,10 +87,12 @@ class OceanParser:
         if data.get('avecs'):
             sec_atoms.lattice_vectors = data.get('avecs') * ureg.bohr
             sec_atoms.periodic = [data.get('avecs')[:] is not None] * 3
+        if data.get('bvecs'):
             sec_atoms.lattice_vectors_reciprocal = np.array(data.get('bvecs')) / ureg.bohr
 
         if data.get('znucl') and data.get('typat'):
             sec_atoms.labels = [chemical_symbols[int(data.get('znucl')[n_at - 1])] for n_at in data.get('typat')]
+        if data.get('xangst'):
             sec_atoms.positions = data.get('xangst') * ureg.bohr
 
     def parse_photon_polarization(self, archive, files, index):
@@ -159,7 +161,7 @@ class OceanParser:
         sec_bse_screen.x_ocean_model_flavor = self.data['screen']['model'].get('flavor')
         # edges
         edges = []
-        for ed in [x.split(' ') for x in self.data['calc'].get('edges')]:
+        for ed in [x.split(' ') for x in self.data['calc'].get('edges', [])]:
             edges.append([int(x) for x in ed])
         sec_method.x_ocean_edges = edges
 
@@ -204,25 +206,20 @@ class OceanParser:
 
     def parse_spectra_entries(self, archive, files, index):
         # For each spectra, we parse the data in one entry
-        try:
-            data = json.load(open(self.filepath))
-        except Exception:
-            self.logger.error('Error opening json output file.')
-            data = None
-            return
-        self.data = data
-
         sec_run = archive.m_create(Run)
 
         # Program
         sec_program = sec_run.m_create(Program)
         sec_program.name = 'OCEAN'
-        sec_program.version = data['version'].get('.')
-        sec_program.x_ocean_commit_hash = data['version'].get('hash')
-        sec_program.x_ocean_original_dft_code = self._dft_code_map.get(data['dft'].get('program'))
+        sec_program.version = self.data['version'].get('.')
+        sec_program.x_ocean_commit_hash = self.data['version'].get('hash')
+        sec_program.x_ocean_original_dft_code = self._dft_code_map.get(self.data['dft'].get('program'))
 
         # System
-        self.parse_system(archive, self.data['structure'])
+        if not self.data.get('structure'):
+            self.logger.error('Error finding the structure in the main output file.')
+            return
+        self.parse_system(archive, self.data.get('structure'))
 
         # Method
         self.parse_photon_polarization(archive, files, index)
@@ -254,6 +251,14 @@ class OceanParser:
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
 
+        try:
+            data = json.load(open(self.filepath))
+        except Exception:
+            self.logger.error('Error opening json output file.')
+            data = None
+            return
+        self.data = data
+
         def finding_files(names):
             if not isinstance(names, list):
                 self.logger.warning('Please, define your attribute names as a list.')
@@ -265,6 +270,7 @@ class OceanParser:
                 aux_files.append(files)
             return aux_files
 
+        # absspct kept first, to be the "main auxiliary file" to generate extra entries
         files = finding_files(['absspct', 'photon', 'abslanc'])
         if files:
             for index in range(len(files[0])):
