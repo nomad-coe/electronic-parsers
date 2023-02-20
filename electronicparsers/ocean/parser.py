@@ -31,7 +31,13 @@ from nomad.datamodel.metainfo.simulation.method import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Spectra
 from nomad.datamodel.metainfo.workflow import Workflow
-from nomad.datamodel.metainfo.simulation.workflow import SinglePoint as SinglePoint2
+from nomad.datamodel.metainfo.workflow2 import TaskReference, Link
+from nomad.datamodel.metainfo.simulation.workflow import (
+    SinglePoint as SinglePointVisualization,
+    PhotonPolarization as PhotonPolarizationVisualization,
+    PhotonPolarizationResults as PhotonPolarizationResultsVisualization,
+    PhotonPolarizationMethod as PhotonPolarizationMethodVisualization
+)
 from .metainfo.ocean import (
     x_ocean_bse_parameters, x_ocean_screen_parameters, x_ocean_core_haydock_parameters,
     x_ocean_core_gmres_parameters, x_ocean_lanczos_results
@@ -80,8 +86,8 @@ class OceanParser:
             '[2, 1]': 'L23'
         }
 
-    def parse_system(self, archive, data):
-        sec_run = archive.run[-1]
+    def parse_system(self, data):
+        sec_run = self.archive.run[-1]
         sec_atoms = sec_run.m_create(System).m_create(Atoms)
 
         if data.get('avecs'):
@@ -95,8 +101,8 @@ class OceanParser:
         if data.get('xangst'):
             sec_atoms.positions = data.get('xangst') * ureg.bohr
 
-    def parse_photon_polarization(self, archive, files, index):
-        sec_run = archive.run[-1]
+    def parse_photon_polarization(self, files, index):
+        sec_run = self.archive.run[-1]
         sec_photon = sec_run.m_create(Method).m_create(Photon)
 
         # NOT IDEAL: photonN should be in the same folder: patch due for the upload mr5PRdbVQUm-d7awz3Q9Uw
@@ -172,8 +178,8 @@ class OceanParser:
         sec_core_hole.edge = self._core_level_map[str(edges[0][-2:])]
         sec_core_hole.broadening = self.data['bse']['core'].get('broaden')
 
-    def parse_scc(self, archive, files, index):
-        sec_run = archive.run[-1]
+    def parse_scc(self, files, index):
+        sec_run = self.archive.run[-1]
         sec_scc = sec_run.m_create(Calculation)
         sec_scc.system_ref = sec_run.system[-1]
         sec_scc.method_ref = sec_run.method[-1]  # ref to BSE method section
@@ -204,9 +210,25 @@ class OceanParser:
         sec_lanczos.x_ocean_tridiagonal_matrix = matrix
         sec_lanczos.x_ocean_eigenvalues = data_lancz[n_dimension + 1:]
 
-    def parse_spectra_entries(self, archive, files, index):
+    def parse_workflow(self):
+        sec_workflow = self.archive.m_create(Workflow)
+        sec_workflow.type = 'single_point'
+
+        workflow = SinglePointVisualization()
+        input_structure = self.archive.run[-1].system[-1]
+        input_method = self.archive.run[-1].method[-1]
+        output_calculation = self.archive.run[-1].calculation[-1]
+        if input_structure and input_method:
+            workflow.inputs = [
+                Link(name='Input structure', section=input_structure),
+                Link(name='Input polarization photons', section=input_method)]
+        if output_calculation:
+            workflow.outputs = [Link(name='Output calculation', section=output_calculation)]
+        self.archive.workflow2 = workflow
+
+    def parse_spectra_entries(self, files, index):
         # For each spectra, we parse the data in one entry
-        sec_run = archive.m_create(Run)
+        sec_run = self.archive.m_create(Run)
 
         # Program
         sec_program = sec_run.m_create(Program)
@@ -219,20 +241,55 @@ class OceanParser:
         if not self.data.get('structure'):
             self.logger.error('Error finding the structure in the main output file.')
             return
-        self.parse_system(archive, self.data.get('structure'))
+        self.parse_system(self.data.get('structure'))
 
         # Method
-        self.parse_photon_polarization(archive, files, index)
-        self.parse_method(archive)
+        self.parse_photon_polarization(files, index)
+        self.parse_method(self.archive)
 
         # Calculation
-        self.parse_scc(archive, files, index)
+        self.parse_scc(files, index)
 
         # Workflow
-        sec_workflow = archive.m_create(Workflow)
-        sec_workflow.type = 'single_point'
-        workflow = SinglePoint2()
-        archive.workflow2 = workflow
+        self.parse_workflow()
+
+    def parse_photon_workflow(self, photon_archive, photon_workflow_archive):
+        sec_run = photon_workflow_archive.m_create(Run)
+        sec_run.program = photon_archive[0].run[-1].program
+        setattr(sec_run, 'system', photon_archive[0].run[-1].system)
+        self.parse_method(photon_workflow_archive)
+
+        workflow = PhotonPolarizationVisualization(
+            method=PhotonPolarizationMethodVisualization(),
+            results=PhotonPolarizationResultsVisualization())
+
+        workflow.results.n_polarizations = len(photon_archive)
+        input_structure = sec_run.system[-1]
+        input_method = sec_run.method[-1]
+        workflow.method = input_method
+        workflow.inputs = [
+            Link(name='Input structure', section=input_structure),
+            Link(name='Input BSE methodology', section=input_method)]
+        spectra = []
+        outputs = []
+        for archive in photon_archive:
+            if archive.workflow2:
+                index = photon_archive.index(archive)
+                task = TaskReference(task=archive.workflow2)
+                input_photon_method = archive.run[-1].method[0]
+                if input_structure and input_photon_method:
+                    task.inputs = [
+                        Link(name='Input structure', section=input_structure),
+                        Link(name='Input photon parameters', section=input_photon_method)]
+                output_calculation = archive.run[-1].calculation[-1]
+                if output_calculation:
+                    task.outputs = [Link(name=f'Output polarization {index + 1}', section=output_calculation)]
+                    spectra.append(output_calculation.spectra[0])
+                    outputs.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
+                workflow.tasks.append(task)
+        workflow.outputs = outputs
+        workflow.results.spectrum_polarization = spectra
+        photon_workflow_archive.workflow2 = workflow
 
     def get_mainfile_keys(self, filepath):
         absspct_files = [f for f in os.listdir(os.path.dirname(filepath)) if f.startswith('absspct')]
@@ -240,14 +297,14 @@ class OceanParser:
         if len(absspct_files) > 1:
             keys = []
             for f in absspct_files:
-                keys.append(f'BSE{f[-2:]}')
-            keys.remove('BSE01')  # removing BSE01 as this will be save in the initial call of parse()
+                keys.append(f'photon{f[-2:]}')
+            keys.remove('photon01')  # removing BSE01 as this will be save in the initial call of parse()
+            keys.append('photon_workflow')
             return keys
         return True
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
-        self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
 
@@ -273,9 +330,16 @@ class OceanParser:
         # absspct kept first, to be the "main auxiliary file" to generate extra entries
         files = finding_files(['absspct', 'photon', 'abslanc'])
         if files:
+            photon_archive = []
             for index in range(len(files[0])):
                 if index == 0:
-                    self.parse_spectra_entries(archive, files, index)
+                    self.archive = archive
                 else:
-                    bse_archive = self._child_archives.get(f'BSE0{index + 1}')
-                    self.parse_spectra_entries(bse_archive, files, index)
+                    self.archive = self._child_archives.get(f'photon0{index + 1}')
+
+                self.parse_spectra_entries(files, index)
+                photon_archive.append(self.archive)
+
+        photon_workflow_archive = self._child_archives.get('photon_workflow')
+        if photon_workflow_archive:
+            self.parse_photon_workflow(photon_archive, photon_workflow_archive)
