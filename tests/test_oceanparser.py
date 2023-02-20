@@ -60,16 +60,16 @@ def test_tio2(parser):
     assert (sec_method[-1].k_mesh.grid == np.array([1, 1, 1])).all()
     assert sec_method[-1].m_xpath('bse')
     sec_bse = sec_method[-1].bse
-    assert sec_bse.type == 'lanczos-haydock'
-    assert sec_bse.mode == 'absorption'
     assert sec_bse.n_empty_states == 119
-    assert sec_bse.core_level == 'K'
-    assert sec_bse.core_hole_broadening == approx(0.89)
     assert sec_bse.screening_type == 'core'
     assert sec_bse.dielectric_infinity == 1000000
     assert sec_bse.n_empty_states_screening == 472
     assert (sec_bse.k_mesh_screening.grid == np.array([3, 3, 2])).all()
     assert (sec_method[-1].x_ocean_edges[0] == np.array([1, 1, 0])).all()
+    assert sec_bse.core_hole.solver == 'lanczos-haydock'
+    assert sec_bse.core_hole.edge == 'K'
+    assert sec_bse.core_hole.mode == 'absorption'
+    assert sec_bse.core_hole.broadening.magnitude == approx(0.89)
     sec_ocean_screen = sec_method[-1].x_ocean_screen
     assert sec_ocean_screen.m_mod_count == 22
     assert sec_ocean_screen.x_ocean_dft_energy_range == approx(150.0)

@@ -26,7 +26,9 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import DataTextParser, TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.method import Method, Photon, BSE, KMesh
+from nomad.datamodel.metainfo.simulation.method import (
+    Method, Photon, CoreHole, BSE, KMesh
+)
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Spectra
 from nomad.datamodel.metainfo.workflow import Workflow
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint as SinglePoint2
@@ -120,10 +122,7 @@ class OceanParser:
 
         # BSE section
         sec_bse = sec_method.m_create(BSE)
-        sec_bse.type = self._type_bse_map[self.data['bse']['core'].get('solver')]
-        sec_bse.mode = self.mode_bse[self.data['bse']['core'].get('strength')]
         sec_bse.n_empty_states = self.data['bse'].get('nbands')
-        sec_bse.core_hole_broadening = self.data['bse']['core'].get('broaden')
         # screening parsing
         sec_bse.screening_type = self.data['screen'].get('mode')
         sec_bse.dielectric_infinity = self.data['structure'].get('epsilon')
@@ -163,8 +162,13 @@ class OceanParser:
         for ed in [x.split(' ') for x in self.data['calc'].get('edges')]:
             edges.append([int(x) for x in ed])
         sec_method.x_ocean_edges = edges
-        # setting the core level (either K=1s or L23=2p depenging on the first edge found)
-        sec_bse.core_level = self._core_level_map[str(edges[0][-2:])]
+
+        # Core-Hole (either K=1s or L23=2p depenging on the first edge found)
+        sec_core_hole = sec_bse.m_create(CoreHole)
+        sec_core_hole.mode = self.mode_bse[self.data['bse']['core'].get('strength')]
+        sec_core_hole.solver = self._type_bse_map[self.data['bse']['core'].get('solver')]
+        sec_core_hole.edge = self._core_level_map[str(edges[0][-2:])]
+        sec_core_hole.broadening = self.data['bse']['core'].get('broaden')
 
     def parse_scc(self, archive, files, index):
         sec_run = archive.run[-1]
