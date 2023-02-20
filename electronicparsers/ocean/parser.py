@@ -210,22 +210,6 @@ class OceanParser:
         sec_lanczos.x_ocean_tridiagonal_matrix = matrix
         sec_lanczos.x_ocean_eigenvalues = data_lancz[n_dimension + 1:]
 
-    def parse_workflow(self):
-        sec_workflow = self.archive.m_create(Workflow)
-        sec_workflow.type = 'single_point'
-
-        workflow = SinglePointVisualization()
-        input_structure = self.archive.run[-1].system[-1]
-        input_method = self.archive.run[-1].method[-1]
-        output_calculation = self.archive.run[-1].calculation[-1]
-        if input_structure and input_method:
-            workflow.inputs = [
-                Link(name='Input structure', section=input_structure),
-                Link(name='Input polarization photons', section=input_method)]
-        if output_calculation:
-            workflow.outputs = [Link(name='Output calculation', section=output_calculation)]
-        self.archive.workflow2 = workflow
-
     def parse_spectra_entries(self, files, index):
         # For each spectra, we parse the data in one entry
         sec_run = self.archive.m_create(Run)
@@ -251,7 +235,10 @@ class OceanParser:
         self.parse_scc(files, index)
 
         # Workflow
-        self.parse_workflow()
+        sec_workflow = self.archive.m_create(Workflow)
+        sec_workflow.type = 'single_point'
+        workflow = SinglePointVisualization()
+        self.archive.workflow2 = workflow
 
     def parse_photon_workflow(self, photon_archive, photon_workflow_archive):
         sec_run = photon_workflow_archive.m_create(Run)
