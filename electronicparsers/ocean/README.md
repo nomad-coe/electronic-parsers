@@ -6,12 +6,10 @@ For OCEAN please provide at least the files from this table, if applicable
 
 | Input Filename | Description |
 | --- | --- |
-| `*.out` | **Mainfile:** text output file containing the identifiers for OCEAN |
+| `*` | **Mainfile:** text output file (in JSON format) |
 | `*.in` | input file with all parameters |
 | `absspct*` | output data file with the Absorption Spectra |
+| `abslanc*` | output data file with (Lanzcos algorithm) Absorption spectra |
 | `xesspct*` | output data file with the Emission Spectra |
 | `rxsspct*` | output data file with the RIXS |
 | `photon*` | electron-photon operator |
-| `*.fhi*` | pseudopotentials |
-| `*fill*` | auxiliary files for targeted element |
-| `*opts*` | auxiliary files for targeted element |
