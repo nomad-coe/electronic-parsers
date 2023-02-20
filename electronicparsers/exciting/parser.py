@@ -20,6 +20,7 @@ import numpy as np
 import os
 import re
 import logging
+from glob import glob
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextParser
@@ -36,7 +37,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Forces, ForcesEntry, ScfIteration, BandGap
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, Task, GW as GWWorkflow
-from nomad.datamodel.metainfo.workflow2 import TaskReference, Link
+from nomad.datamodel.metainfo.workflow2 import TaskReference, Link, Workflow as Workflow2
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, GW as GW2, GWResults
@@ -1126,31 +1127,23 @@ class ExcitingParser:
             'x_exciting_section_MT_moment_atom': ['atom_resolved']
         }
 
-    def get_exciting_files(self, default):
-        mainfile = os.path.basename(self.info_parser.mainfile)
-        suffix = mainfile.strip('INFO.OUT')
-        target = default.rsplit('.', 1)
-        filename = '%s%s' % (target[0], suffix)
-        if target[1:]:
-            filename = '%s.%s' % (filename, target[1])
-        filename = os.path.join(self.info_parser.maindir, filename)
+        self._xs_spectra_types = ['EPSILON', 'EXCITON', 'SIGMA', 'LOSS']
 
-        if os.path.isfile(filename):
-            return [filename]
+    def get_exciting_files(self, pattern, filepath=None, deep=True):
+        if filepath is None:
+            filepath = self.filepath
+        # TODO do recursion until files are found
+        for _ in range(10):
+            filenames = glob(f'{os.path.dirname(filepath)}/{pattern}')
+            pattern = os.path.join('**' if deep else '..', pattern)
+            if filenames:
+                break
 
-        filename = os.path.join(self.info_parser.maindir, default)
-        if not os.path.isfile(filename):
-            file_ext = default.split('.')[-1]
-            mainfile_base = mainfile.rsplit('.', 1)[0].replace('INFO', '')
-            options = [
-                f for f in os.listdir(
-                    self.info_parser.maindir) if target[0] in f and mainfile_base in f]
-            options = [f for f in options if f.endswith(file_ext)]
-            options.sort()
-
-            filenames = [os.path.join(self.info_parser.maindir, f) for f in options]
-        else:
-            filenames = [filename]
+        if len(filenames) > 1:
+            # filter files that match
+            suffix = os.path.basename(filepath).strip('INFO.OUT')
+            matches = [f for f in filenames if suffix in f]
+            filenames = matches if matches else filenames
 
         filenames = [f for f in filenames if os.access(f, os.F_OK)]
         return filenames
@@ -1544,33 +1537,27 @@ class ExcitingParser:
             sec_method.x_exciting_xs_tetra = self.input_xml_parser.get(
                 'xs/tetra/tetradf', False)
 
+    def _get_xs_calculation(self, path):
+        segments = os.path.basename(path).split('_', 1)
+        if segments[0] not in self._xs_spectra_types:
+            return
+
+        archive = None
+        for key in self._child_archives.keys():
+            if key.endswith(segments[-1]):
+                archive = self._child_archives[key]
+                break
+
+        if archive is None:
+            return
+
+        sec_run = archive.run[0] if archive.run else archive.m_create(Run)
+        return sec_run.calculation[0] if sec_run.calculation else sec_run.m_create(Calculation)
+
     def _parse_xs_bse(self):
-        sec_run = self.archive.run[-1]
-
-        # TODO read from xml file
-        def get_files(name):
-            bse_types = ['IP', 'singlet', 'triplet', 'RPA']
-            scr_types = ['full', 'diag', 'noinvdiag', 'longrange']
-            bse_files = []
-            for bse_type in bse_types:
-                for scr_type in scr_types:
-                    files = self.get_exciting_files(
-                        '%s_BSE%s_SCR%s.OUT' % (name, bse_type, scr_type))
-                    bse_files.append(files)
-
-            return bse_files
-
-        def get_data(files):
-            data = []
-            for f in files:
-                self.data_xs_parser.mainfile = f
-                if self.data_xs_parser.data is None:
-                    continue
-                data.append(self.data_xs_parser.data)
-
-            return data
 
         def parse_exciton(data, sec_scc):
+            # TODO remove n_components
             n_components = len(data)
             data = np.transpose(np.vstack(data))
 
@@ -1623,126 +1610,95 @@ class ExcitingParser:
             sec_scc.x_exciting_xs_bse_loss = np.reshape(
                 data[1], (n_components, n_loss))
 
-        # TODO check if format of files are really correct, i.e. columns are supposed
-        # to be what they are. What is the fourth column in epsilon which is not parsed?
-        sccs = []
-        for quantity in ['EXCITON', 'EPSILON', 'SIGMA', 'LOSS']:
-            files = get_files(quantity)
-            for i in range(len(files)):
-                data = get_data(files[i])
-                if not data:
-                    sccs.append(None)
-                    continue
-                if quantity == 'EXCITON':
-                    sec_scc = sec_run.m_create(Calculation)
-                    sccs.append(sec_scc)
-                else:
-                    sec_scc = sccs[i]
-                    if sec_scc is None:
-                        # This is the case when there is a mismatch between files
-                        self.logger.warning(
-                            'Mismatch in EXCITON and file type', data=dict(file=quantity))
-                        sec_scc = sec_run.m_create(Calculation)
+        for path in self.get_exciting_files('*BSE*.OUT', self._xs_info_file):
+            sec_scc = self._get_xs_calculation(path)
+            if not sec_scc:
+                continue
 
-                if quantity == 'EXCITON':
-                    parse_function = parse_exciton
-                elif quantity == 'EPSILON':
-                    parse_function = parse_epsilon
-                elif quantity == 'SIGMA':
-                    parse_function = parse_sigma
-                elif quantity == 'LOSS':
-                    parse_function = parse_loss
-                else:
-                    continue
-                try:
-                    parse_function(data, sec_scc)
-                except Exception:
-                    self.logger.error('Error setting xs data', data=dict(file=quantity))
+            self.data_xs_parser.mainfile = path
+            if self.data_xs_parser.data is None:
+                continue
+
+            quantity = os.path.basename(path).split('_')[0]
+
+            if quantity.startswith('EXCITON'):
+                parse_function = parse_exciton
+            elif quantity.startswith('EPSILON'):
+                parse_function = parse_epsilon
+            elif quantity.startswith('SIGMA'):
+                parse_function = parse_sigma
+            elif quantity.startswith('LOSS'):
+                parse_function = parse_loss
+
+            try:
+                parse_function([self.data_xs_parser.data], sec_scc)
+            except Exception:
+                self.logger.error('Error setting BSE data.')
 
     def _parse_xs_tddft(self):
         sec_run = self.archive.run[-1]
 
-        fxctype = self.input_xml_parser.get('xs/tddft/fxctype', 'RPA')
-
-        tetradf = self.input_xml_parser.get('xs/tetra/tetradf', None)
-        nwacont = self.input_xml_parser.get('xs/tddft/nwacont', None)
-        aresdf = self.input_xml_parser.get('xs/tddft/aresdf', True)
-
-        file_ext_list = [
-            'TET' if tetradf else None, 'AC' if nwacont else None, 'NAR' if not aresdf else None]
-        file_ext = '_'.join([e for e in file_ext_list if e])
-
-        # read q points
-        qpoints = self.input_xml_parser.get('xs/qpointset/qpoint')
-
-        def get_data(quantity, ext):
+        def get_data(path):
             # all files related to quantity at all qpoints
-            files = self.get_exciting_files('%s_%s%s%s.OUT' % (quantity, file_ext, ext, fxctype))
+            files = self.get_exciting_files(os.path.basename(path).replace('001', '*'), filepath=self._xs_info_file)
             data = [[], [], []]
-            for i in range(len(qpoints)):
-                data_q = []
-                files_q = [f for f in files if f.endswith('QMT%s.OUT' % str(i + 1).rjust(3, '0'))]
-                for f in files_q:
-                    self.data_xs_parser.mainfile = f
-                    if self.data_xs_parser.data is None:
-                        continue
-                    data_q.append(self.data_xs_parser.data)
-                if not data_q:
+            data_q = []
+            for f in files:
+                self.data_xs_parser.mainfile = f
+                if self.data_xs_parser.data is None:
                     continue
-
+                data_q.append(self.data_xs_parser.data)
+            if data_q:
                 data_q = np.transpose(data_q, axes=(2, 0, 1))
                 for j in range(len(data)):
                     data[j].append(data_q[j])
 
             return data
 
-        for quantity in ['EPSILON', 'LOSS', 'SIGMA']:
-            for ext in ['FXC', 'NLF_FXC']:
-                data = get_data(quantity, ext)
-                if not data[0]:
-                    continue
+        for path in self.get_exciting_files('*_OC*001.OUT'):
+            sec_scc = self._get_xs_calculation(path)
+            if not sec_scc:
+                continue
 
-                if quantity == 'EPSILON' and ext == 'FXC':
-                    sec_scc = sec_run.m_create(Calculation)
-                    sec_scc.x_exciting_xs_tddft_number_of_epsilon_values = len(data[0][0][0])
-                    sec_scc.x_exciting_xs_tddft_epsilon_energies = data[0][0][0] * ureg.hartree
-                    sec_scc.x_exciting_xs_tddft_dielectric_function_local_field = data[1:]
+            data = get_data(path)
 
-                elif quantity == 'EPSILON' and ext == 'NLF_FXC':
-                    sec_scc.x_exciting_xs_tddft_dielectric_function_no_local_field = data[1:3]
+            if not data[0]:
+                continue
 
-                elif quantity == 'LOSS' and ext == 'FXC':
-                    sec_scc.x_exciting_xs_tddft_loss_function_local_field = data[1]
+            basename = os.path.basename(path)
+            quantity = basename.split('_')[0]
 
-                elif quantity == 'LOSS' and ext == 'NLF_FXC':
-                    sec_scc.x_exciting_xs_tddft_loss_function_no_local_field = data[1]
+            if quantity == 'EPSILON' and '_FXC' in basename:
+                sec_scc = sec_run.m_create(Calculation)
+                sec_scc.x_exciting_xs_tddft_number_of_epsilon_values = len(data[0][0][0])
+                sec_scc.x_exciting_xs_tddft_epsilon_energies = data[0][0][0] * ureg.hartree
+                sec_scc.x_exciting_xs_tddft_dielectric_function_local_field = data[1:]
 
-                elif quantity == 'SIGMA' and ext == 'FXC':
-                    sec_scc.x_exciting_xs_tddft_sigma_local_field = data[1:3]
+            elif quantity == 'EPSILON' and '_NLF_FXC' in basename:
+                sec_scc.x_exciting_xs_tddft_dielectric_function_no_local_field = data[1:3]
 
-                elif quantity == 'SIGMA' and ext == 'NLF_FXC':
-                    sec_scc.x_exciting_xs_tddft_sigma_no_local_field = data[1:3]
+            elif quantity == 'LOSS' and '_FXC' in basename:
+                sec_scc.x_exciting_xs_tddft_loss_function_local_field = data[1]
+
+            elif quantity == 'LOSS' and '_NLF_FXC' in basename:
+                sec_scc.x_exciting_xs_tddft_loss_function_no_local_field = data[1]
+
+            elif quantity == 'SIGMA' and '_FXC' in basename:
+                sec_scc.x_exciting_xs_tddft_sigma_local_field = data[1:3]
+
+            elif quantity == 'SIGMA' and '_NLF_FXC' in basename:
+                sec_scc.x_exciting_xs_tddft_sigma_no_local_field = data[1:3]
 
     def parse_xs(self):
         sec_run = self.archive.run[-1]
 
-        xs_info_files = self.get_exciting_files('INFOXS.OUT')
-
-        if not xs_info_files:
-            return
-
-        self._calculation_type = 'xs'
         # inconsistency in the naming convention for xs input xml file
         sec_method = sec_run.m_create(Method)
-
-        sec_method_ref = self.archive.run[-1].method[0]
-        sec_method.starting_method_ref = sec_method_ref
-        sec_method.methods_ref = [sec_method_ref]
 
         self.parse_file('input.xml', sec_method)
 
         # parse properties
-        input_file = self.get_exciting_files('input.xml')
+        input_file = self.get_exciting_files('input.xml', filepath=self._xs_info_file)
         if not input_file:
             return
         self.input_xml_parser.mainfile = input_file[0]
@@ -1751,6 +1707,10 @@ class ExcitingParser:
             self._parse_xs_bse()
         elif xstype.lower() == 'tddft':
             self._parse_xs_tddft()
+
+    def parse_xs_worklfow(self, xs_archive, xs_workflow_archive):
+        # TODO implement this once schema defined
+        pass
 
     def _parse_input_gw(self, sec_method):
         sec_gw = sec_method.m_create(GWMethod)
@@ -2346,21 +2306,35 @@ class ExcitingParser:
         self.data_clathrate_parser.logger = self.logger
         self._archives_ref = []
 
-    def reuse_parser(self, parser):
-        self.info_parser.quantities = parser.info_parser.quantities
-        self.eigval_parser.quantities = parser.eigval_parser.quantities
-        self.fermisurf_parser.quantities = parser.fermisurf_parser.quantities
-        self.evalqp_parser.quantities = parser.evalqp_parser.quantities
-        self.info_gw_parser.quantities = parser.info_gw_parser.quantities
-
     def get_mainfile_keys(self, filepath):
         basename = os.path.basename(filepath)
-        if os.path.isfile(os.path.join(os.path.dirname(filepath), f'GW_{basename}')):
+        dirname = os.path.dirname(filepath)
+        if os.path.isfile(os.path.join(dirname, f'GW_{basename}')):
             return ['GW', 'GW_workflow']
+        xs_files = self.get_exciting_files(basename.replace('INFO.OUT', 'INFOXS.OUT'), filepath)
+        if xs_files:
+            re_xs_mainfile = re.compile(r'.+\d\d\d\.OUT')
+            spectra_files = []
+            for prefix in self._xs_spectra_types:
+                spectra_files = self.get_exciting_files(f'{prefix}_*.OUT', filepath)
+                if spectra_files:
+                    # remove files for qpoints other than first
+                    files = ['XS_workflow'] + xs_files
+                    for f in spectra_files:
+                        if re_xs_mainfile.match(f):
+                            if '001' in f:
+                                files.append(f)
+                        else:
+                            files.append(f)
+                    return files
         return True
 
     def parse(self, filepath, archive, logger, **kwargs):
         # GW will be dealt as a separate entry
+        self.filepath = filepath
+        self.archive = archive
+        self.logger = logger if logger is not None else logging
+
         self._calculation_type = None
         basename = os.path.basename(filepath)
         dirname = os.path.dirname(filepath)
@@ -2368,13 +2342,18 @@ class ExcitingParser:
             self._calculation_type = 'gw'
             # read method params from INFO.OUT
             self._gw_info_file = filepath
-            filepath = os.path.join(dirname, basename.lstrip('GW_'))
-            if not os.path.isfile(filepath):
-                return
+            self.filepath = os.path.join(dirname, basename.lstrip('GW_'))
 
-        self.filepath = filepath
-        self.archive = archive
-        self.logger = logger if logger is not None else logging
+        elif basename.startswith('INFOXS'):
+            self._calculation_type = 'xs'
+            self._xs_info_file = filepath
+            info_file = self.get_exciting_files('INFO.OUT', deep=False)
+            if info_file:
+                self.filepath = os.path.join(info_file[0])
+            # self.filepath = os.path.join(dirname, basename.replace('INFOXS', 'INFO'))
+
+        if not os.path.isfile(self.filepath):
+            return
 
         self.init_parser()
 
@@ -2387,12 +2366,13 @@ class ExcitingParser:
         if self._calculation_type == 'gw':
             self.parse_gw()
 
+        elif self._calculation_type == 'xs':
+            self.parse_xs()
+
         else:
             self.parse_method()
             self.parse_configurations()
-            self.parse_xs()
-
-        self.parse_workflow()
+            self.parse_workflow()
 
         # TODO get child_archives from parse
         gw_archive = self._child_archives.get('GW')
@@ -2401,6 +2381,26 @@ class ExcitingParser:
             p = ExcitingParser()
             p.parse(os.path.join(dirname, f'GW_{basename}'), gw_archive, logger)
 
-            # parser gw workflow
+            # parse gw workflow
             gw_workflow_archive = self._child_archives.get('GW_workflow')
             self.parse_gw_workflow(gw_archive, gw_workflow_archive)
+
+        xs_workflow_archive = self._child_archives.get('XS_workflow')
+        for xs_info_file, xs_archive in self._child_archives.items():
+            if 'INFOXS.OUT' in xs_info_file:
+                # parse xs single point
+                xs_dirname = os.path.dirname(xs_info_file)
+                p = ExcitingParser()
+                p._child_archives = {
+                    key: archive for key, archive in self._child_archives.items() if key.startswith(
+                        xs_dirname) and os.path.basename(key).split('_')[0] in self._xs_spectra_types}
+
+                p.parse(xs_info_file, xs_archive, logger)
+                try:
+                    archive.run[-1].calculation[-1].starting_method_ref = self.archive.run[-1].method[0]
+                    archive.run[-1].calculation[-1].system_ref = self.archive.run[-1].system[0]
+                except Exception:
+                    pass
+
+                # parse xs workflow
+                self.parse_xs_worklfow(xs_archive, xs_workflow_archive)
