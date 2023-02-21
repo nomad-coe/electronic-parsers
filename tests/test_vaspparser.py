@@ -219,7 +219,7 @@ def test_outcar(parser):
     assert sec_system.atoms.positions[1][0].magnitude == approx(3.14154e-10)
 
     sec_scc = sec_run.calculation[0]
-    assert sec_scc.energy.total.value.magnitude == approx(-2.23390885e-18)
+    assert sec_scc.energy.total.value.magnitude == approx(-1.11695443e-18)
     assert sec_scc.forces.total.value[0][0].magnitude == 0.0
     assert sec_scc.stress.total.value[0][0].magnitude == approx(7.060258e+09)
     assert sec_scc.energy.lowest_unoccupied.magnitude == approx(9.40461662e-19)

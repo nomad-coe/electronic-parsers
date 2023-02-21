@@ -542,9 +542,10 @@ class OutcarContentParser(ContentParser):
         if n_scf is None:
             section = self.parser.get(
                 'calculation', [{}] * (n_calc + 1))[n_calc].get('energies', {})
-            # final energies are per-atom
-            multiplier = self.atom_info.get(
-                'n_atoms', len(self.get_structure(n_calc).get('positions')))
+            # final energies are per-atom (this is not the case)
+            # TODO survey all vasp versions to know if energy per atom is printed
+            # multiplier = self.atom_info.get(
+            #     'n_atoms', len(self.get_structure(n_calc).get('positions')))
         else:
             section = self.parser.get('calculation', [{}] * (
                 n_calc + 1))[n_calc].get('scf_iteration', [{}] * (n_scf + 1))[n_scf]
