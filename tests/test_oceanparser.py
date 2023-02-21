@@ -32,33 +32,16 @@ def parser():
     return OceanParser()
 
 
-@pytest.mark.skip('Disabled as the data is automatically parsed in two different entries: please, test locally the files.')
 def test_tio2(parser):
+    # Testing the photon_workflow_archive, from empty photon_archives, hence no sections program nor system.
     archive = EntryArchive()
     parser.parse('tests/data/ocean/ms-10734/Spectra-1-1-1/postDefaultsOceanDatafile', archive, None)
 
     sec_run = archive.run[0]
 
-    # Program
-    assert sec_run.program.name == 'OCEAN'
-    assert sec_run.program.version == '3.0.1'
-    assert sec_run.program.x_ocean_original_dft_code == 'QuantumESPRESSO'
-    assert sec_run.program.x_ocean_commit_hash == 'b4307fbb42993e2ddead42d6bce528c0b83a25cb'
-
-    # System
-    sec_system = sec_run.system[0]
-    assert sec_system.atoms.labels[0] == 'Ti'
-    assert sec_system.atoms.labels[4] == 'O'
-    assert sec_system.atoms.positions[0][0].magnitude == approx(8.819712029018749e-11)
-
     # Method
     sec_method = sec_run.method
-    assert len(sec_method) == 2
-    assert sec_method[0].m_xpath('photon')
-    sec_photon = sec_method[0].photon[0]
-    assert sec_photon.multipole_type == 'dipole'
-    assert sec_photon.energy.to('eV').magnitude == approx(4966.0)
-    assert (sec_method[-1].k_mesh.grid == np.array([1, 1, 1])).all()
+    assert len(sec_method) == 1
     assert sec_method[-1].m_xpath('bse')
     sec_bse = sec_method[-1].bse
     assert sec_bse.n_empty_states == 119
@@ -77,16 +60,4 @@ def test_tio2(parser):
 
     # Calculation
     sec_scc = sec_run.calculation
-    assert len(sec_scc) == 1
-    assert sec_scc[0].m_xpath('spectra')
-    sec_spectra = sec_scc[0].spectra[0]
-    assert sec_spectra.type == 'XAS'
-    assert sec_spectra.n_energies == 1001
-    assert sec_spectra.excitation_energies[0].magnitude == approx(-3.204353268e-18)
-    assert sec_spectra.intensities[0] == approx(9.99366e-09)
-    assert sec_scc[0].m_xpath('x_ocean_lanczos')
-    sec_lanczos = sec_scc[0].x_ocean_lanczos[0]
-    assert sec_lanczos.x_ocean_n_tridiagonal_matrix == 70
-    assert sec_lanczos.x_ocean_scaling_factor == approx(8.99182993377932e-07)
-    assert sec_lanczos.x_ocean_tridiagonal_matrix[22][0] == approx(1.1278299324258296)
-    assert sec_lanczos.x_ocean_eigenvalues[22][-1] == approx(0.6462608405)
+    assert len(sec_scc) == 0  # Calculation not populated in workflow2\
