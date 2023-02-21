@@ -352,7 +352,20 @@ class OutcarTextParser(TextParser):
             Quantity(
                 'positions',
                 r'position of ions in cartesian coordinates\s*\(Angst\):([\s\S]+?)\n *\n',
-                str_operation=str_to_positions, convert=False)]
+                str_operation=str_to_positions, convert=False)
+            Quantity('pseudopotential_label',
+                     # Qaem: add a regex here
+                     )
+            Quantity('pseudopotential_category',
+                     # Qaem: add a regex here
+                     ),
+            Quantity('pseudopotential_valence_electrons',
+                     # Qaem: add a regex here
+                     ),
+            Quantity('pseudopotential_planewave_cutoff',
+                     # Qaem: add a regex here
+                     )
+        ]
 
 
 class OutcarContentParser(ContentParser):
