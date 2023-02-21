@@ -34,7 +34,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, EnergyEntry, Charges,
-    Forces, ForcesEntry, ScfIteration, BandGap
+    Forces, ForcesEntry, ScfIteration, BandGap, Spectra
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, Task, GW as GWWorkflow
 from nomad.datamodel.metainfo.workflow2 import TaskReference, Link, Workflow as Workflow2
@@ -42,12 +42,15 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, GW as GW2, GWResults, ParticleHoleExcitations,
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults, PhotonPolarization,
-    PhononMethod, PhononResults
+    PhotonPolarizationMethod, PhotonPolarizationResults
 )
-
-from .metainfo.exciting import x_exciting_section_MT_charge_atom, x_exciting_section_MT_moment_atom,\
-    x_exciting_section_spin, x_exciting_section_fermi_surface,\
-    x_exciting_section_atoms_group
+from .metainfo.exciting import (
+    x_exciting_section_MT_charge_atom, x_exciting_section_MT_moment_atom,
+    x_exciting_section_spin, x_exciting_section_fermi_surface,
+    x_exciting_section_atoms_group, x_exciting_exciton_calculation,
+    x_exciting_epsilon_calculation, x_exciting_sigma_calculation,
+    x_exciting_loss_calculation
+)
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -1562,7 +1565,7 @@ class ExcitingParser:
         sec_run = archive.run[0] if archive.run else archive.m_create(Run)
         return sec_run.calculation[0] if sec_run.calculation else sec_run.m_create(Calculation)
 
-    def _parse_xs_bse(self):
+    def _parse_xs_bse(self, path):
 
         def parse_exciton(data, sec_scc):
             # TODO remove n_components
@@ -1571,16 +1574,17 @@ class ExcitingParser:
 
             sec_scc.x_exciting_xs_bse_number_of_components = n_components
             n_excitons = len(data[0]) // n_components
-            sec_scc.x_exciting_xs_bse_number_of_excitons = n_excitons
-            sec_scc.x_exciting_xs_bse_exciton_energies = np.reshape(
+            scc_section = sec_scc.m_create(x_exciting_exciton_calculation)
+            scc_section.x_exciting_xs_bse_number_of_excitons = n_excitons
+            scc_section.x_exciting_xs_bse_exciton_energies = np.reshape(
                 data[1], (n_components, n_excitons)) * ureg.hartree
-            sec_scc.x_exciting_xs_bse_exciton_binding_energies = np.reshape(
+            scc_section.x_exciting_xs_bse_exciton_binding_energies = np.reshape(
                 data[2], (n_components, n_excitons)) * ureg.hartree
-            sec_scc.x_exciting_xs_bse_exciton_oscillator_strength = np.reshape(
+            scc_section.x_exciting_xs_bse_exciton_oscillator_strength = np.reshape(
                 data[3], (n_components, n_excitons))
-            sec_scc.x_exciting_xs_bse_exciton_amplitude_re = np.reshape(
+            scc_section.x_exciting_xs_bse_exciton_amplitude_re = np.reshape(
                 data[4], (n_components, n_excitons))
-            sec_scc.x_exciting_xs_bse_exciton_amplitude_im = np.reshape(
+            scc_section.x_exciting_xs_bse_exciton_amplitude_im = np.reshape(
                 data[5], (n_components, n_excitons))
 
         def parse_epsilon(data, sec_scc):
@@ -1589,23 +1593,30 @@ class ExcitingParser:
             n_epsilon = len(data[0]) // n_components
 
             sec_scc.x_exciting_xs_bse_number_of_energy_points = n_epsilon
-            sec_scc.x_exciting_xs_bse_epsilon_energies = np.reshape(
+            scc_section = sec_scc.m_create(x_exciting_epsilon_calculation)
+            scc_section.x_exciting_xs_bse_epsilon_energies = np.reshape(
                 data[0], (n_components, n_epsilon)) * ureg.hartree
-            sec_scc.x_exciting_xs_bse_epsilon_re = np.reshape(
+            scc_section.x_exciting_xs_bse_epsilon_re = np.reshape(
                 data[1], (n_components, n_epsilon))
-            sec_scc.x_exciting_xs_bse_epsilon_im = np.reshape(
+            scc_section.x_exciting_xs_bse_epsilon_im = np.reshape(
                 data[2], (n_components, n_epsilon))
+
+            sec_spectra = sec_scc.m_create(Spectra)
+            sec_spectra.n_energies = n_epsilon
+            sec_spectra.excitation_energies = data[0] * ureg.hartree
+            sec_spectra.intensities = data[2]
 
         def parse_sigma(data, sec_scc):
             n_components = len(data)
             data = np.transpose(np.vstack(data))
             n_sigma = len(data[0]) // n_components
 
-            sec_scc.x_exciting_xs_bse_sigma_energies = np.reshape(
+            scc_section = sec_scc.m_create(x_exciting_sigma_calculation)
+            scc_section.x_exciting_xs_bse_sigma_energies = np.reshape(
                 data[0], (n_components, n_sigma)) * ureg.hartree
-            sec_scc.x_exciting_xs_bse_sigma_re = np.reshape(
+            scc_section.x_exciting_xs_bse_sigma_re = np.reshape(
                 data[1], (n_components, n_sigma))
-            sec_scc.x_exciting_xs_bse_sigma_im = np.reshape(
+            scc_section.x_exciting_xs_bse_sigma_im = np.reshape(
                 data[2], (n_components, n_sigma))
 
         def parse_loss(data, sec_scc):
@@ -1613,21 +1624,24 @@ class ExcitingParser:
             data = np.transpose(np.vstack(data))
             n_loss = len(data[0]) // n_components
 
-            sec_scc.x_exciting_xs_bse_loss_energies = np.reshape(
+            scc_section = sec_scc.m_create(x_exciting_loss_calculation)
+            scc_section.x_exciting_xs_bse_loss_energies = np.reshape(
                 data[0], (n_components, n_loss)) * ureg.hartree
-            sec_scc.x_exciting_xs_bse_loss = np.reshape(
+            scc_section.x_exciting_xs_bse_loss = np.reshape(
                 data[1], (n_components, n_loss))
 
-        for path in self.get_exciting_files('*BSE*.OUT', self._xs_info_file):
-            sec_scc = self._get_xs_calculation(path)
+        polarization_files = [
+            f for f in self.get_exciting_files('*BSE*.OUT', self._xs_info_file) if f.endswith(path[-6:])]
+        for file in polarization_files:
+            sec_scc = self._get_xs_calculation(file)
             if not sec_scc:
                 continue
 
-            self.data_xs_parser.mainfile = path
+            self.data_xs_parser.mainfile = file
             if self.data_xs_parser.data is None:
                 continue
 
-            quantity = os.path.basename(path).split('_')[0]
+            quantity = os.path.basename(file).split('_')[0]
 
             if quantity.startswith('EXCITON'):
                 parse_function = parse_exciton
@@ -1640,6 +1654,12 @@ class ExcitingParser:
 
             try:
                 parse_function([self.data_xs_parser.data], sec_scc)
+                # Specific tag for the spectra from EPSILON
+                if quantity.startswith('EPSILON'):
+                    if self.input_xml_parser.get('xs/BSE/xas'):
+                        sec_scc.spectra[0].type = 'XAS'
+                    elif self.input_xml_parser.get('xs/BSE/xes'):
+                        sec_scc.spectra[0].type = 'XES'
             except Exception:
                 self.logger.error('Error setting BSE data.')
 
@@ -1732,27 +1752,15 @@ class ExcitingParser:
         sec_core_hole.broadening = ureg.convert(sec_run.method[0].get('x_exciting_xs_broadening'), 'joule', 'electron_volt')
 
     def parse_spectra(self, path):
-        sec_run = self._child_archives.get(path).run[-1]
-
         input_file = self.get_exciting_files('input.xml', filepath=self._xs_info_file)
         if not input_file:
             return
         self.input_xml_parser.mainfile = input_file[0]
         xstype = self.input_xml_parser.get('xs/xstype', '')
         if xstype.lower() == 'bse':
-            self._parse_xs_bse()
+            self._parse_xs_bse(path)
         elif xstype.lower() == 'tddft':
             self._parse_xs_tddft()
-
-        sec_workflow = PhotonPolarization(results=PhononResults(), method=PhononMethod())
-        spectra = []
-        for archive in self._child_archives.values():
-            if archive.m_xpath('run[0].calculation[0].spectra[0]'):
-                spectra.append(archive.run[0].calculation[0].spectra[0])
-        sec_workflow.results.n_polarizations = len(spectra)
-        sec_workflow.results.spectrum_polarization = spectra
-        sec_workflow.outputs = [Link(name='output spectrum', section=spectrum) for spectrum in spectra]
-        self.archive.workflow2 = sec_workflow
 
     def parse_photons(self, path):
         sec_run = self._child_archives.get(path).m_create(Run)
@@ -1774,6 +1782,40 @@ class ExcitingParser:
 
         # Calculation
         self.parse_spectra(path)
+
+        # Workflow
+        workflow = SinglePoint2()
+        self._child_archives.get(path).workflow2 = workflow
+
+    def parse_photon_workflow(self, photon_archive, xs_archive):
+        workflow = PhotonPolarization(results=PhotonPolarizationResults(), method=PhotonPolarizationMethod())
+        input_structure = xs_archive.run[-1].system[-1]
+        input_method = xs_archive.run[-1].method[-1]
+        workflow.method = input_method
+        workflow.inputs = [
+            Link(name='Input structure', section=input_structure),
+            Link(name='Input BSE methodology', section=input_method)]
+        spectra = []
+        outputs = []
+        for archive in photon_archive:
+            if archive.workflow2:
+                index = photon_archive.index(archive)
+                task = TaskReference(task=archive.workflow2)
+                input_photon_method = archive.run[-1].method[0]
+                if input_structure and input_photon_method:
+                    task.inputs = [
+                        Link(name='Input structure', section=input_structure),
+                        Link(name='Input photon parameters', section=input_photon_method)]
+                output_calculation = archive.run[-1].calculation[-1]
+                if output_calculation:
+                    task.outputs = [Link(name=f'Output polarization {index + 1}', section=output_calculation)]
+                    spectra.append(output_calculation.spectra[0])
+                    outputs.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
+                workflow.tasks.append(task)
+        workflow.results.n_polarizations = len(spectra)
+        workflow.results.spectrum_polarization = spectra
+        workflow.outputs = outputs
+        xs_archive.workflow2 = workflow
 
     def parse_xs_worklfow(self, xs_archive, xs_workflow_archive):
         if xs_workflow_archive.workflow2:
@@ -1802,10 +1844,6 @@ class ExcitingParser:
             xs_dft_workflow.results.spectra = []
         xs_dft_workflow.results.spectra.append(xs_archive.workflow2.results)
         xs_workflow_archive.workflow2 = xs_dft_workflow
-
-    def parse_photon_workflow(self, photon_archive, xs_archive):
-        # TODO implement this once schema defined
-        pass
 
     def _parse_input_gw(self, sec_method):
         sec_gw = sec_method.m_create(GWMethod)
@@ -2457,6 +2495,7 @@ class ExcitingParser:
             self.parse_system(archive, self.info_parser.get('groundstate'))
             sec_method = sec_run.m_create(Method)
             self.parse_file('input.xml', sec_method)
+            self.parse_xs(archive)
 
             photon_archive = []
             for child in self._child_archives:
