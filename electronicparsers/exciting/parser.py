@@ -1743,10 +1743,9 @@ class ExcitingParser:
         if not xs_dft_workflow.outputs:
             xs_dft_workflow.outputs = []
         xs_dft_workflow.outputs.extend(spectra)
-        # TODO fix metainfo def, set repeats
-        # if not xs_dft_workflow.results.spectra:
-        #     xs_dft_workflow.results.spectra = []
-        # xs_dft_workflow.results.spectra.extend(spectra)
+        if not xs_dft_workflow.results.spectra:
+            xs_dft_workflow.results.spectra = []
+        xs_dft_workflow.results.spectra.append(xs_archive.workflow2.results)
         xs_workflow_archive.workflow2 = xs_dft_workflow
 
     def _parse_input_gw(self, sec_method):
