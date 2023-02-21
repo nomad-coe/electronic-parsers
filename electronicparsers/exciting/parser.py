@@ -40,7 +40,9 @@ from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, Ta
 from nomad.datamodel.metainfo.workflow2 import TaskReference, Link, Workflow as Workflow2
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
-    GeometryOptimizationMethod, GW as GW2, GWResults
+    GeometryOptimizationMethod, GW as GW2, GWResults, ParticleHoleExcitations,
+    ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults, PhotonPolarization,
+    PhononMethod, PhononResults
 )
 
 from .metainfo.exciting import x_exciting_section_MT_charge_atom, x_exciting_section_MT_moment_atom,\
@@ -1708,9 +1710,44 @@ class ExcitingParser:
         elif xstype.lower() == 'tddft':
             self._parse_xs_tddft()
 
+        sec_workflow = PhotonPolarization(results=PhononResults(), method=PhononMethod())
+        spectra = []
+        for archive in self._child_archives.values():
+            if archive.m_xpath('run[0].calculation[0].spectra[0]'):
+                spectra.append(archive.run[0].calculation[0].spectra[0])
+        sec_workflow.results.n_polarizations = len(spectra)
+        sec_workflow.results.spectrum_polarization = spectra
+        sec_workflow.outputs = [Link(name='output spectrum', section=spectrum) for spectrum in spectra]
+        self.archive.workflow2 = sec_workflow
+
     def parse_xs_worklfow(self, xs_archive, xs_workflow_archive):
-        # TODO implement this once schema defined
-        pass
+        if xs_workflow_archive.workflow2:
+            xs_dft_workflow = xs_workflow_archive.workflow2
+        else:
+            xs_dft_workflow = ParticleHoleExcitations(
+                results=ParticleHoleExcitationsResults(), method=ParticleHoleExcitationsMethod())
+
+        # unfortunately we need to split generation of xs workflow here since we need dft input
+        inputs = []
+        if self.archive.m_xpath('run[0].calculation[0]'):
+            inputs.append(Link(name='input calculation', section=self.archive.run[0].calculation[0]))
+        xs_archive.workflow2.inputs = inputs
+
+        spectra = xs_archive.workflow2.results.spectrum_polarization
+
+        xs_archive.workflow2.tasks = [Task(
+            name=f'polarization {d}', inputs=inputs, outputs=[spectra[d]]) for d in range(len(spectra))]
+
+        if not xs_dft_workflow.inputs:
+            xs_dft_workflow.inputs = inputs
+        if not xs_dft_workflow.outputs:
+            xs_dft_workflow.outputs = []
+        xs_dft_workflow.outputs.extend(spectra)
+        # TODO fix metainfo def, set repeats
+        # if not xs_dft_workflow.results.spectra:
+        #     xs_dft_workflow.results.spectra = []
+        # xs_dft_workflow.results.spectra.extend(spectra)
+        xs_workflow_archive.workflow2 = xs_dft_workflow
 
     def _parse_input_gw(self, sec_method):
         sec_gw = sec_method.m_create(GWMethod)
