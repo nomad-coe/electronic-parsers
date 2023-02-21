@@ -1,0 +1,606 @@
+{
+   "bse" : {
+      "con_start" : -1,
+      "core" : {
+         "broaden" : 0.89,
+         "gmres" : {
+            "echamp" : true,
+            "elist" : [
+               0
+            ],
+            "erange" : [],
+            "estyle" : "list",
+            "ffff" : 5e-08,
+            "gprc" : 13.605,
+            "nloop" : 80
+         },
+         "gw" : {
+            "control" : "none"
+         },
+         "haydock" : {
+            "converge" : {
+               "spacing" : 5,
+               "thresh" : 0.0001
+            },
+            "niter" : 1000
+         },
+         "plot" : {
+            "auto" : true,
+            "delta" : 0.1,
+            "pad" : 15,
+            "points" : 1000,
+            "range" : [
+               -20,
+               80
+            ]
+         },
+         "scfac" : -1,
+         "screen_radius" : 5.5,
+         "solver" : "haydock",
+         "spin_orbit" : -1,
+         "strength" : 1,
+         "write_rhs" : false
+      },
+      "dft_energy_range" : 50,
+      "kmesh" : [
+         1,
+         1,
+         1
+      ],
+      "kshift" : [
+         0.125,
+         0.25,
+         0.375
+      ],
+      "mimic_exciting_bands" : 80,
+      "nbands" : 119,
+      "occupation" : {
+         "type" : "none",
+         "value" : 0
+      },
+      "val" : {
+         "aldaf" : false,
+         "backf" : false,
+         "bande" : true,
+         "bflag" : true,
+         "broaden" : 0.1,
+         "bwflg" : false,
+         "decut" : 10,
+         "gmres" : {
+            "echamp" : true,
+            "elist" : [
+               0
+            ],
+            "erange" : [],
+            "estyle" : "list",
+            "ffff" : 5e-08,
+            "gprc" : 13.605,
+            "nloop" : 80
+         },
+         "gw" : {
+            "control" : "none"
+         },
+         "haydock" : {
+            "converge" : {
+               "spacing" : 5,
+               "thresh" : -0.001
+            },
+            "niter" : 100
+         },
+         "lflag" : true,
+         "plot" : {
+            "points" : 2000,
+            "range" : [
+               0,
+               100
+            ]
+         },
+         "qpflg" : true,
+         "solver" : "haydock"
+      },
+      "val_start" : 1,
+      "xmesh" : [
+         10,
+         10,
+         10
+      ]
+   },
+   "calc" : {
+      "cartesian_q" : {
+         "q" : {
+            "direction" : [
+               0,
+               0,
+               0
+            ],
+            "energy" : 0,
+            "magnitude" : 0
+         },
+         "qin" : {
+            "direction" : [
+               0,
+               0,
+               0
+            ],
+            "energy" : 0,
+            "magnitude" : 0
+         },
+         "qout" : {
+            "direction" : [
+               0,
+               0,
+               0
+            ],
+            "energy" : 0,
+            "magnitude" : 0
+         }
+      },
+      "edges" : [
+         "1 1 0",
+         "2 1 0",
+         "3 1 0",
+         "4 1 0"
+      ],
+      "mode" : "xas",
+      "nonzero_q" : false,
+      "photon_in" : [],
+      "photon_out" : [],
+      "photon_q" : [
+         0,
+         0,
+         0
+      ]
+   },
+   "computer" : {
+      "cpu_factors" : [
+         1,
+         2,
+         4,
+         8,
+         16,
+         32,
+         64
+      ],
+      "cpu_square_factors" : [
+         1,
+         4,
+         16,
+         64
+      ],
+      "ncpus" : "64",
+      "para_prefix" : "mpirun -n 64",
+      "ser_prefix" : "mpirun -n 1"
+   },
+   "dft" : {
+      "abpad" : 4,
+      "bse" : {
+         "diagonalization" : "ppcg",
+         "poolsize" : -1,
+         "split" : false,
+         "toldfe" : 1e-12
+      },
+      "calc_force" : true,
+      "calc_stress" : false,
+      "degauss" : 0.02,
+      "den" : {
+         "auto" : false,
+         "kmesh" : [
+            6,
+            6,
+            6
+         ],
+         "kshift" : [
+            1,
+            1,
+            1
+         ],
+         "poolsize" : -1,
+         "toldfe" : 9e-10
+      },
+      "diagonalization" : "default",
+      "ecut" : 104,
+      "epsilon" : {
+         "metal_max" : 10000,
+         "metal_min" : 100,
+         "method" : "input",
+         "min_gap" : 0.2,
+         "thresh" : 1e-12
+      },
+      "exx" : {
+         "qmesh" : [
+            1,
+            1,
+            1
+         ]
+      },
+      "fband" : 0.125,
+      "functional" : "default",
+      "isolated" : "none",
+      "ldau" : {
+         "Hubbard_J" : "",
+         "Hubbard_J0" : "",
+         "Hubbard_U" : "",
+         "Hubbard_V" : "",
+         "U_projection_type" : "atomic",
+         "enable" : false,
+         "lda_plus_u_kind" : 0
+      },
+      "mixing" : 0.7,
+      "ndiag" : -1,
+      "noncolin" : false,
+      "nspin" : 1,
+      "nstep" : 50,
+      "occopt" : 3,
+      "program" : "qe",
+      "redirect" : false,
+      "screen" : {
+         "diagonalization" : "ppcg",
+         "poolsize" : -1,
+         "toldfe" : 1e-12
+      },
+      "smag" : "",
+      "spinorb" : false,
+      "startingwfc" : "atomic+random",
+      "tmp_dir" : "undefined",
+      "verbatim" : ""
+   },
+   "opf" : {
+      "program" : "hamann",
+      "shirley" : {
+         "caution" : false,
+         "fill" : "!",
+         "hfkgrid" : [
+            2000,
+            32
+         ],
+         "opts" : "!"
+      }
+   },
+   "psp" : {
+      "ecut_quality" : "high",
+      "pp_database" : "ONCVPSP-PBE-PDv0.4-stringent",
+      "pp_list" : [
+         "O-high.UPF",
+         "Ti-sp.UPF"
+      ],
+      "ppdir" : "/flash/jtv1/xanes_bench/OCEAN_times/mp-10734-bands/Common/psp/",
+      "pphash" : [
+         "36339a0223a6b3a524787ddb1ba8142c",
+         "3c4aa74137ba4d00a3ffd13e2d64885c"
+      ],
+      "source" : "database"
+   },
+   "screen" : {
+      "all_augment" : false,
+      "augment" : true,
+      "convertstyle" : "intp",
+      "core_offset" : {
+         "average" : false,
+         "enable" : true,
+         "energy" : "225.10"
+      },
+      "dft_energy_range" : 150,
+      "final" : {
+         "dr" : 0.02,
+         "rmax" : 10
+      },
+      "grid" : {
+         "ang" : [
+            5,
+            11,
+            11,
+            9,
+            7
+         ],
+         "deltar" : [
+            0.1,
+            0.15,
+            0.25,
+            0.25,
+            0.25
+         ],
+         "lmax" : 2,
+         "rmax" : 10,
+         "rmode" : [
+            "lagrange",
+            "uniform"
+         ],
+         "scheme" : "central",
+         "shells" : [
+            -1,
+            4,
+            6,
+            8,
+            10
+         ]
+      },
+      "inversionstyle" : "direct",
+      "kmesh" : [
+         3,
+         3,
+         2
+      ],
+      "kshift" : [
+         0.125,
+         0.25,
+         0.375
+      ],
+      "mimic_exciting_bands" : false,
+      "mode" : "core",
+      "model" : {
+         "SLL" : {
+            "dq" : 0.01,
+            "nav" : -1,
+            "qmax" : 10
+         },
+         "flavor" : "SLL"
+      },
+      "nbands" : 472,
+      "shells" : [
+         3.5,
+         4,
+         4.5,
+         5,
+         5.5,
+         6
+      ]
+   },
+   "structure" : {
+      "alen" : [
+         9.71255273227786,
+         9.71255273227786,
+         9.71255273227786
+      ],
+      "avecs" : [
+         [
+            -6.27203880617529,
+            6.27203880617529,
+            3.95685974036743
+         ],
+         [
+            6.27203880617529,
+            -6.27203880617529,
+            3.95685974036743
+         ],
+         [
+            6.27203880617529,
+            6.27203880617529,
+            -3.95685974036743
+         ]
+      ],
+      "blen" : [
+         0.938756401412919,
+         0.938756401412919,
+         0.708363432602493
+      ],
+      "bvecs" : [
+         [
+            0,
+            0.500888586737802,
+            0.79396108523626
+         ],
+         [
+            0.500888586737802,
+            0,
+            0.79396108523626
+         ],
+         [
+            0.500888586737802,
+            0.500888586737802,
+            0
+         ]
+      ],
+      "charge" : 0,
+      "elname" : [
+         "O_",
+         "Ti"
+      ],
+      "epsilon" : 1000000,
+      "invA" : [
+         [
+            0,
+            0.0797188945176348,
+            0.0797188945176348
+         ],
+         [
+            0.0797188945176348,
+            0,
+            0.0797188945176348
+         ],
+         [
+            0.126362831337957,
+            0.126362831337957,
+            0
+         ]
+      ],
+      "magnetization" : "none",
+      "metal" : true,
+      "rprim" : [
+         -3.31902,
+         3.31902,
+         2.09388,
+         3.31902,
+         -3.31902,
+         2.09388,
+         3.31902,
+         3.31902,
+         -2.09388
+      ],
+      "rscale" : [
+         1.88972612583693,
+         1.88972612583693,
+         1.88972612583693
+      ],
+      "typat" : [
+         2,
+         2,
+         2,
+         2,
+         1,
+         1,
+         1,
+         1,
+         1
+      ],
+      "valence_electrons" : 78,
+      "volume" : 622.627245205645,
+      "xangst" : [
+         [
+            1.66668402328821,
+            -0.929659201615836,
+            3.53463851656541
+         ],
+         [
+            0.234852547410521,
+            1.40311439795928,
+            3.79820814189434
+         ],
+         [
+            1.85902745393148,
+            0.690765603382724,
+            0.745951861018094
+         ],
+         [
+            0.427195978053798,
+            3.02353920295784,
+            1.00952148634702
+         ],
+         [
+            3.62283922852194,
+            -0.350293235624509,
+            0.957395098333612
+         ],
+         [
+            1.97862284334814,
+            0.527919028658353,
+            4.0523152981972
+         ],
+         [
+            0.11525715799387,
+            1.56596097268365,
+            0.491844704715232
+         ],
+         [
+            -1.52895922717994,
+            2.44417323696651,
+            3.58676490457882
+         ],
+         [
+            0,
+            0,
+            3.31902000212722
+         ]
+      ],
+      "xbohr" : [
+         [
+            3.14957634030411,
+            -1.75680128029218,
+            6.67949874586214
+         ],
+         [
+            0.443806994276574,
+            2.65150193366221,
+            7.17757315250404
+         ],
+         [
+            3.51305274609086,
+            1.30535780670522,
+            1.4096447194791
+         ],
+         [
+            0.807283400063318,
+            5.71366102065961,
+            1.907719126121
+         ],
+         [
+            6.84617393545699,
+            -0.661958278639326,
+            1.80921452890968
+         ],
+         [
+            3.73905527785629,
+            0.99762238014275,
+            7.65776608422392
+         ],
+         [
+            0.217804462511137,
+            2.95923736022468,
+            0.929451787759222
+         ],
+         [
+            -2.88931419508956,
+            4.61881801900676,
+            6.77800334307346
+         ],
+         [
+            0,
+            0,
+            6.27203880617529
+         ]
+      ],
+      "xred" : [
+         [
+            0.392432,
+            0.783563,
+            0.175995
+         ],
+         [
+            0.783563,
+            0.607568,
+            0.391132
+         ],
+         [
+            0.216437,
+            0.392432,
+            0.608868
+         ],
+         [
+            0.607568,
+            0.216437,
+            0.824005
+         ],
+         [
+            0.091458,
+            0.689998,
+            0.781455
+         ],
+         [
+            0.689998,
+            0.908542,
+            0.59854
+         ],
+         [
+            0.310002,
+            0.091458,
+            0.40146
+         ],
+         [
+            0.908542,
+            0.310002,
+            0.218545
+         ],
+         [
+            0.5,
+            0.5,
+            0
+         ]
+      ],
+      "znucl" : [
+         8,
+         22
+      ],
+      "zsymb" : [
+         "O",
+         "Ti"
+      ]
+   },
+   "version" : {
+      "." : "3.0.1",
+      "hash" : "b4307fbb42993e2ddead42d6bce528c0b83a25cb"
+   },
+   "warnings" : {
+      "defaults.pl" : [
+         "Occopt changed from 1 to 3"
+      ]
+   }
+}

@@ -1396,7 +1396,7 @@ class GeometryOptimization(workflow.GeometryOptimization):
         repeats=True)
 
 
-class ExcitedStates(simulation.calculation.ExcitedStates):
+class Spectra(simulation.calculation.Spectra):
 
     m_def = Section(validate=False, extends_base_section=True)
 
