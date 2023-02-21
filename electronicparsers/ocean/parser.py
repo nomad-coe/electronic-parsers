@@ -101,14 +101,15 @@ class OceanParser:
         if data.get('xangst'):
             sec_atoms.positions = data.get('xangst') * ureg.bohr
 
-    def parse_photon_polarization(self, files, index):
+    def parse_photon_polarization(self, index):
         sec_run = self.archive.run[-1]
         sec_photon = sec_run.m_create(Method).m_create(Photon)
 
         # NOT IDEAL: photonN should be in the same folder: patch due for the upload mr5PRdbVQUm-d7awz3Q9Uw
-        if len(files[1]) == 0:
+        photon_file = [f for f in os.listdir(self.maindir) if f.startswith('photon') and f.endswith(f'{index + 1}')]
+        if len(photon_file) == 0:
             return
-        self.photon_parser.mainfile = os.path.join(self.maindir, files[1][index])
+        self.photon_parser.mainfile = os.path.join(self.maindir, photon_file[0])
         sec_photon.multipole_type = self.photon_parser.get('operator')
         sec_photon.polarization = self.photon_parser.get('vectors')[0]
         if sec_photon.multipole_type in ['quad', 'NRIXS', 'qRaman']:
@@ -178,16 +179,16 @@ class OceanParser:
         sec_core_hole.edge = self._core_level_map[str(edges[0][-2:])]
         sec_core_hole.broadening = self.data['bse']['core'].get('broaden')
 
-    def parse_scc(self, files, index):
+    def parse_scc(self, index):
         sec_run = self.archive.run[-1]
         sec_scc = sec_run.m_create(Calculation)
         sec_scc.system_ref = sec_run.system[-1]
         sec_scc.method_ref = sec_run.method[-1]  # ref to BSE method section
 
         # absorption spectra (main calculation)
-        if len(files[0]) == 0:
+        if len(self.aux_files) == 0:
             return
-        self.spectra_parser.mainfile = os.path.join(self.maindir, files[0][index])
+        self.spectra_parser.mainfile = os.path.join(self.maindir, self.aux_files[index])
         data_spct = self.spectra_parser.data
         sec_spectra = sec_scc.m_create(Spectra)
         sec_spectra.type = self.data['calc'].get('mode').upper()
@@ -196,9 +197,10 @@ class OceanParser:
         sec_spectra.intensities = data_spct[:, 2]
 
         # lanczos matrices
-        if len(files[2]) == 0:
+        lanc_file = [f for f in os.listdir(self.maindir) if f.startswith('abslanc') and f.endswith(f'_0{index + 1}')]
+        if len(lanc_file) == 0:
             return
-        self.lanczos_parser.mainfile = os.path.join(self.maindir, files[2][index])
+        self.lanczos_parser.mainfile = os.path.join(self.maindir, lanc_file[0])
         data_lancz = self.lanczos_parser.get('data')
         sec_lanczos = sec_scc.m_create(x_ocean_lanczos_results)
         n_dimension = int(data_lancz[0][0]) + 1
@@ -210,7 +212,7 @@ class OceanParser:
         sec_lanczos.x_ocean_tridiagonal_matrix = matrix
         sec_lanczos.x_ocean_eigenvalues = data_lancz[n_dimension + 1:]
 
-    def parse_spectra_entries(self, files, index):
+    def parse_spectra_entries(self, index):
         # For each spectra, we parse the data in one entry
         sec_run = self.archive.m_create(Run)
 
@@ -228,11 +230,11 @@ class OceanParser:
         self.parse_system(self.data.get('structure'))
 
         # Method
-        self.parse_photon_polarization(files, index)
+        self.parse_photon_polarization(index)
         self.parse_method(self.archive)
 
         # Calculation
-        self.parse_scc(files, index)
+        self.parse_scc(index)
 
         # Workflow
         sec_workflow = self.archive.m_create(Workflow)
@@ -242,8 +244,13 @@ class OceanParser:
 
     def parse_photon_workflow(self, photon_archive, photon_workflow_archive):
         sec_run = photon_workflow_archive.m_create(Run)
-        sec_run.program = photon_archive[0].run[-1].program
-        setattr(sec_run, 'system', photon_archive[0].run[-1].system)
+        try:
+            sec_run.program = photon_archive[0].run[-1].program
+            setattr(sec_run, 'system', photon_archive[0].run[-1].system)
+        except Exception:
+            self.logger.warning('Photon archives not found, program and system for photon '
+                                'workflow archive cannot be parsed.')
+            return
         self.parse_method(photon_workflow_archive)
 
         workflow = PhotonPolarizationVisualization(
@@ -281,12 +288,10 @@ class OceanParser:
     def get_mainfile_keys(self, filepath):
         absspct_files = [f for f in os.listdir(os.path.dirname(filepath)) if f.startswith('absspct')]
         absspct_files.sort()
-        if len(absspct_files) > 1:
+        if len(absspct_files) > 0:
             keys = []
             for f in absspct_files:
                 keys.append(f'photon{f[-2:]}')
-            keys.remove('photon01')  # removing BSE01 as this will be save in the initial call of parse()
-            keys.append('photon_workflow')
             return keys
         return True
 
@@ -294,6 +299,8 @@ class OceanParser:
         self.filepath = filepath
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
+
+        photon_workflow_archive = archive  # archive will be passed as the PhotonPolarization workflow
 
         try:
             data = json.load(open(self.filepath))
@@ -303,30 +310,13 @@ class OceanParser:
             return
         self.data = data
 
-        def finding_files(names):
-            if not isinstance(names, list):
-                self.logger.warning('Please, define your attribute names as a list.')
-                return
-            aux_files = []
-            for n in names:
-                files = [f for f in os.listdir(self.maindir) if f.startswith(n)]
-                files.sort()
-                aux_files.append(files)
-            return aux_files
-
-        # absspct kept first, to be the "main auxiliary file" to generate extra entries
-        files = finding_files(['absspct', 'photon', 'abslanc'])
-        if files:
-            photon_archive = []
-            for index in range(len(files[0])):
-                if index == 0:
-                    self.archive = archive
-                else:
-                    self.archive = self._child_archives.get(f'photon0{index + 1}')
-
-                self.parse_spectra_entries(files, index)
+        # We recognize the absspct files as the main auxiliary files
+        self.aux_files = [f for f in os.listdir(self.maindir) if f.startswith('absspct')]
+        photon_archive = []
+        if self.aux_files:
+            for index in range(len(self.aux_files)):
+                self.archive = self._child_archives.get(f'photon0{index + 1}')
+                self.parse_spectra_entries(index)
                 photon_archive.append(self.archive)
 
-        photon_workflow_archive = self._child_archives.get('photon_workflow')
-        if photon_workflow_archive:
-            self.parse_photon_workflow(photon_archive, photon_workflow_archive)
+        self.parse_photon_workflow(photon_archive, photon_workflow_archive)
