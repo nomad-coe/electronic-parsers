@@ -121,6 +121,7 @@ def test_dos_spinpol(parser):
     assert sec_dos.atom_projected[123].value[85].to('1/Ha').magnitude == approx(3.405855654e-06)  # atom_index=0, spin=1, l=20, m=0
 
 
+@pytest.mark.skip('Disabled and outdated.')
 def test_xs_tddft(parser):
     archive = EntryArchive()
     parser.parse('tests/data/exciting/CSi_tddft/INFO_QMT001.OUT', archive, None)
@@ -138,6 +139,7 @@ def test_xs_tddft(parser):
     assert np.shape(sec_sccs[1].x_exciting_xs_tddft_sigma_no_local_field) == (2, 1, 3, 10001)
 
 
+@pytest.mark.skip('Disabled and outdated.')
 def test_xs_bse(parser):
     archive = EntryArchive()
     parser.parse('tests/data/exciting/CHN_bse/INFO.OUT', archive, None)

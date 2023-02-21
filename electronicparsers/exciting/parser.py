@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextP
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional,
-    GW as GWMethod, Scf, BasisSet, KMesh
+    GW as GWMethod, Scf, BasisSet, KMesh, Photon, BSE, CoreHole
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1478,6 +1478,8 @@ class ExcitingParser:
                 'xs/screening/screentype', 'full')
 
         if self.input_xml_parser.get('xs/BSE') is not None:
+            sec_method.x_exciting_xs_bse_type = self.input_xml_parser.get(
+                'xs/BSE/bsetype', 'singlet')
             sec_method.x_exciting_xs_bse_antiresonant = self.input_xml_parser.get(
                 'xs/BSE/aresbse', True)
             sec_method.x_exciting_xs_bse_angular_momentum_cutoff = self.input_xml_parser.get(
@@ -1538,6 +1540,10 @@ class ExcitingParser:
                 'xs/tddft/nwacont', 0)
             sec_method.x_exciting_xs_tetra = self.input_xml_parser.get(
                 'xs/tetra/tetradf', False)
+
+        if self.input_xml_parser.get('xs/qpointset') is not None:
+            sec_method.x_exciting_xs_qpointset_qpoint = self.input_xml_parser.get(
+                'xs/qpointset/qpoint')
 
     def _get_xs_calculation(self, path):
         segments = os.path.basename(path).split('_', 1)
@@ -1691,15 +1697,43 @@ class ExcitingParser:
             elif quantity == 'SIGMA' and '_NLF_FXC' in basename:
                 sec_scc.x_exciting_xs_tddft_sigma_no_local_field = data[1:3]
 
-    def parse_xs(self):
-        sec_run = self.archive.run[-1]
+    def parse_polarization(self, path):
+        sec_run = self._child_archives.get(path).run[-1]
+        if sec_run.m_xpath('method[0]'):
+            sec_photon = sec_run.method[0].m_create(Photon)
+        else:
+            sec_photon = sec_run.m_create(Method).m_create(Photon)
+        sec_photon.momentum_transfer = sec_run.method[0].get('x_exciting_xs_qpointset_qpoint')
 
-        # inconsistency in the naming convention for xs input xml file
+    def parse_xs(self, archive):
+        sec_run = archive.run[-1]
         sec_method = sec_run.m_create(Method)
+        if sec_run.m_xpath('method[0]'):
+            sec_method.starting_method_ref = sec_run.method[0]
 
-        self.parse_file('input.xml', sec_method)
+        # KMesh
+        sec_k_mesh = sec_method.m_create(KMesh)
+        sec_k_mesh.grid = sec_run.method[0].get('x_exciting_xs_ngridk')
 
-        # parse properties
+        # BSE
+        sec_bse = sec_method.m_create(BSE)
+        sec_bse.n_empty_states = sec_run.method[0].get('x_exciting_xs_number_of_empty_states')
+        sec_bse.screening_type = sec_run.method[0].get('x_exciting_xs_screening_type')
+        sec_bse.n_empty_states_screening = sec_run.method[0].get('x_exciting_xs_screening_number_of_empty_states')
+        sec_bse.k_mesh_screening = KMesh(grid=sec_run.method[0].get('x_exciting_xs_screening_ngridk'))
+        # CoreHole
+        sec_core_hole = sec_bse.m_create(CoreHole)
+        if sec_run.method[0].get('x_exciting_xs_bse_xas'):
+            sec_core_hole.mode = 'absorption'
+        elif sec_run.method[0].get('x_exciting_xs_bse_xes'):
+            sec_core_hole.mode = 'emission'
+        sec_core_hole.solver = sec_run.method[0].get('x_exciting_xs_bse_type')
+        sec_core_hole.edge = sec_run.method[0].get('x_exciting_xs_bse_xasedge')
+        sec_core_hole.broadening = ureg.convert(sec_run.method[0].get('x_exciting_xs_broadening'), 'joule', 'electron_volt')
+
+    def parse_spectra(self, path):
+        sec_run = self._child_archives.get(path).run[-1]
+
         input_file = self.get_exciting_files('input.xml', filepath=self._xs_info_file)
         if not input_file:
             return
@@ -1720,11 +1754,26 @@ class ExcitingParser:
         sec_workflow.outputs = [Link(name='output spectrum', section=spectrum) for spectrum in spectra]
         self.archive.workflow2 = sec_workflow
 
-    def parse_spectra_entries(self, path):
+    def parse_photons(self, path):
         sec_run = self._child_archives.get(path).m_create(Run)
 
+        # Program
         sec_run.program = Program(
             name='exciting', version=self.info_parser.get('program_version', '').strip())
+
+        # System
+        self.parse_system(self._child_archives.get(path), self.info_parser.get('groundstate'))
+
+        # We parse exciting-specific quantities
+        sec_method = sec_run.m_create(Method)
+        self.parse_file('input.xml', sec_method)
+        # Photon method
+        self.parse_polarization(path)
+        # BSE method
+        self.parse_xs(self._child_archives.get(path))
+
+        # Calculation
+        self.parse_spectra(path)
 
     def parse_xs_worklfow(self, xs_archive, xs_workflow_archive):
         if xs_workflow_archive.workflow2:
@@ -1753,6 +1802,10 @@ class ExcitingParser:
             xs_dft_workflow.results.spectra = []
         xs_dft_workflow.results.spectra.append(xs_archive.workflow2.results)
         xs_workflow_archive.workflow2 = xs_dft_workflow
+
+    def parse_photon_workflow(self, photon_archive, xs_archive):
+        # TODO implement this once schema defined
+        pass
 
     def _parse_input_gw(self, sec_method):
         sec_gw = sec_method.m_create(GWMethod)
@@ -1857,12 +1910,7 @@ class ExcitingParser:
             sec_gap.value_optical = optical_band_gap
 
         sec_scc.method_ref = sec_method
-        # if dft_archive:
-        #     # trying to resolve system from archive does not seem to work
-        #     sec_scc.system_ref = self.parse_system(self.info_parser.get('groundstate'))
-        #     # sec_run.system.append(archive.run[0].system[0].m_copy())
-        #     # sec_scc.system_ref = sec_run.system[-1]
-        self.parse_system(self.info_parser.get('groundstate'))
+        self.parse_system(self.archive, self.info_parser.get('groundstate'))
         sec_scc.system_ref = sec_run.system[-1]
 
     def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
@@ -2160,8 +2208,8 @@ class ExcitingParser:
 
         return sec_scc
 
-    def parse_system(self, section):
-        sec_run = self.archive.run[-1]
+    def parse_system(self, archive, section):
+        sec_run = archive.run[-1]
 
         positions = self.info_parser.get_atom_positions(section.get('atomic_positions', {}))
         lattice_vectors = self.info_parser.get_initialization_parameter('lattice_vectors')
@@ -2269,7 +2317,7 @@ class ExcitingParser:
             if sec_scc is None:
                 return
 
-            sec_system = self.parse_system(section)
+            sec_system = self.parse_system(self.archive, section)
             if sec_system is not None:
                 sec_scc.system_ref = sec_system
 
@@ -2406,12 +2454,17 @@ class ExcitingParser:
         if self._calculation_type == 'gw':
             self.parse_gw()
         elif self._calculation_type == 'xs':
-            self.parse_xs()
+            self.parse_system(archive, self.info_parser.get('groundstate'))
+            sec_method = sec_run.m_create(Method)
+            self.parse_file('input.xml', sec_method)
+
             photon_archive = []
             for child in self._child_archives:
                 if self._child_archives.get(child):
-                    self.parse_spectra_entries(child)
+                    self.parse_photons(child)
                     photon_archive.append(self._child_archives.get(child))
+            # putting together all photons in the same xs_archive
+            self.parse_photon_workflow(photon_archive, archive)
         else:
             self.parse_method()
             self.parse_configurations()
@@ -2440,11 +2493,7 @@ class ExcitingParser:
                         xs_dirname) and os.path.basename(key).split('_')[0] in self._xs_spectra_types}
 
                 p.parse(xs_info_file, xs_archive, logger)
-                # try:
-                #    archive.run[-1].calculation[-1].starting_method_ref = self.archive.run[-1].method[0]
-                #    archive.run[-1].calculation[-1].system_ref = self.archive.run[-1].system[0]
-                #except Exception:
-                #    pass
 
-                # parse xs workflow
-                self.parse_xs_worklfow(xs_archive, xs_workflow_archive)
+                # parse xs workflow (DFT + all photons)
+                # TODO generalize to include GW step
+                # self.parse_xs_worklfow(xs_archive, xs_workflow_archive)

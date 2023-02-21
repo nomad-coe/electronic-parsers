@@ -1055,6 +1055,13 @@ class Calculation(simulation.calculation.Calculation):
         Sigma without local-field effects
         ''')
 
+    x_exciting_xs_qpointset_qpoint = Quantity(
+        type=np.dtype(np.float64),
+        shape=[3],
+        description='''
+        A q-point is given in reciprocal space coordinates
+        ''')
+
     x_exciting_section_bandstructure = SubSection(
         sub_section=SectionProxy('x_exciting_section_bandstructure'),
         repeats=True)
