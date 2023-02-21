@@ -97,7 +97,7 @@ class OceanParser:
         if data.get('xangst'):
             sec_atoms.positions = data.get('xangst') * ureg.bohr
 
-    def parse_photon_polarization(self, path):
+    def parse_polarization(self, path):
         sec_run = self._child_archives.get(path).run[-1]
         sec_photon = sec_run.m_create(Method).m_create(Photon)
 
@@ -203,7 +203,7 @@ class OceanParser:
         sec_lanczos.x_ocean_tridiagonal_matrix = matrix
         sec_lanczos.x_ocean_eigenvalues = data_lancz[n_dimension + 1:]
 
-    def parse_spectra_entries(self, path):
+    def parse_photons(self, path):
         # For each spectra, we parse the data in one entry
         sec_run = self._child_archives.get(path).m_create(Run)
 
@@ -221,7 +221,7 @@ class OceanParser:
         self.parse_system(path, self.data.get('structure'))
 
         # Method
-        self.parse_photon_polarization(path)
+        self.parse_polarization(path)
         self.parse_method(self._child_archives.get(path))
 
         # Calculation
@@ -305,8 +305,7 @@ class OceanParser:
         photon_archive = []
         for child in self._child_archives:
             if self._child_archives.get(child):
-                # index = child[-2:]
-                self.parse_spectra_entries(child)
+                self.parse_photons(child)
                 photon_archive.append(self._child_archives.get(child))
 
         self.parse_photon_workflow(photon_archive, photon_workflow_archive)

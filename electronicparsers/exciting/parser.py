@@ -1720,6 +1720,12 @@ class ExcitingParser:
         sec_workflow.outputs = [Link(name='output spectrum', section=spectrum) for spectrum in spectra]
         self.archive.workflow2 = sec_workflow
 
+    def parse_spectra_entries(self, path):
+        sec_run = self._child_archives.get(path).m_create(Run)
+
+        sec_run.program = Program(
+            name='exciting', version=self.info_parser.get('program_version', '').strip())
+
     def parse_xs_worklfow(self, xs_archive, xs_workflow_archive):
         if xs_workflow_archive.workflow2:
             xs_dft_workflow = xs_workflow_archive.workflow2
@@ -2366,7 +2372,6 @@ class ExcitingParser:
         return True
 
     def parse(self, filepath, archive, logger, **kwargs):
-        # GW will be dealt as a separate entry
         self.filepath = filepath
         self.archive = archive
         self.logger = logger if logger is not None else logging
@@ -2379,7 +2384,6 @@ class ExcitingParser:
             # read method params from INFO.OUT
             self._gw_info_file = filepath
             self.filepath = os.path.join(dirname, basename.lstrip('GW_'))
-
         elif basename.startswith('INFOXS'):
             self._calculation_type = 'xs'
             self._xs_info_file = filepath
@@ -2401,16 +2405,19 @@ class ExcitingParser:
         # method goes first since reference needed for sec_scc
         if self._calculation_type == 'gw':
             self.parse_gw()
-
         elif self._calculation_type == 'xs':
             self.parse_xs()
-
+            photon_archive = []
+            for child in self._child_archives:
+                if self._child_archives.get(child):
+                    self.parse_spectra_entries(child)
+                    photon_archive.append(self._child_archives.get(child))
         else:
             self.parse_method()
             self.parse_configurations()
             self.parse_workflow()
 
-        # TODO get child_archives from parse
+        # GW archives
         gw_archive = self._child_archives.get('GW')
         if gw_archive is not None:
             # parse gw single point
@@ -2421,6 +2428,7 @@ class ExcitingParser:
             gw_workflow_archive = self._child_archives.get('GW_workflow')
             self.parse_gw_workflow(gw_archive, gw_workflow_archive)
 
+        # XS archives
         xs_workflow_archive = self._child_archives.get('XS_workflow')
         for xs_info_file, xs_archive in self._child_archives.items():
             if 'INFOXS.OUT' in xs_info_file:
@@ -2432,11 +2440,11 @@ class ExcitingParser:
                         xs_dirname) and os.path.basename(key).split('_')[0] in self._xs_spectra_types}
 
                 p.parse(xs_info_file, xs_archive, logger)
-                try:
-                    archive.run[-1].calculation[-1].starting_method_ref = self.archive.run[-1].method[0]
-                    archive.run[-1].calculation[-1].system_ref = self.archive.run[-1].system[0]
-                except Exception:
-                    pass
+                # try:
+                #    archive.run[-1].calculation[-1].starting_method_ref = self.archive.run[-1].method[0]
+                #    archive.run[-1].calculation[-1].system_ref = self.archive.run[-1].system[0]
+                #except Exception:
+                #    pass
 
                 # parse xs workflow
                 self.parse_xs_worklfow(xs_archive, xs_workflow_archive)
