@@ -1786,10 +1786,12 @@ class ExcitingParser:
 
         # Workflow
         workflow = SinglePoint2()
+        workflow.name = 'SinglePoint'
         self._child_archives.get(path).workflow2 = workflow
 
     def parse_photon_workflow(self):
         workflow = PhotonPolarization(results=PhotonPolarizationResults(), method=PhotonPolarizationMethod())
+        workflow.name = 'PhotonPolarization'
         input_structure = self.archive.run[-1].system[-1]
         input_method = self.archive.run[-1].method[-1]
         workflow.method = input_method
@@ -2000,6 +2002,7 @@ class ExcitingParser:
         sec_gw.band_structure_gw = bs_gw
 
         workflow = GW2(results=GWResults())
+        workflow.name = 'GW'
         workflow.results.dos_dft = dos_dft
         workflow.results.dos_gw = dos_gw
         workflow.results.band_structure_dft = bs_dft
@@ -2037,12 +2040,14 @@ class ExcitingParser:
 
         sec_workflow.type = 'single_point'
         workflow = SinglePoint2()
+        workflow.name = 'SinglePoint'
         sec_workflow.calculations_ref = self.archive.run[-1].calculation
         structure_optimization = self.info_parser.get('structure_optimization')
         if structure_optimization is not None:
             sec_workflow.type = 'geometry_optimization'
             sec_geometry_opt = sec_workflow.m_create(GeometryOptimization)
             workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
+            workflow.name = 'GeometryOptimization'
             threshold_force = structure_optimization.get(
                 'optimization_step', [{}])[0].get('force_convergence', [0., 0.])[-1]
             sec_geometry_opt.convergence_tolerance_force_maximum = threshold_force
