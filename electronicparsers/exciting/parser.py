@@ -1723,8 +1723,8 @@ class ExcitingParser:
         # TODO check with developers if this is correct
         sec_photon.momentum_transfer = sec_run.method[0].get('x_exciting_xs_qpointset_qpoint')
 
-    def parse_xs(self, archive):
-        sec_run = archive.run[-1]
+    def parse_xs(self):
+        sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
         if sec_run.m_xpath('method[0]'):
             sec_method.starting_method_ref = sec_run.method[0]
@@ -2500,7 +2500,7 @@ class ExcitingParser:
             self.parse_gw()
         elif self._calculation_type == 'xs':
             self.parse_system(self.info_parser.get('groundstate'))
-            self.parse_xs(archive)
+            self.parse_xs()
 
             for child in self._child_archives:
                 self.parse_photons(child)
