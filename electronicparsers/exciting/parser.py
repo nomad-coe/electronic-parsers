@@ -1719,10 +1719,8 @@ class ExcitingParser:
 
     def parse_polarization(self, path):
         sec_run = self._child_archives.get(path).run[-1]
-        if sec_run.m_xpath('method[0]'):
-            sec_photon = sec_run.method[0].m_create(Photon)
-        else:
-            sec_photon = sec_run.m_create(Method).m_create(Photon)
+        sec_photon = sec_run.m_create(Method).m_create(Photon)
+        # TODO check with developers if this is correct
         sec_photon.momentum_transfer = sec_run.method[0].get('x_exciting_xs_qpointset_qpoint')
 
     def parse_xs(self, archive):
@@ -1730,6 +1728,9 @@ class ExcitingParser:
         sec_method = sec_run.m_create(Method)
         if sec_run.m_xpath('method[0]'):
             sec_method.starting_method_ref = sec_run.method[0]
+
+        # Code-specific
+        self.parse_file('input.xml', sec_method)
 
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
@@ -1773,15 +1774,12 @@ class ExcitingParser:
             name='exciting', version=self.info_parser.get('program_version', '').strip())
 
         # System
-        self.parse_system(self._child_archives.get(path), self.info_parser.get('groundstate'))
+        sec_run.system = self.archive.run[-1].system
 
-        # We parse exciting-specific quantities
-        sec_method = sec_run.m_create(Method)
-        self.parse_file('input.xml', sec_method)
         # Photon method
         self.parse_polarization(path)
         # BSE method
-        self.parse_xs(self._child_archives.get(path))
+        sec_run.method.append(self.archive.run[-1].method[-1])
 
         # Calculation
         self.parse_spectra(path)
@@ -2250,8 +2248,8 @@ class ExcitingParser:
 
         return sec_scc
 
-    def parse_system(self, archive, section):
-        sec_run = archive.run[-1]
+    def parse_system(self, section):
+        sec_run = self.archive.run[-1]
 
         positions = self.info_parser.get_atom_positions(section.get('atomic_positions', {}))
         lattice_vectors = self.info_parser.get_initialization_parameter('lattice_vectors')
@@ -2359,7 +2357,7 @@ class ExcitingParser:
             if sec_scc is None:
                 return
 
-            sec_system = self.parse_system(self.archive, section)
+            sec_system = self.parse_system(section)
             if sec_system is not None:
                 sec_scc.system_ref = sec_system
 
@@ -2496,9 +2494,7 @@ class ExcitingParser:
         if self._calculation_type == 'gw':
             self.parse_gw()
         elif self._calculation_type == 'xs':
-            self.parse_system(archive, self.info_parser.get('groundstate'))
-            sec_method = sec_run.m_create(Method)
-            self.parse_file('input.xml', sec_method)
+            self.parse_system(self.info_parser.get('groundstate'))
             self.parse_xs(archive)
 
             for child in self._child_archives:
@@ -2522,7 +2518,7 @@ class ExcitingParser:
             self.parse_gw_workflow(gw_archive, gw_workflow_archive)
 
         # XS archives
-        xs_workflow_archive = self._child_archives.get('XS_workflow')
+        # xs_workflow_archive = self._child_archives.get('XS_workflow')
         for xs_info_file, xs_archive in self._child_archives.items():
             if 'INFOXS.OUT' in xs_info_file:
                 # parse xs single point
