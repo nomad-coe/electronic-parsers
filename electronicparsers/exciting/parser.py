@@ -37,7 +37,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Forces, ForcesEntry, ScfIteration, BandGap, Spectra
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, Task, GW as GWWorkflow
-from nomad.datamodel.metainfo.workflow2 import TaskReference, Link, Workflow as Workflow2
+from nomad.datamodel.metainfo.workflow2 import TaskReference, Link
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, GW as GW2, GWResults, ParticleHoleExcitations,
@@ -1792,6 +1792,7 @@ class ExcitingParser:
     def parse_photon_workflow(self):
         workflow = PhotonPolarization(results=PhotonPolarizationResults(), method=PhotonPolarizationMethod())
         workflow.name = 'PhotonPolarization'
+
         input_structure = self.archive.run[-1].system[-1]
         input_method = self.archive.run[-1].method[-1]
         workflow.method = input_method
@@ -1822,32 +1823,71 @@ class ExcitingParser:
         self.archive.workflow2 = workflow
 
     def parse_xs_worklfow(self, xs_archive, xs_workflow_archive):
-        if xs_workflow_archive.workflow2:
-            xs_dft_workflow = xs_workflow_archive.workflow2
-        else:
-            xs_dft_workflow = ParticleHoleExcitations(
-                results=ParticleHoleExcitationsResults(), method=ParticleHoleExcitationsMethod())
+        sec_run = xs_workflow_archive.m_create(Run)
+        sec_run.program = self.archive.run[-1].program
+        sec_run.system = self.archive.run[-1].system
+        workflow = ParticleHoleExcitations(
+            results=ParticleHoleExcitationsResults(), method=ParticleHoleExcitationsMethod())
 
-        # unfortunately we need to split generation of xs workflow here since we need dft input
-        inputs = []
-        if self.archive.m_xpath('run[0].calculation[0]'):
-            inputs.append(Link(name='input calculation', section=self.archive.run[0].calculation[0]))
-        xs_archive.workflow2.inputs = inputs
+        def extract_section(source, path):
+            path_segments = path.split('/', 1)
+            try:
+                value = getattr(source, path_segments[0])
+                value = value[-1] if isinstance(value, list) else value
+            except Exception:
+                return
 
-        spectra = xs_archive.workflow2.results.spectrum_polarization
+            if len(path_segments) == 1:
+                return value
+            else:
+                return extract_section(value, path_segments[1])
 
-        xs_archive.workflow2.tasks = [Task(
-            name=f'polarization {d}', inputs=inputs, outputs=[spectra[d]]) for d in range(len(spectra))]
+        def extract_polarization_outputs():
+            output = []
+            index = 0
+            for path, archive in self._child_archives.items():
+                if 'EPSILON' in path:
+                    output_calculation = archive.run[-1].calculation[-1]
+                    output.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
+                    index += 1
+            return output
 
-        if not xs_dft_workflow.inputs:
-            xs_dft_workflow.inputs = inputs
-        if not xs_dft_workflow.outputs:
-            xs_dft_workflow.outputs = []
-        xs_dft_workflow.outputs.extend(spectra)
-        if not xs_dft_workflow.results.spectra:
-            xs_dft_workflow.results.spectra = []
-        xs_dft_workflow.results.spectra.append(xs_archive.workflow2.results)
-        xs_workflow_archive.workflow2 = xs_dft_workflow
+        # Inputs
+        input_structure = extract_section(self.archive, 'run/system')
+        if input_structure:
+            workflow.inputs = [Link(name='Input structure', section=input_structure)]
+
+        # Results
+        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
+        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
+        workflow.results.dos_dft = dos_dft
+        workflow.results.band_structure_dft = bs_dft
+        spectra = xs_archive.workflow2.results
+        workflow.results.spectra = []
+        workflow.results.spectra.append(spectra)
+
+        # Outputs
+        workflow.outputs = extract_polarization_outputs()
+        input_calculation = extract_section(self.archive, 'run/calculation')
+        if self.archive.workflow2:  # DFT task
+            task = TaskReference(task=self.archive.workflow2)
+            if input_structure:
+                task.inputs = [Link(name='Input structure', section=input_structure)]
+                if input_calculation:
+                    task.outputs = [
+                        Link(name='Input structure', section=input_structure),
+                        Link(name='Output DFT calculation', section=input_calculation)]
+            workflow.tasks.append(task)
+        if xs_archive.workflow2:  # PhotonPolarization task
+            for photon_task in xs_archive.workflow2.tasks:
+                photon_task.inputs.append(Link(name='Input DFT calculation', section=input_calculation))
+            task = TaskReference(task=xs_archive.workflow2)
+            if input_structure and input_calculation:
+                task.inputs = [Link(name='Input DFT calculation', section=input_calculation)]
+            task.outputs = extract_polarization_outputs()
+            workflow.tasks.append(task)
+
+        xs_workflow_archive.workflow2 = workflow
 
     def _parse_input_gw(self, sec_method):
         sec_gw = sec_method.m_create(GWMethod)
@@ -2523,7 +2563,6 @@ class ExcitingParser:
             self.parse_gw_workflow(gw_archive, gw_workflow_archive)
 
         # XS archives
-        # xs_workflow_archive = self._child_archives.get('XS_workflow')
         for xs_info_file, xs_archive in self._child_archives.items():
             if 'INFOXS.OUT' in xs_info_file:
                 # parse xs single point
@@ -2537,4 +2576,5 @@ class ExcitingParser:
 
                 # parse xs workflow (DFT + all photons)
                 # TODO generalize to include GW step
-                # self.parse_xs_worklfow(xs_archive, xs_workflow_archive)
+                xs_workflow_archive = self._child_archives.get('XS_workflow')
+                self.parse_xs_worklfow(xs_archive, xs_workflow_archive)
