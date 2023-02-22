@@ -1722,6 +1722,19 @@ class ExcitingParser:
             elif quantity == 'SIGMA' and '_NLF_FXC' in basename:
                 sec_scc.x_exciting_xs_tddft_sigma_no_local_field = data[1:3]
 
+    def extract_section(self, source, path):
+        path_segments = path.split('/', 1)
+        try:
+            value = getattr(source, path_segments[0])
+            value = value[-1] if isinstance(value, list) else value
+        except Exception:
+            return
+
+        if len(path_segments) == 1:
+            return value
+        else:
+            return self.extract_section(value, path_segments[1])
+
     def parse_polarization(self, path):
         sec_run = self._child_archives.get(path).run[-1]
         sec_photon = sec_run.m_create(Method).m_create(Photon)
@@ -1831,37 +1844,24 @@ class ExcitingParser:
         workflow = ParticleHoleExcitations(
             results=ParticleHoleExcitationsResults(), method=ParticleHoleExcitationsMethod())
 
-        def extract_section(source, path):
-            path_segments = path.split('/', 1)
-            try:
-                value = getattr(source, path_segments[0])
-                value = value[-1] if isinstance(value, list) else value
-            except Exception:
-                return
-
-            if len(path_segments) == 1:
-                return value
-            else:
-                return extract_section(value, path_segments[1])
-
         def extract_polarization_outputs():
             output = []
             index = 0
             for path, archive in self._child_archives.items():
-                if 'EPSILON' in path:
+                if os.path.basename(path).split('_')[0] in self._xs_spectra_types:
                     output_calculation = archive.run[-1].calculation[-1]
                     output.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
                     index += 1
             return output
 
         # Inputs
-        input_structure = extract_section(self.archive, 'run/system')
+        input_structure = self.extract_section(self.archive, 'run/system')
         if input_structure:
             workflow.inputs = [Link(name='Input structure', section=input_structure)]
 
         # Results
-        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
+        bs_dft = self.extract_section(self.archive, 'run/calculation/band_structure_electronic')
+        dos_dft = self.extract_section(self.archive, 'run/calculation/dos_electronic')
         workflow.results.dos_dft = dos_dft
         workflow.results.band_structure_dft = bs_dft
         spectra = xs_archive.workflow2.results
@@ -1870,7 +1870,8 @@ class ExcitingParser:
 
         # Outputs
         workflow.outputs = extract_polarization_outputs()
-        input_calculation = extract_section(self.archive, 'run/calculation')
+        input_calculation = self.extract_section(self.archive, 'run/calculation')
+        output_dft_name = 'Output DFT calculation'
         if self.archive.workflow2:  # DFT task
             task = TaskReference(task=self.archive.workflow2)
             if input_structure:
@@ -1878,14 +1879,14 @@ class ExcitingParser:
                 if input_calculation:
                     task.outputs = [
                         Link(name='Input structure', section=input_structure),
-                        Link(name='Output DFT calculation', section=input_calculation)]
+                        Link(name=output_dft_name, section=input_calculation)]
             workflow.tasks.append(task)
         if xs_archive.workflow2:  # PhotonPolarization task
             for photon_task in xs_archive.workflow2.tasks:
-                photon_task.inputs.append(Link(name='Input DFT calculation', section=input_calculation))
+                photon_task.inputs.append(Link(name=output_dft_name, section=input_calculation))
             task = TaskReference(task=xs_archive.workflow2)
             if input_structure and input_calculation:
-                task.inputs = [Link(name='Input DFT calculation', section=input_calculation)]
+                task.inputs = [Link(name=output_dft_name, section=input_calculation)]
             task.outputs = extract_polarization_outputs()
             workflow.tasks.append(task)
 
@@ -2020,24 +2021,11 @@ class ExcitingParser:
         ]
 
         # Include DFT and GW band structures and DOS (if present) for comparison.
-        def extract_section(source, path):
-            path_segments = path.split('/', 1)
-            try:
-                value = getattr(source, path_segments[0])
-                value = value[-1] if isinstance(value, list) else value
-            except Exception:
-                return
-
-            if len(path_segments) == 1:
-                return value
-            else:
-                return extract_section(value, path_segments[1])
-
         sec_gw = sec_workflow.m_create(GWWorkflow)
-        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
-        dos_gw = extract_section(gw_archive, 'run/calculation/dos_electronic')
-        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        bs_gw = extract_section(gw_archive, 'run/calculation/band_structure_electronic')
+        dos_dft = self.extract_section(self.archive, 'run/calculation/dos_electronic')
+        dos_gw = self.extract_section(gw_archive, 'run/calculation/dos_electronic')
+        bs_dft = self.extract_section(self.archive, 'run/calculation/band_structure_electronic')
+        bs_gw = self.extract_section(gw_archive, 'run/calculation/band_structure_electronic')
         sec_gw.dos_dft = dos_dft
         sec_gw.dos_gw = dos_gw
         sec_gw.band_structure_dft = bs_dft
@@ -2050,15 +2038,15 @@ class ExcitingParser:
         workflow.results.band_structure_dft = bs_dft
         workflow.results.band_structure_gw = bs_gw
 
-        input_structure = extract_section(self.archive, 'run/system')
+        input_structure = self.extract_section(self.archive, 'run/system')
         if input_structure:
             workflow.inputs = [Link(name='Input structure', section=input_structure)]
-        output_calculation = extract_section(gw_archive, 'run/calculation')
+        output_calculation = self.extract_section(gw_archive, 'run/calculation')
         if output_calculation:
             workflow.outputs = [Link(name='Output calculation', section=output_calculation)]
 
         # output of dft and input for gw
-        input_calculation = extract_section(self.archive, 'run/calculation')
+        input_calculation = self.extract_section(self.archive, 'run/calculation')
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
             if input_structure:
