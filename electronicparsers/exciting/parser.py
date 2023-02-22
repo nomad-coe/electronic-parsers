@@ -1742,14 +1742,14 @@ class ExcitingParser:
         sec_bse.n_empty_states_screening = sec_run.method[0].get('x_exciting_xs_screening_number_of_empty_states')
         sec_bse.k_mesh_screening = KMesh(grid=sec_run.method[0].get('x_exciting_xs_screening_ngridk'))
         # CoreHole
-        sec_core_hole = sec_bse.m_create(CoreHole)
+        sec_core = sec_bse.m_create(CoreHole)
         if sec_run.method[0].get('x_exciting_xs_bse_xas'):
-            sec_core_hole.mode = 'absorption'
+            sec_core.mode = 'absorption'
         elif sec_run.method[0].get('x_exciting_xs_bse_xes'):
-            sec_core_hole.mode = 'emission'
-        sec_core_hole.solver = sec_run.method[0].get('x_exciting_xs_bse_type')
-        sec_core_hole.edge = sec_run.method[0].get('x_exciting_xs_bse_xasedge')
-        sec_core_hole.broadening = ureg.convert(sec_run.method[0].get('x_exciting_xs_broadening'), 'joule', 'electron_volt')
+            sec_core.mode = 'emission'
+        sec_core.solver = sec_run.method[0].get('x_exciting_xs_bse_type')
+        sec_core.edge = sec_run.method[0].get('x_exciting_xs_bse_xasedge')
+        sec_core.broadening = ureg.convert(sec_run.method[0].get('x_exciting_xs_broadening'), 'joule', 'electron_volt')
 
     def parse_spectra(self, path):
         sec_run = self._child_archives.get(path).run[-1]

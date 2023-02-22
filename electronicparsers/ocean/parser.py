@@ -136,16 +136,6 @@ class OceanParser:
         sec_bse_ocean = sec_method.m_create(x_ocean_bse_parameters)
         sec_bse_ocean.x_ocean_screen_radius = self.data['bse']['core'].get('screen_radius')
         sec_bse_ocean.x_ocean_xmesh = self.data['bse'].get('xmesh')
-        if sec_bse.type == 'lanczos-haydock':
-            sec_haydock = sec_bse_ocean.m_create(x_ocean_core_haydock_parameters)
-            sec_haydock.x_ocean_converge_spacing = self.data['bse']['core']['haydock']['converge'].get('spacing')
-            sec_haydock.x_ocean_converge_thresh = self.data['bse']['core']['haydock']['converge'].get('thresh')
-            sec_haydock.x_ocean_niter = self.data['bse']['core']['haydock'].get('niter')
-        elif sec_bse.type == 'gmres':
-            sec_gmres = sec_bse_ocean.m_create(x_ocean_core_gmres_parameters)
-            gmres_keys = ['echamp', 'elist', 'erange', 'estyle', 'ffff', 'gprc', 'nloop']
-            for key in gmres_keys:
-                setattr(sec_gmres, f'x_ocean_{key}', self.data['bse']['core']['gmres'].get(key))
         # screening
         sec_bse_screen = sec_method.m_create(x_ocean_screen_parameters)
         screen_keys = [
@@ -166,11 +156,21 @@ class OceanParser:
         sec_method.x_ocean_edges = edges
 
         # Core-Hole (either K=1s or L23=2p depenging on the first edge found)
-        sec_core_hole = sec_bse.m_create(CoreHole)
-        sec_core_hole.mode = self.mode_bse[self.data['bse']['core'].get('strength')]
-        sec_core_hole.solver = self._type_bse_map[self.data['bse']['core'].get('solver')]
-        sec_core_hole.edge = self._core_level_map[str(edges[0][-2:])]
-        sec_core_hole.broadening = self.data['bse']['core'].get('broaden')
+        sec_core = sec_bse.m_create(CoreHole)
+        sec_core.mode = self.mode_bse[self.data['bse']['core'].get('strength')]
+        sec_core.solver = self._type_bse_map[self.data['bse']['core'].get('solver')]
+        sec_core.edge = self._core_level_map[str(edges[0][-2:])]
+        sec_core.broadening = self.data['bse']['core'].get('broaden')
+        if sec_core.solver == 'lanczos-haydock':
+            sec_haydock = sec_bse_ocean.m_create(x_ocean_core_haydock_parameters)
+            sec_haydock.x_ocean_converge_spacing = self.data['bse']['core']['haydock']['converge'].get('spacing')
+            sec_haydock.x_ocean_converge_thresh = self.data['bse']['core']['haydock']['converge'].get('thresh')
+            sec_haydock.x_ocean_niter = self.data['bse']['core']['haydock'].get('niter')
+        elif sec_core.solver == 'gmres':
+            sec_gmres = sec_bse_ocean.m_create(x_ocean_core_gmres_parameters)
+            gmres_keys = ['echamp', 'elist', 'erange', 'estyle', 'ffff', 'gprc', 'nloop']
+            for key in gmres_keys:
+                setattr(sec_gmres, f'x_ocean_{key}', self.data['bse']['core']['gmres'].get(key))
 
     def parse_scc(self, path):
         sec_run = self._child_archives.get(path).run[-1]
