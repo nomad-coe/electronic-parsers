@@ -27,14 +27,14 @@ from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextP
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional,
-    GW as GWMethod, Scf, BasisSet, KMesh
+    GW as GWMethod, Scf, BasisSet, KMesh, Photon, BSE, CoreHole
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, EnergyEntry, Charges,
-    Forces, ForcesEntry, ScfIteration, BandGap
+    Forces, ForcesEntry, ScfIteration, BandGap, Spectra
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, Task, GW as GWWorkflow
 from nomad.datamodel.metainfo.workflow2 import TaskReference, Link, Workflow as Workflow2
@@ -42,12 +42,15 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, GW as GW2, GWResults, ParticleHoleExcitations,
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults, PhotonPolarization,
-    PhononMethod, PhononResults
+    PhotonPolarizationMethod, PhotonPolarizationResults
 )
-
-from .metainfo.exciting import x_exciting_section_MT_charge_atom, x_exciting_section_MT_moment_atom,\
-    x_exciting_section_spin, x_exciting_section_fermi_surface,\
-    x_exciting_section_atoms_group
+from .metainfo.exciting import (
+    x_exciting_section_MT_charge_atom, x_exciting_section_MT_moment_atom,
+    x_exciting_section_spin, x_exciting_section_fermi_surface,
+    x_exciting_section_atoms_group, x_exciting_exciton_calculation,
+    x_exciting_epsilon_calculation, x_exciting_sigma_calculation,
+    x_exciting_loss_calculation
+)
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -1478,6 +1481,8 @@ class ExcitingParser:
                 'xs/screening/screentype', 'full')
 
         if self.input_xml_parser.get('xs/BSE') is not None:
+            sec_method.x_exciting_xs_bse_type = self.input_xml_parser.get(
+                'xs/BSE/bsetype', 'singlet')
             sec_method.x_exciting_xs_bse_antiresonant = self.input_xml_parser.get(
                 'xs/BSE/aresbse', True)
             sec_method.x_exciting_xs_bse_angular_momentum_cutoff = self.input_xml_parser.get(
@@ -1539,6 +1544,10 @@ class ExcitingParser:
             sec_method.x_exciting_xs_tetra = self.input_xml_parser.get(
                 'xs/tetra/tetradf', False)
 
+        if self.input_xml_parser.get('xs/qpointset') is not None:
+            sec_method.x_exciting_xs_qpointset_qpoint = self.input_xml_parser.get(
+                'xs/qpointset/qpoint')
+
     def _get_xs_calculation(self, path):
         segments = os.path.basename(path).split('_', 1)
         if segments[0] not in self._xs_spectra_types:
@@ -1556,7 +1565,7 @@ class ExcitingParser:
         sec_run = archive.run[0] if archive.run else archive.m_create(Run)
         return sec_run.calculation[0] if sec_run.calculation else sec_run.m_create(Calculation)
 
-    def _parse_xs_bse(self):
+    def _parse_xs_bse(self, path):
 
         def parse_exciton(data, sec_scc):
             # TODO remove n_components
@@ -1565,16 +1574,17 @@ class ExcitingParser:
 
             sec_scc.x_exciting_xs_bse_number_of_components = n_components
             n_excitons = len(data[0]) // n_components
-            sec_scc.x_exciting_xs_bse_number_of_excitons = n_excitons
-            sec_scc.x_exciting_xs_bse_exciton_energies = np.reshape(
+            scc_section = sec_scc.m_create(x_exciting_exciton_calculation)
+            scc_section.x_exciting_xs_bse_number_of_excitons = n_excitons
+            scc_section.x_exciting_xs_bse_exciton_energies = np.reshape(
                 data[1], (n_components, n_excitons)) * ureg.hartree
-            sec_scc.x_exciting_xs_bse_exciton_binding_energies = np.reshape(
+            scc_section.x_exciting_xs_bse_exciton_binding_energies = np.reshape(
                 data[2], (n_components, n_excitons)) * ureg.hartree
-            sec_scc.x_exciting_xs_bse_exciton_oscillator_strength = np.reshape(
+            scc_section.x_exciting_xs_bse_exciton_oscillator_strength = np.reshape(
                 data[3], (n_components, n_excitons))
-            sec_scc.x_exciting_xs_bse_exciton_amplitude_re = np.reshape(
+            scc_section.x_exciting_xs_bse_exciton_amplitude_re = np.reshape(
                 data[4], (n_components, n_excitons))
-            sec_scc.x_exciting_xs_bse_exciton_amplitude_im = np.reshape(
+            scc_section.x_exciting_xs_bse_exciton_amplitude_im = np.reshape(
                 data[5], (n_components, n_excitons))
 
         def parse_epsilon(data, sec_scc):
@@ -1583,23 +1593,30 @@ class ExcitingParser:
             n_epsilon = len(data[0]) // n_components
 
             sec_scc.x_exciting_xs_bse_number_of_energy_points = n_epsilon
-            sec_scc.x_exciting_xs_bse_epsilon_energies = np.reshape(
+            scc_section = sec_scc.m_create(x_exciting_epsilon_calculation)
+            scc_section.x_exciting_xs_bse_epsilon_energies = np.reshape(
                 data[0], (n_components, n_epsilon)) * ureg.hartree
-            sec_scc.x_exciting_xs_bse_epsilon_re = np.reshape(
+            scc_section.x_exciting_xs_bse_epsilon_re = np.reshape(
                 data[1], (n_components, n_epsilon))
-            sec_scc.x_exciting_xs_bse_epsilon_im = np.reshape(
+            scc_section.x_exciting_xs_bse_epsilon_im = np.reshape(
                 data[2], (n_components, n_epsilon))
+
+            sec_spectra = sec_scc.m_create(Spectra)
+            sec_spectra.n_energies = n_epsilon
+            sec_spectra.excitation_energies = data[0] * ureg.hartree
+            sec_spectra.intensities = data[2]
 
         def parse_sigma(data, sec_scc):
             n_components = len(data)
             data = np.transpose(np.vstack(data))
             n_sigma = len(data[0]) // n_components
 
-            sec_scc.x_exciting_xs_bse_sigma_energies = np.reshape(
+            scc_section = sec_scc.m_create(x_exciting_sigma_calculation)
+            scc_section.x_exciting_xs_bse_sigma_energies = np.reshape(
                 data[0], (n_components, n_sigma)) * ureg.hartree
-            sec_scc.x_exciting_xs_bse_sigma_re = np.reshape(
+            scc_section.x_exciting_xs_bse_sigma_re = np.reshape(
                 data[1], (n_components, n_sigma))
-            sec_scc.x_exciting_xs_bse_sigma_im = np.reshape(
+            scc_section.x_exciting_xs_bse_sigma_im = np.reshape(
                 data[2], (n_components, n_sigma))
 
         def parse_loss(data, sec_scc):
@@ -1607,21 +1624,24 @@ class ExcitingParser:
             data = np.transpose(np.vstack(data))
             n_loss = len(data[0]) // n_components
 
-            sec_scc.x_exciting_xs_bse_loss_energies = np.reshape(
+            scc_section = sec_scc.m_create(x_exciting_loss_calculation)
+            scc_section.x_exciting_xs_bse_loss_energies = np.reshape(
                 data[0], (n_components, n_loss)) * ureg.hartree
-            sec_scc.x_exciting_xs_bse_loss = np.reshape(
+            scc_section.x_exciting_xs_bse_loss = np.reshape(
                 data[1], (n_components, n_loss))
 
-        for path in self.get_exciting_files('*BSE*.OUT', self._xs_info_file):
-            sec_scc = self._get_xs_calculation(path)
+        polarization_files = [
+            f for f in self.get_exciting_files('*BSE*.OUT', self._xs_info_file) if f.endswith(path[-6:])]
+        for file in polarization_files:
+            sec_scc = self._get_xs_calculation(file)
             if not sec_scc:
                 continue
 
-            self.data_xs_parser.mainfile = path
+            self.data_xs_parser.mainfile = file
             if self.data_xs_parser.data is None:
                 continue
 
-            quantity = os.path.basename(path).split('_')[0]
+            quantity = os.path.basename(file).split('_')[0]
 
             if quantity.startswith('EXCITON'):
                 parse_function = parse_exciton
@@ -1634,6 +1654,12 @@ class ExcitingParser:
 
             try:
                 parse_function([self.data_xs_parser.data], sec_scc)
+                # Specific tag for the spectra from EPSILON
+                if quantity.startswith('EPSILON'):
+                    if self.input_xml_parser.get('xs/BSE/xas'):
+                        sec_scc.spectra[0].type = 'XAS'
+                    elif self.input_xml_parser.get('xs/BSE/xes'):
+                        sec_scc.spectra[0].type = 'XES'
             except Exception:
                 self.logger.error('Error setting BSE data.')
 
@@ -1691,34 +1717,109 @@ class ExcitingParser:
             elif quantity == 'SIGMA' and '_NLF_FXC' in basename:
                 sec_scc.x_exciting_xs_tddft_sigma_no_local_field = data[1:3]
 
+    def parse_polarization(self, path):
+        sec_run = self._child_archives.get(path).run[-1]
+        sec_photon = sec_run.m_create(Method).m_create(Photon)
+        # TODO check with developers if this is correct
+        sec_photon.momentum_transfer = sec_run.method[0].get('x_exciting_xs_qpointset_qpoint')
+
     def parse_xs(self):
         sec_run = self.archive.run[-1]
-
-        # inconsistency in the naming convention for xs input xml file
         sec_method = sec_run.m_create(Method)
+        if sec_run.m_xpath('method[0]'):
+            sec_method.starting_method_ref = sec_run.method[0]
 
+        # Code-specific
         self.parse_file('input.xml', sec_method)
 
-        # parse properties
+        # KMesh
+        sec_k_mesh = sec_method.m_create(KMesh)
+        sec_k_mesh.grid = sec_run.method[0].get('x_exciting_xs_ngridk')
+
+        # BSE
+        sec_bse = sec_method.m_create(BSE)
+        sec_bse.n_empty_states = sec_run.method[0].get('x_exciting_xs_number_of_empty_states')
+        sec_bse.screening_type = sec_run.method[0].get('x_exciting_xs_screening_type')
+        sec_bse.n_empty_states_screening = sec_run.method[0].get('x_exciting_xs_screening_number_of_empty_states')
+        sec_bse.k_mesh_screening = KMesh(grid=sec_run.method[0].get('x_exciting_xs_screening_ngridk'))
+        # CoreHole
+        sec_core = sec_bse.m_create(CoreHole)
+        if sec_run.method[0].get('x_exciting_xs_bse_xas'):
+            sec_core.mode = 'absorption'
+        elif sec_run.method[0].get('x_exciting_xs_bse_xes'):
+            sec_core.mode = 'emission'
+        sec_core.solver = sec_run.method[0].get('x_exciting_xs_bse_type')
+        sec_core.edge = sec_run.method[0].get('x_exciting_xs_bse_xasedge')
+        sec_core.broadening = ureg.convert(sec_run.method[0].get('x_exciting_xs_broadening'), 'joule', 'electron_volt')
+
+    def parse_spectra(self, path):
+        sec_run = self._child_archives.get(path).run[-1]
         input_file = self.get_exciting_files('input.xml', filepath=self._xs_info_file)
         if not input_file:
             return
         self.input_xml_parser.mainfile = input_file[0]
         xstype = self.input_xml_parser.get('xs/xstype', '')
         if xstype.lower() == 'bse':
-            self._parse_xs_bse()
+            self._parse_xs_bse(path)
         elif xstype.lower() == 'tddft':
             self._parse_xs_tddft()
+        sec_run.calculation[-1].system_ref = sec_run.system[-1]
+        sec_run.calculation[-1].method_ref = sec_run.method[-1]
 
-        sec_workflow = PhotonPolarization(results=PhononResults(), method=PhononMethod())
+    def parse_photons(self, path):
+        sec_run = self._child_archives.get(path).m_create(Run)
+
+        # Program
+        sec_run.program = Program(
+            name='exciting', version=self.info_parser.get('program_version', '').strip())
+
+        # System
+        sec_run.system = self.archive.run[-1].system
+
+        # Photon method
+        self.parse_polarization(path)
+        # BSE method
+        sec_run.method.append(self.archive.run[-1].method[-1])
+
+        # Calculation
+        self.parse_spectra(path)
+
+        # Workflow
+        workflow = SinglePoint2()
+        workflow.name = 'SinglePoint'
+        self._child_archives.get(path).workflow2 = workflow
+
+    def parse_photon_workflow(self):
+        workflow = PhotonPolarization(results=PhotonPolarizationResults(), method=PhotonPolarizationMethod())
+        workflow.name = 'PhotonPolarization'
+        input_structure = self.archive.run[-1].system[-1]
+        input_method = self.archive.run[-1].method[-1]
+        workflow.method = input_method
+        workflow.inputs = [
+            Link(name='Input structure', section=input_structure),
+            Link(name='Input BSE methodology', section=input_method)]
         spectra = []
-        for archive in self._child_archives.values():
-            if archive.m_xpath('run[0].calculation[0].spectra[0]'):
-                spectra.append(archive.run[0].calculation[0].spectra[0])
-        sec_workflow.results.n_polarizations = len(spectra)
-        sec_workflow.results.spectrum_polarization = spectra
-        sec_workflow.outputs = [Link(name='output spectrum', section=spectrum) for spectrum in spectra]
-        self.archive.workflow2 = sec_workflow
+        outputs = []
+        for path in self._child_archives.keys():
+            archive = self._child_archives.get(path)
+            index = list(self._child_archives.keys()).index(path)
+
+            task = TaskReference(task=archive.workflow2)
+            input_photon_method = archive.run[-1].method[0]
+            if input_structure and input_photon_method:
+                task.inputs = [
+                    Link(name='Input structure', section=input_structure),
+                    Link(name='Input photon parameters', section=input_photon_method)]
+            output_calculation = archive.run[-1].calculation[-1]
+            if output_calculation:
+                task.outputs = [Link(name=f'Output polarization {index + 1}', section=output_calculation)]
+                spectra.append(output_calculation.spectra[0])
+                outputs.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
+            workflow.tasks.append(task)
+        workflow.results.n_polarizations = len(spectra)
+        workflow.results.spectrum_polarization = spectra
+        workflow.outputs = outputs
+        self.archive.workflow2 = workflow
 
     def parse_xs_worklfow(self, xs_archive, xs_workflow_archive):
         if xs_workflow_archive.workflow2:
@@ -1851,12 +1952,7 @@ class ExcitingParser:
             sec_gap.value_optical = optical_band_gap
 
         sec_scc.method_ref = sec_method
-        # if dft_archive:
-        #     # trying to resolve system from archive does not seem to work
-        #     sec_scc.system_ref = self.parse_system(self.info_parser.get('groundstate'))
-        #     # sec_run.system.append(archive.run[0].system[0].m_copy())
-        #     # sec_scc.system_ref = sec_run.system[-1]
-        self.parse_system(self.info_parser.get('groundstate'))
+        self.parse_system(self.archive, self.info_parser.get('groundstate'))
         sec_scc.system_ref = sec_run.system[-1]
 
     def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
@@ -1906,6 +2002,7 @@ class ExcitingParser:
         sec_gw.band_structure_gw = bs_gw
 
         workflow = GW2(results=GWResults())
+        workflow.name = 'GW'
         workflow.results.dos_dft = dos_dft
         workflow.results.dos_gw = dos_gw
         workflow.results.band_structure_dft = bs_dft
@@ -1943,12 +2040,14 @@ class ExcitingParser:
 
         sec_workflow.type = 'single_point'
         workflow = SinglePoint2()
+        workflow.name = 'SinglePoint'
         sec_workflow.calculations_ref = self.archive.run[-1].calculation
         structure_optimization = self.info_parser.get('structure_optimization')
         if structure_optimization is not None:
             sec_workflow.type = 'geometry_optimization'
             sec_geometry_opt = sec_workflow.m_create(GeometryOptimization)
             workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
+            workflow.name = 'GeometryOptimization'
             threshold_force = structure_optimization.get(
                 'optimization_step', [{}])[0].get('force_convergence', [0., 0.])[-1]
             sec_geometry_opt.convergence_tolerance_force_maximum = threshold_force
@@ -2366,7 +2465,6 @@ class ExcitingParser:
         return True
 
     def parse(self, filepath, archive, logger, **kwargs):
-        # GW will be dealt as a separate entry
         self.filepath = filepath
         self.archive = archive
         self.logger = logger if logger is not None else logging
@@ -2379,7 +2477,6 @@ class ExcitingParser:
             # read method params from INFO.OUT
             self._gw_info_file = filepath
             self.filepath = os.path.join(dirname, basename.lstrip('GW_'))
-
         elif basename.startswith('INFOXS'):
             self._calculation_type = 'xs'
             self._xs_info_file = filepath
@@ -2401,16 +2498,20 @@ class ExcitingParser:
         # method goes first since reference needed for sec_scc
         if self._calculation_type == 'gw':
             self.parse_gw()
-
         elif self._calculation_type == 'xs':
+            self.parse_system(self.info_parser.get('groundstate'))
             self.parse_xs()
 
+            for child in self._child_archives:
+                self.parse_photons(child)
+            # putting together all photons in the same xs_archive
+            self.parse_photon_workflow()
         else:
             self.parse_method()
             self.parse_configurations()
             self.parse_workflow()
 
-        # TODO get child_archives from parse
+        # GW archives
         gw_archive = self._child_archives.get('GW')
         if gw_archive is not None:
             # parse gw single point
@@ -2421,7 +2522,8 @@ class ExcitingParser:
             gw_workflow_archive = self._child_archives.get('GW_workflow')
             self.parse_gw_workflow(gw_archive, gw_workflow_archive)
 
-        xs_workflow_archive = self._child_archives.get('XS_workflow')
+        # XS archives
+        # xs_workflow_archive = self._child_archives.get('XS_workflow')
         for xs_info_file, xs_archive in self._child_archives.items():
             if 'INFOXS.OUT' in xs_info_file:
                 # parse xs single point
@@ -2432,11 +2534,7 @@ class ExcitingParser:
                         xs_dirname) and os.path.basename(key).split('_')[0] in self._xs_spectra_types}
 
                 p.parse(xs_info_file, xs_archive, logger)
-                try:
-                    archive.run[-1].calculation[-1].starting_method_ref = self.archive.run[-1].method[0]
-                    archive.run[-1].calculation[-1].system_ref = self.archive.run[-1].system[0]
-                except Exception:
-                    pass
 
-                # parse xs workflow
-                self.parse_xs_worklfow(xs_archive, xs_workflow_archive)
+                # parse xs workflow (DFT + all photons)
+                # TODO generalize to include GW step
+                # self.parse_xs_worklfow(xs_archive, xs_workflow_archive)
