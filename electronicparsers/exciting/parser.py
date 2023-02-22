@@ -1671,8 +1671,25 @@ class ExcitingParser:
 
             return data
 
+        def get_xs_calculation(path):
+            segments = os.path.basename(path).split('_', 1)
+            if segments[0] not in self._xs_spectra_types:
+                return
+
+            archive = None
+            for key in self._child_archives.keys():
+                if key.endswith(segments[-1]):
+                    archive = self._child_archives[key]
+                    break
+
+            if archive is None:
+                return
+
+            sec_run = archive.run[0] if archive.run else archive.m_create(Run)
+            return sec_run.calculation[0] if sec_run.calculation else sec_run.m_create(Calculation)
+
         for path in self.get_exciting_files('*_OC*001.OUT'):
-            sec_scc = self._get_xs_calculation(path)
+            sec_scc = get_xs_calculation(path)
             if not sec_scc:
                 continue
 
