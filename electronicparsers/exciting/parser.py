@@ -1548,24 +1548,8 @@ class ExcitingParser:
             sec_method.x_exciting_xs_qpointset_qpoint = self.input_xml_parser.get(
                 'xs/qpointset/qpoint')
 
-    def _get_xs_calculation(self, path):
-        segments = os.path.basename(path).split('_', 1)
-        if segments[0] not in self._xs_spectra_types:
-            return
-
-        archive = None
-        for key in self._child_archives.keys():
-            if key.endswith(segments[-1]):
-                archive = self._child_archives[key]
-                break
-
-        if archive is None:
-            return
-
-        sec_run = archive.run[0] if archive.run else archive.m_create(Run)
-        return sec_run.calculation[0] if sec_run.calculation else sec_run.m_create(Calculation)
-
     def _parse_xs_bse(self, path):
+        sec_run = self._child_archives.get(path).run[-1]
 
         def parse_exciton(data, sec_scc):
             # TODO remove n_components
@@ -1630,19 +1614,19 @@ class ExcitingParser:
             scc_section.x_exciting_xs_bse_loss = np.reshape(
                 data[1], (n_components, n_loss))
 
+        file_ending = path.split('EPSILON')[-1]  # Identifying files with the same ending but different type of calculation
         polarization_files = [
-            f for f in self.get_exciting_files('*BSE*.OUT', self._xs_info_file) if f.endswith(path[-6:])]
+            f for f in self.get_exciting_files('*BSE*.OUT', self._xs_info_file) if f.endswith(file_ending)]
         for file in polarization_files:
-            sec_scc = self._get_xs_calculation(file)
-            if not sec_scc:
-                continue
-
+            if sec_run.m_xpath('calculation'):
+                sec_scc = sec_run.calculation[-1]
+            else:
+                sec_scc = sec_run.m_create(Calculation)
             self.data_xs_parser.mainfile = file
             if self.data_xs_parser.data is None:
                 continue
 
             quantity = os.path.basename(file).split('_')[0]
-
             if quantity.startswith('EXCITON'):
                 parse_function = parse_exciton
             elif quantity.startswith('EPSILON'):
@@ -1662,6 +1646,10 @@ class ExcitingParser:
                         sec_scc.spectra[0].type = 'XES'
             except Exception:
                 self.logger.error('Error setting BSE data.')
+
+            # refs
+            sec_scc.system_ref = sec_run.system[-1]
+            sec_scc.method_ref = sec_run.method[-1]
 
     def _parse_xs_tddft(self):
         sec_run = self.archive.run[-1]
@@ -1753,7 +1741,6 @@ class ExcitingParser:
         sec_core.broadening = ureg.convert(sec_run.method[0].get('x_exciting_xs_broadening'), 'joule', 'electron_volt')
 
     def parse_spectra(self, path):
-        sec_run = self._child_archives.get(path).run[-1]
         input_file = self.get_exciting_files('input.xml', filepath=self._xs_info_file)
         if not input_file:
             return
@@ -1763,8 +1750,6 @@ class ExcitingParser:
             self._parse_xs_bse(path)
         elif xstype.lower() == 'tddft':
             self._parse_xs_tddft()
-        sec_run.calculation[-1].system_ref = sec_run.system[-1]
-        sec_run.calculation[-1].method_ref = sec_run.method[-1]
 
     def parse_photons(self, path):
         sec_run = self._child_archives.get(path).m_create(Run)
@@ -1811,7 +1796,7 @@ class ExcitingParser:
                 task.inputs = [
                     Link(name='Input structure', section=input_structure),
                     Link(name='Input photon parameters', section=input_photon_method)]
-            output_calculation = archive.run[-1].calculation[-1]
+            output_calculation = archive.run[-1].calculation[-1]  # ref to EPSILON calculation
             if output_calculation:
                 task.outputs = [Link(name=f'Output polarization {index + 1}', section=output_calculation)]
                 spectra.append(output_calculation.spectra[0])
@@ -1992,7 +1977,7 @@ class ExcitingParser:
             sec_gap.value_optical = optical_band_gap
 
         sec_scc.method_ref = sec_method
-        self.parse_system(self.archive, self.info_parser.get('groundstate'))
+        self.parse_system(self.info_parser.get('groundstate'))
         sec_scc.system_ref = sec_run.system[-1]
 
     def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
