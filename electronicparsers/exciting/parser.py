@@ -1752,6 +1752,7 @@ class ExcitingParser:
         sec_core_hole.broadening = ureg.convert(sec_run.method[0].get('x_exciting_xs_broadening'), 'joule', 'electron_volt')
 
     def parse_spectra(self, path):
+        sec_run = self._child_archives.get(path).run[-1]
         input_file = self.get_exciting_files('input.xml', filepath=self._xs_info_file)
         if not input_file:
             return
@@ -1761,6 +1762,8 @@ class ExcitingParser:
             self._parse_xs_bse(path)
         elif xstype.lower() == 'tddft':
             self._parse_xs_tddft()
+        sec_run.calculation[-1].system_ref = sec_run.system[-1]
+        sec_run.calculation[-1].method_ref = sec_run.method[-1]
 
     def parse_photons(self, path):
         sec_run = self._child_archives.get(path).m_create(Run)
@@ -1787,35 +1790,36 @@ class ExcitingParser:
         workflow = SinglePoint2()
         self._child_archives.get(path).workflow2 = workflow
 
-    def parse_photon_workflow(self, photon_archive, xs_archive):
+    def parse_photon_workflow(self):
         workflow = PhotonPolarization(results=PhotonPolarizationResults(), method=PhotonPolarizationMethod())
-        input_structure = xs_archive.run[-1].system[-1]
-        input_method = xs_archive.run[-1].method[-1]
+        input_structure = self.archive.run[-1].system[-1]
+        input_method = self.archive.run[-1].method[-1]
         workflow.method = input_method
         workflow.inputs = [
             Link(name='Input structure', section=input_structure),
             Link(name='Input BSE methodology', section=input_method)]
         spectra = []
         outputs = []
-        for archive in photon_archive:
-            if archive.workflow2:
-                index = photon_archive.index(archive)
-                task = TaskReference(task=archive.workflow2)
-                input_photon_method = archive.run[-1].method[0]
-                if input_structure and input_photon_method:
-                    task.inputs = [
-                        Link(name='Input structure', section=input_structure),
-                        Link(name='Input photon parameters', section=input_photon_method)]
-                output_calculation = archive.run[-1].calculation[-1]
-                if output_calculation:
-                    task.outputs = [Link(name=f'Output polarization {index + 1}', section=output_calculation)]
-                    spectra.append(output_calculation.spectra[0])
-                    outputs.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
-                workflow.tasks.append(task)
+        for path in self._child_archives.keys():
+            archive = self._child_archives.get(path)
+            index = list(self._child_archives.keys()).index(path)
+
+            task = TaskReference(task=archive.workflow2)
+            input_photon_method = archive.run[-1].method[0]
+            if input_structure and input_photon_method:
+                task.inputs = [
+                    Link(name='Input structure', section=input_structure),
+                    Link(name='Input photon parameters', section=input_photon_method)]
+            output_calculation = archive.run[-1].calculation[-1]
+            if output_calculation:
+                task.outputs = [Link(name=f'Output polarization {index + 1}', section=output_calculation)]
+                spectra.append(output_calculation.spectra[0])
+                outputs.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
+            workflow.tasks.append(task)
         workflow.results.n_polarizations = len(spectra)
         workflow.results.spectrum_polarization = spectra
         workflow.outputs = outputs
-        xs_archive.workflow2 = workflow
+        self.archive.workflow2 = workflow
 
     def parse_xs_worklfow(self, xs_archive, xs_workflow_archive):
         if xs_workflow_archive.workflow2:
@@ -2497,13 +2501,10 @@ class ExcitingParser:
             self.parse_file('input.xml', sec_method)
             self.parse_xs(archive)
 
-            photon_archive = []
             for child in self._child_archives:
-                if self._child_archives.get(child):
-                    self.parse_photons(child)
-                    photon_archive.append(self._child_archives.get(child))
+                self.parse_photons(child)
             # putting together all photons in the same xs_archive
-            self.parse_photon_workflow(photon_archive, archive)
+            self.parse_photon_workflow()
         else:
             self.parse_method()
             self.parse_configurations()
