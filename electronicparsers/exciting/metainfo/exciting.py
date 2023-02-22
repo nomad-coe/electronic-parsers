@@ -520,6 +520,141 @@ class GW(simulation.method.GW):
         ''')
 
 
+class x_exciting_exciton_calculation(MSection):
+    '''
+    Calculation of EXCITON
+    '''
+
+    m_def = Section(validate=False)
+
+    x_exciting_xs_bse_number_of_excitons = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        Total number of excitons
+        ''')
+
+    x_exciting_xs_bse_exciton_amplitude_im = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_excitons'],
+        description='''
+        Imaginary part of the transition amplitude
+        ''')
+
+    x_exciting_xs_bse_exciton_amplitude_re = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_excitons'],
+        description='''
+        Real part of the transition amplitude
+        ''')
+
+    x_exciting_xs_bse_exciton_binding_energies = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_excitons'],
+        unit='joule',
+        description='''
+        Exciton binding energies
+        ''')
+
+    x_exciting_xs_bse_exciton_energies = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_excitons'],
+        unit='joule',
+        description='''
+        Exciton energies
+        ''')
+
+    x_exciting_xs_bse_exciton_oscillator_strength = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_excitons'],
+        description='''
+        Exciton oscillator strength
+        ''')
+
+
+class x_exciting_epsilon_calculation(MSection):
+    '''
+    Calculation of EPSILON
+    '''
+
+    m_def = Section(validate=False)
+
+    x_exciting_xs_bse_epsilon_energies = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
+        unit='joule',
+        description='''
+        Energies of the dielectric function epsilon
+        ''')
+
+    x_exciting_xs_bse_epsilon_im = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
+        description='''
+        Imaginary part of the dielectric function epsilon
+        ''')
+
+    x_exciting_xs_bse_epsilon_re = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
+        description='''
+        Real part of the dielectric function epsilon
+        ''')
+
+
+class x_exciting_sigma_calculation(MSection):
+    '''
+    Calculation of SIGMA
+    '''
+
+    m_def = Section(validate=False)
+
+    x_exciting_xs_bse_sigma_energies = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
+        unit='joule',
+        description='''
+        Energies of the conductivity function sigma
+        ''')
+
+    x_exciting_xs_bse_sigma_im = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
+        description='''
+        Imaginary part of the conductivity function sigma
+        ''')
+
+    x_exciting_xs_bse_sigma_re = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
+        description='''
+        Real part of the conductivity function sigma
+        ''')
+
+
+class x_exciting_loss_calculation(MSection):
+    '''
+    Calculation of LOSS
+    '''
+
+    m_def = Section(validate=False)
+
+    x_exciting_xs_bse_loss = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
+        description='''
+        Loss function
+        ''')
+
+    x_exciting_xs_bse_loss_energies = Quantity(
+        type=np.dtype(np.float64),
+        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
+        unit='joule',
+        description='''
+        Energies of the loss function
+        ''')
+
+
 class Calculation(simulation.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
@@ -845,80 +980,6 @@ class Calculation(simulation.calculation.Calculation):
         XC potential final
         ''')
 
-    x_exciting_xs_bse_epsilon_energies = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
-        unit='joule',
-        description='''
-        Energies of the dielectric function epsilon
-        ''')
-
-    x_exciting_xs_bse_epsilon_im = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
-        description='''
-        Imaginary part of the dielectric function epsilon
-        ''')
-
-    x_exciting_xs_bse_epsilon_re = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
-        description='''
-        Real part of the dielectric function epsilon
-        ''')
-
-    x_exciting_xs_bse_exciton_amplitude_im = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_excitons'],
-        description='''
-        Imaginary part of the transition amplitude
-        ''')
-
-    x_exciting_xs_bse_exciton_amplitude_re = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_excitons'],
-        description='''
-        Real part of the transition amplitude
-        ''')
-
-    x_exciting_xs_bse_exciton_binding_energies = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_excitons'],
-        unit='joule',
-        description='''
-        Exciton binding energies
-        ''')
-
-    x_exciting_xs_bse_exciton_energies = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_excitons'],
-        unit='joule',
-        description='''
-        Exciton energies
-        ''')
-
-    x_exciting_xs_bse_exciton_oscillator_strength = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_excitons'],
-        description='''
-        Exciton oscillator strength
-        ''')
-
-    x_exciting_xs_bse_loss = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
-        description='''
-        Loss function
-        ''')
-
-    x_exciting_xs_bse_loss_energies = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
-        unit='joule',
-        description='''
-        Energies of the loss function
-        ''')
-
     x_exciting_xs_bse_number_of_components = Quantity(
         type=np.dtype(np.int32),
         shape=[],
@@ -931,35 +992,6 @@ class Calculation(simulation.calculation.Calculation):
         shape=[],
         description='''
         Energy mesh for the dielectric function, conductivity and loss function
-        ''')
-
-    x_exciting_xs_bse_number_of_excitons = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        Total number of excitons
-        ''')
-
-    x_exciting_xs_bse_sigma_energies = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
-        unit='joule',
-        description='''
-        Energies of the conductivity function sigma
-        ''')
-
-    x_exciting_xs_bse_sigma_im = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
-        description='''
-        Imaginary part of the conductivity function sigma
-        ''')
-
-    x_exciting_xs_bse_sigma_re = Quantity(
-        type=np.dtype(np.float64),
-        shape=['x_exciting_xs_bse_number_of_components', 'x_exciting_xs_bse_number_of_energy_points'],
-        description='''
-        Real part of the conductivity function sigma
         ''')
 
     x_exciting_xs_tddft_dielectric_function_local_field = Quantity(
@@ -1055,6 +1087,13 @@ class Calculation(simulation.calculation.Calculation):
         Sigma without local-field effects
         ''')
 
+    x_exciting_xs_qpointset_qpoint = Quantity(
+        type=np.dtype(np.float64),
+        shape=[3],
+        description='''
+        A q-point is given in reciprocal space coordinates
+        ''')
+
     x_exciting_section_bandstructure = SubSection(
         sub_section=SectionProxy('x_exciting_section_bandstructure'),
         repeats=True)
@@ -1076,6 +1115,14 @@ class Calculation(simulation.calculation.Calculation):
         sub_section=SectionProxy('x_exciting_section_MT_moment_atom'),
         repeats=True
     )
+
+    x_exciting_exciton = SubSection(sub_section=x_exciting_exciton_calculation.m_def, repeats=False)
+
+    x_exciting_epsilon = SubSection(sub_section=x_exciting_epsilon_calculation.m_def, repeats=False)
+
+    x_exciting_sigma = SubSection(sub_section=x_exciting_sigma_calculation.m_def, repeats=False)
+
+    x_exciting_loss = SubSection(sub_section=x_exciting_loss_calculation.m_def, repeats=False)
 
 
 class System(simulation.system.System):

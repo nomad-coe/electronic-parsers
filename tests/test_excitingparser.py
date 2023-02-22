@@ -18,6 +18,7 @@
 
 import pytest
 import numpy as np
+import os
 
 from nomad.units import ureg
 from nomad.datamodel import EntryArchive
@@ -121,6 +122,7 @@ def test_dos_spinpol(parser):
     assert sec_dos.atom_projected[123].value[85].to('1/Ha').magnitude == approx(3.405855654e-06)  # atom_index=0, spin=1, l=20, m=0
 
 
+@pytest.mark.skip('To be updated: TDDFT currently not supported by FAIRmat')
 def test_xs_tddft(parser):
     archive = EntryArchive()
     parser.parse('tests/data/exciting/CSi_tddft/INFO_QMT001.OUT', archive, None)
@@ -138,37 +140,17 @@ def test_xs_tddft(parser):
     assert np.shape(sec_sccs[1].x_exciting_xs_tddft_sigma_no_local_field) == (2, 1, 3, 10001)
 
 
-def test_xs_bse(parser):
-    archive = EntryArchive()
-    parser.parse('tests/data/exciting/CHN_bse/INFO.OUT', archive, None)
-
-    sec_sccs = archive.run[0].calculation
-    # gs + ip + singlet + triplet
-    assert len(sec_sccs) == 4
-    assert np.shape(sec_sccs[1].x_exciting_xs_bse_epsilon_energies) == (3, 10000)
-    assert np.shape(sec_sccs[2].x_exciting_xs_bse_epsilon_energies) == (3, 10000)
-    assert np.shape(sec_sccs[3].x_exciting_xs_bse_epsilon_energies) == (3, 10000)
-    assert np.shape(sec_sccs[1].x_exciting_xs_bse_epsilon_im) == (3, 10000)
-    assert np.shape(sec_sccs[2].x_exciting_xs_bse_epsilon_im) == (3, 10000)
-    assert np.shape(sec_sccs[3].x_exciting_xs_bse_epsilon_im) == (3, 10000)
-    assert np.shape(sec_sccs[1].x_exciting_xs_bse_epsilon_re) == (3, 10000)
-    assert np.shape(sec_sccs[2].x_exciting_xs_bse_epsilon_re) == (3, 10000)
-    assert np.shape(sec_sccs[3].x_exciting_xs_bse_epsilon_re) == (3, 10000)
-    assert np.shape(sec_sccs[1].x_exciting_xs_bse_exciton_amplitude_im) == (3, 100)
-    assert np.shape(sec_sccs[2].x_exciting_xs_bse_exciton_amplitude_im) == (3, 100)
-    assert np.shape(sec_sccs[3].x_exciting_xs_bse_exciton_amplitude_im) == (3, 100)
-    assert np.shape(sec_sccs[1].x_exciting_xs_bse_exciton_amplitude_re) == (3, 100)
-    assert np.shape(sec_sccs[2].x_exciting_xs_bse_exciton_amplitude_re) == (3, 100)
-    assert np.shape(sec_sccs[3].x_exciting_xs_bse_exciton_amplitude_re) == (3, 100)
-    assert np.shape(sec_sccs[1].x_exciting_xs_bse_exciton_binding_energies) == (3, 100)
-    assert np.shape(sec_sccs[2].x_exciting_xs_bse_exciton_binding_energies) == (3, 100)
-    assert np.shape(sec_sccs[3].x_exciting_xs_bse_exciton_binding_energies) == (3, 100)
-    assert np.shape(sec_sccs[1].x_exciting_xs_bse_exciton_energies) == (3, 100)
-    assert np.shape(sec_sccs[2].x_exciting_xs_bse_exciton_energies) == (3, 100)
-    assert np.shape(sec_sccs[3].x_exciting_xs_bse_exciton_energies) == (3, 100)
-    assert np.shape(sec_sccs[1].x_exciting_xs_bse_exciton_oscillator_strength) == (3, 100)
-    assert np.shape(sec_sccs[2].x_exciting_xs_bse_exciton_oscillator_strength) == (3, 100)
-    assert np.shape(sec_sccs[3].x_exciting_xs_bse_exciton_oscillator_strength) == (3, 100)
+def test_xs_mainfile_keys(parser):
+    # This test will not show the BSE archive. We use it instead to test the mainfile_keys
+    filepath = 'tests/data/exciting/CHN_bse/INFO.OUT'
+    dirname = os.path.dirname(filepath)
+    mainfile_keys = parser.get_mainfile_keys(filepath)
+    assert mainfile_keys[0] == 'XS_workflow'
+    assert mainfile_keys[1] == f'{dirname}/INFOXS.OUT'
+    for i in range(2):
+        assert f'{dirname}/EPSILON_BSEIP_SCRfull_OC{i + 1}{i + 1}.OUT' in mainfile_keys
+        assert f'{dirname}/EPSILON_BSEsinglet_SCRfull_OC{i + 1}{i + 1}.OUT' in mainfile_keys
+        assert f'{dirname}/EPSILON_BSEtriplet_SCRfull_OC{i + 1}{i + 1}.OUT' in mainfile_keys
 
 
 def test_gw(silicon_gw):
