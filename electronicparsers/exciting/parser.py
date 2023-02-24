@@ -51,6 +51,9 @@ from .metainfo.exciting import (
     x_exciting_epsilon_calculation, x_exciting_sigma_calculation,
     x_exciting_loss_calculation
 )
+from ..utils import (
+    extract_section, get_files
+)
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -1134,25 +1137,6 @@ class ExcitingParser:
 
         self._xs_spectra_types = ['EPSILON', 'EXCITON', 'SIGMA', 'LOSS']
 
-    def get_exciting_files(self, pattern, filepath=None, deep=True):
-        if filepath is None:
-            filepath = self.filepath
-        # TODO do recursion until files are found
-        for _ in range(10):
-            filenames = glob(f'{os.path.dirname(filepath)}/{pattern}')
-            pattern = os.path.join('**' if deep else '..', pattern)
-            if filenames:
-                break
-
-        if len(filenames) > 1:
-            # filter files that match
-            suffix = os.path.basename(filepath).strip('INFO.OUT')
-            matches = [f for f in filenames if suffix in f]
-            filenames = matches if matches else filenames
-
-        filenames = [f for f in filenames if os.access(f, os.F_OK)]
-        return filenames
-
     def file_exists(self, filename):
         """Checks if a the given filename exists and is accessible in the same
         folder where the mainfile is stored.
@@ -1434,7 +1418,8 @@ class ExcitingParser:
         else:
             return
 
-        files = self.get_exciting_files(name, filepath=filepath if filepath is not None else self.filepath)
+        filepath = filepath if filepath is not None else self.filepath
+        files = get_files(name, filepath, 'INFO.OUT')
         if len(files) > 1:
             self.logger.warning('Found multiple files. Will read all!', data=dict(file=name))
 
@@ -1616,7 +1601,7 @@ class ExcitingParser:
 
         file_ending = path.split('EPSILON')[-1]  # Identifying files with the same ending but different type of calculation
         polarization_files = [
-            f for f in self.get_exciting_files('*BSE*.OUT', self._xs_info_file) if f.endswith(file_ending)]
+            f for f in get_files('*BSE*.OUT', self._xs_info_file, 'INFO.OUT') if f.endswith(file_ending)]
         for file in polarization_files:
             if sec_run.m_xpath('calculation'):
                 sec_scc = sec_run.calculation[-1]
@@ -1656,7 +1641,7 @@ class ExcitingParser:
 
         def get_data(path):
             # all files related to quantity at all qpoints
-            files = self.get_exciting_files(os.path.basename(path).replace('001', '*'), filepath=self._xs_info_file)
+            files = get_files(os.path.basename(path).replace('001', '*'), self._xs_info_file, 'INFO.OUT')
             data = [[], [], []]
             data_q = []
             for f in files:
@@ -1688,7 +1673,7 @@ class ExcitingParser:
             sec_run = archive.run[0] if archive.run else archive.m_create(Run)
             return sec_run.calculation[0] if sec_run.calculation else sec_run.m_create(Calculation)
 
-        for path in self.get_exciting_files('*_OC*001.OUT'):
+        for path in get_files('*_OC*001.OUT', self.filepath, 'INFO.OUT'):
             sec_scc = get_xs_calculation(path)
             if not sec_scc:
                 continue
@@ -1721,19 +1706,6 @@ class ExcitingParser:
 
             elif quantity == 'SIGMA' and '_NLF_FXC' in basename:
                 sec_scc.x_exciting_xs_tddft_sigma_no_local_field = data[1:3]
-
-    def extract_section(self, source, path):
-        path_segments = path.split('/', 1)
-        try:
-            value = getattr(source, path_segments[0])
-            value = value[-1] if isinstance(value, list) else value
-        except Exception:
-            return
-
-        if len(path_segments) == 1:
-            return value
-        else:
-            return self.extract_section(value, path_segments[1])
 
     def parse_polarization(self, path):
         sec_run = self._child_archives.get(path).run[-1]
@@ -1771,7 +1743,7 @@ class ExcitingParser:
         sec_core.broadening = ureg.convert(sec_run.method[0].get('x_exciting_xs_broadening'), 'joule', 'electron_volt')
 
     def parse_spectra(self, path):
-        input_file = self.get_exciting_files('input.xml', filepath=self._xs_info_file)
+        input_file = get_files('input.xml', self._xs_info_file, 'INFO.OUT')
         if not input_file:
             return
         self.input_xml_parser.mainfile = input_file[0]
@@ -1862,21 +1834,21 @@ class ExcitingParser:
             return output
 
         # Inputs
-        input_structure = self.extract_section(self.archive, 'run/system')
+        input_structure = extract_section(self.archive, 'run/system')
         workflow.inputs.append(Link(name='Workflow parameters', section=workflow.method))
         if input_structure:
             workflow.inputs.append(Link(name='Input structure', section=input_structure))
 
         # Results
-        bs_dft = self.extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        dos_dft = self.extract_section(self.archive, 'run/calculation/dos_electronic')
+        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
+        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
         workflow.results.dos_dft = dos_dft
         workflow.results.band_structure_dft = bs_dft
         workflow.results.spectra = [xs_archive.workflow2.results for xs_archive in xs_archives]
 
         # Outputs
         workflow.outputs = extract_polarization_outputs()
-        input_calculation = self.extract_section(self.archive, 'run/calculation')
+        input_calculation = extract_section(self.archive, 'run/calculation')
         output_dft_name = 'Output DFT calculation'
 
         # include DFT calculation to each single point task
@@ -2034,10 +2006,10 @@ class ExcitingParser:
 
         # Include DFT and GW band structures and DOS (if present) for comparison.
         sec_gw = sec_workflow.m_create(GWWorkflow)
-        dos_dft = self.extract_section(self.archive, 'run/calculation/dos_electronic')
-        dos_gw = self.extract_section(gw_archive, 'run/calculation/dos_electronic')
-        bs_dft = self.extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        bs_gw = self.extract_section(gw_archive, 'run/calculation/band_structure_electronic')
+        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
+        dos_gw = extract_section(gw_archive, 'run/calculation/dos_electronic')
+        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
+        bs_gw = extract_section(gw_archive, 'run/calculation/band_structure_electronic')
         sec_gw.dos_dft = dos_dft
         sec_gw.dos_gw = dos_gw
         sec_gw.band_structure_dft = bs_dft
@@ -2050,15 +2022,15 @@ class ExcitingParser:
         workflow.results.band_structure_dft = bs_dft
         workflow.results.band_structure_gw = bs_gw
 
-        input_structure = self.extract_section(self.archive, 'run/system')
+        input_structure = extract_section(self.archive, 'run/system')
         if input_structure:
             workflow.inputs = [Link(name='Input structure', section=input_structure)]
-        output_calculation = self.extract_section(gw_archive, 'run/calculation')
+        output_calculation = extract_section(gw_archive, 'run/calculation')
         if output_calculation:
             workflow.outputs = [Link(name='Output calculation', section=output_calculation)]
 
         # output of dft and input for gw
-        input_calculation = self.extract_section(self.archive, 'run/calculation')
+        input_calculation = extract_section(self.archive, 'run/calculation')
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
             if input_structure:
@@ -2145,7 +2117,7 @@ class ExcitingParser:
         xc_functional_names = self.info_parser.get_xc_functional_name()
         if not xc_functional_names:
             # get it from input.xml
-            input_file = self.get_exciting_files('input.xml')
+            input_file = get_files('input.xml', self.filepath, 'INFO.OUT')
             for f in input_file:
                 self.input_xml_parser.mainfile = f
                 correlation = self.input_xml_parser.get('libxc/correlation', None)
@@ -2301,7 +2273,7 @@ class ExcitingParser:
         positions = self.info_parser.get_atom_positions(section.get('atomic_positions', {}))
         lattice_vectors = self.info_parser.get_initialization_parameter('lattice_vectors')
         atom_labels = self.info_parser.get_atom_labels(section.get('atomic_positions', {}))
-        input_file = self.get_exciting_files('input.xml')
+        input_file = get_files('input.xml', self.filepath, 'INFO.OUT')
 
         if positions is None:
             # get it from input.xml
@@ -2375,7 +2347,7 @@ class ExcitingParser:
             sec_atoms_group.x_exciting_geometry_atom_positions = positions.magnitude
 
         # clathrate info
-        clathrate_file = self.get_exciting_files('str.out')
+        clathrate_file = get_files('str.out', self.filepath, 'INFO.OUT')
         if clathrate_file:
             sec_system.x_exciting_clathrates = True
             self.data_clathrate_parser.mainfile = clathrate_file[0]
@@ -2461,7 +2433,7 @@ class ExcitingParser:
         # volume optimizations
         volume_index = 1
         while True:
-            info_volume = self.get_exciting_files('run_dir%s/INFO.OUT' % str(volume_index).rjust(2, '0'))
+            info_volume = get_files(f"run_dir{str(volume_index).rjust(2, '0')}/INFO.OUT", self.filepath, 'INFO.OUT')
             if not info_volume:
                 break
             sec_scc.calculations_path.append(info_volume[0])
@@ -2488,12 +2460,12 @@ class ExcitingParser:
         dirname = os.path.dirname(filepath)
         if os.path.isfile(os.path.join(dirname, f'GW_{basename}')):
             return ['GW', 'GW_workflow']
-        xs_files = self.get_exciting_files(basename.replace('INFO.OUT', 'INFOXS.OUT'), filepath)
+        xs_files = get_files(basename.replace('INFO.OUT', 'INFOXS.OUT'), filepath, 'INFO.OUT')
         if xs_files:
             re_xs_mainfile = re.compile(r'.+\d\d\d\.OUT')
             spectra_files = []
             for prefix in self._xs_spectra_types:
-                spectra_files = self.get_exciting_files(f'{prefix}_*.OUT', filepath)
+                spectra_files = get_files(f'{prefix}_*.OUT', filepath, 'INFO.OUT')
                 if spectra_files:
                     # remove files for qpoints other than first
                     files = ['XS_workflow'] + xs_files
@@ -2522,7 +2494,7 @@ class ExcitingParser:
         elif basename.startswith('INFOXS'):
             self._calculation_type = 'xs'
             self._xs_info_file = filepath
-            info_file = self.get_exciting_files('INFO.OUT', deep=False)
+            info_file = get_files('INFO.OUT', self.filepath, 'INFO.OUT', deep=False)
             if info_file:
                 self.filepath = os.path.join(info_file[0])
             # self.filepath = os.path.join(dirname, basename.replace('INFOXS', 'INFO'))

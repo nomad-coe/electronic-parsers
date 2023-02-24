@@ -48,6 +48,9 @@ from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_controlIn_basis_set, x_fhi_aims_section_controlIn_basis_func,\
     x_fhi_aims_section_controlInOut_atom_species, x_fhi_aims_section_controlInOut_basis_func,\
     x_fhi_aims_section_vdW_TS
+from ..utils import (
+    extract_section
+)
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -949,20 +952,6 @@ class FHIAimsParser:
                 input_workflow=gw_archive.workflow[0], output_workflow=sec_workflow,
                 description='Comparison between DFT and GW.')
         ]
-
-        # Include DFT and GW band structures and DOS (if present) for comparison.
-        def extract_section(source, path):
-            path_segments = path.split('/', 1)
-            try:
-                value = getattr(source, path_segments[0])
-                value = value[-1] if isinstance(value, list) else value
-            except Exception:
-                return
-
-            if len(path_segments) == 1:
-                return value
-            else:
-                return extract_section(value, path_segments[1])
 
         sec_gw = sec_workflow.m_create(GWWorkflow)
         dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
