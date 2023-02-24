@@ -1837,7 +1837,7 @@ class ExcitingParser:
         workflow.outputs = outputs
         self.archive.workflow2 = workflow
 
-    def parse_xs_worklfow(self, xs_archive, xs_workflow_archive):
+    def parse_xs_worklfow(self, xs_archives, xs_workflow_archive):
         sec_run = xs_workflow_archive.m_create(Run)
         sec_run.program = self.archive.run[-1].program
         sec_run.system = self.archive.run[-1].system
@@ -1864,9 +1864,7 @@ class ExcitingParser:
         dos_dft = self.extract_section(self.archive, 'run/calculation/dos_electronic')
         workflow.results.dos_dft = dos_dft
         workflow.results.band_structure_dft = bs_dft
-        spectra = xs_archive.workflow2.results
-        workflow.results.spectra = []
-        workflow.results.spectra.append(spectra)
+        workflow.results.spectra = [xs_archive.workflow2.results for xs_archive in xs_archives]
 
         # Outputs
         workflow.outputs = extract_polarization_outputs()
@@ -1881,14 +1879,15 @@ class ExcitingParser:
                         Link(name='Input structure', section=input_structure),
                         Link(name=output_dft_name, section=input_calculation)]
             workflow.tasks.append(task)
-        if xs_archive.workflow2:  # PhotonPolarization task
-            for photon_task in xs_archive.workflow2.tasks:
-                photon_task.inputs.append(Link(name=output_dft_name, section=input_calculation))
-            task = TaskReference(task=xs_archive.workflow2)
-            if input_structure and input_calculation:
-                task.inputs = [Link(name=output_dft_name, section=input_calculation)]
-            task.outputs = extract_polarization_outputs()
-            workflow.tasks.append(task)
+        for xs_archive in xs_archives:
+            if xs_archive.workflow2:  # PhotonPolarization task
+                for photon_task in xs_archive.workflow2.tasks:
+                    photon_task.inputs.append(Link(name=output_dft_name, section=input_calculation))
+                task = TaskReference(task=xs_archive.workflow2)
+                if input_structure and input_calculation:
+                    task.inputs = [Link(name=output_dft_name, section=input_calculation)]
+                task.outputs = extract_polarization_outputs()
+                workflow.tasks.append(task)
 
         xs_workflow_archive.workflow2 = workflow
 
@@ -2553,6 +2552,7 @@ class ExcitingParser:
             self.parse_gw_workflow(gw_archive, gw_workflow_archive)
 
         # XS archives
+        xs_archives = []
         for xs_info_file, xs_archive in self._child_archives.items():
             if 'INFOXS.OUT' in xs_info_file:
                 # parse xs single point
@@ -2563,8 +2563,10 @@ class ExcitingParser:
                         xs_dirname) and os.path.basename(key).split('_')[0] in self._xs_spectra_types}
 
                 p.parse(xs_info_file, xs_archive, logger)
+                xs_archives.append(xs_archive)
 
                 # parse xs workflow (DFT + all photons)
                 # TODO generalize to include GW step
-                xs_workflow_archive = self._child_archives.get('XS_workflow')
-                self.parse_xs_worklfow(xs_archive, xs_workflow_archive)
+        xs_workflow_archive = self._child_archives.get('XS_workflow')
+        if xs_workflow_archive:
+            self.parse_xs_worklfow(xs_archives, xs_workflow_archive)
