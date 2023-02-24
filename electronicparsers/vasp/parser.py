@@ -333,7 +333,7 @@ class OutcarTextParser(TextParser):
                 str_operation=str_to_mass_valence),
             Quantity(
                 'kpoints',
-                r'Following reciprocal coordinates:[\s\S]+?\n([\d\.\s\-]+)',
+                r'k-points in reciprocal lattice and weights:([\s\S]+?)\n([\d\.\s\-]+)',
                 repeats=False, dtype=float),
             Quantity(
                 'nbands', r'NBANDS\s*=\s*(\d+)', dtype=int, repeats=False),
@@ -428,13 +428,23 @@ class OutcarContentParser(ContentParser):
     def kpoints_info(self):
         if self._kpoints_info is None:
             self._kpoints_info = dict()
-            kpts_occs = self.parser.get('kpoints')
-            if kpts_occs is not None:
+            kpts = self.parser.get('kpoints')
+            if kpts is not None:
+                generation_method = []
+                kpts_occs = []
+                for kpt in kpts:
+                    if isinstance(kpt, str):
+                        generation_method.append(kpt)
+                    elif isinstance(kpt, float):
+                        kpts_occs.append(kpt)
+                    else:
+                        raise ValueError(f'Unknown kpoint type: {isinstance(kpt)}')
+                self._kpoints_info['x_vasp_k_points_generation_method'] = ' '.join(generation_method)
                 kpts_occs = np.reshape(kpts_occs, (len(kpts_occs) // 4, 4)).T
                 self._kpoints_info['k_mesh_points'] = kpts_occs[0:3].T
                 k_mults = kpts_occs[3].T
-                self._kpoints_info['k_mesh_multiplicities'] = k_mults
-                self._kpoints_info['k_mesh_weights'] = k_mults / np.sum(k_mults)
+                self._kpoints_info['k_mesh_weights'] = k_mults
+                self._kpoints_info['k_mesh_multiplicities'] = k_mults * sum(k_mults) / len(k_mults)
         return self._kpoints_info
 
     @property
@@ -1396,37 +1406,38 @@ class VASPParser:
             sec_scc.energy.highest_occupied = max(valence_max) * ureg.eV
             sec_scc.energy.lowest_unoccupied = min(conduction_min) * ureg.eV
 
-            if self.parser.kpoints_info.get('x_vasp_k_points_generation_method', None) == 'listgenerated':
-                # I removed normalization since imho it should be done by normalizer
-                sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
-                for n in range(len(eigs)):
-                    sec_band_gap = sec_k_band.m_create(BandGap)
-                    sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
-                    sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
-                divisions = self.parser.kpoints_info.get('divisions', None)
-                if divisions is None:
-                    return
-                n_segments = len(kpoints) // divisions
-                kpoints = np.reshape(kpoints, (n_segments, divisions, 3))
-                eigs = np.reshape(eigs, (
-                    self.parser.ispin, n_segments, divisions, self.parser.n_bands))
-                occs = np.reshape(occs, (
-                    self.parser.ispin, n_segments, divisions, self.parser.n_bands))
-                eigs = np.transpose(eigs, axes=(1, 0, 2, 3)) * ureg.eV
-                occs = np.transpose(occs, axes=(1, 0, 2, 3))
-                for n in range(n_segments):
-                    sec_k_band_segment = sec_k_band.m_create(BandEnergies)
-                    sec_k_band_segment.kpoints = kpoints[n]
-                    sec_k_band_segment.energies = eigs[n]
-                    sec_k_band_segment.occupations = occs[n]
-            else:
-                eigs = eigs * ureg.eV
-                sec_eigenvalues = sec_scc.m_create(BandEnergies)
-                sec_eigenvalues.kpoints = kpoints
-                sec_eigenvalues.kpoints_weights = self.parser.kpoints_info.get('k_mesh_weights', [])
-                sec_eigenvalues.kpoints_multiplicities = self.parser.kpoints_info.get('k_mesh_multiplicities', [])
-                sec_eigenvalues.energies = eigs
-                sec_eigenvalues.occupations = occs
+            generation_method = self.parser.kpoints_info.get('x_vasp_k_points_generation_method', None)
+            if generation_method:
+                if generation_method not in ['Gamma', 'Monkhorst-Pack']:
+                    sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
+                    for n in range(len(eigs)):
+                        sec_band_gap = sec_k_band.m_create(BandGap)
+                        sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
+                        sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
+                    divisions = self.parser.kpoints_info.get('divisions', None)
+                    if divisions is None:
+                        return
+                    n_segments = len(kpoints) // divisions
+                    kpoints = np.reshape(kpoints, (n_segments, divisions, 3))
+                    eigs = np.reshape(eigs, (
+                        self.parser.ispin, n_segments, divisions, self.parser.n_bands))
+                    occs = np.reshape(occs, (
+                        self.parser.ispin, n_segments, divisions, self.parser.n_bands))
+                    eigs = np.transpose(eigs, axes=(1, 0, 2, 3)) * ureg.eV
+                    occs = np.transpose(occs, axes=(1, 0, 2, 3))
+                    for n in range(n_segments):
+                        sec_k_band_segment = sec_k_band.m_create(BandEnergies)
+                        sec_k_band_segment.kpoints = kpoints[n]
+                        sec_k_band_segment.energies = eigs[n]
+                        sec_k_band_segment.occupations = occs[n]
+                else:
+                    eigs = eigs * ureg.eV
+                    sec_eigenvalues = sec_scc.m_create(BandEnergies)
+                    sec_eigenvalues.kpoints = kpoints
+                    sec_eigenvalues.kpoints_weights = self.parser.kpoints_info.get('k_mesh_weights', [])
+                    sec_eigenvalues.kpoints_multiplicities = self.parser.kpoints_info.get('k_mesh_multiplicities', [])
+                    sec_eigenvalues.energies = eigs
+                    sec_eigenvalues.occupations = occs
 
         def parse_dos(n_calc):
             energies, values, integrated, efermi = self.parser.get_total_dos(n_calc)
