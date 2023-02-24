@@ -1395,7 +1395,7 @@ class ExcitingParser:
             sec_k_band_segment.n_kpoints = nkpts_segment[nb]
             sec_k_band_segment.value = band_energies[nb] + energy_fermi
 
-    def parse_file(self, name, section):
+    def parse_file(self, name, section, filepath=None):
         # TODO add support for info.xml, wannier.out
         if name.startswith('dos') and name.endswith('xml'):
             parser = self.dos_parser
@@ -1434,7 +1434,7 @@ class ExcitingParser:
         else:
             return
 
-        files = self.get_exciting_files(name)
+        files = self.get_exciting_files(name, filepath=filepath if filepath is not None else self.filepath)
         if len(files) > 1:
             self.logger.warning('Found multiple files. Will read all!', data=dict(file=name))
 
@@ -1748,7 +1748,7 @@ class ExcitingParser:
             sec_method.starting_method_ref = sec_run.method[0]
 
         # Code-specific
-        self.parse_file('input.xml', sec_method)
+        self.parse_file('input.xml', sec_method, self._xs_info_file)
 
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
@@ -1832,6 +1832,8 @@ class ExcitingParser:
                 spectra.append(output_calculation.spectra[0])
                 outputs.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
             workflow.tasks.append(task)
+            archive.metadata.entry_name = 'Exciting spectrum calculation'
+
         workflow.results.n_polarizations = len(spectra)
         workflow.results.spectrum_polarization = spectra
         workflow.outputs = outputs
@@ -1890,6 +1892,7 @@ class ExcitingParser:
                 workflow.tasks.append(task)
 
         xs_workflow_archive.workflow2 = workflow
+        xs_workflow_archive.metadata.entry_name = 'Exciting Particle-Hole Excitations workflow'
 
     def _parse_input_gw(self, sec_method):
         sec_gw = sec_method.m_create(GWMethod)
