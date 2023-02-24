@@ -37,7 +37,9 @@ from datetime import datetime
 import ase
 import re
 from xml.sax import ContentHandler, make_parser  # type: ignore
+from matid import SymmetryAnalyzer  # type: ignore
 
+from nomad import config
 from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
@@ -58,6 +60,7 @@ from nomad.datamodel.metainfo.workflow import (
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, MolecularDynamics as MolecularDynamics2)
+from nomad.normalizing.band_structure import get_special_points
 
 
 def get_key_values(val_in):
@@ -1415,8 +1418,20 @@ class VASPParser:
                         sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
                         sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
                     divisions = self.parser.kpoints_info.get('divisions', None)
-                    if divisions is None:
-                        divisions = len(kpoints)
+                    if divisions is None:  # TODO: this section should be integrated into the normalizer
+                        system_atoms = self.archive.run[0].system[0].atoms
+                        atom_labels = ''.join(system_atoms.labels)
+                        symm = SymmetryAnalyzer(ase.Atoms(symbols=atom_labels,
+                                                          positions=system_atoms.positions,
+                                                          cell=system_atoms.lattice_vectors.to('angstrom'),
+                                                          pbc=True),
+                                                symmetry_tol=config.normalize.symmetry_tolerance)
+                        bravais_lattice = symm.get_bravais_lattice()
+                        if bravais_lattice is not None:
+                            k_labels = get_special_points(bravais_lattice, system_atoms.lattice_vectors, eps=3e-3)
+                            divisions = len(k_labels)
+                        else:
+                            return
                     n_segments = len(kpoints) // divisions
                     kpoints = np.reshape(kpoints, (n_segments, divisions, 3))
                     eigs = np.reshape(eigs, (
