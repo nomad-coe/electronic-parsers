@@ -1416,7 +1416,7 @@ class VASPParser:
                         sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
                     divisions = self.parser.kpoints_info.get('divisions', None)
                     if divisions is None:
-                        return
+                        divisions = len(kpoints)
                     n_segments = len(kpoints) // divisions
                     kpoints = np.reshape(kpoints, (n_segments, divisions, 3))
                     eigs = np.reshape(eigs, (
