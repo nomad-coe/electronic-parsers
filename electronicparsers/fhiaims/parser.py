@@ -1620,4 +1620,4 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
             # GW workflow
             gw_workflow_archive = self._child_archives.get('GW_workflow')
-            BeyondDFTWorkflows(self.archive).parse_gw_workflow(gw_archive, gw_workflow_archive)
+            self.parse_gw_workflow(gw_archive, gw_workflow_archive)
