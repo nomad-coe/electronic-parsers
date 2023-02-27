@@ -52,7 +52,7 @@ from .metainfo.exciting import (
     x_exciting_loss_calculation
 )
 from ..utils import (
-    extract_section, get_files
+    get_files, BeyondDFTWorkflows
 )
 
 
@@ -1816,66 +1816,6 @@ class ExcitingParser:
         self.archive.metadata.entry_name = 'exciting Photon Polarization workflow'
         self.archive.workflow2 = workflow
 
-    def parse_xs_worklfow(self, xs_archives, xs_workflow_archive):
-        sec_run = xs_workflow_archive.m_create(Run)
-        sec_run.program = self.archive.run[-1].program
-        sec_run.system = self.archive.run[-1].system
-        workflow = ParticleHoleExcitations(
-            results=ParticleHoleExcitationsResults(), method=ParticleHoleExcitationsMethod())
-
-        def extract_polarization_outputs():
-            output = []
-            index = 0
-            for path, archive in self._child_archives.items():
-                if os.path.basename(path).split('_')[0] in self._xs_spectra_types:
-                    output_calculation = archive.run[-1].calculation[-1]
-                    output.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
-                    index += 1
-            return output
-
-        # Inputs
-        input_structure = extract_section(self.archive, 'run/system')
-        workflow.inputs.append(Link(name='Workflow parameters', section=workflow.method))
-        if input_structure:
-            workflow.inputs.append(Link(name='Input structure', section=input_structure))
-
-        # Results
-        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
-        workflow.results.dos_dft = dos_dft
-        workflow.results.band_structure_dft = bs_dft
-        workflow.results.spectra = [xs_archive.workflow2.results for xs_archive in xs_archives]
-
-        # Outputs
-        workflow.outputs = extract_polarization_outputs()
-        input_calculation = extract_section(self.archive, 'run/calculation')
-        output_dft_name = 'Output DFT calculation'
-
-        # include DFT calculation to each single point task
-        if input_calculation:
-            for archive in self._child_archives.values():
-                if isinstance(archive.workflow2, SinglePoint2):
-                    archive.workflow2.inputs.append(Link(name=output_dft_name, section=input_calculation))
-                    archive.workflow2.tasks[0].inputs.append(Link(name=output_dft_name, section=input_calculation))
-
-        if self.archive.workflow2:  # DFT task
-            task = TaskReference(task=self.archive.workflow2)
-            self.archive.workflow2.outputs = []
-            if input_structure:
-                self.archive.workflow2.inputs = [Link(name='Input structure', section=input_structure)]
-            if input_calculation:
-                self.archive.workflow2.outputs.append(Link(name=output_dft_name, section=input_calculation))
-            workflow.tasks.append(task)
-        for xs_archive in xs_archives:
-            if xs_archive.workflow2:  # PhotonPolarization task
-                task = TaskReference(task=xs_archive.workflow2)
-                if input_calculation:
-                    xs_archive.workflow2.inputs.append(Link(name=output_dft_name, section=input_calculation))
-                workflow.tasks.append(task)
-
-        xs_workflow_archive.workflow2 = workflow
-        xs_workflow_archive.metadata.entry_name = 'exciting Particle-Hole Excitations workflow'
-
     def _parse_input_gw(self, sec_method):
         sec_gw = sec_method.m_create(GWMethod)
         sec_gw.type = 'G0W0'
@@ -1981,73 +1921,6 @@ class ExcitingParser:
         sec_scc.method_ref = sec_method
         self.parse_system(self.info_parser.get('groundstate'))
         sec_scc.system_ref = sec_run.system[-1]
-
-    def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
-        sec_run = gw_workflow_archive.m_create(Run)
-        sec_run.program = self.archive.run[-1].program
-        setattr(sec_run, 'system', self.archive.run[-1].system)
-
-        sec_workflow = gw_workflow_archive.m_create(Workflow)
-        sec_workflow.type = 'GW'
-        sec_workflow.workflows_ref = [self.archive.workflow[0], gw_archive.workflow[0]]
-
-        # Tasks linking dft and gw
-        sec_workflow.task = [
-            Task(
-                input_workflow=sec_workflow, output_workflow=self.archive.workflow[0],
-                description='DFT calculation performed in an input structure.'),
-            Task(
-                input_workflow=self.archive.workflow[0], output_workflow=gw_archive.workflow[0],
-                description='GW calculation performed from input DFT calculation.'),
-            Task(
-                input_workflow=gw_archive.workflow[0], output_workflow=sec_workflow,
-                description='Comparison between DFT and GW.')
-        ]
-
-        # Include DFT and GW band structures and DOS (if present) for comparison.
-        sec_gw = sec_workflow.m_create(GWWorkflow)
-        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
-        dos_gw = extract_section(gw_archive, 'run/calculation/dos_electronic')
-        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        bs_gw = extract_section(gw_archive, 'run/calculation/band_structure_electronic')
-        sec_gw.dos_dft = dos_dft
-        sec_gw.dos_gw = dos_gw
-        sec_gw.band_structure_dft = bs_dft
-        sec_gw.band_structure_gw = bs_gw
-
-        workflow = GW2(results=GWResults())
-        workflow.name = 'GW'
-        workflow.results.dos_dft = dos_dft
-        workflow.results.dos_gw = dos_gw
-        workflow.results.band_structure_dft = bs_dft
-        workflow.results.band_structure_gw = bs_gw
-
-        input_structure = extract_section(self.archive, 'run/system')
-        if input_structure:
-            workflow.inputs = [Link(name='Input structure', section=input_structure)]
-        output_calculation = extract_section(gw_archive, 'run/calculation')
-        if output_calculation:
-            workflow.outputs = [Link(name='Output calculation', section=output_calculation)]
-
-        # output of dft and input for gw
-        input_calculation = extract_section(self.archive, 'run/calculation')
-        if self.archive.workflow2:
-            task = TaskReference(task=self.archive.workflow2)
-            if input_structure:
-                task.inputs = [Link(name='Input structure', section=input_structure)]
-            if input_calculation:
-                task.outputs = [Link(name='Output calculation', section=input_calculation)]
-            workflow.tasks.append(task)
-
-        if gw_archive.workflow2:
-            task = TaskReference(task=gw_archive.workflow2)
-            if input_calculation:
-                task.inputs = [Link(name='Input calculation', section=input_calculation)]
-            if output_calculation:
-                task.outputs = [Link(name='Output calculation', section=output_calculation)]
-            workflow.tasks.append(task)
-
-        gw_workflow_archive.workflow2 = workflow
 
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)
@@ -2534,7 +2407,7 @@ class ExcitingParser:
 
             # parse gw workflow
             gw_workflow_archive = self._child_archives.get('GW_workflow')
-            self.parse_gw_workflow(gw_archive, gw_workflow_archive)
+            BeyondDFTWorkflows(self.archive).parse_gw_workflow(gw_archive, gw_workflow_archive)
 
         # XS archives
         xs_archives = []
@@ -2554,7 +2427,7 @@ class ExcitingParser:
                 # TODO generalize to include GW step
         xs_workflow_archive = self._child_archives.get('XS_workflow')
         if xs_workflow_archive:
-            self.parse_xs_worklfow(xs_archives, xs_workflow_archive)
+            BeyondDFTWorkflows(self.archive, self._child_archives, self._xs_spectra_types).parse_xs_worklfow(xs_archives, xs_workflow_archive)
 
             import json
             with open('temp.json', 'w') as f:
