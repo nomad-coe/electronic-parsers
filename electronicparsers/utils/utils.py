@@ -70,6 +70,10 @@ def get_files(pattern, filepath, stripname: str = '', deep: bool = True):
 
 
 class BeyondDFTWorkflows():
+    '''
+    Generates automatic GW, BSE, etc, workflows for all electronic codes that can handle
+    these calculations.
+    '''
     def __init__(self, archive, child_archives=None, xs_spectra_types=None):
         self.archive = archive  # DFT archive
         self.child_archives = child_archives
