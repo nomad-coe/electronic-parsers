@@ -2428,7 +2428,3 @@ class ExcitingParser:
         xs_workflow_archive = self._child_archives.get('XS_workflow')
         if xs_workflow_archive:
             BeyondDFTWorkflows(self.archive, self._child_archives, self._xs_spectra_types).parse_xs_worklfow(xs_archives, xs_workflow_archive)
-
-            import json
-            with open('temp.json', 'w') as f:
-                json.dump(xs_archive.m_to_dict(), f, indent=4)
