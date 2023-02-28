@@ -451,6 +451,10 @@ ABINIT_LIBXC_IXC = {
     531: {"XC_functional_name": "HYB_MGGA_XC_WB97M_V"}}
 
 
+re_float = r'([\d\.E\+\-]+)'
+re_n = r'[\n\r]'
+
+
 class AbinitOutParser(TextParser):
     def __init__(self):
         self.energy_components = {
@@ -653,6 +657,180 @@ class AbinitOutParser(TextParser):
                     r'\-+iterations are completed or convergence reached\-+([\s\S]+)'
                     r'(?:(sigma\(\d \d\)\s*=\s*[\+\-\d\.E]+)|={80})', repeats=False,
                     sub_parser=TextParser(quantities=results))])))
+
+        rpa_quantities = [
+            Quantity(
+                'precision_algorithm', rf'{re_n}\.Using[a-zA-Z\s\;]+\=\s*(\d+)',
+                repeats=False),
+            Quantity(
+                'kmesh', rf'{re_n}(\s*====\s*K-mesh[a-zA-Z\s]*wavefunctions[\s\S]+?)(?:\s*====\s*Q-mesh)',
+                repeats=False, sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'n_mesh', rf'{re_n}\s*Number of points in the irreducible wedge\s*\:\s*(\d+)',
+                        repeats=False),
+                    Quantity(
+                        'mesh', rf'{re_n}[\d\)\s]+{re_float}\s*{re_float}\s*{re_float}\s*{re_float}',
+                        repeats=True)])),
+            Quantity(
+                'qmesh', rf'{re_n}(\s*====\s*Q-mesh[a-zA-Z\s]*screening function[\s\S]+?)(?:\s*setmesh\:)',
+                repeats=False, sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'n_mesh', rf'{re_n}\s*Number of points in the irreducible wedge\s*\:\s*(\d+)',
+                        repeats=False),
+                    Quantity(
+                        'mesh', rf'{re_n}[\d\)\s]+{re_float}\s*{re_float}\s*{re_float}\s*{re_float}',
+                        repeats=True)])),
+            Quantity(
+                'fftmesh', r'FFT mesh size selected[\s\=]*(\d+)x\s*(\d+)x\s*(\d+)',
+                repeats=False),
+            Quantity(
+                'n_fftmesh', r'total number of points[\s\=]*(\d+)',
+                repeats=False),
+            Quantity(
+                'symm_screening', rf'{re_n}\- screening\:([a-zA-Z\-\s]+){re_n}', repeats=False),
+            Quantity(
+                'max_band_occ',
+                rf'{re_n}\- Maximum band index for partially occupied states[a-zA-Z\s]+\=\s*(\d+)',
+                repeats=False),
+            Quantity(
+                'n_bands_per_proc',
+                rf'{re_n}\- Remaining bands to be divided among processors[a-zA-Z\s]+\=\s*(\d+)',
+                repeats=False),
+            Quantity(
+                'n_bands_per_node', rf'{re_n}\- Number of bands treated by each node[a-zA-Z\s]+\~(\d+)',
+                repeats=False),
+            Quantity(
+                'n_electrons',
+                rf'{re_n}\s*Number of electrons calculated from density\s*\=\s*{re_float}'
+                rf'\;\s*Expected\s*\=\s*{re_float}'
+                rf'{re_n}\s*average of density\,\s*n\s*\=\s*{re_float}', repeats=False),
+            Quantity(
+                'wigner_seitz_radius', rf'{re_n}\s*r_s\s*\=\s*{re_float}', repeats=False),
+            Quantity(
+                'omega_plasma', rf'{re_n}\s*omega_plasma\s*\=\s*{re_float}\s*\[(?P<__unit>\w+)\]',
+                repeats=False),
+        ]
+
+        screening_quantities = rpa_quantities + [
+            Quantity(
+                'frequencies',
+                rf'{re_n}\s*(calculating chi0 at frequencies \[[a-zA-Z]+\]\s*\:[\s\S]+?)(?:\-*{re_n}\s*q-point number\s*1)',
+                sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'values', rf'{re_n}\s*\d*\s*{re_float}\s*{re_float}', repeats=True)])),
+            Quantity(
+                'static_diel_const',
+                rf'{re_n}\s*dielectric constant\s*\=\s*{re_float}', repeats=False),
+            Quantity(
+                'static_diel_const_nofields',
+                rf'{re_n}\s*dielectric constant without local fields\s*\=\s*{re_float}', repeats=False),
+            Quantity(
+                'chi_q',
+                rf'{re_n}(\s*q-point number\s*1[\s\S]+?)(?:\s*Average fulfillment[\s\w\[\]\-\:\.\%]*===)',
+                repeats=False,
+                sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'q_point',
+                        rf'\s*q-point number\s*(\d+)\s*q =\s*\(\s*{re_float}\,\s*{re_float}\,\s*{re_float}\)\s*\[r\.l\.u\.\]',
+                        repeats=True),
+                    Quantity(
+                        'av_fulfillment',
+                        rf'{re_n}\s*Average fulfillment[a-zA-Z\s\[\]\-\d]*\:\s*([\d\.]+)',
+                        repeats=True)
+                    # TODO regex chi0(G, G') for each qpoint and frequency
+                ]))
+        ]
+
+        self._quantities.append(Quantity(
+            'screening_dataset',
+            rf'{re_n}(==\s*DATASET\s*3[\s\S]+?)(?:==\s*DATASET\s*4|== END DATASET)',
+            repeats=False, sub_parser=TextParser(quantities=screening_quantities),
+        ))
+
+        def params_to_pairs(val_in):
+            key = '_'.join(val_in.split()[:-1]).replace('-', '_')
+            value = np.int(val_in.split()[-1])
+            return [key, value]
+
+        gw_quantities = rpa_quantities + [
+            Quantity(
+                'ks_band_gaps',
+                rf'{re_n}\s*(\>\>\>\>\s*For spin\s*1[\s\S]+?)(?:\s*SIGMA fundamental parameters)',
+                repeats=False, sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'min_direct_gap',
+                        rf'\s*Minimum direct gap\s*=\s*{re_float}\s*\[\w*\]\,\s*'
+                        rf'located at k-point\s*\:\s*{re_float}\s*{re_float}\s*{re_float}',
+                        repeats=True),
+                    Quantity(
+                        'fundamental_gap',
+                        rf'\s*Fundamental gap\s*=\s*{re_float}\s*\[(?P<__unit>\w+)\]',
+                        repeats=True),
+                    Quantity(
+                        'k_top_valence_band',
+                        rf'\s*Top of valence bands at\s*\:\s*{re_float}\s*{re_float}\s*{re_float}',
+                        repeats=True),
+                    Quantity(
+                        'k_bottom_conduction_band',
+                        rf'\s*Bottom of conduction at\s*\:\s*{re_float}\s*{re_float}\s*{re_float}',
+                        repeats=True)])),
+            Quantity(
+                'sigma_parameters',
+                rf'{re_n}(\s*SIGMA fundamental parameters[\s\S]+?)(?:\s*EPSILON\^\-1)',
+                repeats=False, sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'model', rf'([a-zA-Z\s]+) MODEL\s*(\d+)', repeats=False),
+                    Quantity(
+                        'n_params',
+                        rf'\s*number of ([a-zA-Z\s\-\/]+)(\d+)',
+                        repeats=True, str_operation=params_to_pairs),
+                    Quantity(
+                        'freq_step',
+                        rf'{re_n}\s*frequency step[a-zA-Z\s\/]*\[eV\]\s*{re_float}',
+                        repeats=False),
+                    Quantity(
+                        'max_omega_sigma',
+                        rf'{re_n}\s*max omega for Sigma[a-zA-Z\s]*\[eV\]\s*{re_float}',
+                        repeats=False),
+                    Quantity(
+                        'zcut_avoid',
+                        rf'{re_n}\s*zcut for avoiding poles\s*\[eV\]\s*{re_float}',
+                        repeats=False)])),
+            Quantity(
+                'epsilon_inv',
+                rf'{re_n}(\s*EPSILON\^\-1[\s\S]+?)(?:\s*Perturbative Calculation)',
+                repeats=False, sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'dimensions',
+                        rf'\s*dimension of the eps\^\-1 matrix([a-zA-Z\s]+)(\d+)',
+                        repeats=True, str_operation=params_to_pairs),
+                    Quantity(
+                        'n_params',
+                        rf'\s*number of ([a-zA-Z\s\-\/]+)(\d+)',
+                        repeats=True, str_operation=params_to_pairs)])),
+            Quantity(
+                'self_energy_ee',
+                rf'{re_n}(\-\-\-\s*\!SelfEnergy\_ee[\s\S]+?)(?:\.\.\.)',
+                repeats=True, sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'kpoint',
+                        rf'{re_n}kpoint\s*\:[\s\[]*{re_float}\, *{re_float}\, *{re_float}',
+                        repeats=False),
+                    Quantity(
+                        'params',
+                        rf'{re_n}([a-zA-Z\_\s]+)\:\s*([\d\.\-\+]+)',
+                        repeats=True),
+                    Quantity(
+                        'data',
+                        rf'{re_n} *(\d+) *{re_float} *{re_float} *{re_float} *{re_float} *{re_float} *{re_float} *{re_float} *{re_float} *{re_float}',
+                        repeats=True)]))
+        ]
+
+        self._quantities.append(Quantity(
+            'gw_dataset',
+            rf'{re_n}(==\s*DATASET\s*4[\s\S]+?)(?:==\s*DATASET\s*5|==\s*END DATASET\s*\(S\))',
+            repeats=False, sub_parser=TextParser(quantities=gw_quantities),
+        ))
 
     @property
     def n_datasets(self):
@@ -924,7 +1102,11 @@ class AbinitParser:
                 if occs is not None:
                     sec_k_band_segment.occupations = occs[:, k - 1:k + 1]
 
-    def parse_datasets(self):
+    def parse_groundstate_datasets(self):
+        '''
+        Parsing ground state datasets: 1 and 2. DATASET 1 gives structural calculations,
+        DATASET 2 gives charge self-consistent (DFT) calculations.
+        '''
         sec_run = self.archive.run[-1]
 
         def parse_configurations(section):
@@ -1032,6 +1214,14 @@ class AbinitParser:
         if sec_run.calculation[-1].energy.fermi and self.dataset[nd].get('results'):
             self.parse_bandstructure(nd + 1, sec_run.calculation[-1].energy.fermi)
 
+    def parse_excitedstate_datasets(self):
+        '''
+        Parsing excited state datasets (mainly for GW): 3 and 4. DATASET 3 gives screened
+        interaction calculations, DATASET 4 gives quasiparticle (GW) corrections.
+        '''
+        sec_run = self.archive.run[-1]
+        n_params = self.out_parser['gw_dataset']['sigma_parameters'].get('n_params')
+
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
         self.out_parser.logger = self.logger
@@ -1096,9 +1286,10 @@ class AbinitParser:
         # Parse DFT method
         if self._calculation_type == 'gw':
             self.parse_gw()
+            self.parse_excitedstate_datasets()
         else:
             self.parse_method()
-            self.parse_datasets()
+            self.parse_groundstate_datasets()
 
         self.parse_workflow()
 
