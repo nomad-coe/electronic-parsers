@@ -161,7 +161,7 @@ class BeyondDFTWorkflowsParser:
             archive = self._child_archives.get(path)
             index = list(self._child_archives.keys()).index(path)
             archive.workflow2 = SinglePoint()
-            archive.workflow2.name = 'Single point'
+            archive.workflow2.name = 'SinglePoint'
 
             task = TaskReference(task=archive.workflow2)
             input_photon_method = archive.run[-1].method[0]
@@ -176,13 +176,11 @@ class BeyondDFTWorkflowsParser:
                 outputs.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
             archive.workflow2.tasks = [Task(name='Spectra calculation', inputs=archive.workflow2.inputs, outputs=archive.workflow2.outputs)]
             workflow.tasks.append(task)
-            archive.metadata.entry_name = 'exciting Spectra Single Point workflow'
 
         workflow.results.n_polarizations = len(spectra)
         workflow.results.spectrum_polarization = spectra
         outputs.append(Link(name='Workflow results', section=workflow.results))
         workflow.outputs = outputs
-        self.archive.metadata.entry_name = 'exciting Photon Polarization workflow'
         self.archive.workflow2 = workflow
 
     def parse_xs_workflow(self, xs_archives, xs_workflow_archive):
