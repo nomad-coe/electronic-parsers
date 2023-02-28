@@ -71,7 +71,7 @@ class BeyondDFTWorkflowsParser:
     Generates automatic GW, BSE, etc, workflows for all electronic codes that can handle
     these calculations.
     '''
-    def __init__(self, archive: EntryArchive, _child_archives: dict = {}, _xs_spectra_types: list = []):
+    def __init__(self, archive: EntryArchive, _child_archives: dict, _xs_spectra_types: list):
         self.archive = archive
         self._child_archives = _child_archives
         self._xs_spectra_types = _xs_spectra_types
