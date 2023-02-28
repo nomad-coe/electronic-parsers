@@ -20,7 +20,6 @@ import numpy as np
 import os
 import re
 import logging
-from glob import glob
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextParser
