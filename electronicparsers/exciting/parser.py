@@ -36,12 +36,11 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, EnergyEntry, Charges,
     Forces, ForcesEntry, ScfIteration, BandGap, Spectra
 )
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, Task, GW as GWWorkflow
+from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.workflow2 import TaskReference, Link, Task as Task2
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
-    GeometryOptimizationMethod, GW as GW2, GWResults, ParticleHoleExcitations,
-    ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults, PhotonPolarization,
+    GeometryOptimizationMethod, PhotonPolarization,
     PhotonPolarizationResults
 )
 from .metainfo.exciting import (
@@ -52,7 +51,7 @@ from .metainfo.exciting import (
     x_exciting_loss_calculation
 )
 from ..utils import (
-    get_files, BeyondDFTWorkflows
+    get_files, BeyondDFTWorkflowsParser
 )
 
 
@@ -1077,7 +1076,7 @@ class ExcitingInfoParser(TextParser):
         return self.get('initialization', {}).get(key, default)
 
 
-class ExcitingParser:
+class ExcitingParser(BeyondDFTWorkflowsParser):
     def __init__(self):
         self.info_parser = ExcitingInfoParser()
         self.dos_parser = DOSXMLParser(energy_unit=ureg.hartree)
@@ -2407,7 +2406,7 @@ class ExcitingParser:
 
             # parse gw workflow
             gw_workflow_archive = self._child_archives.get('GW_workflow')
-            BeyondDFTWorkflows(self.archive).parse_gw_workflow(gw_archive, gw_workflow_archive)
+            BeyondDFTWorkflowsParser(self.archive).parse_gw_workflow(gw_archive, gw_workflow_archive)
 
         # XS archives
         xs_archives = []
@@ -2427,4 +2426,4 @@ class ExcitingParser:
                 # TODO generalize to include GW step
         xs_workflow_archive = self._child_archives.get('XS_workflow')
         if xs_workflow_archive:
-            BeyondDFTWorkflows(self.archive, self._child_archives, self._xs_spectra_types).parse_xs_worklfow(xs_archives, xs_workflow_archive)
+            BeyondDFTWorkflowsParser(self.archive, self._child_archives, self._xs_spectra_types).parse_xs_workflow(xs_archives, xs_workflow_archive)

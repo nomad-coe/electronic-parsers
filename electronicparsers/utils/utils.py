@@ -20,6 +20,7 @@
 import os
 from glob import glob
 
+from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Workflow, Task, GW as GWold
 from nomad.datamodel.metainfo.workflow2 import Link, TaskReference
@@ -37,10 +38,10 @@ def extract_section(source, path):
     '''
     section_segments = path.split('/')
     for section in section_segments:
-        if source.m_xpath(section):
+        try:
             value = getattr(source, section)
             source = value[-1] if isinstance(value, list) else value
-        else:
+        except Exception:
             return
     return source
 
@@ -65,15 +66,15 @@ def get_files(pattern, filepath, stripname: str = '', deep: bool = True):
     return filenames
 
 
-class BeyondDFTWorkflows():
+class BeyondDFTWorkflowsParser:
     '''
     Generates automatic GW, BSE, etc, workflows for all electronic codes that can handle
     these calculations.
     '''
-    def __init__(self, archive, child_archives=None, xs_spectra_types=None):
-        self.archive = archive  # DFT archive
-        self.child_archives = child_archives
-        self.xs_spectra_types = xs_spectra_types  # string containing possible tags for spectra
+    def __init__(self, archive: EntryArchive, _child_archives: dict = {}, _xs_spectra_types: list = []):
+        self.archive = archive
+        self._child_archives = _child_archives
+        self._xs_spectra_types = _xs_spectra_types
 
     def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
         sec_run = gw_workflow_archive.m_create(Run)
@@ -151,8 +152,8 @@ class BeyondDFTWorkflows():
         def extract_polarization_outputs():
             output = []
             index = 0
-            for path, archive in self.child_archives.items():
-                if os.path.basename(path).split('_')[0] in self.xs_spectra_types:
+            for path, archive in self._child_archives.items():
+                if os.path.basename(path).split('_')[0] in self._xs_spectra_types:
                     output_polarization = archive.run[-1].calculation[-1]
                     output.append(Link(name=f'Output polarization {index + 1}', section=output_polarization))
                     index += 1
@@ -176,7 +177,7 @@ class BeyondDFTWorkflows():
         dft_calculation = extract_section(self.archive, 'run/calculation')
         output_dft_name = 'Output DFT calculation'
         if dft_calculation:  # include DFT calculation to each single point task
-            for archive in self.child_archives.values():
+            for archive in self._child_archives.values():
                 if isinstance(archive.workflow2, SinglePoint):
                     archive.workflow2.inputs.append(Link(name=output_dft_name, section=dft_calculation))
                     archive.workflow2.tasks[0].inputs.append(Link(name=output_dft_name, section=dft_calculation))

@@ -37,18 +37,17 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     ScfIteration, Energy, EnergyEntry, Stress, StressEntry, Thermodynamics,
     Forces, ForcesEntry
 )
-from nomad.datamodel.metainfo.workflow import Workflow, Task, GW as GWWorkflow
-from nomad.datamodel.metainfo.workflow2 import TaskReference, Link
+from nomad.datamodel.metainfo.workflow import Workflow
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
-    MolecularDynamics as MolecularDynamics2, GW as GW2, GWResults)
+    MolecularDynamics as MolecularDynamics2)
 
 from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_parallel_task_assignement, x_fhi_aims_section_parallel_tasks,\
     x_fhi_aims_section_controlIn_basis_set, x_fhi_aims_section_controlIn_basis_func,\
     x_fhi_aims_section_controlInOut_atom_species, x_fhi_aims_section_controlInOut_basis_func,\
     x_fhi_aims_section_vdW_TS
-from ..utils import BeyondDFTWorkflows
+from ..utils import BeyondDFTWorkflowsParser
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -624,14 +623,14 @@ class FHIAimsOutParser(TextParser):
         return self.get('array_size_parameters', {}).get('Number of spin channels', 1)
 
 
-class FHIAimsParser:
+class FHIAimsParser(BeyondDFTWorkflowsParser):
     def __init__(self):
         self.out_parser = FHIAimsOutParser()
         self.control_parser = FHIAimsControlParser()
         self.dos_parser = DataTextParser()
         self.bandstructure_parser = DataTextParser()
-        self._child_archives = {}
         self._calculation_type = 'dft'
+        self._child_archives = {}
 
         self._xc_map = {
             'Perdew-Wang parametrisation of Ceperley-Alder LDA': [
@@ -1621,4 +1620,4 @@ class FHIAimsParser:
 
             # GW workflow
             gw_workflow_archive = self._child_archives.get('GW_workflow')
-            BeyondDFTWorkflows(self.archive).parse_gw_workflow(gw_archive, gw_workflow_archive)
+            BeyondDFTWorkflowsParser(self.archive).parse_gw_workflow(gw_archive, gw_workflow_archive)
