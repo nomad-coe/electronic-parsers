@@ -22,8 +22,8 @@ from glob import glob
 
 from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
-from nomad.datamodel.metainfo.workflow import Workflow, Task, GW as GWold
-from nomad.datamodel.metainfo.workflow2 import Link, TaskReference
+from nomad.datamodel.metainfo.workflow import Workflow, Task as Taskold, GW as GWold
+from nomad.datamodel.metainfo.workflow2 import Link, TaskReference, Task
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint, GW, GWMethod, GWResults, ParticleHoleExcitations,
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,
@@ -33,7 +33,7 @@ from nomad.datamodel.metainfo.simulation.workflow import (
 
 def extract_section(source, path):
     '''
-    Extracts the section from source given by path. Examples:
+    Extracts the (last) section from source given by path. Examples:
         sec_system = extract_section(archive, 'run/system')
         spectra = extract_section(archive, 'run/calculation/spectra')
     '''
@@ -93,13 +93,13 @@ class BeyondDFTWorkflowsParser:
         workflow_old.type = 'GW'
         workflow_old.workflows_ref = [self.archive.workflow[-1], gw_archive.workflow[-1]]
         workflow_old.task = [
-            Task(
+            Taskold(
                 input_workflow=workflow_old, output_workflow=self.archive.workflow[-1],
                 description='DFT calculation performed in an input structure.'),
-            Task(
+            Taskold(
                 input_workflow=self.archive.workflow[0], output_workflow=gw_archive.workflow[-1],
                 description='GW calculation performed from input DFT calculation.'),
-            Task(
+            Taskold(
                 input_workflow=gw_archive.workflow[0], output_workflow=workflow_old,
                 description='Comparison between DFT and GW.')
         ]
@@ -147,7 +147,7 @@ class BeyondDFTWorkflowsParser:
 
     def parse_photon_workflow(self):
         workflow = PhotonPolarization(results=PhotonPolarizationResults())
-        workflow.name = 'PhotonPolarization'
+        workflow.name = 'Spectra'
 
         input_structure = self.archive.run[-1].system[-1]
         input_method = self.archive.run[-1].method[-1]
@@ -174,7 +174,7 @@ class BeyondDFTWorkflowsParser:
                 archive.workflow2.outputs = [Link(name=f'Output polarization {index + 1}', section=output_calculation)]
                 spectra.append(output_calculation.spectra[0])
                 outputs.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
-            archive.workflow2.tasks = [Task(name='Spectra calculation', inputs=archive.workflow2.inputs, outputs=archive.workflow2.outputs)]
+            archive.workflow2.tasks = [Task(inputs=archive.workflow2.inputs, outputs=archive.workflow2.outputs)]
             workflow.tasks.append(task)
 
         workflow.results.n_polarizations = len(spectra)
