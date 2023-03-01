@@ -20,7 +20,6 @@ import numpy as np
 import os
 import re
 import logging
-from glob import glob
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextParser
@@ -36,13 +35,10 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, EnergyEntry, Charges,
     Forces, ForcesEntry, ScfIteration, BandGap, Spectra
 )
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, Task, GW as GWWorkflow
-from nomad.datamodel.metainfo.workflow2 import TaskReference, Link, Task as Task2
+from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
-    GeometryOptimizationMethod, GW as GW2, GWResults, ParticleHoleExcitations,
-    ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults, PhotonPolarization,
-    PhotonPolarizationResults
+    GeometryOptimizationMethod
 )
 from .metainfo.exciting import (
     x_exciting_section_MT_charge_atom, x_exciting_section_MT_moment_atom,
@@ -50,6 +46,9 @@ from .metainfo.exciting import (
     x_exciting_section_atoms_group, x_exciting_exciton_calculation,
     x_exciting_epsilon_calculation, x_exciting_sigma_calculation,
     x_exciting_loss_calculation
+)
+from ..utils import (
+    get_files, BeyondDFTWorkflowsParser
 )
 
 
@@ -1074,7 +1073,7 @@ class ExcitingInfoParser(TextParser):
         return self.get('initialization', {}).get(key, default)
 
 
-class ExcitingParser:
+class ExcitingParser(BeyondDFTWorkflowsParser):
     def __init__(self):
         self.info_parser = ExcitingInfoParser()
         self.dos_parser = DOSXMLParser(energy_unit=ureg.hartree)
@@ -1133,25 +1132,6 @@ class ExcitingParser:
         }
 
         self._xs_spectra_types = ['EPSILON', 'EXCITON', 'SIGMA', 'LOSS']
-
-    def get_exciting_files(self, pattern, filepath=None, deep=True):
-        if filepath is None:
-            filepath = self.filepath
-        # TODO do recursion until files are found
-        for _ in range(10):
-            filenames = glob(f'{os.path.dirname(filepath)}/{pattern}')
-            pattern = os.path.join('**' if deep else '..', pattern)
-            if filenames:
-                break
-
-        if len(filenames) > 1:
-            # filter files that match
-            suffix = os.path.basename(filepath).strip('INFO.OUT')
-            matches = [f for f in filenames if suffix in f]
-            filenames = matches if matches else filenames
-
-        filenames = [f for f in filenames if os.access(f, os.F_OK)]
-        return filenames
 
     def file_exists(self, filename):
         """Checks if a the given filename exists and is accessible in the same
@@ -1434,7 +1414,8 @@ class ExcitingParser:
         else:
             return
 
-        files = self.get_exciting_files(name, filepath=filepath if filepath is not None else self.filepath)
+        filepath = filepath if filepath is not None else self.filepath
+        files = get_files(name, filepath, 'INFO.OUT')
         if len(files) > 1:
             self.logger.warning('Found multiple files. Will read all!', data=dict(file=name))
 
@@ -1616,7 +1597,7 @@ class ExcitingParser:
 
         file_ending = path.split('EPSILON')[-1]  # Identifying files with the same ending but different type of calculation
         polarization_files = [
-            f for f in self.get_exciting_files('*BSE*.OUT', self._xs_info_file) if f.endswith(file_ending)]
+            f for f in get_files('*BSE*.OUT', self._xs_info_file, 'INFO.OUT') if f.endswith(file_ending)]
         for file in polarization_files:
             if sec_run.m_xpath('calculation'):
                 sec_scc = sec_run.calculation[-1]
@@ -1656,7 +1637,7 @@ class ExcitingParser:
 
         def get_data(path):
             # all files related to quantity at all qpoints
-            files = self.get_exciting_files(os.path.basename(path).replace('001', '*'), filepath=self._xs_info_file)
+            files = get_files(os.path.basename(path).replace('001', '*'), self._xs_info_file, 'INFO.OUT')
             data = [[], [], []]
             data_q = []
             for f in files:
@@ -1688,7 +1669,7 @@ class ExcitingParser:
             sec_run = archive.run[0] if archive.run else archive.m_create(Run)
             return sec_run.calculation[0] if sec_run.calculation else sec_run.m_create(Calculation)
 
-        for path in self.get_exciting_files('*_OC*001.OUT'):
+        for path in get_files('*_OC*001.OUT', self.filepath, 'INFO.OUT'):
             sec_scc = get_xs_calculation(path)
             if not sec_scc:
                 continue
@@ -1721,19 +1702,6 @@ class ExcitingParser:
 
             elif quantity == 'SIGMA' and '_NLF_FXC' in basename:
                 sec_scc.x_exciting_xs_tddft_sigma_no_local_field = data[1:3]
-
-    def extract_section(self, source, path):
-        path_segments = path.split('/', 1)
-        try:
-            value = getattr(source, path_segments[0])
-            value = value[-1] if isinstance(value, list) else value
-        except Exception:
-            return
-
-        if len(path_segments) == 1:
-            return value
-        else:
-            return self.extract_section(value, path_segments[1])
 
     def parse_polarization(self, path):
         sec_run = self._child_archives.get(path).run[-1]
@@ -1771,7 +1739,7 @@ class ExcitingParser:
         sec_core.broadening = ureg.convert(sec_run.method[0].get('x_exciting_xs_broadening'), 'joule', 'electron_volt')
 
     def parse_spectra(self, path):
-        input_file = self.get_exciting_files('input.xml', filepath=self._xs_info_file)
+        input_file = get_files('input.xml', self._xs_info_file, 'INFO.OUT')
         if not input_file:
             return
         self.input_xml_parser.mainfile = input_file[0]
@@ -1803,106 +1771,6 @@ class ExcitingParser:
         workflow = SinglePoint2()
         workflow.name = 'SinglePoint'
         self._child_archives.get(path).workflow2 = workflow
-
-    def parse_photon_workflow(self):
-        workflow = PhotonPolarization(results=PhotonPolarizationResults())
-        workflow.name = 'PhotonPolarization'
-
-        input_structure = self.archive.run[-1].system[-1]
-        input_method = self.archive.run[-1].method[-1]
-        workflow.inputs = [
-            Link(name='Input structure', section=input_structure),
-            # TODO this should be put under PhotonPolarizationMethod e.g. as method_ref
-            Link(name='Input BSE methodology', section=input_method)]
-        spectra = []
-        outputs = []
-        for path in self._child_archives.keys():
-            archive = self._child_archives.get(path)
-            index = list(self._child_archives.keys()).index(path)
-            archive.workflow2 = SinglePoint2()
-            archive.workflow2.name = 'Single point'
-
-            task = TaskReference(task=archive.workflow2)
-            input_photon_method = archive.run[-1].method[0]
-            if input_structure and input_photon_method:
-                archive.workflow2.inputs = [
-                    Link(name='Input structure', section=input_structure),
-                    Link(name='Input photon parameters', section=input_photon_method)]
-            output_calculation = archive.run[-1].calculation[-1]  # ref to EPSILON calculation
-            if output_calculation:
-                archive.workflow2.outputs = [Link(name=f'Output polarization {index + 1}', section=output_calculation)]
-                spectra.append(output_calculation.spectra[0])
-                outputs.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
-            archive.workflow2.tasks = [Task2(name='Spectra calculation', inputs=archive.workflow2.inputs, outputs=archive.workflow2.outputs)]
-            workflow.tasks.append(task)
-            archive.metadata.entry_name = 'exciting Spectra Single Point workflow'
-
-        workflow.results.n_polarizations = len(spectra)
-        workflow.results.spectrum_polarization = spectra
-        outputs.append(Link(name='Workflow results', section=workflow.results))
-        workflow.outputs = outputs
-        self.archive.metadata.entry_name = 'exciting Photon Polarization workflow'
-        self.archive.workflow2 = workflow
-
-    def parse_xs_worklfow(self, xs_archives, xs_workflow_archive):
-        sec_run = xs_workflow_archive.m_create(Run)
-        sec_run.program = self.archive.run[-1].program
-        sec_run.system = self.archive.run[-1].system
-        workflow = ParticleHoleExcitations(
-            results=ParticleHoleExcitationsResults(), method=ParticleHoleExcitationsMethod())
-
-        def extract_polarization_outputs():
-            output = []
-            index = 0
-            for path, archive in self._child_archives.items():
-                if os.path.basename(path).split('_')[0] in self._xs_spectra_types:
-                    output_calculation = archive.run[-1].calculation[-1]
-                    output.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
-                    index += 1
-            return output
-
-        # Inputs
-        input_structure = self.extract_section(self.archive, 'run/system')
-        workflow.inputs.append(Link(name='Workflow parameters', section=workflow.method))
-        if input_structure:
-            workflow.inputs.append(Link(name='Input structure', section=input_structure))
-
-        # Results
-        bs_dft = self.extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        dos_dft = self.extract_section(self.archive, 'run/calculation/dos_electronic')
-        workflow.results.dos_dft = dos_dft
-        workflow.results.band_structure_dft = bs_dft
-        workflow.results.spectra = [xs_archive.workflow2.results for xs_archive in xs_archives]
-
-        # Outputs
-        workflow.outputs = extract_polarization_outputs()
-        input_calculation = self.extract_section(self.archive, 'run/calculation')
-        output_dft_name = 'Output DFT calculation'
-
-        # include DFT calculation to each single point task
-        if input_calculation:
-            for archive in self._child_archives.values():
-                if isinstance(archive.workflow2, SinglePoint2):
-                    archive.workflow2.inputs.append(Link(name=output_dft_name, section=input_calculation))
-                    archive.workflow2.tasks[0].inputs.append(Link(name=output_dft_name, section=input_calculation))
-
-        if self.archive.workflow2:  # DFT task
-            task = TaskReference(task=self.archive.workflow2)
-            self.archive.workflow2.outputs = []
-            if input_structure:
-                self.archive.workflow2.inputs = [Link(name='Input structure', section=input_structure)]
-            if input_calculation:
-                self.archive.workflow2.outputs.append(Link(name=output_dft_name, section=input_calculation))
-            workflow.tasks.append(task)
-        for xs_archive in xs_archives:
-            if xs_archive.workflow2:  # PhotonPolarization task
-                task = TaskReference(task=xs_archive.workflow2)
-                if input_calculation:
-                    xs_archive.workflow2.inputs.append(Link(name=output_dft_name, section=input_calculation))
-                workflow.tasks.append(task)
-
-        xs_workflow_archive.workflow2 = workflow
-        xs_workflow_archive.metadata.entry_name = 'exciting Particle-Hole Excitations workflow'
 
     def _parse_input_gw(self, sec_method):
         sec_gw = sec_method.m_create(GWMethod)
@@ -2010,73 +1878,6 @@ class ExcitingParser:
         self.parse_system(self.info_parser.get('groundstate'))
         sec_scc.system_ref = sec_run.system[-1]
 
-    def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
-        sec_run = gw_workflow_archive.m_create(Run)
-        sec_run.program = self.archive.run[-1].program
-        setattr(sec_run, 'system', self.archive.run[-1].system)
-
-        sec_workflow = gw_workflow_archive.m_create(Workflow)
-        sec_workflow.type = 'GW'
-        sec_workflow.workflows_ref = [self.archive.workflow[0], gw_archive.workflow[0]]
-
-        # Tasks linking dft and gw
-        sec_workflow.task = [
-            Task(
-                input_workflow=sec_workflow, output_workflow=self.archive.workflow[0],
-                description='DFT calculation performed in an input structure.'),
-            Task(
-                input_workflow=self.archive.workflow[0], output_workflow=gw_archive.workflow[0],
-                description='GW calculation performed from input DFT calculation.'),
-            Task(
-                input_workflow=gw_archive.workflow[0], output_workflow=sec_workflow,
-                description='Comparison between DFT and GW.')
-        ]
-
-        # Include DFT and GW band structures and DOS (if present) for comparison.
-        sec_gw = sec_workflow.m_create(GWWorkflow)
-        dos_dft = self.extract_section(self.archive, 'run/calculation/dos_electronic')
-        dos_gw = self.extract_section(gw_archive, 'run/calculation/dos_electronic')
-        bs_dft = self.extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        bs_gw = self.extract_section(gw_archive, 'run/calculation/band_structure_electronic')
-        sec_gw.dos_dft = dos_dft
-        sec_gw.dos_gw = dos_gw
-        sec_gw.band_structure_dft = bs_dft
-        sec_gw.band_structure_gw = bs_gw
-
-        workflow = GW2(results=GWResults())
-        workflow.name = 'GW'
-        workflow.results.dos_dft = dos_dft
-        workflow.results.dos_gw = dos_gw
-        workflow.results.band_structure_dft = bs_dft
-        workflow.results.band_structure_gw = bs_gw
-
-        input_structure = self.extract_section(self.archive, 'run/system')
-        if input_structure:
-            workflow.inputs = [Link(name='Input structure', section=input_structure)]
-        output_calculation = self.extract_section(gw_archive, 'run/calculation')
-        if output_calculation:
-            workflow.outputs = [Link(name='Output calculation', section=output_calculation)]
-
-        # output of dft and input for gw
-        input_calculation = self.extract_section(self.archive, 'run/calculation')
-        if self.archive.workflow2:
-            task = TaskReference(task=self.archive.workflow2)
-            if input_structure:
-                task.inputs = [Link(name='Input structure', section=input_structure)]
-            if input_calculation:
-                task.outputs = [Link(name='Output calculation', section=input_calculation)]
-            workflow.tasks.append(task)
-
-        if gw_archive.workflow2:
-            task = TaskReference(task=gw_archive.workflow2)
-            if input_calculation:
-                task.inputs = [Link(name='Input calculation', section=input_calculation)]
-            if output_calculation:
-                task.outputs = [Link(name='Output calculation', section=output_calculation)]
-            workflow.tasks.append(task)
-
-        gw_workflow_archive.workflow2 = workflow
-
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)
 
@@ -2145,7 +1946,7 @@ class ExcitingParser:
         xc_functional_names = self.info_parser.get_xc_functional_name()
         if not xc_functional_names:
             # get it from input.xml
-            input_file = self.get_exciting_files('input.xml')
+            input_file = get_files('input.xml', self.filepath, 'INFO.OUT')
             for f in input_file:
                 self.input_xml_parser.mainfile = f
                 correlation = self.input_xml_parser.get('libxc/correlation', None)
@@ -2301,7 +2102,7 @@ class ExcitingParser:
         positions = self.info_parser.get_atom_positions(section.get('atomic_positions', {}))
         lattice_vectors = self.info_parser.get_initialization_parameter('lattice_vectors')
         atom_labels = self.info_parser.get_atom_labels(section.get('atomic_positions', {}))
-        input_file = self.get_exciting_files('input.xml')
+        input_file = get_files('input.xml', self.filepath, 'INFO.OUT')
 
         if positions is None:
             # get it from input.xml
@@ -2375,7 +2176,7 @@ class ExcitingParser:
             sec_atoms_group.x_exciting_geometry_atom_positions = positions.magnitude
 
         # clathrate info
-        clathrate_file = self.get_exciting_files('str.out')
+        clathrate_file = get_files('str.out', self.filepath, 'INFO.OUT')
         if clathrate_file:
             sec_system.x_exciting_clathrates = True
             self.data_clathrate_parser.mainfile = clathrate_file[0]
@@ -2461,7 +2262,7 @@ class ExcitingParser:
         # volume optimizations
         volume_index = 1
         while True:
-            info_volume = self.get_exciting_files('run_dir%s/INFO.OUT' % str(volume_index).rjust(2, '0'))
+            info_volume = get_files(f"run_dir{str(volume_index).rjust(2, '0')}/INFO.OUT", self.filepath, 'INFO.OUT')
             if not info_volume:
                 break
             sec_scc.calculations_path.append(info_volume[0])
@@ -2488,12 +2289,12 @@ class ExcitingParser:
         dirname = os.path.dirname(filepath)
         if os.path.isfile(os.path.join(dirname, f'GW_{basename}')):
             return ['GW', 'GW_workflow']
-        xs_files = self.get_exciting_files(basename.replace('INFO.OUT', 'INFOXS.OUT'), filepath)
+        xs_files = get_files(basename.replace('INFO.OUT', 'INFOXS.OUT'), filepath, 'INFO.OUT')
         if xs_files:
             re_xs_mainfile = re.compile(r'.+\d\d\d\.OUT')
             spectra_files = []
             for prefix in self._xs_spectra_types:
-                spectra_files = self.get_exciting_files(f'{prefix}_*.OUT', filepath)
+                spectra_files = get_files(f'{prefix}_*.OUT', filepath, 'INFO.OUT')
                 if spectra_files:
                     # remove files for qpoints other than first
                     files = ['XS_workflow'] + xs_files
@@ -2522,7 +2323,7 @@ class ExcitingParser:
         elif basename.startswith('INFOXS'):
             self._calculation_type = 'xs'
             self._xs_info_file = filepath
-            info_file = self.get_exciting_files('INFO.OUT', deep=False)
+            info_file = get_files('INFO.OUT', self.filepath, 'INFO.OUT', deep=False)
             if info_file:
                 self.filepath = os.path.join(info_file[0])
             # self.filepath = os.path.join(dirname, basename.replace('INFOXS', 'INFO'))
@@ -2582,8 +2383,4 @@ class ExcitingParser:
                 # TODO generalize to include GW step
         xs_workflow_archive = self._child_archives.get('XS_workflow')
         if xs_workflow_archive:
-            self.parse_xs_worklfow(xs_archives, xs_workflow_archive)
-
-            import json
-            with open('temp.json', 'w') as f:
-                json.dump(xs_archive.m_to_dict(), f, indent=4)
+            self.parse_xs_workflow(xs_archives, xs_workflow_archive)

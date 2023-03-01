@@ -30,13 +30,13 @@ from nomad.datamodel.metainfo.simulation.method import (
     Method, Photon, CoreHole, BSE, KMesh
 )
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Spectra
-from nomad.datamodel.metainfo.workflow2 import TaskReference, Link
-from nomad.datamodel.metainfo.simulation.workflow import (
-    SinglePoint, PhotonPolarization, PhotonPolarizationResults, PhotonPolarizationMethod
-)
+from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 from .metainfo.ocean import (
     x_ocean_bse_parameters, x_ocean_screen_parameters, x_ocean_core_haydock_parameters,
     x_ocean_core_gmres_parameters, x_ocean_lanczos_results
+)
+from ..utils import (
+    BeyondDFTWorkflowsParser
 )
 
 
@@ -60,14 +60,13 @@ class LanczosParser(TextParser):
             Quantity('data', r'(.*[\s\S]+?)(?:.)', repeats=True)]
 
 
-class OceanParser:
+class OceanParser(BeyondDFTWorkflowsParser):
     def __init__(self):
         self.photon_parser = PhotonParser()
         self.spectra_parser = DataTextParser()
         self.lanczos_parser = LanczosParser()
         self._child_archives = {}
         self._calculation_type = 'bse'
-        self._photon_workflow_level = 0
         self._dft_code_map = {
             'qe': 'QuantumESPRESSO',
             'abi': 'ABINIT'
@@ -231,51 +230,6 @@ class OceanParser:
         workflow = SinglePoint()
         self._child_archives.get(path).workflow2 = workflow
 
-    def parse_photon_workflow(self, photon_archive, photon_workflow_archive):
-        sec_run = photon_workflow_archive.m_create(Run)
-        if photon_archive:
-            if photon_archive[0].run[-1].m_xpath('program') and photon_archive[0].run[-1].m_xpath('system'):
-                sec_run.program = photon_archive[0].run[-1].program
-                sec_run.system = photon_archive[0].run[-1].system
-        else:
-            self.logger.warning('Cannot resolve program and system from the first photon archive. '
-                                'Generating empty sections.')
-            sec_run.m_create(Program)
-            sec_run.m_create(System)
-        self.parse_method(photon_workflow_archive)
-
-        workflow = PhotonPolarization(
-            method=PhotonPolarizationMethod(),
-            results=PhotonPolarizationResults())
-
-        workflow.results.n_polarizations = len(photon_archive)
-        input_structure = sec_run.system[-1]
-        input_method = sec_run.method[-1]
-        workflow.method = input_method
-        workflow.inputs = [
-            Link(name='Input structure', section=input_structure),
-            Link(name='Input BSE methodology', section=input_method)]
-        spectra = []
-        outputs = []
-        for archive in photon_archive:
-            if archive.workflow2:
-                index = photon_archive.index(archive)
-                task = TaskReference(task=archive.workflow2)
-                input_photon_method = archive.run[-1].method[0]
-                if input_structure and input_photon_method:
-                    task.inputs = [
-                        Link(name='Input structure', section=input_structure),
-                        Link(name='Input photon parameters', section=input_photon_method)]
-                output_calculation = archive.run[-1].calculation[-1]
-                if output_calculation:
-                    task.outputs = [Link(name=f'Output polarization {index + 1}', section=output_calculation)]
-                    spectra.append(output_calculation.spectra[0])
-                    outputs.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
-                workflow.tasks.append(task)
-        workflow.outputs = outputs
-        workflow.results.spectrum_polarization = spectra
-        photon_workflow_archive.workflow2 = workflow
-
     def get_mainfile_keys(self, filepath):
         # We recognize the absspct files as the main auxiliary files
         absspct_files = [f for f in os.listdir(os.path.dirname(filepath)) if f.startswith('absspct')]
@@ -289,10 +243,9 @@ class OceanParser:
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
+        self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
-
-        photon_workflow_archive = archive  # archive will be passed as the PhotonPolarization workflow
 
         try:
             data = json.load(open(self.filepath))
@@ -302,10 +255,19 @@ class OceanParser:
             return
         self.data = data
 
-        photon_archive = []
         for child in self._child_archives:
             if self._child_archives.get(child):
                 self.parse_photons(child)
-                photon_archive.append(self._child_archives.get(child))
 
-        self.parse_photon_workflow(photon_archive, photon_workflow_archive)
+        sec_run = self.archive.m_create(Run)
+        if self._child_archives.get(child):
+            if self._child_archives.get(child).run[-1].program and self._child_archives.get(child).run[-1].system:
+                sec_run.program = self._child_archives.get(child).run[-1].program
+                sec_run.system = self._child_archives.get(child).run[-1].system
+        else:
+            self.logger.warning('Cannot resolve program and system from the first photon archive. '
+                                'Generating empty sections.')
+            sec_run.m_create(Program)
+            sec_run.m_create(System)
+        self.parse_method(self.archive)
+        self.parse_photon_workflow()

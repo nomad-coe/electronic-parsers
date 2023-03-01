@@ -37,17 +37,17 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     ScfIteration, Energy, EnergyEntry, Stress, StressEntry, Thermodynamics,
     Forces, ForcesEntry
 )
-from nomad.datamodel.metainfo.workflow import Workflow, Task, GW as GWWorkflow
-from nomad.datamodel.metainfo.workflow2 import TaskReference, Link
+from nomad.datamodel.metainfo.workflow import Workflow
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
-    MolecularDynamics as MolecularDynamics2, GW as GW2, GWResults)
+    MolecularDynamics as MolecularDynamics2)
 
 from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_parallel_task_assignement, x_fhi_aims_section_parallel_tasks,\
     x_fhi_aims_section_controlIn_basis_set, x_fhi_aims_section_controlIn_basis_func,\
     x_fhi_aims_section_controlInOut_atom_species, x_fhi_aims_section_controlInOut_basis_func,\
     x_fhi_aims_section_vdW_TS
+from ..utils import BeyondDFTWorkflowsParser
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -623,14 +623,14 @@ class FHIAimsOutParser(TextParser):
         return self.get('array_size_parameters', {}).get('Number of spin channels', 1)
 
 
-class FHIAimsParser:
+class FHIAimsParser(BeyondDFTWorkflowsParser):
     def __init__(self):
         self.out_parser = FHIAimsOutParser()
         self.control_parser = FHIAimsControlParser()
         self.dos_parser = DataTextParser()
         self.bandstructure_parser = DataTextParser()
-        self._child_archives = {}
         self._calculation_type = 'dft'
+        self._child_archives = {}
 
         self._xc_map = {
             'Perdew-Wang parametrisation of Ceperley-Alder LDA': [
@@ -927,85 +927,6 @@ class FHIAimsParser:
                 # TODO verify shape of eigenvalues
                 val = gw_eigenvalues[key] if key == 'occ_num' else gw_eigenvalues[key] * ureg.eV
                 setattr(sec_eigs_gw, name, np.reshape(val, (1, 1, len(val))))
-
-    def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
-        sec_run = gw_workflow_archive.m_create(Run)
-        sec_run.program = self.archive.run[-1].program
-        setattr(sec_run, 'system', self.archive.run[-1].system)
-
-        sec_workflow = gw_workflow_archive.m_create(Workflow)
-        sec_workflow.type = 'GW'
-        sec_workflow.workflows_ref = [self.archive.workflow[0], gw_archive.workflow[0]]
-
-        # Tasks linking dft and gw
-        sec_workflow.task = [
-            Task(
-                input_workflow=sec_workflow, output_workflow=self.archive.workflow[0],
-                description='DFT calculation performed in an input structure.'),
-            Task(
-                input_workflow=self.archive.workflow[0], output_workflow=gw_archive.workflow[0],
-                description='GW calculation performed from input DFT calculation.'),
-            Task(
-                input_workflow=gw_archive.workflow[0], output_workflow=sec_workflow,
-                description='Comparison between DFT and GW.')
-        ]
-
-        # Include DFT and GW band structures and DOS (if present) for comparison.
-        def extract_section(source, path):
-            path_segments = path.split('/', 1)
-            try:
-                value = getattr(source, path_segments[0])
-                value = value[-1] if isinstance(value, list) else value
-            except Exception:
-                return
-
-            if len(path_segments) == 1:
-                return value
-            else:
-                return extract_section(value, path_segments[1])
-
-        sec_gw = sec_workflow.m_create(GWWorkflow)
-        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
-        dos_gw = extract_section(gw_archive, 'run/calculation/dos_electronic')
-        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        bs_gw = extract_section(gw_archive, 'run/calculation/band_structure_electronic')
-        sec_gw.dos_dft = dos_dft
-        sec_gw.dos_gw = dos_gw
-        sec_gw.band_structure_dft = bs_dft
-        sec_gw.band_structure_gw = bs_gw
-
-        workflow = GW2(results=GWResults())
-        workflow.results.dos_dft = dos_dft
-        workflow.results.dos_gw = dos_gw
-        workflow.results.band_structure_dft = bs_dft
-        workflow.results.band_structure_gw = bs_gw
-
-        input_structure = extract_section(self.archive, 'run/system')
-        if input_structure:
-            workflow.inputs = [Link(name='Input structure', section=input_structure)]
-        output_calculation = extract_section(gw_archive, 'run/calculation')
-        if output_calculation:
-            workflow.outputs = [Link(name='Output calculation', section=output_calculation)]
-
-        # output of dft and input for gw
-        input_calculation = extract_section(self.archive, 'run/calculation')
-        if self.archive.workflow2:
-            task = TaskReference(task=self.archive.workflow2)
-            if input_structure:
-                task.inputs = [Link(name='Input structure', section=input_structure)]
-            if input_calculation:
-                task.outputs = [Link(name='Output calculation', section=input_calculation)]
-            workflow.tasks.append(task)
-
-        if gw_archive.workflow2:
-            task = TaskReference(task=gw_archive.workflow2)
-            if input_calculation:
-                task.inputs = [Link(name='Input calculation', section=input_calculation)]
-            if output_calculation:
-                task.outputs = [Link(name='Output calculation', section=output_calculation)]
-            workflow.tasks.append(task)
-
-        gw_workflow_archive.workflow2 = workflow
 
     def parse_system(self, section):
         sec_run = self.archive.run[-1]
