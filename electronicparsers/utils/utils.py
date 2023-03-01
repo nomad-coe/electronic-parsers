@@ -77,10 +77,21 @@ class BeyondDFTWorkflowsParser:
         self._child_archives = _child_archives
         self._xs_spectra_types = _xs_spectra_types
 
-    def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
-        sec_run = gw_workflow_archive.m_create(Run)
+    def run_workflow_archive(self, workflow_archive):
+        if workflow_archive.run:
+            sec_run = workflow_archive.run[-1]
+        else:
+            sec_run = workflow_archive.m_create(Run)
         sec_run.program = self.archive.run[-1].program
         sec_run.system = self.archive.run[-1].system
+
+    def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
+        '''
+            self.archive = DFT archive
+            gw_archive = GW archive
+            gw_workflow_archive = DFT+GW workflow archive
+        '''
+        self.run_workflow_archive(gw_workflow_archive)
 
         # Extracting DFT and GW results
         dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
@@ -146,6 +157,10 @@ class BeyondDFTWorkflowsParser:
         gw_workflow_archive.workflow2 = workflow
 
     def parse_photon_workflow(self):
+        '''
+            self.archive = archive for the workflow
+            self._child_archives = archives for SinglePoint photons
+        '''
         workflow = PhotonPolarization(results=PhotonPolarizationResults())
         workflow.name = 'Spectra'
 
@@ -184,9 +199,12 @@ class BeyondDFTWorkflowsParser:
         self.archive.workflow2 = workflow
 
     def parse_xs_workflow(self, xs_archives, xs_workflow_archive):
-        sec_run = xs_workflow_archive.m_create(Run)
-        sec_run.program = self.archive.run[-1].program
-        sec_run.system = self.archive.run[-1].system
+        '''
+            self.archive = DFT archive
+            xs_archives = archives for all Spectra workflows
+            xs_workflow_archive = DFT+Spectra workflow archive
+        '''
+        self.run_workflow_archive(xs_workflow_archive)
 
         def extract_polarization_outputs():
             output = []
