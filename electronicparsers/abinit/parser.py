@@ -1218,7 +1218,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             if results is None:
                 continue
             parse_configurations(results)
-            parse_scf(results)
+            parse_scf(self.dataset[nd])
 
             # Relaxation of the structure
             relaxation = self.dataset[nd].get('relaxation')

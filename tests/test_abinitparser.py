@@ -43,8 +43,8 @@ def test_scf(parser):
     assert sec_run.time_run.date_start.magnitude == 1467132480.0
     sec_dataset = sec_run.x_abinit_section_dataset
     assert len(sec_dataset) == 1
-    assert len(sec_dataset[0].x_abinit_section_input[0].x_abinit_var_symrel) == 432
-    assert sec_dataset[0].x_abinit_section_input[0].x_abinit_var_znucl[0] == 14.
+    assert len(sec_dataset[0].x_abinit_section_input.x_abinit_var_symrel) == 432
+    assert sec_dataset[0].x_abinit_section_input.x_abinit_var_znucl[0] == 14.
 
     sec_method = sec_run.method[0]
     assert sec_method.scf.n_max_iteration == 10.
@@ -73,14 +73,18 @@ def test_relax(parser):
     archive = EntryArchive()
     parser.parse('tests/data/abinit/H2/H2.out', archive, None)
 
-    assert len(archive.run[0].x_abinit_section_dataset) == 2
+    assert archive.workflow2.m_def.name == 'GeometryOptimization'
+    assert archive.workflow2.method.method == 'bfgs'
+    sec_run = archive.run[0]
+    assert len(sec_run.x_abinit_section_dataset) == 2
+    assert len(sec_run.system) == 3
     sec_scc = archive.run[0].calculation
-    assert len(sec_scc) == 5
-    for i in range(1, 3):  # sec_scc[0] do not store any scf section
+    assert len(sec_scc) == 4
+    for i in range(1, 4):  # sec_scc[0] do not store any scf section
         assert sec_scc[i].m_xpath('scf_iteration')
     assert len(sec_scc[2].scf_iteration) == 5
-    assert sec_scc[3].energy.total.value.magnitude == approx(-4.93984603e-18)
-    assert sec_scc[3].scf_iteration[4].energy.total.value.magnitude == approx(-4.9398460277747174e-18)
+    assert sec_scc[2].energy.total.value.magnitude == approx(-4.93984603e-18)
+    assert sec_scc[2].scf_iteration[4].energy.total.value.magnitude == approx(-4.9398460277747174e-18)
 
 
 def test_dos(parser):
