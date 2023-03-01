@@ -470,6 +470,7 @@ class AbinitOutParser(TextParser):
             'energy_total': ' >>>>>>>>> Etotal',
             'energy_sum_eigenvalues': r'Band energy \(Ha\)'}
         self._input_vars = None
+        self._dataset_numbers = None
         self._n_datasets = None
         super().__init__(None)
 
@@ -833,12 +834,16 @@ class AbinitOutParser(TextParser):
         ))
 
     @property
+    def dataset_numbers(self):
+        if self._dataset_numbers is None:
+            self._dataset_numbers = [
+                d.get('x_abinit_dataset_number', 1) for d in self.get('dataset', [])]
+        return self._dataset_numbers
+
+    @property
     def n_datasets(self):
         if self._n_datasets is None:
-            # we could also simply return the length of dataset but this is safer
-            dataset_numbers = [
-                d.get('x_abinit_dataset_number', 1) for d in self.get('dataset', [])]
-            self._n_datasets = max(dataset_numbers) if dataset_numbers else 1
+            self._n_datasets = max(self.dataset_numbers) if self.dataset_numbers else 1
         return self._n_datasets
 
     @property
@@ -902,15 +907,34 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                     continue
                 setattr(sec_input, f'x_abinit_var_{key}', val[i])
 
-    def parse_system(self, section):
+    def parse_system(self):
         sec_run = self.archive.run[-1]
+        sec_input = sec_run.x_abinit_section_dataset[0].x_abinit_section_input
 
         atom_labels = self.out_parser.get_atom_labels()
-        atom_positions = section.get('cartesian_coordinates')
-        if atom_labels is None or atom_positions is None:
+        if atom_labels is None:
             return
         lattice_vectors = self.dataset[0].get('x_abinit_vprim') * ureg.bohr
         pbc = [v is not None for v in lattice_vectors]
+
+        # Always extracted from DATASET 1
+        natom = sec_input.x_abinit_var_natom
+        xcart = sec_input.x_abinit_var_xcart
+        rprim = sec_input.x_abinit_var_rprim
+        xred = sec_input.x_abinit_var_xred
+        if xcart is not None:
+            xcart = np.reshape(sec_input.x_abinit_var_xcart, (natom, 3))
+            atom_positions = xcart
+        elif xred is not None and rprim is not None:
+            xred = np.reshape(sec_input.x_abinit_var_xred, (natom, 3))
+            rprim = np.reshape(sec_input.x_abinit_var_rprim, (natom, 3))
+            atom_positions = np.dot(xred, rprim.transpose()) * ureg.bohr
+        else:
+            if natom == 1:  # handling exception
+                atom_positions = np.array([0.0, 0.0, 0.0])
+            else:
+                self.logger.warning('Could not resolve atom positions.')
+                return
 
         sec_system = sec_run.m_create(System)
         sec_atoms = sec_system.m_create(Atoms)
@@ -1060,24 +1084,25 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         elif ionmov == 9:
             sec_workflow.type = 'molecular_dynamics'
             workflow = MolecularDynamics2()
-        elif ionmov == 0:
+        else:
             sec_workflow.type = 'single_point'
             workflow = SinglePoint2()
-        else:
-            pass
 
         self.archive.workflow2 = workflow
 
-    def parse_bandstructure(self, nd, energy_fermi):
+    def parse_bandstructure(self, results, energy_fermi):
         if self.out_parser.get_input_var('kptopt', 1, 4) > 0:  # negative kptopt sets band structure
             return
+        # saving band structure after the dataset 2
+        if results is None:
+            return
         sec_run = self.archive.run[-1]
-        sec_scc = sec_run.calculation[-1]  # saving band structure after the dataset 2
+        sec_scc = sec_run.calculation[-1]
 
-        data = self.dataset[nd - 1].get('results', {}).get('eigenvalues', None)
+        data = results.get('eigenvalues', None)
         if data is None:
             return
-        nsppol = self.out_parser.get_input_var('nsppol', nd, 1)
+        nsppol = self.out_parser.get_input_var('nsppol', 2, 1)
         data = np.reshape(data, (nsppol, len(data) // nsppol, np.size(data) // len(data)))
 
         nband = int(data.T[1].T[0][0])
@@ -1085,7 +1110,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         if len(kpts) == 1:  # returning if only one kpoint (atoms or molecules)
             return
         eigs = data.T[6:6 + nband].T
-        occs = self.dataset[nd - 1].get('results').get('occupation_numbers')
+        occs = results.get('occupation_numbers')
         if occs is not None:
             occs = np.reshape(occs, (nsppol, len(occs) // nsppol, np.size(occs) // len(occs)))
 
@@ -1102,17 +1127,46 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 if occs is not None:
                     sec_k_band_segment.occupations = occs[:, k - 1:k + 1]
 
+    def parse_dos(self):
+        sec_run = self.archive.run[-1]
+
+        # Identifying the DS2_DOS files
+        file_root = self.out_parser.get('x_abinit_output_files_root')
+        if file_root is None:
+            file_root = f'{os.path.basename(self.filepath).rstrip(".out")}_o'
+        dos_file = os.path.join(self.maindir, f'{file_root}_DS2_DOS')
+        if not os.path.isfile(dos_file):
+            return
+
+        if sec_run.calculation[-1] is None:
+            sec_scc = sec_run.m_create(Calculation)
+        else:
+            sec_scc = sec_run.calculation[-1]
+
+        self.dos_parser.mainfile = dos_file
+        dos = self.dos_parser.data
+        nsppol = self.out_parser.get_input_var('nsppol', 2, 1)
+        dos = np.reshape(dos, (nsppol, len(dos) // nsppol, np.size(dos) // len(dos)))
+
+        sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+        sec_dos.energies = dos.T[0].T[0] * ureg.hartree
+        sec_dos.n_energies = np.shape(dos)[1]
+
+        dos = np.transpose(dos, axes=(0, 2, 1))
+        for spin in range(len(dos)):
+            sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
+            sec_dos_values.spin = spin
+            sec_dos_values.value = dos[spin][1] * (1 / ureg.hartree)
+            sec_dos_values.value_integrated = dos[spin][2]
+
     def parse_groundstate_datasets(self):
         '''
-        Parsing ground state datasets: 1 and 2. DATASET 1 gives structural calculations,
+        DATASET 1 gives structural calculations.
         DATASET 2 gives charge self-consistent (DFT) calculations.
         '''
         sec_run = self.archive.run[-1]
 
         def parse_configurations(section):
-            if not section:
-                return
-
             sec_scc = sec_run.m_create(Calculation)
             if sec_run.system is not None:
                 sec_scc.system_ref = sec_run.system[-1]
@@ -1146,9 +1200,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             if fermi_energy is not None:
                 sec_energy.fermi = fermi_energy
 
-        def parse_scf(sec_scc, section):
-            if not sec_scc or not section:
-                return
+        def parse_scf(section):
+            sec_scc = sec_run.calculation[-1]
 
             self_consistent = section.get('self_consistent', {})
             if self_consistent.get('convergence', None) in ['converged', 'is converged', 'are converged']:
@@ -1160,64 +1213,35 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 sec_energy = sec_scf_iteration.m_create(Energy)
                 sec_energy.total = EnergyEntry(value=energy[0] * ureg.hartree)
 
-        def parse_dos(sec_scc):
-            if not sec_scc:
-                return
+        for nd in range(self.out_parser.n_datasets):
+            results = self.dataset[nd].get('results')
+            if results is None:
+                continue
+            parse_configurations(results)
+            parse_scf(results)
 
-            # Identifying the DS2_DOS files
-            file_root = self.out_parser.get('x_abinit_output_files_root')
-            if file_root is None:
-                file_root = f'{os.path.basename(self.filepath).rstrip(".out")}_o'
-            dos_file = os.path.join(self.maindir, f'{file_root}_DS2_DOS')
-            if not os.path.isfile(dos_file):
-                return
-
-            self.dos_parser.mainfile = dos_file
-            dos = self.dos_parser.data
-            nsppol = self.out_parser.get_input_var('nsppol', 2, 1)
-            dos = np.reshape(dos, (nsppol, len(dos) // nsppol, np.size(dos) // len(dos)))
-
-            sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-            sec_dos.energies = dos.T[0].T[0] * ureg.hartree
-            sec_dos.n_energies = np.shape(dos)[1]
-
-            dos = np.transpose(dos, axes=(0, 2, 1))
-            for spin in range(len(dos)):
-                sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
-                sec_dos_values.spin = spin
-                sec_dos_values.value = dos[spin][1] * (1 / ureg.hartree)
-                sec_dos_values.value_integrated = dos[spin][2]
-
-        # only one dataset
-        if len(self.dataset) == 1:
-            nd = 0
-            parse_configurations(self.dataset[nd].get('results'))
-            parse_scf(sec_run.calculation[-1], self.dataset[nd])
-
-            # relaxations
-            for step in self.dataset[nd].get('relaxation', []):
-                self.parse_system(step)
-                parse_configurations(step)
-                parse_scf(sec_run.calculation[-1], step)
-        # results of the single point calculation for the 2 first datasets
-        else:
-            for nd in range(2):
-                parse_configurations(self.dataset[nd].get('results'))
-                parse_scf(sec_run.calculation[-1], self.dataset[nd].get('results'))
-
-                # relaxations
-                for step in self.dataset[nd].get('relaxation', []):
-                    self.parse_system(step)
-                    parse_configurations(step)
-                    parse_scf(sec_run.calculation[-1], step)
-        parse_dos(sec_run.calculation[-1])
-        if sec_run.calculation[-1].energy.fermi and self.dataset[nd].get('results'):
-            self.parse_bandstructure(nd + 1, sec_run.calculation[-1].energy.fermi)
+            # Relaxation of the structure
+            relaxation = self.dataset[nd].get('relaxation')
+            if relaxation is not None:
+                for step in relaxation:
+                    if relaxation.index(step) > 0:  # not parsing system for step 1
+                        sec_system = sec_run.m_create(System)
+                        sec_atoms = sec_system.m_create(Atoms)
+                        atom_positions = step.get('cartesian_coordinates')
+                        sec_atoms.positions = atom_positions
+                        sec_atoms.labels = sec_run.system[0].atoms.labels
+                        sec_atoms.periodic = sec_run.system[0].atoms.periodic
+                        sec_atoms.n_atoms = sec_run.system[0].atoms.n_atoms
+                        sec_atoms.lattice_vectors = sec_run.system[0].atoms.lattice_vectors
+                        parse_configurations(step)
+                        parse_scf(step)
+        self.parse_dos()
+        if sec_run.calculation[-1].energy.fermi:
+            self.parse_bandstructure(results, sec_run.calculation[-1].energy.fermi)
 
     def parse_gw_datasets(self):
         '''
-        Parsing GW state datasets: 3 and 4. DATASET 3 gives screened interactions,
-        DATASET 4 gives quasiparticle (GW) corrections.
+        Parsing GW state datasets: 3 and 4.
         '''
         sec_run = self.archive.run[-1]
 
@@ -1229,6 +1253,10 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             if sec_run.system is not None:
                 sec_scc.system_ref = sec_run.system[-1]
             sec_scc.method_ref = sec_run.method[-1]
+
+        # if len(self.dataset) == 1:
+            # se
+        # parse_configurations(self.dataset[2])
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
@@ -1289,9 +1317,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         self.parse_var()
 
         # Parse initial system from dataset 1
-        self.parse_system(self.dataset[0].get('results'))
+        self.parse_system()
 
-        # Parse DFT method
         if self._calculation_type == 'gw':
             self.parse_gw()
             self.parse_gw_datasets()

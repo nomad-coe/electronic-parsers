@@ -6034,7 +6034,7 @@ class x_abinit_section_dataset(MSection):
 
     x_abinit_section_input = SubSection(
         sub_section=x_abinit_section_input.m_def,
-        repeats=True)
+        repeats=False)
 
 
 class Run(simulation.run.Run):
