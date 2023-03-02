@@ -1030,6 +1030,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
     def parse_gw(self):
         sec_run = self.archive.run[-1]
 
+        # TODO parse GW method entry
         # Method
         sec_method = sec_run.m_create(Method)
         # KMesh
@@ -1253,9 +1254,9 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 sec_scc.system_ref = sec_run.system[-1]
             sec_scc.method_ref = sec_run.method[-1]
 
-        # if len(self.dataset) == 1:
-            # se
-        # parse_configurations(self.dataset[2])
+        # TODO parse screening and GW outputs
+        for nd in range(self.out_parser.n_datasets):
+            parse_configurations(self.dataset[nd])
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
