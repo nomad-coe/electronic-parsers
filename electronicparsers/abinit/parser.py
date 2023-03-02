@@ -1179,7 +1179,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                     continue
                 key = key.lstrip('energy_')
                 if key == 'internal':
-                    sec_energy.internatl = energy
+                    sec_energy.internal = energy
                 elif hasattr(Energy, key):
                     sec_energy.m_add_sub_section(getattr(Energy, key), EnergyEntry(value=energy))
 
@@ -1221,20 +1221,19 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             parse_scf(self.dataset[nd])
 
             # Relaxation of the structure
-            relaxation = self.dataset[nd].get('relaxation')
-            if relaxation is not None:
-                for step in relaxation:
-                    if relaxation.index(step) > 0:  # not parsing system for step 1
-                        sec_system = sec_run.m_create(System)
-                        sec_atoms = sec_system.m_create(Atoms)
-                        atom_positions = step.get('cartesian_coordinates')
-                        sec_atoms.positions = atom_positions
-                        sec_atoms.labels = sec_run.system[0].atoms.labels
-                        sec_atoms.periodic = sec_run.system[0].atoms.periodic
-                        sec_atoms.n_atoms = sec_run.system[0].atoms.n_atoms
-                        sec_atoms.lattice_vectors = sec_run.system[0].atoms.lattice_vectors
-                        parse_configurations(step)
-                        parse_scf(step)
+            relaxation = self.dataset[nd].get('relaxation', [])
+            for step in relaxation:
+                if relaxation.index(step) > 0:  # not parsing system for step 1
+                    sec_system = sec_run.m_create(System)
+                    sec_atoms = sec_system.m_create(Atoms)
+                    atom_positions = step.get('cartesian_coordinates')
+                    sec_atoms.positions = atom_positions
+                    sec_atoms.labels = sec_run.system[0].atoms.labels
+                    sec_atoms.periodic = sec_run.system[0].atoms.periodic
+                    sec_atoms.n_atoms = sec_run.system[0].atoms.n_atoms
+                    sec_atoms.lattice_vectors = sec_run.system[0].atoms.lattice_vectors
+                    parse_configurations(step)
+                    parse_scf(step)
         self.parse_dos()
         if sec_run.calculation[-1].energy.fermi:
             self.parse_bandstructure(results, sec_run.calculation[-1].energy.fermi)
