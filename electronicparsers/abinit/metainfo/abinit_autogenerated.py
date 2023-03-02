@@ -1676,6 +1676,14 @@ class x_abinit_section_input(MSection):
         ''',
         categories=[x_abinit_var])
 
+    x_abinit_var_gw1rdm = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        ABINIT variable GW 1-Reduced Density Matrix
+        ''',
+        categories=[x_abinit_var])
+
     x_abinit_var_gw_customnfreqsp = Quantity(
         type=np.dtype(np.int32),
         shape=[],
@@ -1713,6 +1721,14 @@ class x_abinit_section_input(MSection):
         shape=[],
         description='''
         ABINIT variable Contour Deformation Use Tangent Grid
+        ''',
+        categories=[x_abinit_var])
+
+    x_abinit_var_gw_icutcoul = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        ABINIT variable GW CUT-off for COULomb interaction
         ''',
         categories=[x_abinit_var])
 
@@ -1768,7 +1784,7 @@ class x_abinit_section_input(MSection):
         type=np.dtype(np.int32),
         shape=[],
         description='''
-        ABINIT variable GW, treatment of the ...
+        ABINIT variable GW, SIGma (self-energy) for the CORE contribution
         ''',
         categories=[x_abinit_var])
 
@@ -1778,6 +1794,14 @@ class x_abinit_section_input(MSection):
         unit='hartree',
         description='''
         ABINIT variable GW TOLerance on the DiFference of the EIGenvalues
+        ''',
+        categories=[x_abinit_var])
+
+    x_abinit_var_gwaclowrank = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        ABINIT variable GW Analytic Continuation LOW RANK approximation
         ''',
         categories=[x_abinit_var])
 
@@ -1813,6 +1837,14 @@ class x_abinit_section_input(MSection):
         ''',
         categories=[x_abinit_var])
 
+    x_abinit_var_gwgmcorr = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        ABINIT variable GW Galitskii-Migdal CORRelation energy
+        ''',
+        categories=[x_abinit_var])
+
     x_abinit_var_gwls_band_index = Quantity(
         type=np.dtype(np.int32),
         shape=[],
@@ -1833,7 +1865,15 @@ class x_abinit_section_input(MSection):
         type=np.dtype(np.int32),
         shape=[],
         description='''
-        ABINIT variable GWLS dielectric model
+        ABINIT variable GWLS dielectric model, version old
+        ''',
+        categories=[x_abinit_var])
+
+    x_abinit_var_gwls_diel_model = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        ABINIT variable GWLS dielectric model, version new
         ''',
         categories=[x_abinit_var])
 
@@ -1955,7 +1995,15 @@ class x_abinit_section_input(MSection):
         type=np.dtype(np.int32),
         shape=[],
         description='''
-        ABINIT variable GWLS Kmax
+        ABINIT variable GWLS Kmax, version old
+        ''',
+        categories=[x_abinit_var])
+
+    x_abinit_var_gwls_stern_kmax = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        ABINIT variable GWLS Kmax, version new
         ''',
         categories=[x_abinit_var])
 
@@ -2314,6 +2362,14 @@ class x_abinit_section_input(MSection):
         ''',
         categories=[x_abinit_var])
 
+    x_abinit_var_ixc_sigma = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        ABINIT variable Index of eXchange-Correlation functional used for self-energy calculations (SIGMA)
+        ''',
+        categories=[x_abinit_var])
+
     x_abinit_var_ixcpositron = Quantity(
         type=np.dtype(np.int32),
         shape=[],
@@ -2382,7 +2438,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_kptgw = Quantity(
         type=np.dtype(np.float64),
-        shape=['x_abinit_var_nkptgw', 3],
+        shape=[3, 'x_abinit_var_nkptgw'],
         description='''
         ABINIT variable K-PoinTs for GW calculations
         ''',
@@ -4725,6 +4781,38 @@ class x_abinit_section_input(MSection):
         ''',
         categories=[x_abinit_var])
 
+    x_abinit_var_sigma_bsum_range = Quantity(
+        type=np.dtype(np.int32),
+        shape=[2],
+        description='''
+        ABINIT variable SIGMA: Band SUM RANGE
+        ''',
+        categories=[x_abinit_var])
+
+    x_abinit_var_sigma_ngkpt = Quantity(
+        type=np.dtype(np.int32),
+        shape=[3],
+        description='''
+        ABINIT variable SIGMA: Number of Grid points for K PoinTs generation
+        ''',
+        categories=[x_abinit_var])
+
+    x_abinit_var_sigma_nshiftk = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        ABINIT variable SIGMA: Number of SHIFTs for K point grids
+        ''',
+        categories=[x_abinit_var])
+
+    x_abinit_var_sigma_shiftk = Quantity(
+        type=np.dtype(np.int32),
+        shape=[3, 'x_abinit_var_sigma_nshiftk'],
+        description='''
+        ABINIT variable SHIFT for K points
+        ''',
+        categories=[x_abinit_var])
+
     x_abinit_var_rprim = Quantity(
         type=np.dtype(np.float64),
         shape=[3, 3],
@@ -5235,6 +5323,15 @@ class x_abinit_section_input(MSection):
         shape=[],
         description='''
         ABINIT variable USE NON-SCF calculation of GKK matrix elements (electron phonon)
+        ''',
+        categories=[x_abinit_var])
+
+    x_abinit_var_use_oldchi = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        ABINIT variable USE OLD CHI implementation for evaluating \\chi_o with eigenvalues
+        taken from a QPS file
         ''',
         categories=[x_abinit_var])
 
@@ -5818,6 +5915,14 @@ class x_abinit_section_input(MSection):
         ''',
         categories=[x_abinit_var])
 
+    x_abinit_var_x1rdm = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        ABINIT variable EXchange-only 1-Reduced Density Matrix
+        ''',
+        categories=[x_abinit_var])
+
     x_abinit_var_xangst = Quantity(
         type=np.dtype(np.float64),
         shape=['min(x_abinit_var_natom,x_abinit_var_natrd)', 3],
@@ -5929,7 +6034,7 @@ class x_abinit_section_dataset(MSection):
 
     x_abinit_section_input = SubSection(
         sub_section=x_abinit_section_input.m_def,
-        repeats=True)
+        repeats=False)
 
 
 class Run(simulation.run.Run):

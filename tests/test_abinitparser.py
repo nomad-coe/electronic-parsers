@@ -43,8 +43,8 @@ def test_scf(parser):
     assert sec_run.time_run.date_start.magnitude == 1467132480.0
     sec_dataset = sec_run.x_abinit_section_dataset
     assert len(sec_dataset) == 1
-    assert len(sec_dataset[0].x_abinit_section_input[0].x_abinit_var_symrel) == 432
-    assert sec_dataset[0].x_abinit_section_input[0].x_abinit_var_znucl[0] == 14.
+    assert len(sec_dataset[0].x_abinit_section_input.x_abinit_var_symrel) == 432
+    assert sec_dataset[0].x_abinit_section_input.x_abinit_var_znucl[0] == 14.
 
     sec_method = sec_run.method[0]
     assert sec_method.scf.n_max_iteration == 10.
@@ -66,37 +66,43 @@ def test_scf(parser):
     assert sec_scc.energy.fermi.magnitude == approx(8.4504932e-19)
     assert sec_scc.energy.kinetic_electronic.value.magnitude == approx(1.3343978e-17)
     assert len(sec_scc.scf_iteration) == 5
-    sec_eig = sec_scc.eigenvalues[0]
     assert sec_scc.scf_iteration[1].energy.total.value.magnitude == approx(-3.86541222e-17)
-    assert np.shape(sec_eig.energies[0][1]) == (5,)
-    assert sec_eig.energies[0][1][2].magnitude == approx(8.4504932e-19)
-    assert sec_eig.kpoints[0][0] == -0.25
 
 
 def test_relax(parser):
     archive = EntryArchive()
     parser.parse('tests/data/abinit/H2/H2.out', archive, None)
 
-    assert len(archive.run[0].x_abinit_section_dataset) == 2
-    sec_sccs = archive.run[0].calculation
-    assert len(sec_sccs) == 5
-    assert len(sec_sccs[2].scf_iteration) == 5
-    assert sec_sccs[3].energy.total.value.magnitude == approx(-4.93984603e-18)
-    assert sec_sccs[4].scf_iteration[1].energy.total.value.magnitude == approx(-2.13640055e-18)
+    assert archive.workflow2.m_def.name == 'GeometryOptimization'
+    assert archive.workflow2.method.method == 'bfgs'
+    sec_run = archive.run[0]
+    assert len(sec_run.x_abinit_section_dataset) == 2
+    assert len(sec_run.system) == 3
+    sec_scc = archive.run[0].calculation
+    assert len(sec_scc) == 4
+    for i in range(1, 4):  # sec_scc[0] do not store any scf section
+        assert sec_scc[i].m_xpath('scf_iteration')
+    assert len(sec_scc[2].scf_iteration) == 5
+    assert sec_scc[2].energy.total.value.magnitude == approx(-4.93984603e-18)
+    assert sec_scc[2].scf_iteration[4].energy.total.value.magnitude == approx(-4.9398460277747174e-18)
 
 
 def test_dos(parser):
     archive = EntryArchive()
     parser.parse('tests/data/abinit/Fe/Fe.out', archive, None)
 
-    sec_sccs = archive.run[0].calculation
-    assert len(sec_sccs) == 2
-    assert np.shape(sec_sccs[0].eigenvalues[0].energies[0][5]) == (8,)
-    assert np.shape(sec_sccs[1].eigenvalues[0].energies[1][5]) == (8,)
-    assert np.shape(sec_sccs[0].dos_electronic[0].total[0].value) == (1601,)
-    assert np.shape(sec_sccs[1].dos_electronic[0].total[1].value) == (1601,)
-    assert sec_sccs[0].dos_electronic[0].energies[70].magnitude == approx(-3.18261365e-18)
-    assert sec_sccs[0].dos_electronic[0].total[0].value[151].magnitude == approx(2.97494483e+14)
-    assert sec_sccs[1].dos_electronic[0].total[1].value[180].magnitude == approx(1.27484528e+15)
-    assert sec_sccs[0].dos_electronic[0].total[0].value_integrated[457] == approx(4.347007)
-    assert sec_sccs[1].dos_electronic[0].total[0].value_integrated[1025] == approx(7.028265)
+    sec_scc = archive.run[0].calculation
+    assert len(sec_scc) == 2
+    assert sec_scc[-1].m_xpath('dos_electronic')  # dos always stored after dataset 1
+    sec_dos = sec_scc[-1].dos_electronic[0]
+    assert sec_dos.n_energies == 1601
+    assert sec_dos.energies[0].magnitude == approx(-3.487795777765736e-18)
+    assert sec_dos.energies[543].magnitude == approx(-1.1204543936072428e-18)
+    assert sec_dos.energies[-1].magnitude == approx(-sec_dos.energies[0].magnitude)
+    assert len(sec_dos.total) == 2
+    assert sec_dos.total[0].spin == 0
+    assert sec_dos.total[1].spin == 1
+    assert sec_dos.total[0].value[151].magnitude == approx(3.01852536e+14)
+    assert sec_dos.total[0].value[180].magnitude == approx(5.46018208e+15)
+    assert sec_dos.total[0].value_integrated[151] == approx(1.3e-5)
+    assert sec_dos.total[0].value_integrated[180] == approx(2.39e-4)
