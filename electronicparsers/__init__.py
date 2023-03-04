@@ -16,12 +16,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .abacus.parser import ABACUSParser
 from .abinit.parser import AbinitParser
 from .atk.parser import ATKParser
 from .ams.parser import AMSParser
 from .bigdft.parser import BigDFTParser
 from .castep.parser import CastepParser
 from .charmm.parser import CharmmParser
+from .cmb2.parser import CMB2Parser
 from .cp2k.parser import CP2KParser
 from .cpmd.parser import CPMDParser
 from .crystal.parser import CrystalParser
@@ -37,6 +39,7 @@ from .gpaw.parser import GPAWParser
 from .molcas.parser import MolcasParser
 from .mopac.parser import MopacParser
 from .nwchem.parser import NWChemParser
+from .ocean.parser import OceanParser
 from .octopus.parser import OctopusParser
 from .onetep.parser import OnetepParser
 from .openmx.parser import OpenmxParser
@@ -46,12 +49,10 @@ from .qball.parser import QBallParser
 from .qbox.parser import QboxParser
 from .quantumespresso.parser import QuantumEspressoParser
 from .siesta.parser import SiestaParser
+from .soliddmft.parser import SolidDMFTParser
 from .turbomole.parser import TurbomoleParser
 from .vasp.parser import VASPParser
 from .wien2k.parser import Wien2kParser
 from .yambo.parser import YamboParser
-from .abacus.parser import ABACUSParser
 from .wannier90.parser import Wannier90Parser
 from .w2dynamics.parser import W2DynamicsParser
-from .soliddmft.parser import SolidDMFTParser
-from .ocean.parser import OceanParser
