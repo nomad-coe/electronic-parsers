@@ -688,7 +688,7 @@ class Wien2kParser:
         sec_method = self.archive.run[0].m_create(Method)
         sec_dft = sec_method.m_create(DFT)
         sec_electronic = sec_method.m_create(Electronic)
-
+        sec_electronic.method = 'DFT'
         sec_electronic.n_spin_channels = self.get_nspin()
 
         # read functional settings from in0 file
