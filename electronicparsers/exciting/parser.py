@@ -1903,7 +1903,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_freq_grid.n_points = nomeg
         freqmax = sec_gw.x_exciting_freqgrid.x_exciting_freqmax
         freqmin = sec_gw.x_exciting_freqgrid.x_exciting_freqmin
-        sec_freq_grid.values = [i * (freqmax - freqmin) / nomeg for i in range(nomeg)] * ureg.eV
+        sec_freq_grid.values = [i * (freqmax - freqmin) / nomeg for i in range(nomeg)] * ureg.hartree
 
         # GW Calculation
         sec_scc = sec_run.m_create(Calculation)
@@ -1925,14 +1925,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         for f in gw_files:
             self.parse_file(f, sec_scc)
-
-        frequency_data = self.info_gw_parser.get('frequency_data', None)
-        if frequency_data is not None:
-            number = frequency_data.get('number')
-            sec_method.gw.n_frequencies = len(number)
-            sec_method.gw.frequency_values = frequency_data.get('values') * ureg.hartree
-            sec_method.gw.x_exciting_frequency_number = number
-            sec_method.gw.x_exciting_frequency_weights = frequency_data.get('weights')
 
         fundamental_band_gap = self.info_gw_parser.get('direct_band_gap', None)
         if fundamental_band_gap is None:
