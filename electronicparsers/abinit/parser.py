@@ -28,7 +28,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataText
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, Electronic, Smearing, Scf, DFT, XCFunctional,
-    Functional, KMesh, GW as GWMethod)
+    Functional, KMesh, FreqMesh, GW as GWMethod)
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry, Dos,
@@ -519,7 +519,7 @@ class AbinitOutParser(TextParser):
             'input_vars',
             r'\-outvars: echo values of preprocessed input variables \-+([\s\S]+?)\={10}',
             repeats=False, sub_parser=TextParser(quantities=[Quantity(
-                'key_value', r'(\w+)\s*([\d\.\+\-E\s]+)', repeats=True)])))
+                'key_value', r'([a-zA-Z\d]+)\s*([\d\.\+\-E\s]+)', repeats=True)])))
 
         def str_to_array(val_in):
             val = val_in.strip().split('\n')
@@ -866,6 +866,9 @@ class AbinitOutParser(TextParser):
                 except Exception:
                     continue
 
+                if '-' in key_val[i]:  # exception when the next line starts with -
+                    key_val[i] = key_val[i][:-1]
+
                 val = np.array(key_val[i][1:], dtype=m_quantity.type)
                 if not m_quantity.shape:
                     val = val[0]
@@ -1049,35 +1052,69 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                     pass
 
     def parse_gw(self):
-        gw_dataset = self.out_parser.get('gw_dataset').results
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
 
-        # KMesh
-        if gw_dataset.get('kmesh'):
-            n_k_mesh = gw_dataset.get('kmesh').get('n_mesh', 1)
-            k_mesh = np.array(gw_dataset.get('kmesh').get('mesh', []))
-            sec_k_mesh = sec_method.m_create(KMesh)
-            sec_k_mesh.n_points = n_k_mesh
-            sec_k_mesh.points = k_mesh[:, :-1]
-            sec_k_mesh.weights = k_mesh[:, -1]
         # GW
         sec_gw = sec_method.m_create(GWMethod)
-        # sec_gw.type = ...
-        if gw_dataset.get('qmesh'):
-            n_q_mesh = gw_dataset.get('qmesh').get('n_mesh', 1)
-            q_mesh = np.array(gw_dataset.get('qmesh').get('mesh', []))
+        # Q meshes
+        nkptgw = self.out_parser.get_input_var('nkptgw', 4, 0)
+        if nkptgw > 0:
+            kptgw = np.reshape(self.out_parser.get_input_var('kptgw', 4, []), (nkptgw, 3))
             sec_q_mesh = sec_gw.m_create(KMesh)
-            sec_q_mesh.n_points = n_q_mesh
-            sec_q_mesh.points = q_mesh[:, :-1]
-            sec_q_mesh.weights = q_mesh[:, -1]
-        # sec_gw.self_energy_analytical_continuation = ...
-        # sec_gw.n_frequencies = ...
-        # sec_gw.frequency_values = ...
-        # sec_gw.core_treatment = ...
-        # sec_gw.dielectric_function_treatment = ...
-        # sec_gw.n_empty_states_polarizability = ...
-        # sec_gw.n_empty_states_self_energy = ...
+            sec_q_mesh.n_points = nkptgw
+            sec_q_mesh.points = kptgw
+        # Type
+        gwcalctype = self.out_parser.get_input_var('gwcalctype', 4, 0)
+        if 0 <= gwcalctype <= 9:
+            sec_gw.type = 'G0W0'
+        elif 10 <= gwcalctype <= 19:
+            sec_gw.type = 'ev-scGW'
+        elif 20 <= gwcalctype <= 29:
+            sec_gw.type = 'qp-scGW'
+        else:
+            self.logger.warning('GW type not supported (currently only for 0 <= gwcalctype <= 29).')
+        # Analytical continuation
+        ppmodel = self.out_parser.get_input_var('ppmodel', 4, 0)
+        if gwcalctype == 1:
+            sec_gw.analytical_continuation = 'pade'
+        elif gwcalctype == 2:
+            sec_gw.analytical_continuation = 'countour_deformation'
+        else:
+            if ppmodel == 1:
+                sec_gw.analytical_continuation = 'ppm_GodbyNeeds'
+            elif ppmodel == 2:
+                sec_gw.analytical_continuation = 'ppm_HybertsenLouie'
+            elif ppmodel == 3:
+                sec_gw.analytical_continuation = 'ppm_vonderLindenHorsh'
+            elif ppmodel == 4:
+                sec_gw.analytical_continuation = 'ppm_FaridEngel'
+            else:
+                sec_gw.analytical_continuation = 'countour_deformation'
+        # Frequency grid
+        if self.out_parser.get('screening_dataset'):
+            freqs = self.out_parser.get('screening_dataset').get('frequencies').get('values') * ureg.hartree
+            sec_freq_grid = sec_gw.m_create(FreqMesh)
+            sec_freq_grid.n_points = len(freqs)
+            sec_freq_grid.values = freqs[:, 0] + freqs[:, 1] * 1j
+        else:
+            freq_plasma = self.out_parser.get('gw_dataset').get('omega_plasma')
+            sec_freq_grid = sec_gw.m_create(FreqMesh)
+            sec_freq_grid.n_points = 2
+            sec_freq_grid.values = [0.0, freq_plasma * 1j]
+        # Other paramters
+        if self.out_parser.get_input_var('bdgw', 4, []):
+            sec_gw.interval_qp_corrections = [
+                self.out_parser.get_input_var('bdgw', 4, []).min(),
+                self.out_parser.get_input_var('bdgw', 4, []).max()]
+        occ_scr = self.out_parser.get_input_var('occ', 3, [])
+        n_scr = len(occ_scr)
+        n_occ_scr = len([occ_scr[i] for i in range(n_scr) if occ_scr[i] > 0.0])
+        sec_gw.n_empty_states_polarizability = n_scr - n_occ_scr
+        occ_gw = self.out_parser.get_input_var('occ', 4, [])
+        n_gw = len(occ_gw)
+        n_occ_gw = len([occ_gw[i] for i in range(n_gw) if occ_gw[i] > 0.0])
+        sec_gw.n_empty_states_self_energy = n_gw - n_occ_gw
 
         # GW calculation
         sec_scc = sec_run.m_create(Calculation)
@@ -1272,7 +1309,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
     def parse_gw_datasets(self):
         '''
-        Parsing GW state datasets: 3 and 4.
+        DATASET 3 gives screening calculations.
+        DATASET 4 gives self-energy (GW) calculations.
         '''
         sec_run = self.archive.run[-1]
 
