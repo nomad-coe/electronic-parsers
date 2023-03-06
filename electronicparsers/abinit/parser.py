@@ -886,7 +886,6 @@ class AbinitOutParser(TextParser):
         typat = self.get_input_var('typat', 1)
         if znucl is None or typat is None:
             return
-
         return [chemical_symbols[int(znucl[n_at - 1])] for n_at in typat]
 
 
@@ -1050,18 +1049,28 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                     pass
 
     def parse_gw(self):
+        gw_dataset = self.out_parser.get('gw_dataset').results
         sec_run = self.archive.run[-1]
-
-        # TODO parse GW method entry
-        # Method
         sec_method = sec_run.m_create(Method)
+
         # KMesh
-        sec_k_mesh = sec_method.m_create(KMesh)
-        # sec_k_mesh.grid = ...
+        if gw_dataset.get('kmesh'):
+            n_k_mesh = gw_dataset.get('kmesh').get('n_mesh', 1)
+            k_mesh = np.array(gw_dataset.get('kmesh').get('mesh', []))
+            sec_k_mesh = sec_method.m_create(KMesh)
+            sec_k_mesh.n_points = n_k_mesh
+            sec_k_mesh.points = k_mesh[:, :-1]
+            sec_k_mesh.weights = k_mesh[:, -1]
         # GW
         sec_gw = sec_method.m_create(GWMethod)
         # sec_gw.type = ...
-        # sec_gw.q_grid = sec_k_mesh?
+        if gw_dataset.get('qmesh'):
+            n_q_mesh = gw_dataset.get('qmesh').get('n_mesh', 1)
+            q_mesh = np.array(gw_dataset.get('qmesh').get('mesh', []))
+            sec_q_mesh = sec_gw.m_create(KMesh)
+            sec_q_mesh.n_points = n_q_mesh
+            sec_q_mesh.points = q_mesh[:, :-1]
+            sec_q_mesh.weights = q_mesh[:, -1]
         # sec_gw.self_energy_analytical_continuation = ...
         # sec_gw.n_frequencies = ...
         # sec_gw.frequency_values = ...
