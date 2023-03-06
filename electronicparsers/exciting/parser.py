@@ -45,7 +45,10 @@ from .metainfo.exciting import (
     x_exciting_section_spin, x_exciting_section_fermi_surface,
     x_exciting_section_atoms_group, x_exciting_exciton_calculation,
     x_exciting_epsilon_calculation, x_exciting_sigma_calculation,
-    x_exciting_loss_calculation
+    x_exciting_loss_calculation, x_exciting_freqgrid_parameters,
+    x_exciting_selfenergy_parameters, x_exciting_wgrid_parameters,
+    x_exciting_mixbasis_parameters, x_exciting_barecoul_parameters,
+    x_exciting_scrcoul_parameters
 )
 from ..utils import (
     get_files, BeyondDFTWorkflowsParser
@@ -1133,6 +1136,65 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         self._xs_spectra_types = ['EPSILON', 'EXCITON', 'SIGMA', 'LOSS']
 
+        self._gw_input_default = {
+            'coreflag': 'all',
+            'ibgw': 1,
+            'mblksiz': 0,
+            'nbgw': 0,
+            'nempty': 0,
+            'ngridq': [0, 0, 0],
+            'printSelfC': False,
+            'printSpectralFunction': False,
+            'qdepw': 'tet',
+            'rpmat': False,
+            'skipgnd': False,
+            'taskname': 'g0w0',
+            'vqloff': [0.0, 0.0, 0.0]
+        }
+
+        self._freqgrid_input_default = {
+            'eta': 1.0e-3,
+            'fconv': 'imfreq',
+            'fgrid': 'gauleg2',
+            'freqmax': 1.0,
+            'freqmin': 0.0,
+            'nomeg': 16
+        }
+
+        self._selfenergy_input_default = {
+            'actype': 'pade',
+            'eqpsolver': 0,
+            'eshift': 0,
+            'method': 'ac',
+            'nempty': 0,
+            'singularity': 'mbp',
+            'swidth': 1.0e-4,
+            'tol': 1.0e-12
+        }
+
+        self._wgrid_input_default = {
+            'size': 1000,
+            'type': 'eqdist',
+            'wmax': 1.0,
+            'wmin': -1.0
+        }
+
+        self._mixbasis_input_default = {
+            'epsmb': 1.0e-4,
+            'gmb': 1.0,
+            'lmaxmb': 3
+        }
+
+        self._barecoul_input_default = {
+            'barcevtol': 0.1,
+            'basis': 'mb',
+            'cutofftype': None,
+            'pwm': 2.0,
+            'stctol': 1.0e-15
+        }
+
+        self._scrcoul_input_default = {'omegap': 1.0, 'scrtype': 'rpa'}
+
     def file_exists(self, filename):
         """Checks if a the given filename exists and is accessible in the same
         folder where the mainfile is stored.
@@ -1773,46 +1835,49 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         self._child_archives.get(path).workflow2 = workflow
 
     def _parse_input_gw(self, sec_method):
+        def parse_exciting_gw_inputs(source, path, target):
+            for keys in source.keys():
+                setattr(
+                    target,
+                    f'x_exciting_keys',
+                    self.input_xml_parser.get(f'{path}/{keys}', source[keys]))
+
         sec_gw = sec_method.m_create(GWMethod)
+        parse_exciting_gw_inputs(self._gw_input_default, 'gw', sec_gw)
+        sec_freqgrid = sec_gw.m_create(x_exciting_freqgrid_parameters)
+        parse_exciting_gw_inputs(self._freqgrid_input_default, 'gw/freqgrid', sec_freqgrid)
+        sec_selfenergy = sec_gw.m_create(x_exciting_selfenergy_parameters)
+        parse_exciting_gw_inputs(self._selfenergy_input_default, 'gw/selfenergy', sec_selfenergy)
+        sec_wgrid = sec_gw.m_create(x_exciting_wgrid_parameters)
+        parse_exciting_gw_inputs(self._wgrid_input_default, 'gw/wgrid', sec_wgrid)
+        sec_mixbasis = sec_gw.m_create(x_exciting_mixbasis_parameters)
+        parse_exciting_gw_inputs(self._barecoul_input_default, 'gw/mixbasis', sec_mixbasis)
+        sec_barecoul = sec_gw.m_create(x_exciting_barecoul_parameters)
+        parse_exciting_gw_inputs(self._barecoul_input_default, 'gw/barecoul', sec_barecoul)
+        sec_scrcoul = sec_gw.m_create(x_exciting_scrcoul_parameters)
+        parse_exciting_gw_inputs(self._scrcoul_input_default, 'gw/scrcoul', sec_scrcoul)
+
+        # Type
         sec_gw.type = 'G0W0'
+        # Q mesh
         sec_q_grid = sec_gw.m_create(KMesh)
         sec_q_grid.grid = self.input_xml_parser.get('gw/ngridq', [1, 1, 1])
         sec_gw.q_grid = sec_q_grid
-        sec_gw.core_treatment = self.input_xml_parser.get(
-            'gw/coreflag', 'all')
+        # Analytical continuation
+        actype = self.input_xml_parser.get('gw/selfenergy/actype', 'pade')
+        sec_gw.self_energy_analytical_continuation = actype
         sec_gw.n_empty_states_polarizability = int(
             self.input_xml_parser.get('gw/nempty', 0))
         sec_gw.n_frequencies = int(self.input_xml_parser.get(
             'gw/freqgrid/nomeg', 16))
-        sec_gw.self_energy_analytical_continuation = self.input_xml_parser.get(
-            'gw/selfenergy/actype', 'pade')
-        sec_gw.dielectric_function_treatment = self.input_xml_parser.get(
-            'gw/scrcoul/scrtype', 'rpa')
         sec_gw.n_empty_states_self_energy = int(self.input_xml_parser.get(
             'gw/selfenergy/nempty', 0))
 
-        gmaxvr = self.info_parser.get_initialization_parameter('x_exciting_gmaxvr', 0)
-        sec_gw.x_exciting_qp_equation_treatment = 'linearization'
-        sec_gw.x_exciting_max_frequency = self.input_xml_parser.get(
-            'gw/freqgrid/freqmax', 1.0)
-        sec_gw.x_exciting_frequency_grid_type = self.input_xml_parser.get(
-            'gw/freqgrid/fgrid', 'gaule2')
-        sec_gw.x_exciting_self_energy_c_number_of_poles = int(self.input_xml_parser.get(
-            'gw/selfenergy/npol', 0))
-        sec_gw.x_exciting_self_energy_singularity_treatment = self.input_xml_parser.get(
-            'gw/selfenergy/singularity', 'mpd')
-        sec_gw.x_exciting_mixed_basis_lmax = int(self.input_xml_parser.get(
-            'gw/mixbasis/lmaxmb', 3))
-        sec_gw.x_exciting_mixed_basis_tolerance = self.input_xml_parser.get(
-            'gw/mixbasis/epsmb', 0.0001)
-        gmb = self.input_xml_parser.get('gw/mixbasis/gmb', 1.0)
-        sec_gw.x_exciting_mixed_basis_gmax = gmb * gmaxvr
-        pwm = self.input_xml_parser.get('gw/barecoul/pwm', 2.0)
-        sec_gw.x_exciting_bare_coulomb_gmax = pwm * gmb * gmaxvr
-        sec_gw.x_exciting_bare_coulomb_cutofftype = self.input_xml_parser.get(
-            'gw/barecoul/cutofftype', 'none')
-        sec_gw.x_exciting_screened_coulomb_volume_average = self.input_xml_parser.get(
-            'gw/scrcoul/sciavtype', 'isotropic')
+        # gmaxvr = self.info_parser.get_initialization_parameter('x_exciting_gmaxvr', 0)
+        # gmb = self.input_xml_parser.get('gw/mixbasis/gmb', 1.0)
+        # sec_gw.x_exciting_mixed_basis_gmax = gmb * gmaxvr
+        # pwm = self.input_xml_parser.get('gw/barecoul/pwm', 2.0)
+        # sec_gw.x_exciting_bare_coulomb_gmax = pwm * gmb * gmaxvr
 
     def parse_gw(self):
         sec_run = self.archive.run[-1]

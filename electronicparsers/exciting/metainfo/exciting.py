@@ -409,49 +409,435 @@ class x_exciting_section_xc(MSection):
         ''')
 
 
+class x_exciting_freqgrid_parameters(MSection):
+    '''
+    Frequency grid setup used for computing W(q,omega) and Sigma(k,omega).
+    '''
+
+    m_def = Section(validate=False)
+
+    x_exciting_eta = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Numerical (complex) smearing parameter used for the real frequency convolution
+        and qdepw=sum.
+        ''')
+
+    x_exciting_fconv = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Frequency convolution type:
+            nofreq - skip frequency dependency (testing option).
+            refreq - real frequency formalism (only for response functions).
+            imfreq - imaginary frequency formalism.
+        ''')
+
+    x_exciting_fgrid = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Grid types (listed only the recommended ones, for more grids see the source
+        subroutine mod_frequency.f90):
+            eqdist - Equidistant grid from freqmin to freqmax.
+            gaulag - Grid for the Gauss-Laguerre quadrature rule from 0 to ∞.
+            gauleg - Grid for the Gauss-Lagendre quadrature rule from 0 to ∞.
+            gauleg2 - Grid for the double Gauss-Lagendre quadrature rule from 0 to freqmax
+                      and freqmax to ∞.
+            clencurt2 - Grid for the Clenshaw-Curtis quadrature rule from 0 to ∞. freqmax
+                        can be used to rescale the frequencies.
+        ''')
+
+    x_exciting_freqmax = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Upper limit for the grid interval.
+        ''')
+
+    x_exciting_freqmin = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Lower limit for the grid interval.
+        ''')
+
+    x_exciting_nomeg = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        Number of grid points.
+        ''')
+
+
+class x_exciting_selfenergy_parameters(MSection):
+    '''
+    Correlation self-energy setup.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_exciting_actype = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Analytical continuation scheme:
+            pade - Pade's approximant (by H. J. Vidberg and J. W. Serence, J. Low Temp.
+                   Phys. 29, 179 (1977)).
+            aaa - Y. Nakatsukasa, O. Sete, L. N. Trefethen, "The AAA algorithm for rational
+                  approximation", SIAM J. Sci. Comp. 40 (2018), A1494-A1522.
+        ''')
+
+    x_exciting_eqpsolver = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        Schemes to solve the quasiparticle (non-linear) equation:
+            0 - Perturbative solution.
+            1 - Z=1 calculations.
+            2 - Iterative solution.
+        ''')
+
+    x_exciting_eshift = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        Alignment of the chemical potential:
+            0 - No alignment.
+            1 - Self-consistency at the Fermi level (iteratively).
+            2 - Self-consistency at the Fermi level (perturbatively).
+        ''')
+
+    x_exciting_method = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Technique to compute the frequency convolution integral:
+            ac - Analytical continuation
+            cd - Contour deformation
+        ''')
+
+    x_exciting_nempty = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        Number of empty states to calculate the correlation self energy (different from default).
+        ''')
+
+    x_exciting_singularity = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Treatment of the q→0 singularity:
+            none': No special treatment (test purpose only).
+            mpb': Auxiliary function method by S. Massidda, M. Posternak, and A.
+                  Baldereschi, PRB 48, 5058 (1993)
+            crg': Auxiliary function method by P. Carrier, S. Rohra, and A. Goerling,
+                  PRB 75, 205126 (2007).
+        ''')
+
+    x_exciting_swidth = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Smearing parameter for visualizing the spectral function.
+        ''')
+
+    x_exciting_tol = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Tolerance factor used for generating support points in AAA-interpolation.
+        ''')
+
+
+class x_exciting_wgrid_parameters(MSection):
+    '''
+    The real frequency grid (output) setup for computing and visualizing the correlation
+    self-energy and the spectral function. For more detailed description see freqgrid.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_exciting_size = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        Number of grid points.
+        ''')
+
+    x_exciting_type = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Grid type.
+        ''')
+
+    x_exciting_wmax = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Upper limit for the grid interval.
+        ''')
+
+    x_exciting_wmin = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Lower limit for the grid interval.
+        ''')
+
+
+class x_exciting_mixbasis_parameters(MSection):
+    '''
+    Mixed-product basis setup.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_exciting_epsmb = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Linear dependence tolerance factor: controls construction of the radial part of
+        the mixed-product basis.
+        ''')
+
+    x_exciting_gmb = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Plane-wave energy cutoff (in units of GLAPWmax): controls construction of the
+        plane-wave part of the mixed-product basis.
+        ''')
+
+    x_exciting_lmaxmb = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        Maximal angular momentum: controls construction of the radial part of the
+        mixed-product basis.
+        ''')
+
+
+class x_exciting_barecoul_parameters(MSection):
+    '''
+    The bare Coulomb potential setup.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_exciting_barcevtol = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Matrix elements of the polarizability, the screened Coulomb potential, and the
+        self-energy are computed in the basis that diagonalize the bare Coulomb potential.
+        This tolerance factor is used to reduce the size of the Vc-diagonal product basis
+        when computing the screened Coulomb potential and the correlation self-energy.
+        ''')
+
+    x_exciting_basis = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Two approaches to compute the bare Coulomb potential:
+            mb - The Coulomb potential is computed in the mixed-product basis.
+            pw - The Coulomb potential is computed in the plane-wave basis and then
+                 converted into the mixed-product basis. This option is used only when
+                 the potential truncation technique cutofftype is employed. From practical
+                 point, usage of this approach requires to set a higher value of pwm
+                 (typically = 4.0)
+        ''')
+
+    x_exciting_cutofftype = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Trigger the usage of the Coulomb potential truncation technique (S. Ismail-Beigi,
+        "Truncation of Periodic Image Interactions for Confined Systems. Phys. Rev. B 73,
+        233103 (2006)).
+            none - 3D periodic crystal.
+            0d - Isolated atom or molecule.
+            1d - 1D chain (periodicity along z-axis)
+            2d - 2D surface (vacuum separation along z-direction)
+        ''')
+
+    x_exciting_pwm = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Plane-wave energy cutoff (in units of gmaxvr*gmb) for computing the plane-wave
+        part of the Coulomb potential.
+        ''')
+
+    x_exciting_stctol = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Tolerance factor for computing the structure factor in Ewald summation scheme.
+        ''')
+
+
+class x_exciting_scrcoul_parameters(MSection):
+    '''
+    Dynamically screened Coulomb potential setup.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_exciting_omegap = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        Plasmon-pole frequency (fitting parameter).
+        ''')
+
+    x_exciting_scrtype = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        Approximation:
+            rpa - Full-frequency Random-Phase Approximation.
+            ppm - Godby-Needs plasmon-pole model.
+        ''')
+
+
 class GW(simulation.method.GW):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_exciting_frequency_number = Quantity(
-        type=np.dtype(np.int32),
-        shape=['n_frequencies'],
-        description='''
-        Number referring to the frequency used in the calculation of the self energy.
-        ''')
-
-    x_exciting_frequency_weights = Quantity(
-        type=np.dtype(np.float64),
-        shape=['n_frequencies'],
-        description='''
-        Weights of the frequency used in the calculation of the self energy.
-        ''')
-
-    x_exciting_frequency_grid_type = Quantity(
+    x_exciting_coreflag = Quantity(
         type=str,
         shape=[],
         description='''
-        Frequency integration grid type for the correlational self energy: 'eqdis' -
-        equidistant frequencies from 0 to freqmax; 'gaulag' - Gauss-Laguerre quadrature
-        from 0 to infinity; 'gauleg' - Gauss-Legendre quadrature from 0 to freqmax;
-        'gaule2' (default) - double Gauss-Legendre quadrature from 0 to freqmax and from
-        freqmax to infinity.
+        Option for treating core states in GW:
+            all - All-electron treatment.
+            xal - Both core and valence states are used to compute the exchange self-energy
+                  and only valence electrons for computing the correlation self-energy.
+            val - Valence-electron treatment.
+            vab - Valence-electron treatment where core states are also excluded from the
+                  construction of the mixed-product basis.
         ''')
 
-    x_exciting_max_frequency = Quantity(
-        type=np.dtype(np.float64),
+    x_exciting_ibgw = Quantity(
+        type=np.int32,
         shape=[],
         description='''
-        Maximum frequency for the calculation of the self energy.
+        QP corrections are computed for states in the interval [ibgw, nbgw].
         ''')
 
-    x_exciting_bare_coulomb_cutofftype = Quantity(
+    x_exciting_nbgw = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        QP corrections are computed for states in the interval [ibgw, nbgw].
+        ''')
+
+    x_exciting_mblksiz = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        To reduce the memory usage, in summations over unoccupied states, big matrices are
+        considered to be in a block form with a size of mblksiz.
+        ''')
+
+    x_exciting_nempty = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        Number of empty states to compute both the screened Coulomb potential and the self-energy.
+        ''')
+
+    x_exciting_ngridq = Quantity(
+        type=np.int32,
+        shape=[3],
+        description='''
+        Size of the k/q-point grids.
+        ''')
+
+    x_exciting_printSelfC = Quantity(
+        type=bool,
+        shape=[],
+        description='''
+        Output the correlation self-energy.
+        ''')
+
+    x_exciting_printSpectralFunction = Quantity(
+        type=bool,
+        shape=[],
+        description='''
+        Compute and output the spectral function.
+        ''')
+
+    x_exciting_nempty = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        Method to compute k/q and frequency dependent weights in the expression for
+        polarizability:
+            tet - Using the tetrahedron method as implemented in LibBZInt library
+            sum - Direct summation employing a smearing parameter eta of freqgrid
+        ''')
+
+    x_exciting_rpmat = Quantity(
+        type=bool,
+        shape=[],
+        description='''
+        Skip calculation of the momentum matrix elements, instead read them from files
+        PMATVV.OUT and PMATCV.OUT (restart option).
+        ''')
+
+    x_exciting_skipgnd = Quantity(
+        type=bool,
+        shape=[],
+        description='''
+        Skip the recalculation of KS eigenvalues and eigenvectors for the specified
+        k/q-point grids (restart option).
+        ''')
+
+    x_exciting_taskname = Quantity(
         type=str,
         shape=[],
         description='''
-        Cutoff type for the calculation of the bare Coulomb potential: none, 0d, 1d, 2d.
-        See Rozzi et al., PRB 73, 205119 (2006)
+        Tasks launcher:
+            g0w0 - G0W0 calculations
+            g0w0-x - Exchange only G0W0 calculations
+            cohsex - Coulomb-hole and screened-exchange (COHSEX) approximation
+            band - QP banstructure as obtained by Fourier interpolation
+            dos - QP density of states
+            emac - Calculate the macroscopic dielectric function
+            vxc - Calculate the diagonal matrix elements of the exchange-correlation potential
+            pmat - Calculate matrix elements of the momentum operator
+            acon - Perform analytic continuation of the correlation self-energy from
+                   imaginary to real frequency and calculate QP energies
         ''')
+
+    x_exciting_vqloff = Quantity(
+        type=np.float64,
+        shape=[3],
+        description='''
+        The k/q-point offset vector in lattice coordinates.
+        ''')
+
+    x_exciting_freqgrid = SubSection(
+        sub_section=x_exciting_freqgrid_parameters.m_def, repeats=False)
+
+    x_exciting_selfenergy = SubSection(
+        sub_section=x_exciting_selfenergy_parameters.m_def, repeats=False)
+
+    x_exciting_wgrid = SubSection(
+        sub_section=x_exciting_wgrid_parameters.m_def, repeats=False)
+
+    x_exciting_mixbasis = SubSection(
+        sub_section=x_exciting_mixbasis_parameters.m_def, repeats=False)
+
+    x_exciting_barecoul = SubSection(
+        sub_section=x_exciting_barecoul_parameters.m_def, repeats=False)
+
+    x_exciting_scrcoul = SubSection(
+        sub_section=x_exciting_scrcoul_parameters.m_def, repeats=False)
 
     x_exciting_bare_coulomb_gmax = Quantity(
         type=np.dtype(np.float64),
@@ -468,55 +854,6 @@ class GW(simulation.method.GW):
         description='''
         Cut-off parameter for the truncation of the expansion of the plane waves in the
         interstitial region.
-        ''')
-
-    x_exciting_mixed_basis_lmax = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        Maximum l value used for the radial functions within the muffin-tin.
-        ''')
-
-    x_exciting_mixed_basis_tolerance = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        Eigenvalue threshold below which the egenvectors are discarded in the construction
-        of the radial basis set.
-        ''')
-
-    x_exciting_self_energy_c_number_of_poles = Quantity(
-        type=int,
-        shape=[],
-        description='''
-        Number of poles used in the analytical continuation.
-        ''')
-
-    x_exciting_self_energy_singularity_treatment = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        Treatment of the integrable singular terms in the calculation of the self energy.
-        Values: 'mpb' - Auxiliary function method by S. Massidda, M. Posternak, and A.
-        Baldereschi, PRB 48, 5058 (1993); 'crg' - Auxiliary function method by P. Carrier,
-        S. Rohra, and A. Goerling, PRB 75, 205126 (2007).
-        ''')
-
-    x_exciting_screened_coulomb_volume_average = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        Type of volume averaging for the dynamically screened Coulomb potential: isotropic
-        - Simple averaging along a specified direction using only diagonal components of
-        the dielectric tensor; anisotropic - Anisotropic screening by C. Freysoldt et al.,
-        CPC 176, 1-13 (2007)
-        ''')
-
-    x_exciting_qp_equation_treatment = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        Methods to solve the quasi-particle equation: 'linearization', 'self-consistent'
         ''')
 
 
