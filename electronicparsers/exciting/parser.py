@@ -26,7 +26,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextP
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional,
-    GW as GWMethod, Scf, BasisSet, KMesh, Photon, BSE, CoreHole
+    GW as GWMethod, Scf, BasisSet, KMesh, FreqMesh, Photon, BSE, CoreHole
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1834,15 +1834,14 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         workflow.name = 'SinglePoint'
         self._child_archives.get(path).workflow2 = workflow
 
-    def _parse_input_gw(self, sec_method):
+    def _parse_input_gw(self, sec_gw):
         def parse_exciting_gw_inputs(source, path, target):
             for keys in source.keys():
                 setattr(
                     target,
-                    f'x_exciting_keys',
+                    f'x_exciting_{keys}',
                     self.input_xml_parser.get(f'{path}/{keys}', source[keys]))
 
-        sec_gw = sec_method.m_create(GWMethod)
         parse_exciting_gw_inputs(self._gw_input_default, 'gw', sec_gw)
         sec_freqgrid = sec_gw.m_create(x_exciting_freqgrid_parameters)
         parse_exciting_gw_inputs(self._freqgrid_input_default, 'gw/freqgrid', sec_freqgrid)
@@ -1857,47 +1856,54 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_scrcoul = sec_gw.m_create(x_exciting_scrcoul_parameters)
         parse_exciting_gw_inputs(self._scrcoul_input_default, 'gw/scrcoul', sec_scrcoul)
 
-        # Type
-        sec_gw.type = 'G0W0'
-        # Q mesh
-        sec_q_grid = sec_gw.m_create(KMesh)
-        sec_q_grid.grid = self.input_xml_parser.get('gw/ngridq', [1, 1, 1])
-        sec_gw.q_grid = sec_q_grid
-        # Analytical continuation
-        actype = self.input_xml_parser.get('gw/selfenergy/actype', 'pade')
-        sec_gw.self_energy_analytical_continuation = actype
-        sec_gw.n_empty_states_polarizability = int(
-            self.input_xml_parser.get('gw/nempty', 0))
-        sec_gw.n_frequencies = int(self.input_xml_parser.get(
-            'gw/freqgrid/nomeg', 16))
-        sec_gw.n_empty_states_self_energy = int(self.input_xml_parser.get(
-            'gw/selfenergy/nempty', 0))
-
-        # gmaxvr = self.info_parser.get_initialization_parameter('x_exciting_gmaxvr', 0)
-        # gmb = self.input_xml_parser.get('gw/mixbasis/gmb', 1.0)
-        # sec_gw.x_exciting_mixed_basis_gmax = gmb * gmaxvr
-        # pwm = self.input_xml_parser.get('gw/barecoul/pwm', 2.0)
-        # sec_gw.x_exciting_bare_coulomb_gmax = pwm * gmb * gmaxvr
+        gmaxvr = self.info_parser.get_initialization_parameter('x_exciting_gmaxvr', 0)
+        gmb = self.input_xml_parser.get('gw/mixbasis/gmb', 1.0)
+        sec_gw.x_exciting_mixed_basis_gmax = gmb * gmaxvr
+        pwm = self.input_xml_parser.get('gw/barecoul/pwm', 2.0)
+        sec_gw.x_exciting_bare_coulomb_gmax = pwm * gmb * gmaxvr
 
     def parse_gw(self):
         sec_run = self.archive.run[-1]
 
         # GW Method
         sec_method = sec_run.m_create(Method)
+        sec_gw = sec_method.m_create(GWMethod)
 
-        # parse input xml file, there seems to be two versions, input_gw.xml and input-gw.xml
+        # parse input xml files: code-specific metainfo
         for f in ['input_gw.xml', 'input-gw.xml', 'input.xml']:
-            self.parse_file(f, sec_method)
+            self.parse_file(f, sec_gw)
 
-        # get reference to reference dft calculation
-        # dft_archive = None
-        # if self.archive.m_context is not None:
-        #     try:
-        #         dirname = os.path.basename(os.path.dirname(self.filepath))
-        #         dft_archive = self.archive.m_context.resolve_archive(f'../upload/archive/mainfile/{dirname}/INFO.OUT')
-        #         self._archives_ref.append(dft_archive)
-        #     except Exception as e:
-        #         self.logger.error('Could not resolve reference DFT calculation.', exc_info=e)
+        # Type
+        sec_gw.type = 'G0W0'
+        # Q mesh
+        sec_q_grid = sec_gw.m_create(KMesh)
+        sec_q_grid.grid = sec_gw.x_exciting_ngridq
+        # Analytical continuation
+        if sec_gw.x_exciting_selfenergy.x_exciting_actype == 'pade':
+            sec_gw.analytical_continuation = sec_gw.x_exciting_selfenergy.x_exciting_actype
+        else:
+            if sec_gw.x_exciting_selfenergy.x_exciting_method == 'cd':
+                sec_gw.analytical_continuation = 'countour_deformation'
+            else:
+                if sec_gw.x_exciting_scrcoul.x_exciting_scrtype == 'ppm':
+                    sec_gw.analytical_continuation = 'ppm_GodbyNeeds'
+                else:
+                    self.logger.warning('Could not find the analytical continuation method.')
+        # Other parameters
+        sec_gw.interval_qp_corrections = [sec_gw.x_exciting_ibgw, sec_gw.x_exciting_nbgw]
+        sec_gw.n_empty_states_polarizability = sec_gw.x_exciting_nempty
+        if sec_gw.n_empty_states_polarizability == 0:
+            sec_gw.n_empty_states_self_energy = sec_gw.x_exciting_selfenergy.x_exciting_nempty
+        else:
+            sec_gw.n_empty_states_self_energy = sec_gw.n_empty_states_polarizability
+        # Frequency grid
+        sec_freq_grid = sec_gw.m_create(FreqMesh)
+        sec_freq_grid.type = sec_gw.x_exciting_freqgrid.x_exciting_fgrid
+        nomeg = sec_gw.x_exciting_freqgrid.x_exciting_nomeg
+        sec_freq_grid.n_points = nomeg
+        freqmax = sec_gw.x_exciting_freqgrid.x_exciting_freqmax
+        freqmin = sec_gw.x_exciting_freqgrid.x_exciting_freqmin
+        sec_freq_grid.values = [i * (freqmax - freqmin) / nomeg for i in range(nomeg)] * ureg.eV
 
         # GW Calculation
         sec_scc = sec_run.m_create(Calculation)
@@ -2445,8 +2451,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 p.parse(xs_info_file, xs_archive, logger)
                 xs_archives.append(xs_archive)
 
-                # parse xs workflow (DFT + all photons)
-                # TODO generalize to include GW step
+        # parse xs workflow (DFT + all photons)
+        # TODO generalize to include GW step
         xs_workflow_archive = self._child_archives.get('XS_workflow')
         if xs_workflow_archive:
             self.parse_xs_workflow(xs_archives, xs_workflow_archive)
