@@ -290,6 +290,320 @@ class System(simulation.system.System):
         ''')
 
 
+class x_abinit_mesh(MSection):
+    '''
+    Section containing the parameters for a mesh.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_abinit_type = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_n_mesh = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_mesh = Quantity(
+        type=np.float64,
+        shape=['x_abinit_n_mesh', 3],
+        description='''
+        ''')
+
+
+class x_abinit_chi_q_data(MSection):
+    '''
+    Section containing the parameters for chi_q.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_abinit_q_point = Quantity(
+        type=np.float64,
+        shape=['x_abinit_n_mesh', 3],
+        description='''
+        ''')
+
+    x_abinit_av_fulfillment = Quantity(
+        type=np.float64,
+        shape=['x_abinit_n_mesh'],
+        description='''
+        ''')
+
+
+class x_abinit_screening_dataset(MSection):
+    '''
+    Section containing the outputs of the screening dataset.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_abinit_precision_algorithm = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_kqmesh = SubSection(sub_section=x_abinit_mesh.m_def, repeats=True)
+
+    x_abinit_n_fftmesh = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_fftmesh = Quantity(
+        type=np.int32,
+        shape=[3],
+        description='''
+        ''')
+
+    x_abinit_symm_screening = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_n_bands_per_proc = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_n_bands_per_node = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_n_electrons = Quantity(
+        type=np.float64,
+        shape=[3],
+        description='''
+        ''')
+
+    x_abinit_wigner_seitz_radius = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_omega_plasma = Quantity(
+        type=np.float64,
+        shape=[],
+        unit='electron_volt',
+        description='''
+        ''')
+
+    x_abinit_static_diel_const = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_static_diel_const_nofields = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_static_max_band_occ = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_chi_q = SubSection(sub_section=x_abinit_chi_q_data.m_def, repeats=False)
+
+    x_abinit_frequencies = Quantity(
+        type=np.float64,
+        shape=['*', 2],
+        description='''
+        ''')
+
+
+class x_abinit_ks_band_gaps_params(MSection):
+    '''
+    Section containing the parameters for the KS band gaps.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_abinit_min_direct_gap = Quantity(
+        type=np.float64,
+        shape=[4],
+        description='''
+        ''')
+
+    x_abinit_fundamental_gap = Quantity(
+        type=np.float64,
+        shape=[],
+        unit='electron_volt',
+        description='''
+        ''')
+
+    x_abinit_k_top_valence_band = Quantity(
+        type=np.float64,
+        shape=[3],
+        description='''
+        ''')
+
+    x_abinit_k_bottom_conduction_band = Quantity(
+        type=np.float64,
+        shape=[3],
+        description='''
+        ''')
+
+
+class x_abinit_sigma_params(MSection):
+    '''
+    Section containing the parameters for the SIGMA.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_abinit_model = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_params = Quantity(
+        type=JSON,
+        description='''
+        ''')
+
+    x_abinit_freq_step = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_max_omega_sigma = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_zcut_avoid = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        ''')
+
+
+class x_abinit_epsilon_inv_params(MSection):
+    '''
+    Section containing the parameters for the EPSILON^-1.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_abinit_dimensions = Quantity(
+        type=JSON,
+        description='''
+        ''')
+
+    x_abinit_params = Quantity(
+        type=JSON,
+        description='''
+        ''')
+
+
+class x_abinit_gw_dataset(MSection):
+    '''
+    Section containing the outputs of the gw dataset.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_abinit_precision_algorithm = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_kqmesh = SubSection(sub_section=x_abinit_mesh.m_def, repeats=True)
+
+    x_abinit_n_fftmesh = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_fftmesh = Quantity(
+        type=np.int32,
+        shape=[3],
+        description='''
+        ''')
+
+    x_abinit_symm_screening = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_n_bands_per_proc = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_n_bands_per_node = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_n_electrons = Quantity(
+        type=np.float64,
+        shape=[3],
+        description='''
+        ''')
+
+    x_abinit_wigner_seitz_radius = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_omega_plasma = Quantity(
+        type=np.float64,
+        shape=[],
+        unit='electron_volt',
+        description='''
+        ''')
+
+    x_abinit_static_diel_const = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_static_diel_const_nofields = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_static_max_band_occ = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_abinit_ks_band_gaps = SubSection(sub_section=x_abinit_ks_band_gaps_params.m_def, repeats=True)
+
+    x_abinit_sigma = SubSection(sub_section=x_abinit_sigma_params.m_def, repeats=True)
+
+    x_abinit_epsilon_inv = SubSection(sub_section=x_abinit_epsilon_inv_params.m_def, repeats=True)
+
+
 class Calculation(simulation.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
@@ -391,17 +705,9 @@ class Calculation(simulation.calculation.Calculation):
         Unit cell volume
         ''')
 
-    x_abinit_screening = Quantity(
-        type=JSON,
-        description='''
-        Outputs of a screening dataset.
-        ''')
+    x_abinit_screening = SubSection(sub_section=x_abinit_screening_dataset.m_def, repeats=True)
 
-    x_abinit_gw = Quantity(
-        type=JSON,
-        description='''
-        Outputs of a GW dataset.
-        ''')
+    x_abinit_gw = SubSection(sub_section=x_abinit_gw_dataset.m_def, repeats=True)
 
 
 class x_abinit_section_dataset(abinit_autogenerated.x_abinit_section_dataset):
