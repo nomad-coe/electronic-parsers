@@ -1086,12 +1086,12 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 sec_gw.analytical_continuation = 'countour_deformation'
         # Frequency grid
         if self.out_parser.get('screening_dataset'):
-            freqs = self.out_parser.get('screening_dataset').get('frequencies').get('values') * ureg.hartree
+            freqs = self.out_parser.get('screening_dataset').get('frequencies').get('values') * ureg.eV
             sec_freq_grid = sec_gw.m_create(FreqMesh)
             sec_freq_grid.n_points = len(freqs)
             sec_freq_grid.values = freqs[:, 0] + freqs[:, 1] * 1j
         else:
-            freq_plasma = self.out_parser.get('gw_dataset').get('omega_plasma')
+            freq_plasma = self.out_parser.get('gw_dataset').get('omega_plasma') * ureg.eV
             sec_freq_grid = sec_gw.m_create(FreqMesh)
             sec_freq_grid.n_points = 2
             sec_freq_grid.values = [0.0, freq_plasma * 1j]

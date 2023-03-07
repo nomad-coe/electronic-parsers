@@ -112,4 +112,20 @@ def test_gw(parser):
     archive = EntryArchive()
     parser.parse('test/data/abinit/ZrO2_GW/A1.abo', archive, None)
 
-    assert archive
+    sec_run = archive.run[-1]
+    sec_gw = sec_run.method[-1].gw
+    assert sec_gw.type == 'G0W0'
+    assert sec_gw.analytical_continuation == 'contour_deformation'
+    assert sec_gw.interval_qp_corrections[0] == 12
+    assert sec_gw.interval_qp_corrections[-1] == 13
+    assert sec_gw.n_empty_states_polarizability == sec_gw.n_empty_states_self_energy
+    assert sec_gw.frequency_grid.n_points == 2
+    assert sec_gw.frequency_grid.values[-1].to('eV').magnitude == approx(31.855950000000004j)
+    sec_scc = sec_run.calculation
+    assert len(sec_scc) == 1
+    assert sec_scc[-1].m_xpath('x_abinit_screening')
+    assert sec_scc[-1].m_xpath('x_abinit_gw')
+    sec_eigen = sec_scc[-1].eigenvalues
+    assert len(sec_eigen) == 3
+    assert sec_eigen[0].value_qp.to('eV').magnitude[0][0][2] == approx(7.024)
+    assert sec_eigen[0].value_qp.to('eV').magnitude[0][0][3] == approx(12.483)
