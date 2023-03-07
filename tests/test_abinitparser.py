@@ -106,3 +106,10 @@ def test_dos(parser):
     assert sec_dos.total[0].value[180].magnitude == approx(5.46018208e+15)
     assert sec_dos.total[0].value_integrated[151] == approx(1.3e-5)
     assert sec_dos.total[0].value_integrated[180] == approx(2.39e-4)
+
+
+def test_gw(parser):
+    archive = EntryArchive()
+    parser.parse('test/data/abinit/ZrO2_GW/A1.abo', archive, None)
+
+    assert archive
