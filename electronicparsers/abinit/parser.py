@@ -32,7 +32,7 @@ from nomad.datamodel.metainfo.simulation.method import (
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry, Dos,
-    DosValues, BandStructure, BandEnergies, ScfIteration)
+    DosValues, BandStructure, BandEnergies, ScfIteration, BandGap)
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod,
@@ -1103,7 +1103,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             sec_freq_grid.n_points = 2
             sec_freq_grid.values = [0.0, freq_plasma * 1j]
         # Other paramters
-        if self.out_parser.get_input_var('bdgw', 4, []):
+        if self.out_parser.get_input_var('bdgw', 4, np.array(None)).all():
             sec_gw.interval_qp_corrections = [
                 self.out_parser.get_input_var('bdgw', 4, []).min(),
                 self.out_parser.get_input_var('bdgw', 4, []).max()]
@@ -1115,11 +1115,6 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         n_gw = len(occ_gw)
         n_occ_gw = len([occ_gw[i] for i in range(n_gw) if occ_gw[i] > 0.0])
         sec_gw.n_empty_states_self_energy = n_gw - n_occ_gw
-
-        # GW calculation
-        sec_scc = sec_run.m_create(Calculation)
-        sec_scc.method_ref = sec_method
-        sec_scc.system_ref = sec_run.system[-1]
 
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)
@@ -1319,15 +1314,34 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             if step_dataset is None:
                 continue
 
-            if sec_run.calculation[-1] is None:
+            if sec_run.m_xpath('calculation'):
+                sec_scc = sec_run.calculation[-1]
+            else:
                 sec_scc = sec_run.m_create(Calculation)
                 if sec_run.system is not None:
                     sec_scc.system_ref = sec_run.system[-1]
                 sec_scc.method_ref = sec_run.method[-1]
-            else:
-                sec_scc = sec_run.calculation[-1]
             parameters = self.parse_regex_into_json(step_dataset)
             setattr(sec_scc, f'x_abinit_{step}', parameters)
+
+        # GW specific outputs
+        for selfenergy in sec_scc.x_abinit_gw.get('self_energy_ee', []):
+            sec_k_eigen = sec_scc.m_create(BandEnergies)
+            sec_k_eigen.n_spin_channels = selfenergy.get('params')[0][-1]
+            sec_k_eigen.n_kpoints = 1
+            sec_k_eigen.kpoints = selfenergy.get('kpoint')
+            sec_gap = sec_k_eigen.m_create(BandGap)
+            sec_gap.value = selfenergy.get('params')[1][-1] * ureg.eV  # KS gap
+            sec_gap.value_fundamental = selfenergy.get('params')[2][-1] * ureg.eV  # QP gap
+            sec_k_eigen.n_bands = len(selfenergy.get('data'))
+            selfenergy_data = np.array(selfenergy.get('data'))
+            sec_k_eigen.value_ks = selfenergy_data[:, 1] * ureg.eV
+            sec_k_eigen.value_ks_xc = selfenergy_data[:, 2] * ureg.eV
+            sec_k_eigen.value_exchange = selfenergy_data[:, 3] * ureg.eV
+            sec_k_eigen.value_correlation = selfenergy_data[:, 4] * ureg.eV
+            sec_k_eigen.qp_linearization_factor = selfenergy_data[:, 5] * ureg.eV
+            sec_k_eigen.value_xc = selfenergy_data[:, 7] * ureg.eV
+            sec_k_eigen.value_qp = selfenergy_data[:, 9] * ureg.eV
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
