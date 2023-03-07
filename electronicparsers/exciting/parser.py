@@ -2341,6 +2341,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # method goes first since reference needed for sec_scc
         if self._calculation_type == 'gw':
             self.parse_gw()
+            self.parse_workflow()
         elif self._calculation_type == 'xs':
             self.parse_system(self.info_parser.get('groundstate'))
             self.parse_xs()
