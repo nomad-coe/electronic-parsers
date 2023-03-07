@@ -1329,19 +1329,20 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             sec_k_eigen = sec_scc.m_create(BandEnergies)
             sec_k_eigen.n_spin_channels = selfenergy.get('params')[0][-1]
             sec_k_eigen.n_kpoints = 1
-            sec_k_eigen.kpoints = selfenergy.get('kpoint')
+            kpoints = [selfenergy.get('kpoint') for k in range(sec_k_eigen.n_kpoints)]
+            sec_k_eigen.kpoints = kpoints
             sec_gap = sec_k_eigen.m_create(BandGap)
             sec_gap.value = selfenergy.get('params')[1][-1] * ureg.eV  # KS gap
             sec_gap.value_fundamental = selfenergy.get('params')[2][-1] * ureg.eV  # QP gap
             sec_k_eigen.n_bands = len(selfenergy.get('data'))
             selfenergy_data = np.array(selfenergy.get('data'))
-            sec_k_eigen.value_ks = selfenergy_data[:, 1] * ureg.eV
-            sec_k_eigen.value_ks_xc = selfenergy_data[:, 2] * ureg.eV
-            sec_k_eigen.value_exchange = selfenergy_data[:, 3] * ureg.eV
-            sec_k_eigen.value_correlation = selfenergy_data[:, 4] * ureg.eV
-            sec_k_eigen.qp_linearization_factor = selfenergy_data[:, 5] * ureg.eV
-            sec_k_eigen.value_xc = selfenergy_data[:, 7] * ureg.eV
-            sec_k_eigen.value_qp = selfenergy_data[:, 9] * ureg.eV
+            sec_k_eigen.value_ks = np.array([[selfenergy_data[:, 1] * ureg.eV for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])
+            sec_k_eigen.value_ks_xc = np.array([[selfenergy_data[:, 2] * ureg.eV for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])
+            sec_k_eigen.value_exchange = np.array([[selfenergy_data[:, 3] * ureg.eV for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])
+            sec_k_eigen.value_correlation = np.array([[selfenergy_data[:, 4] * ureg.eV for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])
+            sec_k_eigen.qp_linearization_factor = np.array([[selfenergy_data[:, 5] for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])
+            sec_k_eigen.value_xc = np.array([[selfenergy_data[:, 7] * ureg.eV for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])
+            sec_k_eigen.value_qp = np.array([[selfenergy_data[:, 9] * ureg.eV for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
