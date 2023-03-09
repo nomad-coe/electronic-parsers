@@ -1086,12 +1086,13 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 sec_gw.analytical_continuation = 'countour_deformation'
         # Frequency grid
         if self.out_parser.get('screening_dataset'):
-            freqs = self.out_parser.get('screening_dataset').get('frequencies').get('values') * ureg.eV
-            sec_freq_grid = sec_gw.m_create(FreqMesh)
-            sec_freq_grid.n_points = len(freqs)
-            sec_freq_grid.values = freqs[:, 0] + freqs[:, 1] * 1j
+            if self.out_parser.get('screening_dataset').get('frequencies'):
+                freqs = self.out_parser.get('screening_dataset').get('frequencies').get('values') * ureg.eV
+                sec_freq_grid = sec_gw.m_create(FreqMesh)
+                sec_freq_grid.n_points = len(freqs)
+                sec_freq_grid.values = freqs[:, 0] + freqs[:, 1] * 1j
         else:
-            freq_plasma = self.out_parser.get('gw_dataset').get('omega_plasma') * ureg.eV
+            freq_plasma = self.out_parser.get('gw_dataset').get('omega_plasma', 0.0) * ureg.eV
             sec_freq_grid = sec_gw.m_create(FreqMesh)
             sec_freq_grid.n_points = 2
             sec_freq_grid.values = [0.0, freq_plasma * 1j]
@@ -1302,24 +1303,37 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         '''
         sec_run = self.archive.run[-1]
 
-        # Screening dataset code-specific
-        scr_dataset = self.out_parser.get('screening_dataset')
-        if scr_dataset:
-            if sec_run.m_xpath('calculation'):
+        def initialize_calculation_section():
+            if sec_run.calculation:
                 sec_scc = sec_run.calculation[-1]
             else:
                 sec_scc = sec_run.m_create(Calculation)
-                if sec_run.system is not None:
-                    sec_scc.system_ref = sec_run.system[-1]
-                sec_scc.method_ref = sec_run.method[-1]
+            if sec_run.system is not None:
+                sec_scc.system_ref = sec_run.system[-1]
+            sec_scc.method_ref = sec_run.method[-1]
+            return sec_scc
+
+        def parse_quantities(section, keys, value):
+            if keys == 'symm_screening' and value:
+                value = ' '.join(value)
+            setattr(section, f'x_abinit_{keys}', value)
+
+        def parse_meshes(section, keys, value):
+            sec_mesh = section.m_create(x_abinit_mesh)
+            sec_mesh.x_abinit_type = keys
+            for subkeys in value.keys():
+                setattr(sec_mesh, f'x_abinit_{subkeys}', value[subkeys])
+
+        # Screening dataset code-specific
+        scr_dataset = self.out_parser.get('screening_dataset')
+        if scr_dataset:
+            sec_scc = initialize_calculation_section()
             sec_scr = sec_scc.m_create(x_abinit_screening_dataset)
 
             for keys in scr_dataset.keys():
                 value = scr_dataset.get(keys)
                 if not hasattr(value, 'quantities'):
-                    if keys == 'symm_screening' and value:
-                        value = ' '.join(value)
-                    setattr(sec_scr, f'x_abinit_{keys}', value)
+                    parse_quantities(sec_scr, keys, value)
                 else:
                     if keys == 'frequencies':
                         sec_scr.x_abinit_frequencies = value['values']
@@ -1328,29 +1342,18 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                         for subkeys in value.keys():
                             setattr(sec_chi_q, f'x_abinit_{subkeys}', value[subkeys])
                     else:
-                        sec_mesh = sec_scr.m_create(x_abinit_mesh)
-                        sec_mesh.x_abinit_type = keys
-                        for subkeys in value.keys():
-                            setattr(sec_mesh, f'x_abinit_{subkeys}', value[subkeys])
+                        parse_meshes(sec_scr, keys, value)
 
         # GW dataset code-specific
         gw_dataset = self.out_parser.get('gw_dataset')
         if gw_dataset:
-            if sec_run.m_xpath('calculation'):
-                sec_scc = sec_run.calculation[-1]
-            else:
-                sec_scc = sec_run.m_create(Calculation)
-                if sec_run.system is not None:
-                    sec_scc.system_ref = sec_run.system[-1]
-                sec_scc.method_ref = sec_run.method[-1]
+            sec_scc = initialize_calculation_section()
             sec_gw_abinit = sec_scc.m_create(x_abinit_gw_dataset)
 
             for keys in gw_dataset.keys():
                 value = gw_dataset.get(keys)
                 if not hasattr(value, 'quantities'):
-                    if keys == 'symm_screening' and value:
-                        value = ' '.join(value)
-                    setattr(sec_gw_abinit, f'x_abinit_{keys}', value)
+                    parse_quantities(sec_gw_abinit, keys, value)
                 else:
                     if keys == 'ks_band_gaps':
                         sec_ks_gaps = sec_gw_abinit.m_create(x_abinit_ks_band_gaps_params)
@@ -1372,31 +1375,29 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                             val = dict(value[subkeys])
                             setattr(sec_epsiloninv, f'x_abinit_{subkeys}', val)
                     else:
-                        sec_mesh = sec_gw_abinit.m_create(x_abinit_mesh)
-                        sec_mesh.x_abinit_type = keys
-                        for subkeys in value.keys():
-                            setattr(sec_mesh, f'x_abinit_{subkeys}', value[subkeys])
+                        parse_meshes(sec_gw_abinit, keys, value)
 
         # GW specific outputs
         for selfenergy in gw_dataset.get('self_energy_ee', []):
             sec_k_eigen = sec_scc.m_create(BandEnergies)
-            sec_k_eigen.n_spin_channels = selfenergy.get('params')[0][-1]
             sec_k_eigen.n_kpoints = 1
-            kpoints = [selfenergy.get('kpoint') for k in range(sec_k_eigen.n_kpoints)]
+            kpoints = [selfenergy.get('kpoint', []) for k in range(sec_k_eigen.n_kpoints)]
             sec_k_eigen.kpoints = kpoints
-            sec_gap = sec_k_eigen.m_create(BandGap)
-            sec_gap.value = selfenergy.get('params')[1][-1] * ureg.eV  # KS gap
-            sec_gap.value_fundamental = selfenergy.get('params')[2][-1] * ureg.eV  # QP gap
-            sec_k_eigen.n_bands = len(selfenergy.get('data'))
-            selfenergy_data = np.array(selfenergy.get('data'))
-            for i in self._selfenergy_data_map.keys():
+            sec_k_eigen.n_bands = len(selfenergy.get('data', []))
+            selfenergy_data = np.array(selfenergy.get('data', []))
+            if selfenergy.get('params'):
+                sec_k_eigen.n_spin_channels = selfenergy.get('params')[0][-1]
+                sec_gap = sec_k_eigen.m_create(BandGap)
+                sec_gap.value = selfenergy.get('params')[1][-1] * ureg.eV  # KS gap
+                sec_gap.value_fundamental = selfenergy.get('params')[2][-1] * ureg.eV  # QP gap
+                for i in self._selfenergy_data_map.keys():
+                    value = np.array([[
+                        selfenergy_data[:, i] for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])
+                    value = value * ureg.eV
+                    setattr(sec_k_eigen, self._selfenergy_data_map[i], value)
                 value = np.array([[
-                    selfenergy_data[:, i] for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])
-                value = value * ureg.eV
-                setattr(sec_k_eigen, self._selfenergy_data_map[i], value)
-            value = np.array([[
-                selfenergy_data[:, 5] for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])
-            sec_k_eigen.qp_linearization_factor = value
+                    selfenergy_data[:, 5] for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])
+                sec_k_eigen.qp_linearization_factor = value
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
