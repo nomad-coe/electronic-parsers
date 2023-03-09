@@ -31,7 +31,7 @@ from nomad.datamodel.metainfo.simulation.method import Method, BasisSet
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Forces, ForcesEntry
 from nomad.parsing.file_parser import Quantity, TextParser
 
-import xml.etree.ElementTree as ElementTree
+import xml.etree.ElementTree as ElementTreeXML
 
 
 def str_to_timestamp(s: str):
@@ -94,7 +94,7 @@ class QBallParser:
             basis_set = method.m_create(BasisSet)
             basis_set.type = "plane waves"
 
-        element_tree = ElementTree.fromstring(contents)
+        element_tree = ElementTreeXML.fromstring(contents)
 
         # system
         system = run.m_create(System)

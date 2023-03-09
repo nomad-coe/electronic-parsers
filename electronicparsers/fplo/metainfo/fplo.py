@@ -123,7 +123,7 @@ class Method(simulation.method.Method):
         ''')
 
 
-class HubbardModel(simulation.method.HubbardModel):
+class HubbardModel(simulation.method.HubbardKanamoriModel):
 
     m_def = Section(validate=False, extends_base_section=True)
 

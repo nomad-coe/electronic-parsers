@@ -190,7 +190,7 @@ class ContentParser:
         return val
 
     def is_converged(self, n_calc):
-        return
+        return False
 
 
 class OutcarTextParser(TextParser):

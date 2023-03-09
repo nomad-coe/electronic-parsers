@@ -846,7 +846,7 @@ class Psi4Parser:
             calculations_ref = []
             for name in module_names:
                 for submodule in module.get(name, []):
-                    self._method = submodule.get('method', name.split('_')[0].upper())
+                    self._method = submodule.get('method', name.split('_', maxsplit=1)[0].upper())
                     self.parse_system(submodule)
                     self.parse_method(submodule)
                     calc = self.parse_calculation(submodule)

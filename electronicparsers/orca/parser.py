@@ -610,7 +610,7 @@ class OrcaParser:
                     val = basis_set.get(key)
                     if val is None:
                         continue
-                    prefix = '' if key == 'basis_set_atom_labels' else kind.split('basis_set')[0]
+                    prefix = '' if key == 'basis_set_atom_labels' else kind.split('basis_set', maxsplit=1)[0]
                     metainfo_name = 'x_orca_%s%s' % (prefix, key)
                     setattr(sec_basis_set, metainfo_name, val[n])
 

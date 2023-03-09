@@ -28,7 +28,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataText
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, Electronic, Smearing, Scf, DFT, XCFunctional,
-    Functional, KMesh, GW as GWMethod)
+    Functional, KMesh)
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry, Dos,
@@ -1028,30 +1028,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                     pass
 
     def parse_gw(self):
-        sec_run = self.archive.run[-1]
-
-        # TODO parse GW method entry
-        # Method
-        sec_method = sec_run.m_create(Method)
-        # KMesh
-        sec_k_mesh = sec_method.m_create(KMesh)
-        # sec_k_mesh.grid = ...
-        # GW
-        sec_gw = sec_method.m_create(GWMethod)
-        # sec_gw.type = ...
-        # sec_gw.q_grid = sec_k_mesh?
-        # sec_gw.self_energy_analytical_continuation = ...
-        # sec_gw.n_frequencies = ...
-        # sec_gw.frequency_values = ...
-        # sec_gw.core_treatment = ...
-        # sec_gw.dielectric_function_treatment = ...
-        # sec_gw.n_empty_states_polarizability = ...
-        # sec_gw.n_empty_states_self_energy = ...
-
-        # GW calculation
-        sec_scc = sec_run.m_create(Calculation)
-        sec_scc.method_ref = sec_method
-        sec_scc.system_ref = sec_run.system[-1]
+        pass
 
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)
