@@ -23,7 +23,7 @@ jobs:
         python -m pycodestyle --ignore=E501,E701,E731 *parsers tests
     - name: pylint
       run: |
-        python -m pylint --load-plugins=nomad.metainfo.pylint_plugin *parsers tests
+        python -m pylint *parsers tests
     - name: mypy
       run: |
         python -m mypy *parsers tests

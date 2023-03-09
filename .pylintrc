@@ -7,7 +7,7 @@ extension-pkg-whitelist=pydantic
 
 # List of plugins (as comma separated values of python module names) to load,
 # usually to register additional checkers.
-load-plugins=pylint_mongoengine,nomad.metainfo.pylint_plugin
+load-plugins=
 
 
 [MESSAGES CONTROL]
