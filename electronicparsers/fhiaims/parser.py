@@ -710,7 +710,7 @@ class FHIAimsOutParser(TextParser):
                 'molecular_dynamics',
                 rf'{re_n} *Molecular dynamics: Attempting to update all nuclear coordinates\.'
                 rf'([\s\S]+?(?:{tail}))',
-                repeats=True, sub_parser=TextParser(quantities=molecular_dynamics_quantities))]
+                repeats=True, sub_parser=TextParser(quantities=[*calculation_quantities, *molecular_dynamics_quantities]))]
         # TODO add SOC perturbed eigs, dielectric function
 
     def get_number_of_spin_channels(self):
