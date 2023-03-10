@@ -40,7 +40,13 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 from nomad.datamodel.metainfo.workflow import Workflow
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
-    MolecularDynamics as MolecularDynamics2)
+    MolecularDynamics as MolecularDynamics2, MolecularDynamicsMethod, MolecularDynamicsResults,
+    ThermostatParameters)
+
+# for old MD workflow
+from nomad.datamodel.metainfo.workflow import (
+    ThermostatParameters as ThermostatParameters1, IntegrationParameters as IntegrationParameters1,
+    MolecularDynamics as MolecularDynamics1)
 
 from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_parallel_task_assignement, x_fhi_aims_section_parallel_tasks,\
@@ -372,6 +378,40 @@ class FHIAimsOutParser(TextParser):
                     data['Fit accuracy for G(w)'] = float(v[0].split()[-1])
             return data
 
+        def str_to_md_calculation_info(val_in):
+            val = [v.strip() for v in val_in.strip().splitlines()]
+            res = dict()
+            for v in val:
+                v = v.lstrip(' |').strip().split(':')
+                if len(v) < 2 or not v[1]:
+                    continue
+                vi = v[1].split()
+                if not vi[0][-1].isdecimal():
+                    continue
+                elif len(vi) < 2:
+                    res[v[0].strip()] = float(vi[0])
+                else:
+                    unit = units_mapping.get(vi[1], None)
+                    res[v[0].strip()] = float(vi[0]) * unit if unit is not None else float(vi[0])
+            return res
+
+        def str_to_quantity(val_in):
+            val = val_in.split()
+            if len(val) == 1:
+                return float(val[0])
+            elif len(val) == 2:
+                return float(val[0]) * ureg(val[1])
+            else:
+                return None
+
+        def str_to_ureg(val_in):
+            try:
+                val = ureg(val_in.replace('^', '**'))
+            except Exception:
+                self.logger.warning(rf'Problem parsing some units from .out file, could not convert: {val_in}')
+                val = None
+            return val
+
         calculation_quantities = [
             Quantity(
                 'self_consistency',
@@ -447,6 +487,55 @@ class FHIAimsOutParser(TextParser):
                         str_operation=str_to_hirshfeld, repeats=True, convert=False)])),
             Quantity(
                 'converged', r'Self\-consistency cycle (converged)\.', repeats=False, dtype=str)]
+
+        molecular_dynamics_quantities = [
+            Quantity(
+                'molecular_dynamics_ensemble',
+                r' *Running\s*Born-Oppenheimer\s*molecular\s*dynamics\s*in\s*([A-Z]{3})\s*ensemble',
+                repeats=False, convert=False),
+            Quantity(
+                'molecular_dynamics_thermostat',
+                r' *Running\s*Born-Oppenheimer\s*molecular\s*dynamics\s*\D*\s*with\s*([A-Za-z\-]*)\s*thermostat',
+                repeats=False, convert=False),
+            Quantity(
+                'molecular_dynamics_timestep',
+                rf'{re_n} *Molecular dynamics time step\s*=\s*({re_float} [A-Za-z]*)\s*{re_n}',
+                str_operation=str_to_quantity, repeats=False, convert=False),
+            Quantity(
+                'molecular_dynamics_simulation_time',
+                rf'{re_n} *\| *simulation time\s*=\s*({re_float} [A-Za-z]*)\s*{re_n}',
+                str_operation=str_to_quantity, repeats=False, convert=False),
+            Quantity(
+                'molecular_dynamics_temperature',
+                rf'{re_n} *\| *at temperature\s*=\s*({re_float} [A-Za-z]*)\s*{re_n}',
+                str_operation=str_to_quantity, repeats=False, convert=False),
+            Quantity(
+                'molecular_dynamics_thermostat_mass',
+                rf'{re_n} *\| *thermostat effective mass\s*=\s*({re_float})\s*{re_n}',
+                str_operation=str_to_quantity, repeats=False, convert=False),
+            Quantity(
+                'molecular_dynamics_thermostat_units',
+                rf'Thermostat\s*units\s*for\s*molecular\s*dynamics\s*:\s*([A-Za-z\^\-0-9]*)',
+                str_operation=str_to_ureg, repeats=False, convert=False),
+            Quantity(
+                'molecular_dynamics_calculation_info',
+                rf'{re_n} *Advancing structure using Born-Oppenheimer Molecular Dynamics:\s*{re_n}'
+                rf' *Complete information for previous time-step:'
+                rf'([\s\S]+?)((?:{re_n}{re_n}|\| Nose-Hoover Hamiltonian\s*:\s*[Ee\d\.\-\+]+ eV))',
+                str_operation=str_to_md_calculation_info, repeats=False, convert=False),
+            Quantity(
+                'molecular_dynamics_system_info',
+                rf'Atomic structure.*as used in the preceding time step:\s*{re_n}'
+                rf'([\s\S]+?)((?:{re_n}{re_n}|\s*Begin self-consistency loop))',
+                repeats=False, convert=False, sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'positions',
+                        rf'atom +({re_float})\s+({re_float})\s+({re_float})',
+                        dtype=np.dtype(np.float64), repeats=True),
+                    Quantity(
+                        'velocities',
+                        rf'velocity\s+({re_float})\s+({re_float})\s+({re_float})',
+                        dtype=np.dtype(np.float64), repeats=True)]))]
 
         tail = '|'.join([
             r'Time for this force evaluation\s*:\s*[s \d\.]+',
@@ -554,7 +643,7 @@ class FHIAimsOutParser(TextParser):
                 sub_parser=TextParser(quantities=[
                     Quantity(
                         'species', r'Reading configuration options for (species[\s\S]+?)grid points\.',
-                        repeats=True, str_operation=str_to_species)])),
+                        repeats=True, str_operation=str_to_species), *molecular_dynamics_quantities])),
             # GW input quantities
             Quantity(
                 'gw_flag', rf'{re_n}\s*qpe_calc\s*([\w]+)', repeats=False),
@@ -621,8 +710,7 @@ class FHIAimsOutParser(TextParser):
                 'molecular_dynamics',
                 rf'{re_n} *Molecular dynamics: Attempting to update all nuclear coordinates\.'
                 rf'([\s\S]+?(?:{tail}))',
-                repeats=True, sub_parser=TextParser(quantities=calculation_quantities))]
-
+                repeats=True, sub_parser=TextParser(quantities=molecular_dynamics_quantities))]
         # TODO add SOC perturbed eigs, dielectric function
 
     def get_number_of_spin_channels(self):
@@ -763,6 +851,23 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             'e_xc^gs': 'value_ks_xc',
             'e_c^nloc': 'value_correlation',
             'e_qp': 'value_qp'
+        }
+
+        self._md_calculation_map = {
+            'Time step number': 'step',
+            'Simulation time': 'time',
+            'Temperature (nuclei)': 'temperature',
+            'Thermostat value ln(s)': 'x_fhi_aims_thermostat_value_lns',
+            'Thermostat momentum pi': 'x_fhi_aims_thermostat_momentum_pi',
+        }
+        self._md_calculation_energy_map = {
+            'Electronic free energy': 'x_fhi_aims_electronic_free_energy',
+            'Nuclear kinetic energy': 'x_fhi_aims_nuclear_kinetic_energy',
+            'Total energy (el.+nuc.)': 'x_fhi_aims_total_energy_el_and_nuc',
+            'Nose-Hoover Hamiltonian': 'x_fhi_aims_nosehoover_hamiltonian'
+        }
+        self._md_methods_map = {
+            'Nose-Hoover': 'nose_hoover'
         }
 
         self._frame_rate = None
@@ -958,6 +1063,9 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_atoms.labels = structure.get('labels')
         sec_atoms.positions = structure.get('positions') * ureg.angstrom
         velocities = structure.get('velocities')
+        if velocities is None:
+            molecular_dynamics_system_info = section.get('molecular_dynamics_system_info', None)
+            velocities = molecular_dynamics_system_info._results['velocities'] if molecular_dynamics_system_info else None
         if velocities is not None:
             sec_atoms.velocities = velocities * ureg.angstrom / ureg.ps
 
@@ -1260,6 +1368,59 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             # vdW parameters
             parse_vdW(section)
 
+            # step, time, temperature info + additional energies from molecular dynamics
+            md_info = section.get('molecular_dynamics_calculation_info', None)
+            if md_info is not None:
+                for key, val in md_info.items():
+                    if key in self._md_calculation_map:
+                        metainfo_key = self._md_calculation_map.get(key, None)
+                        if metainfo_key is not None:
+                            try:
+                                setattr(sec_scc, metainfo_key, val)
+                            except Exception:
+                                self.logger.warn(
+                                    'Error setting md calculation metainfo.',
+                                    data=dict(key=metainfo_key))
+                    elif key in self._md_calculation_energy_map:
+                        metainfo_key = self._md_calculation_energy_map.get(key, None)
+                        if metainfo_key is not None:
+                            try:
+                                setattr(sec_energy, metainfo_key, EnergyEntry(value=val))
+                            except Exception:
+                                self.logger.warn(
+                                    'Error setting md calculation energy metainfo.',
+                                    data=dict(key=metainfo_key))
+
+            # get the classical kinetic and potential energies
+            sec_atoms = sec_scc.system_ref.atoms
+            label_to_mass = {atom_params.label: atom_params.mass for atom_params in sec_scc.method_ref.atom_parameters}
+            velocities = sec_atoms.velocities
+            atom_labels = sec_atoms.get('labels')
+            if velocities is not None:
+                kinetic_energy = 0
+                for i_atom in range(len(velocities)):
+                    mass = label_to_mass[atom_labels[i_atom]]
+                    for dim in range(3):
+                        kinetic_energy += 0.5 * mass * (velocities[i_atom][dim]) ** 2
+                metainfo_key = 'kinetic'
+                try:
+                    setattr(sec_energy, metainfo_key, EnergyEntry(value=kinetic_energy))
+                except Exception:
+                    self.logger.warn(
+                        'Error setting kinetic energy metainfo.',
+                        data=dict(key=metainfo_key))
+
+                total_energy = sec_energy.get('x_fhi_aims_total_energy_el_and_nuc')
+                if total_energy:
+                    potential_energy = total_energy.value - kinetic_energy
+                    metainfo_key = 'potential'
+                    try:
+                        setattr(sec_energy, metainfo_key, EnergyEntry(value=potential_energy))
+                    except Exception:
+                        self.logger.warn(
+                            'Error setting potential energy metainfo.',
+                            data=dict(key=metainfo_key))
+
         for n, section in enumerate(self.out_parser.get('full_scf', [])):
             # skip frames for large trajectories
             if (n % self.frame_rate) > 0:
@@ -1294,8 +1455,40 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             sec_workflow.type = 'geometry_optimization'
             workflow = GeometryOptimization2()
         elif self.out_parser.get('molecular_dynamics', None) is not None:
-            sec_workflow.type = 'molecular_dynamics'
-            workflow = MolecularDynamics2()
+            workflow = MolecularDynamics2(
+                method=MolecularDynamicsMethod(), results=MolecularDynamicsResults())
+
+            control_inout = self.out_parser.get('control_inout')
+            workflow.method.thermodynamic_ensemble = control_inout.get('molecular_dynamics_ensemble')
+            workflow.method.integration_timestep = control_inout.get('molecular_dynamics_timestep')
+
+            sec_thermostat_parameters = workflow.method.m_create(ThermostatParameters)
+            sec_thermostat_parameters.thermostat_type = self._md_methods_map.get(control_inout.get('molecular_dynamics_thermostat'))
+            simulation_time = control_inout.get('molecular_dynamics_simulation_time')
+            if (simulation_time is not None) and (workflow.method.integration_timestep is not None):
+                n_steps = (simulation_time.to(ureg.picosecond) / workflow.method.integration_timestep.to(ureg.picosecond)).magnitude
+                workflow.method.n_steps = int(n_steps)
+            sec_thermostat_parameters.reference_temperature = control_inout.get('molecular_dynamics_temperature')
+            thermostat_mass = control_inout.get('molecular_dynamics_thermostat_mass')
+            if type(thermostat_mass != ureg.Quantity):
+                thermostat_mass_unit = control_inout.get('molecular_dynamics_thermostat_units')
+                sec_thermostat_parameters.coupling_constant = 1.0 / (ureg.speed_of_light * thermostat_mass * thermostat_mass_unit) if thermostat_mass_unit is not None else None
+            else:
+                sec_thermostat_parameters.effective_mass = thermostat_mass  ## TODO: generalize this for different thermostats (assuming here that the mass units will be printed to the outfile in case thermostat_mass is not defined)
+
+        # fill in old workflow section for GUI features until it is deprecated
+        sec_workflow.type = 'molecular_dynamics'
+        sec_md = sec_workflow.m_create(MolecularDynamics1)
+        sec_md.thermodynamic_ensemble = workflow.method.thermodynamic_ensemble
+        sec_integration_parameters1 = sec_md.m_create(IntegrationParameters1)
+        sec_integration_parameters1.n_steps = workflow.method.n_steps
+        sec_integration_parameters1.integration_timestep = workflow.method.integration_timestep
+        sec_thermostat_parameters1 = sec_integration_parameters1.m_create(ThermostatParameters1)
+        sec_thermostat_parameters1.thermostat_type = sec_thermostat_parameters.thermostat_type
+        sec_thermostat_parameters1.reference_temperature = sec_thermostat_parameters.reference_temperature
+        sec_thermostat_parameters1.coupling_constant = sec_thermostat_parameters.coupling_constant
+        sec_thermostat_parameters1.effective_mass = sec_thermostat_parameters.effective_mass
+
         self.archive.workflow2 = workflow
 
     def parse_method(self):
