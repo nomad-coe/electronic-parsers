@@ -1374,6 +1374,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 for key, val in md_info.items():
                     if key in self._md_calculation_map:
                         metainfo_key = self._md_calculation_map.get(key, None)
+                        if metainfo_key == 'step':
+                            val = int(val)
                         if metainfo_key is not None:
                             try:
                                 setattr(sec_scc, metainfo_key, val)
@@ -1476,18 +1478,18 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             else:
                 sec_thermostat_parameters.effective_mass = thermostat_mass  ## TODO: generalize this for different thermostats (assuming here that the mass units will be printed to the outfile in case thermostat_mass is not defined)
 
-        # fill in old workflow section for GUI features until it is deprecated
-        sec_workflow.type = 'molecular_dynamics'
-        sec_md = sec_workflow.m_create(MolecularDynamics1)
-        sec_md.thermodynamic_ensemble = workflow.method.thermodynamic_ensemble
-        sec_integration_parameters1 = sec_md.m_create(IntegrationParameters1)
-        sec_integration_parameters1.n_steps = workflow.method.n_steps
-        sec_integration_parameters1.integration_timestep = workflow.method.integration_timestep
-        sec_thermostat_parameters1 = sec_integration_parameters1.m_create(ThermostatParameters1)
-        sec_thermostat_parameters1.thermostat_type = sec_thermostat_parameters.thermostat_type
-        sec_thermostat_parameters1.reference_temperature = sec_thermostat_parameters.reference_temperature
-        sec_thermostat_parameters1.coupling_constant = sec_thermostat_parameters.coupling_constant
-        sec_thermostat_parameters1.effective_mass = sec_thermostat_parameters.effective_mass
+            # fill in old workflow section for GUI features until it is deprecated
+            sec_workflow.type = 'molecular_dynamics'
+            sec_md = sec_workflow.m_create(MolecularDynamics1)
+            sec_md.thermodynamic_ensemble = workflow.method.thermodynamic_ensemble
+            sec_integration_parameters1 = sec_md.m_create(IntegrationParameters1)
+            sec_integration_parameters1.n_steps = workflow.method.n_steps
+            sec_integration_parameters1.integration_timestep = workflow.method.integration_timestep
+            sec_thermostat_parameters1 = sec_integration_parameters1.m_create(ThermostatParameters1)
+            sec_thermostat_parameters1.thermostat_type = sec_thermostat_parameters.thermostat_type
+            sec_thermostat_parameters1.reference_temperature = sec_thermostat_parameters.reference_temperature
+            sec_thermostat_parameters1.coupling_constant = sec_thermostat_parameters.coupling_constant
+            sec_thermostat_parameters1.effective_mass = sec_thermostat_parameters.effective_mass
 
         self.archive.workflow2 = workflow
 
