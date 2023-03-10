@@ -24,6 +24,7 @@ import re
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
+from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, GreensFunctions
@@ -333,3 +334,5 @@ class W2DynamicsParser:
         # Workflow section
         sec_workflow = self.archive.m_create(Workflow)
         sec_workflow.type = 'single_point'
+        workflow = SinglePoint()
+        self.archive.workflow2 = workflow
