@@ -1461,35 +1461,36 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 method=MolecularDynamicsMethod(), results=MolecularDynamicsResults())
 
             control_inout = self.out_parser.get('control_inout')
-            workflow.method.thermodynamic_ensemble = control_inout.get('molecular_dynamics_ensemble')
-            workflow.method.integration_timestep = control_inout.get('molecular_dynamics_timestep')
+            if control_inout:
+                workflow.method.thermodynamic_ensemble = control_inout.get('molecular_dynamics_ensemble')
+                workflow.method.integration_timestep = control_inout.get('molecular_dynamics_timestep')
 
-            sec_thermostat_parameters = workflow.method.m_create(ThermostatParameters)
-            sec_thermostat_parameters.thermostat_type = self._md_methods_map.get(control_inout.get('molecular_dynamics_thermostat'))
-            simulation_time = control_inout.get('molecular_dynamics_simulation_time')
-            if (simulation_time is not None) and (workflow.method.integration_timestep is not None):
-                n_steps = (simulation_time.to(ureg.picosecond) / workflow.method.integration_timestep.to(ureg.picosecond)).magnitude
-                workflow.method.n_steps = int(n_steps)
-            sec_thermostat_parameters.reference_temperature = control_inout.get('molecular_dynamics_temperature')
-            thermostat_mass = control_inout.get('molecular_dynamics_thermostat_mass')
-            if type(thermostat_mass != ureg.Quantity):
-                thermostat_mass_unit = control_inout.get('molecular_dynamics_thermostat_units')
-                sec_thermostat_parameters.coupling_constant = 1.0 / (ureg.speed_of_light * thermostat_mass * thermostat_mass_unit) if thermostat_mass_unit is not None else None
-            else:
-                sec_thermostat_parameters.effective_mass = thermostat_mass  ## TODO: generalize this for different thermostats (assuming here that the mass units will be printed to the outfile in case thermostat_mass is not defined)
+                sec_thermostat_parameters = workflow.method.m_create(ThermostatParameters)
+                sec_thermostat_parameters.thermostat_type = self._md_methods_map.get(control_inout.get('molecular_dynamics_thermostat'))
+                simulation_time = control_inout.get('molecular_dynamics_simulation_time')
+                if (simulation_time is not None) and (workflow.method.integration_timestep is not None):
+                    n_steps = (simulation_time.to(ureg.picosecond) / workflow.method.integration_timestep.to(ureg.picosecond)).magnitude
+                    workflow.method.n_steps = int(n_steps)
+                sec_thermostat_parameters.reference_temperature = control_inout.get('molecular_dynamics_temperature')
+                thermostat_mass = control_inout.get('molecular_dynamics_thermostat_mass')
+                if type(thermostat_mass != ureg.Quantity):
+                    thermostat_mass_unit = control_inout.get('molecular_dynamics_thermostat_units')
+                    sec_thermostat_parameters.coupling_constant = 1.0 / (ureg.speed_of_light * thermostat_mass * thermostat_mass_unit) if thermostat_mass_unit is not None else None
+                else:
+                    sec_thermostat_parameters.effective_mass = thermostat_mass  ## TODO: generalize this for different thermostats (assuming here that the mass units will be printed to the outfile in case thermostat_mass is not defined)
 
-            # fill in old workflow section for GUI features until it is deprecated
-            sec_workflow.type = 'molecular_dynamics'
-            sec_md = sec_workflow.m_create(MolecularDynamics1)
-            sec_md.thermodynamic_ensemble = workflow.method.thermodynamic_ensemble
-            sec_integration_parameters1 = sec_md.m_create(IntegrationParameters1)
-            sec_integration_parameters1.n_steps = workflow.method.n_steps
-            sec_integration_parameters1.integration_timestep = workflow.method.integration_timestep
-            sec_thermostat_parameters1 = sec_integration_parameters1.m_create(ThermostatParameters1)
-            sec_thermostat_parameters1.thermostat_type = sec_thermostat_parameters.thermostat_type
-            sec_thermostat_parameters1.reference_temperature = sec_thermostat_parameters.reference_temperature
-            sec_thermostat_parameters1.coupling_constant = sec_thermostat_parameters.coupling_constant
-            sec_thermostat_parameters1.effective_mass = sec_thermostat_parameters.effective_mass
+                # fill in old workflow section for GUI features until it is deprecated
+                sec_workflow.type = 'molecular_dynamics'
+                sec_md = sec_workflow.m_create(MolecularDynamics1)
+                sec_md.thermodynamic_ensemble = workflow.method.thermodynamic_ensemble
+                sec_integration_parameters1 = sec_md.m_create(IntegrationParameters1)
+                sec_integration_parameters1.n_steps = workflow.method.n_steps
+                sec_integration_parameters1.integration_timestep = workflow.method.integration_timestep
+                sec_thermostat_parameters1 = sec_integration_parameters1.m_create(ThermostatParameters1)
+                sec_thermostat_parameters1.thermostat_type = sec_thermostat_parameters.thermostat_type
+                sec_thermostat_parameters1.reference_temperature = sec_thermostat_parameters.reference_temperature
+                sec_thermostat_parameters1.coupling_constant = sec_thermostat_parameters.coupling_constant
+                sec_thermostat_parameters1.effective_mass = sec_thermostat_parameters.effective_mass
 
         self.archive.workflow2 = workflow
 
