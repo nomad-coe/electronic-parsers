@@ -238,6 +238,16 @@ def test_md(parser):
     assert sec_calculation[4].energy.kinetic.value.magnitude == approx(2.111251998587359e-20)
     assert sec_calculation[4].energy.potential.value.magnitude == approx(-3.3301149258970176e-16)
 
+    sec_workflow = archive.workflow2
+    assert sec_workflow.method.thermodynamic_ensemble == 'NVT'
+    assert sec_workflow.method.integration_timestep.magnitude == approx(1e-15)
+    assert sec_workflow.method.n_steps == 5
+    sec_thermostat = sec_workflow.method.thermostat_parameters
+    assert sec_thermostat.thermostat_type == 'nose_hoover'
+    assert sec_thermostat.reference_temperature.magnitude == approx(300.0)
+    assert sec_thermostat.coupling_constant.magnitude == approx(3.706267724423911e-14)
+
+
 def test_hybrid(parser):
     """"Taken from the official test files in FHI-aims v210716_3"""
     archive = EntryArchive()
