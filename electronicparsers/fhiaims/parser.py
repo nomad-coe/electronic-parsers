@@ -40,13 +40,13 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 from nomad.datamodel.metainfo.workflow import Workflow
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
-    MolecularDynamics as MolecularDynamics2, MolecularDynamicsMethod, MolecularDynamicsResults,
+    MolecularDynamics, MolecularDynamicsMethod, MolecularDynamicsResults,
     ThermostatParameters)
 
 # for old MD workflow
 from nomad.datamodel.metainfo.workflow import (
-    ThermostatParameters as ThermostatParameters1, IntegrationParameters as IntegrationParameters1,
-    MolecularDynamics as MolecularDynamics1)
+    ThermostatParameters as ThermostatParametersOld, IntegrationParameters as IntegrationParametersOld,
+    MolecularDynamics as MolecularDynamicsOld)
 
 from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_parallel_task_assignement, x_fhi_aims_section_parallel_tasks,\
@@ -1457,7 +1457,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             sec_workflow.type = 'geometry_optimization'
             workflow = GeometryOptimization2()
         elif self.out_parser.get('molecular_dynamics', None) is not None:
-            workflow = MolecularDynamics2(
+            workflow = MolecularDynamics(
                 method=MolecularDynamicsMethod(), results=MolecularDynamicsResults())
 
             control_inout = self.out_parser.get('control_inout')
@@ -1481,12 +1481,12 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
                 # fill in old workflow section for GUI features until it is deprecated
                 sec_workflow.type = 'molecular_dynamics'
-                sec_md = sec_workflow.m_create(MolecularDynamics1)
+                sec_md = sec_workflow.m_create(MolecularDynamicsOld)
                 sec_md.thermodynamic_ensemble = workflow.method.thermodynamic_ensemble
-                sec_integration_parameters1 = sec_md.m_create(IntegrationParameters1)
+                sec_integration_parameters1 = sec_md.m_create(IntegrationParametersOld)
                 sec_integration_parameters1.n_steps = workflow.method.n_steps
                 sec_integration_parameters1.integration_timestep = workflow.method.integration_timestep
-                sec_thermostat_parameters1 = sec_integration_parameters1.m_create(ThermostatParameters1)
+                sec_thermostat_parameters1 = sec_integration_parameters1.m_create(ThermostatParametersOld)
                 sec_thermostat_parameters1.thermostat_type = sec_thermostat_parameters.thermostat_type
                 sec_thermostat_parameters1.reference_temperature = sec_thermostat_parameters.reference_temperature
                 sec_thermostat_parameters1.coupling_constant = sec_thermostat_parameters.coupling_constant
