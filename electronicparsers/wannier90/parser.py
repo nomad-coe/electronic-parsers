@@ -112,7 +112,10 @@ class WInParser(TextParser):
 
     def init_quantities(self):
         self._quantities = [
-            Quantity('energy_fermi', rf'{re_n}fermi_energy\s*=\s*([\d\.\-]+)', repeats=False)]
+            Quantity('energy_fermi', rf'{re_n}fermi_energy\s*=\s*([\d\.\-]+)', repeats=False),
+            Quantity('projections',
+                     rf'begin projections([\s\S]+?)(?:end projections)',
+                     repeats=False)]
 
 
 class HrParser(TextParser):
@@ -125,10 +128,7 @@ class HrParser(TextParser):
             Quantity('hoppings', rf'\s*([-\d\s.]+)', repeats=False)]
 
 
-class Wannier90Parser:
-    # TODO check if level defined w.r.t. DFT calculation (default, level = 0)
-    level = 1
-
+class Wannier90Parser():
     def __init__(self):
         self.wout_parser = WOutParser()
         self.win_parser = WInParser()
@@ -140,6 +140,52 @@ class Wannier90Parser:
             'Nwannier': 'n_projected_orbitals',
             'Nband': 'n_bands',
             'conv_tol': 'convergence_tolerance_max_localization'
+        }
+
+        self._input_projection_units = {
+            'Ang': 'angstrom',
+            'Bohr': 'bohr'
+        }
+
+        # Angular momentum [l, mr] following Wannier90 tables 3.1 and 3.2
+        # TODO move to normalization or utils in nomad?
+        self._angular_momentum_orbital_map = {
+            's': [0, 1],
+            'px': [1, 1],
+            'py': [1, 2],
+            'pz': [1, 3],
+            'dz2': [2, 1],
+            'dxz': [2, 2],
+            'dyz': [2, 3],
+            'dx2-y2': [2, 4],
+            'dxy': [2, 5],
+            'fz3': [3, 1],
+            'fxz2': [3, 2],
+            'fyz2': [3, 3],
+            'fz(x2-y2)': [3, 4],
+            'fxyz': [3, 5],
+            'fx(x2-3y2)': [3, 6],
+            'fy(3x2-y2)': [3, 7],
+            'sp-1': [-1, 1],
+            'sp-2': [-1, 2],
+            'sp2-1': [-2, 1],
+            'sp2-1': [-2, 2],
+            'sp2-1': [-2, 3],
+            'sp3-1': [-3, 1],
+            'sp3-2': [-3, 2],
+            'sp3-3': [-3, 3],
+            'sp3-4': [-3, 4],
+            'sp3d-1': [-4, 1],
+            'sp3d-2': [-4, 2],
+            'sp3d-3': [-4, 3],
+            'sp3d-4': [-4, 4],
+            'sp3d-5': [-4, 5],
+            'sp3d2-1': [-5, 1],
+            'sp3d2-2': [-5, 2],
+            'sp3d2-3': [-5, 3],
+            'sp3d2-4': [-5, 4],
+            'sp3d2-5': [-5, 5],
+            'sp3d2-6': [-5, 6]
         }
 
     def parse_system(self, archive, wout_parser):
@@ -157,6 +203,72 @@ class Wannier90Parser:
 
         sec_atoms.labels = wout_parser.get('structure').get('labels')
         sec_atoms.positions = wout_parser.get('structure').get('positions') * ureg.angstrom
+
+        # Parsing from input
+        win_files = [f for f in os.listdir(self.maindir) if f.endswith('.win')]
+        if len(win_files) > 1:
+            self.logger.warning('Multiple win files found. We will parse the first one.')
+        self.win_parser.mainfile = os.path.join(self.maindir, win_files[0])
+        if self.win_parser.get('projections'):
+            xaxis = []
+            zaxis = []
+            radial = []
+            zona = []
+            sites = []
+            ang_mtm = []
+            for proj in self.win_parser.get('projections'):
+                if proj.startswith('['):
+                    sec_atoms.x_wannier90_units = self._input_projection_units[
+                        proj.replace('[', '').replace(']', '')]
+                else:
+                    for label in proj.split(':'):
+                        # site (always index=0)
+                        if proj.split(':').index(label) == 0:
+                            if label.startswith('f='):
+                                val = [float(lab) for lab in label.replace('f=', '').split(',')]
+                                val = np.dot(val, sec_atoms.lattice_vectors.magnitude)
+                                for pos in sec_atoms.positions:
+                                    if np.array_equal(val, pos.magnitude):
+                                        index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
+                                        sites.append(sec_atoms.labels[index])
+                                        break
+                            elif label.startswith('c='):
+                                val = [float(lab) for lab in label.replace('c=', '').split(',')]
+                                if not sec_atoms.m_xpath('x_wannier90_units'):
+                                    sec_atoms.x_wannier90_units = 'angstrom'
+                                for pos in sec_atoms.positions.to(sec_atoms.x_wannier90_units):
+                                    if np.array_equal(val, pos.magnitude):
+                                        index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
+                                        sites.append(sec_atoms.labels[index])
+                                        break
+                            else:
+                                sites.append(label)
+                        # ang_mtm (always index=1)
+                        elif proj.split(':').index(label) == 1:
+                            if label.startswith('l='):
+                                lmom = label.split(',mr')[0]
+                                val_lm = [int(lm) for lm in lmom.replace('l=', '').split(',')]
+                                mrmom = label.split(',mr')[-1]
+                                val_mr = [int(mr) for mr in mrmom.replace('=', '').split(',')]
+                            else:
+                                ang_mtm.append(label)
+                        else:
+                            if label.startswith('x='):
+                                val = [int(lab) for lab in label.replace('x=', '').split(',')]
+                                xaxis.append(val)
+                            elif label.startswith('z='):
+                                val = [int(lab) for lab in label.replace('z=', '').split(',')]
+                                zaxis.append(val)
+                            elif label.startswith('r='):
+                                radial.append(label.replace('r=', ''))
+                            elif label.startswith('zona='):
+                                zona.append(label.replace('zona=', ''))
+            sec_atoms.x_wannier90_site = sites
+            sec_atoms.x_wannier90_ang_mtm = sites
+            sec_atoms.x_wannier90_zaxis = zaxis
+            sec_atoms.x_wannier90_xaxis = xaxis
+            sec_atoms.x_wannier90_radial = radial
+            sec_atoms.x_wannier90_zona = zona
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
