@@ -18,10 +18,9 @@
 #
 import logging
 from nomad.datamodel.datamodel import EntryArchive
-from nomad.metainfo.metainfo import MSection
-from nomad.metainfo.metainfo import Quantity as mQuantity
-from nomad.parsing.file_parser.text_parser import ParsePattern, Quantity
-import os
+from nomad.datamodel.metainfo.simulation.run import Run, Program
+from nomad.metainfo.metainfo import MSection, Quantity as mQuantity
+from nomad.parsing.file_parser.text_parser import TextParser, ParsePattern, Quantity
 import re
 from typing import Union, List
 
@@ -80,18 +79,22 @@ class QuantityToArchive(Quantity):
                     raise(ValueError(f'Path {self.quantity_path} does not follow the schema.'))
         setattr(head, self.quantity.name, self.quantity.to_data(val_in))
 
+program = Quantity('program', r'(^\s*CMB2\s+Version:.+)', sub_parser=\
+    TextParser(quantities=[
+        Quantity('version', r'Version:\s+([\d\.]+)', dtype=str),
+    ]))
+run = Quantity('run', r'^(\s*CMB2\s+Version:[\s\S]+?)\Z', repeats=True,
+        sub_parser=TextParser(quantities=[program])
+    )
 
 class CMB2Parser():
     ''''''
-    def parse_output(self, filepath, archive):
-        '''Parse the output file.'''
-        QuantityToArchive(self.archive, 'run[-1]/calculation[-1]/energy/correlation/value',
-                          'Correlation energy = (-?\d*\.\d+)').update(['Correlation energy =   -6.2007286914'])
+    def __init__(self):
+        self.parser = TextParser(quantities=[run])
+        # self.parser._msections_map = {'run': Run, 'program': Program}
 
     def parse(self, filepath, archive, logger):
         '''Parse a CMB2 file.'''
-        self.filepath = filepath
-        self.archive = archive
-        self.maindir = os.path.dirname(self.filepath)
-        self.logger = logging.getLogger(__name__) if logger is None else logger
-        self.parse_output(self.filepath, self.archive)
+        self.parser.mainfile = filepath
+        archive.m_create(Run).m_create(Program)
+        self.parser.write_to_archive(archive)
