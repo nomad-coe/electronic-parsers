@@ -123,6 +123,13 @@ class BeyondDFTWorkflowsParser:
         # New workflow
         workflow = GW(method=GWMethod(), results=GWResults())
         workflow.name = 'GW'
+        # method
+        method_gw = extract_section(gw_archive, 'run/method/gw')
+        method_xcfunctional = extract_section(self.archive, 'run/method/dft/xc_functional')
+        method_basisset = extract_section(self.archive, 'run/method/basis_set')
+        workflow.method.gw_method_ref = method_gw
+        workflow.method.starting_point = method_xcfunctional
+        workflow.method.basis_set = method_basisset
         # results
         workflow.results.dos_dft = dos_dft
         workflow.results.dos_gw = dos_gw

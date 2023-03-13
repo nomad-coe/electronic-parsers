@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Electronic, Method, XCFunctional, Functional, HubbardKanamoriModel, AtomParameters, DFT,
-    BasisSet, GW as GWMethod, KMesh
+    BasisSet, GW as GWMethod, KMesh, FreqMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -561,6 +561,8 @@ class FHIAimsOutParser(TextParser):
             Quantity(
                 'gw_flag', rf'{re_n}\s*sc_self_energy\s*([\w]+)', repeats=False),
             Quantity(
+                'anacon_type', rf'{re_n}\s*anacon_type\s*(\d+)', repeats=False),
+            Quantity(
                 'gw_analytical_continuation',
                 rf'{re_n} (?:Using)*\s*([\w\-\s]+) for analytical continuation',
                 repeats=False, flatten=True, str_operation=lambda x: [y.lower() for v in x.split(' ') for y in v.split('-')]),
@@ -579,6 +581,10 @@ class FHIAimsOutParser(TextParser):
             Quantity(
                 'frozen_core', rf'{re_n}\s*frozen_core_scf\s*(\d+)', repeats=False,
                 dtype=int),
+            Quantity(
+                'empty_states',
+                r'\|\s*Number of Kohn-Sham states \(occupied \+ empty\)\s*\:\s*(\d+)',
+                repeats=False),
             Quantity(
                 'gw_self_consistency', r'GW Total Energy Calculation([\s\S]+?)\-{5}',
                 repeats=True, str_operation=str_to_gw_scf, convert=False),
@@ -748,11 +754,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             'scgw': 'scGW'
         }
 
-        self._gw_analytical_continuation_map = {
-            'pade': 'pade',
-            'pole': 'multi-pole',
-            'countour': 'CD'
-        }
+        self.gw_analytical_continuation = ['multi_pole', 'pade']
 
         self._gw_qp_energies_map = {
             'occ_num': 'occupations',
@@ -856,26 +858,24 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         # GW method
         sec_method = sec_run.m_create(Method)
         sec_gw = sec_method.m_create(GWMethod)
+        # Type
         sec_gw.type = self._gw_flag_map.get(self.out_parser.get('gw_flag'), None)
-
-        # TODO check this with FHIaims GW developers
-        sec_k_mesh = sec_method.m_create(KMesh)
+        # Q mesh
+        sec_k_mesh = sec_gw.m_create(KMesh)
         sec_k_mesh.grid = self.out_parser.get('k_grid', [1, 1, 1])
-        sec_gw.q_grid = sec_k_mesh
-        if self.out_parser.get('frozen_core', None) is not None:
-            sec_gw.core_treatment = 'fc'
-        sec_gw.dielectric_function_treatment = 'rpa'
-
-        if self.out_parser.get('gw_analytical_continuation') is not None:
-            sec_gw.self_energy_analytical_continuation = self._gw_analytical_continuation_map.get([
-                i for i in self.out_parser.get('gw_analytical_continuation') for x in self._gw_analytical_continuation_map.keys() if i == x][0])
-        else:
-            self.logger.warn(
-                'Analytical continuation approximation for the GW self-energy not found')
-        sec_gw.n_frequencies = self.out_parser.get('n_freq', 100)
+        # Analytical continuation
+        sec_gw.analytical_continuation = self.gw_analytical_continuation[
+            self.out_parser.get('anacon_type', 1)]
+        # Frequency grid
+        sec_freq_grid = sec_gw.m_create(FreqMesh)
+        sec_freq_grid.type = self.out_parser.get('freq_grid_type')
+        sec_freq_grid.n_points = self.out_parser.get('n_freq', 100)
         frequency_data = self.out_parser.get('frequency_data', None)
         if frequency_data is not None:
-            sec_gw.frequency_values = np.array(frequency_data)[:, 1] * ureg.hartree
+            sec_freq_grid.values = np.array(frequency_data)[:, 1] * ureg.hartree
+        # Other parameters
+        sec_gw.n_empty_states_polarizability = self.out_parser.get('empty_states')
+        sec_gw.n_empty_states_self_energy = self.out_parser.get('empty_states')
 
         # GW calculation
         sec_scc = sec_run.m_create(Calculation)

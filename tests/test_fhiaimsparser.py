@@ -265,8 +265,9 @@ def test_gw(parser):
     sec_method = archive.run[0].method
     assert len(sec_method) == 1
     assert sec_method[0].gw.type == 'scGW'
-    assert sec_method[0].gw.n_frequencies == len(sec_method[0].gw.frequency_values)
-    assert sec_method[0].gw.frequency_values.to('hartree')[-1].magnitude == approx(3571.4288641158605)
+    assert sec_method[0].gw.analytical_continuation == 'pade'
+    assert sec_method[0].gw.frequency_grid.n_points == len(sec_method[0].gw.frequency_grid.values)
+    assert sec_method[0].gw.frequency_grid.values.to('hartree')[-1].magnitude == approx(3571.4288641158605)
 
     sec_scf = archive.run[0].calculation[0].scf_iteration
     assert len(sec_scf) == 5
