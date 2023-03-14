@@ -44,7 +44,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, DFT, HubbardKanamoriModel, AtomParameters, XCFunctional,
-    Functional, Electronic, Scf, KMesh
+    Functional, Electronic, Scf, KMesh, GW, FreqMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -58,6 +58,7 @@ from nomad.datamodel.metainfo.workflow import (
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, MolecularDynamics as MolecularDynamics2)
+from ..utils import BeyondDFTWorkflowsParser
 
 
 def get_key_values(val_in):
@@ -1119,12 +1120,22 @@ class RunContentParser(ContentParser):
         return dos, fields
 
 
-class VASPParser:
+class VASPParser(BeyondDFTWorkflowsParser):
     def __init__(self):
         self._vasprun_parser = RunContentParser()
         self._outcar_parser = OutcarContentParser()
+        self._calculation_type = 'dft'
         self.hubbard_dc_corrections = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
         self.hubbard_orbital_types = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
+        self._gw_algo_map = {
+            'EVGW0': 'ev-scGW0',
+            'EVGW0R': 'ev-scGW0',
+            'EVGW': 'ev-scGW',
+            'QPGW0': 'qp-scGW0',
+            'QPGW': 'qp-scGW',
+            'GW0R': 'scGW0',
+            'GWR': 'scGW',
+        }
 
     def init_parser(self, filepath, logger):
         self.parser = self._vasprun_parser if '.xml' in filepath else self._outcar_parser
@@ -1153,6 +1164,20 @@ class VASPParser:
         sec_basis_set_cell_dependent.planewave_cutoff = self.parser.incar.get(
             'ENMAX', self.parser.incar.get('ENCUT', 0.0)) * prec * ureg.eV
 
+    def parse_kpoints(self, method):
+        k_mesh_generation_method = self.parser.kpoints_info.get('x_vasp_k_points_generation_method', None)
+        if k_mesh_generation_method in ['Gamma', 'Monkhorst-Pack']:
+            sec_kmesh = method.m_create(KMesh)
+            sec_kmesh.generation_method = k_mesh_generation_method
+            sec_kmesh.grid = self.parser.kpoints_info.get('divisions', None)
+            method.k_mesh = sec_kmesh
+        for key, val in self.parser.kpoints_info.items():
+            if val is not None:
+                try:
+                    setattr(method, key, val)
+                except Exception:
+                    self.logger.warning('Error setting metainfo', data=dict(key=key))
+
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)
         sec_dft = sec_method.m_create(DFT)
@@ -1173,18 +1198,7 @@ class VASPParser:
             'LDAU', False) else 'DFT')
 
         # kpoints
-        k_mesh_generation_method = self.parser.kpoints_info.get('x_vasp_k_points_generation_method', None)
-        if k_mesh_generation_method in ['Gamma', 'Monkhorst-Pack']:
-            sec_kmesh = sec_method.m_create(KMesh)
-            sec_kmesh.generation_method = k_mesh_generation_method
-            sec_kmesh.grid = self.parser.kpoints_info.get('divisions', None)
-            sec_method.k_mesh = sec_kmesh
-        for key, val in self.parser.kpoints_info.items():
-            if val is not None:
-                try:
-                    setattr(sec_method, key, val)
-                except Exception:
-                    self.logger.warning('Error setting metainfo', data=dict(key=key))
+        self.parse_kpoints(sec_method)
 
         # atom properties & hubbard correction
         # based on https://www.vasp.at/wiki/index.php/LDAUTYPE (08/07/2022)
@@ -1282,6 +1296,35 @@ class VASPParser:
         tolerance = self.parser.incar.get('EDIFF')
         if tolerance is not None:
             sec_method.scf = Scf(threshold_energy_change=tolerance * ureg.eV)
+
+    def parse_gw(self):
+        sec_run = self.archive.run[-1]
+        sec_method = sec_run.m_create(Method)
+        sec_gw = sec_method.m_create(GW)
+
+        # Code-specific parameters
+        response_functions = self.parser._get_key_values(rf'/modeling[0]/parameters[0]/separator[@name="response functions"]/i')
+        sec_gw.x_vasp_response_functions_incar = response_functions
+
+        # Type
+        algo = self.parser.get_incar().get('ALGO')[0]
+        nelmgw = response_functions.get('NELMGW', 1)
+        if nelmgw == 1:
+            sec_gw.type = 'G0W0'
+        else:
+            try:
+                sec_gw.type = self._gw_algo_map[algo]
+            except Exception:
+                self.logger.warning('Error setting the GW sfc type.')
+        # Q mesh
+        self.parse_kpoints(sec_method)
+        # Analytical continuation
+        sec_gw.analytical_continuation = 'pade'
+        # Frequency grid
+        sec_freq_grid = sec_gw.m_create(FreqMesh)
+        sec_freq_grid.n_points = response_functions.get('NOMEGA', 100)
+        # Other parameters
+        sec_gw.n_states_self_energy = self.parser.get_incar().get('NBANDS')
 
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)
@@ -1543,6 +1586,14 @@ class VASPParser:
         if self.parser.n_calculations == 0:
             self.logger.warning('No calculation was parsed.')
 
+    def get_mainfile_keys(self, filepath):
+        logger = logging.getLogger(__name__)
+        self.init_parser(filepath, logger)
+        version = int(self.parser.header.get('version', '').replace('.', ''))
+        if version >= 630 and self.parser.get_incar().get('ALGO')[0] in self._gw_algo_map.keys():
+            return ['GW', 'GW_workflow']
+        return True
+
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
@@ -1570,8 +1621,27 @@ class VASPParser:
             dtime = datetime.combine(date, time) - datetime.utcfromtimestamp(0)
             sec_run.program.compilation_datetime = dtime.total_seconds()
 
-        self.parse_method()
+        # Check VASP63 single step GW calculations: extend parser for BeyondDFTWorkflows
+        version = int(self.parser.header.get('version', '').replace('.', ''))
+        if version < 630 and self.parser.get_incar().get('ALGO')[0] in self._gw_algo_map.keys():
+            self._calculation_type = 'gw'
+
+        if self._calculation_type == 'gw':
+            self.parse_gw()
+        else:
+            self.parse_method()
 
         self.parse_configurations()
 
         self.parse_workflow()
+
+        gw_archive = self._child_archives.get('GW')
+        if gw_archive is not None and version >= 630 and self.parser.get_incar().get('ALGO')[0] in self._gw_algo_map.keys():
+            # GW single point
+            p = VASPParser()
+            p._calculation_type = 'gw'
+            p.parse(filepath, gw_archive, logger)
+
+            # GW workflow
+            gw_workflow_archive = self._child_archives.get('GW_workflow')
+            self.parse_gw_workflow(gw_archive, gw_workflow_archive)
