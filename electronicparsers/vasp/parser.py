@@ -352,19 +352,32 @@ class OutcarTextParser(TextParser):
             Quantity(
                 'positions',
                 r'position of ions in cartesian coordinates\s*\(Angst\):([\s\S]+?)\n *\n',
-                str_operation=str_to_positions, convert=False)
-            Quantity('pseudopotential_label',
-                     # Qaem: add a regex here
-                     )
-            Quantity('pseudopotential_category',
-                     # Qaem: add a regex here
-                     ),
-            Quantity('pseudopotential_valence_electrons',
-                     # Qaem: add a regex here
-                     ),
-            Quantity('pseudopotential_planewave_cutoff',
-                     # Qaem: add a regex here
-                     )
+                str_operation=str_to_positions, convert=False),
+            Quantity(
+                'pseudopotential_label',
+                r'TITEL\s*=\s+\S+\s(\S+)',
+                dtype=str, repeats=True),
+            Quantity(
+                'pseudopotential_functional',
+                r'LEXCH\s+=\s+([A-Za-z]+)',
+                dtype=str, repeats=True),
+            Quantity(
+                'pseudopotential_category',
+                r'LULTRA\s+=\s+([A-Za-z])',
+                dtype=str, repeats=True),
+            Quantity(
+                'pseudopotential_valence_electrons',
+                r'ZVAL\s+=\s+([+-]?[0-9]*[.]?[0-9]+)+\s+([+-]?[0-9]*[.]?[0-9]+)',
+                dtype=float, repeats=False),
+            Quantity(
+                'pseudopotential_planewave_cutoff',
+                r'ENCUT\s+=\s+([+-]?[0-9]*[.]?[0-9]+)+\s+eV',
+                r'ENMAX\s+=\s+([+-]?[0-9]*[.]?[0-9]+)',
+                dtype=float, repeats=False),
+            Quantity(
+                'Atomic_configuration',
+                r'Atomic\s*configuration\s*[0-9]*\s*entries\s*(n\s*l\s*j\s*E\s*occ\.[\s\S]+?)Description',
+                dtype=float, repeats=True)
         ]
 
 
