@@ -1883,7 +1883,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_gw.analytical_continuation = sec_gw.x_exciting_selfenergy.x_exciting_actype
         else:
             if sec_gw.x_exciting_selfenergy.x_exciting_method == 'cd':
-                sec_gw.analytical_continuation = 'countour_deformation'
+                sec_gw.analytical_continuation = 'contour_deformation'
             else:
                 if sec_gw.x_exciting_scrcoul.x_exciting_scrtype == 'ppm':
                     sec_gw.analytical_continuation = 'ppm_GodbyNeeds'

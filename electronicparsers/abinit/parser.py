@@ -1072,7 +1072,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         if gwcalctype == 1:
             sec_gw.analytical_continuation = 'pade'
         elif gwcalctype == 2:
-            sec_gw.analytical_continuation = 'countour_deformation'
+            sec_gw.analytical_continuation = 'contour_deformation'
         else:
             if ppmodel == 1:
                 sec_gw.analytical_continuation = 'ppm_GodbyNeeds'
@@ -1083,7 +1083,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             elif ppmodel == 4:
                 sec_gw.analytical_continuation = 'ppm_FaridEngel'
             else:
-                sec_gw.analytical_continuation = 'countour_deformation'
+                sec_gw.analytical_continuation = 'contour_deformation'
         # Frequency grid
         if self.out_parser.get('screening_dataset'):
             if self.out_parser.get('screening_dataset').get('frequencies'):
@@ -1107,6 +1107,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         sec_gw.n_empty_states_polarizability = n_scr - n_occ_scr
         occ_gw = self.out_parser.get_input_var('occ', 4, [])
         n_gw = len(occ_gw)
+        sec_gw.n_states_self_energy = n_gw
         n_occ_gw = len([occ_gw[i] for i in range(n_gw) if occ_gw[i] > 0.0])
         sec_gw.n_empty_states_self_energy = n_gw - n_occ_gw
 
