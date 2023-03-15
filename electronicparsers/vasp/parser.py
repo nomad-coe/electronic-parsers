@@ -1587,14 +1587,6 @@ class VASPParser(BeyondDFTWorkflowsParser):
         if self.parser.n_calculations == 0:
             self.logger.warning('No calculation was parsed.')
 
-    def get_mainfile_keys(self, filepath):
-        logger = logging.getLogger(__name__)
-        self.init_parser(filepath, logger)
-        version = int(self.parser.header.get('version', '').replace('.', ''))
-        if version >= 630 and self.parser.get_incar().get('ALGO')[0] in self._gw_algo_map.keys():
-            return ['GW', 'GW_workflow']
-        return True
-
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
@@ -1622,10 +1614,12 @@ class VASPParser(BeyondDFTWorkflowsParser):
             dtime = datetime.combine(date, time) - datetime.utcfromtimestamp(0)
             sec_run.program.compilation_datetime = dtime.total_seconds()
 
-        # Check VASP63 single step GW calculations: extend parser for BeyondDFTWorkflows
-        version = int(self.parser.header.get('version', '').replace('.', ''))
-        if version < 630 and self.parser.get_incar().get('ALGO')[0] in self._gw_algo_map.keys():
-            self._calculation_type = 'gw'
+        # TODO VASP>=6.3.0 can do DFT+GW calculations in one single step: with data we can extend
+        # the parser to inherit from BeyondDFTWorkflowsParser to address automatic GW workflow.
+        if self.parser.get_incar().get('ALGO'):
+            # TODO check why ALGO is a list
+            if self.parser.get_incar().get('ALGO')[0] in self._gw_algo_map.keys():
+                self._calculation_type = 'gw'
 
         if self._calculation_type == 'gw':
             self.parse_gw()
@@ -1635,14 +1629,3 @@ class VASPParser(BeyondDFTWorkflowsParser):
         self.parse_configurations()
 
         self.parse_workflow()
-
-        gw_archive = self._child_archives.get('GW')
-        if gw_archive is not None and version >= 630 and self.parser.get_incar().get('ALGO')[0] in self._gw_algo_map.keys():
-            # GW single point
-            p = VASPParser()
-            p._calculation_type = 'gw'
-            p.parse(filepath, gw_archive, logger)
-
-            # GW workflow
-            gw_workflow_archive = self._child_archives.get('GW_workflow')
-            self.parse_gw_workflow(gw_archive, gw_workflow_archive)
