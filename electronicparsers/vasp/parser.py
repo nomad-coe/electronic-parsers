@@ -1014,13 +1014,15 @@ class RunContentParser(ContentParser):
             f'{structure}/varray[@name="positions"]/v', array=True).get('v', None)
         selective = self._get_key_values(
             f'{structure}/varray[@name="selective"]/v', array=True).get('v', None)
-        # TODO check if this is a versioning issue or nose[0] is always correct
-        if self._get_key_values(f'{structure}/nose/v', array=True):
-            nose = self._get_key_values(
-                f'{structure}/nose/v', array=True).get('v', None)
-        else:
-            nose = self._get_key_values(
-                f'{structure}/nose[0]/v', array=True).get('v', None)
+        # COMMENTED OUT: there is a problem with the versioning: sometimes is nose
+        # others nose[0]
+        # if self._get_key_values(f'{structure}/nose/v', array=True):
+            # nose = self._get_key_values(
+                # f'{structure}/nose/v', array=True).get('v', None)
+        # else:
+            # nose = self._get_key_values(
+                # f'{structure}/nose[0]/v', array=True).get('v', None)
+        nose = None
 
         if positions is not None:
             positions = np.dot(positions, cell) * ureg.angstrom
