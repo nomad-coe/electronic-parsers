@@ -58,7 +58,6 @@ from nomad.datamodel.metainfo.workflow import (
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, MolecularDynamics as MolecularDynamics2)
-from ..utils import BeyondDFTWorkflowsParser
 
 
 def get_key_values(val_in):
@@ -1125,14 +1124,13 @@ class RunContentParser(ContentParser):
         return dos, fields
 
 
-class VASPParser(BeyondDFTWorkflowsParser):
+class VASPParser():
     def __init__(self):
         self._vasprun_parser = RunContentParser()
         self._outcar_parser = OutcarContentParser()
         self._calculation_type = 'dft'
         self.hubbard_dc_corrections = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
         self.hubbard_orbital_types = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
-        self._child_archives = {}
         self._gw_algo_map = {
             'EVGW0': 'ev-scGW0',
             'EVGW0R': 'ev-scGW0',
