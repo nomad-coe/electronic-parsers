@@ -1040,7 +1040,8 @@ class RunContentParser(ContentParser):
         selective = self._get_key_values(
             f'{structure}/varray[@name="selective"]/v', array=True).get('v', None)
         # COMMENTED OUT: there is a problem with the versioning: sometimes is nose
-        # others nose[0]
+        # others nose[0]; when trying ifs, _get_key_values gives error trying to set
+        # the array.
         # if self._get_key_values(f'{structure}/nose/v', array=True):
         # nose = self._get_key_values(
         # f'{structure}/nose/v', array=True).get('v', None)
