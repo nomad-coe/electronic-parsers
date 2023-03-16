@@ -691,18 +691,16 @@ class OutcarContentParser(ContentParser):
         return dos, fields
 
     def get_response_functions(self):
-        if self.parser.get('response_functions'):
-            parameters = self.parser.get('response_functions').get('input_parameters')
-            parameters_dict = {}
-            try:
-                for param in parameters:
-                    if param[1] == 'T' or param[1] == 'F':
-                        param[1] = bool(param[1] == 'T')
-                    if param[0] == 'KPOINT':  # problem when serializing array in json
-                        continue
-                    parameters_dict[param[0]] = param[1]
-            except Exception:
-                self.logger.warning('Could not resolve response functions input parameters.')
+        parameters_dict = {}
+        try:
+            for param in self.parser.get('response_functions', {}).get('input_parameters', {}):
+                if param[1] == 'T' or param[1] == 'F':
+                    param[1] = param[1] == 'T'
+                if param[0] == 'KPOINT':  # problem when serializing array in json
+                    continue
+                parameters_dict[param[0]] = param[1]
+        except Exception:
+            self.logger.warning('Could not resolve response functions input parameters.')
         return parameters_dict
 
     def is_converged(self, n_calc):
