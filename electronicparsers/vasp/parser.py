@@ -361,7 +361,7 @@ class OutcarTextParser(TextParser):
                 repeats=False, sub_parser=TextParser(quantities=[
                     Quantity(
                         'input_parameters',
-                        rf'{re_n}* *([a-zA-Z\d\_]+) *\= *([a-zA-Z\d\.\-]+) *.*',
+                        rf'{re_n}* *(\w+) *\= *([\w\.\-]+) *.*',
                         repeats=True)]))]
 
 
