@@ -246,6 +246,7 @@ class OceanParser(BeyondDFTWorkflowsParser):
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
+        child = ''
 
         try:
             data = json.load(open(self.filepath))
