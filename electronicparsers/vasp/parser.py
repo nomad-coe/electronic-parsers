@@ -59,6 +59,8 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, MolecularDynamics as MolecularDynamics2)
 
+re_n = r'[\n\r]'
+
 
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
@@ -352,7 +354,15 @@ class OutcarTextParser(TextParser):
             Quantity(
                 'positions',
                 r'position of ions in cartesian coordinates\s*\(Angst\):([\s\S]+?)\n *\n',
-                str_operation=str_to_positions, convert=False)]
+                str_operation=str_to_positions, convert=False),
+            Quantity(
+                'response_functions',
+                r'\s*Response functions by sum over occupied states\:([\s\S]+?)(?:\-\-\-\-\-\-)',
+                repeats=False, sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'input_parameters',
+                        rf'{re_n}* *([a-zA-Z\d]+) *\= *([a-zA-Z\d\.\-]+) *.*',
+                        repeats=True)]))]
 
 
 class OutcarContentParser(ContentParser):
@@ -679,6 +689,21 @@ class OutcarContentParser(ContentParser):
                 'Cannot determine lm fields for n_lm', data=dict(n_lm=n_lm))
 
         return dos, fields
+
+    def get_response_functions(self):
+        if self.parser.get('response_functions'):
+            parameters = self.parser.get('response_functions').get('input_parameters')
+            try:
+                parameters_dict = {}
+                for param in parameters:
+                    if param[1] == 'T' or param[1] == 'F':
+                        param[1] = bool(param[1] == 'T')
+                    if param[0] == 'KPOINT':  # problem when serializing array in json
+                        continue
+                    parameters_dict[param[0]] = param[1]
+            except Exception:
+                self.logger.warning('Could not resolve response functions input parameters.')
+        return parameters_dict
 
     def is_converged(self, n_calc):
         return self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
@@ -1017,11 +1042,11 @@ class RunContentParser(ContentParser):
         # COMMENTED OUT: there is a problem with the versioning: sometimes is nose
         # others nose[0]
         # if self._get_key_values(f'{structure}/nose/v', array=True):
-            # nose = self._get_key_values(
-                # f'{structure}/nose/v', array=True).get('v', None)
+        # nose = self._get_key_values(
+        # f'{structure}/nose/v', array=True).get('v', None)
         # else:
-            # nose = self._get_key_values(
-                # f'{structure}/nose[0]/v', array=True).get('v', None)
+        # nose = self._get_key_values(
+        # f'{structure}/nose[0]/v', array=True).get('v', None)
         nose = None
 
         if positions is not None:
@@ -1124,6 +1149,10 @@ class RunContentParser(ContentParser):
         dos = np.transpose(dos, axes=(0, 2, 3, 1))
 
         return dos, fields
+
+    def get_response_functions(self):
+        root = '/modeling[0]/parameters[0]/separator[@name="response functions"]/i'
+        return self._get_key_values(root)
 
 
 class VASPParser():
@@ -1302,7 +1331,7 @@ class VASPParser():
         self.parse_incarsinout()
 
         # Code-specific parameters
-        response_functions = self.parser._get_key_values(rf'/modeling[0]/parameters[0]/separator[@name="response functions"]/i')
+        response_functions = self.parser.get_response_functions()
         sec_gw.x_vasp_response_functions_incar = response_functions
 
         # Type
@@ -1618,7 +1647,11 @@ class VASPParser():
         # the parser to inherit from BeyondDFTWorkflowsParser to address automatic GW workflow.
         if self.parser.get_incar().get('ALGO'):
             # TODO check why ALGO is a list
-            if self.parser.get_incar().get('ALGO')[0] in self._gw_algo_map.keys():
+            if isinstance(self.parser.get_incar().get('ALGO'), list):
+                algo = self.parser.get_incar().get('ALGO')[0]
+            else:
+                algo = self.parser.get_incar().get('ALGO')
+            if algo in self._gw_algo_map.keys():
                 self._calculation_type = 'gw'
 
         if self._calculation_type == 'gw':
