@@ -110,7 +110,8 @@ def test_dos(parser):
 
 def test_gw(parser):
     archive = EntryArchive()
-    parser.parse('test/data/abinit/ZrO2_GW/A1.abo', archive, None)
+    parser._calculation_type = 'gw'
+    parser.parse('tests/data/abinit/ZrO2_GW/A1.abo', archive, None)
 
     sec_run = archive.run[-1]
     sec_gw = sec_run.method[-1].gw
@@ -118,7 +119,8 @@ def test_gw(parser):
     assert sec_gw.analytical_continuation == 'contour_deformation'
     assert sec_gw.interval_qp_corrections[0] == 12
     assert sec_gw.interval_qp_corrections[-1] == 13
-    assert sec_gw.n_empty_states_polarizability == sec_gw.n_empty_states_self_energy
+    assert sec_gw.n_states_self_energy == 512
+    assert sec_gw.n_empty_states_self_energy == approx(sec_gw.n_empty_states_polarizability)
     assert sec_gw.frequency_grid.n_points == 2
     assert sec_gw.frequency_grid.values[-1].to('eV').magnitude == approx(31.855950000000004j)
     sec_scc = sec_run.calculation

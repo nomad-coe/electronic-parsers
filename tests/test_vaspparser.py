@@ -48,6 +48,13 @@ def silicon_band(parser):
     return archive
 
 
+@pytest.fixture(scope='module')
+def silicon_gw(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/vasp/Si_GW/vasprun.xml', archive, None)
+    return archive
+
+
 def test_vasprunxml_static(parser):
     """Test Mg1 system, computed in VASP 4.6.35"""
     archive = EntryArchive()
@@ -312,3 +319,19 @@ def test_dftu_static(parser):
     parser.parse('tests/data/vasp/Mg4V2Bi2O12_dftu_no_incar/OUTCAR', archive, None)
     params = archive.run[-1].method[-1].atom_parameters
     assert approx(params[1].hubbard_kanamori_model.u.to('eV').magnitude) == 3.2
+
+
+def test_gw(silicon_gw):
+    """Tests that the GW metainfo has been parsed correctly.
+    """
+    sec_run = silicon_gw.run[-1]
+    sec_method = sec_run.method[-1]
+    assert sec_method.m_xpath('gw')
+    assert not sec_method.m_xpath('dft')
+    assert sec_method.gw.type == 'G0W0'
+    assert sec_method.gw.analytical_continuation == 'pade'
+    assert sec_method.gw.n_states_self_energy == 72
+    assert (sec_method.k_mesh.grid == np.array([6, 6, 6])).all()
+    assert (sec_method.gw.q_grid.grid == np.array([6, 6, 6])).all()
+    assert sec_method.gw.q_grid.generation_method == 'Gamma'
+    assert sec_method.gw.frequency_grid.n_points == 50

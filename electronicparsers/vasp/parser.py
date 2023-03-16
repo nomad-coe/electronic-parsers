@@ -44,7 +44,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, DFT, HubbardKanamoriModel, AtomParameters, XCFunctional,
-    Functional, Electronic, Scf, KMesh
+    Functional, Electronic, Scf, KMesh, GW, FreqMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -58,6 +58,8 @@ from nomad.datamodel.metainfo.workflow import (
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, MolecularDynamics as MolecularDynamics2)
+
+re_n = r'[\n\r]'
 
 
 def get_key_values(val_in):
@@ -352,7 +354,15 @@ class OutcarTextParser(TextParser):
             Quantity(
                 'positions',
                 r'position of ions in cartesian coordinates\s*\(Angst\):([\s\S]+?)\n *\n',
-                str_operation=str_to_positions, convert=False)]
+                str_operation=str_to_positions, convert=False),
+            Quantity(
+                'response_functions',
+                r'\s*Response functions by sum over occupied states\:([\s\S]+?)(?:\-\-\-\-\-\-)',
+                repeats=False, sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'input_parameters',
+                        rf'{re_n}* *(\w+) *\= *([\w\.\-]+) *.*',
+                        repeats=True)]))]
 
 
 class OutcarContentParser(ContentParser):
@@ -679,6 +689,19 @@ class OutcarContentParser(ContentParser):
                 'Cannot determine lm fields for n_lm', data=dict(n_lm=n_lm))
 
         return dos, fields
+
+    def get_response_functions(self):
+        parameters_dict = {}
+        try:
+            for param in self.parser.get('response_functions', {}).get('input_parameters', {}):
+                if param[1] == 'T' or param[1] == 'F':
+                    param[1] = param[1] == 'T'
+                if param[0] == 'KPOINT':  # problem when serializing array in json
+                    continue
+                parameters_dict[param[0]] = param[1]
+        except Exception:
+            self.logger.warning('Could not resolve response functions input parameters.')
+        return parameters_dict
 
     def is_converged(self, n_calc):
         return self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
@@ -1014,8 +1037,16 @@ class RunContentParser(ContentParser):
             f'{structure}/varray[@name="positions"]/v', array=True).get('v', None)
         selective = self._get_key_values(
             f'{structure}/varray[@name="selective"]/v', array=True).get('v', None)
-        nose = self._get_key_values(
-            f'{structure}/nose/v', array=True).get('v', None)
+        # COMMENTED OUT: there is a problem with the versioning: sometimes is nose
+        # others nose[0]; when trying ifs, _get_key_values gives error trying to set
+        # the array.
+        # if self._get_key_values(f'{structure}/nose/v', array=True):
+        # nose = self._get_key_values(
+        # f'{structure}/nose/v', array=True).get('v', None)
+        # else:
+        # nose = self._get_key_values(
+        # f'{structure}/nose[0]/v', array=True).get('v', None)
+        nose = None
 
         if positions is not None:
             positions = np.dot(positions, cell) * ureg.angstrom
@@ -1118,73 +1149,75 @@ class RunContentParser(ContentParser):
 
         return dos, fields
 
+    def get_response_functions(self):
+        root = '/modeling[0]/parameters[0]/separator[@name="response functions"]/i'
+        return self._get_key_values(root)
 
-class VASPParser:
+
+class VASPParser():
     def __init__(self):
         self._vasprun_parser = RunContentParser()
         self._outcar_parser = OutcarContentParser()
+        self._calculation_type = 'dft'
         self.hubbard_dc_corrections = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
         self.hubbard_orbital_types = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
+        self.gw_algo = ''
+        self._gw_algo_map = {
+            'EVGW0': 'ev-scGW0',
+            'EVGW0R': 'ev-scGW0',
+            'EVGW': 'ev-scGW',
+            'QPGW0': 'qp-scGW0',
+            'QPGW': 'qp-scGW',
+            'GW0R': 'scGW0',
+            'GWR': 'scGW',
+        }
 
     def init_parser(self, filepath, logger):
         self.parser = self._vasprun_parser if '.xml' in filepath else self._outcar_parser
         self.parser.init_parser(filepath, logger)
         self.maindir = os.path.dirname(os.path.abspath(filepath))
 
-    def parse_incarsout(self):
+    def parse_incarsinout(self):
         sec_method = self.archive.run[-1].method[-1]
 
-        incar_parameters = self.parser.get_incar_out()
-        for key, val in incar_parameters.items():
-            if isinstance(val, np.ndarray):
-                val = list(val)
-            incar_parameters[key] = val
-        try:
-            sec_method.x_vasp_incar_out = incar_parameters
-        except Exception:
-            self.logger.warning('Error setting metainfo defintion x_vasp_incar_out', data=dict(
-                incar=incar_parameters))
+        def parse_incar(parameters, target):
+            for key, val in parameters.items():
+                if isinstance(val, np.ndarray):
+                    val = list(val)
+                parameters[key] = val
+            try:
+                setattr(sec_method, target, parameters)
+            except Exception:
+                self.logger.warning('Error setting metainfo defintion x_vasp_incar_in', data=dict(
+                    incar=parameters))
 
-        prec = 1.3 if 'acc' in self.parser.incar.get('PREC', '') else 1.0
-        sec_basis = sec_method.m_create(BasisSet)
-        sec_basis.type = 'plane waves'
-        sec_basis_set_cell_dependent = sec_basis.m_create(BasisSetCellDependent)
-        sec_basis_set_cell_dependent.kind = 'plane waves'
-        sec_basis_set_cell_dependent.planewave_cutoff = self.parser.incar.get(
-            'ENMAX', self.parser.incar.get('ENCUT', 0.0)) * prec * ureg.eV
+        parse_incar(self.parser.get_incar(), 'x_vasp_incar_in')
+        parse_incar(self.parser.get_incar_out(), 'x_vasp_incar_out')
+
+    def parse_kpoints(self, section):
+        k_mesh_generation_method = self.parser.kpoints_info.get('x_vasp_k_points_generation_method', None)
+        if k_mesh_generation_method in ['Gamma', 'Monkhorst-Pack']:
+            sec_kmesh = section.m_create(KMesh)
+            sec_kmesh.generation_method = k_mesh_generation_method
+            sec_kmesh.grid = self.parser.kpoints_info.get('divisions', None)
+            section.k_mesh = sec_kmesh
+        for key, val in self.parser.kpoints_info.items():
+            if val is not None:
+                try:
+                    setattr(section, key, val)
+                except Exception:
+                    self.logger.warning('Error setting metainfo', data=dict(key=key))
 
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)
         sec_dft = sec_method.m_create(DFT)
-
-        # input incar
-        incar_parameters = self.parser.get_incar()
-        for key, val in incar_parameters.items():
-            if isinstance(val, np.ndarray):
-                val = list(val)
-            incar_parameters[key] = val
-        try:
-            sec_method.x_vasp_incar_in = incar_parameters
-        except Exception:
-            self.logger.warning('Error setting metainfo defintion x_vasp_incar_in', data=dict(
-                incar=incar_parameters))
-
         sec_method.electronic = Electronic(method='DFT+U' if self.parser.incar.get(
             'LDAU', False) else 'DFT')
 
+        # input/output incar
+        self.parse_incarsinout()
         # kpoints
-        k_mesh_generation_method = self.parser.kpoints_info.get('x_vasp_k_points_generation_method', None)
-        if k_mesh_generation_method in ['Gamma', 'Monkhorst-Pack']:
-            sec_kmesh = sec_method.m_create(KMesh)
-            sec_kmesh.generation_method = k_mesh_generation_method
-            sec_kmesh.grid = self.parser.kpoints_info.get('divisions', None)
-            sec_method.k_mesh = sec_kmesh
-        for key, val in self.parser.kpoints_info.items():
-            if val is not None:
-                try:
-                    setattr(sec_method, key, val)
-                except Exception:
-                    self.logger.warning('Error setting metainfo', data=dict(key=key))
+        self.parse_kpoints(sec_method)
 
         # atom properties & hubbard correction
         # based on https://www.vasp.at/wiki/index.php/LDAUTYPE (08/07/2022)
@@ -1229,7 +1262,13 @@ class VASPParser:
             atom_counts[element[i]] += 1
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
 
-        self.parse_incarsout()
+        prec = 1.3 if 'acc' in self.parser.incar.get('PREC', '') else 1.0
+        sec_basis = sec_method.m_create(BasisSet)
+        sec_basis.type = 'plane waves'
+        sec_basis_set_cell_dependent = sec_basis.m_create(BasisSetCellDependent)
+        sec_basis_set_cell_dependent.kind = 'plane waves'
+        sec_basis_set_cell_dependent.planewave_cutoff = self.parser.incar.get(
+            'ENMAX', self.parser.incar.get('ENCUT', 0.0)) * prec * ureg.eV
 
         sec_xc_functional = sec_dft.m_create(XCFunctional)
         if self.parser.incar.get('LHFCALC', False):
@@ -1282,6 +1321,42 @@ class VASPParser:
         tolerance = self.parser.incar.get('EDIFF')
         if tolerance is not None:
             sec_method.scf = Scf(threshold_energy_change=tolerance * ureg.eV)
+
+    def parse_gw(self):
+        sec_run = self.archive.run[-1]
+        sec_method = sec_run.m_create(Method)
+        sec_gw = sec_method.m_create(GW)
+
+        # input/output incar
+        self.parse_incarsinout()
+
+        # Code-specific parameters
+        response_functions = self.parser.get_response_functions()
+        sec_gw.x_vasp_response_functions_incar = response_functions
+
+        # Type
+        nelmgw = response_functions.get('NELMGW', 1)
+        sec_gw.type = 'G0W0' if nelmgw == 1 else self._gw_algo_map.get(self.gw_algo)
+        if sec_gw.type is None:
+            self.logger.warning('Error setting the GW type.')
+
+        # K mesh
+        self.parse_kpoints(sec_method)
+
+        # Q mesh
+        self.parse_kpoints(sec_gw)
+
+        # Analytical continuation
+        sec_gw.analytical_continuation = 'pade'
+
+        # Frequency grid
+        n_omega = response_functions.get('NOMEGA', 100)
+        sec_freq_grid = sec_gw.m_create(FreqMesh)
+        sec_freq_grid.n_points = n_omega
+
+        # Other parameters
+        n_bands = self.parser.get_incar().get('NBANDS')
+        sec_gw.n_states_self_energy = n_bands
 
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)
@@ -1570,7 +1645,21 @@ class VASPParser:
             dtime = datetime.combine(date, time) - datetime.utcfromtimestamp(0)
             sec_run.program.compilation_datetime = dtime.total_seconds()
 
-        self.parse_method()
+        # TODO VASP>=6.3.0 can do DFT+GW calculations in one single step: with data we can extend
+        # the parser to inherit from BeyondDFTWorkflowsParser to address automatic GW workflow.
+        if self.parser.get_incar().get('ALGO', ''):
+            # TODO check why ALGO is a list
+            if isinstance(self.parser.get_incar().get('ALGO', ''), list):
+                self.gw_algo = self.parser.get_incar().get('ALGO', '')[0]
+            else:
+                self.gw_algo = self.parser.get_incar().get('ALGO', '')
+            if self.gw_algo in self._gw_algo_map.keys():
+                self._calculation_type = 'gw'
+
+        if self._calculation_type == 'gw':
+            self.parse_gw()
+        else:
+            self.parse_method()
 
         self.parse_configurations()
 

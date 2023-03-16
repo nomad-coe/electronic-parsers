@@ -582,7 +582,7 @@ class FHIAimsOutParser(TextParser):
                 'frozen_core', rf'{re_n}\s*frozen_core_scf\s*(\d+)', repeats=False,
                 dtype=int),
             Quantity(
-                'empty_states',
+                'n_states_gw',
                 r'\|\s*Number of Kohn-Sham states \(occupied \+ empty\)\s*\:\s*(\d+)',
                 repeats=False),
             Quantity(
@@ -874,8 +874,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         if frequency_data is not None:
             sec_freq_grid.values = np.array(frequency_data)[:, 1] * ureg.hartree
         # Other parameters
-        sec_gw.n_empty_states_polarizability = self.out_parser.get('empty_states')
-        sec_gw.n_empty_states_self_energy = self.out_parser.get('empty_states')
+        sec_gw.n_states_self_energy = self.out_parser.get('n_states_gw')
 
         # GW calculation
         sec_scc = sec_run.m_create(Calculation)

@@ -146,3 +146,15 @@ class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):
         description='''
         Type of orbitals used for projection in order to calculate occupation numbers.
         ''')
+
+
+class GW(simulation.method.GW):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_vasp_response_functions_incar = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        Input parameters used in the "response functions".
+        ''')
