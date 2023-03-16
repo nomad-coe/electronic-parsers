@@ -1336,7 +1336,7 @@ class VASPParser():
 
         # Type
         nelmgw = response_functions.get('NELMGW', 1)
-        sec_gw.type = 'G0W0' if nelmgw == 1 else self._gw_algo_map.get(self.gw_algo, None)
+        sec_gw.type = 'G0W0' if nelmgw == 1 else self._gw_algo_map.get(self.gw_algo)
         if sec_gw.type is None:
             self.logger.warning('Error setting the GW type.')
 
