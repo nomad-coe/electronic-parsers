@@ -361,7 +361,7 @@ class OutcarTextParser(TextParser):
                 repeats=False, sub_parser=TextParser(quantities=[
                     Quantity(
                         'input_parameters',
-                        rf'{re_n}* *([a-zA-Z\d]+) *\= *([a-zA-Z\d\.\-]+) *.*',
+                        rf'{re_n}* *([a-zA-Z\d\_]+) *\= *([a-zA-Z\d\.\-]+) *.*',
                         repeats=True)]))]
 
 
@@ -693,8 +693,8 @@ class OutcarContentParser(ContentParser):
     def get_response_functions(self):
         if self.parser.get('response_functions'):
             parameters = self.parser.get('response_functions').get('input_parameters')
+            parameters_dict = {}
             try:
-                parameters_dict = {}
                 for param in parameters:
                     if param[1] == 'T' or param[1] == 'F':
                         param[1] = bool(param[1] == 'T')
@@ -1646,12 +1646,12 @@ class VASPParser():
 
         # TODO VASP>=6.3.0 can do DFT+GW calculations in one single step: with data we can extend
         # the parser to inherit from BeyondDFTWorkflowsParser to address automatic GW workflow.
-        if self.parser.get_incar().get('ALGO'):
+        if self.parser.get_incar().get('ALGO', ''):
             # TODO check why ALGO is a list
-            if isinstance(self.parser.get_incar().get('ALGO'), list):
-                algo = self.parser.get_incar().get('ALGO')[0]
+            if isinstance(self.parser.get_incar().get('ALGO', ''), list):
+                algo = self.parser.get_incar().get('ALGO', '')[0]
             else:
-                algo = self.parser.get_incar().get('ALGO')
+                algo = self.parser.get_incar().get('ALGO', '')
             if algo in self._gw_algo_map.keys():
                 self._calculation_type = 'gw'
 
