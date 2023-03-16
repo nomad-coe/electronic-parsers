@@ -1161,6 +1161,7 @@ class VASPParser():
         self._calculation_type = 'dft'
         self.hubbard_dc_corrections = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
         self.hubbard_orbital_types = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
+        self.gw_algo = ''
         self._gw_algo_map = {
             'EVGW0': 'ev-scGW0',
             'EVGW0R': 'ev-scGW0',
@@ -1334,26 +1335,28 @@ class VASPParser():
         sec_gw.x_vasp_response_functions_incar = response_functions
 
         # Type
-        algo = self.parser.get_incar().get('ALGO')[0]
         nelmgw = response_functions.get('NELMGW', 1)
-        if nelmgw == 1:
-            sec_gw.type = 'G0W0'
-        else:
-            try:
-                sec_gw.type = self._gw_algo_map[algo]
-            except Exception:
-                self.logger.warning('Error setting the GW sfc type.')
+        sec_gw.type = 'G0W0' if nelmgw == 1 else self._gw_algo_map.get(self.gw_algo, None)
+        if sec_gw.type is None:
+            self.logger.warning('Error setting the GW type.')
+
         # K mesh
         self.parse_kpoints(sec_method)
+
         # Q mesh
         self.parse_kpoints(sec_gw)
+
         # Analytical continuation
         sec_gw.analytical_continuation = 'pade'
+
         # Frequency grid
+        n_omega = response_functions.get('NOMEGA', 100)
         sec_freq_grid = sec_gw.m_create(FreqMesh)
-        sec_freq_grid.n_points = response_functions.get('NOMEGA', 100)
+        sec_freq_grid.n_points = n_omega
+
         # Other parameters
-        sec_gw.n_states_self_energy = self.parser.get_incar().get('NBANDS')
+        n_bands = self.parser.get_incar().get('NBANDS')
+        sec_gw.n_states_self_energy = n_bands
 
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)
@@ -1647,10 +1650,10 @@ class VASPParser():
         if self.parser.get_incar().get('ALGO', ''):
             # TODO check why ALGO is a list
             if isinstance(self.parser.get_incar().get('ALGO', ''), list):
-                algo = self.parser.get_incar().get('ALGO', '')[0]
+                self.gw_algo = self.parser.get_incar().get('ALGO', '')[0]
             else:
-                algo = self.parser.get_incar().get('ALGO', '')
-            if algo in self._gw_algo_map.keys():
+                self.gw_algo = self.parser.get_incar().get('ALGO', '')
+            if self.gw_algo in self._gw_algo_map.keys():
                 self._calculation_type = 'gw'
 
         if self._calculation_type == 'gw':
