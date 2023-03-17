@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import DataTextParser, TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, Photon, CoreHole, BSE, KMesh
+    Method, KMesh, Photon, CoreHole, BSE, ExcitedStateMethodology
 )
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Spectra
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
@@ -117,59 +117,75 @@ class OceanParser(BeyondDFTWorkflowsParser):
         if sec_run.m_xpath('method[0].photon'):
             sec_method.starting_method_ref = sec_run.method[0]
 
-        # KMesh section
-        sec_k_mesh = sec_method.m_create(KMesh)
-        sec_k_mesh.grid = self.data['bse'].get('kmesh')
-
-        # BSE section
-        sec_bse = sec_method.m_create(BSE)
-        sec_bse.n_empty_states = self.data['bse'].get('nbands')
-        # screening parsing
-        sec_bse.screening_type = self.data['screen'].get('mode')
-        sec_bse.dielectric_infinity = self.data['structure'].get('epsilon')
-        sec_bse.n_empty_states_screening = self.data['screen'].get('nbands')
-        sec_bse.k_mesh_screening = KMesh(grid=self.data['screen'].get('kmesh'))
-
-        # code-specific parameters
         # BSE
-        sec_bse_ocean = sec_method.m_create(x_ocean_bse_parameters)
-        sec_bse_ocean.x_ocean_screen_radius = self.data['bse']['core'].get('screen_radius')
-        sec_bse_ocean.x_ocean_xmesh = self.data['bse'].get('xmesh')
-        # screening
-        sec_bse_screen = sec_method.m_create(x_ocean_screen_parameters)
-        screen_keys = [
-            'all_augment', 'augment', 'convertstyle', 'dft_energy_range', 'inversionstyle',
-            'kshift', 'mimic_exciting_bands', 'shells']
-        screen_dicts = [
-            'core_offset', 'final', 'grid']
-        for key in screen_keys:
-            setattr(sec_bse_screen, f'x_ocean_{key}', self.data['screen'].get(key))
-        for keys in screen_dicts:
-            for subkeys in self.data['screen'][keys].keys():
-                setattr(sec_bse_screen, f'x_ocean_{keys}_{subkeys}', self.data['screen'][keys].get(subkeys))
-        sec_bse_screen.x_ocean_model_flavor = self.data['screen']['model'].get('flavor')
-        # edges
-        edges = []
-        for ed in [x.split(' ') for x in self.data['calc'].get('edges', [])]:
-            edges.append([int(x) for x in ed])
-        sec_method.x_ocean_edges = edges
+        sec_bse = sec_method.m_create(BSE)
+        bse_data = self.data.get('bse', {})
+        sec_bse.type = bse_data.get('val', {}).get('solver')
+        sec_bse.n_states = bse_data.get('nbands', 1)
+        # KMesh for BSE
+        sec_k_mesh = KMesh(grid=bse_data.get('kmesh', []))
+        sec_bse.m_add_sub_section(BSE.k_mesh, sec_k_mesh)
+        # QMesh copied from KMesh
+        sec_bse.m_add_sub_section(BSE.q_mesh, sec_k_mesh)
+        # Screening
+        screen_data = self.data.get('screen', {})
+        sec_screening = ExcitedStateMethodology(
+            type=screen_data.get('mode'),
+            n_states=screen_data.get('nbands', 1))
+        sec_k_mesh_screening = KMesh(grid=screen_data.get('kmesh', []))
+        sec_screening.m_add_sub_section(ExcitedStateMethodology.k_mesh, sec_k_mesh_screening)
+        sec_screening.m_add_sub_section(ExcitedStateMethodology.q_mesh, sec_k_mesh_screening)
+        sec_bse.m_add_sub_section(BSE.screening, sec_screening)
+        sec_bse.dielectric_infinity = self.data['structure'].get('epsilon')
 
         # Core-Hole (either K=1s or L23=2p depenging on the first edge found)
-        sec_core = sec_bse.m_create(CoreHole)
-        sec_core.mode = self.mode_bse[self.data['bse']['core'].get('strength')]
-        sec_core.solver = self._type_bse_map[self.data['bse']['core'].get('solver')]
-        sec_core.edge = self._core_level_map[str(edges[0][-2:])]
-        sec_core.broadening = self.data['bse']['core'].get('broaden')
-        if sec_core.solver == 'lanczos-haydock':
-            sec_haydock = sec_bse_ocean.m_create(x_ocean_core_haydock_parameters)
-            sec_haydock.x_ocean_converge_spacing = self.data['bse']['core']['haydock']['converge'].get('spacing')
-            sec_haydock.x_ocean_converge_thresh = self.data['bse']['core']['haydock']['converge'].get('thresh')
-            sec_haydock.x_ocean_niter = self.data['bse']['core']['haydock'].get('niter')
-        elif sec_core.solver == 'gmres':
-            sec_gmres = sec_bse_ocean.m_create(x_ocean_core_gmres_parameters)
-            gmres_keys = ['echamp', 'elist', 'erange', 'estyle', 'ffff', 'gprc', 'nloop']
-            for key in gmres_keys:
-                setattr(sec_gmres, f'x_ocean_{key}', self.data['bse']['core']['gmres'].get(key))
+        bse_core_data = bse_data.get('core')
+        if bse_core_data:
+            sec_core = CoreHole(
+                mode=self.mode_bse[bse_core_data.get('strength')],
+                solver=self._type_bse_map[bse_core_data.get('solver')])
+            sec_bse.m_add_sub_section(BSE.core, sec_core)
+            # TODO wait for new changes in metainfo for CoreHole
+            # sec_core.edge = self._core_level_map[str(edges[0][-2:])]
+            # sec_core.broadening = self.data['bse']['core'].get('broaden')
+
+        # code-specific parameters
+        try:
+            # BSE
+            sec_bse_ocean = sec_method.m_create(x_ocean_bse_parameters)
+            sec_bse_ocean.x_ocean_screen_radius = bse_core_data.get('screen_radius')
+            sec_bse_ocean.x_ocean_xmesh = bse_data.get('xmesh')
+            # screening
+            sec_bse_screen = sec_method.m_create(x_ocean_screen_parameters)
+            screen_keys = [
+                'all_augment', 'augment', 'convertstyle', 'dft_energy_range', 'inversionstyle',
+                'kshift', 'mimic_exciting_bands', 'shells']
+            screen_dicts = [
+                'core_offset', 'final', 'grid']
+            for key in screen_keys:
+                setattr(sec_bse_screen, f'x_ocean_{key}', screen_data.get(key))
+            for keys in screen_dicts:
+                for subkeys in screen_data[keys].keys():
+                    setattr(sec_bse_screen, f'x_ocean_{keys}_{subkeys}', screen_data[keys].get(subkeys))
+            sec_bse_screen.x_ocean_model_flavor = screen_data['model'].get('flavor')
+            # edges
+            edges = []
+            for ed in [x.split(' ') for x in self.data['calc'].get('edges', [])]:
+                edges.append([int(x) for x in ed])
+            sec_method.x_ocean_edges = edges
+            # core
+            if bse_core_data.get('solver') == 'haydock':
+                sec_haydock = sec_bse_ocean.m_create(x_ocean_core_haydock_parameters)
+                sec_haydock.x_ocean_converge_spacing = bse_core_data['haydock']['converge'].get('spacing')
+                sec_haydock.x_ocean_converge_thresh = bse_core_data['haydock']['converge'].get('thresh')
+                sec_haydock.x_ocean_niter = bse_core_data['haydock'].get('niter')
+            elif bse_core_data.get('solver') == 'gmres':
+                sec_gmres = sec_bse_ocean.m_create(x_ocean_core_gmres_parameters)
+                gmres_keys = ['echamp', 'elist', 'erange', 'estyle', 'ffff', 'gprc', 'nloop']
+                for key in gmres_keys:
+                    setattr(sec_gmres, f'x_ocean_{key}', bse_core_data['gmres'].get(key))
+        except Exception:
+            self.logger.warning('Error extracting code-specific quantities.')
 
     def parse_scc(self, path):
         sec_run = self._child_archives.get(path).run[-1]
