@@ -20,7 +20,7 @@ import numpy as np            # pylint: disable=unused-import
 import typing                 # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference, MEnum
+    Reference, MEnum, JSON
 )
 from nomad.datamodel.metainfo import simulation
 
@@ -1494,4 +1494,16 @@ class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):
         shape=[],
         description='''
         Mixing term to correct for double counting in DFT+U
+        ''')
+
+
+class MolecularDynamicsMethod(simulation.workflow.MolecularDynamicsMethod):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_fhi_aims_controlIn_MD = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        All MD-related input parameters.
         ''')

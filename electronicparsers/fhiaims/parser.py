@@ -412,6 +412,10 @@ class FHIAimsOutParser(TextParser):
                 val = None
             return val
 
+        def str_to_test(val_in):
+            val = val_in
+            return val
+
         calculation_quantities = [
             Quantity(
                 'self_consistency',
@@ -489,6 +493,10 @@ class FHIAimsOutParser(TextParser):
                 'converged', r'Self\-consistency cycle (converged)\.', repeats=False, dtype=str)]
 
         molecular_dynamics_quantities = [
+            # Quantity(
+            #     'molecular_dynamics_controlin',
+            #     rf'{re_n} *([\_a-zA-Z\d\-]*MD[\_a-zA-Z\d\-]*)[\s\=]+([a-zA-Z\d\.\-]+)\s*{re_n}',
+            #     str_operation=str_to_test, repeats=True, convert=False),
             Quantity(
                 'molecular_dynamics_ensemble',
                 r' *Running\s*Born-Oppenheimer\s*molecular\s*dynamics\s*in\s*([A-Z]{3})\s*ensemble',
@@ -1462,6 +1470,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
             control_inout = self.out_parser.get('control_inout')
             if control_inout:
+                test = control_inout.get('molecular_dynamics_controlin')
                 workflow.method.thermodynamic_ensemble = control_inout.get('molecular_dynamics_ensemble')
                 workflow.method.integration_timestep = control_inout.get('molecular_dynamics_timestep')
 
