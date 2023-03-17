@@ -1497,13 +1497,13 @@ class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):
         ''')
 
 
-class MolecularDynamicsMethod(simulation.workflow.MolecularDynamicsMethod):
+# class MolecularDynamicsMethod(simulation.workflow.MolecularDynamicsMethod):
 
-    m_def = Section(validate=False, extends_base_section=True)
+#     m_def = Section(validate=False, extends_base_section=True)
 
-    x_fhi_aims_controlIn_MD = Quantity(
-        type=JSON,
-        shape=[],
-        description='''
-        All MD-related input parameters.
-        ''')
+#     x_fhi_aims_controlIn_MD = Quantity(
+#         type=JSON,
+#         shape=[],
+#         description='''
+#         All MD-related input parameters.
+#         ''')
