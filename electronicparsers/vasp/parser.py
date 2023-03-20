@@ -118,25 +118,47 @@ class ContentParser:
             'energy_entropy0': 'energy_total', 'DENC': 'energy_correction_hartree',
             'EXHF': 'energy_exchange', 'EBANDS': 'energy_sum_eigenvalues', 'efermi': 'fermi'}
 
-        # TODO 1. verify list most probably incomplete, 2. it appears that there is no
+        # TODO 2. it appears that there is no
         # single parameter for hybrid functionals so it is difficult to determine, 3. not
         # sure about --, I thought it is lda exchange only.
         self.xc_functional_mapping = {
-            '91': ['GGA_X_PW91', 'GGA_C_PW91'], 'PE': ['GGA_X_PBE', 'GGA_C_PBE'],
-            'AM': ['GGA_X_AM05', 'GGA_C_AM05'], 'HL': ['LDA_C_HL'],
-            'PZ': ['LDA_C_PZ'], 'WI': ['LDA_C_WIGNER'],
-            'RE': ['GGA_X_PBE_R'], 'VW': ['LDA_C_VWN'], 'B3': ['HYB_GGA_XC_B3LYP3'],
-            'B5': ['HYB_GGA_XC_B3LYP5'], 'BF': ['GGA_X_BEEFVDW', 'GGA_XC_BEEFVDW'],
-            'CO': [], 'OR': ['GGA_X_OPTPBE_VDW'],
-            'BO': ['GGA_X_OPTB88_VDW'], 'RA': ['LDA_C_PW_RPA'],
-            'RP': ['GGA_X_RPBE', 'GGA_C_PBE'], 'PS': ['GGA_C_PBE_SOL', 'GGA_X_PBE_SOL'],
-            'MK': ['GGA_X_OPTB86B_VDW'], '--': ['GGA_X_PBE', 'GGA_C_PBE'],
-            'TPSS': ['MGGA_X_TPSS', 'MGGA_C_TPSS'], 'RTPSS': ['MGGA_X_RTPSS'],
-            'M06L': ['MGGA_C_M06_L'], 'MBJ': ['MGGA_X_BJ06'], 'MS0': ['MGGA_X_MS0'],
-            'MS1': ['MGGA_X_MS1'], 'MS2': ['MGGA_X_MS2'],
-            'RSCAN': ['MGGA_X_RSCAN', 'MGGA_C_RSCAN'], 'SCAN': ['MGGA_X_SCAN'],
+            '--': ['GGA_X_PBE', 'GGA_C_PBE'],
+            'HL': ['LDA_C_HL'],
+            'WI': ['LDA_C_WIGNER'],
+            'PZ': ['LDA_C_PZ'],
+            '91': ['GGA_X_PW91', 'GGA_C_PW91'],
+            'PE': ['GGA_X_PBE', 'GGA_C_PBE'],
+            'RE': ['GGA_X_PBE_R'], 'VW': ['LDA_C_VWN'],
+            'RP': ['GGA_X_RPBE', 'GGA_C_PBE'],
+            'PS': ['GGA_C_PBE_SOL', 'GGA_X_PBE_SOL'],
+            'AM': ['GGA_X_AM05', 'GGA_C_AM05'],
+            'B3': ['HYB_GGA_XC_B3LYP3'],
+            'B5': ['HYB_GGA_XC_B3LYP5'],
+            'BF': ['GGA_X_BEEFVDW', 'GGA_XC_BEEFVDW'],
+            'CO': [],  # TODO check if this is ever used
+            'OR': ['GGA_X_OPTPBE_VDW'],
+            'BO': ['GGA_X_OPTB88_VDW'],
+            'MK': ['GGA_X_OPTB86B_VDW'],
+            'ML': ['VDW_XC_DF2'],
+            'CX': ['VDW_XC_DF_CX'],
+            'TPSS': ['MGGA_X_TPSS', 'MGGA_C_TPSS'],
+            'RTPSS': ['MGGA_X_RTPSS'],
+            'M06L': ['MGGA_C_M06_L'],
+            'MS0': ['MGGA_X_MS0'],
+            'MS1': ['MGGA_X_MS1'],
+            'MS2': ['MGGA_X_MS2'],
+            'SCAN': ['MGGA_X_SCAN'],
+            'RSCAN': ['MGGA_X_RSCAN', 'MGGA_C_RSCAN'],
             'R2SCAN': ['MGGA_X_R2SCAN', 'MGGA_C_R2SCAN'],
-            'HLE17': ['MGGA_XC_HLE17']}
+            'SCANL': ['MGGA_X_SCANL', 'MGGA_C_SCANL'],
+            'RSCANL': [], # not in LibXC, nor any paper, just deorbitalized SCANL
+            'R2SCANL': ['MGGA_X_R2SCANL', 'MGGA_C_R2SCANL'],
+            'OFR2': [],
+            'MBJ': ['MGGA_X_BJ06'],
+            'LBMJ': [],  # TODO ask Miguel Marquez
+            'HLE17': ['MGGA_XC_HLE17'], # TODO check if this is ever used
+            'RA': ['LDA_C_PW_RPA'] # TODO check if this is ever used
+        }
 
     def init_parser(self, filepath, logger):
         self.parser.mainfile = filepath
