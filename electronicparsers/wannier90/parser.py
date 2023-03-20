@@ -196,16 +196,19 @@ class Wannier90Parser():
         sec_system = sec_run.m_create(System)
 
         sec_atoms = sec_system.m_create(Atoms)
-        if wout_parser.get('lattice_vectors') is not None:
-            sec_atoms.lattice_vectors = np.vstack(wout_parser.get('lattice_vectors')[-3:]) * ureg.angstrom
+        if wout_parser.get('lattice_vectors', []):
+            lattice_vectors = np.vstack(wout_parser.get('lattice_vectors', [])[-3:])
+            sec_atoms.lattice_vectors = lattice_vectors * ureg.angstrom
         if wout_parser.get('reciprocal_lattice_vectors') is not None:
             sec_atoms.lattice_vectors_reciprocal = np.vstack(wout_parser.get('reciprocal_lattice_vectors')[-3:]) / ureg.angstrom
 
-        pbc = [np.vstack(wout_parser.get('lattice_vectors')[-3:]) is not None] * 3
+        pbc = [lattice_vectors is not None] * 3
         sec_atoms.periodic = pbc
 
-        sec_atoms.labels = wout_parser.get('structure').get('labels')
-        sec_atoms.positions = wout_parser.get('structure').get('positions') * ureg.angstrom
+        structure = wout_parser.get('structure')
+        if structure:
+            sec_atoms.labels = structure.get('labels')
+            sec_atoms.positions = structure.get('positions') * ureg.angstrom
 
         # Parsing from input
         # win_files = [f for f in os.listdir(self.maindir) if f.endswith('.win')]
@@ -296,7 +299,7 @@ class Wannier90Parser():
         # Wannier90 section
         for key in self._input_projection_mapping.keys():
             setattr(sec_wann, self._input_projection_mapping[key], self.wout_parser.get(key))
-        if self.wout_parser.get('Niter') is not None:
+        if self.wout_parser.get('Niter'):
             sec_wann.is_maximally_localized = self.wout_parser.get('Niter', 0) > 1
         sec_wann.energy_window_outer = self.wout_parser.get('energy_windows').outer
         sec_wann.energy_window_inner = self.wout_parser.get('energy_windows').inner
