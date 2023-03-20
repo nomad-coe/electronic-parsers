@@ -712,35 +712,6 @@ class x_fhi_aims_section_eigenvalues_spin_perturbativeGW(MSection):
     m_def = Section(validate=False)
 
 
-class Energy(simulation.calculation.Energy):
-
-    m_def = Section(validate=False, extends_base_section=True)
-
-    x_fhi_aims_electronic_free_energy = SubSection(
-        sub_section=simulation.calculation.EnergyEntry.m_def,
-        description='''
-        Associated with Born-Oppenheimer molecular dynamics in NVT with Nose-Hoover thermostat.
-        ''',)
-
-    x_fhi_aims_nuclear_kinetic_energy = SubSection(
-        sub_section=simulation.calculation.EnergyEntry.m_def,
-        description='''
-        Associated with Born-Oppenheimer molecular dynamics in NVT with Nose-Hoover thermostat.
-        ''',)
-
-    x_fhi_aims_total_energy_el_and_nuc = SubSection(
-        sub_section=simulation.calculation.EnergyEntry.m_def,
-        description='''
-        Associated with Born-Oppenheimer molecular dynamics in NVT with Nose-Hoover thermostat.
-        ''',)
-
-    x_fhi_aims_nosehoover_hamiltonian = SubSection(
-        sub_section=simulation.calculation.EnergyEntry.m_def,
-        description='''
-        Associated with Born-Oppenheimer molecular dynamics in NVT with Nose-Hoover thermostat.
-        ''',)
-
-
 class Calculation(simulation.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
@@ -794,21 +765,12 @@ class Calculation(simulation.calculation.Calculation):
         filename of cube file
         ''')
 
-    x_fhi_aims_thermostat_value_lns = Quantity(
-        type=np.dtype(np.float64),
+    x_fhi_aims_calculation_md = Quantity(
+        type=JSON,
         shape=[],
-        unit='joule * second',
         description='''
-        Associated with Born-Oppenheimer molecular dynamics in NVT with Nose-Hoover thermostat.
-        ''',)
-
-    x_fhi_aims_thermostat_momentum_pi = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='joule',
-        description='''
-        Associated with Born-Oppenheimer molecular dynamics in NVT with Nose-Hoover thermostat.
-        ''',)
+        All MD-related calculation quantities.
+        ''')
 
 
 class ScfIeration(simulation.calculation.ScfIteration):
@@ -1497,13 +1459,13 @@ class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):
         ''')
 
 
-# class MolecularDynamicsMethod(simulation.workflow.MolecularDynamicsMethod):
+class MolecularDynamicsMethod(simulation.workflow.MolecularDynamicsMethod):
 
-#     m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False, extends_base_section=True)
 
-#     x_fhi_aims_controlIn_MD = Quantity(
-#         type=JSON,
-#         shape=[],
-#         description='''
-#         All MD-related input parameters.
-#         ''')
+    x_fhi_aims_controlIn_md = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        All MD-related input parameters.
+        ''')
