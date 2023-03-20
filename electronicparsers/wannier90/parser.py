@@ -208,10 +208,11 @@ class Wannier90Parser():
         sec_atoms.positions = wout_parser.get('structure').get('positions') * ureg.angstrom
 
         # Parsing from input
+        # win_files = [f for f in os.listdir(self.maindir) if f.endswith('.win')]
         win_files = get_files('*.win', self.filepath, '*.wout')
         if len(win_files) > 1:
             self.logger.warning('Multiple win files found. We will parse the first one.')
-        self.win_parser.mainfile = os.path.join(self.maindir, win_files[0])
+        self.win_parser.mainfile = win_files[0]
 
         # Set units in case these are defined in .win
         projections = self.win_parser.get('projections', [])
@@ -304,17 +305,15 @@ class Wannier90Parser():
         hr_files = get_files('*hr.dat', self.filepath, '*.wout')
         if not hr_files:
             return
-
-        sec_scc = self.archive.run[-1].calculation[-1]
-
-        self.hr_parser.mainfile = os.path.join(self.maindir, hr_files[0])
-        sec_hopping_matrix = sec_scc.m_create(HoppingMatrix)
+        self.hr_parser.mainfile = hr_files[0]
 
         # Assuming method.projection is parsed before
+        sec_scc = self.archive.run[-1].calculation[-1]
+        sec_hopping_matrix = sec_scc.m_create(HoppingMatrix)
         sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].projection.wannier.n_projected_orbitals
-        sec_hopping_matrix.n_wigner_seitz_points = self.hr_parser.get('degeneracy_factors')[1]
-        sec_hopping_matrix.degeneracy_factors = self.hr_parser.get('degeneracy_factors')[2:]
-        full_hoppings = self.hr_parser.get('hoppings')
+        sec_hopping_matrix.n_wigner_seitz_points = self.hr_parser.get('degeneracy_factors', [])[1]
+        sec_hopping_matrix.degeneracy_factors = self.hr_parser.get('degeneracy_factors', [])[2:]
+        full_hoppings = self.hr_parser.get('hoppings', [])
         sec_hopping_matrix.value = np.reshape(
             full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
 
@@ -375,7 +374,7 @@ class Wannier90Parser():
         if len(band_files) > 1:
             self.logger.warning('Multiple bandstructure data files found.')
         # Parsing only first *_band.dat file
-        self.band_dat_parser.mainfile = os.path.join(self.maindir, band_files[0])
+        self.band_dat_parser.mainfile = band_files[0]
 
         sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
         sec_k_band.energy_fermi = energy_fermi
@@ -426,8 +425,8 @@ class Wannier90Parser():
             return
         if len(dos_files) > 1:
             self.logger.warning('Multiple dos data files found.')
-        # Parsing only first *_band.dat file
-        self.dos_dat_parser.mainfile = os.path.join(self.maindir, dos_files[0])
+        # Parsing only first *dos.dat file
+        self.dos_dat_parser.mainfile = dos_files[0]
 
         sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
         sec_dos.energy_fermi = energy_fermi
