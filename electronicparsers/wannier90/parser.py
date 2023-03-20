@@ -208,7 +208,7 @@ class Wannier90Parser():
         sec_atoms.positions = wout_parser.get('structure').get('positions') * ureg.angstrom
 
         # Parsing from input
-        win_files = [f for f in os.listdir(self.maindir) if f.endswith('.win')]
+        win_files = get_files('*.win', self.filepath, '*.wout')
         if len(win_files) > 1:
             self.logger.warning('Multiple win files found. We will parse the first one.')
         self.win_parser.mainfile = os.path.join(self.maindir, win_files[0])
@@ -301,7 +301,7 @@ class Wannier90Parser():
         sec_wann.energy_window_inner = self.wout_parser.get('energy_windows').inner
 
     def parse_hoppings(self):
-        hr_files = [f for f in os.listdir(self.maindir) if f.endswith('hr.dat')]
+        hr_files = get_files('*hr.dat', self.filepath, '*.wout')
         if not hr_files:
             return
 
@@ -369,7 +369,7 @@ class Wannier90Parser():
             energy_fermi = 0.0 * ureg.eV
         energy_fermi_eV = energy_fermi.to('electron_volt').magnitude
 
-        band_files = [f for f in os.listdir(self.maindir) if f.endswith('band.dat')]
+        band_files = get_files('*band.dat', self.filepath, '*.wout')
         if not band_files:
             return
         if len(band_files) > 1:
@@ -421,7 +421,7 @@ class Wannier90Parser():
             self.logger.warn('Error setting the Fermi level: not found from hoppings. Setting it to 0 eV')
             energy_fermi = 0.0 * ureg.eV
 
-        dos_files = [f for f in os.listdir(self.maindir) if f.endswith('dos.dat')]
+        dos_files = get_files('*dos.dat', self.filepath, '*.wout')
         if not dos_files:
             return
         if len(dos_files) > 1:
@@ -463,15 +463,8 @@ class Wannier90Parser():
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logging.getLogger(__name__) if logger is None else logger
 
+        self.wout_parser.mainfile = self.filepath
         sec_run = archive.m_create(Run)
-
-        # TODO move mainfile as hdf5 to MatchingParserInterface list and
-        # create init_parser() for the mainfile?
-        wout_files = [f for f in os.listdir(self.maindir) if f.endswith('.wout')]
-        if not wout_files:
-            self.logger.error('Error finding the woutput file.')
-
-        self.wout_parser.mainfile = os.path.join(self.maindir, wout_files[0])
 
         # Program section
         sec_run.program = Program(
