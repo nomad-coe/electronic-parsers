@@ -290,7 +290,7 @@ class Wannier90Parser():
         # k_mesh section
         kmesh = self.wout_parser.get('k_mesh')
         if kmesh:
-            sec_k_mesh = sec_wann.m_create(KMesh)
+            sec_k_mesh = sec_method.m_create(KMesh)
             sec_k_mesh.n_points = kmesh.get('n_points')
             sec_k_mesh.grid = kmesh.get('grid', [])
             if kmesh.get('k_points') is not None:
