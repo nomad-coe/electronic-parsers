@@ -65,6 +65,13 @@ class Atoms(simulation.system.Atoms):
 
     m_def = Section(validate=False, extends_base_section=True)
 
+    x_wannier90_n_atoms_proj = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        Number of atoms used in the Wannier90 projection.
+        ''')
+
     x_wannier90_units = Quantity(
         type=str,
         shape=[],
@@ -76,7 +83,7 @@ class Atoms(simulation.system.Atoms):
 
     x_wannier90_site = Quantity(
         type=str,
-        shape=[],
+        shape=['x_wannier90_n_atoms_proj'],
         description='''
         C, Al, etc. applies to all atoms of that type.
         f=0,0.50,0, centre on (0.0,0.5,0.0) in f ractional coordinates (crystallographic
@@ -88,7 +95,7 @@ class Atoms(simulation.system.Atoms):
 
     x_wannier90_ang_mtm = Quantity(
         type=str,
-        shape=[],
+        shape=['x_wannier90_n_atoms_proj'],
         description='''
         Angular momentum states may be specified by l and mr, or by the appropriate
         character string.Examples:
@@ -103,21 +110,21 @@ class Atoms(simulation.system.Atoms):
 
     x_wannier90_zaxis = Quantity(
         type=np.int32,
-        shape=[3],
+        shape=['*', 3],
         description='''
         Z axis direction. Default=[0, 0, 1].
         ''')
 
     x_wannier90_xaxis = Quantity(
         type=np.int32,
-        shape=[3],
+        shape=['*', 3],
         description='''
         X axis direction. Default=[1, 0, 0].
         ''')
 
     x_wannier90_radial = Quantity(
         type=np.int32,
-        shape=[],
+        shape=['*'],
         description='''
         Use a radial function with one node (ie second highest pseudostate with that
         angular momentum). Default is r=1. Radial functions associated with different
@@ -126,7 +133,7 @@ class Atoms(simulation.system.Atoms):
 
     x_wannier90_zona = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*'],
         description='''
         The value of Za for the radial part of the atomic orbital (controls the diffusivity
         of the radial function). Units always in reciprocal Angstrom. Default is zona=1.0.
