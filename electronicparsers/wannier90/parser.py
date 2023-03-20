@@ -260,7 +260,7 @@ class Wannier90Parser():
 
             # orbital angular momentum always index=1
             orbitals = proj[1].split(';')
-            sec_atoms_group.n_orbitals = len(orbitals)
+            sec_atoms_group.n_orbitals = np.array([len(orbitals)])
             ang_mtm = []
             for orb in orbitals:
                 if orb.startswith('l='):  # using angular momentum numbers
