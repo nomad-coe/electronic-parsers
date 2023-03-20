@@ -46,6 +46,8 @@ class WOutParser(TextParser):
                 'n_points', r'Total points[\s=]*(\d+)', dtype=int,
                 repeats=False),
             Quantity(
+                'grid', r'Grid size *\= *(\d+) *x *(\d+) *x *(\d+)', repeats=False),
+            Quantity(
                 'k_points', r'\|[\s\d]*(-*\d.[^\|]+)', repeats=True)]
 
         disentangle_quantities = [
@@ -115,8 +117,8 @@ class WInParser(TextParser):
         self._quantities = [
             Quantity('energy_fermi', rf'{re_n}fermi_energy\s*=\s*([\d\.\-]+)', repeats=False),
             Quantity('projections',
-                     rf'begin projections([\s\S]+?)(?:end projections)',
-                     repeats=True)]
+                     rf'[bB]*egin [pP]*rojections([\s\S]+?)(?:[eE]*nd [pP]*rojections)',
+                     repeats=False)]
 
 
 class HrParser(TextParser):
@@ -214,87 +216,66 @@ class Wannier90Parser():
         # Set units in case these are defined in .win
         projections = self.win_parser.get('projections', [])
         if projections:
+            if not isinstance(projections, list):
+                projections = [projections]
             if projections[0] == '[Bohr]' or projections[0] == '[Angstrom]':
                 sec_atoms.x_wannier90_units = self._input_projection_units[
                     projections[0].replace('[', '').replace(']', '')]
                 projections.remove(projections[0])
             else:
                 sec_atoms.x_wannier90_units = 'angstrom'
-        sec_atoms.x_wannier90_n_atoms_proj = len(projections)
-
-        sites = []
-        ang_mtm = []
-        xaxis = []
-        zaxis = []
-        radial = []
-        zona = []
-        for proj in projections:
-            proj = proj.split(':')
-            for i in range(len(proj)):
-                # site (always index=0)
-                if i == 0:
-                    # TODO for some reason the regex breaks if the numbers are separated by
-                    # a space. Ask @Alvin about this.
-                    if proj[i].startswith('f='):  # fractional coordinates
-                        val = [float(x) for x in proj[i].replace('f=', '').split(',')]
-                        val = np.dot(val, sec_atoms.lattice_vectors.magnitude)
-                        for pos in sec_atoms.positions:
-                            if np.array_equal(val, pos.magnitude):
-                                index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
-                                sites.append(sec_atoms.labels[index])
-                                break
-                    elif proj[i].startswith('c='):  # cartesian coordinates
-                        val = [float(x) for x in proj[i].replace('c=', '').split(',')]
-                        for pos in sec_atoms.positions.to(sec_atoms.x_wannier90_units):
-                            if np.array_equal(val, pos.magnitude):
-                                index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
-                                sites.append(sec_atoms.labels[index])
-                                break
-                    else:  # atom label directly specified
-                        sites.append(proj[i])
-                # ang_mtm (always index=1)
-                elif i == 1:
-                    if proj[i].startswith('l='):  # using angular momentum numbers
-                        lmom = proj[i].split(',mr')[0]
-                        mrmom = proj[i].split(',mr')[-1]
-                        val_lmom = [int(x) for x in lmom.replace('l=', '').split(',')]
-                        val_mrmom = [int(x) for x in mrmom.replace('=', '').split(',')]
-                        val_angmtm = [val_lmom[0], val_mrmom[0]]
-                        for key, val in self._angular_momentum_orbital_map.items():
-                            orb_ang_mom = [val[i] == val_angmtm[i] for i in range(2)]
-                            if all(orb_ang_mom):
-                                ang_mtm.append(key)
-                    else:  # ang mom label directly specified
-                        ang_mtm.append(proj[i])
-                # optional quantities
-                else:
-                    if proj[i].startswith('x='):
-                        val = [int(x) for x in proj[i].replace('x=', '').split(',')]
-                        xaxis.append(val)
-                    elif proj[i].startswith('z='):
-                        val = [int(x) for x in proj[i].replace('z=', '').split(',')]
-                        zaxis.append(val)
-                    elif proj[i].startswith('r='):
-                        radial.append(proj[i].replace('r=', ''))
-                    elif proj[i].startswith('zona='):
-                        zona.append(proj[i].replace('zona=', ''))
-        sec_atoms.x_wannier90_site = sites
-        sec_atoms.x_wannier90_ang_mtm = ang_mtm
-        sec_atoms.x_wannier90_zaxis = zaxis
-        sec_atoms.x_wannier90_xaxis = xaxis
-        sec_atoms.x_wannier90_radial = radial
-        sec_atoms.x_wannier90_zona = zona
 
         # Populating AtomsGroup for projected atoms
+        sec_atoms.x_wannier90_n_atoms_proj = len(projections)
         for nat in range(sec_atoms.x_wannier90_n_atoms_proj):
             sec_atoms_group = sec_system.m_create(AtomsGroup)
             sec_atoms_group.type = 'projection'  # Always Projection type
-            sec_atoms_group.index = 0  # Always first index (it does not exist projection on a projection)
-            sec_atoms_group.label = sec_atoms.x_wannier90_site[nat]
-            sec_atoms_group.atom_indices = np.where([x == sec_atoms_group.label for x in sec_atoms.labels])[0]
-            sec_atoms_group.n_atoms = sec_atoms_group.atom_indices.shape[0]
+            sec_atoms_group.index = 0  # Always first index (projection on a projection does not exist)
             sec_atoms_group.is_molecule = False
 
+            proj = projections[nat].split(':')
+
+            # site always index=0
+            if proj[0].startswith('f='):  # fractional coordinates
+                val = [float(x) for x in proj[0].replace('f=', '').split(',')]
+                val = np.dot(val, sec_atoms.lattice_vectors.magnitude)
+                for pos in sec_atoms.positions:
+                    if np.array_equal(val, pos.magnitude):
+                        index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
+                        sites = sec_atoms.labels[index]
+                        break
+            elif proj[0].startswith('c='):  # cartesian coordinates
+                val = [float(x) for x in proj[0].replace('c=', '').split(',')]
+                for pos in sec_atoms.positions.to(sec_atoms.x_wannier90_units):
+                    if np.array_equal(val, pos.magnitude):
+                        index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
+                        sites = sec_atoms.labels[index]
+                        break
+            else:  # atom label directly specified
+                sites = proj[0]
+            sec_atoms_group.n_atoms = len(sites)  # always 1 (only one atom per proj)
+            sec_atoms_group.label = sites
+            sec_atoms_group.atom_indices = np.where([x == sec_atoms_group.label for x in sec_atoms.labels])[0]
+
+            # orbital angular momentum always index=1
+            orbitals = proj[1].split(';')
+            sec_atoms_group.n_orbitals = len(orbitals)
+            ang_mtm = []
+            for orb in orbitals:
+                if orb.startswith('l='):  # using angular momentum numbers
+                    lmom = orb.split(',mr')[0]
+                    mrmom = orb.split(',mr')[-1]
+                    val_lmom = [int(x) for x in lmom.replace('l=', '').split(',')]
+                    val_mrmom = [int(x) for x in mrmom.replace('=', '').split(',')]
+                    val_angmtm = [val_lmom[0], val_mrmom[0]]
+                    for key, val in self._angular_momentum_orbital_map.items():
+                        orb_ang_mom = [val[i] == val_angmtm[i] for i in range(2)]
+                        if all(orb_ang_mom):
+                            ang_mtm.append(key)
+                else:  # ang mom label directly specified
+                    ang_mtm.append(orb)
+            ang_mtm = np.array([ang_mtm])
+            sec_atoms_group.orbitals_angular_momentum = ang_mtm
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
@@ -303,10 +284,13 @@ class Wannier90Parser():
         sec_wann = sec_proj.m_create(Wannier)
 
         # k_mesh section
-        sec_k_mesh = sec_wann.m_create(KMesh)
-        sec_k_mesh.n_points = self.wout_parser.get('k_mesh', None).get('n_points')
-        if self.wout_parser.get('k_mesh', None).get('k_points') is not None:
-            sec_k_mesh.points = self.wout_parser.get('k_mesh', None).k_points[::2]
+        kmesh = self.wout_parser.get('k_mesh')
+        if kmesh:
+            sec_k_mesh = sec_wann.m_create(KMesh)
+            sec_k_mesh.n_points = kmesh.get('n_points')
+            sec_k_mesh.grid = kmesh.get('grid', [])
+            if kmesh.get('k_points') is not None:
+                sec_k_mesh.points = kmesh.k_points[::2]
 
         # Wannier90 section
         for key in self._input_projection_mapping.keys():
