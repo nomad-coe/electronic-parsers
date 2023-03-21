@@ -242,15 +242,12 @@ class Wannier90Parser():
 
     def parse_winput(self, archive):
         sec_run = archive.run[-1]
-        if sec_run.system and sec_run.method:
+        try:
             sec_system = sec_run.system[-1]
+            sec_atoms = sec_system.atoms
             sec_method = sec_run.method[-1]
-            try:
-                sec_atoms = sec_system.atoms
-            except Exception:
-                self.logger.warning('Could not extract System.Atoms section for parsing win.')
-                return
-        else:
+        except Exception:
+            self.logger.warning('Could not extract system.atoms and method sections for parsing win.')
             return
 
         # Parsing from input
@@ -261,6 +258,12 @@ class Wannier90Parser():
         if len(win_files) > 1:
             self.logger.warning('Multiple win files found. We will parse the first one.')
         self.win_parser.mainfile = win_files[0]
+
+        def fract_cart_sites(sec_atoms, units, val):
+            for pos in sec_atoms.positions.to(units):
+                if np.array_equal(val, pos.magnitude):
+                    index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
+                    return sec_atoms.labels[index]
 
         # Set units in case these are defined in .win
         projections = self.win_parser.get('projections', [])
@@ -283,23 +286,15 @@ class Wannier90Parser():
             sec_atoms_group.is_molecule = False
 
             # atom label always index=0
-            atom = projections[nat][0]
             try:
+                atom = projections[nat][0]
                 if atom.startswith('f='):  # fractional coordinates
                     val = [float(x) for x in atom.replace('f=', '').split(',')]
                     val = np.dot(val, sec_atoms.lattice_vectors.magnitude)
-                    for pos in sec_atoms.positions:
-                        if np.array_equal(val, pos.magnitude):
-                            index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
-                            sites = sec_atoms.labels[index]
-                            break
+                    sites = fract_cart_sites(sec_atoms, sec_run.x_wannier90_units, val)
                 elif atom.startswith('c='):  # cartesian coordinates
                     val = [float(x) for x in atom.replace('c=', '').split(',')]
-                    for pos in sec_atoms.positions.to(sec_run.x_wannier90_units):
-                        if np.array_equal(val, pos.magnitude):
-                            index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
-                            sites = sec_atoms.labels[index]
-                            break
+                    sites = fract_cart_sites(sec_atoms, sec_run.x_wannier90_units, val)
                 else:  # atom label directly specified
                     sites = atom
                 sec_atoms_group.n_atoms = len(sites)  # always 1 (only one atom per proj)
@@ -314,7 +309,7 @@ class Wannier90Parser():
                 orbitals = projections[nat][1].split(';')
                 sec_atom_parameters = sec_method.m_create(AtomParameters)
                 sec_atom_parameters.n_orbitals = len(orbitals)
-                ang_mtm = []
+                angular_momentum = []
                 for orb in orbitals:
                     if orb.startswith('l='):  # using angular momentum numbers
                         lmom = orb.split(',mr')[0]
@@ -325,10 +320,10 @@ class Wannier90Parser():
                         for key, val in self._angular_momentum_orbital_map.items():
                             orb_ang_mom = [val[i] == val_angmtm[i] for i in range(2)]
                             if all(orb_ang_mom):
-                                ang_mtm.append(key)
+                                angular_momentum.append(key)
                     else:  # ang mom label directly specified
-                        ang_mtm.append(orb)
-                sec_atom_parameters.orbitals = np.array(ang_mtm)
+                        angular_momentum.append(orb)
+                sec_atom_parameters.orbitals = np.array(angular_momentum)
             except Exception:
                 self.logger.warning('Projected orbital labels not found from win.')
 
@@ -342,8 +337,10 @@ class Wannier90Parser():
         sec_scc = self.archive.run[-1].calculation[-1]
         sec_hopping_matrix = sec_scc.m_create(HoppingMatrix)
         sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].projection.wannier.n_projected_orbitals
-        sec_hopping_matrix.n_wigner_seitz_points = self.hr_parser.get('degeneracy_factors', [])[1]
-        sec_hopping_matrix.degeneracy_factors = self.hr_parser.get('degeneracy_factors', [])[2:]
+        deg_factors = self.hr_parser.get('degeneracy_factors', [])
+        if deg_factors is not None:
+            sec_hopping_matrix.n_wigner_seitz_points = deg_factors[1]
+            sec_hopping_matrix.degeneracy_factors = deg_factors[2:]
         full_hoppings = self.hr_parser.get('hoppings', [])
         sec_hopping_matrix.value = np.reshape(
             full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
@@ -395,7 +392,7 @@ class Wannier90Parser():
         try:
             energy_fermi = sec_scc.energy.fermi
         except Exception:
-            self.logger.warn('Error setting the Fermi level: not found from hoppings. Setting it to 0 eV')
+            self.logger.warning('Error setting the Fermi level: not found from hoppings. Setting it to 0 eV')
             energy_fermi = 0.0 * ureg.eV
         energy_fermi_eV = energy_fermi.to('electron_volt').magnitude
 
@@ -448,7 +445,7 @@ class Wannier90Parser():
         try:
             energy_fermi = sec_scc.energy.fermi
         except Exception:
-            self.logger.warn('Error setting the Fermi level: not found from hoppings. Setting it to 0 eV')
+            self.logger.warning('Error setting the Fermi level: not found from hoppings. Setting it to 0 eV')
             energy_fermi = 0.0 * ureg.eV
 
         dos_files = get_files('*dos.dat', self.filepath, '*.wout')
