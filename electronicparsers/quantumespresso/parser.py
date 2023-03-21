@@ -653,7 +653,7 @@ _exchange_gradient_correction_map = [
         }],
         'xc_section_method': {
             'x_qe_xc_igcx_name': 'obk8',
-            'x_qe_xc_igcx_comment': 'optB88  exchange',
+            'x_qe_xc_igcx_comment': 'optB88 exchange',
             'x_qe_xc_igcx': 23,
         },
     },
@@ -1249,9 +1249,11 @@ _van_der_waals_map = [
     None,
     {
         'xc_terms': [{
-            'XC_functional_name': 'VDW_C_DF1',
+            'XC_functional_name': 'VDW_XC_DF1',
         }],
         'xc_terms_remove': [{
+            'XC_functional_name': 'LDA_X',
+        }, {
             'XC_functional_name': 'LDA_C_PW',
         }],
         'xc_section_method': {
@@ -1262,9 +1264,11 @@ _van_der_waals_map = [
     },
     {
         'xc_terms': [{
-            'XC_functional_name': 'VDW_C_DF2',
+            'XC_functional_name': 'VDW_XC_DF2',
         }],
         'xc_terms_remove': [{
+            'XC_functional_name': 'LDA_X',
+        }, {
             'XC_functional_name': 'LDA_C_PW',
         }],
         'xc_section_method': {
@@ -1412,9 +1416,6 @@ class QuantumEspressoRunParser(TextParser):
         xc_section_method = dict()
         xc_terms = dict()
         xc_terms_remove = dict()
-        # xc_names = [
-        #     'exchange', 'correlation', 'exchange_gradient_correction',
-        #     'correlation_gradient_correction', 'van_der_waals', 'meta_gga']
         for i in range(6):
             xc_component = self._xc_functional_map[i]
             xc_number = numbers_split[i]
