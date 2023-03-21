@@ -53,8 +53,6 @@ def test_lco(parser):
     assert sec_system.atoms_group[-1].type == 'projection'
     assert sec_system.atoms_group[-1].index == 0
     assert sec_system.atoms_group[-1].atom_indices[0] == 2
-    assert sec_system.atoms_group[-1].n_orbitals[0] == 1
-    assert sec_system.atoms_group[-1].orbitals_angular_momentum[0][0] == 'dx2-y2'
 
     assert len(sec_run.method) == 1
     sec_method = sec_run.method[-1]
@@ -64,6 +62,8 @@ def test_lco(parser):
     assert sec_wannier.n_projected_orbitals == 1
     assert sec_wannier.n_bands == 5
     assert sec_wannier.is_maximally_localized is True
+    assert sec_method.atom_parameters[-1].n_orbitals == 1
+    assert sec_method.atom_parameters[-1].orbitals[0] == 'dx2-y2'
 
     # Band tests
     assert len(sec_run.calculation) == 1

@@ -28,7 +28,9 @@ from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, HoppingMatrix
 )
-from nomad.datamodel.metainfo.simulation.method import Method, KMesh, Wannier, Projection
+from nomad.datamodel.metainfo.simulation.method import (
+    Method, AtomParameters, KMesh, Wannier, Projection
+)
 from nomad.datamodel.metainfo.simulation.system import System, Atoms, AtomsGroup
 from nomad.datamodel.metainfo.workflow import Workflow
 from ..utils import get_files
@@ -114,11 +116,16 @@ class WInParser(TextParser):
         super().__init__(None)
 
     def init_quantities(self):
+        def str_proj_to_list(val_in):
+            # To avoid inconsistent regex that can contain or not spaces
+            val_n = [x for x in val_in.split('\n') if x]
+            return [v.replace(' ', '').split(':') for v in val_n]
+
         self._quantities = [
             Quantity('energy_fermi', rf'{re_n}fermi_energy\s*=\s*([\d\.\-]+)', repeats=False),
             Quantity('projections',
                      rf'[bB]*egin [pP]*rojections([\s\S]+?)(?:[eE]*nd [pP]*rojections)',
-                     repeats=False)]
+                     repeats=False, str_operation=str_proj_to_list)]
 
 
 class HrParser(TextParser):
@@ -210,77 +217,6 @@ class Wannier90Parser():
             sec_atoms.labels = structure.get('labels')
             sec_atoms.positions = structure.get('positions') * ureg.angstrom
 
-        # Parsing from input
-        # win_files = [f for f in os.listdir(self.maindir) if f.endswith('.win')]
-        win_files = get_files('*.win', self.filepath, '*.wout')
-        if len(win_files) > 1:
-            self.logger.warning('Multiple win files found. We will parse the first one.')
-        self.win_parser.mainfile = win_files[0]
-
-        # Set units in case these are defined in .win
-        projections = self.win_parser.get('projections', [])
-        if projections:
-            if not isinstance(projections, list):
-                projections = [projections]
-            if projections[0] == '[Bohr]' or projections[0] == '[Angstrom]':
-                sec_atoms.x_wannier90_units = self._input_projection_units[
-                    projections[0].replace('[', '').replace(']', '')]
-                projections.remove(projections[0])
-            else:
-                sec_atoms.x_wannier90_units = 'angstrom'
-
-        # Populating AtomsGroup for projected atoms
-        sec_atoms.x_wannier90_n_atoms_proj = len(projections)
-        for nat in range(sec_atoms.x_wannier90_n_atoms_proj):
-            sec_atoms_group = sec_system.m_create(AtomsGroup)
-            sec_atoms_group.type = 'projection'  # Always Projection type
-            sec_atoms_group.index = 0  # Always first index (projection on a projection does not exist)
-            sec_atoms_group.is_molecule = False
-
-            proj = projections[nat].split(':')
-
-            # site always index=0
-            if proj[0].startswith('f='):  # fractional coordinates
-                val = [float(x) for x in proj[0].replace('f=', '').split(',')]
-                val = np.dot(val, sec_atoms.lattice_vectors.magnitude)
-                for pos in sec_atoms.positions:
-                    if np.array_equal(val, pos.magnitude):
-                        index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
-                        sites = sec_atoms.labels[index]
-                        break
-            elif proj[0].startswith('c='):  # cartesian coordinates
-                val = [float(x) for x in proj[0].replace('c=', '').split(',')]
-                for pos in sec_atoms.positions.to(sec_atoms.x_wannier90_units):
-                    if np.array_equal(val, pos.magnitude):
-                        index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
-                        sites = sec_atoms.labels[index]
-                        break
-            else:  # atom label directly specified
-                sites = proj[0]
-            sec_atoms_group.n_atoms = len(sites)  # always 1 (only one atom per proj)
-            sec_atoms_group.label = sites
-            sec_atoms_group.atom_indices = np.where([x == sec_atoms_group.label for x in sec_atoms.labels])[0]
-
-            # orbital angular momentum always index=1
-            orbitals = proj[1].split(';')
-            sec_atoms_group.n_orbitals = np.array([len(orbitals)])
-            ang_mtm = []
-            for orb in orbitals:
-                if orb.startswith('l='):  # using angular momentum numbers
-                    lmom = orb.split(',mr')[0]
-                    mrmom = orb.split(',mr')[-1]
-                    val_lmom = [int(x) for x in lmom.replace('l=', '').split(',')]
-                    val_mrmom = [int(x) for x in mrmom.replace('=', '').split(',')]
-                    val_angmtm = [val_lmom[0], val_mrmom[0]]
-                    for key, val in self._angular_momentum_orbital_map.items():
-                        orb_ang_mom = [val[i] == val_angmtm[i] for i in range(2)]
-                        if all(orb_ang_mom):
-                            ang_mtm.append(key)
-                else:  # ang mom label directly specified
-                    ang_mtm.append(orb)
-            ang_mtm = np.array([ang_mtm])
-            sec_atoms_group.orbitals_angular_momentum = ang_mtm
-
     def parse_method(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
@@ -303,6 +239,100 @@ class Wannier90Parser():
             sec_wann.is_maximally_localized = self.wout_parser.get('Niter', 0) > 1
         sec_wann.energy_window_outer = self.wout_parser.get('energy_windows').outer
         sec_wann.energy_window_inner = self.wout_parser.get('energy_windows').inner
+
+    def parse_winput(self, archive):
+        sec_run = archive.run[-1]
+        if sec_run.system and sec_run.method:
+            sec_system = sec_run.system[-1]
+            sec_method = sec_run.method[-1]
+            try:
+                sec_atoms = sec_system.atoms
+            except Exception:
+                self.logger.warning('Could not extract System.Atoms section for parsing win.')
+                return
+        else:
+            return
+
+        # Parsing from input
+        # win_files = [f for f in os.listdir(self.maindir) if f.endswith('.win')]
+        win_files = get_files('*.win', self.filepath, '*.wout')
+        if len(win_files) == 0:
+            self.logger.warning('Input .win file not found.')
+            return
+        if len(win_files) > 1:
+            self.logger.warning('Multiple win files found. We will parse the first one.')
+        self.win_parser.mainfile = win_files[0]
+
+        # Set units in case these are defined in .win
+        projections = self.win_parser.get('projections', [])
+        if projections:
+            if not isinstance(projections, list):
+                projections = [projections]
+            if projections[0][0] == '[Bohr]' or projections[0][0] == '[Angstrom]':
+                sec_run.x_wannier90_units = self._input_projection_units[
+                    projections[0][0].replace('[', '').replace(']', '')]
+                projections.remove(projections[0])
+            else:
+                sec_run.x_wannier90_units = 'angstrom'
+
+        # Populating AtomsGroup for projected atoms
+        sec_run.x_wannier90_n_atoms_proj = len(projections)
+        for nat in range(sec_run.x_wannier90_n_atoms_proj):
+            sec_atoms_group = sec_system.m_create(AtomsGroup)
+            sec_atoms_group.type = 'projection'
+            sec_atoms_group.index = 0  # Always first index (projection on a projection does not exist)
+            sec_atoms_group.is_molecule = False
+
+
+            # atom label always index=0
+            atom = projections[nat][0]
+            try:
+                if atom.startswith('f='):  # fractional coordinates
+                    val = [float(x) for x in atom.replace('f=', '').split(',')]
+                    val = np.dot(val, sec_atoms.lattice_vectors.magnitude)
+                    for pos in sec_atoms.positions:
+                        if np.array_equal(val, pos.magnitude):
+                            index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
+                            sites = sec_atoms.labels[index]
+                            break
+                elif atom.startswith('c='):  # cartesian coordinates
+                    val = [float(x) for x in atom.replace('c=', '').split(',')]
+                    for pos in sec_atoms.positions.to(sec_run.x_wannier90_units):
+                        if np.array_equal(val, pos.magnitude):
+                            index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
+                            sites = sec_atoms.labels[index]
+                            break
+                else:  # atom label directly specified
+                    sites = atom
+                sec_atoms_group.n_atoms = len(sites)  # always 1 (only one atom per proj)
+                sec_atoms_group.label = sites
+                sec_atoms_group.atom_indices = np.where([
+                    x == sec_atoms_group.label for x in sec_atoms.labels])[0]
+            except Exception:
+                self.logger.warning('Error finding the atom labels for the projection from win.')
+
+            # orbital angular momentum always index=1
+            try:
+                orbitals = projections[nat][1].split(';')
+                sec_atom_parameters = sec_method.m_create(AtomParameters)
+                sec_atom_parameters.n_orbitals = len(orbitals)
+                ang_mtm = []
+                for orb in orbitals:
+                    if orb.startswith('l='):  # using angular momentum numbers
+                        lmom = orb.split(',mr')[0]
+                        mrmom = orb.split(',mr')[-1]
+                        val_lmom = [int(x) for x in lmom.replace('l=', '').split(',')]
+                        val_mrmom = [int(x) for x in mrmom.replace('=', '').split(',')]
+                        val_angmtm = [val_lmom[0], val_mrmom[0]]
+                        for key, val in self._angular_momentum_orbital_map.items():
+                            orb_ang_mom = [val[i] == val_angmtm[i] for i in range(2)]
+                            if all(orb_ang_mom):
+                                ang_mtm.append(key)
+                    else:  # ang mom label directly specified
+                        ang_mtm.append(orb)
+                sec_atom_parameters.orbitals = np.array(ang_mtm)
+            except Exception:
+                self.logger.warning('Projected orbital labels not found from win.')
 
     def parse_hoppings(self):
         hr_files = get_files('*hr.dat', self.filepath, '*.wout')
@@ -476,6 +506,9 @@ class Wannier90Parser():
         self.parse_system(self.archive, self.wout_parser)
 
         self.parse_method()
+
+        # Parsing AtomsGroup and AtomParameters for System and Method from the input file .win
+        self.parse_winput(self.archive)
 
         self.parse_scc()
 
