@@ -1379,31 +1379,30 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
             # step, time, temperature info + additional energies from molecular dynamics
             md_info = section.get('md_calculation_info', {})
-            if md_info is not None:
-                sec_scc.x_fhi_aims_calculation_md = {
-                    key: str(val.magnitude) + ' ' + str(val.units) if type(val) == ureg.Quantity else str(val)
-                    for key, val in md_info.items()}
-                for key, val in md_info.items():
-                    if key in self._md_calculation_map:
-                        metainfo_key = self._md_calculation_map.get(key, None)
-                        if metainfo_key == 'step':
-                            val = int(val)
-                        if metainfo_key is not None:
-                            try:
-                                setattr(sec_scc, metainfo_key, val)
-                            except Exception:
-                                self.logger.warning(
-                                    'Error setting md calculation metainfo.',
-                                    details={key: metainfo_key, 'value': val})
-                    elif key in self._md_calculation_energy_map:
-                        metainfo_key = self._md_calculation_energy_map.get(key, None)
-                        if metainfo_key is not None:
-                            try:
-                                setattr(sec_energy, metainfo_key, EnergyEntry(value=val))
-                            except Exception:
-                                self.logger.warning(
-                                    'Error setting md calculation energy metainfo.',
-                                    details={key: metainfo_key, 'value': val})
+            sec_scc.x_fhi_aims_calculation_md = {
+                key: str(val.magnitude) + ' ' + str(val.units) if type(val) == ureg.Quantity else str(val)
+                for key, val in md_info.items()}
+            for key, val in md_info.items():
+                if key in self._md_calculation_map:
+                    metainfo_key = self._md_calculation_map.get(key, None)
+                    if metainfo_key == 'step':
+                        val = int(val)
+                    if metainfo_key is not None:
+                        try:
+                            setattr(sec_scc, metainfo_key, val)
+                        except Exception:
+                            self.logger.warning(
+                                'Error setting md calculation metainfo.',
+                                details={key: metainfo_key, 'value': val})
+                elif key in self._md_calculation_energy_map:
+                    metainfo_key = self._md_calculation_energy_map.get(key, None)
+                    if metainfo_key is not None:
+                        try:
+                            setattr(sec_energy, metainfo_key, EnergyEntry(value=val))
+                        except Exception:
+                            self.logger.warning(
+                                'Error setting md calculation energy metainfo.',
+                                details={key: metainfo_key, 'value': val})
 
             # get potential energies
                 total_energy = sec_energy.get('total')
