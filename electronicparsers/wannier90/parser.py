@@ -119,12 +119,12 @@ class WInParser(TextParser):
         def str_proj_to_list(val_in):
             # To avoid inconsistent regex that can contain or not spaces
             val_n = [x for x in val_in.split('\n') if x]
-            return [v.replace(' ', '').split(':') for v in val_n]
+            return [v.strip('[]').replace(' ', '').split(':') for v in val_n]
 
         self._quantities = [
             Quantity('energy_fermi', rf'{re_n}fermi_energy\s*=\s*([\d\.\-]+)', repeats=False),
             Quantity('projections',
-                     rf'[bB]egin [pP]rojections([\s\S]+?)(?:[eE]*nd [pP]*rojections)',
+                     rf'[bB]egin [pP]rojections([\s\S]+?)(?:[eE]nd [pP]rojections)',
                      repeats=False, str_operation=str_proj_to_list)]
 
 
@@ -202,6 +202,11 @@ class Wannier90Parser():
         sec_run = archive.run[-1]
         sec_system = sec_run.m_create(System)
 
+        structure = wout_parser.get('structure')
+        if structure is None:
+            self.logger.error('Error parsing the structure from .wout')
+            return
+
         sec_atoms = sec_system.m_create(Atoms)
         if wout_parser.get('lattice_vectors', []):
             lattice_vectors = np.vstack(wout_parser.get('lattice_vectors', [])[-3:])
@@ -211,11 +216,8 @@ class Wannier90Parser():
 
         pbc = [True, True, True] if lattice_vectors is not None else [False, False, False]
         sec_atoms.periodic = pbc
-
-        structure = wout_parser.get('structure')
-        if structure:
-            sec_atoms.labels = structure.get('labels')
-            sec_atoms.positions = structure.get('positions') * ureg.angstrom
+        sec_atoms.labels = structure.get('labels')
+        sec_atoms.positions = structure.get('positions') * ureg.angstrom
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
@@ -270,9 +272,8 @@ class Wannier90Parser():
         if projections:
             if not isinstance(projections, list):
                 projections = [projections]
-            if projections[0][0] in ['[Bohr]', '[Angstrom]']:
-                sec_run.x_wannier90_units = self._input_projection_units[
-                    projections[0][0][1:-1]]
+            if projections[0][0] in ['Bohr', 'Angstrom']:
+                sec_run.x_wannier90_units = self._input_projection_units[projections[0][0]]
                 projections.pop(0)
             else:
                 sec_run.x_wannier90_units = 'angstrom'
