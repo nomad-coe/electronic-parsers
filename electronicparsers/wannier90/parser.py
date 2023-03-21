@@ -256,7 +256,7 @@ class Wannier90Parser():
         # Parsing from input
         # win_files = [f for f in os.listdir(self.maindir) if f.endswith('.win')]
         win_files = get_files('*.win', self.filepath, '*.wout')
-        if len(win_files) == 0:
+        if not win_files:
             self.logger.warning('Input .win file not found.')
             return
         if len(win_files) > 1:
@@ -268,10 +268,10 @@ class Wannier90Parser():
         if projections:
             if not isinstance(projections, list):
                 projections = [projections]
-            if projections[0][0] == '[Bohr]' or projections[0][0] == '[Angstrom]':
+            if projections[0][0] in ['[Bohr]', '[Angstrom]']:
                 sec_run.x_wannier90_units = self._input_projection_units[
-                    projections[0][0].replace('[', '').replace(']', '')]
-                projections.remove(projections[0])
+                    projections[0][0][1:-1]]
+                projections.pop(0)
             else:
                 sec_run.x_wannier90_units = 'angstrom'
 
@@ -282,7 +282,6 @@ class Wannier90Parser():
             sec_atoms_group.type = 'projection'
             sec_atoms_group.index = 0  # Always first index (projection on a projection does not exist)
             sec_atoms_group.is_molecule = False
-
 
             # atom label always index=0
             atom = projections[nat][0]
