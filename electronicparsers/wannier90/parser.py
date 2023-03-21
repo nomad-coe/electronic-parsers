@@ -124,7 +124,7 @@ class WInParser(TextParser):
         self._quantities = [
             Quantity('energy_fermi', rf'{re_n}fermi_energy\s*=\s*([\d\.\-]+)', repeats=False),
             Quantity('projections',
-                     rf'[bB]*egin [pP]*rojections([\s\S]+?)(?:[eE]*nd [pP]*rojections)',
+                     rf'[bB]egin [pP]rojections([\s\S]+?)(?:[eE]*nd [pP]*rojections)',
                      repeats=False, str_operation=str_proj_to_list)]
 
 
@@ -209,7 +209,7 @@ class Wannier90Parser():
         if wout_parser.get('reciprocal_lattice_vectors') is not None:
             sec_atoms.lattice_vectors_reciprocal = np.vstack(wout_parser.get('reciprocal_lattice_vectors')[-3:]) / ureg.angstrom
 
-        pbc = [lattice_vectors is not None] * 3
+        pbc = [True, True, True] if lattice_vectors is not None else [False, False, False]
         sec_atoms.periodic = pbc
 
         structure = wout_parser.get('structure')
@@ -254,7 +254,6 @@ class Wannier90Parser():
             return
 
         # Parsing from input
-        # win_files = [f for f in os.listdir(self.maindir) if f.endswith('.win')]
         win_files = get_files('*.win', self.filepath, '*.wout')
         if not win_files:
             self.logger.warning('Input .win file not found.')
