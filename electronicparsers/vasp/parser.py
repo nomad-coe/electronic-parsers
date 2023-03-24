@@ -151,13 +151,13 @@ class ContentParser:
             'RSCAN': ['MGGA_X_RSCAN', 'MGGA_C_RSCAN'],
             'R2SCAN': ['MGGA_X_R2SCAN', 'MGGA_C_R2SCAN'],
             'SCANL': ['MGGA_X_SCANL', 'MGGA_C_SCANL'],
-            'RSCANL': [], # not in LibXC, nor any paper, just deorbitalized SCANL
+            'RSCANL': [],  # not in LibXC, nor any paper, just deorbitalized SCANL
             'R2SCANL': ['MGGA_X_R2SCANL', 'MGGA_C_R2SCANL'],
             'OFR2': [],
             'MBJ': ['MGGA_X_BJ06'],
             'LBMJ': [],  # TODO ask Miguel Marquez
-            'HLE17': ['MGGA_XC_HLE17'], # TODO check if this is ever used
-            'RA': ['LDA_C_PW_RPA'] # TODO check if this is ever used
+            'HLE17': ['MGGA_XC_HLE17'],  # TODO check if this is ever used
+            'RA': ['LDA_C_PW_RPA']  # TODO check if this is ever used
         }
 
     def init_parser(self, filepath, logger):
