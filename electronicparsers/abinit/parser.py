@@ -1394,7 +1394,6 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 sec_k_eigen.n_spin_channels = selfenergy.get('params')[0][-1]
                 sec_gap = sec_k_eigen.m_create(BandGap)
                 sec_gap.value = selfenergy.get('params')[1][-1] * ureg.eV  # KS gap
-                sec_gap.value_fundamental = selfenergy.get('params')[2][-1] * ureg.eV  # QP gap
                 for i in self._selfenergy_data_map.keys():
                     value = np.array([[
                         selfenergy_data[:, i] for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])

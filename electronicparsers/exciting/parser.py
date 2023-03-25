@@ -1957,16 +1957,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         for f in gw_files:
             self.parse_file(f, sec_scc)
 
-        fundamental_band_gap = self.info_gw_parser.get('direct_band_gap', None)
-        if fundamental_band_gap is None:
-            fundamental_band_gap = self.info_gw_parser.get('fundamental_band_gap', None)
         sec_gap = sec_scc.eigenvalues[-1].m_create(BandGap)
-        if fundamental_band_gap is not None:
-            sec_gap.value_fundamental = fundamental_band_gap
-
-        optical_band_gap = self.info_gw_parser.get('optical_band_gap', None)
-        if optical_band_gap is not None:
-            sec_gap.value_optical = optical_band_gap
 
         sec_scc.method_ref = sec_method
         self.parse_system(self.info_parser.get('groundstate'))
