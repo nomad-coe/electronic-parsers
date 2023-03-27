@@ -32,9 +32,11 @@ def parser():
     return Wien2kParser()
 
 
-def test_single_point(parser):
+def test_single_point(parser, caplog):
     archive = EntryArchive()
     parser.parse('tests/data/wien2k/basic/ok.scf', archive, None)
+
+    assert len(caplog.records) == 0
 
     sec_run = archive.run[0]
     assert sec_run.program.version == '12.1 22/7/2012'
@@ -65,12 +67,15 @@ def test_single_point(parser):
     assert sec_system.atoms.labels == ['C'] * 49
 
 
-def test_eigenvalues(parser):
+def test_eigenvalues(parser, caplog):
     archive = EntryArchive()
     parser.parse('tests/data/wien2k/eigenvalues/64k_8Rk_mBJkol.scf', archive, None)
 
+    assert len(caplog.records) == 1
+    assert "Different number of eigenvalues" in caplog.records[0].msg
+
     sec_eigenvalues = archive.run[0].calculation[0].eigenvalues[0]
-    assert np.shape(sec_eigenvalues.energies[0][7]) == (315,)
+    assert np.shape(sec_eigenvalues.energies[0][7]) == (314,)
     assert np.shape(sec_eigenvalues.kpoints) == (8, 3)
     assert sec_eigenvalues.energies[0][2][31].magnitude == approx(-2.98121062e-18)
     assert sec_eigenvalues.kpoints[7][0] == 0.375
@@ -83,11 +88,19 @@ def test_eigenvalues(parser):
     assert sec_dos.energies[285].magnitude == approx(-9.37345115e-19)
 
 
-def test_dos(parser):
+def test_dos(parser, caplog):
     archive = EntryArchive()
     parser.parse('tests/data/wien2k/dos/CrO2-sp.scf', archive, None)
 
-    # eigenvalues are problematic as shape is not homogenously
+    assert len(caplog.records) == 1
+    assert "Different number of eigenvalues" in caplog.records[0].msg
+
+    sec_eigenvalues = archive.run[0].calculation[0].eigenvalues[0]
+    assert np.shape(sec_eigenvalues.energies) == (2, 70, 43)
+    assert sec_eigenvalues.energies[0][2][42].magnitude == approx(3.88893e-18)
+    assert sec_eigenvalues.energies[0][52][11].magnitude == approx(-1.81337e-18)
+    assert sec_eigenvalues.energies[0][69][42].magnitude == approx(3.88971e-18)
+    assert sec_eigenvalues.energies[1][68][41].magnitude == approx(3.695777e-18)
 
     sec_dos = archive.run[0].calculation[0].dos_electronic[0]
     assert np.shape(sec_dos.total[1].value) == (1000,)
