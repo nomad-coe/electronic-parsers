@@ -342,16 +342,20 @@ class Wannier90Parser():
         if deg_factors is not None:
             sec_hopping_matrix.n_wigner_seitz_points = deg_factors[1]
             sec_hopping_matrix.degeneracy_factors = deg_factors[2:]
-        full_hoppings = self.hr_parser.get('hoppings', [])
-        sec_hopping_matrix.value = np.reshape(
-            full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
+            full_hoppings = self.hr_parser.get('hoppings', [])
+            if full_hoppings is not None:
+                sec_hopping_matrix.value = np.reshape(
+                    full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
 
-        sec_scc_energy = sec_scc.m_create(Energy)
-        # Setting Fermi level to the first orbital onsite energy
-        n_wigner_seitz_points_half = int(0.5 * sec_hopping_matrix.n_wigner_seitz_points)
-        energy_fermi = sec_hopping_matrix.value[n_wigner_seitz_points_half][0][5] * ureg.eV
-        sec_scc_energy.fermi = energy_fermi
-        sec_scc_energy.highest_occupied = energy_fermi
+        try:
+            sec_scc_energy = sec_scc.m_create(Energy)
+            # Setting Fermi level to the first orbital onsite energy
+            n_wigner_seitz_points_half = int(0.5 * sec_hopping_matrix.n_wigner_seitz_points)
+            energy_fermi = sec_hopping_matrix.value[n_wigner_seitz_points_half][0][5] * ureg.eV
+            sec_scc_energy.fermi = energy_fermi
+            sec_scc_energy.highest_occupied = energy_fermi
+        except Exception:
+            return
 
     def get_k_points(self):
         if self.wout_parser.get('reciprocal_lattice_vectors') is None:
