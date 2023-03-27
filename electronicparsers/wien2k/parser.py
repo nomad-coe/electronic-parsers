@@ -462,12 +462,16 @@ class Wien2kParser:
         nspin = self.get_nspin()
         if nspin == 1:
             files = self.get_wien2k_file(r'energy\_\d+', multiple=True)
+            # sort the files so that the k-points are read in order
+            files = sorted(files, key=lambda x: int(x.split('_')[-1]))
             if not files:
                 files = [self.get_wien2k_file('energy')]
         else:
             files = []
             for spin in ['up', 'dn']:
                 files_spin = self.get_wien2k_file(r'energy%s\_\d+' % spin, multiple=True)
+                # sort the files so that the k-points are read in order
+                files_spin = sorted(files_spin, key=lambda x: int(x.split('_')[-1]))
                 if not files_spin:
                     files_spin = [self.get_wien2k_file('energy%s' % spin)]
                 files.extend(files_spin)
@@ -484,28 +488,34 @@ class Wien2kParser:
                     line = f.readline()
                     if not line:
                         break
-                    if 'energydn' not in file_i:
-                        kpoint = re_kpoint.match(line)
-                        if kpoint:
+                    kpoint = re_kpoint.match(line)
+                    if kpoint:
+                        eigenvalues.append([])
+                        if 'energydn' not in file_i:
                             kpoints.append(kpoint.groups()[:3])
                             index.append(kpoint.group(4))
                             multiplicity.append(kpoint.group(5))
                             continue
                     eigenvalue = re_eigenvalue.match(line)
                     if eigenvalue:
-                        eigenvalues.append(eigenvalue.group(1))
+                        eigenvalues[-1].append(eigenvalue.group(1))
         try:
+            # There can be different amount of eigenvalues calculated at every k-point.
+            # However, the metainfo expects a homogeneous array, so just find the k-point
+            # with the least amount and discard the extra values at other k-points.
+            num_eigvals = [len(eig) for eig in eigenvalues]
+            min_eigval_index = min(num_eigvals)
+            max_eigval_index = max(num_eigvals)
+            if min_eigval_index < max_eigval_index:
+                self.logger.warning('Different number of eigenvalues at different k-points. Truncating the extra values.')
+            for i, e in enumerate(eigenvalues):
+                eigenvalues[i] = e[:min_eigval_index]
+
             eigenvalues = np.array(eigenvalues, dtype=np.dtype(np.float64))
             kpoints = np.array(kpoints, dtype=np.dtype(np.float64))
             multiplicity = np.array(multiplicity, dtype=np.dtype(np.float64))
             eigenvalues = np.reshape(eigenvalues, (
-                nspin, len(kpoints), len(eigenvalues) // (nspin * len(kpoints))))
-            # sort data wrt kpoint index
-            index = np.argsort(index)
-            kpoints = kpoints[index]
-            multiplicity = multiplicity[index]
-            for spin in range(nspin):
-                eigenvalues[spin] = eigenvalues[spin][index]
+                nspin, len(kpoints), min_eigval_index))
             return eigenvalues, kpoints, multiplicity
         except Exception:
             self.logger.error('Error reading eigenvalues.')
