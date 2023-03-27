@@ -19,42 +19,30 @@
 import numpy as np
 
 from nomad.metainfo import (  # pylint: disable=unused-import
-    MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference, MEnum, JSON
+    MSection, Package, Quantity, Section, SubSection
 )
+from nomad.datamodel.metainfo import simulation
 
 
 m_package = Package()
 
 
-class x_wannier90_hopping_parameters(MSection):
-    '''
-    Section containing the Wannier90 hopping parameters
-    '''
+class Run(simulation.run.Run):
 
-    m_def = Section(validate=False)
+    m_def = Section(validate=False, extends_base_section=True)
 
-    nrpts = Quantity(
-        type=np.dtype(np.int32),
+    x_wannier90_n_atoms_proj = Quantity(
+        type=np.int32,
+        shape=[],
         description='''
-        Number of Wigner-Seitz real points.
+        Number of atoms used in the Wannier90 projection.
         ''')
 
-    degeneracy_factors = Quantity(
-        type=np.dtype(np.int32),
-        shape=['nrpts'],
+    x_wannier90_units = Quantity(
+        type=str,
+        shape=[],
         description='''
-        Degeneracy of each Wigner-Seitz grid point.
-        ''')
-
-    hopping_matrix = Quantity(
-        type=np.dtype(np.float64),
-        shape=['nrpts', 7],
-        description='''
-        Real space hopping matrix for each Wigner-Seitz grid point. The elements are
-        defined as follows:
-            n_x   n_y   n_z   orb_1   orb_2   real_part   imag_part
-        where (n_x, n_y, n_z) define the Wigner-Seitz cell vector in fractional coordinates,
-        (orb_1, orb_2) indicates the hopping amplitude between orb_1 and orb_2, and the
-        real and imaginary parts of the hopping in electron_volt.
+        Optional. Either Ang or Bohr to specify whether the projection centres specified
+        in this block (if given in Cartesian co-ordinates) are in units of Angstrom or
+        Bohr, respectively. The default value is Ang.
         ''')

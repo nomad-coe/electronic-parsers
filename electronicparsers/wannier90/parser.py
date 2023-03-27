@@ -28,9 +28,12 @@ from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, HoppingMatrix
 )
-from nomad.datamodel.metainfo.simulation.method import Method, KMesh, Wannier, Projection
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
+from nomad.datamodel.metainfo.simulation.method import (
+    Method, AtomParameters, KMesh, Wannier, Projection
+)
+from nomad.datamodel.metainfo.simulation.system import System, Atoms, AtomsGroup
 from nomad.datamodel.metainfo.workflow import Workflow
+from ..utils import get_files
 
 re_n = r'[\n\r]'
 
@@ -44,6 +47,8 @@ class WOutParser(TextParser):
             Quantity(
                 'n_points', r'Total points[\s=]*(\d+)', dtype=int,
                 repeats=False),
+            Quantity(
+                'grid', r'Grid size *\= *(\d+) *x *(\d+) *x *(\d+)', repeats=False),
             Quantity(
                 'k_points', r'\|[\s\d]*(-*\d.[^\|]+)', repeats=True)]
 
@@ -111,8 +116,16 @@ class WInParser(TextParser):
         super().__init__(None)
 
     def init_quantities(self):
+        def str_proj_to_list(val_in):
+            # To avoid inconsistent regex that can contain or not spaces
+            val_n = [x for x in val_in.split('\n') if x]
+            return [v.strip('[]').replace(' ', '').split(':') for v in val_n]
+
         self._quantities = [
-            Quantity('energy_fermi', rf'{re_n}fermi_energy\s*=\s*([\d\.\-]+)', repeats=False)]
+            Quantity('energy_fermi', rf'{re_n}fermi_energy\s*=\s*([\d\.\-]+)', repeats=False),
+            Quantity('projections',
+                     rf'[bB]egin [pP]rojections([\s\S]+?)(?:[eE]nd [pP]rojections)',
+                     repeats=False, str_operation=str_proj_to_list)]
 
 
 class HrParser(TextParser):
@@ -125,10 +138,7 @@ class HrParser(TextParser):
             Quantity('hoppings', rf'\s*([-\d\s.]+)', repeats=False)]
 
 
-class Wannier90Parser:
-    # TODO check if level defined w.r.t. DFT calculation (default, level = 0)
-    level = 1
-
+class Wannier90Parser():
     def __init__(self):
         self.wout_parser = WOutParser()
         self.win_parser = WInParser()
@@ -142,21 +152,72 @@ class Wannier90Parser:
             'conv_tol': 'convergence_tolerance_max_localization'
         }
 
+        self._input_projection_units = {
+            'Ang': 'angstrom',
+            'Bohr': 'bohr'
+        }
+
+        # Angular momentum [l, mr] following Wannier90 tables 3.1 and 3.2
+        # TODO move to normalization or utils in nomad?
+        self._angular_momentum_orbital_map = {
+            's': [0, 1],
+            'px': [1, 1],
+            'py': [1, 2],
+            'pz': [1, 3],
+            'dz2': [2, 1],
+            'dxz': [2, 2],
+            'dyz': [2, 3],
+            'dx2-y2': [2, 4],
+            'dxy': [2, 5],
+            'fz3': [3, 1],
+            'fxz2': [3, 2],
+            'fyz2': [3, 3],
+            'fz(x2-y2)': [3, 4],
+            'fxyz': [3, 5],
+            'fx(x2-3y2)': [3, 6],
+            'fy(3x2-y2)': [3, 7],
+            'sp-1': [-1, 1],
+            'sp-2': [-1, 2],
+            'sp2-1': [-2, 1],
+            'sp2-1': [-2, 2],
+            'sp2-1': [-2, 3],
+            'sp3-1': [-3, 1],
+            'sp3-2': [-3, 2],
+            'sp3-3': [-3, 3],
+            'sp3-4': [-3, 4],
+            'sp3d-1': [-4, 1],
+            'sp3d-2': [-4, 2],
+            'sp3d-3': [-4, 3],
+            'sp3d-4': [-4, 4],
+            'sp3d-5': [-4, 5],
+            'sp3d2-1': [-5, 1],
+            'sp3d2-2': [-5, 2],
+            'sp3d2-3': [-5, 3],
+            'sp3d2-4': [-5, 4],
+            'sp3d2-5': [-5, 5],
+            'sp3d2-6': [-5, 6]
+        }
+
     def parse_system(self, archive, wout_parser):
         sec_run = archive.run[-1]
         sec_system = sec_run.m_create(System)
 
+        structure = wout_parser.get('structure')
+        if structure is None:
+            self.logger.error('Error parsing the structure from .wout')
+            return
+
         sec_atoms = sec_system.m_create(Atoms)
-        if wout_parser.get('lattice_vectors') is not None:
-            sec_atoms.lattice_vectors = np.vstack(wout_parser.get('lattice_vectors')[-3:]) * ureg.angstrom
+        if wout_parser.get('lattice_vectors', []):
+            lattice_vectors = np.vstack(wout_parser.get('lattice_vectors', [])[-3:])
+            sec_atoms.lattice_vectors = lattice_vectors * ureg.angstrom
         if wout_parser.get('reciprocal_lattice_vectors') is not None:
             sec_atoms.lattice_vectors_reciprocal = np.vstack(wout_parser.get('reciprocal_lattice_vectors')[-3:]) / ureg.angstrom
 
-        pbc = [np.vstack(wout_parser.get('lattice_vectors')[-3:]) is not None] * 3
+        pbc = [True, True, True] if lattice_vectors is not None else [False, False, False]
         sec_atoms.periodic = pbc
-
-        sec_atoms.labels = wout_parser.get('structure').get('labels')
-        sec_atoms.positions = wout_parser.get('structure').get('positions') * ureg.angstrom
+        sec_atoms.labels = structure.get('labels')
+        sec_atoms.positions = structure.get('positions') * ureg.angstrom
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
@@ -165,43 +226,136 @@ class Wannier90Parser:
         sec_wann = sec_proj.m_create(Wannier)
 
         # k_mesh section
-        sec_k_mesh = sec_wann.m_create(KMesh)
-        sec_k_mesh.n_points = self.wout_parser.get('k_mesh', None).get('n_points')
-        if self.wout_parser.get('k_mesh', None).get('k_points') is not None:
-            sec_k_mesh.points = self.wout_parser.get('k_mesh', None).k_points[::2]
+        kmesh = self.wout_parser.get('k_mesh')
+        if kmesh:
+            sec_k_mesh = sec_method.m_create(KMesh)
+            sec_k_mesh.n_points = kmesh.get('n_points')
+            sec_k_mesh.grid = kmesh.get('grid', [])
+            if kmesh.get('k_points') is not None:
+                sec_k_mesh.points = kmesh.k_points[::2]
 
         # Wannier90 section
         for key in self._input_projection_mapping.keys():
             setattr(sec_wann, self._input_projection_mapping[key], self.wout_parser.get(key))
-        if self.wout_parser.get('Niter') is not None:
+        if self.wout_parser.get('Niter'):
             sec_wann.is_maximally_localized = self.wout_parser.get('Niter', 0) > 1
         sec_wann.energy_window_outer = self.wout_parser.get('energy_windows').outer
         sec_wann.energy_window_inner = self.wout_parser.get('energy_windows').inner
 
-    def parse_hoppings(self):
-        hr_files = [f for f in os.listdir(self.maindir) if f.endswith('hr.dat')]
-        if not hr_files:
+    def parse_winput(self, archive):
+        sec_run = archive.run[-1]
+        try:
+            sec_system = sec_run.system[-1]
+            sec_atoms = sec_system.atoms
+            sec_method = sec_run.method[-1]
+        except Exception:
+            self.logger.warning('Could not extract system.atoms and method sections for parsing win.')
             return
 
-        sec_scc = self.archive.run[-1].calculation[-1]
+        # Parsing from input
+        win_files = get_files('*.win', self.filepath, '*.wout')
+        if not win_files:
+            self.logger.warning('Input .win file not found.')
+            return
+        if len(win_files) > 1:
+            self.logger.warning('Multiple win files found. We will parse the first one.')
+        self.win_parser.mainfile = win_files[0]
 
-        self.hr_parser.mainfile = os.path.join(self.maindir, hr_files[0])
-        sec_hopping_matrix = sec_scc.m_create(HoppingMatrix)
+        def fract_cart_sites(sec_atoms, units, val):
+            for pos in sec_atoms.positions.to(units):
+                if np.array_equal(val, pos.magnitude):
+                    index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
+                    return sec_atoms.labels[index]
+
+        # Set units in case these are defined in .win
+        projections = self.win_parser.get('projections', [])
+        if projections:
+            if not isinstance(projections, list):
+                projections = [projections]
+            if projections[0][0] in ['Bohr', 'Angstrom']:
+                sec_run.x_wannier90_units = self._input_projection_units[projections[0][0]]
+                projections.pop(0)
+            else:
+                sec_run.x_wannier90_units = 'angstrom'
+
+        # Populating AtomsGroup for projected atoms
+        sec_run.x_wannier90_n_atoms_proj = len(projections)
+        for nat in range(sec_run.x_wannier90_n_atoms_proj):
+            sec_atoms_group = sec_system.m_create(AtomsGroup)
+            sec_atoms_group.type = 'projection'
+            sec_atoms_group.index = 0  # Always first index (projection on a projection does not exist)
+            sec_atoms_group.is_molecule = False
+
+            # atom label always index=0
+            try:
+                atom = projections[nat][0]
+                if atom.startswith('f='):  # fractional coordinates
+                    val = [float(x) for x in atom.replace('f=', '').split(',')]
+                    val = np.dot(val, sec_atoms.lattice_vectors.magnitude)
+                    sites = fract_cart_sites(sec_atoms, sec_run.x_wannier90_units, val)
+                elif atom.startswith('c='):  # cartesian coordinates
+                    val = [float(x) for x in atom.replace('c=', '').split(',')]
+                    sites = fract_cart_sites(sec_atoms, sec_run.x_wannier90_units, val)
+                else:  # atom label directly specified
+                    sites = atom
+                sec_atoms_group.n_atoms = len(sites)  # always 1 (only one atom per proj)
+                sec_atoms_group.label = sites
+                sec_atoms_group.atom_indices = np.where([
+                    x == sec_atoms_group.label for x in sec_atoms.labels])[0]
+            except Exception:
+                self.logger.warning('Error finding the atom labels for the projection from win.')
+
+            # orbital angular momentum always index=1
+            try:
+                orbitals = projections[nat][1].split(';')
+                sec_atom_parameters = sec_method.m_create(AtomParameters)
+                sec_atom_parameters.n_orbitals = len(orbitals)
+                angular_momentum = []
+                for orb in orbitals:
+                    if orb.startswith('l='):  # using angular momentum numbers
+                        lmom = orb.split(',mr')[0]
+                        mrmom = orb.split(',mr')[-1]
+                        val_lmom = [int(x) for x in lmom.replace('l=', '').split(',')]
+                        val_mrmom = [int(x) for x in mrmom.replace('=', '').split(',')]
+                        val_angmtm = [val_lmom[0], val_mrmom[0]]
+                        for key, val in self._angular_momentum_orbital_map.items():
+                            orb_ang_mom = [val[i] == val_angmtm[i] for i in range(2)]
+                            if all(orb_ang_mom):
+                                angular_momentum.append(key)
+                    else:  # ang mom label directly specified
+                        angular_momentum.append(orb)
+                sec_atom_parameters.orbitals = np.array(angular_momentum)
+            except Exception:
+                self.logger.warning('Projected orbital labels not found from win.')
+
+    def parse_hoppings(self):
+        hr_files = get_files('*hr.dat', self.filepath, '*.wout')
+        if not hr_files:
+            return
+        self.hr_parser.mainfile = hr_files[0]
 
         # Assuming method.projection is parsed before
+        sec_scc = self.archive.run[-1].calculation[-1]
+        sec_hopping_matrix = sec_scc.m_create(HoppingMatrix)
         sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].projection.wannier.n_projected_orbitals
-        sec_hopping_matrix.n_wigner_seitz_points = self.hr_parser.get('degeneracy_factors')[1]
-        sec_hopping_matrix.degeneracy_factors = self.hr_parser.get('degeneracy_factors')[2:]
-        full_hoppings = self.hr_parser.get('hoppings')
-        sec_hopping_matrix.value = np.reshape(
-            full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
+        deg_factors = self.hr_parser.get('degeneracy_factors', [])
+        if deg_factors is not None:
+            sec_hopping_matrix.n_wigner_seitz_points = deg_factors[1]
+            sec_hopping_matrix.degeneracy_factors = deg_factors[2:]
+            full_hoppings = self.hr_parser.get('hoppings', [])
+            if full_hoppings is not None:
+                sec_hopping_matrix.value = np.reshape(
+                    full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
 
-        sec_scc_energy = sec_scc.m_create(Energy)
-        # Setting Fermi level to the first orbital onsite energy
-        n_wigner_seitz_points_half = int(0.5 * sec_hopping_matrix.n_wigner_seitz_points)
-        energy_fermi = sec_hopping_matrix.value[n_wigner_seitz_points_half][0][5] * ureg.eV
-        sec_scc_energy.fermi = energy_fermi
-        sec_scc_energy.highest_occupied = energy_fermi
+        try:
+            sec_scc_energy = sec_scc.m_create(Energy)
+            # Setting Fermi level to the first orbital onsite energy
+            n_wigner_seitz_points_half = int(0.5 * sec_hopping_matrix.n_wigner_seitz_points)
+            energy_fermi = sec_hopping_matrix.value[n_wigner_seitz_points_half][0][5] * ureg.eV
+            sec_scc_energy.fermi = energy_fermi
+            sec_scc_energy.highest_occupied = energy_fermi
+        except Exception:
+            return
 
     def get_k_points(self):
         if self.wout_parser.get('reciprocal_lattice_vectors') is None:
@@ -243,17 +397,17 @@ class Wannier90Parser:
         try:
             energy_fermi = sec_scc.energy.fermi
         except Exception:
-            self.logger.warn('Error setting the Fermi level: not found from hoppings. Setting it to 0 eV')
+            self.logger.warning('Error setting the Fermi level: not found from hoppings. Setting it to 0 eV')
             energy_fermi = 0.0 * ureg.eV
         energy_fermi_eV = energy_fermi.to('electron_volt').magnitude
 
-        band_files = [f for f in os.listdir(self.maindir) if f.endswith('band.dat')]
+        band_files = get_files('*band.dat', self.filepath, '*.wout')
         if not band_files:
             return
         if len(band_files) > 1:
             self.logger.warning('Multiple bandstructure data files found.')
         # Parsing only first *_band.dat file
-        self.band_dat_parser.mainfile = os.path.join(self.maindir, band_files[0])
+        self.band_dat_parser.mainfile = band_files[0]
 
         sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
         sec_k_band.energy_fermi = energy_fermi
@@ -296,16 +450,16 @@ class Wannier90Parser:
         try:
             energy_fermi = sec_scc.energy.fermi
         except Exception:
-            self.logger.warn('Error setting the Fermi level: not found from hoppings. Setting it to 0 eV')
+            self.logger.warning('Error setting the Fermi level: not found from hoppings. Setting it to 0 eV')
             energy_fermi = 0.0 * ureg.eV
 
-        dos_files = [f for f in os.listdir(self.maindir) if f.endswith('dos.dat')]
+        dos_files = get_files('*dos.dat', self.filepath, '*.wout')
         if not dos_files:
             return
         if len(dos_files) > 1:
             self.logger.warning('Multiple dos data files found.')
-        # Parsing only first *_band.dat file
-        self.dos_dat_parser.mainfile = os.path.join(self.maindir, dos_files[0])
+        # Parsing only first *dos.dat file
+        self.dos_dat_parser.mainfile = dos_files[0]
 
         sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
         sec_dos.energy_fermi = energy_fermi
@@ -341,15 +495,8 @@ class Wannier90Parser:
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logging.getLogger(__name__) if logger is None else logger
 
+        self.wout_parser.mainfile = self.filepath
         sec_run = archive.m_create(Run)
-
-        # TODO move mainfile as hdf5 to MatchingParserInterface list and
-        # create init_parser() for the mainfile?
-        wout_files = [f for f in os.listdir(self.maindir) if f.endswith('.wout')]
-        if not wout_files:
-            self.logger.error('Error finding the woutput file.')
-
-        self.wout_parser.mainfile = os.path.join(self.maindir, wout_files[0])
 
         # Program section
         sec_run.program = Program(
@@ -359,6 +506,9 @@ class Wannier90Parser:
         self.parse_system(self.archive, self.wout_parser)
 
         self.parse_method()
+
+        # Parsing AtomsGroup and AtomParameters for System and Method from the input file .win
+        self.parse_winput(self.archive)
 
         self.parse_scc()
 
