@@ -26,7 +26,8 @@ from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextP
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional,
-    GW as GWMethod, Scf, BasisSet, KMesh, FreqMesh, Photon, BSE, CoreHole
+    GW as GWMethod, Scf, BasisSet, KMesh, FreqMesh, Photon, BSE, CoreHole,
+    ExcitedStateMethodology, Screening
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1510,7 +1511,12 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_method.x_exciting_xs_scissor = self.input_xml_parser.get('xs/scissor', 0.0)
         sec_method.x_exciting_xs_vkloff = self.input_xml_parser.get('xs/vkloff', [0., 0., 0.])
 
-        # TODO I am not certain if screening/BSE are children of xs
+        if self.input_xml_parser.get('xs/energywindow') is not None:
+            sec_method.x_exciting_xs_energywindow_values = self.input_xml_parser.get(
+                'xs/energywindow/intv', np.array([-0.5, 0.5]), 'hartree')
+            sec_method.x_exciting_xs_energywindow_points = self.input_xml_parser.get(
+                'xs/energywindow/points', 500)
+
         if self.input_xml_parser.get('xs/screening') is not None:
             sec_method.x_exciting_xs_screening_number_of_empty_states = self.input_xml_parser.get(
                 'xs/screening/nempty', 0)
@@ -1780,25 +1786,40 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # Code-specific
         self.parse_file('input.xml', sec_method, self._xs_info_file)
 
-        # KMesh
-        sec_k_mesh = sec_method.m_create(KMesh)
-        sec_k_mesh.grid = sec_run.method[0].get('x_exciting_xs_ngridk')
-
         # BSE
         sec_bse = sec_method.m_create(BSE)
-        sec_bse.n_empty_states = sec_run.method[0].get('x_exciting_xs_number_of_empty_states')
-        sec_bse.screening_type = sec_run.method[0].get('x_exciting_xs_screening_type')
-        sec_bse.n_empty_states_screening = sec_run.method[0].get('x_exciting_xs_screening_number_of_empty_states')
-        sec_bse.k_mesh_screening = KMesh(grid=sec_run.method[0].get('x_exciting_xs_screening_ngridk'))
+        sec_bse.type = sec_run.method[-1].get('x_exciting_xs_bse_type')
+        sec_bse.n_empty_states = sec_run.method[-1].get('x_exciting_xs_number_of_empty_states')
+        sec_bse.broadening = sec_run.method[-1].get('x_exciting_xs_broadening')
+        # KMesh
+        sec_k_mesh = sec_method.m_create(KMesh)
+        sec_k_mesh.grid = sec_run.method[-1].get('x_exciting_xs_ngridk')
+        # QMesh
+        sec_q_mesh = KMesh(grid=sec_run.method[-1].get('x_exciting_xs_ngridq'))
+        sec_bse.m_add_sub_section(BSE.q_mesh, sec_q_mesh)
+        # FreqMesh
+        n_freqs = sec_run.method[-1].get('x_exciting_xs_energywindow_points')
+        freqs = sec_run.method[-1].get('x_exciting_xs_energywindow_values')
+        values = [freqs[0] + i * (freqs[-1] - freqs[0]) / n_freqs for i in range(n_freqs)]
+        sec_freq_mesh = FreqMesh(
+            n_points=n_freqs,
+            values=values)
+        sec_bse.m_add_sub_section(BSE.frequency_mesh, sec_freq_mesh)
+        # Screening
+        sec_screening = Screening(
+            type=sec_run.method[-1].get('x_exciting_xs_screening_type'),
+            n_empty_states=sec_run.method[-1].get('x_exciting_xs_screening_number_of_empty_states'))
+        sec_k_mesh_screening = KMesh(grid=sec_run.method[-1].get('x_exciting_xs_screening_ngridk'))
+        sec_screening.m_add_sub_section(Screening.k_mesh, sec_k_mesh_screening)
+
         # CoreHole
-        sec_core = sec_bse.m_create(CoreHole)
-        if sec_run.method[0].get('x_exciting_xs_bse_xas'):
-            sec_core.mode = 'absorption'
-        elif sec_run.method[0].get('x_exciting_xs_bse_xes'):
-            sec_core.mode = 'emission'
-        sec_core.solver = sec_run.method[0].get('x_exciting_xs_bse_type')
-        sec_core.edge = sec_run.method[0].get('x_exciting_xs_bse_xasedge')
-        sec_core.broadening = ureg.convert(sec_run.method[0].get('x_exciting_xs_broadening'), 'joule', 'electron_volt')
+        if sec_run.method[-1].get('x_exciting_xs_bse_xas'):
+            sec_core = CoreHole(
+                mode='absorption',
+                broadening=sec_run.method[-1].get('x_exciting_xs_broadening'))
+            sec_bse.m_add_sub_section(BSE.core, sec_core)
+            # TODO wait for new changes in metainfo for CoreHole
+            # sec_core.edge = sec_run.method[0].get('x_exciting_xs_bse_xasedge')
 
     def parse_spectra(self, path):
         input_file = get_files('input.xml', self._xs_info_file, 'INFO.OUT')
