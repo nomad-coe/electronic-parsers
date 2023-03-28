@@ -25,9 +25,8 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, DFT, Electronic, Smearing, XCFunctional, Functional, Screening,
-    GW as GWMethod, Scf, BasisSet, KMesh, FreqMesh, Photon, BSE, CoreHole
-
+    Method, DFT, Electronic, Smearing, XCFunctional, Functional,Scf, BasisSet, KMesh,
+    FreqMesh, Screening, GW, Photon, BSE, CoreHole
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1888,17 +1887,19 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         # GW Method
         sec_method = sec_run.m_create(Method)
-        sec_gw = sec_method.m_create(GWMethod)
+        sec_gw = sec_method.m_create(GW)
 
         # parse input xml files: code-specific metainfo
         for f in ['input_gw.xml', 'input-gw.xml', 'input.xml']:
             self.parse_file(f, sec_gw)
 
-        # Type
+        # GW
         sec_gw.type = 'G0W0'
-        # Q mesh
-        sec_q_grid = sec_gw.m_create(KMesh)
-        sec_q_grid.grid = sec_gw.x_exciting_ngridq
+        # KMesh
+        sec_k_mesh = sec_method.m_create(KMesh)
+        sec_k_mesh.grid = sec_gw.x_exciting_ngridq
+        # QMesh same as KMesh
+        sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
         # Analytical continuation
         if sec_gw.x_exciting_selfenergy.x_exciting_actype == 'pade':
             sec_gw.analytical_continuation = sec_gw.x_exciting_selfenergy.x_exciting_actype
@@ -1910,21 +1911,33 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     sec_gw.analytical_continuation = 'ppm_GodbyNeeds'
                 else:
                     self.logger.warning('Could not find the analytical continuation method.')
-        # Other parameters
-        sec_gw.interval_qp_corrections = [sec_gw.x_exciting_ibgw, sec_gw.x_exciting_nbgw]
-        sec_gw.n_empty_states_polarizability = sec_gw.x_exciting_nempty
-        if sec_gw.n_empty_states_polarizability == 0:
-            sec_gw.n_empty_states_self_energy = sec_gw.x_exciting_selfenergy.x_exciting_nempty
-        else:
-            sec_gw.n_empty_states_self_energy = sec_gw.n_empty_states_polarizability
-        # Frequency grid
-        sec_freq_grid = sec_gw.m_create(FreqMesh)
-        sec_freq_grid.type = sec_gw.x_exciting_freqgrid.x_exciting_fgrid
-        nomeg = sec_gw.x_exciting_freqgrid.x_exciting_nomeg
-        sec_freq_grid.n_points = nomeg
+        # FreqMesh
+        n_freqs = sec_gw.x_exciting_freqgrid.x_exciting_nomeg
         freqmax = sec_gw.x_exciting_freqgrid.x_exciting_freqmax
         freqmin = sec_gw.x_exciting_freqgrid.x_exciting_freqmin
-        sec_freq_grid.values = [i * (freqmax - freqmin) / nomeg for i in range(nomeg)] * ureg.hartree
+        values = [freqmin + i * (freqmax - freqmin) / n_freqs for i in range(n_freqs)] * ureg.hartree
+        smearing = sec_gw.x_exciting_freqgrid.x_exciting_eta if sec_gw.x_exciting_qdepw == 'sum' else None
+        sec_freq_mesh = FreqMesh(
+            type=sec_gw.x_exciting_freqgrid.x_exciting_fgrid,
+            n_points=n_freqs,
+            values=values,
+            smearing=smearing)
+        sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
+        # Screening
+        sec_screening = Screening(
+            type=sec_gw.x_exciting_scrcoul.x_exciting_scrtype,
+            n_empty_states=sec_gw.x_exciting_nempty,
+            k_mesh=sec_k_mesh.m_copy(),
+            q_mesh=sec_k_mesh.m_copy(),
+            frequency_mesh=sec_freq_mesh.m_copy())
+        sec_gw.m_add_sub_section(GW.screening, sec_screening)
+
+        # Other parameters
+        sec_gw.interval_qp_corrections = [sec_gw.x_exciting_ibgw, sec_gw.x_exciting_nbgw]
+        if sec_screening.n_empty_states == 0:
+            sec_gw.n_empty_states = sec_gw.x_exciting_selfenergy.x_exciting_nempty
+        else:
+            sec_gw.n_empty_states = sec_screening.n_empty_states
 
         # GW Calculation
         sec_scc = sec_run.m_create(Calculation)

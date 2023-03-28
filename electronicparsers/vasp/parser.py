@@ -43,8 +43,8 @@ from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, BasisSetCellDependent, DFT, HubbardKanamoriModel, AtomParameters, XCFunctional,
-    Functional, Electronic, Scf, KMesh, GW, FreqMesh
+    Method, BasisSet, BasisSetCellDependent, DFT, HubbardKanamoriModel, AtomParameters,
+    XCFunctional, Functional, Electronic, Scf, KMesh, GW, FreqMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1361,24 +1361,17 @@ class VASPParser():
         sec_gw.type = 'G0W0' if nelmgw == 1 else self._gw_algo_map.get(self.gw_algo)
         if sec_gw.type is None:
             self.logger.warning('Error setting the GW type.')
-
-        # K mesh
+        sec_gw.n_states = self.parser.get_incar().get('NBANDS')
+        # KMesh
         self.parse_kpoints(sec_method)
-
-        # Q mesh
-        self.parse_kpoints(sec_gw)
-
+        # QMesh
+        sec_gw.m_add_sub_section(GW.q_mesh, sec_method.k_mesh)
         # Analytical continuation
         sec_gw.analytical_continuation = 'pade'
-
-        # Frequency grid
-        n_omega = response_functions.get('NOMEGA', 100)
-        sec_freq_grid = sec_gw.m_create(FreqMesh)
-        sec_freq_grid.n_points = n_omega
-
-        # Other parameters
-        n_bands = self.parser.get_incar().get('NBANDS')
-        sec_gw.n_states_self_energy = n_bands
+        # FreqMesh
+        sec_freq_mesh = FreqMesh(
+            n_points = response_functions.get('NOMEGA', 100))
+        sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
 
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)

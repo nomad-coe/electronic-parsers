@@ -28,7 +28,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataText
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, Electronic, Smearing, Scf, DFT, XCFunctional,
-    Functional, KMesh, FreqMesh, GW as GWMethod)
+    Functional, KMesh, FreqMesh, Screening, GW)
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry, Dos,
@@ -1049,14 +1049,16 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         sec_method = sec_run.m_create(Method)
 
         # GW
-        sec_gw = sec_method.m_create(GWMethod)
-        # Q meshes
+        sec_gw = sec_method.m_create(GW)
+        # KMesh
         nkptgw = self.out_parser.get_input_var('nkptgw', 4, 0)
         if nkptgw > 0:
             kptgw = np.reshape(self.out_parser.get_input_var('kptgw', 4, []), (nkptgw, 3))
-            sec_q_mesh = sec_gw.m_create(KMesh)
-            sec_q_mesh.n_points = nkptgw
-            sec_q_mesh.points = kptgw
+            sec_k_mesh = sec_method.m_create(KMesh)
+            sec_k_mesh.n_points = nkptgw
+            sec_k_mesh.points = kptgw
+        # QMesh same as KMesh
+        sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
         # Type
         gwcalctype = self.out_parser.get_input_var('gwcalctype', 4, 0)
         if 0 <= gwcalctype <= 9:
@@ -1084,32 +1086,39 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 sec_gw.analytical_continuation = 'ppm_FaridEngel'
             else:
                 sec_gw.analytical_continuation = 'contour_deformation'
-        # Frequency grid
+        # FreqMesh
         if self.out_parser.get('screening_dataset'):
             if self.out_parser.get('screening_dataset').get('frequencies'):
                 freqs = self.out_parser.get('screening_dataset').get('frequencies').get('values') * ureg.eV
-                sec_freq_grid = sec_gw.m_create(FreqMesh)
-                sec_freq_grid.n_points = len(freqs)
-                sec_freq_grid.values = freqs[:, 0] + freqs[:, 1] * 1j
+                values = freqs[:, 0] + freqs[:, 1] * 1j
+                sec_freq_mesh = FreqMesh(
+                    n_points=len(freqs),
+                    values=values)
         else:
             freq_plasma = self.out_parser.get('gw_dataset').get('omega_plasma', 0.0)
-            sec_freq_grid = sec_gw.m_create(FreqMesh)
-            sec_freq_grid.n_points = 2
-            sec_freq_grid.values = [0.0, freq_plasma * 1j]
+            values = [0.0, freq_plasma * 1j]
+            sec_freq_mesh = FreqMesh(
+                n_points=2,
+                values=values)
+        sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
+        # Screening
+        occ_scr = self.out_parser.get_input_var('occ', 3, [])
+        n_scr = len(occ_scr)
+        n_occ_scr = len([occ_scr[i] for i in range(n_scr) if occ_scr[i] > 0.0])
+        sec_screening = Screening(
+            n_empty_states = n_scr - n_occ_scr
+        )
+        sec_gw.m_add_sub_section(GW.screening, sec_screening)
         # Other paramters
         if self.out_parser.get_input_var('bdgw', 4, np.array(None)).all():
             sec_gw.interval_qp_corrections = [
                 self.out_parser.get_input_var('bdgw', 4, []).min(),
                 self.out_parser.get_input_var('bdgw', 4, []).max()]
-        occ_scr = self.out_parser.get_input_var('occ', 3, [])
-        n_scr = len(occ_scr)
-        n_occ_scr = len([occ_scr[i] for i in range(n_scr) if occ_scr[i] > 0.0])
-        sec_gw.n_empty_states_polarizability = n_scr - n_occ_scr
         occ_gw = self.out_parser.get_input_var('occ', 4, [])
         n_gw = len(occ_gw)
-        sec_gw.n_states_self_energy = n_gw
+        sec_gw.n_states = n_gw
         n_occ_gw = len([occ_gw[i] for i in range(n_gw) if occ_gw[i] > 0.0])
-        sec_gw.n_empty_states_self_energy = n_gw - n_occ_gw
+        sec_gw.n_empty_states = n_gw - n_occ_gw
 
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)
