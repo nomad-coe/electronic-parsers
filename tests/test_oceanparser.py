@@ -46,6 +46,7 @@ def test_tio2(parser):
     sec_bse = sec_method[-1].bse
     assert sec_bse.type == 'lanczos-haydock'
     assert sec_bse.n_states == 119
+    assert sec_bse.broadening.to('eV').magnitude == approx(0.1)
     assert sec_bse.screening.type == 'core'
     assert sec_bse.screening.n_states == 472
     assert sec_bse.dielectric_infinity == 1000000

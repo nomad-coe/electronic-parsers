@@ -122,6 +122,7 @@ class OceanParser(BeyondDFTWorkflowsParser):
         bse_data = self.data.get('bse', {})
         sec_bse.type = self._type_bse_map[bse_data.get('val', {}).get('solver')]
         sec_bse.n_states = bse_data.get('nbands', 1)
+        sec_bse.broadening = bse_data.get('val', {}).get('broaden') * ureg.eV
         # KMesh for BSE
         sec_k_mesh = KMesh(grid=bse_data.get('kmesh', []))
         sec_bse.m_add_sub_section(BSE.k_mesh, sec_k_mesh)
