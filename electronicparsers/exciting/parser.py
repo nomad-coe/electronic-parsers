@@ -2427,7 +2427,10 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
             # parse gw workflow
             gw_workflow_archive = self._child_archives.get('GW_workflow')
-            self.parse_gw_workflow(gw_archive, gw_workflow_archive)
+            try:
+                self.parse_gw_workflow(gw_archive, gw_workflow_archive)
+            except Exception:
+                self.logger.error('Error parsing the automatic GW workflow')
 
         # XS archives
         xs_archives = []
@@ -2447,4 +2450,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # TODO generalize to include GW step
         xs_workflow_archive = self._child_archives.get('XS_workflow')
         if xs_workflow_archive:
-            self.parse_xs_workflow(xs_archives, xs_workflow_archive)
+            try:
+                self.parse_xs_workflow(xs_archives, xs_workflow_archive)
+            except Exception:
+                self.logger.error('Error parsing the automatic XS workflow')
