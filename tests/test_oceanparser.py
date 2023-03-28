@@ -49,7 +49,7 @@ def test_tio2(parser):
     assert sec_bse.broadening.to('eV').magnitude == approx(0.1)
     assert sec_bse.screening.type == 'core'
     assert sec_bse.screening.n_states == 472
-    assert sec_bse.dielectric_infinity == 1000000
+    assert sec_bse.screening.dielectric_infinity == 1000000
     assert (sec_bse.screening.k_mesh.grid == np.array([3, 3, 2])).all()
     assert (sec_method[-1].x_ocean_edges[0] == np.array([1, 1, 0])).all()
     assert sec_bse.core.solver == 'lanczos-haydock'

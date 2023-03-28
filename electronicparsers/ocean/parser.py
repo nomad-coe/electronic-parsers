@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import DataTextParser, TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, KMesh, Photon, CoreHole, BSE, ExcitedStateMethodology
+    Method, KMesh, Photon, CoreHole, ExcitedStateMethodology, Screening, BSE
 )
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Spectra
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
@@ -124,20 +124,20 @@ class OceanParser(BeyondDFTWorkflowsParser):
         sec_bse.n_states = bse_data.get('nbands', 1)
         sec_bse.broadening = bse_data.get('val', {}).get('broaden') * ureg.eV
         # KMesh
-        sec_k_mesh = KMesh(grid=bse_data.get('kmesh', []))
-        sec_method.m_add_sub_section(Method.k_mesh, sec_k_mesh)
+        sec_k_mesh = sec_method.m_create(KMesh)
+        sec_k_mesh.grid = bse_data.get('kmesh', [])
         # QMesh copied from KMesh
         sec_bse.m_add_sub_section(BSE.q_mesh, sec_k_mesh)
         # Screening
         screen_data = self.data.get('screen', {})
-        sec_screening = ExcitedStateMethodology(
+        sec_screening = Screening(
             type=screen_data.get('mode'),
-            n_states=screen_data.get('nbands', 1))
+            n_states=screen_data.get('nbands', 1),
+            dielectric_infinity=self.data['structure'].get('epsilon'))
         sec_k_mesh_screening = KMesh(grid=screen_data.get('kmesh', []))
-        sec_screening.m_add_sub_section(ExcitedStateMethodology.k_mesh, sec_k_mesh_screening)
-        sec_screening.m_add_sub_section(ExcitedStateMethodology.q_mesh, sec_k_mesh_screening)
+        sec_screening.m_add_sub_section(Screening.k_mesh, sec_k_mesh_screening)
+        sec_screening.m_add_sub_section(Screening.q_mesh, sec_k_mesh_screening)
         sec_bse.m_add_sub_section(BSE.screening, sec_screening)
-        sec_bse.dielectric_infinity = self.data['structure'].get('epsilon')
 
         # Core-Hole (either K=1s or L23=2p depenging on the first edge found)
         bse_core_data = bse_data.get('core')
