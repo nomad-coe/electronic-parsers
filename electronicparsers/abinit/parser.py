@@ -1485,4 +1485,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
             # GW workflow
             gw_workflow_archive = self._child_archives.get('GW_workflow')
-            self.parse_gw_workflow(gw_archive, gw_workflow_archive)
+            try:
+                self.parse_gw_workflow(gw_archive, gw_workflow_archive)
+            except Exception:
+                self.logger.error('Error parsing the automatic GW workflow')
