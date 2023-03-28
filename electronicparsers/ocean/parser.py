@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import DataTextParser, TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, KMesh, Photon, CoreHole, ExcitedStateMethodology, Screening, BSE
+    Method, KMesh, Photon, CoreHole, Screening, BSE
 )
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Spectra
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
