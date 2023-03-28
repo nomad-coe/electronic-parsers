@@ -1,0 +1,34 @@
+code_category: Atomistic code
+code_homepage: https://www.cp2k.org/
+code_name: CP2K
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: CP2K
+  codeLabelStyle: all in capitals
+  codeName: cp2k
+  codeUrl: https://www.cp2k.org/
+  parserDirName: dependencies/electronic/electronicparsers/cp2k/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: "## Usage notes\nThe parser is based on CP2K 2.6.2.\n\nThe CP2K\
+    \ input setting\n[PRINT_LEVEL](https://manual.cp2k.org/trunk/CP2K_INPUT/GLOBAL.html#PRINT_LEVEL)\n\
+    controls the amount of details that are outputted during the calculation. The\n\
+    higher this setting is, the more can be parsed from the upload.\n\nThe parser\
+    \ will try to find the paths to all the input and output files, but if\nthey are\
+    \ located very deep inside some folder structure or outside the folder\nwhere\
+    \ the output file is, the parser will not be able to locate them. For this\nreason\
+    \ it is recommended to keep the upload structure as flat as possible.\n\nHere\
+    \ is a list of features/fixes that would make the parsing of CP2K results\neasier:\n\
+    - The pdb trajectory output doesn't seem to conform to the actual standard as\n\
+    \  the different configurations are separated by the END keyword which is\n  supposed\
+    \ to be written only once in the file. The [format\n  specification](http://www.wwpdb.org/documentation/file-format)\
+    \ states that\n  different configurations should start with MODEL and end with\
+    \ ENDMDL tags.\n- The output file should contain the paths/filenames of different\
+    \ input and\n  output files that are accessed during the program run. This data\
+    \ is already\n  available for some files (input file, most files produced by MD),\
+    \ but many\n  are not mentioned.\n"
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/cp2k
+parser_class_name: electronicparsers.cp2k.parser.CP2KParser
+python_package: electronicparsers.cp2k

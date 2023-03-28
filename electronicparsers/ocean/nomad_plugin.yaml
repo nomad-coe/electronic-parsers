@@ -1,0 +1,36 @@
+code_category: Atomistic code
+code_homepage: https://feff.phys.washington.edu/OCEAN/index.html
+code_name: OCEAN
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: OCEAN
+  codeLabelStyle: All in capitals
+  codeName: ocean
+  codeUrl: https://feff.phys.washington.edu/OCEAN/index.html
+  parserDirName: dependencies/electronic/electronicparsers/ocean/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: '| Input Filename | Description |
+
+    | --- | --- |
+
+    | `*` | **Mainfile:** text output file (in JSON format) |
+
+    | `*.in` | input file with all parameters |
+
+    | `absspct*` | output data file with the Absorption Spectra |
+
+    | `abslanc*` | output data file with (Lanzcos algorithm) Absorption spectra |
+
+    | `xesspct*` | output data file with the Emission Spectra |
+
+    | `rxsspct*` | output data file with the RIXS |
+
+    | `photon*` | electron-photon operator |
+
+    '
+name: parsers/ocean
+parser_class_name: electronicparsers.ocean.parser.OceanParser
+python_package: electronicparsers.ocean

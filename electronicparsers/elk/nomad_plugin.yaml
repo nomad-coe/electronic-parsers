@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: http://elk.sourceforge.net/
+code_name: Elk
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: Elk
+  codeLabelStyle: Only E in capitals
+  codeName: elk
+  codeUrl: http://elk.sourceforge.net/
+  parserDirName: dependencies/electronic/electronicparsers/elk/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/elk
+parser_class_name: electronicparsers.elk.parser.ElkParser
+python_package: electronicparsers.elk

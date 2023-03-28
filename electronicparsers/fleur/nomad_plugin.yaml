@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: https://www.flapw.de/
+code_name: FLEUR
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: FLEUR
+  codeLabelStyle: 'Found: 1) only F in capitals, 2) all in capitals.'
+  codeName: fleur
+  codeUrl: https://www.flapw.de/
+  parserDirName: dependencies/electronic/electronicparsers/fleur/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/fleur
+parser_class_name: electronicparsers.fleur.parser.FleurParser
+python_package: electronicparsers.fleur

@@ -1,0 +1,83 @@
+code_category: Atomistic code
+code_homepage: http://exciting-code.org/
+code_name: exciting
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: exciting
+  codeLabelStyle: All in LOWER case
+  codeName: exciting
+  codeUrl: http://exciting-code.org/
+  parserDirName: dependencies/electronic/electronicparsers/exciting/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserLastUpdate: 18.10.2022
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: '|Input Filename| Description|
+
+    |--- | --- |
+
+    |`INFO.OUT`| mainfile|
+
+    |`BAND-QP.OUT`| |
+
+    |`BANDLINES.OUT`| |
+
+    |`DIELTENS0*.OUT`| |
+
+    |`DIELTENS0_NOSYM*.OUT`| |
+
+    |`EIGVAL.OUT`| |
+
+    |`EPSILON_*FXC*_OC*.OUT `| |
+
+    |`EPSILON_*NLF_FXC*_OC*.OUT`| |
+
+    |`EPSILON_BSE*_SCR*_OC*.OUT`| |
+
+    |`EVALQP.DAT or EVALQP.TXT`| |
+
+    |`EXCITON_BSE*_SCR*_OC*.OUT`| |
+
+    |`FERMISURF.bxsf`| |
+
+    |`GQPOINTS*.OUT`| |
+
+    |`GW_INFO.OUT`| |
+
+    |`INFO_VOL       `| |
+
+    |`LOSS_*FXC*_OC*.OUT`| |
+
+    |`LOSS_*NLF_*FXC*_OC*.OUT`| |
+
+    |`QPOINTS.OUT`| |
+
+    |`SIGMA_*FXC*_OC*.OUT`| |
+
+    |`SIGMA_*NLF_FXC*_OC*.OUT `| |
+
+    |`SIGMA_BSE*_SCR*_OC*.OUT `| |
+
+    |`TDOS-QP.OUT` | time dependent DOS|
+
+    |`bandstructure-qp.dat`| |
+
+    |`bandstructure.xml`| (vertexLabGWFile)|
+
+    |`bandstructure.xml`| |
+
+    |`dos.xml`| |
+
+    |`input-gw.xml `| |
+
+    |`input.xml`|(GSFile) |
+
+    |`input.xml`| (XSFile)|
+
+    |`str.out`| |
+
+    '
+name: parsers/exciting
+parser_class_name: electronicparsers.exciting.parser.ExcitingParser
+python_package: electronicparsers.exciting

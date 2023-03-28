@@ -1,0 +1,27 @@
+code_category: Atomistic code
+code_homepage: http://www.castep.org/
+code_name: CASTEP
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: CASTEP
+  codeLabelStyle: all in capitals
+  codeName: castep
+  codeUrl: http://www.castep.org/
+  parserDirName: dependencies/electronic/electronicparsers/castep/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: "### CASTEP output examples\n[Note: The list below is much shorter\
+    \ than the existing examples]\nA few output files to test the parser are provided\
+    \ in the directory `castep/test/examples/*/`.\n\n        FILE NAME     |     \
+    \         FILE DESCRIPTION\n    __________________|___________________________________________________\n\
+    \    \"Si2.castep_v_1\" --> Single Point Calculation (minimum verbosity)\n   \
+    \ \"Si2.castep_v_2\" --> Single Point Calculation (medium verbosity)\n    \"Si2.castep_v_3\"\
+    \ --> Single Point Calculation (maximum verbosity)\n\n    \"Si2.castep_b_v_1\"\
+    \ --> Band Structure Calculation (minimum verbosity)\n    \"Si2.castep_b_v_2\"\
+    \ --> Band Structure Calculation (medium verbosity)\n    \"Si2.castep_b_v_3\"\
+    \ --> Band Structure Calculation (maximum verbosity)\n"
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/castep
+parser_class_name: electronicparsers.castep.parser.CastepParser
+python_package: electronicparsers.castep

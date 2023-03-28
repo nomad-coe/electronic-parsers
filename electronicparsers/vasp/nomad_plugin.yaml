@@ -1,0 +1,27 @@
+code_category: Atomistic code
+code_homepage: https://www.vasp.at/
+code_name: VASP
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: VASP
+  codeLabelStyle: All in capitals
+  codeName: vasp
+  codeUrl: https://www.vasp.at/
+  parserDirName: dependencies/electronic/electronicparsers/vasp/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: '|Input Filename| Description|
+
+    |--- | --- |
+
+    |`vasprun.xml` | **Mainfile** in plain-text (structured) XML format |
+
+    |`OUTCAR` | plain-text (semi-structured) file, VAPS''s detailed output. Read by
+    NOMAD only as fallback to parse `outcar` data |
+
+    '
+name: parsers/vasp
+parser_class_name: electronicparsers.vasp.parser.VASPParser
+python_package: electronicparsers.vasp

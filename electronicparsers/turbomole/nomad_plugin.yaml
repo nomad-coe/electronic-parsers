@@ -1,0 +1,17 @@
+code_category: Atomistic code
+code_homepage: https://www.turbomole.org/
+code_name: TURBOMOLE
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: TURBOMOLE
+  codeLabelStyle: All in capitals
+  codeName: turbomole
+  codeUrl: https://www.turbomole.org/
+  parserDirName: dependencies/electronic/electronicparsers/turbomole/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/turbomole
+parser_class_name: electronicparsers.turbomole.parser.TurbomoleParser
+python_package: electronicparsers.turbomole

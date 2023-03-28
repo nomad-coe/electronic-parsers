@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: https://www.fplo.de/
+code_name: FPLO
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: FPLO
+  codeLabelStyle: All in capitals
+  codeName: fplo
+  codeUrl: https://www.fplo.de/
+  parserDirName: dependencies/electronic/electronicparsers/fplo/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/fplo
+parser_class_name: electronicparsers.fplo.parser.FploParser
+python_package: electronicparsers.fplo

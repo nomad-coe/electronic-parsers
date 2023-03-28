@@ -1,0 +1,24 @@
+code_category: Atomistic code
+code_homepage: http://www.openmx-square.org/
+code_name: OpenMX
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: OpenMX
+  codeLabelStyle: First and last two characters in capitals
+  codeName: openmx
+  codeUrl: http://www.openmx-square.org/
+  parserDirName: dependencies/electronic/electronicparsers/openmx/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: '|Input Filename| Description|
+
+    |--- | --- |
+
+    |`<systemname>.out` | **Mainfile** in OpenMX specific plain-text |
+
+    '
+name: parsers/openmx
+parser_class_name: electronicparsers.openmx.parser.OpenmxParser
+python_package: electronicparsers.openmx

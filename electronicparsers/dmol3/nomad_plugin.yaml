@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: http://dmol3.web.psi.ch/
+code_name: DMol3
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: DMol3
+  codeLabelStyle: 'Capitals: D, M'
+  codeName: dmol
+  codeUrl: http://dmol3.web.psi.ch/
+  parserDirName: dependencies/electronic/electronicparsers/dmol3/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/dmol
+parser_class_name: electronicparsers.dmol3.parser.Dmol3Parser
+python_package: electronicparsers.dmol3

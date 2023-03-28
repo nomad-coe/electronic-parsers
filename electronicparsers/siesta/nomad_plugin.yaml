@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: https://siesta-project.org/siesta
+code_name: SIESTA
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: SIESTA
+  codeLabelStyle: All in capitals
+  codeName: siesta
+  codeUrl: https://siesta-project.org/siesta
+  parserDirName: dependencies/electronic/electronicparsers/siesta/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/siesta
+parser_class_name: electronicparsers.siesta.parser.SiestaParser
+python_package: electronicparsers.siesta

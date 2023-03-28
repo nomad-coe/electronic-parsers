@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: https://nwchemgit.github.io/
+code_name: NWChem
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: NWChem
+  codeLabelStyle: 'Capitals: N, W, C'
+  codeName: nwchem
+  codeUrl: https://nwchemgit.github.io/
+  parserDirName: dependencies/electronic/electronicparsers/nwchem/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/nwchem
+parser_class_name: electronicparsers.nwchem.parser.NWChemParser
+python_package: electronicparsers.nwchem
