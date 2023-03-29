@@ -1105,9 +1105,9 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         occ_scr = self.out_parser.get_input_var('occ', 3, [])
         n_scr = len(occ_scr)
         n_occ_scr = len([occ_scr[i] for i in range(n_scr) if occ_scr[i] > 0.0])
+        n_empty_scr = n_scr - n_occ_scr
         sec_screening = Screening(
-            n_empty_states = n_scr - n_occ_scr
-        )
+            n_empty_states=n_empty_scr)
         sec_gw.m_add_sub_section(GW.screening, sec_screening)
         # Other paramters
         if self.out_parser.get_input_var('bdgw', 4, np.array(None)).all():
