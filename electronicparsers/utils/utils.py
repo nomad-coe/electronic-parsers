@@ -192,9 +192,8 @@ class BeyondDFTWorkflowsParser:
 
         # Outputs
         spectra = []
-        for path in self._child_archives.keys():
+        for index, path in enumerate(self._child_archives.keys()):
             archive = self._child_archives.get(path)
-            index = list(self._child_archives.keys()).index(path)
 
             output_polarization = extract_section(archive, 'run/calculation')
             if output_polarization:
@@ -264,8 +263,7 @@ class BeyondDFTWorkflowsParser:
         if input_structure:
             workflow.m_add_sub_section(
                 ParticleHoleExcitations.inputs, Link(name='Input structure', section=input_structure))
-        for polarizations in polarization_calculations:
-            index = polarization_calculations.index(polarizations)
+        for index, polarizations in enumerate(polarization_calculations):
             workflow.m_add_sub_section(
                 ParticleHoleExcitations.outputs, Link(name=f'Polarization {index + 1}', section=polarizations))
 
@@ -280,17 +278,17 @@ class BeyondDFTWorkflowsParser:
             workflow.m_add_sub_section(ParticleHoleExcitations.tasks, task)
 
         # Spectra task
-        for xs_archive in xs_archives:
-            if xs_archive.workflow2:
-                index = list(xs_archives).index(xs_archive)
-                task = TaskReference(task=xs_archive.workflow2)
-                task.name = f'Spectra {index + 1}'
-                if dft_calculation:
-                    xs_archive.workflow2.m_add_sub_section(
-                        PhotonPolarization.inputs, Link(name='Output DFT calculation', section=dft_calculation))
-                    for photon_task in xs_archive.workflow2.tasks:
-                        photon_task.m_add_sub_section(
-                            TaskReference.inputs, Link(name='Output DFT calculation', section=dft_calculation))
-                workflow.m_add_sub_section(ParticleHoleExcitations.tasks, task)
+        for index, xs_archive in enumerate(xs_archives):
+            if not xs_archive.workflow2:
+                continue
+            task = TaskReference(task=xs_archive.workflow2)
+            task.name = f'Spectra {index + 1}'
+            if dft_calculation:
+                xs_archive.workflow2.m_add_sub_section(
+                    PhotonPolarization.inputs, Link(name='Output DFT calculation', section=dft_calculation))
+                for photon_task in xs_archive.workflow2.tasks:
+                    photon_task.m_add_sub_section(
+                        TaskReference.inputs, Link(name='Output DFT calculation', section=dft_calculation))
+            workflow.m_add_sub_section(ParticleHoleExcitations.tasks, task)
 
         xs_workflow_archive.workflow2 = workflow
