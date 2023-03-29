@@ -1091,23 +1091,18 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             if self.out_parser.get('screening_dataset').get('frequencies'):
                 freqs = self.out_parser.get('screening_dataset').get('frequencies').get('values') * ureg.eV
                 values = freqs[:, 0] + freqs[:, 1] * 1j
-                sec_freq_mesh = FreqMesh(
-                    n_points=len(freqs),
-                    values=values)
+                sec_freq_mesh = FreqMesh(n_points=len(freqs), values=values)
         else:
-            freq_plasma = self.out_parser.get('gw_dataset').get('omega_plasma', 0.0)
+            freq_plasma = self.out_parser.get('gw_dataset', {}).get('omega_plasma', 0.0)
             values = [0.0, freq_plasma * 1j]
-            sec_freq_mesh = FreqMesh(
-                n_points=2,
-                values=values)
+            sec_freq_mesh = FreqMesh(n_points=2, values=values)
         sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
         # Screening
         occ_scr = self.out_parser.get_input_var('occ', 3, [])
         n_scr = len(occ_scr)
-        n_occ_scr = len([occ_scr[i] for i in range(n_scr) if occ_scr[i] > 0.0])
+        n_occ_scr = len([occ for occ in occ_scr if occ > 0.0])
         n_empty_scr = n_scr - n_occ_scr
-        sec_screening = Screening(
-            n_empty_states=n_empty_scr)
+        sec_screening = Screening(n_empty_states=n_empty_scr)
         sec_gw.m_add_sub_section(GW.screening, sec_screening)
         # Other paramters
         if self.out_parser.get_input_var('bdgw', 4, np.array(None)).all():

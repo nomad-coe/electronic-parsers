@@ -1800,9 +1800,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         n_freqs = sec_run.method[-1].get('x_exciting_xs_energywindow_points')
         freqs = sec_run.method[-1].get('x_exciting_xs_energywindow_values')
         values = [freqs[0] + i * (freqs[-1] - freqs[0]) / n_freqs for i in range(n_freqs)]
-        sec_freq_mesh = FreqMesh(
-            n_points=n_freqs,
-            values=values)
+        sec_freq_mesh = FreqMesh(n_points=n_freqs, values=values)
         sec_bse.m_add_sub_section(BSE.frequency_mesh, sec_freq_mesh)
         # Screening
         sec_screening = Screening(

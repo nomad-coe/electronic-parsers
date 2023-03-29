@@ -151,42 +151,39 @@ class OceanParser(BeyondDFTWorkflowsParser):
             # sec_core.edge = self._core_level_map[str(edges[0][-2:])]
 
         # code-specific parameters
-        try:
-            # BSE
-            sec_bse_ocean = sec_method.m_create(x_ocean_bse_parameters)
-            sec_bse_ocean.x_ocean_screen_radius = bse_core_data.get('screen_radius')
-            sec_bse_ocean.x_ocean_xmesh = bse_data.get('xmesh')
-            # screening
-            sec_bse_screen = sec_method.m_create(x_ocean_screen_parameters)
-            screen_keys = [
-                'all_augment', 'augment', 'convertstyle', 'dft_energy_range', 'inversionstyle',
-                'kshift', 'mimic_exciting_bands', 'shells']
-            screen_dicts = [
-                'core_offset', 'final', 'grid']
-            for key in screen_keys:
-                setattr(sec_bse_screen, f'x_ocean_{key}', screen_data.get(key))
-            for keys in screen_dicts:
-                for subkeys in screen_data[keys].keys():
-                    setattr(sec_bse_screen, f'x_ocean_{keys}_{subkeys}', screen_data[keys].get(subkeys))
-            sec_bse_screen.x_ocean_model_flavor = screen_data['model'].get('flavor')
-            # edges
-            edges = []
-            for ed in [x.split(' ') for x in self.data['calc'].get('edges', [])]:
-                edges.append([int(x) for x in ed])
-            sec_method.x_ocean_edges = edges
-            # core
-            if bse_core_data.get('solver') == 'haydock':
-                sec_haydock = sec_bse_ocean.m_create(x_ocean_core_haydock_parameters)
-                sec_haydock.x_ocean_converge_spacing = bse_core_data['haydock']['converge'].get('spacing')
-                sec_haydock.x_ocean_converge_thresh = bse_core_data['haydock']['converge'].get('thresh')
-                sec_haydock.x_ocean_niter = bse_core_data['haydock'].get('niter')
-            elif bse_core_data.get('solver') == 'gmres':
-                sec_gmres = sec_bse_ocean.m_create(x_ocean_core_gmres_parameters)
-                gmres_keys = ['echamp', 'elist', 'erange', 'estyle', 'ffff', 'gprc', 'nloop']
-                for key in gmres_keys:
-                    setattr(sec_gmres, f'x_ocean_{key}', bse_core_data['gmres'].get(key))
-        except Exception:
-            self.logger.warning('Error extracting code-specific quantities.')
+        # BSE
+        sec_bse_ocean = sec_method.m_create(x_ocean_bse_parameters)
+        sec_bse_ocean.x_ocean_screen_radius = bse_core_data.get('screen_radius')
+        sec_bse_ocean.x_ocean_xmesh = bse_data.get('xmesh')
+        # screening
+        sec_bse_screen = sec_method.m_create(x_ocean_screen_parameters)
+        screen_keys = [
+            'all_augment', 'augment', 'convertstyle', 'dft_energy_range', 'inversionstyle',
+            'kshift', 'mimic_exciting_bands', 'shells']
+        screen_dicts = [
+            'core_offset', 'final', 'grid']
+        for key in screen_keys:
+            setattr(sec_bse_screen, f'x_ocean_{key}', screen_data.get(key))
+        for keys in screen_dicts:
+            for subkeys in screen_data[keys].keys():
+                setattr(sec_bse_screen, f'x_ocean_{keys}_{subkeys}', screen_data[keys].get(subkeys))
+        sec_bse_screen.x_ocean_model_flavor = screen_data['model'].get('flavor')
+        # edges
+        edges = []
+        for ed in [x.split(' ') for x in self.data['calc'].get('edges', [])]:
+            edges.append([int(x) for x in ed])
+        sec_method.x_ocean_edges = edges
+        # core
+        if bse_core_data.get('solver') == 'haydock':
+            sec_haydock = sec_bse_ocean.m_create(x_ocean_core_haydock_parameters)
+            sec_haydock.x_ocean_converge_spacing = bse_core_data['haydock']['converge'].get('spacing')
+            sec_haydock.x_ocean_converge_thresh = bse_core_data['haydock']['converge'].get('thresh')
+            sec_haydock.x_ocean_niter = bse_core_data['haydock'].get('niter')
+        elif bse_core_data.get('solver') == 'gmres':
+            sec_gmres = sec_bse_ocean.m_create(x_ocean_core_gmres_parameters)
+            gmres_keys = ['echamp', 'elist', 'erange', 'estyle', 'ffff', 'gprc', 'nloop']
+            for key in gmres_keys:
+                setattr(sec_gmres, f'x_ocean_{key}', bse_core_data['gmres'].get(key))
 
     def parse_scc(self, path):
         sec_run = self._child_archives.get(path).run[-1]
