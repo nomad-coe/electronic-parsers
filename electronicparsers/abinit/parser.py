@@ -1405,6 +1405,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         self.out_parser.logger = self.logger
         self.out_parser._input_vars = None
         self.out_parser._n_datasets = None
+        self.out_parser._dataset_numbers = None
 
     def reuse_parser(self, parser):
         self.out_parser.quantities = parser.out_parser.quantities
