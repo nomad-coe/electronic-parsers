@@ -277,6 +277,8 @@ class Wannier90Parser():
                 projections.pop(0)
             else:
                 sec_run.x_wannier90_units = 'angstrom'
+            if projections[0][0] == 'random':
+                return
 
         # Populating AtomsGroup for projected atoms
         sec_run.x_wannier90_n_atoms_proj = len(projections)
