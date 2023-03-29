@@ -121,7 +121,9 @@ class BeyondDFTWorkflowsParser:
         gw_old.band_structure_gw = bs_gw
 
         # New workflow
-        workflow = GW(method=GWMethod(), results=GWResults())
+        workflow = GW(
+            method=GWMethod(),
+            results=GWResults())
         workflow.name = 'GW'
         # method
         method_gw = extract_section(gw_archive, 'run/method/gw')
@@ -139,27 +141,35 @@ class BeyondDFTWorkflowsParser:
         input_structure = extract_section(self.archive, 'run/system')
         dft_calculation = extract_section(self.archive, 'run/calculation')
         gw_calculation = extract_section(gw_archive, 'run/calculation')
-        workflow.inputs.append(Link(name='Workflow parameters', section=workflow.method))
+        workflow.m_add_sub_section(
+            GW.inputs,
+            Link(name='GW workflow parameters', section=workflow.method))
         if input_structure:
-            workflow.inputs.append(Link(name='Input structure', section=input_structure))
+            workflow.m_add_sub_section(
+                GW.inputs,
+                Link(name='Input structure', section=input_structure))
         if gw_calculation:
-            workflow.outputs.append(Link(name='Output GW calculation', section=gw_calculation))
+            workflow.m_add_sub_section(
+                GW.outputs,
+                Link(name='Output GW calculation', section=gw_calculation))
         # DFT task
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
+            task.name = 'DFT'
             if input_structure:
                 task.inputs = [Link(name='Input structure', section=input_structure)]
             if dft_calculation:
                 task.outputs = [Link(name='Output DFT calculation', section=dft_calculation)]
-            workflow.tasks.append(task)
+            workflow.m_add_sub_section(GW.tasks, task)
         # GW task
         if gw_archive.workflow2:
             task = TaskReference(task=gw_archive.workflow2)
+            task.name = 'GW'
             if dft_calculation:
                 task.inputs = [Link(name='Input DFT calculation', section=dft_calculation)]
             if gw_calculation:
                 task.outputs = [Link(name='Output GW calculation', section=gw_calculation)]
-            workflow.tasks.append(task)
+            workflow.m_add_sub_section(GW.tasks, task)
 
         gw_workflow_archive.workflow2 = workflow
 
