@@ -27,7 +27,7 @@ from nomad.datamodel.metainfo.workflow2 import Link, TaskReference, Task
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint, GW, GWMethod, GWResults, ParticleHoleExcitations,
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,
-    PhotonPolarization, PhotonPolarizationResults
+    PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
 
 
@@ -125,19 +125,19 @@ class BeyondDFTWorkflowsParser:
             method=GWMethod(),
             results=GWResults())
         workflow.name = 'GW'
-        # method
+        # Method
         method_gw = extract_section(gw_archive, 'run/method/gw')
         method_xcfunctional = extract_section(self.archive, 'run/method/dft/xc_functional')
         method_basisset = extract_section(self.archive, 'run/method/basis_set')
         workflow.method.gw_method_ref = method_gw
         workflow.method.starting_point = method_xcfunctional
         workflow.method.basis_set = method_basisset
-        # results
+        # Results
         workflow.results.dos_dft = dos_dft
         workflow.results.dos_gw = dos_gw
         workflow.results.band_structure_dft = bs_dft
         workflow.results.band_structure_gw = bs_gw
-        # inputs and outputs
+        # Inputs and Outputs
         input_structure = extract_section(self.archive, 'run/system')
         dft_calculation = extract_section(self.archive, 'run/calculation')
         gw_calculation = extract_section(gw_archive, 'run/calculation')
@@ -178,41 +178,50 @@ class BeyondDFTWorkflowsParser:
             self.archive = archive for the workflow
             self._child_archives = archives for SinglePoint photons
         '''
-        workflow = PhotonPolarization(results=PhotonPolarizationResults())
+        workflow = PhotonPolarization(
+            method=PhotonPolarizationMethod(),
+            results=PhotonPolarizationResults())
         workflow.name = 'Spectra'
-
+        # Method (TODO define Method)
+        # Inputs
         input_structure = self.archive.run[-1].system[-1]
+        workflow.m_add_sub_section(
+            PhotonPolarization.inputs,
+            Link(name='Input structure', section=input_structure))
         input_method = self.archive.run[-1].method[-1]
-        workflow.inputs = [
-            Link(name='Input structure', section=input_structure),
-            # TODO this should be put under PhotonPolarizationMethod e.g. as method_ref
-            Link(name='Input BSE methodology', section=input_method)]
+        workflow.m_add_sub_section(
+            PhotonPolarization.inputs,
+            Link(name='Input BSE methodology', section=input_method))
+        # Outputs
         spectra = []
-        outputs = []
         for path in self._child_archives.keys():
             archive = self._child_archives.get(path)
             index = list(self._child_archives.keys()).index(path)
-            archive.workflow2 = SinglePoint()
-            archive.workflow2.name = 'SinglePoint'
 
-            task = TaskReference(task=archive.workflow2)
-            input_photon_method = archive.run[-1].method[0]
-            if input_structure and input_photon_method:
-                archive.workflow2.inputs = [
-                    Link(name='Input structure', section=input_structure),
-                    Link(name='Input photon parameters', section=input_photon_method)]
-            output_calculation = archive.run[-1].calculation[-1]  # ref to EPSILON calculation
-            if output_calculation:
-                archive.workflow2.outputs = [Link(name=f'Output polarization {index + 1}', section=output_calculation)]
-                spectra.append(output_calculation.spectra[0])
-                outputs.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
-            archive.workflow2.tasks = [Task(inputs=archive.workflow2.inputs, outputs=archive.workflow2.outputs)]
-            workflow.tasks.append(task)
+            output_polarization = archive.run[-1].calculation[-1]
+            if output_polarization:
+                workflow.m_add_sub_section(
+                    PhotonPolarization.outputs,
+                    Link(name=f'Output polarization {index + 1}', section=output_polarization))
+                spectra.append(output_polarization.spectra[0])
 
+            # Tasks
+            if archive.workflow2:
+                task = TaskReference(task=archive.workflow2)
+                task.name = f'Photon {index + 1}'
+                input_photon_method = archive.run[-1].method[0]
+                if input_photon_method and input_structure:
+                    task.inputs = [
+                        Link(name='Input structure', section=input_structure),
+                        Link(name='Input photon parameters', section=input_photon_method)]
+                if output_polarization:
+                    task.outputs = [
+                        Link(name=f'Output polarization {index + 1}', section=output_polarization)]
+                workflow.m_add_sub_section(PhotonPolarization.tasks, task)
+        # Results
         workflow.results.n_polarizations = len(spectra)
         workflow.results.spectrum_polarization = spectra
-        outputs.append(Link(name='Workflow results', section=workflow.results))
-        workflow.outputs = outputs
+
         self.archive.workflow2 = workflow
 
     def parse_xs_workflow(self, xs_archives, xs_workflow_archive):
