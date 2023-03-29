@@ -145,7 +145,7 @@ class OceanParser(BeyondDFTWorkflowsParser):
             sec_core = CoreHole(
                 mode=self.mode_bse[bse_core_data.get('strength')],
                 solver=self._type_bse_map[bse_core_data.get('solver')],
-                broadening=bse_core_data.get('broaden'))
+                broadening=bse_core_data.get('broaden') * ureg.eV)
             sec_bse.m_add_sub_section(BSE.core, sec_core)
             # TODO wait for new changes in metainfo for CoreHole
             # sec_core.edge = self._core_level_map[str(edges[0][-2:])]

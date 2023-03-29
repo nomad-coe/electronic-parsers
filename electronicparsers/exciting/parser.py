@@ -1789,7 +1789,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_bse = sec_method.m_create(BSE)
         sec_bse.type = sec_run.method[-1].get('x_exciting_xs_bse_type')
         sec_bse.n_empty_states = sec_run.method[-1].get('x_exciting_xs_number_of_empty_states')
-        sec_bse.broadening = sec_run.method[-1].get('x_exciting_xs_broadening')
+        sec_bse.broadening = sec_run.method[-1].get('x_exciting_xs_broadening') * ureg.hartree
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
         sec_k_mesh.grid = sec_run.method[-1].get('x_exciting_xs_ngridk')
@@ -1815,7 +1815,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         if sec_run.method[-1].get('x_exciting_xs_bse_xas'):
             sec_core = CoreHole(
                 mode='absorption',
-                broadening=sec_run.method[-1].get('x_exciting_xs_broadening'))
+                broadening=sec_run.method[-1].get('x_exciting_xs_broadening') * ureg.hartree)
             sec_bse.m_add_sub_section(BSE.core, sec_core)
             # TODO wait for new changes in metainfo for CoreHole
             # sec_core.edge = sec_run.method[0].get('x_exciting_xs_bse_xasedge')
@@ -1931,7 +1931,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             q_mesh=sec_k_mesh.m_copy(),
             frequency_mesh=sec_freq_mesh.m_copy())
         sec_gw.m_add_sub_section(GW.screening, sec_screening)
-
         # Other parameters
         sec_gw.interval_qp_corrections = [sec_gw.x_exciting_ibgw, sec_gw.x_exciting_nbgw]
         if sec_screening.n_empty_states == 0:
