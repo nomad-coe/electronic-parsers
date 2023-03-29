@@ -142,9 +142,6 @@ class BeyondDFTWorkflowsParser:
         input_structure = extract_section(self.archive, 'run/system')
         dft_calculation = extract_section(self.archive, 'run/calculation')
         gw_calculation = extract_section(gw_archive, 'run/calculation')
-        # workflow.m_add_sub_section(
-            # GW.inputs,
-            # Link(name='GW workflow parameters', section=workflow.method))
         if input_structure:
             workflow.m_add_sub_section(
                 GW.inputs, Link(name='Input structure', section=input_structure))
