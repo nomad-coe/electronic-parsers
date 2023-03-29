@@ -23,9 +23,9 @@ from glob import glob
 from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Workflow, Task as Taskold, GW as GWold
-from nomad.datamodel.metainfo.workflow2 import Link, TaskReference, Task
+from nomad.datamodel.metainfo.workflow2 import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
-    SinglePoint, GW, GWMethod, GWResults, ParticleHoleExcitations,
+    GW, GWMethod, GWResults, ParticleHoleExcitations,
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
