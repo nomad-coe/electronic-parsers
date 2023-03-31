@@ -1936,7 +1936,8 @@ class QuantumEspressoOutParser(TextParser):
                 dtype=float, shape=(3, 3)),
             Quantity(
                 'reciprocal_cell_units',
-                r'reciprocal axes: \(cart\. coord\. in units of ([\w ]+)\)\s*'),
+                r'reciprocal axes: \(cart\. coord\. in units ([\w \/]+)\)',
+                flatten=False),
             Quantity(
                 'reciprocal_cell',
                 r'b\(1\) = \(([\-\d\. ]+)\)\s*b\(2\) = \(([\-\d\. ]+)\)\s*b\(3\) = \(([\-\d\. ]+)\)\s*',
