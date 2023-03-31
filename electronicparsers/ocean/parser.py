@@ -142,11 +142,11 @@ class OceanParser(BeyondDFTWorkflowsParser):
         # Core-Hole (either K=1s or L23=2p depenging on the first edge found)
         bse_core_data = bse_data.get('core')
         if bse_core_data:
-            sec_core = CoreHole(
+            sec_core_hole = CoreHole(
                 mode=self.mode_bse[bse_core_data.get('strength')],
                 solver=self._type_bse_map[bse_core_data.get('solver')],
                 broadening=bse_core_data.get('broaden') * ureg.eV)
-            sec_bse.m_add_sub_section(BSE.core, sec_core)
+            sec_bse.m_add_sub_section(BSE.core_hole, sec_core_hole)
             # TODO wait for new changes in metainfo for CoreHole
             # sec_core.edge = self._core_level_map[str(edges[0][-2:])]
 

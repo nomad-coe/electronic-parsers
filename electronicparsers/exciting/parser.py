@@ -1811,10 +1811,10 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         # CoreHole
         if sec_run.method[-1].get('x_exciting_xs_bse_xas'):
-            sec_core = CoreHole(
+            sec_core_hole = CoreHole(
                 mode='absorption',
                 broadening=sec_run.method[-1].get('x_exciting_xs_broadening') * ureg.hartree)
-            sec_bse.m_add_sub_section(BSE.core, sec_core)
+            sec_bse.m_add_sub_section(BSE.core_hole, sec_core_hole)
             # TODO wait for new changes in metainfo for CoreHole
             # sec_core.edge = sec_run.method[0].get('x_exciting_xs_bse_xasedge')
 
