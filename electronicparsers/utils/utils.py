@@ -31,7 +31,7 @@ from nomad.datamodel.metainfo.simulation.workflow import (
 )
 
 
-def extract_section(source, path):
+def extract_section(source: EntryArchive, path: str):
     '''
     Extracts the (last) section from source given by path. Examples:
         sec_system = extract_section(archive, 'run/system')
@@ -47,9 +47,11 @@ def extract_section(source, path):
     return source
 
 
-def get_files(pattern, filepath, stripname: str = '', deep: bool = True):
+def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = True):
     '''
-    Get files up to / down from the filepath (up ** or down ..).
+    Get files up to / down from the filepath (deep=`**` going up, and deep=`..` down,) to
+    find the file `pattern` with respect to the file `stripname` (normally being the
+    mainfile of the parser).
     '''
     for _ in range(10):
         filenames = glob(f'{os.path.dirname(filepath)}/{pattern}')
@@ -77,7 +79,11 @@ class BeyondDFTWorkflowsParser:
         self._child_archives = _child_archives
         self._xs_spectra_types = _xs_spectra_types
 
-    def run_workflow_archive(self, workflow_archive):
+    def run_workflow_archive(self, workflow_archive: EntryArchive):
+        '''
+        Initializes the workflow archive by checking if Run exists or not, as well as copying
+        Program and System into it.
+        '''
         if workflow_archive.run:
             sec_run = workflow_archive.run[-1]
         else:
@@ -85,7 +91,7 @@ class BeyondDFTWorkflowsParser:
         sec_run.program = self.archive.run[-1].program
         sec_run.system = self.archive.run[-1].system
 
-    def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
+    def parse_gw_workflow(self, gw_archive: EntryArchive, gw_workflow_archive: EntryArchive):
         '''
             self.archive = DFT archive
             gw_archive = GW archive
@@ -222,7 +228,7 @@ class BeyondDFTWorkflowsParser:
 
         self.archive.workflow2 = workflow
 
-    def parse_xs_workflow(self, xs_archives, xs_workflow_archive):
+    def parse_xs_workflow(self, xs_archives: EntryArchive, xs_workflow_archive: EntryArchive):
         '''
             self.archive = DFT archive
             xs_archives = archives for all Spectra workflows
