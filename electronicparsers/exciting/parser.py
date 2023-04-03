@@ -26,7 +26,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextP
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional, Scf, BasisSet, KMesh,
-    FreqMesh, Screening, GW, Photon, BSE, CoreHole
+    FrequencyMesh, Screening, GW, Photon, BSE, CoreHole
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1796,11 +1796,11 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # QMesh
         sec_q_mesh = KMesh(grid=sec_run.method[-1].get('x_exciting_xs_ngridq'))
         sec_bse.m_add_sub_section(BSE.q_mesh, sec_q_mesh)
-        # FreqMesh
+        # FrequencyMesh
         n_freqs = sec_run.method[-1].get('x_exciting_xs_energywindow_points')
         freqs = sec_run.method[-1].get('x_exciting_xs_energywindow_values')
         values = [freqs[0] + i * (freqs[-1] - freqs[0]) / n_freqs for i in range(n_freqs)]
-        sec_freq_mesh = FreqMesh(n_points=n_freqs, values=values)
+        sec_freq_mesh = FrequencyMesh(n_points=n_freqs, values=values)
         sec_bse.m_add_sub_section(BSE.frequency_mesh, sec_freq_mesh)
         # Screening
         sec_screening = Screening(
@@ -1909,13 +1909,13 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     sec_gw.analytical_continuation = 'ppm_GodbyNeeds'
                 else:
                     self.logger.warning('Could not find the analytical continuation method.')
-        # FreqMesh
+        # FrequencyMesh
         n_freqs = sec_gw.x_exciting_freqgrid.x_exciting_nomeg
         freqmax = sec_gw.x_exciting_freqgrid.x_exciting_freqmax
         freqmin = sec_gw.x_exciting_freqgrid.x_exciting_freqmin
         values = [freqmin + i * (freqmax - freqmin) / n_freqs for i in range(n_freqs)] * ureg.hartree
         smearing = sec_gw.x_exciting_freqgrid.x_exciting_eta if sec_gw.x_exciting_qdepw == 'sum' else None
-        sec_freq_mesh = FreqMesh(
+        sec_freq_mesh = FrequencyMesh(
             type=sec_gw.x_exciting_freqgrid.x_exciting_fgrid,
             n_points=n_freqs,
             values=values,

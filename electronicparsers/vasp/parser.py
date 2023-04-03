@@ -44,7 +44,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, DFT, HubbardKanamoriModel, AtomParameters,
-    XCFunctional, Functional, Electronic, Scf, KMesh, GW, FreqMesh
+    XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1368,8 +1368,8 @@ class VASPParser():
         sec_gw.m_add_sub_section(GW.q_mesh, sec_method.k_mesh)
         # Analytical continuation
         sec_gw.analytical_continuation = 'pade'
-        # FreqMesh
-        sec_freq_mesh = FreqMesh(n_points=response_functions.get('NOMEGA', 100))
+        # FrequencyMesh
+        sec_freq_mesh = FrequencyMesh(n_points=response_functions.get('NOMEGA', 100))
         sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
 
     def parse_workflow(self):

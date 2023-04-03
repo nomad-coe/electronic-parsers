@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Electronic, Method, XCFunctional, Functional, HubbardKanamoriModel, AtomParameters, DFT,
-    BasisSet, GW, KMesh, FreqMesh
+    BasisSet, GW, KMesh, FrequencyMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -869,13 +869,13 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         # Analytical continuation
         sec_gw.analytical_continuation = self.gw_analytical_continuation[
             self.out_parser.get('anacon_type', 1)]
-        # FreqMesh
+        # FrequencyMesh
         frequency_data = self.out_parser.get('frequency_data', None)
         if frequency_data:
             values = np.array(frequency_data)[:, 1] * ureg.hartree
         else:
             values = None
-        sec_freq_mesh = FreqMesh(
+        sec_freq_mesh = FrequencyMesh(
             type=self.out_parser.get('freq_grid_type'),
             n_points=self.out_parser.get('n_freq', 100),
             values=values)

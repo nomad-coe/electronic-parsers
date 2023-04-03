@@ -28,7 +28,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataText
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, Electronic, Smearing, Scf, DFT, XCFunctional,
-    Functional, KMesh, FreqMesh, Screening, GW)
+    Functional, KMesh, FrequencyMesh, Screening, GW)
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry, Dos,
@@ -1086,16 +1086,16 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 sec_gw.analytical_continuation = 'ppm_FaridEngel'
             else:
                 sec_gw.analytical_continuation = 'contour_deformation'
-        # FreqMesh
+        # FrequencyMesh
         if self.out_parser.get('screening_dataset'):
             if self.out_parser.get('screening_dataset').get('frequencies'):
                 freqs = self.out_parser.get('screening_dataset').get('frequencies').get('values') * ureg.eV
                 values = freqs[:, 0] + freqs[:, 1] * 1j
-                sec_freq_mesh = FreqMesh(n_points=len(freqs), values=values)
+                sec_freq_mesh = FrequencyMesh(n_points=len(freqs), values=values)
         else:
             freq_plasma = self.out_parser.get('gw_dataset', {}).get('omega_plasma', 0.0)
             values = [0.0, freq_plasma * 1j]
-            sec_freq_mesh = FreqMesh(n_points=2, values=values)
+            sec_freq_mesh = FrequencyMesh(n_points=2, values=values)
         sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
         # Screening
         occ_scr = self.out_parser.get_input_var('occ', 3, [])
