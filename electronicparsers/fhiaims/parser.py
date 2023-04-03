@@ -870,8 +870,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_gw.analytical_continuation = self.gw_analytical_continuation[
             self.out_parser.get('anacon_type', 1)]
         # FrequencyMesh
-        frequency_data = self.out_parser.get('frequency_data', None)
-        if frequency_data:
+        frequency_data = self.out_parser.get('frequency_data', [])
+        if len(frequency_data) > 0:
             values = np.array(frequency_data)[:, 1] * ureg.hartree
         else:
             values = None

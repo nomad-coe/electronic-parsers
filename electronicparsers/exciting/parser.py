@@ -1925,9 +1925,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_screening = Screening(
             type=sec_gw.x_exciting_scrcoul.x_exciting_scrtype,
             n_empty_states=sec_gw.x_exciting_nempty,
-            k_mesh=sec_k_mesh.m_copy(),
-            q_mesh=sec_k_mesh.m_copy(),
-            frequency_mesh=sec_freq_mesh.m_copy())
+            k_mesh=sec_k_mesh,
+            q_mesh=sec_k_mesh,
+            frequency_mesh=sec_freq_mesh)
         sec_gw.m_add_sub_section(GW.screening, sec_screening)
         # Other parameters
         sec_gw.interval_qp_corrections = [sec_gw.x_exciting_ibgw, sec_gw.x_exciting_nbgw]

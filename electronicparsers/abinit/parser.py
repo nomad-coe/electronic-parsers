@@ -1087,11 +1087,11 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             else:
                 sec_gw.analytical_continuation = 'contour_deformation'
         # FrequencyMesh
-        if self.out_parser.get('screening_dataset'):
-            if self.out_parser.get('screening_dataset').get('frequencies'):
-                freqs = self.out_parser.get('screening_dataset').get('frequencies').get('values') * ureg.eV
-                values = freqs[:, 0] + freqs[:, 1] * 1j
-                sec_freq_mesh = FrequencyMesh(n_points=len(freqs), values=values)
+        frequency_values = self.out_parser.get('screening_dataset', {}).get('frequencies', {}).get('values')
+        if frequency_values is not None:
+            freqs = frequency_values * ureg.eV
+            values = freqs[:, 0] + freqs[:, 1] * 1j
+            sec_freq_mesh = FrequencyMesh(n_points=len(freqs), values=values)
         else:
             freq_plasma = self.out_parser.get('gw_dataset', {}).get('omega_plasma', 0.0)
             values = [0.0, freq_plasma * 1j]
@@ -1102,7 +1102,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         n_scr = len(occ_scr)
         n_occ_scr = len([occ for occ in occ_scr if occ > 0.0])
         n_empty_scr = n_scr - n_occ_scr
-        sec_screening = Screening(n_empty_states=n_empty_scr)
+        sec_screening = Screening(n_states=n_scr, n_empty_states=n_empty_scr)
         sec_gw.m_add_sub_section(GW.screening, sec_screening)
         # Other paramters
         if self.out_parser.get_input_var('bdgw', 4, np.array(None)).all():

@@ -164,9 +164,9 @@ class OceanParser(BeyondDFTWorkflowsParser):
             'core_offset', 'final', 'grid']
         for key in screen_keys:
             setattr(sec_bse_screen, f'x_ocean_{key}', screen_data.get(key))
-        for keys in screen_dicts:
-            for subkeys in screen_data[keys].keys():
-                setattr(sec_bse_screen, f'x_ocean_{keys}_{subkeys}', screen_data[keys].get(subkeys))
+        for key in screen_dicts:
+            for subkey in screen_data[key].keys():
+                setattr(sec_bse_screen, f'x_ocean_{key}_{subkey}', screen_data[key].get(subkey))
         sec_bse_screen.x_ocean_model_flavor = screen_data['model'].get('flavor')
         # edges
         edges = []
