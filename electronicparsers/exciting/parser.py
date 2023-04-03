@@ -1787,33 +1787,33 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         # BSE
         sec_bse = sec_method.m_create(BSE)
-        sec_bse.type = sec_run.method[-1].get('x_exciting_xs_bse_type')
-        sec_bse.n_empty_states = sec_run.method[-1].get('x_exciting_xs_number_of_empty_states')
-        sec_bse.broadening = sec_run.method[-1].get('x_exciting_xs_broadening') * ureg.hartree
+        sec_bse.type = sec_run.method[-1].x_exciting_xs_bse_type
+        sec_bse.n_empty_states = sec_run.method[-1].x_exciting_xs_number_of_empty_states
+        sec_bse.broadening = sec_run.method[-1].x_exciting_xs_broadening * ureg.hartree
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
-        sec_k_mesh.grid = sec_run.method[-1].get('x_exciting_xs_ngridk')
+        sec_k_mesh.grid = sec_run.method[-1].x_exciting_xs_ngridk
         # QMesh
-        sec_q_mesh = KMesh(grid=sec_run.method[-1].get('x_exciting_xs_ngridq'))
+        sec_q_mesh = KMesh(grid=sec_run.method[-1].x_exciting_xs_ngridq)
         sec_bse.m_add_sub_section(BSE.q_mesh, sec_q_mesh)
         # FrequencyMesh
-        n_freqs = sec_run.method[-1].get('x_exciting_xs_energywindow_points')
-        freqs = sec_run.method[-1].get('x_exciting_xs_energywindow_values')
+        n_freqs = sec_run.method[-1].x_exciting_xs_energywindow_points
+        freqs = sec_run.method[-1].x_exciting_xs_energywindow_values
         values = [freqs[0] + i * (freqs[-1] - freqs[0]) / n_freqs for i in range(n_freqs)]
         sec_freq_mesh = FrequencyMesh(n_points=n_freqs, values=values)
         sec_bse.m_add_sub_section(BSE.frequency_mesh, sec_freq_mesh)
         # Screening
         sec_screening = Screening(
-            type=sec_run.method[-1].get('x_exciting_xs_screening_type'),
-            n_empty_states=sec_run.method[-1].get('x_exciting_xs_screening_number_of_empty_states'))
-        sec_k_mesh_screening = KMesh(grid=sec_run.method[-1].get('x_exciting_xs_screening_ngridk'))
+            type=sec_run.method[-1].x_exciting_xs_screening_type,
+            n_empty_states=sec_run.method[-1].x_exciting_xs_screening_number_of_empty_states)
+        sec_k_mesh_screening = KMesh(grid=sec_run.method[-1].x_exciting_xs_screening_ngridk)
         sec_screening.m_add_sub_section(Screening.k_mesh, sec_k_mesh_screening)
 
         # CoreHole
-        if sec_run.method[-1].get('x_exciting_xs_bse_xas'):
+        if sec_run.method[-1].x_exciting_xs_bse_xas:
             sec_core_hole = CoreHole(
                 mode='absorption',
-                broadening=sec_run.method[-1].get('x_exciting_xs_broadening') * ureg.hartree)
+                broadening=sec_run.method[-1].x_exciting_xs_broadening * ureg.hartree)
             sec_bse.m_add_sub_section(BSE.core_hole, sec_core_hole)
             # TODO wait for new changes in metainfo for CoreHole
             # sec_core.edge = sec_run.method[0].get('x_exciting_xs_bse_xasedge')

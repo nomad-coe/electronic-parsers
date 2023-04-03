@@ -122,7 +122,7 @@ class OceanParser(BeyondDFTWorkflowsParser):
         bse_data = self.data.get('bse', {})
         sec_bse.type = self._type_bse_map[bse_data.get('val', {}).get('solver')]
         sec_bse.n_states = bse_data.get('nbands', 1)
-        sec_bse.broadening = bse_data.get('val', {}).get('broaden') * ureg.eV
+        sec_bse.broadening = bse_data.get('val', {}).get('broaden', 0.1) * ureg.eV
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
         sec_k_mesh.grid = bse_data.get('kmesh', [])
@@ -145,7 +145,7 @@ class OceanParser(BeyondDFTWorkflowsParser):
             sec_core_hole = CoreHole(
                 mode=self.mode_bse[bse_core_data.get('strength')],
                 solver=self._type_bse_map[bse_core_data.get('solver')],
-                broadening=bse_core_data.get('broaden') * ureg.eV)
+                broadening=bse_core_data.get('broaden', 0.1) * ureg.eV)
             sec_bse.m_add_sub_section(BSE.core_hole, sec_core_hole)
             # TODO wait for new changes in metainfo for CoreHole
             # sec_core.edge = self._core_level_map[str(edges[0][-2:])]
