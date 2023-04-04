@@ -2541,6 +2541,22 @@ class Method(simulation.method.Method):
         Type of excited states calculation, BSE or TDDFT
         ''')
 
+    x_exciting_xs_energywindow_values = Quantity(
+        type=np.float64,
+        shape=[2],
+        unit='joule',
+        description='''
+        Energy interval lower and upper limits. Default is [-0.5d0, 0.5d0] in Hartree.
+        ''')
+
+    x_exciting_xs_energywindow_points = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        Number of points to be sampled linearly inside the energy interval including the
+        lower limit. Default is 500.
+        ''')
+
 
 class Run(simulation.run.Run):
 

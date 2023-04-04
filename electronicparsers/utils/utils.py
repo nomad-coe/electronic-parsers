@@ -23,15 +23,15 @@ from glob import glob
 from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Workflow, Task as Taskold, GW as GWold
-from nomad.datamodel.metainfo.workflow2 import Link, TaskReference, Task
+from nomad.datamodel.metainfo.workflow2 import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
-    SinglePoint, GW, GWMethod, GWResults, ParticleHoleExcitations,
+    GW, GWMethod, GWResults, ParticleHoleExcitations,
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,
-    PhotonPolarization, PhotonPolarizationResults
+    PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
 
 
-def extract_section(source, path):
+def extract_section(source: EntryArchive, path: str):
     '''
     Extracts the (last) section from source given by path. Examples:
         sec_system = extract_section(archive, 'run/system')
@@ -47,9 +47,11 @@ def extract_section(source, path):
     return source
 
 
-def get_files(pattern, filepath, stripname: str = '', deep: bool = True):
+def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = True):
     '''
-    Get files up to / down from the filepath (up ** or down ..).
+    Get files up to / down from the filepath (deep=`**` going up, and deep=`..` down,) to
+    find the file `pattern` with respect to the file `stripname` (normally being the
+    mainfile of the parser).
     '''
     for _ in range(10):
         filenames = glob(f'{os.path.dirname(filepath)}/{pattern}')
@@ -77,7 +79,11 @@ class BeyondDFTWorkflowsParser:
         self._child_archives = _child_archives
         self._xs_spectra_types = _xs_spectra_types
 
-    def run_workflow_archive(self, workflow_archive):
+    def run_workflow_archive(self, workflow_archive: EntryArchive):
+        '''
+        Initializes the workflow archive by checking if Run exists or not, as well as copying
+        Program and System into it.
+        '''
         if workflow_archive.run:
             sec_run = workflow_archive.run[-1]
         else:
@@ -85,7 +91,7 @@ class BeyondDFTWorkflowsParser:
         sec_run.program = self.archive.run[-1].program
         sec_run.system = self.archive.run[-1].system
 
-    def parse_gw_workflow(self, gw_archive, gw_workflow_archive):
+    def parse_gw_workflow(self, gw_archive: EntryArchive, gw_workflow_archive: EntryArchive):
         '''
             self.archive = DFT archive
             gw_archive = GW archive
@@ -120,46 +126,55 @@ class BeyondDFTWorkflowsParser:
         gw_old.band_structure_dft = bs_dft
         gw_old.band_structure_gw = bs_gw
 
-        # New workflow
+        # -- New workflow --
         workflow = GW(method=GWMethod(), results=GWResults())
         workflow.name = 'GW'
-        # method
+
+        # Method
         method_gw = extract_section(gw_archive, 'run/method/gw')
         method_xcfunctional = extract_section(self.archive, 'run/method/dft/xc_functional')
         method_basisset = extract_section(self.archive, 'run/method/basis_set')
         workflow.method.gw_method_ref = method_gw
         workflow.method.starting_point = method_xcfunctional
         workflow.method.basis_set = method_basisset
-        # results
+
+        # Results
         workflow.results.dos_dft = dos_dft
         workflow.results.dos_gw = dos_gw
         workflow.results.band_structure_dft = bs_dft
         workflow.results.band_structure_gw = bs_gw
-        # inputs and outputs
+
+        # Inputs and Outputs
         input_structure = extract_section(self.archive, 'run/system')
         dft_calculation = extract_section(self.archive, 'run/calculation')
         gw_calculation = extract_section(gw_archive, 'run/calculation')
-        workflow.inputs.append(Link(name='Workflow parameters', section=workflow.method))
         if input_structure:
-            workflow.inputs.append(Link(name='Input structure', section=input_structure))
+            workflow.m_add_sub_section(
+                GW.inputs, Link(name='Input structure', section=input_structure))
         if gw_calculation:
-            workflow.outputs.append(Link(name='Output GW calculation', section=gw_calculation))
+            workflow.m_add_sub_section(
+                GW.outputs, Link(name='Output GW calculation', section=gw_calculation))
+
         # DFT task
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
+            task.name = 'DFT'
+            # TODO check why this re-writting is necessary to not repeat sections inside tasks
             if input_structure:
                 task.inputs = [Link(name='Input structure', section=input_structure)]
             if dft_calculation:
                 task.outputs = [Link(name='Output DFT calculation', section=dft_calculation)]
-            workflow.tasks.append(task)
+            workflow.m_add_sub_section(GW.tasks, task)
+
         # GW task
         if gw_archive.workflow2:
             task = TaskReference(task=gw_archive.workflow2)
+            task.name = 'GW'
             if dft_calculation:
-                task.inputs = [Link(name='Input DFT calculation', section=dft_calculation)]
+                task.inputs = [Link(name='Output DFT calculation', section=dft_calculation)]
             if gw_calculation:
                 task.outputs = [Link(name='Output GW calculation', section=gw_calculation)]
-            workflow.tasks.append(task)
+            workflow.m_add_sub_section(GW.tasks, task)
 
         gw_workflow_archive.workflow2 = workflow
 
@@ -168,44 +183,52 @@ class BeyondDFTWorkflowsParser:
             self.archive = archive for the workflow
             self._child_archives = archives for SinglePoint photons
         '''
-        workflow = PhotonPolarization(results=PhotonPolarizationResults())
+        workflow = PhotonPolarization(method=PhotonPolarizationMethod(), results=PhotonPolarizationResults())
         workflow.name = 'Spectra'
 
-        input_structure = self.archive.run[-1].system[-1]
-        input_method = self.archive.run[-1].method[-1]
-        workflow.inputs = [
-            Link(name='Input structure', section=input_structure),
-            # TODO this should be put under PhotonPolarizationMethod e.g. as method_ref
-            Link(name='Input BSE methodology', section=input_method)]
+        # TODO define Method
+
+        # Inputs
+        input_structure = extract_section(self.archive, 'run/system')
+        workflow.m_add_sub_section(
+            PhotonPolarization.inputs, Link(name='Input structure', section=input_structure))
+        input_method = extract_section(self.archive, 'run/method')
+        workflow.m_add_sub_section(
+            PhotonPolarization.inputs, Link(name='Input BSE methodology', section=input_method))
+
+        # Outputs
         spectra = []
-        outputs = []
-        for path in self._child_archives.keys():
+        for index, path in enumerate(self._child_archives.keys()):
             archive = self._child_archives.get(path)
-            index = list(self._child_archives.keys()).index(path)
-            archive.workflow2 = SinglePoint()
-            archive.workflow2.name = 'SinglePoint'
 
-            task = TaskReference(task=archive.workflow2)
-            input_photon_method = archive.run[-1].method[0]
-            if input_structure and input_photon_method:
-                archive.workflow2.inputs = [
-                    Link(name='Input structure', section=input_structure),
-                    Link(name='Input photon parameters', section=input_photon_method)]
-            output_calculation = archive.run[-1].calculation[-1]  # ref to EPSILON calculation
-            if output_calculation:
-                archive.workflow2.outputs = [Link(name=f'Output polarization {index + 1}', section=output_calculation)]
-                spectra.append(output_calculation.spectra[0])
-                outputs.append(Link(name=f'Output polarization {index + 1}', section=output_calculation))
-            archive.workflow2.tasks = [Task(inputs=archive.workflow2.inputs, outputs=archive.workflow2.outputs)]
-            workflow.tasks.append(task)
+            output_polarization = extract_section(archive, 'run/calculation')
+            if output_polarization:
+                workflow.m_add_sub_section(
+                    PhotonPolarization.outputs,
+                    Link(name=f'Output polarization {index + 1}', section=output_polarization))
+                spectra.append(output_polarization.spectra[0])
 
+            # Tasks
+            if archive.workflow2:
+                task = TaskReference(task=archive.workflow2)
+                task.name = f'Photon {index + 1}'
+                input_photon_method = archive.run[-1].method[0]
+                if input_photon_method and input_structure:
+                    task.inputs = [
+                        Link(name='Input structure', section=input_structure),
+                        Link(name='Input photon parameters', section=input_photon_method)]
+                if output_polarization:
+                    task.outputs = [
+                        Link(name=f'Output polarization {index + 1}', section=output_polarization)]
+                workflow.m_add_sub_section(PhotonPolarization.tasks, task)
+
+        # Results
         workflow.results.n_polarizations = len(spectra)
         workflow.results.spectrum_polarization = spectra
-        outputs.append(Link(name='Workflow results', section=workflow.results))
-        workflow.outputs = outputs
+
         self.archive.workflow2 = workflow
 
-    def parse_xs_workflow(self, xs_archives, xs_workflow_archive):
+    def parse_xs_workflow(self, xs_archives: EntryArchive, xs_workflow_archive: EntryArchive):
         '''
             self.archive = DFT archive
             xs_archives = archives for all Spectra workflows
@@ -226,40 +249,52 @@ class BeyondDFTWorkflowsParser:
         workflow = ParticleHoleExcitations(
             method=ParticleHoleExcitationsMethod(), results=ParticleHoleExcitationsResults())
         workflow.name = 'ParticleHoleExcitations'
-        # results
+
+        # TODO define Method
+
+        # Results
         bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
         dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
         workflow.results.dos_dft = dos_dft
         workflow.results.band_structure_dft = bs_dft
         workflow.results.spectra = [xs_archive.workflow2.results for xs_archive in xs_archives]
-        # inputs and outputs
+
+        # Inputs and Outputs
         input_structure = extract_section(self.archive, 'run/system')
-        workflow.inputs.append(Link(name='Workflow parameters', section=workflow.method))
-        if input_structure:
-            workflow.inputs.append(Link(name='Input structure', section=input_structure))
-        workflow.outputs = extract_polarization_outputs()
         dft_calculation = extract_section(self.archive, 'run/calculation')
-        output_dft_name = 'Output DFT calculation'
-        if dft_calculation:  # include DFT calculation to each single point task
-            for archive in self._child_archives.values():
-                if isinstance(archive.workflow2, SinglePoint):
-                    archive.workflow2.inputs.append(Link(name=output_dft_name, section=dft_calculation))
-                    archive.workflow2.tasks[0].inputs.append(Link(name=output_dft_name, section=dft_calculation))
+        polarization_calculations = extract_polarization_outputs()
+        workflow.m_add_sub_section(
+            ParticleHoleExcitations.inputs,
+            Link(name='Particle-Hole excitations workflow parameters', section=workflow.method))
+        if input_structure:
+            workflow.m_add_sub_section(
+                ParticleHoleExcitations.inputs, Link(name='Input structure', section=input_structure))
+        for index, polarizations in enumerate(polarization_calculations):
+            workflow.m_add_sub_section(
+                ParticleHoleExcitations.outputs, Link(name=f'Polarization {index + 1}', section=polarizations))
+
         # DFT task
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
-            self.archive.workflow2.outputs = []
+            task.name = 'DFT'
             if input_structure:
-                self.archive.workflow2.inputs = [Link(name='Input structure', section=input_structure)]
+                task.inputs = [Link(name='Input structure', section=input_structure)]
             if dft_calculation:
-                self.archive.workflow2.outputs.append(Link(name=output_dft_name, section=dft_calculation))
-            workflow.tasks.append(task)
-        # PhotonPolarization task
-        for xs_archive in xs_archives:
-            if xs_archive.workflow2:
-                task = TaskReference(task=xs_archive.workflow2)
-                if dft_calculation:
-                    xs_archive.workflow2.inputs.append(Link(name=output_dft_name, section=dft_calculation))
-                workflow.tasks.append(task)
+                task.outputs = [Link(name='Output DFT calculation', section=dft_calculation)]
+            workflow.m_add_sub_section(ParticleHoleExcitations.tasks, task)
+
+        # Spectra task
+        for index, xs_archive in enumerate(xs_archives):
+            if not xs_archive.workflow2:
+                continue
+            task = TaskReference(task=xs_archive.workflow2)
+            task.name = f'Spectra {index + 1}'
+            if dft_calculation:
+                xs_archive.workflow2.m_add_sub_section(
+                    PhotonPolarization.inputs, Link(name='Output DFT calculation', section=dft_calculation))
+                for photon_task in xs_archive.workflow2.tasks:
+                    photon_task.m_add_sub_section(
+                        TaskReference.inputs, Link(name='Output DFT calculation', section=dft_calculation))
+            workflow.m_add_sub_section(ParticleHoleExcitations.tasks, task)
 
         xs_workflow_archive.workflow2 = workflow

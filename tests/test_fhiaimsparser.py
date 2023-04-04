@@ -259,17 +259,26 @@ def test_gw(parser):
     parser._calculation_type = 'gw'
     parser.parse('tests/data/fhiaims/He_gw/He_scGW_ontop_PBE.out', archive, None)
 
-    assert archive.run[0].system[0].atoms.labels == ['He']
-    assert archive.run[0].system[0].atoms.periodic == [False, False, False]
+    sec_run = archive.run[-1]
 
-    sec_method = archive.run[0].method
+    # System
+    sec_system = sec_run.system
+    assert len(sec_system) == 1
+    assert sec_system[-1].atoms.labels == ['He']
+    assert sec_system[-1].atoms.periodic == [False, False, False]
+
+    # Method
+    sec_method = archive.run[-1].method
     assert len(sec_method) == 1
-    assert sec_method[0].gw.type == 'scGW'
-    assert sec_method[0].gw.analytical_continuation == 'pade'
-    assert sec_method[0].gw.frequency_grid.n_points == len(sec_method[0].gw.frequency_grid.values)
-    assert sec_method[0].gw.frequency_grid.values.to('hartree')[-1].magnitude == approx(3571.4288641158605)
+    assert sec_method[-1].gw.type == 'scGW'
+    assert sec_method[-1].gw.analytical_continuation == 'pade'
+    assert sec_method[-1].gw.n_states == 5
+    assert (sec_method[-1].gw.q_mesh.grid == np.array([1, 1, 1])).all()
+    assert sec_method[-1].gw.frequency_mesh.n_points == len(sec_method[-1].gw.frequency_mesh.values)
+    assert sec_method[-1].gw.frequency_mesh.values[-1].to('hartree').magnitude == approx(3571.4288641158605 + 0j)
 
-    sec_scf = archive.run[0].calculation[0].scf_iteration
+    # GW energies
+    sec_scf = sec_run.calculation[-1].scf_iteration
     assert len(sec_scf) == 5
     assert sec_scf[0].x_fhi_aims_energy_scgw_correlation_energy.to('eV').magnitude == approx(-2.392295)
     assert sec_scf[-1].x_fhi_aims_energy_scgw_correlation_energy.to('eV').magnitude == approx(-1.73791)
@@ -280,10 +289,21 @@ def test_gw_eigs(parser):
     archive = EntryArchive()
     parser.parse('tests/data/fhiaims/CHN_gw/output.out', archive, None)
 
-    assert archive.run[0].system[0].atoms.labels[0] == 'O'
-    assert archive.run[0].method[0].gw.type == 'G0W0'
+    sec_run = archive.run[-1]
 
-    sec_eigs_gw = archive.run[0].calculation[0].eigenvalues[0]
+    # System and Method
+    sec_system = sec_run.system
+    assert len(sec_system) == 1
+    assert sec_system[-1].atoms.labels[0] == 'O'
+    sec_method = sec_run.method
+    assert len(sec_method) == 1
+    assert sec_method[-1].m_xpath('gw')
+    assert sec_method[-1].gw.type == 'G0W0'
+    assert sec_method[-1].gw.n_states == 1590
+    assert sec_method[-1].gw.analytical_continuation == 'pade'
+
+    # GW eigenvalues
+    sec_eigs_gw = sec_run.calculation[-1].eigenvalues[0]
     assert sec_eigs_gw.value_qp.shape == (1, 1, 81)
     assert sec_eigs_gw.value_correlation[-1][0][0].to('eV').magnitude == approx(10.4622)
     assert sec_eigs_gw.value_exchange[-1][0][0].to('eV').magnitude == approx(-99.6569)
@@ -297,10 +317,13 @@ def test_gw_bands(parser):
     archive = EntryArchive()
     parser.parse('tests/data/fhiaims/Si_pbe_vs_gw_bands/aims.out', archive, None)
 
-    assert archive.run[0].system[0].atoms.labels == ['Si', 'Si']
-    assert archive.run[0].method[0].gw.type == 'G0W0'
+    sec_run = archive.run[-1]
 
-    sec_scc = archive.run[0].calculation[0]
+    # System and Method
+    assert sec_run.system[-1].atoms.labels == ['Si', 'Si']
+    assert sec_run.method[-1].gw.type == 'G0W0'
+
+    sec_scc = sec_run.calculation[-1]
     assert sec_scc.energy.fermi.to('eV').magnitude == approx(-5.73695796)
     assert len(sec_scc.band_structure_electronic[0].segment) == 10
     assert sec_scc.band_structure_electronic[0].segment[0].kpoints.shape == (17, 3)

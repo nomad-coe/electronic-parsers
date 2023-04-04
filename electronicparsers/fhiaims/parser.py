@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Electronic, Method, XCFunctional, Functional, HubbardKanamoriModel, AtomParameters, DFT,
-    BasisSet, GW as GWMethod, KMesh, FreqMesh
+    BasisSet, GW, KMesh, FrequencyMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -857,24 +857,29 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
         # GW method
         sec_method = sec_run.m_create(Method)
-        sec_gw = sec_method.m_create(GWMethod)
-        # Type
+        # GW
+        sec_gw = sec_method.m_create(GW)
         sec_gw.type = self._gw_flag_map.get(self.out_parser.get('gw_flag'), None)
-        # Q mesh
-        sec_k_mesh = sec_gw.m_create(KMesh)
+        sec_gw.n_states = self.out_parser.get('n_states_gw')
+        # KMesh
+        sec_k_mesh = sec_method.m_create(KMesh)
         sec_k_mesh.grid = self.out_parser.get('k_grid', [1, 1, 1])
+        # QMesh copied from KMesh
+        sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
         # Analytical continuation
         sec_gw.analytical_continuation = self.gw_analytical_continuation[
             self.out_parser.get('anacon_type', 1)]
-        # Frequency grid
-        sec_freq_grid = sec_gw.m_create(FreqMesh)
-        sec_freq_grid.type = self.out_parser.get('freq_grid_type')
-        sec_freq_grid.n_points = self.out_parser.get('n_freq', 100)
-        frequency_data = self.out_parser.get('frequency_data', None)
-        if frequency_data is not None:
-            sec_freq_grid.values = np.array(frequency_data)[:, 1] * ureg.hartree
-        # Other parameters
-        sec_gw.n_states_self_energy = self.out_parser.get('n_states_gw')
+        # FrequencyMesh
+        frequency_data = self.out_parser.get('frequency_data', [])
+        if len(frequency_data) > 0:
+            values = np.array(frequency_data)[:, 1] * ureg.hartree
+        else:
+            values = None
+        sec_freq_mesh = FrequencyMesh(
+            type=self.out_parser.get('freq_grid_type'),
+            n_points=self.out_parser.get('n_freq', 100),
+            values=values)
+        sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
 
         # GW calculation
         sec_scc = sec_run.m_create(Calculation)

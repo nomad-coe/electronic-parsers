@@ -162,11 +162,14 @@ def test_gw(silicon_gw):
     assert sec_gw.x_exciting_barecoul.x_exciting_barcevtol == approx(0.1)
     assert sec_gw.type == 'G0W0'
     assert sec_gw.analytical_continuation == 'pade'
-    assert sec_gw.n_empty_states_polarizability == approx(sec_gw.n_empty_states_self_energy)
-    assert sec_gw.frequency_grid.type == 'gauleg2'
-    assert sec_gw.frequency_grid.n_points == 32
-    assert sec_gw.frequency_grid.values[4].to('hartree').magnitude == approx(0.125)
-    assert (sec_gw.q_grid.grid == np.array([2, 2, 2])).all()
+    assert sec_gw.n_empty_states == 100
+    assert sec_gw.screening.type == 'rpa'
+    assert sec_gw.screening.n_empty_states == sec_gw.n_empty_states
+    assert (sec_gw.screening.k_mesh.grid == np.array([2, 2, 2])).all()
+    assert sec_gw.frequency_mesh.type == 'gauleg2'
+    assert sec_gw.frequency_mesh.n_points == 32
+    assert sec_gw.frequency_mesh.values[4].to('hartree').magnitude == approx(0.125 + 0j)
+    assert (sec_gw.q_mesh.grid == np.array([2, 2, 2])).all()
 
     sec_sccs = silicon_gw.run[0].calculation
     assert len(sec_sccs) == 1

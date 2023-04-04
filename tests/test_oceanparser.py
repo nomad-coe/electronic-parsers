@@ -37,23 +37,25 @@ def test_tio2(parser):
     archive = EntryArchive()
     parser.parse('tests/data/ocean/ms-10734/Spectra-1-1-1/postDefaultsOceanDatafile', archive, None)
 
-    sec_run = archive.run[0]
+    sec_run = archive.run[-1]
 
     # Method
     sec_method = sec_run.method
     assert len(sec_method) == 1
     assert sec_method[-1].m_xpath('bse')
     sec_bse = sec_method[-1].bse
-    assert sec_bse.n_empty_states == 119
-    assert sec_bse.screening_type == 'core'
-    assert sec_bse.dielectric_infinity == 1000000
-    assert sec_bse.n_empty_states_screening == 472
-    assert (sec_bse.k_mesh_screening.grid == np.array([3, 3, 2])).all()
+    assert sec_bse.type == 'lanczos-haydock'
+    assert sec_bse.n_states == 119
+    assert sec_bse.broadening.to('eV').magnitude == approx(0.1)
+    assert (sec_bse.q_mesh.grid == np.array([1, 1, 1])).all()
+    assert sec_bse.screening.type == 'core'
+    assert sec_bse.screening.n_states == 472
+    assert sec_bse.screening.dielectric_infinity == 1000000
+    assert (sec_bse.screening.k_mesh.grid == np.array([3, 3, 2])).all()
     assert (sec_method[-1].x_ocean_edges[0] == np.array([1, 1, 0])).all()
-    assert sec_bse.core.solver == 'lanczos-haydock'
-    assert sec_bse.core.edge == 'K'
-    assert sec_bse.core.mode == 'absorption'
-    assert sec_bse.core.broadening.magnitude == approx(0.89)
+    assert sec_bse.core_hole.solver == 'lanczos-haydock'
+    assert sec_bse.core_hole.mode == 'absorption'
+    assert sec_bse.core_hole.broadening.to('eV').magnitude == approx(0.89)
     sec_ocean_screen = sec_method[-1].x_ocean_screen
     assert sec_ocean_screen.m_mod_count == 22
     assert sec_ocean_screen.x_ocean_dft_energy_range == approx(150.0)

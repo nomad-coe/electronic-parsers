@@ -114,15 +114,25 @@ def test_gw(parser):
     parser.parse('tests/data/abinit/ZrO2_GW/A1.abo', archive, None)
 
     sec_run = archive.run[-1]
-    sec_gw = sec_run.method[-1].gw
+
+    # Method
+    sec_method = sec_run.method
+    assert len(sec_method) == 1
+    assert sec_method[-1].m_xpath('gw') and sec_method[-1].m_xpath('k_mesh')
+    assert sec_method[-1].k_mesh.n_points == 3
+    sec_gw = sec_method[-1].gw
     assert sec_gw.type == 'G0W0'
     assert sec_gw.analytical_continuation == 'contour_deformation'
     assert sec_gw.interval_qp_corrections[0] == 12
     assert sec_gw.interval_qp_corrections[-1] == 13
-    assert sec_gw.n_states_self_energy == 512
-    assert sec_gw.n_empty_states_self_energy == approx(sec_gw.n_empty_states_polarizability)
-    assert sec_gw.frequency_grid.n_points == 2
-    assert sec_gw.frequency_grid.values[-1].to('eV').magnitude == approx(31.855950000000004j)
+    assert sec_gw.n_states == 512
+    assert sec_gw.n_empty_states == 500
+    assert sec_gw.screening.n_empty_states == sec_gw.n_empty_states
+    assert sec_gw.frequency_mesh.n_points == 2
+    assert sec_gw.frequency_mesh.values[-1].to('eV').magnitude == approx(31.855950000000004j)
+    assert sec_gw.q_mesh.n_points == sec_method[-1].k_mesh.n_points
+
+    # Calculation
     sec_scc = sec_run.calculation
     assert len(sec_scc) == 1
     assert sec_scc[-1].m_xpath('x_abinit_screening')

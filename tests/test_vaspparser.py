@@ -326,12 +326,20 @@ def test_gw(silicon_gw):
     """
     sec_run = silicon_gw.run[-1]
     sec_method = sec_run.method[-1]
-    assert sec_method.m_xpath('gw')
+    assert sec_method.m_xpath('gw') and sec_method.m_xpath('k_mesh')
     assert not sec_method.m_xpath('dft')
+    assert (sec_method.k_mesh.grid == np.array([6, 6, 6])).all()
     assert sec_method.gw.type == 'G0W0'
     assert sec_method.gw.analytical_continuation == 'pade'
-    assert sec_method.gw.n_states_self_energy == 72
-    assert (sec_method.k_mesh.grid == np.array([6, 6, 6])).all()
-    assert (sec_method.gw.q_grid.grid == np.array([6, 6, 6])).all()
-    assert sec_method.gw.q_grid.generation_method == 'Gamma'
-    assert sec_method.gw.frequency_grid.n_points == 50
+    assert sec_method.gw.n_states == 72
+    assert (sec_method.gw.q_mesh.grid == np.array([6, 6, 6])).all()
+    assert sec_method.gw.q_mesh.generation_method == 'Gamma'
+    assert sec_method.gw.frequency_mesh.n_points == 50
+    sec_scc = sec_run.calculation
+    assert len(sec_scc) == 1
+    homo = sec_scc[-1].energy.highest_occupied.to('eV').magnitude
+    lumo = sec_scc[-1].energy.lowest_unoccupied.to('eV').magnitude
+    assert homo == approx(2.132)
+    assert lumo == approx(3.8526)
+    bandgap = lumo - homo
+    assert bandgap == approx(1.7206)
