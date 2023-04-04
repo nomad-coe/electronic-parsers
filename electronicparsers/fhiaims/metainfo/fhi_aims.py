@@ -20,7 +20,7 @@ import numpy as np            # pylint: disable=unused-import
 import typing                 # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference, MEnum
+    Reference, MEnum, JSON
 )
 from nomad.datamodel.metainfo import simulation
 
@@ -765,13 +765,12 @@ class Calculation(simulation.calculation.Calculation):
         filename of cube file
         ''')
 
-    x_fhi_aims_section_eigenvalues_group_perturbativeGW = SubSection(
-        sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_group_perturbativeGW'),
-        repeats=False)
-
-    x_fhi_aims_section_eigenvalues_ZORA = SubSection(
-        sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_ZORA'),
-        repeats=False)
+    x_fhi_aims_calculation_md = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        All MD-related calculation quantities.
+        ''')
 
 
 class ScfIeration(simulation.calculation.ScfIteration):
@@ -1457,4 +1456,16 @@ class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):
         shape=[],
         description='''
         Mixing term to correct for double counting in DFT+U
+        ''')
+
+
+class MolecularDynamicsMethod(simulation.workflow.MolecularDynamicsMethod):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_fhi_aims_controlIn_md = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        All MD-related input parameters.
         ''')
