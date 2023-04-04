@@ -50,7 +50,7 @@ class WOutParser(TextParser):
             Quantity(
                 'grid', r'Grid size *\= *(\d+) *x *(\d+) *x *(\d+)', repeats=False),
             Quantity(
-                'k_points', r'\|[\s\d]*(-*\d.[^\|]+)', repeats=True)]
+                'k_points', r'\|[\s\d]*(-*\d.[^\|]+)', repeats=True, dtype=float)]
 
         disentangle_quantities = [
             Quantity(
@@ -232,7 +232,7 @@ class Wannier90Parser():
             sec_k_mesh.n_points = kmesh.get('n_points')
             sec_k_mesh.grid = kmesh.get('grid', [])
             if kmesh.get('k_points') is not None:
-                sec_k_mesh.points = kmesh.k_points[::2]
+                sec_k_mesh.points = np.complex128(kmesh.k_points[::2])
 
         # Wannier90 section
         for key in self._input_projection_mapping.keys():
