@@ -50,6 +50,7 @@ def test_srvo3(parser):
     # Method tests
     assert len(sec_run.method) == 2  # 2 methods: [0] input Hamiltonian, [1] input DMFT parameters
     # input Hamiltonian
+    assert sec_run.m_xpath('method[0].lattice_model_hamiltonian')
     sec_lattice_model = sec_run.method[0].lattice_model_hamiltonian[0]
     assert hasattr(sec_lattice_model, 'projection_matrix')
     assert sec_lattice_model.projection_matrix.shape == (729, 1, 3, 5)
@@ -66,21 +67,26 @@ def test_srvo3(parser):
     assert up == approx(u - 2 * jh)
     assert j == approx(jh)
     # input DMFT
-    assert len(sec_run.method[1].x_soliddmft_general) == 55
-    assert len(sec_run.method[1].x_soliddmft_solver) == 15
-    assert len(sec_run.method[1].x_soliddmft_advanced) == 8
-    assert sec_run.method[1].starting_method_ref == sec_run.method[0]
-    sec_dmft = sec_run.method[1].dmft
+    assert len(sec_run.method[-1].x_soliddmft_general) == 55
+    assert len(sec_run.method[-1].x_soliddmft_solver) == 15
+    assert len(sec_run.method[-1].x_soliddmft_advanced) == 8
+    assert sec_run.method[-1].starting_method_ref == sec_run.method[0]
+    sec_dmft = sec_run.method[-1].dmft
     assert sec_dmft.n_atoms_per_unit_cell == 1
     assert sec_dmft.n_correlated_orbitals[0] == 3
     assert sec_dmft.n_correlated_electrons == approx(1.0000225214138097)
     assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(10.0)
-    assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(sec_run.method[1].x_soliddmft_general.x_soliddmft_beta)
-    assert sec_dmft.n_matsubara_freq == 501
-    assert sec_dmft.n_tau == 10001
+    assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(sec_run.method[-1].x_soliddmft_general.x_soliddmft_beta)
     assert sec_dmft.impurity_solver == 'CT-HYB'
-    sec_k_mesh = sec_run.method[1].k_mesh
+    sec_k_mesh = sec_run.method[-1].k_mesh
     assert sec_k_mesh.n_points == 729
+    assert sec_run.m_xpath('method[-1].frequency_mesh') and sec_run.m_xpath('method[-1].time_mesh')
+    sec_freq_mesh = sec_run.method[-1].frequency_mesh
+    assert sec_freq_mesh.n_points == 501
+    assert sec_freq_mesh.points[15].to('eV').magnitude == approx(-97.10000000000001j)
+    sec_time_mesh = sec_run.method[-1].time_mesh
+    assert sec_time_mesh.n_points == 10001
+    assert sec_time_mesh.points[76] == approx(0.076j)
 
     # Calculation tests
     assert len(sec_run.calculation) == 1
@@ -90,7 +96,7 @@ def test_srvo3(parser):
     sec_gfs = sec_scc.greens_functions[0]
     assert sec_gfs.matsubara_freq[0] == approx(-100.1)
     assert sec_gfs.matsubara_freq[-1] == approx(100.1)
-    assert sec_gfs.tau.shape[0] == sec_dmft.n_tau
+    assert sec_gfs.tau.shape[0] == sec_time_mesh.n_points
     assert sec_gfs.self_energy_iw.dtype == 'complex128'
     assert sec_gfs.self_energy_iw.shape == (1, 2, 3, 1002)
     assert sec_gfs.greens_function_tau[0][1][1][1025] == approx(-0.14109113749664728 + 0j)
