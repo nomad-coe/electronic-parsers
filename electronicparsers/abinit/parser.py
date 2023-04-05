@@ -714,7 +714,7 @@ class AbinitOutParser(TextParser):
             Quantity(
                 'wigner_seitz_radius', rf'{re_n}\s*r_s\s*\=\s*{re_float}', repeats=False),
             Quantity(
-                'omega_plasma', rf'{re_n}\s*omega_plasma\s*\=\s*{re_float}\s*\[\w*',
+                'omega_plasma', rf'{re_n}\s*omega_plasma\s*\=\s*{re_float}\s*\[(?P<__unit>\w+)\]',
                 repeats=False),
         ]
 
