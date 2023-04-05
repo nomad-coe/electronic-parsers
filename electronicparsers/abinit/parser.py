@@ -714,7 +714,7 @@ class AbinitOutParser(TextParser):
             Quantity(
                 'wigner_seitz_radius', rf'{re_n}\s*r_s\s*\=\s*{re_float}', repeats=False),
             Quantity(
-                'omega_plasma', rf'{re_n}\s*omega_plasma\s*\=\s*{re_float}\s*\[\w*',
+                'omega_plasma', rf'{re_n}\s*omega_plasma\s*\=\s*{re_float}\s*\[(?P<__unit>\w+)\]',
                 repeats=False),
         ]
 
@@ -1089,7 +1089,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         # FrequencyMesh
         frequency_values = self.out_parser.get('screening_dataset', {}).get('frequencies', {}).get('values')
         if frequency_values is not None:
-            values = [freq[0] + freq[1] * 1j for freq in frequency_values]
+            values = [freq[0] + freq[1] * 1j for freq in frequency_values] * ureg.eV
             sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=len(frequency_values), points=values)
         else:
             freq_plasma = self.out_parser.get('gw_dataset', {}).get('omega_plasma', 0.0)
