@@ -1369,8 +1369,8 @@ class VASPParser():
         # Analytical continuation
         sec_gw.analytical_continuation = 'pade'
         # FrequencyMesh
-        sec_freq_mesh = FrequencyMesh(n_points=response_functions.get('NOMEGA', 100))
-        sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
+        sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=response_functions.get('NOMEGA', 100))
+        sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)

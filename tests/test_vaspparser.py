@@ -334,7 +334,7 @@ def test_gw(silicon_gw):
     assert sec_method.gw.n_states == 72
     assert (sec_method.gw.q_mesh.grid == np.array([6, 6, 6])).all()
     assert sec_method.gw.q_mesh.generation_method == 'Gamma'
-    assert sec_method.gw.frequency_mesh.n_points == 50
+    assert sec_method.frequency_mesh.n_points == 50
     sec_scc = sec_run.calculation
     assert len(sec_scc) == 1
     homo = sec_scc[-1].energy.highest_occupied.to('eV').magnitude
