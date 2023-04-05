@@ -990,10 +990,11 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         else:
             values = None
         sec_freq_mesh = FrequencyMesh(
-            type=self.out_parser.get('freq_grid_type'),
+            dimensionality=1,
+            sampling_method=self.out_parser.get('freq_grid_type'),
             n_points=self.out_parser.get('n_freq', 100),
-            values=values)
-        sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
+            points=values)
+        sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
         # GW calculation
         sec_scc = sec_run.m_create(Calculation)
