@@ -33,7 +33,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, EnergyEntry, Charges,
-    Forces, ForcesEntry, ScfIteration, BandGap, Spectra
+    Forces, ForcesEntry, ScfIteration, BandGapDepricated, Spectra
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
@@ -1957,7 +1957,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         for f in gw_files:
             self.parse_file(f, sec_scc)
 
-        sec_gap = sec_scc.eigenvalues[-1].m_create(BandGap)
+        sec_gap = sec_scc.eigenvalues[-1].m_create(BandGapDepricated)
 
         sec_scc.method_ref = sec_method
         self.parse_system(self.info_parser.get('groundstate'))
