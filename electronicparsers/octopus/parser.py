@@ -11,7 +11,7 @@ from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Electronic, Functional, Smearing, Method, DFT, BasisSet, BasisSetCellDependent,
-    XCFunctional
+    XCFunctional, KMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -84,10 +84,10 @@ class InfoParser(EigenvalueParser):
         super().init_quantities()
         self._quantities += [
             Quantity(
-                'brilloiun_zone_sampling',
+                'brillouin_zone_sampling',
                 r'Brillouin zone sampling([\s\S]+?)\*+\n\n', sub_parser=TextParser(quantities=[
                     Quantity(
-                        'grid_dimensions',
+                        'kgrid',
                         r'Dimensions of the k\-point grid\s*=(.*)', dtype=int),
                     Quantity(
                         'n_kpoints', r'Total number of k\-points\s*=(.*)', dtype=int),
@@ -810,6 +810,9 @@ class OctopusParser:
     def parse_method(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
+        k_mesh = sec_method.m_create(KMesh)
+        k_mesh.grid = self.info_parser.get('brillouin_zone_sampling', {'results': {}}).results.get('kgrid')
+
         sec_electronic = sec_method.m_create(Electronic)
         sec_dft = sec_method.m_create(DFT)
 

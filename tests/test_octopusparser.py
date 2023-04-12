@@ -42,6 +42,7 @@ def test_scf(parser):
     assert sec_run.x_octopus_parserlog_SpeciesProjectorSphereThreshold == 0.001
 
     sec_method = sec_run.method[0]
+    assert list(sec_method.k_mesh.grid) == [4] * 3
     assert sec_method.electronic.smearing.kind == 'empty'
     assert sec_method.electronic.method == 'DFT'
     assert sec_method.dft.xc_functional.correlation[0].name == 'LDA_C_PZ_MOD'
@@ -70,11 +71,15 @@ def test_spinpol(parser):
     archive = EntryArchive()
     parser.parse('tests/data/octopus/Fe_spinpol/stdout.txt', archive, None)
 
-    assert archive.run[0].x_octopus_parserlog_SpinComponents == '2'
-    assert archive.run[0].x_octopus_input_Units == 'ev_angstrom'
-    assert archive.run[0].x_octopus_parserlog_PreconditionerFilterFactor == 0.6
+    sec_run = archive.run[0]
+    assert sec_run.x_octopus_parserlog_SpinComponents == '2'
+    assert sec_run.x_octopus_input_Units == 'ev_angstrom'
+    assert sec_run.x_octopus_parserlog_PreconditionerFilterFactor == 0.6
 
-    sec_scc = archive.run[0].calculation[0]
+    sec_method = sec_run.method[0]
+    assert list(sec_method.k_mesh.grid) == [4] * 3
+
+    sec_scc = sec_run.calculation[0]
     assert sec_scc.energy.fermi.magnitude == approx(7.39160185e-19)
     sec_eig = sec_scc.eigenvalues[0]
     assert np.shape(sec_eig.energies[1][9]) == (20,)
