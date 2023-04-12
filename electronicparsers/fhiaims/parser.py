@@ -601,7 +601,7 @@ class FHIAimsOutParser(TextParser):
                 repeats=False),
             Quantity(
                 'k_grid',
-                rf'{re_n} *Found k-point grid:\s*([\d ]+)', repeats=False),
+                rf'{re_n} *Found k-point grid:\s*([\d ]+)', repeats=False),   # taken from tests/data/fhi_aims
             Quantity(
                 xsection_run.x_fhi_aims_controlInOut_MD_time_step,
                 rf'{re_n} *Molecular dynamics time step\s*=\s*([\d\.]+)\s*(?P<__unit>[\w]+)',
@@ -666,9 +666,6 @@ class FHIAimsOutParser(TextParser):
                 'gw_analytical_continuation',
                 rf'{re_n} (?:Using)*\s*([\w\-\s]+) for analytical continuation',
                 repeats=False, flatten=True, str_operation=lambda x: [y.lower() for v in x.split(' ') for y in v.split('-')]),
-            Quantity(
-                'k_grid',
-                rf'{re_n} *k\_grid\s*([\d ]+)', repeats=False),
             Quantity(
                 'freq_grid_type', rf'{re_n}\s*Initialising transformed\s([\w\-]+)\s*time and frequency grids',
                 repeats=False),
@@ -980,7 +977,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_gw.n_states = self.out_parser.get('n_states_gw')
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
-        sec_k_mesh.grid = self.out_parser.get('k_grid', [1, 1, 1])
+        sec_k_mesh.grid = self.out_parser.get('k_grid', [1, 1, 1])  # AIMS does not have a guaranteed PBC, this default should be omitted
         # QMesh copied from KMesh
         sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
         # Analytical continuation
