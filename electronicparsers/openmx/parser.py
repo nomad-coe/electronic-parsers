@@ -34,10 +34,9 @@ from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing, Scf
 )
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, MolecularDynamics
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod,
-    MolecularDynamics as MolecularDynamics2, MolecularDynamicsMethod)
+    GeometryOptimization, GeometryOptimizationMethod,
+    MolecularDynamics, MolecularDynamicsMethod)
 
 from .metainfo.openmx import OpenmxSCC  # pylint: disable=unused-import
 
@@ -219,33 +218,23 @@ class OpenmxParser:
         ]
         if md_type is not None and 'nomd' not in md_type.lower():
             md_type = md_type.upper()
-            sec_workflow = self.archive.m_create(Workflow)
             workflow = None
             for current_md_type in md_types_list:
                 if current_md_type[0] in md_type:
-                    sec_workflow.type = current_md_type[1]
                     if current_md_type[1] == 'geometry_optimization':
-                        workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
-                        sec_geometry_opt = sec_workflow.m_create(GeometryOptimization)
-                        sec_geometry_opt.method = current_md_type[2]
+                        workflow = GeometryOptimization(method=GeometryOptimizationMethod())
                         workflow.method.method = current_md_type[2]
                         criterion = mainfile_parser.get('MD.Opt.criterion')
                         if criterion is not None:
-                            sec_geometry_opt.convergence_tolerance_force_maximum = (
-                                criterion * units.hartree / units.bohr)
                             workflow.method.convergence_tolerance_force_maximum = (
                                 criterion * units.hartree / units.bohr)
                         else:
-                            sec_geometry_opt.convergence_tolerance_force_maximum = (
-                                1e-4 * units.hartree / units.bohr)
                             workflow.method.convergence_tolerance_force_maximum = (
                                 1e-4 * units.hartree / units.bohr)
                     else:
-                        sec_md = sec_workflow.m_create(MolecularDynamics)
-                        sec_md.thermodynamic_ensemble = current_md_type[2]
-                        workflow = MolecularDynamics2(method=MolecularDynamicsMethod())
+                        workflow = MolecularDynamics(method=MolecularDynamicsMethod())
                         workflow.method.thermodynamic_ensemble = current_md_type[2]
-            self.archive.workflow2 = workflow
+            self.archive.workflow = workflow
 
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)

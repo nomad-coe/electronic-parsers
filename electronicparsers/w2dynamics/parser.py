@@ -429,7 +429,5 @@ class W2DynamicsParser:
         self.parse_scc()
 
         # Workflow section
-        sec_workflow = self.archive.m_create(Workflow)
-        sec_workflow.type = 'single_point'
         workflow = SinglePoint()
-        self.archive.workflow2 = workflow
+        self.archive.workflow = workflow

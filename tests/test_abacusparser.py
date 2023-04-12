@@ -117,7 +117,7 @@ def test_band(parser):
     assert sec_k_band_segment.energies.shape == (1, 101, 8)
     assert sec_k_band_segment.energies[0][4][4].magnitude == approx(1.14715847e-18)
 
-    assert archive.workflow[0].type == 'single_point'
+    assert archive.workflow.method.method == 'DFT'
 
 
 # TODO iteration is None in sub_section
@@ -205,10 +205,9 @@ def test_geomopt(parser):
     assert sec_method.x_abacus_gamma_algorithms
     assert sec_method.x_abacus_basis_type == 'lcao'
 
-    sec_workflow = archive.workflow[0]
-    assert sec_workflow.type == 'geometry_optimization'
-    assert sec_workflow.geometry_optimization.convergence_tolerance_force_maximum.magnitude == approx(1.6021766339999997e-12)
-    assert sec_workflow.geometry_optimization.x_abacus_geometry_optimization_threshold_stress.magnitude == approx(1000000.0)
+    sec_workflow = archive.workflow
+    assert sec_workflow.method.convergence_tolerance_force_maximum.magnitude == approx(1.6021766339999997e-12)
+    assert sec_workflow.method.convergence_tolerance_stress_maximum.magnitude == approx(1000000.0)
 
     sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 50
@@ -232,9 +231,7 @@ def test_md(parser):
     sec_method = sec_run.method[0]
     assert sec_method.x_abacus_scf_threshold_density == approx(1e-5)
     assert sec_method.x_abacus_mixing_beta == approx(0.4)
-    sec_workflow = archive.workflow[0]
-    assert sec_workflow.type == 'molecular_dynamics'
-    assert sec_workflow.molecular_dynamics.thermodynamic_ensemble == 'NVT'
+    assert archive.workflow.method.thermodynamic_ensemble == 'NVT'
 
     sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 11

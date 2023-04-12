@@ -37,16 +37,10 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     ScfIteration, Energy, EnergyEntry, Stress, StressEntry, Thermodynamics,
     Forces, ForcesEntry
 )
-from nomad.datamodel.metainfo.workflow import Workflow
 from nomad.datamodel.metainfo.simulation.workflow import (
-    SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
+    SinglePoint, GeometryOptimization,
     MolecularDynamics, MolecularDynamicsMethod, MolecularDynamicsResults,
     ThermostatParameters)
-
-# for old MD workflow
-from nomad.datamodel.metainfo.workflow import (
-    ThermostatParameters as ThermostatParametersOld, IntegrationParameters as IntegrationParametersOld,
-    MolecularDynamics as MolecularDynamicsOld)
 
 from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_parallel_task_assignement, x_fhi_aims_section_parallel_tasks,\
@@ -1451,13 +1445,9 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.parse_bandstructure(fermi_energy)
 
     def parse_workflow(self):
-        sec_workflow = self.archive.m_create(Workflow)
-        workflow = SinglePoint2()
-        sec_workflow.type = 'single_point'
-        sec_workflow.calculations_ref = self.archive.run[-1].calculation
+        workflow = SinglePoint()
         if self.out_parser.get('geometry_optimization') is not None:
-            sec_workflow.type = 'geometry_optimization'
-            workflow = GeometryOptimization2()
+            workflow = GeometryOptimization()
         elif self.out_parser.get('molecular_dynamics', None) is not None:
             workflow = MolecularDynamics(
                 method=MolecularDynamicsMethod(), results=MolecularDynamicsResults())
@@ -1487,20 +1477,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 else:
                     sec_thermostat_parameters.effective_mass = thermostat_mass  # TODO: generalize this for different thermostats (assuming here that the mass units will be printed to the outfile in case thermostat_mass is not defined)
 
-                # fill in old workflow section for GUI features until it is deprecated
-                sec_workflow.type = 'molecular_dynamics'
-                sec_md = sec_workflow.m_create(MolecularDynamicsOld)
-                sec_md.thermodynamic_ensemble = workflow.method.thermodynamic_ensemble
-                sec_integration_parameters1 = sec_md.m_create(IntegrationParametersOld)
-                sec_integration_parameters1.n_steps = workflow.method.n_steps
-                sec_integration_parameters1.integration_timestep = workflow.method.integration_timestep
-                sec_thermostat_parameters1 = sec_integration_parameters1.m_create(ThermostatParametersOld)
-                sec_thermostat_parameters1.thermostat_type = sec_thermostat_parameters.thermostat_type
-                sec_thermostat_parameters1.reference_temperature = sec_thermostat_parameters.reference_temperature
-                sec_thermostat_parameters1.coupling_constant = sec_thermostat_parameters.coupling_constant
-                sec_thermostat_parameters1.effective_mass = sec_thermostat_parameters.effective_mass
-
-        self.archive.workflow2 = workflow
+        self.archive.workflow = workflow
 
     def parse_method(self):
         sec_run = self.archive.run[-1]

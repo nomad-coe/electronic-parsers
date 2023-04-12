@@ -37,7 +37,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Forces, ForcesEntry, ScfIteration, Energy, EnergyEntry, BandEnergies, Dos,
     DosValues
 )
-from nomad.datamodel.metainfo.workflow import Workflow
+from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 from .metainfo.wien2k import x_wien2k_section_equiv_atoms
 
 
@@ -793,8 +793,7 @@ class Wien2kParser:
             sec_run.time_run = TimeRun(date_start=dt.total_seconds())
 
         # TODO implement geometry optimization
-        sec_workflow = self.archive.m_create(Workflow)
-        sec_workflow.type = 'single_point'
+        archive.workflow = SinglePoint()
 
         self.parse_method()
 

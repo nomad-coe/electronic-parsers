@@ -33,7 +33,6 @@ from nomad.datamodel.metainfo.simulation.method import (
     DMFT
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.workflow import Workflow
 from .metainfo.soliddmft import (
     x_soliddmft_general_parameters, x_soliddmft_solver_parameters, x_soliddmft_advanced_parameters,
     x_soliddmft_dft_input_parameters, x_soliddmft_iter_parameters, x_soliddmft_convergence_obs_parameters,
@@ -405,7 +404,5 @@ class SolidDMFTParser:
         self.parse_scc()
 
         # Workflow section
-        sec_workflow = self.archive.m_create(Workflow)
-        sec_workflow.type = 'single_point'
         workflow = SinglePoint()
-        self.archive.workflow2 = workflow
+        self.archive.workflow = workflow

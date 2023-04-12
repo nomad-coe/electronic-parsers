@@ -35,10 +35,9 @@ from nomad.datamodel.metainfo.simulation.system import System, Atoms, Symmetry
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, Dos, DosValues, BandStructure, BandEnergies, EnergyEntry, ScfIteration,
     Forces, ForcesEntry, Stress, StressEntry)
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, MolecularDynamics, SinglePoint
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GeometryOptimization as GeometryOptimization2, MolecularDynamics as MolecularDynamics2,
-    MolecularDynamicsMethod, GeometryOptimizationMethod, SinglePoint as SinglePoint2, SinglePointMethod)
+    GeometryOptimization, MolecularDynamics, MolecularDynamicsMethod, GeometryOptimizationMethod,
+    SinglePoint, SinglePointMethod)
 from .metainfo.abacus import (
     Method as xsection_method, x_abacus_section_parallel, x_abacus_section_basis_sets, x_abacus_section_specie_basis_set)
 
@@ -1657,40 +1656,28 @@ class ABACUSParser:
 
         # sampling method
         if self.sampling_method is not None:
-            sec_worflow = archive.m_create(Workflow)
-            sec_worflow.type = self.sampling_method
             workflow = None
             if self.sampling_method == 'molecular_dynamics':
-                sec_md = sec_worflow.m_create(MolecularDynamics)
-                workflow = MolecularDynamics2(method=MolecularDynamicsMethod())
+                workflow = MolecularDynamics(method=MolecularDynamicsMethod())
                 md_type = self.input_parser.get('md_type')
                 if md_type == 0:
-                    sec_md.thermodynamic_ensemble = 'NVE'
                     workflow.method.thermodynamic_ensemble = 'NVE'
                 elif md_type in [1, 2, 3]:
-                    sec_md.thermodynamic_ensemble = 'NVT'
                     workflow.method.thermodynamic_ensemble = 'NVT'
             elif self.sampling_method == 'geometry_optimization':
-                sec_geometry_opt = sec_worflow.m_create(GeometryOptimization)
-                workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
+                workflow = GeometryOptimization(method=GeometryOptimizationMethod())
                 force_threshold = self.out_parser.get('force_threshold')
                 stress_threshold = self.out_parser.get('stress_threshold')
                 if force_threshold:
-                    sec_geometry_opt.convergence_tolerance_force_maximum = force_threshold.to(
-                        'newton').magnitude
                     workflow.method.convergence_tolerance_force_maximum = force_threshold.to(
                         'newton').magnitude
                 if stress_threshold:
-                    sec_geometry_opt.x_abacus_geometry_optimization_threshold_stress = stress_threshold.to(
-                        'pascal').magnitude
                     workflow.method.convergence_tolerance_stress_maximum = stress_threshold.to(
                         'pascal').magnitude
             elif self.sampling_method == 'single_point':
-                sec_worflow.m_create(SinglePoint)
-                workflow = SinglePoint2(method=SinglePointMethod())
+                workflow = SinglePoint(method=SinglePointMethod())
                 workflow.method.method = archive.run[-1].method[-1].electronic.method
-            archive.workflow2 = workflow
-        print(sec_worflow.type)
+            archive.workflow = workflow
 
         # start date
         date_time = self.out_parser.get('start_date_time')

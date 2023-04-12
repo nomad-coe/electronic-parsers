@@ -19,7 +19,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandEnergies
 )
-from nomad.datamodel.metainfo.workflow import Workflow
+from nomad.datamodel.metainfo.simulation.workflow import GeometryOptimization
 
 
 re_float = r'[\d\.\-\+Ee]+'
@@ -935,5 +935,4 @@ class OctopusParser:
 
         self.parse_scc()
 
-        sec_workflow = archive.m_create(Workflow)
-        sec_workflow.type = 'geometry_optimization'
+        archive.workflow = GeometryOptimization()

@@ -37,9 +37,8 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandStructure,
     BandEnergies, Dos, DosValues
 )
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod)
+    GeometryOptimization, GeometryOptimizationMethod, GeometryOptimizationResults)
 from .metainfo.crystal import x_crystal_section_shell
 
 
@@ -833,7 +832,7 @@ class CrystalParser:
             # band structure is not written in the archive. The meaning of the
             # values is given in an appendix of the Crystal manual.
             if f25 is not None:
-                segments = f25["segments"]
+                segments = f25.segments
                 prev_energy = None
                 prev_k_point = None
                 first_row = segments[0]["first_row"]
@@ -897,14 +896,10 @@ class CrystalParser:
         if geo_opt is not None:
             steps = geo_opt["geo_opt_step"]  # pylint: disable=E1136
             if steps is not None:
-                workflow = archive.m_create(Workflow)
-                archive.workflow2 = GeometryOptimization2(method=GeometryOptimizationMethod())
-                workflow.type = "geometry_optimization"
-                geometry_opt = workflow.m_create(GeometryOptimization)
-                geometry_opt.convergence_tolerance_energy_difference = out["energy_change"]
-                geometry_opt.convergence_tolerance_displacement_maximum = out["geometry_change"]
-                archive.workflow2.method.convergence_tolerance_energy_difference = out["energy_change"]
-                archive.workflow2.method.convergence_tolerance_displacement_maximum = out["geometry_change"]
+                archive.workflow = GeometryOptimization(
+                    method=GeometryOptimizationMethod(), results=GeometryOptimizationResults())
+                archive.workflow.method.convergence_tolerance_energy_difference = out["energy_change"]
+                archive.workflow.method.convergence_tolerance_displacement_maximum = out["geometry_change"]
 
                 # First step is special: it refers to the initial system which
                 # was printed before entering the geometry optimization loop.
@@ -941,8 +936,7 @@ class CrystalParser:
                     i_scc.method_ref = method
 
                     frames.append(i_scc)
-                workflow.calculations_ref = frames
-                geometry_opt.is_converged_geometry = geo_opt["converged"] == "CONVERGED"  # pylint: disable=E1136
+                archive.workflow.results.is_converged_geometry = geo_opt["converged"] == "CONVERGED"  # pylint: disable=E1136
 
         # Remove ghost atom information. The metainfo does not provide a very
         # good way to deal with them currently so they are simply removed.

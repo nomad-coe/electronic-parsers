@@ -35,9 +35,8 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Dos, DosValues, Energy, EnergyEntry, Forces, ForcesEntry,
     Charges, ChargesValue, Multipoles, MultipolesEntry, BandEnergies, BandGapDeprecated
 )
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod)
+    GeometryOptimization, GeometryOptimizationMethod)
 from .metainfo import m_env  # pylint: disable=unused-import
 
 
@@ -1012,16 +1011,13 @@ class AMSParser:
 
         geometry_opt = self.out_parser.geometry_optimization
         if geometry_opt is not None:
-            sec_workflow = self.archive.m_create(Workflow)
-            sec_workflow.type = 'geometry_optimization'
-            sec_geometry_opt = sec_workflow.m_create(GeometryOptimization)
-            workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
+            workflow = GeometryOptimization(method=GeometryOptimizationMethod())
             for key, val in geometry_opt.items():
                 if key == 'iteration':
                     for iteration in val:
                         parse_calculation(iteration)
-                else:
-                    setattr(sec_geometry_opt, key, val)
+                elif key.startswith('x_ams'):
+                    setattr(workflow, key, val)
             workflow.method.convergence_tolerance_energy_difference = geometry_opt.get('convergence_tolerance_energy_difference')
             workflow.method.convergence_tolerance_displacement_maximum = geometry_opt.get('convergence_tolerance_displacement_maximum')
             workflow.method.convergence_tolerance_force_maximum = geometry_opt.get('convergence_tolerance_force_maximum')

@@ -31,10 +31,8 @@ from nomad.datamodel.metainfo.simulation.method import (
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, ScfIteration, BandEnergies,
     Multipoles, MultipolesEntry, Charges, ChargesValue)
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
-    SinglePoint as SinglePoint2,
-    GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod
+    SinglePoint, GeometryOptimization, GeometryOptimizationMethod
 )
 from .metainfo.psi4 import x_psi4_root_information
 from .metainfo import m_env
@@ -871,11 +869,7 @@ class Psi4Parser:
 
             # each module should can be considered as a single_point workflow
             # TODO implement specific workflow for mp, ci, cc, mcscf
-            workflow = self.archive.m_create(Workflow)
-            workflow.type = 'single_point'
-            workflow.calculations_ref = calculations_ref
-            workflow.calculation_result_ref = calc
-            self.archive.workflow2 = SinglePoint2()
+            self.archive.workflow = SinglePoint()
 
             if module.optking is not None:
                 self.parse_system(module.optking)
@@ -891,18 +885,10 @@ class Psi4Parser:
                 calc.system_ref = self.archive.run[-1].system[-1]
                 opt_calculations_ref.append(calc)
         if opt_calculations_ref:
-            workflow = self.archive.m_create(Workflow)
-            workflow.type = 'geometry_optimization'
-            workflow.calculations_ref = opt_calculations_ref
-            workflow.calculation_result_ref = opt_calculations_ref[-1]
             convergence = module.optking.convergence_criteria
             if convergence is not None:
-                geometry_opt = workflow.m_create(GeometryOptimization)
-                geometry_opt.convergence_tolerance_energy_difference = convergence[0] * ureg.hartree
-                geometry_opt.convergence_tolerance_force_maximum = convergence[1] * ureg.hartree / ureg.bohr
-                geometry_opt.convergence_tolerance_displacement_maximum = convergence[2] * ureg.bohr
-            workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
-            workflow.method.convergence_tolerance_energy_difference = convergence[0] * ureg.hartree
-            workflow.method.convergence_tolerance_force_maximum = convergence[1] * ureg.hartree / ureg.bohr
-            workflow.method.convergence_tolerance_displacement_maximum = convergence[2] * ureg.bohr
-            self.archive.workflow2 = workflow
+                workflow = GeometryOptimization(method=GeometryOptimizationMethod())
+                workflow.method.convergence_tolerance_energy_difference = convergence[0] * ureg.hartree
+                workflow.method.convergence_tolerance_force_maximum = convergence[1] * ureg.hartree / ureg.bohr
+                workflow.method.convergence_tolerance_displacement_maximum = convergence[2] * ureg.bohr
+                self.archive.workflow = workflow

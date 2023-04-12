@@ -33,10 +33,9 @@ from nomad.datamodel.metainfo.simulation.system import (
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, ScfIteration
 )
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, MolecularDynamics
 from nomad.datamodel.metainfo.simulation.workflow import (
-    SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
-    GeometryOptimizationMethod, MolecularDynamics as MolecularDynamics2
+    SinglePoint, GeometryOptimization,
+    GeometryOptimizationMethod, MolecularDynamics
 )
 
 from .metainfo.nwchem import (
@@ -484,54 +483,42 @@ class NWChemParser:
             parse_calculation(self.out_parser.get('single_point'))
 
     def parse_workflow(self):
-        sec_workflow = self.archive.m_create(Workflow)
-
         workflow = None
         parameters = []
         if self.out_parser.get('geometry_optimization') is not None:
-            sec_workflow.type = 'geometry_optimization'
             parameters = self.out_parser.get('geometry_optimization').get('parameters', [])
-            workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
+            workflow = GeometryOptimization(method=GeometryOptimizationMethod())
 
         elif self.out_parser.get('molecular_dynamics') is not None:
-            sec_workflow.type = 'molecular_dynamics'
             parameters = self.out_parser.get('molecular_dynamics').get('parameters', [])
-            workflow = MolecularDynamics2()
+            workflow = MolecularDynamics()
 
         elif self.out_parser.get('pw') is not None:
             # pw is not fully implemented as I do not have example files
-            sec_workflow.type = 'geometry_optimization' if len(
-                self.out_parser.get('pw')) > 1 else 'single_point'
-            workflow = GeometryOptimization2() if len(
-                self.out_parser.get('pw')) > 1 else SinglePoint2()
+            workflow = GeometryOptimization() if len(
+                self.out_parser.get('pw')) > 1 else SinglePoint()
 
         elif self.out_parser.get('single_point') is not None:
-            sec_workflow.type = 'single_point'
-            workflow = SinglePoint2()
+            workflow = SinglePoint()
 
-        sec_geometry_opt = sec_workflow.m_create(GeometryOptimization)
-        sec_md = sec_workflow.m_create(MolecularDynamics)
         for parameter in parameters:
             if len(parameter) != 2:
                 continue
             if parameter[0] == 'maximum gradient threshold         (gmax)':
                 val = fix_dfloat(parameter[1]) if isinstance(parameter[1], str) else parameter[1]
-                sec_geometry_opt.convergence_tolerance_force_maximum = val * ureg.hartree / ureg.bohr
                 workflow.method.convergence_tolerance_force_maximum = val * ureg.hartree / ureg.bohr
             elif parameter[0] == 'maximum cartesian step threshold   (xmax)':
                 val = fix_dfloat(parameter[1]) if isinstance(parameter[1], str) else parameter[1]
-                sec_geometry_opt.convergence_tolerance_displacement_maximum = val * ureg.bohr
                 workflow.method.convergence_tolerance_displacement_maximum = val * ureg.bohr
             elif parameter[0] == 'energy precision                  (eprec)':
                 val = fix_dfloat(parameter[1]) if isinstance(parameter[1], str) else parameter[1]
-                sec_geometry_opt.input_energy_difference_tolerance = val * ureg.hartree
                 workflow.method.convergence_tolerance_energy_difference = val * ureg.hartree
             else:
                 parameter[0] = self._metainfo_map.get(parameter[0])
                 if parameter[0] is not None:
-                    setattr(sec_md, 'x_nwchem_%s' % parameter[0], parameter[1])
+                    setattr(workflow, 'x_nwchem_%s' % parameter[0], parameter[1])
 
-        self.archive.workflow2 = workflow
+        self.archive.workflow = workflow
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)

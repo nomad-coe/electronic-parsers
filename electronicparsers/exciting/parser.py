@@ -35,9 +35,8 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, EnergyEntry, Charges,
     Forces, ForcesEntry, ScfIteration, BandGap, Spectra, ElectronicStructureProvenance
 )
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
-    SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
+    SinglePoint, GeometryOptimization,
     GeometryOptimizationMethod
 )
 from .metainfo.exciting import (
@@ -1862,9 +1861,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         self.parse_spectra(path)
 
         # Workflow
-        workflow = SinglePoint2()
+        workflow = SinglePoint()
         workflow.name = 'SinglePoint'
-        self._child_archives.get(path).workflow2 = workflow
+        self._child_archives.get(path).workflow = workflow
 
     def _parse_input_gw(self, sec_gw):
         def parse_exciting_gw_inputs(source, path, target):
@@ -1986,23 +1985,16 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_scc.system_ref = sec_run.system[-1]
 
     def parse_workflow(self):
-        sec_workflow = self.archive.m_create(Workflow)
-
-        sec_workflow.type = 'single_point'
-        workflow = SinglePoint2()
+        workflow = SinglePoint()
         workflow.name = 'SinglePoint'
-        sec_workflow.calculations_ref = self.archive.run[-1].calculation
         structure_optimization = self.info_parser.get('structure_optimization')
         if structure_optimization is not None:
-            sec_workflow.type = 'geometry_optimization'
-            sec_geometry_opt = sec_workflow.m_create(GeometryOptimization)
-            workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
+            workflow = GeometryOptimization(method=GeometryOptimizationMethod())
             workflow.name = 'GeometryOptimization'
             threshold_force = structure_optimization.get(
                 'optimization_step', [{}])[0].get('force_convergence', [0., 0.])[-1]
-            sec_geometry_opt.convergence_tolerance_force_maximum = threshold_force
             workflow.method.convergence_tolerance_force_maximum = threshold_force
-        self.archive.workflow2 = workflow
+        self.archive.workflow = workflow
 
     def parse_method(self):
         sec_run = self.archive.run[-1]

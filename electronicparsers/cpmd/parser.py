@@ -35,10 +35,9 @@ from nomad.datamodel.metainfo.simulation.system import (
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent
 )
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, MolecularDynamics
 from nomad.datamodel.metainfo.simulation.workflow import (
-    SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod,
-    MolecularDynamics as MolecularDyanamics2, MolecularDynamicsMethod)
+    SinglePoint, GeometryOptimization, GeometryOptimizationMethod,
+    MolecularDynamics, MolecularDynamicsMethod)
 from .metainfo.cpmd_general import (
     x_cpmd_section_start_information, x_cpmd_section_supercell, x_cpmd_section_md_averaged_quantities
 )
@@ -326,23 +325,17 @@ class CPMDParser:
             ensemble_type = 'NVE' if ion_dyn == 'THE TEMPERATURE IS NOT CONTROLLED' else None
             return ensemble_type
 
-        sec_workflow = archive.m_create(Workflow)
         workflow = None
-
         simulation_type = self.mainfile_parser.get('info', {}).get('simulation_type')
         if simulation_type == 'SINGLE POINT DENSITY OPTIMIZATION':
-            workflow = SinglePoint2()
-            sec_workflow.type = 'single_point'
+            workflow = SinglePoint()
             sec_system = parse_system(self.mainfile_parser.single_point)
             sec_calc = parse_calculation(self.mainfile_parser.single_point)
             sec_calc.system_ref = sec_system
 
         elif self.mainfile_parser.geometry_optimization is not None:
-            workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
-            sec_workflow.type = 'geometry_optimization'
+            workflow = GeometryOptimization(method=GeometryOptimizationMethod())
             method = self.mainfile_parser.get('info', {}).get('geometry_optimization_method')
-            sec_workflow.geometry_optimization = GeometryOptimization(
-                method=self._method_map.get(method, method))
             workflow.method.method = self._method_map.get(method, method)
             for step in self.mainfile_parser.geometry_optimization.get('step', []):
                 sec_system = parse_system(step)
@@ -350,13 +343,9 @@ class CPMDParser:
                 sec_calc.system_ref = sec_system
 
         elif self.mainfile_parser.molecular_dynamics is not None:
-            workflow = MolecularDyanamics2(method=MolecularDynamicsMethod())
-            sec_workflow.type = 'molecular_dynamics'
-            sec_workflow.molecular_dynamics = MolecularDynamics(
-                thermodynamic_ensemble=resolve_ensemble_type()
-            )
+            workflow = MolecularDynamics(method=MolecularDynamicsMethod())
             workflow.method.thermodynamic_ensemble = resolve_ensemble_type()
-            sec_averaged = sec_workflow.molecular_dynamics.m_create(x_cpmd_section_md_averaged_quantities)
+            sec_averaged = workflow.molecular_dynamics.m_create(x_cpmd_section_md_averaged_quantities)
             for value in self.mainfile_parser.molecular_dynamics.get('averaged', []):
                 name = '_'.join(value[:-2]).lower()
                 setattr(sec_averaged, f'x_cpmd_{name}_mean', value[-2])
@@ -454,4 +443,4 @@ class CPMDParser:
         sec_method.x_cpmd_simulation_parameters = self.mainfile_parser.get_simulation_parameters()
         # TODO xc functionals. The mapping cannot be ascertained
 
-        archive.workflow2 = workflow
+        archive.workflow = workflow
