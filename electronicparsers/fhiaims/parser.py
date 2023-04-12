@@ -111,8 +111,11 @@ class FHIAimsControlParser(TextParser):
                 xsection_run.x_fhi_aims_controlIn_MD_time_step,
                 rf'{re_n} *MD_time_step\s*({re_float})', repeats=False),
             Quantity(
-                xsection_method.x_fhi_aims_controlIn_k_grid,
-                rf'{re_n} *k\_grid\s*([\d ]+)', repeats=False),
+                'k_grid',
+                rf'{re_n} *k\_grid\s*([\d ]+)', repeats=False),  # manual version 210716_2
+            Quantity(
+                'k_offset',
+                rf'{re_n} *k\_offset\s*([\d ]+)', repeats=False),  # manual version 210716_2
             Quantity(
                 'occupation_type',
                 rf'{re_n} *occupation_type\s*([\w\. \-\+]+)', repeats=False),
@@ -597,7 +600,7 @@ class FHIAimsOutParser(TextParser):
                 r'hybrid_xc_coeff: Mixing coefficient for hybrid-functional exact exchange modified to\s*([\d\.]+)',
                 repeats=False),
             Quantity(
-                xsection_method.x_fhi_aims_controlInOut_k_grid,
+                'k_grid',
                 rf'{re_n} *Found k-point grid:\s*([\d ]+)', repeats=False),
             Quantity(
                 xsection_run.x_fhi_aims_controlInOut_MD_time_step,
@@ -1495,6 +1498,11 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
     def parse_method(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
+
+        # extract the k-grid
+        sec_kmesh = sec_method.m_create(KMesh)
+        sec_kmesh.grid = self.out_parser.get('k_grid')
+        sec_kmesh.offset = self.out_parser.get('k_offset')
 
         sec_method.basis_set.append(BasisSet(type='numeric AOs'))
         sec_dft = sec_method.m_create(DFT)
