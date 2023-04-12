@@ -1996,9 +1996,10 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
 
-        k_mesh = sec_method.m_create(KMesh)
-        k_mesh.grid = self.info_parser.get_initialization_parameter('kpoint_grid', default=[1] * 3)
-        k_mesh.offset = self.info_parser.get_initialization_parameter('kpoint_offset', default=[0.] * 3)
+        if sec_method.k_mesh is None:  # TODO revise need in the future
+            k_mesh = sec_method.m_create(KMesh)
+            k_mesh.grid = self.info_parser.get_initialization_parameter('kpoint_grid', default=[1] * 3)
+            k_mesh.offset = self.info_parser.get_initialization_parameter('kpoint_offset', default=[0.] * 3)
 
         sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
         sec_dft = sec_method.m_create(DFT)
