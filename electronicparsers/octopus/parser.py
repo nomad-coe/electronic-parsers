@@ -811,7 +811,10 @@ class OctopusParser:
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
         k_mesh = sec_method.m_create(KMesh)
-        k_mesh.grid = self.info_parser.get('brillouin_zone_sampling', {'results': {}}).results.get('kgrid')
+        brillouin_zone_sampling = self.info_parser.get('brillouin_zone_sampling')
+        if brillouin_zone_sampling is not None:
+            if brillouin_zone_sampling.results is not None:
+                k_mesh.grid = brillouin_zone_sampling.results.get('kgrid')
 
         sec_electronic = sec_method.m_create(Electronic)
         sec_dft = sec_method.m_create(DFT)
