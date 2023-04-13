@@ -140,9 +140,9 @@ def test_vasprunxml_bands(parser):
     parser.parse('tests/data/vasp/Mg_bands/vasprun.xml.bands', archive, None)
 
     sec_run = archive.run[0]
-    #  k_mesh = sec_run.method[0].k_mesh
-    #  assert len(k_mesh.points) == 128
-    #  assert k_mesh.sampling_method == "listgenerated"
+    k_mesh = sec_run.method[0].k_mesh
+    assert len(k_mesh.points) == 128 * 6
+    assert k_mesh.sampling_method == "Line-path"
 
     sec_k_band = sec_run.calculation[0].band_structure_electronic[0]
     assert len(sec_k_band.segment) == 6

@@ -950,6 +950,14 @@ class RunContentParser(ContentParser):
     def n_calculations(self):
         return self.parser.n_calculations
 
+
+    sampling_method_mapping = {
+        'Automatic': 'Gamma-centered',
+        'Gamma': 'Gamma-centered',
+        'Monkhorst-Pack': 'Monkhorst-Pack',
+        'listgenerated': 'Line-path',
+    }
+
     @property
     def kpoints_info(self):
         if self._kpoints_info is None:
@@ -958,7 +966,7 @@ class RunContentParser(ContentParser):
             method = self._get_key_values(
                 '/modeling[0]/kpoints[0]/generation[0]/param')
             if method:
-                self._kpoints_info['sampling_method'] = method['param']
+                self._kpoints_info['sampling_method'] = RunContentParser.sampling_method_mapping[method['param']]
             divisions = self._get_key_values(
                 '/modeling[0]/kpoints[0]/generation[0]/v[@name="divisions"]')
             if not divisions:
@@ -1226,8 +1234,6 @@ class VASPParser():
                     self.logger.warning('Error setting metainfo', data=dict(key=key))
         if sec_k_mesh.points is None:
             sec_k_mesh.points = [[0.] * 3]
-        if sec_k_mesh.sampling_method == 'Gamma':
-            sec_k_mesh.sampling_method = 'Gamma-centered'
 
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)
@@ -1484,7 +1490,7 @@ class VASPParser():
             sec_scc.energy.highest_occupied = max(valence_max) * ureg.eV
             sec_scc.energy.lowest_unoccupied = min(conduction_min) * ureg.eV
 
-            if self.parser.kpoints_info.get('sampling_method', None) == 'listgenerated':
+            if self.parser.kpoints_info.get('sampling_method', None) == 'Line-path':
                 sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
                 for n in range(len(eigs)):
                     sec_band_gap = sec_k_band.m_create(BandGap)
