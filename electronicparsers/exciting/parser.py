@@ -1161,6 +1161,14 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             'nomeg': 16
         }
 
+        self._freq_grid_map = {
+            'eqdist': 'Equidistant',
+            'gaulag': 'Gauss-Laguerre',
+            'gauleg': 'Gauss-Legendre',
+            'gauleg2': 'Gauss-Legendre',
+            'clencurt2': 'Clenshaw-Curtis'
+        }
+
         self._selfenergy_input_default = {
             'actype': 'pade',
             'eqpsolver': 0,
@@ -1917,7 +1925,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         smearing = sec_gw.x_exciting_freqgrid.x_exciting_eta if sec_gw.x_exciting_qdepw == 'sum' else None
         sec_freq_mesh = FrequencyMesh(
             dimensionality=1,
-            sampling_method=sec_gw.x_exciting_freqgrid.x_exciting_fgrid,
+            sampling_method=self._freq_grid_map.get(sec_gw.x_exciting_freqgrid.x_exciting_fgrid),
             n_points=n_freqs,
             points=values,
             smearing=smearing)

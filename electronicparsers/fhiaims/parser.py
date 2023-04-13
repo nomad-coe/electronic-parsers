@@ -667,7 +667,7 @@ class FHIAimsOutParser(TextParser):
                 'k_grid',
                 rf'{re_n} *k\_grid\s*([\d ]+)', repeats=False),
             Quantity(
-                'freq_grid_type', rf'{re_n}\s*Initialising transformed\s([\w\-]+)\s*time and frequency grids',
+                'freq_grid_type', rf'{re_n}\s*Initialising\s*([\w\-\s]+)\s*time and frequency grids',
                 repeats=False),
             Quantity(
                 'n_freq', rf'{re_n}\s*frequency_points\s*(\d+)', repeats=False,
@@ -989,9 +989,14 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             values = np.array(frequency_data)[:, 1] * ureg.hartree
         else:
             values = None
+        freq_grid_type = self.out_parser.get('freq_grid_type', 'Gauss-Legendre')
+        if isinstance(freq_grid_type, list):
+            freq_grid_type = freq_grid_type[-1]
+        elif freq_grid_type == 'logarithmic':
+            freq_grid_type = freq_grid_type.capitalize()
         sec_freq_mesh = FrequencyMesh(
             dimensionality=1,
-            sampling_method=self.out_parser.get('freq_grid_type'),
+            sampling_method=freq_grid_type,
             n_points=self.out_parser.get('n_freq', 100),
             points=values)
         sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
