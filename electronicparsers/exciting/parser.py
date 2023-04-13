@@ -1914,12 +1914,12 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         n_freqs = sec_gw.x_exciting_freqgrid.x_exciting_nomeg
         freqmax = sec_gw.x_exciting_freqgrid.x_exciting_freqmax
         freqmin = sec_gw.x_exciting_freqgrid.x_exciting_freqmin
-        values = [freqmin + i * (freqmax - freqmin) / n_freqs for i in range(n_freqs)] * ureg.hartree
+        freq_points = [freqmin + i * (freqmax - freqmin) / n_freqs for i in range(n_freqs)] * ureg.hartree
         smearing = sec_gw.x_exciting_freqgrid.x_exciting_eta if sec_gw.x_exciting_qdepw == 'sum' else None
         sec_freq_mesh = FrequencyMesh(
-            type=sec_gw.x_exciting_freqgrid.x_exciting_fgrid,
+            # type=sec_gw.x_exciting_freqgrid.x_exciting_fgrid,  # TODO: map into enum
             n_points=n_freqs,
-            values=values,
+            points=freq_points,  # TODO: check
             smearing=smearing)
         sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
         # Screening

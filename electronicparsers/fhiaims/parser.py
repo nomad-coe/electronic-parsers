@@ -986,13 +986,13 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         # FrequencyMesh
         frequency_data = self.out_parser.get('frequency_data', [])
         if len(frequency_data) > 0:
-            values = np.array(frequency_data)[:, 1] * ureg.hartree
+            freq_points = np.array(frequency_data)[:, 1] * ureg.hartree
         else:
-            values = None
+            freq_points = None
         sec_freq_mesh = FrequencyMesh(
-            type=self.out_parser.get('freq_grid_type'),
+            # type=self.out_parser.get('freq_grid_type'),  # TODO: set default value for enum
             n_points=self.out_parser.get('n_freq', 100),
-            values=values)
+            points=freq_points)
         sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
 
         # GW calculation

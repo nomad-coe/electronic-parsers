@@ -1090,8 +1090,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         frequency_values = self.out_parser.get('screening_dataset', {}).get('frequencies', {}).get('values')
         if frequency_values is not None:
             freqs = frequency_values * ureg.eV
-            values = freqs[:, 0] + freqs[:, 1] * 1j
-            sec_freq_mesh = FrequencyMesh(n_points=len(freqs), values=values)
+            freq_points = freqs[:, 0] + freqs[:, 1] * 1j
+            sec_freq_mesh = FrequencyMesh(n_points=len(freqs), points=freq_points)  # TODO: check
         else:
             freq_plasma = self.out_parser.get('gw_dataset', {}).get('omega_plasma', 0.0)
             values = [0.0, freq_plasma * 1j]
