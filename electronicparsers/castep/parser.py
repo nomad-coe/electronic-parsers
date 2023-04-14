@@ -860,6 +860,9 @@ class CastepParser:
         elif method == 'single_point':
             workflow = SinglePoint()
 
+        elif method == 'phonon':
+            workflow = Phonon()
+
         self.archive.workflow = workflow
 
     def parse_configurations(self):
@@ -1172,7 +1175,7 @@ class CastepParser:
         if calculation.get('final') is not None:
             parse_calculation(calculation.get('final'))
 
-        if type(self.archive.workflow) in [SinglePoint, Phonon]:
+        if self.archive.workflow.m_def.name in ['SinglePoint', 'Phonon']:
             # single point calculation
             parse_calculation(calculation)
 
