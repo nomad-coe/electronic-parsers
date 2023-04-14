@@ -950,7 +950,6 @@ class RunContentParser(ContentParser):
     def n_calculations(self):
         return self.parser.n_calculations
 
-
     sampling_method_mapping = {
         'Automatic': 'Gamma-centered',
         'Gamma': 'Gamma-centered',
@@ -1254,7 +1253,8 @@ class VASPParser():
                                           [RunContentParser, RunContentParser, OutcarContentParser, OutcarContentParser]):
             # self.parser.incar  ## in case the keys are not being found: put this line back in
             parsed_file = self.parser._incar[file_type]
-            if not (type(self.parser) is parser_type and parsed_file): continue
+            if not (type(self.parser) is parser_type and parsed_file):
+                continue
             # check minimum requirements to define hubbard_model
             if (file_type == 'incar' and parsed_file.get('LDAU')) or (parsed_file.get('LDAUL')):
                 hubbard_present = True

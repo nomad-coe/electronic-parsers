@@ -1502,7 +1502,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_method.x_exciting_xs_number_of_empty_states = self.input_xml_parser.get(
             'xs/nempty', 5)
         sec_method.x_exciting_xs_ngridq = self.input_xml_parser.get('xs/ngridq', [1, 1, 1])
-        k_mesh = sec_method.KMesh()
+        k_mesh = sec_method.m_create(KMesh)
         k_mesh.grid = self.input_xml_parser.get('xs/ngridk')
         rgkmax = self.input_xml_parser.get('xs/rgkmax', None)
         if rgkmax is None:
