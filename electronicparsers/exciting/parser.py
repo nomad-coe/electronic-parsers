@@ -33,13 +33,14 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, EnergyEntry, Charges,
-    Forces, ForcesEntry, ScfIteration, BandGapDepricated, Spectra
+    Forces, ForcesEntry, ScfIteration, BandGap, Spectra
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod
 )
+from nomad.datamodel.metainfo.common import ProvenanceTracker
 from .metainfo.exciting import (
     x_exciting_section_MT_charge_atom, x_exciting_section_MT_moment_atom,
     x_exciting_section_spin, x_exciting_section_fermi_surface,
@@ -1957,7 +1958,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         for f in gw_files:
             self.parse_file(f, sec_scc)
 
-        sec_gap = sec_scc.eigenvalues[-1].m_create(BandGapDepricated)
+        # example band gap setup
+        sec_gap = sec_scc.eigenvalues[-1].m_create(BandGap)
+        sec_gap.provenance.m_create(ProvenanceTracker)
 
         sec_scc.method_ref = sec_method
         self.parse_system(self.info_parser.get('groundstate'))
