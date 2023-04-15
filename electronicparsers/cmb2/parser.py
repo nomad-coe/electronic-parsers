@@ -17,68 +17,32 @@
 # limitations under the License.
 #
 import logging
-from nomad.datamodel.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.metainfo.metainfo import MSection, Quantity as mQuantity
-from nomad.parsing.file_parser.text_parser import TextParser, ParsePattern, Quantity
-import re
-from typing import Union, List
+from nomad.metainfo.metainfo import Quantity
+from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 
+separator_line = r'[\-\s]+\n'
+vector_3D = r'([\d\.\-]+)\s+([\d\.\-]+)\s+([\d\.\-]+)'
 
-class QuantityToArchive(Quantity):
-    '''A quantity that can be written to the archive.'''
-    floating_point_number: str = r'[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?'
-    repeated_section_pattern = re.compile(r'(\w+)\[?(-?[\d\*]*)\]?$')
-
-    def __init__(self, archive: EntryArchive, quantity: str,
-                 re_pattern: Union[str, ParsePattern], **kwargs):
-        self.archive = archive
-        self.quantity_path = quantity
-        self.path = self.quantity_path.split('/')
-        self.section_path = self.path[:-1]
-        self.section_path_limit = len(self.section_path) - 1
-
-        self.quantity = Quantity(self.path[-1], re_pattern, **kwargs)
-
-    def is_planned(self, section, property_name: str):
-        '''Return a quantity or subsection `property_name` of `section`
-        if the schema allows it.'''
-        try:
-            section_def = section.m_def
-            subsection = section.m_def.all_properties[property_name]
-        except AttributeError:
-            return
-        if isinstance(section_def, MSection) and isinstance(subsection, (MSection, mQuantity)):
-            return subsection
-
-    def update(self, val_in: List[str]) -> None:
-        '''Write a quantity to the archive.'''
-        array_index: str = ''
-        head = self.archive  # traces the Archive Section in the loop
-
-        for next_section_name in self.section_path:
-            # process path string
-            next_section_matched = self.__class__.repeated_section_pattern.match(next_section_name)
-            next_section_name = next_section_matched.group(1)
-            try:
-                array_index = next_section_matched.group(2)
-            except Exception:
-                pass
-            next_section_value = getattr(head, next_section_name)
-
-            # check if the next section is already defined
-            if not next_section_value:
-                # add section, in line with the schema
-                next_section = self.is_planned(head, next_section_name)
-                if next_section:
-                    updated_section = next_section.sub_section.section_cls()
-                    updated_section = [updated_section] if array_index in ['0', '-1'] else updated_section
-                    setattr(head, next_section_name, updated_section)
-                    head = updated_section[0] if array_index in ['0', '-1'] else updated_section
-                else:
-                    raise(ValueError(f'Path {self.quantity_path} does not follow the schema.'))
-        setattr(head, self.quantity.name, self.quantity.to_data(val_in))
-
+lattice_section = Quantity('lattice_section',
+        r'lattice vectors (a.u.)\n[\s\S]+?\n\n',
+        sub_parser=TextParser(quantities=[
+            Quantity('lattice_vectors', vector_3D, repeats=True),
+        ])
+    )
+rep_latt_section = Quantity('rep_latt_section',
+        r'reciprocal basis (a.u.)\n[\s\S]+?\n\n',
+        sub_parser=TextParser(quantities=[
+            Quantity('reciprocal_lattice_vectors', vector_3D, repeats=True),
+        ])
+    )
+atoms_coords = Quantity('atoms_coords',
+        r'Atomic Positions:\n[\s\S]+?\n(.*)\nThe crystal system',
+        sub_parser=TextParser(quantities=[
+            Quantity('labels', r'([A-Z][a-z]?) #', repeats=True, dtype=str),
+            Quantity('positions', r'\d+:\s+' + vector_3D, repeats=True),
+            ])
+    )
 program = Quantity('program', r'(^\s*CMB2\s+Version:.+)', sub_parser=\
     TextParser(quantities=[
         Quantity('version', r'Version:\s+([\d\.]+)', dtype=str),
