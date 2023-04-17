@@ -976,10 +976,11 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_gw.type = self._gw_flag_map.get(self.out_parser.get('gw_flag'), None)
         sec_gw.n_states = self.out_parser.get('n_states_gw')
         # KMesh
-        sec_k_mesh = sec_method.m_create(KMesh)
-        sec_k_mesh.grid = self.out_parser.get('k_grid')
+        if self.out_parser.get('k_grid'):
+            sec_k_mesh = sec_method.m_create(KMesh)
+            sec_k_mesh.grid = self.out_parser.get('k_grid')
         # QMesh copied from KMesh
-        sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
+            sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
         # Analytical continuation
         sec_gw.analytical_continuation = self.gw_analytical_continuation[
             self.out_parser.get('anacon_type', 1)]
