@@ -101,8 +101,10 @@ class W2DynamicsParser:
 
             return self.log_parser.get('program_version', None)
 
-    def parse_dataset(self, source, target, include=[]):
+    def parse_dataset(self, source, target, include=[], skip=[]):
         for key in source.keys():
+            if key in skip:
+                continue
             if include and key not in include:
                 continue
             # resolve value from 'value'
@@ -332,7 +334,7 @@ class W2DynamicsParser:
 
         # run.x_w2dynamics_axes section
         sec_axes = sec_run.m_create(x_w2dynamics_axes)
-        self.parse_dataset(data.get('.axes'), sec_axes)
+        self.parse_dataset(data.get('.axes'), sec_axes, include=[], skip=['iw', 'tau'])
 
         # System section
         self.parse_system()

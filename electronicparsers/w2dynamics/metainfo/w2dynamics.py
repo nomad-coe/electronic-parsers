@@ -33,14 +33,6 @@ class x_w2dynamics_axes(MSection):
     '''
 
     m_def = Section(validate=False)
-
-    x_w2dynamics_iw = Quantity(
-        type=np.float64,
-        shape=['Niw'],
-        description='''
-        Matsubara frequencies.
-        ''')
-
     x_w2dynamics_iwb_g4 = Quantity(
         type=np.float64,
         shape=['N4iwb'],
@@ -94,13 +86,6 @@ class x_w2dynamics_axes(MSection):
         type=np.float64,
         shape=['0..*'],
         description='''
-        ''')
-
-    x_w2dynamics_tau = Quantity(
-        type=np.float64,
-        shape=['Ntau'],
-        description='''
-        Tau times.
         ''')
 
     x_w2dynamics_tau_g4 = Quantity(
