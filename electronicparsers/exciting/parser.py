@@ -735,7 +735,7 @@ class ExcitingInfoParser(TextParser):
             Quantity(
                 'lattice_vectors_reciprocal',
                 r'Reciprocal lattice vectors\s*[\(cartesian\)]*\s*:\s*([\-0-9\.\s]+)\n',
-                str_operation=str_to_array, unit=1 / ureg.bohr, repeats=False, convert=False),
+                str_operation=str_to_array, unit=1 / ureg.bohr, repeats=False, convert=False)
         ]
 
         self._system_keys_mapping = {
@@ -745,8 +745,8 @@ class ExcitingInfoParser(TextParser):
             'x_exciting_spin_treatment': ('Spin treatment', None),
             'x_exciting_number_of_bravais_lattice_symmetries': ('Number of Bravais lattice symmetries', None),
             'x_exciting_number_of_crystal_symmetries': ('Number of crystal symmetries', None),
-            'x_exciting_kpoint_grid': (r'k\-point grid', None),
-            'x_exciting_kpoint_offset': (r'k\-point offset', None),
+            'kpoint_grid': (r'k\-point grid', None),
+            'kpoint_offset': (r'k\-point offset', None),
             'x_exciting_number_kpoints': (r'Total number of k\-points', None),
             'x_exciting_rgkmax': (r'R\^MT\_min \* \|G\+k\|\_max \(rgkmax\)', None),
             'x_exciting_species_rtmin': (r'Species with R\^MT\_min', None),
@@ -1510,7 +1510,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_method.x_exciting_xs_number_of_empty_states = self.input_xml_parser.get(
             'xs/nempty', 5)
         sec_method.x_exciting_xs_ngridq = self.input_xml_parser.get('xs/ngridq', [1, 1, 1])
-        sec_method.x_exciting_xs_ngridk = self.input_xml_parser.get('xs/ngridk', [1, 1, 1])
+        k_mesh = sec_method.m_create(KMesh)
+        k_mesh.grid = self.input_xml_parser.get('xs/ngridk')
         rgkmax = self.input_xml_parser.get('xs/rgkmax', None)
         if rgkmax is None:
             rgkmax = self.info_parser.get_initialization_parameter('x_exciting_rgkmax', 0.)
@@ -1800,7 +1801,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_bse.broadening = sec_run.method[-1].x_exciting_xs_broadening
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
-        sec_k_mesh.grid = sec_run.method[-1].x_exciting_xs_ngridk
+        sec_k_mesh.grid = sec_run.method[-1].x_exciting_xs_ngridk  # TODO change to output parsing
         # QMesh
         sec_q_mesh = KMesh(grid=sec_run.method[-1].x_exciting_xs_ngridq)
         sec_bse.m_add_sub_section(BSE.q_mesh, sec_q_mesh)
@@ -1921,7 +1922,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         n_freqs = sec_gw.x_exciting_freqgrid.x_exciting_nomeg
         freqmax = sec_gw.x_exciting_freqgrid.x_exciting_freqmax
         freqmin = sec_gw.x_exciting_freqgrid.x_exciting_freqmin
-        values = [freqmin + i * (freqmax - freqmin) / n_freqs for i in range(n_freqs)] * ureg.hartree
+        freq_points = [freqmin + i * (freqmax - freqmin) / n_freqs for i in range(n_freqs)] * ureg.hartree
         smearing = sec_gw.x_exciting_freqgrid.x_exciting_eta if sec_gw.x_exciting_qdepw == 'sum' else None
         sec_freq_mesh = FrequencyMesh(
             dimensionality=1,
@@ -2003,6 +2004,11 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
     def parse_method(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
+
+        if sec_method.k_mesh is None:  # TODO revise need in the future
+            k_mesh = sec_method.m_create(KMesh)
+            k_mesh.grid = self.info_parser.get_initialization_parameter('kpoint_grid', default=[1] * 3)
+            k_mesh.offset = self.info_parser.get_initialization_parameter('kpoint_offset', default=[0.] * 3)
 
         sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
         sec_dft = sec_method.m_create(DFT)

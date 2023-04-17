@@ -70,10 +70,6 @@ def test_vasprunxml_static(parser):
     assert len(sec_method.x_vasp_incar_in) == 27
     assert len(sec_method.x_vasp_incar_out) == 112
     assert sec_method.x_vasp_incar_in['LCHARG']
-    assert len(sec_method.k_mesh_points) == 888
-    assert sec_method.k_mesh_points[-1][2] == approx(0.48437500)
-    assert sec_method.k_mesh_weights[100] == approx(0.00073242)
-    assert (sec_method.x_vasp_tetrahedrons_list[0] == [4, 1, 2, 2, 18]).all()
     assert sec_method.atom_parameters[0].mass.magnitude == approx(4.0359402e-26)
     assert len(sec_method.dft.xc_functional.exchange) == 1
 
@@ -87,9 +83,13 @@ def test_vasprunxml_static(parser):
     assert sec_scc.stress.total.value[2][2].magnitude == approx(-2.78384438e+08)
 
     # Check the k-point sampling
-    k_mesh = sec_run.method[-1].k_mesh
-    assert all(k_mesh.grid == [32] * 3)
-    assert k_mesh.generation_method == "Monkhorst-Pack"
+    k_mesh = sec_method.k_mesh
+    assert list(k_mesh.grid) == [32] * 3
+    assert k_mesh.sampling_method == "Monkhorst-Pack"
+    assert len(k_mesh.points) == 888
+    assert k_mesh.points[-1][2] == approx(0.48437500)
+    assert k_mesh.weights[100] == approx(0.00073242)
+    assert (k_mesh.x_vasp_tetrahedrons_list[0] == [4, 1, 2, 2, 18]).all()
 
     # test DOS values
     assert len(sec_scc.dos_electronic[0].energies) == 5000
@@ -118,8 +118,8 @@ def test_vasprunxml_relax(parser):
 
     # Check the k-point sampling
     k_mesh = sec_run.method[-1].k_mesh
-    assert all(k_mesh.grid == [16] * 3)
-    assert k_mesh.generation_method == "Gamma"
+    assert list(k_mesh.grid) == [16] * 3
+    assert k_mesh.sampling_method == "Gamma-centered"
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 3
@@ -139,7 +139,12 @@ def test_vasprunxml_bands(parser):
     archive = EntryArchive()
     parser.parse('tests/data/vasp/Mg_bands/vasprun.xml.bands', archive, None)
 
-    sec_k_band = archive.run[0].calculation[0].band_structure_electronic[0]
+    sec_run = archive.run[0]
+    k_mesh = sec_run.method[0].k_mesh
+    assert len(k_mesh.points) == 128 * 6
+    assert k_mesh.sampling_method == "Line-path"
+
+    sec_k_band = sec_run.calculation[0].band_structure_electronic[0]
     assert len(sec_k_band.segment) == 6
     assert np.shape(sec_k_band.segment[0].energies[0][127].magnitude) == (37,)
     assert sec_k_band.segment[1].energies[0][1][1].magnitude == approx(-6.27128785e-18)
@@ -183,8 +188,8 @@ def test_dos_silicon(silicon_dos):
     values = np.array([d.value.magnitude for d in dos.total])
 
     # Check the k-point sampling
-    assert all(k_mesh.grid == [15] * 3)
-    assert k_mesh.generation_method == "Monkhorst-Pack"
+    assert list(k_mesh.grid) == [15] * 3
+    assert k_mesh.sampling_method == "Monkhorst-Pack"
 
     # Check that an energy reference is reported
     energy_reference = scc.energy.fermi
@@ -220,6 +225,9 @@ def test_outcar(parser):
     assert sec_method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
     assert len(sec_method.atom_parameters) == 2
     assert sec_method.atom_parameters[1].pseudopotential_name == 'PAW_PBE'
+
+    k_mesh = sec_method.k_mesh
+    assert len(k_mesh.points) == 145
 
     sec_system = sec_run.system[0]
     assert sec_system.atoms.lattice_vectors[1][0].magnitude == approx(3.141538e-10)
@@ -270,8 +278,8 @@ def test_hybrid(parser):
     k_mesh = sec_method.k_mesh
 
     # Check the k-point sampling
-    assert all(k_mesh.grid == [1] * 3)
-    assert k_mesh.generation_method == "Gamma"
+    assert list(k_mesh.grid) == [1] * 3
+    assert k_mesh.sampling_method == "Gamma-centered"
 
     sec_xc_functional = sec_method.dft.xc_functional
     assert sec_xc_functional.hybrid[0].parameters['exact_exchange_mixing_factor'] == .25
@@ -287,8 +295,8 @@ def test_metagga(parser):
     k_mesh = sec_method.k_mesh
 
     # Check the k-point sampling
-    assert all(k_mesh.grid == [1] * 3)
-    assert k_mesh.generation_method == "Gamma"
+    assert list(k_mesh.grid) == [1] * 3
+    assert k_mesh.sampling_method == "Gamma-centered"
 
     sec_xc_functional = sec_method.dft.xc_functional
     assert sec_xc_functional.contributions[0].name == 'MGGA_XC_HLE17'
@@ -304,7 +312,13 @@ def test_dftu_static(parser):
     reference_dir = 'tests/data/vasp/Mg4V2Bi2O12_dftu/'
     for mainfile in ['vasprun.xml', 'OUTCAR']:
         parser.parse(reference_dir + mainfile, archive, None)
-        params = archive.run[-1].method[-1].atom_parameters
+        sec_method = archive.run[-1].method[-1]
+        k_mesh = sec_method.k_mesh
+
+        if mainfile == 'vasprun.xml':
+            assert list(k_mesh.grid) == [4] * 3
+            assert k_mesh.sampling_method == 'Gamma-centered'
+        params = sec_method.atom_parameters
         references = {'orbital': ('d', 'd'), 'u': (3.25, 2.), 'j': (0., 1.)}
         slice = 0
         for param in params:

@@ -48,6 +48,7 @@ def test_scf(parser):
     assert sec_run.clean_end
 
     sec_method = sec_run.method[0]
+    assert len(sec_method.k_mesh.points) == 1
     assert sec_method.basis_set[0].cell_dependent[0].name == 'PW_25.0'
     assert sec_method.basis_set[1].cell_dependent[0].planewave_cutoff.magnitude == approx(2.17987236e-16,)
     assert sec_method.x_qe_sticks_sum_G_smooth == 135043
@@ -103,8 +104,10 @@ def test_multirun(parser):
     parser.parse('tests/data/quantumespresso/Mn_multirun/9064627814752884918776106151027.log', archive, None)
 
     sec_runs = archive.run
+    sec_method = sec_runs[0].method[0]
     assert len(sec_runs) == 3
-    assert sec_runs[0].method[0].electronic.smearing.width == approx(2.3978595972139434e-20)
+    assert len(sec_method.k_mesh.points) == 40
+    assert sec_method.electronic.smearing.width == approx(2.3978595972139434e-20)
     assert len(sec_runs[1].calculation[0].scf_iteration) == 111
     assert sec_runs[2].calculation[0].scf_iteration[45].x_qe_iter_mpersite_magn[6] == -0.3325
     assert sec_runs[0].system[0].x_qe_atom_starting_magnetization[1] == 0.133
@@ -124,7 +127,10 @@ def test_md(parser):
     parser.parse('tests/data/quantumespresso/Si_md/out.out', archive, None)
 
     assert archive.workflow[0].type == 'molecular_dynamics'
-    sec_sccs = archive.run[0].calculation
+    sec_run = archive.run[0]
+    sec_method = sec_run.method[0]
+    assert len(sec_method.k_mesh.points) == 1
+    sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 50
     assert archive.run[0].system[6].atoms.positions[1][2].magnitude == approx(6.66987013e-11)
     assert sec_sccs[-3].forces.total.value_raw[1][1].magnitude == approx(9.55685747e-10)
@@ -135,7 +141,11 @@ def test_dos(parser):
     archive = EntryArchive()
     parser.parse('tests/data/quantumespresso/W_dos/w.dos.out', archive, None)
 
-    sec_dos = archive.run[0].calculation[0].dos_electronic[0]
+    sec_run = archive.run[0]
+    sec_method = sec_run.method[0]
+    assert sec_method.k_mesh.n_points == 413
+    assert sec_method.k_mesh.points is None
+    sec_dos = sec_run.calculation[0].dos_electronic[0]
     assert np.shape(sec_dos.total[0].value) == (1801,)
     assert len(sec_dos.energies) == 1801
     assert sec_dos.energies[269].magnitude == approx(1.23207383e-18)

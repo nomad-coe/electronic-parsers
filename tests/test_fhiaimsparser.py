@@ -64,6 +64,7 @@ def test_scf_spinpol(parser):
 
     assert len(archive.run[0].method) == 1
     sec_method = archive.run[0].method[0]
+    assert list(sec_method.k_mesh.grid) == [16] * 3
     assert sec_method.electronic.n_spin_channels == 2
     assert sec_method.electronic.relativity_method == 'scalar_relativistic_atomic_ZORA'
     assert sec_method.dft.xc_functional.correlation[0].name == 'LDA_C_PW'
@@ -103,6 +104,7 @@ def test_geomopt(parser):
 
     sec_methods = archive.run[0].method
     assert len(sec_methods) == 1
+    assert list(sec_methods[0].k_mesh.grid) == [8] * 3
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 6
@@ -120,6 +122,9 @@ def test_band_spinpol(parser):
 
     assert len(archive.run[0].calculation) == 1
     sec_scc = archive.run[0].calculation[0]
+
+    sec_method = archive.run[0].method[0]
+    assert list(sec_method.k_mesh.grid) == [16] * 3
 
     sec_k_band = sec_scc.band_structure_electronic[0]
     assert len(sec_k_band.segment) == 3
@@ -198,6 +203,9 @@ def test_dos(parser):
     archive = EntryArchive()
     parser.parse('tests/data/fhiaims/ClNa_dos/ClNa_dos.out', archive, None)
 
+    sec_method = archive.run[0].method[0]
+    assert list(sec_method.k_mesh.grid) == [10] * 3
+
     sec_scc = archive.run[0].calculation[0]
     sec_dos = sec_scc.dos_electronic[0]
     assert np.shape(sec_dos.energies) == (50,)
@@ -219,6 +227,9 @@ def test_dos(parser):
 def test_md(parser):
     archive = EntryArchive()
     parser.parse('tests/data/fhiaims/HO_md/H2O_periodic_MD.out', archive, None)
+
+    sec_method = archive.run[0].method[0]
+    assert list(sec_method.k_mesh.grid) == [2] * 3
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 6
@@ -253,7 +264,10 @@ def test_hybrid(parser):
     archive = EntryArchive()
     parser.parse('tests/data/fhiaims/GaAs_HSE06+SOC/aims.out', archive, None)
 
-    sec_xc_functional = archive.run[0].method[0].dft.xc_functional
+    sec_method = archive.run[0].method[0]
+    assert list(sec_method.k_mesh.grid) == [12] * 3
+
+    sec_xc_functional = sec_method.dft.xc_functional
     assert sec_xc_functional.hybrid[0].parameters['exact_exchange_mixing_factor'] == .25
     assert sec_xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE06'
 
@@ -264,7 +278,10 @@ def test_dftu(parser):
     archive = EntryArchive()
     parser.parse('tests/data/fhiaims/CeO2_dftu/aims_CC.out', archive, None)
 
-    sec_hubb = archive.run[-1].method[0].atom_parameters[0].hubbard_kanamori_model
+    sec_method = archive.run[0].method[0]
+    assert list(sec_method.k_mesh.grid) == [1] * 3
+
+    sec_hubb = sec_method.atom_parameters[0].hubbard_kanamori_model
     assert sec_hubb.orbital == '4f'
     assert approx(sec_hubb.u_effective.to('eV').magnitude) == 4.5
     assert sec_hubb.double_counting_correction == 'Dudarev'
@@ -337,7 +354,9 @@ def test_gw_bands(parser):
 
     # System and Method
     assert sec_run.system[-1].atoms.labels == ['Si', 'Si']
-    assert sec_run.method[-1].gw.type == 'G0W0'
+    sec_method = sec_run.method[-1]
+    assert list(sec_method.k_mesh.grid) == [8] * 3
+    assert sec_method.gw.type == 'G0W0'
 
     sec_scc = sec_run.calculation[-1]
     assert sec_scc.energy.fermi.to('eV').magnitude == approx(-5.73695796)
