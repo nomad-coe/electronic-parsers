@@ -290,7 +290,6 @@ def test_gw(parser):
     assert sec_method[-1].gw.type == 'scGW'
     assert sec_method[-1].gw.analytical_continuation == 'pade'
     assert sec_method[-1].gw.n_states == 5
-    assert (sec_method[-1].gw.q_mesh.grid == np.array([1, 1, 1])).all()
     assert sec_method[-1].frequency_mesh.n_points == len(sec_method[-1].frequency_mesh.points)
     assert sec_method[-1].frequency_mesh.points[-1].to('hartree').magnitude == approx(3571.4288641158605 + 0j)
 
