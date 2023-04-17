@@ -51,7 +51,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry,
-    BandEnergies, DosValues, ScfIteration, BandStructure, BandGapDepricated, Dos, Density
+    BandEnergies, DosValues, ScfIteration, BandStructure, BandGapDeprecated, Dos, Density
 )
 from nomad.datamodel.metainfo.workflow import (
     Workflow, GeometryOptimization, SinglePoint, MolecularDynamics)
@@ -1489,7 +1489,7 @@ class VASPParser():
                 # I removed normalization since imho it should be done by normalizer
                 sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
                 for n in range(len(eigs)):
-                    sec_band_gap = sec_k_band.m_create(BandGapDepricated)
+                    sec_band_gap = sec_k_band.m_create(BandGapDeprecated)
                     sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
                     sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
                 divisions = self.parser.kpoints_info.get('divisions', None)
