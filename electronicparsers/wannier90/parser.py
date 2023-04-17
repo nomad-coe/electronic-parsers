@@ -33,6 +33,9 @@ from nomad.datamodel.metainfo.simulation.method import (
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms, AtomsGroup
 from ..utils import get_files
+# For automatic workflows
+from nomad.processing.data import Entry
+
 
 re_n = r'[\n\r]'
 
@@ -200,8 +203,11 @@ class Wannier90Parser():
             'sp3d2-6': [-5, 6]
         }
 
-    def parse_system(self):
-        sec_run = self.archive.run[-1]
+        self._dft_codes = [
+            'quantumespresso', 'abinit', 'vasp', 'siesta', 'wien2k', 'fleur', 'openmx', 'gpaw']
+
+    def parse_system(self, archive, wout_parser):
+        sec_run = archive.run[-1]
         sec_system = sec_run.m_create(System)
 
         structure = self.wout_parser.get('structure')
@@ -503,6 +509,7 @@ class Wannier90Parser():
         self.filepath = filepath
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
+        self.mainfile = os.path.basename(self.filepath)
         self.logger = logging.getLogger(__name__) if logger is None else logger
 
         self.wout_parser.mainfile = self.filepath
@@ -524,3 +531,18 @@ class Wannier90Parser():
 
         workflow = SinglePoint()
         self.archive.workflow2 = workflow
+
+        # Checking if other mainfiles are present, if any is DFT will link Wannier90 with
+        # it in an automatic workflow.
+        try:
+            upload_id = archive.metadata.upload_id
+            entry_ids = [i.entry_id for i in Entry.objects(upload_id=upload_id)]
+            if len(entry_ids) > 1:
+                dft_parser = [f'parsers/{dft_code}' for dft_code in self._dft_codes]
+                for entry_id in entry_ids:
+                    entry_archive = archive.m_context.load_archive(entry_id, upload_id, None)
+                    if entry_archive.metadata.parser_name in dft_parser:
+                        mainfile = entry_archive.metadata.mainfile
+                        print(entry_id, entry_archive, entry_archive.metadata.parser_name)
+        except Exception:
+            self.logger.warning('Could not resolve the automatic workflow for Wannier90.')
