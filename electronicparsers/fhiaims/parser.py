@@ -667,7 +667,7 @@ class FHIAimsOutParser(TextParser):
                 'k_grid',
                 rf'{re_n} *k\_grid\s*([\d ]+)', repeats=False),
             Quantity(
-                'freq_grid_type', rf'{re_n}\s*Initialising\s*([\w\-\s]+)\s*time and frequency grids',
+                'freq_grid_type', rf'{re_n}\s*Initialising([\w\-\s]+)time and frequency grids',
                 repeats=False),
             Quantity(
                 'n_freq', rf'{re_n}\s*frequency_points\s*(\d+)', repeats=False,
@@ -977,7 +977,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_gw.n_states = self.out_parser.get('n_states_gw')
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
-        sec_k_mesh.grid = self.out_parser.get('k_grid', [1, 1, 1])
+        sec_k_mesh.grid = self.out_parser.get('k_grid')
         # QMesh copied from KMesh
         sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
         # Analytical continuation
