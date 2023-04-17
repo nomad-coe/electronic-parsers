@@ -979,7 +979,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_gw.type = self._gw_flag_map.get(self.out_parser.get('gw_flag'), None)
         sec_gw.n_states = self.out_parser.get('n_states_gw')
         # KMesh
-        if self.out_parser.get('k_grid'):
+        if self.out_parser.get('k_grid') is not None:
             sec_k_mesh = sec_method.m_create(KMesh)
             sec_k_mesh.grid = self.out_parser.get('k_grid')
         # QMesh copied from KMesh
@@ -992,7 +992,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         if len(frequency_data) > 0:
             freq_points = np.array(frequency_data)[:, 1] * ureg.hartree
         else:
-            values = None
+            freq_points = None
         freq_grid_type = self.out_parser.get('freq_grid_type', 'Gauss-Legendre')
         if isinstance(freq_grid_type, list):
             freq_grid_type = freq_grid_type[-1]
@@ -1002,7 +1002,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             dimensionality=1,
             sampling_method=freq_grid_type,
             n_points=self.out_parser.get('n_freq', 100),
-            points=values)
+            points=freq_points)
         sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
         # GW calculation

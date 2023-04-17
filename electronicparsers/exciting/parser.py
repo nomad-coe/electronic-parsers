@@ -1928,7 +1928,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             dimensionality=1,
             sampling_method=self._freq_grid_map.get(sec_gw.x_exciting_freqgrid.x_exciting_fgrid),
             n_points=n_freqs,
-            points=values,
+            points=freq_points,
             smearing=smearing)
         sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # Screening
