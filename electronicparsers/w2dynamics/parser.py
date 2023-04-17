@@ -59,6 +59,8 @@ class LogParser(TextParser):
 
 
 class W2DynamicsParser:
+    level = 2
+
     def __init__(self):
         self._re_namesafe = re.compile(r'[^\w]')
         self.log_parser = LogParser()
