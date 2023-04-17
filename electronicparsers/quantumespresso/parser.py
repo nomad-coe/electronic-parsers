@@ -2253,7 +2253,7 @@ class QuantumEspressoParser:
         # time
         time = calculation.get('total_time')
         if time is not None:
-            sec_scc.time_single_configuration_calculation_cpu1_end = time[-1]
+            sec_scc.time = time[-1]
 
         def parse_diagonalization(source, target):
             diagonalization = {
@@ -2470,8 +2470,8 @@ class QuantumEspressoParser:
             if sec_scc is None:
                 return
             if sec_system is not None:
-                sec_scc.single_configuration_calculation_to_system_ref = sec_system
-            sec_scc.single_configuration_to_calculation_method_ref = sec_run.method[-1]
+                sec_scc.system_ref = sec_system
+            sec_scc.method_ref = sec_run.method[-1]
 
         for calculation_type in ['self_consistent', 'bandstructure']:
             calculation = run.get(calculation_type)
