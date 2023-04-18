@@ -176,7 +176,7 @@ def test_gw(silicon_gw):
 
     # Check GW properties
     assert approx(sec_sccs[0].energy.fermi.magnitude, 1.09865567e-19)
-    assert approx(sec_sccs[0].eigenvalues[0].band_gap[0].value.magnitude, 3.42913865e-19)
+    assert approx(sec_sccs[0].band_gap[0].value.magnitude, 3.42913865e-19)
     assert np.shape(sec_sccs[0].eigenvalues[0].energies[0][2]) == (20,)
     assert sec_sccs[0].eigenvalues[0].kpoints[-3][1] == 0.0
     assert sec_sccs[0].eigenvalues[0].energies[0][2][9].magnitude == approx(1.769533187849446e-18, abs=1e-20)
