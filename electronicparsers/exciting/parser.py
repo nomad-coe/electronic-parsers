@@ -1510,8 +1510,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_method.x_exciting_xs_number_of_empty_states = self.input_xml_parser.get(
             'xs/nempty', 5)
         sec_method.x_exciting_xs_ngridq = self.input_xml_parser.get('xs/ngridq', [1, 1, 1])
-        k_mesh = sec_method.m_create(KMesh)
-        k_mesh.grid = self.input_xml_parser.get('xs/ngridk')
+        sec_method.x_exciting_xs_ngridk = self.input_xml_parser.get('xs/ngridk', [1, 1, 1])
         rgkmax = self.input_xml_parser.get('xs/rgkmax', None)
         if rgkmax is None:
             rgkmax = self.info_parser.get_initialization_parameter('x_exciting_rgkmax', 0.)
@@ -2094,6 +2093,11 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             return
 
         sec_scc = sec_run.m_create(Calculation)
+        k_grid = self.info_parser.get('k_grid')
+        if k_grid is not None:
+            sec_kmesh = sec_scc.m_create(KMesh)
+            sec_kmesh.grid = k_grid
+            sec_kmesh.offset = self.info_parser.get('k_offset', [0.] * 3)
 
         def parse_scf(iteration, msection):
 
