@@ -33,6 +33,7 @@ from nomad.datamodel.metainfo.simulation.method import (
     Method, HoppingMatrix, HubbardKanamoriModel, LatticeModelHamiltonian, FrequencyMesh,
     TimeMesh, DMFT
 )
+from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.workflow import Workflow
 from .metainfo.w2dynamics import (
     x_w2dynamics_axes, x_w2dynamics_quantities, x_w2dynamics_config_parameters,
@@ -117,14 +118,34 @@ class W2DynamicsParser:
                 setattr(target, f'x_w2dynamics_{name}', value[:])
 
     def parse_system(self):
+        sec_run = self.archive.run[-1]
+
+        # Parsing Wannier90 wout for system
         wann90_files = get_files('*.wout', self.filepath, self.mainfile)
         if wann90_files:  # parse crystal from Wannier90
             if len(wann90_files) > 1:
                 self.logger.warning('Multiple logging files found.')
 
             self.wout_parser.mainfile = os.path.join(self.maindir, wann90_files[-1])
-            p = Wannier90Parser()
-            p.parse_system(self.archive, self.wout_parser, self.logger)
+            sec_system = sec_run.m_create(System)
+
+            structure = self.wout_parser.get('structure')
+            if structure is None:
+                self.logger.error('Error parsing the structure from .wout')
+                return
+
+            sec_atoms = sec_system.m_create(Atoms)
+            if self.wout_parser.get('lattice_vectors', []):
+                lattice_vectors = np.vstack(self.wout_parser.get('lattice_vectors', [])[-3:])
+                sec_atoms.lattice_vectors = lattice_vectors * ureg.angstrom
+            if self.wout_parser.get('reciprocal_lattice_vectors') is not None:
+                sec_atoms.lattice_vectors_reciprocal = np.vstack(self.wout_parser.get('reciprocal_lattice_vectors')[-3:]) / ureg.angstrom
+
+            pbc = [True, True, True] if lattice_vectors is not None else [False, False, False]
+            sec_atoms.periodic = pbc
+            sec_atoms.labels = structure.get('labels')
+            if structure.get('positions') is not None:
+                sec_atoms.positions = structure.get('positions') * ureg.angstrom
         else:  # TODO parse specific lattice model: discuss it Jonas Schwab
             self.logger.warning('Wannier90 output files not found in the same folder.')
 
@@ -339,6 +360,10 @@ class W2DynamicsParser:
                                 value[no, ns, no, ns]
                                 for no in range(norb)] for ns in range(2)])
                 sec_gf.orbital_occupations = np.array(parameters)
+
+    def init_parser(self):
+        self.wout_parser.mainfile = self.filepath
+        self.wout_parser.logger = self.logger
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath

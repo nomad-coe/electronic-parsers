@@ -64,7 +64,8 @@ class WOutParser(TextParser):
             Quantity(
                 'labels', r'\|\s*([A-Z][a-z]*)', repeats=True),
             Quantity(
-                'positions', rf'\|\s*([\-\d\.]+)\s*([\-\d\.]+)\s*([\-\d\.]+)', repeats=True)]
+                'positions', rf'\|\s*([\-\d\.]+)\s*([\-\d\.]+)\s*([\-\d\.]+)',
+                repeats=True, dtype=float)]
 
         self._quantities = [
             # Program quantities
@@ -200,26 +201,27 @@ class Wannier90Parser():
             'sp3d2-6': [-5, 6]
         }
 
-    def parse_system(self, archive, wout_parser, logger):
-        sec_run = archive.run[-1]
+    def parse_system(self):
+        sec_run = self.archive.run[-1]
         sec_system = sec_run.m_create(System)
 
-        structure = wout_parser.get('structure')
+        structure = self.wout_parser.get('structure')
         if structure is None:
-            logger.error('Error parsing the structure from .wout')
+            self.logger.error('Error parsing the structure from .wout')
             return
 
         sec_atoms = sec_system.m_create(Atoms)
-        if wout_parser.get('lattice_vectors', []):
-            lattice_vectors = np.vstack(wout_parser.get('lattice_vectors', [])[-3:])
+        if self.wout_parser.get('lattice_vectors', []):
+            lattice_vectors = np.vstack(self.wout_parser.get('lattice_vectors', [])[-3:])
             sec_atoms.lattice_vectors = lattice_vectors * ureg.angstrom
-        if wout_parser.get('reciprocal_lattice_vectors') is not None:
-            sec_atoms.lattice_vectors_reciprocal = np.vstack(wout_parser.get('reciprocal_lattice_vectors')[-3:]) / ureg.angstrom
+        if self.wout_parser.get('reciprocal_lattice_vectors') is not None:
+            sec_atoms.lattice_vectors_reciprocal = np.vstack(self.wout_parser.get('reciprocal_lattice_vectors')[-3:]) / ureg.angstrom
 
         pbc = [True, True, True] if lattice_vectors is not None else [False, False, False]
         sec_atoms.periodic = pbc
         sec_atoms.labels = structure.get('labels')
-        sec_atoms.positions = structure.get('positions') * ureg.angstrom
+        if structure.get('positions') is not None:
+            sec_atoms.positions = structure.get('positions') * ureg.angstrom
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
@@ -493,6 +495,10 @@ class Wannier90Parser():
         # Wannier DOS
         self.parse_dos()
 
+    def init_parser(self):
+        self.wout_parser.mainfile = self.filepath
+        self.wout_parser.logger = self.logger
+
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
@@ -507,7 +513,7 @@ class Wannier90Parser():
             name='Wannier90', version=self.wout_parser.get('version', ''))
         # TODO TimeRun section
 
-        self.parse_system(self.archive, self.wout_parser, self.logger)
+        self.parse_system()
 
         self.parse_method()
 
