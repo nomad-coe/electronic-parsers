@@ -29,7 +29,7 @@ respective file format. They both use separate file (:class:`RunFileParser`) and
 (:class:`OutcarTextParser`) parsers to read content content from either xml or text files.
 '''
 
-from typing import List
+from typing import List, Dict, Union
 import os
 import numpy as np
 import logging
@@ -44,7 +44,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, DFT, HubbardKanamoriModel, AtomParameters,
-    XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh
+    XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh, CoreHole
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -61,6 +61,10 @@ from nomad.datamodel.metainfo.simulation.workflow import (
 
 re_n = r'[\n\r]'
 
+orbital_mapping = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
+
+# For more info, visit https://www.vasp.at/wiki/index.php/ICORELEVEL
+core_hole_keys = ('ICORELEVEL', 'CLNT', 'CLN', 'CLL', 'CLZ')
 
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
@@ -1182,14 +1186,29 @@ class RunContentParser(ContentParser):
         root = '/modeling[0]/parameters[0]/separator[@name="response functions"]/i'
         return self._get_key_values(root)
 
+    def get_core_hole(self) -> Dict[str, Union[int, float]]:
+        '''Extract a core-hole description from the vasprun.xml file
+        and return it as a dictionary with native tags as keys.'''
+
+        core_hole_info: Dict[str, Union[int, float]] = {}
+        root = '/modeling[0]/parameters/separator/i'
+        for key in core_hole_keys:
+            try:
+                core_hole_info[key] = self._get_key_values(root).get(key)[0]
+            except KeyError:
+                pass
+            core_hole_info[key] = float(core_hole_info[key]) if key == 'CLZ' else\
+                int(core_hole_info[key])
+        return core_hole_info
+
 
 class VASPParser():
     def __init__(self):
         self._vasprun_parser = RunContentParser()
         self._outcar_parser = OutcarContentParser()
         self._calculation_type = 'dft'
-        self.hubbard_dc_corrections = {1: 'Liechtenstein', 2: 'Dudarev', 4: 'Liechtenstein without exchange splitting'}
-        self.hubbard_orbital_types = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
+        self.hubbard_dc_corrections = {1: 'Liechtenstein', 2: 'Dudarev',
+                                       4: 'Liechtenstein without exchange splitting'}
         self.gw_algo = ''
         self._gw_algo_map = {
             'EVGW0': 'ev-scGW0',
@@ -1260,9 +1279,12 @@ class VASPParser():
                 hubbard_present = True
                 break
 
+        # Extract core-hole information, so if present, it can be set in atomparameters
+        core_hole_info = self.parser.get_core_hole()
+
         atomtypes = self.parser.atom_info.get('atomtypes', {})
         element = atomtypes.get('element', [])
-        atom_counts = {e: 0 for e in element}
+        atom_counts = {e: 0 for e in element}  # counts atoms per PSE element label
         for i in range(len(element)):
             sec_method_atom_kind = sec_method.m_create(AtomParameters)
             atom_number = ase.data.atomic_numbers.get(element[i], 0)
@@ -1278,7 +1300,7 @@ class VASPParser():
                 pseudopotential, list) else pseudopotential
             sec_method_atom_kind.pseudopotential_name = str(pseudopotential)
             if hubbard_present:
-                orbital = self.hubbard_orbital_types[int(parsed_file.get('LDAUL')[i])]
+                orbital = orbital_mapping[int(parsed_file.get('LDAUL')[i])]
                 if orbital:
                     sec_hubb = sec_method_atom_kind.m_create(HubbardKanamoriModel)
                     sec_hubb.orbital = orbital
@@ -1286,6 +1308,16 @@ class VASPParser():
                     sec_hubb.j = float(parsed_file.get('LDAUJ')[i]) * ureg.eV
                     sec_hubb.double_counting_correction = self.hubbard_dc_corrections[parsed_file.get('LDAUTYPE')]
                     sec_hubb.x_vasp_projection_type = 'on-site'
+            if core_hole_info['ICORELEVEL'] == 2 and core_hole_info['CLNT'] == i + 1:
+                sec_core_hole = sec_method_atom_kind.m_create(CoreHole)
+                sec_core_hole.n_quantum_number = core_hole_info['CLN']
+                sec_core_hole.l_quantum_number = core_hole_info['CLL']
+                sec_core_hole.l_quantum_symbol = orbital_mapping[
+                    sec_core_hole.l_quantum_number]
+                sec_core_hole.occupancy = 1 - core_hole_info['CLZ']
+                if sec_core_hole.occupancy < 0:
+                    raise ValueError('Core hole occupancy is negative.')
+
             atom_counts[element[i]] += 1
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
 
