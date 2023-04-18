@@ -30,7 +30,8 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, GreensFunctions
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, HoppingMatrix, HubbardKanamoriModel, LatticeModelHamiltonian, DMFT
+    Method, HoppingMatrix, HubbardKanamoriModel, LatticeModelHamiltonian, FrequencyMesh,
+    TimeMesh, DMFT
 )
 from nomad.datamodel.metainfo.workflow import Workflow
 from .metainfo.w2dynamics import (
@@ -210,6 +211,16 @@ class W2DynamicsParser:
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
         sec_dmft.n_correlated_electrons = occ_per_atoms
         sec_dmft.impurity_solver = 'CT-HYB'
+        # FrequencyMesh
+        if sec_run.m_xpath('x_w2dynamics_axes.x_w2dynamics_iw') is not None:
+            iw = sec_run.x_w2dynamics_axes.x_w2dynamics_iw * 1j * ureg.eV
+            sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=len(iw), points=iw)
+            sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
+        # TimeMesh
+        if sec_run.m_xpath('x_w2dynamics_axes.x_w2dynamics_tau') is not None:
+            tau = sec_run.x_w2dynamics_axes.x_w2dynamics_tau * 1j
+            sec_tau_mesh = TimeMesh(dimensionality=1, n_points=len(tau), points=tau)
+            sec_method.m_add_sub_section(Method.time_mesh, sec_tau_mesh)
 
     def parse_scc(self, data):
         sec_run = self.archive.run[0]

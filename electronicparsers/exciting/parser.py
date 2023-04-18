@@ -1161,6 +1161,14 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             'nomeg': 16
         }
 
+        self._freq_grid_map = {
+            'eqdist': 'Equidistant',
+            'gaulag': 'Gauss-Laguerre',
+            'gauleg': 'Gauss-Legendre',
+            'gauleg2': 'Gauss-Legendre',
+            'clencurt2': 'Clenshaw-Curtis'
+        }
+
         self._selfenergy_input_default = {
             'actype': 'pade',
             'eqpsolver': 0,
@@ -1801,8 +1809,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         n_freqs = sec_run.method[-1].x_exciting_xs_energywindow_points
         freqs = sec_run.method[-1].x_exciting_xs_energywindow_values
         values = [freqs[0] + i * (freqs[-1] - freqs[0]) / n_freqs for i in range(n_freqs)]
-        sec_freq_mesh = FrequencyMesh(n_points=n_freqs, values=values)
-        sec_bse.m_add_sub_section(BSE.frequency_mesh, sec_freq_mesh)
+        sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=n_freqs, points=values)
+        sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # Screening
         sec_screening = Screening(
             type=sec_run.method[-1].x_exciting_xs_screening_type,
@@ -1917,11 +1925,12 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         freq_points = [freqmin + i * (freqmax - freqmin) / n_freqs for i in range(n_freqs)] * ureg.hartree
         smearing = sec_gw.x_exciting_freqgrid.x_exciting_eta if sec_gw.x_exciting_qdepw == 'sum' else None
         sec_freq_mesh = FrequencyMesh(
-            # type=sec_gw.x_exciting_freqgrid.x_exciting_fgrid,  # TODO: map into enum
+            dimensionality=1,
+            sampling_method=self._freq_grid_map.get(sec_gw.x_exciting_freqgrid.x_exciting_fgrid),
             n_points=n_freqs,
-            points=freq_points,  # TODO: check
+            points=freq_points,
             smearing=smearing)
-        sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
+        sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # Screening
         sec_screening = Screening(
             type=sec_gw.x_exciting_scrcoul.x_exciting_scrtype,

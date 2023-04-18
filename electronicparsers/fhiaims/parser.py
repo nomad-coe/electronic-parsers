@@ -667,7 +667,10 @@ class FHIAimsOutParser(TextParser):
                 rf'{re_n} (?:Using)*\s*([\w\-\s]+) for analytical continuation',
                 repeats=False, flatten=True, str_operation=lambda x: [y.lower() for v in x.split(' ') for y in v.split('-')]),
             Quantity(
-                'freq_grid_type', rf'{re_n}\s*Initialising transformed\s([\w\-]+)\s*time and frequency grids',
+                'k_grid',
+                rf'{re_n} *k\_grid\s*([\d ]+)', repeats=False),
+            Quantity(
+                'freq_grid_type', rf'{re_n}\s*Initialising([\w\-\s]+)time and frequency grids',
                 repeats=False),
             Quantity(
                 'n_freq', rf'{re_n}\s*frequency_points\s*(\d+)', repeats=False,
@@ -976,10 +979,11 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_gw.type = self._gw_flag_map.get(self.out_parser.get('gw_flag'), None)
         sec_gw.n_states = self.out_parser.get('n_states_gw')
         # KMesh
-        sec_k_mesh = sec_method.m_create(KMesh)
-        sec_k_mesh.grid = self.out_parser.get('k_grid')
+        if self.out_parser.get('k_grid') is not None:
+            sec_k_mesh = sec_method.m_create(KMesh)
+            sec_k_mesh.grid = self.out_parser.get('k_grid')
         # QMesh copied from KMesh
-        sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
+            sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
         # Analytical continuation
         sec_gw.analytical_continuation = self.gw_analytical_continuation[
             self.out_parser.get('anacon_type', 1)]
@@ -989,11 +993,17 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             freq_points = np.array(frequency_data)[:, 1] * ureg.hartree
         else:
             freq_points = None
+        freq_grid_type = self.out_parser.get('freq_grid_type', 'Gauss-Legendre')
+        if isinstance(freq_grid_type, list):
+            freq_grid_type = freq_grid_type[-1]
+        elif freq_grid_type == 'logarithmic':
+            freq_grid_type = freq_grid_type.capitalize()
         sec_freq_mesh = FrequencyMesh(
-            # type=self.out_parser.get('freq_grid_type'),  # TODO: set default value for enum
+            dimensionality=1,
+            sampling_method=freq_grid_type,
             n_points=self.out_parser.get('n_freq', 100),
             points=freq_points)
-        sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
+        sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
         # GW calculation
         sec_scc = sec_run.m_create(Calculation)
