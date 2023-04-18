@@ -102,11 +102,9 @@ class W2DynamicsParser:
 
             return self.log_parser.get('program_version', None)
 
-    def parse_dataset(self, source, target, include=[], skip=[]):
+    def parse_axis(self, source, target):
         for key in source.keys():
-            if key in skip:
-                continue
-            if include and key not in include:
+            if key in ['iw', 'tau']:
                 continue
             # resolve value from 'value'
             value = source[key]
@@ -117,9 +115,6 @@ class W2DynamicsParser:
             name = self._re_namesafe.sub('_', key)
             if value.shape:
                 setattr(target, f'x_w2dynamics_{name}', value[:])
-            # mu is a single value
-            if key == 'mu':
-                target.x_w2dynamics_mu = value
 
     def parse_system(self):
         wann90_files = get_files('*.wout', self.filepath, self.mainfile)
@@ -255,8 +250,6 @@ class W2DynamicsParser:
                 n_ineq += 1
         n_atoms = sec_run.method[-1].dmft.n_atoms_per_unit_cell
 
-        calc_quantities = [
-            'dc-latt', 'gdensnew', 'gdensold', 'glocnew-lattice', 'glocold-lattice', 'mu']
         for key in calc_keys:
             if key not in self.data.keys():
                 continue
@@ -266,87 +259,39 @@ class W2DynamicsParser:
             if self.archive.m_context:
                 with self.archive.m_context.raw_file(filename, farg) as f:
                     for subkey in self.data.get(key).keys():
-                        value = self.data.get(key).get(subkey).get('value')
+                        parameter = self.data.get(key).get(subkey)
                         if subkey == 'mu':
+                            value = parameter.get('value')
                             sec_energy = sec_scf_iteration.m_create(Energy)
                             sec_energy.fermi = np.float64(value) * ureg.eV
                         elif subkey != 'ineq-001':
-                            value = to_hdf5(value[:], f, f'{key}/{subkey}/value')
-                        name = self._re_namesafe.sub('_', subkey)
-                        setattr(sec_scf_iteration, f'x_w2dynamics_{name}', value)
+                            value = parameter.get('value')[:]
+                            value = to_hdf5(value, f, f'{key}/{subkey}/value')
+                            name = self._re_namesafe.sub('_', subkey)
+                            setattr(sec_scf_iteration, f'x_w2dynamics_{name}', value)
+                        else:
+                            sec_ineq = sec_scf_iteration.m_create(x_w2dynamics_quantities)
+                            for name in parameter.keys():
+                                # resolve value from 'value'
+                                value = parameter.get(name)
+                                if isinstance(value, h5py.Group) and 'value' in value.keys():
+                                    value = value.get('value')
+                                if not isinstance(value, h5py.Dataset):
+                                    continue
+                                value = to_hdf5(value, f, f'{key}/{subkey}/{name}/value')
+                                name = self._re_namesafe.sub('_', name)
+                                setattr(sec_ineq, f'x_w2dynamics_{name}', value)
 
             '''
             # Storing converged quantities from dmft-last or stat-last
             if key.endswith('last'):
                 sec_gf = sec_scc.m_create(GreensFunctions)
-                sec_gf.matsubara_freq = sec_run.x_w2dynamics_axes.x_w2dynamics_iw
-                sec_gf.tau = sec_run.x_w2dynamics_axes.x_w2dynamics_tau
-                sec_gf.chemical_potential = self.data.get(key)['mu']['value']
-                norb = self.data['.config'].attrs.get('atoms.1.nd')
-                for subkey in self._inequivalent_atom_map.keys():
-                    parameters = []
-                    if n_ineq == n_atoms:
-                        for i in range(n_ineq):
-                            parameters.append(getattr(
-                                sec_scf_iteration.x_w2dynamics_ineq[i], self._inequivalent_atom_map.get(subkey, [])))
-                    else:  # TODO check whether there are more complicated cases where this is not true
-                        if n_atoms % n_ineq == 0 and n_ineq > 1:
-                            for i in range(n_atoms):
-                                parameters.append(getattr(
-                                    sec_scf_iteration.x_w2dynamics_ineq[i % n_ineq], self._inequivalent_atom_map.get(subkey, [])))
-                        elif n_ineq == 1:
-                            for i in range(n_atoms):
-                                parameters.append(getattr(
-                                    sec_scf_iteration.x_w2dynamics_ineq[0], self._inequivalent_atom_map.get(subkey, [])))
-                        else:
-                            self.logger.warning('Number of inequivalent atoms and number of atoms per unit cell '
-                                                'is neither equal nor multiples. Please, revise the output.')
-                            break
-
-                    parameters = np.array(parameters)
-                    # reordering calculation matrices to standarize w2dynamics and solid_dmft
-                    # (and potentially, other DMFT codes)
-                    parameters_reorder = np.array([[[
-                        parameters[i, no, ns, :] for no in range(norb)] for ns in range(2)] for i in range(n_atoms)])
-                    setattr(sec_gf, subkey, parameters_reorder)
-                # summing over atoms per unit cell to keep same array dimensions
-                parameters = []
-                if n_ineq == n_atoms:
-                    for i in range(n_ineq):
-                        parameters.append([[
-                            sec_scf_iteration.x_w2dynamics_ineq[i].x_w2dynamics_occ[no, ns, no, ns]
-                            for no in range(norb)] for ns in range(2)])
-
-                else:
-                    if n_atoms % n_ineq == 0 and n_ineq > 1:
-                        for i in range(n_atoms):
-                            parameters.append([[
-                                sec_scf_iteration.x_w2dynamics_ineq[i % n_ineq].x_w2dynamics_occ[no, ns, no, ns]
-                                for no in range(norb)] for ns in range(2)])
-                    elif n_ineq == 1:
-                        for i in range(n_atoms):
-                            parameters.append([[
-                                sec_scf_iteration.x_w2dynamics_ineq[0].x_w2dynamics_occ[no, ns, no, ns]
-                                for no in range(norb)] for ns in range(2)])
-                sec_gf.orbital_occupations = np.array(parameters)
-            '''
-            '''
-            self.parse_dataset(self.data[key], sec_scf_iteration, include=calc_quantities)
-            for sub_key in self.data[key].keys():
-                if sub_key.startswith('ineq-'):
-                    sec_ineq = sec_scf_iteration.m_create(x_w2dynamics_quantities)
-                    self.parse_dataset(self.data[key][sub_key], sec_ineq)
-
-            if sec_scf_iteration.x_w2dynamics_mu is not None:
-                sec_energy = sec_scf_iteration.m_create(Energy)
-                sec_energy.fermi = sec_scf_iteration.x_w2dynamics_mu * ureg.eV
-
-            if key.endswith('last'):
-                sec_gf = sec_scc.m_create(GreensFunctions)
-                sec_gf.matsubara_freq = sec_run.x_w2dynamics_axes.x_w2dynamics_iw
-                sec_gf.tau = sec_run.x_w2dynamics_axes.x_w2dynamics_tau
-                sec_gf.chemical_potential = self.data.get(key)['mu']['value']
-                norb = self.data['.config'].attrs.get('atoms.1.nd')
+                if sec_run.method[-1].m_xpath('frequency_mesh'):
+                    sec_gf.matsubara_freq = sec_run.method[-1].frequency_mesh.points.magnitude.imag
+                if sec_run.method[-1].m_xpath('time_mesh'):
+                    sec_gf.tau = sec_run.method[-1].time_mesh.points.magnitude.imag
+                sec_gf.chemical_potential = self.data.get(key).get('mu').get('value')
+                norb = self.data.get('.config').attrs.get('atoms.1.nd')
                 for subkey in self._inequivalent_atom_map.keys():
                     parameters = []
                     if n_ineq == n_atoms:
@@ -418,7 +363,7 @@ class W2DynamicsParser:
 
         # run.x_w2dynamics_axes section
         sec_axes = sec_run.m_create(x_w2dynamics_axes)
-        self.parse_dataset(self.data.get('.axes'), sec_axes, include=[], skip=['iw', 'tau'])
+        self.parse_axis(self.data.get('.axes'), sec_axes)
 
         # System section
         self.parse_system()
