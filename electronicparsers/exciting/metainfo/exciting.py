@@ -1583,13 +1583,6 @@ class System(simulation.system.System):
         Maximum Hamiltonian size
         ''')
 
-    x_exciting_kpoint_offset_x = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        K-points offset x component
-        ''')
-
     x_exciting_kpoint_offset_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
@@ -1652,13 +1645,6 @@ class System(simulation.system.System):
         shape=[],
         description='''
         number k-points z
-        ''')
-
-    x_exciting_kpoint_grid = Quantity(
-        type=np.dtype(np.int32),
-        shape=[3],
-        description='''
-        kpoint grid
         ''')
 
     x_exciting_number_kpoints = Quantity(

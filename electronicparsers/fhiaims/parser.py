@@ -111,8 +111,11 @@ class FHIAimsControlParser(TextParser):
                 xsection_run.x_fhi_aims_controlIn_MD_time_step,
                 rf'{re_n} *MD_time_step\s*({re_float})', repeats=False),
             Quantity(
-                xsection_method.x_fhi_aims_controlIn_k_grid,
-                rf'{re_n} *k\_grid\s*([\d ]+)', repeats=False),
+                'k_grid',
+                rf'{re_n} *k\_grid\s*([\d ]+)', repeats=False),  # manual version 210716_2
+            Quantity(
+                'k_offset',
+                rf'{re_n} *k\_offset\s*([\d ]+)', repeats=False),  # manual version 210716_2
             Quantity(
                 'occupation_type',
                 rf'{re_n} *occupation_type\s*([\w\. \-\+]+)', repeats=False),
@@ -597,8 +600,8 @@ class FHIAimsOutParser(TextParser):
                 r'hybrid_xc_coeff: Mixing coefficient for hybrid-functional exact exchange modified to\s*([\d\.]+)',
                 repeats=False),
             Quantity(
-                xsection_method.x_fhi_aims_controlInOut_k_grid,
-                rf'{re_n} *Found k-point grid:\s*([\d ]+)', repeats=False),
+                'k_grid',
+                rf'{re_n} *Found k-point grid:\s*([\d ]+)', repeats=False),   # taken from tests/data/fhi_aims
             Quantity(
                 xsection_run.x_fhi_aims_controlInOut_MD_time_step,
                 rf'{re_n} *Molecular dynamics time step\s*=\s*([\d\.]+)\s*(?P<__unit>[\w]+)',
@@ -667,7 +670,7 @@ class FHIAimsOutParser(TextParser):
                 'k_grid',
                 rf'{re_n} *k\_grid\s*([\d ]+)', repeats=False),
             Quantity(
-                'freq_grid_type', rf'{re_n}\s*Initialising transformed\s([\w\-]+)\s*time and frequency grids',
+                'freq_grid_type', rf'{re_n}\s*Initialising([\w\-\s]+)time and frequency grids',
                 repeats=False),
             Quantity(
                 'n_freq', rf'{re_n}\s*frequency_points\s*(\d+)', repeats=False,
@@ -976,24 +979,31 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_gw.type = self._gw_flag_map.get(self.out_parser.get('gw_flag'), None)
         sec_gw.n_states = self.out_parser.get('n_states_gw')
         # KMesh
-        sec_k_mesh = sec_method.m_create(KMesh)
-        sec_k_mesh.grid = self.out_parser.get('k_grid', [1, 1, 1])
+        if self.out_parser.get('k_grid') is not None:
+            sec_k_mesh = sec_method.m_create(KMesh)
+            sec_k_mesh.grid = self.out_parser.get('k_grid')
         # QMesh copied from KMesh
-        sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
+            sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
         # Analytical continuation
         sec_gw.analytical_continuation = self.gw_analytical_continuation[
             self.out_parser.get('anacon_type', 1)]
         # FrequencyMesh
         frequency_data = self.out_parser.get('frequency_data', [])
         if len(frequency_data) > 0:
-            values = np.array(frequency_data)[:, 1] * ureg.hartree
+            freq_points = np.array(frequency_data)[:, 1] * ureg.hartree
         else:
-            values = None
+            freq_points = None
+        freq_grid_type = self.out_parser.get('freq_grid_type', 'Gauss-Legendre')
+        if isinstance(freq_grid_type, list):
+            freq_grid_type = freq_grid_type[-1]
+        elif freq_grid_type == 'logarithmic':
+            freq_grid_type = freq_grid_type.capitalize()
         sec_freq_mesh = FrequencyMesh(
-            type=self.out_parser.get('freq_grid_type'),
+            dimensionality=1,
+            sampling_method=freq_grid_type,
             n_points=self.out_parser.get('n_freq', 100),
-            values=values)
-        sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
+            points=freq_points)
+        sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
         # GW calculation
         sec_scc = sec_run.m_create(Calculation)
@@ -1495,6 +1505,11 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
     def parse_method(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
+
+        # extract the k-grid
+        sec_kmesh = sec_method.m_create(KMesh)
+        sec_kmesh.grid = self.out_parser.get('k_grid')
+        sec_kmesh.offset = self.out_parser.get('k_offset')
 
         sec_method.basis_set.append(BasisSet(type='numeric AOs'))
         sec_dft = sec_method.m_create(DFT)

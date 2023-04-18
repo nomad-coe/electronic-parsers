@@ -57,6 +57,7 @@ def test_lco(parser):
     assert len(sec_run.method) == 1
     sec_method = sec_run.method[-1]
     assert sec_method.k_mesh.n_points == 343
+    assert (sec_method.k_mesh.points[303] == np.array([0.85714, 0.14286, 0.28571])).all()
     assert (sec_method.k_mesh.grid == np.array([7, 7, 7])).all()
     sec_wannier = sec_method.projection.wannier
     assert sec_wannier.n_projected_orbitals == 1

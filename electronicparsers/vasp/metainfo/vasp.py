@@ -79,20 +79,6 @@ class Method(simulation.method.Method):
         reference to the atom kinds of each atom
         ''')
 
-    x_vasp_k_points_generation_method = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        k points generation  method
-        ''')
-
-    x_vasp_k_points = Quantity(
-        type=int,
-        shape=['x_vasp_number_of_k_points'],
-        description='''
-        k points
-        ''')
-
     x_vasp_numer_of_magmom = Quantity(
         type=int,
         shape=[],
@@ -101,11 +87,23 @@ class Method(simulation.method.Method):
         non-collinear magnetic systems
         ''')
 
+    x_vasp_nose_thermostat = Quantity(
+        type=np.dtype(np.float64),
+        shape=[4],
+        description='''
+        Nose thermostat output
+        ''')
+
+
+class KMesh(simulation.method.KMesh):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
     x_vasp_tetrahedrons_list = Quantity(
         type=np.dtype(np.int32),
         shape=['N', 5],
         description='''
-        Rows of 5 elements. First the weight (symmetry degeneration), then the four corner
+        Rows of 5 data points. First the weight (symmetry degeneration), then the four corner
         points of each tetrahedron.
         ''')
 
@@ -114,13 +112,6 @@ class Method(simulation.method.Method):
         shape=[1],
         description='''
         Volume weight of a single tetrahedron (all tetra's must have the same volume)
-        ''')
-
-    x_vasp_nose_thermostat = Quantity(
-        type=np.dtype(np.float64),
-        shape=[4],
-        description='''
-        Nose thermostat output
         ''')
 
 

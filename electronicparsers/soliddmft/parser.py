@@ -29,7 +29,8 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, GreensFunctions
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, HubbardKanamoriModel, LatticeModelHamiltonian, DMFT, KMesh
+    Method, HubbardKanamoriModel, LatticeModelHamiltonian, KMesh, FrequencyMesh, TimeMesh,
+    DMFT
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.workflow import Workflow
@@ -117,7 +118,7 @@ class SolidDMFTParser:
                         continue
             setattr_to_target(target, name, value)
 
-    def parse_system(self, data):
+    def parse_system(self):
         # TODO speak with solid_dmft devs to include this info in the output
         sec_run = self.archive.run[-1]
         if self.dft_input.get('kpt_basis'):
@@ -165,7 +166,7 @@ class SolidDMFTParser:
             sec_hubbard_kanamori_model.double_counting_correction = self.dc_type[
                 self.dmft_input['general_params'].get('dc_type', 0)[()]]  # set to 'fll' by default
 
-    def parse_method(self, data):
+    def parse_method(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
         # ref to the Non- and InteractionHamiltonian
@@ -195,7 +196,8 @@ class SolidDMFTParser:
             occ_per_atoms.append(total_occupation)
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
         sec_dmft.n_correlated_electrons = occ_per_atoms
-        sec_dmft.inverse_temperature = sec_method.x_soliddmft_general.x_soliddmft_beta / ureg.eV
+        beta = sec_method.x_soliddmft_general.x_soliddmft_beta
+        sec_dmft.inverse_temperature = beta / ureg.eV
         if sec_method.x_soliddmft_general.x_soliddmft_magnetic:
             if sec_method.x_soliddmft_general.x_soliddmft_magmom is None:
                 self.logger.warning('The magnetic flag is set to true, but the initial magnetic moment is not resolved. '
@@ -207,14 +209,25 @@ class SolidDMFTParser:
                     sec_dmft.magnetic_state = 'antiferromagnetic'
         else:
             sec_dmft.magnetic_state = 'paramagnetic'
-        sec_dmft.n_matsubara_freq = sec_method.x_soliddmft_general.x_soliddmft_n_iw
-        sec_dmft.n_tau = sec_method.x_soliddmft_general.x_soliddmft_n_tau
         for keys in self._solver_map.keys():
             if sec_method.x_soliddmft_general.x_soliddmft_solver_type == keys:
                 sec_dmft.impurity_solver = self._solver_map[keys]
                 break
 
-    def parse_scc(self, data):
+        # FrequencyMesh
+        if sec_method.m_xpath('x_soliddmft_general.x_soliddmft_n_iw'):
+            n_iw = sec_method.x_soliddmft_general.x_soliddmft_n_iw
+            iw = [(2 * (n - n_iw) + 1) * 1j / beta for n in range(2 * n_iw)] * ureg.eV
+            sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=n_iw, points=iw)
+            sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
+        # TimeMesh
+        if sec_method.m_xpath('x_soliddmft_general.x_soliddmft_n_tau'):
+            n_tau = sec_method.x_soliddmft_general.x_soliddmft_n_tau
+            tau = [n * beta * 1j / (n_tau - 1) for n in range(n_tau)]
+            sec_time_mesh = TimeMesh(dimensionality=1, n_points=n_tau, points=tau)
+            sec_method.m_add_sub_section(Method.time_mesh, sec_time_mesh)
+
+    def parse_scc(self):
         sec_run = self.archive.run[-1]
         sec_scc = sec_run.m_create(Calculation)
         sec_scc.system_ref = sec_run.system[-1] if sec_run.system else None
@@ -381,14 +394,14 @@ class SolidDMFTParser:
                         setattr(sec_program, f'x_soliddmft_{name}_version', version[()].decode())
 
         # System section
-        self.parse_system(data)
+        self.parse_system()
 
         # Method.DMFT section with inputs (HoppingMatrix + InteractionModel)
         self.parse_input_model(data)
-        self.parse_method(data)
+        self.parse_method()
 
         # Calculation section
-        self.parse_scc(data)
+        self.parse_scc()
 
         # Workflow section
         sec_workflow = self.archive.m_create(Workflow)

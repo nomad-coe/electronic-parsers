@@ -27,7 +27,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataText
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Electronic, Method, DFT, Smearing, XCFunctional, Functional, BasisSet,
-    BasisSetCellDependent, AtomParameters
+    BasisSetCellDependent, AtomParameters, KMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1781,7 +1781,7 @@ class QuantumEspressoOutParser(TextParser):
                     Quantity('ik', r'k\(\s*(\d+)\s*\)', repeats=True),
                     Quantity(
                         'points',
-                        rf'=\s*\(\s*({re_float}\s*{re_float}\s*{re_float})\)', repeats=True),
+                        rf'=\s*\(\s*({re_float}\s*{re_float}\s*{re_float})\)', repeats=True, dtype=float),
                     Quantity('wk', rf',\s*wk\s*=\s*({re_float})', repeats=True),
                     Quantity('warning', r'(Number of k-points >= 100: set verbosity)')])),
             Quantity(
@@ -2516,8 +2516,12 @@ class QuantumEspressoParser:
 
     def parse_method(self, run):
         sec_method = self.archive.run[-1].m_create(Method)
+        sec_kmesh = sec_method.m_create(KMesh)
         sec_dft = sec_method.m_create(DFT)
         sec_electronic = sec_method.m_create(Electronic)
+
+        sec_kmesh.n_points = run.get_header('k_points', {}).get('nk', 1)
+        sec_kmesh.points = run.get_header('k_points', {}).get('points', None)
 
         g_vector_sticks = run.get_header('g_vector_sticks', {}).get('Sum', None)
         if g_vector_sticks is not None:

@@ -51,6 +51,8 @@ def test_gs(parser):
     assert sec_run.program.version == 'CARBON'
 
     sec_method = sec_run.method[0]
+    assert list(sec_method.k_mesh.grid) == [6] * 3
+    assert list(sec_method.k_mesh.offset) == [.0] * 3
     assert sec_method.electronic.n_spin_channels == 1
     assert sec_method.electronic.smearing.width == approx(4.35974472e-22)
     assert sec_method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE_SOL'
@@ -89,7 +91,11 @@ def test_strucopt(parser):
     assert sec_systems[10].atoms.positions[-1][0].magnitude == approx(3.67156876e-11)
     assert sec_systems[1].atoms.lattice_vectors[2][1].magnitude == approx(sec_systems[13].atoms.lattice_vectors[2][1].magnitude)
 
-    sec_sccs = archive.run[0].calculation
+    sec_run = archive.run[0]
+    sec_method = sec_run.method[0]
+    assert list(sec_method.k_mesh.grid) == [6] * 3
+    assert list(sec_method.k_mesh.offset) == [.0] * 3
+    sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 15
     assert len(sec_sccs[0].scf_iteration) == 19
     assert sec_sccs[0].scf_iteration[10].time_calculation.magnitude == approx(431.84)
@@ -105,8 +111,13 @@ def test_dos_spinpol(parser):
     archive = EntryArchive()
     parser.parse('tests/data/exciting/CeO_dos/INFO.OUT', archive, None)
 
-    sec_scc = archive.run[0].calculation[0]
+    sec_run = archive.run[0]
+    sec_method = sec_run.method[0]
+    sec_scc = sec_run.calculation[0]
     sec_dos = sec_scc.dos_electronic[0]
+
+    assert list(sec_method.k_mesh.grid) == [8] * 3
+    assert list(sec_method.k_mesh.offset) == [.0] * 3
 
     assert np.shape(sec_dos.total[0].value) == (500,)
     assert (sec_dos.energies[79].to('Ha') - sec_scc.energy.fermi.to('Ha')).magnitude == approx(-0.684)
@@ -127,7 +138,12 @@ def test_xs_tddft(parser):
     archive = EntryArchive()
     parser.parse('tests/data/exciting/CSi_tddft/INFO_QMT001.OUT', archive, None)
 
-    sec_sccs = archive.run[0].calculation
+    sec_run = archive.run[0]
+    sec_method = sec_run.method[0]
+    assert list(sec_method.k_mesh.grid) == [12] * 3
+    assert list(sec_method.k_mesh.offset) == [0.097, 0.273, 0.493]
+
+    sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 2
 
     assert len(sec_sccs[1].x_exciting_xs_tddft_epsilon_energies) == 10001
@@ -166,10 +182,11 @@ def test_gw(silicon_gw):
     assert sec_gw.screening.type == 'rpa'
     assert sec_gw.screening.n_empty_states == sec_gw.n_empty_states
     assert (sec_gw.screening.k_mesh.grid == np.array([2, 2, 2])).all()
-    assert sec_gw.frequency_mesh.type == 'gauleg2'
-    assert sec_gw.frequency_mesh.n_points == 32
-    assert sec_gw.frequency_mesh.values[4].to('hartree').magnitude == approx(0.125 + 0j)
     assert (sec_gw.q_mesh.grid == np.array([2, 2, 2])).all()
+    sec_freq_mesh = sec_methods[-1].frequency_mesh
+    assert sec_freq_mesh.sampling_method == 'Gauss-Legendre'
+    assert sec_freq_mesh.n_points == 32
+    assert sec_freq_mesh.points[4].to('hartree').magnitude == approx(0.125 + 0j)
 
     sec_sccs = silicon_gw.run[0].calculation
     assert len(sec_sccs) == 1
@@ -250,8 +267,10 @@ def test_hybrids(parser):
     archive = EntryArchive()
     parser.parse('tests/data/exciting/PbI_hybrids/INFO.OUT', archive, None)
 
-    method = archive.run[-1].method[0]
-    assert method.dft.xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE03'
+    sec_method = archive.run[-1].method[0]
+    assert list(sec_method.k_mesh.grid) == [6, 6, 4]
+    assert list(sec_method.k_mesh.offset) == [0.] * 3
+    assert sec_method.dft.xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE03'
 
     calc = archive.run[-1].calculation[0]
     assert len(calc.scf_iteration) == 4

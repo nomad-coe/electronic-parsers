@@ -463,10 +463,10 @@ class OutcarContentParser(ContentParser):
             kpts_occs = self.parser.get('kpoints')
             if kpts_occs is not None:
                 kpts_occs = np.reshape(kpts_occs, (len(kpts_occs) // 4, 4)).T
-                self._kpoints_info['k_mesh_points'] = kpts_occs[0:3].T
+                self._kpoints_info['points'] = kpts_occs[0:3].T
                 k_mults = kpts_occs[3].T
-                self._kpoints_info['k_mesh_multiplicities'] = k_mults
-                self._kpoints_info['k_mesh_weights'] = k_mults / np.sum(k_mults)
+                self._kpoints_info['multiplicities'] = k_mults
+                self._kpoints_info['weights'] = k_mults / np.sum(k_mults)
         return self._kpoints_info
 
     @property
@@ -598,7 +598,7 @@ class OutcarContentParser(ContentParser):
         return forces, stress
 
     def get_eigenvalues(self, n_calc):
-        n_kpts = len(self.kpoints_info.get('k_mesh_points', []))
+        n_kpts = len(self.kpoints_info.get('points', []))
         eigenvalues = self.parser.get(
             'calculation', [{}] * (n_calc + 1))[n_calc].get('eigenvalues')
 
@@ -950,6 +950,13 @@ class RunContentParser(ContentParser):
     def n_calculations(self):
         return self.parser.n_calculations
 
+    sampling_method_mapping = {
+        'Automatic': 'Gamma-centered',
+        'Gamma': 'Gamma-centered',
+        'Monkhorst-Pack': 'Monkhorst-Pack',
+        'listgenerated': 'Line-path',
+    }
+
     @property
     def kpoints_info(self):
         if self._kpoints_info is None:
@@ -958,14 +965,14 @@ class RunContentParser(ContentParser):
             method = self._get_key_values(
                 '/modeling[0]/kpoints[0]/generation[0]/param')
             if method:
-                self._kpoints_info['x_vasp_k_points_generation_method'] = method['param']
+                self._kpoints_info['sampling_method'] = RunContentParser.sampling_method_mapping[method['param']]
             divisions = self._get_key_values(
                 '/modeling[0]/kpoints[0]/generation[0]/v[@name="divisions"]')
             if not divisions:
                 divisions = self._get_key_values(
                     '/modeling[0]/kpoints[0]/generation[0]/i[@name="divisions"]')
             if divisions:
-                self._kpoints_info['divisions'] = divisions['divisions']
+                self._kpoints_info['grid'] = divisions['divisions']
             volumeweight = self._get_key_values('/modeling[0]/kpoints[0]/generation[0]/i[@name="volumeweight"]')
             if volumeweight:
                 volumeweight = (volumeweight['volumeweight'] * ureg.angstrom ** 3).to('m**3')
@@ -974,11 +981,11 @@ class RunContentParser(ContentParser):
             points = self._get_key_values(
                 '/modeling[0]/kpoints[0]/varray[@name="kpointlist"]/v', array=True)
             if points:
-                self._kpoints_info['k_mesh_points'] = points['v']
+                self._kpoints_info['points'] = points['v']
             weights = self._get_key_values(
                 '/modeling[0]/kpoints[0]/varray[@name="weights"]/v', array=True)
             if weights:
-                self._kpoints_info['k_mesh_weights'] = weights['v']
+                self._kpoints_info['weights'] = weights['v']
             tetrahedrons = self._get_key_values(
                 '/modeling[0]/kpoints[0]/varray[@name="tetrahedronlist"]/v', array=True)
             if tetrahedrons:
@@ -1103,7 +1110,7 @@ class RunContentParser(ContentParser):
         return forces, stress
 
     def get_eigenvalues(self, n_calc):
-        n_kpts = len(self.kpoints_info.get('k_mesh_points', []))
+        n_kpts = len(self.kpoints_info.get('points', []))
         root = '/modeling[0]/calculation[%s]/eigenvalues[0]/array[0]/set[0]' % n_calc
         eigenvalues = self._get_key_values(
             f'{root}/r', array=True).get('r', None)
@@ -1217,18 +1224,15 @@ class VASPParser():
         parse_incar(self.parser.get_incar_out(), 'x_vasp_incar_out')
 
     def parse_kpoints(self, section):
-        k_mesh_generation_method = self.parser.kpoints_info.get('x_vasp_k_points_generation_method', None)
-        if k_mesh_generation_method in ['Gamma', 'Monkhorst-Pack']:
-            sec_kmesh = section.m_create(KMesh)
-            sec_kmesh.generation_method = k_mesh_generation_method
-            sec_kmesh.grid = self.parser.kpoints_info.get('divisions', None)
-            section.k_mesh = sec_kmesh
+        sec_k_mesh = section.m_create(KMesh)
         for key, val in self.parser.kpoints_info.items():
             if val is not None:
                 try:
-                    setattr(section, key, val)
+                    setattr(sec_k_mesh, key, val)
                 except Exception:
                     self.logger.warning('Error setting metainfo', data=dict(key=key))
+        if sec_k_mesh.points is None:
+            sec_k_mesh.points = [[0.] * 3]
 
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)
@@ -1249,7 +1253,8 @@ class VASPParser():
                                           [RunContentParser, RunContentParser, OutcarContentParser, OutcarContentParser]):
             # self.parser.incar  ## in case the keys are not being found: put this line back in
             parsed_file = self.parser._incar[file_type]
-            if not (type(self.parser) is parser_type and parsed_file): continue
+            if not (type(self.parser) is parser_type and parsed_file):
+                continue
             # check minimum requirements to define hubbard_model
             if (file_type == 'incar' and parsed_file.get('LDAU')) or (parsed_file.get('LDAUL')):
                 hubbard_present = True
@@ -1369,8 +1374,8 @@ class VASPParser():
         # Analytical continuation
         sec_gw.analytical_continuation = 'pade'
         # FrequencyMesh
-        sec_freq_mesh = FrequencyMesh(n_points=response_functions.get('NOMEGA', 100))
-        sec_gw.m_add_sub_section(GW.frequency_mesh, sec_freq_mesh)
+        sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=response_functions.get('NOMEGA', 100))
+        sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
     def parse_workflow(self):
         sec_workflow = self.archive.m_create(Workflow)
@@ -1471,7 +1476,7 @@ class VASPParser():
             eigenvalues = np.transpose(eigenvalues)
             eigs = eigenvalues[0].T
             occs = eigenvalues[1].T
-            kpoints = self.parser.kpoints_info.get('k_mesh_points', [])
+            kpoints = self.parser.kpoints_info.get('points', [])
 
             # get valence(conduction) and maximum(minimum)
             # we have a case where no band is occupied, i.e. valence_max should be below
@@ -1485,14 +1490,13 @@ class VASPParser():
             sec_scc.energy.highest_occupied = max(valence_max) * ureg.eV
             sec_scc.energy.lowest_unoccupied = min(conduction_min) * ureg.eV
 
-            if self.parser.kpoints_info.get('x_vasp_k_points_generation_method', None) == 'listgenerated':
-                # I removed normalization since imho it should be done by normalizer
+            if self.parser.kpoints_info.get('sampling_method', None) == 'Line-path':
                 sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
                 for n in range(len(eigs)):
                     sec_band_gap = sec_k_band.m_create(BandGap)
                     sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
                     sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
-                divisions = self.parser.kpoints_info.get('divisions', None)
+                divisions = self.parser.kpoints_info.get('grid', None)
                 if divisions is None:
                     return
                 n_segments = len(kpoints) // divisions
@@ -1512,8 +1516,8 @@ class VASPParser():
                 eigs = eigs * ureg.eV
                 sec_eigenvalues = sec_scc.m_create(BandEnergies)
                 sec_eigenvalues.kpoints = kpoints
-                sec_eigenvalues.kpoints_weights = self.parser.kpoints_info.get('k_mesh_weights', [])
-                sec_eigenvalues.kpoints_multiplicities = self.parser.kpoints_info.get('k_mesh_multiplicities', [])
+                sec_eigenvalues.kpoints_weights = self.parser.kpoints_info.get('weights', [])
+                sec_eigenvalues.kpoints_multiplicities = self.parser.kpoints_info.get('multiplicities', [])
                 sec_eigenvalues.energies = eigs
                 sec_eigenvalues.occupations = occs
 
