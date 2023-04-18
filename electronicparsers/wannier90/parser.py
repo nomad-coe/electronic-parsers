@@ -200,13 +200,13 @@ class Wannier90Parser():
             'sp3d2-6': [-5, 6]
         }
 
-    def parse_system(self, archive, wout_parser):
+    def parse_system(self, archive, wout_parser, logger):
         sec_run = archive.run[-1]
         sec_system = sec_run.m_create(System)
 
         structure = wout_parser.get('structure')
         if structure is None:
-            self.logger.error('Error parsing the structure from .wout')
+            logger.error('Error parsing the structure from .wout')
             return
 
         sec_atoms = sec_system.m_create(Atoms)
@@ -507,7 +507,7 @@ class Wannier90Parser():
             name='Wannier90', version=self.wout_parser.get('version', ''))
         # TODO TimeRun section
 
-        self.parse_system(self.archive, self.wout_parser)
+        self.parse_system(self.archive, self.wout_parser, self.logger)
 
         self.parse_method()
 

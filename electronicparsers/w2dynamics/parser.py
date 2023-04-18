@@ -86,9 +86,9 @@ class W2DynamicsParser:
         }
 
         self._inequivalent_atom_map = {
-            'self_energy_iw': 'x_w2dynamics_siw',
-            'greens_function_iw': 'x_w2dynamics_giw',
-            'greens_function_tau': 'x_w2dynamics_gtau'
+            'self_energy_iw': 'siw',
+            'greens_function_iw': 'giw',
+            'greens_function_tau': 'gtau'
         }
 
     def parse_program_version(self):
@@ -124,7 +124,7 @@ class W2DynamicsParser:
 
             self.wout_parser.mainfile = os.path.join(self.maindir, wann90_files[-1])
             p = Wannier90Parser()
-            p.parse_system(self.archive, self.wout_parser)
+            p.parse_system(self.archive, self.wout_parser, self.logger)
         else:  # TODO parse specific lattice model: discuss it Jonas Schwab
             self.logger.warning('Wannier90 output files not found in the same folder.')
 
@@ -282,31 +282,30 @@ class W2DynamicsParser:
                                 name = self._re_namesafe.sub('_', name)
                                 setattr(sec_ineq, f'x_w2dynamics_{name}', value)
 
-            '''
             # Storing converged quantities from dmft-last or stat-last
             if key.endswith('last'):
                 sec_gf = sec_scc.m_create(GreensFunctions)
                 if sec_run.method[-1].m_xpath('frequency_mesh'):
                     sec_gf.matsubara_freq = sec_run.method[-1].frequency_mesh.points.magnitude.imag
                 if sec_run.method[-1].m_xpath('time_mesh'):
-                    sec_gf.tau = sec_run.method[-1].time_mesh.points.magnitude.imag
+                    sec_gf.tau = sec_run.method[-1].time_mesh.points.imag
                 sec_gf.chemical_potential = self.data.get(key).get('mu').get('value')
                 norb = self.data.get('.config').attrs.get('atoms.1.nd')
                 for subkey in self._inequivalent_atom_map.keys():
                     parameters = []
                     if n_ineq == n_atoms:
                         for i in range(n_ineq):
-                            parameters.append(getattr(
-                                sec_scf_iteration.x_w2dynamics_ineq[i], self._inequivalent_atom_map.get(subkey, [])))
+                            value = self.data.get(key).get(f'ineq-00{i + 1}').get(self._inequivalent_atom_map.get(subkey, [])).get('value')[:]
+                            parameters.append(value)
                     else:  # TODO check whether there are more complicated cases where this is not true
                         if n_atoms % n_ineq == 0 and n_ineq > 1:
                             for i in range(n_atoms):
-                                parameters.append(getattr(
-                                    sec_scf_iteration.x_w2dynamics_ineq[i % n_ineq], self._inequivalent_atom_map.get(subkey, [])))
+                                value = self.data.get(key).get(f'ineq-00{(i % n_ineq) + 1}').get(self._inequivalent_atom_map.get(subkey, [])).get('value')[:]
+                                parameters.append(value)
                         elif n_ineq == 1:
                             for i in range(n_atoms):
-                                parameters.append(getattr(
-                                    sec_scf_iteration.x_w2dynamics_ineq[0], self._inequivalent_atom_map.get(subkey, [])))
+                                value = self.data.get(key).get('ineq-001').get(self._inequivalent_atom_map.get(subkey, [])).get('value')[:]
+                                parameters.append(value)
                         else:
                             self.logger.warning('Number of inequivalent atoms and number of atoms per unit cell '
                                                 'is neither equal nor multiples. Please, revise the output.')
@@ -322,23 +321,24 @@ class W2DynamicsParser:
                 parameters = []
                 if n_ineq == n_atoms:
                     for i in range(n_ineq):
+                        value = self.data.get(key).get(f'ineq-00{i + 1}').get('occ').get('value')[:]
                         parameters.append([[
-                            sec_scf_iteration.x_w2dynamics_ineq[i].x_w2dynamics_occ[no, ns, no, ns]
+                            value[no, ns, no, ns]
                             for no in range(norb)] for ns in range(2)])
-
                 else:
                     if n_atoms % n_ineq == 0 and n_ineq > 1:
                         for i in range(n_atoms):
+                            value = self.data.get(key).get(f'ineq-00{(i % n_ineq) + 1}').get('occ').get('value')[:]
                             parameters.append([[
-                                sec_scf_iteration.x_w2dynamics_ineq[i % n_ineq].x_w2dynamics_occ[no, ns, no, ns]
+                                value[no, ns, no, ns]
                                 for no in range(norb)] for ns in range(2)])
                     elif n_ineq == 1:
                         for i in range(n_atoms):
+                            value = self.data.get(key).get(f'ineq-001').get('occ').get('value')[:]
                             parameters.append([[
-                                sec_scf_iteration.x_w2dynamics_ineq[0].x_w2dynamics_occ[no, ns, no, ns]
+                                value[no, ns, no, ns]
                                 for no in range(norb)] for ns in range(2)])
                 sec_gf.orbital_occupations = np.array(parameters)
-            '''
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
