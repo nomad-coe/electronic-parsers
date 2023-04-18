@@ -33,7 +33,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Dos, DosValues, Energy, EnergyEntry, Forces, ForcesEntry,
-    Charges, ChargesValue, Multipoles, MultipolesEntry, BandEnergies, BandGapDepricated
+    Charges, ChargesValue, Multipoles, MultipolesEntry, BandEnergies, BandGapDeprecated
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
@@ -896,7 +896,7 @@ class AMSParser:
                 # band gap
                 band_gap_info = source.get('band_gap_info')
                 if band_gap_info is not None:
-                    sec_band_gap = sec_band_energies.m_create(BandGapDepricated)
+                    sec_band_gap = sec_band_energies.m_create(BandGapDeprecated)
                     for key, val in band_gap_info.items():
                         setattr(sec_band_gap, key, val)
 
