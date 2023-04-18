@@ -36,10 +36,10 @@ from nomad.datamodel.metainfo.simulation.method import (
 from nomad.datamodel.metainfo.workflow import Workflow
 from .metainfo.w2dynamics import (
     x_w2dynamics_axes, x_w2dynamics_quantities, x_w2dynamics_config_parameters,
-    x_w2dynamics_config_atoms_parameters, x_w2dynamics_config_general_parameters,
-    x_w2dynamics_config_qmc_parameters
+    x_w2dynamics_config_atoms_parameters
 )
 from ..wannier90.parser import Wannier90Parser, WOutParser, HrParser
+from ..utils import get_files
 from nomad.parsing.parser import to_hdf5
 
 
@@ -93,7 +93,7 @@ class W2DynamicsParser:
 
     def parse_program_version(self):
         # read program version from .log file if present
-        log_files = [f for f in os.listdir(self.maindir) if f.endswith('.log')]
+        log_files = get_files('*.log', self.filepath, self.mainfile)
         if log_files:
             if len(log_files) > 1:
                 self.logger.warning('Multiple logging files found.')
@@ -122,7 +122,7 @@ class W2DynamicsParser:
                 target.x_w2dynamics_mu = value
 
     def parse_system(self):
-        wann90_files = [f for f in os.listdir(self.maindir) if f.endswith('.wout')]
+        wann90_files = get_files('*.wout', self.filepath, self.mainfile)
         if wann90_files:  # parse crystal from Wannier90
             if len(wann90_files) > 1:
                 self.logger.warning('Multiple logging files found.')
@@ -138,7 +138,7 @@ class W2DynamicsParser:
         sec_hamiltonian = sec_run.m_create(Method).m_create(LatticeModelHamiltonian)
 
         # HoppingMatrix
-        hr_files = [f for f in os.listdir(self.maindir) if f.endswith('hr.dat')]
+        hr_files = get_files('*hr.dat', self.filepath, self.mainfile)
         if hr_files:  # parse crystal from Wannier90
             self.hr_parser.mainfile = os.path.join(self.maindir, hr_files[-1])
             sec_hopping_matrix = sec_hamiltonian.m_create(HoppingMatrix)
@@ -179,16 +179,27 @@ class W2DynamicsParser:
         # ref to the Non- and InteractionHamiltonian
         sec_method.starting_method_ref = sec_run.method[0]
 
+        def parse_config(keys):
+            key = keys.split('.')[-1]
+            if isinstance(data.attrs.get(keys), str):
+                value = data.attrs.get(keys)
+            else:
+                value = data.attrs.get(keys).tolist()
+            return key, value
+
         # Parse Method.x_w2dynamics_config general and qmc quantities
         sec_config = sec_method.m_create(x_w2dynamics_config_parameters)
-        config_sections = [x_w2dynamics_config_general_parameters, x_w2dynamics_config_qmc_parameters]
-        for subsection in config_sections:
-            sec_config_subsection = sec_config.m_create(subsection)
-            for key in data.attrs.keys():
-                if not key.startswith(f'atoms'):
-                    parameters = data.attrs.get(key)
-                    keys_mod = (key.replace('-', '_')).split('.')
-                    setattr(sec_config_subsection, f'x_w2dynamics_{keys_mod[-1]}', parameters)
+        config_general = {}
+        config_qmc = {}
+        for keys in data.attrs.keys():
+            if keys.startswith('general'):
+                key, value = parse_config(keys)
+                config_general[key] = value
+            elif keys.startswith('qmc'):
+                key, value = parse_config(keys)
+                config_qmc[key] = value
+        sec_config.x_w2dynamics_config_general = config_general
+        sec_config.x_w2dynamics_config_qmc = config_qmc
         # Parse Method.x_w2dynamics_config atoms quantities
         for i in range(data.attrs.get(f'general.nat', 0)):
             sec_config_subsection = sec_config.m_create(x_w2dynamics_config_atoms_parameters)
@@ -203,16 +214,13 @@ class W2DynamicsParser:
         sec_dmft.n_atoms_per_unit_cell = data.attrs.get(f'general.nat', 0)
         sec_dmft.inverse_temperature = data.attrs.get(f'general.beta') / ureg.eV
         sec_dmft.magnetic_state = data.attrs.get(f'general.magnetism') + 'magnetic'
-        for key in self._dmft_qmc_map.keys():
-            parameters = data.attrs.get(f'qmc.{key}')
-            setattr(sec_dmft, self._dmft_qmc_map.get(key), parameters)
         corr_orbs_per_atoms = []
         occ_per_atoms = []
         for i in range(sec_dmft.n_atoms_per_unit_cell):
             nd = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_nd
             np = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_np
             corr_orbs_per_atoms.append(nd + np)
-            occ_per_atoms.append(sec_method.x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_totdens)
+            occ_per_atoms.append(data.attrs.get(f'general.totdens'))
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
         sec_dmft.n_correlated_electrons = occ_per_atoms
         sec_dmft.impurity_solver = 'CT-HYB'
@@ -253,14 +261,75 @@ class W2DynamicsParser:
             if key not in self.data.keys():
                 continue
             sec_scf_iteration = sec_scc.m_create(ScfIteration)
-            sec_gf = sec_scf_iteration.m_create(GreensFunctions)
-            filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), f'{os.path.basename(self.filepath)}')
+            filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), self.mainfile)
             farg = 'r+b' if os.path.isfile(os.path.join(os.path.dirname(self.filepath), filename)) else 'wb'
-            print(filename, farg)
             if self.archive.m_context:
                 with self.archive.m_context.raw_file(filename, farg) as f:
-                    value = self.data.get(key).get('mu').get('value')
-                    sec_gf.value_hdf5 = to_hdf5(value, f, f'{key}/mu/value')
+                    for subkey in self.data.get(key).keys():
+                        value = self.data.get(key).get(subkey).get('value')
+                        if subkey == 'mu':
+                            sec_energy = sec_scf_iteration.m_create(Energy)
+                            sec_energy.fermi = np.float64(value) * ureg.eV
+                        elif subkey != 'ineq-001':
+                            value = to_hdf5(value[:], f, f'{key}/{subkey}/value')
+                        name = self._re_namesafe.sub('_', subkey)
+                        setattr(sec_scf_iteration, f'x_w2dynamics_{name}', value)
+
+            '''
+            # Storing converged quantities from dmft-last or stat-last
+            if key.endswith('last'):
+                sec_gf = sec_scc.m_create(GreensFunctions)
+                sec_gf.matsubara_freq = sec_run.x_w2dynamics_axes.x_w2dynamics_iw
+                sec_gf.tau = sec_run.x_w2dynamics_axes.x_w2dynamics_tau
+                sec_gf.chemical_potential = self.data.get(key)['mu']['value']
+                norb = self.data['.config'].attrs.get('atoms.1.nd')
+                for subkey in self._inequivalent_atom_map.keys():
+                    parameters = []
+                    if n_ineq == n_atoms:
+                        for i in range(n_ineq):
+                            parameters.append(getattr(
+                                sec_scf_iteration.x_w2dynamics_ineq[i], self._inequivalent_atom_map.get(subkey, [])))
+                    else:  # TODO check whether there are more complicated cases where this is not true
+                        if n_atoms % n_ineq == 0 and n_ineq > 1:
+                            for i in range(n_atoms):
+                                parameters.append(getattr(
+                                    sec_scf_iteration.x_w2dynamics_ineq[i % n_ineq], self._inequivalent_atom_map.get(subkey, [])))
+                        elif n_ineq == 1:
+                            for i in range(n_atoms):
+                                parameters.append(getattr(
+                                    sec_scf_iteration.x_w2dynamics_ineq[0], self._inequivalent_atom_map.get(subkey, [])))
+                        else:
+                            self.logger.warning('Number of inequivalent atoms and number of atoms per unit cell '
+                                                'is neither equal nor multiples. Please, revise the output.')
+                            break
+
+                    parameters = np.array(parameters)
+                    # reordering calculation matrices to standarize w2dynamics and solid_dmft
+                    # (and potentially, other DMFT codes)
+                    parameters_reorder = np.array([[[
+                        parameters[i, no, ns, :] for no in range(norb)] for ns in range(2)] for i in range(n_atoms)])
+                    setattr(sec_gf, subkey, parameters_reorder)
+                # summing over atoms per unit cell to keep same array dimensions
+                parameters = []
+                if n_ineq == n_atoms:
+                    for i in range(n_ineq):
+                        parameters.append([[
+                            sec_scf_iteration.x_w2dynamics_ineq[i].x_w2dynamics_occ[no, ns, no, ns]
+                            for no in range(norb)] for ns in range(2)])
+
+                else:
+                    if n_atoms % n_ineq == 0 and n_ineq > 1:
+                        for i in range(n_atoms):
+                            parameters.append([[
+                                sec_scf_iteration.x_w2dynamics_ineq[i % n_ineq].x_w2dynamics_occ[no, ns, no, ns]
+                                for no in range(norb)] for ns in range(2)])
+                    elif n_ineq == 1:
+                        for i in range(n_atoms):
+                            parameters.append([[
+                                sec_scf_iteration.x_w2dynamics_ineq[0].x_w2dynamics_occ[no, ns, no, ns]
+                                for no in range(norb)] for ns in range(2)])
+                sec_gf.orbital_occupations = np.array(parameters)
+            '''
             '''
             self.parse_dataset(self.data[key], sec_scf_iteration, include=calc_quantities)
             for sub_key in self.data[key].keys():
@@ -330,6 +399,7 @@ class W2DynamicsParser:
         self.filepath = filepath
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
+        self.mainfile = os.path.basename(self.filepath)
         self.logger = logging.getLogger(__name__) if logger is None else logger
 
         try:
