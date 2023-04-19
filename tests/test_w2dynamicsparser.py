@@ -39,9 +39,7 @@ def test_srvo3_highstat(parser):
     # Run tests
     assert len(archive.run) == 1
     sec_run = archive.run[-1]
-    assert len(sec_run.x_w2dynamics_axes) == 14
-    assert sec_run.x_w2dynamics_axes.x_w2dynamics_iw.shape[0] == 2400
-    assert sec_run.x_w2dynamics_axes.x_w2dynamics_tau.shape[0] == 1000
+    assert len(sec_run.x_w2dynamics_axes) == 12
     assert sec_run.x_w2dynamics_axes.x_w2dynamics_w_dos.shape[0] == 2794
 
     # Program tests
@@ -67,22 +65,20 @@ def test_srvo3_highstat(parser):
     # testing rotational invariance
     assert up == approx(u - 2 * jh)
     assert j == approx(jh)
-    assert len(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general) == 58
-    assert sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_beta == 60.0
+    assert len(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general) == 50
+    assert sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.get('beta') == 60.0
     assert sec_run.method[1].starting_method_ref == sec_run.method[0]
     sec_dmft = sec_run.method[1].dmft
     assert sec_dmft.n_correlated_orbitals.shape == (1,)
     assert sec_dmft.n_correlated_orbitals[0] == 3
     assert sec_dmft.n_correlated_electrons == approx(1.0)
-    assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_beta)
+    assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.get('beta'))
     assert sec_dmft.impurity_solver == 'CT-HYB'
     # Frequency and Time meshes
     assert sec_run.m_xpath('method[-1].frequency_mesh') and sec_run.m_xpath('method[-1].time_mesh')
     sec_freq_mesh = sec_run.method[-1].frequency_mesh
-    assert sec_freq_mesh.n_points == len(sec_run.x_w2dynamics_axes.x_w2dynamics_iw)
     assert sec_freq_mesh.points[22].to('eV').magnitude == approx(-123.30751165339937j)
     sec_time_mesh = sec_run.method[-1].time_mesh
-    assert sec_time_mesh.n_points == len(sec_run.x_w2dynamics_axes.x_w2dynamics_tau)
     assert sec_time_mesh.points[40] == approx(2.4024024024024024j)
 
     # Calculation tests
@@ -102,6 +98,4 @@ def test_srvo3_highstat(parser):
     assert len(sec_scf) == 11
     assert sec_scf[0].energy.fermi.to('eV').magnitude == approx(7.877920164769436)
     assert sec_scf[-1].energy.fermi.to('eV').magnitude == approx(7.877904086990344)
-    assert sec_scf[1].x_w2dynamics_ineq[0].x_w2dynamics_fiw.dtype == 'complex128'
-    assert sec_scf[1].x_w2dynamics_ineq[0].x_w2dynamics_fiw.shape == (3, 2, 2400)
-    assert sec_scf[10].x_w2dynamics_ineq[0].x_w2dynamics_fiw[1][1][100] == approx(-2.4387509114487393e-05 - 0.0026711105507501998j)
+    assert sec_scf[1].x_w2dynamics_ineq[0].x_w2dynamics_fiw == 'SrVO3_beta60_high-stat-2022-09-29-Thu-15-29-40.hdf5#dmft-002/ineq-001/fiw/value'
