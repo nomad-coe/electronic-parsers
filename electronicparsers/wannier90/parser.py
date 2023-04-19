@@ -498,6 +498,7 @@ class Wannier90Parser():
     def init_parser(self):
         self.wout_parser.mainfile = self.filepath
         self.wout_parser.logger = self.logger
+        self.hr_parser.logger = self.logger
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath

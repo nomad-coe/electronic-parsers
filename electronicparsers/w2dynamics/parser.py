@@ -39,7 +39,7 @@ from .metainfo.w2dynamics import (
     x_w2dynamics_axes, x_w2dynamics_quantities, x_w2dynamics_config_parameters,
     x_w2dynamics_config_atoms_parameters
 )
-from ..wannier90.parser import Wannier90Parser, WOutParser, HrParser
+from ..wannier90.parser import WOutParser, HrParser
 from ..utils import get_files
 from nomad.parsing.parser import to_hdf5
 
@@ -93,17 +93,29 @@ class W2DynamicsParser:
         }
 
     def parse_program_version(self):
-        # read program version from .log file if present
+        """Parses the program version from the .log file if present.
+
+        Returns:
+            str: program version label
+        """
+
         log_files = get_files('*.log', self.filepath, self.mainfile)
         if log_files:
             if len(log_files) > 1:
                 self.logger.warning('Multiple logging files found.')
 
-            self.log_parser.mainfile = os.path.join(self.maindir, log_files[0])
-
+            self.log_parser.mainfile = log_files[0]
             return self.log_parser.get('program_version', None)
 
-    def parse_axis(self, source, target):
+    def parse_axes(self, source, target):
+        """Parses the key `.axes` from the hdf5 mainfile
+
+        Args:
+            source (HDF5group): group `.axes` from the hdf5 mainfile
+            target (MSection): EntryArchive.Run[-1].x_w2dynamics_axes code-specific section
+        """
+
+        #Method to parse .axes from the hdf5 mainfile into Run. Skips iw and tau.
         for key in source.keys():
             if key in ['iw', 'tau']:
                 continue
@@ -118,6 +130,9 @@ class W2DynamicsParser:
                 setattr(target, f'x_w2dynamics_{name}', value[:])
 
     def parse_system(self):
+        """Parses System from the Wannier90 output file (*.wout) if present in the upload.
+        Otherwise, a warning appears.
+        """
         sec_run = self.archive.run[-1]
 
         # Parsing Wannier90 wout for system
@@ -126,7 +141,7 @@ class W2DynamicsParser:
             if len(wann90_files) > 1:
                 self.logger.warning('Multiple logging files found.')
 
-            self.wout_parser.mainfile = os.path.join(self.maindir, wann90_files[-1])
+            self.wout_parser.mainfile = wann90_files[-1]
             sec_system = sec_run.m_create(System)
 
             structure = self.wout_parser.get('structure')
@@ -150,13 +165,21 @@ class W2DynamicsParser:
             self.logger.warning('Wannier90 output files not found in the same folder.')
 
     def parse_input_model(self, data):
+        """Parses input model into Run.Method.LatticeModelHamiltonian in two differentiated
+        subsections:
+            1- Hopping matrices from the Wannier90 *hr.dat file
+            2- HubbardKanamoriHamiltonian from the hdf5 mainfile
+
+        Args:
+            data (HDF5group): group `.config` from the hdf5 mainfile
+        """
         sec_run = self.archive.run[0]
         sec_hamiltonian = sec_run.m_create(Method).m_create(LatticeModelHamiltonian)
 
         # HoppingMatrix
         hr_files = get_files('*hr.dat', self.filepath, self.mainfile)
         if hr_files:  # parse crystal from Wannier90
-            self.hr_parser.mainfile = os.path.join(self.maindir, hr_files[-1])
+            self.hr_parser.mainfile = hr_files[-1]
             sec_hopping_matrix = sec_hamiltonian.m_create(HoppingMatrix)
             sec_hopping_matrix.n_orbitals = self.wout_parser.get('Nwannier')
             sec_hopping_matrix.n_wigner_seitz_points = self.hr_parser.get('degeneracy_factors')[1]
@@ -189,6 +212,11 @@ class W2DynamicsParser:
             sec_hubbard_kanamori_model.double_counting_correction = data.attrs.get('general.dc')
 
     def parse_method(self, data):
+        """Parses DMFT and code-specific metadata from `.config` in the hdf5 mainfile
+
+        Args:
+            data (HDF5group): group `.config` from the hdf5 mainfile
+        """
         sec_run = self.archive.run[0]
 
         sec_method = sec_run.m_create(Method)
@@ -254,6 +282,11 @@ class W2DynamicsParser:
             sec_method.m_add_sub_section(Method.time_mesh, sec_tau_mesh)
 
     def parse_scc(self):
+        """Parses the output calculation from dmft-xxx or stat-xxx. Every iteration step quantity
+        is saved as a path to the hdf5 file to spare the size of the archive.
+
+        The last step is used to store the converged quantities.
+        """
         sec_run = self.archive.run[0]
         sec_scc = sec_run.m_create(Calculation)
         if sec_run.m_xpath('system'):
@@ -361,10 +394,6 @@ class W2DynamicsParser:
                                 for no in range(norb)] for ns in range(2)])
                 sec_gf.orbital_occupations = np.array(parameters)
 
-    def init_parser(self):
-        self.wout_parser.mainfile = self.filepath
-        self.wout_parser.logger = self.logger
-
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
@@ -388,7 +417,7 @@ class W2DynamicsParser:
 
         # run.x_w2dynamics_axes section
         sec_axes = sec_run.m_create(x_w2dynamics_axes)
-        self.parse_axis(self.data.get('.axes'), sec_axes)
+        self.parse_axes(self.data.get('.axes'), sec_axes)
 
         # System section
         self.parse_system()
