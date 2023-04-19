@@ -98,7 +98,6 @@ class W2DynamicsParser:
         Returns:
             str: program version label
         """
-
         log_files = get_files('*.log', self.filepath, self.mainfile)
         if log_files:
             if len(log_files) > 1:
@@ -114,8 +113,6 @@ class W2DynamicsParser:
             source (HDF5group): group `.axes` from the hdf5 mainfile
             target (MSection): EntryArchive.Run[-1].x_w2dynamics_axes code-specific section
         """
-
-        #Method to parse .axes from the hdf5 mainfile into Run. Skips iw and tau.
         for key in source.keys():
             if key in ['iw', 'tau']:
                 continue
@@ -135,7 +132,6 @@ class W2DynamicsParser:
         """
         sec_run = self.archive.run[-1]
 
-        # Parsing Wannier90 wout for system
         wann90_files = get_files('*.wout', self.filepath, self.mainfile)
         if wann90_files:  # parse crystal from Wannier90
             if len(wann90_files) > 1:
