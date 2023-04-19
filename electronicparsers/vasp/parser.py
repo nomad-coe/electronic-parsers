@@ -388,7 +388,18 @@ class OutcarTextParser(TextParser):
                     Quantity(
                         'input_parameters',
                         rf'{re_n}* *(\w+) *\= *([\w\.\-]+) *.*',
-                        repeats=True)]))]
+                        repeats=True)])),
+            Quantity(
+                'ICORELEVEL',
+                r'Core level calculations are selected ICORELEVEL\s+\=\s+(2)',
+                sub_parser=TextParser(quantities=[
+                    Quantity('CLNT', r'CLNT\s*=\s*(\d+)', type=np.int32),
+                    Quantity('CLN', r'CLN\s*=\s*(\d+)', type=np.int32),
+                    Quantity('CLL', r'CLL\s*=\s*(\d)', type=np.int32),
+                    Quantity('CLZ', r'CLZ\s*=\s*([\d\.]+)', type=np.float64),
+                ])
+            )
+        ]
 
 
 class OutcarContentParser(ContentParser):
@@ -733,6 +744,19 @@ class OutcarContentParser(ContentParser):
         return self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
             'convergence') is not None
 
+    def get_core_hole(self) -> Dict[str, Union[int, float]]:
+        '''Extract a core-hole description from the OUTCAR file
+        and return it as a dictionary with native tags as keys.
+        '''
+
+        core_hole_info: Dict[str, Union[int, float]] = {}
+        core_hole_tag = self.parser.get('ICORELEVEL')
+        if core_hole_tag is not None:
+            core_hole_info['ICORELEVEL'] = 2
+            for tag in core_hole_keys:
+                if tag != 'ICORELEVEL':
+                    core_hole_info[tag] = self.parser.get(tag)
+        return core_hole_info
 
 class RunXmlContentHandler(ContentHandler):
     def __init__(self):
@@ -1194,11 +1218,15 @@ class RunContentParser(ContentParser):
         root = '/modeling[0]/parameters/separator/i'
         for key in core_hole_keys:
             try:
-                core_hole_info[key] = self._get_key_values(root).get(key)[0]
+                extract = self._get_key_values(root).get(key)
+                core_hole_info[key] = extract[0] if isinstance(extract, list) else extract
             except KeyError:
                 pass
             core_hole_info[key] = float(core_hole_info[key]) if key == 'CLZ' else\
                 int(core_hole_info[key])
+            if key == 'ICORELEVEL':
+                if core_hole_info[key] != 2:
+                    return {}
         return core_hole_info
 
 
@@ -1308,15 +1336,15 @@ class VASPParser():
                     sec_hubb.j = float(parsed_file.get('LDAUJ')[i]) * ureg.eV
                     sec_hubb.double_counting_correction = self.hubbard_dc_corrections[parsed_file.get('LDAUTYPE')]
                     sec_hubb.x_vasp_projection_type = 'on-site'
-            if core_hole_info['ICORELEVEL'] == 2 and core_hole_info['CLNT'] == i + 1:
-                sec_core_hole = sec_method_atom_kind.m_create(CoreHole)
-                sec_core_hole.n_quantum_number = core_hole_info['CLN']
-                sec_core_hole.l_quantum_number = core_hole_info['CLL']
-                sec_core_hole.l_quantum_symbol = orbital_mapping[
-                    sec_core_hole.l_quantum_number]
-                sec_core_hole.occupancy = 1 - core_hole_info['CLZ']
-                if sec_core_hole.occupancy < 0:
-                    raise ValueError('Core hole occupancy is negative.')
+            if core_hole_info:
+                if core_hole_info['ICORELEVEL'] == 2:
+                    if core_hole_info['CLNT'] == i + 1:
+                        sec_core_hole = sec_method_atom_kind.m_create(CoreHole)
+                        sec_core_hole.n_quantum_number = core_hole_info['CLN']
+                        sec_core_hole.l_quantum_number = core_hole_info['CLL']
+                        sec_core_hole.occupancy = 1 - core_hole_info['CLZ']
+                        if sec_core_hole.occupancy < 0:
+                            raise ValueError('Core hole occupancy is negative.')
 
             atom_counts[element[i]] += 1
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
