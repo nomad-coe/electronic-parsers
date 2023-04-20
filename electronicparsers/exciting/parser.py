@@ -1963,7 +1963,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         if gw_band_gap is not None:
             sec_gap = sec_scc.m_create(BandGap)
             sec_gap.value = gw_band_gap
-            sec_gap.provenance = ElectronicStructureProvenance()
+            sec_gap_provenance = sec_gap.m_create(ElectronicStructureProvenance)
+            sec_gap_provenance.label = 'parser'
 
         sec_scc.method_ref = sec_method
         self.parse_system(self.info_parser.get('groundstate'))
