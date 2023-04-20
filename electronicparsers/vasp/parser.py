@@ -51,7 +51,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry,
-    BandEnergies, DosValues, ScfIteration, BandStructure, BandGap, Dos, Density
+    BandEnergies, DosValues, ScfIteration, BandStructure, BandGapDeprecated, Dos, Density
 )
 from nomad.datamodel.metainfo.workflow import (
     Workflow, GeometryOptimization, SinglePoint, MolecularDynamics)
@@ -1493,7 +1493,7 @@ class VASPParser():
             if self.parser.kpoints_info.get('sampling_method', None) == 'Line-path':
                 sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
                 for n in range(len(eigs)):
-                    sec_band_gap = sec_k_band.m_create(BandGap)
+                    sec_band_gap = sec_k_band.m_create(BandGapDeprecated)
                     sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
                     sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
                 divisions = self.parser.kpoints_info.get('grid', None)

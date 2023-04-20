@@ -33,7 +33,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, EnergyEntry, Charges,
-    Forces, ForcesEntry, ScfIteration, BandGap, Spectra
+    Forces, ForcesEntry, ScfIteration, BandGap, Spectra, ElectronicStructureProvenance
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
@@ -1966,16 +1966,14 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         for f in gw_files:
             self.parse_file(f, sec_scc)
 
-        fundamental_band_gap = self.info_gw_parser.get('direct_band_gap', None)
-        if fundamental_band_gap is None:
-            fundamental_band_gap = self.info_gw_parser.get('fundamental_band_gap', None)
-        sec_gap = sec_scc.eigenvalues[-1].m_create(BandGap)
-        if fundamental_band_gap is not None:
-            sec_gap.value_fundamental = fundamental_band_gap
-
-        optical_band_gap = self.info_gw_parser.get('optical_band_gap', None)
-        if optical_band_gap is not None:
-            sec_gap.value_optical = optical_band_gap
+        # example band gap setup
+        gw_band_gap = self.info_gw_parser.get('direct_band_gap',
+                        self.info_gw_parser.get('fundamental_band_gap'))
+        if gw_band_gap is not None:
+            sec_gap = sec_scc.m_create(BandGap)
+            sec_gap.value = gw_band_gap
+            sec_gap_provenance = sec_gap.m_create(ElectronicStructureProvenance)
+            sec_gap_provenance.label = 'parser'
 
         sec_scc.method_ref = sec_method
         self.parse_system(self.info_parser.get('groundstate'))
