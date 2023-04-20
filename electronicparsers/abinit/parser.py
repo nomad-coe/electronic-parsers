@@ -32,7 +32,7 @@ from nomad.datamodel.metainfo.simulation.method import (
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry, Dos,
-    DosValues, BandStructure, BandEnergies, ScfIteration, BandGapDeprecated)
+    DosValues, BandStructure, BandEnergies, ScfIteration, BandGapDeprecated, ElectronicStructureProvenance)
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod,
@@ -1393,7 +1393,9 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             if selfenergy.get('params'):
                 sec_k_eigen.n_spin_channels = selfenergy.get('params')[0][-1]
                 sec_gap = sec_k_eigen.m_create(BandGapDeprecated)
-                sec_gap.value = selfenergy.get('params')[1][-1] * ureg.eV  # KS gap
+                sec_gap.value = selfenergy.get('params')[2][-1] * ureg.eV  # QP gap
+                sec_gap_provenance = sec_gap.m_create(ElectronicStructureProvenance)
+                sec_gap_provenance.label = 'parser'
                 for i in self._selfenergy_data_map.keys():
                     value = np.array([[
                         selfenergy_data[:, i] for s in range(sec_k_eigen.n_spin_channels)] for k in range(sec_k_eigen.n_kpoints)])
