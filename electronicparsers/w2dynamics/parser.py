@@ -33,13 +33,15 @@ from nomad.datamodel.metainfo.simulation.method import (
     Method, HoppingMatrix, HubbardKanamoriModel, LatticeModelHamiltonian, FrequencyMesh,
     TimeMesh, DMFT
 )
+from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.workflow import Workflow
 from .metainfo.w2dynamics import (
     x_w2dynamics_axes, x_w2dynamics_quantities, x_w2dynamics_config_parameters,
-    x_w2dynamics_config_atoms_parameters, x_w2dynamics_config_general_parameters,
-    x_w2dynamics_config_qmc_parameters
+    x_w2dynamics_config_atoms_parameters
 )
-from ..wannier90.parser import Wannier90Parser, WOutParser, HrParser
+from ..wannier90.parser import WOutParser, HrParser
+from ..utils import get_files
+from nomad.parsing.parser import to_hdf5
 
 
 re_n = r'[\n\r]'
@@ -59,6 +61,8 @@ class LogParser(TextParser):
 
 
 class W2DynamicsParser:
+    level = 2
+
     def __init__(self):
         self._re_namesafe = re.compile(r'[^\w]')
         self.log_parser = LogParser()
@@ -83,25 +87,34 @@ class W2DynamicsParser:
         }
 
         self._inequivalent_atom_map = {
-            'self_energy_iw': 'x_w2dynamics_siw',
-            'greens_function_iw': 'x_w2dynamics_giw',
-            'greens_function_tau': 'x_w2dynamics_gtau'
+            'self_energy_iw': 'siw',
+            'greens_function_iw': 'giw',
+            'greens_function_tau': 'gtau'
         }
 
     def parse_program_version(self):
-        # read program version from .log file if present
-        log_files = [f for f in os.listdir(self.maindir) if f.endswith('.log')]
+        """Parses the program version from the .log file if present.
+
+        Returns:
+            str: program version label
+        """
+        log_files = get_files('*.log', self.filepath, self.mainfile)
         if log_files:
             if len(log_files) > 1:
                 self.logger.warning('Multiple logging files found.')
 
-            self.log_parser.mainfile = os.path.join(self.maindir, log_files[0])
-
+            self.log_parser.mainfile = log_files[0]
             return self.log_parser.get('program_version', None)
 
-    def parse_dataset(self, source, target, include=[]):
+    def parse_axes(self, source, target):
+        """Parses the key `.axes` from the hdf5 mainfile
+
+        Args:
+            source (HDF5group): group `.axes` from the hdf5 mainfile
+            target (MSection): EntryArchive.Run[-1].x_w2dynamics_axes code-specific section
+        """
         for key in source.keys():
-            if include and key not in include:
+            if key in ['iw', 'tau']:
                 continue
             # resolve value from 'value'
             value = source[key]
@@ -112,30 +125,57 @@ class W2DynamicsParser:
             name = self._re_namesafe.sub('_', key)
             if value.shape:
                 setattr(target, f'x_w2dynamics_{name}', value[:])
-            # mu is a single value
-            if key == 'mu':
-                target.x_w2dynamics_mu = value
 
     def parse_system(self):
-        wann90_files = [f for f in os.listdir(self.maindir) if f.endswith('.wout')]
+        """Parses System from the Wannier90 output file (*.wout) if present in the upload.
+        Otherwise, a warning appears.
+        """
+        sec_run = self.archive.run[-1]
+
+        wann90_files = get_files('*.wout', self.filepath, self.mainfile)
         if wann90_files:  # parse crystal from Wannier90
             if len(wann90_files) > 1:
                 self.logger.warning('Multiple logging files found.')
 
-            self.wout_parser.mainfile = os.path.join(self.maindir, wann90_files[-1])
-            p = Wannier90Parser()
-            p.parse_system(self.archive, self.wout_parser)
+            self.wout_parser.mainfile = wann90_files[-1]
+            sec_system = sec_run.m_create(System)
+
+            structure = self.wout_parser.get('structure')
+            if structure is None:
+                self.logger.error('Error parsing the structure from .wout')
+                return
+
+            sec_atoms = sec_system.m_create(Atoms)
+            if self.wout_parser.get('lattice_vectors', []):
+                lattice_vectors = np.vstack(self.wout_parser.get('lattice_vectors', [])[-3:])
+                sec_atoms.lattice_vectors = lattice_vectors * ureg.angstrom
+            if self.wout_parser.get('reciprocal_lattice_vectors') is not None:
+                sec_atoms.lattice_vectors_reciprocal = np.vstack(self.wout_parser.get('reciprocal_lattice_vectors')[-3:]) / ureg.angstrom
+
+            pbc = [True, True, True] if lattice_vectors is not None else [False, False, False]
+            sec_atoms.periodic = pbc
+            sec_atoms.labels = structure.get('labels')
+            if structure.get('positions') is not None:
+                sec_atoms.positions = structure.get('positions') * ureg.angstrom
         else:  # TODO parse specific lattice model: discuss it Jonas Schwab
             self.logger.warning('Wannier90 output files not found in the same folder.')
 
     def parse_input_model(self, data):
+        """Parses input model into Run.Method.LatticeModelHamiltonian in two differentiated
+        subsections:
+            1- Hopping matrices from the Wannier90 *hr.dat file
+            2- HubbardKanamoriHamiltonian from the hdf5 mainfile
+
+        Args:
+            data (HDF5group): group `.config` from the hdf5 mainfile
+        """
         sec_run = self.archive.run[0]
         sec_hamiltonian = sec_run.m_create(Method).m_create(LatticeModelHamiltonian)
 
         # HoppingMatrix
-        hr_files = [f for f in os.listdir(self.maindir) if f.endswith('hr.dat')]
+        hr_files = get_files('*hr.dat', self.filepath, self.mainfile)
         if hr_files:  # parse crystal from Wannier90
-            self.hr_parser.mainfile = os.path.join(self.maindir, hr_files[-1])
+            self.hr_parser.mainfile = hr_files[-1]
             sec_hopping_matrix = sec_hamiltonian.m_create(HoppingMatrix)
             sec_hopping_matrix.n_orbitals = self.wout_parser.get('Nwannier')
             sec_hopping_matrix.n_wigner_seitz_points = self.hr_parser.get('degeneracy_factors')[1]
@@ -168,22 +208,38 @@ class W2DynamicsParser:
             sec_hubbard_kanamori_model.double_counting_correction = data.attrs.get('general.dc')
 
     def parse_method(self, data):
+        """Parses DMFT and code-specific metadata from `.config` in the hdf5 mainfile
+
+        Args:
+            data (HDF5group): group `.config` from the hdf5 mainfile
+        """
         sec_run = self.archive.run[0]
 
         sec_method = sec_run.m_create(Method)
         # ref to the Non- and InteractionHamiltonian
         sec_method.starting_method_ref = sec_run.method[0]
 
+        def parse_config(keys):
+            key = keys.split('.')[-1]
+            if isinstance(data.attrs.get(keys), str):
+                value = data.attrs.get(keys)
+            else:
+                value = data.attrs.get(keys).tolist()
+            return key, value
+
         # Parse Method.x_w2dynamics_config general and qmc quantities
         sec_config = sec_method.m_create(x_w2dynamics_config_parameters)
-        config_sections = [x_w2dynamics_config_general_parameters, x_w2dynamics_config_qmc_parameters]
-        for subsection in config_sections:
-            sec_config_subsection = sec_config.m_create(subsection)
-            for key in data.attrs.keys():
-                if not key.startswith(f'atoms'):
-                    parameters = data.attrs.get(key)
-                    keys_mod = (key.replace('-', '_')).split('.')
-                    setattr(sec_config_subsection, f'x_w2dynamics_{keys_mod[-1]}', parameters)
+        config_general = {}
+        config_qmc = {}
+        for keys in data.attrs.keys():
+            if keys.startswith('general'):
+                key, value = parse_config(keys)
+                config_general[key] = value
+            elif keys.startswith('qmc'):
+                key, value = parse_config(keys)
+                config_qmc[key] = value
+        sec_config.x_w2dynamics_config_general = config_general
+        sec_config.x_w2dynamics_config_qmc = config_qmc
         # Parse Method.x_w2dynamics_config atoms quantities
         for i in range(data.attrs.get(f'general.nat', 0)):
             sec_config_subsection = sec_config.m_create(x_w2dynamics_config_atoms_parameters)
@@ -196,91 +252,117 @@ class W2DynamicsParser:
         # DMFT section
         sec_dmft = sec_method.m_create(DMFT)
         sec_dmft.n_atoms_per_unit_cell = data.attrs.get(f'general.nat', 0)
-        sec_dmft.inverse_temperature = data.attrs.get(f'general.beta') / ureg.eV
-        sec_dmft.magnetic_state = data.attrs.get(f'general.magnetism') + 'magnetic'
-        for key in self._dmft_qmc_map.keys():
-            parameters = data.attrs.get(f'qmc.{key}')
-            setattr(sec_dmft, self._dmft_qmc_map.get(key), parameters)
+        if data.attrs.get(f'general.beta'):
+            sec_dmft.inverse_temperature = data.attrs.get(f'general.beta') / ureg.eV
+        if data.attrs.get(f'general.magnetism'):
+            sec_dmft.magnetic_state = data.attrs.get(f'general.magnetism') + 'magnetic'
         corr_orbs_per_atoms = []
         occ_per_atoms = []
         for i in range(sec_dmft.n_atoms_per_unit_cell):
             nd = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_nd
             np = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_np
             corr_orbs_per_atoms.append(nd + np)
-            occ_per_atoms.append(sec_method.x_w2dynamics_config.x_w2dynamics_config_general.x_w2dynamics_totdens)
+            if data.attrs.get(f'general.totdens'):
+                occ_per_atoms.append(data.attrs.get(f'general.totdens'))
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
         sec_dmft.n_correlated_electrons = occ_per_atoms
         sec_dmft.impurity_solver = 'CT-HYB'
         # FrequencyMesh
-        if sec_run.m_xpath('x_w2dynamics_axes.x_w2dynamics_iw') is not None:
-            iw = sec_run.x_w2dynamics_axes.x_w2dynamics_iw * 1j * ureg.eV
+        iw = self.data.get('.axes').get('iw')
+        if iw is not None:
+            iw = iw[:] * 1j * ureg.eV
             sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=len(iw), points=iw)
             sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # TimeMesh
-        if sec_run.m_xpath('x_w2dynamics_axes.x_w2dynamics_tau') is not None:
-            tau = sec_run.x_w2dynamics_axes.x_w2dynamics_tau * 1j
+        tau = self.data.get('.axes').get('tau')
+        if tau is not None:
+            tau = tau[:] * 1j
             sec_tau_mesh = TimeMesh(dimensionality=1, n_points=len(tau), points=tau)
             sec_method.m_add_sub_section(Method.time_mesh, sec_tau_mesh)
 
-    def parse_scc(self, data):
+    def parse_scc(self):
+        """Parses the output calculation from dmft-xxx or stat-xxx. Every iteration step quantity
+        is saved as a path to the hdf5 file to spare the size of the archive.
+
+        The last step is used to store the converged quantities.
+        """
         sec_run = self.archive.run[0]
         sec_scc = sec_run.m_create(Calculation)
-        if hasattr(self.archive.run[0], 'system') and len(self.archive.run[0].system) > 0:
+        if sec_run.m_xpath('system'):
             sec_scc.system_ref = sec_run.system[-1]
         sec_scc.method_ref = sec_run.method[-1]  # ref DMFT
 
         # order calculations
-        calc_keys = [key for key in data.keys() if key.startswith('dmft-') or key.startswith('stat-')]
+        calc_keys = [key for key in self.data.keys() if key.startswith('dmft-') or key.startswith('stat-')]
         calc_keys.sort()
 
         # calculating how many inequivalent atoms are per unit cell
         n_ineq = 0
-        for keys in data[calc_keys[0]]:
+        for keys in self.data[calc_keys[0]]:
             if keys.startswith('ineq'):
                 n_ineq += 1
         n_atoms = sec_run.method[-1].dmft.n_atoms_per_unit_cell
 
-        calc_quantities = [
-            'dc-latt', 'gdensnew', 'gdensold', 'glocnew-lattice', 'glocold-lattice', 'mu']
         for key in calc_keys:
-            if key not in data.keys():
+            if key not in self.data.keys():
                 continue
             sec_scf_iteration = sec_scc.m_create(ScfIteration)
-            self.parse_dataset(data[key], sec_scf_iteration, include=calc_quantities)
-            for sub_key in data[key].keys():
-                if sub_key.startswith('ineq-'):
-                    sec_ineq = sec_scf_iteration.m_create(x_w2dynamics_quantities)
-                    self.parse_dataset(data[key][sub_key], sec_ineq)
+            filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), self.mainfile)
+            farg = 'r+b' if os.path.isfile(os.path.join(os.path.dirname(self.filepath), filename)) else 'wb'
+            if self.archive.m_context:
+                with self.archive.m_context.raw_file(filename, farg) as f:
+                    for subkey in self.data.get(key).keys():
+                        parameter = self.data.get(key).get(subkey)
+                        if subkey == 'mu':
+                            value = parameter.get('value')
+                            sec_energy = sec_scf_iteration.m_create(Energy)
+                            sec_energy.fermi = np.float64(value) * ureg.eV
+                        elif subkey != 'ineq-001':
+                            value = parameter.get('value')[:]
+                            value = to_hdf5(value, f, f'{key}/{subkey}/value')
+                            name = self._re_namesafe.sub('_', subkey)
+                            setattr(sec_scf_iteration, f'x_w2dynamics_{name}', value)
+                        else:
+                            sec_ineq = sec_scf_iteration.m_create(x_w2dynamics_quantities)
+                            for name in parameter.keys():
+                                # resolve value from 'value'
+                                value = parameter.get(name)
+                                if isinstance(value, h5py.Group) and 'value' in value.keys():
+                                    value = value.get('value')
+                                if not isinstance(value, h5py.Dataset):
+                                    continue
+                                value = to_hdf5(value, f, f'{key}/{subkey}/{name}/value')
+                                name = self._re_namesafe.sub('_', name)
+                                setattr(sec_ineq, f'x_w2dynamics_{name}', value)
 
-            if sec_scf_iteration.x_w2dynamics_mu is not None:
-                sec_energy = sec_scf_iteration.m_create(Energy)
-                sec_energy.fermi = sec_scf_iteration.x_w2dynamics_mu * ureg.eV
-
+            # Storing converged quantities from dmft-last or stat-last
             if key.endswith('last'):
                 sec_gf = sec_scc.m_create(GreensFunctions)
-                sec_gf.matsubara_freq = sec_run.x_w2dynamics_axes.x_w2dynamics_iw
-                sec_gf.tau = sec_run.x_w2dynamics_axes.x_w2dynamics_tau
-                sec_gf.chemical_potential = data.get(key)['mu']['value']
-                norb = data['.config'].attrs.get('atoms.1.nd')
+                if sec_run.method[-1].m_xpath('frequency_mesh'):
+                    sec_gf.matsubara_freq = sec_run.method[-1].frequency_mesh.points.to('eV').magnitude.imag
+                if sec_run.method[-1].m_xpath('time_mesh'):
+                    sec_gf.tau = sec_run.method[-1].time_mesh.points.imag
+                if self.data.get(key).get('mu') is not None:
+                    sec_gf.chemical_potential = self.data.get(key).get('mu').get('value')
+                norb = self.data.get('.config').attrs.get('atoms.1.nd')
                 for subkey in self._inequivalent_atom_map.keys():
                     parameters = []
                     if n_ineq == n_atoms:
                         for i in range(n_ineq):
-                            parameters.append(getattr(
-                                sec_scf_iteration.x_w2dynamics_ineq[i], self._inequivalent_atom_map.get(subkey, [])))
-                    else:  # TODO check whether there are more complicated cases where this is not true
-                        if n_atoms % n_ineq == 0 and n_ineq > 1:
-                            for i in range(n_atoms):
-                                parameters.append(getattr(
-                                    sec_scf_iteration.x_w2dynamics_ineq[i % n_ineq], self._inequivalent_atom_map.get(subkey, [])))
-                        elif n_ineq == 1:
-                            for i in range(n_atoms):
-                                parameters.append(getattr(
-                                    sec_scf_iteration.x_w2dynamics_ineq[0], self._inequivalent_atom_map.get(subkey, [])))
-                        else:
-                            self.logger.warning('Number of inequivalent atoms and number of atoms per unit cell '
-                                                'is neither equal nor multiples. Please, revise the output.')
-                            break
+                            value = self.data.get(key).get(f'ineq-00{i + 1}').get(self._inequivalent_atom_map.get(subkey, [])).get('value')[:]
+                            parameters.append(value)
+                    elif n_atoms % n_ineq == 0 and n_ineq > 1:
+                        for i in range(n_atoms):
+                            value = self.data.get(key).get(f'ineq-00{(i % n_ineq) + 1}').get(self._inequivalent_atom_map.get(subkey, [])).get('value')[:]
+                            parameters.append(value)
+                    elif n_ineq == 1:
+                        for i in range(n_atoms):
+                            value = self.data.get(key).get('ineq-001').get(self._inequivalent_atom_map.get(subkey, [])).get('value')[:]
+                            parameters.append(value)
+                    else:
+                        self.logger.warning('Number of inequivalent atoms and number of atoms per unit cell '
+                                            'is neither equal nor multiples. Please, revise the output.')
+                        break
 
                     parameters = np.array(parameters)
                     # reordering calculation matrices to standarize w2dynamics and solid_dmft
@@ -292,31 +374,34 @@ class W2DynamicsParser:
                 parameters = []
                 if n_ineq == n_atoms:
                     for i in range(n_ineq):
+                        value = self.data.get(key).get(f'ineq-00{i + 1}').get('occ').get('value')[:]
                         parameters.append([[
-                            sec_scf_iteration.x_w2dynamics_ineq[i].x_w2dynamics_occ[no, ns, no, ns]
+                            value[no, ns, no, ns]
                             for no in range(norb)] for ns in range(2)])
-
-                else:
-                    if n_atoms % n_ineq == 0 and n_ineq > 1:
-                        for i in range(n_atoms):
-                            parameters.append([[
-                                sec_scf_iteration.x_w2dynamics_ineq[i % n_ineq].x_w2dynamics_occ[no, ns, no, ns]
-                                for no in range(norb)] for ns in range(2)])
-                    elif n_ineq == 1:
-                        for i in range(n_atoms):
-                            parameters.append([[
-                                sec_scf_iteration.x_w2dynamics_ineq[0].x_w2dynamics_occ[no, ns, no, ns]
-                                for no in range(norb)] for ns in range(2)])
+                elif n_atoms % n_ineq == 0 and n_ineq > 1:
+                    for i in range(n_atoms):
+                        value = self.data.get(key).get(f'ineq-00{(i % n_ineq) + 1}').get('occ').get('value')[:]
+                        parameters.append([[
+                            value[no, ns, no, ns]
+                            for no in range(norb)] for ns in range(2)])
+                elif n_ineq == 1:
+                    for i in range(n_atoms):
+                        value = self.data.get(key).get(f'ineq-001').get('occ').get('value')[:]
+                        parameters.append([[
+                            value[no, ns, no, ns]
+                            for no in range(norb)] for ns in range(2)])
                 sec_gf.orbital_occupations = np.array(parameters)
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
+        self.mainfile = os.path.basename(self.filepath)
         self.logger = logging.getLogger(__name__) if logger is None else logger
 
         try:
             data = h5py.File(self.filepath)
+            self.data = data
         except Exception:
             self.logger.error('Error opening hdf5 file.')
             data = None
@@ -330,17 +415,17 @@ class W2DynamicsParser:
 
         # run.x_w2dynamics_axes section
         sec_axes = sec_run.m_create(x_w2dynamics_axes)
-        self.parse_dataset(data.get('.axes'), sec_axes)
+        self.parse_axes(self.data.get('.axes'), sec_axes)
 
         # System section
         self.parse_system()
 
         # Method.DMFT section with inputs (HoppingMatrix + InteractionModel)
-        self.parse_input_model(data.get('.config'))
-        self.parse_method(data.get('.config'))
+        self.parse_input_model(self.data.get('.config'))
+        self.parse_method(self.data.get('.config'))
 
         # Calculation section
-        self.parse_scc(data)
+        self.parse_scc()
 
         # Workflow section
         sec_workflow = self.archive.m_create(Workflow)
