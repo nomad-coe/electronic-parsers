@@ -1059,7 +1059,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             sec_k_mesh.n_points = nkptgw
             sec_k_mesh.points = kptgw
         # QMesh same as KMesh
-        sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
+            sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
         # Type
         gwcalctype = self.out_parser.get_input_var('gwcalctype', 4, 0)
         if 0 <= gwcalctype <= 9:
