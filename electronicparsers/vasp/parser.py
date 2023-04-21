@@ -391,7 +391,7 @@ class OutcarTextParser(TextParser):
                         repeats=True)])),
             Quantity(
                 'ICORELEVEL',
-                r'Core level calculations are selected ICORELEVEL\s+\=\s+(2)',
+                r'Core level calculations are selected ICORELEVEL\s+\=\s+2\n(.+\n.+\n)',
                 sub_parser=TextParser(quantities=[
                     Quantity('CLNT', r'CLNT\s*=\s*(\d+)', type=np.int32),
                     Quantity('CLN', r'CLN\s*=\s*(\d+)', type=np.int32),
@@ -753,9 +753,10 @@ class OutcarContentParser(ContentParser):
         core_hole_tag = self.parser.get('ICORELEVEL')
         if core_hole_tag is not None:
             core_hole_info['ICORELEVEL'] = 2
+            icore_level_parsed = self.parser.results['ICORELEVEL']
             for tag in core_hole_keys:
                 if tag != 'ICORELEVEL':
-                    core_hole_info[tag] = self.parser.get(tag)
+                    core_hole_info[tag] = icore_level_parsed.get(tag)
         return core_hole_info
 
 class RunXmlContentHandler(ContentHandler):
