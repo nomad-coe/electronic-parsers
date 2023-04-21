@@ -1967,8 +1967,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             self.parse_file(f, sec_scc)
 
         # example band gap setup
-        gw_band_gap = self.info_gw_parser.get('direct_band_gap',
-                        self.info_gw_parser.get('fundamental_band_gap'))
+        gw_band_gap = self.info_gw_parser.get(
+            'direct_band_gap', self.info_gw_parser.get('fundamental_band_gap'))
         if gw_band_gap is not None:
             sec_gap = sec_scc.m_create(BandGap)
             sec_gap.value = gw_band_gap
