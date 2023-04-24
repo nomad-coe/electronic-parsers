@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: https://www.onetep.org/
+code_name: ONETEP
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: ONETEP
+  codeLabelStyle: All in capitals
+  codeName: onetep
+  codeUrl: https://www.onetep.org/
+  parserDirName: dependencies/electronic/electronicparsers/onetep/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/onetep
+parser_class_name: electronicparsers.onetep.parser.OnetepParser
+python_package: electronicparsers.onetep

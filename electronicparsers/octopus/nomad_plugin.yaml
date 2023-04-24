@@ -1,0 +1,40 @@
+code_category: Atomistic code
+code_homepage: https://octopus-code.org/
+code_name: Octopus
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: Octopus
+  codeLabelStyle: 'Capitals: O'
+  codeName: octopus
+  codeUrl: https://octopus-code.org/
+  parserDirName: dependencies/electronic/electronicparsers/octopus/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: '|Input Filename| Description|
+
+    |--- | --- |
+
+    |`<text_file>` | **Mainfile:** a plain text file w/arbitrary name|
+
+    |`exec/` | Subdir for runtime information |
+
+    |`exec/parser.log` | Input variables (user-defined & default values) |
+
+    |`inp`| input file|
+
+    |`parse.log`| **Warining** : probably obsolete|
+
+    |`restart/`| Data to restart a calculation, e.g., `restart/gs/` is for ground-state|
+
+    |`static/` | Subdir to report static part of a calculation|
+
+    |`static/eigenvalues`| |
+
+    |`static/info` | General info on static part|
+
+    '
+name: parsers/octopus
+parser_class_name: electronicparsers.octopus.parser.OctopusParser
+python_package: electronicparsers.octopus

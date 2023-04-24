@@ -1,0 +1,30 @@
+code_category: Atomistic code
+code_homepage: https://www.yambo-code.org/
+code_name: YAMBO
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: YAMBO
+  codeLabelStyle: all in capitals
+  codeName: yambo
+  codeUrl: https://www.yambo-code.org/
+  parserDirName: dependencies/electronic/electronicparsers/yambo/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: '|Input Filename| Description|
+
+    |--- | --- |
+
+    |`r-*` | **Mainfile:** a plain text file w/ **user-defined** name|
+
+    |`o-*` | plain text auxiliary output files w/ user-defined filenames |
+
+    |`*.in`| plain text input file w/ **user-defined** name|
+
+    |`n.*`| netcdf file with **user-defined** name|
+
+    '
+name: parsers/yambo
+parser_class_name: electronicparsers.yambo.parser.YamboParser
+python_package: electronicparsers.yambo

@@ -1,0 +1,26 @@
+code_category: Atomistic code
+code_homepage: https://psicode.org/
+code_name: Psi4
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: Psi4
+  codeLabelStyle: 'Capitals: P'
+  codeName: psi4
+  codeUrl: https://psicode.org/
+  parserDirName: dependencies/electronic/electronicparsers/psi4/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: '|Input Filename| Description|
+
+    |--- | --- |
+
+    |`*.out` | **Mainfile:** a plain text file w/ **user-defined** name|
+
+    |`*.dat` |plain text input file|
+
+    '
+name: parsers/psi4
+parser_class_name: electronicparsers.psi4.parser.Psi4Parser
+python_package: electronicparsers.psi4

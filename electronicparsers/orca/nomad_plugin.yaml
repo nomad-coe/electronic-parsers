@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: https://www.faccts.de/orca/
+code_name: ORCA
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: ORCA
+  codeLabelStyle: All in capitals
+  codeName: orca
+  codeUrl: https://www.faccts.de/orca/
+  parserDirName: dependencies/electronic/electronicparsers/orca/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/orca
+parser_class_name: electronicparsers.orca.parser.OrcaParser
+python_package: electronicparsers.orca

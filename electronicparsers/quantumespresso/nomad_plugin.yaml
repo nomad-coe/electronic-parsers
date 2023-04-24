@@ -1,0 +1,30 @@
+code_category: Atomistic code
+code_homepage: http://www.quantum-espresso.org/
+code_name: QuantumESPRESSO
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: QuantumESPRESSO
+  codeLabelStyle: Capitals Q, E, S, P, R, E, S, S, O
+  codeName: quantumespresso
+  codeUrl: http://www.quantum-espresso.org/
+  parserDirName: dependencies/electronic/electronicparsers/quantum-espresso/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: '|Filename| Description|
+
+    |---|---|
+
+    |`<text_file>`|**Mainfile:** a plain text file w/arbitrary name. \
+
+    One of the top lines must contain ''`Program PWSCF.*starts`'', \
+
+    where ''`.*`'' means an arbitrary number ''`*`'' of arbitrary \
+
+    characters ''`.`''|"
+
+    '
+name: parsers/quantumespresso
+parser_class_name: electronicparsers.quantumespresso.parser.QuantumEspressoParser
+python_package: electronicparsers.quantumespresso

@@ -1,0 +1,17 @@
+code_category: Atomistic code
+code_homepage: http://www.wien2k.at/
+code_name: WIEN2k
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: WIEN2k
+  codeLabelStyle: All in capitals, except k
+  codeName: wien2k
+  codeUrl: http://www.wien2k.at/
+  parserDirName: dependencies/electronic/electronicparsers/wien2k/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/wien2k
+parser_class_name: electronicparsers.wien2k.parser.Wien2kParser
+python_package: electronicparsers.wien2k

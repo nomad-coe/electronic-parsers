@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: https://wiki.fysik.dtu.dk/gpaw/
+code_name: GPAW
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: GPAW
+  codeLabelStyle: All in capitals
+  codeName: gpaw
+  codeUrl: https://wiki.fysik.dtu.dk/gpaw/
+  parserDirName: dependencies/electronic/electronicparsers/gpaw/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/gpaw
+parser_class_name: electronicparsers.gpaw.parser.GPAWParser
+python_package: electronicparsers.gpaw

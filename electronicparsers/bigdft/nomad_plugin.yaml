@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: http://bigdft.org/
+code_name: BigDFT
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: BigDFT
+  codeLabelStyle: 'Capitals: B,D,F,T,'
+  codeName: bigdft
+  codeUrl: http://bigdft.org/
+  parserDirName: dependencies/electronic/electronicparsers/bigdft/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/bigdft
+parser_class_name: electronicparsers.bigdft.parser.BigDFTParser
+python_package: electronicparsers.bigdft

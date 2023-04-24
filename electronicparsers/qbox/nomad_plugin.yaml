@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: http://qboxcode.org/
+code_name: Qbox
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: Qbox
+  codeLabelStyle: 'Capitals: Q'
+  codeName: qbox
+  codeUrl: http://qboxcode.org/
+  parserDirName: dependencies/electronic/electronicparsers/qbox/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/qbox
+parser_class_name: electronicparsers.qbox.parser.QboxParser
+python_package: electronicparsers.qbox

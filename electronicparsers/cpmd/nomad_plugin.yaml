@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: https://www.cpmd.org/
+code_name: CPMD
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: CPMD
+  codeLabelStyle: all in capitals
+  codeName: cpmd
+  codeUrl: https://www.cpmd.org/
+  parserDirName: dependencies/electronic/electronicparsers/cpmd/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/cpmd
+parser_class_name: electronicparsers.cpmd.parser.CPMDParser
+python_package: electronicparsers.cpmd

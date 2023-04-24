@@ -1,0 +1,33 @@
+code_category: Atomistic code
+code_homepage: https://www.synopsys.com/silicon/quantumatk.html
+code_name: QuantumATK
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: QuantumATK
+  codeLabelStyle: 'capitals: Q, A, T, K'
+  codeName: atk
+  codeUrl: https://www.synopsys.com/silicon/quantumatk.html
+  parserDirName: dependencies/electronic/electronicparsers/atk/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: 'Currently, NOMAD only supports NetCDF output of AtomistixToolKit
+    (ATK) and not the
+
+    HDF5 based output of QuantumATK.
+
+    '
+  preamble: ''
+  status: production
+  tableOfFiles: '|Input Filename| Description|
+
+    |--- | --- |
+
+    |`*.nc` | The NetCDF output is used as the **mainfile** (HDF5 output is currently
+    not yet supported) |
+
+    |`*` | Other ATK input and output files act as auxiliary files that can be downloaded,
+    put are not parsed |
+
+    '
+name: parsers/atk
+parser_class_name: electronicparsers.atk.parser.ATKParser
+python_package: electronicparsers.atk

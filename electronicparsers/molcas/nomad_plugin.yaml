@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: http://molcas.org/
+code_name: Molcas
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: Molcas
+  codeLabelStyle: 'Capitals: M; also seen all in capitals'
+  codeName: molcas
+  codeUrl: http://molcas.org/
+  parserDirName: dependencies/electronic/electronicparsers/molcas/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/molcas
+parser_class_name: electronicparsers.molcas.parser.MolcasParser
+python_package: electronicparsers.molcas

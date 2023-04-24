@@ -1,0 +1,35 @@
+code_category: Atomistic code
+code_homepage: https://www.crystal.unito.it/
+code_name: CRYSTAL
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: CRYSTAL
+  codeLabelStyle: all in capitals
+  codeName: crystal
+  codeUrl: https://www.crystal.unito.it/
+  parserDirName: dependencies/electronic/electronicparsers/crystal/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: '|Input Filename| Description|
+
+    |--- | --- |
+
+    |`<text_file>` | **Mainfile**, plain text file w/arbitrary name. E.g.,  `simulation.out`
+    |
+
+    |`<text_file>.d12` | Program input. Plain text file with the same name (different
+    extension) as the mainfile. E.g. `simulation.d12` |
+
+    |AUX FILES| Description|
+
+    |`<text_file>.f25`| Output of various electronic and electrical properties. Plain
+    text file with the same name (different extension) as the mainfile. **NOTE**:
+    required in order to parse band structures and density of states. E.g. `simulation.f25`
+    |
+
+    '
+name: parsers/crystal
+parser_class_name: electronicparsers.crystal.parser.CrystalParser
+python_package: electronicparsers.crystal
