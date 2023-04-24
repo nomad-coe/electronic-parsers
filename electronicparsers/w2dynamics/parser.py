@@ -41,6 +41,8 @@ from .metainfo.w2dynamics import (
 from ..wannier90.parser import WOutParser, HrParser
 from ..utils import get_files
 from nomad.parsing.parser import to_hdf5
+# For automatic workflows
+from nomad.processing.data import Entry
 
 
 re_n = r'[\n\r]'
@@ -432,3 +434,17 @@ class W2DynamicsParser:
         # Workflow section
         workflow = SinglePoint()
         self.archive.workflow2 = workflow
+
+        # Checking if other mainfiles are present, if any is DFT will link Wannier90 with
+        # it in an automatic workflow.
+        try:
+            upload_id = archive.metadata.upload_id
+            entry_ids = [i.entry_id for i in Entry.objects(upload_id=upload_id)]
+            if len(entry_ids) > 1:
+                for entry_id in entry_ids:
+                    entry_archive = archive.m_context.load_archive(entry_id, upload_id, None)
+                    if entry_archive.metadata.parser_name in 'parsers/wannier90':
+                        mainfile = entry_archive.metadata.mainfile
+                        print(entry_id, entry_archive, entry_archive.metadata.parser_name, self.filepath, mainfile)
+        except Exception:
+            self.logger.warning('Could not resolve the automatic workflow for Wannier90.')
