@@ -44,7 +44,8 @@ def test_tio2(parser):
     assert len(sec_method) == 1
     assert sec_method[-1].m_xpath('bse')
     sec_bse = sec_method[-1].bse
-    assert sec_bse.type == 'lanczos-haydock'
+    assert sec_bse.type == 'Singlet'
+    assert sec_bse.solver == 'Lanczos-Haydock'
     assert sec_bse.n_states == 119
     assert sec_bse.broadening.to('eV').magnitude == approx(0.1)
     assert (sec_bse.q_mesh.grid == np.array([1, 1, 1])).all()
@@ -53,7 +54,7 @@ def test_tio2(parser):
     assert sec_bse.screening.dielectric_infinity == 1000000
     assert (sec_bse.screening.k_mesh.grid == np.array([3, 3, 2])).all()
     assert (sec_method[-1].x_ocean_edges[0] == np.array([1, 1, 0])).all()
-    assert sec_bse.core_hole.solver == 'lanczos-haydock'
+    assert sec_bse.core_hole.solver == 'Lanczos-Haydock'
     assert sec_bse.core_hole.mode == 'absorption'
     assert sec_bse.core_hole.broadening.to('eV').magnitude == approx(0.89)
     sec_ocean_screen = sec_method[-1].x_ocean_screen
