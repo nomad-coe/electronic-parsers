@@ -28,7 +28,8 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
-    Electronic, Method, DFT, Smearing, XCFunctional, Functional, KMesh, BasisSet
+    Electronic, Method, DFT, Smearing, XCFunctional, Functional, KMesh, BasisSet,
+    AtomParameters, CoreHole
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -140,6 +141,47 @@ class In2Parser(TextParser):
             Quantity('emin', r'([\d\.\- ]+)\s*EMIN'),
             Quantity('smearing', r'(GAUSS|ROOT|TEMP|TETRA|ALL)\s*([\d\.]+)'),
             Quantity('gmax', r'([\d\.\-]+)\s*GMAX')]
+
+
+class IncParser(TextParser):
+    non_polarized_max_occupancies = {1: 2, 2: 4}  # TODO: extend to more cases
+    polarized_max_occupancies = {1: 1, 2: 2}
+
+    def __init__(self):
+        super().__init__()
+
+    def init_quantities(self):
+        neg_float = r'[\-\.\d]+'
+
+        self._quantities = [
+            Quantity(
+                'atom_orbitals',
+                r'''(.+NUMBER OF ORBITALS \(EXCLUDING SPIN\), SHIFT, IPRINT[\s\S]+)
+                .+NUMBER OF ORBITALS \(EXCLUDING SPIN\), SHIFT, IPRINT''',
+                repeats=True,
+                sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'orbital_overview',
+                        r'([\.\d\s]+)NUMBER OF ORBITALS \(EXCLUDING SPIN\), SHIFT, IPRINT',
+                        sub_parser=TextParser(quantities=[
+                            Quantity('n_orbitals', r'(\d+) [\.\d]+  \d+'),
+                            Quantity('shift', r'\d+ ([\.\d]+)  \d+'),
+                            Quantity('iprint', r'\d+ [\.\d]+  (\d+)')
+                        ])
+                    ),
+                    Quantity(
+                        'orbital',
+                        r'([\-\.\d,]+)\s+\( N,KAPPA,OCCUP\)',
+                        repeats=True,
+                        sub_parser=TextParser(quantities=[
+                            Quantity('n', rf'({neg_float}),{neg_float},{neg_float}'),
+                            Quantity('kappa', rf'{neg_float},({neg_float}),{neg_float}'),
+                            Quantity('occup', rf'{neg_float},{neg_float},({neg_float})'),
+                        ])
+                    ),
+                ])
+            )
+        ]
 
 
 class DosParser(TextParser):
@@ -412,6 +454,7 @@ class Wien2kParser:
         self.in0_parser = In0Parser()
         self.in1_parser = In1Parser()
         self.in2_parser = In2Parser()
+        self.inc_parser = IncParser()
         self.struct_parser = StructParser()
         self.dos_parser = DosParser()
 
@@ -743,6 +786,10 @@ class Wien2kParser:
             in2_file = self.get_wien2k_file('in2c')
         self.in2_parser.mainfile = in2_file
 
+        # read atomic starting occupancy from inc
+        inc_file = self.get_wien2k_file('inc')
+        self.inc_parser.mainfile = inc_file  # TODO: add capturing for inc1 and inc2
+
         for key in ['gmax', 'switch']:
             val = self.in2_parser.get(key)
             if val is not None:
@@ -774,6 +821,11 @@ class Wien2kParser:
 
         # basis
         sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
+
+        # atom parameters
+        for atom in self.inc_parser.get('atom_orbitals'):
+            sec_atom_parameters = sec_method.m_create(AtomParameters)
+            sec_atom_parameters.n_valence_electrons = atom.get('n_valence_electrons')
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
