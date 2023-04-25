@@ -18,6 +18,7 @@
 #
 import logging
 from nomad.datamodel.metainfo.simulation.run import Run, Program
+from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.metainfo.metainfo import Quantity
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 
@@ -30,7 +31,7 @@ lattice_section = Quantity('lattice_section',
             Quantity('lattice_vectors', vector_3D, repeats=True),
         ])
     )
-rep_latt_section = Quantity('rep_latt_section',
+reciprocal_lattice_section = Quantity('rep_latt_section',
         r'reciprocal basis (a.u.)\n[\s\S]+?\n\n',
         sub_parser=TextParser(quantities=[
             Quantity('reciprocal_lattice_vectors', vector_3D, repeats=True),
@@ -46,19 +47,26 @@ atoms_coords = Quantity('atoms_coords',
 program = Quantity('program', r'(^\s*CMB2\s+Version:.+)', sub_parser=\
     TextParser(quantities=[
         Quantity('version', r'Version:\s+([\d\.]+)', dtype=str),
+        lattice_section,
+        reciprocal_lattice_section,
     ]))
 run = Quantity('run', r'^(\s*CMB2\s+Version:[\s\S]+?)\Z', repeats=True,
-        sub_parser=TextParser(quantities=[program])
-    )
+                sub_parser=TextParser(quantities=[program])
+)
 
 class CMB2Parser():
     ''''''
     def __init__(self):
         self.parser = TextParser(quantities=[run])
-        # self.parser._msections_map = {'run': Run, 'program': Program}
+        self.parser._msections_map = {
+            'run': Run,
+            'program': Program,
+            'system': System,
+            'system.atoms': Atoms,
+            }
 
     def parse(self, filepath, archive, logger):
         '''Parse a CMB2 file.'''
         self.parser.mainfile = filepath
-        archive.m_create(Run).m_create(Program)
+        archive.m_create(Run)
         self.parser.write_to_archive(archive)
