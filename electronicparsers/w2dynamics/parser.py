@@ -69,6 +69,7 @@ class W2DynamicsParser:
         self._calculation_type = 'dmft'
         self.wout_parser = WOutParser()
         self.hr_parser = HrParser()
+        self.data = None
 
         self._hubbard_kanamori_map = {
             'u': 'u',
@@ -303,12 +304,12 @@ class W2DynamicsParser:
                 n_ineq += 1
         n_atoms = sec_run.method[-1].dmft.n_atoms_per_unit_cell
 
+        filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), self.mainfile)
+        farg = 'r+b'  # Always reading the hdf5 mainfile
         for key in calc_keys:
             if key not in self.data.keys():
                 continue
             sec_scf_iteration = sec_scc.m_create(ScfIteration)
-            filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), self.mainfile)
-            farg = 'r+b' if os.path.isfile(os.path.join(os.path.dirname(self.filepath), filename)) else 'wb'
             if self.archive.m_context:
                 with self.archive.m_context.raw_file(filename, farg) as f:
                     for subkey in self.data.get(key).keys():
