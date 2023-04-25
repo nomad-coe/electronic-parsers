@@ -16,16 +16,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import sys
-import json
-import logging
-
-from nomad.utils import configure_logging
-from nomad.datamodel import EntryArchive
-from electronicparsers.tbs import TBSParser
-
-if __name__ == "__main__":
-    configure_logging(console_log_level=logging.DEBUG)
-    archive = EntryArchive()
-    TBSParser().parse(sys.argv[1], archive, logging)
-    json.dump(archive.m_to_dict(), sys.stdout, indent=2)
+from .parser import TBStudioParser

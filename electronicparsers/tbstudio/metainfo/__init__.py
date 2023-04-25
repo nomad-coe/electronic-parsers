@@ -18,8 +18,8 @@
 #
 from nomad.metainfo import Environment
 
-from . import tbs
+from . import tbstudio
 
 
 m_env = Environment()
-m_env.m_add_sub_section(Environment.packages, tbs.m_package)
+m_env.m_add_sub_section(Environment.packages, tbstudio.m_package)
