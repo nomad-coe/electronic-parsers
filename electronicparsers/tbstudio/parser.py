@@ -36,7 +36,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 
 
-class TBSParser:
+class TBStudioParser:
     level = 1
 
     def __init__(self):

@@ -1,13 +1,13 @@
 code_category: Atomistic code
 code_homepage: https://tight-binding.com/
-code_name: TBS
+code_name: TBStudio
 metadata:
   codeCategory: Atomistic code
-  codeLabel: TBS
+  codeLabel: TBStudio
   codeLabelStyle: All in capitals
-  codeName: tbs
+  codeName: tbstudio
   codeUrl: https://tight-binding.com/
-  parserDirName: dependencies/electronic/electronicparsers/tbs/
+  parserDirName: dependencies/electronic/electronicparsers/tbstudio/
   parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
   parserSpecific: ''
   preamble: ''
@@ -19,6 +19,6 @@ metadata:
     | `*.tbm` | **Mainfile**: output binary file |
 
     '
-name: parsers/tbs
-parser_class_name: electronicparsers.tbs.parser.TBSParser
-python_package: electronicparsers.tbs
+name: parsers/tbstudio
+parser_class_name: electronicparsers.tbstudio.parser.TBStudioParser
+python_package: electronicparsers.tbstudio
