@@ -206,8 +206,8 @@ class Wannier90Parser():
         self._dft_codes = [
             'quantumespresso', 'abinit', 'vasp', 'siesta', 'wien2k', 'fleur', 'openmx', 'gpaw']
 
-    def parse_system(self, archive, wout_parser):
-        sec_run = archive.run[-1]
+    def parse_system(self):
+        sec_run = self.archive.run[-1]
         sec_system = sec_run.m_create(System)
 
         structure = self.wout_parser.get('structure')

@@ -26,7 +26,8 @@ from nomad.datamodel.metainfo.workflow import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
     GW, GWMethod, ParticleHoleExcitations,
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,
-    PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
+    PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults,
+    DMFT, DMFTMethod, DMFTResults
 )
 
 
@@ -283,3 +284,53 @@ class BeyondDFTWorkflowsParser:
             workflow.m_add_sub_section(ParticleHoleExcitations.tasks, task)
 
         xs_workflow_archive.workflow2 = workflow
+
+    def parse_dmft_workflow(self, wannier_archive: EntryArchive, dmft_workflow_archive: EntryArchive):
+        self.run_workflow_archive(dmft_workflow_archive)
+
+        workflow = DMFT(method=DMFTMethod(), results=DMFTResults())
+        workflow.name = 'Projection+DMFT'
+
+        # TODO define Method
+
+        # Results
+        bs_proj = extract_section(wannier_archive, 'run/calculation/band_structure_electronic')
+        dos_proj = extract_section(wannier_archive, 'run/calculation/dos_electronic')
+        gf_dmft = extract_section(self.archive, 'run/calculation/greens_functions')
+        workflow.results.band_structure_dft = bs_proj
+        workflow.results.dos_dft = dos_proj
+        workflow.results.greens_functions_dmft = gf_dmft
+
+        # Inputs and Outputs
+        input_structure = extract_section(wannier_archive, 'run/system')
+        wannier_calculation = extract_section(wannier_archive, 'run/calculation')
+        dmft_calculation = extract_section(self.archive, 'run/calculation')
+        if input_structure:
+            workflow.m_add_sub_section(
+                DMFT.inputs, Link(name='Input structure', section=input_structure))
+        if dmft_calculation:
+            workflow.m_add_sub_section(
+                DMFT.outputs, Link(name='Output DMFT calculation', section=dmft_calculation))
+
+        # Wannier90 task
+        if wannier_archive.workflow2:
+            task = TaskReference(task=wannier_archive.workflow2)
+            task.name = 'Wannier90'
+            # TODO check why this re-writting is necessary to not repeat sections inside tasks
+            if input_structure:
+                task.inputs = [Link(name='Input structure', section=input_structure)]
+            if wannier_calculation:
+                task.outputs = [Link(name='Output Wannier90 calculation', section=wannier_calculation)]
+            workflow.m_add_sub_section(DMFT.tasks, task)
+
+        # GW task
+        if self.archive.workflow2:
+            task = TaskReference(task=self.archive.workflow2)
+            task.name = 'DMFT'
+            if wannier_calculation:
+                task.inputs = [Link(name='Output Wannier90 calculation', section=wannier_calculation)]
+            if dmft_calculation:
+                task.outputs = [Link(name='Output DMFT calculation', section=dmft_calculation)]
+            workflow.m_add_sub_section(DMFT.tasks, task)
+
+        dmft_workflow_archive.workflow2 = workflow

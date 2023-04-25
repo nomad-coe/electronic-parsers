@@ -42,7 +42,9 @@ from ..wannier90.parser import WOutParser, HrParser
 from ..utils import get_files
 from nomad.parsing.parser import to_hdf5
 # For automatic workflows
+from ..utils import BeyondDFTWorkflowsParser
 from nomad.processing.data import Entry
+from nomad.files import UploadFiles
 
 
 re_n = r'[\n\r]'
@@ -61,7 +63,7 @@ class LogParser(TextParser):
         ]
 
 
-class W2DynamicsParser:
+class W2DynamicsParser(BeyondDFTWorkflowsParser):
     level = 2
 
     def __init__(self):
@@ -176,7 +178,7 @@ class W2DynamicsParser:
 
         # HoppingMatrix
         hr_files = get_files('*hr.dat', self.filepath, self.mainfile, deep=False)
-        if hr_files:  # parse crystal from Wannier90
+        if hr_files:  # parse tight-binding model from Wannier90
             self.hr_parser.mainfile = hr_files[-1]
             sec_hopping_matrix = sec_hamiltonian.m_create(HoppingMatrix)
             sec_hopping_matrix.n_orbitals = self.wout_parser.get('Nwannier')
@@ -396,6 +398,16 @@ class W2DynamicsParser:
                             for no in range(norb)] for ns in range(2)])
                 sec_gf.orbital_occupations = np.array(parameters)
 
+    def init_parser(self):
+        self.data = None
+
+    def get_mainfile_keys(self, filepath):
+        mainfile = os.path.basename(filepath)
+        wannier90_files = get_files('*.wout', filepath, mainfile, deep=False)
+        if len(wannier90_files) == 1:
+            return ['DMFT_workflow']
+        return True
+
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
@@ -435,16 +447,23 @@ class W2DynamicsParser:
         workflow = SinglePoint()
         self.archive.workflow2 = workflow
 
-        # Checking if other mainfiles are present, if any is DFT will link Wannier90 with
-        # it in an automatic workflow.
-        try:
-            upload_id = archive.metadata.upload_id
-            entry_ids = [i.entry_id for i in Entry.objects(upload_id=upload_id)]
-            if len(entry_ids) > 1:
-                for entry_id in entry_ids:
-                    entry_archive = archive.m_context.load_archive(entry_id, upload_id, None)
-                    if entry_archive.metadata.parser_name in 'parsers/wannier90':
-                        mainfile = entry_archive.metadata.mainfile
-                        print(entry_id, entry_archive, entry_archive.metadata.parser_name, self.filepath, mainfile)
-        except Exception:
-            self.logger.warning('Could not resolve the automatic workflow for Wannier90.')
+        # Checking if other mainfiles are present, if the closest is a Wannier90, tries to
+        # link it with the corresponding w2dynamics data
+        wannier90_files = get_files('*.wout', self.filepath, self.mainfile, deep=False)
+        if len(wannier90_files) == 1:
+            wannier90_path = wannier90_files[-1]
+            try:
+                upload_id = archive.metadata.upload_id
+                upload_path = UploadFiles.get(upload_id)
+                entry_ids = [i.entry_id for i in Entry.objects(upload_id=upload_id)]
+                if len(entry_ids) > 1:
+                    for entry_id in entry_ids:
+                        entry_archive = archive.m_context.load_archive(entry_id, upload_id, None)
+                        #if entry_archive.metadata.parser_name in 'parsers/wannier90':
+                        mainfile = f'{upload_path}/raw/{entry_archive.metadata.mainfile}'
+                        if wannier90_path == mainfile:
+                            wannier90_archive = entry_archive
+                            dmft_workflow_archive = self._child_archives.get('DMFT_workflow')
+                            self.parse_dmft_workflow(wannier90_archive, dmft_workflow_archive)
+            except Exception:
+                self.logger.warning('Could not resolve the automatic workflow for w2dynamics.')
