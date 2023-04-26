@@ -538,18 +538,3 @@ class Wannier90Parser():
 
         workflow = SinglePoint()
         self.archive.workflow2 = workflow
-
-        # Checking if other mainfiles are present, if any is DFT will link Wannier90 with
-        # it in an automatic workflow.
-        try:
-            upload_id = archive.metadata.upload_id
-            entry_ids = [i.entry_id for i in Entry.objects(upload_id=upload_id)]
-            if len(entry_ids) > 1:
-                dft_parser = [f'parsers/{dft_code}' for dft_code in self._dft_codes]
-                for entry_id in entry_ids:
-                    entry_archive = archive.m_context.load_archive(entry_id, upload_id, None)
-                    if entry_archive.metadata.parser_name in dft_parser:
-                        mainfile = entry_archive.metadata.mainfile
-                        print(entry_id, entry_archive, entry_archive.metadata.parser_name)
-        except Exception:
-            self.logger.warning('Could not resolve the automatic workflow for Wannier90.')
