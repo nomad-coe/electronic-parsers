@@ -265,34 +265,6 @@ class System(simulation.system.System):
         x_fleur_number_of_core_levels
         ''')
 
-    x_fleur_lexpansion_cutoff = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        l-expansion cutoff
-        ''')
-
-    x_fleur_mt_gridpoints = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        muffin-tin gridpoints
-        ''')
-
-    x_fleur_mt_radius = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        muffin-tin radius
-        ''')
-
-    x_fleur_logarythmic_increment = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        logarythmic increment
-        ''')
-
     x_fleur_k_max = Quantity(
         type=np.dtype(np.float64),
         shape=[],
@@ -526,6 +498,41 @@ class Method(simulation.method.Method):
         sub_section=SectionProxy('x_fleur_section_XC'),
         repeats=True)
 
+
+class AtomParameters(simulation.method.AtomParameters):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_fleur_mt_gridpoints = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        muffin-tin gridpoints
+        ''')
+
+    x_fleur_logarithmic_increment = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        logarithmic increment
+        ''')
+
+    x_fleur_lexpansion_cutoff = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        l-expansion cutoff
+        ''')
+
+    x_fleur_lexpansion_lo_cutoff = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        If present the APW+lo approach will be used.
+        This is the cutoff defining the lmax up to which LAPWs are used
+        if no APW+lo local orbital is defined for the respective l.
+        See also the respective article by G.K.H. Madsen.
+        ''')
 
 class XCFunctional(simulation.method.XCFunctional):
 

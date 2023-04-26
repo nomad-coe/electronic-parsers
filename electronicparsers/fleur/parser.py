@@ -31,7 +31,8 @@ from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing
+    Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing,
+    AtomParameters, BasisSetContainer
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandEnergies
@@ -140,6 +141,17 @@ class XMLParser(TextParser):
                         dtype=str
                     ),
                     Quantity(
+                        'species',
+                        r'\<species([\s\S]+?)\<\/species\>', repeats=True,
+                        sub_parser=TextParser(quantities=[
+                            Quantity('mt_radius', r'radius="(.+?)"', dtype=float),
+                            Quantity('x_fleur_mt_gridpoints', r'gridPoints="(.+?)"', dtype=int),
+                            Quantity('x_fleur_logarithmic_increment', r'logIncrement="(.+?)"', dtype=float),
+                            Quantity('x_fleur_lexpansion_cutoff', r'lmax="(.+?)"', dtype=int),
+                            Quantity('x_fleur_lexpansion_lo_cutoff', r'lmaxAPW="(.+?)"', dtype=int),
+                        ])
+                    ),
+                    Quantity(
                         'atom',
                         r'\<atomGroup([\s\S]+?)\<\/atomGroup\>', repeats=True,
                         # TODO parse more quantities
@@ -241,6 +253,19 @@ class XMLParser(TextParser):
         labels = [atom.species for atom in atoms]
         positions = np.dot([atom.position for atom in atoms], cell)
         return labels, positions, cell
+
+    def get_atom_parameters(self) -> list[AtomParameters]:
+        atom_parameters: list[AtomParameters] = []
+        species = self.get('input', {}).get('species', [])
+        for specie in species:
+            param = AtomParameters()
+            param.muffin_tin_radius = specie.get('mt_radius')
+            param.x_fleur_mt_gridpoints = specie.get('x_fleur_mt_gridpoints')
+            param.x_fleur_logarithmic_increment = specie.get('x_fleur_logarithmic_increment')
+            param.x_fleur_lexpansion_cutoff = specie.get('x_fleur_lexpansion_cutoff')
+            param.x_fleur_lexpansion_lo_cutoff = specie.get('x_fleur_lexpansion_lo_cutoff')
+            atom_parameters.append(param)
+        return atom_parameters
 
 
 class OutParser(TextParser):
@@ -455,6 +480,9 @@ class OutParser(TextParser):
         atoms = system.get('atoms', [None, None])
         return atoms[0], atoms[1], system.cell
 
+    def get_atom_parameters(self) -> list[AtomParameters]:
+        return []
+
 
 class FleurParser:
     def __init__(self):
@@ -503,7 +531,7 @@ class FleurParser:
             sec_run.time_run = TimeRun(date_start=dt.timestamp())
 
         sec_method = sec_run.m_create(Method)
-        sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
+        sec_method.electron_model = BasisSetContainer(type='(L)APW+lo')
         input = self.parser.get('input')
         if input is not None:
             for key in ['parameters', 'input_parameters']:
@@ -514,6 +542,8 @@ class FleurParser:
             sec_method.x_fleur_parameters = {}
         sec_method.x_fleur_parameters.update(input.get('output_parameters', {}))
         sec_method.x_fleur_parameters.update(self.parser.get('numerical_parameters', {}))
+
+        sec_method.atom_parameters = self.parser.get_atom_parameters()
 
         electronic = self.parser.electronic
         if electronic is not None:
