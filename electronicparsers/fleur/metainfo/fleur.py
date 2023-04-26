@@ -513,6 +513,7 @@ class AtomParameters(simulation.method.AtomParameters):
     x_fleur_logarithmic_increment = Quantity(
         type=np.dtype(np.float64),
         shape=[],
+        unit='meter',
         description='''
         logarithmic increment
         ''')

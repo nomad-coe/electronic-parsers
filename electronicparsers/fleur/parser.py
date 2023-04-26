@@ -105,6 +105,11 @@ class XMLParser(TextParser):
                         cell[int(vector[0]) - 1][:] = vector[1].split()
                     return cell * ureg.bohr
 
+        embedded_key = Quantity(
+            'key_val', r' (\S+=)\"(.+?)\"',
+            str_operation=lambda x: x.split('='), repeats=True
+        )
+
         self._quantities = [
             Quantity(
                 'header',
@@ -123,12 +128,7 @@ class XMLParser(TextParser):
                 sub_parser=TextParser(quantities=[
                     Quantity(
                         'parameters', r'\<calculationSetup\>([\s\S]+?)\<\/calculationSetup\>',
-                        sub_parser=TextParser(quantities=[
-                            Quantity(
-                                'key_val', r' (\S+=)\"(.+?)\"',
-                                str_operation=lambda x: x.split('='), repeats=True
-                            )
-                        ])
+                        sub_parser=TextParser(quantities=[embedded_key])
                     ),
                     Quantity(
                         'cell',
@@ -143,13 +143,7 @@ class XMLParser(TextParser):
                     Quantity(
                         'species',
                         r'\<species([\s\S]+?)\<\/species\>', repeats=True,
-                        sub_parser=TextParser(quantities=[
-                            Quantity('mt_radius', r'radius="(.+?)"', dtype=float),
-                            Quantity('x_fleur_mt_gridpoints', r'gridPoints="(.+?)"', dtype=int),
-                            Quantity('x_fleur_logarithmic_increment', r'logIncrement="(.+?)"', dtype=float),
-                            Quantity('x_fleur_lexpansion_cutoff', r'lmax="(.+?)"', dtype=int),
-                            Quantity('x_fleur_lexpansion_lo_cutoff', r'lmaxAPW="(.+?)"', dtype=int),
-                        ])
+                        sub_parser=TextParser(quantities=[embedded_key])
                     ),
                     Quantity(
                         'atom',
@@ -166,12 +160,7 @@ class XMLParser(TextParser):
                     Quantity(
                         'output_parameters',
                         r'\<output([\s\S]+?)\<\/output\>',
-                        sub_parser=TextParser(quantities=[
-                            Quantity(
-                                'key_val', r' (\S+=)\"(.+?)\"',
-                                str_operation=lambda x: x.split('='), repeats=True
-                            )
-                        ])
+                        sub_parser=TextParser(quantities=[embedded_key])
                     )
                 ])
             ),
@@ -255,15 +244,24 @@ class XMLParser(TextParser):
         return labels, positions, cell
 
     def get_atom_parameters(self) -> list[AtomParameters]:
+        '''Extract `species` xml tags, add semantics,
+        and map their settings into AtomParameters object ready for Method.atom_parameters.'''
         atom_parameters: list[AtomParameters] = []
         species = self.get('input', {}).get('species', [])
         for specie in species:
             param = AtomParameters()
-            param.muffin_tin_radius = specie.get('mt_radius')
-            param.x_fleur_mt_gridpoints = specie.get('x_fleur_mt_gridpoints')
-            param.x_fleur_logarithmic_increment = specie.get('x_fleur_logarithmic_increment')
-            param.x_fleur_lexpansion_cutoff = specie.get('x_fleur_lexpansion_cutoff')
-            param.x_fleur_lexpansion_lo_cutoff = specie.get('x_fleur_lexpansion_lo_cutoff')
+            # map the tags and values to the AtomParameters object
+            for spec in specie.get('key_val', []):
+                if spec[0] == 'radius':
+                    param.muffin_tin_radius = float(spec[1]) * ureg.bohr
+                elif spec[0] == 'gridPoints':
+                    param.x_fleur_mt_gridpoints = int(spec[1])
+                elif spec[0] == 'logIncrement':
+                    param.x_fleur_logarithmic_increment = float(spec[1]) * ureg.bohr  # TOOD: check unit
+                elif spec[0] == 'lmax':
+                    param.x_fleur_lexpansion_cutoff = int(spec[1])
+                elif spec[0] == 'lmaxAPW':
+                    param.x_fleur_lexpansion_lo_cutoff = int(spec[1])
             atom_parameters.append(param)
         return atom_parameters
 
