@@ -90,7 +90,7 @@ class BeyondDFTWorkflowsParser:
     Generates automatic beyondDFT (GW, BSE, DMFT) workflows. Main classes for parsers will
     inherit from here if some automatic workflow parsing has been implemented.
     '''
-    def __init__(self, archive: EntryArchive, _child_archives: dict, _xs_spectra_types: list):
+    def __init__(self, archive: EntryArchive, _child_archives: dict, _xs_spectra_types: list, logger):
         self.archive = archive
         self._child_archives = _child_archives
         self._xs_spectra_types = _xs_spectra_types
@@ -107,7 +107,6 @@ class BeyondDFTWorkflowsParser:
         else:
             sec_run = workflow_archive.m_create(Run)
         sec_run.program = self.archive.run[-1].program
-        sec_run.system = self.archive.run[-1].system
 
     def parse_gw_workflow(self, gw_archive: EntryArchive, gw_workflow_archive: EntryArchive):
         """Automatically parses the GW workflow. Here, `self.archive` is the DFT archive.
@@ -117,6 +116,7 @@ class BeyondDFTWorkflowsParser:
             gw_workflow_archive (EntryArchive): the GW workflow archive
         """
         self.run_workflow_archive(gw_workflow_archive)
+        gw_workflow_archive.run[-1].m_add_sub_section(Run.system, self.archive.run[-1].system[-1])
 
         workflow = GW(method=GWMethod())
         workflow.name = 'GW'
@@ -221,6 +221,7 @@ class BeyondDFTWorkflowsParser:
             xs_workflow_archive (EntryArchive): the XS workflow archive
         """
         self.run_workflow_archive(xs_workflow_archive)
+        xs_workflow_archive.run[-1].m_add_sub_section(Run.system, self.archive.run[-1].system[-1])
 
         def extract_polarization_outputs():
             output = []
@@ -287,6 +288,16 @@ class BeyondDFTWorkflowsParser:
 
     def parse_dmft_workflow(self, wannier_archive: EntryArchive, dmft_workflow_archive: EntryArchive):
         self.run_workflow_archive(dmft_workflow_archive)
+        # Check if system exists in the DMFT archive or not, and whether it exists on the
+        # Wannier90 archive or not, and then add it.
+        try:
+            sec_system = self.archive.run[-1].system[-1]
+            dmft_workflow_archive.run[-1].m_add_sub_section(Run.system, sec_system)
+        except Exception:
+            if wannier_archive.run[-1].system[-1]:
+                sec_system = wannier_archive.run[-1].system[-1]
+                self.archive.run[-1].m_add_sub_section(Run.system, sec_system)
+                dmft_workflow_archive.run[-1].m_add_sub_section(Run.system, sec_system)
 
         workflow = DMFT(method=DMFTMethod(), results=DMFTResults())
         workflow.name = 'Projection+DMFT'
@@ -323,7 +334,7 @@ class BeyondDFTWorkflowsParser:
                 task.outputs = [Link(name='Output Wannier90 calculation', section=wannier_calculation)]
             workflow.m_add_sub_section(DMFT.tasks, task)
 
-        # GW task
+        # DMFT task
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
             task.name = 'DMFT'

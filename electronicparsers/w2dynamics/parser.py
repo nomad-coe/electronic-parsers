@@ -459,9 +459,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
                 if len(entry_ids) > 1:
                     for entry_id in entry_ids:
                         entry_archive = archive.m_context.load_archive(entry_id, upload_id, None)
-                        #if entry_archive.metadata.parser_name in 'parsers/wannier90':
                         mainfile = f'{upload_path}/raw/{entry_archive.metadata.mainfile}'
-                        if wannier90_path == mainfile:
+                        if wannier90_path == mainfile:  # TODO add condition on system section or is this enough? System is resolved anyways from wannier90_path
                             wannier90_archive = entry_archive
                             dmft_workflow_archive = self._child_archives.get('DMFT_workflow')
                             self.parse_dmft_workflow(wannier90_archive, dmft_workflow_archive)
