@@ -499,16 +499,9 @@ class Method(simulation.method.Method):
         repeats=True)
 
 
-class AtomParameters(simulation.method.AtomParameters):
+class MuffinTinAPW(simulation.method.MuffinTinAPW):
 
     m_def = Section(validate=False, extends_base_section=True)
-
-    x_fleur_mt_gridpoints = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        muffin-tin gridpoints
-        ''')
 
     x_fleur_logarithmic_increment = Quantity(
         type=np.dtype(np.float64),
@@ -518,8 +511,17 @@ class AtomParameters(simulation.method.AtomParameters):
         logarithmic increment
         ''')
 
+    x_fleur_spherical_harmonics_density_cutoff = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        ''')
+
 
 class BasisSet(simulation.method.BasisSet):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
     x_fleur_coretail = Quantity(
         type=bool,
         shape=[],
@@ -534,12 +536,6 @@ class BasisSet(simulation.method.BasisSet):
     )
 
     x_fleur_relativistic_core = Quantity(
-        type=bool,
-        shape=[],
-        description='''
-        ''')
-
-    x_fleur_frozen_core = Quantity(
         type=bool,
         shape=[],
         description='''

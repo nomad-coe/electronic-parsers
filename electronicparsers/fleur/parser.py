@@ -33,7 +33,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing,
-    AtomParameters, BasisSetContainer
+    AtomParameters, BasisSetContainer, MuffinTinAPW, LocalOrbitalAPW, EnergyParameterAPW
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandEnergies
@@ -250,21 +250,39 @@ class XMLParser(TextParser):
         # https://www.flapw.de/MaX-6.0/documentation/fleurInputFile/
         # https://www.flapw.de/MaX-6.0/documentation/localOrbitalSetup/
         atom_parameters: list[AtomParameters] = []
+        l_quantum = {'s': 0, 'p': 1, 'd': 2, 'f': 3}
         species = self.get('input', {}).get('species', [])
         for specie in species:
             param = AtomParameters()
             # map the tags and values to the AtomParameters object
+            mt_set = False
+            lo_set = False
+            mt = MuffinTinAPW()
+            lo = LocalOrbitalAPW()
             for spec in specie.get('key_val', []):
                 if spec[0] == 'radius':
-                    param.muffin_tin_radius = float(spec[1]) * ureg.bohr
+                    mt.radius = float(spec[1]) * ureg.bohr
+                    mt_set = True
                 elif spec[0] == 'gridPoints':
-                    param.x_fleur_mt_gridpoints = int(spec[1])
+                    mt.n_grid_points = int(spec[1])
+                    mt_set = True
                 elif spec[0] == 'logIncrement':
-                    param.x_fleur_logarithmic_increment = float(spec[1]) * ureg.bohr  # TOOD: check unit
+                    mt.x_fleur_logarithmic_increment = float(spec[1]) * ureg.bohr  # TOOD: check unit
+                    mt_set = True
                 elif spec[0] == 'lmax':
-                    param.spherical_harmonics_cutoff = int(spec[1])
+                    mt.spherical_harmonics_cutoff = int(spec[1])
+                    mt_set = True
                 elif spec[0] == 'lmaxAPW':
-                    param.spherical_harmonics_reduced_cutoff = int(spec[1])
+                    mt.spherical_harmonics_reduced_cutoff = int(spec[1])
+                    mt_set = True
+                elif spec[0] in l_quantum.keys():
+                    mt.energy_parameter.append(EnergyParameterAPW(
+                        l_channel=l_quantum[spec[0]],
+                        global_n_parameter=int(spec[1])),
+                    )
+                    mt_set = True
+            if mt_set:
+                param.muffin_tin = mt
             atom_parameters.append(param)
         return atom_parameters
 
@@ -543,8 +561,10 @@ class FleurParser:
         sec_method.x_fleur_parameters.update(input.get('output_parameters', {}))
         sec_method.x_fleur_parameters.update(self.parser.get('numerical_parameters', {}))
 
+        # Atom parameters
         sec_method.atom_parameters = self.parser.get_atom_parameters()
 
+        # Basis sets
         bool_mapping = {'T': True, 'F': False}
         input_parameters_reformatted = {
             key_val[0]: key_val[1] for key_val in input.get('parameters').get('key_val')
@@ -566,20 +586,30 @@ class FleurParser:
             sec_mt_basis = BasisSet(
                 scope = 'muffin-tin',
                 type = 'atom-centered',
-                atom_parameters = sec_method.atom_parameters,
             )
 
-            sec_core_basis = sec_mt_basis.m_copy()
+            sec_core_basis = sec_mt_basis.m_copy(deep=True)
             sec_core_basis.scope += ' core'
-            core_application = {'coretail': 'ctail', 'coretail_cutoff': 'coretail_lmax',
-                                'relativistic_core': 'kcrel'}
+            core_application = {'coretail': 'ctail', 'coretail_cutoff': 'coretail_lmax',}  # TODO: add 'relativistic_core': 'kcrel'?
             for key, val in core_application.items():
                 try:
                     setattr(sec_core_basis, f'x_fleur_{key}', input_parameters_reformatted[val])
+                except TypeError:
+                    setattr(sec_core_basis, f'x_fleur_{key}', bool_mapping[input_parameters_reformatted[val].strip()])
                 except KeyError:
                     pass
             sec_core_basis.frozen_core = bool_mapping[input_parameters_reformatted['frcor'].strip()]
             basis_set_container.basis_set.append(sec_core_basis)
+
+            sec_val_mt_basis = sec_mt_basis.m_copy(deep=True)
+            sec_val_mt_basis.scope += ' valence'
+            sec_method.electronic_model.append(sec_val_mt_basis)
+
+            sec_lo_basis = BasisSet(
+                scope = 'local orbitals',
+                type = 'atom-centered',
+            )
+            sec_method.electronic_model.append(sec_lo_basis)
 
             sec_method.electronic_model.append(basis_set_container)
 
