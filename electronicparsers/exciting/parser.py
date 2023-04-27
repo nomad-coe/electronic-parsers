@@ -1203,6 +1203,13 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         self._scrcoul_input_default = {'omegap': 1.0, 'scrtype': 'rpa'}
 
+        self._bse_type_map = {
+            'singlet': 'Singlet',
+            'triplet': 'Triplet',
+            'IP': 'IP',
+            'RPA': 'RPA'
+        }
+
     def file_exists(self, filename):
         """Checks if a the given filename exists and is accessible in the same
         folder where the mainfile is stored.
@@ -1795,7 +1802,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         # BSE
         sec_bse = sec_method.m_create(BSE)
-        sec_bse.type = sec_run.method[-1].x_exciting_xs_bse_type
+        sec_bse.type = self._bse_type_map[sec_run.method[-1].x_exciting_xs_bse_type]
+        sec_bse.solver = 'Full-diagonalization'
         sec_bse.n_empty_states = sec_run.method[-1].x_exciting_xs_number_of_empty_states
         sec_bse.broadening = sec_run.method[-1].x_exciting_xs_broadening
         # KMesh
@@ -1849,8 +1857,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         # Photon method
         self.parse_polarization(path)
-        # BSE method
-        sec_run.method.append(self.archive.run[-1].method[-1])
 
         # Calculation
         self.parse_spectra(path)

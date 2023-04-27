@@ -71,9 +71,9 @@ class OceanParser(BeyondDFTWorkflowsParser):
             'qe': 'QuantumESPRESSO',
             'abi': 'ABINIT'
         }
-        self._type_bse_map = {
-            'haydock': 'lanczos-haydock',
-            'gmres': 'gmres'
+        self._bse_solver_map = {
+            'haydock': 'Lanczos-Haydock',
+            'gmres': 'GMRES'
         }
         self.mode_bse = ['emission', 'absorption']
         self._core_level_map = {
@@ -120,7 +120,8 @@ class OceanParser(BeyondDFTWorkflowsParser):
         # BSE
         sec_bse = sec_method.m_create(BSE)
         bse_data = self.data.get('bse', {})
-        sec_bse.type = self._type_bse_map[bse_data.get('val', {}).get('solver')]
+        sec_bse.type = 'Singlet'
+        sec_bse.solver = self._bse_solver_map[bse_data.get('val', {}).get('solver')]
         sec_bse.n_states = bse_data.get('nbands', 1)
         sec_bse.broadening = bse_data.get('val', {}).get('broaden', 0.1) * ureg.eV
         # KMesh
@@ -144,7 +145,7 @@ class OceanParser(BeyondDFTWorkflowsParser):
         if bse_core_data:
             sec_core_hole = CoreHole(
                 mode=self.mode_bse[bse_core_data.get('strength')],
-                solver=self._type_bse_map[bse_core_data.get('solver')],
+                solver=self._bse_solver_map[bse_core_data.get('solver')],
                 broadening=bse_core_data.get('broaden', 0.1) * ureg.eV)
             sec_bse.m_add_sub_section(BSE.core_hole, sec_core_hole)
             # TODO wait for new changes in metainfo for CoreHole
@@ -235,7 +236,6 @@ class OceanParser(BeyondDFTWorkflowsParser):
 
         # Method
         self.parse_polarization(path)
-        self.parse_method(self._child_archives.get(path))
 
         # Calculation
         self.parse_scc(path)

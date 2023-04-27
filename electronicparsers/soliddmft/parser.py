@@ -180,7 +180,8 @@ class SolidDMFTParser:
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
         sec_k_mesh.n_points = int(self.dft_input.get('n_k', 1)[()])
-        sec_k_mesh.points = self.dft_input.get('kpts')
+        if self.dft_input.get('kpts'):
+            sec_k_mesh.points = np.complex128(self.dft_input.get('kpts')[:])
         sec_k_mesh.weights = self.dft_input.get('kpt_weights')
 
         # DMFT
