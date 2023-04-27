@@ -184,7 +184,7 @@ class BeyondDFTWorkflowsParser:
             self._child_archives = archives for SinglePoint photons
         '''
         workflow = PhotonPolarization(method=PhotonPolarizationMethod(), results=PhotonPolarizationResults())
-        workflow.name = 'Spectra'
+        workflow.name = 'BSE'  # this entry contains the full BSE calculation for all photon polarizations
 
         # TODO define Method
 
@@ -288,7 +288,7 @@ class BeyondDFTWorkflowsParser:
             if not xs_archive.workflow2:
                 continue
             task = TaskReference(task=xs_archive.workflow2)
-            task.name = f'Spectra {index + 1}'
+            task.name = f'BSE {index + 1}'
             if dft_calculation:
                 xs_archive.workflow2.m_add_sub_section(
                     PhotonPolarization.inputs, Link(name='Output DFT calculation', section=dft_calculation))
