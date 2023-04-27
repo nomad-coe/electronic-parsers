@@ -24,6 +24,7 @@ import re
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
+from nomad.metainfo.metainfo import (Reference)
 from nomad.datamodel.metainfo.simulation.run import (
     Run, Program, TimeRun
 )
@@ -246,6 +247,8 @@ class XMLParser(TextParser):
     def get_atom_parameters(self) -> list[AtomParameters]:
         '''Extract `species` xml tags, add semantics,
         and map their settings into AtomParameters object ready for Method.atom_parameters.'''
+        # https://www.flapw.de/MaX-6.0/documentation/fleurInputFile/
+        # https://www.flapw.de/MaX-6.0/documentation/localOrbitalSetup/
         atom_parameters: list[AtomParameters] = []
         species = self.get('input', {}).get('species', [])
         for specie in species:
@@ -259,9 +262,9 @@ class XMLParser(TextParser):
                 elif spec[0] == 'logIncrement':
                     param.x_fleur_logarithmic_increment = float(spec[1]) * ureg.bohr  # TOOD: check unit
                 elif spec[0] == 'lmax':
-                    param.x_fleur_lexpansion_cutoff = int(spec[1])
+                    param.spherical_harmonics_cutoff = int(spec[1])
                 elif spec[0] == 'lmaxAPW':
-                    param.x_fleur_lexpansion_lo_cutoff = int(spec[1])
+                    param.spherical_harmonics_reduced_cutoff = int(spec[1])
             atom_parameters.append(param)
         return atom_parameters
 
@@ -529,7 +532,6 @@ class FleurParser:
             sec_run.time_run = TimeRun(date_start=dt.timestamp())
 
         sec_method = sec_run.m_create(Method)
-        sec_method.electron_model = BasisSetContainer(type='(L)APW+lo')
         input = self.parser.get('input')
         if input is not None:
             for key in ['parameters', 'input_parameters']:
@@ -542,6 +544,44 @@ class FleurParser:
         sec_method.x_fleur_parameters.update(self.parser.get('numerical_parameters', {}))
 
         sec_method.atom_parameters = self.parser.get_atom_parameters()
+
+        bool_mapping = {'T': True, 'F': False}
+        input_parameters_reformatted = {
+            key_val[0]: key_val[1] for key_val in input.get('parameters').get('key_val')
+        }
+        for cutoff in ('Kmax', 'Gmax'):  # TODO: decide on 'GmaxXC'
+            if cutoff not in input_parameters_reformatted.keys():
+                continue
+
+            basis_set_container = BasisSetContainer()
+            basis_set_container.scope = 'wavefunction' if cutoff == 'Kmax' else 'density'
+            basis_set_container.basis_set.append(
+                BasisSet(
+                    scope = 'interstitial valence',
+                    type = 'plane waves',  # Actually stars: symmetrized plane waves according to the unit cell
+                    cutoff = input_parameters_reformatted[cutoff] * ureg.Ry,  # TODO: check units
+                )
+            )
+
+            sec_mt_basis = BasisSet(
+                scope = 'muffin-tin',
+                type = 'atom-centered',
+                atom_parameters = sec_method.atom_parameters,
+            )
+
+            sec_core_basis = sec_mt_basis.m_copy()
+            sec_core_basis.scope += ' core'
+            core_application = {'coretail': 'ctail', 'coretail_cutoff': 'coretail_lmax',
+                                'relativistic_core': 'kcrel'}
+            for key, val in core_application.items():
+                try:
+                    setattr(sec_core_basis, f'x_fleur_{key}', input_parameters_reformatted[val])
+                except KeyError:
+                    pass
+            sec_core_basis.frozen_core = bool_mapping[input_parameters_reformatted['frcor'].strip()]
+            basis_set_container.basis_set.append(sec_core_basis)
+
+            sec_method.electronic_model.append(basis_set_container)
 
         electronic = self.parser.electronic
         if electronic is not None:

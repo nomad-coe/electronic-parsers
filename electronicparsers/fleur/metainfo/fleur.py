@@ -518,22 +518,33 @@ class AtomParameters(simulation.method.AtomParameters):
         logarithmic increment
         ''')
 
-    x_fleur_lexpansion_cutoff = Quantity(
-        type=np.dtype(np.float64),
+
+class BasisSet(simulation.method.BasisSet):
+    x_fleur_coretail = Quantity(
+        type=bool,
         shape=[],
         description='''
-        l-expansion cutoff
         ''')
 
-    x_fleur_lexpansion_lo_cutoff = Quantity(
-        type=np.dtype(np.float64),
+    x_fleur_coretail_cutoff = Quantity(
+        type=np.dtype(np.int32),
         shape=[],
         description='''
-        If present the APW+lo approach will be used.
-        This is the cutoff defining the lmax up to which LAPWs are used
-        if no APW+lo local orbital is defined for the respective l.
-        See also the respective article by G.K.H. Madsen.
+        '''
+    )
+
+    x_fleur_relativistic_core = Quantity(
+        type=bool,
+        shape=[],
+        description='''
         ''')
+
+    x_fleur_frozen_core = Quantity(
+        type=bool,
+        shape=[],
+        description='''
+        ''')
+
 
 class XCFunctional(simulation.method.XCFunctional):
 
