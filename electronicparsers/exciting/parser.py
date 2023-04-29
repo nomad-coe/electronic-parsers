@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import copy as cp
 import numpy as np
 import os
 import re
@@ -26,7 +27,8 @@ from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextP
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional, Scf, BasisSet, KMesh,
-    FrequencyMesh, Screening, GW, Photon, BSE, CoreHole
+    FrequencyMesh, Screening, GW, Photon, BSE, CoreHole, BasisSetContainer, AtomParameters,
+    OrbitalAPW
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -53,9 +55,106 @@ from .metainfo.exciting import (
 from ..utils import (
     get_files, BeyondDFTWorkflowsParser
 )
+from typing import Any
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
+
+
+class SpeciesInfoParser(TextParser):
+    ''''''
+
+    def __init__(self):
+        super().__init__(None)
+
+    def init_quantities(self):
+        re_tags = r'([\w\s\.\-\"\=]+)'
+        q_key_val = Quantity('key_val', r'([a-zA-Z]+)\="([\w\.\-]+)"', repeats=True)
+        q_wf_l = Quantity('l', r'l="(\d)"')
+        q_wf = Quantity('wf', r'(<wf[\s\w\=\.\-\"]+/>)', repeats=True,
+                        sub_parser=TextParser(quantities=[q_key_val]))
+
+        q_basis_default = Quantity(
+            'default',
+            r'(<default[\s\S]+</default>)',
+            sub_parser=TextParser(quantities=[q_wf]),
+        )
+        q_basis_custom = Quantity(
+            'custom',
+            r'(<custom[\s\S]+</custom>)',
+            repeats=True,
+            sub_parser=TextParser(quantities=[q_wf, q_wf_l,]),
+        )
+        q_basis_lo = Quantity(
+            'lo',
+            r'(<lo[\s\S]+</lo>)',
+            repeats=True,
+            sub_parser=TextParser(quantities=[q_wf, q_wf_l,]),
+        )
+
+        self._scf_quantities = [
+            Quantity('sp', r'(<sp\s+[\s\S]+</sp>)', repeats=True,
+                sub_parser=TextParser(quantities=[
+                    Quantity('details', rf'<sp{re_tags}/?>',
+                        sub_parser=TextParser(quantities=[q_key_val]),
+                    ),
+                    Quantity('muffinTin', rf'<muffinTin{re_tags}/?>',
+                        sub_parser=TextParser(quantities=[q_key_val]),
+                    ),
+                    Quantity('atomicState', rf'<atomicState{re_tags}/?>',
+                        repeats=True,
+                        sub_parser=TextParser(quantities=[q_key_val]),
+                    ),
+                    Quantity('basis', r'(<basis>[\s\S]+</basis>)',
+                        sub_parser=TextParser(quantities=[
+                            q_basis_default, q_basis_custom, q_basis_lo,
+                        ])
+                    ),
+                ])
+            ),
+        ]
+
+        q_basis_default = Quantity(
+            'default',
+            r'(<default[\s\S]+</default>)',
+            sub_parser=TextParser(quantities=[q_key_val]),
+        )
+        q_basis_custom = Quantity(
+            'custom',
+            r'(<custom[\s\S]+</custom>)',
+            repeats=True,
+            sub_parser=TextParser(quantities=[q_key_val]),
+        )
+        q_basis_lo = Quantity(
+            'lo',
+            r'(<lo[\s\S]+</lo>)',
+            repeats=True,
+            sub_parser=TextParser(quantities=[q_key_val]),
+        )
+
+        self._init_quantities = [
+            Quantity('sp', r'(<sp\s+[\s\S]+</sp>)', repeats=True,
+                sub_parser=TextParser(quantities=[
+                    Quantity('details', rf'<sp{re_tags}/?>',
+                        sub_parser=TextParser(quantities=[q_key_val]),
+                    ),
+                    Quantity('muffinTin', rf'<muffinTin{re_tags}/?>',
+                        sub_parser=TextParser(quantities=[q_key_val]),
+                    ),
+                    Quantity('atomicState', rf'<atomicState{re_tags}/?>',
+                        repeats=True,
+                        sub_parser=TextParser(quantities=[q_key_val]),
+                    ),
+                    Quantity('basis', r'(<basis>[\s\S]+</basis>)',
+                        sub_parser=TextParser(quantities=[
+                            q_basis_default, q_basis_custom, q_basis_lo,
+                        ])
+                    ),
+                ])
+            ),
+        ]
+
+        self._quantities = self._scf_quantities
 
 
 class GWInfoParser(TextParser):
@@ -1091,6 +1190,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         self.input_xml_parser = XMLParser()
         self.data_xs_parser = DataTextParser()
         self.data_clathrate_parser = DataTextParser(dtype=str)
+        self.species_parser = SpeciesInfoParser()
         self._child_archives = {}
 
         # different names for different versions of exciting
@@ -1210,9 +1310,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             'RPA': 'RPA'
         }
 
-    def file_exists(self, filename):
+    def file_exists(self, filename: str, fuzzy: bool = False) -> list[str]:
         """Checks if a the given filename exists and is accessible in the same
-        folder where the mainfile is stored.
+        folder where the mainfile is stored. `fuzzy` toggles regex matching.
         """
         mainfile = os.path.basename(self.info_parser.mainfile)
         suffix = mainfile.strip('INFO.OUT')
@@ -1220,11 +1320,17 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         filepath = '%s%s' % (target[0], suffix)
         if target[1:]:
             filepath = '%s.%s' % (filepath, target[1])
-        filepath = os.path.join(self.info_parser.maindir, filepath)
-
-        if os.path.isfile(filepath) and os.access(filepath, os.F_OK):
-            return True
-        return False
+        if fuzzy:
+            filepaths: list[str] = [file for file in os.listdir(self.info_parser.maindir)
+                                   if re.match(filename, file)]
+            has_access = [os.access(filepath, os.F_OK) for filepath in filepaths]
+            if all(has_access):  # this is more restrictive, but ensures that one can operate the files
+                return filepaths
+        else:
+            filepath = os.path.join(self.info_parser.maindir, filepath)
+            if os.path.isfile(filepath) and os.access(filepath, os.F_OK):
+                return [filepath]
+        return ''
 
     def _parse_dos(self, sec_scc):
         if self.dos_parser.get('totaldos', None) is None:
@@ -1452,6 +1558,54 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_k_band_segment.n_kpoints = nkpts_segment[nb]
             sec_k_band_segment.value = band_energies[nb] + energy_fermi
 
+    def _parse_species(self, sec_method):
+        def to_dict(key_vals: list[list[Any]]) -> dict[str, Any]:
+            return {key_val[0]: key_val[1] for key_val in key_vals}
+
+        bool_mapping: dict[str, bool] = {'true': True, 'false': False}
+
+        exciting_species = self.species_parser.get('sp')[0]  # TODO: check if a species file can contain multiple species
+        sec_method.atom_parameters.append(AtomParameters())
+        param_index = len(sec_method.atom_parameters) - 1
+        param = sec_method.atom_parameters[param_index]
+        exciting_details = to_dict(exciting_species.get('details').get('key_val'))
+        param.atom_number = abs(exciting_details.get('z'))
+        param.label = exciting_details.get('chemicalSymbol')
+        param.mass = exciting_details.get('mass') * ureg.amu
+
+        sec_method.electronic_model.append(BasisSetContainer())
+        bs = sec_method.electronic_model[0].m_create(BasisSet)
+        exciting_mt = to_dict(exciting_species.get('muffinTin').get('key_val'))
+        bs.scope = 'muffin-tin'
+        bs.radius = exciting_mt.get('radius') * ureg.bohr
+        bs.n_radial_grid_points = exciting_mt.get('radialmeshPoints')
+        bs.atom_parameters = param
+
+        exciting_bs = exciting_species.get('basis')
+        for state in exciting_species.get('atomicState'):
+            exciting_state = to_dict(state.get('key_val'))
+            sources = [x for x in exciting_bs.get('lo')
+                       if x.get('l') == exciting_state.get('l')]  # TODO: check whether `lo` is append to or overwrites `custom`
+            if len(sources) == 0:
+                sources = [x for x in exciting_bs.get('custom')
+                           if x.get('l') == exciting_state.get('l')]
+            if len(sources) == 0:
+                sources = [exciting_bs.get('default')]
+
+            for source in sources:
+                for wf in source.get('wf'):
+                    exciting_wf = to_dict(wf.get('key_val'))
+                    bs.orbital.append(OrbitalAPW())
+                    orb = bs.orbital[-1]
+                    orb.n_quantum_number = exciting_state.get('n')
+                    orb.l_quantum_number = exciting_state.get('l')
+                    orb.k_quantum_number = exciting_state.get('kappa')
+                    orb.occupation = exciting_state.get('occ')
+                    orb.core = bool_mapping[exciting_state.get('core', 'false')]
+                    orb.boundary_condition_order = exciting_wf.get('matchingOrder')
+                    orb.energy_parameter = exciting_wf.get('trialEnergy') * ureg.hartree
+                    orb.updated = bool_mapping[exciting_wf.get('searchE', 'false')]
+
     def parse_file(self, name, section, filepath=None):
         # TODO add support for info.xml, wannier.out
         if name.startswith('dos') and name.endswith('xml'):
@@ -1478,6 +1632,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         elif name.startswith('BAND') and name.endswith('OUT'):
             parser = self.band_out_parser
             parser_function = self._parse_band_out
+        elif name.endswith('_scf.xml'):
+            parser = self.species_parser
+            parser_function = self._parse_species
         elif name.startswith('input') and name.endswith('xml'):
             parser = self.input_xml_parser
             if self._calculation_type == 'gw':
@@ -2013,7 +2170,15 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             k_mesh.grid = self.info_parser.get_initialization_parameter('kpoint_grid', default=[1] * 3)
             k_mesh.offset = self.info_parser.get_initialization_parameter('kpoint_offset', default=[0.] * 3)
 
-        sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
+        # Atom parameters
+        species_files = self.file_exists(r'.+_scf.xml', fuzzy=True)
+        for species_file in species_files:
+            self.parse_file(species_file, sec_method)
+
+        # Basis set
+        sec_method.electronic_model.append(BasisSetContainer(type='(L)APW+lo'))
+
+        # XC functional
         sec_dft = sec_method.m_create(DFT)
         sec_electronic = sec_method.m_create(Electronic)
         sec_electronic.method = 'DFT'
