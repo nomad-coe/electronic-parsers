@@ -24,7 +24,6 @@ import re
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.metainfo.metainfo import (Reference)
 from nomad.datamodel.metainfo.simulation.run import (
     Run, Program, TimeRun
 )
@@ -33,12 +32,13 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing,
-    AtomParameters, BasisSetContainer, MuffinTinAPW, LocalOrbitalAPW, EnergyParameterAPW
+    AtomParameters, BasisSetContainer, OrbitalAPW
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandEnergies
 )
 from .metainfo.fleur import x_fleur_header
+from typing import Any
 
 
 re_n = r'[\n\r]'
@@ -244,47 +244,91 @@ class XMLParser(TextParser):
         positions = np.dot([atom.position for atom in atoms], cell)
         return labels, positions, cell
 
-    def get_atom_parameters(self) -> list[AtomParameters]:
+    def get_basis_sets(self) -> list[BasisSet]:
         '''Extract `species` xml tags, add semantics,
-        and map their settings into AtomParameters object ready for Method.atom_parameters.'''
+        and map their settings into as series of `muffin-tin` BasisSets.'''
         # https://www.flapw.de/MaX-6.0/documentation/fleurInputFile/
         # https://www.flapw.de/MaX-6.0/documentation/localOrbitalSetup/
-        atom_parameters: list[AtomParameters] = []
-        l_quantum = {'s': 0, 'p': 1, 'd': 2, 'f': 3}
+        def to_dict(key_vals: list[list[Any]]) -> dict[str, Any]:
+            return {key_val[0]: key_val[1] for key_val in key_vals}
+        # function variables
+        basis_sets: list[BasisSet] = []
+        l_mapping = ['s', 'p', 'd', 'f']
+        bool_mapping = {'T': True, 'F': False}
+        input_parameters_reformatted = {
+            key_val[0]: key_val[1] for key_val in self.input.get('parameters').get('key_val')
+        }
+        # muffin-tin
         species = self.get('input', {}).get('species', [])
         for specie in species:
-            param = AtomParameters()
-            # map the tags and values to the AtomParameters object
-            mt_set = False
-            lo_set = False
-            mt = MuffinTinAPW()
-            lo = LocalOrbitalAPW()
-            for spec in specie.get('key_val', []):
-                if spec[0] == 'radius':
-                    mt.radius = float(spec[1]) * ureg.bohr
-                    mt_set = True
-                elif spec[0] == 'gridPoints':
-                    mt.n_grid_points = int(spec[1])
-                    mt_set = True
-                elif spec[0] == 'logIncrement':
-                    mt.x_fleur_logarithmic_increment = float(spec[1]) * ureg.bohr  # TOOD: check unit
-                    mt_set = True
-                elif spec[0] == 'lmax':
-                    mt.spherical_harmonics_cutoff = int(spec[1])
-                    mt_set = True
-                elif spec[0] == 'lmaxAPW':
-                    mt.spherical_harmonics_reduced_cutoff = int(spec[1])
-                    mt_set = True
-                elif spec[0] in l_quantum.keys():
-                    mt.energy_parameter.append(EnergyParameterAPW(
-                        l_channel=l_quantum[spec[0]],
-                        global_n_parameter=int(spec[1])),
+            specie = to_dict(specie.get('key_val', []))
+            mt: list[BasisSet] = []
+            for _ in range(2):
+                mt.append(
+                    BasisSet(
+                        scope=['muffin-tin'],
+                        radius=specie.get('radius') * ureg.bohr,
+                        spherical_harmonics_cutoff=specie.get('lmax'),
+                        radius_log_spacing=float(specie.get('logIncrement')),
+                        n_grid_points=int(specie.get('gridPoints')),
                     )
-                    mt_set = True
-            if mt_set:
-                param.muffin_tin = mt
-            atom_parameters.append(param)
-        return atom_parameters
+                )
+            # valence muffin-tin
+            n_max = 0
+            for l_test in l_mapping[::-1]:
+                n_prospective = int(specie.get(l_test))
+                if n_prospective:
+                    n_max = l_test
+                    break
+            for l in range(int(specie.get('lmax')) + 1):
+                apw_type = 'APW' if l == specie.get('lmaxAPW', -1) else 'LAPW'
+                n_quantum = specie.get(l_mapping[min(l, len(l_mapping) - 1)], n_max)
+                orbital = OrbitalAPW(
+                    type=apw_type,
+                    energy_parameter_n=n_quantum,
+                    l_quantum_number=l,
+                    core_level=False,
+                )
+                mt[0].orbital.append(orbital)
+            mt[0].scope.append('valence')
+            # core muffin-tin
+            n_counter = 1
+            nl_counter = specie.get('coreStates', 0)
+            while nl_counter > 0:
+                for l in range(n_counter):
+                    j = l + .5
+                    while j > 0:
+                        mt[1].orbital.append(
+                            OrbitalAPW(
+                                type='spherical Dirac',
+                                n_quantum_number=n_counter,
+                                l_quantum_number=l,
+                                j_quantum_number=j,
+                                occupation=2 * j + 1,
+                                core_level=True,
+                            )
+                        )
+                        j -= 1
+                        nl_counter -= 1
+                n_counter += 1
+            mt[1].scope.append('core')
+            # general core settings
+            core_application = {'coretail': 'ctail', 'coretail_cutoff': 'coretail_lmax',}  # TODO: add 'relativistic_core': 'kcrel'?
+            for key, val in core_application.items():
+                try:
+                    q = input_parameters_reformatted[val].strip()
+                except KeyError:
+                    continue
+                try:
+                    q = bool_mapping[q]
+                except KeyError:
+                    pass
+                setattr(mt[1], f'x_fleur_{key}', q)
+            mt[1].frozen_core = bool_mapping[input_parameters_reformatted['frcor'].strip()]
+            # write out muffin tin
+            basis_sets.append(mt[0])
+            basis_sets.append(mt[1])
+        return basis_sets
 
 
 class OutParser(TextParser):
@@ -561,57 +605,30 @@ class FleurParser:
         sec_method.x_fleur_parameters.update(input.get('output_parameters', {}))
         sec_method.x_fleur_parameters.update(self.parser.get('numerical_parameters', {}))
 
-        # Atom parameters
-        sec_method.atom_parameters = self.parser.get_atom_parameters()
-
-        # Basis sets
-        bool_mapping = {'T': True, 'F': False}
+        # Electronic_model
         input_parameters_reformatted = {
             key_val[0]: key_val[1] for key_val in input.get('parameters').get('key_val')
         }
-        for cutoff in ('Kmax', 'Gmax'):  # TODO: decide on 'GmaxXC'
+        for cutoff in ('Kmax', 'Gmax'):  # TODO: add 'GmaxXC'
             if cutoff not in input_parameters_reformatted.keys():
                 continue
-
-            basis_set_container = BasisSetContainer()
-            basis_set_container.scope = 'wavefunction' if cutoff == 'Kmax' else 'density'
-            basis_set_container.basis_set.append(
+            em = BasisSetContainer()
+            if cutoff == 'Kmax':
+                em.scope = ['wavefunction']
+            elif cutoff == 'Gmax':
+                em.scope = ['density']
+            # interstitial region
+            k_cutoff = input_parameters_reformatted[cutoff] / ureg.bohr
+            e_cutoff = ureg.h_bar**2 / ureg.electron_mass * k_cutoff**2 / 2
+            em.basis_set.append(
                 BasisSet(
-                    scope = 'interstitial valence',
+                    scope = ['interstitial', 'valence'],
                     type = 'plane waves',  # Actually stars: symmetrized plane waves according to the unit cell
-                    cutoff = input_parameters_reformatted[cutoff] * ureg.Ry,  # TODO: check units
+                    cutoff = e_cutoff,  # TODO: check units
                 )
             )
-
-            sec_mt_basis = BasisSet(
-                scope = 'muffin-tin',
-                type = 'atom-centered',
-            )
-
-            sec_core_basis = sec_mt_basis.m_copy(deep=True)
-            sec_core_basis.scope += ' core'
-            core_application = {'coretail': 'ctail', 'coretail_cutoff': 'coretail_lmax',}  # TODO: add 'relativistic_core': 'kcrel'?
-            for key, val in core_application.items():
-                try:
-                    setattr(sec_core_basis, f'x_fleur_{key}', input_parameters_reformatted[val])
-                except TypeError:
-                    setattr(sec_core_basis, f'x_fleur_{key}', bool_mapping[input_parameters_reformatted[val].strip()])
-                except KeyError:
-                    pass
-            sec_core_basis.frozen_core = bool_mapping[input_parameters_reformatted['frcor'].strip()]
-            basis_set_container.basis_set.append(sec_core_basis)
-
-            sec_val_mt_basis = sec_mt_basis.m_copy(deep=True)
-            sec_val_mt_basis.scope += ' valence'
-            sec_method.electronic_model.append(sec_val_mt_basis)
-
-            sec_lo_basis = BasisSet(
-                scope = 'local orbitals',
-                type = 'atom-centered',
-            )
-            sec_method.electronic_model.append(sec_lo_basis)
-
-            sec_method.electronic_model.append(basis_set_container)
+            em.basis_set = [*em.basis_set, *self.parser.get_basis_sets()]
+            sec_method.electronic_model.append(em)
 
         electronic = self.parser.electronic
         if electronic is not None:

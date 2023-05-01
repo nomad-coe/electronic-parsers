@@ -499,25 +499,6 @@ class Method(simulation.method.Method):
         repeats=True)
 
 
-class MuffinTinAPW(simulation.method.MuffinTinAPW):
-
-    m_def = Section(validate=False, extends_base_section=True)
-
-    x_fleur_logarithmic_increment = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='meter',
-        description='''
-        logarithmic increment
-        ''')
-
-    x_fleur_spherical_harmonics_density_cutoff = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        ''')
-
-
 class BasisSet(simulation.method.BasisSet):
 
     m_def = Section(validate=False, extends_base_section=True)
