@@ -814,16 +814,16 @@ class Wien2kParser:
         if self.in1_parser._results:
             type_mapping = ('LAPW', 'APW', 'HDLO', 'LO')
             source: dict(str, Any) = self.in1_parser._results
-            em = BasisSetContainer(scope='wavefunction')
+            em = BasisSetContainer(scope=['wavefunction'])
             em.basis_set.append(
                 BasisSet(
-                    scope = 'intersitial',
+                    scope = ['intersitial', 'valence'],
                     type = 'plane wave',
                     cutoff_fractional=source.get('rkmax', None),
                 )
             )
             for mt in source.get('species', []):
-                bs = BasisSet(scope='muffin-tin',
+                bs = BasisSet(scope=['muffin-tin', 'full-electron'],
                               spherical_harmonics_cutoff=source.get('lmax'))
                 for l in range(source.get('lmax', -1) + 1):
                     orbital = OrbitalAPW()
