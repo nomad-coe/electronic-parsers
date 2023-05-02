@@ -25,7 +25,7 @@ from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Workflow, Task as Taskold, GW as GWold
 from nomad.datamodel.metainfo.workflow2 import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GW, GWMethod, GWResults, ParticleHoleExcitations,
+    GW, GWMethod, ParticleHoleExcitations,
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
@@ -99,35 +99,7 @@ class BeyondDFTWorkflowsParser:
         '''
         self.run_workflow_archive(gw_workflow_archive)
 
-        # Extracting DFT and GW results
-        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
-        dos_gw = extract_section(gw_archive, 'run/calculation/dos_electronic')
-        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        bs_gw = extract_section(gw_archive, 'run/calculation/band_structure_electronic')
-
-        # Old workflow
-        workflow_old = gw_workflow_archive.m_create(Workflow)
-        workflow_old.type = 'GW'
-        workflow_old.workflows_ref = [self.archive.workflow[-1], gw_archive.workflow[-1]]
-        workflow_old.task = [
-            Taskold(
-                input_workflow=workflow_old, output_workflow=self.archive.workflow[-1],
-                description='DFT calculation performed in an input structure.'),
-            Taskold(
-                input_workflow=self.archive.workflow[0], output_workflow=gw_archive.workflow[-1],
-                description='GW calculation performed from input DFT calculation.'),
-            Taskold(
-                input_workflow=gw_archive.workflow[0], output_workflow=workflow_old,
-                description='Comparison between DFT and GW.')
-        ]
-        gw_old = workflow_old.m_create(GWold)
-        gw_old.dos_dft = dos_dft
-        gw_old.dos_gw = dos_gw
-        gw_old.band_structure_dft = bs_dft
-        gw_old.band_structure_gw = bs_gw
-
-        # -- New workflow --
-        workflow = GW(method=GWMethod(), results=GWResults())
+        workflow = GW(method=GWMethod())
         workflow.name = 'GW'
 
         # Method
@@ -137,12 +109,6 @@ class BeyondDFTWorkflowsParser:
         workflow.method.gw_method_ref = method_gw
         workflow.method.starting_point = method_xcfunctional
         workflow.method.basis_set = method_basisset
-
-        # Results
-        workflow.results.dos_dft = dos_dft
-        workflow.results.dos_gw = dos_gw
-        workflow.results.band_structure_dft = bs_dft
-        workflow.results.band_structure_gw = bs_gw
 
         # Inputs and Outputs
         input_structure = extract_section(self.archive, 'run/system')
