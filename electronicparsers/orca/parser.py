@@ -866,7 +866,7 @@ class OrcaParser:
                     val = val[0]
                 setattr(workflow, 'x_orca_%s' % key, val)
 
-        self.archive.workflow = workflow
+        self.archive.workflow2 = workflow
 
     def init_parser(self, filepath, logger):
         self.out_parser.mainfile = filepath

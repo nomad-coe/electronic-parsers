@@ -1022,6 +1022,8 @@ class AMSParser:
             workflow.method.convergence_tolerance_displacement_maximum = geometry_opt.get('convergence_tolerance_displacement_maximum')
             workflow.method.convergence_tolerance_force_maximum = geometry_opt.get('convergence_tolerance_force_maximum')
 
+            self.archive.workflow2 = workflow
+
     def parse(self, filepath, archive, logger):
         self.mainfile = os.path.abspath(filepath)
         self.archive = archive

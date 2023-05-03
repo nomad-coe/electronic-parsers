@@ -793,7 +793,7 @@ class Wien2kParser:
             sec_run.time_run = TimeRun(date_start=dt.total_seconds())
 
         # TODO implement geometry optimization
-        archive.workflow = SinglePoint()
+        archive.workflow2 = SinglePoint()
 
         self.parse_method()
 

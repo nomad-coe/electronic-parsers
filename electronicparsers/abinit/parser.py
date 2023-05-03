@@ -1140,7 +1140,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         else:
             workflow = SinglePoint()
 
-        self.archive.workflow = workflow
+        self.archive.workflow2 = workflow
 
     def parse_bandstructure(self, results, energy_fermi):
         if self.out_parser.get_input_var('kptopt', 1, 4) > 0:  # negative kptopt sets band structure

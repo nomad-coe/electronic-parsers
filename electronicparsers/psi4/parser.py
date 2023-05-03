@@ -869,7 +869,7 @@ class Psi4Parser:
 
             # each module should can be considered as a single_point workflow
             # TODO implement specific workflow for mp, ci, cc, mcscf
-            self.archive.workflow = SinglePoint()
+            self.archive.workflow2 = SinglePoint()
 
             if module.optking is not None:
                 self.parse_system(module.optking)
@@ -891,4 +891,4 @@ class Psi4Parser:
                 workflow.method.convergence_tolerance_energy_difference = convergence[0] * ureg.hartree
                 workflow.method.convergence_tolerance_force_maximum = convergence[1] * ureg.hartree / ureg.bohr
                 workflow.method.convergence_tolerance_displacement_maximum = convergence[2] * ureg.bohr
-                self.archive.workflow = workflow
+                self.archive.workflow2 = workflow

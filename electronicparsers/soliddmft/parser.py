@@ -405,4 +405,4 @@ class SolidDMFTParser:
 
         # Workflow section
         workflow = SinglePoint()
-        self.archive.workflow = workflow
+        self.archive.workflow2 = workflow

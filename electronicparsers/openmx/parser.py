@@ -234,7 +234,7 @@ class OpenmxParser:
                     else:
                         workflow = MolecularDynamics(method=MolecularDynamicsMethod())
                         workflow.method.thermodynamic_ensemble = current_md_type[2]
-            self.archive.workflow = workflow
+            self.archive.workflow2 = workflow
 
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)

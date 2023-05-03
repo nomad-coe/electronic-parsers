@@ -1477,7 +1477,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 else:
                     sec_thermostat_parameters.effective_mass = thermostat_mass  # TODO: generalize this for different thermostats (assuming here that the mass units will be printed to the outfile in case thermostat_mass is not defined)
 
-        self.archive.workflow = workflow
+        self.archive.workflow2 = workflow
 
     def parse_method(self):
         sec_run = self.archive.run[-1]

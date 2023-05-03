@@ -896,7 +896,7 @@ class CrystalParser:
         if geo_opt is not None:
             steps = geo_opt["geo_opt_step"]  # pylint: disable=E1136
             if steps is not None:
-                archive.workflow = GeometryOptimization(
+                archive.workflow2 = GeometryOptimization(
                     method=GeometryOptimizationMethod(), results=GeometryOptimizationResults())
                 archive.workflow.method.convergence_tolerance_energy_difference = out["energy_change"]
                 archive.workflow.method.convergence_tolerance_displacement_maximum = out["geometry_change"]

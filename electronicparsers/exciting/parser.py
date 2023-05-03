@@ -1863,7 +1863,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # Workflow
         workflow = SinglePoint()
         workflow.name = 'SinglePoint'
-        self._child_archives.get(path).workflow = workflow
+        self._child_archives.get(path).workflow2 = workflow
 
     def _parse_input_gw(self, sec_gw):
         def parse_exciting_gw_inputs(source, path, target):
@@ -1994,7 +1994,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             threshold_force = structure_optimization.get(
                 'optimization_step', [{}])[0].get('force_convergence', [0., 0.])[-1]
             workflow.method.convergence_tolerance_force_maximum = threshold_force
-        self.archive.workflow = workflow
+        self.archive.workflow2 = workflow
 
     def parse_method(self):
         sec_run = self.archive.run[-1]

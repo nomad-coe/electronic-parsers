@@ -449,12 +449,12 @@ class SiestaParser:
 
         if self.out_parser.single_point is not None:
             parse_configurations(self.out_parser.single_point)
-            archive.workflow = SinglePoint()
+            archive.workflow2 = SinglePoint()
 
         if self.out_parser.geometry_optimization is not None:
             for step in self.out_parser.geometry_optimization.get('step', []):
                 parse_configurations(step)
-            archive.workflow = GeometryOptimization()
+            archive.workflow2 = GeometryOptimization()
 
         # final properties
         calc = parse_calculation(self.out_parser)

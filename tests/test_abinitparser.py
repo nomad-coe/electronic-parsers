@@ -73,8 +73,8 @@ def test_relax(parser):
     archive = EntryArchive()
     parser.parse('tests/data/abinit/H2/H2.out', archive, None)
 
-    assert archive.workflow.m_def.name == 'GeometryOptimization'
-    assert archive.workflow.method.method == 'bfgs'
+    assert archive.workflow2.m_def.name == 'GeometryOptimization'
+    assert archive.workflow2.method.method == 'bfgs'
     sec_run = archive.run[0]
     assert len(sec_run.x_abinit_section_dataset) == 2
     assert len(sec_run.system) == 3

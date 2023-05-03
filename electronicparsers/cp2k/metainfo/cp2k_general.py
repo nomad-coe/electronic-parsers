@@ -1102,7 +1102,7 @@ class GeometryOptimization(simulation.workflow.GeometryOptimization):
         repeats=True)
 
 
-class Workflow(simulation.workflow.Workflow):
+class SimulationWorkflow(simulation.workflow.SimulationWorkflow):
 
     m_def = Section(validate=False, extends_base_section=True)
 

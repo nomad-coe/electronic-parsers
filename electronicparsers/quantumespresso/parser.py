@@ -2758,9 +2758,9 @@ class QuantumEspressoParser:
 
             if self.sampling_method is not None:
                 if self.sampling_method == 'geometry_optimization':
-                    self.archive.workflow = GeometryOptimization()
+                    self.archive.workflow2 = GeometryOptimization()
                 elif self.sampling_method.endswith('dynamics'):
-                    self.archive.workflow = MolecularDynamics()
+                    self.archive.workflow2 = MolecularDynamics()
 
             profiling = run.get('profiling')
             if profiling is not None:

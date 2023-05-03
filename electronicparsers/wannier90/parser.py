@@ -523,4 +523,4 @@ class Wannier90Parser():
         self.parse_scc()
 
         workflow = SinglePoint()
-        self.archive.workflow = workflow
+        self.archive.workflow2 = workflow

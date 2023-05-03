@@ -518,7 +518,7 @@ class NWChemParser:
                 if parameter[0] is not None:
                     setattr(workflow, 'x_nwchem_%s' % parameter[0], parameter[1])
 
-        self.archive.workflow = workflow
+        self.archive.workflow2 = workflow
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)

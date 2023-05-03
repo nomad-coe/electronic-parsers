@@ -935,4 +935,4 @@ class OctopusParser:
 
         self.parse_scc()
 
-        archive.workflow = GeometryOptimization()
+        archive.workflow2 = GeometryOptimization()

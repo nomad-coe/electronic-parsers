@@ -40,7 +40,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     ForcesEntry
 )
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GeometryOptimization, GeometryOptimizationMethod,
+    SinglePoint, GeometryOptimization, GeometryOptimizationMethod,
     MolecularDynamics, MolecularDynamicsMethod
 )
 
@@ -1383,7 +1383,7 @@ class CP2KParser:
 
     def parse_workflow(self):
         # TODO add vdW
-        workflow = None
+        workflow = SinglePoint()
 
         if self.sampling_method == 'geometry_optimization':
             workflow = GeometryOptimization(method=GeometryOptimizationMethod())
@@ -1444,7 +1444,7 @@ class CP2KParser:
                 else:
                     setattr(sec_md_settings, 'x_cp2k_md_%s' % key, val)
 
-        self.archive.workflow = workflow
+        self.archive.workflow2 = workflow
 
     def parse_input(self):
         # TODO include extended input

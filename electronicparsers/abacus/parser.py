@@ -1677,7 +1677,7 @@ class ABACUSParser:
             elif self.sampling_method == 'single_point':
                 workflow = SinglePoint(method=SinglePointMethod())
                 workflow.method.method = archive.run[-1].method[-1].electronic.method
-            archive.workflow = workflow
+            archive.workflow2 = workflow
 
         # start date
         date_time = self.out_parser.get('start_date_time')

@@ -1147,7 +1147,7 @@ class TurbomoleParser:
             if key is None or not key.startswith('x_turbomole'):
                 continue
             setattr(workflow, key, val)
-        self.archive.workflow = workflow
+        self.archive.workflow2 = workflow
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)

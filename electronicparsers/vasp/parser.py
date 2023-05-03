@@ -1395,7 +1395,7 @@ class VASPParser():
                     workflow.method.convergence_tolerance_energy_difference = tolerance * ureg.eV
                 else:
                     workflow.method.convergence_tolerance_force_maximum = abs(tolerance) * ureg.eV / ureg.angstrom
-        self.archive.workflow = workflow
+        self.archive.workflow2 = workflow
 
     def parse_configurations(self):
         sec_run = self.archive.run[-1]

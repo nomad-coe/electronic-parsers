@@ -459,4 +459,4 @@ class Dmol3Parser:
                 workflow.results.heat_capacity_c_p = thermo_data[3] * ureg.J * 4.184 / ureg.K / MOL
                 workflow.results.enthalpy = thermo_data[4] * ureg.J * 4184.0 / MOL
                 workflow.results.gibbs_free_energy = thermo_data[5] * ureg.J * 4184.0 / MOL
-        archive.workflow = workflow
+        archive.workflow2 = workflow

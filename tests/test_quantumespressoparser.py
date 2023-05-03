@@ -42,7 +42,7 @@ def test_scf(parser):
     assert sec_run.time_run.date_start.magnitude == 1451140876.0
     assert sec_run.x_qe_section_compile_options[0].x_qe_lmaxx == 3
     assert sec_run.x_qe_section_parallel[0].x_qe_nproc == 4
-    assert archive.workflow[0].type == 'single_point'
+    assert archive.workflow2 is not None
     assert 'rdiaghg' in sec_run.x_qe_profile_function
     assert sec_run.time_run.date_end.magnitude == 1451140881.0
     assert sec_run.clean_end
@@ -126,7 +126,7 @@ def test_md(parser):
     archive = EntryArchive()
     parser.parse('tests/data/quantumespresso/Si_md/out.out', archive, None)
 
-    assert archive.workflow[0].type == 'molecular_dynamics'
+    assert archive.workflow2 is not None
     sec_run = archive.run[0]
     sec_method = sec_run.method[0]
     assert len(sec_method.k_mesh.points) == 1

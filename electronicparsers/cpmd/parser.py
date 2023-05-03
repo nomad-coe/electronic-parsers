@@ -443,4 +443,4 @@ class CPMDParser:
         sec_method.x_cpmd_simulation_parameters = self.mainfile_parser.get_simulation_parameters()
         # TODO xc functionals. The mapping cannot be ascertained
 
-        archive.workflow = workflow
+        archive.workflow2 = workflow
