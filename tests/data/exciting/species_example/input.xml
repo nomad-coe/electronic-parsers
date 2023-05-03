@@ -1,0 +1,31 @@
+<input>
+
+  <title>SiC DFPT phonons</title>
+
+  <structure speciespath="./">
+    <crystal scale="8.244205906996132">
+      <basevect>0.0   0.5   0.5</basevect>
+      <basevect>0.5   0.0   0.5</basevect>
+      <basevect>0.5   0.5   0.0</basevect>
+    </crystal>
+    <species chemicalSymbol="Si" speciesfile="Si.xml">
+      <atom coord="0.00000000000000 0.00000000000000 0.00000000000000"/>
+    </species>
+    <species chemicalSymbol="C" speciesfile="C.xml">
+      <atom coord="0.25000000000000 0.25000000000000 0.25000000000000"/>
+    </species>
+  </structure>
+
+  <groundstate 
+    do="fromscratch"
+    ngridk="4 4 4"
+    reducek="true"
+    rgkmax="6"
+    gmaxvr="10"
+    nempty="50"
+    >
+    <libxc correlation='XC_GGA_C_PBE' exchange='XC_GGA_X_PBE'/>
+  </groundstate>
+
+
+</input>

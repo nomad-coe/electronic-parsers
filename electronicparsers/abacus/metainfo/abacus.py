@@ -161,12 +161,12 @@ class x_abacus_section_specie_basis_set(MSection):
         ''')
 
 
-class x_abacus_section_basis_sets(MSection):
+class BasisSet(simulation.method.BasisSet):
     '''
     section for numerical atomic orbitals of ABACUS
     '''
 
-    m_def = Section(validate=False)
+    m_def = Section(validate=False, extends_base_section=True)
 
     x_abacus_basis_sets_delta_k = Quantity(
         type=np.dtype(np.float64),
@@ -195,13 +195,6 @@ class x_abacus_section_basis_sets(MSection):
     x_abacus_basis_sets_rmax = Quantity(
         type=np.dtype(np.float64),
         unit='bohr',
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_abacus_basis_sets_kmesh = Quantity(
-        type=np.dtype(np.int32),
         shape=[],
         description='''
         -
@@ -550,10 +543,6 @@ class Method(simulation.method.Method):
         The size of basis of auxiliary basis functions is reduced using principal component analysis.
         ''',
         categories=[x_abacus_input_settings, x_abacus_exx_settings])
-
-    x_abacus_section_basis_sets = SubSection(
-        sub_section=SectionProxy('x_abacus_section_basis_sets'),
-        repeats=True,)
 
 
 class System(simulation.system.System):
