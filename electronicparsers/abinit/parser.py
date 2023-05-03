@@ -27,7 +27,7 @@ from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, BasisSetCellDependent, Electronic, Smearing, Scf, DFT, XCFunctional,
+    Method, BasisSet, BasisSetContainer, Electronic, Smearing, Scf, DFT, XCFunctional,
     Functional, KMesh, FrequencyMesh, Screening, GW)
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
@@ -993,19 +993,24 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         if tsmear is not None:
             sec_smearing.width = (tsmear * ureg.hartree).to('joule').magnitude
 
-        sec_basis_set = sec_method.m_create(BasisSet)
-        sec_basis_set.type = 'plane_waves'
-        sec_basis_set.kind = 'wavefunction'
-        sec_basis_set_cell_dependent = sec_basis_set.m_create(BasisSetCellDependent)
-        sec_basis_set_cell_dependent.kind = 'plane_waves'
-
+        # basis set
         ecut = self.out_parser.get_input_var('ecut', 1)
         if ecut is not None:
             ecut = ecut * ureg.hartree
-            sec_basis_set_cell_dependent.planewave_cutoff = ecut
-            name = f'PW_{ecut.to("rydberg").magnitude}'
-            sec_basis_set_cell_dependent.name = name
+        sec_method.electronic_model.append(
+                BasisSetContainer(
+                scope=['wavefunction'],
+                basis_set=[
+                    BasisSet(
+                        scope=['valence'],
+                        type='plane waves',
+                        cutoff=ecut,
+                    )
+                ]
+            )
+        )
 
+        # DFT
         ixc = self.out_parser.get_input_var('ixc', 1, 1)
         if ixc >= 0:
             xc_functionals = ABINIT_NATIVE_IXC.get(ixc, [])
