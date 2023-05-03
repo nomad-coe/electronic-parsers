@@ -3,9 +3,9 @@ code_homepage: https://github.com/TRIQS/solid_dmft
 code_name: soliddmft
 metadata:
   codeCategory: Atomistic code
-  codeLabel: soliddmft
+  codeLabel: solid_dmft
   codeLabelStyle: All in lowercase
-  codeName: solid_dmft
+  codeName: soliddmft
   codeUrl: https://github.com/TRIQS/solid_dmft
   codeVersion: ''
   parserDirName: dependencies/parsers/electronic/electronicparsers/soliddmft/
@@ -22,6 +22,6 @@ metadata:
     |
 
     '
-name: parsers/solid_dmft
+name: parsers/soliddmft
 parser_class_name: electronicparsers.soliddmft.parser.SolidDMFTParser
 python_package: electronicparsers.soliddmft
