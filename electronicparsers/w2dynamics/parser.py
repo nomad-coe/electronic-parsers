@@ -206,8 +206,6 @@ class W2DynamicsParser:
             elif data.attrs.get(f'atoms.{n+1}.hamiltonian') == 'Kanamori':
                 sec_hubbard_kanamori_model.j = sec_hubbard_kanamori_model.jh
 
-            sec_hubbard_kanamori_model.double_counting_correction = data.attrs.get('general.dc')
-
     def parse_method(self, data):
         """Parses DMFT and code-specific metadata from `.config` in the hdf5 mainfile
 
