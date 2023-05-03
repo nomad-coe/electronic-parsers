@@ -345,7 +345,7 @@ class CPMDParser:
         elif self.mainfile_parser.molecular_dynamics is not None:
             workflow = MolecularDynamics(method=MolecularDynamicsMethod())
             workflow.method.thermodynamic_ensemble = resolve_ensemble_type()
-            sec_averaged = workflow.molecular_dynamics.m_create(x_cpmd_section_md_averaged_quantities)
+            sec_averaged = workflow.m_create(x_cpmd_section_md_averaged_quantities)
             for value in self.mainfile_parser.molecular_dynamics.get('averaged', []):
                 name = '_'.join(value[:-2]).lower()
                 setattr(sec_averaged, f'x_cpmd_{name}_mean', value[-2])

@@ -1428,7 +1428,7 @@ class CP2KParser:
             workflow = MolecularDynamics(method=MolecularDynamicsMethod())
             workflow.method.thermodynamic_ensemble = self._ensemble_map.get(self.get_ensemble_type(0), None)
             workflow.method.integration_timestep = self.get_time_step()
-            sec_md_settings = workflow.m_create(x_cp2k_section_md_settings)
+            sec_md_settings = workflow.method.m_create(x_cp2k_section_md_settings)
 
             # Parse code specific MD information
             ignored = {'time_step', 'ensemble_type', 'file_type'}

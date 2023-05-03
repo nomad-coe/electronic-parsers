@@ -476,7 +476,7 @@ class BandEnergies(simulation.calculation.BandEnergies):
         repeats=True)
 
 
-class GeometryOptimization(simulation.workflow.GeometryOptimization):
+class GeometryOptimizationMethod(simulation.workflow.GeometryOptimizationMethod):
 
     m_def = Section(validate=False, extends_base_section=True)
 

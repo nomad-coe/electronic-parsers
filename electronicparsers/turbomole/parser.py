@@ -1144,9 +1144,9 @@ class TurbomoleParser:
             elif 'gradient' in key or 'force' in key:
                 val = val * ureg.hartree / ureg.bohr
             key = self.metainfo_map.get(key, None)
-            if key is None or not key.startswith('x_turbomole'):
+            if key is None:
                 continue
-            setattr(workflow, key, val)
+            setattr(workflow.method, key, val)
         self.archive.workflow2 = workflow
 
     def parse(self, filepath, archive, logger):

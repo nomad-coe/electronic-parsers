@@ -898,8 +898,8 @@ class CrystalParser:
             if steps is not None:
                 archive.workflow2 = GeometryOptimization(
                     method=GeometryOptimizationMethod(), results=GeometryOptimizationResults())
-                archive.workflow.method.convergence_tolerance_energy_difference = out["energy_change"]
-                archive.workflow.method.convergence_tolerance_displacement_maximum = out["geometry_change"]
+                archive.workflow2.method.convergence_tolerance_energy_difference = out["energy_change"]
+                archive.workflow2.method.convergence_tolerance_displacement_maximum = out["geometry_change"]
 
                 # First step is special: it refers to the initial system which
                 # was printed before entering the geometry optimization loop.
@@ -936,7 +936,7 @@ class CrystalParser:
                     i_scc.method_ref = method
 
                     frames.append(i_scc)
-                archive.workflow.results.is_converged_geometry = geo_opt["converged"] == "CONVERGED"  # pylint: disable=E1136
+                archive.workflow2.results.is_converged_geometry = geo_opt["converged"] == "CONVERGED"  # pylint: disable=E1136
 
         # Remove ghost atom information. The metainfo does not provide a very
         # good way to deal with them currently so they are simply removed.
