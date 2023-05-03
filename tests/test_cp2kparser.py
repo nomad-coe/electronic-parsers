@@ -110,7 +110,7 @@ def test_molecular_dynamics(parser):
 
     sec_workflow = archive.workflow2
     assert sec_workflow.method.thermodynamic_ensemble == 'NVE'
-    assert sec_workflow.x_cp2k_section_md_settings[0].x_cp2k_md_print_frequency == 1
+    assert sec_workflow.method.x_cp2k_section_md_settings[0].x_cp2k_md_print_frequency == 1
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 12

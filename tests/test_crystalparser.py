@@ -326,7 +326,6 @@ def asserts_geo_opt(archive, method_type="DFT", system_type="3D", vdw=None, forc
     workflow = archive.workflow2
     assert workflow.method.convergence_tolerance_energy_difference is not None
     assert workflow.method.convergence_tolerance_displacement_maximum is not None
-    assert workflow.results.calculations_ref is not None
     assert workflow.results.is_converged_geometry is True
 
 

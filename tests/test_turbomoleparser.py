@@ -104,7 +104,7 @@ def test_grad_statpt_dscf(parser):
     assert sec_sccs[2].energy.kinetic_electronic.value.magnitude == approx(8.27834082e-16)
 
     sec_sampling = archive.workflow2
-    assert sec_sampling.x_turbomole_geometry_optimization_trustregion_min.magnitude == approx(5.29177211e-14)
+    assert sec_sampling.method.x_turbomole_geometry_optimization_trustregion_min.magnitude == approx(5.29177211e-14)
     assert sec_sampling.method.method == 'BFGS'
     assert sec_sampling.method.convergence_tolerance_force_maximum.magnitude == approx(8.2387235e-11)
 
