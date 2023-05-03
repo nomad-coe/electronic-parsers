@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Functional, Method, DFT, Electronic, XCFunctional, Smearing,
-    BasisSetCellDependent, BasisSet, AtomParameters
+    BasisSetContainer, BasisSet, AtomParameters
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -755,15 +755,20 @@ class CastepParser:
 
         # basis set
         basis_parameters = self.out_parser.get('title', {}).get('basis set parameters', {})
-        sec_basis = sec_method.m_create(BasisSet)
-        sec_basis.type = 'plane_waves'
-        sec_basis_cell_dependent = sec_basis.m_create(BasisSetCellDependent)
-        sec_method.basis_set[0].cell_dependent.kind = 'plane_waves'
-        cutoff = basis_parameters.get('plane wave basis set cut-off')
-        if cutoff:
-            sec_basis_cell_dependent.planewave_cutoff = cutoff
-            sec_basis_cell_dependent.name = 'PW_%d' % (round(cutoff.to('rydberg').magnitude))
+        sec_method.electronic_model.append(
+            BasisSetContainer(
+                scope=['wavefunction'],
+                basis_set=[
+                    BasisSet(
+                        scope=['valence'],
+                        type='plane waves',
+                        cutoff=basis_parameters.get('plane wave basis set cut-off'),
+                    )
+                ]
+            )
+        )
 
+        # DFT
         sec_dft = sec_method.m_create(DFT)
         method = 'DFT+U' if self.out_parser.get('dft_u') is not None else 'DFT'
         sec_method.electronic = Electronic(method=method, n_spin_channels=self.n_spin_channels)
