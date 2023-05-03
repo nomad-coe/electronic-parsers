@@ -1,0 +1,45 @@
+code_category: Atomistic code
+code_homepage: http://hauleweb.rutgers.edu/tutorials/
+code_name: eDMFT
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: eDMFT
+  codeLabelStyle: DMFT in capitals, the rest in lowercase
+  codeName: eDMFT
+  codeUrl: http://hauleweb.rutgers.edu/tutorials/
+  codeVersion: ''
+  parserDirName: dependencies/parsers/electronic/electronicparsers/edmft/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: '| Input Filename | Description |
+
+    | --- | --- |
+
+    | `*.indmfl` | **Mainfile:** input DMFT parameters file |
+
+    | `*params.dat` | input text file with input parameters |
+
+    | `*.struct` | output text file with data for the structure (specific to WIEN2k) |
+
+    | `*.indmf*` | output text file with various inputs for DMFT |
+
+    | `*.in*` | output text file with various inputs for DFT and sfc calculation |
+
+    | `*.clm*` | output data file with charge densities |
+
+    | `*.klist` | output data file with K point list |
+
+    | `*.kgen` | output data file with K generation |
+
+    | `*.scf*` | output text file with info about the sfc cycles |
+
+    | `*projectorw.dat` | output data file with projectors |
+
+    | `*sig.inp*` | output data file with sigma |
+
+    '
+name: parsers/edmft
+parser_class_name: electronicparsers.edmft.parser.EDMFTParser
+python_package: electronicparsers.edmft
