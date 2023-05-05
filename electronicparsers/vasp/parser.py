@@ -44,7 +44,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, DFT, HubbardKanamoriModel, AtomParameters,
-    XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh
+    XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh, Pseudopotential
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -58,6 +58,7 @@ from nomad.datamodel.metainfo.workflow import (
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, MolecularDynamics as MolecularDynamics2)
+from typing import Any
 
 re_n = r'[\n\r]'
 
@@ -100,6 +101,25 @@ def convert(val, dtype):
             return val
 
 
+class PotParser(TextParser):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def init_quantities(self):
+        _pseudopotential = [
+            Quantity('title', r'TITEL\s+=\s(.*)'),
+            Quantity('flag', r'(L[A-Z]+)\s+=\s+(T|F)', repeats=True),
+            Quantity('number', r'([A-Z]+)\s+=\s+([-\.0-9]+)', repeats=True),
+        ]
+
+        self._quantities = [
+            Quantity(
+                'pseudopotential', r'(VRHFIN\s+=[\s\S]+?LMMAX\s=\s+\d)', repeats=True,
+                sub_parser=TextParser(quantities=_pseudopotential)
+                ),
+        ]
+
+
 class ContentParser:
     def __init__(self):
         self.parser = None
@@ -128,6 +148,7 @@ class ContentParser:
             'PZ': ['LDA_C_PZ'],
             '91': ['GGA_X_PW91', 'GGA_C_PW91'],
             'PE': ['GGA_X_PBE', 'GGA_C_PBE'],
+            'PBE': ['GGA_X_PBE', 'GGA_C_PBE'],
             'RE': ['GGA_X_PBE_R'], 'VW': ['LDA_C_VWN'],
             'RP': ['GGA_X_RPBE', 'GGA_C_PBE'],
             'PS': ['GGA_C_PBE_SOL', 'GGA_X_PBE_SOL'],
@@ -255,13 +276,6 @@ class OutcarTextParser(TextParser):
                     positions.append(position.groups())
             return np.array(positions, dtype=float)
 
-        def str_to_mass_valence(val_in):
-            mass_valence = [v.strip() for v in val_in.split('\n')]
-            for n, values in enumerate(mass_valence):
-                mass_valence[n] = [float(values[i - 6:i]) for i in range(len(values), 2, -6)]
-                mass_valence[n].reverse()
-            return [(mass_valence[0][i], mass_valence[1][i]) for i in range(len(mass_valence[0]))]
-
         scf_iteration = [
             Quantity(
                 'energy_total', r'free energy\s*TOTEN\s*=\s*([\d\.\-]+)\s*eV',
@@ -346,15 +360,9 @@ class OutcarTextParser(TextParser):
             Quantity(
                 'ions_per_type', r'ions per type =\s*([ \d]+)', dtype=int, repeats=False),
             Quantity(
-                'species', r'TITEL\s*=\s*(\w+) ([A-Z][a-z]*)', dtype=str, repeats=True),
+                'species', r'TITEL\s*=\s*(\w+) ([A-Z][a-z]*)', dtype=str, repeats=True),  # TODO: deprecate
             Quantity(
-                'species', r'\n *(\w+) +([A-Z][a-z]*).+?:\s*energy of atom +\d+', dtype=str, repeats=True),
-            Quantity(
-                'mass_valence', r'POMASS\s*=\s*([\d\.]+);\s*ZVAL\s*=\s*([\d\.]+)\s*mass and valenz',
-                dtype=float, repeats=True),
-            Quantity(
-                'mass_valence', r'POMASS +(=[\d\. ]+\s+)Ionic Valenz\s+ZVAL +(=[\d\. ]+)',
-                str_operation=str_to_mass_valence),
+                'species', r'\n *(\w+) +([A-Z][a-z]*).+?:\s*energy of atom +\d+', dtype=str, repeats=True),  # TODO: deprecate
             Quantity(
                 'kpoints',
                 r'Following reciprocal coordinates:[\s\S]+?\n([\d\.\s\-]+)',
@@ -507,7 +515,6 @@ class OutcarContentParser(ContentParser):
             species = self.parser.get('species', [])
             ions = [ions] if isinstance(ions, int) else ions
             ions = [int(i) for i in ions]
-            mass_valence = self.parser.get('mass_valence', [])
             if len(ions) != len(species):
                 # get it from POSCAR
                 path = os.path.join(self.parser.maindir, 'POSCAR%s' % os.path.basename(
@@ -537,11 +544,26 @@ class OutcarContentParser(ContentParser):
                 atomtype.extend([(n + 1)] * ions[n])
             self._atom_info['atoms'] = dict(element=element, atomtype=atomtype)
             self._atom_info['atomtypes'] = dict(
-                atomspertype=ions, element=[s[1] for s in species],
-                mass=[m[0] for m in mass_valence], valence=[m[1] for m in mass_valence],
-                pseudopotential=[s[0] for s in species])
+                atomspertype=ions, element=[s[1] for s in species])
 
         return self._atom_info
+
+    @property
+    def pseudopotential(self):
+        def _to_dict(key_val: list[list[str]], transform=lambda x: x) -> dict[str, Any]:
+            return {x[0]: transform(x[1]) for x in key_val}
+
+        bool_mapping = {'T': True, 'F': False}
+        pps = PotParser(mainfile=self.parser.mainfile).parse().get('pseudopotential')
+        pps_out: list[dict[str, Any]] = []
+        for pp in pps:
+            pps_out.append({'title': pp['title']})
+            pps_out[-1]['flag'] = _to_dict(pp['flag'],
+                transform=lambda x: bool_mapping[x])
+            pps_out[-1]['number'] = _to_dict(pp['number'],
+                transform=lambda x: float(x))
+        return pps_out
+
 
     def get_n_scf(self, n_calc):
         return len(self.parser.get(
@@ -1260,23 +1282,29 @@ class VASPParser():
                 hubbard_present = True
                 break
 
+        # Atom Parameters
         atomtypes = self.parser.atom_info.get('atomtypes', {})
         element = atomtypes.get('element', [])
         atom_counts = {e: 0 for e in element}
         for i in range(len(element)):
+            pseudopotential = self.parser.pseudopotential[i]
             sec_method_atom_kind = sec_method.m_create(AtomParameters)
             atom_number = ase.data.atomic_numbers.get(element[i], 0)
             sec_method_atom_kind.atom_number = atom_number
             atom_label = '%s%d' % (
                 element[i], atom_counts[element[i]]) if atom_counts[element[i]] > 0 else element[i]
             sec_method_atom_kind.label = str(atom_label)
-            sec_method_atom_kind.mass = atomtypes.get('mass', [1] * (i + 1))[i] * ureg.amu
-            sec_method_atom_kind.n_valence_electrons = atomtypes.get(
-                'valence', [0] * (i + 1))[i]
-            pseudopotential = atomtypes.get('pseudopotential')[i]
-            pseudopotential = ' '.join(pseudopotential) if isinstance(
-                pseudopotential, list) else pseudopotential
-            sec_method_atom_kind.pseudopotential_name = str(pseudopotential)
+            sec_method_atom_kind.mass = pseudopotential['number']['POMASS'] * ureg.amu
+            sec_method_atom_kind.n_valence_electrons = int(pseudopotential['number']['ZVAL'])
+            pp = Pseudopotential()
+            pp_name = ' '.join(pseudopotential['title'])
+            pp.name = pp_name
+            pp.type = 'PAW' if pseudopotential['flag']['LPAW'] else 'USPP'  # TODO check if this is correct
+            pp.norm_conserving = False
+            pp.cutoff = pseudopotential['number']['ENMAX'] * ureg.eV
+            pp.xc_functional_name = self.parser.xc_functional_mapping.get(pseudopotential['title'][0].split('_')[1], ['GGA_X_PBE', 'GGA_C_PBE'])
+            sec_method_atom_kind.pseudopotential_name = pp_name
+            sec_method_atom_kind.pseudopotential = pp
             if hubbard_present:
                 orbital = self.hubbard_orbital_types[int(parsed_file.get('LDAUL')[i])]
                 if orbital:
