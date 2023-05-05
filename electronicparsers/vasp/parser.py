@@ -564,7 +564,6 @@ class OutcarContentParser(ContentParser):
                 transform=lambda x: float(x))
         return pps_out
 
-
     def get_n_scf(self, n_calc):
         return len(self.parser.get(
             'calculation', [{}] * (n_calc + 1))[n_calc].get('scf_iteration', []))
@@ -1067,6 +1066,23 @@ class RunContentParser(ContentParser):
                 self._atom_info[key] = array_info
         return self._atom_info
 
+    @property
+    def pseudopotential(self):
+        def _to_dict(key_val: list[list[str]], transform=lambda x: x) -> dict[str, Any]:
+            return {x[0]: transform(x[1]) for x in key_val}
+
+        bool_mapping = {'T': True, 'F': False}
+        potcar_file = os.path.join(self.parser.maindir, 'POTCAR.stripped')
+        pps = PotParser(mainfile=potcar_file).parse().get('pseudopotential')
+        pps_out: list[dict[str, Any]] = []
+        for pp in pps:
+            pps_out.append({'title': pp['title']})
+            pps_out[-1]['flag'] = _to_dict(pp['flag'],
+                transform=lambda x: bool_mapping[x])
+            pps_out[-1]['number'] = _to_dict(pp['number'],
+                transform=lambda x: float(x))
+        return pps_out
+
     def get_n_scf(self, n_calc):
         if self._n_scf is None:
             self._n_scf = [None] * self.n_calculations
@@ -1295,14 +1311,15 @@ class VASPParser():
                 element[i], atom_counts[element[i]]) if atom_counts[element[i]] > 0 else element[i]
             sec_method_atom_kind.label = str(atom_label)
             sec_method_atom_kind.mass = pseudopotential['number']['POMASS'] * ureg.amu
-            sec_method_atom_kind.n_valence_electrons = int(pseudopotential['number']['ZVAL'])
+            sec_method_atom_kind.n_valence_electrons = pseudopotential['number']['ZVAL']
             pp = Pseudopotential()
             pp_name = ' '.join(pseudopotential['title'])
             pp.name = pp_name
             pp.type = 'PAW' if pseudopotential['flag']['LPAW'] else 'USPP'  # TODO check if this is correct
             pp.norm_conserving = False
             pp.cutoff = pseudopotential['number']['ENMAX'] * ureg.eV
-            pp.xc_functional_name = self.parser.xc_functional_mapping.get(pseudopotential['title'][0].split('_')[1], ['GGA_X_PBE', 'GGA_C_PBE'])
+            pp.xc_functional_name = self.parser.xc_functional_mapping.get(
+                pseudopotential['title'][0].split('_')[1], ['GGA_X_PBE', 'GGA_C_PBE'])
             sec_method_atom_kind.pseudopotential_name = pp_name
             sec_method_atom_kind.pseudopotential = pp
             if hubbard_present:
