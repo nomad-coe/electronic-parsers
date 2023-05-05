@@ -251,10 +251,29 @@ class XMLParser(TextParser):
         # https://www.flapw.de/MaX-6.0/documentation/localOrbitalSetup/
         def to_dict(key_vals: list[list[Any]]) -> dict[str, Any]:
             return {key_val[0]: key_val[1] for key_val in key_vals}
+
+        def develop_range(val_in: str) -> list[int]:
+            if '-' in val_in:
+                start, end = val_in.split('-')
+                return list(range(int(start), int(end) + 1))
+            elif ',' in val_in:
+                return [int(val) for val in val_in.split(',')]
+            else:
+                return [int(val_in)]
+
+        def roll_out_lo(val_in: dict[str, str]) -> list[dict[tuple[int], list[Any]]]:
+            los = []
+            for l in develop_range(int(val_in['l'])):
+                for n in develop_range(int(val_in['n'])):
+                    order = int(val_in['eDeriv'])
+                    los.append({(l, order): [n, val_in['type']]})
+            return los
+
         # function variables
         basis_sets: list[BasisSet] = []
         l_mapping = ['s', 'p', 'd', 'f']
         bool_mapping = {'T': True, 'F': False}
+        order_mapping = {'APW': 1, 'LAPW': 2}
         input_parameters_reformatted = {
             key_val[0]: key_val[1] for key_val in self.input.get('parameters').get('key_val')
         }
@@ -273,23 +292,42 @@ class XMLParser(TextParser):
                         n_grid_points=int(specie.get('gridPoints')),
                     )
                 )
-            # valence muffin-tin
+            # valence muffin-tin + local orbitals
             n_max = 0
             for l_test in l_mapping[::-1]:
                 n_prospective = int(specie.get(l_test))
                 if n_prospective:
                     n_max = l_test
                     break
+            los = []
+            for lo in specie.get('lo', []):
+                los += roll_out_lo(to_dict(lo.get('key_val', [])))
             for l in range(int(specie.get('lmax')) + 1):
                 apw_type = 'APW' if l == specie.get('lmaxAPW', -1) else 'LAPW'
                 n_quantum = specie.get(l_mapping[min(l, len(l_mapping) - 1)], n_max)
-                orbital = OrbitalAPW(
-                    type=apw_type,
-                    energy_parameter_n=n_quantum,
-                    l_quantum_number=l,
-                    core_level=False,
-                )
-                mt[0].orbital.append(orbital)
+                for order in range(5):  # TODO: find a better option than hard-coding
+                    if order <= order_mapping[apw_type]:
+                        orbital = [
+                            OrbitalAPW(
+                                type=apw_type,
+                                energy_parameter_n=n_quantum,
+                                l_quantum_number=l,
+                                core_level=False,
+                                order=order,
+                            )
+                        ]
+                    if (l, order) in [lo.keys() for lo in los]:
+                        orbital.append(
+                            OrbitalAPW(
+                                type='local orbital',
+                                energy_parameter_n=lo[(l, order)][0],
+                                l_quantum_number=l,
+                                core_level=False,
+                                order=order,
+                                x_fleur_lo_type=lo[(l, order)][1],
+                            )
+                        )
+                    mt[0].orbital = [*mt[0].orbital, *orbital]
             mt[0].scope.append('valence')
             # core muffin-tin
             n_counter = 1

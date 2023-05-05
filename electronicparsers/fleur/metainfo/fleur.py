@@ -20,7 +20,7 @@ import numpy as np            # pylint: disable=unused-import
 
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference, JSON
+    Reference, JSON, MEnum
 )
 from nomad.datamodel.metainfo import simulation
 
@@ -497,6 +497,16 @@ class Method(simulation.method.Method):
     x_fleur_section_XC = SubSection(
         sub_section=SectionProxy('x_fleur_section_XC'),
         repeats=True)
+
+
+class OrbitalAPW(simulation.method.OrbitalAPW):
+    x_fleur_lo_type = Quantity(
+        type=MEnum('SCLO', 'HELO'),
+        shape=[],
+        description='''
+        Fleur demarcation of the LO type used.
+        https://www.flapw.de/MaX-6.0/documentation/localOrbitalSetup/
+        ''')
 
 
 class BasisSet(simulation.method.BasisSet):
