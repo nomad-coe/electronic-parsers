@@ -22,21 +22,28 @@ from glob import glob
 
 from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
-from nomad.datamodel.metainfo.workflow import Workflow, Task as Taskold, GW as GWold
 from nomad.datamodel.metainfo.workflow2 import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GW, GWMethod, GWResults, ParticleHoleExcitations,
+    GW, GWMethod, ParticleHoleExcitations,
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
 
 
 def extract_section(source: EntryArchive, path: str):
-    '''
-    Extracts the (last) section from source given by path. Examples:
-        sec_system = extract_section(archive, 'run/system')
-        spectra = extract_section(archive, 'run/calculation/spectra')
-    '''
+    """Extract the (last) section from `source` given by `path`. Separators in path are done
+    using `/`. Examples:
+
+    section_system = extract_section(archive, 'run/system)
+    spectra = extract_section(archive, 'run/calculation/spectra')
+
+    Args:
+        source (EntryArchive): targeted archive
+        path (str): path to the desired section to be extracted
+
+    Returns:
+        MSection: extracted section
+    """
     section_segments = path.split('/')
     for section in section_segments:
         try:
@@ -48,11 +55,19 @@ def extract_section(source: EntryArchive, path: str):
 
 
 def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = True):
-    '''
-    Get files up to / down from the filepath (deep=`**` going up, and deep=`..` down,) to
-    find the file `pattern` with respect to the file `stripname` (normally being the
-    mainfile of the parser).
-    '''
+    """Get files following the `pattern` with respect to the file `stripname` (usually this
+    being the mainfile of the given parser) up to / down from the `filepath` (`deep=True` going
+    up, `deep=False` down)
+
+    Args:
+        pattern (str): targeted pattern to be found
+        filepath (str): filepath to start the search
+        stripname (str, optional): name with respect to which do the search. Defaults to ''.
+        deep (bool, optional): boolean setting the path in the folders to scan (up or down). Defaults to True.
+
+    Returns:
+        list: List of found files.
+    """
     for _ in range(10):
         filenames = glob(f'{os.path.dirname(filepath)}/{pattern}')
         pattern = os.path.join('**' if deep else '..', pattern)
@@ -71,8 +86,8 @@ def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = Tru
 
 class BeyondDFTWorkflowsParser:
     '''
-    Generates automatic GW, BSE, etc, workflows for all electronic codes that can handle
-    these calculations.
+    Generates automatic beyondDFT (GW, BSE, DMFT) workflows. Main classes for parsers will
+    inherit from here if some automatic workflow parsing has been implemented.
     '''
     def __init__(self, archive: EntryArchive, _child_archives: dict, _xs_spectra_types: list):
         self.archive = archive
@@ -80,10 +95,12 @@ class BeyondDFTWorkflowsParser:
         self._xs_spectra_types = _xs_spectra_types
 
     def run_workflow_archive(self, workflow_archive: EntryArchive):
-        '''
-        Initializes the workflow archive by checking if Run exists or not, as well as copying
-        Program and System into it.
-        '''
+        """Initializes the workflow archive by checking if Run exists or not, as well as
+        copying Program and System into it.
+
+        Args:
+            workflow_archive (EntryArchive): the workflow archive targeted for initialization
+        """
         if workflow_archive.run:
             sec_run = workflow_archive.run[-1]
         else:
@@ -92,42 +109,15 @@ class BeyondDFTWorkflowsParser:
         sec_run.system = self.archive.run[-1].system
 
     def parse_gw_workflow(self, gw_archive: EntryArchive, gw_workflow_archive: EntryArchive):
-        '''
-            self.archive = DFT archive
-            gw_archive = GW archive
-            gw_workflow_archive = DFT+GW workflow archive
-        '''
+        """Automatically parses the GW workflow. Here, `self.archive` is the DFT archive.
+
+        Args:
+            gw_archive (EntryArchive): the GW archive
+            gw_workflow_archive (EntryArchive): the GW workflow archive
+        """
         self.run_workflow_archive(gw_workflow_archive)
 
-        # Extracting DFT and GW results
-        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
-        dos_gw = extract_section(gw_archive, 'run/calculation/dos_electronic')
-        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        bs_gw = extract_section(gw_archive, 'run/calculation/band_structure_electronic')
-
-        # Old workflow
-        workflow_old = gw_workflow_archive.m_create(Workflow)
-        workflow_old.type = 'GW'
-        workflow_old.workflows_ref = [self.archive.workflow[-1], gw_archive.workflow[-1]]
-        workflow_old.task = [
-            Taskold(
-                input_workflow=workflow_old, output_workflow=self.archive.workflow[-1],
-                description='DFT calculation performed in an input structure.'),
-            Taskold(
-                input_workflow=self.archive.workflow[0], output_workflow=gw_archive.workflow[-1],
-                description='GW calculation performed from input DFT calculation.'),
-            Taskold(
-                input_workflow=gw_archive.workflow[0], output_workflow=workflow_old,
-                description='Comparison between DFT and GW.')
-        ]
-        gw_old = workflow_old.m_create(GWold)
-        gw_old.dos_dft = dos_dft
-        gw_old.dos_gw = dos_gw
-        gw_old.band_structure_dft = bs_dft
-        gw_old.band_structure_gw = bs_gw
-
-        # -- New workflow --
-        workflow = GW(method=GWMethod(), results=GWResults())
+        workflow = GW(method=GWMethod())
         workflow.name = 'GW'
 
         # Method
@@ -137,12 +127,6 @@ class BeyondDFTWorkflowsParser:
         workflow.method.gw_method_ref = method_gw
         workflow.method.starting_point = method_xcfunctional
         workflow.method.basis_set = method_basisset
-
-        # Results
-        workflow.results.dos_dft = dos_dft
-        workflow.results.dos_gw = dos_gw
-        workflow.results.band_structure_dft = bs_dft
-        workflow.results.band_structure_gw = bs_gw
 
         # Inputs and Outputs
         input_structure = extract_section(self.archive, 'run/system')
@@ -179,10 +163,10 @@ class BeyondDFTWorkflowsParser:
         gw_workflow_archive.workflow2 = workflow
 
     def parse_photon_workflow(self):
-        '''
-            self.archive = archive for the workflow
-            self._child_archives = archives for SinglePoint photons
-        '''
+        """Automatically parses the PhotonPolarization workflow. Here, `self.archive` is
+        the photon_workflow archive, and `self._child_archives` the archives for SinglePoint
+        photons.
+        """
         workflow = PhotonPolarization(method=PhotonPolarizationMethod(), results=PhotonPolarizationResults())
         workflow.name = 'BSE'  # this entry contains the full BSE calculation for all photon polarizations
 
@@ -229,11 +213,12 @@ class BeyondDFTWorkflowsParser:
         self.archive.workflow2 = workflow
 
     def parse_xs_workflow(self, xs_archives: EntryArchive, xs_workflow_archive: EntryArchive):
-        '''
-            self.archive = DFT archive
-            xs_archives = archives for all Spectra workflows
-            xs_workflow_archive = DFT+Spectra workflow archive
-        '''
+        """Automatically parses the XS workflow. Here, `self.archive` is the DFT archive.
+
+        Args:
+            xs_archives (EntryArchive): the XS archive
+            xs_workflow_archive (EntryArchive): the XS workflow archive
+        """
         self.run_workflow_archive(xs_workflow_archive)
 
         def extract_polarization_outputs():
