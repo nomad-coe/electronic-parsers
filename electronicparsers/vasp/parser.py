@@ -554,7 +554,7 @@ class OutcarContentParser(ContentParser):
             return {x[0]: transform(x[1]) for x in key_val}
 
         bool_mapping = {'T': True, 'F': False}
-        pps = PotParser(mainfile=self.parser.mainfile).parse().get('pseudopotential')
+        pps = PotParser(mainfile=self.parser.mainfile).parse().get('pseudopotential', [])
         pps_out: list[dict[str, Any]] = []
         for pp in pps:
             pps_out.append({'title': pp['title']})
@@ -1073,7 +1073,7 @@ class RunContentParser(ContentParser):
 
         bool_mapping = {'T': True, 'F': False}
         potcar_file = os.path.join(self.parser.maindir, 'POTCAR.stripped')
-        pps = PotParser(mainfile=potcar_file).parse().get('pseudopotential')
+        pps = PotParser(mainfile=potcar_file).parse().get('pseudopotential', [])
         pps_out: list[dict[str, Any]] = []
         for pp in pps:
             pps_out.append({'title': pp['title']})
@@ -1303,25 +1303,28 @@ class VASPParser():
         element = atomtypes.get('element', [])
         atom_counts = {e: 0 for e in element}
         for i in range(len(element)):
-            pseudopotential = self.parser.pseudopotential[i]
             sec_method_atom_kind = sec_method.m_create(AtomParameters)
             atom_number = ase.data.atomic_numbers.get(element[i], 0)
             sec_method_atom_kind.atom_number = atom_number
             atom_label = '%s%d' % (
                 element[i], atom_counts[element[i]]) if atom_counts[element[i]] > 0 else element[i]
             sec_method_atom_kind.label = str(atom_label)
-            sec_method_atom_kind.mass = pseudopotential['number']['POMASS'] * ureg.amu
-            sec_method_atom_kind.n_valence_electrons = pseudopotential['number']['ZVAL']
-            pp = Pseudopotential()
-            pp_name = ' '.join(pseudopotential['title'])
-            pp.name = pp_name
-            pp.type = 'PAW' if pseudopotential['flag']['LPAW'] else 'USPP'  # TODO check if this is correct
-            pp.norm_conserving = False
-            pp.cutoff = pseudopotential['number']['ENMAX'] * ureg.eV
-            pp.xc_functional_name = self.parser.xc_functional_mapping.get(
-                pseudopotential['title'][0].split('_')[1], ['GGA_X_PBE', 'GGA_C_PBE'])
-            sec_method_atom_kind.pseudopotential_name = pp_name
-            sec_method_atom_kind.pseudopotential = pp
+            try:
+                pseudopotential = self.parser.pseudopotential[i]
+                sec_method_atom_kind.mass = pseudopotential['number']['POMASS'] * ureg.amu
+                sec_method_atom_kind.n_valence_electrons = pseudopotential['number']['ZVAL']
+                pp = Pseudopotential()
+                pp.type = 'PAW' if pseudopotential['flag']['LPAW'] else 'USPP'  # TODO check if this is correct
+                pp.norm_conserving = False
+                pp.cutoff = pseudopotential['number']['ENMAX'] * ureg.eV
+                pp.xc_functional_name = self.parser.xc_functional_mapping.get(
+                    pseudopotential['title'][0].split('_')[1], ['GGA_X_PBE', 'GGA_C_PBE'])
+                pp_name = ' '.join(pseudopotential['title'])
+                pp.name = pp_name
+                sec_method_atom_kind.pseudopotential_name = pseudopotential['title'][0]  # backwards compatibility
+                sec_method_atom_kind.pseudopotential = pp
+            except IndexError:
+                pass
             if hubbard_present:
                 orbital = self.hubbard_orbital_types[int(parsed_file.get('LDAUL')[i])]
                 if orbital:

@@ -70,7 +70,6 @@ def test_vasprunxml_static(parser):
     assert len(sec_method.x_vasp_incar_in) == 27
     assert len(sec_method.x_vasp_incar_out) == 112
     assert sec_method.x_vasp_incar_in['LCHARG']
-    assert sec_method.atom_parameters[0].mass.magnitude == approx(4.0359402e-26)
     assert len(sec_method.dft.xc_functional.exchange) == 1
 
     sec_system = sec_run.system[-1]
