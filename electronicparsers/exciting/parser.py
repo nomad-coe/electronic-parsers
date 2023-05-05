@@ -1594,7 +1594,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     for order, energy_parameter in enumerate(energy_parameters):
                         orbital = OrbitalAPW(
                             l_quantum_number=l,
-                            type='lo',
+                            type='LO',
                             order=order,
                             energy_parameter=energy_parameter * ureg.hartree,
                             update=species_data['default']['searchE'],
@@ -1603,10 +1603,19 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
             # Compose basis set  # TODO: the overall behaviour of the parser should change so composition is done at another level
             if not sec_method.electronic_model:
-                sec_method.electronic_model = [BasisSetContainer(
-                    type='(L)APW+lo',
-                    scope=['wavefunction'],
-                )]
+                sec_method.electronic_model = [
+                    BasisSetContainer(
+                        type='(L)APW+lo',
+                        scope=['wavefunction'],
+                        basis_set=[
+                            BasisSet(
+                                type='plane waves',
+                                scope=['valence'],
+                                cutoff_fractional=self.input_xml_parser.get('xs/cutoffapw', 7.),
+                            ),
+                        ]
+                    )
+                ]
             sec_method.electronic_model[0].basis_set.append(bs_val)
 
 

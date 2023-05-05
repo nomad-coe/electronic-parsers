@@ -319,7 +319,7 @@ class XMLParser(TextParser):
                     if (l, order) in [lo.keys() for lo in los]:
                         orbital.append(
                             OrbitalAPW(
-                                type='local orbital',
+                                type='LO',
                                 energy_parameter_n=lo[(l, order)][0],
                                 l_quantum_number=l,
                                 core_level=False,
