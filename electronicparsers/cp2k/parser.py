@@ -1296,6 +1296,7 @@ class CP2KParser:
 
         sec_method.electronic_model.append(
             BasisSetContainer(
+                type='atom-centered orbitals',
                 scope=['wavefunction'],
                 basis_set=self._parse_basis_set(),
             )
