@@ -43,7 +43,7 @@ def test_aoforce(parser):
     assert sec_method.electronic.method == 'DFT'
     assert sec_method.dft.xc_functional.correlation[0].name == 'GGA_C_P86'
     assert len(sec_method.atom_parameters) == 4
-    assert len(sec_method.basis_set[0].atom_centered) == 4
+    assert len(sec_method.electronic_model[0].basis_set[0].atom_centered) == 4
     assert sec_method.electronic.van_der_waals_method == 'DFT-D3'
     assert sec_method.x_turbomole_controlIn_scf_conv == 8
 
@@ -87,7 +87,7 @@ def test_grad_statpt_dscf(parser):
     parser.parse('tests/data/turbomole/acrolein_grad_statpt_dscf.out', archive, None)
 
     sec_methods = archive.run[0].method
-    assert sec_methods[0].basis_set[0].atom_centered[0].name == 'def2-SVP'
+    assert sec_methods[0].electronic_model[0].basis_set[0].atom_centered[0].name == 'def2-SVP'
     assert len(sec_methods) == 3
     assert sec_methods[0].dft.xc_functional.hybrid[0].name == 'HYB_GGA_XC_B3LYP'
 

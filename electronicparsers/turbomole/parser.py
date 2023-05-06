@@ -28,7 +28,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, FileParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     AtomParameters, Functional, Method, Electronic, BasisSet,
-    BasisSetAtomCentered, Smearing, XCFunctional, DFT
+    BasisSetAtomCentered, Smearing, XCFunctional, DFT, BasisSetContainer,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1065,20 +1065,28 @@ class TurbomoleParser:
                 sec_atom_kind.atom_number = atomic_numbers.get(atom, 0)
                 sec_atom_kind.label = atom
 
-            # only atom kinds
+            # Basis set
+            # TODO: add ECP and MO support
             for basis_set in self.module.get('basis_set_info', []):
                 atom = basis_set.get('atom', [])
-                sec_basis_set = sec_method.m_create(BasisSet)
-                sec_basis_set.type = 'gaussians'
-                sec_basis_set.kind = 'density' if basis_set.auxiliary else 'wavefunction'
-
+                scope = 'density' if basis_set.auxiliary else 'wavefunction'
+                bs = BasisSet(
+                    type='gaussians',
+                )
                 for atom in basis_set.get('atom', []):
+                    ac = BasisSetAtomCentered()
                     symbol = atom[0].title()
-                    sec_atom_basis = sec_basis_set.m_create(BasisSetAtomCentered)
-                    sec_atom_basis.name = atom[4]
-                    sec_atom_basis.atom_number = atomic_numbers.get(symbol, 0)
+                    ac.name = atom[4]
+                    ac.atom_number = atomic_numbers.get(symbol, 0)
                     if basis_set.spherical:
-                        sec_atom_basis.n_basis_functions = atom[3]
+                        ac.n_basis_functions = atom[3]
+                    bs.atom_centered.append(ac)
+                em = BasisSetContainer(
+                    type='atom-centered',
+                    scope=[scope],
+                    basis_set=[bs],
+                )
+                sec_method.electronic_model.append(em)
 
         # XC Functionals
         sec_xc_functional = sec_dft.m_create(XCFunctional)
