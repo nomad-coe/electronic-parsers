@@ -49,9 +49,14 @@ def test_scf(parser):
 
     sec_method = sec_run.method[0]
     assert len(sec_method.k_mesh.points) == 1
-    assert sec_method.basis_set[0].cell_dependent[0].name == 'PW_25.0'
-    assert sec_method.basis_set[1].cell_dependent[0].planewave_cutoff.magnitude == approx(2.17987236e-16,)
+    # basis set
+    sec_em = sec_method.electronic_model
+    assert sec_em[0].scope[0] == 'wavefunction'
+    assert sec_em[0].basis_set[0].cutoff.to('Ry').magnitude == approx(25.)
+    assert sec_em[1].scope[0] == 'density'
+    assert sec_em[1].basis_set[0].cutoff.to('Ry').magnitude == approx(100.)
     assert sec_method.x_qe_sticks_sum_G_smooth == 135043
+
     assert 'NL pseudopotentials' in sec_method.x_qe_allocated_array_name
     assert sec_method.x_qe_allocated_array_size[2] == 33554432.
     assert sec_method.x_qe_temporary_array_dimensions[3] == '262144,    8'
