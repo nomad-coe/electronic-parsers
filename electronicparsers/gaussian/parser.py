@@ -9,7 +9,8 @@ from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Electronic, Method, XCFunctional, Functional, DFT, BasisSet, BasisSetAtomCentered
+    Electronic, Method, XCFunctional, Functional, DFT, BasisSet, BasisSetAtomCentered,
+    BasisSetContainer,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1044,18 +1045,26 @@ class GaussianParser:
                 sec_elstruc_method.x_gaussian_electronic_structure_method = '%s%s' % (
                     prefix, entry['name'])
 
+        # Basis set
         if len(basis_sets) != 1:
             self.logger.error('Found multiple or no basis set', data=dict(
                 n_parsed=len(basis_sets)))
         for basis_set in basis_sets:
-            sec_basis = sec_method.m_create(BasisSet)
-            sec_basis.type = 'gaussians'
-            sec_basis.name = basis_set[0]
+            bs = BasisSet(
+                scope=['full-electron'],
+                type='gaussians',
+            )
             for _ in self._basis_set_map.get(basis_set[0], []):
                 # TODO need to adjust basis_set atom centered to take multiple entries
-                sec_basis_set_atom_centered = sec_basis.m_create(BasisSetAtomCentered)
                 # old parser writes the full name of basis set here not the name on map
-                sec_basis_set_atom_centered.name = basis_set[1]
+                bs.atom_centered.append(BasisSetAtomCentered(name=basis_set[1]))
+        sec_method.electronic_model = [
+            BasisSetContainer(
+                type='atom-centered',
+                scope=['wavefunction'],
+                basis_set=[bs],
+            )
+        ]
 
         if len(xc_functionals) != 1:
             self.logger.error('Found multiple or no xc functional', data=dict(
