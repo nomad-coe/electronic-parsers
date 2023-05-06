@@ -1314,8 +1314,9 @@ class VASPParser():
                 sec_method_atom_kind.mass = pseudopotential['number']['POMASS'] * ureg.amu
                 sec_method_atom_kind.n_valence_electrons = pseudopotential['number']['ZVAL']
                 pp = Pseudopotential()
-                pp.type = 'PAW' if pseudopotential['flag']['LPAW'] else 'USPP'  # TODO check if this is correct
-                pp.norm_conserving = False
+                pp.type = 'PAW'
+                if pseudopotential['flag']['LULTRA']:
+                    pp.type = 'USPP'  # TODO check if this is correct
                 pp.cutoff = pseudopotential['number']['ENMAX'] * ureg.eV
                 pp.xc_functional_name = self.parser.xc_functional_mapping.get(
                     pseudopotential['title'][0].split('_')[1], ['GGA_X_PBE', 'GGA_C_PBE'])
