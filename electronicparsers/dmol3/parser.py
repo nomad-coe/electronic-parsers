@@ -26,7 +26,7 @@ from datetime import datetime
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.method import Method, BasisSet
+from nomad.datamodel.metainfo.simulation.method import Method, BasisSet, BasisSetContainer
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, BandEnergies, Charges, Multipoles,
@@ -333,7 +333,18 @@ class Dmol3Parser:
         # section method
         sec_method = sec_run.m_create(Method)
         # basis set
-        sec_method.basis_set.append(BasisSet(type='numeric AOs'))
+        sec_method.electronic_model = [
+            BasisSetContainer(
+                type='atom-centered orbitals',
+                scope=['wavefunction'],
+                basis_set=[
+                        BasisSet(
+                        type='numeric AOs',
+                        scope=['full-electron'],
+                    )
+                ]
+            )
+        ]
         # simulation parameters
         for key, val in self.mainfile_parser.simulation_parameters.items():
             if key == 'scf_diis':
