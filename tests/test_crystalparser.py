@@ -286,7 +286,7 @@ def asserts_basic_code_specific(archive, method_type="DFT", system_type="3D", ru
     method = run.method[0]
 
     assert run.program.name == "Crystal"
-    assert method.basis_set[0].type == "gaussians"
+    assert method.electronic_model[0].basis_set[0].type == "gaussians"
 
     assert method.x_crystal_n_atoms is not None
     assert method.x_crystal_n_shells is not None
@@ -313,7 +313,7 @@ def asserts_basic_code_specific(archive, method_type="DFT", system_type="3D", ru
         assert method.x_crystal_shrink is not None
     assert method.x_crystal_weight_f is not None
 
-    bases = method.basis_set[0].atom_centered
+    bases = method.electronic_model[0].basis_set[0].atom_centered
     for basis in bases:
         assert isinstance(basis.atom_number, np.int32)
         for shell in basis.x_crystal_section_shell:
