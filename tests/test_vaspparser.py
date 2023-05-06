@@ -228,6 +228,15 @@ def test_outcar(parser):
     k_mesh = sec_method.k_mesh
     assert len(k_mesh.points) == 145
 
+    sec_atom_param = sec_method.atom_parameters[0]
+    assert sec_atom_param.n_valence_electrons == approx(11.0)
+    assert sec_atom_param.mass.to('amu').magnitude == approx(227.028)
+
+    sec_pseudo = sec_atom_param.pseudopotential
+    assert sec_pseudo.name == 'PAW_PBE Ac 06Sep2000'
+    assert sec_pseudo.xc_functional_name == ['GGA_X_PBE', 'GGA_C_PBE']
+    assert sec_pseudo.cutoff.to('eV').magnitude == approx(172.237)
+
     sec_system = sec_run.system[0]
     assert sec_system.atoms.lattice_vectors[1][0].magnitude == approx(3.141538e-10)
     assert sec_system.atoms.positions[1][0].magnitude == approx(3.14154e-10)
