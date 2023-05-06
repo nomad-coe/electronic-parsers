@@ -444,21 +444,22 @@ class CPMDParser:
                             break
 
         sec_method = sec_run.m_create(Method)
-        sec_method.electronic_model.append(
-            BasisSetContainer(
-                scope=['wavefunction'],
-                type='plane waves',
-                basis_set = [
-                    BasisSet(
-                        scope=['valence'],
-                        type='plane waves',
-                    )
-                ]
-            )
-        )
-        cutoff = self.mainfile_parser.get('supercell', {}).get('x_cpmd_wave_function_cutoff')
+        cutoff = self.mainfile_parser.get('supercell', {}).get(
+            'x_cpmd_wave_function_cutoff')
         if cutoff is not None:
-            sec_method.electronic_model[0].basis_set[0].cutoff = cutoff * ureg.rydberg
+            sec_method.electronic_model.append(
+                BasisSetContainer(
+                    scope=['wavefunction'],
+                    type='plane waves',
+                    basis_set = [
+                        BasisSet(
+                            scope=['valence'],
+                            type='plane waves',
+                            cutoff=cutoff * ureg.rydberg,
+                        )
+                    ]
+                )
+            )
         sec_method.x_cpmd_simulation_parameters = self.mainfile_parser.get_simulation_parameters()
         # TODO xc functionals. The mapping cannot be ascertained
 
