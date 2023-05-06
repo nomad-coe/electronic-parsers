@@ -53,7 +53,7 @@ def test_single_point(parser):
     assert sec_calc[0].energy.xc.value.magnitude == approx(-2.50324989e-18)
 
     sec_method = run.method
-    assert sec_method[0].basis_set[0].cell_dependent[0].name == 'PW_70.0'
+    assert sec_method[0].electronic_model[0].basis_set[0].cutoff.to('Ry').magnitude == approx(70.0)
     assert sec_method[0].x_cpmd_simulation_parameters['TIME STEP FOR ELECTRONS'] == 5.0
     assert sec_method[0].x_cpmd_simulation_parameters['MAXIMUM NUMBER OF ITERATIONS FOR SC'] == 10000
 
