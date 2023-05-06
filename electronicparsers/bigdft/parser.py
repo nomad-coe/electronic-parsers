@@ -30,7 +30,7 @@ except Exception:
 from nomad.units import ureg
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, DFT, XCFunctional, Functional, Electronic, Scf, BasisSet
+    Method, DFT, XCFunctional, Functional, Electronic, Scf, BasisSet, BasisSetContainer
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -187,7 +187,15 @@ class BigDFTParser:
 
     def parse_method(self):
         sec_method = self.archive.run[0].m_create(Method)
-        sec_method.basis_set.append(BasisSet(type='real-space grid'))
+        sec_method.electronic_model = [
+            BasisSetContainer(
+                type='real-space grid',
+                scope=['wavefunction'],
+                basis_set=[
+                    BasisSet(type='real-space grid',)
+                ]
+            )
+        ]
         sec_dft = sec_method.m_create(DFT)
 
         data = self._extract('dft', self.yaml_dict, {})
