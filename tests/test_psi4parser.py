@@ -44,9 +44,10 @@ def test_scf(parser):
 
     method = run.method[0]
     assert method.electronic.method == 'RHF'
-    assert len(method.basis_set) == 1
-    assert method.basis_set[0].atom_centered[0].name == '6-31G**'
-    assert method.basis_set[0].atom_centered[0].x_psi4_n_shells == 12
+    sec_basis = method.electronic_model[0].basis_set
+    assert len(sec_basis) == 1
+    assert sec_basis[0].atom_centered[0].name == '6-31G**'
+    assert sec_basis[0].atom_centered[0].x_psi4_n_shells == 12
     assert method.scf.minimization_algorithm == 'PK'
     assert not method.scf.x_psi4_mom
     assert method.scf.threshold_energy_change.magnitude == approx(4.35974472e-26)
@@ -119,12 +120,14 @@ def test_ecp_basis(parser):
 
     method = archive.run[0].method
     assert len(method) == 6
-    assert len(method[1].basis_set) == 2
-    assert method[2].basis_set[0].atom_centered[0].name == 'DEF2-SV_P_'
-    assert method[2].basis_set[0].atom_centered[1].x_psi4_n_shells == 4
-    assert method[2].basis_set[1].atom_centered[0].name == 'DEF2-SV_P_ AUX'
+    assert len(method[1].electronic_model[0].basis_set) == 2
+    sec_basis = method[2].electronic_model[0].basis_set
+    assert sec_basis[0].atom_centered[0].name == 'DEF2-SV_P_'
+    assert sec_basis[0].atom_centered[1].x_psi4_n_shells == 4
+    assert sec_basis[1].atom_centered[0].name == 'DEF2-SV_P_ AUX'
     assert method[3].x_psi4_jk_matrices_parameters['Schwarz Cutoff'] == approx(1e-12)
-    assert method[4].basis_set[1].atom_centered[0].n_basis_functions == 309
+    sec_basis = method[4].electronic_model[0].basis_set
+    assert sec_basis[1].atom_centered[0].n_basis_functions == 309
     assert method[5].electronic.method == 'RHF'
 
     calc = archive.run[0].calculation
@@ -158,8 +161,8 @@ def test_dft_grad(parser):
     parser.parse('tests/data/psi4/dft-grad-disk/output.ref', archive, None)
 
     assert archive.run[-1].system[1].atoms.positions[0][2].magnitude == approx(-1.88056612e-11)
-    assert archive.run[-1].method[1].basis_set[0].atom_centered[0].name == 'AUG-CC-PVQZ'
-    assert archive.run[-1].method[0].basis_set[1].atom_centered[0].name == 'AUG-CC-PVQZ AUX'
+    assert archive.run[-1].method[1].electronic_model[0].basis_set[0].atom_centered[0].name == 'AUG-CC-PVQZ'
+    assert archive.run[-1].method[0].electronic_model[0].basis_set[1].atom_centered[0].name == 'AUG-CC-PVQZ AUX'
     assert archive.run[-1].calculation[1].forces.total.value[1][2].magnitude == approx(-8.16191049e-09)
 
 
