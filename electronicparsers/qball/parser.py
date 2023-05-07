@@ -27,7 +27,7 @@ import logging
 from nomad.units import ureg
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.method import Method, BasisSet
+from nomad.datamodel.metainfo.simulation.method import Method, BasisSet, BasisSetContainer
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Forces, ForcesEntry
 from nomad.parsing.file_parser import Quantity, TextParser
 
@@ -88,11 +88,21 @@ class QBallParser:
         # method
         method = run.m_create(Method)
         # TODO add dft functionals
-        if "plane waves" not in contents:
-            logger.error("Qball Error: Not a plane wave dft")
+        if "plane waves" in contents:
+            method.electronic_model = [
+                BasisSetContainer(
+                    type="plane waves",
+                    scope=['wavefunction'],
+                    basis_set=[
+                        BasisSet(
+                            type="plane waves",
+                            scope=['valence'],
+                        )
+                    ]
+                )
+            ]
         else:
-            basis_set = method.m_create(BasisSet)
-            basis_set.type = "plane waves"
+            logger.error("Qball Error: Not a plane wave dft")
 
         element_tree = ElementTree.fromstring(contents)
 
