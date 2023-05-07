@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Electronic, Method, XCFunctional, Functional, HubbardKanamoriModel, AtomParameters, DFT,
-    BasisSet, GW, KMesh, FrequencyMesh
+    BasisSet, GW, KMesh, FrequencyMesh, BasisSetContainer,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1513,7 +1513,19 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_kmesh.grid = self.out_parser.get('k_grid')
         sec_kmesh.offset = self.out_parser.get('k_offset')
 
-        sec_method.basis_set.append(BasisSet(type='numeric AOs'))
+        # Basis set
+        sec_method.electronic_model = [
+            BasisSetContainer(
+                type='atom-centered',
+                scope=['wavefunction'],
+                basis_set=[
+                    BasisSet(
+                        type='numeric AOs',
+                        scope=['full-electron'],
+                    )
+                ]
+            )
+        ]
         sec_dft = sec_method.m_create(DFT)
         sec_electronic = sec_method.m_create(Electronic)
         sec_electronic.method = 'DFT'
