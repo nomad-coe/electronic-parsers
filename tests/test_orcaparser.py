@@ -45,9 +45,10 @@ def test_scf(parser):
     assert sec_method.x_orca_radial_grid_type == 'Gauss-Chebyshev'
     assert len(sec_method.dft.xc_functional.exchange) == 2
     assert sec_method.dft.xc_functional.correlation[0].name == 'GGA_C_LYP'
-    assert len(sec_method.basis_set) == 3
-    assert sec_method.basis_set[1].x_orca_basis_set == '11s6p2d1f'
-    assert sec_method.basis_set[2].x_orca_nb_of_primitive_gaussian_functions == 92
+    sec_basis = sec_method.electronic_model[0].basis_set
+    assert len(sec_basis) == 3
+    assert sec_basis[1].x_orca_basis_set == '11s6p2d1f'
+    assert sec_basis[2].x_orca_nb_of_primitive_gaussian_functions == 92
 
     sec_system = archive.run[0].system[0]
     assert sec_system.atoms.labels == ['C', 'O']

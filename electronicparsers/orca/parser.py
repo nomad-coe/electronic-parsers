@@ -25,7 +25,8 @@ from nomad.parsing.file_parser import TextParser, Quantity
 
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Electronic, Method, BasisSet, DFT, XCFunctional, Functional
+    Electronic, Method, BasisSet, DFT, XCFunctional, Functional,
+    BasisSetContainer, BasisSetAtomCentered,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -598,32 +599,46 @@ class OrcaParser:
     def parse_method(self, section):
         sec_method = self.archive.run[-1].m_create(Method)
 
+        # Basis set
+        # all values are set at the basis_set level
         # TODO fix metainfo so variables take lists
-        for kind in ['basis_set', 'auxiliary_basis_set']:
+        sec_basis_sets: list[BasisSet] = []
+        for kind, kind_map in {'basis_set': 'wavefunction',
+            'auxiliary_basis_set': 'auxiliary'}.items():
             basis_set = section.get(kind)
             if basis_set is None:
                 continue
-            for n in range(len(basis_set.get('basis_set', []))):
-                sec_basis_set = sec_method.m_create(BasisSet)
-                sec_basis_set.type = 'gaussians'
-                for key in ['basis_set', 'basis_set_atom_labels', 'basis_set_contracted']:
-                    val = basis_set.get(key)
-                    if val is None:
-                        continue
+            exctraction_keys = ['basis_set', 'basis_set_atom_labels',
+                'basis_set_contracted']
+            for key in exctraction_keys:
+                vals = basis_set.get(key, [])
+                for bs_index, val in enumerate(vals):
                     prefix = '' if key == 'basis_set_atom_labels' else kind.split('basis_set')[0]
                     metainfo_name = 'x_orca_%s%s' % (prefix, key)
-                    setattr(sec_basis_set, metainfo_name, val[n])
+                    # Note: this assumes that each `extraction_key` follows the same order. Not my assumption
+                    if bs_index >= len(sec_basis_sets):
+                        sec_basis_sets.append(BasisSet(type='gaussians',))
+                    setattr(sec_basis_sets[bs_index], metainfo_name, val)
+            sec_method.electronic_model = [
+                BasisSetContainer(
+                    type='atom-centered orbitals',
+                    scope=[kind_map],
+                    basis_set=sec_basis_sets,
+                )
+            ]
 
         # gaussian basis sets
-        basis_set = section.get('basis_set_statistics')
-        if basis_set is not None:
-            sec_basis_set = sec_method.m_create(BasisSet)
-            for key, val in basis_set.items():
-                if val is None:
-                    continue
-                for n in range(len(val)):
-                    ext = '' if n == 0 else '_aux'
-                    setattr(sec_basis_set, 'x_orca_%s%s' % (key, ext), val[n])
+        for em in sec_method.electronic_model:
+            if 'wavefunction' in em.scope:
+                if basis_set := section.get('basis_set_statistics'):
+                    sec_basis_set = BasisSet(type='gaussians',)
+                    for key, val in basis_set.items():
+                        if val is None:
+                            continue
+                        for n in range(len(val)):
+                            ext = '' if n == 0 else '_aux'
+                            setattr(sec_basis_set, 'x_orca_%s%s' % (key, ext), val[n])
+                    em.basis_set.append(sec_basis_set)
 
         sec_dft = sec_method.m_create(DFT)
         sec_electronic = sec_method.m_create(Electronic)
