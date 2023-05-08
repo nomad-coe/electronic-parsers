@@ -296,6 +296,8 @@ class W2DynamicsParser:
         # order calculations
         calc_keys = [key for key in self.data.keys() if key.startswith('dmft-') or key.startswith('stat-')]
         calc_keys.sort()
+        ineq_keys = [key for key in self.data.get(calc_keys[0]).keys() if key.startswith('ineq-')]
+        ineq_keys.sort()
 
         # calculating how many inequivalent atoms are per unit cell
         n_ineq = 0
@@ -318,7 +320,7 @@ class W2DynamicsParser:
                             value = parameter.get('value')
                             sec_energy = sec_scf_iteration.m_create(Energy)
                             sec_energy.fermi = np.float64(value) * ureg.eV
-                        elif subkey != 'ineq-001':
+                        elif subkey not in ineq_keys:
                             value = parameter.get('value')[:]
                             value = to_hdf5(value, f, f'{key}/{subkey}/value')
                             name = self._re_namesafe.sub('_', subkey)
