@@ -23,6 +23,7 @@ import logging
 from scipy.io.netcdf import netcdf_file
 from ase.data import atomic_names
 from ase import lattice as aselattice, Atoms
+from ase.cell import Cell
 from ase import Atoms as aseAtoms
 
 from nomad.units import ureg
@@ -68,7 +69,10 @@ class NCParser(FileParser):
         # TODO implement UnitCell, ghost atoms
 
         lattices = dict(
-            FaceCenteredCubic=aselattice.FCC, BodyCenteredCubic=aselattice.BCC, Triclinic=aselattice.TRI)
+            FaceCenteredCubic=aselattice.FCC,
+            BodyCenteredCubic=aselattice.BCC,
+            Triclinic=aselattice.TRI
+        )
 
         re_f = r'[\d\.\-\+Ee]+'
 
@@ -103,6 +107,7 @@ class NCParser(FileParser):
 
         atoms.set_pbc(True)
 
+
         lattice = re.search(r'\nlattice = (\w+) *\((.+)\)', data)
         lattice, parameters = lattice.groups() if lattice else ('', '')
         parameters = [self.resolve_unit(p) for p in re.findall(rf'({re_f} *\* *\w+)', parameters)]
@@ -110,10 +115,18 @@ class NCParser(FileParser):
         if lattice is None:
             return
 
+        # ASE is more strict about the triclinic cell rules than ATK, that is
+        # why we can't use ase.lattice.TRI to instantiate it, but have to use
+        # the more generic function Cell.fromcellpar
         try:
-            atoms.set_cell(lattice(*parameters).tocell(), scale_atoms='fractional' in data)
+            if lattice == aselattice.TRI:
+                cell = Cell.fromcellpar(parameters)
+            else:
+                cell = lattice(*parameters).tocell()
         except Exception:
             pass
+        else:
+            atoms.set_cell(cell, scale_atoms='fractional' in data)
 
         return atoms
 
