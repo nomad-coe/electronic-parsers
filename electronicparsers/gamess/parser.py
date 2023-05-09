@@ -105,7 +105,7 @@ class OutParser(TextParser):
                 rf'CHARGE +X +Y +Z\s+\-*[\s\S]+?)INTERNUCLEAR',
                 sub_parser=TextParser(quantities=[
                     Quantity('unit', r'\((\S+)\)'),
-                    Quantity('label_charge', rf'([A-Z]+[a-z]*) +({re_f})', repeats=True),
+                    Quantity('label_charge', rf'([A-Z]+[a-z]*\d*) +({re_f})', repeats=True),
                     Quantity('position', rf'({re_f} +{re_f} +{re_f}) *{re_n}', dtype=np.dtype(np.float64), repeats=True)
                 ])
             ),
