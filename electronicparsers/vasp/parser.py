@@ -611,9 +611,9 @@ class OutcarContentParser(ContentParser):
             sec_basis.type = 'plane waves'
             sec_basis.cutoff = cutoff_value * ureg.eV  # based on examples
             if tag == 'ENCUT':
-                    sec_basis.scope = 'valence'
+                    sec_basis.scope = ['valence']
             elif tag == 'ENAUG':
-                sec_basis.scope = 'augmentation'
+                sec_basis.scope = ['augmentation']
             # TODO: add grid spacing (NGX, NGY, NGZ)?
             electron_model.append(sec_basis)
         return electron_model
@@ -1113,9 +1113,9 @@ class RunContentParser(ContentParser):
                 sec_basis.type = 'plane waves'
                 sec_basis.cutoff = cutoff_value * ureg.eV  # based on examples
                 if tag == 'ENMAX':
-                    sec_basis.scope = 'valence'
+                    sec_basis.scope = ['valence']
                 elif tag == 'ENAUG':
-                    sec_basis.scope = 'augmentation'
+                    sec_basis.scope = ['augmentation']
                 # TODO: add grid spacing (NGX, NGY, NGZ)?
                 electron_model.append(sec_basis)
         return electron_model
@@ -1377,7 +1377,7 @@ class VASPParser():
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
 
         sec_basis_set = sec_method.m_create(BasisSetContainer)
-        sec_basis_set.basis_set.append(self.parser.get_valence_basis_set())
+        sec_basis_set.basis_set = self.parser.get_valence_basis_set()
 
         sec_xc_functional = sec_dft.m_create(XCFunctional)
         if self.parser.incar.get('LHFCALC', False):
