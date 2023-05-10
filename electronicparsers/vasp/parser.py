@@ -44,7 +44,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetCellDependent, DFT, HubbardKanamoriModel, AtomParameters,
-    XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh, Pseudopotential
+    XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh, Pseudopotential,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -106,15 +106,16 @@ class PotParser(TextParser):
         super().__init__(*args, **kwargs)
 
     def init_quantities(self):
+        '''Extract pseudopotential headers both from POTCAR or OUTCAR.'''
         _pseudopotential = [
-            Quantity('title', r'TITEL\s+=\s(.*)'),
-            Quantity('flag', r'(L[A-Z]+)\s+=\s+(T|F)', repeats=True),
-            Quantity('number', r'([A-Z]+)\s+=\s+([-\.0-9]+)', repeats=True),
+            Quantity('title', r'TITEL\s+=\s(.*)'),  # extract the VASP native title
+            Quantity('flag', r'(L[A-Z]+)\s+=\s+(T|F)', repeats=True),  # extract booleans keywords
+            Quantity('number', r'([A-Z]+)\s+=\s+([-\.0-9]+)', repeats=True),  # extract floats or integers
         ]
 
         self._quantities = [
             Quantity(
-                'pseudopotential', r'(VRHFIN\s+=[\s\S]+?LMMAX\s=\s+\d)', repeats=True,
+                'pseudopotential', r'(VRHFIN\s+=[\s\S]+?LMMAX\s=\s+\d)', repeats=True,  # recognize where a header starts
                 sub_parser=TextParser(quantities=_pseudopotential)
                 ),
         ]
@@ -549,8 +550,15 @@ class OutcarContentParser(ContentParser):
         return self._atom_info
 
     @property
-    def pseudopotential(self):
+    def pseudopotential(self):  # TODO: combine with its vasprun.xml counterpart
+        '''Extract the pseudo-potential headers from the OUTCAR,
+        and return them as a list of keyword mappings.
+        Each element of the list corresponds to a pseudo-potential.'''
         def _to_dict(key_val: list[list[str]], transform=lambda x: x) -> dict[str, Any]:
+            '''Convert a list of string pairs to a dictionary.
+            Key: first of the pairs
+            Value: second of the pairs, with the `transform` function applied
+            '''
             return {x[0]: transform(x[1]) for x in key_val}
 
         bool_mapping = {'T': True, 'F': False}
@@ -1067,8 +1075,15 @@ class RunContentParser(ContentParser):
         return self._atom_info
 
     @property
-    def pseudopotential(self):
+    def pseudopotential(self):  # TODO: combine with its OUTCAR counterpart
+        '''Extract the pseudo-potential headers from the POTCAR,
+        and return them as a list of keyword mappings.
+        Each element of the list corresponds to a pseudo-potential.'''
         def _to_dict(key_val: list[list[str]], transform=lambda x: x) -> dict[str, Any]:
+            '''Convert a list of string pairs to a dictionary.
+            Key: first of the pairs
+            Value: second of the pairs, with the `transform` function applied
+            '''
             return {x[0]: transform(x[1]) for x in key_val}
 
         bool_mapping = {'T': True, 'F': False}
