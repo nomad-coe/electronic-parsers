@@ -1376,8 +1376,13 @@ class VASPParser():
             atom_counts[element[i]] += 1
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
 
-        sec_basis_set = sec_method.m_create(BasisSetContainer)
-        sec_basis_set.basis_set = self.parser.get_valence_basis_set()
+        sec_method.electronic_model = [
+            BasisSetContainer(
+                type='plane waves',
+                scope=['wavefunction'],
+            )
+        ]
+        sec_method.electronic_model[0].basis_set = self.parser.get_valence_basis_set()
 
         sec_xc_functional = sec_dft.m_create(XCFunctional)
         if self.parser.incar.get('LHFCALC', False):

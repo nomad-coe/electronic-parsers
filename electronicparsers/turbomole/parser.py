@@ -1082,7 +1082,7 @@ class TurbomoleParser:
                         ac.n_basis_functions = atom[3]
                     bs.atom_centered.append(ac)
                 em = BasisSetContainer(
-                    type='atom-centered',
+                    type='atom-centered orbitals',
                     scope=[scope],
                     basis_set=[bs],
                 )

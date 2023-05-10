@@ -810,46 +810,47 @@ class Wien2kParser:
 
         # basis
         #sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
-        self.in1_parser.parse()
-        if self.in1_parser._results:
-            type_mapping = ('LAPW', 'APW', 'HDLO', 'LO')
-            source: dict(str, Any) = self.in1_parser._results
-            em = BasisSetContainer(scope=['wavefunction'])
-            em.basis_set.append(
-                BasisSet(
-                    scope = ['intersitial', 'valence'],
-                    type = 'plane wave',
-                    cutoff_fractional=source.get('rkmax', None),
+        if self.in1_parser.mainfile:
+            self.in1_parser.parse()
+            if self.in1_parser._results:
+                type_mapping = ('LAPW', 'APW', 'HDLO', 'LO')
+                source: dict(str, Any) = self.in1_parser._results
+                em = BasisSetContainer(scope=['wavefunction'])
+                em.basis_set.append(
+                    BasisSet(
+                        scope = ['intersitial', 'valence'],
+                        type = 'plane wave',
+                        cutoff_fractional=source.get('rkmax', None),
+                    )
                 )
-            )
-            for mt in source.get('species', []):
-                bs = BasisSet(scope=['muffin-tin', 'full-electron'],
-                              spherical_harmonics_cutoff=source.get('lmax'))
-                for l in range(source.get('lmax', -1) + 1):
-                    orbital = OrbitalAPW()
-                    orbital.l_quantum_number = l
-                    orbital.core_level = False
-                    e_param = mt.get('e_param', source.get('e_ref', .5) - .2)  # TODO: check for +.2 case
-                    update = False
-                    apw_type = mt.get('type')
-                    last_orbital_type = None
-                    for orb in mt['orbital']:
-                        if l == orb['l']:
-                            e_param = orb.get('e_param', e_param)
-                            update = False if not orb.get('e_diff', 0) else True
-                            apw_type = orb.get('type', apw_type)
-                            if last_orbital_type == apw_type:
-                                orbital.energy_parameter = e_param
-                                orbital.update = update
-                                orbital.type = type_mapping[3]
-                                continue
-                            last_orbital_type = apw_type
-                    orbital.energy_parameter = e_param
-                    orbital.update = update
-                    orbital.type = type_mapping[apw_type]
-                    bs.orbital.append(orbital)
-                em.basis_set.append(bs)
-            sec_method.electronic_model.append(em)
+                for mt in source.get('species', []):
+                    bs = BasisSet(scope=['muffin-tin', 'full-electron'],
+                                spherical_harmonics_cutoff=source.get('lmax'))
+                    for l in range(source.get('lmax', -1) + 1):
+                        orbital = OrbitalAPW()
+                        orbital.l_quantum_number = l
+                        orbital.core_level = False
+                        e_param = mt.get('e_param', source.get('e_ref', .5) - .2)  # TODO: check for +.2 case
+                        update = False
+                        apw_type = mt.get('type')
+                        last_orbital_type = None
+                        for orb in mt['orbital']:
+                            if l == orb['l']:
+                                e_param = orb.get('e_param', e_param)
+                                update = False if not orb.get('e_diff', 0) else True
+                                apw_type = orb.get('type', apw_type)
+                                if last_orbital_type == apw_type:
+                                    orbital.energy_parameter = e_param
+                                    orbital.update = update
+                                    orbital.type = type_mapping[3]
+                                    continue
+                                last_orbital_type = apw_type
+                        orbital.energy_parameter = e_param
+                        orbital.update = update
+                        orbital.type = type_mapping[apw_type]
+                        bs.orbital.append(orbital)
+                    em.basis_set.append(bs)
+                sec_method.electronic_model.append(em)
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)

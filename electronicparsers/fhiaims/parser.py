@@ -1516,7 +1516,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         # Basis set
         sec_method.electronic_model = [
             BasisSetContainer(
-                type='atom-centered',
+                type='atom-centered orbitals',
                 scope=['wavefunction'],
                 basis_set=[
                     BasisSet(

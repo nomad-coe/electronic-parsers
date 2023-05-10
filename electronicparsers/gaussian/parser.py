@@ -1051,8 +1051,8 @@ class GaussianParser:
                 n_parsed=len(basis_sets)))
         for basis_set in basis_sets:
             bs = BasisSet(
-                scope=['full-electron'],
                 type='gaussians',
+                scope=['full-electron'],
             )
             for _ in self._basis_set_map.get(basis_set[0], []):
                 # TODO need to adjust basis_set atom centered to take multiple entries
@@ -1060,7 +1060,7 @@ class GaussianParser:
                 bs.atom_centered.append(BasisSetAtomCentered(name=basis_set[1]))
         sec_method.electronic_model = [
             BasisSetContainer(
-                type='atom-centered',
+                type='atom-centered orbitals',
                 scope=['wavefunction'],
                 basis_set=[bs],
             )
