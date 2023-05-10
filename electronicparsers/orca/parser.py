@@ -518,7 +518,9 @@ class OutParser(TextParser):
                 'input_file',
                 r'INPUT FILE\s*\=+([\s\S]+?)END OF INPUT',
                 sub_parser=TextParser(quantities=[
-                    Quantity('xc_functional', r'\d+>\s*!\s*(\S+)')])),
+                    Quantity('xc_functional', r'\d+>\s*!\s*(\S+)'),
+                    Quantity('tier', r'(\w+SCF)'),
+                ])),
             Quantity(
                 'single_point',
                 r'\* Single Point Calculation \*\s*\*+([\s\S]+?(?:FINAL SINGLE POINT ENERGY.*|\Z))',

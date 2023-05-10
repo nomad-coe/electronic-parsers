@@ -626,6 +626,7 @@ class CastepParser:
             'Dispersion corrected final free energy* (Ecor-TS)': 'x_castep_total_dispersion_corrected_free_energy',
             'NB dispersion corrected est. 0K energy* (Ecor-0.5TS)': 'x_castep_disp_corrected_energy_total_T0',
             'basis set parameters': {
+                'basis set accuracy': 'native_tier',  # default: FINE
                 'size of standard grid': 'x_castep_size_std_grid',
                 'size of   fine   gmax': 'x_castep_size_fine_grid'},
             'phonon parameters': {
