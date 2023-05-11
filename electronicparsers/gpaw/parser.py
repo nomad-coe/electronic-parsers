@@ -335,7 +335,7 @@ class GPAWParser:
         elif mode == 'lcao':
             bs = BasisSet(
                 scope=['full-electron'],  # TODO check
-                type='numerical AOs',
+                type='numeric AOs',
             )
         if bs:
             sec_method.electronic_model.append(
