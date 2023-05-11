@@ -236,7 +236,29 @@ class ContentParser:
         return val
 
     def is_converged(self, n_calc):
-        return
+        return False
+
+    def get_pseudopotential(self, filepath):  # TODO: combine with its vasprun.xml counterpart
+        '''Extract the pseudo-potential headers from an input file,
+        and return them as a list of keyword mappings.
+        Each element of the list corresponds to a pseudo-potential.'''
+        def _to_dict(key_val: list[list[str]], transform=lambda x: x) -> dict[str, Any]:
+            '''Convert a list of string pairs to a dictionary.
+            Key: first of the pairs
+            Value: second of the pairs, with the `transform` function applied
+            '''
+            return {x[0]: transform(x[1]) for x in key_val}
+
+        bool_mapping = {'T': True, 'F': False}
+        pps = PotParser(mainfile=self.parser.mainfile).parse().get('pseudopotential', [])
+        pps_out: list[dict[str, Any]] = []
+        for pp in pps:
+            pps_out.append({'title': pp['title']})
+            pps_out[-1]['flag'] = _to_dict(pp['flag'],
+                transform=lambda x: bool_mapping[x])
+            pps_out[-1]['number'] = _to_dict(pp['number'],
+                transform=lambda x: float(x))
+        return pps_out
 
 
 class OutcarTextParser(TextParser):
@@ -549,28 +571,12 @@ class OutcarContentParser(ContentParser):
 
         return self._atom_info
 
-    @property
-    def pseudopotential(self):  # TODO: combine with its vasprun.xml counterpart
+    def get_pseudopotential(self):  # TODO: combine with its vasprun.xml counterpart
         '''Extract the pseudo-potential headers from the OUTCAR,
         and return them as a list of keyword mappings.
         Each element of the list corresponds to a pseudo-potential.'''
-        def _to_dict(key_val: list[list[str]], transform=lambda x: x) -> dict[str, Any]:
-            '''Convert a list of string pairs to a dictionary.
-            Key: first of the pairs
-            Value: second of the pairs, with the `transform` function applied
-            '''
-            return {x[0]: transform(x[1]) for x in key_val}
 
-        bool_mapping = {'T': True, 'F': False}
-        pps = PotParser(mainfile=self.parser.mainfile).parse().get('pseudopotential', [])
-        pps_out: list[dict[str, Any]] = []
-        for pp in pps:
-            pps_out.append({'title': pp['title']})
-            pps_out[-1]['flag'] = _to_dict(pp['flag'],
-                transform=lambda x: bool_mapping[x])
-            pps_out[-1]['number'] = _to_dict(pp['number'],
-                transform=lambda x: float(x))
-        return pps_out
+        return super().get_pseudopotential(self.parser.mainfile)
 
     def get_n_scf(self, n_calc):
         return len(self.parser.get(
@@ -751,7 +757,7 @@ class OutcarContentParser(ContentParser):
                     continue
                 parameters_dict[param[0]] = param[1]
         except Exception:
-            self.logger.warning('Could not resolve response functions input parameters.')
+            self.parser.logger.warning('Could not resolve response functions input parameters.')
         return parameters_dict
 
     def is_converged(self, n_calc):
@@ -1074,29 +1080,12 @@ class RunContentParser(ContentParser):
                 self._atom_info[key] = array_info
         return self._atom_info
 
-    @property
-    def pseudopotential(self):  # TODO: combine with its OUTCAR counterpart
+    def get_pseudopotential(self):  # TODO: combine with its OUTCAR counterpart
         '''Extract the pseudo-potential headers from the POTCAR,
         and return them as a list of keyword mappings.
         Each element of the list corresponds to a pseudo-potential.'''
-        def _to_dict(key_val: list[list[str]], transform=lambda x: x) -> dict[str, Any]:
-            '''Convert a list of string pairs to a dictionary.
-            Key: first of the pairs
-            Value: second of the pairs, with the `transform` function applied
-            '''
-            return {x[0]: transform(x[1]) for x in key_val}
-
-        bool_mapping = {'T': True, 'F': False}
         potcar_file = os.path.join(self.parser.maindir, 'POTCAR.stripped')
-        pps = PotParser(mainfile=potcar_file).parse().get('pseudopotential', [])
-        pps_out: list[dict[str, Any]] = []
-        for pp in pps:
-            pps_out.append({'title': pp['title']})
-            pps_out[-1]['flag'] = _to_dict(pp['flag'],
-                transform=lambda x: bool_mapping[x])
-            pps_out[-1]['number'] = _to_dict(pp['number'],
-                transform=lambda x: float(x))
-        return pps_out
+        return super().get_pseudopotential(potcar_file)
 
     def get_n_scf(self, n_calc):
         if self._n_scf is None:
@@ -1317,6 +1306,7 @@ class VASPParser():
         atomtypes = self.parser.atom_info.get('atomtypes', {})
         element = atomtypes.get('element', [])
         atom_counts = {e: 0 for e in element}
+        pseudopotentials = self.parser.get_pseudopotential()
         for i in range(len(element)):
             sec_method_atom_kind = sec_method.m_create(AtomParameters)
             atom_number = ase.data.atomic_numbers.get(element[i], 0)
@@ -1325,7 +1315,7 @@ class VASPParser():
                 element[i], atom_counts[element[i]]) if atom_counts[element[i]] > 0 else element[i]
             sec_method_atom_kind.label = str(atom_label)
             try:
-                pseudopotential = self.parser.pseudopotential[i]
+                pseudopotential = pseudopotentials[i]
                 sec_method_atom_kind.mass = pseudopotential['number']['POMASS'] * ureg.amu
                 sec_method_atom_kind.n_valence_electrons = pseudopotential['number']['ZVAL']
                 pp = Pseudopotential()
@@ -1657,7 +1647,7 @@ class VASPParser():
 
             # convergence
             converged = self.parser.is_converged(n)
-            if converged:
+            if converged is not None:
                 sec_scc.single_configuration_calculation_converged = converged
 
         # parse charge density
