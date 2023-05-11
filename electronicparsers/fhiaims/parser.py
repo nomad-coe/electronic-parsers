@@ -1460,11 +1460,13 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                         workflow.method.x_fhi_aims_controlIn_md[key] = val
             control_inout = self.out_parser.get('control_inout')
             if control_inout:
-                workflow.method.thermodynamic_ensemble = control_inout.get('md_run')[0]
+                md_run = control_inout.get('md_run')
                 workflow.method.integration_timestep = control_inout.get('md_timestep')
 
                 sec_thermostat_parameters = workflow.method.m_create(ThermostatParameters)
-                sec_thermostat_parameters.thermostat_type = self._md_methods_map.get(control_inout.get('md_run')[1])
+                if md_run:
+                    workflow.method.thermodynamic_ensemble = md_run[0]
+                    sec_thermostat_parameters.thermostat_type = self._md_methods_map.get(md_run[1])
                 simulation_time = control_inout.get('md_simulation_time')
                 if (simulation_time is not None) and (workflow.method.integration_timestep is not None):
                     n_steps = (simulation_time.to(ureg.picosecond) / workflow.method.integration_timestep.to(ureg.picosecond)).magnitude

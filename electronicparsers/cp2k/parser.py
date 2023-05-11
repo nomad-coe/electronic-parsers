@@ -1000,6 +1000,9 @@ class CP2KParser:
             self.energy_parser.mainfile = os.path.join(self.maindir, filename)
             self.energy_parser._frequency = frequency
 
+        if self.energy_parser.mainfile is None:
+            return dict()
+
         if self.get_ensemble_type(frame) == 'REFTRAJ':
             frame -= 1
 
@@ -1019,6 +1022,7 @@ class CP2KParser:
 
         except Exception:
             self.logger.error('Error reading MD energies.')
+            return dict()
 
     def get_forces(self, frame):
         filename = self.inp_parser.get('FORCE_EVAL/PRINT/FORCES/FILENAME', '').strip()
@@ -1188,9 +1192,9 @@ class CP2KParser:
             potential_energy = md_output.get("potential_energy_instantaneous")
             if potential_energy:
                 calc.energy.potential = EnergyEntry(value=potential_energy.to('joule'))
-            step = int(md_output.get("step"))
+            step = md_output.get("step")
             if step:
-                calc.step = step
+                calc.step = int(step)
             time = md_output.get("time")
             if time:
                 calc.time = time.to('second')
@@ -1487,7 +1491,7 @@ class CP2KParser:
                     setattr(section, name, quantity_def.type(data))
 
         self.inp_parser.mainfile = os.path.join(self.maindir, input_filename)
-        if self.inp_parser.tree is None:
+        if self.inp_parser.mainfile is None or self.inp_parser.tree is None:
             return
 
         parse('x_cp2k_section_input', self.inp_parser.tree, self.archive.run[-1])

@@ -762,14 +762,6 @@ class OctopusParser:
     def parse_system(self):
         sec_run = self.archive.run[-1]
         sec_system = sec_run.m_create(System)
-        sec_atoms = sec_system.m_create(Atoms)
-
-        cell = self.out_parser.get('grid', {}).get('cell')
-        if cell is not None:
-            sec_atoms.lattice_vectors = cell
-            npbc = self.out_parser.get('grid', {}).get('npbc', 3)
-            pbc = [True for _ in range(npbc)]
-            sec_atoms.periodic = pbc + [False] * (3 - len(pbc))
 
         symbols, coordinates = self.log_parser.get_coordinates()
         if len(coordinates) == 0:
@@ -793,19 +785,30 @@ class OctopusParser:
                     symbols = atoms.get_chemical_symbols()
                     coordinates = atoms.get_positions()
                     break
-        if len(coordinates) != 0:
-            if self.info.get('ReducedCoordinates', None) is not None and cell is not None:
-                coordinates = np.dot(coordinates, cell.magnitude)
-                units = cell.units
-            elif self.info.get('Coordinates', None) is not None:
-                units = self.info.get('lengthunit')
-            else:
-                # read from ase atoms (in angstroms)
-                units = 'angstrom'
-            sec_atoms.positions = coordinates * self._units_mapping.get(str(units).lower())
-            sec_atoms.labels = symbols
-        else:
+
+        if len(coordinates) == 0:
             self.logger.error('Error parsing atom positions and labels.')
+            return
+
+        sec_atoms = sec_system.m_create(Atoms)
+
+        cell = self.out_parser.get('grid', {}).get('cell')
+        if cell is not None:
+            sec_atoms.lattice_vectors = cell
+            npbc = self.out_parser.get('grid', {}).get('npbc', 3)
+            pbc = [True for _ in range(npbc)]
+            sec_atoms.periodic = pbc + [False] * (3 - len(pbc))
+
+        if self.info.get('ReducedCoordinates', None) is not None and cell is not None:
+            coordinates = np.dot(coordinates, cell.magnitude)
+            units = cell.units
+        elif self.info.get('Coordinates', None) is not None:
+            units = self.info.get('lengthunit')
+        else:
+            # read from ase atoms (in angstroms)
+            units = 'angstrom'
+        sec_atoms.positions = coordinates * self._units_mapping.get(str(units).lower())
+        sec_atoms.labels = symbols
 
     def parse_method(self):
         sec_run = self.archive.run[-1]

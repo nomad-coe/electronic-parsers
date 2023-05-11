@@ -1066,6 +1066,20 @@ class ScfIteration(simulation.calculation.ScfIteration):
         Local Green's function in Matsubara (old self-energy), diagonal part for all lda-bands.
         ''')
 
+    x_w2dynamics_ubar = Quantity(
+        type=HDF5Reference,
+        shape=[],
+        description='''
+        Shell-averaged U values over the ineq sites.
+        ''')
+
+    x_w2dynamics_jbar = Quantity(
+        type=HDF5Reference,
+        shape=[],
+        description='''
+        Shell-averaged J values over the ineq sites.
+        ''')
+
     x_w2dynamics_ineq = SubSection(sub_section=x_w2dynamics_quantities.m_def, repeats=True)
 
 
