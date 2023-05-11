@@ -133,7 +133,7 @@ class W2DynamicsParser:
         """
         sec_run = self.archive.run[-1]
 
-        wann90_files = get_files('*.wout', self.filepath, self.mainfile)
+        wann90_files = get_files('*.wout', self.filepath, self.mainfile, deep=False)
         if wann90_files:  # parse crystal from Wannier90
             if len(wann90_files) > 1:
                 self.logger.warning('Multiple logging files found.')
@@ -174,7 +174,7 @@ class W2DynamicsParser:
         sec_hamiltonian = sec_run.m_create(Method).m_create(LatticeModelHamiltonian)
 
         # HoppingMatrix
-        hr_files = get_files('*hr.dat', self.filepath, self.mainfile)
+        hr_files = get_files('*hr.dat', self.filepath, self.mainfile, deep=False)
         if hr_files:  # parse crystal from Wannier90
             self.hr_parser.mainfile = hr_files[-1]
             sec_hopping_matrix = sec_hamiltonian.m_create(HoppingMatrix)
