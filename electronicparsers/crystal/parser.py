@@ -705,7 +705,7 @@ class CrystalParser:
         method.electronic_model = [
             BasisSetContainer(
                 type='atom-centered orbitals',
-                scope=['wavefunctions'],
+                scope=['wavefunction'],
                 basis_set=[
                     BasisSet(
                         type='gaussians',  # the scope can fluctuate depending on the use of ECPs

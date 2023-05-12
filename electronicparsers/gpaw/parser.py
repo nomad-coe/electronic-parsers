@@ -312,6 +312,13 @@ class GPAWParser:
         sec_method = self.archive.run[-1].m_create(Method)
 
         # Basis Set
+        def _basisset_type_to_container(basisset_type: str) -> str:
+            for option  in ('real-space grid', 'plane waves'):
+                if basisset_type == option:
+                    return basisset_type
+            if basisset_type == 'numeric AOs':
+                return 'atom-centered orbitals'
+
         mode = self.get_mode()
         bs: BasisSet = None
         if mode == 'pw':
@@ -340,6 +347,7 @@ class GPAWParser:
         if bs:
             sec_method.electronic_model.append(
                 BasisSetContainer(
+                    type=_basisset_type_to_container(bs.type),
                     scope=['wavefunction'],
                     basis_set=[bs],
                 )

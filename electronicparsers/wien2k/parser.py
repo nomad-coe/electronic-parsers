@@ -819,7 +819,7 @@ class Wien2kParser:
                 em.basis_set.append(
                     BasisSet(
                         scope = ['intersitial', 'valence'],
-                        type = 'plane wave',
+                        type = 'plane waves',
                         cutoff_fractional=source.get('rkmax', None),
                     )
                 )

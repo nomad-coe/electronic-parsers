@@ -1495,7 +1495,7 @@ class ABACUSParser:
                 cutoff=header.get(f'{name}_cutoff'),  # http://abacus.deepmodeling.com/en/latest/advanced/input_files/input-main.html#ecutwfc
             )
             if orbital_settings:
-                bs.type = 'numerical AOs'
+                bs.type = 'numeric AOs'
                 for key in ['delta_k', 'delta_r', 'dr_uniform', 'rmax', 'kmesh']:
                     val = orbital_settings.get(key)
                     setattr(bs, f'x_abacus_basis_sets_{key}', val)

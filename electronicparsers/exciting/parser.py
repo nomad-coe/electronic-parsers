@@ -1602,21 +1602,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     bs_val.orbital.append(orbital)
 
             if not sec_method.electronic_model:
-                compound_type = ''
-                for orbital in bs_val.orbital or []:
-                    if orbital.type == 'APW' and not compound_type:
-                        compound_type = 'APW'
-                    elif orbital.type == 'LAPW' and not compound_type:
-                        compound_type = 'LAPW'
-                    elif orbital.type in ['APW', 'LAPW']\
-                    and compound_type in ['APW', 'LAPW']\
-                    and orbital.type != compound_type:
-                        compound_type = '(L)APW'
-                    elif orbital.type == 'LO' and 'lo' == compound_type[-2:]:
-                        compound_type += '+lo'
                 sec_method.electronic_model = [
                     BasisSetContainer(
-                        type=compound_type,
                         scope=['wavefunction'],
                         basis_set=[
                             BasisSet(

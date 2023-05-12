@@ -1294,13 +1294,13 @@ class CP2KParser:
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
 
-        sec_method.electronic_model.append(
+        sec_method.electronic_model = [
             BasisSetContainer(
-                type='atom-centered orbitals',
+                type='gaussians + plane waves',
                 scope=['wavefunction'],
                 basis_set=self._parse_basis_set(),
             )
-        )
+        ]
         quickstep = self.out_parser.get(self._calculation_type, sec_method)
 
         sec_dft = sec_method.m_create(DFT)

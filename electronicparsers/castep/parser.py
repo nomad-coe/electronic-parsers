@@ -757,6 +757,7 @@ class CastepParser:
         basis_parameters = self.out_parser.get('title', {}).get('basis set parameters', {})
         sec_method.electronic_model.append(
             BasisSetContainer(
+                type='plane waves',
                 scope=['wavefunction'],
                 basis_set=[
                     BasisSet(

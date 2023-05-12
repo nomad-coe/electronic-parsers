@@ -115,7 +115,7 @@ def test_lcao(parser):
 
     sec_method = archive.run[0].method[0]
     sec_basis = sec_method.electronic_model[0].basis_set[0]
-    assert sec_basis.type == 'numerical AOs'
+    assert sec_basis.type == 'numeric AOs'
 
     sec_density = archive.run[0].calculation[0].density_charge[0]
     sec_potential = archive.run[0].calculation[0].potential[0].effective[0]

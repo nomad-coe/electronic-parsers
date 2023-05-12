@@ -999,6 +999,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             ecut = ecut * ureg.hartree
         sec_method.electronic_model.append(
                 BasisSetContainer(
+                type='plane waves',
                 scope=['wavefunction'],
                 basis_set=[
                     BasisSet(

@@ -53,7 +53,7 @@ def test_band(parser):
 
     sec_method = sec_run.method[0]
     sec_basis_set = sec_method.electronic_model[0].basis_set[0]
-    assert sec_basis_set.type == 'numerical AOs'
+    assert sec_basis_set.type == 'numeric AOs'
     assert sec_basis_set.cutoff.to('Ry').magnitude == approx(50)
     sec_basis_set = sec_method.electronic_model[1].basis_set[0]
     assert sec_basis_set.x_abacus_basis_sets_delta_k.magnitude == approx(0.01)
@@ -200,7 +200,7 @@ def test_geomopt(parser):
     assert sec_method.electronic.smearing.kind == 'gaussian'
     assert sec_method.electronic.smearing.width == approx(2.179872361103585e-20)
     assert sec_method.x_abacus_gamma_algorithms
-    assert sec_method.electronic_model[0].basis_set[0].type == 'numerical atomic orbitals'
+    assert sec_method.electronic_model[0].basis_set[0].type == 'numeric AOs'
 
     sec_workflow = archive.workflow[0]
     assert sec_workflow.type == 'geometry_optimization'
