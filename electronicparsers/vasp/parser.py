@@ -604,19 +604,20 @@ class OutcarContentParser(ContentParser):
         return dict(cell=cell, positions=positions, selective=selective, nose=nose)
 
     def get_valence_basis_set(self) -> list[BasisSet]:
-        electron_model: list[BasisSet] = []
+        sec_bases: list[BasisSet] = []
         for tag in ('ENCUT', 'ENAUG'):
             cutoff_value = self.parser.get('parameters').get(tag)
-            sec_basis = BasisSet()
-            sec_basis.type = 'plane waves'
-            sec_basis.cutoff = cutoff_value * ureg.eV  # based on examples
+            sec_basis = BasisSet(
+                type='plane waves',
+                cutoff=cutoff_value * ureg.eV,  # based on examples
+            )
             if tag == 'ENCUT':
-                    sec_basis.scope = ['valence']
+                sec_basis.scope = ['valence']
             elif tag == 'ENAUG':
                 sec_basis.scope = ['augmentation']
             # TODO: add grid spacing (NGX, NGY, NGZ)?
-            electron_model.append(sec_basis)
-        return electron_model
+            sec_bases.append(sec_basis)
+        return sec_bases
 
     def get_energies(self, n_calc, n_scf):
         energies = dict()
@@ -1104,21 +1105,22 @@ class RunContentParser(ContentParser):
 
     def get_valence_basis_set(self) -> list[BasisSet]:
         path = '/modeling[0]/parameters/separator[@name="electronic"]'
-        electron_model: list[BasisSet] = []
+        sec_bases: list[BasisSet] = []
         for tag in ('ENMAX', 'ENAUG'):
             cutoff_path = f'{path}/i[@name="{tag}"]'
             cutoff_value = self._get_key_values(cutoff_path).get(tag)
             if cutoff_value is not None:
-                sec_basis = BasisSet()
-                sec_basis.type = 'plane waves'
-                sec_basis.cutoff = cutoff_value * ureg.eV  # based on examples
+                sec_basis = BasisSet(
+                    type='plane waves',
+                    cutoff=cutoff_value * ureg.eV,  # based on examples
+                )
                 if tag == 'ENMAX':
                     sec_basis.scope = ['valence']
                 elif tag == 'ENAUG':
                     sec_basis.scope = ['augmentation']
                 # TODO: add grid spacing (NGX, NGY, NGZ)?
-                electron_model.append(sec_basis)
-        return electron_model
+                sec_bases.append(sec_basis)
+        return sec_bases
 
     def get_n_scf(self, n_calc):
         if self._n_scf is None:
@@ -1380,9 +1382,9 @@ class VASPParser():
             BasisSetContainer(
                 type='plane waves',
                 scope=['wavefunction'],
+                basis_set=self.parser.get_valence_basis_set(),
             )
         ]
-        sec_method.electronic_model[0].basis_set = self.parser.get_valence_basis_set()
 
         sec_xc_functional = sec_dft.m_create(XCFunctional)
         if self.parser.incar.get('LHFCALC', False):

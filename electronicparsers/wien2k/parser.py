@@ -820,12 +820,12 @@ class Wien2kParser:
                     BasisSet(
                         scope = ['intersitial', 'valence'],
                         type = 'plane waves',
-                        cutoff_fractional=source.get('rkmax', None),
+                        cutoff_fractional=source.get('rkmax'),
                     )
                 )
                 for mt in source.get('species', []):
                     bs = BasisSet(scope=['muffin-tin', 'full-electron'],
-                                spherical_harmonics_cutoff=source.get('lmax'))
+                        spherical_harmonics_cutoff=source.get('lmax'))
                     for l in range(source.get('lmax', -1) + 1):
                         orbital = OrbitalAPW()
                         orbital.l_quantum_number = l
