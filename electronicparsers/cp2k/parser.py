@@ -1294,7 +1294,7 @@ class CP2KParser:
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
 
-        sec_method.electronic_model = [
+        sec_method.electrons_representation = [
             BasisSetContainer(
                 type='gaussians + plane waves',
                 scope=['wavefunction'],

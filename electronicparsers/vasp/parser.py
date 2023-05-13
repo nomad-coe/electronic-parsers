@@ -1378,7 +1378,7 @@ class VASPParser():
             atom_counts[element[i]] += 1
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
 
-        sec_method.electronic_model = [
+        sec_method.electrons_representation = [
             BasisSetContainer(
                 type='plane waves',
                 scope=['wavefunction'],

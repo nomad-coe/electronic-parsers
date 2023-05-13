@@ -2635,7 +2635,7 @@ class QuantumEspressoParser:
         for scope in ['wavefunction', 'density']:
             cutoff = run.get_header('%s_cutoff' % scope)
             if cutoff is not None:
-                sec_method.electronic_model.append(
+                sec_method.electrons_representation.append(
                     BasisSetContainer(
                         type='plane waves',
                         scope=[scope],

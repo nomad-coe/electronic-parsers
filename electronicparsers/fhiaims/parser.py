@@ -1514,7 +1514,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_kmesh.offset = self.out_parser.get('k_offset')
 
         # Basis set
-        sec_method.electronic_model = [
+        sec_method.electrons_representation = [
             BasisSetContainer(
                 type='atom-centered orbitals',
                 scope=['wavefunction'],

@@ -702,7 +702,7 @@ class CrystalParser:
                         )
                         section_basis_sets[-1].x_crystal_section_shell.append(section_shell)
 
-        method.electronic_model = [
+        method.electrons_representation = [
             BasisSetContainer(
                 type='atom-centered orbitals',
                 scope=['wavefunction'],

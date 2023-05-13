@@ -50,7 +50,7 @@ def test_scf(parser):
     sec_method = sec_run.method[0]
     assert len(sec_method.k_mesh.points) == 1
     # basis set
-    sec_em = sec_method.electronic_model
+    sec_em = sec_method.electrons_representation
     assert sec_em[0].scope[0] == 'wavefunction'
     assert sec_em[0].basis_set[0].cutoff.to('Ry').magnitude == approx(25.)
     assert sec_em[1].scope[0] == 'density'

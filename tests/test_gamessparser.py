@@ -38,7 +38,7 @@ def test_dft(parser):
 
     sec_method = archive.run[0].method
     assert sec_method[0].dft.xc_functional.correlation[0].name == 'LDA_C_VWN_5'
-    sec_basis_ac = sec_method[0].electronic_model[0].basis_set[0].atom_centered[0]
+    sec_basis_ac = sec_method[0].electrons_representation[0].basis_set[0].atom_centered[0]
     assert sec_basis_ac.formula == '6-31G(d)'
     assert sec_basis_ac.name == 'N31'
 

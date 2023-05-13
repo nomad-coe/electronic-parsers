@@ -447,7 +447,7 @@ class CPMDParser:
         cutoff = self.mainfile_parser.get('supercell', {}).get(
             'x_cpmd_wave_function_cutoff')
         if cutoff is not None:
-            sec_method.electronic_model.append(
+            sec_method.electrons_representation.append(
                 BasisSetContainer(
                     scope=['wavefunction'],
                     type='plane waves',

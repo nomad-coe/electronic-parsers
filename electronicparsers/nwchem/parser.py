@@ -459,7 +459,7 @@ class NWChemParser:
         sec_basis.type = 'plane waves' if self.out_parser.get('pw') is not None else 'gaussians'
         sec_basis.scope = ['valence'] if sec_basis.type == 'gaussians' else []  # TODO: add distinction for ECP
         full_type = 'plane waves' if sec_basis.type == 'plane waves' else 'atom-centered orbitals'
-        sec_method.electronic_model = [
+        sec_method.electrons_representation = [
             BasisSetContainer(
                 type=full_type,
                 scope=['wavefunction'],

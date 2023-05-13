@@ -345,7 +345,7 @@ class GPAWParser:
                 type='numeric AOs',
             )
         if bs:
-            sec_method.electronic_model.append(
+            sec_method.electrons_representation.append(
                 BasisSetContainer(
                     type=_basisset_type_to_container(bs.type),
                     scope=['wavefunction'],

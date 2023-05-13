@@ -1513,7 +1513,7 @@ class ABACUSParser:
                     sec_specie_basis_set.x_abacus_specie_basis_set_number_of_orbitals = len(
                         ln_list)
             ems.append(BasisSetContainer(scope=[name], basis_set=[bs]))
-        sec_method.electronic_model = ems
+        sec_method.electrons_representation = ems
 
         if self.input_parser.get('dft_plus_u'):
             sec_electronic.method = 'DFT+U'

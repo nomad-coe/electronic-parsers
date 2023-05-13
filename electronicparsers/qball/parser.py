@@ -89,7 +89,7 @@ class QBallParser:
         method = run.m_create(Method)
         # TODO add dft functionals
         if "plane waves" in contents:
-            method.electronic_model = [
+            method.electrons_representation = [
                 BasisSetContainer(
                     type="plane waves",
                     scope=['wavefunction'],

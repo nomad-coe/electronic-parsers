@@ -823,7 +823,7 @@ class OctopusParser:
         sec_dft = sec_method.m_create(DFT)
 
         # basis set
-        sec_method.electronic_model.append(
+        sec_method.electrons_representation.append(
             BasisSetContainer(
                 type='real-space grid',
                 scope=['wavefunction'],

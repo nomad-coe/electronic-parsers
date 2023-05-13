@@ -39,7 +39,7 @@ def test_gpw(parser):
     assert archive.run[0].program.version == '1.1.0'
 
     sec_method = archive.run[0].method[0]
-    sec_basis = sec_method.electronic_model[0].basis_set[0]
+    sec_basis = sec_method.electrons_representation[0].basis_set[0]
     assert sec_basis.type == 'real-space grid'
     assert sec_method.scf.threshold_energy_change.magnitude == approx(1.42196374e-24)
     assert sec_method.electronic.smearing.width == 0.0
@@ -72,7 +72,7 @@ def test_gpw2(parser):
     assert archive.run[0].program.version == '1.1.1b1'
 
     sec_method = archive.run[0].method[0]
-    sec_basis = sec_method.electronic_model[0].basis_set[0]
+    sec_basis = sec_method.electrons_representation[0].basis_set[0]
     assert sec_basis.type == 'plane waves'
     assert sec_basis.cutoff.magnitude == approx(4.8065299e-17)
     assert sec_method.scf.threshold_energy_change.magnitude == approx(8.01088317e-23)
@@ -114,7 +114,7 @@ def test_lcao(parser):
     assert archive.run[0].program.version == '1.1.1b1'
 
     sec_method = archive.run[0].method[0]
-    sec_basis = sec_method.electronic_model[0].basis_set[0]
+    sec_basis = sec_method.electrons_representation[0].basis_set[0]
     assert sec_basis.type == 'numeric AOs'
 
     sec_density = archive.run[0].calculation[0].density_charge[0]

@@ -55,7 +55,7 @@ def test_scf(parser):
     assert len(sec_scc[0].scf_iteration) == 4
 
     sec_method = sec_run.method[0]
-    assert sec_method.electronic_model[0].basis_set[0].cutoff.to('Ha').magnitude == approx(30.38533)
+    assert sec_method.electrons_representation[0].basis_set[0].cutoff.to('Ha').magnitude == approx(30.38533)
 
 
 def test_relax(parser):
@@ -66,7 +66,7 @@ def test_relax(parser):
     sec_method = archive.run[0].method
     assert sec_method[0].dft.xc_functional.exchange[0].name == 'LDA_X_PZ'
     assert sec_method[0].x_onetep_input_parameters['ngwf_threshold_orig'] == approx(1e-5)
-    assert sec_method[0].electronic_model[0].basis_set[0].cutoff.to('Ha').magnitude == approx(20.05907)
+    assert sec_method[0].electrons_representation[0].basis_set[0].cutoff.to('Ha').magnitude == approx(20.05907)
 
     sec_system = archive.run[0].system
     assert len(sec_system) == 3
@@ -90,7 +90,7 @@ def test_tddft(parser):
     parser.parse('tests/data/onetep/ethene/ethene_tddft.out', archive, None)
 
     sec_method = archive.run[0].method
-    assert sec_method[0].electronic_model[0].basis_set[0].cutoff.to('Ha').magnitude == approx(14.88881)
+    assert sec_method[0].electrons_representation[0].basis_set[0].cutoff.to('Ha').magnitude == approx(14.88881)
 
     sec_scc = archive.run[0].calculation
     assert len(sec_scc) == 1
@@ -108,7 +108,7 @@ def test_charges(parser):
     parser.parse('tests/data/onetep/test20/test20.out', archive, None)
 
     sec_method = archive.run[0].method
-    assert sec_method[0].electronic_model[0].basis_set[0].cutoff.to('Ha').magnitude == approx(31.36667)
+    assert sec_method[0].electrons_representation[0].basis_set[0].cutoff.to('Ha').magnitude == approx(31.36667)
 
     sec_scc = archive.run[0].calculation
     assert len(sec_scc) == 1

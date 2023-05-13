@@ -356,7 +356,7 @@ class SiestaParser:
                 sec_method.dft.xc_functional.hybrid.append(Functional(name=xc_functional))
             else:
                 sec_method.dft.xc_functional.contributions.append(Functional(name=xc_functional))
-        sec_method.electronic_model = [
+        sec_method.electrons_representation = [
             BasisSetContainer(
                 type='atom-centered orbitals',
                 scope=['wavefunction'],

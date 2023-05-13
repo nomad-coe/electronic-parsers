@@ -123,10 +123,10 @@ class BeyondDFTWorkflowsParser:
         # Method
         method_gw = extract_section(gw_archive, 'run/method/gw')
         method_xcfunctional = extract_section(self.archive, 'run/method/dft/xc_functional')
-        method_basisset = extract_section(self.archive, 'run/method/electronic_model')
+        method_basisset = extract_section(self.archive, 'run/method/electrons_representation')
         workflow.method.gw_method_ref = method_gw
         workflow.method.starting_point = method_xcfunctional
-        workflow.method.electronic_model = method_basisset
+        workflow.method.electrons_representation = method_basisset
 
         # Inputs and Outputs
         input_structure = extract_section(self.archive, 'run/system')

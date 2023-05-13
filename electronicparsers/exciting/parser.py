@@ -1601,8 +1601,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                         )
                     bs_val.orbital.append(orbital)
 
-            if not sec_method.electronic_model:
-                sec_method.electronic_model = [
+            if not sec_method.electrons_representation:
+                sec_method.electrons_representation = [
                     BasisSetContainer(
                         scope=['wavefunction'],
                         basis_set=[
@@ -1614,7 +1614,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                         ]
                     )
                 ]
-            sec_method.electronic_model[0].basis_set.append(bs_val)
+            sec_method.electrons_representation[0].basis_set.append(bs_val)
 
 
     def parse_file(self, name, section, filepath=None):

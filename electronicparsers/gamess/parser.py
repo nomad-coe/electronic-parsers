@@ -608,7 +608,7 @@ class GamessParser:
 
         # Basis set
         gbasis = sec_method.x_gamess_basis_options.get('GBASIS', 'NONE')
-        sec_method.electronic_model = [
+        sec_method.electrons_representation = [
             BasisSetContainer(
                 type='atom-centered orbitals',
                 scope=['wavefunction'],
@@ -618,7 +618,7 @@ class GamessParser:
             )
         ]
         for basis_set in self._basis_set_map.get(gbasis, []):
-            sec_method.electronic_model[0].basis_set[0].atom_centered.append(
+            sec_method.electrons_representation[0].basis_set[0].atom_centered.append(
                 BasisSetAtomCentered(
                     name=basis_set.get('name'),
                     formula=resolve_basis(gbasis),

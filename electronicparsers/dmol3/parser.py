@@ -333,7 +333,7 @@ class Dmol3Parser:
         # section method
         sec_method = sec_run.m_create(Method)
         # basis set
-        sec_method.electronic_model = [
+        sec_method.electrons_representation = [
             BasisSetContainer(
                 type='atom-centered orbitals',
                 scope=['wavefunction'],

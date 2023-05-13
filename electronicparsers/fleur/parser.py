@@ -666,7 +666,7 @@ class FleurParser:
                 )
             )
             em.basis_set = [*em.basis_set, *self.parser.get_basis_sets()]
-            sec_method.electronic_model.append(em)
+            sec_method.electrons_representation.append(em)
 
         electronic = self.parser.electronic
         if electronic is not None:

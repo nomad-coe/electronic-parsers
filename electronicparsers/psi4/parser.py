@@ -638,7 +638,7 @@ class Psi4Parser:
         for basis in source.get('auxiliary_basis', []):
             basis_sets += self._parse_basis(basis)
         if len(basis_sets) > 0:
-            method.electronic_model = [
+            method.electrons_representation = [
                 BasisSetContainer(
                     type='atom-centered orbitals',
                     scope=['wavefunction'],

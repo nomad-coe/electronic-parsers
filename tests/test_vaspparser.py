@@ -73,7 +73,7 @@ def test_vasprunxml_static(parser):
     assert len(sec_method.dft.xc_functional.exchange) == 1
 
     # basis set
-    sec_basis_set = sec_method.electronic_model[0].basis_set
+    sec_basis_set = sec_method.electrons_representation[0].basis_set
     assert sec_basis_set[0].type == 'plane waves'
     assert sec_basis_set[0].scope == ['valence']
     assert sec_basis_set[0].cutoff.to('eV').magnitude == approx(512.2418)
@@ -131,7 +131,7 @@ def test_vasprunxml_relax(parser):
 
     # Check the basis set
     sec_method = sec_run.method[0]
-    sec_basis_set = sec_method.electronic_model[0].basis_set
+    sec_basis_set = sec_method.electrons_representation[0].basis_set
     assert sec_basis_set[0].type == 'plane waves'
     assert sec_basis_set[0].scope == ['valence']
     assert sec_basis_set[0].cutoff.to('eV').magnitude == approx(249.8)
@@ -240,7 +240,7 @@ def test_outcar(parser):
 
     sec_method = sec_run.method[0]
     # basis set
-    sec_basis_set = sec_method.electronic_model[0].basis_set
+    sec_basis_set = sec_method.electrons_representation[0].basis_set
     assert sec_basis_set[0].type == 'plane waves'
     assert sec_basis_set[0].scope == ['valence']
     assert sec_basis_set[0].cutoff.to('eV').magnitude == approx(520)

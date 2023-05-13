@@ -619,7 +619,7 @@ class OrcaParser:
                     if bs_index >= len(sec_basis_sets):
                         sec_basis_sets.append(BasisSet(type='gaussians',))
                     setattr(sec_basis_sets[bs_index], metainfo_name, val)
-            sec_method.electronic_model = [
+            sec_method.electrons_representation = [
                 BasisSetContainer(
                     type='atom-centered orbitals',
                     scope=[kind_map],
@@ -628,7 +628,7 @@ class OrcaParser:
             ]
 
         # gaussian basis sets
-        for em in sec_method.electronic_model:
+        for em in sec_method.electrons_representation:
             if 'wavefunction' in em.scope:
                 if basis_set := section.get('basis_set_statistics'):
                     sec_basis_set = BasisSet(type='gaussians',)

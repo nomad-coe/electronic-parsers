@@ -1058,7 +1058,7 @@ class GaussianParser:
                 # TODO need to adjust basis_set atom centered to take multiple entries
                 # old parser writes the full name of basis set here not the name on map
                 bs.atom_centered.append(BasisSetAtomCentered(name=basis_set[1]))
-        sec_method.electronic_model = [
+        sec_method.electrons_representation = [
             BasisSetContainer(
                 type='atom-centered orbitals',
                 scope=['wavefunction'],

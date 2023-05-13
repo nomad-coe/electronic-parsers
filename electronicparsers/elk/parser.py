@@ -270,7 +270,7 @@ class ElkParser:
         sec_run.program = Program(version=self.mainfile_parser.get('program_version', ''))
 
         sec_method = sec_run.m_create(Method)
-        sec_method.electronic_model = [
+        sec_method.electrons_representation = [
             BasisSetContainer(
                 type='(L)APW+lo',
                 scope=['wavefunction'],

@@ -250,7 +250,7 @@ class OpenmxParser:
 
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)
-        sec_method.electronic_model = [
+        sec_method.electrons_representation = [
             BasisSetContainer(
                 type='atom-centered orbitals',
                 scope=['wavefunction'],

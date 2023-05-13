@@ -929,7 +929,7 @@ class AMSParser:
             sec_atom_centered = BasisSetAtomCentered()
             for key, val in source.get('confinement', {}).items():
                 setattr(sec_atom_centered, key, val)
-            sec_method.electronic_model = [
+            sec_method.electrons_representation = [
                 BasisSetContainer(
                     type='atom-centered orbitals',
                     scope=['wavefunction'],

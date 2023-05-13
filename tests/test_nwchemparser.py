@@ -40,7 +40,7 @@ def test_single_point(parser):
     assert sec_run.x_nwchem_section_start_information[0].x_nwchem_ga_revision == '10594'
 
     sec_method = archive.run[0].method[0]
-    assert sec_method.electronic_model[0].basis_set[0].type == 'gaussians'
+    assert sec_method.electrons_representation[0].basis_set[0].type == 'gaussians'
     assert sec_method.scf.n_max_iteration == 50
     assert len(sec_method.dft.xc_functional.correlation) == 1
     assert sec_method.dft.xc_functional.correlation[0].name == 'MGGA_C_TPSS'

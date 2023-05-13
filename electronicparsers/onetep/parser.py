@@ -417,7 +417,7 @@ class OnetepParser:
                     ),
                 ],
             )
-            sec_method.electronic_model=[sec_em,]
+            sec_method.electrons_representation=[sec_em,]
 
         if self.out_parser.geometry_optimization is not None:
             if self.out_parser.geometry_optimization.single_point is not None:

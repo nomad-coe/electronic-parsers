@@ -850,7 +850,7 @@ class Wien2kParser:
                         orbital.type = type_mapping[apw_type]
                         bs.orbital.append(orbital)
                     em.basis_set.append(bs)
-                sec_method.electronic_model.append(em)
+                sec_method.electrons_representation.append(em)
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)

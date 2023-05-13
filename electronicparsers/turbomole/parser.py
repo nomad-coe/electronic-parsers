@@ -1086,7 +1086,7 @@ class TurbomoleParser:
                     scope=[scope],
                     basis_set=[bs],
                 )
-                sec_method.electronic_model.append(em)
+                sec_method.electrons_representation.append(em)
 
         # XC Functionals
         sec_xc_functional = sec_dft.m_create(XCFunctional)

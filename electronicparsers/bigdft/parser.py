@@ -187,7 +187,7 @@ class BigDFTParser:
 
     def parse_method(self):
         sec_method = self.archive.run[0].m_create(Method)
-        sec_method.electronic_model = [
+        sec_method.electrons_representation = [
             BasisSetContainer(
                 type='real-space grid',
                 scope=['wavefunction'],
