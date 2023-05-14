@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, AtomParameters, DFT, XCFunctional, Functional, Electronic, BasisSet,
-    BasisSetAtomCentered)
+    BasisSetAtomCentered, BasisSetContainer)
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
 )
@@ -606,12 +606,24 @@ class GamessParser:
 
             return f'{igauss}{gbasis}{plus}{symbol}{orb_suffix}'
 
+        # Basis set
         gbasis = sec_method.x_gamess_basis_options.get('GBASIS', 'NONE')
-        sec_basis = sec_method.m_create(BasisSet)
-        sec_basis.name = resolve_basis(gbasis)
+        sec_method.electrons_representation = [
+            BasisSetContainer(
+                type='atom-centered orbitals',
+                scope=['wavefunction'],
+                basis_set = [
+                    BasisSet(type='gaussians',)
+                ]
+            )
+        ]
         for basis_set in self._basis_set_map.get(gbasis, []):
-            sec_atom_basis = sec_basis.m_create(BasisSetAtomCentered)
-            sec_atom_basis.name = basis_set.get('name')
+            sec_method.electrons_representation[0].basis_set[0].atom_centered.append(
+                BasisSetAtomCentered(
+                    name=basis_set.get('name'),
+                    formula=resolve_basis(gbasis),
+                )
+            )
 
         # electronic structure method
         sec_method.electronic = Electronic()

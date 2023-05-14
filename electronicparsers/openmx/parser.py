@@ -31,7 +31,8 @@ from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing, Scf
+    Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing, Scf,
+    BasisSetContainer,
 )
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, MolecularDynamics
@@ -249,7 +250,18 @@ class OpenmxParser:
 
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)
-        sec_method.basis_set.append(BasisSet(type='numeric AOs'))
+        sec_method.electrons_representation = [
+            BasisSetContainer(
+                type='atom-centered orbitals',
+                scope=['wavefunction'],
+                basis_set=[
+                    BasisSet(
+                        type='numeric AOs',
+                        scope=['full-election'],
+                    )
+                ]
+            )
+        ]
 
         sec_dft = sec_method.m_create(DFT)
         sec_electronic = sec_method.m_create(Electronic)

@@ -26,14 +26,14 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, XCFunctional, Functional, Electronic, BasisSet, Scf, AtomParameters,
-    KMesh
+    KMesh, BasisSetContainer, BasisSetAtomCentered,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Dos, DosValues, Energy, EnergyEntry, Forces, ForcesEntry,
-    Charges, ChargesValue, Multipoles, MultipolesEntry, BandEnergies, BandGapDeprecated
+    Charges, ChargesValue, Multipoles, MultipolesEntry, BandEnergies, BandGapDeprecated,
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
@@ -926,10 +926,21 @@ class AMSParser:
 
         def parse_method(source):
             sec_method = sec_run.m_create(Method)
-            sec_basis_set = sec_method.m_create(BasisSet)
-            sec_basis_set.type = 'numeric AOs'
+            sec_atom_centered = BasisSetAtomCentered()
             for key, val in source.get('confinement', {}).items():
-                setattr(sec_basis_set, key, val)
+                setattr(sec_atom_centered, key, val)
+            sec_method.electrons_representation = [
+                BasisSetContainer(
+                    type='atom-centered orbitals',
+                    scope=['wavefunction'],
+                    basis_set=[
+                        BasisSet(
+                            type='numeric AOs',
+                            atom_centered=[sec_atom_centered],
+                        )
+                    ]
+                )
+            ]
 
             for function in source.get('radial_functions', []):
                 sec_atom_param = sec_method.m_create(AtomParameters)

@@ -72,6 +72,15 @@ def test_vasprunxml_static(parser):
     assert sec_method.x_vasp_incar_in['LCHARG']
     assert len(sec_method.dft.xc_functional.exchange) == 1
 
+    # basis set
+    sec_basis_set = sec_method.electrons_representation[0].basis_set
+    assert sec_basis_set[0].type == 'plane waves'
+    assert sec_basis_set[0].scope == ['valence']
+    assert sec_basis_set[0].cutoff.to('eV').magnitude == approx(512.2418)
+    assert sec_basis_set[1].type == 'plane waves'
+    assert sec_basis_set[1].scope == ['augmentation']
+    assert sec_basis_set[1].cutoff.to('eV').magnitude == approx(429)
+
     sec_system = sec_run.system[-1]
     assert len(sec_system.atoms.labels) == 1
     assert sec_system.atoms.lattice_vectors[0][0].magnitude == approx(-1.78559323e-10)
@@ -119,6 +128,16 @@ def test_vasprunxml_relax(parser):
     k_mesh = sec_run.method[-1].k_mesh
     assert list(k_mesh.grid) == [16] * 3
     assert k_mesh.sampling_method == "Gamma-centered"
+
+    # Check the basis set
+    sec_method = sec_run.method[0]
+    sec_basis_set = sec_method.electrons_representation[0].basis_set
+    assert sec_basis_set[0].type == 'plane waves'
+    assert sec_basis_set[0].scope == ['valence']
+    assert sec_basis_set[0].cutoff.to('eV').magnitude == approx(249.8)
+    assert sec_basis_set[1].type == 'plane waves'
+    assert sec_basis_set[1].scope == ['augmentation']
+    assert sec_basis_set[1].cutoff.to('eV').magnitude == approx(543.281)
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 3
@@ -207,7 +226,7 @@ def test_dos_silicon(silicon_dos):
     gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
     assert gap == approx(0.83140)
 
-    # Check that the no. valence electrons is receovered
+    # Check that the no. valence electrons is recovered
     dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1e-2) == 8.
 
@@ -220,7 +239,15 @@ def test_outcar(parser):
     assert sec_run.program.version == '5.3.2 13Sep12 complex serial LinuxIFC'
 
     sec_method = sec_run.method[0]
-    assert sec_method.basis_set[0].cell_dependent[0].planewave_cutoff.magnitude == approx(8.3313185e-17)
+    # basis set
+    sec_basis_set = sec_method.electrons_representation[0].basis_set
+    assert sec_basis_set[0].type == 'plane waves'
+    assert sec_basis_set[0].scope == ['valence']
+    assert sec_basis_set[0].cutoff.to('eV').magnitude == approx(520)
+    assert sec_basis_set[1].type == 'plane waves'
+    assert sec_basis_set[1].scope == ['augmentation']
+    assert sec_basis_set[1].cutoff.to('eV').magnitude == approx(543.3)
+    # DFT
     assert sec_method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
     assert len(sec_method.atom_parameters) == 2
     assert sec_method.atom_parameters[1].pseudopotential_name == 'PAW_PBE'

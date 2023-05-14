@@ -29,7 +29,7 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
-    AtomParameters, Method, BasisSet, BasisSetCellDependent, Electronic, Smearing, Scf,
+    AtomParameters, Method, BasisSet, BasisSetContainer, Electronic, Smearing, Scf,
     DFT, XCFunctional, Functional, KMesh)
 from nomad.datamodel.metainfo.simulation.system import System, Atoms, Symmetry
 from nomad.datamodel.metainfo.simulation.calculation import (
@@ -40,7 +40,7 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     GeometryOptimization as GeometryOptimization2, MolecularDynamics as MolecularDynamics2,
     MolecularDynamicsMethod, GeometryOptimizationMethod, SinglePoint as SinglePoint2, SinglePointMethod)
 from .metainfo.abacus import (
-    Method as xsection_method, x_abacus_section_parallel, x_abacus_section_basis_sets, x_abacus_section_specie_basis_set)
+    Method as xsection_method, x_abacus_section_parallel, x_abacus_section_specie_basis_set)
 
 
 # TODO determine if we can update regex to the following
@@ -1485,47 +1485,35 @@ class ABACUSParser:
         sec_method.x_abacus_basis_type = self.input_parser.get(
             'basis_type', 'pw')
 
-        # pw settings
+        # basis set settings
+        ems: list(BasisSetContainer) = []
         for name in ['wavefunction', 'density']:
-            cutoff = header.get(f'{name}_cutoff')
-            if cutoff is None:
-                continue
-            sec_method_basis_set = sec_method.m_create(BasisSet)
-            sec_method_basis_set.type = 'Numeric AOs' if header.get(
-                'orbital_settings') else 'plane waves'
-            sec_method_basis_set.kind = name
-            sec_basis_set = sec_method_basis_set.m_create(
-                BasisSetCellDependent)
-            sec_basis_set.planewave_cutoff = cutoff.to(
-                'joule').magnitude
-            sec_basis_set.kind = 'plane_waves'
-            sec_basis_set.name = 'PW_%.1f' % cutoff.magnitude
-            for key in ['pw', 'sticks']:
-                val = header.get(f'number_of_{key}_for_{name}')
-                setattr(
-                    sec_method, f'x_abacus_number_of_{key}_for_{name}', val)
-
-        # lcao settings
-        orbital_settings = header.get('orbital_settings')
-        if orbital_settings:
-            sec_basis_set = sec_method.m_create(x_abacus_section_basis_sets)
-            for key in ['delta_k', 'delta_r', 'dr_uniform', 'rmax', 'kmesh']:
-                val = orbital_settings.get(key)
-                setattr(sec_basis_set, f'x_abacus_basis_sets_{key}', val)
-
-            for i, orb in enumerate(orbital_settings.get('orbital_information', [])):
-                sec_specie_basis_set = sec_basis_set.m_create(
-                    x_abacus_section_specie_basis_set)
-                sec_specie_basis_set.x_abacus_specie_basis_set_filename = os.path.basename(
-                    header.get('orbital_files')[i])
-                ln_list = []
-                for data in orb:
-                    ln_list.append([data.l, data.n])
-                sec_specie_basis_set.x_abacus_specie_basis_set_ln = ln_list
-                sec_specie_basis_set.x_abacus_specie_basis_set_rcutoff = data.rcut
-                sec_specie_basis_set.x_abacus_specie_basis_set_rmesh = data.nr
-                sec_specie_basis_set.x_abacus_specie_basis_set_number_of_orbitals = len(
-                    ln_list)
+            orbital_settings = header.get('orbital_settings')
+            bs = BasisSet(
+                type='plane waves',
+                scope=['valence'],
+                cutoff=header.get(f'{name}_cutoff'),  # http://abacus.deepmodeling.com/en/latest/advanced/input_files/input-main.html#ecutwfc
+            )
+            if orbital_settings:
+                bs.type = 'numeric AOs'
+                for key in ['delta_k', 'delta_r', 'dr_uniform', 'rmax', 'kmesh']:
+                    val = orbital_settings.get(key)
+                    setattr(bs, f'x_abacus_basis_sets_{key}', val)
+                for i, orb in enumerate(orbital_settings.get('orbital_information', [])):
+                    sec_specie_basis_set = bs.m_create(
+                        x_abacus_section_specie_basis_set)
+                    sec_specie_basis_set.x_abacus_specie_basis_set_filename = os.path.basename(
+                        header.get('orbital_files')[i])
+                    ln_list = []
+                    for data in orb:
+                        ln_list.append([data.l, data.n])
+                    sec_specie_basis_set.x_abacus_specie_basis_set_ln = ln_list
+                    sec_specie_basis_set.x_abacus_specie_basis_set_rcutoff = data.rcut
+                    sec_specie_basis_set.x_abacus_specie_basis_set_rmesh = data.nr
+                    sec_specie_basis_set.x_abacus_specie_basis_set_number_of_orbitals = len(
+                        ln_list)
+            ems.append(BasisSetContainer(scope=[name], basis_set=[bs]))
+        sec_method.electrons_representation = ems
 
         if self.input_parser.get('dft_plus_u'):
             sec_electronic.method = 'DFT+U'

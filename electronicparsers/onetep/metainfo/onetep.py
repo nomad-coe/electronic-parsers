@@ -2585,16 +2585,9 @@ class System(simulation.system.System):
         repeats=True)
 
 
-class BasisSetCellDependent(simulation.method.BasisSetCellDependent):
+class BasisSet(simulation.method.BasisSet):
 
     m_def = Section(validate=False, extends_base_section=True)
-
-    x_onetep_basis_set_planewave_cutoff = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        Temporary storing plane wave cutoff as string
-        ''')
 
     x_onetep_size_std_grid = Quantity(
         type=np.dtype(np.float64),

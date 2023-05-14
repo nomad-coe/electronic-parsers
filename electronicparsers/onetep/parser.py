@@ -26,7 +26,7 @@ from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import (
     Run, Program, TimeRun)
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, DFT, XCFunctional, Functional
+    Method, DFT, XCFunctional, Functional, BasisSet, BasisSetContainer,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -119,7 +119,8 @@ class OutParser(TextParser):
                         'rms_gradient',
                         rf'RMS gradient += +({re_f})',
                         dtype=np.float64
-                    )
+                    ),
+
                 ])
             ),
             Quantity(
@@ -193,6 +194,17 @@ class OutParser(TextParser):
                 'date_end',
                 r'Job completed: (\d\d\-\d\d\-\d\d\d\d \d\d:\d\d \(\+\d\d\d\d\))',
                 flatten=False, dtype=str),
+            Quantity(
+                'psinc',
+                r'PSINC grid sizes([\s\S]+)=+',
+                sub_parser=TextParser(quantities=[
+                        Quantity(
+                        'cutoff',
+                        rf'KE cutoff=\s+({re_f})Eh',
+                        dtype=np.float64, unit=ureg.hartree,
+                    ),
+                ])
+            ),
             Quantity(
                 'geometry_optimization',
                 r'Starting ONETEP Geometry Optimisation([\s\S]+?)(?:\- TIMING|\Z)',
@@ -306,7 +318,10 @@ class OnetepParser:
         self.out_parser.logger = self.logger
         self.input_parser.logger = self.logger
 
-    def parse_configuration(self, source):
+    def parse_configuration(self, source: TextParser):
+        '''Generate a system section from `source`.
+        Input:
+        - `source`: information block corresponding to a single point calculation'''
         def parse_system(source):
             cell = source.get('cell', self.input_parser.cell)
             if cell is None:
@@ -389,6 +404,21 @@ class OnetepParser:
                 else:
                     sec_method.dft.xc_functional.contributions.append(Functional(name=xc_functional))
 
+        # Basis set
+        if cutoff := self.out_parser.get('psinc', {}).get('cutoff'):
+            sec_em = BasisSetContainer(
+                type='support functions',
+                scope=['wavefunction'],
+                basis_set=[
+                    BasisSet(
+                        type='psinc functions',
+                        scope=['valence'],
+                        cutoff=cutoff,
+                    ),
+                ],
+            )
+            sec_method.electrons_representation=[sec_em,]
+
         if self.out_parser.geometry_optimization is not None:
             if self.out_parser.geometry_optimization.single_point is not None:
                 self.parse_configuration(self.out_parser.geometry_optimization.single_point)
@@ -407,4 +437,3 @@ class OnetepParser:
                     sec_excitation.x_onetep_tddft_excit_energy = excitation[1] * ureg.hartree
                     sec_excitation.x_onetep_tddft_excit_oscill_str = excitation[2]
                     sec_excitation.x_onetep_tddft_excit_lifetime = excitation[3] * ureg.ns
-        # TODO parse md

@@ -33,7 +33,7 @@ from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, BasisSetCellDependent
+    Method, BasisSet, BasisSetContainer
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization, MolecularDynamics
 from nomad.datamodel.metainfo.simulation.workflow import (
@@ -444,13 +444,22 @@ class CPMDParser:
                             break
 
         sec_method = sec_run.m_create(Method)
-        sec_basis = sec_method.m_create(BasisSet)
-        sec_basis.type = 'plane waves'
-        sec_basis.kind = 'wavefunction'
-        cutoff = self.mainfile_parser.get('supercell', {}).get('x_cpmd_wave_function_cutoff', 0.)
-        sec_cell_basis = sec_basis.m_create(BasisSetCellDependent)
-        sec_cell_basis.planewave_cutoff = cutoff * ureg.rydberg
-        sec_cell_basis.name = f'PW_{cutoff}'
+        cutoff = self.mainfile_parser.get('supercell', {}).get(
+            'x_cpmd_wave_function_cutoff')
+        if cutoff is not None:
+            sec_method.electrons_representation.append(
+                BasisSetContainer(
+                    scope=['wavefunction'],
+                    type='plane waves',
+                    basis_set = [
+                        BasisSet(
+                            scope=['valence'],
+                            type='plane waves',
+                            cutoff=cutoff * ureg.rydberg,
+                        )
+                    ]
+                )
+            )
         sec_method.x_cpmd_simulation_parameters = self.mainfile_parser.get_simulation_parameters()
         # TODO xc functionals. The mapping cannot be ascertained
 

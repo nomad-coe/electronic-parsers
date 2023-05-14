@@ -10,7 +10,7 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Electronic, Functional, Smearing, Method, DFT, BasisSet, BasisSetCellDependent,
+    Electronic, Functional, Smearing, Method, DFT, BasisSet, BasisSetContainer,
     XCFunctional, KMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
@@ -823,10 +823,18 @@ class OctopusParser:
         sec_dft = sec_method.m_create(DFT)
 
         # basis set
-        sec_basis = sec_method.m_create(BasisSet)
-        sec_basis.type = 'real-space grid'
-        sec_basis_set = sec_basis.m_create(BasisSetCellDependent)
-        sec_basis_set.kind = 'realspace_grids'
+        sec_method.electrons_representation.append(
+            BasisSetContainer(
+                type='real-space grid',
+                scope=['wavefunction'],
+                basis_set=[
+                    BasisSet(
+                        scope=['valence'],
+                        type='real-space grid',
+                    )
+                ]
+            )
+        )
 
         # smearing
         smearing_function = self._smearing_functions.get(self.info.get('SmearingFunction'), None)

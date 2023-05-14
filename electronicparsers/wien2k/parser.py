@@ -25,10 +25,12 @@ from ase.io import read as ioread
 from ase import Atoms
 
 from nomad.units import ureg
+from nomad.parsing.file_parser.file_parser import FileParser
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
-    Electronic, Method, DFT, Smearing, XCFunctional, Functional, KMesh, BasisSet
+    Electronic, Method, DFT, Smearing, XCFunctional, Functional, KMesh, BasisSet,
+    BasisSetContainer, OrbitalAPW
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -39,6 +41,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 )
 from nomad.datamodel.metainfo.workflow import Workflow
 from .metainfo.wien2k import x_wien2k_section_equiv_atoms
+from typing import Any
 
 
 class In0Parser(TextParser):
@@ -53,14 +56,50 @@ class In0Parser(TextParser):
             Quantity('fft', r'FFT[\s\S]+?(\d+\s+\d+\s+\d+\s+[\d\.]+)')]
 
 
-class In1Parser(TextParser):
-    def __init__(self):
-        super().__init__()
+class In1Parser(FileParser):
+    def __init__(self, mainfile=None, logger=None, open=None):
+        super().__init__(mainfile, logger=logger, open=open)
 
-    def init_quantities(self):
-        self._quantities = [
-            Quantity('wf_switch', r'(WFFIL|WFPRI|ENFIL|SUPWF)'),
-            Quantity('rkmax', r'([\d\.]+\s*\d+\s*\d+).+K\-MAX', dtype=np.float64)]
+    def parse(self):
+        self._results = {'species': []}
+        num_orbitals: int = 0
+        with self.mainfile_obj as f:
+            for line_id, line in enumerate(f):
+                if line_id == 0:
+                    line = line.strip().split()
+                    self._results['calc_mode'] = line[0]
+                    if re.match(r'EF', line[1]):
+                        self._results['e_ref'] = float(line[1].split('=')[1])
+                elif line_id == 1:
+                    line = line.strip().split()
+                    for tag, val in zip(['rkmax', 'lmax', 'lvnsmax'], line):
+                        try:
+                            self._results[tag] = int(val)
+                        except ValueError:
+                            self._results[tag] = float(val)
+                elif re.search(r'K-VECTORS', line):
+                    continue
+                # further specify the species setup
+                elif num_orbitals > 0:
+                    line = line.strip().split()
+                    orbital_settings = {}
+                    for tag, val in zip(['l', 'e_param', 'e_diff', 'diff_search', 'type'], line[:5]):
+                        for converter in (int, float, lambda x: x):
+                            try:
+                                orbital_settings[tag] = converter(val)
+                                break
+                            except ValueError:
+                                pass
+                    self._results['species'][-1]['orbital'].append(orbital_settings)
+                    num_orbitals -= 1
+                # add a new species setup
+                elif num_orbitals == 0:
+                    species_settings = {'orbital': []}
+                    line = line.strip().split()
+                    species_settings['e_param'] = float(line[0])
+                    species_settings['type'] = int(line[2])
+                    self._results['species'].append(species_settings)
+                    num_orbitals = int(line[1])
 
 
 class StructParser(TextParser):
@@ -733,9 +772,6 @@ class Wien2kParser:
         if in1_file is None:
             in1_file = self.get_wien2k_file('in1c')
         self.in1_parser.mainfile = in1_file
-        for key, val in self.in1_parser.items():
-            if val is not None:
-                setattr(sec_method, 'x_wien2k_%s' % key, val)
 
         # read integration data from in2 file
         in2_file = self.get_wien2k_file('1n2')
@@ -773,7 +809,48 @@ class Wien2kParser:
             sec_k_mesh.weights = kpoints[1]
 
         # basis
-        sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
+        #sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
+        if self.in1_parser.mainfile:
+            self.in1_parser.parse()
+            if self.in1_parser._results:
+                type_mapping = ('LAPW', 'APW', 'HDLO', 'LO')
+                source: dict(str, Any) = self.in1_parser._results
+                em = BasisSetContainer(scope=['wavefunction'])
+                em.basis_set.append(
+                    BasisSet(
+                        scope = ['intersitial', 'valence'],
+                        type = 'plane waves',
+                        cutoff_fractional=source.get('rkmax'),
+                    )
+                )
+                for mt in source.get('species', []):
+                    bs = BasisSet(scope=['muffin-tin', 'full-electron'],
+                        spherical_harmonics_cutoff=source.get('lmax'))
+                    for l in range(source.get('lmax', -1) + 1):
+                        orbital = OrbitalAPW()
+                        orbital.l_quantum_number = l
+                        orbital.core_level = False
+                        e_param = mt.get('e_param', source.get('e_ref', .5) - .2)  # TODO: check for +.2 case
+                        update = False
+                        apw_type = mt.get('type')
+                        last_orbital_type = None
+                        for orb in mt['orbital']:
+                            if l == orb['l']:
+                                e_param = orb.get('e_param', e_param)
+                                update = False if not orb.get('e_diff', 0) else True
+                                apw_type = orb.get('type', apw_type)
+                                if last_orbital_type == apw_type:
+                                    orbital.energy_parameter = e_param
+                                    orbital.update = update
+                                    orbital.type = type_mapping[3]
+                                    continue
+                                last_orbital_type = apw_type
+                        orbital.energy_parameter = e_param
+                        orbital.update = update
+                        orbital.type = type_mapping[apw_type]
+                        bs.orbital.append(orbital)
+                    em.basis_set.append(bs)
+                sec_method.electrons_representation.append(em)
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)

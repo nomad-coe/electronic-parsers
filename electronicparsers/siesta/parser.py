@@ -27,7 +27,7 @@ from nomad.datamodel.metainfo.simulation.run import (
     Run, Program, TimeRun
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, DFT, XCFunctional, Functional, BasisSet
+    Method, DFT, XCFunctional, Functional, BasisSet, BasisSetContainer,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -356,8 +356,18 @@ class SiestaParser:
                 sec_method.dft.xc_functional.hybrid.append(Functional(name=xc_functional))
             else:
                 sec_method.dft.xc_functional.contributions.append(Functional(name=xc_functional))
-        sec_basis_set = sec_method.m_create(BasisSet)
-        sec_basis_set.type = 'numeric AOs'
+        sec_method.electrons_representation = [
+            BasisSetContainer(
+                type='atom-centered orbitals',
+                scope=['wavefunction'],
+                basis_set=[
+                    BasisSet(
+                        type='numeric AOs',
+                        scope=['full-election'],
+                    )
+                ]
+            )
+        ]
         # parse atomic basis info
 
         def parse_system(source):

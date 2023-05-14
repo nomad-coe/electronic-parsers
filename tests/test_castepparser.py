@@ -42,7 +42,7 @@ def test_single_point(parser):
     assert sec_run.time_run.date_start.magnitude == 1455286325.0
 
     sec_method = sec_run.method[0]
-    assert sec_method.basis_set[0].cell_dependent[0].name == 'PW_7'
+    assert sec_method.electrons_representation[0].basis_set[0].cutoff.to('eV').magnitude == approx(100)
     assert sec_method.electronic.n_spin_channels == 1
     assert sec_method.dft.xc_functional.correlation[0].name == 'GGA_C_PBE'
     assert sec_method.electronic.smearing.kind == 'gaussian'

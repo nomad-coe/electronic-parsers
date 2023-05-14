@@ -71,7 +71,7 @@ def test_HfO2(parser):
     scf[3].energy.sum_eigenvalues.value.magnitude == approx(-3.916702417016777e-16)
 
     method = run.method[0]
-    assert method.basis_set[0].type == 'numeric AOs'
+    assert method.electrons_representation[0].basis_set[0].type == 'numeric AOs'
     assert method.electronic.n_spin_channels == 1
     assert method.electronic.method == 'DFT'
     assert method.electronic.smearing.width == approx(K_to_J(300))

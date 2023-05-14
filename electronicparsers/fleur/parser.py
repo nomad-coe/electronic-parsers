@@ -31,12 +31,14 @@ from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing
+    Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing,
+    AtomParameters, BasisSetContainer, OrbitalAPW
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandEnergies
 )
 from .metainfo.fleur import x_fleur_header
+from typing import Any
 
 
 re_n = r'[\n\r]'
@@ -104,6 +106,11 @@ class XMLParser(TextParser):
                         cell[int(vector[0]) - 1][:] = vector[1].split()
                     return cell * ureg.bohr
 
+        embedded_key = Quantity(
+            'key_val', r' (\S+=)\"(.+?)\"',
+            str_operation=lambda x: x.split('='), repeats=True
+        )
+
         self._quantities = [
             Quantity(
                 'header',
@@ -122,12 +129,7 @@ class XMLParser(TextParser):
                 sub_parser=TextParser(quantities=[
                     Quantity(
                         'parameters', r'\<calculationSetup\>([\s\S]+?)\<\/calculationSetup\>',
-                        sub_parser=TextParser(quantities=[
-                            Quantity(
-                                'key_val', r' (\S+=)\"(.+?)\"',
-                                str_operation=lambda x: x.split('='), repeats=True
-                            )
-                        ])
+                        sub_parser=TextParser(quantities=[embedded_key])
                     ),
                     Quantity(
                         'cell',
@@ -138,6 +140,11 @@ class XMLParser(TextParser):
                         'xc_functional',
                         r'<xcFunctional name="(.+?)" relativisticCorrections="(.)"',
                         dtype=str
+                    ),
+                    Quantity(
+                        'species',
+                        r'\<species([\s\S]+?)\<\/species\>', repeats=True,
+                        sub_parser=TextParser(quantities=[embedded_key])
                     ),
                     Quantity(
                         'atom',
@@ -154,12 +161,7 @@ class XMLParser(TextParser):
                     Quantity(
                         'output_parameters',
                         r'\<output([\s\S]+?)\<\/output\>',
-                        sub_parser=TextParser(quantities=[
-                            Quantity(
-                                'key_val', r' (\S+=)\"(.+?)\"',
-                                str_operation=lambda x: x.split('='), repeats=True
-                            )
-                        ])
+                        sub_parser=TextParser(quantities=[embedded_key])
                     )
                 ])
             ),
@@ -241,6 +243,130 @@ class XMLParser(TextParser):
         labels = [atom.species for atom in atoms]
         positions = np.dot([atom.position for atom in atoms], cell)
         return labels, positions, cell
+
+    def get_basis_sets(self) -> list[BasisSet]:
+        '''Extract `species` xml tags, add semantics,
+        and map their settings into as series of `muffin-tin` BasisSets.'''
+        # https://www.flapw.de/MaX-6.0/documentation/fleurInputFile/
+        # https://www.flapw.de/MaX-6.0/documentation/localOrbitalSetup/
+        def to_dict(key_vals: list[list[Any]]) -> dict[str, Any]:
+            return {key_val[0]: key_val[1] for key_val in key_vals}
+
+        def develop_range(val_in: str) -> list[int]:
+            if '-' in val_in:
+                start, end = val_in.split('-')
+                return list(range(int(start), int(end) + 1))
+            elif ',' in val_in:
+                return [int(val) for val in val_in.split(',')]
+            else:
+                return [int(val_in)]
+
+        def roll_out_lo(val_in: dict[str, str]) -> list[dict[tuple[int], list[Any]]]:
+            los = []
+            for l in develop_range(int(val_in['l'])):
+                for n in develop_range(int(val_in['n'])):
+                    order = int(val_in['eDeriv'])
+                    los.append({(l, order): [n, val_in['type']]})
+            return los
+
+        # function variables
+        basis_sets: list[BasisSet] = []
+        l_mapping = ['s', 'p', 'd', 'f']
+        bool_mapping = {'T': True, 'F': False}
+        order_mapping = {'APW': 1, 'LAPW': 2}
+        input_parameters_reformatted = {
+            key_val[0]: key_val[1] for key_val in self.input.get('parameters').get('key_val')
+        }
+        # muffin-tin
+        species = self.get('input', {}).get('species', [])
+        for specie in species:
+            specie = to_dict(specie.get('key_val', []))
+            mt: list[BasisSet] = []
+            for _ in range(2):
+                mt.append(
+                    BasisSet(
+                        scope=['muffin-tin'],
+                        radius=specie.get('radius') * ureg.bohr,
+                        spherical_harmonics_cutoff=specie.get('lmax'),
+                        radius_log_spacing=float(specie.get('logIncrement')),
+                        n_grid_points=int(specie.get('gridPoints')),
+                    )
+                )
+            # valence muffin-tin + local orbitals
+            n_max = 0
+            for l_test in l_mapping[::-1]:
+                n_prospective = int(specie.get(l_test))
+                if n_prospective:
+                    n_max = l_test
+                    break
+            los = []
+            for lo in specie.get('lo', []):
+                los += roll_out_lo(to_dict(lo.get('key_val', [])))
+            for l in range(int(specie.get('lmax')) + 1):
+                apw_type = 'APW' if l == specie.get('lmaxAPW', -1) else 'LAPW'
+                n_quantum = specie.get(l_mapping[min(l, len(l_mapping) - 1)], n_max)
+                for order in range(5):  # TODO: find a better option than hard-coding
+                    if order <= order_mapping[apw_type]:
+                        orbital = [
+                            OrbitalAPW(
+                                type=apw_type,
+                                energy_parameter_n=n_quantum,
+                                l_quantum_number=l,
+                                core_level=False,
+                                order=order,
+                            )
+                        ]
+                    if (l, order) in [lo.keys() for lo in los]:
+                        orbital.append(
+                            OrbitalAPW(
+                                type='LO',
+                                energy_parameter_n=lo[(l, order)][0],
+                                l_quantum_number=l,
+                                core_level=False,
+                                order=order,
+                                x_fleur_lo_type=lo[(l, order)][1],
+                            )
+                        )
+                    mt[0].orbital = [*mt[0].orbital, *orbital]
+            mt[0].scope.append('valence')
+            # core muffin-tin
+            n_counter = 1
+            nl_counter = specie.get('coreStates', 0)
+            while nl_counter > 0:
+                for l in range(n_counter):
+                    j = l + .5
+                    while j > 0:
+                        mt[1].orbital.append(
+                            OrbitalAPW(
+                                type='spherical Dirac',
+                                n_quantum_number=n_counter,
+                                l_quantum_number=l,
+                                j_quantum_number=j,
+                                occupation=2 * j + 1,
+                                core_level=True,
+                            )
+                        )
+                        j -= 1
+                        nl_counter -= 1
+                n_counter += 1
+            mt[1].scope.append('core')
+            # general core settings
+            core_application = {'coretail': 'ctail', 'coretail_cutoff': 'coretail_lmax',}  # TODO: add 'relativistic_core': 'kcrel'?
+            for key, val in core_application.items():
+                try:
+                    q = input_parameters_reformatted[val].strip()
+                except KeyError:
+                    continue
+                try:
+                    q = bool_mapping[q]
+                except KeyError:
+                    pass
+                setattr(mt[1], f'x_fleur_{key}', q)
+            mt[1].frozen_core = bool_mapping[input_parameters_reformatted['frcor'].strip()]
+            # write out muffin tin
+            basis_sets.append(mt[0])
+            basis_sets.append(mt[1])
+        return basis_sets
 
 
 class OutParser(TextParser):
@@ -455,6 +581,9 @@ class OutParser(TextParser):
         atoms = system.get('atoms', [None, None])
         return atoms[0], atoms[1], system.cell
 
+    def get_atom_parameters(self) -> list[AtomParameters]:
+        return []
+
 
 class FleurParser:
     def __init__(self):
@@ -503,7 +632,6 @@ class FleurParser:
             sec_run.time_run = TimeRun(date_start=dt.timestamp())
 
         sec_method = sec_run.m_create(Method)
-        sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
         input = self.parser.get('input')
         if input is not None:
             for key in ['parameters', 'input_parameters']:
@@ -514,6 +642,31 @@ class FleurParser:
             sec_method.x_fleur_parameters = {}
         sec_method.x_fleur_parameters.update(input.get('output_parameters', {}))
         sec_method.x_fleur_parameters.update(self.parser.get('numerical_parameters', {}))
+
+        # Electronic_model
+        input_parameters_reformatted = {
+            key_val[0]: key_val[1] for key_val in input.get('parameters').get('key_val')
+        }
+        for cutoff in ('Kmax', 'Gmax'):  # TODO: add 'GmaxXC'
+            if cutoff not in input_parameters_reformatted.keys():
+                continue
+            em = BasisSetContainer()
+            if cutoff == 'Kmax':
+                em.scope = ['wavefunction']
+            elif cutoff == 'Gmax':
+                em.scope = ['density']
+            # interstitial region
+            k_cutoff = input_parameters_reformatted[cutoff] / ureg.bohr
+            e_cutoff = ureg.h_bar**2 / ureg.electron_mass * k_cutoff**2 / 2
+            em.basis_set.append(
+                BasisSet(
+                    scope = ['interstitial', 'valence'],
+                    type = 'plane waves',  # Actually stars: symmetrized plane waves according to the unit cell
+                    cutoff = e_cutoff,  # TODO: check units
+                )
+            )
+            em.basis_set = [*em.basis_set, *self.parser.get_basis_sets()]
+            sec_method.electrons_representation.append(em)
 
         electronic = self.parser.electronic
         if electronic is not None:
