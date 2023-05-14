@@ -954,8 +954,8 @@ class GaussianParser:
                 if method is not None:
                     return parameter
 
-                method = self._xc_functional_map.get(parameter, None)
-                return 'DFT' if method is not None else method
+                xc = resolve_xc_functional(parameter)
+                return 'DFT' if xc is not None else None
 
             method = get_method(parameter)
             if method is None:
@@ -993,6 +993,11 @@ class GaussianParser:
             xc_functional = self._xc_functional_map.get(parameter, None)
             if xc_functional is not None:
                 return parameter
+
+            part = parameter.split('-')[0]
+            xc_functional = self._xc_functional_map.get(part)
+            if xc_functional is not None:
+                return part
 
             res = self._xc_functional_pattern.match(parameter)
             if res is not None:
