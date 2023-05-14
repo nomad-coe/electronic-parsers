@@ -968,7 +968,7 @@ class GaussianParser:
             return method
 
         def resolve_prefix(name):
-            name = name.split('=')[0].split('-')[0].strip()
+            name = name.split('=')[0].strip()
             prefix = ''
             if name not in ['RHF', 'ROHF', 'UHF', 'UFF']:
                 res = re.match(r'([RU]{1}O?)(.*)', name)
