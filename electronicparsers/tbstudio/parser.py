@@ -29,7 +29,7 @@ from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms, AtomsGroup
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, AtomParameters, KMesh, TightBinding
+    Method, AtomParameters, KMesh, TightBinding, SlaterKoster, TightBindingOrbital, SlaterKosterBond
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, BandStructure, BandEnergies, Energy, HoppingMatrix
@@ -331,7 +331,7 @@ class TBStudioParser:
     level = 1
 
     def __init__(self):
-        self._calculation_type = 'projection'
+        self._calculation_type = 'tight binding'
 
     def parse_system(self):
         """Populates run.system with the input structural parameters.
@@ -340,7 +340,7 @@ class TBStudioParser:
         sec_system = sec_run.m_create(System)
         # Here the key is to populate:
         #   1- `Atoms` with the main quantities I wrote
-        #   2- `AtomsGroup` (optional) with the info of the atoms used for the projection in the tight-binding model
+        #   2- `AtomsGroup` (optional) with the info of the atoms used for the tight binding in the tight-binding model
         sec_atoms = sec_system.m_create(Atoms)
 
         a = self.tb_model['a']
@@ -373,10 +373,36 @@ class TBStudioParser:
         """
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
-        sec_dft = sec_method.m_create(SK)
+        sec_tb = sec_method.m_create(TightBinding)
+        sec_sk = sec_tb.m_create(SlaterKoster)
 
-        # Here it will be useful to populate `AtomParameters` within Method to account, for
-        # example, for the orbitals used in the projeciton
+        n_orbitals = len(self.tb_model['orbitals'])
+        orbitals = self.tb_model['orbitals']
+        sec_orbitals = sec_sk.m_create(TightBindingOrbital, SlaterKoster.bonds)
+
+        for bond in self.tb_model['bonds']:
+            atom1 = bond['atom1']
+            atom2 = bond['atom2']
+            type = bond['type']
+            h_sk = None
+            s_sk = None
+            if self.tb_model['final_sk'] != {}:
+                h_sk = self.tb_model['final_sk'][type]
+            if self.tb_model['final_overlap'] != {}:
+                s_sk = self.tb_model['final_overlap'][type]
+
+            if h_sk is not None:
+                sec_bonds = sec_sk.m_create(SlaterKosterBond, SlaterKoster.bonds)
+                sec_bonds.bond_label = type
+                sec_bonds.index1 = atom1.index
+                sec_bonds.index2 = atom2.index
+            if s_sk is not None:
+                sec_overlaps = sec_sk.m_create(SlaterKosterBond, SlaterKoster.overlaps)
+                sec_overlaps.bond_label = type
+                sec_overlaps.index1 = atom1.index
+                sec_overlaps.index2 = atom2.index
+
+
 
     def parse_scc(self):
         """Populates run.calculation with the output of the calculation.
