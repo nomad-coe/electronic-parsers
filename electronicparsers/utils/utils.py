@@ -299,18 +299,8 @@ class BeyondDFTWorkflowsParser:
                 self.archive.run[-1].m_add_sub_section(Run.system, sec_system)
                 dmft_workflow_archive.run[-1].m_add_sub_section(Run.system, sec_system)
 
-        workflow = DMFT(method=DMFTMethod(), results=DMFTResults())
-        workflow.name = 'Projection+DMFT'
-
-        # TODO define Method
-
-        # Results
-        bs_proj = extract_section(wannier_archive, 'run/calculation/band_structure_electronic')
-        dos_proj = extract_section(wannier_archive, 'run/calculation/dos_electronic')
-        gf_dmft = extract_section(self.archive, 'run/calculation/greens_functions')
-        workflow.results.band_structure_dft = bs_proj
-        workflow.results.dos_dft = dos_proj
-        workflow.results.greens_functions_dmft = gf_dmft
+        workflow = DMFT()
+        workflow.name = 'DMFT'
 
         # Inputs and Outputs
         input_structure = extract_section(wannier_archive, 'run/system')
@@ -326,12 +316,12 @@ class BeyondDFTWorkflowsParser:
         # Wannier90 task
         if wannier_archive.workflow2:
             task = TaskReference(task=wannier_archive.workflow2)
-            task.name = 'Wannier90'
+            task.name = 'Projection'
             # TODO check why this re-writting is necessary to not repeat sections inside tasks
             if input_structure:
                 task.inputs = [Link(name='Input structure', section=input_structure)]
             if wannier_calculation:
-                task.outputs = [Link(name='Output Wannier90 calculation', section=wannier_calculation)]
+                task.outputs = [Link(name='Output Projection calculation', section=wannier_calculation)]
             workflow.m_add_sub_section(DMFT.tasks, task)
 
         # DMFT task
@@ -339,7 +329,7 @@ class BeyondDFTWorkflowsParser:
             task = TaskReference(task=self.archive.workflow2)
             task.name = 'DMFT'
             if wannier_calculation:
-                task.inputs = [Link(name='Output Wannier90 calculation', section=wannier_calculation)]
+                task.inputs = [Link(name='Output Projection calculation', section=wannier_calculation)]
             if dmft_calculation:
                 task.outputs = [Link(name='Output DMFT calculation', section=dmft_calculation)]
             workflow.m_add_sub_section(DMFT.tasks, task)
