@@ -39,6 +39,24 @@ import json
 import re
 
 
+def parse_int(string, default=0):
+    val = default
+    try:
+        val = np.int64(string)
+    except:
+        pass
+    return val
+
+
+def parse_float(string, default=0.0):
+    val = default
+    try:
+        val = np.intfloat64(string)
+    except:
+        pass
+    return val
+
+
 def load_tbm(file):
     f = open(file)
     tbm = json.load(f)
@@ -60,9 +78,9 @@ def load_tbm(file):
     model['DFTNomadEntryID'] = tbm['DFTSource']['DFTNomadEntryID']
 
     # Load lattice vectors
-    model['a'] = [tbm['vars']['a[0]'], tbm['vars']['a[1]'], tbm['vars']['a[2]']]
-    model['b'] = [tbm['vars']['b[0]'], tbm['vars']['b[1]'], tbm['vars']['b[2]']]
-    model['c'] = [tbm['vars']['c[0]'], tbm['vars']['c[1]'], tbm['vars']['c[2]']]
+    model['a'] = [parse_float(tbm['vars']['a[0]']), parse_float(tbm['vars']['a[1]']), parse_float(tbm['vars']['a[2]'])]
+    model['b'] = [parse_float(tbm['vars']['b[0]']), parse_float(tbm['vars']['b[1]']), parse_float(tbm['vars']['b[2]'])]
+    model['c'] = [parse_float(tbm['vars']['c[0]']), parse_float(tbm['vars']['c[1]']), parse_float(tbm['vars']['c[2]'])]
 
     # SOC
     model['isSOC'] = tbm['checks']['SOC[0]']
@@ -80,22 +98,9 @@ def load_tbm(file):
             break
     model['xyz_coords'] = xyz_coords
 
-    tb_l = 0
-    tb_m = 0
-    tb_n = 0
-
-    try:
-        tb_l = np.int64(tbm['vars']['TBl[0]'])
-    except:
-        pass
-    try:
-        tb_m = np.int64(tbm['vars']['TBm[0]'])
-    except:
-        pass
-    try:
-        tb_n = np.int64(tbm['vars']['TBn[0]'])
-    except:
-        pass
+    tb_l = parse_int(tbm['vars']['TBl[0]'])
+    tb_m = parse_int(tbm['vars']['TBm[0]'])
+    tb_n = parse_int(tbm['vars']['TBn[0]'])
 
     model['neighbor_unit_cells'] = [tb_l, tb_m, tb_n]
 
@@ -188,17 +193,8 @@ def load_tbm(file):
                 model['final_sk'][tbBond] = {}
         else:
             skIntegral = row[0]
-            initial = 0
-            try:
-                initial = np.float64(row[1])
-            except:
-                pass
-            final = 0
-            try:
-                final = np.float64(row[2])
-            except:
-                pass
-
+            initial = parse_float(row[1])
+            final = parse_float(row[2])
             model['initial_sk'][tbBond][skIntegral] = initial
             model['final_sk'][tbBond][skIntegral] = final
 
@@ -217,17 +213,8 @@ def load_tbm(file):
                 model['final_overlap'][tbBond] = {}
         else:
             skIntegral = row[0]
-            initial = 0
-            try:
-                initial = np.float64(row[1])
-            except:
-                pass
-            final = 0
-            try:
-                final = np.float64(row[2])
-            except:
-                pass
-
+            initial = parse_float(row[1])
+            final = parse_float(row[2])
             model['initial_overlap'][tbBond][skIntegral] = initial
             model['final_overlap'][tbBond][skIntegral] = final
 
@@ -378,7 +365,7 @@ class TBStudioParser:
 
         n_orbitals = len(self.tb_model['orbitals'])
         orbitals = self.tb_model['orbitals']
-        sec_orbitals = sec_sk.m_create(TightBindingOrbital, SlaterKoster.bonds)
+        sec_orbitals = sec_sk.m_create(TightBindingOrbital, SlaterKoster.orbitals)
 
         for bond in self.tb_model['bonds']:
             atom1 = bond['atom1']
@@ -394,20 +381,19 @@ class TBStudioParser:
             if h_sk is not None:
                 sec_bonds = sec_sk.m_create(SlaterKosterBond, SlaterKoster.bonds)
                 sec_bonds.bond_label = type
-                sec_bonds.index1 = atom1.index
-                sec_bonds.index2 = atom2.index
+                sec_bonds.index1 = atom1['index']
+                sec_bonds.index2 = atom2['index']
             if s_sk is not None:
                 sec_overlaps = sec_sk.m_create(SlaterKosterBond, SlaterKoster.overlaps)
                 sec_overlaps.bond_label = type
-                sec_overlaps.index1 = atom1.index
-                sec_overlaps.index2 = atom2.index
-
-
+                sec_overlaps.index1 = atom1['index']
+                sec_overlaps.index2 = atom2['index']
 
     def parse_scc(self):
         """Populates run.calculation with the output of the calculation.
         """
         sec_run = self.archive.run[-1]
+        self.archive.run[-1].m_create(Calculation)
 
         tb_bands = self.tb_model['final_tb_bands']
         frac_k_points = self.tb_model['frac_k_points']
@@ -436,6 +422,7 @@ class TBStudioParser:
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
 
+        self.archive.m_create(Run)
         self.tb_model = load_tbm(filepath)
 
         self.init_parser()
