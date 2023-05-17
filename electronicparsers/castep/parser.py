@@ -626,7 +626,7 @@ class CastepParser:
             'Dispersion corrected final free energy* (Ecor-TS)': 'x_castep_total_dispersion_corrected_free_energy',
             'NB dispersion corrected est. 0K energy* (Ecor-0.5TS)': 'x_castep_disp_corrected_energy_total_T0',
             'basis set parameters': {
-                'basis set accuracy': 'native_tier',  # default: FINE
+                'basis set accuracy': 'native_tier',  # https://www.tcm.phy.cam.ac.uk/castep/documentation/WebHelp/content/modules/castep/keywords/k_basis_precision_castep.htm
                 'size of standard grid': 'x_castep_size_std_grid',
                 'size of   fine   gmax': 'x_castep_size_fine_grid'},
             'phonon parameters': {
@@ -758,6 +758,7 @@ class CastepParser:
         basis_parameters = self.out_parser.get('title', {}).get('basis set parameters', {})
         sec_method.electrons_representation.append(
             BasisSetContainer(
+                native_tier=basis_parameters.get('basis set accuracy', 'FINE'),
                 type='plane waves',
                 scope=['wavefunction'],
                 basis_set=[

@@ -43,6 +43,7 @@ def test_single_point(parser):
 
     sec_method = sec_run.method[0]
     assert sec_method.electrons_representation[0].basis_set[0].cutoff.to('eV').magnitude == approx(100)
+    assert sec_method.electrons_representation[0].native_tier == 'FINE'
     assert sec_method.electronic.n_spin_channels == 1
     assert sec_method.dft.xc_functional.correlation[0].name == 'GGA_C_PBE'
     assert sec_method.electronic.smearing.kind == 'gaussian'
@@ -140,6 +141,9 @@ def test_bandstructure(parser):
     assert sec_band_segment[3].endpoints_labels == ['X', 'W']
     assert sec_band_segment[1].energies[0][-1][12].magnitude == approx(2.17418526e-18)
     assert sec_band_segment[4].kpoints[2][1] == 0.300000
+
+    sec_method = archive.run[0].method[0]
+    assert sec_method.electrons_representation[0].native_tier == 'MEDIUM'
 
 
 def test_vibration(parser):
