@@ -436,7 +436,8 @@ class FHIAimsOutParser(TextParser):
                 convert=False),
             Quantity(
                 'structure',
-                rf'Atomic structure.*:\s+.*x \[A\]\s*y \[A\]\s*z \[A\]([\s\S]+?Species[\s\S]+?(?:{re_n} *{re_n}| 1\: ))',
+                # rf'Atomic structure.*:\s+.*x \[A\]\s*y \[A\]\s*z \[A\]([\s\S]+?Species[\s\S]+?(?:{re_n} *{re_n}| 1\: ))',
+                rf'Atomic structure(.|\n)*\| *Atom *x \[A\] *y \[A\] *z \[A\]([\s\S]+?Species[\s\S]+?(?:{re_n} *{re_n}| 1\: ))',
                 repeats=False, convert=False, sub_parser=TextParser(quantities=structure_quantities)),
             Quantity(
                 'structure',
@@ -700,7 +701,8 @@ class FHIAimsOutParser(TextParser):
                 repeats=False, unit='angstrom', shape=(3, 3), dtype=float),
             Quantity(
                 'structure',
-                rf'Atomic structure.*:\s+.*x \[A\]\s*y \[A\]\s*z \[A\]([\s\S]+?Species[\s\S]+?(?:{re_n} *{re_n}| 1\: ))',
+                # rf'Atomic structure.*:\s+.*x \[A\]\s*y \[A\]\s*z \[A\]([\s\S]+?Species[\s\S]+?(?:{re_n} *{re_n}| 1\: ))',
+                rf'Atomic structure(.|\n)*\| *Atom *x \[A\] *y \[A\] *z \[A\]([\s\S]+?Species[\s\S]+?(?:{re_n} *{re_n}| 1\: ))',
                 repeats=False, convert=False, sub_parser=TextParser(quantities=structure_quantities)),
             Quantity(
                 'lattice_vectors_reciprocal',
