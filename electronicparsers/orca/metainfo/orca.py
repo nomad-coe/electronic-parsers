@@ -238,13 +238,6 @@ class Method(simulation.method.Method):
         -
         ''')
 
-    x_orca_energy_change_tolerance = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        -
-        ''')
-
     x_orca_exchange_functional = Quantity(
         type=str,
         shape=[],
@@ -578,6 +571,17 @@ class Method(simulation.method.Method):
         sub_section=SectionProxy('x_orca_section_functionals'),
         repeats=True)
 
+class Scf(simulation.method.Scf):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_orca_last_max_density_change = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        -
+        ''')
+
 
 class ScfIteration(simulation.calculation.ScfIteration):
 
@@ -639,13 +643,6 @@ class ScfIteration(simulation.calculation.ScfIteration):
         -
         ''')
 
-    x_orca_last_energy_change_tolerance = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        -
-        ''')
-
     x_orca_last_energy_change = Quantity(
         type=np.dtype(np.float64),
         shape=[],
@@ -653,28 +650,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         -
         ''')
 
-    x_orca_last_max_density_change = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_orca_last_max_density_tolerance = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        -
-        ''')
-
     x_orca_last_rms_density_change = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_orca_last_rms_density_tolerance = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         description='''

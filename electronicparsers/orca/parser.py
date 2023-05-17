@@ -26,7 +26,7 @@ from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Electronic, Method, BasisSet, DFT, XCFunctional, Functional,
-    BasisSetContainer
+    BasisSetContainer, Scf,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -143,7 +143,7 @@ class OutParser(TextParser):
             Quantity(
                 name.lower().replace(' ', '_').replace('-', '_'),
                 rf'%s\s*\.+\s*({re_float})\s* Tolerance :\s*({re_float})' % name,
-                dtype=float, unit=ureg.hartree) for name in [
+                dtype=float) for name in [
                     'Last Energy change', 'Last MAX-Density change', 'Last RMS-Density change']]
 
         population_quantities = [
@@ -601,6 +601,30 @@ class OrcaParser:
     def parse_method(self, section):
         sec_method = self.archive.run[-1].m_create(Method)
 
+        trivial = [None] * 2
+        _native_tier_map = {
+            'SloppySCF': 3.0e-05, 'LooseSCF': 1.0e-05, 'NormalSCF': 1.0e-06,
+            'StrongSCF': 3.0e-07, 'TightSCF': 1.0e-08, 'VeryTightSCF': 1.0e-09,
+            'ExtremeSCF': 1.0e-14,
+        }  # https://sites.google.com/site/orcainputlibrary/numerical-precision
+        _native_tier_map = {k.lower(): v for k, v in _native_tier_map.items()}
+        sec_scf = Scf(
+            native_tier=self.out_parser.results['input_file']['tier'],
+        )
+        scf_convergence = self.out_parser.get('single_point', {}).\
+            get('self_consistent', {}).get('scf_convergence', {})
+        if threshold_energy_change := scf_convergence.get('last_energy_change',
+            trivial)[1]:
+                sec_scf.threshold_energy_change = threshold_energy_change * ureg.hartree  # TODO: extract this from the setup, so it is present even whan a calcultion does not finish properly
+        sec_scf.threshold_density_change = scf_convergence.get('last_rms_density_change',
+            trivial)[1]
+        sec_scf.x_orca_last_max_density_change = scf_convergence.get(
+            'last_max_density_change', trivial)[1]
+        if sec_scf.native_tier and not sec_scf.threshold_energy_change:
+            sec_scf.threshold_energy_change =\
+                _native_tier_map[sec_scf.native_tier.lower()] * ureg.hartree
+        sec_method.scf = sec_scf  # TODO check if the section is filled
+
         # Basis set
         # all values are set at the basis_set level
         # TODO fix metainfo so variables take lists
@@ -765,15 +789,6 @@ class OrcaParser:
             for energy in scf_iterations.get('energy', []):
                 sec_scf_iteration = sec_scc.m_create(ScfIteration)
                 sec_scf_iteration.energy = Energy(total=EnergyEntry(value=energy))
-
-            # why are tolerances in scf iteration
-            scf_convergence = self_consistent.get('scf_convergence', {})
-            for key, val in scf_convergence.items():
-                if val is not None:
-                    val = val.to('joule').magnitude
-                    setattr(sec_scf_iteration, 'x_orca_%s' % key, val[0])
-                    key = key.rstrip('_change') if 'density' in key else key
-                    setattr(sec_scf_iteration, 'x_orca_%s_tolerance' % key, val[1])
 
         # method-specific quantities
         for calculation_type in ['tddft', 'mp2', 'ci']:
