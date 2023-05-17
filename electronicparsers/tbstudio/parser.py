@@ -422,7 +422,8 @@ class TBStudioParser:
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
 
-        self.archive.m_create(Run)
+        sec_run = self.archive.m_create(Run)
+        sec_run.program = Program(name="TBStudio")
         self.tb_model = load_tbm(filepath)
 
         self.init_parser()
