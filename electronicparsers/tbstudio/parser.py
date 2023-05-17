@@ -351,9 +351,8 @@ class TBStudioParser:
         atoms = list(set(atoms))
         atoms.sort()
 
-        pbc = [dim != 0 for dim in self.tb_model['neighbor_unit_cells']]
+        pbc = [bool(dim != 0) for dim in self.tb_model['neighbor_unit_cells']]
         sec_atoms.periodic = pbc
-        sec_system.pbc = pbc
 
     def parse_method(self):
         """Populates run.method with the input methodological parameters.
@@ -409,7 +408,8 @@ class TBStudioParser:
         for n1, n2 in band_segments_points:
             sec_k_band_segment = sec_k_band.m_create(BandEnergies)
             sec_k_band_segment.kpoints = frac_k_points[n1: n2 + 1]
-            sec_k_band_segment.energies = tb_bands[n1: n2 + 1]
+            sec_k_band_segment.energies = np.array([tb_bands[n1: n2 + 1]])
+            print(sec_k_band_segment.energies.shape)
 
     def init_parser(self):
         """Initialize the parsers.
