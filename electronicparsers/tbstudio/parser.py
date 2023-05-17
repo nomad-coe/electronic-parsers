@@ -34,12 +34,13 @@ from nomad.datamodel.metainfo.simulation.method import (
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, BandStructure, BandEnergies, Energy, HoppingMatrix
 )
-from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
+from nomad.datamodel.metainfo.simulation.workflow import SinglePoint, SimulationWorkflow
+from nomad.datamodel.metainfo.workflow2 import TaskReference, Link
 import json
 import re
 
 
-def parse_int(string, default=0):
+def parse_int(string, default):
     val = default
     try:
         val = np.int64(string)
@@ -48,10 +49,10 @@ def parse_int(string, default=0):
     return val
 
 
-def parse_float(string, default=0.0):
+def parse_float(string, default):
     val = default
     try:
-        val = np.intfloat64(string)
+        val = np.float64(string)
     except:
         pass
     return val
@@ -78,9 +79,9 @@ def load_tbm(file):
     model['DFTNomadEntryID'] = tbm['DFTSource']['DFTNomadEntryID']
 
     # Load lattice vectors
-    model['a'] = [parse_float(tbm['vars']['a[0]']), parse_float(tbm['vars']['a[1]']), parse_float(tbm['vars']['a[2]'])]
-    model['b'] = [parse_float(tbm['vars']['b[0]']), parse_float(tbm['vars']['b[1]']), parse_float(tbm['vars']['b[2]'])]
-    model['c'] = [parse_float(tbm['vars']['c[0]']), parse_float(tbm['vars']['c[1]']), parse_float(tbm['vars']['c[2]'])]
+    model['a'] = [parse_float(tbm['vars']['a[0]'], 0), parse_float(tbm['vars']['a[1]'], 0), parse_float(tbm['vars']['a[2]'], 0)]
+    model['b'] = [parse_float(tbm['vars']['b[0]'], 0), parse_float(tbm['vars']['b[1]'], 0), parse_float(tbm['vars']['b[2]'], 0)]
+    model['c'] = [parse_float(tbm['vars']['c[0]'], 0), parse_float(tbm['vars']['c[1]'], 0), parse_float(tbm['vars']['c[2]'], 0)]
 
     # SOC
     model['isSOC'] = tbm['checks']['SOC[0]']
@@ -98,9 +99,9 @@ def load_tbm(file):
             break
     model['xyz_coords'] = xyz_coords
 
-    tb_l = parse_int(tbm['vars']['TBl[0]'])
-    tb_m = parse_int(tbm['vars']['TBm[0]'])
-    tb_n = parse_int(tbm['vars']['TBn[0]'])
+    tb_l = parse_int(tbm['vars']['TBl[0]'], 0)
+    tb_m = parse_int(tbm['vars']['TBm[0]'], 0)
+    tb_n = parse_int(tbm['vars']['TBn[0]'], 0)
 
     model['neighbor_unit_cells'] = [tb_l, tb_m, tb_n]
 
@@ -193,8 +194,8 @@ def load_tbm(file):
                 model['final_sk'][tbBond] = {}
         else:
             skIntegral = row[0]
-            initial = parse_float(row[1])
-            final = parse_float(row[2])
+            initial = parse_float(row[1], 0)
+            final = parse_float(row[2], 0)
             model['initial_sk'][tbBond][skIntegral] = initial
             model['final_sk'][tbBond][skIntegral] = final
 
@@ -213,8 +214,8 @@ def load_tbm(file):
                 model['final_overlap'][tbBond] = {}
         else:
             skIntegral = row[0]
-            initial = parse_float(row[1])
-            final = parse_float(row[2])
+            initial = parse_float(row[1], 0)
+            final = parse_float(row[2], 0)
             model['initial_overlap'][tbBond][skIntegral] = initial
             model['final_overlap'][tbBond][skIntegral] = final
 
@@ -333,23 +334,10 @@ class TBStudioParser:
         a = self.tb_model['a']
         b = self.tb_model['b']
         c = self.tb_model['c']
-        sec_atoms.lattice_vectors = [a, b, c]
+        sec_atoms.lattice_vectors = [a, b, c] * ureg.angstrom
 
-        pi = np.arccos(-1.0)
-        vol = np.dot(a, np.cross(b, c))
-        astar = 2 * pi * np.cross(b, c) / vol
-        bstar = 2 * pi * np.cross(c, a) / vol
-        cstar = 2 * pi * np.cross(a, b) / vol
-        sec_atoms.lattice_vectors_reciprocal = [astar, bstar, cstar]
-
-        sec_atoms.positions = self.tb_model['xyz_coords']
+        sec_atoms.positions = self.tb_model['xyz_coords'] * ureg.angstrom
         sec_atoms.species = self.tb_model['kinds']
-
-        atoms = get_symbols(self.tb_model['kinds'])
-        sec_atoms.labels = atoms
-
-        atoms = list(set(atoms))
-        atoms.sort()
 
         pbc = [bool(dim != 0) for dim in self.tb_model['neighbor_unit_cells']]
         sec_atoms.periodic = pbc
@@ -402,19 +390,23 @@ class TBStudioParser:
 
         sec_scc = sec_run.calculation[-1]
 
-        sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
-        sec_k_band.energy_fermi = self.tb_model['fermi_level']
+        sec_k_band = BandStructure()
+        sec_k_band.energy_fermi = self.tb_model['fermi_level'] * ureg.eV
 
         for n1, n2 in band_segments_points:
             sec_k_band_segment = sec_k_band.m_create(BandEnergies)
             sec_k_band_segment.kpoints = frac_k_points[n1: n2 + 1]
-            sec_k_band_segment.energies = np.array([tb_bands[n1: n2 + 1]])
-            print(sec_k_band_segment.energies.shape)
+            sec_k_band_segment.energies = np.array([tb_bands[n1: n2 + 1]]) * ureg.eV
 
-    def init_parser(self):
-        """Initialize the parsers.
-        """
-        pass
+        sec_scc.band_structure_electronic.append(sec_k_band)
+
+    def get_mainfile_keys(self, filepath):
+        tb_model = load_tbm(filepath)
+        dft_nomad_entry_id = tb_model['DFTNomadEntryID']
+        if dft_nomad_entry_id is not None and dft_nomad_entry_id != '':
+            return ['TB_workflow']
+        else:
+            return True
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
@@ -425,12 +417,32 @@ class TBStudioParser:
         sec_run = self.archive.m_create(Run)
         sec_run.program = Program(name="TBStudio")
         self.tb_model = load_tbm(filepath)
-
-        self.init_parser()
+        dft_nomad_entry_id = self.tb_model['DFTNomadEntryID']
 
         self.parse_system()
         self.parse_method()
         self.parse_scc()
 
         workflow = SinglePoint()
+        workflow.name = "Tight Binding Calculation"
         self.archive.workflow2 = workflow
+
+        if dft_nomad_entry_id is not None and dft_nomad_entry_id != '':
+            dft_archive = None
+            try:
+                dft_archive = archive.m_context.resolve_archive('/entries/{}/archive'.format(dft_nomad_entry_id))
+            except:
+                pass
+            if dft_archive:
+                if self._child_archives:
+                    tb_workflow = SimulationWorkflow()
+                    tb_workflow.name = "Tight Binding"
+                    self._child_archives['TB_workflow'].workflow2 = tb_workflow
+                    tb_workflow.tasks.append(TaskReference(task=dft_archive.workflow2))
+                    tb_workflow.tasks.append(TaskReference(task=self.archive.workflow2))
+
+                    workflow.inputs.append(Link(name='Atomic structure', section=dft_archive.run[0].system[0]))
+                    workflow.inputs.append(
+                        Link(name='DFT band structure', section=dft_archive.run[0].calculation[0]))
+                    workflow.outputs.append(
+                        Link(name='TB band structure', section=archive.run[0].calculation[0]))
