@@ -43,8 +43,8 @@ from ..utils import get_files
 from nomad.parsing.parser import to_hdf5
 # For automatic workflows
 from ..utils import BeyondDFTWorkflowsParser
-from nomad.processing.data import Entry
-from nomad.files import UploadFiles
+from nomad.search import search
+from nomad.app.v1.models import MetadataRequired
 
 
 re_n = r'[\n\r]'
@@ -451,18 +451,23 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         # link it with the corresponding w2dynamics data
         wannier90_files = get_files('*.wout', self.filepath, self.mainfile, deep=False)
         if len(wannier90_files) == 1:
-            wannier90_path = wannier90_files[-1]
+            wannier90_path = wannier90_files[-1].split('raw/')[-1]
             try:
-                upload_id = archive.metadata.upload_id
-                upload_path = UploadFiles.get(upload_id)
-                entry_ids = [i.entry_id for i in Entry.objects(upload_id=upload_id)]
-                if len(entry_ids) > 1:
-                    for entry_id in entry_ids:
+                upload_id = self.archive.metadata.upload_id
+                search_ids = search(
+                    owner='visible',
+                    user_id=self.archive.metadata.main_author.user_id,
+                    query={'upload_id': upload_id},
+                    required=MetadataRequired(include=['entry_id', 'mainfile'])
+                ).data
+                metadata = [[sid['entry_id'], sid['mainfile']] for sid in search_ids]
+                if len(metadata) > 1:
+                    for entry_id, mainfile in metadata:
                         entry_archive = archive.m_context.load_archive(entry_id, upload_id, None)
-                        mainfile = f'{upload_path}/raw/{entry_archive.metadata.mainfile}'
                         if wannier90_path == mainfile:  # TODO add condition on system section or is this enough? System is resolved anyways from wannier90_path
                             wannier90_archive = entry_archive
                             dmft_workflow_archive = self._child_archives.get('DMFT_workflow')
                             self.parse_dmft_workflow(wannier90_archive, dmft_workflow_archive)
+                            break
             except Exception:
                 self.logger.warning('Could not resolve the automatic workflow for w2dynamics.')
