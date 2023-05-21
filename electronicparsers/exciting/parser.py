@@ -26,7 +26,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextP
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional, Scf, BasisSet, KMesh,
-    FrequencyMesh, Screening, GW, Photon, BSE, CoreHole, BasisSetContainer, AtomParameters,
+    FrequencyMesh, Screening, GW, Photon, BSE, CoreHole, BasisSetContainer,
     OrbitalAPW
 )
 from nomad.datamodel.metainfo.simulation.system import (
@@ -1548,7 +1548,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_k_band_segment.value = band_energies[nb] + energy_fermi
 
     def _parse_species(self, sec_method):
-        bool_mapping = {'true': True, 'false': False}
         type_order_mapping = {'APW': 1, 'LAP': 2}
 
         self.species_parser.parse()

@@ -299,6 +299,12 @@ class OutcarTextParser(TextParser):
                     positions.append(position.groups())
             return np.array(positions, dtype=float)
 
+        def str_to_eigenvalues(val_in):
+            val = []
+            for line in val_in.strip().splitlines():
+                val.extend(['nan' if '*' in v else v for v in line.split()])
+            return np.array(val, np.float64)
+
         scf_iteration = [
             Quantity(
                 'energy_total', r'free energy\s*TOTEN\s*=\s*([\d\.\-]+)\s*eV',
@@ -360,8 +366,9 @@ class OutcarTextParser(TextParser):
                 'fermi_energy', r'E\-fermi :\s*([\d\.]+)', dtype=str, repeats=False),
             Quantity(
                 'eigenvalues',
-                r'band No\.\s*band energies\s*occupation\s*([\d\.\s\-]+?)(?:k\-point|spin|\-{10})',
-                repeats=True, dtype=float),
+                r'band No\.\s*band energies\s*occupation\s*([\d\.\s\-\*]+?)(?:k\-point|spin|\-{10})',
+                repeats=True, dtype=float,
+                str_operation=str_to_eigenvalues),
             Quantity(
                 'convergence',
                 r'(aborting loop because EDIFF is reached)')]
@@ -606,11 +613,10 @@ class OutcarContentParser(ContentParser):
     def get_valence_basis_set(self) -> list[BasisSet]:
         sec_bases: list[BasisSet] = []
         for tag in ('ENCUT', 'ENAUG'):
-            cutoff_value = self.parser.get('parameters').get(tag)
-            sec_basis = BasisSet(
-                type='plane waves',
-                cutoff=cutoff_value * ureg.eV,  # based on examples
-            )
+            cutoff_value = self.parser.get('parameters', {}).get(tag)
+            sec_basis = BasisSet(type='plane waves')
+            if cutoff_value:
+                sec_basis.cutoff = cutoff_value * ureg.eV  # based on examples
             if tag == 'ENCUT':
                 sec_basis.scope = ['valence']
             elif tag == 'ENAUG':
@@ -1373,7 +1379,7 @@ class VASPParser():
                     sec_hubb.orbital = orbital
                     sec_hubb.u = float(parsed_file.get('LDAUU')[i]) * ureg.eV
                     sec_hubb.j = float(parsed_file.get('LDAUJ')[i]) * ureg.eV
-                    sec_hubb.double_counting_correction = self.hubbard_dc_corrections[parsed_file.get('LDAUTYPE')]
+                    sec_hubb.double_counting_correction = self.hubbard_dc_corrections.get(parsed_file.get('LDAUTYPE'))
                     sec_hubb.x_vasp_projection_type = 'on-site'
             atom_counts[element[i]] += 1
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
@@ -1709,7 +1715,7 @@ class VASPParser():
                     # TODO remove temporary fix
                     if hasattr(Density, 'value_hdf5'):
                         from nomad.parsing.parser import to_hdf5
-                        filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), f'{os.path.basename(self.filepath)}.archive.hdf5')
+                        filename = os.path.join(os.path.dirname(self.filepath.split('/raw/')[-1]), f'{os.path.basename(self.filepath)}.archive.hdf5')
                         farg = 'r+b' if os.path.isfile(os.path.join(os.path.dirname(self.filepath), filename)) else 'wb'
                         sec_density = sec_scc.m_create(Density)
                         if self.archive.m_context:

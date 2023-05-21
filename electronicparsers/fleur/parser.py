@@ -636,7 +636,7 @@ class FleurParser:
         if input is not None:
             for key in ['parameters', 'input_parameters']:
                 setattr(sec_method, f'x_fleur_{key}', {
-                    key: list([float(v) for v in val]) if isinstance(
+                    key: list(float(v) for v in val) if isinstance(
                         val, np.ndarray) else val for key, val in input.get(key, {}).get('key_val', [])})
         if not sec_method.x_fleur_parameters:
             sec_method.x_fleur_parameters = {}

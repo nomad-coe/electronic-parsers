@@ -30,8 +30,7 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser, TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, Electronic, Smearing, DFT, XCFunctional, Functional,
-    BasisSetAtomCentered, BasisSetContainer,)
+    Method, Electronic, Smearing, DFT, XCFunctional, Functional)
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry)

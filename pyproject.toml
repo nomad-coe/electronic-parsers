@@ -22,7 +22,7 @@ homepage = "https://github.com/nomad-coe/electronic-parsers"
 
 [project.optional-dependencies]
 tests = [
-    'mypy==0.750',
+    'mypy==1.0.1',
     'pylint==2.3.1',
     'pylint_plugin_utils==0.5',
     'pycodestyle==2.8.0',

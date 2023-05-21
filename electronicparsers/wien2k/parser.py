@@ -837,7 +837,7 @@ class Wien2kParser:
                         for orb in mt['orbital']:
                             if l == orb['l']:
                                 e_param = orb.get('e_param', e_param)
-                                update = False if not orb.get('e_diff', 0) else True
+                                update = orb.get('e_diff', 0) is not None
                                 apw_type = orb.get('type', apw_type)
                                 if last_orbital_type == apw_type:
                                     orbital.energy_parameter = e_param
