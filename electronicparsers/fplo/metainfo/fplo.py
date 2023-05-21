@@ -123,48 +123,48 @@ class Method(simulation.method.Method):
         ''')
 
 
-class HubbardModel(simulation.method.HubbardModel):
+# class HubbardModel(simulation.method.HubbardModel):
 
-    m_def = Section(validate=False, extends_base_section=True)
+#     m_def = Section(validate=False, extends_base_section=True)
 
-    x_fplo_dft_plus_u_orbital_element = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        FPLO: Atom/Orbital dependent DFT+U property: element
-        ''')
+#     x_fplo_dft_plus_u_orbital_element = Quantity(
+#         type=str,
+#         shape=[],
+#         description='''
+#         FPLO: Atom/Orbital dependent DFT+U property: element
+#         ''')
 
-    x_fplo_dft_plus_u_orbital_species = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        FPLO: Atom/Orbital dependent DFT+U property: species index
-        ''')
+#     x_fplo_dft_plus_u_orbital_species = Quantity(
+#         type=np.dtype(np.int32),
+#         shape=[],
+#         description='''
+#         FPLO: Atom/Orbital dependent DFT+U property: species index
+#         ''')
 
-    x_fplo_dft_plus_u_orbital_F0 = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        FPLO: Atom/Orbital dependent DFT+U property: value F0
-        ''')
+#     x_fplo_dft_plus_u_orbital_F0 = Quantity(
+#         type=np.dtype(np.float64),
+#         shape=[],
+#         description='''
+#         FPLO: Atom/Orbital dependent DFT+U property: value F0
+#         ''')
 
-    x_fplo_dft_plus_u_orbital_F2 = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        FPLO: Atom/Orbital dependent DFT+U property: value F2
-        ''')
+#     x_fplo_dft_plus_u_orbital_F2 = Quantity(
+#         type=np.dtype(np.float64),
+#         shape=[],
+#         description='''
+#         FPLO: Atom/Orbital dependent DFT+U property: value F2
+#         ''')
 
-    x_fplo_dft_plus_u_orbital_F4 = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        FPLO: Atom/Orbital dependent DFT+U property: value F4
-        ''')
+#     x_fplo_dft_plus_u_orbital_F4 = Quantity(
+#         type=np.dtype(np.float64),
+#         shape=[],
+#         description='''
+#         FPLO: Atom/Orbital dependent DFT+U property: value F4
+#         ''')
 
-    x_fplo_dft_plus_u_orbital_F6 = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        FPLO: Atom/Orbital dependent DFT+U property: value F6
-        ''')
+#     x_fplo_dft_plus_u_orbital_F6 = Quantity(
+#         type=np.dtype(np.float64),
+#         shape=[],
+#         description='''
+#         FPLO: Atom/Orbital dependent DFT+U property: value F6
+#         ''')

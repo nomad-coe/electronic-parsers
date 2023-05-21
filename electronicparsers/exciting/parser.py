@@ -54,7 +54,7 @@ from .metainfo.exciting import (
 from ..utils import (
     get_files, BeyondDFTWorkflowsParser
 )
-from typing import Any, Union
+from typing import Any
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -120,12 +120,13 @@ class SpeciesParser(TextParser):
                 sub_parser=TextParser(quantities=[q_wf, q_wf_l]), repeats=True),
         ]
 
-    def _convert_key_val(self, key_vals: list[list[str]]) -> Union[list[list[str]], dict[str, str]]:
+    def _convert_key_val(self, key_vals):
         try:
             return {key_val[0]: key_val[1] for key_val in key_vals}
         except IndexError:
             return key_vals
 
+    # TODO not sure why this is necessary but in any case replace this with to_dict()
     def _run_tree(self, parser: TextParser) -> dict[str, Any]:
         items: list = parser._results
         standin: bool = False
