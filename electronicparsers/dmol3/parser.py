@@ -338,7 +338,7 @@ class Dmol3Parser:
                 type='atom-centered orbitals',
                 scope=['wavefunction'],
                 basis_set=[
-                        BasisSet(
+                    BasisSet(
                         type='numeric AOs',
                         scope=['full-electron'],
                     )

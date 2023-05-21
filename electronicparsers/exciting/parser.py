@@ -74,12 +74,15 @@ class LinengyParser(TextParser):
         ]
         elem = Quantity('element', r'\(([A-Z][a-z]?)\)')
 
-        apw_line = Quantity('apw_line', r'\s+(l\s=.+)\n', repeats=True,
+        apw_line = Quantity(
+            'apw_line', r'\s+(l\s=.+)\n', repeats=True,
             sub_parser=TextParser(quantities=line_quantities))
-        lo_line = Quantity('lo_line', r'\s+(l\.o\.\s=.+)\n', repeats=True,
+        lo_line = Quantity(
+            'lo_line', r'\s+(l\.o\.\s=.+)\n', repeats=True,
             sub_parser=TextParser(quantities=line_quantities))
-        self._quantities = [Quantity('species_block', r'(Species[\s\S]+)', repeats=True,
-             sub_parser=TextParser(quantities=[elem, apw_line, lo_line,]))]
+        self._quantities = [Quantity(
+            'species_block', r'(Species[\s\S]+)', repeats=True,
+            sub_parser=TextParser(quantities=[elem, apw_line, lo_line]))]
 
 
 class SpeciesParser(TextParser):
@@ -92,26 +95,32 @@ class SpeciesParser(TextParser):
         re_tags = r'([\w\s\.\-\"\=]+)'
         q_key_val = Quantity(self.flag, r'([a-zA-Z]+)\="([\w\.\-]+)"', repeats=True)
         q_wf_l = Quantity('l', r'l="(\d)"')
-        q_wf = Quantity('wf', r'<wf\s([\s\w\=\.\-\"]+)/>',
+        q_wf = Quantity(
+            'wf', r'<wf\s([\s\w\=\.\-\"]+)/>',
             sub_parser=TextParser(quantities=[q_key_val]), repeats=True)
 
         self._quantities = [
-            Quantity('sp', r'<sp\s([\s\S]+)</sp>',  # TODO: check if a species file can contain multiple species
-                sub_parser=TextParser(quantities=[q_key_val,])),
-            Quantity('muffinTin', rf'<muffinTin{re_tags}/?>',
+            Quantity(
+                'sp', r'<sp\s([\s\S]+)</sp>',  # TODO: check if a species file can contain multiple species
                 sub_parser=TextParser(quantities=[q_key_val])),
-            Quantity('atomicState', rf'<atomicState{re_tags}/?>',
+            Quantity(
+                'muffinTin', rf'<muffinTin{re_tags}/?>',
+                sub_parser=TextParser(quantities=[q_key_val])),
+            Quantity(
+                'atomicState', rf'<atomicState{re_tags}/?>',
                 sub_parser=TextParser(quantities=[q_key_val]), repeats=True),
-            Quantity('default', r'(<default[\s\S]+(</default>|/>))',
-                sub_parser=TextParser(quantities=[q_wf, q_key_val,])),
-            Quantity('custom', r'(<custom[\s\S]+?</custom>)',
-                sub_parser=TextParser(quantities=[q_wf, q_key_val,]), repeats=True),
-            Quantity('lo', r'(<lo[\s\S]+?</lo>)',
-                sub_parser=TextParser(quantities=[q_wf, q_wf_l,]), repeats=True),
+            Quantity(
+                'default', r'(<default[\s\S]+(</default>|/>))',
+                sub_parser=TextParser(quantities=[q_wf, q_key_val])),
+            Quantity(
+                'custom', r'(<custom[\s\S]+?</custom>)',
+                sub_parser=TextParser(quantities=[q_wf, q_key_val]), repeats=True),
+            Quantity(
+                'lo', r'(<lo[\s\S]+?</lo>)',
+                sub_parser=TextParser(quantities=[q_wf, q_wf_l]), repeats=True),
         ]
 
-    def _convert_key_val(self,
-        key_vals: list[list[str]]) -> Union[list[list[str]], dict[str, str]]:
+    def _convert_key_val(self, key_vals: list[list[str]]) -> Union[list[list[str]], dict[str, str]]:
         try:
             return {key_val[0]: key_val[1] for key_val in key_vals}
         except IndexError:
@@ -1310,8 +1319,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         if target[1:]:
             filepath = '%s.%s' % (filepath, target[1])
         if fuzzy:
-            filepaths: list[str] = [file for file in os.listdir(self.info_parser.maindir)
-                                   if re.match(filename, file)]
+            filepaths: list[str] = [
+                file for file in os.listdir(self.info_parser.maindir) if re.match(filename, file)]
             has_access = [os.access(filepath, os.F_OK) for filepath in filepaths]
             if all(has_access):  # this is more restrictive, but ensures that one can operate the files
                 return filepaths
@@ -1319,7 +1328,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             filepath = os.path.join(self.info_parser.maindir, filepath)
             if os.path.isfile(filepath) and os.access(filepath, os.F_OK):
                 return [filepath]
-        return ''
+        return []
 
     def _parse_dos(self, sec_scc):
         if self.dos_parser.get('totaldos', None) is None:
@@ -1559,24 +1568,24 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         radial_spacing = radius / radialmeshPoints
         bs_val = BasisSet(
             scope=['muffin-tin'],
-            radius = radius * ureg.bohr,
+            radius=radius * ureg.bohr,
             radius_lin_spacing=radial_spacing * ureg.bohr,
         )
         lo_samplings = {lo['l']: lo['wf'] for lo in species_data.get('lo', [])}
         lmax: int = self.input_xml_parser.get('xs/lmaxapw', 10)
-        for l in range(lmax + 1):
+        for l_n in range(lmax + 1):
             orbital_type = species_data['default']['type']
             energy_parameter = species_data['default']['trialEnergy']
             if orbital_type is None:
                 orbital_type = 'lapw'
             for custom_settings in species_data.get('custom', []):
-                if custom_settings['l'] == l:
+                if custom_settings['l'] == l_n:
                     orbital_type = custom_settings['type']
                     energy_parameter = custom_settings['trialEnergy']
             orbital_type = orbital_type.upper()
             for order in range(type_order_mapping[orbital_type[:3]]):
                 orbital = OrbitalAPW(
-                    l_quantum_number=l,
+                    l_quantum_number=l_n,
                     type=orbital_type,
                     order=order,
                     energy_parameter=energy_parameter * ureg.hartree,
@@ -1586,13 +1595,13 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
             # Add lo's
             max_order = 2
-            if orbital_type[-2] == 'LO' and l in lo_samplings.keys():
+            if orbital_type[-2] == 'LO' and l_n in lo_samplings.keys():
                 energy_parameters = [energy_parameter for _ in range(max_order)]
-                for wf in lo_samplings[l]:
+                for wf in lo_samplings[l_n]:
                     energy_parameters = [wf['trialEnergy'] for _ in range(wf['matchingOrder'], max_order)]
                     for order, energy_parameter in enumerate(energy_parameters):
                         orbital = OrbitalAPW(
-                            l_quantum_number=l,
+                            l_quantum_number=l_n,
                             type='LO',
                             order=order,
                             energy_parameter=energy_parameter * ureg.hartree,
@@ -1614,7 +1623,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     )
                 ]
             sec_method.electrons_representation[0].basis_set.append(bs_val)
-
 
     def parse_file(self, name, section, filepath=None):
         # TODO add support for info.xml, wannier.out

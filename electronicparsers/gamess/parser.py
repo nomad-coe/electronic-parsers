@@ -612,7 +612,7 @@ class GamessParser:
             BasisSetContainer(
                 type='atom-centered orbitals',
                 scope=['wavefunction'],
-                basis_set = [
+                basis_set=[
                     BasisSet(type='gaussians',)
                 ]
             )

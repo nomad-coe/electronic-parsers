@@ -106,7 +106,6 @@ class NCParser(FileParser):
 
         atoms.set_pbc(True)
 
-
         lattice = re.search(r'\nlattice = (\w+) *\((.+)\)', data)
         lattice, parameters = lattice.groups() if lattice else ('', '')
         parameters = [self.resolve_unit(p) for p in re.findall(rf'({re_f} *\* *\w+)', parameters)]

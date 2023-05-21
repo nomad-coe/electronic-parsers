@@ -998,7 +998,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         if ecut is not None:
             ecut = ecut * ureg.hartree
         sec_method.electrons_representation.append(
-                BasisSetContainer(
+            BasisSetContainer(
                 type='plane waves',
                 scope=['wavefunction'],
                 basis_set=[

@@ -603,13 +603,11 @@ class OrcaParser:
         # all values are set at the basis_set level
         # TODO fix metainfo so variables take lists
         sec_basis_sets: list[BasisSet] = []
-        for kind, kind_map in {'basis_set': 'wavefunction',
-            'auxiliary_basis_set': 'auxiliary'}.items():
+        for kind, kind_map in [('basis_set', 'wavefunction'), ('auxiliary_basis_set', 'auxiliary')]:
             basis_set = section.get(kind)
             if basis_set is None:
                 continue
-            exctraction_keys = ['basis_set', 'basis_set_atom_labels',
-                'basis_set_contracted']
+            exctraction_keys = ['basis_set', 'basis_set_atom_labels', 'basis_set_contracted']
             for key in exctraction_keys:
                 vals = basis_set.get(key, [])
                 for bs_index, val in enumerate(vals):

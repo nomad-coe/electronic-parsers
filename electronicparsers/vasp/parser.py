@@ -117,7 +117,7 @@ class PotParser(TextParser):
             Quantity(
                 'pseudopotential', r'(VRHFIN\s+=[\s\S]+?LMMAX\s=\s+\d)', repeats=True,  # recognize where a header starts
                 sub_parser=TextParser(quantities=_pseudopotential)
-                ),
+            )
         ]
 
 
@@ -254,10 +254,8 @@ class ContentParser:
         pps_out: list[dict[str, Any]] = []
         for pp in pps:
             pps_out.append({'title': pp['title']})
-            pps_out[-1]['flag'] = _to_dict(pp['flag'],
-                transform=lambda x: bool_mapping[x])
-            pps_out[-1]['number'] = _to_dict(pp['number'],
-                transform=lambda x: float(x))
+            pps_out[-1]['flag'] = _to_dict(pp['flag'], transform=lambda x: bool_mapping[x])
+            pps_out[-1]['number'] = _to_dict(pp['number'], transform=lambda x: float(x))
         return pps_out
 
 
