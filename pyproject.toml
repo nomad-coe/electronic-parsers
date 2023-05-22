@@ -24,13 +24,13 @@ homepage = "https://github.com/nomad-coe/electronic-parsers"
 [project.optional-dependencies]
 tests = [
     'mypy==1.0.1',
-    'pylint==2.3.1',
+    'pylint==2.13.9',
     'pylint_plugin_utils==0.5',
     'pycodestyle==2.8.0',
     'pytest==3.10.0',
     'pytest-timeout==1.4.2',
     'pytest-cov==2.7.1',
-    'astroid==2.5.1'
+    'astroid==2.11.7'
 ]
 
 [tool.setuptools.packages.find]

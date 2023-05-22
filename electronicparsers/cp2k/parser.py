@@ -57,13 +57,6 @@ from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings, x_cp2k_sec
     x_cp2k_section_geometry_optimization_step
 
 
-try:
-    import mdtraj
-except ImportError:
-    logging.getLogger(__name__).warning('Required MDTraj module not found.')
-    mdtraj = False
-
-
 units_map = {
     'hbar': ureg.hbar,
     'hartree': ureg.hartree,
@@ -204,23 +197,28 @@ class TrajParser(FileParser):
                     result = [traj.positions for traj in self._xyz_parser.get('trajectory', [])]
                     labels = [traj.labels for traj in self._xyz_parser.get('trajectory', [])]
 
-            if result is None and mdtraj:
-                reader = None
-                if self.format in ['xyz', 'xmol', 'atomic']:
-                    reader = mdtraj.formats.XYZTrajectoryFile(self.mainfile)
-                elif self.format == 'dcd':
-                    reader = mdtraj.formats.DCDTrajectoryFile(self.mainfile)
-                elif self.format == 'pdb':
-                    reader = mdtraj.formats.PDBTrajectoryFile(self.mainfile)
-                else:
-                    self.logger.error('Unsupported trajectory format.')
-
-                if reader is not None:
-                    try:
+            if result is None:
+                try:
+                    import mdtraj
+                    reader = None
+                    if self.format in ['xyz', 'xmol', 'atomic']:
+                        reader = mdtraj.formats.XYZTrajectoryFile(self.mainfile)
+                    elif self.format == 'dcd':
+                        reader = mdtraj.formats.DCDTrajectoryFile(self.mainfile)
+                    elif self.format == 'pdb':
+                        reader = mdtraj.formats.PDBTrajectoryFile(self.mainfile)
+                    else:
+                        self.logger.error('Unsupported trajectory format.')
+                    if reader is not None:
                         # we do not stream to simplify archive writing
                         result = reader.read()
-                    except Exception:
-                        pass
+                except ImportError:
+                    self.logger.warning('Required MDTraj module not found.')
+                except Exception:
+                    self.logger.warning('Error loaging trajectory file.')
+
+            if result is None:
+                return self._file_handler
 
             result = result * self.units if self.units is not None else result
 
