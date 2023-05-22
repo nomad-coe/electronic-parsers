@@ -258,7 +258,7 @@ class ContentParser:
             pps_out[-1]['number'] = _to_dict(pp['number'], transform=lambda x: float(x))
         return pps_out
 
-    def _get_tier(self, raw_data: Union(str, None), type='native') -> Union(str, None):
+    def _get_tier(self, raw_data: Union[str | None], type='native') -> Union[str | None]:
         '''Extract the tier from a string, and return it in a standardized format.
         - `raw_data`: the string to extract the tier from
         - `type`: the standardized output format, either `native` to VASP,
@@ -637,7 +637,7 @@ class OutcarContentParser(ContentParser):
             sec_bases.append(sec_basis)
         return sec_bases
 
-    def get_tier(self, type='native') -> Union(str, None):
+    def get_tier(self, type='native') -> Union[str | None]:
         return super()._get_tier(self.parser.get('parameters', {}).get('PREC'), type=type)
 
     def get_energies(self, n_calc, n_scf):
@@ -1143,7 +1143,7 @@ class RunContentParser(ContentParser):
                 sec_bases.append(sec_basis)
         return sec_bases
 
-    def get_tier(self, type='native') -> Union(str, None):
+    def get_tier(self, type='native') -> Union[str | None]:
         return super()._get_tier(self._get_key_values(
             '/modeling[0]/parameters/separator[@name="electronic"]/i[@name="PREC"]')
             ['PREC'][0],
