@@ -2639,7 +2639,7 @@ class QuantumEspressoParser:
                     BasisSetContainer(
                         type='plane waves',
                         scope=[scope],
-                        basis_set = [
+                        basis_set=[
                             BasisSet(
                                 type='plane waves',
                                 scope=['valence'],

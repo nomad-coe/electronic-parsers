@@ -198,7 +198,7 @@ class OutParser(TextParser):
                 'psinc',
                 r'PSINC grid sizes([\s\S]+)=+',
                 sub_parser=TextParser(quantities=[
-                        Quantity(
+                    Quantity(
                         'cutoff',
                         rf'KE cutoff=\s+({re_f})Eh',
                         dtype=np.float64, unit=ureg.hartree,
@@ -417,7 +417,7 @@ class OnetepParser:
                     ),
                 ],
             )
-            sec_method.electrons_representation=[sec_em,]
+            sec_method.electrons_representation = [sec_em]
 
         if self.out_parser.geometry_optimization is not None:
             if self.out_parser.geometry_optimization.single_point is not None:

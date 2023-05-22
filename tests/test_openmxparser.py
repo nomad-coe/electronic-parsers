@@ -79,7 +79,7 @@ def test_HfO2(parser):
     assert method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
 
     system = run.system[0]
-    assert all([a == b for a, b in zip(system.atoms.periodic, [True, True, True])])
+    assert system.atoms.periodic == [True, True, True]
     assert system.atoms.lattice_vectors[0][0].magnitude == approx(A_to_m(5.1156000))
     assert system.atoms.lattice_vectors[2][2].magnitude == approx(A_to_m(5.2269843))
     assert len(system.atoms.positions) == 12
@@ -130,7 +130,7 @@ def test_AlN(parser):
 
     assert len(run.system) == 5
     system = run.system[0]
-    assert all([a == b for a, b in zip(system.atoms.periodic, [True, True, True])])
+    assert system.atoms.periodic == [True, True, True]
     assert system.atoms.lattice_vectors[0][0].magnitude == approx(A_to_m(3.10997))
     assert system.atoms.lattice_vectors[1][0].magnitude == approx(A_to_m(-1.55499))
     assert len(system.atoms.positions) == 4
@@ -212,7 +212,7 @@ def test_C2N2(parser):
     eigenvalues = run.calculation[-1].eigenvalues[0]
     assert eigenvalues.n_kpoints == 1
     assert np.shape(eigenvalues.kpoints) == (1, 3)
-    assert all([a == pytest.approx(b) for a, b in zip(eigenvalues.kpoints[0], [0, 0, 0])])
+    assert (eigenvalues.kpoints[0] == [0, 0, 0]).all()
     assert np.shape(eigenvalues.energies) == (1, 1, 64)
     assert eigenvalues.energies[0, 0, 0].magnitude == approx(Ha_to_J(-0.67352892393426))
     assert eigenvalues.energies[0, 0, 63].magnitude == approx(Ha_to_J(7.29352095903235))

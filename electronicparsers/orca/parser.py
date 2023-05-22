@@ -26,7 +26,7 @@ from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Electronic, Method, BasisSet, DFT, XCFunctional, Functional,
-    BasisSetContainer, BasisSetAtomCentered,
+    BasisSetContainer
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -602,18 +602,16 @@ class OrcaParser:
         # Basis set
         # all values are set at the basis_set level
         # TODO fix metainfo so variables take lists
-        sec_basis_sets: list[BasisSet] = []
-        for kind, kind_map in {'basis_set': 'wavefunction',
-            'auxiliary_basis_set': 'auxiliary'}.items():
+        sec_basis_sets = []
+        for kind, kind_map in [('basis_set', 'wavefunction'), ('auxiliary_basis_set', 'auxiliary')]:
             basis_set = section.get(kind)
             if basis_set is None:
                 continue
-            exctraction_keys = ['basis_set', 'basis_set_atom_labels',
-                'basis_set_contracted']
+            exctraction_keys = ['basis_set', 'basis_set_atom_labels', 'basis_set_contracted']
             for key in exctraction_keys:
                 vals = basis_set.get(key, [])
                 for bs_index, val in enumerate(vals):
-                    prefix = '' if key == 'basis_set_atom_labels' else kind.split('basis_set')[0]
+                    prefix = '' if key == 'basis_set_atom_labels' else kind.split('basis_set', maxsplit=1)[0]
                     metainfo_name = 'x_orca_%s%s' % (prefix, key)
                     # Note: this assumes that each `extraction_key` follows the same order. Not my assumption
                     if bs_index >= len(sec_basis_sets):

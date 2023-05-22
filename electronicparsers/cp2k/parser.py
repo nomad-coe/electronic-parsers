@@ -1260,9 +1260,9 @@ class CP2KParser:
     def _parse_basis_set(self) -> list[BasisSet]:
         '''Scopes are based on https://10.1016/j.cpc.2004.12.014'''
         bs_gauss = BasisSet(
-                scope=['kinetic energy', 'electron-core interaction'],
-                type='gaussians',
-            )
+            scope=['kinetic energy', 'electron-core interaction'],
+            type='gaussians',
+        )
         atoms = self.out_parser.get(
             self._calculation_type, {}).get('atomic_kind_information', {}).get('atom', [])
         for atom in atoms:
@@ -1276,16 +1276,14 @@ class CP2KParser:
             bs_pw = BasisSet(
                 scope=['Hartree energy', 'electron-electron interaction'],
                 type='plane waves',
-                cutoff=self.settings.get('qs', {}).\
-                    get('planewave_cutoff', None) * ureg.hartree,
+                cutoff=self.settings.get('qs', {}).get('planewave_cutoff', None) * ureg.hartree,
             )
             basis_sets = [bs_pw, bs_gauss]
         else:
             bs_pw = BasisSet(
                 scope=['valence'],
                 type='plane waves',
-                cutoff=self.settings.get('qs', {}).\
-                    get('planewave_cutoff', None) * ureg.hartree,
+                cutoff=self.settings.get('qs', {}).get('planewave_cutoff', None) * ureg.hartree,
             )
             basis_sets = [bs_pw]
         return basis_sets

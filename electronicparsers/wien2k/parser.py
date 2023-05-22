@@ -41,7 +41,6 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 )
 from nomad.datamodel.metainfo.workflow import Workflow
 from .metainfo.wien2k import x_wien2k_section_equiv_atoms
-from typing import Any
 
 
 class In0Parser(TextParser):
@@ -62,7 +61,7 @@ class In1Parser(FileParser):
 
     def parse(self):
         self._results = {'species': []}
-        num_orbitals: int = 0
+        num_orbitals = 0
         with self.mainfile_obj as f:
             for line_id, line in enumerate(f):
                 if line_id == 0:
@@ -809,35 +808,35 @@ class Wien2kParser:
             sec_k_mesh.weights = kpoints[1]
 
         # basis
-        #sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
         if self.in1_parser.mainfile:
             self.in1_parser.parse()
             if self.in1_parser._results:
                 type_mapping = ('LAPW', 'APW', 'HDLO', 'LO')
-                source: dict(str, Any) = self.in1_parser._results
+                source = self.in1_parser._results
                 em = BasisSetContainer(scope=['wavefunction'])
                 em.basis_set.append(
                     BasisSet(
-                        scope = ['intersitial', 'valence'],
-                        type = 'plane waves',
+                        scope=['intersitial', 'valence'],
+                        type='plane waves',
                         cutoff_fractional=source.get('rkmax'),
                     )
                 )
                 for mt in source.get('species', []):
-                    bs = BasisSet(scope=['muffin-tin', 'full-electron'],
+                    bs = BasisSet(
+                        scope=['muffin-tin', 'full-electron'],
                         spherical_harmonics_cutoff=source.get('lmax'))
-                    for l in range(source.get('lmax', -1) + 1):
+                    for l_n in range(source.get('lmax', -1) + 1):
                         orbital = OrbitalAPW()
-                        orbital.l_quantum_number = l
+                        orbital.l_quantum_number = l_n
                         orbital.core_level = False
                         e_param = mt.get('e_param', source.get('e_ref', .5) - .2)  # TODO: check for +.2 case
                         update = False
                         apw_type = mt.get('type')
                         last_orbital_type = None
                         for orb in mt['orbital']:
-                            if l == orb['l']:
+                            if l_n == orb['l']:
                                 e_param = orb.get('e_param', e_param)
-                                update = False if not orb.get('e_diff', 0) else True
+                                update = orb.get('e_diff', 0) is not None
                                 apw_type = orb.get('type', apw_type)
                                 if last_orbital_type == apw_type:
                                     orbital.energy_parameter = e_param

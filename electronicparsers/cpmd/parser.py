@@ -451,7 +451,7 @@ class CPMDParser:
                 BasisSetContainer(
                     scope=['wavefunction'],
                     type='plane waves',
-                    basis_set = [
+                    basis_set=[
                         BasisSet(
                             scope=['valence'],
                             type='plane waves',

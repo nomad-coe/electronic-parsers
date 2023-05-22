@@ -25,7 +25,7 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing,
+    Method, DFT, XCFunctional, Functional, Electronic, Smearing,
     BasisSetContainer,
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms

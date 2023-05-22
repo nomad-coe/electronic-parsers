@@ -117,7 +117,7 @@ class PotParser(TextParser):
             Quantity(
                 'pseudopotential', r'(VRHFIN\s+=[\s\S]+?LMMAX\s=\s+\d)', repeats=True,  # recognize where a header starts
                 sub_parser=TextParser(quantities=_pseudopotential)
-                ),
+            )
         ]
 
 
@@ -251,13 +251,11 @@ class ContentParser:
 
         bool_mapping = {'T': True, 'F': False}
         pps = PotParser(mainfile=self.parser.mainfile).parse().get('pseudopotential', [])
-        pps_out: list[dict[str, Any]] = []
+        pps_out = []
         for pp in pps:
             pps_out.append({'title': pp['title']})
-            pps_out[-1]['flag'] = _to_dict(pp['flag'],
-                transform=lambda x: bool_mapping[x])
-            pps_out[-1]['number'] = _to_dict(pp['number'],
-                transform=lambda x: float(x))
+            pps_out[-1]['flag'] = _to_dict(pp['flag'], transform=lambda x: bool_mapping[x])
+            pps_out[-1]['number'] = _to_dict(pp['number'], transform=lambda x: float(x))
         return pps_out
 
 
@@ -298,6 +296,12 @@ class OutcarTextParser(TextParser):
                 if position:
                     positions.append(position.groups())
             return np.array(positions, dtype=float)
+
+        def str_to_eigenvalues(val_in):
+            val = []
+            for line in val_in.strip().splitlines():
+                val.extend(['nan' if '*' in v else v for v in line.split()])
+            return np.array(val, np.float64)
 
         scf_iteration = [
             Quantity(
@@ -360,8 +364,9 @@ class OutcarTextParser(TextParser):
                 'fermi_energy', r'E\-fermi :\s*([\d\.]+)', dtype=str, repeats=False),
             Quantity(
                 'eigenvalues',
-                r'band No\.\s*band energies\s*occupation\s*([\d\.\s\-]+?)(?:k\-point|spin|\-{10})',
-                repeats=True, dtype=float),
+                r'band No\.\s*band energies\s*occupation\s*([\d\.\s\-\*]+?)(?:k\-point|spin|\-{10})',
+                repeats=True, dtype=float,
+                str_operation=str_to_eigenvalues),
             Quantity(
                 'convergence',
                 r'(aborting loop because EDIFF is reached)')]
@@ -606,11 +611,10 @@ class OutcarContentParser(ContentParser):
     def get_valence_basis_set(self) -> list[BasisSet]:
         sec_bases: list[BasisSet] = []
         for tag in ('ENCUT', 'ENAUG'):
-            cutoff_value = self.parser.get('parameters').get(tag)
-            sec_basis = BasisSet(
-                type='plane waves',
-                cutoff=cutoff_value * ureg.eV,  # based on examples
-            )
+            cutoff_value = self.parser.get('parameters', {}).get(tag)
+            sec_basis = BasisSet(type='plane waves')
+            if cutoff_value:
+                sec_basis.cutoff = cutoff_value * ureg.eV  # based on examples
             if tag == 'ENCUT':
                 sec_basis.scope = ['valence']
             elif tag == 'ENAUG':
@@ -1373,7 +1377,7 @@ class VASPParser():
                     sec_hubb.orbital = orbital
                     sec_hubb.u = float(parsed_file.get('LDAUU')[i]) * ureg.eV
                     sec_hubb.j = float(parsed_file.get('LDAUJ')[i]) * ureg.eV
-                    sec_hubb.double_counting_correction = self.hubbard_dc_corrections[parsed_file.get('LDAUTYPE')]
+                    sec_hubb.double_counting_correction = self.hubbard_dc_corrections.get(parsed_file.get('LDAUTYPE'))
                     sec_hubb.x_vasp_projection_type = 'on-site'
             atom_counts[element[i]] += 1
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
@@ -1691,7 +1695,7 @@ class VASPParser():
         if sec_scc and os.path.isfile(chgcar_file):
             grid = None
             n_points = 0
-            charge_density: List[float] = []
+            charge_density = []
             re_grid = re.compile(r' *\d+ +\d+ +\d+\s+')
             for line in open(chgcar_file):
                 if not line.strip():
@@ -1709,7 +1713,7 @@ class VASPParser():
                     # TODO remove temporary fix
                     if hasattr(Density, 'value_hdf5'):
                         from nomad.parsing.parser import to_hdf5
-                        filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), f'{os.path.basename(self.filepath)}.archive.hdf5')
+                        filename = os.path.join(os.path.dirname(self.filepath.split('/raw/')[-1]), f'{os.path.basename(self.filepath)}.archive.hdf5')
                         farg = 'r+b' if os.path.isfile(os.path.join(os.path.dirname(self.filepath), filename)) else 'wb'
                         sec_density = sec_scc.m_create(Density)
                         if self.archive.m_context:

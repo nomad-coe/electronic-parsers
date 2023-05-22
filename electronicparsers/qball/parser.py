@@ -31,7 +31,7 @@ from nomad.datamodel.metainfo.simulation.method import Method, BasisSet, BasisSe
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Forces, ForcesEntry
 from nomad.parsing.file_parser import Quantity, TextParser
 
-import xml.etree.ElementTree as ElementTree
+from xml.etree import ElementTree
 
 
 def str_to_timestamp(s: str):

@@ -25,7 +25,7 @@ import ase
 import numpy as np
 
 from nomad.units import ureg
-from nomad import atomutils
+from nomad import atomutils  # type: ignore
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.system import (
@@ -684,7 +684,7 @@ class CrystalParser:
         # Basis set
         basis_set = out["basis_set"]
         covered_species = set()
-        section_basis_sets: list(BasisSetAtomCentered) = []
+        section_basis_sets = []
         if basis_set is not None:
             for bs in basis_set["basis_sets"]:  # pylint: disable=E1136
                 atomic_number = label_to_atomic_number(bs["species"][1])

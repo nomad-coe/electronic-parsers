@@ -261,12 +261,12 @@ class XMLParser(TextParser):
             else:
                 return [int(val_in)]
 
-        def roll_out_lo(val_in: dict[str, str]) -> list[dict[tuple[int], list[Any]]]:
+        def roll_out_lo(val_in: dict[str, str]) -> list[dict[tuple[int, int], list[Any]]]:
             los = []
-            for l in develop_range(int(val_in['l'])):
-                for n in develop_range(int(val_in['n'])):
+            for l_n in develop_range(val_in['l']):
+                for n in develop_range(val_in['n']):
                     order = int(val_in['eDeriv'])
-                    los.append({(l, order): [n, val_in['type']]})
+                    los.append({(l_n, order): [n, val_in['type']]})
             return los
 
         # function variables
@@ -293,38 +293,39 @@ class XMLParser(TextParser):
                     )
                 )
             # valence muffin-tin + local orbitals
-            n_max = 0
+            n_max = None
             for l_test in l_mapping[::-1]:
                 n_prospective = int(specie.get(l_test))
                 if n_prospective:
+                    # TODO check n_max supposed to be int but l_test is str
                     n_max = l_test
                     break
             los = []
             for lo in specie.get('lo', []):
                 los += roll_out_lo(to_dict(lo.get('key_val', [])))
-            for l in range(int(specie.get('lmax')) + 1):
-                apw_type = 'APW' if l == specie.get('lmaxAPW', -1) else 'LAPW'
-                n_quantum = specie.get(l_mapping[min(l, len(l_mapping) - 1)], n_max)
+            for l_n in range(int(specie.get('lmax')) + 1):
+                apw_type = 'APW' if l_n == specie.get('lmaxAPW', -1) else 'LAPW'
+                n_quantum = specie.get(l_mapping[min(l_n, len(l_mapping) - 1)], n_max)
                 for order in range(5):  # TODO: find a better option than hard-coding
                     if order <= order_mapping[apw_type]:
                         orbital = [
                             OrbitalAPW(
                                 type=apw_type,
                                 energy_parameter_n=n_quantum,
-                                l_quantum_number=l,
+                                l_quantum_number=l_n,
                                 core_level=False,
                                 order=order,
                             )
                         ]
-                    if (l, order) in [lo.keys() for lo in los]:
+                    if (l_n, order) in [lo.keys() for lo in los]:
                         orbital.append(
                             OrbitalAPW(
                                 type='LO',
-                                energy_parameter_n=lo[(l, order)][0],
-                                l_quantum_number=l,
+                                energy_parameter_n=lo[(l_n, order)][0],
+                                l_quantum_number=l_n,
                                 core_level=False,
                                 order=order,
-                                x_fleur_lo_type=lo[(l, order)][1],
+                                x_fleur_lo_type=lo[(l_n, order)][1],
                             )
                         )
                     mt[0].orbital = [*mt[0].orbital, *orbital]
@@ -333,14 +334,14 @@ class XMLParser(TextParser):
             n_counter = 1
             nl_counter = specie.get('coreStates', 0)
             while nl_counter > 0:
-                for l in range(n_counter):
-                    j = l + .5
+                for l_n in range(n_counter):
+                    j = l_n + .5
                     while j > 0:
                         mt[1].orbital.append(
                             OrbitalAPW(
                                 type='spherical Dirac',
                                 n_quantum_number=n_counter,
-                                l_quantum_number=l,
+                                l_quantum_number=l_n,
                                 j_quantum_number=j,
                                 occupation=2 * j + 1,
                                 core_level=True,
@@ -351,7 +352,7 @@ class XMLParser(TextParser):
                 n_counter += 1
             mt[1].scope.append('core')
             # general core settings
-            core_application = {'coretail': 'ctail', 'coretail_cutoff': 'coretail_lmax',}  # TODO: add 'relativistic_core': 'kcrel'?
+            core_application = {'coretail': 'ctail', 'coretail_cutoff': 'coretail_lmax'}  # TODO: add 'relativistic_core': 'kcrel'?
             for key, val in core_application.items():
                 try:
                     q = input_parameters_reformatted[val].strip()
@@ -636,7 +637,7 @@ class FleurParser:
         if input is not None:
             for key in ['parameters', 'input_parameters']:
                 setattr(sec_method, f'x_fleur_{key}', {
-                    key: list([float(v) for v in val]) if isinstance(
+                    key: list(float(v) for v in val) if isinstance(
                         val, np.ndarray) else val for key, val in input.get(key, {}).get('key_val', [])})
         if not sec_method.x_fleur_parameters:
             sec_method.x_fleur_parameters = {}
@@ -660,9 +661,9 @@ class FleurParser:
             e_cutoff = ureg.h_bar**2 / ureg.electron_mass * k_cutoff**2 / 2
             em.basis_set.append(
                 BasisSet(
-                    scope = ['interstitial', 'valence'],
-                    type = 'plane waves',  # Actually stars: symmetrized plane waves according to the unit cell
-                    cutoff = e_cutoff,  # TODO: check units
+                    scope=['interstitial', 'valence'],
+                    type='plane waves',  # Actually stars: symmetrized plane waves according to the unit cell
+                    cutoff=e_cutoff,  # TODO: check units
                 )
             )
             em.basis_set = [*em.basis_set, *self.parser.get_basis_sets()]

@@ -1486,7 +1486,7 @@ class ABACUSParser:
             'basis_type', 'pw')
 
         # basis set settings
-        ems: list(BasisSetContainer) = []
+        ems = []
         for name in ['wavefunction', 'density']:
             orbital_settings = header.get('orbital_settings')
             bs = BasisSet(
