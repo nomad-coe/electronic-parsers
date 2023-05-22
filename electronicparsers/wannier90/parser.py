@@ -33,8 +33,6 @@ from nomad.datamodel.metainfo.simulation.method import (
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms, AtomsGroup
 from ..utils import get_files
-# For automatic workflows
-from nomad.processing.data import Entry
 
 
 
