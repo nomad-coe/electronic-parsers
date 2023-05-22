@@ -638,7 +638,7 @@ class OutcarContentParser(ContentParser):
         return sec_bases
 
     def get_tier(self, type='native') -> Union[str, None]:
-        return super().get_tier(self.parser.get('parameters').get('PREC'), type=type)
+        return super().get_tier(self.parser.get('parameters', {}).get('PREC'), type=type)
 
     def get_energies(self, n_calc, n_scf):
         energies = dict()

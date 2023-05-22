@@ -32,8 +32,8 @@ from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
-    Calculation, Energy, EnergyEntry, ScfIteration, BandEnergies, Charges, ChargesValue,
-    Spectra
+    Calculation, Energy, EnergyEntry, ScfIteration, BandEnergies, Charges,
+    ChargesValue, Spectra,
 )
 from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
@@ -609,7 +609,7 @@ class OrcaParser:
         }  # https://sites.google.com/site/orcainputlibrary/numerical-precision
         _native_tier_map = {k.lower(): v for k, v in _native_tier_map.items()}
         sec_scf = Scf(
-            native_tier=self.out_parser.results['input_file']['tier'],
+            native_tier=self.out_parser.get('input_file', {}).get('tier'),
         )
         scf_convergence = self.out_parser.get('single_point', {}).\
             get('self_consistent', {}).get('scf_convergence', {})
