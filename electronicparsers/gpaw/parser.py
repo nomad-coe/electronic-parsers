@@ -318,9 +318,10 @@ class GPAWParser:
                     return basisset_type
             if basisset_type == 'numeric AOs':
                 return 'atom-centered orbitals'
+            return ''
 
         mode = self.get_mode()
-        bs: BasisSet = None
+        bs = None
         if mode == 'pw':
             pw_cutoff = self.parser.get_parameter('planewavecutoff')
             pw_cutoff = self.apply_unit(pw_cutoff, 'energyunit')

@@ -261,10 +261,10 @@ class XMLParser(TextParser):
             else:
                 return [int(val_in)]
 
-        def roll_out_lo(val_in: dict[str, str]) -> list[dict[tuple[int], list[Any]]]:
+        def roll_out_lo(val_in: dict[str, str]) -> list[dict[tuple[int, int], list[Any]]]:
             los = []
-            for l_n in develop_range(int(val_in['l'])):
-                for n in develop_range(int(val_in['n'])):
+            for l_n in develop_range(val_in['l']):
+                for n in develop_range(val_in['n']):
                     order = int(val_in['eDeriv'])
                     los.append({(l_n, order): [n, val_in['type']]})
             return los
@@ -293,10 +293,11 @@ class XMLParser(TextParser):
                     )
                 )
             # valence muffin-tin + local orbitals
-            n_max = 0
+            n_max = None
             for l_test in l_mapping[::-1]:
                 n_prospective = int(specie.get(l_test))
                 if n_prospective:
+                    # TODO check n_max supposed to be int but l_test is str
                     n_max = l_test
                     break
             los = []

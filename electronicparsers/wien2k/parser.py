@@ -62,7 +62,7 @@ class In1Parser(FileParser):
 
     def parse(self):
         self._results = {'species': []}
-        num_orbitals: int = 0
+        num_orbitals = 0
         with self.mainfile_obj as f:
             for line_id, line in enumerate(f):
                 if line_id == 0:
@@ -813,7 +813,7 @@ class Wien2kParser:
             self.in1_parser.parse()
             if self.in1_parser._results:
                 type_mapping = ('LAPW', 'APW', 'HDLO', 'LO')
-                source: dict(str, Any) = self.in1_parser._results
+                source = self.in1_parser._results
                 em = BasisSetContainer(scope=['wavefunction'])
                 em.basis_set.append(
                     BasisSet(

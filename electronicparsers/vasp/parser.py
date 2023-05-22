@@ -251,7 +251,7 @@ class ContentParser:
 
         bool_mapping = {'T': True, 'F': False}
         pps = PotParser(mainfile=self.parser.mainfile).parse().get('pseudopotential', [])
-        pps_out: list[dict[str, Any]] = []
+        pps_out = []
         for pp in pps:
             pps_out.append({'title': pp['title']})
             pps_out[-1]['flag'] = _to_dict(pp['flag'], transform=lambda x: bool_mapping[x])
@@ -1695,7 +1695,7 @@ class VASPParser():
         if sec_scc and os.path.isfile(chgcar_file):
             grid = None
             n_points = 0
-            charge_density: List[float] = []
+            charge_density = []
             re_grid = re.compile(r' *\d+ +\d+ +\d+\s+')
             for line in open(chgcar_file):
                 if not line.strip():

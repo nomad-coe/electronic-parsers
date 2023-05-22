@@ -1573,7 +1573,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             radius_lin_spacing=radial_spacing * ureg.bohr,
         )
         lo_samplings = {lo['l']: lo['wf'] for lo in species_data.get('lo', [])}
-        lmax: int = self.input_xml_parser.get('xs/lmaxapw', 10)
+        lmax = self.input_xml_parser.get('xs/lmaxapw', 10)
         for l_n in range(lmax + 1):
             orbital_type = species_data['default']['type']
             energy_parameter = species_data['default']['trialEnergy']
