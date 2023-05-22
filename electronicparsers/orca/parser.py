@@ -614,12 +614,12 @@ class OrcaParser:
         scf_convergence = self.out_parser.get('single_point', {}).\
             get('self_consistent', {}).get('scf_convergence', {})
         if threshold_energy_change := scf_convergence.get('last_energy_change',
-            trivial)[1]:
-                sec_scf.threshold_energy_change = threshold_energy_change * ureg.hartree  # TODO: extract this from the setup, so it is present even whan a calcultion does not finish properly
+                                                          trivial)[-1]:
+            sec_scf.threshold_energy_change = threshold_energy_change * ureg.hartree  # TODO: extract this from the setup, so it is present even whan a calcultion does not finish properly
         sec_scf.threshold_density_change = scf_convergence.get('last_rms_density_change',
-            trivial)[1]
+                                                               trivial)[-1]
         sec_scf.x_orca_last_max_density_change = scf_convergence.get(
-            'last_max_density_change', trivial)[1]
+            'last_max_density_change', trivial)[-1]
         if sec_scf.native_tier and not sec_scf.threshold_energy_change:
             sec_scf.threshold_energy_change =\
                 _native_tier_map[sec_scf.native_tier.lower()] * ureg.hartree

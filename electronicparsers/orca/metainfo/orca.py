@@ -499,6 +499,7 @@ class Method(simulation.method.Method):
         sub_section=SectionProxy('x_orca_section_functionals'),
         repeats=True)
 
+
 class Scf(simulation.method.Scf):
 
     m_def = Section(validate=False, extends_base_section=True)
