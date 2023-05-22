@@ -24,10 +24,9 @@ from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GW, GWMethod, ParticleHoleExcitations,
+    GW, GWMethod, DMFT, DMFTMethod, ParticleHoleExcitations,
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,
-    PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults,
-    DMFT, DMFTMethod, DMFTResults
+    PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
 
 
@@ -299,7 +298,7 @@ class BeyondDFTWorkflowsParser:
                 self.archive.run[-1].m_add_sub_section(Run.system, sec_system)
                 dmft_workflow_archive.run[-1].m_add_sub_section(Run.system, sec_system)
 
-        workflow = DMFT()
+        workflow = DMFT(method=DMFTMethod())
         workflow.name = 'DMFT'
 
         # Inputs and Outputs
