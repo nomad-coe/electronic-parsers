@@ -23,6 +23,7 @@ jobs:
         pip install --upgrade pip
         pip install .[tests]
         pip install ./nomad[parsing]
+        pip install types-PyYAML
     - name: pycodestyle
       run: |
         python -m pycodestyle --ignore=E501,E701,E731 *parsers tests
