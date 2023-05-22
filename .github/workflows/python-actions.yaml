@@ -34,5 +34,6 @@ jobs:
       run: |
         python -m mypy --ignore-missing-imports --follow-imports=silent --no-strict-optional *parsers tests
     - name: Test with pytest
+      if: success() || failure()
       run: |
         python -m pytest -sv tests
