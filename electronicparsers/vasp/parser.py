@@ -58,7 +58,7 @@ from nomad.datamodel.metainfo.workflow import (
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
     GeometryOptimizationMethod, MolecularDynamics as MolecularDynamics2)
-from typing import Any
+from typing import Any, Union
 
 re_n = r'[\n\r]'
 
@@ -257,6 +257,20 @@ class ContentParser:
             pps_out[-1]['flag'] = _to_dict(pp['flag'], transform=lambda x: bool_mapping[x])
             pps_out[-1]['number'] = _to_dict(pp['number'], transform=lambda x: float(x))
         return pps_out
+
+    def _get_tier(self, raw_data: Union[str, None], type='native') -> Union[str, None]:
+        '''Extract the tier from a string, and return it in a standardized format.
+        - `raw_data`: the string to extract the tier from
+        - `type`: the standardized output format, either `native` to VASP,
+                or `standard` NOMAD
+        '''
+        _map = ['low', 'medium', 'high', 'normal', 'single', 'accurate']
+        if tier_name := raw_data:
+            if type == 'native':
+                for tier in _map:
+                    if tier.startswith(tier_name.lower()):
+                        return tier
+        return None
 
 
 class OutcarTextParser(TextParser):
@@ -622,6 +636,9 @@ class OutcarContentParser(ContentParser):
             # TODO: add grid spacing (NGX, NGY, NGZ)?
             sec_bases.append(sec_basis)
         return sec_bases
+
+    def get_tier(self, type='native') -> Union[str, None]:
+        return super()._get_tier(self.parser.get('parameters', {}).get('PREC'), type=type)
 
     def get_energies(self, n_calc, n_scf):
         energies = dict()
@@ -1126,6 +1143,13 @@ class RunContentParser(ContentParser):
                 sec_bases.append(sec_basis)
         return sec_bases
 
+    def get_tier(self, type='native') -> Union[str, None]:
+        return super()._get_tier(self._get_key_values(
+            '/modeling[0]/parameters/separator[@name="electronic"]/i[@name="PREC"]')
+            ['PREC'][0],
+            type=type
+        )
+
     def get_n_scf(self, n_calc):
         if self._n_scf is None:
             self._n_scf = [None] * self.n_calculations
@@ -1386,6 +1410,7 @@ class VASPParser():
             BasisSetContainer(
                 type='plane waves',
                 scope=['wavefunction'],
+                native_tier=self.parser.get_tier(type='native'),
                 basis_set=self.parser.get_valence_basis_set(),
             )
         ]
