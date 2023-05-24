@@ -24,7 +24,7 @@ from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod, XSResults,
+    GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
 
@@ -231,17 +231,8 @@ class BeyondDFTWorkflowsParser:
                     index += 1
             return output
 
-        workflow = XS(method=XSMethod(), results=XSResults())
+        workflow = XS(method=XSMethod())
         workflow.name = 'XS'
-
-        # TODO define Method
-
-        # Results
-        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
-        workflow.results.dos_dft = dos_dft
-        workflow.results.band_structure_dft = bs_dft
-        workflow.results.spectra = [xs_archive.workflow2.results for xs_archive in xs_archives]
 
         # Inputs and Outputs
         input_structure = extract_section(self.archive, 'run/system')
