@@ -169,7 +169,9 @@ class BeyondDFTWorkflowsParser:
         workflow = PhotonPolarization(method=PhotonPolarizationMethod(), results=PhotonPolarizationResults())
         workflow.name = 'BSE'  # this entry contains the full BSE calculation for all photon polarizations
 
-        # TODO define Method
+        # Method
+        method_bse = extract_section(self.archive, 'run/method/bse')
+        workflow.method.bse_method_ref = method_bse
 
         # Inputs
         input_structure = extract_section(self.archive, 'run/system')
