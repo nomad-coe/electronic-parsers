@@ -25,7 +25,8 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing
+    Method, DFT, XCFunctional, Functional, Electronic, Smearing,
+    BasisSetContainer,
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
@@ -269,7 +270,12 @@ class ElkParser:
         sec_run.program = Program(version=self.mainfile_parser.get('program_version', ''))
 
         sec_method = sec_run.m_create(Method)
-        sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
+        sec_method.electrons_representation = [
+            BasisSetContainer(
+                type='(L)APW+lo',
+                scope=['wavefunction'],
+            )
+        ]
         # xc functional
         sec_xc_functional = XCFunctional()
         for name in self._xc_map.get(self.mainfile_parser.xc_functional, []):

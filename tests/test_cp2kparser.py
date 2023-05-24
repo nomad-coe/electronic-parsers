@@ -51,8 +51,9 @@ def test_single_point(parser):
     assert sec_force_eval_dft.x_cp2k_section_input_FORCE_EVAL_DFT_SCF[0].x_cp2k_input_FORCE_EVAL_DFT_SCF_EPS_SCF == '1.0E-7'
 
     sec_method = sec_run.method[0]
-    assert sec_method.basis_set[0].atom_centered[0].name == 'DZVP-GTH-PADE'
-    assert sec_method.basis_set[0].cell_dependent[0].planewave_cutoff.magnitude == approx(6.53961708e-16)
+    sec_basis_sets = sec_method.electrons_representation[0].basis_set
+    assert sec_basis_sets[0].cutoff.magnitude == approx(6.53961708e-16)
+    assert sec_basis_sets[1].atom_centered[0].name == 'DZVP-GTH-PADE'
     assert sec_method.scf.threshold_energy_change.magnitude == approx(4.35974472220717e-25)
     assert sec_method.dft.xc_functional.contributions[0].name == 'LDA_XC_TETER93'
     sec_qs_settings = sec_method.x_cp2k_section_quickstep_settings[0]

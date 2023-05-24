@@ -49,8 +49,7 @@ def test_scf(parser):
     sec_method = sec_run.method[0]
     assert sec_method.scf.n_max_iteration == 10.
     assert sec_method.scf.threshold_energy_change.magnitude == approx(4.35974472e-24)
-    assert sec_method.basis_set[0].cell_dependent[0].planewave_cutoff.magnitude == approx(3.48779578e-17)
-    assert sec_method.basis_set[0].kind == 'wavefunction'
+    assert sec_method.electrons_representation[0].basis_set[0].cutoff.to('hartree').magnitude == approx(8)
     assert sec_method.dft.xc_functional.contributions[0].name == 'LDA_XC_TETER93'
 
     sec_system = sec_run.system[0]

@@ -1,0 +1,60 @@
+ 
+Species :    1 (Si), atom :    1
+ APW functions :
+ # only order=1 because we said to use 
+ # APW+LO for l=0 and l=1
+ # energies have been found by the search
+  l =  0, order =  1 :   0.1500000000    
+  l =  1, order =  1 :   0.4150000000    
+ # order=1 and order=2 for l>1 because we
+ # specified LAPW as default basis
+ # energies were fixed and have not been varied by the search
+  l =  2, order =  1 :   0.1500000000    
+  l =  2, order =  2 :   0.1500000000    
+  l =  3, order =  1 :   0.1500000000    
+  l =  3, order =  2 :   0.1500000000    
+  l =  4, order =  1 :   0.1500000000    
+  l =  4, order =  2 :   0.1500000000    
+  l =  5, order =  1 :   0.1500000000    
+  l =  5, order =  2 :   0.1500000000    
+  l =  6, order =  1 :   0.1500000000    
+  l =  6, order =  2 :   0.1500000000    
+  l =  7, order =  1 :   0.1500000000    
+  l =  7, order =  2 :   0.1500000000    
+  l =  8, order =  1 :   0.1500000000    
+  l =  8, order =  2 :   0.1500000000    
+ local-orbital functions :
+ # LOs from APW+LO for l=0 and l=1
+ # energies found by search
+  l.o. =  1, l =  0, order =  1 :   0.1500000000    
+  l.o. =  1, l =  0, order =  2 :   0.1500000000    
+  l.o. =  2, l =  1, order =  1 :   0.4150000000    
+  l.o. =  2, l =  1, order =  2 :   0.4150000000    
+ # custom LOs for semi-core states
+ # energies found by search
+  l.o. =  3, l =  1, order =  1 :   0.4150000000    
+  l.o. =  3, l =  1, order =  2 :   -2.976250000    
+ 
+Species :    2 (C), atom :    1
+ APW functions :
+  l =  0, order =  1 :   0.1500000000    
+  l =  1, order =  1 :   0.2725000000    
+  l =  2, order =  1 :   0.1500000000    
+  l =  2, order =  2 :   0.1500000000    
+  l =  3, order =  1 :   0.1500000000    
+  l =  3, order =  2 :   0.1500000000    
+  l =  4, order =  1 :   0.1500000000    
+  l =  4, order =  2 :   0.1500000000    
+  l =  5, order =  1 :   0.1500000000    
+  l =  5, order =  2 :   0.1500000000    
+  l =  6, order =  1 :   0.1500000000    
+  l =  6, order =  2 :   0.1500000000    
+  l =  7, order =  1 :   0.1500000000    
+  l =  7, order =  2 :   0.1500000000    
+  l =  8, order =  1 :   0.1500000000    
+  l =  8, order =  2 :   0.1500000000    
+ local-orbital functions :
+  l.o. =  1, l =  0, order =  1 :   0.1500000000    
+  l.o. =  1, l =  0, order =  2 :   0.1500000000    
+  l.o. =  2, l =  1, order =  1 :   0.2725000000    
+  l.o. =  2, l =  1, order =  2 :   0.2725000000    

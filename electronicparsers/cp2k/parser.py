@@ -29,8 +29,8 @@ from nomad.parsing.file_parser import TextParser, Quantity, FileParser, DataText
 from nomad.datamodel.metainfo.simulation.run import (
     Run, Program)
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, DFT, XCFunctional, Functional, BasisSet, BasisSetCellDependent, BasisSetAtomCentered,
-    AtomParameters, Scf, Electronic
+    Method, DFT, XCFunctional, Functional, BasisSet, BasisSetContainer,
+    AtomParameters, Scf, Electronic, BasisSetAtomCentered
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -52,13 +52,6 @@ from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings, x_cp2k_sec
     x_cp2k_section_scf_iteration, x_cp2k_section_stress_tensor, x_cp2k_section_md_settings,\
     x_cp2k_section_restart_information, x_cp2k_section_geometry_optimization,\
     x_cp2k_section_geometry_optimization_step
-
-
-try:
-    import mdtraj
-except ImportError:
-    logging.getLogger(__name__).warning('Required MDTraj module not found.')
-    mdtraj = False
 
 
 units_map = {
@@ -201,23 +194,28 @@ class TrajParser(FileParser):
                     result = [traj.positions for traj in self._xyz_parser.get('trajectory', [])]
                     labels = [traj.labels for traj in self._xyz_parser.get('trajectory', [])]
 
-            if result is None and mdtraj:
-                reader = None
-                if self.format in ['xyz', 'xmol', 'atomic']:
-                    reader = mdtraj.formats.XYZTrajectoryFile(self.mainfile)
-                elif self.format == 'dcd':
-                    reader = mdtraj.formats.DCDTrajectoryFile(self.mainfile)
-                elif self.format == 'pdb':
-                    reader = mdtraj.formats.PDBTrajectoryFile(self.mainfile)
-                else:
-                    self.logger.error('Unsupported trajectory format.')
-
-                if reader is not None:
-                    try:
+            if result is None:
+                try:
+                    import mdtraj
+                    reader = None
+                    if self.format in ['xyz', 'xmol', 'atomic']:
+                        reader = mdtraj.formats.XYZTrajectoryFile(self.mainfile)
+                    elif self.format == 'dcd':
+                        reader = mdtraj.formats.DCDTrajectoryFile(self.mainfile)
+                    elif self.format == 'pdb':
+                        reader = mdtraj.formats.PDBTrajectoryFile(self.mainfile)
+                    else:
+                        self.logger.error('Unsupported trajectory format.')
+                    if reader is not None:
                         # we do not stream to simplify archive writing
                         result = reader.read()
-                    except Exception:
-                        pass
+                except ImportError:
+                    self.logger.warning('Required MDTraj module not found.')
+                except Exception:
+                    self.logger.warning('Error loaging trajectory file.')
+
+            if result is None:
+                return self._file_handler
 
             result = result * self.units if self.units is not None else result
 
@@ -1254,29 +1252,49 @@ class CP2KParser:
             md_steps.extend(molecular_dynamics.get('md_step', []))
             parse_calculations(md_steps)
 
-    def parse_method_quickstep(self):
-        sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
-
-        sec_basis = sec_method.m_create(BasisSet)
-        sec_basis.kind = 'wavefunction'
-        sec_basis.type = 'gaussians'
-
-        planewave_cutoff = self.settings.get('qs', {}).get('planewave_cutoff', None)
-        if planewave_cutoff is not None:
-            sec_basis_cell = sec_basis.m_create(BasisSetCellDependent)
-            sec_basis_cell.planewave_cutoff = planewave_cutoff * ureg.hartree
-
+    def _parse_basis_set(self) -> list[BasisSet]:
+        '''Scopes are based on https://10.1016/j.cpc.2004.12.014'''
+        bs_gauss = BasisSet(
+            scope=['kinetic energy', 'electron-core interaction'],
+            type='gaussians',
+        )
         atoms = self.out_parser.get(
             self._calculation_type, {}).get('atomic_kind_information', {}).get('atom', [])
         for atom in atoms:
             basis_set = atom.get('kind_basis_set_name', None)
             if basis_set is not None:
-                sec_basis_atom = sec_basis.m_create(BasisSetAtomCentered)
-                sec_basis_atom.atom_number = self.get_atomic_number(atom.kind_label)
-                sec_basis_atom.name = basis_set
+                ac = BasisSetAtomCentered()
+                ac.atom_number = self.get_atomic_number(atom.kind_label)
+                ac.name = basis_set
+                bs_gauss.atom_centered.append(ac)
+        if bs_gauss.atom_centered:
+            bs_pw = BasisSet(
+                scope=['Hartree energy', 'electron-electron interaction'],
+                type='plane waves',
+                cutoff=self.settings.get('qs', {}).get('planewave_cutoff', None) * ureg.hartree,
+            )
+            basis_sets = [bs_pw, bs_gauss]
+        else:
+            bs_pw = BasisSet(
+                scope=['valence'],
+                type='plane waves',
+                cutoff=self.settings.get('qs', {}).get('planewave_cutoff', None) * ureg.hartree,
+            )
+            basis_sets = [bs_pw]
+        return basis_sets
 
-        quickstep = self.out_parser.get(self._calculation_type)
+    def parse_method_quickstep(self):
+        sec_run = self.archive.run[-1]
+        sec_method = sec_run.m_create(Method)
+
+        sec_method.electrons_representation = [
+            BasisSetContainer(
+                type='gaussians + plane waves',
+                scope=['wavefunction'],
+                basis_set=self._parse_basis_set(),
+            )
+        ]
+        quickstep = self.out_parser.get(self._calculation_type, sec_method)
 
         sec_dft = sec_method.m_create(DFT)
         # electronic structure method

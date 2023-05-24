@@ -27,7 +27,7 @@ from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataText
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Electronic, Method, DFT, Smearing, XCFunctional, Functional, BasisSet,
-    BasisSetCellDependent, AtomParameters, KMesh
+    BasisSetContainer, AtomParameters, KMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -2630,15 +2630,23 @@ class QuantumEspressoParser:
             sec_method.x_qe_starting_charge = initial_charge[0]
             sec_method.x_qe_starting_charge_renormalized = initial_charge[1]
 
-        for name in ['wavefunction', 'density']:
-            cutoff = run.get_header('%s_cutoff' % name)
-            if cutoff is None:
-                continue
-            sec_basis_set = sec_method.m_create(BasisSet)
-            sec_basis_set.type = 'plane waves'
-            sec_basis_set.kind = name
-            sec_basis_set.cell_dependent.append(BasisSetCellDependent(
-                planewave_cutoff=cutoff, kind='plane_waves', name='PW_%.1f' % cutoff.magnitude))
+        # basis set
+        for scope in ['wavefunction', 'density']:
+            cutoff = run.get_header('%s_cutoff' % scope)
+            if cutoff is not None:
+                sec_method.electrons_representation.append(
+                    BasisSetContainer(
+                        type='plane waves',
+                        scope=[scope],
+                        basis_set=[
+                            BasisSet(
+                                type='plane waves',
+                                scope=['valence'],
+                                cutoff=cutoff,
+                            )
+                        ]
+                    )
+                )
 
         pseudopotential = run.get_header('pseudopotential', [])
 

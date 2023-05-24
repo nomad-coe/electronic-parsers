@@ -25,13 +25,14 @@ import ase
 import numpy as np
 
 from nomad.units import ureg
-from nomad import atomutils
+from nomad import atomutils  # type: ignore
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms)
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, Electronic, Scf, DFT, XCFunctional, Functional, BasisSetAtomCentered
+    Method, BasisSet, Electronic, Scf, DFT, XCFunctional, Functional,
+    BasisSetAtomCentered, BasisSetContainer,
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandStructure,
@@ -678,7 +679,40 @@ class CrystalParser:
 
         # Method
         method = run.m_create(Method)
-        method.basis_set.append(BasisSet(type='gaussians'))
+
+        # Basis set
+        basis_set = out["basis_set"]
+        covered_species = set()
+        section_basis_sets = []
+        if basis_set is not None:
+            for bs in basis_set["basis_sets"]:  # pylint: disable=E1136
+                atomic_number = label_to_atomic_number(bs["species"][1])
+                shells = bs["shells"]
+                if atomic_number != covered_species and shells is not None:
+                    section_basis_sets.append(
+                        BasisSetAtomCentered(atom_number=atomic_number,)
+                    )
+                    covered_species.add(atomic_number)
+                    for shell in shells:
+                        section_shell = x_crystal_section_shell(
+                            x_crystal_shell_range=str(shell["shell_range"]),
+                            x_crystal_shell_type=shell["shell_type"],
+                            x_crystal_shell_coefficients=np.array(shell["shell_coefficients"]),
+                        )
+                        section_basis_sets[-1].x_crystal_section_shell.append(section_shell)
+
+        method.electrons_representation = [
+            BasisSetContainer(
+                type='atom-centered orbitals',
+                scope=['wavefunction'],
+                basis_set=[
+                    BasisSet(
+                        type='gaussians',  # the scope can fluctuate depending on the use of ECPs
+                        atom_centered=section_basis_sets,
+                    )
+                ]
+            )
+        ]
 
         method.electronic = Electronic(method='DFT')
         method.scf = Scf(
@@ -762,21 +796,6 @@ class CrystalParser:
         method.x_crystal_convergence_deltap = out["convergenge_deltap"]
         method.x_crystal_n_k_points_ibz = out["n_k_points_ibz"]
         method.x_crystal_n_k_points_gilat = out["n_k_points_gilat"]
-        basis_set = out["basis_set"]
-        covered_species = set()
-        if basis_set is not None:
-            for bs in basis_set["basis_sets"]:  # pylint: disable=E1136
-                atomic_number = label_to_atomic_number(bs["species"][1])
-                shells = bs["shells"]
-                if atomic_number != covered_species and shells is not None:
-                    section_basis_set = method.basis_set[-1].m_create(BasisSetAtomCentered)
-                    section_basis_set.atom_number = atomic_number
-                    covered_species.add(atomic_number)
-                    for shell in shells:
-                        section_shell = section_basis_set.m_create(x_crystal_section_shell)
-                        section_shell.x_crystal_shell_range = str(shell["shell_range"])
-                        section_shell.x_crystal_shell_type = shell["shell_type"]
-                        section_shell.x_crystal_shell_coefficients = np.array(shell["shell_coefficients"])
 
         # SCC
         scc = run.m_create(Calculation)

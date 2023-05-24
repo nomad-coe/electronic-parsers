@@ -52,19 +52,16 @@ def test_band(parser):
     assert sec_run.clean_end
 
     sec_method = sec_run.method[0]
-    assert sec_method.basis_set[0].type == 'Numeric AOs'
-    assert sec_method.x_abacus_basis_type == 'lcao'
-    assert sec_method.x_abacus_number_of_pw_for_wavefunction == 2085
-    assert sec_method.x_abacus_number_of_sticks_for_density == 721
-    assert sec_method.basis_set[0].cell_dependent[0].name == 'PW_50.0'
-    assert sec_method.basis_set[1].cell_dependent[0].planewave_cutoff.magnitude == approx(4.35974472220717e-16)
-    sec_basis_sets = sec_method.x_abacus_section_basis_sets[0]
-    assert sec_basis_sets.x_abacus_basis_sets_delta_k.magnitude == approx(0.01)
-    assert sec_basis_sets.x_abacus_basis_sets_delta_r.magnitude == approx(0.01)
-    assert sec_basis_sets.x_abacus_basis_sets_dr_uniform.magnitude == approx(0.001)
-    assert sec_basis_sets.x_abacus_basis_sets_rmax.magnitude == approx(30)
-    assert sec_basis_sets.x_abacus_basis_sets_kmesh == 711
-    sec_specie_basis_set = sec_basis_sets.x_abacus_section_specie_basis_set
+    sec_basis_set = sec_method.electrons_representation[0].basis_set[0]
+    assert sec_basis_set.type == 'numeric AOs'
+    assert sec_basis_set.cutoff.to('Ry').magnitude == approx(50)
+    sec_basis_set = sec_method.electrons_representation[1].basis_set[0]
+    assert sec_basis_set.x_abacus_basis_sets_delta_k.magnitude == approx(0.01)
+    assert sec_basis_set.x_abacus_basis_sets_delta_r.magnitude == approx(0.01)
+    assert sec_basis_set.x_abacus_basis_sets_dr_uniform.magnitude == approx(0.001)
+    assert sec_basis_set.x_abacus_basis_sets_rmax.magnitude == approx(30)
+    assert sec_basis_set.x_abacus_basis_sets_kmesh == 711  # Update test to new KMesh
+    sec_specie_basis_set = sec_basis_set.x_abacus_section_specie_basis_set
     assert sec_specie_basis_set[0].x_abacus_specie_basis_set_filename == 'Si_lda_8.0au_50Ry_2s2p1d'
     assert (sec_specie_basis_set[0].x_abacus_specie_basis_set_ln == [
             [0, 0], [0, 1], [1, 0], [1, 1], [2, 0]]).all()
@@ -203,7 +200,7 @@ def test_geomopt(parser):
     assert sec_method.electronic.smearing.kind == 'gaussian'
     assert sec_method.electronic.smearing.width == approx(2.179872361103585e-20)
     assert sec_method.x_abacus_gamma_algorithms
-    assert sec_method.x_abacus_basis_type == 'lcao'
+    assert sec_method.electrons_representation[0].basis_set[0].type == 'numeric AOs'
 
     sec_workflow = archive.workflow2
     assert sec_workflow.method.convergence_tolerance_force_maximum.magnitude == approx(1.6021766339999997e-12)

@@ -45,7 +45,7 @@ def test_single_point(parser, caplog):
     sec_method = archive.run[0].method[0]
     assert sec_method.dft.xc_functional.correlation[0].name == 'GGA_C_PBE_SOL'
     assert sec_method.x_wien2k_ifft[1] == 120
-    assert sec_method.x_wien2k_rkmax[2] == 4
+    assert sec_method.electrons_representation[0].basis_set[0].cutoff_fractional == 7.0
     assert sec_method.electronic.smearing.kind == 'tetrahedra'
     assert sec_method.x_wien2k_in2_espermin == 0.50
 

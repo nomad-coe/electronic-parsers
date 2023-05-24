@@ -30,7 +30,7 @@ except Exception:
 from nomad.units import ureg
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, DFT, XCFunctional, Functional, Electronic, Scf, BasisSet
+    Method, DFT, XCFunctional, Functional, Electronic, Scf, BasisSet, BasisSetContainer
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -186,8 +186,16 @@ class BigDFTParser:
         return default
 
     def parse_method(self):
-        sec_method = self.archive.run[0].m_create(Method)
-        sec_method.basis_set.append(BasisSet(type='real-space grid'))
+        sec_method = self.archive.run[-1].m_create(Method)
+        sec_method.electrons_representation = [
+            BasisSetContainer(
+                type='real-space grid',
+                scope=['wavefunction'],
+                basis_set=[
+                    BasisSet(type='real-space grid',)
+                ]
+            )
+        ]
         sec_dft = sec_method.m_create(DFT)
 
         data = self._extract('dft', self.yaml_dict, {})
@@ -198,7 +206,7 @@ class BigDFTParser:
 
         xc_id = self._extract('xc id', data)
         if xc_id is None:
-            xc_id = self._extract('ixc', data)
+            xc_id = self._extract('ixc', data, 0)
         if xc_id < 0:
             # libxc
             xc_id = '%06d' % abs(xc_id)
@@ -218,7 +226,7 @@ class BigDFTParser:
         sec_xc_functional.name = '_'.join(xc_functionals)
 
     def parse_system(self):
-        sec_system = self.archive.run[0].m_create(System)
+        sec_system = self.archive.run[-1].m_create(System)
 
         data = self._extract('Atomic structure', self.yaml_dict, {})
         labels = []
@@ -255,7 +263,7 @@ class BigDFTParser:
             sec_atoms.periodic = [True, False, True]
 
     def parse_scc(self):
-        sec_scc = self.archive.run[0].m_create(Calculation)
+        sec_scc = self.archive.run[-1].m_create(Calculation)
 
         energy = self._extract('Energy (Hartree)', self.yaml_dict)
         sec_energy = sec_scc.m_create(Energy)
@@ -305,23 +313,26 @@ class BigDFTParser:
             try:
                 # we simply load everything at once as the metainfo framework does not
                 # support streaming
-                self.yaml_dict = yaml.load(f, Loader=CLoader)
+                yaml_dicts = yaml.load_all(f, Loader=CLoader)
             except Exception:
                 try:
-                    self.yaml_dict = yaml.safe_load(f)
+                    yaml_dicts = yaml.safe_load_all(f)
                 except Exception:
                     self.logger.error('Error loading yaml file.')
                     return
 
-        sec_run = self.archive.m_create(Run)
-        sec_run.program = Program(
-            name='BigDFT',
-            version=str(self.yaml_dict.pop('Version Number', '')))
+            for yaml_dict in yaml_dicts:
+                self.yaml_dict = yaml_dict
 
-        self.parse_method()
-        self.parse_system()
-        self.parse_scc()
+                sec_run = self.archive.m_create(Run)
+                sec_run.program = Program(
+                    name='BigDFT',
+                    version=str(self.yaml_dict.pop('Version Number', '')))
 
-        sec_scc = sec_run.calculation[-1]
-        sec_scc.system_ref = sec_run.system[-1]
-        sec_scc.method_ref = sec_run.method[-1]
+                self.parse_method()
+                self.parse_system()
+                self.parse_scc()
+
+                sec_scc = sec_run.calculation[-1]
+                sec_scc.system_ref = sec_run.system[-1]
+                sec_scc.method_ref = sec_run.method[-1]

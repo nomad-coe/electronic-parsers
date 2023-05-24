@@ -26,7 +26,8 @@ from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextP
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional, Scf, BasisSet, KMesh,
-    FrequencyMesh, Screening, GW, Photon, BSE, CoreHole
+    FrequencyMesh, Screening, GW, Photon, BSE, CoreHole, BasisSetContainer,
+    OrbitalAPW
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -52,9 +53,105 @@ from .metainfo.exciting import (
 from ..utils import (
     get_files, BeyondDFTWorkflowsParser
 )
+from typing import Any
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
+
+
+class LinengyParser(TextParser):
+    '''Parse APW basis setup form Wigner-Seitz algorithm.'''
+    def __init__(self):
+        super().__init__(None)
+
+    def init_quantities(self):
+        line_quantities = [
+            Quantity('lo_index', r'l\.o\.\s=\s+(\d+)'),
+            Quantity('l', r'l\s=\s+(\d+)'),
+            Quantity('order', r'order\s=\s+(\d+)'),
+            Quantity('e_param', r':\s+([\d\.\-])'),
+        ]
+        elem = Quantity('element', r'\(([A-Z][a-z]?)\)')
+
+        apw_line = Quantity(
+            'apw_line', r'\s+(l\s=.+)\n', repeats=True,
+            sub_parser=TextParser(quantities=line_quantities))
+        lo_line = Quantity(
+            'lo_line', r'\s+(l\.o\.\s=.+)\n', repeats=True,
+            sub_parser=TextParser(quantities=line_quantities))
+        self._quantities = [Quantity(
+            'species_block', r'(Species[\s\S]+)', repeats=True,
+            sub_parser=TextParser(quantities=[elem, apw_line, lo_line]))]
+
+
+class SpeciesParser(TextParser):
+    '''Parse all muffin-tin parameters for each species.'''
+    def __init__(self):
+        self.flag = 'key_val'
+        super().__init__(None)
+
+    def init_quantities(self):
+        re_tags = r'([\w\s\.\-\"\=]+)'
+        q_key_val = Quantity(self.flag, r'([a-zA-Z]+)\="([\w\.\-]+)"', repeats=True)
+        q_wf_l = Quantity('l', r'l="(\d)"')
+        q_wf = Quantity(
+            'wf', r'<wf\s([\s\w\=\.\-\"]+)/>',
+            sub_parser=TextParser(quantities=[q_key_val]), repeats=True)
+
+        self._quantities = [
+            Quantity(
+                'sp', r'<sp\s([\s\S]+)</sp>',  # TODO: check if a species file can contain multiple species
+                sub_parser=TextParser(quantities=[q_key_val])),
+            Quantity(
+                'muffinTin', rf'<muffinTin{re_tags}/?>',
+                sub_parser=TextParser(quantities=[q_key_val])),
+            Quantity(
+                'atomicState', rf'<atomicState{re_tags}/?>',
+                sub_parser=TextParser(quantities=[q_key_val]), repeats=True),
+            Quantity(
+                'default', r'(<default[\s\S]+(</default>|/>))',
+                sub_parser=TextParser(quantities=[q_wf, q_key_val])),
+            Quantity(
+                'custom', r'(<custom[\s\S]+?</custom>)',
+                sub_parser=TextParser(quantities=[q_wf, q_key_val]), repeats=True),
+            Quantity(
+                'lo', r'(<lo[\s\S]+?</lo>)',
+                sub_parser=TextParser(quantities=[q_wf, q_wf_l]), repeats=True),
+        ]
+
+    def _convert_key_val(self, key_vals):
+        try:
+            return {key_val[0]: key_val[1] for key_val in key_vals}
+        except IndexError:
+            return key_vals
+
+    # TODO not sure why this is necessary but in any case replace this with to_dict()
+    def _run_tree(self, parser: TextParser) -> dict[str, Any]:
+        items: list = parser._results
+        standin: bool = False
+        if not isinstance(items, list):
+            items = [parser._results]
+            standin = True
+
+        for value_index, value in enumerate(items):
+            for key, val in value.items():
+                if key == self.flag:
+                    if standin:
+                        parser._results = self._convert_key_val(val)
+                    else:
+                        items[value_index] = self._convert_key_val(val)
+                elif isinstance(val, TextParser):
+                    self._run_tree(val)
+                elif isinstance(val, list):
+                    for v in val:
+                        if isinstance(v, TextParser):
+                            self._run_tree(v)
+        return parser
+
+    def parse(self, key=None):
+        self = super().parse(key=key)
+        self = self._run_tree(self)
+        return self
 
 
 class GWInfoParser(TextParser):
@@ -1090,6 +1187,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         self.input_xml_parser = XMLParser()
         self.data_xs_parser = DataTextParser()
         self.data_clathrate_parser = DataTextParser(dtype=str)
+        self.species_parser = SpeciesParser()
+        self.linengy_parser = LinengyParser()
         self._child_archives = {}
 
         # different names for different versions of exciting
@@ -1209,9 +1308,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             'RPA': 'RPA'
         }
 
-    def file_exists(self, filename):
+    def file_exists(self, filename: str, fuzzy: bool = False) -> list[str]:
         """Checks if a the given filename exists and is accessible in the same
-        folder where the mainfile is stored.
+        folder where the mainfile is stored. `fuzzy` toggles regex matching.
         """
         mainfile = os.path.basename(self.info_parser.mainfile)
         suffix = mainfile.strip('INFO.OUT')
@@ -1219,11 +1318,17 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         filepath = '%s%s' % (target[0], suffix)
         if target[1:]:
             filepath = '%s.%s' % (filepath, target[1])
-        filepath = os.path.join(self.info_parser.maindir, filepath)
-
-        if os.path.isfile(filepath) and os.access(filepath, os.F_OK):
-            return True
-        return False
+        if fuzzy:
+            filepaths: list[str] = [
+                file for file in os.listdir(self.info_parser.maindir) if re.match(filename, file)]
+            has_access = [os.access(filepath, os.F_OK) for filepath in filepaths]
+            if all(has_access):  # this is more restrictive, but ensures that one can operate the files
+                return filepaths
+        else:
+            filepath = os.path.join(self.info_parser.maindir, filepath)
+            if os.path.isfile(filepath) and os.access(filepath, os.F_OK):
+                return [filepath]
+        return []
 
     def _parse_dos(self, sec_scc):
         if self.dos_parser.get('totaldos', None) is None:
@@ -1451,6 +1556,74 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_k_band_segment.n_kpoints = nkpts_segment[nb]
             sec_k_band_segment.value = band_energies[nb] + energy_fermi
 
+    def _parse_species(self, sec_method):
+        type_order_mapping = {'APW': 1, 'LAP': 2}
+
+        self.species_parser.parse()
+        species_data = self.species_parser.results
+
+        # muffin-tin valence
+        radius = float(species_data['muffinTin']['radius'])
+        radialmeshPoints = int(species_data['muffinTin']['radialmeshPoints'])
+        radial_spacing = radius / radialmeshPoints
+        bs_val = BasisSet(
+            scope=['muffin-tin'],
+            radius=radius * ureg.bohr,
+            radius_lin_spacing=radial_spacing * ureg.bohr,
+        )
+        lo_samplings = {lo['l']: lo['wf'] for lo in species_data.get('lo', [])}
+        lmax = self.input_xml_parser.get('xs/lmaxapw', 10)
+        for l_n in range(lmax + 1):
+            orbital_type = species_data['default']['type']
+            energy_parameter = species_data['default']['trialEnergy']
+            if orbital_type is None:
+                orbital_type = 'lapw'
+            for custom_settings in species_data.get('custom', []):
+                if custom_settings['l'] == l_n:
+                    orbital_type = custom_settings['type']
+                    energy_parameter = custom_settings['trialEnergy']
+            orbital_type = orbital_type.upper()
+            for order in range(type_order_mapping[orbital_type[:3]]):
+                orbital = OrbitalAPW(
+                    l_quantum_number=l_n,
+                    type=orbital_type,
+                    order=order,
+                    energy_parameter=energy_parameter * ureg.hartree,
+                    update=species_data['default']['searchE'],
+                )
+                bs_val.orbital.append(orbital)
+
+            # Add lo's
+            max_order = 2
+            if orbital_type[-2] == 'LO' and l_n in lo_samplings.keys():
+                energy_parameters = [energy_parameter for _ in range(max_order)]
+                for wf in lo_samplings[l_n]:
+                    energy_parameters = [wf['trialEnergy'] for _ in range(wf['matchingOrder'], max_order)]
+                    for order, energy_parameter in enumerate(energy_parameters):
+                        orbital = OrbitalAPW(
+                            l_quantum_number=l_n,
+                            type='LO',
+                            order=order,
+                            energy_parameter=energy_parameter * ureg.hartree,
+                            update=species_data['default']['searchE'],
+                        )
+                    bs_val.orbital.append(orbital)
+
+            if not sec_method.electrons_representation:
+                sec_method.electrons_representation = [
+                    BasisSetContainer(
+                        scope=['wavefunction'],
+                        basis_set=[
+                            BasisSet(
+                                type='plane waves',
+                                scope=['valence'],
+                                cutoff_fractional=self.input_xml_parser.get('xs/cutoffapw', 7.),
+                            ),
+                        ]
+                    )
+                ]
+            sec_method.electrons_representation[0].basis_set.append(bs_val)
+
     def parse_file(self, name, section, filepath=None):
         # TODO add support for info.xml, wannier.out
         if name.startswith('dos') and name.endswith('xml'):
@@ -1477,6 +1650,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         elif name.startswith('BAND') and name.endswith('OUT'):
             parser = self.band_out_parser
             parser_function = self._parse_band_out
+        elif re.match(r'[A-Z][a-z]?\.xml', name):
+            parser = self.species_parser
+            parser_function = self._parse_species
         elif name.startswith('input') and name.endswith('xml'):
             parser = self.input_xml_parser
             if self._calculation_type == 'gw':
@@ -2005,7 +2181,12 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             k_mesh.grid = self.info_parser.get_initialization_parameter('kpoint_grid', default=[1] * 3)
             k_mesh.offset = self.info_parser.get_initialization_parameter('kpoint_offset', default=[0.] * 3)
 
-        sec_method.basis_set.append(BasisSet(type='(L)APW+lo'))
+        # Atom parameters
+        species_files = self.file_exists(r'[A-Z][a-z]?\.xml', fuzzy=True)
+        for species_file in species_files:
+            self.parse_file(species_file, sec_method)
+
+        # XC functional
         sec_dft = sec_method.m_create(DFT)
         sec_electronic = sec_method.m_create(Electronic)
         sec_electronic.method = 'DFT'

@@ -20,7 +20,7 @@ import numpy as np            # pylint: disable=unused-import
 
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference, JSON
+    Reference, JSON, MEnum
 )
 from nomad.datamodel.metainfo import simulation
 
@@ -265,34 +265,6 @@ class System(simulation.system.System):
         x_fleur_number_of_core_levels
         ''')
 
-    x_fleur_lexpansion_cutoff = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        l-expansion cutoff
-        ''')
-
-    x_fleur_mt_gridpoints = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        muffin-tin gridpoints
-        ''')
-
-    x_fleur_mt_radius = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        muffin-tin radius
-        ''')
-
-    x_fleur_logarythmic_increment = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        logarythmic increment
-        ''')
-
     x_fleur_k_max = Quantity(
         type=np.dtype(np.float64),
         shape=[],
@@ -525,6 +497,40 @@ class Method(simulation.method.Method):
     x_fleur_section_XC = SubSection(
         sub_section=SectionProxy('x_fleur_section_XC'),
         repeats=True)
+
+
+class OrbitalAPW(simulation.method.OrbitalAPW):
+    x_fleur_lo_type = Quantity(
+        type=MEnum('SCLO', 'HELO'),
+        shape=[],
+        description='''
+        Fleur demarcation of the LO type used.
+        https://www.flapw.de/MaX-6.0/documentation/localOrbitalSetup/
+        ''')
+
+
+class BasisSet(simulation.method.BasisSet):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_fleur_coretail = Quantity(
+        type=bool,
+        shape=[],
+        description='''
+        ''')
+
+    x_fleur_coretail_cutoff = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        '''
+    )
+
+    x_fleur_relativistic_core = Quantity(
+        type=bool,
+        shape=[],
+        description='''
+        ''')
 
 
 class XCFunctional(simulation.method.XCFunctional):

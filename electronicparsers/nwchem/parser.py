@@ -25,7 +25,8 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Electronic, Method, DFT, XCFunctional, Functional, BasisSet, Scf
+    Electronic, Method, DFT, XCFunctional, Functional, BasisSet, Scf,
+    BasisSetContainer,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -453,8 +454,17 @@ class NWChemParser:
         if total_charge is not None:
             sec_electronic.charge = total_charge
 
-        sec_basis = sec_method.m_create(BasisSet)
+        sec_basis = BasisSet()
         sec_basis.type = 'plane waves' if self.out_parser.get('pw') is not None else 'gaussians'
+        sec_basis.scope = ['valence'] if sec_basis.type == 'gaussians' else []  # TODO: add distinction for ECP
+        full_type = 'plane waves' if sec_basis.type == 'plane waves' else 'atom-centered orbitals'
+        sec_method.electrons_representation = [
+            BasisSetContainer(
+                type=full_type,
+                scope=['wavefunction'],
+                basis_set=[sec_basis],
+            )
+        ]
 
         return sec_method
 

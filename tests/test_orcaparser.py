@@ -41,13 +41,16 @@ def test_scf(parser):
     sec_method = archive.run[0].method[0]
     assert sec_method.electronic.method == 'DFT'
     assert sec_method.x_orca_nelectrons == 14.0
-    assert sec_method.x_orca_energy_change_tolerance == approx(4.35974472e-24)
+    assert sec_method.scf.threshold_energy_change.to('hartree').magnitude == 1.e-6
+    assert sec_method.scf.threshold_density_change == 1.e-6
+    assert sec_method.scf.x_orca_last_max_density_change == 1e-5
     assert sec_method.x_orca_radial_grid_type == 'Gauss-Chebyshev'
     assert len(sec_method.dft.xc_functional.exchange) == 2
     assert sec_method.dft.xc_functional.correlation[0].name == 'GGA_C_LYP'
-    assert len(sec_method.basis_set) == 3
-    assert sec_method.basis_set[1].x_orca_basis_set == '11s6p2d1f'
-    assert sec_method.basis_set[2].x_orca_nb_of_primitive_gaussian_functions == 92
+    sec_basis = sec_method.electrons_representation[0].basis_set
+    assert len(sec_basis) == 3
+    assert sec_basis[1].x_orca_basis_set == '11s6p2d1f'
+    assert sec_basis[2].x_orca_nb_of_primitive_gaussian_functions == 92
 
     sec_system = archive.run[0].system[0]
     assert sec_system.atoms.labels == ['C', 'O']
@@ -60,7 +63,6 @@ def test_scf(parser):
     assert sec_scc.x_orca_nb_elect_total == approx(14.000005402207)
     assert len(sec_scc.scf_iteration) == 8
     assert sec_scc.scf_iteration[3].energy.total.value.magnitude == approx(-4.94113458e-16)
-    assert sec_scc.scf_iteration[-1].x_orca_last_max_density_change == approx(9.441463170411847e-22)
     assert np.shape(sec_scc.eigenvalues[0].energies[0][0]) == (62,)
     assert sec_scc.eigenvalues[0].energies[0][0][28].magnitude == approx(6.53237991e-18)
     assert sec_scc.eigenvalues[0].occupations[0][0][6] == 2.0

@@ -25,8 +25,8 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser, TarParser, XMLParser, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Electronic, Method, DFT, Smearing, XCFunctional, Functional, BasisSet, BasisSetAtomCentered,
-    BasisSetCellDependent, Electronic, Scf
+    Electronic, Method, DFT, Smearing, XCFunctional, Functional, BasisSet,
+    BasisSetContainer, Electronic, Scf
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -306,22 +306,6 @@ class GPAWParser:
         unit = units_map.get(p_unit, p_unit) if p_unit else unit
         return val * unit
 
-    def get_basis_set_name(self, basis_set):
-        if basis_set == 'plane waves':
-            pw_cutoff = self.parser.get_parameter('planewavecutoff')
-            pw_cutoff = self.apply_unit(pw_cutoff, 'energyunit')
-            return 'PW_%.1f_Ry' % (pw_cutoff.to('rydberg').magnitude)
-        elif basis_set == 'real space grid':
-            cell = self.parser.get_array('unitcell')
-            ngpts = self.parser.get_array_dimension('ngpts')
-            if cell is None or ngpts is None:
-                return
-            h_grid = np.linalg.norm(cell, axis=1) / np.array(ngpts[:3])
-            h_grid = self.apply_unit(np.sum(h_grid) / 3.0, 'lengthunit')
-            return 'GR_%.1f' % (h_grid.to('fm').magnitude)
-        elif basis_set == 'numeric AOs':
-            return self.parser.get_parameter('basisset')
-
     def get_mode(self):
         mode = self.parser.get_parameter('mode')
         if isinstance(mode, dict):
@@ -344,24 +328,49 @@ class GPAWParser:
 
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)
-        sec_basis_set = sec_method.m_create(BasisSet)
+
+        # Basis Set
+        def _basisset_type_to_container(basisset_type: str) -> str:
+            for option in ('real-space grid', 'plane waves'):
+                if basisset_type == option:
+                    return basisset_type
+            if basisset_type == 'numeric AOs':
+                return 'atom-centered orbitals'
+            return ''
+
         mode = self.get_mode()
+        bs = None
         if mode == 'pw':
-            sec_basis = sec_basis_set.m_create(BasisSetCellDependent)
             pw_cutoff = self.parser.get_parameter('planewavecutoff')
             pw_cutoff = self.apply_unit(pw_cutoff, 'energyunit')
-            sec_basis.kind = 'plane waves'
-            sec_basis.planewave_cutoff = pw_cutoff
-            sec_basis.name = self.get_basis_set_name('plane waves')
+            bs = BasisSet(
+                scope=['valence'],
+                type='plane waves',
+                cutoff=pw_cutoff,
+            )
         elif mode == 'fd':
-            sec_basis = sec_basis_set.m_create(BasisSetCellDependent)
-            sec_basis.kind = 'real space grid'
-            sec_basis.name = self.get_basis_set_name('real space grid')
+            bs = BasisSet(
+                scope=['full-electron'],  # TODO check
+                type='real-space grid',
+            )
+            cell = self.parser.get_array('unitcell')
+            ngpts = self.apply_unit(self.parser.get_array_dimension('ngpts'), 'lengthunit')
+            if cell.any() and ngpts.all():
+                h_grid = np.linalg.norm(cell, axis=1) / np.array(ngpts[:3])
+                bs.grid_spacing = self.apply_unit(h_grid, 'lengthunit')
         elif mode == 'lcao':
-            sec_basis = sec_basis_set.m_create(BasisSetAtomCentered)
-            sec_basis.kind = 'numeric AOs'
-            sec_basis.name = self.get_basis_set_name('numeric AOs')
-        sec_basis_set.type = sec_basis.kind
+            bs = BasisSet(
+                scope=['full-electron'],  # TODO check
+                type='numeric AOs',
+            )
+        if bs:
+            sec_method.electrons_representation.append(
+                BasisSetContainer(
+                    type=_basisset_type_to_container(bs.type),
+                    scope=['wavefunction'],
+                    basis_set=[bs],
+                )
+            )
 
         sec_electronic = sec_method.m_create(Electronic)
         sec_electronic.relativity_method = 'pseudo_scalar_relativistic'

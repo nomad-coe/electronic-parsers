@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Functional, Method, DFT, Electronic, XCFunctional, Smearing,
-    BasisSetCellDependent, BasisSet, AtomParameters
+    BasisSetContainer, BasisSet, AtomParameters
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -623,6 +623,7 @@ class CastepParser:
             'Dispersion corrected final free energy* (Ecor-TS)': 'x_castep_total_dispersion_corrected_free_energy',
             'NB dispersion corrected est. 0K energy* (Ecor-0.5TS)': 'x_castep_disp_corrected_energy_total_T0',
             'basis set parameters': {
+                'basis set accuracy': 'native_tier',  # https://www.tcm.phy.cam.ac.uk/castep/documentation/WebHelp/content/modules/castep/keywords/k_basis_precision_castep.htm
                 'size of standard grid': 'x_castep_size_std_grid',
                 'size of   fine   gmax': 'x_castep_size_fine_grid'},
             'phonon parameters': {
@@ -752,15 +753,22 @@ class CastepParser:
 
         # basis set
         basis_parameters = self.out_parser.get('title', {}).get('basis set parameters', {})
-        sec_basis = sec_method.m_create(BasisSet)
-        sec_basis.type = 'plane_waves'
-        sec_basis_cell_dependent = sec_basis.m_create(BasisSetCellDependent)
-        sec_method.basis_set[0].cell_dependent.kind = 'plane_waves'
-        cutoff = basis_parameters.get('plane wave basis set cut-off')
-        if cutoff:
-            sec_basis_cell_dependent.planewave_cutoff = cutoff
-            sec_basis_cell_dependent.name = 'PW_%d' % (round(cutoff.to('rydberg').magnitude))
+        sec_method.electrons_representation.append(
+            BasisSetContainer(
+                native_tier=basis_parameters.get('basis set accuracy', 'FINE'),
+                type='plane waves',
+                scope=['wavefunction'],
+                basis_set=[
+                    BasisSet(
+                        scope=['valence'],
+                        type='plane waves',
+                        cutoff=basis_parameters.get('plane wave basis set cut-off'),
+                    )
+                ]
+            )
+        )
 
+        # DFT
         sec_dft = sec_method.m_create(DFT)
         method = 'DFT+U' if self.out_parser.get('dft_u') is not None else 'DFT'
         sec_method.electronic = Electronic(method=method, n_spin_channels=self.n_spin_channels)

@@ -27,7 +27,7 @@ from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.method import (
     Electronic, Method, BasisSet, BasisSetAtomCentered, Scf as ScfMethod, DFT,
-    XCFunctional, Functional)
+    XCFunctional, Functional, BasisSetContainer,)
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, ScfIteration, BandEnergies,
     Multipoles, MultipolesEntry, Charges, ChargesValue)
@@ -596,6 +596,30 @@ class Psi4Parser:
             except Exception:
                 pass
 
+    def _parse_basis(self, source: TextParser) -> list[BasisSet]:
+        '''Produce a list of the gaussian basis sets.'''
+        if source is None:
+            return []
+        atoms: list[BasisSetAtomCentered] = []
+        for entry in source.get('basis_set', []):
+            atom = BasisSetAtomCentered()
+            atom.name = entry.get('Basis Set', '').strip('(').strip(')')
+            atom.n_basis_functions = int(entry.get('Number of basis function', 0))
+            atom.x_psi4_n_shells = int(entry.get('Number of shells', 0))
+            atom.x_psi4_max_angular_momentum = int(entry.get('Max angular momentum', 0))
+            atom.x_psi4_n_cartesian_functions = int(entry.get('Number of Cartesian functions', 0))
+            atom.x_psi4_blend = entry.get('Blend')
+            atom.x_psi4_spherical_harmonics = entry.get('Spherical Harmonics?') == 'false'
+            atoms.append(atom)
+
+        return [
+            BasisSet(
+                type='gaussians',
+                scope=['full-electron'],
+                atom_centered=atoms,
+            ),
+        ]
+
     def parse_method(self, source):
         method = self.archive.run[-1].m_create(Method)
         if self._method is not None:
@@ -607,26 +631,18 @@ class Psi4Parser:
                     method.x_psi4_parameters = {
                         key: val for key, val in source.parameters.get('key_value', [])}
 
-        def parse_basis(source):
-            if source is None:
-                return
-            basis_set = method.m_create(BasisSet)
-            # TODO is this always the case?
-            basis_set.type = 'Gaussians'
-            for entry in source.get('basis_set', []):
-                atom = basis_set.m_create(BasisSetAtomCentered)
-                atom.name = entry.get('Basis Set', '').strip('(').strip(')')
-                atom.n_basis_functions = int(entry.get('Number of basis function', 0))
-                atom.x_psi4_n_shells = int(entry.get('Number of shells', 0))
-                atom.x_psi4_max_angular_momentum = int(entry.get('Max angular momentum', 0))
-                atom.x_psi4_n_cartesian_functions = int(entry.get('Number of Cartesian functions', 0))
-                atom.x_psi4_blend = entry.get('Blend')
-                atom.x_psi4_spherical_harmonics = entry.get('Spherical Harmonics?') == 'false'
-
-        # basis set
-        parse_basis(source.basis)
+        # Basis set
+        basis_sets = self._parse_basis(source.basis)
         for basis in source.get('auxiliary_basis', []):
-            parse_basis(basis)
+            basis_sets += self._parse_basis(basis)
+        if len(basis_sets) > 0:
+            method.electrons_representation = [
+                BasisSetContainer(
+                    type='atom-centered orbitals',
+                    scope=['wavefunction'],
+                    basis_set=basis_sets,
+                ),
+            ]
 
         if source.jk_matrices is not None:
             method.x_psi4_jk_matrices_parameters = source.jk_matrices.get('parameters', (None, None))[1]
@@ -844,7 +860,7 @@ class Psi4Parser:
             calculations_ref = []
             for name in module_names:
                 for submodule in module.get(name, []):
-                    self._method = submodule.get('method', name.split('_')[0].upper())
+                    self._method = submodule.get('method', name.split('_', maxsplit=1)[0].upper())
                     self.parse_system(submodule)
                     self.parse_method(submodule)
                     calc = self.parse_calculation(submodule)

@@ -637,21 +637,6 @@ class Method(simulation.method.Method):
         optional print switch, in in0
         ''')
 
-    x_wien2k_wf_switch = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        wave function switch between WFFIL, SUPWF, WPPRI
-        ''')
-
-    x_wien2k_rkmax = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        RmtKmax - determines matrix size (convergence), where Kmax is the plane wave cut-
-        off, Rmt is the smallest of all atomic sphere radii
-        ''')
-
     x_wien2k_in2_switch = Quantity(
         type=str,
         shape=[],

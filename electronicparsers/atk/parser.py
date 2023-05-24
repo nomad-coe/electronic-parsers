@@ -30,8 +30,7 @@ from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser, TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, Electronic, Smearing, DFT, XCFunctional, Functional,
-    BasisSetAtomCentered)
+    Method, Electronic, Smearing, DFT, XCFunctional, Functional)
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry)
@@ -106,7 +105,6 @@ class NCParser(FileParser):
             return atoms
 
         atoms.set_pbc(True)
-
 
         lattice = re.search(r'\nlattice = (\w+) *\((.+)\)', data)
         lattice, parameters = lattice.groups() if lattice else ('', '')
@@ -251,9 +249,9 @@ class ATKParser:
                 elif '_C' in xc_functional:
                     sec_xc_functional.correlation.append(Functional(name=xc_functional))
 
-            sec_method.basis_set.append(
-                BasisSet(type='numeric AOs'))
-            sec_method.basis_set[0].atom_centered.append(BasisSetAtomCentered(name='ATK LCAO basis'))
+            # Basis set
+            # TODO: QuantumATK supports multiple types of basis sets: numeric AOs, or plane waves
+            # https://www.synopsys.com/silicon/quantumatk/resources/feature-list.html#lcao
 
             return sec_method
 

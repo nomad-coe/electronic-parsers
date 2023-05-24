@@ -43,7 +43,7 @@ from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, BasisSetCellDependent, DFT, HubbardKanamoriModel, AtomParameters,
+    Method, BasisSet, BasisSetContainer, DFT, HubbardKanamoriModel, AtomParameters,
     XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh, Pseudopotential,
 )
 from nomad.datamodel.metainfo.simulation.system import (
@@ -114,7 +114,7 @@ class PotParser(TextParser):
             Quantity(
                 'pseudopotential', r'(VRHFIN\s+=[\s\S]+?LMMAX\s=\s+\d)', repeats=True,  # recognize where a header starts
                 sub_parser=TextParser(quantities=_pseudopotential)
-                ),
+            )
         ]
 
 
@@ -235,6 +235,40 @@ class ContentParser:
     def is_converged(self, n_calc):
         return False
 
+    def get_pseudopotential(self, filepath):  # TODO: combine with its vasprun.xml counterpart
+        '''Extract the pseudo-potential headers from an input file,
+        and return them as a list of keyword mappings.
+        Each element of the list corresponds to a pseudo-potential.'''
+        def _to_dict(key_val: list[list[str]], transform=lambda x: x) -> dict[str, Any]:
+            '''Convert a list of string pairs to a dictionary.
+            Key: first of the pairs
+            Value: second of the pairs, with the `transform` function applied
+            '''
+            return {x[0]: transform(x[1]) for x in key_val}
+
+        bool_mapping = {'T': True, 'F': False}
+        pps = PotParser(mainfile=self.parser.mainfile).parse().get('pseudopotential', [])
+        pps_out = []
+        for pp in pps:
+            pps_out.append({'title': pp['title']})
+            pps_out[-1]['flag'] = _to_dict(pp['flag'], transform=lambda x: bool_mapping[x])
+            pps_out[-1]['number'] = _to_dict(pp['number'], transform=lambda x: float(x))
+        return pps_out
+
+    def _get_tier(self, raw_data: Union[str, None], type='native') -> Union[str, None]:
+        '''Extract the tier from a string, and return it in a standardized format.
+        - `raw_data`: the string to extract the tier from
+        - `type`: the standardized output format, either `native` to VASP,
+                or `standard` NOMAD
+        '''
+        _map = ['low', 'medium', 'high', 'normal', 'single', 'accurate']
+        if tier_name := raw_data:
+            if type == 'native':
+                for tier in _map:
+                    if tier.startswith(tier_name.lower()):
+                        return tier
+        return None
+
 
 class OutcarTextParser(TextParser):
     def __init__(self):
@@ -273,6 +307,12 @@ class OutcarTextParser(TextParser):
                 if position:
                     positions.append(position.groups())
             return np.array(positions, dtype=float)
+
+        def str_to_eigenvalues(val_in):
+            val = []
+            for line in val_in.strip().splitlines():
+                val.extend(['nan' if '*' in v else v for v in line.split()])
+            return np.array(val, np.float64)
 
         scf_iteration = [
             Quantity(
@@ -335,8 +375,9 @@ class OutcarTextParser(TextParser):
                 'fermi_energy', r'E\-fermi :\s*([\d\.]+)', dtype=str, repeats=False),
             Quantity(
                 'eigenvalues',
-                r'band No\.\s*band energies\s*occupation\s*([\d\.\s\-]+?)(?:k\-point|spin|\-{10})',
-                repeats=True, dtype=float),
+                r'band No\.\s*band energies\s*occupation\s*([\d\.\s\-\*]+?)(?:k\-point|spin|\-{10})',
+                repeats=True, dtype=float,
+                str_operation=str_to_eigenvalues),
             Quantity(
                 'convergence',
                 r'(aborting loop because EDIFF is reached)')]
@@ -546,28 +587,12 @@ class OutcarContentParser(ContentParser):
 
         return self._atom_info
 
-    @property
-    def pseudopotential(self):  # TODO: combine with its vasprun.xml counterpart
+    def get_pseudopotential(self):  # TODO: combine with its vasprun.xml counterpart
         '''Extract the pseudo-potential headers from the OUTCAR,
         and return them as a list of keyword mappings.
         Each element of the list corresponds to a pseudo-potential.'''
-        def _to_dict(key_val: list[list[str]], transform=lambda x: x) -> dict[str, Any]:
-            '''Convert a list of string pairs to a dictionary.
-            Key: first of the pairs
-            Value: second of the pairs, with the `transform` function applied
-            '''
-            return {x[0]: transform(x[1]) for x in key_val}
 
-        bool_mapping = {'T': True, 'F': False}
-        pps = PotParser(mainfile=self.parser.mainfile).parse().get('pseudopotential', [])
-        pps_out: list[dict[str, Any]] = []
-        for pp in pps:
-            pps_out.append({'title': pp['title']})
-            pps_out[-1]['flag'] = _to_dict(pp['flag'],
-                transform=lambda x: bool_mapping[x])
-            pps_out[-1]['number'] = _to_dict(pp['number'],
-                transform=lambda x: float(x))
-        return pps_out
+        return super().get_pseudopotential(self.parser.mainfile)
 
     def get_n_scf(self, n_calc):
         return len(self.parser.get(
@@ -593,6 +618,24 @@ class OutcarContentParser(ContentParser):
             cell = cell * ureg.angstrom
 
         return dict(cell=cell, positions=positions, selective=selective, nose=nose)
+
+    def get_valence_basis_set(self) -> list[BasisSet]:
+        sec_bases: list[BasisSet] = []
+        for tag in ('ENCUT', 'ENAUG'):
+            cutoff_value = self.parser.get('parameters', {}).get(tag)
+            sec_basis = BasisSet(type='plane waves')
+            if cutoff_value:
+                sec_basis.cutoff = cutoff_value * ureg.eV  # based on examples
+            if tag == 'ENCUT':
+                sec_basis.scope = ['valence']
+            elif tag == 'ENAUG':
+                sec_basis.scope = ['augmentation']
+            # TODO: add grid spacing (NGX, NGY, NGZ)?
+            sec_bases.append(sec_basis)
+        return sec_bases
+
+    def get_tier(self, type='native') -> Union[str, None]:
+        return super()._get_tier(self.parser.get('parameters', {}).get('PREC'), type=type)
 
     def get_energies(self, n_calc, n_scf):
         energies = dict()
@@ -1071,29 +1114,38 @@ class RunContentParser(ContentParser):
                 self._atom_info[key] = array_info
         return self._atom_info
 
-    @property
-    def pseudopotential(self):  # TODO: combine with its OUTCAR counterpart
+    def get_pseudopotential(self):  # TODO: combine with its OUTCAR counterpart
         '''Extract the pseudo-potential headers from the POTCAR,
         and return them as a list of keyword mappings.
         Each element of the list corresponds to a pseudo-potential.'''
-        def _to_dict(key_val: list[list[str]], transform=lambda x: x) -> dict[str, Any]:
-            '''Convert a list of string pairs to a dictionary.
-            Key: first of the pairs
-            Value: second of the pairs, with the `transform` function applied
-            '''
-            return {x[0]: transform(x[1]) for x in key_val}
-
-        bool_mapping = {'T': True, 'F': False}
         potcar_file = os.path.join(self.parser.maindir, 'POTCAR.stripped')
-        pps = PotParser(mainfile=potcar_file).parse().get('pseudopotential', [])
-        pps_out: list[dict[str, Any]] = []
-        for pp in pps:
-            pps_out.append({'title': pp['title']})
-            pps_out[-1]['flag'] = _to_dict(pp['flag'],
-                transform=lambda x: bool_mapping[x])
-            pps_out[-1]['number'] = _to_dict(pp['number'],
-                transform=lambda x: float(x))
-        return pps_out
+        return super().get_pseudopotential(potcar_file)
+
+    def get_valence_basis_set(self) -> list[BasisSet]:
+        path = '/modeling[0]/parameters/separator[@name="electronic"]'
+        sec_bases: list[BasisSet] = []
+        for tag in ('ENMAX', 'ENAUG'):
+            cutoff_path = f'{path}/i[@name="{tag}"]'
+            cutoff_value = self._get_key_values(cutoff_path).get(tag)
+            if cutoff_value is not None:
+                sec_basis = BasisSet(
+                    type='plane waves',
+                    cutoff=cutoff_value * ureg.eV,  # based on examples
+                )
+                if tag == 'ENMAX':
+                    sec_basis.scope = ['valence']
+                elif tag == 'ENAUG':
+                    sec_basis.scope = ['augmentation']
+                # TODO: add grid spacing (NGX, NGY, NGZ)?
+                sec_bases.append(sec_basis)
+        return sec_bases
+
+    def get_tier(self, type='native') -> Union[str, None]:
+        return super()._get_tier(self._get_key_values(
+            '/modeling[0]/parameters/separator[@name="electronic"]/i[@name="PREC"]')
+            ['PREC'][0],
+            type=type
+        )
 
     def get_n_scf(self, n_calc):
         if self._n_scf is None:
@@ -1314,6 +1366,7 @@ class VASPParser():
         atomtypes = self.parser.atom_info.get('atomtypes', {})
         element = atomtypes.get('element', [])
         atom_counts = {e: 0 for e in element}
+        pseudopotentials = self.parser.get_pseudopotential()
         for i in range(len(element)):
             sec_method_atom_kind = sec_method.m_create(AtomParameters)
             atom_number = ase.data.atomic_numbers.get(element[i], 0)
@@ -1322,7 +1375,7 @@ class VASPParser():
                 element[i], atom_counts[element[i]]) if atom_counts[element[i]] > 0 else element[i]
             sec_method_atom_kind.label = str(atom_label)
             try:
-                pseudopotential = self.parser.pseudopotential[i]
+                pseudopotential = pseudopotentials[i]
                 sec_method_atom_kind.mass = pseudopotential['number']['POMASS'] * ureg.amu
                 sec_method_atom_kind.n_valence_electrons = pseudopotential['number']['ZVAL']
                 pp = Pseudopotential()
@@ -1345,18 +1398,19 @@ class VASPParser():
                     sec_hubb.orbital = orbital
                     sec_hubb.u = float(parsed_file.get('LDAUU')[i]) * ureg.eV
                     sec_hubb.j = float(parsed_file.get('LDAUJ')[i]) * ureg.eV
-                    sec_hubb.double_counting_correction = self.hubbard_dc_corrections[parsed_file.get('LDAUTYPE')]
+                    sec_hubb.double_counting_correction = self.hubbard_dc_corrections.get(parsed_file.get('LDAUTYPE'))
                     sec_hubb.x_vasp_projection_type = 'on-site'
             atom_counts[element[i]] += 1
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
 
-        prec = 1.3 if 'acc' in self.parser.incar.get('PREC', '') else 1.0
-        sec_basis = sec_method.m_create(BasisSet)
-        sec_basis.type = 'plane waves'
-        sec_basis_set_cell_dependent = sec_basis.m_create(BasisSetCellDependent)
-        sec_basis_set_cell_dependent.kind = 'plane waves'
-        sec_basis_set_cell_dependent.planewave_cutoff = self.parser.incar.get(
-            'ENMAX', self.parser.incar.get('ENCUT', 0.0)) * prec * ureg.eV
+        sec_method.electrons_representation = [
+            BasisSetContainer(
+                type='plane waves',
+                scope=['wavefunction'],
+                native_tier=self.parser.get_tier(type='native'),
+                basis_set=self.parser.get_valence_basis_set(),
+            )
+        ]
 
         sec_xc_functional = sec_dft.m_create(XCFunctional)
         if self.parser.incar.get('LHFCALC', False):
@@ -1641,7 +1695,7 @@ class VASPParser():
 
             # convergence
             converged = self.parser.is_converged(n)
-            if converged:
+            if converged is not None:
                 sec_scc.single_configuration_calculation_converged = converged
 
         # parse charge density
@@ -1650,7 +1704,7 @@ class VASPParser():
         if sec_scc and os.path.isfile(chgcar_file):
             grid = None
             n_points = 0
-            charge_density: List[float] = []
+            charge_density = []
             re_grid = re.compile(r' *\d+ +\d+ +\d+\s+')
             for line in open(chgcar_file):
                 if not line.strip():
@@ -1668,7 +1722,7 @@ class VASPParser():
                     # TODO remove temporary fix
                     if hasattr(Density, 'value_hdf5'):
                         from nomad.parsing.parser import to_hdf5
-                        filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), f'{os.path.basename(self.filepath)}.archive.hdf5')
+                        filename = os.path.join(os.path.dirname(self.filepath.split('/raw/')[-1]), f'{os.path.basename(self.filepath)}.archive.hdf5')
                         farg = 'r+b' if os.path.isfile(os.path.join(os.path.dirname(self.filepath), filename)) else 'wb'
                         sec_density = sec_scc.m_create(Density)
                         if self.archive.m_context:

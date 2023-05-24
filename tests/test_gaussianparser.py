@@ -43,7 +43,7 @@ def test_scf_spinpol(parser):
     assert len(sec_runs[0].x_gaussian_section_orbital_symmetries[0].x_gaussian_alpha_symmetries) == 50
 
     sec_methods = sec_runs[0].method
-    assert sec_methods[0].basis_set[0].atom_centered[0].name == 'AUG-CC-PVTZ'
+    assert sec_methods[0].electrons_representation[0].basis_set[0].atom_centered[0].name == 'AUG-CC-PVTZ'
     assert len(sec_methods) == 1
     assert sec_methods[0].dft.xc_functional.hybrid[0].name == 'HYB_GGA_XC_B3LYP'
     assert sec_methods[0].electronic.charge.magnitude == -1
