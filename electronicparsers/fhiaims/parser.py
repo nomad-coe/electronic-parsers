@@ -19,6 +19,7 @@
 import os
 import numpy as np
 import logging
+import json
 
 from nomad.units import ureg
 
@@ -48,6 +49,8 @@ from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_controlInOut_atom_species, x_fhi_aims_section_controlInOut_basis_func,\
     x_fhi_aims_section_vdW_TS
 from ..utils import BeyondDFTWorkflowsParser
+from typing import Any, Union, Callable
+from collections.abc import Iterable
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -720,6 +723,173 @@ class FHIAimsOutParser(TextParser):
 
     def get_number_of_spin_channels(self):
         return self.get('array_size_parameters', {}).get('Number of spin channels', 1)
+
+
+class Storage:
+    def __init__(self, key_length: int):
+        if key_length < 1:
+            raise ValueError('`key_length` has to be at least 1.')
+        self._key_length = key_length
+        self._storage = dict()
+
+    def add(self, val: Union[int, float], key: Union[tuple, list]):
+        '''
+        Adds `val` to the storage under `key`.
+        `key` has to be a `tuple` or `list` of length `self._key_length`.
+        Anything shorter will resort in an error.
+        Keys with 1 element more will be stored as a `dict`,
+        with the last key element being the `dict` key.
+        '''
+        if not isinstance(key, (tuple, list)):
+            raise TypeError('`key` has to be a `tuple` or `list`.')
+        if len(key) == self._key_length:
+            self._storage[tuple(key)] = val
+        elif len(key) == self._key_length + 1:
+            storage_key = tuple(key[:-1])
+            if storage_key not in self._storage:
+                self._storage[storage_key] = dict()
+            self._storage[storage_key][key[-1]] = val
+        else:
+            raise ValueError(f'`key` has to be of length {self._key_length} or {self._key_length + 1}.')
+
+    def get(self) -> Any:
+        '''Return the storage in an iterable, zipped format,
+        with the last `tuple` entry being the value.'''
+        for keys, val in self._storage.items():
+            yield *keys, val
+
+    def clean(self, sorting_function: Callable[[Any], Any] = lambda x: int(x)):
+        '''Convert dictionary entries to sorted lists.
+        The user can optionally specify the `sorting_function` employed.
+        Then default is in order of ascending integers.
+        Returns itself for easy deployment.'''
+        for key, val in self._storage.items():
+            if isinstance(val, dict):
+                sorted_vals = sorted(val.items(), key=lambda x: sorting_function(x[0]))
+                self._storage[key] = [v for _, v in sorted_vals]
+        return self
+
+    def append(self, storage, overwrite: bool = False):
+        '''Append the contents of `storage` to the current storage.
+        Toggle which values are stored in case of common keys with `overwrite`.'''
+        if not isinstance(storage, Storage):
+            raise TypeError('`storage` has to be of type `_Storage`.')
+        if storage._key_length != self._key_length:
+            raise ValueError('`storage`s require the same `key_length`.')
+        for key, val in storage._storage.items():
+            if key in self._storage and not overwrite:
+                continue
+            self._storage[key] = val
+
+
+class FHIAimsNativeTier:
+    _tier_filenames = {
+        'really_tight': 1,
+        'tight': 2,
+        'light': 3,
+    }
+
+    def __init__(self, basis_set: list[x_fhi_aims_section_controlIn_basis_set]):
+        self._basis_set = basis_set
+        self._species = Storage(3)
+        for bs in self._basis_set:
+            try:
+                self._read_species_file(bs.x_fhi_aims_controlIn_species_name)
+            except AttributeError:
+                pass
+
+    def _extract_species_file(self, filename: str, species_name: str) -> dict[str, Any]:
+        # read file
+        with open(f'{os.path.dirname(__file__)}/{filename}', 'r') as f:
+            data = json.load(f)
+        f.close()
+        # extract the species data
+        for section in data['sections']['section_run-0']['sections']['section_method-0']['x_fhi_aims_section_controlIn_basis_set']:
+            try:
+                if section['x_fhi_aims_controlIn_species_name'] == species_name:
+                    return section
+            except KeyError:
+                pass
+        return {}
+
+    def _read_species_file(self, species_name: str):
+        '''Reads the species file stored in `_tier_filenames`,
+        extracts the data specific to atom labels,
+        and store it as a dictionary in `self._species`.'''
+        to_skip = (
+            'x_fhi_aims_section_controlIn_basis_func',
+            'x_fhi_aims_controlIn_species_name',
+        )
+        to_write = Storage(3)
+        for tiername in __class__._tier_filenames.keys():
+            filename = f'{tiername}.json'
+            extracted_data = self._extract_species_file(filename, species_name)
+            for fhiaims_key, fhiaims_val in extracted_data.items():
+                indexed_key: int = 0
+                # some keys are not read
+                if fhiaims_key in to_skip or isinstance(fhiaims_val, str):
+                    continue
+                # convert old key format with index at the end
+                if fhiaims_key[-1] in [str(i) for i in range(0, 10)]:
+                    indexed_key = int(fhiaims_key[-1])
+                    fhiaims_key = fhiaims_key[:-1]
+                # write out values
+                to_write.add(fhiaims_val, [species_name, fhiaims_key, tiername, indexed_key])
+        self._species.append(to_write.clean())
+
+    def _check_tier(self) -> dict[str, Any]:
+        '''Assign the highest passed threshold for each quantity,
+        based on the `_tier_filenames`.
+        '''
+        tier_map = Storage(2)
+        for species_name, fhiaims_key, tier, val in self._species.get():
+            for bs in self._basis_set:
+                # default to `None` when the tag is not applicable
+                if fhiaims_key not in bs:
+                    tier_map.add(None, (species_name, fhiaims_key))
+                    continue
+                # treat lists and floats differently
+                passed = False
+                ref_val = bs[fhiaims_key]
+                parsed_val = val
+                if isinstance(ref_val, Iterable) and isinstance(parsed_val, Iterable):
+                    if len(ref_val) == len(parsed_val):
+                        if all(np.array(ref_val) == np.array(parsed_val)):
+                            passed = True
+                elif ref_val == parsed_val:
+                    passed = True
+                # write out the tier or default to empty string
+                if passed:
+                    tier_map.add(tier, (species_name, fhiaims_key))
+                else:
+                    tier_map.add('', (species_name, fhiaims_key))
+                # str entries are not tested, since they are filtered out in self._read_species_file()
+        return tier_map
+
+    def assign_tier_species(self) -> dict[str, Union[str, None]]:
+        '''Decide which overall `native_tier` to assign, based on the make-up
+        of the quantities. Calls `self._check_tier()`.
+        '''
+        tier_map = self._check_tier()
+        tier_by_species: dict[str, Union[str, None]] = dict()
+        # Assign tier for each species
+        for species_name, _, tier in tier_map.get():
+            # filter out None and ''
+            if not tier:
+                continue
+            # Store new tiers
+            if species_name not in tier_by_species:
+                tier_by_species[species_name] = tier
+            # Downgrade tier is necessary
+            elif __class__._tier_filenames[tier_by_species[species_name]] >\
+                    __class__._tier_filenames[tier]:
+                tier_by_species[species_name] = tier
+        return tier_by_species
+
+    def assign_tier(self) -> Union[str, None]:
+        '''Return overall tier. Calls `self.assign_tier_species()`.'''
+        tiers = self.assign_tier_species()
+        return max(tiers.values(), key=lambda x: __class__._tier_filenames[x])
 
 
 class FHIAimsParser(BeyondDFTWorkflowsParser):
@@ -1622,6 +1792,13 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
         # xc functional from output
         self.parse_xc_functional(sec_method, sec_dft)
+
+        # assign native tier
+        if sec_method.electrons_representation:
+            x_basis_set = sec_run.method[0].x_fhi_aims_section_controlIn_basis_set
+            native_tier = FHIAimsNativeTier(x_basis_set).assign_tier()
+            if native_tier:
+                sec_method.electrons_representation[0].native_tier = native_tier
 
     def parse_xc_functional(self, section, subsection):
         xc_inout = self.out_parser.get('x_fhi_aims_controlInOut_xc', None)
