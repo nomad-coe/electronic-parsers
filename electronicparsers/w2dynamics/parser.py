@@ -34,7 +34,6 @@ from nomad.datamodel.metainfo.simulation.method import (
     TimeMesh, DMFT
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.workflow import Workflow
 from .metainfo.w2dynamics import (
     x_w2dynamics_axes, x_w2dynamics_quantities, x_w2dynamics_config_parameters,
     x_w2dynamics_config_atoms_parameters
