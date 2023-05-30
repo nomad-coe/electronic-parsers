@@ -32,7 +32,6 @@ from nomad.datamodel.metainfo.simulation.method import (
     Method, AtomParameters, KMesh, Wannier, Projection
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms, AtomsGroup
-from nomad.datamodel.metainfo.workflow import Workflow
 from ..utils import get_files
 
 re_n = r'[\n\r]'
@@ -523,7 +522,5 @@ class Wannier90Parser():
 
         self.parse_scc()
 
-        sec_workflow = self.archive.m_create(Workflow)
-        sec_workflow.type = 'single_point'
         workflow = SinglePoint()
         self.archive.workflow2 = workflow

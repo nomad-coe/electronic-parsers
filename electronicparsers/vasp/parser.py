@@ -29,7 +29,7 @@ respective file format. They both use separate file (:class:`RunFileParser`) and
 (:class:`OutcarTextParser`) parsers to read content content from either xml or text files.
 '''
 
-from typing import List
+from typing import List, Any, Union
 import os
 import numpy as np
 import logging
@@ -53,12 +53,9 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry,
     BandEnergies, DosValues, ScfIteration, BandStructure, BandGapDeprecated, Dos, Density
 )
-from nomad.datamodel.metainfo.workflow import (
-    Workflow, GeometryOptimization, SinglePoint, MolecularDynamics)
 from nomad.datamodel.metainfo.simulation.workflow import (
-    SinglePoint as SinglePoint2, GeometryOptimization as GeometryOptimization2,
-    GeometryOptimizationMethod, MolecularDynamics as MolecularDynamics2)
-from typing import Any, Union
+    SinglePoint, GeometryOptimization,
+    GeometryOptimizationMethod, MolecularDynamics)
 
 re_n = r'[\n\r]'
 
@@ -1496,39 +1493,26 @@ class VASPParser():
         sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
     def parse_workflow(self):
-        sec_workflow = self.archive.m_create(Workflow)
-
         ibrion = -1
         incar = self.archive.run[-1].method[-1].x_vasp_incar_out
         if incar is not None:
             nsw = incar.get('NSW')
             ibrion = -1 if nsw == 0 else incar.get('IBRION', 0)
 
-        workflow2 = None
+        workflow = None
         if ibrion == -1:
-            sec_workflow.type = 'single_point'
-            sec_workflow.m_create(SinglePoint)
-            workflow2 = SinglePoint2()
+            workflow = SinglePoint()
         elif ibrion == 0:
-            sec_workflow.type = 'molecular_dynamics'
-            sec_workflow.m_create(MolecularDynamics)
-            workflow2 = MolecularDynamics2()
+            workflow = MolecularDynamics()
         else:
-            sec_workflow.type = 'geometry_optimization'
-            task = sec_workflow.m_create(GeometryOptimization)
+            workflow = GeometryOptimization(method=GeometryOptimizationMethod())
             tolerance = self.parser.incar.get('EDIFFG')
             if tolerance is not None:
                 if tolerance > 0:
-                    task.convergence_tolerance_energy_difference = tolerance * ureg.eV
+                    workflow.method.convergence_tolerance_energy_difference = tolerance * ureg.eV
                 else:
-                    task.convergence_tolerance_force_maximum = abs(tolerance) * ureg.eV / ureg.angstrom
-            workflow2 = GeometryOptimization2(
-                method=GeometryOptimizationMethod(
-                    convergence_tolerance_energy_difference=tolerance * ureg.eV,
-                    convergence_tolerance_force_maximum=abs(tolerance) * ureg.eV / ureg.angstrom
-                )
-            )
-        self.archive.workflow2 = workflow2
+                    workflow.method.convergence_tolerance_force_maximum = abs(tolerance) * ureg.eV / ureg.angstrom
+        self.archive.workflow2 = workflow
 
     def parse_configurations(self):
         sec_run = self.archive.run[-1]

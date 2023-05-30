@@ -46,7 +46,7 @@ def test_single_point(parser):
     assert sec_method.dft.xc_functional.correlation[0].name == 'MGGA_C_TPSS'
     assert sec_method.dft.xc_functional.exchange[0].weight == 1.0
 
-    assert archive.workflow[0].type == 'single_point'
+    assert archive.workflow2.m_def.name == 'SinglePoint'
 
     sec_scc = archive.run[0].calculation[0]
     assert sec_scc.energy.total.value.magnitude == approx(-3.332424186333889e-16)

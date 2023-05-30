@@ -48,7 +48,7 @@ def test_single_point(parser):
     assert sec_method.dft.xc_functional.correlation[0].name == 'GGA_C_PBE'
     assert sec_method.electronic.smearing.kind == 'gaussian'
 
-    assert archive.workflow[0].type == 'single_point'
+    assert archive.workflow2.m_def.name == 'SinglePoint'
 
     sec_scc = sec_run.calculation[0]
     assert np.shape(sec_scc.forces.total.value) == (8, 3)
@@ -78,10 +78,9 @@ def test_dmd(parser):
     archive = EntryArchive()
     parser.parse('tests/data/castep/TiO2-geom.castep', archive, None)
 
-    sec_workflow = archive.workflow[0]
-    assert sec_workflow.type == 'geometry_optimization'
-    assert sec_workflow.geometry_optimization.method == 'damped MD'
-    assert sec_workflow.geometry_optimization.convergence_tolerance_force_maximum.magnitude == approx(8.01088317e-11)
+    sec_workflow = archive.workflow2
+    assert sec_workflow.method.method == 'damped MD'
+    assert sec_workflow.method.convergence_tolerance_force_maximum.magnitude == approx(8.01088317e-11)
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 23
@@ -100,11 +99,10 @@ def test_md(parser):
     archive = EntryArchive()
     parser.parse('tests/data/castep/Si8-md-NPT.castep', archive, None)
 
-    sec_workflow = archive.workflow[0]
-    assert sec_workflow.type == 'molecular_dynamics'
-    assert sec_workflow.molecular_dynamics.ensemble_type == 'NPT'
-    assert sec_workflow.molecular_dynamics.x_castep_thermostat_type == 'Nose-Hoover chain thermostat'
-    assert sec_workflow.molecular_dynamics.x_castep_frame_energy_tolerance.magnitude == approx(1.60217663e-24)
+    sec_workflow = archive.workflow2
+    assert sec_workflow.method.thermodynamic_ensemble == 'NPT'
+    assert sec_workflow.method.x_castep_thermostat_type == 'Nose-Hoover chain thermostat'
+    assert sec_workflow.method.x_castep_frame_energy_tolerance.magnitude == approx(1.60217663e-24)
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 13
@@ -166,7 +164,7 @@ def test_tss(parser):
     archive = EntryArchive()
     parser.parse('tests/data/castep/h2-lst.castep', archive, None)
 
-    assert archive.workflow[0].type == 'geometry_optimization'
+    assert archive.workflow2.m_def.name == 'GeometryOptimization'
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 27
@@ -177,7 +175,7 @@ def test_bfgs(parser):
     archive = EntryArchive()
     parser.parse('tests/data/castep/Si2_opt.castep', archive, None)
 
-    assert archive.workflow[0].type == 'geometry_optimization'
+    assert archive.workflow2.m_def.name == 'GeometryOptimization'
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 9

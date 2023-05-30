@@ -22,7 +22,7 @@ from glob import glob
 
 from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
-from nomad.datamodel.metainfo.workflow2 import Link, TaskReference
+from nomad.datamodel.metainfo.workflow import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
     GW, GWMethod, ParticleHoleExcitations,
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,

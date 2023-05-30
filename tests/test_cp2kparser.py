@@ -78,7 +78,7 @@ def test_single_point(parser):
     assert sec_system.atoms.lattice_vectors[2][2].magnitude == approx(5.431e-10)
     assert False not in sec_system.atoms.periodic
 
-    assert archive.workflow[0].type == 'single_point'
+    assert archive.workflow2.m_def.name == 'SinglePoint'
 
 
 def test_geometry_optimization(parser):
@@ -87,8 +87,8 @@ def test_geometry_optimization(parser):
 
     assert len(archive.run[0].x_cp2k_section_quickstep_calculation) == 101
 
-    sec_workflow = archive.workflow[0]
-    assert sec_workflow.geometry_optimization.method == 'conjugate gradient'
+    sec_workflow = archive.workflow2
+    assert sec_workflow.method.method == 'conjugate gradient'
     sec_opt = sec_workflow.x_cp2k_section_geometry_optimization[0]
     assert len(sec_opt.x_cp2k_section_geometry_optimization_step) == 11
     assert sec_opt.x_cp2k_section_geometry_optimization_step[2].x_cp2k_optimization_rms_gradient == approx(1.0992366882757706e-10)
@@ -109,9 +109,9 @@ def test_molecular_dynamics(parser):
     archive = EntryArchive()
     parser.parse('tests/data/cp2k/molecular_dynamics/H2O-32.out', archive, None)
 
-    sec_workflow = archive.workflow[0]
-    assert sec_workflow.molecular_dynamics.thermodynamic_ensemble == 'NVE'
-    assert sec_workflow.x_cp2k_section_md_settings[0].x_cp2k_md_print_frequency == 1
+    sec_workflow = archive.workflow2
+    assert sec_workflow.method.thermodynamic_ensemble == 'NVE'
+    assert sec_workflow.method.x_cp2k_section_md_settings[0].x_cp2k_md_print_frequency == 1
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 12

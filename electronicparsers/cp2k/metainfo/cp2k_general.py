@@ -23,8 +23,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference
 )
 
-from nomad.datamodel.metainfo import simulation, workflow
-
+from nomad.datamodel.metainfo import simulation
 
 m_package = Package()
 
@@ -1093,7 +1092,7 @@ class Run(simulation.run.Run):
         repeats=True)
 
 
-class GeometryOptimization(workflow.GeometryOptimization):
+class GeometryOptimization(simulation.workflow.GeometryOptimization):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -1102,16 +1101,21 @@ class GeometryOptimization(workflow.GeometryOptimization):
         repeats=True)
 
 
-class Workflow(workflow.Workflow):
+class GeometryOptimizationMethod(simulation.workflow.GeometryOptimizationMethod):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_cp2k_section_geometry_optimization = SubSection(
+        sub_section=SectionProxy('x_cp2k_section_geometry_optimization'),
+        repeats=True)
+
+
+class MolecularDynamicsMethod(simulation.workflow.MolecularDynamicsMethod):
 
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cp2k_section_md_settings = SubSection(
         sub_section=SectionProxy('x_cp2k_section_md_settings'),
-        repeats=True)
-
-    x_cp2k_section_geometry_optimization = SubSection(
-        sub_section=SectionProxy('x_cp2k_section_geometry_optimization'),
         repeats=True)
 
 

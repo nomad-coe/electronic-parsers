@@ -23,7 +23,6 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference, JSON
 )
 from nomad.datamodel.metainfo import simulation
-from nomad.datamodel.metainfo import workflow
 
 
 m_package = Package()
@@ -874,7 +873,7 @@ class Calculation(simulation.calculation.Calculation):
         repeats=True)
 
 
-class GeometryOptimization(workflow.GeometryOptimization):
+class GeometryOptimization(simulation.workflow.GeometryOptimization):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -887,7 +886,7 @@ class GeometryOptimization(workflow.GeometryOptimization):
         repeats=True)
 
 
-class MolecularDynamics(workflow.MolecularDynamics):
+class MolecularDynamics(simulation.workflow.MolecularDynamics):
 
     m_def = Section(validate=False, extends_base_section=True)
 

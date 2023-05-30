@@ -323,12 +323,10 @@ def asserts_basic_code_specific(archive, method_type="DFT", system_type="3D", ru
 
 
 def asserts_geo_opt(archive, method_type="DFT", system_type="3D", vdw=None, forces=False):
-    workflow = archive.workflow[0]
-    assert workflow.type == "geometry_optimization"
-    assert workflow.geometry_optimization.convergence_tolerance_energy_difference is not None
-    assert workflow.geometry_optimization.convergence_tolerance_displacement_maximum is not None
-    assert workflow.calculations_ref is not None
-    assert workflow.geometry_optimization.is_converged_geometry is True
+    workflow = archive.workflow2
+    assert workflow.method.convergence_tolerance_energy_difference is not None
+    assert workflow.method.convergence_tolerance_displacement_maximum is not None
+    assert workflow.results.is_converged_geometry is True
 
 
 def asserts_band_structure(archive, method_type="DFT", system_type="3D", vdw=None, forces=False):

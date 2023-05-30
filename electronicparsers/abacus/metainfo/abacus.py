@@ -24,7 +24,6 @@ from nomad.metainfo import (  # pylint: disable=unused-import
 )
 
 from nomad.datamodel.metainfo import simulation
-from nomad.datamodel.metainfo import workflow
 
 
 m_package = Package()
@@ -743,19 +742,6 @@ class BandEnergies(simulation.calculation.BandEnergies):
         description='''
         Number of plane waves for each k-point
         ''',)
-
-
-class GeometryOptimization(workflow.GeometryOptimization):
-
-    m_def = Section(validate=False, extends_base_section=True)
-
-    x_abacus_geometry_optimization_threshold_stress = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='pascal',
-        description='''
-        The threshold of the stress convergence, it indicates the largest stress among all the directions
-        ''')
 
 
 m_package.__init_metainfo__()

@@ -37,12 +37,9 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     StressEntry, Charges, ChargesValue, ScfIteration, BandStructure, BandEnergies,
     VibrationalFrequencies, VibrationalFrequenciesValues
 )
-from nomad.datamodel.metainfo.workflow import (
-    Workflow, GeometryOptimization, MolecularDynamics
-)
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod,
-    MolecularDynamics as MolecularDynamics2, MolecularDynamicsMethod
+    GeometryOptimization, GeometryOptimizationMethod, MolecularDynamics, MolecularDynamicsMethod,
+    SinglePoint, Phonon
 )
 
 from .metainfo.castep import x_castep_section_phonons, x_castep_section_scf_parameters,\
@@ -833,7 +830,6 @@ class CastepParser:
             sec_atom_parameters.mass = mass
 
     def parse_workflow(self):
-        sec_workflow = self.archive.m_create(Workflow)
         workflow = None
 
         title = self.out_parser.get('title', {})
@@ -843,35 +839,37 @@ class CastepParser:
         if method is None:
             self.logger.warning('Sampling method cannot be resolved.')
             method = 'single_point'
-        sec_workflow.type = method
 
         if method == 'geometry_optimization':
-            sec_geometry_opt = sec_workflow.m_create(GeometryOptimization)
             parameters = title.get('geometry optimization parameters', {})
             key_map = self._metainfo_map.get('geometry optimization parameters')
+            workflow = GeometryOptimization(method=GeometryOptimizationMethod())
             for key, val in parameters.items():
                 key = key_map.get(key)
                 if key is None or val is None:
                     continue
-                setattr(sec_geometry_opt, key, val)
-            workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
+                setattr(workflow.method, key, val)
             workflow.method.convergence_tolerance_displacement_maximum = parameters.get('max ionic |displacement| tolerance')
             workflow.method.convergence_tolerance_energy_difference = parameters.get('total energy convergence tolerance')
             workflow.method.convergence_tolerance_force_maximum = parameters.get('max ionic |force| tolerance')
         elif method == 'molecular_dynamics':
-            sec_md = sec_workflow.m_create(MolecularDynamics)
             parameters = title.get('molecular dynamics parameters', {})
-            workflow = MolecularDynamics2(method=MolecularDynamicsMethod())
+            workflow = MolecularDynamics(method=MolecularDynamicsMethod())
             for key, val in parameters.items():
                 key = self._metainfo_map.get('molecular dynamics parameters').get(key)
                 if key is None or val is None:
                     continue
                 if isinstance(key, list):
                     for i, key_i in enumerate(key):
-                        setattr(sec_md, key_i, val[i])
+                        setattr(workflow.method, key_i, val[i])
                 else:
-                    setattr(sec_md, key, val)
+                    setattr(workflow.method, key, val)
             workflow.method.thermodynamic_ensemble = parameters.get('ensemble')
+        elif method == 'single_point':
+            workflow = SinglePoint()
+
+        elif method == 'phonon':
+            workflow = Phonon()
 
         self.archive.workflow2 = workflow
 
@@ -1185,7 +1183,7 @@ class CastepParser:
         if calculation.get('final') is not None:
             parse_calculation(calculation.get('final'))
 
-        if self.archive.workflow[0].type in ['single_point', 'phonon']:
+        if self.archive.workflow2.m_def.name in ['SinglePoint', 'Phonon']:
             # single point calculation
             parse_calculation(calculation)
 

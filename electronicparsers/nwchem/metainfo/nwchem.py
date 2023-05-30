@@ -23,7 +23,6 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference
 )
 from nomad.datamodel.metainfo import simulation
-from nomad.datamodel.metainfo import workflow
 
 
 m_package = Package()
@@ -346,7 +345,7 @@ class Calculation(simulation.calculation.Calculation):
         repeats=True)
 
 
-class MolecularDynamics(workflow.MolecularDynamics):
+class MolecularDynamics(simulation.workflow.MolecularDynamics):
 
     m_def = Section(validate=False, extends_base_section=True)
 

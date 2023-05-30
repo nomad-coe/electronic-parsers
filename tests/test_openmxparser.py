@@ -122,10 +122,9 @@ def test_AlN(parser):
     assert method.scf.n_max_iteration == 100
     assert method.scf.threshold_energy_change.magnitude == approx(Ha_to_J(1e-7))
 
-    workflow = archive.workflow[0]
-    assert workflow.type == "geometry_optimization"
-    assert workflow.geometry_optimization.method == "steepest_descent"
-    assert workflow.geometry_optimization.convergence_tolerance_force_maximum.magnitude == approx(
+    workflow = archive.workflow2
+    assert workflow.method.method == "steepest_descent"
+    assert workflow.method.convergence_tolerance_force_maximum.magnitude == approx(
         (0.0003 * units.hartree / units.bohr).to_base_units().magnitude)
 
     assert len(run.system) == 5
@@ -197,9 +196,8 @@ def test_C2N2(parser):
     assert method.dft.xc_functional.exchange[0].name == 'LDA_X'
     assert method.dft.xc_functional.correlation[0].name == 'LDA_C_PZ'
 
-    workflow = archive.workflow[0]
-    assert workflow.type == "molecular_dynamics"
-    assert workflow.molecular_dynamics.thermodynamic_ensemble == "NVT"
+    workflow = archive.workflow2
+    assert workflow.method.thermodynamic_ensemble == "NVT"
 
     system = run.system[0]
     assert np.shape(system.atoms.velocities) == (4, 3)

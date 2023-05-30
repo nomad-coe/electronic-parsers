@@ -34,7 +34,6 @@ from nomad.datamodel.metainfo.simulation.method import (
     TimeMesh, DMFT
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.workflow import Workflow
 from .metainfo.w2dynamics import (
     x_w2dynamics_axes, x_w2dynamics_quantities, x_w2dynamics_config_parameters,
     x_w2dynamics_config_atoms_parameters
@@ -431,7 +430,5 @@ class W2DynamicsParser:
         self.parse_scc()
 
         # Workflow section
-        sec_workflow = self.archive.m_create(Workflow)
-        sec_workflow.type = 'single_point'
         workflow = SinglePoint()
         self.archive.workflow2 = workflow

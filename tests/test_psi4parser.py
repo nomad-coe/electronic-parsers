@@ -258,8 +258,7 @@ def test_cc(parser):
     assert calc[6].energy.contributions[0].value.magnitude == approx(3.30311948e-16)
     assert calc[9].forces.total.value[1][1].magnitude == approx(-5.32388792e-10)
 
-    assert archive.workflow[-1].type == 'geometry_optimization'
-    geo_opt = archive.workflow[-1].geometry_optimization
-    assert geo_opt.convergence_tolerance_energy_difference.magnitude == approx(4.35974472e-24)
-    assert geo_opt.convergence_tolerance_force_maximum.magnitude == approx(2.47161705e-11)
-    assert geo_opt.convergence_tolerance_displacement_maximum.magnitude == approx(6.35012653e-14)
+    geo_opt = archive.workflow2
+    assert geo_opt.method.convergence_tolerance_energy_difference.magnitude == approx(4.35974472e-24)
+    assert geo_opt.method.convergence_tolerance_force_maximum.magnitude == approx(2.47161705e-11)
+    assert geo_opt.method.convergence_tolerance_displacement_maximum.magnitude == approx(6.35012653e-14)

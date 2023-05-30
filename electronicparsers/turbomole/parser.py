@@ -37,9 +37,8 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry,
     Thermodynamics, BandEnergies, ScfIteration
 )
-from nomad.datamodel.metainfo.workflow import Workflow, GeometryOptimization
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GeometryOptimization as GeometryOptimization2, GeometryOptimizationMethod
+    GeometryOptimization, GeometryOptimizationMethod
 )
 
 from .metainfo import turbomole  # pylint: disable=unused-import
@@ -1144,9 +1143,7 @@ class TurbomoleParser:
         if options is None:
             return
 
-        sec_workflow = self.archive.m_create(Workflow)
-        sec_geometry_opt = sec_workflow.m_create(GeometryOptimization)
-        workflow = GeometryOptimization2(method=GeometryOptimizationMethod())
+        workflow = GeometryOptimization(method=GeometryOptimizationMethod())
         for key, val in options.items():
             if 'radius' in key or 'displacement' in key:
                 val = val * ureg.bohr
@@ -1157,7 +1154,6 @@ class TurbomoleParser:
             key = self.metainfo_map.get(key, None)
             if key is None:
                 continue
-            setattr(sec_geometry_opt, key, val)
             setattr(workflow.method, key, val)
         self.archive.workflow2 = workflow
 

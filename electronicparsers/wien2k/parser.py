@@ -39,7 +39,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Forces, ForcesEntry, ScfIteration, Energy, EnergyEntry, BandEnergies, Dos,
     DosValues
 )
-from nomad.datamodel.metainfo.workflow import Workflow
+from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 from .metainfo.wien2k import x_wien2k_section_equiv_atoms
 
 
@@ -262,7 +262,7 @@ class OutParser(TextParser):
                 sub_parser=TextParser(quantities=[
                     Quantity(
                         'energy_reference_fermi',
-                        rf'F E R M I \- ENERGY.+?\=\s*([\d\.\-\+Ee ]+)',
+                        r'F E R M I \- ENERGY.+?\=\s*([\d\.\-\+Ee ]+)',
                         str_operation=lambda x: [float(v) for v in x.strip().split()] * ureg.rydberg,
                         convert=False)])),
             Quantity(
@@ -458,7 +458,7 @@ class Wien2kParser:
         self.out_parser.logger = self.logger
 
     def get_wien2k_file(self, ext, multiple=False):
-        paths = [p for p in os.listdir(self.maindir) if re.match(r'.*%s$' % ext, p)]
+        paths = [p for p in os.listdir(self.maindir) if re.match(rf'.*{ext}$', p)]
         if not paths:
             return [] if multiple else None
         elif len(paths) == 1:
@@ -507,7 +507,7 @@ class Wien2kParser:
         else:
             files = []
             for spin in ['up', 'dn']:
-                files_spin = self.get_wien2k_file(r'energy%s\_\d+' % spin, multiple=True)
+                files_spin = self.get_wien2k_file(rf'energy{spin}\_\d+', multiple=True)
                 # sort the files so that the k-points are read in order
                 files_spin = sorted(files_spin, key=lambda x: int(x.split('_')[-1]))
                 if not files_spin:
@@ -869,8 +869,7 @@ class Wien2kParser:
             sec_run.time_run = TimeRun(date_start=dt.total_seconds())
 
         # TODO implement geometry optimization
-        sec_workflow = self.archive.m_create(Workflow)
-        sec_workflow.type = 'single_point'
+        archive.workflow2 = SinglePoint()
 
         self.parse_method()
 

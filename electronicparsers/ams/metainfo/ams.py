@@ -23,7 +23,6 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference, JSON
 )
 from nomad.datamodel.metainfo import simulation
-from nomad.datamodel.metainfo import workflow
 
 
 m_package = Package()
@@ -87,7 +86,7 @@ class Forces(simulation.calculation.Forces):
     x_ams_nuclear_repulsion = SubSection(sub_section=simulation.calculation.ForcesEntry)
 
 
-class GeometryOptimization(workflow.GeometryOptimization):
+class GeometryOptimization(simulation.workflow.GeometryOptimization):
 
     m_def = Section(validate=False, extends_base_section=True)
 
