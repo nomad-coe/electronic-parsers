@@ -199,6 +199,13 @@ def test_dos_silicon(silicon, version, silicon_normalization_factors):
     assert gap == approx(0.54054054, abs=.04)  # TODO increase accuracy
 
 
+@pytest.mark.parametrize("version", silicon_versions())
+def test_silicon_basis_set(silicon, version):
+    '''Test the `electrons_representation` section (for `type=wavefunction`) of `silicon`.'''
+    sec_er = silicon[version].run[-1].method[0].electrons_representation[0]
+    sec_er.native_tier == 'light'
+
+
 def test_dos(parser):
     archive = EntryArchive()
     parser.parse('tests/data/fhiaims/ClNa_dos/ClNa_dos.out', archive, None)
