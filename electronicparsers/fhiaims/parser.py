@@ -57,9 +57,9 @@ package_folder = os.path.dirname(__file__)
 try:
     with open(os.path.join(package_folder, json_file_name)) as f:
         native_tier_references = json.load(f)
-        f.close()
 except (FileNotFoundError, json.JSONDecodeError):
     raise Exception(f'FHI-aims parser could not load {json_file_name}')  # TODO: add to error logger
+tier_map = {'light': 1, 'tight': 2, 'really_tight': 3}
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -1564,6 +1564,30 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 sec_basis_set.x_fhi_aims_controlIn_number_of_basis_func = len(division)
                 sec_basis_set.x_fhi_aims_controlIn_division = division
 
+        def _get_elemental_tier(basis_settings: x_fhi_aims_section_controlIn_basis_set,
+                                reference: dict=native_tier_references) -> list[str]:
+            '''Compare the basis settings to the reference
+            and return the matching tier for each element.'''
+            tiers: list[str] = []
+            for setting in basis_settings:
+                ref_tiers = reference['data'][setting['x_fhi_aims_controlIn_species_name']]
+                for tier_name, ref_tier in ref_tiers.items():
+                    match = True
+                    for ref_quantity, ref_value in ref_tier.items():
+                        try:
+                            # all quantities have to match
+                            if ref_value != setting[ref_quantity]:
+                                match = False
+                                break
+                        # missing quantities are disqualifying
+                        except KeyError:
+                            match = False
+                            break
+                    if match:
+                        tiers.append(tier_name)  # element names are stored
+                        break
+            return tiers
+
         for key, val in self.control_parser.items():
             if val is None:
                 # TODO consider also none entries? or (isinstance(val, str) and val == 'none'):
@@ -1636,27 +1660,6 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.parse_xc_functional(sec_method, sec_dft)
 
         # assign native tier
-        def _get_elemental_tier(basis_settings, reference: dict=native_tier_references) -> list[str]:
-            tiers: list[str] = []
-            for setting in basis_settings:
-                ref_tiers = reference[setting['x_fhi_aims_controlIn_species_name']]
-                for tier_name, ref_tier in ref_tiers.items():
-                    match = True
-                    for ref_quantity, ref_value in ref_tier.items():
-                        try:
-                            if ref_value != setting[ref_quantity]:
-                                match = False
-                                break
-                        # missing quantities are disqualifying
-                        except KeyError:
-                            match = False
-                            break
-                    if match:
-                        tiers.append(tier_name)
-                        break
-            return tiers
-
-        tier_map = {'light': 1, 'tight': 2, 'really_tight': 3}
         if 'x_fhi_aims_section_controlIn_basis_set' in sec_method:
             native_basis_set = sec_method.x_fhi_aims_section_controlIn_basis_set
             tiers = _get_elemental_tier(native_basis_set)
