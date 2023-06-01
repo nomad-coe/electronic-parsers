@@ -124,46 +124,11 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
         cut\\_pot parameters
         ''')
 
-    x_fhi_aims_controlIn_cut_pot1 = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        first parameter of cut\\_pot
-        ''')
-
-    x_fhi_aims_controlIn_cut_pot2 = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        second parameter of cut\\_pot
-        ''')
-
-    x_fhi_aims_controlIn_cut_pot3 = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        third parameter of cut\\_pot
-        ''')
-
-    x_fhi_aims_controlIn_division1 = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        first parameter of division (position)
-        ''')
-
-    x_fhi_aims_controlIn_division2 = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        second parameter of division (n points)
-        ''')
-
     x_fhi_aims_controlIn_division = Quantity(
         type=np.dtype(np.float64),
         shape=['x_fhi_aims_controlIn_number_of_basis_func', 2],
         description='''
-        division parameters
+        division parameters: position and number of points, respectively
         ''')
 
     x_fhi_aims_controlIn_number_of_basis_func = Quantity(
@@ -206,20 +171,6 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
         shape=[2],
         description='''
         radial\\_base parameters
-        ''')
-
-    x_fhi_aims_controlIn_radial_base1 = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        first parameter of radial\\_base
-        ''')
-
-    x_fhi_aims_controlIn_radial_base2 = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        second parameter of radial\\_base
         ''')
 
     x_fhi_aims_controlIn_radial_multiplier = Quantity(
