@@ -52,20 +52,6 @@ from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
 from ..utils import BeyondDFTWorkflowsParser
 
 
-json_file_name = 'native_tier_references.json'
-package_folder = os.path.dirname(__file__)
-try:
-    with open(os.path.join(package_folder, json_file_name)) as f:
-        native_tier_references = json.load(f)
-except (FileNotFoundError, json.JSONDecodeError):
-    raise Exception(f'FHI-aims parser could not load {json_file_name}')  # TODO: add to error logger
-tier_map = {'light': 1, 'tight': 2, 'really_tight': 3}
-
-
-re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
-re_n = r'[\n\r]'
-
-
 class FHIAimsControlParser(TextParser):
     def __init__(self):
         super().__init__(None)
@@ -892,6 +878,24 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         # max cumulative number of atoms for all parsed trajectories to calculate sampling rate
         self._cum_max_atoms = 100000
 
+        # set up the native tier references
+        self._tier_map = {'light': 1, 'tight': 2, 'really_tight': 3}
+        _native_tier_reference_data_filename = 'native_tier_references.json'
+        _package_folder = os.path.dirname(__file__)
+        _native_tier_reference_data_filepath = os.path.join(_package_folder,
+            _native_tier_reference_data_filename)
+        try:
+            with open(_native_tier_reference_data_filepath) as f:
+                self._native_tier_references = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            raise Exception(f'''
+                FHI-aims parser could not load {_native_tier_reference_data_filename}
+            ''')  # TODO: add to error logger
+
+
+re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
+re_n = r'[\n\r]'
+
     @property
     def frame_rate(self):
         if self._frame_rate is None:
@@ -1565,7 +1569,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 sec_basis_set.x_fhi_aims_controlIn_division = division
 
         def _get_elemental_tier(basis_settings: x_fhi_aims_section_controlIn_basis_set,
-                                reference: dict=native_tier_references) -> list[str]:
+                reference: dict=self._native_tier_references) -> list[str]:
             '''Compare the basis settings to the reference
             and return the matching tier for each element.'''
             tiers: list[str] = []
@@ -1665,7 +1669,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             tiers = _get_elemental_tier(native_basis_set)
             if tiers:
                 sec_method.electrons_representation[0].native_tier =\
-                    max(tiers, key=lambda x: tier_map[x])  # update the index, in case more `electrons_representation` are added
+                    max(tiers, key=lambda x: self._tier_map[x])  # update the index, in case more `electrons_representation` are added
 
     def parse_xc_functional(self, section, subsection):
         xc_inout = self.out_parser.get('x_fhi_aims_controlInOut_xc', None)
