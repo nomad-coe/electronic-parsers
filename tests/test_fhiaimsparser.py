@@ -203,7 +203,7 @@ def test_dos_silicon(silicon, version, silicon_normalization_factors):
 def test_silicon_basis_set(silicon, version):
     '''Test the `electrons_representation` section (for `type=wavefunction`) of `silicon`.'''
     sec_er = silicon[version].run[-1].method[0].electrons_representation[0]
-    sec_er.native_tier == 'light_2020'
+    assert sec_er.native_tier == 'light_2020'
 
 
 def test_dos(parser):

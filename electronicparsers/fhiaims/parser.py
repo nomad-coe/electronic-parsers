@@ -1664,7 +1664,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             native_basis_set = sec_method.x_fhi_aims_section_controlIn_basis_set
             tiers = _get_elemental_tier(native_basis_set)
             if tiers:
-                sec_method.native_tier = max(tiers, key=lambda x: tier_map[x])
+                sec_method.electrons_representation[0].native_tier =\
+                    max(tiers, key=lambda x: tier_map[x])  # update the index, in case more `electrons_representation` are added
 
     def parse_xc_functional(self, section, subsection):
         xc_inout = self.out_parser.get('x_fhi_aims_controlInOut_xc', None)
