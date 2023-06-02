@@ -1572,25 +1572,21 @@ re_n = r'[\n\r]'
                 reference: dict=self._native_tier_references) -> list[str]:
             '''Compare the basis settings to the reference
             and return the matching tier for each element.'''
-            tiers: list[str] = []
-            for setting in basis_settings:
-                ref_tiers = reference['data'][setting['x_fhi_aims_controlIn_species_name']]
-                for tier_name, ref_tier in ref_tiers.items():
-                    match = True
-                    for ref_quantity, ref_value in ref_tier.items():
-                        try:
-                            # all quantities have to match
-                            if ref_value != setting[ref_quantity]:
-                                match = False
-                                break
-                        # missing quantities are disqualifying
-                        except KeyError:
+            tier_refs = reference['data'][basis_settings['x_fhi_aims_controlIn_species_name']]
+            for tier_name, tier_ref in tier_refs.items():
+                match = True
+                for ref_quantity, ref_value in tier_ref.items():
+                    try:
+                        # all quantities have to match
+                        if ref_value != basis_settings[ref_quantity]:
                             match = False
                             break
-                    if match:
-                        tiers.append(tier_name)  # element names are stored
+                    # missing quantities are disqualifying
+                    except KeyError:
+                        match = False
                         break
-            return tiers
+                if match:
+                    return tier_name  # element names are not returned
 
         for key, val in self.control_parser.items():
             if val is None:
@@ -1666,8 +1662,7 @@ re_n = r'[\n\r]'
         # assign native tier
         if 'x_fhi_aims_section_controlIn_basis_set' in sec_method:
             native_basis_set = sec_method.x_fhi_aims_section_controlIn_basis_set
-            tiers = _get_elemental_tier(native_basis_set)
-            if tiers:
+            if tiers := [_get_elemental_tier(nbs) for nbs in native_basis_set]:
                 sec_method.electrons_representation[0].native_tier =\
                     max(tiers, key=lambda x: self._tier_map[x])  # update the index, in case more `electrons_representation` are added
 
