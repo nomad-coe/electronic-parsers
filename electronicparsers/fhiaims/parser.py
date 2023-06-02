@@ -52,6 +52,10 @@ from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
 from ..utils import BeyondDFTWorkflowsParser
 
 
+re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
+re_n = r'[\n\r]'
+
+
 class FHIAimsControlParser(TextParser):
     def __init__(self):
         super().__init__(None)
@@ -891,10 +895,6 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             raise Exception(f'''
                 FHI-aims parser could not load {_native_tier_reference_data_filename}
             ''')  # TODO: add to error logger
-
-
-re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
-re_n = r'[\n\r]'
 
     @property
     def frame_rate(self):
