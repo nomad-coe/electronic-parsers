@@ -883,7 +883,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self._cum_max_atoms = 100000
 
         # set up the native tier references
-        self._tier_map = {'light': 1, 'tight': 2, 'really_tight': 3}
+        self._tier_map = {None: -1, 'light': 1, 'tight': 2, 'really_tight': 3}
         _native_tier_reference_data_filename = 'native_tier_references.json'
         _package_folder = os.path.dirname(__file__)
         _native_tier_reference_data_filepath = os.path.join(_package_folder,
