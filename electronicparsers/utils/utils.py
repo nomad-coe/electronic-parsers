@@ -240,9 +240,6 @@ class BeyondDFTWorkflowsParser:
         input_structure = extract_section(self.archive, 'run/system')
         dft_calculation = extract_section(self.archive, 'run/calculation')
         polarization_calculations = extract_polarization_outputs()
-        workflow.m_add_sub_section(
-            XS.inputs,
-            Link(name='XS workflow parameters', section=workflow.method))
         if input_structure:
             workflow.m_add_sub_section(
                 XS.inputs, Link(name='Input structure', section=input_structure))
@@ -269,9 +266,12 @@ class BeyondDFTWorkflowsParser:
             if dft_calculation:
                 xs_archive.workflow2.m_add_sub_section(
                     PhotonPolarization.inputs, Link(name='Output DFT calculation', section=dft_calculation))
-                for photon_task in xs_archive.workflow2.tasks:
+                task.inputs = [Link(name='Output DFT calculation', section=dft_calculation)]
+                for i_photon, photon_task in enumerate(xs_archive.workflow2.tasks):
                     photon_task.m_add_sub_section(
                         TaskReference.inputs, Link(name='Output DFT calculation', section=dft_calculation))
+                    if photon_task.m_xpath('outputs[-1].section'):
+                        task.m_add_sub_section(TaskReference.outputs, Link(name=f'Polarization {i_photon + 1}', section=photon_task.outputs[-1].section))
             workflow.m_add_sub_section(XS.tasks, task)
 
         xs_workflow_archive.workflow2 = workflow
