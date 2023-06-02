@@ -1822,7 +1822,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 data[2], (n_components, n_epsilon))
 
             sec_spectra = sec_scc.m_create(Spectra)
-            sec_spectra.type = 'XANES'
             sec_spectra.n_energies = n_epsilon
             sec_spectra.excitation_energies = data[0] * ureg.hartree
             sec_spectra.intensities = data[2]
