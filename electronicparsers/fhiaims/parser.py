@@ -20,6 +20,8 @@ import os
 import numpy as np
 import logging
 import json
+import hashlib
+from typing import Union
 
 from nomad.units import ureg
 
@@ -883,18 +885,18 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self._cum_max_atoms = 100000
 
         # set up the native tier references
-        self._tier_map = {None: -1, 'light': 1, 'tight': 2, 'really_tight': 3}
         _native_tier_reference_data_filename = 'native_tier_references.json'
-        _package_folder = os.path.dirname(__file__)
-        _native_tier_reference_data_filepath = os.path.join(_package_folder,
+        _native_tier_reference_data_filepath = os.path.join(
+            os.path.dirname(__file__),
             _native_tier_reference_data_filename)
         try:
             with open(_native_tier_reference_data_filepath) as f:
                 self._native_tier_references = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
-            raise Exception(f'''
-                FHI-aims parser could not load {_native_tier_reference_data_filename}
-            ''')  # TODO: add to error logger
+            self.logger.warning(
+                '''Native tier references could not be loaded,
+                hence `native_tier` cannot be assigned.'''
+            )
 
     @property
     def frame_rate(self):
@@ -1569,24 +1571,22 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 sec_basis_set.x_fhi_aims_controlIn_division = division
 
         def _get_elemental_tier(basis_settings: x_fhi_aims_section_controlIn_basis_set,
-                reference: dict=self._native_tier_references) -> list[str]:
+                reference: dict=self._native_tier_references) -> Union[str, None]:
             '''Compare the basis settings to the reference
             and return the matching tier for each element.'''
-            tier_refs = reference['data'][basis_settings['x_fhi_aims_controlIn_species_name']]
-            for tier_name, tier_ref in tier_refs.items():
-                match = True
-                for ref_quantity, ref_value in tier_ref.items():
-                    try:
-                        # all quantities have to match
-                        if ref_value != basis_settings[ref_quantity]:
-                            match = False
-                            break
-                    # missing quantities are disqualifying
-                    except KeyError:
-                        match = False
-                        break
-                if match:
-                    return tier_name  # element names are not returned
+            # filter out element identifiers and other non-relevant quantities
+            prefix = 'x_fhi_aims_controlIn_'
+            to_be_filtered = ['species_name', 'nucleus', 'mass', 'angular_grids_method',]
+            to_be_filtered = [prefix + k for k in to_be_filtered]
+
+            if (identifier := basis_settings[to_be_filtered[0]]) is None:
+                return
+            bs_filtered = {k: v for k, v in basis_settings.m_to_dict().items() if k not in to_be_filtered}
+            bs_hash = hashlib.sha1()
+            bs_hash.update(json.dumps(bs_filtered, sort_keys=True).encode('utf-8'))
+            for tier in reference['hash'][identifier]:
+                if bs_hash.hexdigest() == reference['hash'][identifier][tier]:
+                    return tier
 
         for key, val in self.control_parser.items():
             if val is None:
@@ -1664,7 +1664,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             native_basis_set = sec_method.x_fhi_aims_section_controlIn_basis_set
             if tiers := [_get_elemental_tier(nbs) for nbs in native_basis_set]:
                 sec_method.electrons_representation[0].native_tier =\
-                    max(tiers, key=lambda x: self._tier_map[x])  # update the index, in case more `electrons_representation` are added
+                    min(tiers, key=lambda x: self._native_tier_references['hierarchy'][x])  # update the index, in case more `electrons_representation` are added
 
     def parse_xc_functional(self, section, subsection):
         xc_inout = self.out_parser.get('x_fhi_aims_controlInOut_xc', None)
