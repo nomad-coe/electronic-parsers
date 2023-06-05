@@ -894,7 +894,6 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         try:
             with open(_native_tier_reference_data_filepath) as f:
                 self._native_tier_references = json.load(f)
-                self._native_tier_references['hierarchy'][None] = -1
         except (FileNotFoundError, json.JSONDecodeError):
             self.logger.warning(
                 '''Native tier references could not be loaded,
@@ -1574,7 +1573,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 sec_basis_set.x_fhi_aims_controlIn_division = division
 
         def _get_elemental_tier(basis_settings: x_fhi_aims_section_controlIn_basis_set,
-                reference: dict=self._native_tier_references) -> Union[str, None]:
+                reference: dict=self._native_tier_references) -> tuple[Union[str, int, None]]:
             '''Compare the basis settings to the reference
             and return the matching tier for each element.'''
 
@@ -1596,7 +1595,6 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 return {k: basis_new[k] for k in sorted(basis_new.keys())}
 
             # filter out element identifiers and other non-relevant quantities
-            id_name = 'x_fhi_aims_controlIn_species_name'
             orbital_name = 'x_fhi_aims_section_controlIn_basis_func'
             bs_filtered = _prep_elemental_tier(basis_settings)
             bs_filtered[orbital_name] = [_prep_elemental_tier(orb) for orb
@@ -1611,9 +1609,9 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             bs_hash.update(json.dumps(bs_filtered, sort_keys=True).encode('utf-8'))
             bs_hash = bs_hash.hexdigest()
             try:
-                return reference['hash'][bs_hash]['tier']
+                return reference['hash'][bs_hash]['tier'], reference['hash'][bs_hash]['hierarchy']
             except KeyError:
-                return
+                return None, -1
 
         for key, val in self.control_parser.items():
             if val is None:
@@ -1689,9 +1687,13 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         # assign native tier
         if 'x_fhi_aims_section_controlIn_basis_set' in sec_method:
             native_basis_set = sec_method.x_fhi_aims_section_controlIn_basis_set
-            if tiers := [_get_elemental_tier(nbs) for nbs in native_basis_set]:
+            tiers = {}
+            for nbs in native_basis_set:
+                tier, hierarchy = _get_elemental_tier(nbs)
+                tiers[tier] = hierarchy
+            if tiers:
                 sec_method.electrons_representation[0].native_tier =\
-                    min(tiers, key=lambda x: self._native_tier_references['hierarchy'][x])  # update the index, in case more `electrons_representation` are added
+                    min(tiers.keys(), key=lambda x: tiers[x])
 
     def parse_xc_functional(self, section, subsection):
         xc_inout = self.out_parser.get('x_fhi_aims_controlInOut_xc', None)
