@@ -24,6 +24,9 @@ from electronicparsers.fhiaims import FHIAimsParser
 from tests.dos_integrator import integrate_dos
 
 
+_root_dir = 'tests/data/fhiaims/'
+
+
 def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
@@ -43,7 +46,7 @@ def silicon(parser, silicon_versions):
     silicon = {}
     for version in silicon_versions:
         archive = EntryArchive()
-        parser.parse('tests/data/fhiaims/Si_band_dos_' + version + '/aims_CC.out',
+        parser.parse(_root_dir + 'Si_band_dos_' + version + '/aims_CC.out',
                      archive, None)
         silicon[version] = archive
     return silicon
@@ -53,6 +56,13 @@ def silicon(parser, silicon_versions):
 def silicon_normalization_factors(silicon_versions):
     normalization_factors = [.5, 1]
     return dict(zip(silicon_versions, normalization_factors))
+
+
+@pytest.fixture(scope='module')
+def parse_native_tiers(tier):
+    archive = EntryArchive()
+    FHIAimsParser().parse(f'{_root_dir}/native_tiers/{tier}/aims.out', archive, None)
+    return archive
 
 
 def test_scf_spinpol(parser):
@@ -199,13 +209,6 @@ def test_dos_silicon(silicon, version, silicon_normalization_factors):
     assert gap == approx(0.54054054, abs=.04)  # TODO increase accuracy
 
 
-@pytest.mark.parametrize("version", silicon_versions())
-def test_silicon_basis_set(silicon, version):
-    '''Test the `electrons_representation` section (for `type=wavefunction`) of `silicon`.'''
-    sec_er = silicon[version].run[-1].method[0].electrons_representation[0]
-    assert sec_er.native_tier == 'light_2020'
-
-
 def test_dos(parser):
     archive = EntryArchive()
     parser.parse('tests/data/fhiaims/ClNa_dos/ClNa_dos.out', archive, None)
@@ -229,6 +232,13 @@ def test_dos(parser):
     assert sec_species_dos[1].value[37].to('1 / eV').magnitude == approx(0.12585650)  # Cl total
     assert sec_species_dos[4].value[3].to('1 / eV').magnitude == approx(0.07198767)  # Na l=1
     assert sec_species_dos[7].value[5].to('1 / eV').magnitude == approx(0.00394778)  # Cl l=2
+
+
+@pytest.mark.parametrize("tier", ['tight', 'intermediate', 'light_spd'])
+def test_native_tiers(tier):
+    archive = parse_native_tiers(tier)
+    sec_er = archive.run[0].method[0].electrons_representation[0]
+    assert sec_er.native_tier == f'{tier}_defaults_2020'
 
 
 def test_md(parser):

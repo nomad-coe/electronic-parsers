@@ -21,11 +21,13 @@ import numpy as np
 import logging
 import json
 import hashlib
-from typing import Union
+from typing import Union, Any
 
 from nomad.units import ureg
 
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
+
+from nomad.metainfo import MSection
 
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
@@ -892,6 +894,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         try:
             with open(_native_tier_reference_data_filepath) as f:
                 self._native_tier_references = json.load(f)
+                self._native_tier_references['hierarchy'][None] = -1
         except (FileNotFoundError, json.JSONDecodeError):
             self.logger.warning(
                 '''Native tier references could not be loaded,
@@ -1570,18 +1573,39 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 sec_basis_set.x_fhi_aims_controlIn_number_of_basis_func = len(division)
                 sec_basis_set.x_fhi_aims_controlIn_division = division
 
+        def _prep_elemental_tier(basis_settings: MSection) -> dict[str, Any]:
+            """Prepare the elemental tier for the basis set."""
+            prefix = 'x_fhi_aims_controlIn_'
+            prefix_repeating = 'x_fhi_aims_section_controlIn_'
+            to_be_filtered = [
+                'species_name', 'nucleus', 'mass',
+                'number_of_basis_func', 'angular_grids_method',
+            ]
+            to_be_filtered = [prefix + k for k in to_be_filtered]
+            basis_new = {}
+            if not isinstance(basis_settings, dict):
+                basis_settings = basis_settings.m_to_dict()
+            for k, v in basis_settings.items():
+                if (k.startswith(prefix) or k.startswith(prefix_repeating)) and k not in to_be_filtered:
+                    basis_new[k] = v
+            return {k: basis_new[k] for k in sorted(basis_new.keys())}
+
         def _get_elemental_tier(basis_settings: x_fhi_aims_section_controlIn_basis_set,
                 reference: dict=self._native_tier_references) -> Union[str, None]:
             '''Compare the basis settings to the reference
             and return the matching tier for each element.'''
             # filter out element identifiers and other non-relevant quantities
-            prefix = 'x_fhi_aims_controlIn_'
-            to_be_filtered = ['species_name', 'nucleus', 'mass', 'angular_grids_method',]
-            to_be_filtered = [prefix + k for k in to_be_filtered]
-
-            if (identifier := basis_settings[to_be_filtered[0]]) is None:
+            id_name = 'x_fhi_aims_controlIn_species_name'
+            orbital_name = 'x_fhi_aims_section_controlIn_basis_func'
+            if (identifier := basis_settings[id_name]) is None:
                 return
-            bs_filtered = {k: v for k, v in basis_settings.m_to_dict().items() if k not in to_be_filtered}
+            bs_filtered = _prep_elemental_tier(basis_settings)
+            bs_filtered[orbital_name] = [_prep_elemental_tier(orb) for orb in bs_filtered[orbital_name]]
+            for quantity in ['radius', 'type', 'l', 'n']:
+                try:
+                    bs_filtered[orbital_name] = sorted(bs_filtered[orbital_name], key=lambda x: x[f'x_fhi_aims_controlIn_basis_func_{quantity}'])
+                except KeyError:
+                    pass
             bs_hash = hashlib.sha1()
             bs_hash.update(json.dumps(bs_filtered, sort_keys=True).encode('utf-8'))
             for tier in reference['hash'][identifier]:
