@@ -1573,27 +1573,28 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 sec_basis_set.x_fhi_aims_controlIn_number_of_basis_func = len(division)
                 sec_basis_set.x_fhi_aims_controlIn_division = division
 
-        def _prep_elemental_tier(basis_settings: MSection) -> dict[str, Any]:
-            """Prepare the elemental tier for the basis set."""
-            prefix = 'x_fhi_aims_controlIn_'
-            prefix_repeating = 'x_fhi_aims_section_controlIn_'
-            to_be_filtered = [
-                'species_name', 'nucleus', 'mass',
-                'number_of_basis_func', 'angular_grids_method',
-            ]
-            to_be_filtered = [prefix + k for k in to_be_filtered]
-            basis_new = {}
-            if not isinstance(basis_settings, dict):
-                basis_settings = basis_settings.m_to_dict()
-            for k, v in basis_settings.items():
-                if (k.startswith(prefix) or k.startswith(prefix_repeating)) and k not in to_be_filtered:
-                    basis_new[k] = v
-            return {k: basis_new[k] for k in sorted(basis_new.keys())}
-
         def _get_elemental_tier(basis_settings: x_fhi_aims_section_controlIn_basis_set,
                 reference: dict=self._native_tier_references) -> Union[str, None]:
             '''Compare the basis settings to the reference
             and return the matching tier for each element.'''
+
+            def _prep_elemental_tier(basis_settings: MSection) -> dict[str, Any]:
+                """Prepare the elemental tier for the basis set."""
+                prefix = 'x_fhi_aims_controlIn_'
+                prefix_repeating = 'x_fhi_aims_section_controlIn_'
+                to_be_filtered = [
+                    'species_name', 'nucleus', 'mass',
+                    'number_of_basis_func', 'angular_grids_method',
+                ]
+                to_be_filtered = [prefix + k for k in to_be_filtered]
+                basis_new = {}
+                if not isinstance(basis_settings, dict):
+                    basis_settings = basis_settings.m_to_dict()
+                for k, v in basis_settings.items():
+                    if (k.startswith(prefix) or k.startswith(prefix_repeating)) and k not in to_be_filtered:
+                        basis_new[k] = v
+                return {k: basis_new[k] for k in sorted(basis_new.keys())}
+
             # filter out element identifiers and other non-relevant quantities
             id_name = 'x_fhi_aims_controlIn_species_name'
             orbital_name = 'x_fhi_aims_section_controlIn_basis_func'
@@ -1608,8 +1609,9 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                     pass
             bs_hash = hashlib.sha1()
             bs_hash.update(json.dumps(bs_filtered, sort_keys=True).encode('utf-8'))
+            bs_hash = bs_hash.hexdigest()
             for tier in reference['hash'][identifier]:
-                if bs_hash.hexdigest() == reference['hash'][identifier][tier]:
+                if bs_hash == reference['hash'][identifier][tier]:
                     return tier
 
         for key, val in self.control_parser.items():
