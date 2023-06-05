@@ -1598,21 +1598,22 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             # filter out element identifiers and other non-relevant quantities
             id_name = 'x_fhi_aims_controlIn_species_name'
             orbital_name = 'x_fhi_aims_section_controlIn_basis_func'
-            if (identifier := basis_settings[id_name]) is None:
-                return
             bs_filtered = _prep_elemental_tier(basis_settings)
-            bs_filtered[orbital_name] = [_prep_elemental_tier(orb) for orb in bs_filtered[orbital_name]]
+            bs_filtered[orbital_name] = [_prep_elemental_tier(orb) for orb
+                in bs_filtered[orbital_name]]
             for quantity in ['radius', 'type', 'l', 'n']:
                 try:
-                    bs_filtered[orbital_name] = sorted(bs_filtered[orbital_name], key=lambda x: x[f'x_fhi_aims_controlIn_basis_func_{quantity}'])
+                    bs_filtered[orbital_name] = sorted(bs_filtered[orbital_name],
+                        key=lambda x: x[f'x_fhi_aims_controlIn_basis_func_{quantity}'])
                 except KeyError:
                     pass
             bs_hash = hashlib.sha1()
             bs_hash.update(json.dumps(bs_filtered, sort_keys=True).encode('utf-8'))
             bs_hash = bs_hash.hexdigest()
-            for tier in reference['hash'][identifier]:
-                if bs_hash == reference['hash'][identifier][tier]:
-                    return tier
+            try:
+                return reference['hash'][bs_hash]['tier']
+            except KeyError:
+                return
 
         for key, val in self.control_parser.items():
             if val is None:

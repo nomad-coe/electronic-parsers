@@ -174,7 +174,7 @@ def test_band_silicon(silicon, version):
     assert energy_reference == approx(-5.7308573, abs=1e-5)
     assert band.energy_fermi.to('eV').magnitude == energy_reference
 
-    # Check that an approporiately sized band gap is found at the given
+    # Check that an appropriately sized band gap is found at the given
     # reference energy
     energies = energies.flatten()
     energies.sort()
@@ -198,7 +198,7 @@ def test_dos_silicon(silicon, version, silicon_normalization_factors):
     assert pytest.approx(dos_integrated, abs=5e-2) == 8
     assert dos.total[0].x_fhi_aims_normalization_factor_raw_data == silicon_normalization_factors[version]
 
-    # Check that an approporiately sized band gap is found at the given
+    # Check that an appropriately sized band gap is found at the given
     # reference energy
     nonzero = np.unique(values.nonzero())
     energies = energies[nonzero]
