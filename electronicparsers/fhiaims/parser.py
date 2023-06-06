@@ -19,10 +19,15 @@
 import os
 import numpy as np
 import logging
+import json
+import hashlib
+from typing import Any
 
 from nomad.units import ureg
 
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
+
+from nomad.metainfo import MSection
 
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
@@ -47,6 +52,7 @@ from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_controlIn_basis_set, x_fhi_aims_section_controlIn_basis_func,\
     x_fhi_aims_section_controlInOut_atom_species, x_fhi_aims_section_controlInOut_basis_func,\
     x_fhi_aims_section_vdW_TS
+
 from ..utils import BeyondDFTWorkflowsParser
 
 
@@ -880,6 +886,20 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         # max cumulative number of atoms for all parsed trajectories to calculate sampling rate
         self._cum_max_atoms = 100000
 
+        # set up the native tier references
+        _native_tier_reference_data_filename = 'native_tier_references.json'
+        _native_tier_reference_data_filepath = os.path.join(
+            os.path.dirname(__file__),
+            _native_tier_reference_data_filename)
+        try:
+            with open(_native_tier_reference_data_filepath) as f:
+                self._native_tier_references = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            self.logger.warning(
+                '''Native tier references could not be loaded,
+                hence `native_tier` cannot be assigned.'''
+            )
+
     @property
     def frame_rate(self):
         if self._frame_rate is None:
@@ -1552,6 +1572,48 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 sec_basis_set.x_fhi_aims_controlIn_number_of_basis_func = len(division)
                 sec_basis_set.x_fhi_aims_controlIn_division = division
 
+        def _get_elemental_tier(
+                basis_settings: x_fhi_aims_section_controlIn_basis_set,
+                reference: dict = self._native_tier_references) -> tuple[Any, Any]:
+            '''Compare the basis settings to the reference
+            and return the matching tier for each element.'''
+
+            def _prep_elemental_tier(basis_settings: MSection) -> dict[str, Any]:
+                """Prepare the elemental tier for the basis set."""
+                prefix = 'x_fhi_aims_controlIn_'
+                prefix_repeating = 'x_fhi_aims_section_controlIn_'
+                to_be_filtered = [
+                    'species_name', 'nucleus', 'mass',
+                    'number_of_basis_func', 'angular_grids_method',
+                ]
+                to_be_filtered = [prefix + k for k in to_be_filtered]
+                basis_new = {}
+                if not isinstance(basis_settings, dict):
+                    basis_settings = basis_settings.m_to_dict()
+                for k, v in basis_settings.items():
+                    if (k.startswith(prefix) or k.startswith(prefix_repeating)) and k not in to_be_filtered:
+                        basis_new[k] = v
+                return {k: basis_new[k] for k in sorted(basis_new.keys())}
+
+            # filter out element identifiers and other non-relevant quantities
+            orbital_name = 'x_fhi_aims_section_controlIn_basis_func'
+            bs_filtered = _prep_elemental_tier(basis_settings)
+            bs_filtered[orbital_name] = [_prep_elemental_tier(orb) for orb
+                                         in bs_filtered[orbital_name]]
+            for quantity in ['radius', 'type', 'l', 'n']:
+                try:
+                    bsf = lambda x: x[f'x_fhi_aims_controlIn_basis_func_{quantity}']
+                    bs_filtered[orbital_name] = sorted(bs_filtered[orbital_name], key=bsf)
+                except KeyError:
+                    pass
+            bs_hash = hashlib.sha1()
+            bs_hash.update(json.dumps(bs_filtered, sort_keys=True).encode('utf-8'))
+            bs_hash_key = bs_hash.hexdigest()
+            try:
+                return reference['hash'][bs_hash_key]['tier'], reference['hash'][bs_hash_key]['hierarchy']
+            except KeyError:
+                return None, -1
+
         for key, val in self.control_parser.items():
             if val is None:
                 # TODO consider also none entries? or (isinstance(val, str) and val == 'none'):
@@ -1622,6 +1684,17 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
         # xc functional from output
         self.parse_xc_functional(sec_method, sec_dft)
+
+        # assign native tier
+        if 'x_fhi_aims_section_controlIn_basis_set' in sec_method:
+            native_basis_set = sec_method.x_fhi_aims_section_controlIn_basis_set
+            tiers = {}
+            for nbs in native_basis_set:
+                tier, hierarchy = _get_elemental_tier(nbs)
+                tiers[tier] = hierarchy
+            if tiers:
+                sec_method.electrons_representation[0].native_tier =\
+                    min(tiers.keys(), key=lambda x: tiers[x])
 
     def parse_xc_functional(self, section, subsection):
         xc_inout = self.out_parser.get('x_fhi_aims_controlInOut_xc', None)

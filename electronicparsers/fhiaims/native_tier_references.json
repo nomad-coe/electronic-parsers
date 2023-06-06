@@ -1,0 +1,3848 @@
+{
+    "hash": {
+        "2636ddbce7719c09f4587078a442c9753b6bb432": {
+            "element": "N",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "15eab1b54a1e2208500068efdcf8252d655bad1d": {
+            "element": "N",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "b66a5928dc01ca303527618c1d2709dde4241c81": {
+            "element": "N",
+            "tier": "aug-pcJ-4",
+            "hierarchy": 36
+        },
+        "f8d3cc38ecd75bd53bc375de94c975c9cb580a7d": {
+            "element": "N",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "407e677224378f497f13f1b8db1a935efc86aadc": {
+            "element": "N",
+            "tier": "aug-cc-pCV5Z",
+            "hierarchy": 57
+        },
+        "fcb1392e17ebf0cd22c6011f0bbf1f891af209a3": {
+            "element": "N",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "e3faefe5be5ea410b06843b590a5c27e7dbbe93a": {
+            "element": "N",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "d812fdce98dbe72e73b3a13f6404c69e95f733c0": {
+            "element": "N",
+            "tier": "light_194",
+            "hierarchy": 61
+        },
+        "42dca9a2f5de62345a167e24d7d9750ce8fd8674": {
+            "element": "N",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "81f0ec5f63f4fa31c844f3ca1f16e8897a01b9c6": {
+            "element": "N",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "ea54c1c7d04da5016ecd9d7f9e67a1e4628168f6": {
+            "element": "N",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "5c86b04cdbfbbfcf1a38eb6d1cf6124e345ef59a": {
+            "element": "N",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "cf3ad08639b3c0c03bd695ad2abd3a51566a4d85": {
+            "element": "N",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "2cdc1dc0ca79a31025c11c543e2166b894eaf337": {
+            "element": "N",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "1d70eb0cb9d3368df790830577a91b209186eb14": {
+            "element": "N",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "55681a9fd0b2b936dcb41472a7ded3e13231eda8": {
+            "element": "N",
+            "tier": "NAO-J-2",
+            "hierarchy": 78
+        },
+        "50ad8d8c8ecb18ab82150cc45236ab885d5c594a": {
+            "element": "N",
+            "tier": "NAO-J-3",
+            "hierarchy": 79
+        },
+        "e456afae3dbb7e0e94185a8198f1dc2022ab8ad5": {
+            "element": "N",
+            "tier": "NAO-J-4",
+            "hierarchy": 80
+        },
+        "8bdc54dbf18b1dc6b4e3e366c7b543b3c195e842": {
+            "element": "N",
+            "tier": "NAO-J-5",
+            "hierarchy": 81
+        },
+        "ff36b95466ce222b45536b9a240d1f173a0a6c89": {
+            "element": "N",
+            "tier": "Tier2_aug2",
+            "hierarchy": 82
+        },
+        "344a1dfce510fbdf70b7f22ae7a3cc1965f17caf": {
+            "element": "O",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "f921aa607135c1ed0fc3b736c42b879757873b1c": {
+            "element": "O",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "5e12a3ac0cf72b6c04e67ca102106c0935bc8451": {
+            "element": "O",
+            "tier": "aug-pcJ-4",
+            "hierarchy": 36
+        },
+        "f0aa44fda592596f28a922c89312bcba4dd5de6d": {
+            "element": "O",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "2b67a5bed0bdf4631bf5e3d6e08f0b2fd38e75ae": {
+            "element": "O",
+            "tier": "aug-cc-pCV5Z",
+            "hierarchy": 57
+        },
+        "1bcf65658f57eacf102aa20360112f4f5f7fe913": {
+            "element": "O",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "4c07523961a603f92ee61ebeba0e7f1f65c7a4cc": {
+            "element": "O",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "d37a053d5d4f25c509ba955e579c83a62f15d70a": {
+            "element": "O",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "dc3cbbacf0de469c163884ce711622f0acfd4f34": {
+            "element": "O",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "dad1493e5a53651f2c7908675e54f183c657877b": {
+            "element": "O",
+            "tier": "light_194",
+            "hierarchy": 61
+        },
+        "4694f093b62cd7a8a67667a3bfe9a5a36911bc61": {
+            "element": "O",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "81e8225dde52244a4a2ae0926836dc9a58536427": {
+            "element": "O",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "7db677708f29a5aaafcca66c748a902c1e8736b1": {
+            "element": "O",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "955a3c9d2a797642ee77d79085a365603185a166": {
+            "element": "O",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "ae0dce4f73e905c3fdde6236ddb3973aab04b7c3": {
+            "element": "O",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "afab3af5a1f4d0b0e079e1a9dc23d66439bdf914": {
+            "element": "O",
+            "tier": "NAO-J-2",
+            "hierarchy": 78
+        },
+        "a2c04c57f201ddd4f1ae41f4a9b40b0c6593ec21": {
+            "element": "O",
+            "tier": "NAO-J-3",
+            "hierarchy": 79
+        },
+        "45f41719b06a0805973c46ed20e42407227bf898": {
+            "element": "O",
+            "tier": "NAO-J-4",
+            "hierarchy": 80
+        },
+        "28588a0a80e57ae45732093e70d344ebcdcb613f": {
+            "element": "O",
+            "tier": "NAO-J-5",
+            "hierarchy": 81
+        },
+        "f159f0fc7a22152220048a71d4074b340b5110be": {
+            "element": "O",
+            "tier": "Tier2_aug2",
+            "hierarchy": 82
+        },
+        "cef965d0e37d0df6e6af1554132743ee5cd7fb08": {
+            "element": "Si",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "b9aefa1de2f39f3ecbcb3174eff0902f83a6f6ce": {
+            "element": "Si",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "ac48e4471cdb4fde015cb5902aa02e64613b96c1": {
+            "element": "Si",
+            "tier": "aug-pcJ-4",
+            "hierarchy": 36
+        },
+        "1b537a2f76b03e878ed2401a13802c02951509c6": {
+            "element": "Si",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "0787a20e61db4bfdf4cc986e1ed5bb3766ba81e7": {
+            "element": "Si",
+            "tier": "aug-cc-pCV5Z",
+            "hierarchy": 57
+        },
+        "fa4fff7d1fe042d19152176e29519e69e3ef12f0": {
+            "element": "Si",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "01154dff8f92d9b425509afd3b7678880fb30949": {
+            "element": "Si",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "6586620788976f5dea9200414f6a3428267e9509": {
+            "element": "Si",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "4ba6553c36abbc81f31924662447a2e24ed2699c": {
+            "element": "Si",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "d38f026c00be1a855944f8312647aef2ce12af99": {
+            "element": "Si",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "e886b2aaa851868d245007d1431c598a786eb3f6": {
+            "element": "Si",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "349e3077df2330c18a159c6c3f8048250cb16b09": {
+            "element": "Si",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "b64380d37cf8db1c1243e0e040e0e791e6130611": {
+            "element": "Si",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "f82bf0fd3d650ac5d612f61915b29a5d637dd482": {
+            "element": "Si",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "49ffda9f150901f438c4ecddace14e1ab5e57163": {
+            "element": "Si",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "cccea58a6105e95400c437ed93b2481a83e5dafb": {
+            "element": "Si",
+            "tier": "NAO-J-2",
+            "hierarchy": 78
+        },
+        "54de3935c91082c878e9b2d3030931306d438daf": {
+            "element": "Si",
+            "tier": "NAO-J-3",
+            "hierarchy": 79
+        },
+        "69b19f55849d32a09c5e185287113afc4d0a14bd": {
+            "element": "Si",
+            "tier": "NAO-J-4",
+            "hierarchy": 80
+        },
+        "3f23db1de1ec4d2e189923f508c920e620fbd8d2": {
+            "element": "Si",
+            "tier": "NAO-J-5",
+            "hierarchy": 81
+        },
+        "96fa07ce79822fe583c487842d4c9edec774508a": {
+            "element": "Si",
+            "tier": "Tier2_aug2",
+            "hierarchy": 82
+        },
+        "f58a53da2124016cc6c85a6b4fa539f9c817ebec": {
+            "element": "H",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "d839e22e45fb3a5da8a3ee32085be973df6c7366": {
+            "element": "H",
+            "tier": "pcS-4",
+            "hierarchy": 16
+        },
+        "4285ec6a6ba2774888152a0834219df13227b7a5": {
+            "element": "H",
+            "tier": "aug-pcJ-4",
+            "hierarchy": 36
+        },
+        "e3edbb60ed02532ce568738c232e6e04448ea4bd": {
+            "element": "H",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "4997e8871ad81275f4e69a24c51a6bd635a18284": {
+            "element": "H",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "2f8cb67b220eadddfac6492ee01faa1f97a0634f": {
+            "element": "H",
+            "tier": "d-aug-cc-pV5Z",
+            "hierarchy": 53
+        },
+        "68418086bc4c4943861bae74cf3f6c706dc80464": {
+            "element": "H",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "6fc3366dc1fda58bd0186882ed1c01c5adf4b8a1": {
+            "element": "H",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "851bc4766b26bb3bfb7933226056727253e88de8": {
+            "element": "H",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "2dac848fd2dbd185cd2d5b98b0777c5efa8296dd": {
+            "element": "H",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "8be8fca04b774b15f5eca8ebb233f20492038344": {
+            "element": "H",
+            "tier": "light_194",
+            "hierarchy": 61
+        },
+        "e20f15d9c6c442e9670f22e0450729a4b86b0184": {
+            "element": "H",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "5f59ffa5b58b309fd3e861ec5abc801d97f0153b": {
+            "element": "H",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "af21b7a4c98efb0d2cf60f869bd3df06df7cc6de": {
+            "element": "H",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "868491c132f470d70e3edc96706a78fdf7b2f6f2": {
+            "element": "H",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "740a5894198d43c13f791d67c236dd6497a6c2af": {
+            "element": "H",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "c7e951dbc05473265dd9942a098e576ff1279ecd": {
+            "element": "H",
+            "tier": "NAO-J-2",
+            "hierarchy": 78
+        },
+        "25e973cb9f1615dd60373e6d193ae049697ad481": {
+            "element": "H",
+            "tier": "NAO-J-3",
+            "hierarchy": 79
+        },
+        "47b360da914a0275a4d1e16f18e410e505d3c5a2": {
+            "element": "H",
+            "tier": "NAO-J-4",
+            "hierarchy": 80
+        },
+        "a7ff019b2a51fb4512559edbcb0b100bc91963f4": {
+            "element": "H",
+            "tier": "NAO-J-5",
+            "hierarchy": 81
+        },
+        "a3ebbc412235b73e67220073d526c005426c71b9": {
+            "element": "H",
+            "tier": "Tier2_aug2",
+            "hierarchy": 82
+        },
+        "f2861a5793456e3a13f6ac09f510d025ebe02abd": {
+            "element": "B",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "8abf2948c10644b50d90e5ded2f7129d0659fcf7": {
+            "element": "B",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "709488fc248394239ca844f7adf504ff7c2a9c52": {
+            "element": "B",
+            "tier": "aug-pcJ-4",
+            "hierarchy": 36
+        },
+        "b54892bbefffd037f2a09764853dd99724f96a39": {
+            "element": "B",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "ae5eb844b31042cdf5287044378242ee982c10d4": {
+            "element": "B",
+            "tier": "aug-cc-pCV5Z",
+            "hierarchy": 57
+        },
+        "020c67735e1d02e7038334927d757e1804aba684": {
+            "element": "B",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "e50594c8bb844a528bd52d0661b616e45dfccf32": {
+            "element": "B",
+            "tier": "light_194",
+            "hierarchy": 61
+        },
+        "5e50823f167f47ac6cd91911e2226d33da37cde4": {
+            "element": "B",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "5d6ac4142c00fbcecaa1eaf19e6731dce369ba2e": {
+            "element": "B",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "f03f5d5496ef5cb1967c698ede0f2e8bd2f139c9": {
+            "element": "B",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "6e6b64ba8f87ae4766e8a876d9d2d785323c7b53": {
+            "element": "B",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "d9044eff7347145d0e64fd56c62fcad8d1bbcd07": {
+            "element": "B",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "0388cde24b661568f0636ecdc9de7f683ae4d7dc": {
+            "element": "B",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "77b7071064bcc9c2c563fcb01f15f7a9bf1a82ea": {
+            "element": "B",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "b46b5565da4769d24abbd2e64d9165a65d572b06": {
+            "element": "B",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "68112510a2512cce15e8eb961e1032922fda0410": {
+            "element": "B",
+            "tier": "NAO-J-2",
+            "hierarchy": 78
+        },
+        "dc83e8b4d5cf174ab8b1b4d6b582992cff038e0c": {
+            "element": "B",
+            "tier": "NAO-J-3",
+            "hierarchy": 79
+        },
+        "fdf964b195482412fcbb5c59139aa918fde5d348": {
+            "element": "B",
+            "tier": "NAO-J-4",
+            "hierarchy": 80
+        },
+        "2d2058bc6f7ddae353d3bd1de5bb15d88f2007ee": {
+            "element": "B",
+            "tier": "NAO-J-5",
+            "hierarchy": 81
+        },
+        "ed6a306cc917823612974118602a53262398521f": {
+            "element": "B",
+            "tier": "Tier2_aug2",
+            "hierarchy": 82
+        },
+        "24379f8a64b78bff8e3ca59d8a9507047c698e37": {
+            "element": "C",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "6e0c32d3e78adcc69ca7f7b566e350d4a927db71": {
+            "element": "C",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "b5f36e30df11f1cf322898e7c2c434f732190781": {
+            "element": "C",
+            "tier": "aug-pcJ-4",
+            "hierarchy": 36
+        },
+        "840677efe5e7c1512b968f6139a4af18f2e7994a": {
+            "element": "C",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "1bc69c7be78768241b218ac3e4165e348845d3da": {
+            "element": "C",
+            "tier": "aug-cc-pCV5Z",
+            "hierarchy": 57
+        },
+        "b045bb96d19b0e488e1fb3cc0b264c45fbf80657": {
+            "element": "C",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "3fce42faf89c6f0356edc7c092e2b4cc74b10451": {
+            "element": "C",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "ef6f9c02868fc16296577dc7ef1e2d6dd1d4030d": {
+            "element": "C",
+            "tier": "light_194",
+            "hierarchy": 61
+        },
+        "834d89f7a4ed36095a747ce3e10f1f919c854fd3": {
+            "element": "C",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "2321168e3f066b21fd92f41cc8afc6d5aa53b3e6": {
+            "element": "C",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "7060369c4bb601d8c1e6f988de960d4374b9292c": {
+            "element": "C",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "d6ee8cb5748399689015306befd79bdb714052ac": {
+            "element": "C",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "c876980e7a00188a2251fd5c83e2f060afc89b60": {
+            "element": "C",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "7f8ffd158d1ec6e4274c876f45012bbb8e811ebd": {
+            "element": "C",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "629a659ebdf531a024dd368b745bc189b0b17560": {
+            "element": "C",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "50148430fb3e8991eb77576cfedfeb33a6dd1185": {
+            "element": "C",
+            "tier": "NAO-J-2",
+            "hierarchy": 78
+        },
+        "4162114a6e06e996e746add85bceb59b51ef5dea": {
+            "element": "C",
+            "tier": "NAO-J-3",
+            "hierarchy": 79
+        },
+        "5c8dc673c933cc9450fc819807fec96c6c781dc2": {
+            "element": "C",
+            "tier": "NAO-J-4",
+            "hierarchy": 80
+        },
+        "5a1715577aa1a2a93cf6248ab97109acd043b110": {
+            "element": "C",
+            "tier": "NAO-J-5",
+            "hierarchy": 81
+        },
+        "4259733973ef8c9de11be6c923bc96263c0d6e80": {
+            "element": "C",
+            "tier": "Tier2_aug2",
+            "hierarchy": 82
+        },
+        "6ab385d83ba03e473d18847320552fda125cde0c": {
+            "element": "He",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "6dd9d5443a50069ced0e23ad3fb36d448f53e34d": {
+            "element": "He",
+            "tier": "d-aug-cc-pV5Z",
+            "hierarchy": 53
+        },
+        "72a791a65faae78aee95e4ce0a241d6afcb4a5a7": {
+            "element": "He",
+            "tier": "6-311-Plus-G-2Star",
+            "hierarchy": 41
+        },
+        "93ea8b6bd74cb193b1ede4a1a855b27ed8d0272d": {
+            "element": "He",
+            "tier": "light_194",
+            "hierarchy": 61
+        },
+        "b54c1e5dd25c5e3fc65b3d198c74fedb9334d9ca": {
+            "element": "He",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "f981b4042cfefc66ceef5b1d22ea46ebc585463f": {
+            "element": "He",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "948e61dc2717aab9ac572593b49ec47283882954": {
+            "element": "He",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "537f5cbe133aaf3974eb98f934e5015004b07135": {
+            "element": "He",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "998042b247e601e20b1e6eab2d886588f3ee50a2": {
+            "element": "He",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "8bc5facb4932bc7d651341453840393280172ab7": {
+            "element": "He",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "25cd5b7492e4d6ee5cda982ad67fc3f7504a53f0": {
+            "element": "He",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "45131079065930bc55918e3d3fadb3ef2cb39c4d": {
+            "element": "He",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "c9906db65b8c661eb0dce74edcd96c4bb177f33e": {
+            "element": "He",
+            "tier": "Tier2_aug2",
+            "hierarchy": 82
+        },
+        "c6ff51606497399ec179338341819828adaff3d6": {
+            "element": "S",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "98e6a641b5f7e0de209e3bad51d0a0ac29a53028": {
+            "element": "S",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "f73e89d78f48627d5d0532a0a9f44406d0027c64": {
+            "element": "S",
+            "tier": "aug-pcJ-4",
+            "hierarchy": 36
+        },
+        "f22a114b9b683ee3bdc0ac56d2d8d8d3a2f8b2ff": {
+            "element": "S",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "4ebf2f3b9054b2ecb868b62b5ec3e4c5c1d821d0": {
+            "element": "S",
+            "tier": "aug-cc-pCV5Z",
+            "hierarchy": 57
+        },
+        "a3d512b24c31d3eab38f680f23c67fd887ff16f5": {
+            "element": "S",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "6a7767ae066930637d496f1ba152dce54287e4dc": {
+            "element": "S",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "029b2413e85ba3ba65184a44016dada3f49e4542": {
+            "element": "S",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "59078f5ebf94f824833cf9a6547ee6594b14dd22": {
+            "element": "S",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "5ee901202ab96f393df81e6ec4c28a7fdadf7828": {
+            "element": "S",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "0566ea1aacc89a010b4788be67f3ebfac45535a4": {
+            "element": "S",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "1ed10fd7dd3b384390b4861d48255257b18acc98": {
+            "element": "S",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "5ed51ae5c30b2b08b34ec8d3d2bc5a2aa62b0ccd": {
+            "element": "S",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "5b7d10c2c653553f44962168d4e5940c9260400d": {
+            "element": "S",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "bf99b92d7f7b50872b995baec1c2e34b7c4d428d": {
+            "element": "S",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "1b13172393d11297760883e6b2232205aaabfcec": {
+            "element": "S",
+            "tier": "NAO-J-2",
+            "hierarchy": 78
+        },
+        "544d0b8557968f281fb75d3638d3320e4eb81d0c": {
+            "element": "S",
+            "tier": "NAO-J-3",
+            "hierarchy": 79
+        },
+        "bc75e109547fc73584ecc665003b2e7e471d7643": {
+            "element": "S",
+            "tier": "NAO-J-4",
+            "hierarchy": 80
+        },
+        "1c002f2a6edf245a92d8fe4d5514cf95159b972a": {
+            "element": "S",
+            "tier": "NAO-J-5",
+            "hierarchy": 81
+        },
+        "d0dc78a410b4797a73cede2c1a522681a60cac2b": {
+            "element": "S",
+            "tier": "Tier2_aug2",
+            "hierarchy": 82
+        },
+        "d873f419e73b58fce9cda25454f6915a186a325f": {
+            "element": "P",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "7fecef8c06c52cfc1b8d58c64c819d5ed445134a": {
+            "element": "P",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "1f2712d68190f5cf1cf72b18f22fdb4e16e7bd5c": {
+            "element": "P",
+            "tier": "aug-pcJ-4",
+            "hierarchy": 36
+        },
+        "931c82021db51fc4661f173877d806809fbd7ce6": {
+            "element": "P",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "c5e9865120d2ab9b8ce82b8459bdb7a5b77ab759": {
+            "element": "P",
+            "tier": "aug-cc-pCV5Z",
+            "hierarchy": 57
+        },
+        "68a8cf9cb1720dd6d689713f4e5798c24a62f832": {
+            "element": "P",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "0f932a563e891cd59a69bf10ee3d84c80df6aaf6": {
+            "element": "P",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "1e3906d47d335415b81088d75a8957014577ad2e": {
+            "element": "P",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "52d177030d8277d07b9daba77f603a924d160a01": {
+            "element": "P",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "3cb3799980fb2cb65f474c6231d93fb7e3046ac8": {
+            "element": "P",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "b23b695795025ef09726af9c96abb7eb08ffbeb6": {
+            "element": "P",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "110e17b3f1e64a59c13dd54027a7d3e2c2dcc03a": {
+            "element": "P",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "039b8430f060911175805b9b0649bd426379322b": {
+            "element": "P",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "f7cdf5c8668ae4404460afde98abb6bf2d969a37": {
+            "element": "P",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "6a419389f1f65032b187be623cd9af133435a602": {
+            "element": "P",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "d7df10dcd90989d63a4e31d8d9dad9a3a98528ae": {
+            "element": "P",
+            "tier": "NAO-J-2",
+            "hierarchy": 78
+        },
+        "d241cdd9340532710adaa55113d288783060ae8d": {
+            "element": "P",
+            "tier": "NAO-J-3",
+            "hierarchy": 79
+        },
+        "aa0328426e1df4cdeb7e903f101bd6f91226c810": {
+            "element": "P",
+            "tier": "NAO-J-4",
+            "hierarchy": 80
+        },
+        "104ebcca2a88f56d1f533e2d4401a13e2cf08f9d": {
+            "element": "P",
+            "tier": "NAO-J-5",
+            "hierarchy": 81
+        },
+        "089ee991edf22fb52cbc98aa4352e7370148f0d8": {
+            "element": "P",
+            "tier": "Tier2_aug2",
+            "hierarchy": 82
+        },
+        "8be62e3393a5f6036755c72af6123055939ba53c": {
+            "element": "F",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "ffaca088fdbb71d5d5ba0db1131ebb9f5ac2b4af": {
+            "element": "F",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "ca24b2a1a7718bedc8b291a6f12db505a876671c": {
+            "element": "F",
+            "tier": "aug-pcJ-4",
+            "hierarchy": 36
+        },
+        "c948815ad42ef337c4dfcd96a92b0d6a0a061729": {
+            "element": "F",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "2b71137ba41b92da9ea6259683eff1469465f202": {
+            "element": "F",
+            "tier": "aug-cc-pCV5Z",
+            "hierarchy": 57
+        },
+        "5694ecce778c44c0ac0fd3199c9e6cf8d481b5e4": {
+            "element": "F",
+            "tier": "6-311-Plus-G-2Star",
+            "hierarchy": 41
+        },
+        "c5d6efbe54892072f54ccf1796d88f70273ef4df": {
+            "element": "F",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "7c517eccd2b59279e10b846537db50b7d0d1c55d": {
+            "element": "F",
+            "tier": "light_194",
+            "hierarchy": 61
+        },
+        "4e0b50bf7f69125e9cc0aaa9992cd9654b24e75b": {
+            "element": "F",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "1c73813433e481e1b923bfe9a14c86e6de0b8317": {
+            "element": "F",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "35d06d449c7813808e4ce7189ab0c1fe73e58308": {
+            "element": "F",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "ea165d104e06e96c3385b8a9ca6c461775afc36b": {
+            "element": "F",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "d76c1436de76f5bf71aa74ee5633231caea5123d": {
+            "element": "F",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "3b7fc71b80b7e88cf838d1efda4094c6edd8c3bf": {
+            "element": "F",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "d62b97a5a2a41e4e935475171efc0bca247b5415": {
+            "element": "F",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "1d24fda293e896787abe6baeb3955904daacc902": {
+            "element": "F",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "87608087b739a07f9bc1437810093a4d8be64153": {
+            "element": "F",
+            "tier": "NAO-J-2",
+            "hierarchy": 78
+        },
+        "ed6fac5b7f55f3090915caf093c6de64168955d7": {
+            "element": "F",
+            "tier": "NAO-J-3",
+            "hierarchy": 79
+        },
+        "35f2058ca6c433fe56f331cec734df6b68088ed7": {
+            "element": "F",
+            "tier": "NAO-J-4",
+            "hierarchy": 80
+        },
+        "5177858de5ea34c57543b045a295a9182b45b8c7": {
+            "element": "F",
+            "tier": "NAO-J-5",
+            "hierarchy": 81
+        },
+        "af4d8963f55d9467b7034339f666a97adcd19aa7": {
+            "element": "F",
+            "tier": "Tier2_aug2",
+            "hierarchy": 82
+        },
+        "58fd67d0f0091d10584c2d494f8258c653fd1c3e": {
+            "element": "Cl",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "58db3f3dc2118cabded35ed7fa5cb0148f0a921e": {
+            "element": "Cl",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "1059e5f8f4c68506fa3f9698acac82c73be517c7": {
+            "element": "Cl",
+            "tier": "aug-pcJ-4",
+            "hierarchy": 36
+        },
+        "f8435a267ad7477e54450e9b6f7e57e76d600c0f": {
+            "element": "Cl",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "4a4b88c228ac32fa8846ddfa438e7da423c926ef": {
+            "element": "Cl",
+            "tier": "aug-cc-pCV5Z",
+            "hierarchy": 57
+        },
+        "3a2e80440aa433d1c99d16ba7b67a1c991e2e2f2": {
+            "element": "Cl",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "7757aab6b24002c7a789365df1bae2364a9574d3": {
+            "element": "Cl",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "6c92536e4bca349c18538d868bb9a85c67883ba7": {
+            "element": "Cl",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "dabea5107ece8677395084a191c74a8175005a06": {
+            "element": "Cl",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "1946bd2782fc16e373a98e014b31cc79924d84aa": {
+            "element": "Cl",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "89ec889a49a2a1a6b4f869089f70af9d7b46a337": {
+            "element": "Cl",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "29612f689c10d2067bf3d27a1d8d58e9688d3ef8": {
+            "element": "Cl",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "8e3a6607efeaacb36adaa3bb667fe37eac682343": {
+            "element": "Cl",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "5861f9caeaa28f5bd82d0258d6d4a107393605a4": {
+            "element": "Cl",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "91422a72bebe24af931216674aba4ca4e8204dd3": {
+            "element": "Cl",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "eb714b4d4cf6e14fd59c1d5b3f0ea8b6e93c7a13": {
+            "element": "Cl",
+            "tier": "NAO-J-2",
+            "hierarchy": 78
+        },
+        "33bf599c3c586645065a58c0f4bae4fe3201ac65": {
+            "element": "Cl",
+            "tier": "NAO-J-3",
+            "hierarchy": 79
+        },
+        "8d5178c61ca78b67af46e457a1dc2a625da98764": {
+            "element": "Cl",
+            "tier": "NAO-J-4",
+            "hierarchy": 80
+        },
+        "3c12cce50beb5db7483311ccda3089b7c5221a28": {
+            "element": "Cl",
+            "tier": "NAO-J-5",
+            "hierarchy": 81
+        },
+        "809b9cef64fd75bfea09fd3fb788b6b5a7bea9be": {
+            "element": "Cl",
+            "tier": "Tier2_aug2",
+            "hierarchy": 82
+        },
+        "ccf98503dbfbd4cd7a77ccc8b7cf01a7476fc4b4": {
+            "element": "Nd",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "939c3ed93b5b2671bd4d5979252d49f74e329535": {
+            "element": "Nd",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "0a60df6050f03d394b444aef2520042700bbe91f": {
+            "element": "Nd",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "dfb6d9ea4d0905fc35c9dbc1c6d1e4f520aa2581": {
+            "element": "Nd",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "194a4f3de838836425a527f3916581b035279d47": {
+            "element": "Ge",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "4d1fe1e24c87f224641977448617da653410df87": {
+            "element": "Ge",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "9d87aa2453c553d1611d9a03efbd2fee53a6f71d": {
+            "element": "Ge",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "72cb933724d6d117da5fe5226147344ac129c980": {
+            "element": "Ge",
+            "tier": "really_tight_defaults_2010",
+            "hierarchy": 67
+        },
+        "ea32908d605f026cd0047b334fd1b04eeb316914": {
+            "element": "Ge",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "0c1b9b0a98cd96540fd4198874ca929cb13ce754": {
+            "element": "Ge",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "60f8616bda9d2d6653b2f302426abdbbf17554b7": {
+            "element": "Ge",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "2035a69f7f640cc7efbd09cdcbb89b33290aa43c": {
+            "element": "Rb",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "7fd027aca9f8b2ffc789bac76130c9efa1f3882c": {
+            "element": "Rb",
+            "tier": "light_defaults_2010",
+            "hierarchy": 64
+        },
+        "98f7fd0b27032e020ab6812635a957df29d2ca21": {
+            "element": "Rb",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "718f0cfa8976822372087915b17ca858fbf99aee": {
+            "element": "Rb",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "73daf904c51f2e54eec37a85f4e27714dbe62bc9": {
+            "element": "Rb",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "eab7b7d2d23b8dafdae65b49812b3d5f83e79046": {
+            "element": "Rb",
+            "tier": "really_tight_2015",
+            "hierarchy": 68
+        },
+        "ada7d3923ff8664565cc2d93db5be8556170b0f9": {
+            "element": "Rb",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "8eba7f8460a8c3c96c07548f3c908276310e3549": {
+            "element": "Cd",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "8e5c5c403c2d946a989aacd18ec456826146e16d": {
+            "element": "Cd",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "4a6c5b2f1e2c26a81a2fb2acf919ee56b05a77c0": {
+            "element": "Cd",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "f1d7188f74570d84ac7a6bc1a8743c23cec9b905": {
+            "element": "Cd",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "788a331d5d70e1444696859a380a6d057fb4d844": {
+            "element": "Cd",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "bba9810d4467444fb845d787db886aa661a37dd2": {
+            "element": "Tl",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "72c068fed9870efe6e44a6e79bd6e994d0ca944b": {
+            "element": "Tl",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "56f72d6be770be56bd2033b92cd06da33e69d9be": {
+            "element": "Tl",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "39b435253f46afa12813fdfcccb0e1a5d1d59340": {
+            "element": "Tl",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "568cabba39f793ba3577629ca29b13aebb796d48": {
+            "element": "Tl",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "857573fb4e4aa88188c1b3dda8458d79f5fe8542": {
+            "element": "Ca",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "0e1d4b6cff2ecd44444073841179f185c1bbeaf6": {
+            "element": "Ca",
+            "tier": "cc-pV5Z",
+            "hierarchy": 46
+        },
+        "7d786bda7a099b1a80a5677681d473bb29870976": {
+            "element": "Ca",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "28c97ae2c48a4ed67e10fe9beefeefdd00b88a59": {
+            "element": "Ca",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "ea53693194588d6fff2587a9e29a35cd7696ad5a": {
+            "element": "Ca",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "4f0c2c6ad7a6558ec9f31fceef26993360c412da": {
+            "element": "Ca",
+            "tier": "really_tight_2015",
+            "hierarchy": 68
+        },
+        "b0a404e93e53a2c5a19db279280b4901eb5ab141": {
+            "element": "Hg",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "5cc8d772b17fdc907fa80a6815507c825cfefa63": {
+            "element": "Hg",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "83675fc2c46a60691139bd679e612eb5f199ad6b": {
+            "element": "Hg",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "7771091ba70939dc63809be5fb3d9a44da4c401b": {
+            "element": "Hg",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "c6e63ad02a8b8987e005d59d8b5b7b937575a874": {
+            "element": "Hg",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "71d44e4a62215d679c59bb4b08e7b1e41f9c2b49": {
+            "element": "Md",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "3b2d0962d2279ecd9d5c57ac35566f8054467106": {
+            "element": "Md",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "75e12de9c5a5a38a078d2d96bcb9bcd0429bebdc": {
+            "element": "Md",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "a00533e0541ac9c0594960dd49f03525a8d0cb25": {
+            "element": "Md",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "4c2f245e9cbd0409aba4b2c529ba6028406b7052": {
+            "element": "U",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "390a8338b6255835b8a61a37f3a03c6e82c3ddb4": {
+            "element": "U",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "8a63c2899a664fb2b5b3f9531a2fc726f54dd71e": {
+            "element": "U",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "77201d206de6296a531c0a85dd299c5bd4528aeb": {
+            "element": "U",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "8d62ada7127ead0121d69c6753c7b65c41c77e3f": {
+            "element": "Ga",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "ab4089ce0cbf6a214bd0519ddb86b84cae58c143": {
+            "element": "Ga",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "cb1f09be4737a85b72a237d6c9f527e8aeee6823": {
+            "element": "Ga",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "a6dcbb3a42aee9ec9f2d10d2c53accf6250af07a": {
+            "element": "Ga",
+            "tier": "really_tight_defaults_2010",
+            "hierarchy": 67
+        },
+        "485e0f497d836336cddd285068c7921d370e8033": {
+            "element": "Ga",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "9ef10752d2f72d38d87f923fa53dc6f18a211290": {
+            "element": "Ga",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "53f5b8fe58a3d800b19d1dbc88c72a3ebdc64eaa": {
+            "element": "Ga",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "47cb0b5b0862354b0f6db55b5a64d6fd3deb89d9": {
+            "element": "In",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "6317afb20b09c98c16fec43efd92a2195c99172c": {
+            "element": "In",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "7ef5460d0141d2a6425b5a79d7167b3c647cda88": {
+            "element": "In",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "57695a4f36b03f93cc1a7e2fb1432d92da6ddab7": {
+            "element": "In",
+            "tier": "really_tight_defaults_2010",
+            "hierarchy": 67
+        },
+        "9af9e174727662a4e00fd7072f6503d48c6349bf": {
+            "element": "In",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "e077ac6ebbf02c50e491419f7ddea1f664116073": {
+            "element": "In",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "c55795f86669b3280b4994ec06eaa5152fa16917": {
+            "element": "In",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "8786a38efabd69a5c60ce2bcab4c445a0493e49c": {
+            "element": "La",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "a0b95909dde8b89c0de83abbb0fef156df9f8db0": {
+            "element": "La",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "aac4b9f22789faeb5c0c34aea0af801e31747bdb": {
+            "element": "La",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "94dd6d8c9b9b215784d2409ce2638703a8a41dbd": {
+            "element": "La",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "766bc612bf390a375165295cfac1672e5e8c0bda": {
+            "element": "Au",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "b8eb048af28058a016c7403ad7466989c8f15ad4": {
+            "element": "Au",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "808adb68a8c8d03918dfb4c8213c7ea1a7b7ed9c": {
+            "element": "Au",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "312b95901c06ded8adb0198ccf237a075db97ef9": {
+            "element": "Au",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "bb806e7928dd01e43bf2283e77bd13dbe842f47e": {
+            "element": "Au",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "dac7cd42986d473be4fa7a27e2a624e01d2a9d04": {
+            "element": "Cs",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "fe773faa9f4708be24124f3cafd242507e6c035b": {
+            "element": "Cs",
+            "tier": "light_defaults_2010",
+            "hierarchy": 64
+        },
+        "ec450fbcdbadcc9e643a9556c49bab83d9e6ecf8": {
+            "element": "Cs",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "5047487ee7ca3e1155cb426e1017e12474197887": {
+            "element": "Cs",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "2f478dc92bc095bcad9bf22c77c02b27c9693df1": {
+            "element": "Cs",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "108c5bb0d6a4caae3912e3dffb647463705f8f44": {
+            "element": "Cs",
+            "tier": "really_tight_2015",
+            "hierarchy": 68
+        },
+        "fce1c076260f978dd2eab0585749347760c901f1": {
+            "element": "Cs",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "722808c54de3116459aafd19c0c7fe98f981c997": {
+            "element": "Ti",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "fac3fc521baa010e057624e901edafb29b16a8f3": {
+            "element": "Ti",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "350199d4554e2e433655242a020d277ec7add5a9": {
+            "element": "Ti",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "b937f6203e3852583a2e8166b99fc18775d5f470": {
+            "element": "Ti",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "afefd5f2b06ed6b12eb92f71837a249c5e8b893b": {
+            "element": "Ti",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "56d3cb7857d23cfc83d0ed25c06c3ea3328da8b9": {
+            "element": "Np",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "18455dbc05eea43d648380ed0c33003428d7a82b": {
+            "element": "Np",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "6b305d689af883edfb381e4052ced38fb8404939": {
+            "element": "Np",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "00c5d08c517354a11a72e9cc86f9a955d1601387": {
+            "element": "Np",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "f55f0964da4e1f711629ca9e014fa9c8ab47f8e7": {
+            "element": "Sn",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "22b54b56639a730abad6f5d4c27051d51d061373": {
+            "element": "Sn",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "7d8729579e444ba6f089dea4c1e140158a90ddb1": {
+            "element": "Sn",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "d193a75dab6b064893e45ebd723e208643414d51": {
+            "element": "Sn",
+            "tier": "really_tight_defaults_2010",
+            "hierarchy": 67
+        },
+        "8dc90709a8190605791d22081d9b97298332fd0f": {
+            "element": "Sn",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "251d821d062c259f7bf5313a4e93f6111db120e5": {
+            "element": "Sn",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "47b5396baf5e8d83502f4afe48066e0b37947f4a": {
+            "element": "Sn",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "97781f1982f1bf09039b28b0542f74f65f11f34b": {
+            "element": "Bi",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "4990c7d7d9385bb59ddf21b649ce0c2bb3e5f200": {
+            "element": "Bi",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "bc8433faf40f6d4616a92f1044f5c5c17bffad41": {
+            "element": "Bi",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "1c5f8eb2e06a6ff6d7bd5e5423587b0d590c093b": {
+            "element": "Bi",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "0ba713bce863de04cc34f9b8ef448a000098a387": {
+            "element": "Bi",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "792f47fc3dd057374e05ca2130186919fc723782": {
+            "element": "Pt",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "4b27e49564e51f9dd6cd82be7f25868b51917979": {
+            "element": "Pt",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "fe44eff624bf2b563b903303cad2db20ef78469c": {
+            "element": "Pt",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "699870709749bd51d4ad00157e7e338bee85fb36": {
+            "element": "Pt",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "e810948da747106239e604717160ff6b9c46618c": {
+            "element": "Pt",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "45cfee067601e82ed18adce1ec2606ae71666829": {
+            "element": "Re",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "3bc6add25fa4b53af473754376d0b2fcd148bd94": {
+            "element": "Re",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "bcb05656f59bf2d9afa85ba1bb9e4c623f9b6773": {
+            "element": "Re",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "27bfd13499ad43ba43e8d7f72d8c1b6c303e16c4": {
+            "element": "Re",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "c9c7e39386fa395405adf52f0427ae31b3cb837b": {
+            "element": "Re",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "4d0aa16f94a187c5e5220a88316530770d87809d": {
+            "element": "Ne",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "4349333f4d98b82f01e9ea7603c4b364b167ad7f": {
+            "element": "Ne",
+            "tier": "aug-cc-pCV5Z",
+            "hierarchy": 57
+        },
+        "98ada599dc9d44d502da079a7e661c3bbb0f8779": {
+            "element": "Ne",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "311e3b83312c064206e5749cfa95b913f8dc7b03": {
+            "element": "Ne",
+            "tier": "light_194",
+            "hierarchy": 61
+        },
+        "42293ef9e42a7aec6a620191d357a009e7e3fc1f": {
+            "element": "Ne",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "545f19bbdbd7013a59637954d2c5273655949339": {
+            "element": "Ne",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "86db25a6999c4423a95f461d19eae234fcc08062": {
+            "element": "Ne",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "31ad586e7881bbc3e12e3645426b693f223702f2": {
+            "element": "Ne",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "13aca1fe752528443b3d4735f88a56862293a14c": {
+            "element": "Ne",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "322eb138eca47bca7b23101c0c85813a9e875513": {
+            "element": "Ne",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "77fd1d13ff8b0f476525d22233a9b788ac85f309": {
+            "element": "Ne",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "54accc5975914b08eab04286370dfbc93e21af8e": {
+            "element": "Ne",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "2c75e1b057dcf4b176526d8d0e564e4bf06a4595": {
+            "element": "Os",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "29cf047e510daec10ec175bf61b725f8d28f3762": {
+            "element": "Os",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "dbc8419c827393d9054c7dd083dcb27a8dd205ae": {
+            "element": "Os",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "f2b77eee71f2e2440c398b5ad4067766233b44af": {
+            "element": "Os",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "8ebe800d9172bb61392e9d3d37f01e8a2cf12ca9": {
+            "element": "Os",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "1163b8b9a80f229de2e4dffba6b02e358759d7bf": {
+            "element": "Ir",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "09cace917493a98fe325248e139c35ac69c8975a": {
+            "element": "Ir",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "9259b8884dc8b5aad4622a164e6a6886da40a66d": {
+            "element": "Ir",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "a47338ffe8f8728993191eca7e8955bdfa18b9d3": {
+            "element": "Ir",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "72a76e80fc4747b0938f867f63a2a7419b022a70": {
+            "element": "Ir",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "fb52962d5425e6553d1a6549ca90d3905440215c": {
+            "element": "Pu",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "f36fc91faedac62a3530ce8a3a00de173119345c": {
+            "element": "Pu",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "16aacb80b893cb43acc78eced02df89f6df6e9ff": {
+            "element": "Pu",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "b0cbe282fc0e261fb1a20a110be44a3174954d59": {
+            "element": "Pu",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "90c0d6169a577a1f15d69a6c2f56671b1958d311": {
+            "element": "Pd",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "84cfd284b1cab617c824f31916aa825e0d180513": {
+            "element": "Pd",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "478bcb0952a4811b1678e0d60d6ea1ffadf3ea4c": {
+            "element": "Pd",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "9bd7271a96485107fa96df83d5feb94e559d582c": {
+            "element": "Pd",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "71ee441511417817c2021cbb7173061e8a04c25f": {
+            "element": "Pd",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "f154187791b4592effd907ceb54a620742b110af": {
+            "element": "Li",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "e6ec96c40d94600f221c2cff967bee85e3185e9d": {
+            "element": "Li",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "30e115f850753f074ef1bdbaef14c20fac17c2d4": {
+            "element": "Li",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "3dec8e714ef7c767df9ae354cb3bfb6ebbd5a65d": {
+            "element": "Li",
+            "tier": "aug-cc-pVQZ",
+            "hierarchy": 50
+        },
+        "7299f3ece637276a424508b5ec61403bdb8f1655": {
+            "element": "Li",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "9f4a64ad08d4f0a5c341b495f96261347f645d7a": {
+            "element": "Li",
+            "tier": "light_194",
+            "hierarchy": 61
+        },
+        "144bb52dc0fe72957b716f9a68cbab6e870adea5": {
+            "element": "Li",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "c7934c60329aa70ae30a3e5974eab7fe18d57f03": {
+            "element": "Li",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "264e0d9bd859c412e59c198d4088189395bac719": {
+            "element": "Li",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "50b3c5fd5cd50bab987939922898145f4826a61e": {
+            "element": "Li",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "a905c03ac09e5c198b0a4639e52e530d65dc0453": {
+            "element": "Li",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "519ae4df3a2739b024c50ec5313d144fe45f466c": {
+            "element": "Li",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "edccb8bc1919e60f49aec18a691112d21df757e3": {
+            "element": "Li",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "58b8ac38259a323797975c815f0c90981aabed39": {
+            "element": "Li",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "ac9b3ba28dd41566e0ea5bcf2b5b3865dbe6bf6c": {
+            "element": "Br",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "bf0096920276711e6e2523f9c43bc2aaac9686c3": {
+            "element": "Br",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "e44d0cecf642b52cff898245690cd4b7f7838353": {
+            "element": "Br",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "b818786d4de2be6da7a697e9c1899a02a9ff90d1": {
+            "element": "Br",
+            "tier": "really_tight_defaults_2010",
+            "hierarchy": 67
+        },
+        "909185bdec582e3684ba1b311bc5b87057d5cc7a": {
+            "element": "Br",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "4157ddb63c0142eba1f97a894844d4f227f275f0": {
+            "element": "Br",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "4efdca36c613d1d40a4b5ce54118abc4bf125f76": {
+            "element": "Br",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "1f6a8ce86579aa223bf93db1b1f9b4c36331a4f3": {
+            "element": "Cu",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "f24467007e83d65fee95cd18aa778f47bf67f6cb": {
+            "element": "Cu",
+            "tier": "cc-pV5Z",
+            "hierarchy": 46
+        },
+        "13b47b96eb2291051fd73363231f953f5fb1dd8b": {
+            "element": "Cu",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "9d7e15450e1d9881eed1bdf8d1f112bfa1926c24": {
+            "element": "Cu",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "6114bd95b4a2e04d100f8cf3bc6c2b507a01fcca": {
+            "element": "Cu",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "22f8ac4668e8103a323456c0ba7ea0adfe55b94d": {
+            "element": "Cu",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "1d65bd92e19797b24bafb1a4257566068cd00536": {
+            "element": "Gd",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "fce3cb7a60e0db4cbe033454628e64a2cfbe638d": {
+            "element": "Gd",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "f89d916ef2f73b4b3e2cd5ab45b4f4f2b1ec2116": {
+            "element": "Gd",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "6fbc0b3b048a0a72d760a97182cb384d22aa4e6b": {
+            "element": "Gd",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "6a408b101253005049e54e729d5d52040388da74": {
+            "element": "No",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "e47a74228d83257f01a784582ab39e18e720437c": {
+            "element": "No",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "cc0d5ee7e852d78cb22d6a8cf7fc0163455da934": {
+            "element": "No",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "2b3d704be08911755b0d5eff10fa02f269d36dc4": {
+            "element": "No",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "74d010642a1252b88959d92bb48d399c5eb531c8": {
+            "element": "Ce",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "39b802371bdf9c6f27cb871dac7f5e78adcb7830": {
+            "element": "Ce",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "79dbf93b0f8145dc2e6ff23fbe66dc3f1e968b7a": {
+            "element": "Ce",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "75449fccfdbe5390dd287b556fe575a22190815c": {
+            "element": "Ce",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "271a8355bab23e64ed3c03aea0640cc2c071b244": {
+            "element": "Pm",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "171b48e9be058340bd8db2f702467cabad4f10e9": {
+            "element": "Pm",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "66847ba3b286fbc42e416ef1a271a540890dcf93": {
+            "element": "Pm",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "7e26d9cdb78c34a0ac082f54ba8c43fd57359af8": {
+            "element": "Pm",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "540018539d73f8d8bd3a7c5161a05ce43057287a": {
+            "element": "Co",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "75bc2897a824d17336f2bdffddd91fa1f44535fe": {
+            "element": "Co",
+            "tier": "light_defaults_2010",
+            "hierarchy": 64
+        },
+        "24c7376c92d2949e1f0b6c233e96d01abb2e218a": {
+            "element": "Co",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "e12d55fe926c64efad90c371d67d93727be9870a": {
+            "element": "Co",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "dfa138b20b90414985cc955a3bca4d4a455ae82c": {
+            "element": "Co",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "6d320a9f97b9b45129de1e49757e4fc6743861aa": {
+            "element": "Co",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "c223ca46d0f0b6a3667ccbc6dde8402ba0050aa1": {
+            "element": "Fm",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "d87c981df567722f2c6e0f5f4acc850348382c80": {
+            "element": "Fm",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "aa0e49e24252b86ff2a88121c17afaf1d442cedf": {
+            "element": "Fm",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "528b997221156ac3afa5e18cd2d8c2b710b9648e": {
+            "element": "Fm",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "c8a4899a93afc3e97204c73cac52a7ed486a65c2": {
+            "element": "Ni",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "fd9f5575fd33e0aef76fe7f47e36d92936b89568": {
+            "element": "Ni",
+            "tier": "light_defaults_2010",
+            "hierarchy": 64
+        },
+        "a544af0d020028ac53746d0084f527a7f3c53fb1": {
+            "element": "Ni",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "65ae555e3fc712ab709ff95e1dde053cbf002919": {
+            "element": "Ni",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "c5e02075a9ffd6847c6f326263afb67d2073f141": {
+            "element": "Ni",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "74a5f827bb9d09ccd859f1625e0db92ba35237fc": {
+            "element": "Ni",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "1f3659e52ee29c567cbca2b339b079aad09f3bbc": {
+            "element": "Ni",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "d28795a6fb803edbd82a88d3866bffc81c019690": {
+            "element": "Ni",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "ae1ec023008c58fe6c9c70f18872d830078abd7a": {
+            "element": "Ni",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "69e569c48270f8cdf928140260c4ca11e9ca10b2": {
+            "element": "Ni",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "d1eefc0a75838060e20bd4be1b9fffc93bb5f091": {
+            "element": "Be",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "b57a54a9f7017d72ce631bbc62a365409566de4e": {
+            "element": "Be",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "088edb225c975c0ae26789c49c90cf34a8c6cf40": {
+            "element": "Be",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "03c214b35b847d7d4367ffd81181d276a085e74b": {
+            "element": "Be",
+            "tier": "aug-cc-pVQZ",
+            "hierarchy": 50
+        },
+        "f822b24131520efd8080568853fbeff5be32a700": {
+            "element": "Be",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "d7bae48297ecf495c7719b80fba7847a4a11e850": {
+            "element": "Be",
+            "tier": "light_194",
+            "hierarchy": 61
+        },
+        "7be21aaa8aad52cace5d9b4ea8d59550d4d704eb": {
+            "element": "Be",
+            "tier": "light_defaults_2010",
+            "hierarchy": 64
+        },
+        "05b1096d8add79a0785ba1bfd5d5e7c6c44f1886": {
+            "element": "Be",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "953fdfe97c421a6aea420c3595b0ff0eefc657f6": {
+            "element": "Be",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "b5ba0fb384c203bb8696634137633ba37f4b891c": {
+            "element": "Be",
+            "tier": "really_tight_2015",
+            "hierarchy": 68
+        },
+        "3b2c8887a08c3ac1e4360a8adcab406d0b0d844b": {
+            "element": "Be",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "f7f26f93d0b4ccb8bfa59e6c1cce64736f858201": {
+            "element": "Be",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "f82df69f45ac86ba0e2b6f11872f6768cd58cdd3": {
+            "element": "Be",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "bcc586725e992bdbe6b5eacfcceb1fc1f69f709f": {
+            "element": "Be",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "3de7d615df525a62fe14902387fad64633c97da7": {
+            "element": "Be",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "453729e2fcf79ff1fd6ffb36ffbef8172572eb32": {
+            "element": "Be",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "96d281a546b6ff6f514d61cbe34a89175d577ffc": {
+            "element": "Ac",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "22f35192c22b3d69f9db460ec79d85506d7384ac": {
+            "element": "Ac",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "575bf8e17cd97f97b24297968362b4cbf0bf201a": {
+            "element": "Ac",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "d39af2d480583361e333e608218dd2e6a2b30768": {
+            "element": "Ac",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "90241782d5c79eb56d51cd75ed0936ec823fc961": {
+            "element": "I",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "26e6f0877d7d73978672f37c89565b65e623fef6": {
+            "element": "I",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "ea43412a625015cbec28731a6226fd54e061b160": {
+            "element": "I",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "8ddb767b3ef790b0b976fdb683b290bc7c0fb31f": {
+            "element": "I",
+            "tier": "really_tight_defaults_2010",
+            "hierarchy": 67
+        },
+        "c51738e5fd3ae492d081d7b630feb50d79452c0f": {
+            "element": "I",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "fd2f9725d4b44e5799bfc00e97bb3df7f1914590": {
+            "element": "I",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "6efae2c7e535bf4cafae986eafd70d610c0e70e7": {
+            "element": "I",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "b5e18c805bbf9c2f63135e1b5698e32dc256e933": {
+            "element": "W",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "ad6ea6709ef88be201629d966d3b73901a4e08a0": {
+            "element": "W",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "6fc794eeccd635a077b354451d9644d3bb56ddfc": {
+            "element": "W",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "2e6b35869d0c660eb55debf0e2d08247c839a996": {
+            "element": "W",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "6f36be3c14eba03944a823e6a470d62a4b41dee6": {
+            "element": "W",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "a08b3eba1b25a817d9d1b7a4f23cfb715aa9e206": {
+            "element": "Tc",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "9e011f0d2e99cc296ee930279fdd1d80b11981f1": {
+            "element": "Tc",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "39ce56d71f806af51763b2e8590e723256e3cb62": {
+            "element": "Tc",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "92e5fbb4706bf0b9540ce819e58cdd35f628d230": {
+            "element": "Tc",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "abe5c43e9ec26487d9f62556d66fe148496e2168": {
+            "element": "Tc",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "680c1589863d760755a0327872221342ced4d4af": {
+            "element": "Cr",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "d565c1894112392cff45b0e3989d75058fa57d63": {
+            "element": "Cr",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "82e0dbaa3ce416eeadab5c397b481fcc96d0fba5": {
+            "element": "Cr",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "fe2e0d7ee1ee631beb580347aa23ff4bda367699": {
+            "element": "Cr",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "8173ee2d5f100c72eb0b6031c2780ffdf3c28491": {
+            "element": "Cr",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "ce9dcbbd6cb39a59794ed4bc4fe07857a2977ec0": {
+            "element": "Po",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "65713fced46ed47a2e347977522479750663d55f": {
+            "element": "Po",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "afcf947ce78360434182344b831683f8e2c59bc8": {
+            "element": "Po",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "ec7366d77ed08b8a6095f598956906768870a19c": {
+            "element": "Po",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "e9d6d12cb693007b4cdee63b6e932cbaaafbc96c": {
+            "element": "Po",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "76ea9652147da7d964f52c92210f3332b345a77a": {
+            "element": "Pb",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "c2359c488ea1aaae7dbdb9b82d65cb1f53b12111": {
+            "element": "Pb",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "a95156181eb0c219b0256717caef65b2fd94d684": {
+            "element": "Pb",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "f81f17fffd2cd6b2caab86f9282e3cf95a7de1b2": {
+            "element": "Pb",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "0a02bae157ddc704dd7b3bb41a4b9397c086689c": {
+            "element": "Pb",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "48e15999feea8dcfc59a2c39bc318c3144cb48cc": {
+            "element": "Hf",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "ab3237c7dd6531ed368940889f96c309cdea5f7c": {
+            "element": "Hf",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "0f57a5f880810cd4354ea30c6acd5049b92778fe": {
+            "element": "Hf",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "7cef193df7c8b042a2ff2ad95340e7ec067df8c7": {
+            "element": "Hf",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "43561928cefd5cfa96b7aa9200533712c8210916": {
+            "element": "Hf",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "a634a9c7c75c073afa054dc4e7a1997e9c04a6da": {
+            "element": "Bk",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "d70fae4dcc76c551b320af88a3e6bfc62deea3ca": {
+            "element": "Bk",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "c47dc3b1050ccbd7550de761c4cadbdd93f25425": {
+            "element": "Bk",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "1017cb6b742d01c9fcb09bb094388123d1d68a9e": {
+            "element": "Bk",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "7f3adadb7f3502b8e29060a81ab3034162d039c9": {
+            "element": "Er",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "e6e157d22056f354f262f7be2efc2acec5551085": {
+            "element": "Er",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "9707bc11f15192e111f5d553658b905ac069ad17": {
+            "element": "Er",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "8cca1dc255019bffc00ca9955dc45fbeda6f99fd": {
+            "element": "Er",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "e153094665ac40ed837780250df566760ed6926c": {
+            "element": "Na",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "f96d784ffd9c236a758f9f854dd601de5b3a882f": {
+            "element": "Na",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "da10adb551554271de5ee22970348c732c03beb8": {
+            "element": "Na",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "73ea17560bc1d3978fa1ec49348c5fed754ba308": {
+            "element": "Na",
+            "tier": "aug-cc-pVQZ",
+            "hierarchy": 50
+        },
+        "1f1fd8eb6291637e077754822f4ed560c5b4181e": {
+            "element": "Na",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "5bc05dfd639b69777b189f0e7f6dc26756fab64b": {
+            "element": "Na",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "05485d0341dbd4e47bbe2b2d58053a118ec60a36": {
+            "element": "Na",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "a023c6bf82d9acd28bae7b6177d4fce0043e4530": {
+            "element": "Na",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "4ed632860249aa741278912c754fc6117709a083": {
+            "element": "Na",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "f52bc3806dfa0d3aa674a5b63da8c93155bb32fa": {
+            "element": "Na",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "8e68293aa1d068cf35633cbac8f5306e1573e197": {
+            "element": "Na",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "bb95632cfcd33ecc386995d6d2f9a8ef925789eb": {
+            "element": "Na",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "17aef63f687863be2cecb67aabaa9fabef93014f": {
+            "element": "Na",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "a3506f96bc75d167dde5a5f6f052c6bbd6f517b9": {
+            "element": "Y",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "08ce0e7bec7608b2b1599240b1884f8adf8cc57f": {
+            "element": "Y",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "12b846efa5dbd0e4496cb52fdec4a25e8c1adba1": {
+            "element": "Y",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "0d6579917b5ecb8138f58e650e65b8e5bee8ce36": {
+            "element": "Y",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "9e502c833f81e8fb7e7fa1c6c7cf8ffc4968689b": {
+            "element": "Y",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "14265169ec0e3b6725ee3baac3ec662eaaacebd6": {
+            "element": "Lu",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "4d2d38af7e6c77c28ea4ff5c39671e13c81f006e": {
+            "element": "Lu",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "de7ae9599eaf451f2b1b1349e0b1da890aeaecea": {
+            "element": "Lu",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "4e99ff043100d89ab2e2e28f16f5649fcf339d39": {
+            "element": "Lu",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "b9164b0f481196e61cdc6a66e2fa89242d4d1949": {
+            "element": "Lu",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "92e10c2b9a0dfec262e1f338b3136be14dee94db": {
+            "element": "Xe",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "8e98ecc1483be6a8656623e48581ce18292d16e4": {
+            "element": "Xe",
+            "tier": "light_defaults_2010",
+            "hierarchy": 64
+        },
+        "bb5085ee654c81f34c1bdfb90049f3a63adf69d2": {
+            "element": "Xe",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "a1f85ea69fd1ebb94917b7f50154b97146acfcbc": {
+            "element": "Xe",
+            "tier": "really_tight_2015",
+            "hierarchy": 68
+        },
+        "1c344d7a796572882271ab9acb584c20a9711080": {
+            "element": "Xe",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "50980f4f911397f6341d1a70f69246d38b9782ab": {
+            "element": "Xe",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "c064e05dc60bfba6536bbb0c434f8af9ab1c4a1f": {
+            "element": "Xe",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "bd99bc549f27d750f9bf6139c9e7613547f0f978": {
+            "element": "Pa",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "1c6177f31175db60baaab8ce1dd0f9a547e74685": {
+            "element": "Pa",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "39f4407a4906bcb3ab3528d250bdfe5c95b0821e": {
+            "element": "Pa",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "3d0d9ad11fa9b79e67cc706c68f18954cdaa1bbf": {
+            "element": "Pa",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "ac3e8705df4b13ca9b34a669d830dff4ba8ea0e0": {
+            "element": "Tb",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "2cd34b8c2959889f0858232debad0d66106ee9bf": {
+            "element": "Tb",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "39d557fe471afd148a37a8671a456533309962cf": {
+            "element": "Tb",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "1ad97a1fb7ec78c8c64b2cf5d6efd26752ca56fa": {
+            "element": "Tb",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "645c078d2b9967ee04a005523c1e9853d1c8cdc8": {
+            "element": "Zn",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "f1cfb40b21c851c9b04b89e7897978d431981981": {
+            "element": "Zn",
+            "tier": "cc-pV5Z",
+            "hierarchy": 46
+        },
+        "8a592dff63783c8d1bab9941c9c5a8672835fd04": {
+            "element": "Zn",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "70b467e18c01c72cc10c8169493c523993b91232": {
+            "element": "Zn",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "a1633603cf5e5fb9f4f6efd4b711c99f17975b0a": {
+            "element": "Zn",
+            "tier": "really_tight_defaults_2010",
+            "hierarchy": 67
+        },
+        "2d3ee699945c61fe1ede3b87e31eea3aa694b9d4": {
+            "element": "Zn",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "a8df574bb1026f314b00b6ac992df63984039b71": {
+            "element": "Zn",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "4009b27a7901677f796075d52700851a68203f22": {
+            "element": "Mg",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "520defda5761570e66c6db6695053f2766de90a2": {
+            "element": "Mg",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "6fc7e38674b3bd9c06a609311ab1ad4929001fe0": {
+            "element": "Mg",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "9bbf4063c6496ab034a896694baef7902fdde4ca": {
+            "element": "Mg",
+            "tier": "aug-cc-pVQZ",
+            "hierarchy": 50
+        },
+        "1283f9ce370811a53cb099621f05c0657f335176": {
+            "element": "Mg",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "a59c73691e5418a29bd8511b0ba25a05e10ee4ee": {
+            "element": "Mg",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "6268fb5b1ed6a9f12aabd3034b95180c22ff5023": {
+            "element": "Mg",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "5002d325e42cfa9043def14f11ec284b4cead367": {
+            "element": "Mg",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "d9a61a7a3401dd4f19c8982827c8b15242f064cb": {
+            "element": "Mg",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "db7a912fa32f734803b46c128dc59e8ef5737a69": {
+            "element": "Mg",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "db012f4195233409d83be777959d379e88443ba3": {
+            "element": "Mg",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "91f0e7d6712794a21a04cd120ae3ad9445e8f5d1": {
+            "element": "Mg",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "dc2772bdb6bec4e420e50dba8884d41f87db9e0c": {
+            "element": "Mg",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "d76549dfb25da649d8e7d43f15fee95e404120a8": {
+            "element": "K",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "45cb923aa4cd3aa54b0e336e7cee80ac37a958b7": {
+            "element": "K",
+            "tier": "light_defaults_2010",
+            "hierarchy": 64
+        },
+        "2e2d6f31f683fb78b8de821cad7cefe5de561b9b": {
+            "element": "K",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "d3140c2c9738a891801a89ed143d70fe7f277afe": {
+            "element": "K",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "dcd32229504cafc867837c147850d0c8baa22c1f": {
+            "element": "K",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "0b3e24a81233414f07a152ef2240c67556d9fbd5": {
+            "element": "K",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "c8bba4803d099a6a0a82a1cced68c1591958dd7e": {
+            "element": "Dy",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "d8eaf78389179a427cd3cab8a9b9cb2d415f99c9": {
+            "element": "Dy",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "47bf0a23158108bbd68c8cd66e5ede2b1b904098": {
+            "element": "Dy",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "568ccfb5ce6439fc0a1d523645468cb76c43d422": {
+            "element": "Dy",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "9c8cd1180da615e3b6ce958a738d614db3069fab": {
+            "element": "Al",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "860d40d03c7301403b8ec816259eb9f02795a8f4": {
+            "element": "Al",
+            "tier": "aug-pc-4",
+            "hierarchy": 26
+        },
+        "61d099a4242239d5c9c9bb4f2904130660cb13f2": {
+            "element": "Al",
+            "tier": "aug-pcJ-4",
+            "hierarchy": 36
+        },
+        "f8bec215b79056be83cceb39e27bfc9f2af7d2a8": {
+            "element": "Al",
+            "tier": "aug-pcS-4",
+            "hierarchy": 31
+        },
+        "622641ac260fd2d78a5c43084efbb2c6373ea488": {
+            "element": "Al",
+            "tier": "aug-cc-pCV5Z",
+            "hierarchy": 57
+        },
+        "3c36f6728798619a10cdfdabae33ab04edcd5c6c": {
+            "element": "Al",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "9974315b2e046d5b124c78a1a9df5f915fe74870": {
+            "element": "Al",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "52251e0fb76b10fd45a1d96f47beeaebbcbc49d3": {
+            "element": "Al",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "101a0c9f65b991d426dec12a070d18dfb63b397a": {
+            "element": "Al",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "3734df750e94875051f659db1263beb9b06034a3": {
+            "element": "Al",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "06758f3eead09bb6142b094e65deb9a11411ae34": {
+            "element": "Al",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "e148d790b7897edb31b730a1f29072f1dcf8d1d2": {
+            "element": "Al",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "153a3a4d4f4b04792110593049e1e79060c0ae38": {
+            "element": "Al",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "f53e546349e2e7bec965ec80d73278b0c33a9865": {
+            "element": "Al",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "0addbd1d56ebb70a90f4d68df312d93b8509ef66": {
+            "element": "Al",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "0d4202c52ff84a9daccb2ce2188a82b69b967600": {
+            "element": "Al",
+            "tier": "NAO-J-2",
+            "hierarchy": 78
+        },
+        "750e49a54e0215c742ff1ba562add78e44f8fed3": {
+            "element": "Al",
+            "tier": "NAO-J-3",
+            "hierarchy": 79
+        },
+        "73c5fe102b1455c0cf555336afe010e234ecd534": {
+            "element": "Al",
+            "tier": "NAO-J-4",
+            "hierarchy": 80
+        },
+        "3cbcd07eaf046f47bf8247cd2fe772a3ec86f300": {
+            "element": "Al",
+            "tier": "NAO-J-5",
+            "hierarchy": 81
+        },
+        "1f62ff6fcebe73d40e0dcc75284d3704152d3945": {
+            "element": "Mo",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "76bcd5566c8e18b0e92cdf275c3a4abf11a6d297": {
+            "element": "Mo",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "fdedca50b432315493caab11f14ffc7c68986152": {
+            "element": "Mo",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "3b654cc63edb9ab9ebe4f9af40a6e63b7a044db4": {
+            "element": "Mo",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "d33700f4cc3cf6f123d9760ee60f3d65dcab34e5": {
+            "element": "Mo",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "faf3487aa1845d9498baaeda9bab1911ebb5239e": {
+            "element": "Fr",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "a619b7d2ae0a4f8ab69357faf34b0fafef11e13d": {
+            "element": "Fr",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "7366dcc2eff118012b8435a9fe98b7e153cfbb27": {
+            "element": "Fr",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "49b0a2a8f6652ea5d5a431f8530d0bb5be0ddc07": {
+            "element": "Fr",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "45641d270a1e10587a4d57787516eec1fe1fba43": {
+            "element": "Fe",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "ca5aac2ca89fa56d9434db605db777a22d5efab9": {
+            "element": "Fe",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "6a1860bfe3852ce83dc1d3042971326d43b1c2b8": {
+            "element": "Fe",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "82aeb8ce7f32cd52a80bb6bf516d21c5cdb70a5d": {
+            "element": "Fe",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "0bfdbdfe5744c5b4bd4c86f7e9c430b6a0bd4e5b": {
+            "element": "Fe",
+            "tier": "really_tight_2015",
+            "hierarchy": 68
+        },
+        "f32b1bd2288a96742006b80a092062028d0ca4d2": {
+            "element": "Fe",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "502683117e1a8a64c8516ed75aa7c36e646c29f2": {
+            "element": "Cf",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "304c27489bebe792fc6942e34da693641691029c": {
+            "element": "Cf",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "d800775be5c04bfd395a185bf1efb23b21af119d": {
+            "element": "Cf",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "d7e05cb85532e12f564203588ea662d78e5ea704": {
+            "element": "Cf",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "1c16214cb70b5a676031da6e1e30ad31fb0a1337": {
+            "element": "Pr",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "06c920bbf0d6e5f577211b695b59a6a2006291d1": {
+            "element": "Pr",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "b5656c3d02e8c438204639988fcf696ec2a6a488": {
+            "element": "Pr",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "33f75e517cf0528cc206b46d1a21b70a61e1e582": {
+            "element": "Pr",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "863a9abf26a2ab212d9d2dbd8dd2a0870aba4b1e": {
+            "element": "Ru",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "8f7cbdd4f800bc6ae581a7bc0c98fcd48a485424": {
+            "element": "Ru",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "e685b02e715a0672c31a01c77401959fab13dbf8": {
+            "element": "Ru",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "188340207ab1f679ad2dd043f1425385ebdad1a6": {
+            "element": "Ru",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "fa26cc213ee6b6adeb0adab59d62f8e078cc5a24": {
+            "element": "Ru",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "486247b691d6b7616608372bd69a679de31b2059": {
+            "element": "Mn",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "28cefb925677419cd3cf1b77e52ca36329556767": {
+            "element": "Mn",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "81b5468a8937d5aca3e833ba24c31ac76fc7585a": {
+            "element": "Mn",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "45b1ddeaab677f7fabf27958431379992182368a": {
+            "element": "Mn",
+            "tier": "tight_defaults_2010",
+            "hierarchy": 66
+        },
+        "924f1ad400191aaf0dfc5d4138b141a0d6c2ba3c": {
+            "element": "Mn",
+            "tier": "really_tight_defaults_2010",
+            "hierarchy": 67
+        },
+        "c888bee0ee72c94394a88c33abb52ecfc1229399": {
+            "element": "Mn",
+            "tier": "really_tight_2015",
+            "hierarchy": 68
+        },
+        "06637f9e15b49a71d54bcd84f85ac7e97160c5ab": {
+            "element": "Mn",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "37453fecddb320242330f7f428141b8570b1d1ac": {
+            "element": "Mn",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "c5d6f4ecf50f95f5fdcd2ddf42b336c31855c969": {
+            "element": "Ta",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "1bd7c9568cba25e2739a25f96d3a80251df11abf": {
+            "element": "Ta",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "c63948cf1fd78f49aa5f620909197d91b65d42d1": {
+            "element": "Ta",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "54fe7228bacf5f6aadeb728479bba3acee994a56": {
+            "element": "Ta",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "d0bfe8036b72c00ddd99978be8a7ce3f8b88010e": {
+            "element": "Ta",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "271c0971a1afc6442a7845025e4ea43ee9a5deca": {
+            "element": "Te",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "4c04eb0303227564c733c7bae4de0b6cb32d9838": {
+            "element": "Te",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "cb60c5d4a06b93f7f55ea832234a93fd859852a2": {
+            "element": "Te",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "6f5c1178b8961d8ee5a2ba04d145f845a9d13e20": {
+            "element": "Te",
+            "tier": "really_tight_defaults_2010",
+            "hierarchy": 67
+        },
+        "2659fd820cd95401849f8d4ecd3f604602c3b656": {
+            "element": "Te",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "858eefff3e564eca1ffc069a7b2bd90a9dd6eca8": {
+            "element": "Te",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "6f000cea70573578fb2d443a04b4837cd1df81e0": {
+            "element": "Te",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "e917c6a441e22cd69224bf94d364d7fa763f3490": {
+            "element": "Sm",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "f019368f6a74d80e313e626766de16ec80d47a88": {
+            "element": "Sm",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "bc496f9b895e5d879cc13f4339c23d0740d8a61d": {
+            "element": "Sm",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "1843b46f2ac59fd9c843f40bb745469b38bdeedf": {
+            "element": "Sm",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "03e29a0f7d755e4d7f414adcec4b0eb8cef530a0": {
+            "element": "Zr",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "6a853fd5a9c4e22c90c8b8b77485c7f1c7636683": {
+            "element": "Zr",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "6911ae20d06407a13da0015c8943e505bbb3e602": {
+            "element": "Zr",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "437d758880fa14f08821e9b269c77e7591ec0f6b": {
+            "element": "Zr",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "0cabc1147b5fd0d16b73fdfde40e85eb228fc2bc": {
+            "element": "Zr",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "0a62ea7651cc7e9a0e3f79a4d548bfc42ff1a420": {
+            "element": "Ag",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "fcdf13d9c52c7d69a5c716df6d98dd5ec2c9c0cd": {
+            "element": "Ag",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "930e9fcee79a5b878822253fae040bdf10ed3dab": {
+            "element": "Ag",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "80d174a5dc4740281f7c52762980da66b05ff66a": {
+            "element": "Ag",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "b25f7c570fdac90f09e725b994bf7c00addc7bc5": {
+            "element": "Ag",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "ae9338d2d94745ad5b9057a6849f9c5aac55be30": {
+            "element": "Ra",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "d220a655255c5a0070fc551685dd867e7ef8c056": {
+            "element": "Ra",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "373f8385b6241d91f366ea495c9023c0680b66b2": {
+            "element": "Ra",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "26856d136695cc3011c3f47bcbfa71ed95d4d6b0": {
+            "element": "Ra",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "5d6deb5a7194ea4228250e6eeae11c7eeb14e082": {
+            "element": "Nb",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "866bd19800c1b0bd3abfcfe7b162856c3a7d17ad": {
+            "element": "Nb",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "5a578ba61da12e62165a64bc244a8ba4e8083c63": {
+            "element": "Nb",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "30b244550be64ec823319261f68e370aa2df3a70": {
+            "element": "Nb",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "cf9f172ff22dad0100d6f8f45c49a338e5eff19d": {
+            "element": "Nb",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "44c749e2bc6c5f4054b5e46ed88f56405fe895d9": {
+            "element": "As",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "131358da41532f2c745a66fda47993791f44d7f5": {
+            "element": "As",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "498fb2d6aa9bff7f2301aaec1b6354c14559cbc4": {
+            "element": "As",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "e95e767b312d728a9ed5acad0e72cadf84697331": {
+            "element": "As",
+            "tier": "really_tight_2015",
+            "hierarchy": 68
+        },
+        "1fc91169458dfdfcb93a2f9aefd4e9d82788af3a": {
+            "element": "As",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "b72ee9775fe4ecb2e91358617356c0f3c79c6d66": {
+            "element": "As",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "a485e0804430b35625cc20650643ec5cab7521f9": {
+            "element": "As",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "ae948d17de15e4b68b6cb989a4821e679f938711": {
+            "element": "Sr",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "8a154bec876663dfa3bfacd42fb1e60753ea5cca": {
+            "element": "Sr",
+            "tier": "light_defaults_2010",
+            "hierarchy": 64
+        },
+        "f79d57a156174d5474295dcd8d6e1b018a3a1a1e": {
+            "element": "Sr",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "1d4d9e9e7ad8db851c22f02f67162a835330fd33": {
+            "element": "Sr",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "ba4a0aac8ac362f87a68e12e9e64967146b3064d": {
+            "element": "Sr",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "35790fd4620c1eef6c1c27f6827a596e48155574": {
+            "element": "Sr",
+            "tier": "really_tight_2015",
+            "hierarchy": 68
+        },
+        "2e34f007dcc6c85cebc90151be8faf8790cb9d25": {
+            "element": "Sr",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "d1e04e7f62f5f7a4558d61f325e0b5d32b9362fa": {
+            "element": "Sb",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "824e92f5e4d8d2933bacbfa5e1783215ccfa091c": {
+            "element": "Sb",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "e907f1cda532acc14a88b3552f76f398a4db9a6e": {
+            "element": "Sb",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "f16e366fdf54efa9eca3a9184da8617f9c5dbea0": {
+            "element": "Sb",
+            "tier": "really_tight_defaults_2010",
+            "hierarchy": 67
+        },
+        "2b0b98aba02831f85858a7eac83e72dea57c85a8": {
+            "element": "Sb",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "938e4ec5f04d20dc8461b4b5e6499b23288b0981": {
+            "element": "Sb",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "aaa986d24d870afc30a68eed264d8c4cd018332a": {
+            "element": "Sb",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "2df09098e2216c9a2821f47fe64cbde03c79660e": {
+            "element": "Se",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "160d11cc1ecfa8748280c13132347af9ddaa9fc1": {
+            "element": "Se",
+            "tier": "light_spd_defaults_2020",
+            "hierarchy": 69
+        },
+        "28ad08cc6d5b5ea7377efc497b24e4a167752fc7": {
+            "element": "Se",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "f1ef790771f1f9501002ffd31b6453cc2d41f3c7": {
+            "element": "Se",
+            "tier": "really_tight_defaults_2010",
+            "hierarchy": 67
+        },
+        "dfa9aea8e1791a6815611ae43036ab2c34aa90a7": {
+            "element": "Se",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "addbcc394700bc26e59b0676ad6aa62898d78cea": {
+            "element": "Se",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "64928b2fbe1f84fe22a2793975f506f2603de005": {
+            "element": "Se",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "9a1e51a4ba6fc059a0c98e699fbbc0d3580c5fea": {
+            "element": "Am",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "b9514d96a9285edea2f9143d4cf2ad9fb7d5e080": {
+            "element": "Am",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "708b57849ed89fdf497d4cd6a075dd923efe1dea": {
+            "element": "Am",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "5f231fbf3b83b391f485b37fb12dca95b6a6fff2": {
+            "element": "Am",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "687ffd1f36a86015ae1d2d57804edfc24c9542b1": {
+            "element": "Ar",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "4d7c70df26ac918689e75942411831a9046b7bf0": {
+            "element": "Ar",
+            "tier": "aug-cc-pCV5Z",
+            "hierarchy": 57
+        },
+        "e63d3e2cc9b51609ba03e0e5e4e515bac7ffd449": {
+            "element": "Ar",
+            "tier": "6-311PD_biggest",
+            "hierarchy": 42
+        },
+        "2de5d0ca2b6b7957973526206e0d5e192ac6a7e4": {
+            "element": "Ar",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "cb8a9d23f664484ce9cbae7751f78e1f157713fe": {
+            "element": "Ar",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "e07b86cbd309df36eb534453826a6bc69c613697": {
+            "element": "Ar",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "86aed0fb4f5df7f8be9c29d2aa827bfce0995447": {
+            "element": "Ar",
+            "tier": "NAO-VCC-2Z",
+            "hierarchy": 74
+        },
+        "f9302be7ee80a04753cf2b911fc3c0cf5ae1d3d5": {
+            "element": "Ar",
+            "tier": "NAO-VCC-3Z",
+            "hierarchy": 75
+        },
+        "23b9eb3d126d6822f70448774215fe355772e675": {
+            "element": "Ar",
+            "tier": "NAO-VCC-4Z",
+            "hierarchy": 76
+        },
+        "1e6dac35efaabda9ef22aa7560c655fb7360a41e": {
+            "element": "Ar",
+            "tier": "NAO-VCC-5Z",
+            "hierarchy": 77
+        },
+        "2604ca9d2afc1fd5a75d15f392e914655d37579f": {
+            "element": "Tm",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "dd18065c9d5db686e618489b2a7e6cc25a179c9d": {
+            "element": "Tm",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "362c612dad7794bf9b638af0fd177226a4770a2b": {
+            "element": "Tm",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "632eae1285cd3a06130d3382de0b210a9af661c1": {
+            "element": "Tm",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "dca5daf1e30d0d4391f1e963e95ee4f5fabd61df": {
+            "element": "Es",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "f66d09740f4d750a6df5c1b898e5476d549d73b9": {
+            "element": "Es",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "8ab2476cb8b4fedc2e9f2129df9a8a40dc77f244": {
+            "element": "Es",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "ad7c2bf08a88c2d14a47ecff477f13f5d66247bb": {
+            "element": "Es",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "90287ef702f60d7fce350324ab1a22353ba8d77e": {
+            "element": "Yb",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "73e41c1230bd248a8b4f7cd6f41b62003708ad34": {
+            "element": "Yb",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "f79854e74ca1a75fcef9ecc79cd20a5eb7399f30": {
+            "element": "Yb",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "9d75bc28e282ebccedb2dbe9a779c240bd24446f": {
+            "element": "Yb",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "cfc55aede18737a4f9885287fe244af1b82da6cd": {
+            "element": "Rh",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "8d044c67dbd763414e6e8afca0f9cd5ec6a97b4c": {
+            "element": "Rh",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "8ebe08e5bfa260878ed39aec3de7b4d826baf92b": {
+            "element": "Rh",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "fefa2b07a235f4e3999d5555149b1cb9bec9da38": {
+            "element": "Rh",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "2619675c3004c4e1d35793d5012439eb60e3809a": {
+            "element": "Rh",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "47f0c5068bfbb9af5b527aed61f4a800f2934dee": {
+            "element": "Eu",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "58f067015f2aa3c67138445f8c69363025083ff5": {
+            "element": "Eu",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "c95642292a4bcd749926125c5ea4e991e5006e25": {
+            "element": "Eu",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "2e00d9940a3c96830c60fb75ffe07ac1ad0ab7fd": {
+            "element": "Eu",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "23b257d65f5d4ce42598dc56cb278b3b7847d3ee": {
+            "element": "Rn",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "73e1d892ec114226d29ae7bce60dbe5affcde6ca": {
+            "element": "Rn",
+            "tier": "light_defaults_2010",
+            "hierarchy": 64
+        },
+        "aea8292f8953910d00e8bdaf11d1adb8ccf5e192": {
+            "element": "Rn",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "cd99e52808b2f90006bbe8c2c19255ee6ee8f307": {
+            "element": "Rn",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "ad83b1ab2761174088518168d3f5e0d1745b0454": {
+            "element": "Rn",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "994e74c183334e2939ad72fb6a1c4f3a8bfd7214": {
+            "element": "Rn",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "2505fa7c15097774e25caf86f83dd2970eac2ad2": {
+            "element": "V",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "d58b1db02c1f344b2ec94647c8f43115d0321ae3": {
+            "element": "V",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "e2cb0dc6772484c3da504a4e4217f697121f1600": {
+            "element": "V",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "701748de383edc289c4df60a1ce305b9887f829e": {
+            "element": "V",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "73d1e272017d79871c6069606ac6c946c951f1cd": {
+            "element": "V",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "aab1efdb80e6d17e9b36de93c195ebe83c013fb6": {
+            "element": "Ba",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "bedb5425896018840d2be6560e6aa9623aa9fc75": {
+            "element": "Ba",
+            "tier": "light_defaults_2010",
+            "hierarchy": 64
+        },
+        "905e795c50ef559e42a92f26d565d07e0884349c": {
+            "element": "Ba",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "153a7b5bdc386e1b73c7eb1a099f6d4efa7b0267": {
+            "element": "Ba",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "569629722639cae5cb4be4f450ef0e494363e12c": {
+            "element": "Ba",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "7bcb207969f96bbd5c8c2a08c1c4012b5233313f": {
+            "element": "Ba",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "34f077777437ce6936377277b8a4e625196af10d": {
+            "element": "Kr",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "976d903c03a0b15ed80d7329ecfc18eea07c37d2": {
+            "element": "Kr",
+            "tier": "light_defaults_2010",
+            "hierarchy": 64
+        },
+        "c93b3774d97143aad5edaeb41f5b7772a9281261": {
+            "element": "Kr",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "6a1466fab77772163c7a07500c98e5aec5f5520f": {
+            "element": "Kr",
+            "tier": "really_tight_defaults_2010",
+            "hierarchy": 67
+        },
+        "22b2d739f462bf78b9683747922763597066737d": {
+            "element": "Kr",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "da2133d317fd6de745b9626ee7871a7ca7d2bb20": {
+            "element": "Kr",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "f13a0cde7d39025192fc97b0d0fd78b40294c36b": {
+            "element": "Kr",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "54b643c10b2f48822a6ba281ae7d56ccd23a5adf": {
+            "element": "At",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "e54ab15b758b814848bd606b4580f6e61ded3f63": {
+            "element": "At",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "0b8697e30ed4c0103837986bcbae57556d834541": {
+            "element": "At",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "e36e9e492e0f042f3200c3423406676a09b73e0d": {
+            "element": "At",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "e0d5819831bba358c400ed02f07fd5db4feb7c90": {
+            "element": "At",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "3d825bcc85b592febd3cc3df420317c39314a0c8": {
+            "element": "Ho",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "64feeddc8d8f3761337724850dc1c78693c0b784": {
+            "element": "Ho",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "b574c81f3327d83e70fe16576728201e0e13c9a3": {
+            "element": "Ho",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "ea18ab70bf44bdd967b2bd7afcf83f14fe51a9be": {
+            "element": "Ho",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "e0341478eb6ba7944abdcad490e45fd4ea3b14db": {
+            "element": "Th",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "0788b862e70c6e5df1273be458f19b15472579d1": {
+            "element": "Th",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "e59d056f93ed9e961d1ea2925be6f8d2000ea2f1": {
+            "element": "Th",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "4bde1c81ee2c20132e1dc59edf5548352635f7ce": {
+            "element": "Th",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "0f8181a7f758e3f8de6d9fa382fc40d76299f493": {
+            "element": "Sc",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "7bbc718eed87c20ab2e1ec723b56819fefd78e83": {
+            "element": "Sc",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "5ef72555a90012a783c2377d9cbdafbbb3042937": {
+            "element": "Sc",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "d5e2c01acb8a8f5864e0df96391f148993ac5ca4": {
+            "element": "Sc",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "3deaf365f6b43a99f4f500988984125836e978d3": {
+            "element": "Sc",
+            "tier": "intermediate_defaults_2020",
+            "hierarchy": 71
+        },
+        "642ea7d427b797ccebabe47cc37dc40b2d8cde05": {
+            "element": "Cm",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "d4daed814dbc6080ed052ce79aec9c176ab3d942": {
+            "element": "Cm",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        },
+        "464bbeb2b9b3a397d9afa7364bdbd8206957b7e3": {
+            "element": "Cm",
+            "tier": "tight_defaults_2020",
+            "hierarchy": 72
+        },
+        "6cd235d4b2e833adf45849c262960113f018d447": {
+            "element": "Cm",
+            "tier": "really_tight_defaults_2020",
+            "hierarchy": 73
+        },
+        "34e0e4bc745832acf087bf53d0367f5b2ae66b63": {
+            "element": "Fl",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "00ef58c7290163b32fd1093938b66213f1f43f5e": {
+            "element": "Bh",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "0d4040ac77d7ab23316546bd5a1081f117ed4ada": {
+            "element": "Nh",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "6fe08c5dcd55946ba604b6c55edc9e947a513dea": {
+            "element": "Cn",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "52b0ac831587b3bef0ad346939e4e6b8383c4d99": {
+            "element": "Mc",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "1c0d60535acdadb3927f49f5e9c5eac9040904cb": {
+            "element": "Ds",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "d9fe77301880116202ab22e6c5cfc1f9ac7f005e": {
+            "element": "Lv",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "a7d14f74f54e0d5aa25ed9c814c566120c0e30c4": {
+            "element": "Hs",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "1f7957a9ff615fcb441f6074ea780c35929972de": {
+            "element": "Mt",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "f7be3791fcd134ae81e1d49eab6da6705604e747": {
+            "element": "Ts",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "36176acf94bec741d312054459784607e5969d1c": {
+            "element": "Rg",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "d0b20ebf891b2d0b96c715a63cfdd09888509728": {
+            "element": "Lr",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "b8ab159466c8bf77845e8fed04c297daef55f0e8": {
+            "element": "Og",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "c36fc7f19be136616c15916838f23c6658bd5f68": {
+            "element": "Rf",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "2ecd1e51e747300b83a1fa97ff92c8cce5cda074": {
+            "element": "Sg",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "0efac7b601779edee505fb4b383227b3a3e5faf1": {
+            "element": "Db",
+            "tier": "QZ4P_ae_STOs",
+            "hierarchy": 6
+        },
+        "e3fa73f5040c3674689e9083c6f43750aad8c0f3": {
+            "element": "19",
+            "tier": "cc-pV5Z",
+            "hierarchy": 46
+        },
+        "7940d5c74a80df2ab3c38bd25a9e916b7026f4c6": {
+            "element": "Emptium",
+            "tier": "light_defaults_2010",
+            "hierarchy": 64
+        },
+        "134608ea6353c8b0173c02b295e483ce4b41087a": {
+            "element": "Emptium",
+            "tier": "light_defaults_2020",
+            "hierarchy": 70
+        }
+    },
+    "info": {
+        "summary_file": "native_tier_references_verbose.json",
+        "hierarchy_order": "ascending"
+    }
+}
