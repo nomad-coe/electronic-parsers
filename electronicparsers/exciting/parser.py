@@ -1622,7 +1622,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                         ]
                     )
                 ]
-            sec_method.electrons_representation[0].basis_set.append(bs_val)
+        sec_method.electrons_representation[0].basis_set.append(bs_val)
 
     def parse_file(self, name, section, filepath=None):
         # TODO add support for info.xml, wannier.out
