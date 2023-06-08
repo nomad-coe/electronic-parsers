@@ -27,7 +27,7 @@ from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional, Scf, BasisSet, KMesh,
     FrequencyMesh, Screening, GW, Photon, BSE, CoreHole, BasisSetContainer,
-    OrbitalAPW
+    OrbitalAPW, AtomParameters,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -1597,6 +1597,19 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     for order in range(wf.get('matchingOrder', 0), 2):
                         bs_val.orbital.append(_set_orbital(wf, l_n, order, type='LO'))
 
+        # manage atom parameters
+        if not sec_method.atom_parameters:
+            sec_method.atom_parameters = []
+        sec_method.atom_parameters.append(
+            AtomParameters(
+                atom_number = abs(species_data['sp']['z']),
+                label = species_data['sp']['chemicalSymbol'],
+                mass = species_data['sp']['mass'] * ureg.amu,
+            )
+        )
+
+        bs_val.atom_parameters=sec_method.atom_parameters[-1]
+
         if not sec_method.electrons_representation:
             sec_method.electrons_representation = [
                 BasisSetContainer(
@@ -1611,6 +1624,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 )
             ]
         sec_method.electrons_representation[0].basis_set.append(bs_val)
+
 
     def parse_file(self, name, section, filepath=None):
         # TODO add support for info.xml, wannier.out
