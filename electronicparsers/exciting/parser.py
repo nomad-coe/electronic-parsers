@@ -109,7 +109,7 @@ class SpeciesParser(TextParser):
                 'atomicState', rf'<atomicState{re_tags}/?>',
                 sub_parser=TextParser(quantities=[q_key_val]), repeats=True),
             Quantity(
-                'default', r'(<default[\s\S]+(</default>|/>))',
+                'default', r'(<default[\s\S]+?(</default>|/>))',
                 sub_parser=TextParser(quantities=[q_wf, q_key_val])),
             Quantity(
                 'custom', r'(<custom[\s\S]+?(</custom>|/>))',
@@ -1572,12 +1572,15 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             radius_lin_spacing=radial_spacing * ureg.bohr,
         )
         lo_samplings = {lo['l']: lo['wf'] for lo in species_data.get('lo', [])}
+        orbital_type_default = species_data['default']['type']
+        if orbital_type_default is None:
+            orbital_type_default = 'lapw'
+        energy_parameter_default = species_data['default']['trialEnergy']
         lmax = self.input_xml_parser.get('xs/lmaxapw', 10)
+
         for l_n in range(lmax + 1):
-            orbital_type = species_data['default']['type']
-            energy_parameter = species_data['default']['trialEnergy']
-            if orbital_type is None:
-                orbital_type = 'lapw'
+            orbital_type = orbital_type_default
+            energy_parameter = energy_parameter_default
             for custom_settings in species_data.get('custom', []):
                 if custom_settings['l'] == l_n:
                     orbital_type = custom_settings['type']
