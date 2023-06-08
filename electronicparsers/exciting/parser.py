@@ -126,7 +126,7 @@ class SpeciesParser(TextParser):
             except IndexError:
                 return key_vals
 
-        def _supplant(val_map: dict[Any], flag: str='key_val') -> dict:
+        def _supplant(val_map: dict[Any, Any], flag: str = 'key_val') -> dict:
             supplanted = {}
             for k, v in val_map.items():
                 if k == flag:
@@ -134,7 +134,7 @@ class SpeciesParser(TextParser):
                 elif isinstance(v, dict):
                     supplanted[k] = _supplant(v)
                 elif isinstance(v, Iterable):
-                    supplatend_v = []
+                    supplatend_v: list[dict[Any, Any]] = []
                     for vv in v:
                         if isinstance(vv, dict):
                             supplatend_v.append(_supplant(vv))
@@ -147,7 +147,6 @@ class SpeciesParser(TextParser):
 
         results = super().to_dict()
         return _supplant(results)
-
 
 
 class GWInfoParser(TextParser):
@@ -1554,16 +1553,16 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
     def _parse_species(self, sec_method):
         def _set_orbital(source: TextParser, l_quantum_number: int,
-                         order: int, type: str='') -> OrbitalAPW:
+                         order: int, type: str = '') -> OrbitalAPW:
             if not type:
-                type=re.sub(r'\+lo', '', source.get('type', 'lapw')).upper()
+                type = re.sub(r'\+lo', '', source.get('type', 'lapw')).upper()
             return OrbitalAPW(
-                    l_quantum_number=l_quantum_number,
-                    type=type,
-                    order=order,
-                    energy_parameter=source['trialEnergy'] * ureg.hartree,
-                    update=source['searchE'],
-                )
+                l_quantum_number=l_quantum_number,
+                type=type,
+                order=order,
+                energy_parameter=source['trialEnergy'] * ureg.hartree,
+                update=source['searchE'],
+            )
 
         type_order_mapping = {'apw': 1, 'lap': 2}
         self.species_parser.parse()
@@ -1602,13 +1601,12 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_method.atom_parameters = []
         sec_method.atom_parameters.append(
             AtomParameters(
-                atom_number = abs(species_data['sp']['z']),
-                label = species_data['sp']['chemicalSymbol'],
-                mass = species_data['sp']['mass'] * ureg.amu,
+                atom_number=abs(species_data['sp']['z']),
+                label=species_data['sp']['chemicalSymbol'],
+                mass=species_data['sp']['mass'] * ureg.amu,
             )
         )
-
-        bs_val.atom_parameters=sec_method.atom_parameters[-1]
+        bs_val.atom_parameters = sec_method.atom_parameters[-1]
 
         if not sec_method.electrons_representation:
             sec_method.electrons_representation = [
@@ -1624,7 +1622,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 )
             ]
         sec_method.electrons_representation[0].basis_set.append(bs_val)
-
 
     def parse_file(self, name, section, filepath=None):
         # TODO add support for info.xml, wannier.out
