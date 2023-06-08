@@ -126,15 +126,15 @@ class SpeciesParser(TextParser):
             except IndexError:
                 return key_vals
 
-        def _supplant(val_map: dict[Any, Any], flag: str = 'key_val') -> dict:
-            supplanted = {}
+        def _supplant(val_map: dict[str, Any], flag: str = 'key_val') -> dict[str, Any]:
+            supplanted: dict[str, Any] = {}
             for k, v in val_map.items():
                 if k == flag:
                     return _convert_key_val(v)
                 elif isinstance(v, dict):
                     supplanted[k] = _supplant(v)
                 elif isinstance(v, Iterable):
-                    supplatend_v: list[dict[Any, Any]] = []
+                    supplatend_v: list[dict[str, Any]] = []
                     for vv in v:
                         if isinstance(vv, dict):
                             supplatend_v.append(_supplant(vv))
