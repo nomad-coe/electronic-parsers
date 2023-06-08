@@ -92,7 +92,7 @@ class SpeciesParser(TextParser):
 
     def init_quantities(self):
         re_tags = r'([\w\s\.\-\"\=]+)'
-        q_key_val = Quantity(self.flag, r'([a-zA-Z]+)\="([\w\.\-]+)"', repeats=True)
+        q_key_val = Quantity(self.flag, r'([a-zA-Z]+)\="([\w\.\-\+]+)"', repeats=True)
         q_wf_l = Quantity('l', r'l="(\d)"')
         q_wf = Quantity(
             'wf', r'<wf\s([\s\w\=\.\-\"]+)/>',
@@ -112,7 +112,7 @@ class SpeciesParser(TextParser):
                 'default', r'(<default[\s\S]+(</default>|/>))',
                 sub_parser=TextParser(quantities=[q_wf, q_key_val])),
             Quantity(
-                'custom', r'(<custom[\s\S]+?</custom>)',
+                'custom', r'(<custom[\s\S]+?(</custom>|/>))',
                 sub_parser=TextParser(quantities=[q_wf, q_key_val]), repeats=True),
             Quantity(
                 'lo', r'(<lo[\s\S]+?</lo>)',
@@ -1586,7 +1586,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             for order in range(type_order_mapping[orbital_type[:3]]):
                 orbital = OrbitalAPW(
                     l_quantum_number=l_n,
-                    type=orbital_type,
+                    type=re.sub(r'\+LO', '', orbital_type),
                     order=order,
                     energy_parameter=energy_parameter * ureg.hartree,
                     update=species_data['default']['searchE'],
