@@ -1835,8 +1835,11 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.control_parser.quantities = parser.control_parser.quantities
 
     def get_mainfile_keys(self, filepath):
+        self.out_parser.findall = False
         self.out_parser.mainfile = filepath
-        if self.out_parser.get('gw_flag', None) in self._gw_flag_map.keys():
+        gw_flag = self.out_parser.get('gw_flag')
+        self.out_parser.findall = True
+        if gw_flag in self._gw_flag_map.keys():
             return ['GW', 'GW_workflow']
         return True
 

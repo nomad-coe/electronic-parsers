@@ -1410,11 +1410,13 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         self.out_parser.quantities = parser.out_parser.quantities
 
     def get_mainfile_keys(self, filepath):
+        self.out_parser.findall = False
         self.out_parser.mainfile = filepath
-        ds_numbers = self.out_parser.dataset_numbers
+        ds_numbers = self.out_parser.get('dataset_numbers')
+        optdriver = self.out_parser.input_vars.get('optdriver', [])
+        self.out_parser.findall = True
         if 4 in ds_numbers and (1 and 2 and 3) not in ds_numbers:
             return True
-        optdriver = self.out_parser.input_vars.get('optdriver', [])
         if len(optdriver) == 4 and (optdriver[-1] == 4 or optdriver[-1] == 66):
             return ['GW', 'GW_workflow']
         return True
