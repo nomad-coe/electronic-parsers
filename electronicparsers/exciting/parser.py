@@ -2574,7 +2574,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         self.data_clathrate_parser.logger = self.logger
         self._archives_ref = []
 
-    def get_mainfile_keys(self, filepath):
+    def get_mainfile_keys(self, **kwargs):
+        filepath = kwargs.get('filepath')
         basename = os.path.basename(filepath)
         dirname = os.path.dirname(filepath)
         if os.path.isfile(os.path.join(dirname, f'GW_{basename}')):

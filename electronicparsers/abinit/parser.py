@@ -1409,9 +1409,9 @@ class AbinitParser(BeyondDFTWorkflowsParser):
     def reuse_parser(self, parser):
         self.out_parser.quantities = parser.out_parser.quantities
 
-    def get_mainfile_keys(self, filepath):
+    def get_mainfile_keys(self, **kwargs):
         self.out_parser.findall = False
-        self.out_parser.mainfile = filepath
+        self.out_parser.mainfile = kwargs.get('filename')
         ds_numbers = self.out_parser.get('dataset_numbers')
         optdriver = self.out_parser.input_vars.get('optdriver', [])
         self.out_parser.findall = True

@@ -22,6 +22,7 @@ import logging
 import json
 import hashlib
 from typing import Any
+import re
 
 from nomad.units import ureg
 
@@ -1834,11 +1835,15 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.out_parser.quantities = parser.out_parser.quantities
         self.control_parser.quantities = parser.control_parser.quantities
 
-    def get_mainfile_keys(self, filepath):
-        self.out_parser.findall = False
-        self.out_parser.mainfile = filepath
-        gw_flag = self.out_parser.get('gw_flag')
-        self.out_parser.findall = True
+    def get_mainfile_keys(self, **kwargs):
+        match = re.search(r'(?:qpe_calc|sc_self_energy)\s+(\w+)', kwargs.get('decoded_buffer', ''))
+        if match:
+            gw_flag = match[1]
+        else:
+            self.out_parser.findall = False
+            self.out_parser.mainfile = kwargs.get('filepath')
+            gw_flag = self.out_parser.get('gw_flag')
+            self.out_parser.findall = True
         if gw_flag in self._gw_flag_map.keys():
             return ['GW', 'GW_workflow']
         return True
