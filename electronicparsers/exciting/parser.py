@@ -1598,19 +1598,17 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
             # Add lo's
             max_order = 2
-            if orbital_type[-2] == 'LO' and l_n in lo_samplings.keys():
-                energy_parameters = [energy_parameter for _ in range(max_order)]
+            if orbital_type[-2:] == 'LO' and l_n in lo_samplings:
                 for wf in lo_samplings[l_n]:
-                    energy_parameters = [wf['trialEnergy'] for _ in range(wf['matchingOrder'], max_order)]
-                    for order, energy_parameter in enumerate(energy_parameters):
+                    for order in range(wf.get('matchingOrder', 0), max_order):
                         orbital = OrbitalAPW(
                             l_quantum_number=l_n,
                             type='LO',
                             order=order,
-                            energy_parameter=energy_parameter * ureg.hartree,
+                            energy_parameter=wf['trialEnergy'] * ureg.hartree,
                             update=species_data['default']['searchE'],
                         )
-                    bs_val.orbital.append(orbital)
+                        bs_val.orbital.append(orbital)
 
             if not sec_method.electrons_representation:
                 sec_method.electrons_representation = [
