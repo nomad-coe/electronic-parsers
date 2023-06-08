@@ -1564,7 +1564,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 update=source['searchE'],
             )
 
-        type_order_mapping = {'apw': 1, 'lap': 2}
+        type_order_mapping = {'   ': 0, 'apw': 1, 'lap': 2}
         self.species_parser.parse()
         species_data = self.species_parser.to_dict()
 
@@ -1577,20 +1577,20 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             radius=radius * ureg.bohr,
             radius_lin_spacing=radial_spacing * ureg.bohr,
         )
-        lo_samplings = {lo['l']: lo['wf'] for lo in species_data.get('lo', [])}
+        lo_samplings = {lo['l']: lo.get('wf', []) for lo in species_data.get('lo', [])}
         lmax = self.input_xml_parser.get('xs/lmaxapw', 10)
 
         for l_n in range(lmax + 1):
-            source = species_data['default']
+            source = species_data.get('default', {})
             for custom_settings in species_data.get('custom', []):
                 if custom_settings['l'] == l_n:
                     source = custom_settings
                     break
-            for order in range(type_order_mapping[source['type'][:3]]):
+            for order in range(type_order_mapping[source.get('type', 3 * ' ')[:3]]):
                 bs_val.orbital.append(_set_orbital(source, l_n, order))
 
             # Add lo's
-            if source['type'][-2:] == 'lo':
+            if source.get('type', 2 * ' ')[-2:] == 'lo':
                 wfs = lo_samplings[l_n] if l_n in lo_samplings else [source]
                 for wf in wfs:
                     for order in range(wf.get('matchingOrder', 0), 2):
@@ -1599,11 +1599,12 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # manage atom parameters
         if not sec_method.atom_parameters:
             sec_method.atom_parameters = []
+        sp = species_data.get('sp', {})
         sec_method.atom_parameters.append(
             AtomParameters(
-                atom_number=abs(species_data['sp']['z']),
-                label=species_data['sp']['chemicalSymbol'],
-                mass=species_data['sp']['mass'] * ureg.amu,
+                atom_number=abs(sp.get('z')),
+                label=sp.get('chemicalSymbol'),
+                mass=sp.get('mass') * ureg.amu if sp.get('mass') else None,
             )
         )
         bs_val.atom_parameters = sec_method.atom_parameters[-1]
