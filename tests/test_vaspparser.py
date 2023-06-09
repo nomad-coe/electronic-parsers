@@ -370,6 +370,12 @@ def test_dftu_static(parser):
                 assert approx(param.hubbard_kanamori_model.j.to('eV').magnitude) == references['j'][slice]
                 slice += 1
 
+        sec_pseudo = params[1].pseudopotential
+        assert sec_pseudo.name == 'PAW_PBE V_pv 07Sep2000'
+        assert sec_pseudo.type == 'PAW'
+        assert sec_pseudo.xc_functional_name == ['GGA_X_PBE', 'GGA_C_PBE']
+        assert sec_pseudo.cutoff.to('eV').magnitude == approx(263.675)
+
     # check the OUTCAR value when no INCAR is present
     parser.parse('tests/data/vasp/Mg4V2Bi2O12_dftu_no_incar/OUTCAR', archive, None)
     params = archive.run[-1].method[-1].atom_parameters
