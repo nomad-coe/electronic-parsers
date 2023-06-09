@@ -1840,7 +1840,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             gw_flag = match[1]
         else:
             self.out_parser.findall = False
-            self.out_parser.mainfile = kwargs.get('filepath')
+            self.out_parser.mainfile = kwargs.get('filename')
             gw_flag = self.out_parser.get('gw_flag')
             self.out_parser.findall = True
         if gw_flag in self._gw_flag_map.keys():
