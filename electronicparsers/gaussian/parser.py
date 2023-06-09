@@ -314,7 +314,7 @@ class GaussianOutParser(TextParser):
                 'x_gaussian_settings_corrected',
                 r'\-{10}\s*(#[\s\S]+?)\-{10}',
                 convert=False,
-                str_operation=lambda x: x.strip().replace('\n', '')),
+                str_operation=lambda x: re.sub(r'\s*\n\s*', '', x).strip()),
             Quantity(
                 'charge', r'Charge =\s*([\-\+\d]+)', dtype=int),
             Quantity(
