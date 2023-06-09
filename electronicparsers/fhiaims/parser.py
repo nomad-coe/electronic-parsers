@@ -1835,14 +1835,36 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.control_parser.quantities = parser.control_parser.quantities
 
     def get_mainfile_keys(self, **kwargs):
-        match = re.search(self.out_parser._re_gw_flag, kwargs.get('decoded_buffer', ''))
+        buffer = kwargs.get('decoded_buffer', '')
+        match = re.search(self.out_parser._re_gw_flag, buffer)
         if match:
             gw_flag = match[1]
         else:
-            self.out_parser.findall = False
-            self.out_parser.mainfile = kwargs.get('filename')
-            gw_flag = self.out_parser.get('gw_flag')
-            self.out_parser.findall = True
+            overlap = len(self.out_parser._re_gw_flag) + 1
+            block = max(len(buffer), 4916)
+            match = None
+            position = len(buffer)
+            with open(kwargs.get('filename')) as f:
+                while True:
+                    f.seek(position - overlap)
+                    text = f.read(block + overlap)
+                    match = re.search(self.out_parser._re_gw_flag, text)
+                    position += block
+                    if not text or match:
+                        gw_flag = match[1]
+                        break
+        # TODO decide which to keep after thorough benchmarking
+        # else:
+        #     self.out_parser.findall = False
+        #     self.out_parser.mainfile = kwargs.get('filename')
+        #     stop = self.out_parser.file_mmap.find(b'species')
+        #     self.out_parser.file_offset = len(buffer)
+        #     self.out_parser.file_length = stop if stop > 0 else 0
+        #     self.out_parser._file_handler = None
+        #     gw_flag = self.out_parser.get('gw_flag')
+        #     self.out_parser.findall = True
+        #     self.out_parser.file_offset = 0
+        #     self.out_parser.file_length = 0
         if gw_flag in self._gw_flag_map.keys():
             return ['GW', 'GW_workflow']
         return True
