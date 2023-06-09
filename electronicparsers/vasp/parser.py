@@ -112,7 +112,7 @@ class PotParser(TextParser):
 
         self._quantities = [
             Quantity(
-                'pseudopotential', r'(VRHFIN\s+=[\s\S]+?LMMAX\s=\s+\d)', repeats=True,  # recognize where a header starts
+                'pseudopotential', r'(VRHFIN\s+=[\s\S]+?(LMMAX\s=\s+\d|END of))', repeats=True,  # recognize where a header starts
                 sub_parser=TextParser(quantities=_pseudopotential)
             )
         ]
@@ -247,7 +247,7 @@ class ContentParser:
             return {x[0]: transform(x[1]) for x in key_val}
 
         bool_mapping = {'T': True, 'F': False}
-        pps = PotParser(mainfile=self.parser.mainfile).parse().get('pseudopotential', [])
+        pps = PotParser(filepath).parse().get('pseudopotential', [])
         pps_out = []
         for pp in pps:
             pps_out.append({'title': pp['title']})
