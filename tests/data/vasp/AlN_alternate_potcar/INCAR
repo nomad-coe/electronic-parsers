@@ -1,0 +1,40 @@
+  SYSTEM = VASPCALC
+
+# Startparameter for this run:
+  NWRITE =      2    # 7.4  # verbosity :
+  LPETIM =      F    # write-flag & timer
+  PREC   = Accurate    # 7.7  # medium together with ENCUT is good enough
+  ISPIN  =      1    # 7.8  # 2 = spin polarized calculation?
+  ICHARG =      2
+  ENCUT  =    500    # 7.5  # for oxynitrides
+#  MAGMOM = 4*2.0 4*1.0 4*0.0
+  NPAR =       12
+  NBANDS = 528 
+
+# Electronic Relaxation
+  EDIFF  =  1E-05    # 7.14 # stopping-criterion for ELM
+  LREAL  =  .FALSE.  # 7.34 # real-space projection : .FALSE. for systems < 20 atoms
+  IALGO  =     38    # 7.38 # algorithm : use 48 for large systems or mpi, 8 otherwise
+
+  NELM   =    200    # NOTE(DB): max. number of electronic iterations
+  NELMIN =      5    # 7.13 # require at least 3 electronic iterations per ionic step
+  NELMDL =     -5
+
+  LCHARG = .FALSE.   # 7.43 # on T3E don't write the charge file (costs memory per node)
+  LWAVE  = .TRUE.
+# LORBIT = 12
+
+# Ionic relaxation
+  EDIFFG =     1E-05 # 7.16 # convergence criterion for ions; positive = max energy change
+                                                             # negative = max residual force
+  NSW =         0
+  IBRION =      2    # 7.19 # ionic relax: 0-MD 1-quasi-New 2-CG
+  ISIF   =      3    # 7.21 # stress and relaxation: 2=const.Cell;3=Vol&Cell-relax;4=const.Vol&Cell.adjust
+
+  IWAVPR =      1   # 7.23 # prediction:  0-non 1-charg (relax) - 2-wave (for MD) 3-comb; 10 makes default
+  ISYM   =      0    # 7.24 # 0-nonsym 1-usesym 2-fastsym
+  LCORR  =      T    # 7.25 # Harris-Foulkes like correction to forces
+
+  ISMEAR = -5
+  SIGMA  =   0.15
+  NEDOS  =   3001

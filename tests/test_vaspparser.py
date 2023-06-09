@@ -305,6 +305,18 @@ def test_outcar(parser):
 #        raise AssertionError(sec_scc.energy.fermi)
 
 
+def test_potcar(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/vasp/AlN_alternate_potcar/vasprun.xml', archive, None)
+
+    sec_method = archive.run[0].method[0]
+    sec_pseudo = sec_method.atom_parameters[-1].pseudopotential
+    assert sec_pseudo.name == 'PAW_PBE Al 04Jan2001'
+    assert sec_pseudo.type == 'PAW'
+    assert sec_pseudo.xc_functional_name == ['GGA_X_PBE', 'GGA_C_PBE']
+    assert sec_pseudo.cutoff.to('eV').magnitude == approx(240.3)
+
+
 def test_broken_xml(parser):
     archive = EntryArchive()
     parser.parse('tests/data/vasp/vasprun.xml.broken', archive, None)
