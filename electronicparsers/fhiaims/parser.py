@@ -161,6 +161,7 @@ class FHIAimsControlParser(TextParser):
 
 class FHIAimsOutParser(TextParser):
     def __init__(self):
+        self._re_gw_flag = rf'{re_n}\s*(?:qpe_calc|sc_self_energy)\s*([\w]+)'
         super().__init__(None)
 
     def init_quantities(self):
@@ -658,9 +659,7 @@ class FHIAimsOutParser(TextParser):
                         str_operation=str_to_md_control_in, repeats=True, convert=False)])),
             # GW input quantities
             Quantity(
-                'gw_flag', rf'{re_n}\s*qpe_calc\s*([\w]+)', repeats=False),
-            Quantity(
-                'gw_flag', rf'{re_n}\s*sc_self_energy\s*([\w]+)', repeats=False),
+                'gw_flag', self._re_gw_flag, repeats=False),
             Quantity(
                 'anacon_type', rf'{re_n}\s*anacon_type\s*(\d+)', repeats=False),
             Quantity(
@@ -1836,7 +1835,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.control_parser.quantities = parser.control_parser.quantities
 
     def get_mainfile_keys(self, **kwargs):
-        match = re.search(r'(?:qpe_calc|sc_self_energy)\s+(\w+)', kwargs.get('decoded_buffer', ''))
+        match = re.search(self.out_parser._re_gw_flag, kwargs.get('decoded_buffer', ''))
         if match:
             gw_flag = match[1]
         else:
