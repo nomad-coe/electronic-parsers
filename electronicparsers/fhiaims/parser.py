@@ -1840,14 +1840,14 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         if match:
             gw_flag = match[1]
         else:
-            overlap = len(self.out_parser._re_gw_flag) + 10
+            overlap = len(self.out_parser._re_gw_flag) + 1
             block = max(len(buffer), 4916)
             match = None
             position = len(buffer)
             with open(kwargs.get('filename')) as f:
                 while True:
                     f.seek(position - overlap)
-                    text = f.read(block)
+                    text = f.read(block + overlap)
                     match = re.search(self.out_parser._re_gw_flag, text)
                     position += block
                     if not text or match:
