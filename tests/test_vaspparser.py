@@ -256,7 +256,6 @@ def test_outcar(parser):
     # DFT
     assert sec_method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
     assert len(sec_method.atom_parameters) == 2
-    assert sec_method.atom_parameters[1].pseudopotential_name == 'PAW_PBE'
 
     k_mesh = sec_method.k_mesh
     assert len(k_mesh.points) == 145

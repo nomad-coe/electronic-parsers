@@ -1385,9 +1385,7 @@ class VASPParser():
                 pp.cutoff = pseudopotential['number']['ENMAX'] * ureg.eV
                 pp.xc_functional_name = self.parser.xc_functional_mapping.get(
                     pseudopotential['title'][0].split('_')[1], ['GGA_X_PBE', 'GGA_C_PBE'])
-                pp_name = ' '.join(pseudopotential['title'])
-                pp.name = pp_name
-                sec_method_atom_kind.pseudopotential_name = pseudopotential['title'][0]  # backwards compatibility
+                pp.name = ' '.join(pseudopotential['title'])
                 sec_method_atom_kind.pseudopotential = pp
             except IndexError:
                 pass
