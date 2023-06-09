@@ -245,7 +245,7 @@ class OceanParser(BeyondDFTWorkflowsParser):
         self._child_archives.get(path).workflow2 = workflow
 
     def get_mainfile_keys(self, **kwargs):
-        filepath = kwargs.get('filepath')
+        filepath = kwargs.get('filename')
         # We recognize the absspct files as the main auxiliary files
         absspct_files = [f for f in os.listdir(os.path.dirname(filepath)) if f.startswith('absspct')]
         absspct_files.sort()

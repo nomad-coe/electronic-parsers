@@ -2575,7 +2575,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         self._archives_ref = []
 
     def get_mainfile_keys(self, **kwargs):
-        filepath = kwargs.get('filepath')
+        filepath = kwargs.get('filename')
         basename = os.path.basename(filepath)
         dirname = os.path.dirname(filepath)
         if os.path.isfile(os.path.join(dirname, f'GW_{basename}')):

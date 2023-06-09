@@ -160,7 +160,7 @@ def test_xs_mainfile_keys(parser):
     # This test will not show the BSE archive. We use it instead to test the mainfile_keys
     filepath = 'tests/data/exciting/CHN_bse/INFO.OUT'
     dirname = os.path.dirname(filepath)
-    mainfile_keys = parser.get_mainfile_keys(filepath=filepath)
+    mainfile_keys = parser.get_mainfile_keys(filename=filepath)
     assert mainfile_keys[0] == 'XS_workflow'
     assert mainfile_keys[1] == f'{dirname}/INFOXS.OUT'
     for i in range(2):
