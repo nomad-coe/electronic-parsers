@@ -1853,6 +1853,18 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                     if not text or match:
                         gw_flag = match[1]
                         break
+        # TODO decide which to keep after thorough benchmarking
+        # else:
+        #     self.out_parser.findall = False
+        #     self.out_parser.mainfile = kwargs.get('filename')
+        #     stop = self.out_parser.file_mmap.find(b'species')
+        #     self.out_parser.file_offset = len(buffer)
+        #     self.out_parser.file_length = stop if stop > 0 else 0
+        #     self.out_parser._file_handler = None
+        #     gw_flag = self.out_parser.get('gw_flag')
+        #     self.out_parser.findall = True
+        #     self.out_parser.file_offset = 0
+        #     self.out_parser.file_length = 0
         if gw_flag in self._gw_flag_map.keys():
             return ['GW', 'GW_workflow']
         return True
