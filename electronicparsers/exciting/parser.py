@@ -27,7 +27,7 @@ from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional, Scf, BasisSet, KMesh,
     FrequencyMesh, Screening, GW, Photon, BSE, CoreHole, BasisSetContainer,
-    OrbitalAPW
+    OrbitalAPW, AtomParameters,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -53,7 +53,7 @@ from .metainfo.exciting import (
 from ..utils import (
     get_files, BeyondDFTWorkflowsParser
 )
-from typing import Any
+from typing import Any, Iterable
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -92,7 +92,7 @@ class SpeciesParser(TextParser):
 
     def init_quantities(self):
         re_tags = r'([\w\s\.\-\"\=]+)'
-        q_key_val = Quantity(self.flag, r'([a-zA-Z]+)\="([\w\.\-]+)"', repeats=True)
+        q_key_val = Quantity(self.flag, r'([a-zA-Z]+)\="([\w\.\-\+]+)"', repeats=True)
         q_wf_l = Quantity('l', r'l="(\d)"')
         q_wf = Quantity(
             'wf', r'<wf\s([\s\w\=\.\-\"]+)/>',
@@ -109,49 +109,44 @@ class SpeciesParser(TextParser):
                 'atomicState', rf'<atomicState{re_tags}/?>',
                 sub_parser=TextParser(quantities=[q_key_val]), repeats=True),
             Quantity(
-                'default', r'(<default[\s\S]+(</default>|/>))',
+                'default', r'(<default[\s\S]+?(</default>|/>))',
                 sub_parser=TextParser(quantities=[q_wf, q_key_val])),
             Quantity(
-                'custom', r'(<custom[\s\S]+?</custom>)',
+                'custom', r'(<custom[\s\S]+?(</custom>|/>))',
                 sub_parser=TextParser(quantities=[q_wf, q_key_val]), repeats=True),
             Quantity(
                 'lo', r'(<lo[\s\S]+?</lo>)',
                 sub_parser=TextParser(quantities=[q_wf, q_wf_l]), repeats=True),
         ]
 
-    def _convert_key_val(self, key_vals):
-        try:
-            return {key_val[0]: key_val[1] for key_val in key_vals}
-        except IndexError:
-            return key_vals
+    def to_dict(self) -> dict:
+        def _convert_key_val(key_vals):  # TODO: generalize this functionality
+            try:
+                return {key_val[0]: key_val[1] for key_val in key_vals}
+            except IndexError:
+                return key_vals
 
-    # TODO not sure why this is necessary but in any case replace this with to_dict()
-    def _run_tree(self, parser: TextParser) -> dict[str, Any]:
-        items: list = parser._results
-        standin: bool = False
-        if not isinstance(items, list):
-            items = [parser._results]
-            standin = True
+        def _supplant(val_map: dict[str, Any], flag: str = 'key_val') -> dict[str, Any]:
+            supplanted: dict[str, Any] = {}
+            for k, v in val_map.items():
+                if k == flag:
+                    return _convert_key_val(v)
+                elif isinstance(v, dict):
+                    supplanted[k] = _supplant(v)
+                elif isinstance(v, Iterable):
+                    supplatend_v: list[dict[str, Any]] = []
+                    for vv in v:
+                        if isinstance(vv, dict):
+                            supplatend_v.append(_supplant(vv))
+                        else:
+                            supplatend_v.append(vv)
+                    supplanted[k] = supplatend_v
+                else:
+                    supplanted[k] = v
+            return supplanted
 
-        for value_index, value in enumerate(items):
-            for key, val in value.items():
-                if key == self.flag:
-                    if standin:
-                        parser._results = self._convert_key_val(val)
-                    else:
-                        items[value_index] = self._convert_key_val(val)
-                elif isinstance(val, TextParser):
-                    self._run_tree(val)
-                elif isinstance(val, list):
-                    for v in val:
-                        if isinstance(v, TextParser):
-                            self._run_tree(v)
-        return parser
-
-    def parse(self, key=None):
-        self = super().parse(key=key)
-        self = self._run_tree(self)
-        return self
+        results = super().to_dict()
+        return _supplant(results)
 
 
 class GWInfoParser(TextParser):
@@ -1319,14 +1314,12 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         if target[1:]:
             filepath = '%s.%s' % (filepath, target[1])
         if fuzzy:
-            filepaths: list[str] = [
+            filepaths = [
                 file for file in os.listdir(self.info_parser.maindir) if re.match(filename, file)]
-            has_access = [os.access(filepath, os.F_OK) for filepath in filepaths]
-            if all(has_access):  # this is more restrictive, but ensures that one can operate the files
-                return filepaths
+            return filepaths
         else:
             filepath = os.path.join(self.info_parser.maindir, filepath)
-            if os.path.isfile(filepath) and os.access(filepath, os.F_OK):
+            if os.path.isfile(filepath):
                 return [filepath]
         return []
 
@@ -1557,10 +1550,21 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_k_band_segment.value = band_energies[nb] + energy_fermi
 
     def _parse_species(self, sec_method):
-        type_order_mapping = {'APW': 1, 'LAP': 2}
+        def _set_orbital(source: TextParser, l_quantum_number: int,
+                         order: int, type: str = '') -> OrbitalAPW:
+            if not type:
+                type = re.sub(r'\+lo', '', source.get('type', 'lapw')).upper()
+            return OrbitalAPW(
+                l_quantum_number=l_quantum_number,
+                type=type,
+                order=order,
+                energy_parameter=source['trialEnergy'] * ureg.hartree,
+                update=source['searchE'],
+            )
 
+        type_order_mapping = {'   ': 0, 'apw': 1, 'lap': 2}
         self.species_parser.parse()
-        species_data = self.species_parser.results
+        species_data = self.species_parser.to_dict()
 
         # muffin-tin valence
         radius = float(species_data['muffinTin']['radius'])
@@ -1571,58 +1575,52 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             radius=radius * ureg.bohr,
             radius_lin_spacing=radial_spacing * ureg.bohr,
         )
-        lo_samplings = {lo['l']: lo['wf'] for lo in species_data.get('lo', [])}
+        lo_samplings = {lo['l']: lo.get('wf', []) for lo in species_data.get('lo', [])}
         lmax = self.input_xml_parser.get('xs/lmaxapw', 10)
+
         for l_n in range(lmax + 1):
-            orbital_type = species_data['default']['type']
-            energy_parameter = species_data['default']['trialEnergy']
-            if orbital_type is None:
-                orbital_type = 'lapw'
+            source = species_data.get('default', {})
             for custom_settings in species_data.get('custom', []):
                 if custom_settings['l'] == l_n:
-                    orbital_type = custom_settings['type']
-                    energy_parameter = custom_settings['trialEnergy']
-            orbital_type = orbital_type.upper()
-            for order in range(type_order_mapping[orbital_type[:3]]):
-                orbital = OrbitalAPW(
-                    l_quantum_number=l_n,
-                    type=orbital_type,
-                    order=order,
-                    energy_parameter=energy_parameter * ureg.hartree,
-                    update=species_data['default']['searchE'],
-                )
-                bs_val.orbital.append(orbital)
+                    source = custom_settings
+                    break
+            for order in range(type_order_mapping[source.get('type', 3 * ' ')[:3]]):
+                bs_val.orbital.append(_set_orbital(source, l_n, order))
 
             # Add lo's
-            max_order = 2
-            if orbital_type[-2] == 'LO' and l_n in lo_samplings.keys():
-                energy_parameters = [energy_parameter for _ in range(max_order)]
-                for wf in lo_samplings[l_n]:
-                    energy_parameters = [wf['trialEnergy'] for _ in range(wf['matchingOrder'], max_order)]
-                    for order, energy_parameter in enumerate(energy_parameters):
-                        orbital = OrbitalAPW(
-                            l_quantum_number=l_n,
-                            type='LO',
-                            order=order,
-                            energy_parameter=energy_parameter * ureg.hartree,
-                            update=species_data['default']['searchE'],
-                        )
-                    bs_val.orbital.append(orbital)
+            if source.get('type', 2 * ' ')[-2:] == 'lo':
+                wfs = lo_samplings[l_n] if l_n in lo_samplings else [source]
+                for wf in wfs:
+                    for order in range(wf.get('matchingOrder', 0), 2):
+                        bs_val.orbital.append(_set_orbital(wf, l_n, order, type='LO'))
 
-            if not sec_method.electrons_representation:
-                sec_method.electrons_representation = [
-                    BasisSetContainer(
-                        scope=['wavefunction'],
-                        basis_set=[
-                            BasisSet(
-                                type='plane waves',
-                                scope=['valence'],
-                                cutoff_fractional=self.input_xml_parser.get('xs/cutoffapw', 7.),
-                            ),
-                        ]
-                    )
-                ]
-            sec_method.electrons_representation[0].basis_set.append(bs_val)
+        # manage atom parameters
+        if not sec_method.atom_parameters:
+            sec_method.atom_parameters = []
+        sp = species_data.get('sp', {})
+        sec_method.atom_parameters.append(
+            AtomParameters(
+                atom_number=abs(sp.get('z')),
+                label=sp.get('chemicalSymbol'),
+                mass=sp.get('mass') * ureg.amu if sp.get('mass') else None,
+            )
+        )
+        bs_val.atom_parameters = sec_method.atom_parameters[-1]
+
+        if not sec_method.electrons_representation:
+            sec_method.electrons_representation = [
+                BasisSetContainer(
+                    scope=['wavefunction'],
+                    basis_set=[
+                        BasisSet(
+                            type='plane waves',
+                            scope=['valence'],
+                            cutoff_fractional=self.input_xml_parser.get('xs/cutoffapw', 7.),
+                        ),
+                    ]
+                )
+            ]
+        sec_method.electrons_representation[0].basis_set.append(bs_val)
 
     def parse_file(self, name, section, filepath=None):
         # TODO add support for info.xml, wannier.out
