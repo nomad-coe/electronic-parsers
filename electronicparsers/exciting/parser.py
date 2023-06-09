@@ -1314,14 +1314,12 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         if target[1:]:
             filepath = '%s.%s' % (filepath, target[1])
         if fuzzy:
-            filepaths: list[str] = [
+            filepaths = [
                 file for file in os.listdir(self.info_parser.maindir) if re.match(filename, file)]
-            has_access = [os.access(filepath, os.F_OK) for filepath in filepaths]
-            if all(has_access):  # this is more restrictive, but ensures that one can operate the files
-                return filepaths
+            return filepaths
         else:
             filepath = os.path.join(self.info_parser.maindir, filepath)
-            if os.path.isfile(filepath) and os.access(filepath, os.F_OK):
+            if os.path.isfile(filepath):
                 return [filepath]
         return []
 
