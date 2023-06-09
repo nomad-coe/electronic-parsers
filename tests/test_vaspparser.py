@@ -256,7 +256,6 @@ def test_outcar(parser):
     # DFT
     assert sec_method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
     assert len(sec_method.atom_parameters) == 2
-    assert sec_method.atom_parameters[1].pseudopotential_name == 'PAW_PBE'
 
     k_mesh = sec_method.k_mesh
     assert len(k_mesh.points) == 145
@@ -303,6 +302,18 @@ def test_outcar(parser):
 #        assert pytest.approx(dos_integrated, abs=1) == 22.
 #    except AssertionError:
 #        raise AssertionError(sec_scc.energy.fermi)
+
+
+def test_potcar(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/vasp/AlN_alternate_potcar/vasprun.xml', archive, None)
+
+    sec_method = archive.run[0].method[0]
+    sec_pseudo = sec_method.atom_parameters[-1].pseudopotential
+    assert sec_pseudo.name == 'PAW_PBE Al 04Jan2001'
+    assert sec_pseudo.type == 'PAW'
+    assert sec_pseudo.xc_functional_name == ['GGA_X_PBE', 'GGA_C_PBE']
+    assert sec_pseudo.cutoff.to('eV').magnitude == approx(240.3)
 
 
 def test_broken_xml(parser):
@@ -369,6 +380,12 @@ def test_dftu_static(parser):
                 assert approx(param.hubbard_kanamori_model.u.to('eV').magnitude) == references['u'][slice]
                 assert approx(param.hubbard_kanamori_model.j.to('eV').magnitude) == references['j'][slice]
                 slice += 1
+
+        sec_pseudo = params[1].pseudopotential
+        assert sec_pseudo.name == 'PAW_PBE V_pv 07Sep2000'
+        assert sec_pseudo.type == 'PAW'
+        assert sec_pseudo.xc_functional_name == ['GGA_X_PBE', 'GGA_C_PBE']
+        assert sec_pseudo.cutoff.to('eV').magnitude == approx(263.675)
 
     # check the OUTCAR value when no INCAR is present
     parser.parse('tests/data/vasp/Mg4V2Bi2O12_dftu_no_incar/OUTCAR', archive, None)

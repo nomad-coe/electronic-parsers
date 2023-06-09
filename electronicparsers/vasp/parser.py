@@ -112,7 +112,7 @@ class PotParser(TextParser):
 
         self._quantities = [
             Quantity(
-                'pseudopotential', r'(VRHFIN\s+=[\s\S]+?LMMAX\s=\s+\d)', repeats=True,  # recognize where a header starts
+                'pseudopotential', r'(VRHFIN\s+=[\s\S]+?(LMMAX\s=\s+\d|END of))', repeats=True,  # recognize where a header starts
                 sub_parser=TextParser(quantities=_pseudopotential)
             )
         ]
@@ -247,7 +247,7 @@ class ContentParser:
             return {x[0]: transform(x[1]) for x in key_val}
 
         bool_mapping = {'T': True, 'F': False}
-        pps = PotParser(mainfile=self.parser.mainfile).parse().get('pseudopotential', [])
+        pps = PotParser(filepath).parse().get('pseudopotential', [])
         pps_out = []
         for pp in pps:
             pps_out.append({'title': pp['title']})
@@ -1385,9 +1385,7 @@ class VASPParser():
                 pp.cutoff = pseudopotential['number']['ENMAX'] * ureg.eV
                 pp.xc_functional_name = self.parser.xc_functional_mapping.get(
                     pseudopotential['title'][0].split('_')[1], ['GGA_X_PBE', 'GGA_C_PBE'])
-                pp_name = ' '.join(pseudopotential['title'])
-                pp.name = pp_name
-                sec_method_atom_kind.pseudopotential_name = pseudopotential['title'][0]  # backwards compatibility
+                pp.name = ' '.join(pseudopotential['title'])
                 sec_method_atom_kind.pseudopotential = pp
             except IndexError:
                 pass
