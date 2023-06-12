@@ -43,6 +43,7 @@ class MainfileParser(TextParser):
     def init_quantities(self):
         self._quantities = [
             Quantity('program_version', r'Version (\S+)', dtype=str),
+            Quantity('program_version', r'MOPAC v([\d\.]+)', dtype=str),
             Quantity(
                 'calculation',
                 r'(CALCULATION DONE:[\s\S]+?)\*\*\*\*\*',
@@ -146,7 +147,9 @@ class MopacParser:
         self.mainfile_parser.logger = self.logger
 
         sec_run = archive.m_create(Run)
-        sec_run.program = Program(version=self.mainfile_parser.get('program_version'))
+        sec_run.program = Program(
+            name='mopac',
+            version=self.mainfile_parser.get('program_version'))
 
         date_start = self.mainfile_parser.get('calculation', {}).get('date_start')
         if date_start is not None:
