@@ -401,7 +401,7 @@ class OutcarTextParser(TextParser):
             Quantity(
                 'species', r'TITEL\s*=\s*(\w+) ([A-Z][a-z]*)', dtype=str, repeats=True),  # TODO: deprecate
             Quantity(
-                'species', r'\n *(\w+) +([A-Z][a-z]*).+?:\s*energy of atom +\d+', dtype=str, repeats=True),  # TODO: deprecate
+                'species', r'(\w+) +([A-Z][a-z]*).+?:\s*energy of atom +\d+', dtype=str, repeats=True),  # TODO: deprecate
             Quantity(
                 'kpoints',
                 r'Following reciprocal coordinates:[\s\S]+?\n([\d\.\s\-]+)',
