@@ -105,7 +105,7 @@ class PotParser(TextParser):
     def init_quantities(self):
         '''Extract pseudopotential headers both from POTCAR or OUTCAR.'''
         _pseudopotential = [
-            Quantity('title', r'TITEL\s+=\s(.*)'),  # extract the VASP native title
+            Quantity('title', r'TITEL\s+=\s*(.*)'),  # extract the VASP native title
             Quantity('flag', r'(L[A-Z]+)\s+=\s+(T|F)', repeats=True),  # extract booleans keywords
             Quantity('number', r'([A-Z]+)\s+=\s+([-\.0-9]+)', repeats=True),  # extract floats or integers
         ]
@@ -398,8 +398,6 @@ class OutcarTextParser(TextParser):
                 str_operation=get_key_values, repeats=False, convert=False),
             Quantity(
                 'ions_per_type', r'ions per type =\s*([ \d]+)', dtype=int, repeats=False),
-            Quantity(
-                'species', r'TITEL\s*=\s*(\w+) ([A-Z][a-z]*)', dtype=str, repeats=True),  # TODO: deprecate
             Quantity(
                 'species', r'(\w+) +([A-Z][a-z]*).+?:\s*energy of atom +\d+', dtype=str, repeats=True),  # TODO: deprecate
             Quantity(
