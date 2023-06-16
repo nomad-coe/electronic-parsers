@@ -1372,24 +1372,25 @@ class VASPParser():
             atom_label = '%s%d' % (
                 element[i], atom_counts[element[i]]) if atom_counts[element[i]] > 0 else element[i]
             sec_method_atom_kind.label = str(atom_label)
-            try:
-                pseudopotential = pseudopotentials[i]
-            except IndexError:
-                self.logger.error(f'Pseudopotential not found for atom {element[i]}')
-            sec_method_atom_kind.mass = pseudopotential['number']['POMASS'] * ureg.amu
-            sec_method_atom_kind.n_valence_electrons = pseudopotential['number']['ZVAL']
-            pp = Pseudopotential()
-            pp.type = 'PAW'
-            if pseudopotential['flag']['LULTRA']:
-                pp.type = 'USPP'  # TODO check if this is correct
-            pp.cutoff = pseudopotential['number']['ENMAX'] * ureg.eV
-            try:
-                pp.xc_functional_name = self.parser.xc_functional_mapping.get(
-                    pseudopotential['title'][0].split('_')[1], ['GGA_X_PBE', 'GGA_C_PBE'])
-            except IndexError:
-                self.logger.warning(f'Could not extract xc functional from pseudopotential for {element[i]}')
-            pp.name = ' '.join(pseudopotential['title'])
-            sec_method_atom_kind.pseudopotential = pp
+            if pseudopotentials:
+                try:
+                    pseudopotential = pseudopotentials[i]
+                except IndexError:
+                    self.logger.error(f'Pseudopotential not found for atom {element[i]}')
+                sec_method_atom_kind.mass = pseudopotential['number']['POMASS'] * ureg.amu
+                sec_method_atom_kind.n_valence_electrons = pseudopotential['number']['ZVAL']
+                pp = Pseudopotential()
+                pp.type = 'PAW'
+                if pseudopotential['flag']['LULTRA']:
+                    pp.type = 'USPP'  # TODO check if this is correct
+                pp.cutoff = pseudopotential['number']['ENMAX'] * ureg.eV
+                try:
+                    pp.xc_functional_name = self.parser.xc_functional_mapping.get(
+                        pseudopotential['title'][0].split('_')[1], ['GGA_X_PBE', 'GGA_C_PBE'])
+                except IndexError:
+                    self.logger.warning(f'Could not extract xc functional from pseudopotential for {element[i]}')
+                pp.name = ' '.join(pseudopotential['title'])
+                sec_method_atom_kind.pseudopotential = pp
 
             if hubbard_present:
                 orbital = self.hubbard_orbital_types[int(parsed_file.get('LDAUL')[i])]
