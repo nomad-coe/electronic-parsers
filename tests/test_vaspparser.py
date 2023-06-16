@@ -304,16 +304,23 @@ def test_outcar(parser):
 #        raise AssertionError(sec_scc.energy.fermi)
 
 
-def test_potcar(parser):
+@pytest.mark.parametrize(
+    'filename, name, cutoff',
+    [
+        ('tests/data/vasp/alternative_pseudopotentials/AlN/vasprun.xml', 'PAW_PBE Al 04Jan2001', 240.3),
+        ('tests/data/vasp/alternative_pseudopotentials/F_GW/OUTCAR', '^PAW_PBE F_h_GW 20May2014', 848.358),
+    ]
+)
+def test_potcar(parser, filename, name, cutoff):
     archive = EntryArchive()
-    parser.parse('tests/data/vasp/AlN_alternate_potcar/vasprun.xml', archive, None)
+    parser.parse(filename, archive, None)
 
     sec_method = archive.run[0].method[0]
     sec_pseudo = sec_method.atom_parameters[-1].pseudopotential
-    assert sec_pseudo.name == 'PAW_PBE Al 04Jan2001'
+    assert sec_pseudo.name == name
     assert sec_pseudo.type == 'PAW'
     assert sec_pseudo.xc_functional_name == ['GGA_X_PBE', 'GGA_C_PBE']
-    assert sec_pseudo.cutoff.to('eV').magnitude == approx(240.3)
+    assert sec_pseudo.cutoff.to('eV').magnitude == approx(cutoff)
 
 
 def test_broken_xml(parser):
