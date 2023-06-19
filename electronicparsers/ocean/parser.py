@@ -200,6 +200,7 @@ class OceanParser(BeyondDFTWorkflowsParser):
         sec_spectra.n_energies = len(data_spct)
         sec_spectra.excitation_energies = data_spct[:, 0] * ureg.eV
         sec_spectra.intensities = data_spct[:, 2]
+        sec_spectra.intensities_units = 'F/m'
 
         # lanczos matrices
         lanc_file = [f for f in os.listdir(self.maindir) if f.startswith('abslanc') and f.endswith(path[-2:])]
