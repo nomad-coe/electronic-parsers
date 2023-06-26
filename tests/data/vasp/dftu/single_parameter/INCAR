@@ -1,0 +1,37 @@
+#NBANDS=XX                                            # for hand modification
+#IALGO=48                                             # for hand modification
+#incar
+LPLANE=.TRUE.             # parallelization 
+NPAR=4                    # seems to give good results with all MPI
+NSIM=4                    # tune size vector/matrix product
+LSCALU=.FALSE.            # neglect scalapack 
+NBANDS=44                 # KBIN_XVASP_INCAR_GetNBANDS
+ISYM=2                    # SYMMMETRY=ON
+LDAU=.TRUE.               # AFLOW LSDA+U
+#LDAU_SPECIES=Zn          # LDAU species 
+LDAUL=2                   # l-quantum number for which the on site interaction is added (Default 2) automatic LDAUL table
+LDAUU=7.5                 # UEFF parameter. Automatic LDAUU table
+LDAUJ=0                   # J parameter (if used). Automatic LDAUJ table
+LDAUTYPE=2                # Type of LDA+U. 
+LMAXMIX=4                 # Controls up to which l-quantum number the onsite PAW charge densities are passed through the charge density mixer. 
+LDAUPRINT=0               # Controls verbosity of the L(S)DA+U module. (Default 0) # AFLOW LSDA+U
+ENMAX=387.4178            # 1.4*ENMAX (276.727) of pseudopotentials 
+LREAL=.FALSE.             # reciprocal space projection technique 
+EDIFF=1E-6                # high accuracy required          
+ISPIN=1                   # SPIN=OFF
+ISMEAR=-5                 # Performing RELAX_STATIC (tetrahedron method with Blochl corrections : wahyu/stefano 2009/10/09)
+SIGMA=0.05                # Performing RELAX_STATIC (so the DOS will not spill too much from band edges)
+ALGO=Normal               # Performing RELAX_STATIC (stefano from ICSD)
+ISIF=2                    # Performing RELAX_STATIC (relax ions, but single step so no relax)
+IBRION=2                  # Performing RELAX_STATIC (relax conj. grad, but single step so no relax)
+NSW=0                     # Performing RELAX_STATIC (zero ionic steps, so no relax, just static)
+NELM=120                  # Performing RELAX_STATIC
+NELMIN=2                  # Performing RELAX_STATIC
+LORBIT=10                 # Performing RELAX_STATIC
+LCHARG=.TRUE.             # Performing RELAX_STATIC
+LWAVE=.FALSE.             # Performing RELAX_STATIC
+LELF=.TRUE.               # Performing RELAX_STATIC
+PREC=High                 # Performing RELAX_STATIC (aleksey)
+EMIN= -30.0               # Performing RELAX_STATIC (aleksey) force search for EMIN
+EMAX=  45.0               # Performing RELAX_STATIC (aleksey)
+NEDOS= 5000               # Performing RELAX_STATIC (aleksey)
