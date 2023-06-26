@@ -16,3 +16,4 @@ metadata:
 name: parsers/ams
 parser_class_name: electronicparsers.ams.parser.AMSParser
 python_package: electronicparsers.ams
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/ams

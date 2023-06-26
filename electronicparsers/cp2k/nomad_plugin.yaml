@@ -32,3 +32,4 @@ metadata:
 name: parsers/cp2k
 parser_class_name: electronicparsers.cp2k.parser.CP2KParser
 python_package: electronicparsers.cp2k
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/cp2k

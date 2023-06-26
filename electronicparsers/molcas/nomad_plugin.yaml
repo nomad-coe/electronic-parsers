@@ -16,3 +16,4 @@ metadata:
 name: parsers/molcas
 parser_class_name: electronicparsers.molcas.parser.MolcasParser
 python_package: electronicparsers.molcas
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/molcas

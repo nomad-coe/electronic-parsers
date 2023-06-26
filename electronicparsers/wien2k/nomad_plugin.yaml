@@ -15,3 +15,4 @@ metadata:
 name: parsers/wien2k
 parser_class_name: electronicparsers.wien2k.parser.Wien2kParser
 python_package: electronicparsers.wien2k
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/wien2k

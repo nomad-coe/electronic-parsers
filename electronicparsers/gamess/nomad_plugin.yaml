@@ -16,3 +16,4 @@ metadata:
 name: parsers/gamess
 parser_class_name: electronicparsers.gamess.parser.GamessParser
 python_package: electronicparsers.gamess
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/gamess

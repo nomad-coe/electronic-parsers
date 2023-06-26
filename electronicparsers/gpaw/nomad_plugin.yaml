@@ -16,3 +16,4 @@ metadata:
 name: parsers/gpaw
 parser_class_name: electronicparsers.gpaw.parser.GPAWParser
 python_package: electronicparsers.gpaw
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/gpaw

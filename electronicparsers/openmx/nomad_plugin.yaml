@@ -22,3 +22,4 @@ metadata:
 name: parsers/openmx
 parser_class_name: electronicparsers.openmx.parser.OpenmxParser
 python_package: electronicparsers.openmx
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/openmx

@@ -16,3 +16,4 @@ metadata:
 name: parsers/onetep
 parser_class_name: electronicparsers.onetep.parser.OnetepParser
 python_package: electronicparsers.onetep
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/onetep

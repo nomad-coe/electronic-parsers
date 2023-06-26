@@ -41,3 +41,4 @@ metadata:
 name: parsers/abacus
 parser_class_name: electronicparsers.abacus.parser.ABACUSParser
 python_package: electronicparsers.abacus
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/abacus

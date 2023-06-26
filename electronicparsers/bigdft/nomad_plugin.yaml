@@ -16,3 +16,4 @@ metadata:
 name: parsers/bigdft
 parser_class_name: electronicparsers.bigdft.parser.BigDFTParser
 python_package: electronicparsers.bigdft
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/bigdft

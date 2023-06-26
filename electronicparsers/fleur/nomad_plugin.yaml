@@ -16,3 +16,4 @@ metadata:
 name: parsers/fleur
 parser_class_name: electronicparsers.fleur.parser.FleurParser
 python_package: electronicparsers.fleur
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/fleur

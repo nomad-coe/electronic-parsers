@@ -22,3 +22,4 @@ metadata:
 name: parsers/qball
 parser_class_name: electronicparsers.qball.parser.QBallParser
 python_package: electronicparsers.qball
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/qball

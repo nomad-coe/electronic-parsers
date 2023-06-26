@@ -25,3 +25,4 @@ metadata:
 name: parsers/solid_dmft
 parser_class_name: electronicparsers.soliddmft.parser.SolidDMFTParser
 python_package: electronicparsers.soliddmft
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/soliddmft

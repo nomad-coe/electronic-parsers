@@ -40,3 +40,4 @@ metadata:
 name: parsers/abinit
 parser_class_name: electronicparsers.abinit.parser.AbinitParser
 python_package: electronicparsers.abinit
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/abinit

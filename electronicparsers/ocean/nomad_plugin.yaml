@@ -34,3 +34,4 @@ metadata:
 name: parsers/ocean
 parser_class_name: electronicparsers.ocean.parser.OceanParser
 python_package: electronicparsers.ocean
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/ocean

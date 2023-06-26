@@ -33,3 +33,4 @@ metadata:
 name: parsers/crystal
 parser_class_name: electronicparsers.crystal.parser.CrystalParser
 python_package: electronicparsers.crystal
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/crystal

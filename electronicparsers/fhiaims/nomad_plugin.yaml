@@ -49,3 +49,4 @@ metadata:
 name: parsers/fhi-aims
 parser_class_name: electronicparsers.fhiaims.parser.FHIAimsParser
 python_package: electronicparsers.fhiaims
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/fhiaims
