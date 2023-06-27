@@ -105,7 +105,7 @@ class PotParser(TextParser):
     def init_quantities(self):
         '''Extract pseudopotential headers both from POTCAR or OUTCAR.'''
         _pseudopotential = [
-            Quantity('title', r'TITEL\s+=\s(.*)'),  # extract the VASP native title
+            Quantity('title', r'TITEL\s+=\s*(.*)'),  # extract the VASP native title
             Quantity('flag', r'(L[A-Z]+)\s+=\s+(T|F)', repeats=True),  # extract booleans keywords
             Quantity('number', r'([A-Z]+)\s+=\s+([-\.0-9]+)', repeats=True),  # extract floats or integers
         ]
@@ -404,9 +404,7 @@ class OutcarTextParser(TextParser):
             Quantity(
                 'ions_per_type', r'ions per type =\s*([ \d]+)', dtype=int, repeats=False),
             Quantity(
-                'species', r'TITEL\s*=\s*(\w+) ([A-Z][a-z]*)', dtype=str, repeats=True),  # TODO: deprecate
-            Quantity(
-                'species', r'\n *(\w+) +([A-Z][a-z]*).+?:\s*energy of atom +\d+', dtype=str, repeats=True),  # TODO: deprecate
+                'species', r'(\w+) +([A-Z][a-z]*).+?:\s*energy of atom +\d+', dtype=str, repeats=True),  # TODO: deprecate
             Quantity(
                 'kpoints',
                 r'Following reciprocal coordinates:[\s\S]+?\n([\d\.\s\-]+)',
@@ -1377,8 +1375,11 @@ class VASPParser():
             atom_label = '%s%d' % (
                 element[i], atom_counts[element[i]]) if atom_counts[element[i]] > 0 else element[i]
             sec_method_atom_kind.label = str(atom_label)
-            try:
-                pseudopotential = pseudopotentials[i]
+            if pseudopotentials:
+                try:
+                    pseudopotential = pseudopotentials[i]
+                except IndexError:
+                    self.logger.error(f'Pseudopotential not found for atom {element[i]}')
                 sec_method_atom_kind.mass = pseudopotential['number']['POMASS'] * ureg.amu
                 sec_method_atom_kind.n_valence_electrons = pseudopotential['number']['ZVAL']
                 pp = Pseudopotential()
@@ -1386,12 +1387,14 @@ class VASPParser():
                 if pseudopotential['flag']['LULTRA']:
                     pp.type = 'USPP'  # TODO check if this is correct
                 pp.cutoff = pseudopotential['number']['ENMAX'] * ureg.eV
-                pp.xc_functional_name = self.parser.xc_functional_mapping.get(
-                    pseudopotential['title'][0].split('_')[1], ['GGA_X_PBE', 'GGA_C_PBE'])
+                try:
+                    pp.xc_functional_name = self.parser.xc_functional_mapping.get(
+                        pseudopotential['title'][0].split('_')[1], ['GGA_X_PBE', 'GGA_C_PBE'])
+                except IndexError:
+                    self.logger.warning(f'Could not extract xc functional from pseudopotential for {element[i]}')
                 pp.name = ' '.join(pseudopotential['title'])
                 sec_method_atom_kind.pseudopotential = pp
-            except IndexError:
-                pass
+
             if hubbard_present:
                 orbital = self.hubbard_orbital_types[int(parsed_file.get('LDAUL')[i])]
                 if orbital:
