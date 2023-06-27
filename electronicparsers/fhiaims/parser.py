@@ -1816,9 +1816,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                             sec_basis_func.x_fhi_aims_controlInOut_basis_func_primitive_gauss_alpha = alpha
 
         # add inout parameters read from main output
-        # species
-        species = self.out_parser.get('control_inout', {}).get('species')
-        if species is not None:
+        if (species := self.out_parser.get('control_inout', {}).get('species')) is not None:
             for specie in species:
                 parse_atom_type(specie)
 
