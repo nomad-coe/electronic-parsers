@@ -198,6 +198,11 @@ class ContentParser:
         lorbit = incar.get('LORBIT', None)
         if isinstance(lorbit, list):
             incar['LORBIT'] = lorbit[0]
+        # fix for LDAU parameters, int / float is read
+        for key in ['LDAUU', 'LDAUJ', 'LDAUL']:
+            val = incar.get(key, None)
+            if isinstance(val, (int, float)):
+                incar[key] = [val]
 
     def get_incar(self):
         pass
@@ -915,9 +920,7 @@ class RunContentParser(ContentParser):
 
     def _get_key_values(self, path, repeats=False, array=False):
         def parse_float_str_vector(str_vector: List[str]):
-            return [
-                'nan' if '*' in x else x
-                for x in str_vector]
+            return ['nan' if '*' in x else x for x in str_vector]
 
         root, base_name = path.strip('/').rsplit('/', 1)
 
