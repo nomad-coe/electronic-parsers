@@ -1614,7 +1614,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     basis_set=[
                         BasisSet(
                             type='plane waves',
-                            scope=['valence'],
+                            scope=['valence', 'interstitial'],
                             cutoff_fractional=self.input_xml_parser.get('xs/cutoffapw', 7.),
                         ),
                     ]
