@@ -38,3 +38,4 @@ metadata:
 name: parsers/octopus
 parser_class_name: electronicparsers.octopus.parser.OctopusParser
 python_package: electronicparsers.octopus
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/octopus

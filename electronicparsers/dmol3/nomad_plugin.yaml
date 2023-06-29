@@ -16,3 +16,4 @@ metadata:
 name: parsers/dmol
 parser_class_name: electronicparsers.dmol3.parser.Dmol3Parser
 python_package: electronicparsers.dmol3
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/dmol3

@@ -24,3 +24,4 @@ metadata:
 name: parsers/psi4
 parser_class_name: electronicparsers.psi4.parser.Psi4Parser
 python_package: electronicparsers.psi4
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/psi4

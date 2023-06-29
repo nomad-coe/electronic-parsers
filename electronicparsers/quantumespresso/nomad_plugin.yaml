@@ -28,3 +28,4 @@ metadata:
 name: parsers/quantumespresso
 parser_class_name: electronicparsers.quantumespresso.parser.QuantumEspressoParser
 python_package: electronicparsers.quantumespresso
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/quantumespresso

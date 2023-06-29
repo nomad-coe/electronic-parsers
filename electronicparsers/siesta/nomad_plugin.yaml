@@ -16,3 +16,4 @@ metadata:
 name: parsers/siesta
 parser_class_name: electronicparsers.siesta.parser.SiestaParser
 python_package: electronicparsers.siesta
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/siesta

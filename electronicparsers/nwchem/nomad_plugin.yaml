@@ -16,3 +16,4 @@ metadata:
 name: parsers/nwchem
 parser_class_name: electronicparsers.nwchem.parser.NWChemParser
 python_package: electronicparsers.nwchem
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/nwchem

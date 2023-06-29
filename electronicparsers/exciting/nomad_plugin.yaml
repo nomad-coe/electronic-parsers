@@ -81,3 +81,4 @@ metadata:
 name: parsers/exciting
 parser_class_name: electronicparsers.exciting.parser.ExcitingParser
 python_package: electronicparsers.exciting
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/exciting

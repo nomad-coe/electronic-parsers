@@ -34,3 +34,4 @@ metadata:
 name: parsers/w2dynamics
 parser_class_name: electronicparsers.w2dynamics.parser.W2DynamicsParser
 python_package: electronicparsers.w2dynamics
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/w2dynamics

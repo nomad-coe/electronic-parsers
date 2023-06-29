@@ -28,3 +28,4 @@ metadata:
 name: parsers/yambo
 parser_class_name: electronicparsers.yambo.parser.YamboParser
 python_package: electronicparsers.yambo
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/yambo

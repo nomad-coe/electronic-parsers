@@ -32,3 +32,4 @@ metadata:
 name: parsers/wannier90
 parser_class_name: electronicparsers.wannier90.parser.Wannier90Parser
 python_package: electronicparsers.wannier90
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/wannier90

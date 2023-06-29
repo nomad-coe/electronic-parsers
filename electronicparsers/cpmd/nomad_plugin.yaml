@@ -16,3 +16,4 @@ metadata:
 name: parsers/cpmd
 parser_class_name: electronicparsers.cpmd.parser.CPMDParser
 python_package: electronicparsers.cpmd
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/cpmd

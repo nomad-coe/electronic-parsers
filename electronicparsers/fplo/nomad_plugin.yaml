@@ -16,3 +16,4 @@ metadata:
 name: parsers/fplo
 parser_class_name: electronicparsers.fplo.parser.FploParser
 python_package: electronicparsers.fplo
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/fplo

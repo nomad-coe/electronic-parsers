@@ -16,3 +16,4 @@ metadata:
 name: parsers/qbox
 parser_class_name: electronicparsers.qbox.parser.QboxParser
 python_package: electronicparsers.qbox
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/qbox

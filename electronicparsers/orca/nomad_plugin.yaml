@@ -16,3 +16,4 @@ metadata:
 name: parsers/orca
 parser_class_name: electronicparsers.orca.parser.OrcaParser
 python_package: electronicparsers.orca
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/orca
