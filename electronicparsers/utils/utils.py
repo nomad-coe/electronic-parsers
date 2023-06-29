@@ -28,6 +28,8 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
+from nomad.datamodel.metainfo.simulation.method import OrbitalAPW
+from typing import Any
 
 
 def extract_section(source: EntryArchive, path: str):
@@ -283,3 +285,97 @@ class BeyondDFTWorkflowsParser:
             workflow.m_add_sub_section(ParticleHoleExcitations.tasks, task)
 
         xs_workflow_archive.workflow2 = workflow
+
+
+class OrbitalAPWConstructor:
+    '''
+    Class for storing and sorting the orbitals in a APW basis set.
+    '''
+    def __init__(self, *args, **kwargs):
+        '''
+        Initializer for the OrbitalAPWConstructor class. Accept:
+        - args: list of strings defining the input format for the orbitals, should match the quantity names in OrbitalAPW
+          default: ['l_quantum_number', 'energy_parameter', 'type', 'updated']
+        - order: list of strings defining the order in which the orbitals are sorted, in descending order of relevance
+        - comparsion: list of strings defining the keys used for comparison of orbitals in `overwrite_orbital`
+        '''
+        self.orbitals: list[dict[str, Any]] = []
+        self.comparison: list[dict[str, Any]] = []
+        self.input_format = ['l_quantum_number', 'energy_parameter', 'type', 'updated']
+        if args:
+            self.input_format = args
+        self.term_order = kwargs.get(
+            'order',
+            [
+                'l_quantum_number', 'j_quantum_number', 'k_quantum_number',
+                'energy_parameter_n', 'type', 'order', 'energy_parameter', 'updated'
+            ]
+        )
+        self.term_order.reverse()
+        self.comparison_keys = kwargs.get('comparison', ['l_quantum_number', 'order'])
+
+    def _convert(self, *args, **kwargs) -> dict[str, Any]:
+        '''
+        Convert the input arguments (`args`) to a `dict` as defined by `input_format`.
+        Keys outside of `input_format` can be added via k`wargs.
+        '''
+        if len(args) != len(self.input_format):
+            raise ValueError('No. arguments mismatch: check `input_format`')
+        # sort alphabetically by keys to ensure proper matching in overwrite_orbital
+        return dict(sorted({**dict(zip(self.input_format, args)), **kwargs}.items()))
+
+    def _extract_comparison(self, orbital: dict[str, Any]) -> dict[str, Any]:
+        '''
+        Extract the keys used for comparison from the orbital, as defined in `comparison_keys`.
+        '''
+        return {k: v for k, v in orbital.items() if k in self.comparison_keys}
+
+    def add_orbital(self, *args, **kwargs):
+        '''
+        Add an orbital to the storage (`orbitals` and `comparison`).
+        The input arguments (`args`) should match the `input_format`.
+        Keys outside of `input_format` can be added via `kwargs`.
+        '''
+        if new_orbital := self._convert(*args, **kwargs):
+            self.orbitals.append(new_orbital)
+            self.comparison.append(self._extract_comparison(new_orbital))
+
+    def overwrite_orbital(self, *args, **kwargs):
+        '''
+        If a new orbital matches the comparison keys, overwrite the old orbital with the new one.
+        The input arguments (`args`) should match the `input_format`.
+        Keys outside of `input_format` can be added via `kwargs`.
+        '''
+        new_orbital = self._convert(*args, **kwargs)
+        new_comparison = self._extract_comparison(new_orbital)
+        try:
+            index = self.comparison.index(new_comparison)  # in case of multiple matching comparison keys, `index` returns the last one
+            self.orbitals[index] = new_orbital
+        except ValueError:
+            pass
+
+    def get_orbitals(self) -> list[OrbitalAPW]:
+        '''
+        Return the stored orbitals as a sorted list of `OrbitalAPW` sections.
+        '''
+        def _sort_func(orbital: dict[str, Any], term: str):
+            '''
+            Helper function to guide the sorting process.
+            '''
+            if term in orbital:
+                return orbital[term]
+            else:
+                return 0
+
+        # sort out the orbitals by id_keys
+        orbitals = self.orbitals
+        for term in self.term_order:
+            orbitals = sorted(orbitals, key=lambda orbital: _sort_func(orbital, term))
+        # convert to NOMAD section
+        formatted_orbitals: list[OrbitalAPW] = []
+        for orbital in orbitals:
+            formatted_orbital = OrbitalAPW()
+            for term, val in orbital.items():
+                setattr(formatted_orbital, term, val)
+            formatted_orbitals.append(formatted_orbital)
+        return formatted_orbitals

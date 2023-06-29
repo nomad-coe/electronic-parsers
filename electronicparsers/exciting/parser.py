@@ -27,7 +27,7 @@ from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional, Scf, BasisSet, KMesh,
     FrequencyMesh, Screening, GW, Photon, BSE, CoreHole, BasisSetContainer,
-    OrbitalAPW, AtomParameters,
+    AtomParameters,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -51,7 +51,7 @@ from .metainfo.exciting import (
     x_exciting_scrcoul_parameters
 )
 from ..utils import (
-    get_files, BeyondDFTWorkflowsParser
+    get_files, BeyondDFTWorkflowsParser, OrbitalAPWConstructor,
 )
 from typing import Any, Iterable
 
@@ -1550,63 +1550,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_k_band_segment.value = band_energies[nb] + energy_fermi
 
     def _parse_species(self, sec_method):
-        def _set_orbital(source: TextParser, l_quantum_number: int,
-                         order: int, type: str = '') -> OrbitalAPW:
-            if not type:
-                type = re.sub(r'\+lo', '', source.get('type', 'lapw')).upper()
-            return OrbitalAPW(
-                l_quantum_number=l_quantum_number,
-                type=type,
-                order=order,
-                energy_parameter=source['trialEnergy'] * ureg.hartree,
-                update=source['searchE'],
-            )
-
-        type_order_mapping = {'   ': 0, 'apw': 1, 'lap': 2}
-        self.species_parser.parse()
-        species_data = self.species_parser.to_dict()
-
-        # muffin-tin valence
-        radius = float(species_data['muffinTin']['radius'])
-        radialmeshPoints = int(species_data['muffinTin']['radialmeshPoints'])
-        radial_spacing = radius / radialmeshPoints
-        bs_val = BasisSet(
-            scope=['muffin-tin'],
-            radius=radius * ureg.bohr,
-            radius_lin_spacing=radial_spacing * ureg.bohr,
-        )
-        lo_samplings = {lo['l']: lo.get('wf', []) for lo in species_data.get('lo', [])}
-        lmax = self.input_xml_parser.get('xs/lmaxapw', 10)
-
-        for l_n in range(lmax + 1):
-            source = species_data.get('default', {})
-            for custom_settings in species_data.get('custom', []):
-                if custom_settings['l'] == l_n:
-                    source = custom_settings
-                    break
-            for order in range(type_order_mapping[source.get('type', 3 * ' ')[:3]]):
-                bs_val.orbital.append(_set_orbital(source, l_n, order))
-
-            # Add lo's
-            if source.get('type', 2 * ' ')[-2:] == 'lo':
-                wfs = lo_samplings[l_n] if l_n in lo_samplings else [source]
-                for wf in wfs:
-                    for order in range(wf.get('matchingOrder', 0), 2):
-                        bs_val.orbital.append(_set_orbital(wf, l_n, order, type='LO'))
-
-        # manage atom parameters
-        if not sec_method.atom_parameters:
-            sec_method.atom_parameters = []
-        sp = species_data.get('sp', {})
-        sec_method.atom_parameters.append(
-            AtomParameters(
-                atom_number=abs(sp.get('z')),
-                label=sp.get('chemicalSymbol'),
-                mass=sp.get('mass') * ureg.amu if sp.get('mass') else None,
-            )
-        )
-        bs_val.atom_parameters = sec_method.atom_parameters[-1]
-
+        # process basis set data
         if not sec_method.electrons_representation:
             sec_method.electrons_representation = [
                 BasisSetContainer(
@@ -1620,7 +1564,81 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     ]
                 )
             ]
-        sec_method.electrons_representation[0].basis_set.append(bs_val)
+
+        # muffin-tin
+        if not (species_data := self.species_parser.results):
+            self.logger.warning(f'No species data found in {self.species_parser.filepath}')
+            return
+
+        def _convert_keyval(key_vals: list[list]) -> dict[str, Any]:
+            bool_map = {'false': False, 'true': True}
+            key_vals_converted: dict[str, Any] = {}
+            for key_val in key_vals:
+                if len(key_val) != 2:
+                    raise ValueError(f'Invalid key-value pair: {key_val}')
+                if key_val[1] in bool_map:
+                    key_vals_converted[key_val[0]] = bool_map[key_val[1]]
+                else:
+                    key_vals_converted[key_val[0]] = key_val[1]
+            return key_vals_converted
+
+        # read orbitals
+        def _get_type(line_data: dict[str, Any]) -> str:
+            return re.sub(r'\+LO', '', line_data.get('type', 'lapw').upper())
+
+        orb_constr = OrbitalAPWConstructor()
+        l_max = self.input_xml_parser.get('xs/lmaxapw', 10)
+        # read default settings
+        if line_data := _convert_keyval(species_data.get('default', {}).get('key_val', [])):
+            for l in range(l_max):
+                orb_constr.add_orbital(
+                    l, line_data['trialEnergy'] * ureg.hartree,
+                    _get_type(line_data), line_data.get('searchE', False),
+                )
+        # read custom settings
+        if lines_data := species_data.get('custom', []):
+            for line_data in lines_data:
+                line_data = _convert_keyval(line_data.get('key_val', []))
+                orb_constr.overwrite_orbital(
+                    line_data['l'], line_data['trialEnergy'] * ureg.hartree,
+                    _get_type(line_data), line_data.get('searchE', False),
+                )
+        # read in local orbitals
+        if lines_data := species_data.get('lo', []):
+            for line_data in lines_data:
+                l = line_data['l']
+                for wf in line_data.get('wf', []):
+                    wf = _convert_keyval(wf.get('key_val', []))
+                    orb_constr.add_orbital(
+                        l, wf['trialEnergy'] * ureg.hartree,
+                        'LO', wf.get('searchE', False),
+                        order=wf.get('matchingOrder', 0),  # TODO check if this is correct
+                    )
+        # write out the orbitals
+        bs = BasisSet(
+            scope=['muffin-tin'],
+            orbital=orb_constr.get_orbitals(),
+        )
+        if mt := species_data.get('muffinTin', {}):
+            if radius := mt.get('radius'):
+                radius = float(radius) * ureg.bohr
+                bs.radius = radius
+                if rmp := mt.get('radialmeshPoints'):
+                    bs.radial_spacing = radius / int(rmp)
+        sec_method.electrons_representation[0].basis_set.append(bs)
+
+        # manage atom parameters
+        if not sec_method.atom_parameters:
+            sec_method.atom_parameters = []
+        if sp := _convert_keyval(species_data.get('sp', {}).get('key_val', [])):
+            sec_method.atom_parameters.append(
+                AtomParameters(
+                    atom_number=abs(sp.get('z')) if sp.get('z') else None,
+                    label=sp.get('chemicalSymbol'),
+                    mass=sp.get('mass') * ureg.amu if sp.get('mass') else None,
+                )
+            )
+        sec_method.electrons_representation[0].basis_set[-1].atom_parameters = sec_method.atom_parameters[-1]
 
     def parse_file(self, name, section, filepath=None):
         # TODO add support for info.xml, wannier.out
