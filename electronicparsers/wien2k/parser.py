@@ -828,7 +828,6 @@ class Wien2kParser:
                     for l_n in range(source.get('lmax', -1) + 1):
                         orbital = OrbitalAPW()
                         orbital.l_quantum_number = l_n
-                        orbital.core_level = False
                         e_param = mt.get('e_param', source.get('e_ref', .5) - .2)  # TODO: check for +.2 case
                         update = False
                         apw_type = mt.get('type')
