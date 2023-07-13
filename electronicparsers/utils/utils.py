@@ -19,6 +19,7 @@
 
 import os
 from glob import glob
+import numpy as np
 
 from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
@@ -29,7 +30,7 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
 from nomad.datamodel.metainfo.simulation.method import OrbitalAPW
-from typing import Any
+from typing import Any, Union, Iterable
 
 
 def extract_section(source: EntryArchive, path: str):
@@ -297,32 +298,75 @@ class OrbitalAPWConstructor:
         - args: list of strings defining the input format for the orbitals, should match the quantity names in OrbitalAPW
           default: ['l_quantum_number', 'energy_parameter', 'type', 'updated']
         - order: list of strings defining the order in which the orbitals are sorted, in descending order of relevance
-        - comparsion: list of strings defining the keys used for comparison of orbitals in `overwrite_orbital`
+        - comparison: list of strings defining the keys used for comparison of orbitals in `overwrite_orbital`
         '''
         self.orbitals: list[dict[str, Any]] = []
-        self.comparison: list[dict[str, Any]] = []
-        self.input_format = ['l_quantum_number', 'energy_parameter', 'type', 'updated']
+        self.wavefunctions: dict[str, Any] = {}
         if args:
             self.input_format = args
         self.term_order = kwargs.get(
             'order',
             [
                 'l_quantum_number', 'j_quantum_number', 'k_quantum_number',
-                'energy_parameter_n', 'type', 'order', 'energy_parameter', 'updated'
+                'energy_parameter_n', 'energy_parameter', 'order', 'updated',
             ]
         )
         self.term_order.reverse()
-        self.comparison_keys = kwargs.get('comparison', ['l_quantum_number', 'order'])
+        self.comparison_keys = kwargs.get(
+            'comparison',
+            ['l_quantum_number', 'j_quantum_number', 'k_quantum_number']
+        )
 
-    def _convert(self, *args, **kwargs) -> dict[str, Any]:
+    def _convert(self, settings: dict[str, Any], **kwargs) -> dict[str, Any]:
         '''
         Convert the input arguments (`args`) to a `dict` as defined by `input_format`.
-        Keys outside of `input_format` can be added via k`wargs.
+        Keys outside of `input_format` can be added via kwargs.
         '''
-        if len(args) != len(self.input_format):
-            raise ValueError('No. arguments mismatch: check `input_format`')
-        # sort alphabetically by keys to ensure proper matching in overwrite_orbital
-        return dict(sorted({**dict(zip(self.input_format, args)), **kwargs}.items()))
+        return dict(sorted({**settings, **kwargs}.items()))
+
+    def append_wavefunction(self, settings, **kwargs):
+        '''
+        '''
+        if self.wavefunctions:
+            for key, val in self.wavefunctions.items():
+                converted = self._convert(settings, **kwargs)
+                if getattr(OrbitalAPW, key, {}).get('shape'):
+                    try:
+                        self.wavefunctions[key].append(converted[key])
+                    except AttributeError:
+                        self.wavefunctions[key] = np.append(self.wavefunctions[key], converted[key])
+                elif val != converted[key]:
+                    raise ValueError(f'Wavefunction {key} does not match previous value')
+        else:
+            for key, val in self._convert(settings, **kwargs).items():
+                if getattr(OrbitalAPW, key, {}).get('shape'):
+                    if hasattr(val, 'units'):  # check if quantity
+                        self.wavefunctions[key] = np.array([val.magnitude]) * val.units
+                    else:
+                        self.wavefunctions[key] = [val]
+                else:
+                    self.wavefunctions[key] = val
+
+    def unroll_orbital(self, orders: Union[int, list[int]], settings, **kwargs):
+        '''
+        '''
+        if isinstance(orders, int):
+            orders = list(range(orders))
+        self.wavefunctions = {} # reset wavefunctions
+        for order in orders:
+            new_kwargs = {**kwargs, 'order': order}
+            self.append_wavefunction(settings, **new_kwargs)
+
+    def append_orbital(self, *settings, **kwargs):
+        '''
+        '''
+        if self.wavefunctions:
+            self.orbitals.append(self.wavefunctions)
+            self.wavefunctions = {}
+            return
+        if len(settings) == 1:
+            if new_orbital := self._convert(settings[0], **kwargs):
+                self.orbitals.append(new_orbital)
 
     def _extract_comparison(self, orbital: dict[str, Any]) -> dict[str, Any]:
         '''
@@ -330,29 +374,22 @@ class OrbitalAPWConstructor:
         '''
         return {k: v for k, v in orbital.items() if k in self.comparison_keys}
 
-    def add_orbital(self, *args, **kwargs):
+    def overwrite_orbital(self, *settings, **kwargs):
         '''
-        Add an orbital to the storage (`orbitals` and `comparison`).
-        The input arguments (`args`) should match the `input_format`.
-        Keys outside of `input_format` can be added via `kwargs`.
         '''
-        if new_orbital := self._convert(*args, **kwargs):
-            self.orbitals.append(new_orbital)
-            self.comparison.append(self._extract_comparison(new_orbital))
-
-    def overwrite_orbital(self, *args, **kwargs):
-        '''
-        If a new orbital matches the comparison keys, overwrite the old orbital with the new one.
-        The input arguments (`args`) should match the `input_format`.
-        Keys outside of `input_format` can be added via `kwargs`.
-        '''
-        new_orbital = self._convert(*args, **kwargs)
-        new_comparison = self._extract_comparison(new_orbital)
-        try:
-            index = self.comparison.index(new_comparison)  # in case of multiple matching comparison keys, `index` returns the last one
-            self.orbitals[index] = new_orbital
-        except ValueError:
-            pass
+        if not(converted := self.wavefunctions):
+            if len(settings) == 1:
+                converted = self._convert(settings[0], **kwargs)
+            else:
+                return
+        converted_ids = self._extract_comparison(converted)
+        new_orbitals = []
+        for orbital in self.orbitals:
+            orbital_ids = self._extract_comparison(orbital)
+            if orbital_ids != converted_ids:
+                new_orbitals.append(orbital)
+        self.orbitals = new_orbitals
+        self.append_orbital(*settings, **kwargs)
 
     def get_orbitals(self) -> list[OrbitalAPW]:
         '''
@@ -363,17 +400,20 @@ class OrbitalAPWConstructor:
             Helper function to guide the sorting process.
             '''
             if term in orbital:
+                if isinstance(val := orbital[term], Iterable):
+                    try:
+                        return sum(val)
+                    except TypeError:
+                        return tuple(val)
                 return orbital[term]
-            else:
-                return 0
+            return 0
 
         # sort out the orbitals by id_keys
-        orbitals = self.orbitals
         for term in self.term_order:
-            orbitals = sorted(orbitals, key=lambda orbital: _sort_func(orbital, term))
-        # convert to NOMAD section
+            orbitals = sorted(self.orbitals, key=lambda orbital: _sort_func(orbital, term))
         formatted_orbitals: list[OrbitalAPW] = []
         for orbital in orbitals:
+            # convert to NOMAD section
             formatted_orbital = OrbitalAPW()
             for term, val in orbital.items():
                 setattr(formatted_orbital, term, val)

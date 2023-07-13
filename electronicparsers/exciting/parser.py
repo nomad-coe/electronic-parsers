@@ -53,7 +53,7 @@ from .metainfo.exciting import (
 from ..utils import (
     get_files, BeyondDFTWorkflowsParser, OrbitalAPWConstructor,
 )
-from typing import Any, Iterable
+from typing import Any, Iterable, Callable
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -1570,7 +1570,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             self.logger.warning(f'No species data found in {self.species_parser.filepath}')
             return
 
+        # helper functions
         def _convert_keyval(key_vals: list[list]) -> dict[str, Any]:
+            '''Helper function to convert key-value pairs to a dictionary'''
             bool_map = {'false': False, 'true': True}
             key_vals_converted: dict[str, Any] = {}
             for key_val in key_vals:
@@ -1582,38 +1584,71 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     key_vals_converted[key_val[0]] = key_val[1]
             return key_vals_converted
 
-        # read orbitals
-        def _get_type(line_data: dict[str, Any]) -> str:
-            return re.sub(r'\+LO', '', line_data.get('type', 'lapw').upper())
+        def map_to_metainfo(settings: dict[str, Any], **kwargs) -> dict[str, Any]:
+            ''''''
+            new_settings: dict[str, Any] = {}
+            mapping = {
+                'matchingOrder': 'order', 'n': 'energy_parameter_n',
+                'trialEnergy': 'energy_parameter', 'kappa': 'kappa_quantum_number',
+                'searchE': 'update',
+            }
+            for key, val in settings.items():
+                if key in mapping:
+                    new_settings[mapping[key]] = val
+                    if key == 'trialEnergy':
+                        new_settings[mapping[key]] *= ureg.hartree
+                elif key == 'type':
+                    new_settings[key] = val.upper()
+                else:
+                    new_settings[key] = val
+            return {'type': 'LAPW', **new_settings, **kwargs}
+
+        def _unroll_lo(orbital: dict[str, Any]) -> list[dict[str, Any]]:
+            '''Helper function to unroll local orbitals'''
+            if (full_type := orbital.get('type').upper()).endswith('+LO'):
+                # Note: the input variable is modified in-place here
+                # This shouldn't be a problem when done in the right order
+                unrolled_lines = [{**orbital, 'type': full_type[:-3]}]
+                for order in range(2):
+                    unrolled_lines.append({**orbital, 'type': 'LO', 'matchingOrder': order})
+                return unrolled_lines
+            elif full_type is not None:
+                return [orbital]
+            else:
+                return []
 
         orb_constr = OrbitalAPWConstructor()
-        l_max = self.input_xml_parser.get('xs/lmaxapw', 10)
+        order_map = {'APW': 1, 'LAPW': 2}
         # read default settings
         if line_data := _convert_keyval(species_data.get('default', {}).get('key_val', [])):
-            for l in range(l_max):
-                orb_constr.add_orbital(
-                    l, line_data['trialEnergy'] * ureg.hartree,
-                    _get_type(line_data), line_data.get('searchE', False),
-                )
+            for l in range(self.input_xml_parser.get('xs/lmaxapw', 10)):
+                for orbital in _unroll_lo(line_data):
+                    orb = map_to_metainfo(orbital, l_quantum_number=l)
+                    if (orb_type := orb['type']) in order_map:
+                        orb_constr.unroll_orbital(order_map[orb_type], orb)
+                        orb_constr.append_orbital()
+                    elif orb_type == 'LO':
+                        orb_constr.append_wavefunction(orb)
+                orb_constr.append_orbital()
         # read custom settings
         if lines_data := species_data.get('custom', []):
             for line_data in lines_data:
-                line_data = _convert_keyval(line_data.get('key_val', []))
-                orb_constr.overwrite_orbital(
-                    line_data['l'], line_data['trialEnergy'] * ureg.hartree,
-                    _get_type(line_data), line_data.get('searchE', False),
-                )
+                for orbital in _unroll_lo(_convert_keyval(line_data.get('key_val', []))):
+                    orb = map_to_metainfo(orbital, l_quantum_number=orbital.get('l'))
+                    if (orb_type := orb['type']) in order_map:
+                        orb_constr.unroll_orbital(order_map[orb_type], orb)
+                        orb_constr.overwrite_orbital()
+                    elif orb_type == 'LO':
+                        orb_constr.append_wavefunction(orb)
+                orb_constr.append_orbital()
         # read in local orbitals
         if lines_data := species_data.get('lo', []):
             for line_data in lines_data:
-                l = line_data['l']
-                for wf in line_data.get('wf', []):
-                    wf = _convert_keyval(wf.get('key_val', []))
-                    orb_constr.add_orbital(
-                        l, wf['trialEnergy'] * ureg.hartree,
-                        'LO', wf.get('searchE', False),
-                        order=wf.get('matchingOrder', 0),  # TODO check if this is correct
-                    )
+                if (l := line_data.get('l')) is not None:
+                    for wf in line_data.get('wf', []):
+                        wf = map_to_metainfo(_convert_keyval(wf.get('key_val', [])))
+                        orb_constr.append_wavefunction(wf, l_quantum_number=l, type='LO')
+                    orb_constr.append_orbital()
         # write out the orbitals
         bs = BasisSet(
             scope=['muffin-tin'],
