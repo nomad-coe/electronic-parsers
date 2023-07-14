@@ -162,7 +162,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             if structure.get('positions') is not None:
                 sec_atoms.positions = structure.get('positions') * ureg.angstrom
         else:  # TODO parse specific lattice model: discuss it Jonas Schwab
-            self.logger.warning('Wannier90 output files not found in the same folder.')
+            self.logger.warning('Wannier90 output files not found in the same folder: I cannot resolve the system metainfo.')
 
     def parse_input_model(self, data):
         """Parses input model into Run.Method.LatticeModelHamiltonian in two differentiated
@@ -188,7 +188,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             sec_hopping_matrix.value = np.reshape(
                 full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
         else:  # TODO parse specific lattice model
-            pass
+            self.logger.warning('Wannier90 _hr.dat files not found in the same folder: I cannot resolve the initial model metainfo.')
 
         # HubbardKanamoriModel
         # TODO add parse of slater integrals
@@ -471,4 +471,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
                             self.parse_dmft_workflow(wannier90_archive, dmft_workflow_archive)
                             break
             except Exception:
-                self.logger.warning('Could not resolve the automatic workflow for w2dynamics.')
+                self.logger.warning('Could not resolve the automatic workflow for w2dynamics. '
+                                    'You can try reorganizing the data in the folders: '
+                                    'DFT data in the top-most folder. Wannier90 data in the top-most folder '
+                                    'or one folder below DFT. w2dynamics data one folder below DFT and Wannier90.')
