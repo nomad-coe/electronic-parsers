@@ -57,7 +57,7 @@ def extract_section(source: EntryArchive, path: str):
 def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = True):
     """Get files following the `pattern` with respect to the file `stripname` (usually this
     being the mainfile of the given parser) up to / down from the `filepath` (`deep=True` going
-    up, `deep=False` down)
+    down, `deep=False` up)
 
     Args:
         pattern (str): targeted pattern to be found
@@ -300,6 +300,12 @@ class BeyondDFTWorkflowsParser:
 
         workflow = DMFT(method=DMFTMethod())
         workflow.name = 'DMFT'
+
+        # Method
+        method_proj = extract_section(wannier_archive, 'run/method/projection')
+        method_dmft = extract_section(self.archive, 'run/method/dmft')
+        workflow.method.projection_method_ref = method_proj
+        workflow.method.dmft_method_ref = method_dmft
 
         # Inputs and Outputs
         input_structure = extract_section(wannier_archive, 'run/system')

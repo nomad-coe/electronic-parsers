@@ -401,7 +401,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
     def init_parser(self):
         self.data = None
 
-    def get_mainfile_keys(self, filepath):
+    def get_mainfile_keys(self, **kwargs):
+        filepath = kwargs.get('filename')
         mainfile = os.path.basename(filepath)
         wannier90_files = get_files('*.wout', filepath, mainfile, deep=False)
         if len(wannier90_files) == 1:
