@@ -51,7 +51,6 @@ from nomad.datamodel.metainfo.simulation.workflow import (
 from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_parallel_task_assignement, x_fhi_aims_section_parallel_tasks,\
     x_fhi_aims_section_controlIn_basis_set, x_fhi_aims_section_controlIn_basis_func,\
-    x_fhi_aims_section_controlInOut_atom_species, x_fhi_aims_section_controlInOut_basis_func,\
     x_fhi_aims_section_vdW_TS
 
 from ..utils import BeyondDFTWorkflowsParser
@@ -790,7 +789,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             'Hybrid M11 gradient-corrected functionals': [{'name': 'MGGA_C_M11'}, {'name': 'HYB_MGGA_X_M11'}]}
 
         # TODO update metainfo to reflect all energy corrections
-        # why section_vdW_TS under x_fhi_aims_section_controlInOut_atom_species?
+        # why section_vdW_TS under atom_parameter?
         self._energy_map = {
             'Total energy uncorrected': 'energy_total',
             'Total energy corrected': 'energy_total_t0',
@@ -1290,7 +1289,6 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         def parse_vdW(section):
             # these are not actually vdW outputs but vdW control parameters but are
             # printed within the calculation section.
-            # TODO why is x_fhi_aims_section_vdW_TS under x_fhi_aims_section_controlInOut_atom_species
             # we would then have to split the vdW parameters by species
             atoms = section.get('vdW_TS', {}).get('atom_hirshfeld', [])
             if not atoms:
@@ -1303,8 +1301,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             for sec in sec_atom_type:
                 for atom in atoms:
                     if sec.label == atom['atom']:
-                        sec_vdW_ts = sec.x_fhi_aims_section_controlInOut_atom_species[-1].m_create(
-                            x_fhi_aims_section_vdW_TS)
+                        sec_vdW_ts = sec.m_create(x_fhi_aims_section_vdW_TS)
                         for key, val in atom.items():
                             metainfo_name = self._property_map.get(key, None)
                             if metainfo_name is None:
@@ -1742,26 +1739,19 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
         def parse_atom_type(species):
             sec_atom_type = sec_method.m_create(AtomParameters)
-            sec_atom_species = sec_atom_type.m_create(
-                x_fhi_aims_section_controlInOut_atom_species)
             for key, val in species.items():
                 if key == 'nuclear charge':
-                    charge = val[0] * ureg.elementary_charge
-                    sec_atom_type.charge = charge
-                    sec_atom_species.x_fhi_aims_controlInOut_species_charge = charge
+                    sec_atom_type.charge = val[0] * ureg.elementary_charge
                 elif key == 'atomic mass':
-                    mass = val[0][0] * ureg.amu
-                    sec_atom_type.mass = mass
-                    sec_atom_species.x_fhi_aims_controlInOut_species_mass = mass
+                    sec_atom_type.mass = val[0][0] * ureg.amu
                 elif key == 'species':
                     sec_atom_type.label = val
-                    sec_atom_species.x_fhi_aims_controlInOut_species_name = val
                 elif 'request to include pure gaussian fns' in key:
-                    sec_atom_species.x_fhi_aims_controlInOut_pure_gaussian = val[0]
+                    sec_atom_type.x_fhi_aims_controlInOut_pure_gaussian = val[0]
                 elif 'cutoff potl' in key:
-                    sec_atom_species.x_fhi_aims_controlInOut_species_cut_pot = val[0][0] * ureg.angstrom
-                    sec_atom_species.x_fhi_aims_controlInOut_species_cut_pot_width = val[0][1] * ureg.angstrom
-                    sec_atom_species.x_fhi_aims_controlInOut_species_cut_pot_scale = val[0][2]
+                    sec_atom_type.x_fhi_aims_controlInOut_species_cut_pot = val[0][0] * ureg.angstrom
+                    sec_atom_type.x_fhi_aims_controlInOut_species_cut_pot_width = val[0][1] * ureg.angstrom
+                    sec_atom_type.x_fhi_aims_controlInOut_species_cut_pot_scale = val[0][2]
                 elif "request for '+U'" in key:
                     sec_hubbard = sec_atom_type.m_create(HubbardKanamoriModel)
                     sec_hubbard.orbital = f'{val[0][0]}{val[0][1]}'
@@ -1769,47 +1759,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                     sec_hubbard.double_counting_correction = 'Dudarev'
                     sec_hubbard.x_fhi_aims_projection_type = 'Mulliken (dual)'
                     sec_hubbard.x_fhi_aims_petukhov_mixing_factor = self.out_parser.get('petukhov')
-                elif 'free-atom' in key or 'free-ion' in key:
-                    for i in range(len(val)):
-                        sec_basis_func = sec_atom_species.m_create(
-                            x_fhi_aims_section_controlInOut_basis_func)
-                        sec_basis_func.x_fhi_aims_controlInOut_basis_func_type = ' '.join(key.split()[:-1])
-                        sec_basis_func.x_fhi_aims_controlInOut_basis_func_n = val[i][0]
-                        sec_basis_func.x_fhi_aims_controlInOut_basis_func_l = val[i][1]
-                        sec_basis_func.x_fhi_aims_controlInOut_basis_func_occ = val[i][2]
-                elif 'hydrogenic' in key:
-                    for i in range(len(val)):
-                        sec_basis_func = sec_atom_species.m_create(
-                            x_fhi_aims_section_controlInOut_basis_func)
-                        sec_basis_func.x_fhi_aims_controlInOut_basis_func_type = ' '.join(key.split()[:-1])
-                        sec_basis_func.x_fhi_aims_controlInOut_basis_func_n = val[i][0]
-                        sec_basis_func.x_fhi_aims_controlInOut_basis_func_l = val[i][1]
-                        sec_basis_func.x_fhi_aims_controlInOut_basis_func_eff_charge = val[i][2]
-                elif 'ionic' in key:
-                    for i in range(len(val)):
-                        sec_basis_func = sec_atom_species.m_create(
-                            x_fhi_aims_section_controlInOut_basis_func)
-                        sec_basis_func.x_fhi_aims_controlInOut_basis_func_type = 'ionic basis'
-                        sec_basis_func.x_fhi_aims_controlInOut_basis_func_n = val[i][0]
-                        sec_basis_func.x_fhi_aims_controlInOut_basis_func_l = val[i][1]
-                elif 'basis function' in key:
-                    for i in range(len(val)):
-                        sec_basis_func = sec_atom_species.m_create(
-                            x_fhi_aims_section_controlInOut_basis_func)
-                        sec_basis_func.x_fhi_aims_controlInOut_basis_func_type = key.split(
-                            'basis')[0].strip()
-                        if val[i][0] == 'L':
-                            sec_basis_func.x_fhi_aims_controlInOut_basis_func_gauss_l = val[i][2]
-                            sec_basis_func.x_fhi_aims_controlInOut_basis_func_gauss_N = val[i][3]
-                            alpha = [val[i][j + 2] for j in range(len(val[i])) if val[i][j] == 'alpha']
-                            weight = [val[i][j + 2] for j in range(len(val[i])) if val[i][j] == 'weight']
-                            alpha = np.array(alpha) * (1 / ureg.angstrom ** 2)
-                            sec_basis_func.x_fhi_aims_controlInOut_basis_func_gauss_alpha = alpha
-                            sec_basis_func.x_fhi_aims_controlInOut_basis_func_gauss_weight = weight
-                        elif len(val[i]) == 2:
-                            sec_basis_func.x_fhi_aims_controlInOut_basis_func_gauss_l = val[i][0]
-                            alpha = np.array(val[i][1]) / ureg.angstrom ** 2
-                            sec_basis_func.x_fhi_aims_controlInOut_basis_func_primitive_gauss_alpha = alpha
+                # From legacy versions we know that 'free-atom' or 'free-ion' are connected to 'occ'
+                # and 'hydrogenic' to 'eff_charge'. Nothing for 'ionic'
 
         # add inout parameters read from main output
         if (species := self.out_parser.get('control_inout', {}).get('species')) is not None:

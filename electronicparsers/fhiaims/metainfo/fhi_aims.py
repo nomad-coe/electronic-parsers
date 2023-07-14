@@ -192,75 +192,6 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
         repeats=True)
 
 
-class x_fhi_aims_section_controlInOut_atom_species(MSection):
-    '''
-    -
-    '''
-
-    m_def = Section(validate=False)
-
-    x_fhi_aims_controlInOut_pure_gaussian = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_species_charge = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='coulomb',
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_species_cut_pot_scale = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_species_cut_pot_width = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='meter',
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_species_cut_pot = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='meter',
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_species_mass = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='kilogram',
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_species_name = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_section_controlInOut_basis_func = SubSection(
-        sub_section=SectionProxy('x_fhi_aims_section_controlInOut_basis_func'),
-        repeats=True)
-
-    x_fhi_aims_section_vdW_TS = SubSection(
-        sub_section=SectionProxy('x_fhi_aims_section_vdW_TS'),
-        repeats=True)
-
-
 class x_fhi_aims_section_controlInOut_basis_func(MSection):
     '''
     -
@@ -1386,8 +1317,38 @@ class AtomParameters(simulation.method.AtomParameters):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_fhi_aims_section_controlInOut_atom_species = SubSection(
-        sub_section=SectionProxy('x_fhi_aims_section_controlInOut_atom_species'),
+    x_fhi_aims_controlInOut_pure_gaussian = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        -
+        ''')
+
+    x_fhi_aims_controlInOut_species_cut_pot_scale = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        -
+        ''')
+
+    x_fhi_aims_controlInOut_species_cut_pot_width = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='meter',
+        description='''
+        -
+        ''')
+
+    x_fhi_aims_controlInOut_species_cut_pot = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='meter',
+        description='''
+        -
+        ''')
+
+    x_fhi_aims_section_vdW_TS = SubSection(
+        sub_section=SectionProxy('x_fhi_aims_section_vdW_TS'),
         repeats=True)
 
 
