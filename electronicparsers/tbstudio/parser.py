@@ -75,8 +75,10 @@ def load_tbm(file):
 
     model = {}
 
-    # Load workflow
-    model['DFTNomadEntryID'] = tbm['DFTSource']['DFTNomadEntryID']
+    # Load workflow if does exist
+    model['DFTNomadEntryID'] = None
+    if 'type' in tbm['DFTSource'] and tbm['DFTSource']['type'].lower() == 'nomad':
+        model['DFTNomadEntryID'] = tbm['DFTSource']['source']
 
     # Load lattice vectors
     model['a'] = [parse_float(tbm['vars']['a[0]'], 0), parse_float(tbm['vars']['a[1]'], 0), parse_float(tbm['vars']['a[2]'], 0)]
