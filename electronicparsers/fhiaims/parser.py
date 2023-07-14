@@ -78,15 +78,12 @@ class FHIAimsControlParser(TextParser):
     def init_quantities(self):
         def str_to_species(val_in):
             val = val_in.strip().splitlines()
-            data = []
             species = dict()
             for v in val:
                 v = v.strip().split('#')[0]
                 if not v or not v[0].isalpha():
                     continue
                 if v.startswith('species'):
-                    if species:
-                        data.append(species)
                     species = dict(species=v.split()[1:])
                 else:
                     v = v.replace('.d', '.e').split()
@@ -95,8 +92,7 @@ class FHIAimsControlParser(TextParser):
                         species[v[0]].extend([vi])
                     else:
                         species[v[0]] = [vi]
-            data.append(species)
-            return data
+            return species
 
         self._quantities = [
             Quantity(
@@ -154,9 +150,9 @@ class FHIAimsControlParser(TextParser):
                 'xc',
                 rf'{re_n} *xc\s*([\w\. \-\+]+)', repeats=False),
             Quantity(
-                'species', rf'{re_n} *(species\s*[A-Z][a-z]?[\s\S]+?)'
-                r'(?:species\s*[A-Z][a-z]?|Completed|\-{10})',
-                str_operation=str_to_species, repeats=False)]
+                'species', rf'{re_n} *(species\s+[A-Z][a-z]?[\s\S]+?)'
+                r'(FHI-aims code project|\-{10})',
+                str_operation=str_to_species, repeats=True)]
 
 
 class FHIAimsOutParser(TextParser):
