@@ -402,7 +402,8 @@ class TBStudioParser:
 
         sec_scc.band_structure_electronic.append(sec_k_band)
 
-    def get_mainfile_keys(self, filepath):
+    def get_mainfile_keys(self, **kwargs):
+        filepath = kwargs.get('filename')
         tb_model = load_tbm(filepath)
         dft_nomad_entry_id = tb_model['DFTNomadEntryID']
         if dft_nomad_entry_id is not None and dft_nomad_entry_id != '':
