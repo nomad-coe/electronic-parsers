@@ -60,6 +60,7 @@ def test_lco(parser):
     assert (sec_method.k_mesh.points[303] == np.array([0.85714, 0.14286, 0.28571])).all()
     assert (sec_method.k_mesh.grid == np.array([7, 7, 7])).all()
     sec_wannier = sec_method.tb.wannier
+    assert sec_method.tb.name == 'Wannier'
     assert sec_wannier.n_projected_orbitals == 1
     assert sec_wannier.n_bands == 5
     assert sec_wannier.is_maximally_localized is True

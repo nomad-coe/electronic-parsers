@@ -350,6 +350,7 @@ class TBStudioParser:
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
         sec_tb = sec_method.m_create(TB)
+        sec_tb.name = 'Slater-Koster'
         sec_sk = sec_tb.m_create(SlaterKoster)
 
         n_orbitals = len(self.tb_model['orbitals'])
@@ -426,7 +427,7 @@ class TBStudioParser:
         self.parse_scc()
 
         workflow = SinglePoint()
-        workflow.name = "Tight Binding Calculation"
+        # workflow.name = "Tight Binding Calculation"
         self.archive.workflow2 = workflow
 
         if dft_nomad_entry_id is not None and dft_nomad_entry_id != '':

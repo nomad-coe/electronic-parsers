@@ -226,6 +226,7 @@ class Wannier90Parser():
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
         sec_tb = sec_method.m_create(TB)
+        sec_tb.name = 'Wannier'
         sec_wann = sec_tb.m_create(Wannier)
 
         # k_mesh section
