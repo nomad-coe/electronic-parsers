@@ -29,7 +29,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, HoppingMatrix
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, AtomParameters, KMesh, Wannier, TightBinding
+    Method, AtomParameters, KMesh, Wannier, TB
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms, AtomsGroup
 from ..utils import get_files
@@ -225,8 +225,8 @@ class Wannier90Parser():
     def parse_method(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
-        sec_proj = sec_method.m_create(TightBinding)
-        sec_wann = sec_proj.m_create(Wannier)
+        sec_tb = sec_method.m_create(TB)
+        sec_wann = sec_tb.m_create(Wannier)
 
         # k_mesh section
         kmesh = self.wout_parser.get('k_mesh')
