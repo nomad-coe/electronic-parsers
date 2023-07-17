@@ -1739,6 +1739,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
         def parse_atom_type(species):
             sec_atom_type = sec_method.m_create(AtomParameters)
+            param_index = len(sec_method.atom_parameters) - 1
+            sec_atom_type.x_fhi_aims_section_controlIn_basis_set = sec_method.x_fhi_aims_section_controlIn_basis_set[param_index]
             for key, val in species.items():
                 if key == 'nuclear charge':
                     sec_atom_type.charge = val[0] * ureg.elementary_charge

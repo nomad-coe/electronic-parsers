@@ -1351,6 +1351,12 @@ class AtomParameters(simulation.method.AtomParameters):
         sub_section=SectionProxy('x_fhi_aims_section_vdW_TS'),
         repeats=True)
 
+    x_fhi_aims_section_controlIn_basis_set = Quantity(
+        type=Reference(SectionProxy('x_fhi_aims_section_controlIn_basis_set')),
+        shape=[],
+        description='''-''',
+    )
+
 
 class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):
 
