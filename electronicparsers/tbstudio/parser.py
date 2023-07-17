@@ -35,7 +35,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, BandStructure, BandEnergies, Energy, HoppingMatrix
 )
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint, SimulationWorkflow
-from nomad.datamodel.metainfo.workflow2 import TaskReference, Link
+from nomad.datamodel.metainfo.workflow import TaskReference, Link
 import json
 import re
 
