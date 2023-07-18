@@ -18,7 +18,6 @@
 #
 
 import json
-import hashlib
 import os
 from glob import glob
 
@@ -32,6 +31,8 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
+from nomad.utils import hash
+from typing import Union
 
 
 def extract_section(source: EntryArchive, path: str):
@@ -88,7 +89,11 @@ def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = Tru
     return filenames
 
 
-def get_basis_hash(basis_settings: list[MSection], subsections: list[bool], **kwargs):
+def hash_section(
+        sections: Union(MSection, list[MSection]),
+        subsections: Union(bool, list[bool]),
+        **kwargs,
+    ) -> str:
     '''
     General function for converting basis set sections to a hash for comparison.
     Basis sets may contain element-specific settings, which typically are tackled separately.
@@ -97,19 +102,21 @@ def get_basis_hash(basis_settings: list[MSection], subsections: list[bool], **kw
     There are two modes determining whether sections are defined by the `quantities` provided (`inclusion`)
     or rather `quantities` are explicitely removed (`exclusion`).
 
-    basis_settings: sections to be hashed together
-    subsections: list of bools, indicating whether to include susbections. Must be of same length as basis_settings.
-    mode: str, either `inclusion` or `exclusion`
-    quantities: list of str, quantities to be included or excluded
+    `sections`: sections to be hashed together
+    `subsections`: list of bools, indicating whether to include susbections. Must be of same length as basis_settings.
+    `mode`: str, either `inclusion` or `exclusion`
+    `quantities`: list of str, quantities to be included or excluded
     '''
+    sections = [sections] if isinstance(sections, MSection) else sections
+    subsections = [subsections] if isinstance(subsections, bool) else subsections
     mode: str = kwargs.get('mode', 'exclusion')
     quantities: list[str] = kwargs.get('quantities', [])
     # sanity checks
     try:
-        evaluation_settings = zip(basis_settings, subsections)
+        evaluation_settings = zip(sections, subsections)
     except Exception:  # TODO: specify exception
         raise ValueError(
-            f'''basis_settings:{basis_settings} and subsections:{subsections}
+            f'''basis_settings:{sections} and subsections:{subsections}
             must be of same length.'''
         )
     # filter out subsections
@@ -127,9 +134,7 @@ def get_basis_hash(basis_settings: list[MSection], subsections: list[bool], **kw
                     to_write[key] = val
         to_compare.append(to_write)
     # hash the filtered sections
-    hash = hashlib.sha1()
-    hash.update(json.dumps(to_compare, sort_keys=True).encode('utf-8'))
-    return hash.hexdigest()
+    return hash(*to_compare)
 
 
 class BeyondDFTWorkflowsParser:
