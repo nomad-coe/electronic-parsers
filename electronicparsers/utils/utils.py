@@ -90,8 +90,8 @@ def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = Tru
 
 
 def hash_section(
-        sections: Union(MSection, list[MSection]),
-        subsections: Union(bool, list[bool]),
+        sections: Union[MSection, list[MSection]],
+        subsections: Union[bool, list[bool]],
         **kwargs,
     ) -> str:
     '''
@@ -100,16 +100,16 @@ def hash_section(
     The option consists of adding also general settings to the hash.
 
     There are two modes determining whether sections are defined by the `quantities` provided (`inclusion`)
-    or rather `quantities` are explicitely removed (`exclusion`).
+    or rather `quantities` are explicitly removed (`exclusion`).
 
     `sections`: sections to be hashed together
-    `subsections`: list of bools, indicating whether to include susbections. Must be of same length as basis_settings.
-    `mode`: str, either `inclusion` or `exclusion`
+    `subsections`: list of bools, indicating whether to include subsections. Must be of same length as basis_settings.
+    `mode`: str, either `include` or `exclude` (default)
     `quantities`: list of str, quantities to be included or excluded
     '''
     sections = [sections] if isinstance(sections, MSection) else sections
     subsections = [subsections] if isinstance(subsections, bool) else subsections
-    mode: str = kwargs.get('mode', 'exclusion')
+    mode: str = kwargs.get('mode', 'exclude')
     quantities: list[str] = kwargs.get('quantities', [])
     # sanity checks
     try:
@@ -129,8 +129,8 @@ def hash_section(
                 isinstance(getattr(section, key), (MSection, MSubSectionList)):
                     continue
             if key == 'm_def' or\
-                (mode == 'exclusion' and key not in quantities) or\
-                (mode == 'inclusion' and key in quantities):
+                (mode == 'exclude' and key not in quantities) or\
+                (mode == 'include' and key in quantities):
                     to_write[key] = val
         to_compare.append(to_write)
     # hash the filtered sections

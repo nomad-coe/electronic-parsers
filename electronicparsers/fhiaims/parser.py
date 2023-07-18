@@ -53,7 +53,7 @@ from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_controlIn_basis_set, x_fhi_aims_section_controlIn_basis_func,\
     x_fhi_aims_section_vdW_TS
 
-from ..utils import BeyondDFTWorkflowsParser, get_basis_hash
+from ..utils import BeyondDFTWorkflowsParser, hash_section
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -76,21 +76,26 @@ class FHIAimsControlParser(TextParser):
 
     def init_quantities(self):
         def str_to_species(val_in):
-            val = val_in.strip().splitlines()
-            species = dict()
-            for v in val:
-                v = v.strip().split('#')[0]
-                if not v or not v[0].isalpha():
+            lines = []
+            line = ''
+            val_in = val_in.strip().splitlines()
+            val_in.reverse()
+            for v in val_in:
+                line = v.strip().split('#')[0].replace('.d', '.e') + ' '+ line
+                if not line:
                     continue
-                if v.startswith('species'):
-                    species = dict(species=v.split()[1:])
+                if line[0].isalpha():
+                    lines = [line.split()] + lines
+                    if line.startswith('species'):
+                        break
+                    line = ''
+            species = {}
+            for line in lines:
+                content = [line[1]] if len(line) == 2 else [line[1:]]
+                if line[0] in species:
+                    species[line[0]].extend(content)
                 else:
-                    v = v.replace('.d', '.e').split()
-                    vi = v[1] if len(v[1:]) == 1 else v[1:]
-                    if v[0] in species:
-                        species[v[0]].extend([vi])
-                    else:
-                        species[v[0]] = [vi]
+                    species[line[0]] = content
             return species
 
         self._quantities = [
@@ -146,12 +151,12 @@ class FHIAimsControlParser(TextParser):
                 xsection_method.x_fhi_aims_controlIn_verbatim_writeout,
                 rf'{re_n} *verbatim_writeout\s*([\w]+)', repeats=False),
             Quantity(
-                'xc',
-                rf'{re_n} *xc\s*([\w\. \-\+]+)', repeats=False),
+                'xc', rf'{re_n} *xc\s*([\w\. \-\+]+)', repeats=False),
             Quantity(
                 'species', rf'{re_n} *(species\s+[A-Z][a-z]?[\s\S]+?)'
-                r'(FHI-aims code project|\-{10})',
-                str_operation=str_to_species, repeats=True)]
+                r'FHI-aims code project|\-{10}',
+                str_operation=str_to_species, repeats=True,),
+        ]
 
 
 class FHIAimsOutParser(TextParser):
@@ -1542,20 +1547,31 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 elif key == 'division':
                     pass
                 elif key in basis_funcs:
-                    for i in range(len(val)):
+                    for v in val:
                         sec_basis_func = sec_basis_set.m_create(
                             x_fhi_aims_section_controlIn_basis_func)
                         sec_basis_func.x_fhi_aims_controlIn_basis_func_type = key
-                        sec_basis_func.x_fhi_aims_controlIn_basis_func_n = int(val[i][0])
-                        sec_basis_func.x_fhi_aims_controlIn_basis_func_l = str(val[i][1])
-                        if len(val[i]) == 3 and hasattr(val[i][2], 'real'):
-                            sec_basis_func.x_fhi_aims_controlIn_basis_func_radius = val[i][2]
+                        if key == 'gaussian':
+                            sec_basis_func.x_fhi_aims_controlIn_basis_func_gauss_l = int(v[0])
+                            gauss_alphas, gauss_coeffs = [], []
+                            for gaussian_index, gaussian_extra in enumerate(v[2:]):
+                                if gaussian_index % 2:
+                                    gauss_alphas.append(float(gaussian_extra))
+                                else:
+                                    gauss_coeffs.append(float(gaussian_extra))
+                            sec_basis_func.x_fhi_aims_controlIn_basis_func_gauss_alphas = np.array(gauss_alphas) / ureg.bohr ** 2
+                            sec_basis_func.x_fhi_aims_controlIn_basis_func_gauss_coeffs = gauss_coeffs
+                        else:
+                            sec_basis_func.x_fhi_aims_controlIn_basis_func_n = int(v[0])
+                            sec_basis_func.x_fhi_aims_controlIn_basis_func_l = str(v[1])
+                            if len(v) == 3 and hasattr(v[2], 'real'):
+                                sec_basis_func.x_fhi_aims_controlIn_basis_func_radius = v[2]
                 elif key in ['cut_pot', 'radial_base']:
                     setattr(sec_basis_set, 'x_fhi_aims_controlIn_%s' % key, np.array(
                         val[0], dtype=float))
                 else:
                     try:
-                        setattr(sec_basis_set, 'x_fhi_aims_controlIn_%s' % key, val[0])
+                        setattr(sec_basis_set, 'x_fhi_aims_controlIn_%s' % key, v[0])
                     except Exception:
                         self.logger.warning('Error setting controlIn metainfo.', details={key: key})
 
@@ -1566,7 +1582,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 sec_basis_set.x_fhi_aims_controlIn_division = division
 
             # store hash
-            sec_basis_set.x_fhi_aims_controlIn_hash = get_basis_hash([sec_basis_set], [True])
+            sec_basis_set.x_fhi_aims_controlIn_hash = hash_section([sec_basis_set], [True])
 
         def _get_elemental_tier(
                 basis_settings: x_fhi_aims_section_controlIn_basis_set,
