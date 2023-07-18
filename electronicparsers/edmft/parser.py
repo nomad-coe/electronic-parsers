@@ -43,6 +43,9 @@ class IndmflParser(TextParser):
         super().__init__()
 
     def init_quantities(self):
+        def str_to_orbitals_list(val_in):
+            return val_in.replace("'", "").split(" ")[:-1]
+
         self._quantities = [
             Quantity(
                 'hybridization_window',
@@ -55,7 +58,22 @@ class IndmflParser(TextParser):
             Quantity(
                 'i_atom_corr', r'(\d+)\s*(\d+)\s*(\d+)\s*\# iatom\, nL\, locrot', repeats=True),
             Quantity(
-                'l_atom_corr', r'\s*(\d+)\s*(\d+)\s*(\d+)\s*\# L\, qsplit\, cix', repeats=True)
+                'l_atom_corr', r'\s*(\d+)\s*(\d+)\s*(\d+)\s*\# L\, qsplit\, cix', repeats=True),
+            Quantity(
+                'siginds_corr',
+                r'(\# Siginds and crystal\-field transformations for correlated orbitals \=*[\s\S]+)(?:\# Sigind follows)',
+                    sub_parser=TextParser(quantities=[
+                        Quantity(
+                            'indep_cix_blocks',
+                            r'(\d+) *(\d+) *(\d+) *\# Number of independent kcix blocks\, max dimension\, max num\-independent-components'),
+                        Quantity(
+                            'cix',
+                            r'(\d+) *(\d+) *(\d+) *\# cix\-num\, dimension\, num\-independent\-components',
+                            repeats=True),
+                        Quantity(
+                            'orbitals',
+                            r'\# Independent components are \-*[\s\S]([\'\^\-\+a-zA-Z\s\d]+)',
+                            str_operation=str_to_orbitals_list)]))
         ]
 
 
