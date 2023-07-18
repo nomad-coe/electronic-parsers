@@ -53,7 +53,7 @@ from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_controlIn_basis_set, x_fhi_aims_section_controlIn_basis_func,\
     x_fhi_aims_section_vdW_TS
 
-from ..utils import BeyondDFTWorkflowsParser
+from ..utils import BeyondDFTWorkflowsParser, get_basis_hash
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -1564,6 +1564,9 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             if division is not None:
                 sec_basis_set.x_fhi_aims_controlIn_number_of_basis_func = len(division)
                 sec_basis_set.x_fhi_aims_controlIn_division = division
+
+            # store hash
+            sec_basis_set.x_fhi_aims_controlIn_hash = get_basis_hash([sec_basis_set], [True])
 
         def _get_elemental_tier(
                 basis_settings: x_fhi_aims_section_controlIn_basis_set,

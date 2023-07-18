@@ -187,6 +187,13 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
         -
         ''')
 
+    x_fhi_aims_controlIn_hash = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        -
+        ''')
+
     x_fhi_aims_section_controlIn_basis_func = SubSection(
         sub_section=SectionProxy('x_fhi_aims_section_controlIn_basis_func'),
         repeats=True)

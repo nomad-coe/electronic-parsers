@@ -17,5 +17,5 @@
 # limitations under the License.
 
 from .utils import (
-    extract_section, get_files, BeyondDFTWorkflowsParser
+    extract_section, get_files, BeyondDFTWorkflowsParser, get_basis_hash
 )

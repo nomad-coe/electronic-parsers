@@ -17,9 +17,13 @@
 # limitations under the License.
 #
 
+import json
+import hashlib
 import os
 from glob import glob
 
+from nomad.metainfo import MSection
+from nomad.metainfo.util import MSubSectionList
 from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
@@ -82,6 +86,50 @@ def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = Tru
 
     filenames = [f for f in filenames if os.access(f, os.F_OK)]
     return filenames
+
+
+def get_basis_hash(basis_settings: list[MSection], subsections: list[bool], **kwargs):
+    '''
+    General function for converting basis set sections to a hash for comparison.
+    Basis sets may contain element-specific settings, which typically are tackled separately.
+    The option consists of adding also general settings to the hash.
+
+    There are two modes determining whether sections are defined by the `quantities` provided (`inclusion`)
+    or rather `quantities` are explicitely removed (`exclusion`).
+
+    basis_settings: sections to be hashed together
+    subsections: list of bools, indicating whether to include susbections. Must be of same length as basis_settings.
+    mode: str, either `inclusion` or `exclusion`
+    quantities: list of str, quantities to be included or excluded
+    '''
+    mode: str = kwargs.get('mode', 'exclusion')
+    quantities: list[str] = kwargs.get('quantities', [])
+    # sanity checks
+    try:
+        evaluation_settings = zip(basis_settings, subsections)
+    except Exception:  # TODO: specify exception
+        raise ValueError(
+            f'''basis_settings:{basis_settings} and subsections:{subsections}
+            must be of same length.'''
+        )
+    # filter out subsections
+    to_compare: list[dict[str, any]] = []
+    for section, subsection_bool in evaluation_settings:
+        section_dict = section.m_to_dict()
+        to_write = {}
+        for key, val in section_dict.items():
+            if not subsection_bool and\
+                isinstance(getattr(section, key), (MSection, MSubSectionList)):
+                    continue
+            if key == 'm_def' or\
+                (mode == 'exclusion' and key not in quantities) or\
+                (mode == 'inclusion' and key in quantities):
+                    to_write[key] = val
+        to_compare.append(to_write)
+    # hash the filtered sections
+    hash = hashlib.sha1()
+    hash.update(json.dumps(to_compare, sort_keys=True).encode('utf-8'))
+    return hash.hexdigest()
 
 
 class BeyondDFTWorkflowsParser:
