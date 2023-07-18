@@ -78,7 +78,7 @@ class FHIAimsControlParser(TextParser):
         def str_to_species(val_in):
             lines = []
             line = ''
-            val_in = val_in.strip().splitlines()
+            val_in = val_in.strip().splitlines()[:-1]
             val_in.reverse()
             for v in val_in:
                 line = v.strip().split('#')[0].replace('.d', '.e') + ' '+ line
@@ -154,7 +154,7 @@ class FHIAimsControlParser(TextParser):
                 'xc', rf'{re_n} *xc\s*([\w\. \-\+]+)', repeats=False),
             Quantity(
                 'species', rf'{re_n} *(species\s+[A-Z][a-z]?[\s\S]+?)'
-                r'FHI-aims code project|\-{10}',
+                r'(FHI-aims code project|\-{10})',
                 str_operation=str_to_species, repeats=True,),
         ]
 
@@ -1556,11 +1556,12 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                             gauss_alphas, gauss_coeffs = [], []
                             for gaussian_index, gaussian_extra in enumerate(v[2:]):
                                 if gaussian_index % 2:
-                                    gauss_alphas.append(float(gaussian_extra))
-                                else:
                                     gauss_coeffs.append(float(gaussian_extra))
+                                else:
+                                    gauss_alphas.append(float(gaussian_extra))
                             sec_basis_func.x_fhi_aims_controlIn_basis_func_gauss_alphas = np.array(gauss_alphas) / ureg.bohr ** 2
-                            sec_basis_func.x_fhi_aims_controlIn_basis_func_gauss_coeffs = gauss_coeffs
+                            if gauss_coeffs:
+                                sec_basis_func.x_fhi_aims_controlIn_basis_func_gauss_coeffs = gauss_coeffs
                         else:
                             sec_basis_func.x_fhi_aims_controlIn_basis_func_n = int(v[0])
                             sec_basis_func.x_fhi_aims_controlIn_basis_func_l = str(v[1])
