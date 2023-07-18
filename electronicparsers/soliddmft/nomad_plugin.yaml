@@ -10,7 +10,6 @@ metadata:
   codeVersion: ''
   parserDirName: dependencies/parsers/electronic/electronicparsers/soliddmft/
   parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
-  parserLastUpdate: 29.12.2022
   parserSpecific: ''
   preamble: ''
   status: production

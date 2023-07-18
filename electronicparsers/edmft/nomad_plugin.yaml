@@ -43,3 +43,4 @@ metadata:
 name: parsers/edmft
 parser_class_name: electronicparsers.edmft.parser.EDMFTParser
 python_package: electronicparsers.edmft
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/edmft

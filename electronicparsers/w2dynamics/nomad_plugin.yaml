@@ -10,7 +10,6 @@ metadata:
   codeVersion: ''
   parserDirName: dependencies/parsers/electronic/electronicparsers/w2dynamics/
   parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
-  parserLastUpdate: 02.11.2022
   parserSpecific: ''
   preamble: ''
   status: production
