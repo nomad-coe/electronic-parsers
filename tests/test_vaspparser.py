@@ -412,3 +412,18 @@ def test_gw(silicon_gw):
     assert lumo == approx(3.8526)
     bandgap = lumo - homo
     assert bandgap == approx(1.7206)
+
+
+@pytest.mark.parametrize("filename", [
+    "dotted",
+    "single_char",
+    "mixed_case",
+    "lowercase",
+])
+def test_booleans(filename, parser):
+    """Tests that booleans are parse correctly no matter which format is used.
+    """
+    archive = EntryArchive()
+    parser.parse(f'tests/data/vasp/booleans/{filename}/OUTCAR', archive, None)
+    lnbo = parser._outcar_parser._incar['incar']['LNBO']
+    assert lnbo is True
