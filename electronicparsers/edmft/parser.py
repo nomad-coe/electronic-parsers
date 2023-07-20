@@ -152,8 +152,14 @@ class EDMFTParser:
                     atom_corr = self.indmfl_parser.get('i_atom_corr')[n]
                     label = labels[atom_corr[0] - 1]
                     sec_atom_params.label = label
-                    if self.indmfl_parser.get('l_atom_corr') is not None:
-                        angular_momentum = self._angular_momentum[self.indmfl_parser.get('l_atom_corr')[n][0]]
+                if self.indmfl_parser.get('l_atom_corr') is not None:
+                    angular_momentum = self._angular_momentum[self.indmfl_parser.get('l_atom_corr')[n][0]]
+                if self.indmfl_parser.get('siginds_corr', {}).get('cix') is not None:
+                    n_orbitals = self.indmfl_parser.get('siginds_corr', {}).get('cix')[n][-1]
+                    sec_atom_params.n_orbitals = n_orbitals
+                if self.indmfl_parser.get('siginds_corr', {}).get('orbitals') is not None:
+                    sec_atom_params.orbitals = [
+                        f'{angular_momentum}{orb}' for orb in self.indmfl_parser.get('siginds_corr', {}).get('orbitals')]
             sec_hubbard_kanamori = sec_atom_params.m_create(HubbardKanamoriModel)
             sec_hubbard_kanamori.double_counting_correction = self.general_parameters.get('DCs', '')
             sec_hubbard_kanamori.u = self.impurity_parameters.get('U', 0.0) * ureg.eV
@@ -178,16 +184,23 @@ class EDMFTParser:
         sec_dmft = sec_method.m_create(DMFT)
         n_corr_atoms = self.indmfl_parser.get('n_corr_atoms', 1)
         sec_dmft.n_atoms_per_unit_cell = n_corr_atoms
-        # TODO add sec_dmft.n_correlated_orbitals
-        n_corr_elect = self.impurity_parameters.get('nf0') / n_corr_atoms
-        corr_elect = [n_corr_elect] * n_corr_atoms
-        sec_dmft.n_correlated_electrons = corr_elect
+        if self.indmfl_parser.get('siginds_corr', {}).get('cix'):
+            n_orbitals = [orb[-1] for orb in self.indmfl_parser.get('siginds_corr', {}).get('cix')]
+            sec_dmft.n_correlated_orbitals = n_orbitals
+        if self.impurity_parameters.get('nf0'):
+            n_corr_elect = self.impurity_parameters.get('nf0') / n_corr_atoms
+            corr_elect = [n_corr_elect] * n_corr_atoms  # TODO ask Lucian if this makes sense
+            sec_dmft.n_correlated_electrons = corr_elect
         sec_dmft.inverse_temperature = self.impurity_parameters.get('beta', 0.0) / ureg.eV
         sec_dmft.magnetic_state = 'paramagnetic'  # TODO ask Lucian if this is correct
         sec_dmft.impurity_solver = self._solver_map.get(self.general_parameters.get('solver', ''))
 
     def parse_scc(self):
-        pass
+        sec_run = self.archive.run[-1]
+        sec_scc = sec_run.m_create(Calculation)
+        if sec_run.m_xpath('system'):
+            sec_scc.system_ref = sec_run.system[-1]
+        sec_scc.method_ref = sec_run.method[-1]  # ref DMFT
 
     def init_parser(self):
         self.indmfl_parser.mainfile = self.mainfile
