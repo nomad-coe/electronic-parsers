@@ -63,7 +63,7 @@ re_n = r'[\n\r]'
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
     data = {}
-    pattern = re.compile(r'([A-Z_]+)\s*=\s*(\.?[a-zA-Z]*[\d\-\.\+\sE]+\.?)')
+    pattern = re.compile(r'([A-Z_]+)\s*=\s*(\.?[a-zA-Z]*[\d\-\.\+\sE]*\.?)')
 
     def convert(v):
         if isinstance(v, list):
@@ -82,11 +82,13 @@ def get_key_values(val_in):
         for resi in res:
             vi = resi[1].split()
             vi = vi[0] if len(vi) == 1 else vi
-            vi = vi.strip() if isinstance(vi, str) else vi
-            if vi in ['T', '.TRUE.']:
-                vi = True
-            elif vi in ['F', '.FALSE.']:
-                vi = False
+            if isinstance(vi, str):
+                vi = vi.strip()
+                vi_upper = vi.upper()
+                if vi_upper in ['T', '.TRUE.', 'TRUE']:
+                    vi = True
+                elif vi_upper in ['F', '.FALSE.', 'FALSE']:
+                    vi = False
             data[resi[0]] = convert(vi)
     return data
 
