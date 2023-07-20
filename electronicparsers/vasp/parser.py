@@ -63,7 +63,7 @@ re_n = r'[\n\r]'
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
     data = {}
-    pattern = re.compile(r'([A-Z_]+)\s*=\s*([a-zA-Z]*[\d\-\.\+\sE]+)')
+    pattern = re.compile(r'([A-Z_]+)\s*=\s*(\.?[a-zA-Z]*[\d\-\.\+\sE]+\.?)')
 
     def convert(v):
         if isinstance(v, list):
@@ -83,7 +83,10 @@ def get_key_values(val_in):
             vi = resi[1].split()
             vi = vi[0] if len(vi) == 1 else vi
             vi = vi.strip() if isinstance(vi, str) else vi
-            vi = vi == 'T' if vi in ['T', 'F'] else vi
+            if vi in ('T', '.TRUE.'):
+                vi = True
+            elif vi in ('F', '.FALSE.'):
+                vi = False
             data[resi[0]] = convert(vi)
     return data
 
@@ -1359,6 +1362,7 @@ class VASPParser():
             if not (type(self.parser) is parser_type and parsed_file):
                 continue
             # check minimum requirements to define hubbard_model
+            # print(parsed_file.get('LDAU'))
             if (file_type == 'incar' and parsed_file.get('LDAU')) or (parsed_file.get('LDAUL')):
                 hubbard_present = True
                 break
