@@ -34,6 +34,7 @@ from nomad.datamodel.metainfo.simulation.method import (
 from nomad.datamodel.metainfo.simulation.system import System, Atoms, AtomsGroup
 from ..utils import get_files
 
+
 re_n = r'[\n\r]'
 
 
@@ -200,6 +201,9 @@ class Wannier90Parser():
             'sp3d2-6': [-5, 6]
         }
 
+        self._dft_codes = [
+            'quantumespresso', 'abinit', 'vasp', 'siesta', 'wien2k', 'fleur', 'openmx', 'gpaw']
+
     def parse_system(self):
         sec_run = self.archive.run[-1]
         sec_system = sec_run.m_create(System)
@@ -245,8 +249,8 @@ class Wannier90Parser():
         sec_wann.energy_window_outer = self.wout_parser.get('energy_windows').outer
         sec_wann.energy_window_inner = self.wout_parser.get('energy_windows').inner
 
-    def parse_winput(self, archive):
-        sec_run = archive.run[-1]
+    def parse_winput(self):
+        sec_run = self.archive.run[-1]
         try:
             sec_system = sec_run.system[-1]
             sec_atoms = sec_system.atoms
@@ -503,10 +507,12 @@ class Wannier90Parser():
         self.filepath = filepath
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
+        self.mainfile = os.path.basename(self.filepath)
         self.logger = logging.getLogger(__name__) if logger is None else logger
 
-        self.wout_parser.mainfile = self.filepath
-        sec_run = archive.m_create(Run)
+        self.init_parser()
+
+        sec_run = self.archive.m_create(Run)
 
         # Program section
         sec_run.program = Program(
@@ -518,7 +524,7 @@ class Wannier90Parser():
         self.parse_method()
 
         # Parsing AtomsGroup and AtomParameters for System and Method from the input file .win
-        self.parse_winput(self.archive)
+        self.parse_winput()
 
         self.parse_scc()
 

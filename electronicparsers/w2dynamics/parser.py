@@ -41,6 +41,10 @@ from .metainfo.w2dynamics import (
 from ..wannier90.parser import WOutParser, HrParser
 from ..utils import get_files
 from nomad.parsing.parser import to_hdf5
+# For automatic workflows
+from ..utils import BeyondDFTWorkflowsParser
+from nomad.search import search
+from nomad.app.v1.models import MetadataRequired
 
 
 re_n = r'[\n\r]'
@@ -59,7 +63,7 @@ class LogParser(TextParser):
         ]
 
 
-class W2DynamicsParser:
+class W2DynamicsParser(BeyondDFTWorkflowsParser):
     level = 2
 
     def __init__(self):
@@ -101,9 +105,9 @@ class W2DynamicsParser:
         log_files = get_files('*.log', self.filepath, self.mainfile)
         if log_files:
             if len(log_files) > 1:
-                self.logger.warning('Multiple logging files found.')
+                self.logger.warning(f'Multiple logging files found, the last one will be parsed: {log_files[-1]}')
 
-            self.log_parser.mainfile = log_files[0]
+            self.log_parser.mainfile = log_files[-1]
             return self.log_parser.get('program_version', None)
 
     def parse_axes(self, source, target):
@@ -135,7 +139,7 @@ class W2DynamicsParser:
         wann90_files = get_files('*.wout', self.filepath, self.mainfile, deep=False)
         if wann90_files:  # parse crystal from Wannier90
             if len(wann90_files) > 1:
-                self.logger.warning('Multiple logging files found.')
+                self.logger.warning(f'Multiple Wannier90.wout files found, the last one will be parsed: {wann90_files[-1]}')
 
             self.wout_parser.mainfile = wann90_files[-1]
             sec_system = sec_run.m_create(System)
@@ -158,7 +162,7 @@ class W2DynamicsParser:
             if structure.get('positions') is not None:
                 sec_atoms.positions = structure.get('positions') * ureg.angstrom
         else:  # TODO parse specific lattice model: discuss it Jonas Schwab
-            self.logger.warning('Wannier90 output files not found in the same folder.')
+            self.logger.warning('Wannier90 output files not found in the same folder, cannot resolve the system metainfo.')
 
     def parse_input_model(self, data):
         """Parses input model into Run.Method.LatticeModelHamiltonian in two differentiated
@@ -174,7 +178,7 @@ class W2DynamicsParser:
 
         # HoppingMatrix
         hr_files = get_files('*hr.dat', self.filepath, self.mainfile, deep=False)
-        if hr_files:  # parse crystal from Wannier90
+        if hr_files:  # parse tight-binding model from Wannier90
             self.hr_parser.mainfile = hr_files[-1]
             sec_hopping_matrix = sec_hamiltonian.m_create(HoppingMatrix)
             sec_hopping_matrix.n_orbitals = self.wout_parser.get('Nwannier')
@@ -184,7 +188,7 @@ class W2DynamicsParser:
             sec_hopping_matrix.value = np.reshape(
                 full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
         else:  # TODO parse specific lattice model
-            pass
+            self.logger.warning('Wannier90 _hr.dat files not found in the same folder, cannot resolve the initial model metainfo.')
 
         # HubbardKanamoriModel
         # TODO add parse of slater integrals
@@ -394,6 +398,17 @@ class W2DynamicsParser:
                             for no in range(norb)] for ns in range(2)])
                 sec_gf.orbital_occupations = np.array(parameters)
 
+    def init_parser(self):
+        self.data = None
+
+    def get_mainfile_keys(self, **kwargs):
+        filepath = kwargs.get('filename')
+        mainfile = os.path.basename(filepath)
+        wannier90_files = get_files('*.wout', filepath, mainfile, deep=False)
+        if len(wannier90_files) == 1:
+            return ['DMFT_workflow']
+        return True
+
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
@@ -432,3 +447,31 @@ class W2DynamicsParser:
         # Workflow section
         workflow = SinglePoint()
         self.archive.workflow2 = workflow
+
+        # Checking if other mainfiles are present, if the closest is a Wannier90, tries to
+        # link it with the corresponding w2dynamics data
+        wannier90_files = get_files('*.wout', self.filepath, self.mainfile, deep=False)
+        if len(wannier90_files) == 1:
+            wannier90_path = wannier90_files[-1].split('raw/')[-1]
+            try:
+                upload_id = self.archive.metadata.upload_id
+                search_ids = search(
+                    owner='visible',
+                    user_id=self.archive.metadata.main_author.user_id,
+                    query={'upload_id': upload_id},
+                    required=MetadataRequired(include=['entry_id', 'mainfile'])
+                ).data
+                metadata = [[sid['entry_id'], sid['mainfile']] for sid in search_ids]
+                if len(metadata) > 1:
+                    for entry_id, mainfile in metadata:
+                        entry_archive = archive.m_context.load_archive(entry_id, upload_id, None)
+                        if wannier90_path == mainfile:  # TODO add condition on system section or is this enough? System is resolved anyways from wannier90_path
+                            wannier90_archive = entry_archive
+                            dmft_workflow_archive = self._child_archives.get('DMFT_workflow')
+                            self.parse_dmft_workflow(wannier90_archive, dmft_workflow_archive)
+                            break
+            except Exception:
+                self.logger.warning('Could not resolve the automatic workflow for w2dynamics. '
+                                    'You can try reorganizing the data in the folders: '
+                                    'DFT data in the top-most folder. Wannier90 data in the top-most folder '
+                                    'or one folder below DFT. w2dynamics data one folder below DFT and Wannier90.')

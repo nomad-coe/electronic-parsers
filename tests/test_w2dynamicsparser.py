@@ -31,16 +31,15 @@ def parser():
     return W2DynamicsParser()
 
 
-@pytest.mark.skip('Disabled as the data is too big for the repo. Please contact Jose Pizarro if you would like to obtain the data')
-def test_srvo3_highstat(parser):
+def test_srvo3(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/w2dynamics/srvo3/SrVO3_beta60_high-stat-2022-09-29-Thu-15-29-40.hdf5', archive, None)
+    parser.parse('tests/data/w2dynamics/SrVO3_beta60-2021-12-03-Fri-13-38-46.hdf5', archive, None)
 
     # Run tests
     assert len(archive.run) == 1
     sec_run = archive.run[-1]
     assert len(sec_run.x_w2dynamics_axes) == 12
-    assert sec_run.x_w2dynamics_axes.x_w2dynamics_w_dos.shape[0] == 2794
+    assert len(sec_run.x_w2dynamics_axes.x_w2dynamics_w_dos) == 2788
 
     # Program tests
     assert sec_run.program.name == 'w2dynamics'
@@ -56,6 +55,7 @@ def test_srvo3_highstat(parser):
     assert hasattr(sec_lattice_model, 'hopping_matrix')
     assert hasattr(sec_lattice_model, 'hubbard_kanamori_model')
     assert sec_lattice_model.hubbard_kanamori_model[0].orbital == 'd'
+    assert sec_lattice_model.hubbard_kanamori_model[0].double_counting_correction == 'anisimov'
     u = sec_lattice_model.hubbard_kanamori_model[0].u.to('eV').magnitude
     jh = sec_lattice_model.hubbard_kanamori_model[0].jh.to('eV').magnitude
     assert u == approx(4.0)
@@ -65,7 +65,7 @@ def test_srvo3_highstat(parser):
     # testing rotational invariance
     assert up == approx(u - 2 * jh)
     assert j == approx(jh)
-    assert len(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general) == 50
+    assert len(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general) == 58
     assert sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.get('beta') == 60.0
     assert sec_run.method[1].starting_method_ref == sec_run.method[0]
     sec_dmft = sec_run.method[1].dmft
@@ -91,11 +91,11 @@ def test_srvo3_highstat(parser):
     assert sec_gfs.matsubara_freq[-1] == approx(125.61134626603189)
     assert sec_gfs.self_energy_iw.dtype == 'complex128'
     assert sec_gfs.self_energy_iw.shape == (1, 2, 3, 2400)
-    assert sec_gfs.greens_function_iw[0][0][2][1450] == approx(-0.0019482734893255288 - 0.03783597807548039j)
-    assert sec_gfs.chemical_potential.magnitude == approx(7.877904086990344)
+    assert sec_gfs.greens_function_iw[0][0][2][1450] == approx(-0.0019060478736177338 - 0.037816153432527574j)
+    assert sec_gfs.chemical_potential.magnitude == approx(14.159227949307798)
     # SCF tests
     sec_scf = sec_scc.scf_iteration
-    assert len(sec_scf) == 11
-    assert sec_scf[0].energy.fermi.to('eV').magnitude == approx(7.877920164769436)
-    assert sec_scf[-1].energy.fermi.to('eV').magnitude == approx(7.877904086990344)
+    assert len(sec_scf) == 4
+    assert sec_scf[0].energy.fermi.to('eV').magnitude == approx(14.15922513307991)
+    assert sec_scf[-1].energy.fermi.to('eV').magnitude == approx(14.1592279493078)
     assert sec_scf[1].x_w2dynamics_ineq[0].x_w2dynamics_fiw == 'SrVO3_beta60_high-stat-2022-09-29-Thu-15-29-40.hdf5#dmft-002/ineq-001/fiw/value'

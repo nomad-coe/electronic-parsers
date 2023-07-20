@@ -68,8 +68,8 @@ class OceanParser(BeyondDFTWorkflowsParser):
         self._child_archives = {}
         self._calculation_type = 'bse'
         self._dft_code_map = {
-            'qe': 'QuantumESPRESSO',
-            'abi': 'ABINIT'
+            'qe': 'parsers/quantumespresso',
+            'abi': 'parsers/abinit'
         }
         self._bse_solver_map = {
             'haydock': 'Lanczos-Haydock',

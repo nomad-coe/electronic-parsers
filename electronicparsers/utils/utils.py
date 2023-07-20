@@ -24,7 +24,7 @@ from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GW, GWMethod, ParticleHoleExcitations,
+    GW, GWMethod, DMFT, DMFTMethod, ParticleHoleExcitations,
     ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
@@ -57,7 +57,7 @@ def extract_section(source: EntryArchive, path: str):
 def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = True):
     """Get files following the `pattern` with respect to the file `stripname` (usually this
     being the mainfile of the given parser) up to / down from the `filepath` (`deep=True` going
-    up, `deep=False` down)
+    down, `deep=False` up)
 
     Args:
         pattern (str): targeted pattern to be found
@@ -89,7 +89,7 @@ class BeyondDFTWorkflowsParser:
     Generates automatic beyondDFT (GW, BSE, DMFT) workflows. Main classes for parsers will
     inherit from here if some automatic workflow parsing has been implemented.
     '''
-    def __init__(self, archive: EntryArchive, _child_archives: dict, _xs_spectra_types: list):
+    def __init__(self, archive: EntryArchive, _child_archives: dict, _xs_spectra_types: list, logger):
         self.archive = archive
         self._child_archives = _child_archives
         self._xs_spectra_types = _xs_spectra_types
@@ -106,7 +106,6 @@ class BeyondDFTWorkflowsParser:
         else:
             sec_run = workflow_archive.m_create(Run)
         sec_run.program = self.archive.run[-1].program
-        sec_run.system = self.archive.run[-1].system
 
     def parse_gw_workflow(self, gw_archive: EntryArchive, gw_workflow_archive: EntryArchive):
         """Automatically parses the GW workflow. Here, `self.archive` is the DFT archive.
@@ -116,6 +115,7 @@ class BeyondDFTWorkflowsParser:
             gw_workflow_archive (EntryArchive): the GW workflow archive
         """
         self.run_workflow_archive(gw_workflow_archive)
+        gw_workflow_archive.run[-1].m_add_sub_section(Run.system, self.archive.run[-1].system[-1])
 
         workflow = GW(method=GWMethod())
         workflow.name = 'GW'
@@ -220,6 +220,7 @@ class BeyondDFTWorkflowsParser:
             xs_workflow_archive (EntryArchive): the XS workflow archive
         """
         self.run_workflow_archive(xs_workflow_archive)
+        xs_workflow_archive.run[-1].m_add_sub_section(Run.system, self.archive.run[-1].system[-1])
 
         def extract_polarization_outputs():
             output = []
@@ -283,3 +284,59 @@ class BeyondDFTWorkflowsParser:
             workflow.m_add_sub_section(ParticleHoleExcitations.tasks, task)
 
         xs_workflow_archive.workflow2 = workflow
+
+    def parse_dmft_workflow(self, wannier_archive: EntryArchive, dmft_workflow_archive: EntryArchive):
+        self.run_workflow_archive(dmft_workflow_archive)
+        # Check if system exists in the DMFT archive or not, and whether it exists on the
+        # Wannier90 archive or not, and then add it.
+        try:
+            sec_system = self.archive.run[-1].system[-1]
+            dmft_workflow_archive.run[-1].m_add_sub_section(Run.system, sec_system)
+        except Exception:
+            if wannier_archive.run[-1].system[-1]:
+                sec_system = wannier_archive.run[-1].system[-1]
+                self.archive.run[-1].m_add_sub_section(Run.system, sec_system)
+                dmft_workflow_archive.run[-1].m_add_sub_section(Run.system, sec_system)
+
+        workflow = DMFT(method=DMFTMethod())
+        workflow.name = 'DMFT'
+
+        # Method
+        method_proj = extract_section(wannier_archive, 'run/method/projection')
+        method_dmft = extract_section(self.archive, 'run/method/dmft')
+        workflow.method.projection_method_ref = method_proj
+        workflow.method.dmft_method_ref = method_dmft
+
+        # Inputs and Outputs
+        input_structure = extract_section(wannier_archive, 'run/system')
+        wannier_calculation = extract_section(wannier_archive, 'run/calculation')
+        dmft_calculation = extract_section(self.archive, 'run/calculation')
+        if input_structure:
+            workflow.m_add_sub_section(
+                DMFT.inputs, Link(name='Input structure', section=input_structure))
+        if dmft_calculation:
+            workflow.m_add_sub_section(
+                DMFT.outputs, Link(name='Output DMFT calculation', section=dmft_calculation))
+
+        # Wannier90 task
+        if wannier_archive.workflow2:
+            task = TaskReference(task=wannier_archive.workflow2)
+            task.name = 'Projection'
+            # TODO check why this re-writting is necessary to not repeat sections inside tasks
+            if input_structure:
+                task.inputs = [Link(name='Input structure', section=input_structure)]
+            if wannier_calculation:
+                task.outputs = [Link(name='Output Projection calculation', section=wannier_calculation)]
+            workflow.m_add_sub_section(DMFT.tasks, task)
+
+        # DMFT task
+        if self.archive.workflow2:
+            task = TaskReference(task=self.archive.workflow2)
+            task.name = 'DMFT'
+            if wannier_calculation:
+                task.inputs = [Link(name='Output Projection calculation', section=wannier_calculation)]
+            if dmft_calculation:
+                task.outputs = [Link(name='Output DMFT calculation', section=dmft_calculation)]
+            workflow.m_add_sub_section(DMFT.tasks, task)
+
+        dmft_workflow_archive.workflow2 = workflow
