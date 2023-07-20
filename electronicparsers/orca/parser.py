@@ -39,6 +39,8 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     GeometryOptimization, GeometryOptimizationMethod
 )
 
+re_n = r'\r*\n'
+
 
 class OutParser(TextParser):
     def __init__(self):
@@ -157,7 +159,7 @@ class OutParser(TextParser):
                         rf'Sum of atomic charges\s*:\s*({re_float})', dtype=float)])),
             Quantity(
                 'orbital_charges',
-                r'[A-Z]+ REDUCED ORBITAL CHARGES.*\s*\-+([\s\S]+?\n\n)',
+                rf'[A-Z]+ REDUCED ORBITAL CHARGES.*\s*\-+([\s\S]+?{re_n}{re_n})',
                 sub_parser=TextParser(quantities=[
                     Quantity(
                         'atom',
@@ -260,7 +262,7 @@ class OutParser(TextParser):
                 sub_parser=TextParser(quantities=scf_convergence_quantities)),
             Quantity(
                 'orbital_energies',
-                r'NO\s*OCC\s*E\(Eh\)\s*E\(eV\)\s*([\s\S]+?)\n\n',
+                rf'NO\s*OCC\s*E\(Eh\)\s*E\(eV\)\s*([\s\S]+?){re_n}{re_n}',
                 str_operation=lambda x: np.array([v.split()[:4] for v in x.split('\n')], dtype=float),
                 repeats=True),
             Quantity(
@@ -447,7 +449,7 @@ class OutParser(TextParser):
         calculation_quantities = [
             Quantity(
                 'cartesian_coordinates',
-                r'CARTESIAN COORDINATES \(ANGSTROEM\)\s*\-+\s*([\s\S]+?)\n\n',
+                rf'CARTESIAN COORDINATES \(ANGSTROEM\)\s*\-+\s*([\s\S]+?){re_n}{re_n}',
                 str_operation=str_to_cartesian_coordinates),
             Quantity(
                 'basis_set',
