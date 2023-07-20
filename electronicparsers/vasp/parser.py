@@ -1362,7 +1362,6 @@ class VASPParser():
             if not (type(self.parser) is parser_type and parsed_file):
                 continue
             # check minimum requirements to define hubbard_model
-            # print(parsed_file.get('LDAU'))
             if (file_type == 'incar' and parsed_file.get('LDAU')) or (parsed_file.get('LDAUL')):
                 hubbard_present = True
                 break
