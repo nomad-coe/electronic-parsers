@@ -83,9 +83,9 @@ def get_key_values(val_in):
             vi = resi[1].split()
             vi = vi[0] if len(vi) == 1 else vi
             vi = vi.strip() if isinstance(vi, str) else vi
-            if vi in ('T', '.TRUE.'):
+            if vi in ['T', '.TRUE.']:
                 vi = True
-            elif vi in ('F', '.FALSE.'):
+            elif vi in ['F', '.FALSE.']:
                 vi = False
             data[resi[0]] = convert(vi)
     return data
