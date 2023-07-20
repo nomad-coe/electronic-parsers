@@ -105,9 +105,9 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         log_files = get_files('*.log', self.filepath, self.mainfile)
         if log_files:
             if len(log_files) > 1:
-                self.logger.warning('Multiple logging files found.')
+                self.logger.warning(f'Multiple logging files found, the last one will be parsed: {log_files[-1]}')
 
-            self.log_parser.mainfile = log_files[0]
+            self.log_parser.mainfile = log_files[-1]
             return self.log_parser.get('program_version', None)
 
     def parse_axes(self, source, target):
@@ -139,7 +139,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         wann90_files = get_files('*.wout', self.filepath, self.mainfile, deep=False)
         if wann90_files:  # parse crystal from Wannier90
             if len(wann90_files) > 1:
-                self.logger.warning('Multiple logging files found.')
+                self.logger.warning(f'Multiple Wannier90.wout files found, the last one will be parsed: {wann90_files[-1]}')
 
             self.wout_parser.mainfile = wann90_files[-1]
             sec_system = sec_run.m_create(System)
@@ -162,7 +162,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             if structure.get('positions') is not None:
                 sec_atoms.positions = structure.get('positions') * ureg.angstrom
         else:  # TODO parse specific lattice model: discuss it Jonas Schwab
-            self.logger.warning('Wannier90 output files not found in the same folder: I cannot resolve the system metainfo.')
+            self.logger.warning('Wannier90 output files not found in the same folder, cannot resolve the system metainfo.')
 
     def parse_input_model(self, data):
         """Parses input model into Run.Method.LatticeModelHamiltonian in two differentiated
@@ -188,7 +188,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             sec_hopping_matrix.value = np.reshape(
                 full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
         else:  # TODO parse specific lattice model
-            self.logger.warning('Wannier90 _hr.dat files not found in the same folder: I cannot resolve the initial model metainfo.')
+            self.logger.warning('Wannier90 _hr.dat files not found in the same folder, cannot resolve the initial model metainfo.')
 
         # HubbardKanamoriModel
         # TODO add parse of slater integrals
