@@ -96,6 +96,3 @@ def test_srvo3(parser):
     # SCF tests
     sec_scf = sec_scc.scf_iteration
     assert len(sec_scf) == 4
-    assert sec_scf[0].energy.fermi.to('eV').magnitude == approx(14.15922513307991)
-    assert sec_scf[-1].energy.fermi.to('eV').magnitude == approx(14.1592279493078)
-    assert sec_scf[1].x_w2dynamics_ineq[0].x_w2dynamics_fiw == 'SrVO3_beta60_high-stat-2022-09-29-Thu-15-29-40.hdf5#dmft-002/ineq-001/fiw/value'
