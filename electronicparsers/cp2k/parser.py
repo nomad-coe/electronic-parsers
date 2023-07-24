@@ -1244,8 +1244,6 @@ class CP2KParser:
             if velocities is not None:
                 sec_atoms.velocities = velocities
 
-        return sec_system
-
     def parse_configurations_quickstep(self):
         sec_run = self.archive.run[-1]
         quickstep = self.out_parser.get(self._calculation_type)
@@ -1301,7 +1299,7 @@ class CP2KParser:
                     atomic_coord = quickstep.get('atomic_coordinates')
                     if atomic_coord is not None:
                         atomic_coord._frame = 0
-                    sec_system = self.parse_system(atomic_coord)
+                    self.parse_system(atomic_coord)
                 else:
                     sec_system = self.parse_system(frame)
                 if sec_system:
