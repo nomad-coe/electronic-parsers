@@ -37,7 +37,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Stress, StressEntry, ScfIteration, Forces,
-    ForcesEntry
+    ForcesEntry, Dos, DosValues
 )
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint, GeometryOptimization, GeometryOptimizationMethod,
@@ -696,10 +696,26 @@ class CP2KOutParser(TextParser):
         ]
 
 
+class CP2KPDOSParser(TextParser):
+    def __init__(self):
+        super().__init__(None)
+
+    def init_quantities(self):
+        self._quantities = [
+            Quantity('atom_kind', r'\# *Projected DOS for atomic kind *([\da-zA-Z]+) *at'),
+            Quantity('columns', rf'\# *MO([\s\S]+?)(?:[\n\r])', repeats=False)]
+
+    @property
+    def data(self):
+        if self.mainfile:
+            return np.loadtxt(self.mainfile)
+
+
 class CP2KParser:
     def __init__(self):
         self.out_parser = CP2KOutParser()
         self.inp_parser = InpParser()
+        self.pdos_parser = CP2KPDOSParser()
         # use a custom xyz parser as the output of cp2k is sometimes not up to standard
         self.traj_parser = TrajParser(type='positions')
         self.velocities_parser = TrajParser(type='velocities')
@@ -775,12 +791,14 @@ class CP2KParser:
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
         self.inp_parser.mainfile = None
+        self.pdos_parser.mainfile = None
         self.traj_parser.mainfile = None
         self.velocities_parser.mainfile = None
         self.energy_parser.mainfile = None
         self.force_parser.mainfile = None
         self.out_parser.logger = self.logger
         self.inp_parser.logger = self.logger
+        self.pdos_parser.logger = self.logger
         self.traj_parser.logger = self.logger
         self.velocities_parser.logger = self.logger
         self.energy_parser.logger = self.logger
@@ -1167,11 +1185,67 @@ class CP2KParser:
             return
         sec_scc = sec_run.m_create(Calculation)
 
+        def parse_dos(files, target):
+            try:
+                energy_fermi = target.energy.fermi
+            except Exception:
+                self.logger.warning('Error finding the Fermi level: not found in the output parsing.')
+                return
+
+            sec_dos = target.m_create(Dos, Calculation.dos_electronic)
+            sec_dos.energy_fermi = energy_fermi
+            sec_dos.energy_shift = energy_fermi
+
+            atoms = []
+            for f in files:
+                self.pdos_parser.mainfile = f
+                atom_kind = self.pdos_parser.get('atom_kind')
+                atoms.append(atom_kind)
+            # This stores a list of tuples ordered depending on the atom_kind label. Useful
+            # when dealing with spin-polarized calculations
+            atom_kind_in_files_sorted = sorted(list(zip(files, atoms)), key=lambda x: x[1])
+
+            spin = 0
+            previous_atom_kind = None
+            total_value = 0.0
+            for f, atom_kind in atom_kind_in_files_sorted:
+                self.pdos_parser.mainfile = f
+                data = np.transpose(self.pdos_parser.data)
+                if data is not None:
+                    sec_dos.n_energies = len(data[1])
+                    sec_dos.energies = data[1] * ureg.hartree
+                    if self.out_parser.get('spin_polarized') == 'UKS':  # unrestricted Kohn-Sham (spin-polarized) calculation
+                        sec_dos.n_spin_channels = 2
+                        spin = 1  if atom_kind == previous_atom_kind else 0
+
+                    # TODO example showed that for both spin channels, the n_energies can
+                    # be different. Check this with @andreaalbino
+
+                        # sec_dos_total = sec_dos.m_create(DosValues, Dos.total) if atom_kind == previous_atom_kind else sec_dos_total
+                        # sec_dos_total.spin = spin
+                    orbital_values = data[3:]
+                    atom_label = re.sub(r'\d', '', atom_kind)
+                    atom_index = re.sub(r'[a-zA-Z]', '', atom_kind)
+                    if self.pdos_parser.get('columns'):
+                        orbital_labels = self.pdos_parser.get('columns')[3:]
+                        for i, orbital_val in enumerate(orbital_values):
+                            sec_orbital_dos = sec_dos.m_create(DosValues, Dos.orbital_projected)
+                            sec_orbital_dos.value = orbital_val
+                            sec_orbital_dos.atom_label = atom_label
+                            sec_orbital_dos.atom_index = atom_index if atom_index else None
+                            sec_orbital_dos.orbital = orbital_labels[i]
+                            sec_orbital_dos.spin = spin
+                else:
+                    self.logger.warning(f'Error extracting data from {f}.')
+                previous_atom_kind = atom_kind
+
+            print(sec_dos)
+
         sec_energy = sec_scc.m_create(Energy)
         if source.get('energy_total') is not None:
-            sec_energy.total = EnergyEntry(value=source.get('energy_total'))
+            sec_energy.total = source.get('energy_total')
         if source.get('electronic_kinetic_energy') is not None:
-            sec_energy.kinetic_electronic = EnergyEntry(value=source.get('electronic_kinetic_energy')[-1])
+            sec_energy.kinetic_electronic = source.get('electronic_kinetic_energy')[-1]
         if source.get('exchange_correlation_energy') is not None:
             sec_energy.xc = EnergyEntry(value=source.get('exchange_correlation_energy')[-1])
         if source.get('fermi_energy') is not None:
@@ -1201,6 +1275,11 @@ class CP2KParser:
             atom_forces = np.array(atom_forces, np.float64) * ureg.hartree / ureg.bohr
             sec_forces = sec_scc.m_create(Forces)
             sec_forces.total = ForcesEntry(value=atom_forces)
+
+        # Parsing DOS and PDOS if .pdos files are present.
+        pdos_files = get_files('*.pdos', self.filepath, self.mainfile)
+        if pdos_files:
+            parse_dos(pdos_files, sec_scc)
 
         return sec_scc
 
