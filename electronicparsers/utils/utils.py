@@ -24,8 +24,7 @@ from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GW, GWMethod, DMFT, DMFTMethod, ParticleHoleExcitations,
-    ParticleHoleExcitationsMethod, ParticleHoleExcitationsResults,
+    GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
 
@@ -170,7 +169,9 @@ class BeyondDFTWorkflowsParser:
         workflow = PhotonPolarization(method=PhotonPolarizationMethod(), results=PhotonPolarizationResults())
         workflow.name = 'BSE'  # this entry contains the full BSE calculation for all photon polarizations
 
-        # TODO define Method
+        # Method
+        method_bse = extract_section(self.archive, 'run/method/bse')
+        workflow.method.bse_method_ref = method_bse
 
         # Inputs
         input_structure = extract_section(self.archive, 'run/system')
@@ -232,32 +233,19 @@ class BeyondDFTWorkflowsParser:
                     index += 1
             return output
 
-        workflow = ParticleHoleExcitations(
-            method=ParticleHoleExcitationsMethod(), results=ParticleHoleExcitationsResults())
-        workflow.name = 'ParticleHoleExcitations'
-
-        # TODO define Method
-
-        # Results
-        bs_dft = extract_section(self.archive, 'run/calculation/band_structure_electronic')
-        dos_dft = extract_section(self.archive, 'run/calculation/dos_electronic')
-        workflow.results.dos_dft = dos_dft
-        workflow.results.band_structure_dft = bs_dft
-        workflow.results.spectra = [xs_archive.workflow2.results for xs_archive in xs_archives]
+        workflow = XS(method=XSMethod())
+        workflow.name = 'XS'
 
         # Inputs and Outputs
         input_structure = extract_section(self.archive, 'run/system')
         dft_calculation = extract_section(self.archive, 'run/calculation')
         polarization_calculations = extract_polarization_outputs()
-        workflow.m_add_sub_section(
-            ParticleHoleExcitations.inputs,
-            Link(name='Particle-Hole excitations workflow parameters', section=workflow.method))
         if input_structure:
             workflow.m_add_sub_section(
-                ParticleHoleExcitations.inputs, Link(name='Input structure', section=input_structure))
+                XS.inputs, Link(name='Input structure', section=input_structure))
         for index, polarizations in enumerate(polarization_calculations):
             workflow.m_add_sub_section(
-                ParticleHoleExcitations.outputs, Link(name=f'Polarization {index + 1}', section=polarizations))
+                XS.outputs, Link(name=f'Polarization {index + 1}', section=polarizations))
 
         # DFT task
         if self.archive.workflow2:
@@ -267,7 +255,7 @@ class BeyondDFTWorkflowsParser:
                 task.inputs = [Link(name='Input structure', section=input_structure)]
             if dft_calculation:
                 task.outputs = [Link(name='Output DFT calculation', section=dft_calculation)]
-            workflow.m_add_sub_section(ParticleHoleExcitations.tasks, task)
+            workflow.m_add_sub_section(XS.tasks, task)
 
         # Spectra task
         for index, xs_archive in enumerate(xs_archives):
@@ -278,10 +266,13 @@ class BeyondDFTWorkflowsParser:
             if dft_calculation:
                 xs_archive.workflow2.m_add_sub_section(
                     PhotonPolarization.inputs, Link(name='Output DFT calculation', section=dft_calculation))
-                for photon_task in xs_archive.workflow2.tasks:
+                task.inputs = [Link(name='Output DFT calculation', section=dft_calculation)]
+                for i_photon, photon_task in enumerate(xs_archive.workflow2.tasks):
                     photon_task.m_add_sub_section(
                         TaskReference.inputs, Link(name='Output DFT calculation', section=dft_calculation))
-            workflow.m_add_sub_section(ParticleHoleExcitations.tasks, task)
+                    if photon_task.m_xpath('outputs[-1].section'):
+                        task.m_add_sub_section(TaskReference.outputs, Link(name=f'Polarization {i_photon + 1}', section=photon_task.outputs[-1].section))
+            workflow.m_add_sub_section(XS.tasks, task)
 
         xs_workflow_archive.workflow2 = workflow
 
