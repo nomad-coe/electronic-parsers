@@ -28,7 +28,21 @@ metadata:
     \ but many\n  are not mentioned.\n"
   preamble: ''
   status: production
-  tableOfFiles: ''
+  tableOfFiles: '| Input Filename | Description |
+
+    | --- | --- |
+
+    | `*.out` | **Mainfile**: output text file w/ arbitrary name |
+
+    | `*.in` or `*.restart` | input text file; defined in the first lines of `*.out` |
+
+    | `*.pdos` | (projected) dos output file |
+
+    | `*.xyz` | trajectories output file |
+
+    | `*.ener` | MD energies output file |
+
+    '
 name: parsers/cp2k
 parser_class_name: electronicparsers.cp2k.parser.CP2KParser
 python_package: electronicparsers.cp2k

@@ -390,87 +390,6 @@ class x_cp2k_section_program_information(MSection):
         ''')
 
 
-class x_cp2k_section_quickstep_calculation(MSection):
-    '''
-    Section for a CP2K QuickStep calculation.
-    '''
-
-    m_def = Section(validate=False)
-
-    x_cp2k_atom_forces = Quantity(
-        type=np.dtype(np.float64),
-        shape=['number_of_atoms', 3],
-        unit='newton',
-        description='''
-        Forces acting on the atoms in this Quickstep calculation.
-        ''')
-
-    x_cp2k_electronic_kinetic_energy = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='joule',
-        description='''
-        Self-consistent electronic kinetic energy calculated with Quickstep
-        ''')
-
-    x_cp2k_energy_total = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='joule',
-        description='''
-        Value of the total energy (nuclei + electrons) calculated with Quickstep.
-        ''')
-
-    x_cp2k_quickstep_converged = Quantity(
-        type=bool,
-        shape=[],
-        description='''
-        Boolean indicating whether the quickstep SCF cycle converged or not.
-        ''')
-
-    x_cp2k_section_scf_iteration = SubSection(
-        sub_section=SectionProxy('x_cp2k_section_scf_iteration'),
-        repeats=True)
-
-    x_cp2k_section_stress_tensor = SubSection(
-        sub_section=SectionProxy('x_cp2k_section_stress_tensor'),
-        repeats=True)
-
-
-class x_cp2k_section_scf_iteration(MSection):
-    '''
-    Section for a CP2K QuickStep SCF iteration.
-    '''
-
-    m_def = Section(validate=False)
-
-    x_cp2k_energy_change_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='joule',
-        description='''
-        At each self-consistent field (SCF) iteration, change of total energy with respect
-        to the previous SCF iteration.
-        ''')
-
-    x_cp2k_energy_total_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='joule',
-        description='''
-        Total electronic energy calculated with XC_method during the self-consistent field
-        (SCF) iterations.
-        ''')
-
-    x_cp2k_energy_XC_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='joule',
-        description='''
-        Exchange-correlation (XC) energy during the self-consistent field (SCF) iteration.
-        ''')
-
-
 class x_cp2k_section_startinformation(MSection):
     '''
     Contains information about the starting conditions for this run.
@@ -554,50 +473,6 @@ class x_cp2k_section_end_information(MSection):
         shape=[],
         description='''
         The path where this calculation ended.
-        ''')
-
-
-class x_cp2k_section_stress_tensor(MSection):
-    '''
-    Section for stress tensor information.
-    '''
-
-    m_def = Section(validate=False)
-
-    x_cp2k_stress_tensor_determinant = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        The determinant of the stress tensor.
-        ''')
-
-    x_cp2k_stress_tensor_eigenvalues = Quantity(
-        type=np.dtype(np.float64),
-        shape=[3],
-        description='''
-        The eigenvalues of the stress tensor.
-        ''')
-
-    x_cp2k_stress_tensor_eigenvectors = Quantity(
-        type=np.dtype(np.float64),
-        shape=[3, 3],
-        description='''
-        The eigenvectors of the stress tensor.
-        ''')
-
-    x_cp2k_stress_tensor_one_third_of_trace = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        1/3 of the trace of the stress tensor.
-        ''')
-
-    x_cp2k_stress_tensor = Quantity(
-        type=np.dtype(np.float64),
-        shape=[3, 3],
-        unit='pascal',
-        description='''
-        A final value of the stress tensor in a Quickstep calculation
         ''')
 
 
@@ -1077,10 +952,6 @@ class Run(simulation.run.Run):
 
     x_cp2k_section_program_information = SubSection(
         sub_section=SectionProxy('x_cp2k_section_program_information'),
-        repeats=True)
-
-    x_cp2k_section_quickstep_calculation = SubSection(
-        sub_section=SectionProxy('x_cp2k_section_quickstep_calculation'),
         repeats=True)
 
     x_cp2k_section_startinformation = SubSection(
