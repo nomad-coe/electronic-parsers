@@ -4,10 +4,9 @@ code_name: eDMFT
 metadata:
   codeCategory: Atomistic code
   codeLabel: eDMFT
-  codeLabelStyle: DMFT in capitals, the rest in lowercase
+  codeLabelStyle: e in lower case, DMFT in capitals
   codeName: eDMFT
   codeUrl: http://hauleweb.rutgers.edu/tutorials/
-  codeVersion: ''
   parserDirName: dependencies/parsers/electronic/electronicparsers/edmft/
   parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
   parserSpecific: ''

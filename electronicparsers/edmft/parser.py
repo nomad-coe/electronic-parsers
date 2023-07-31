@@ -27,8 +27,7 @@ from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, HubbardKanamoriModel, LatticeModelHamiltonian, KMesh, FrequencyMesh, TimeMesh,
-    DMFT, AtomParameters
+    Method, HubbardKanamoriModel, KMesh, FrequencyMesh, TimeMesh, DMFT, AtomParameters
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, GreensFunctions
@@ -142,7 +141,8 @@ class EDMFTParser:
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
 
-        # TODO ask Lucian what projectorw.dat means to parse as initial model.
+        # TODO ask @LucianPascut what projectorw.dat means to parse as initial model.
+
         # HubbardKanamori part
         for n in range(self.indmfl_parser.get('n_corr_atoms', 1)):
             sec_atom_params = sec_method.m_create(AtomParameters)
