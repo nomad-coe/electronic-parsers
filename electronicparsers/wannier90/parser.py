@@ -35,7 +35,6 @@ from nomad.datamodel.metainfo.simulation.system import System, Atoms, AtomsGroup
 from ..utils import get_files
 
 
-
 re_n = r'[\n\r]'
 
 

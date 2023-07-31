@@ -61,19 +61,18 @@ class IndmflParser(TextParser):
             Quantity(
                 'siginds_corr',
                 r'(\# Siginds and crystal\-field transformations for correlated orbitals \=*[\s\S]+)(?:\# Sigind follows)',
-                    sub_parser=TextParser(quantities=[
-                        Quantity(
-                            'indep_cix_blocks',
-                            r'(\d+) *(\d+) *(\d+) *\# Number of independent kcix blocks\, max dimension\, max num\-independent-components'),
-                        Quantity(
-                            'cix',
-                            r'(\d+) *(\d+) *(\d+) *\# cix\-num\, dimension\, num\-independent\-components',
-                            repeats=True),
-                        Quantity(
-                            'orbitals',
-                            r'\# Independent components are \-*[\s\S]([\'\^\-\+a-zA-Z\s\d]+)',
-                            str_operation=str_to_orbitals_list)]))
-        ]
+                sub_parser=TextParser(quantities=[
+                    Quantity(
+                        'indep_cix_blocks',
+                        r'(\d+) *(\d+) *(\d+) *\# Number of independent kcix blocks\, max dimension\, max num\-independent-components'),
+                    Quantity(
+                        'cix',
+                        r'(\d+) *(\d+) *(\d+) *\# cix\-num\, dimension\, num\-independent\-components',
+                        repeats=True),
+                    Quantity(
+                        'orbitals',
+                        r'\# Independent components are \-*[\s\S]([\'\^\-\+a-zA-Z\s\d]+)',
+                        str_operation=str_to_orbitals_list)]))]
 
 
 class ParamsParser(TextParser):
@@ -87,18 +86,14 @@ class ParamsParser(TextParser):
                 sub_parser=TextParser(quantities=[
                     Quantity(
                         'params', r'([a-zA-Z\_]+)\s*\=\s*\'*([a-zA-Z\d\.\-]+)\'*',
-                        repeats=True)
-                    ])
-                ),
+                        repeats=True)])),
             Quantity(
                 'impurity_parameters', r'iparams0\=([\s\S]+)(?:\s*\})',
                 sub_parser=TextParser(quantities=[
                     Quantity(
                         'params',
                         r'\s*\"(.+)\"\s*\:\s*\[[\"\'\s]*([a-zA-Z\d\.\-]+)[\"\'\s]*\,',
-                        repeats=True)
-                    ])
-                )]
+                        repeats=True)]))]
 
 
 class EDMFTParser:
