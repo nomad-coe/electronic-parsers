@@ -1293,6 +1293,8 @@ class CP2KParser:
                     self.parse_system(atomic_coord)
                 else:
                     self.parse_system(n)
+                if sec_run.system[n] is not None:
+                    sec_scc.system_ref = sec_run.system[n]
 
         single_point = quickstep.get('single_point')
         if single_point is not None:
@@ -1555,7 +1557,7 @@ class CP2KParser:
                 self._calculation_type = calculation_type
                 break
 
-        sec_run = self.archive.m_create(Run)
+        self.archive.m_create(Run)
         self.parse_settings()
         self.parse_input()
 
