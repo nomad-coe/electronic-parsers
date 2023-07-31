@@ -154,7 +154,7 @@ class EDMFTParser:
                     sec_atom_params.label = label
                 if self.indmfl_parser.get('l_atom_corr') is not None:
                     angular_momentum = self._angular_momentum[self.indmfl_parser.get('l_atom_corr')[n][0]]
-                if self.indmfl_parser.get('siginds_corr', {}).get('cix') is not None:
+                if self.indmfl_parser.get('siginds_corr', {}).get('cix') is not None:  # TODO ask @Alvin why this is populated locally, but not when processing
                     n_orbitals = self.indmfl_parser.get('siginds_corr', {}).get('cix')[n][-1]
                     sec_atom_params.n_orbitals = n_orbitals
                 if self.indmfl_parser.get('siginds_corr', {}).get('orbitals') is not None:
@@ -184,7 +184,7 @@ class EDMFTParser:
         sec_dmft = sec_method.m_create(DMFT)
         n_corr_atoms = self.indmfl_parser.get('n_corr_atoms', 1)
         sec_dmft.n_atoms_per_unit_cell = n_corr_atoms
-        if self.indmfl_parser.get('siginds_corr', {}).get('cix'):
+        if self.indmfl_parser.get('siginds_corr', {}).get('cix'):  # TODO ask @Alvin why this is populated locally, but not when processing
             n_orbitals = [orb[-1] for orb in self.indmfl_parser.get('siginds_corr', {}).get('cix')]
             sec_dmft.n_correlated_orbitals = n_orbitals
         if self.impurity_parameters.get('nf0'):

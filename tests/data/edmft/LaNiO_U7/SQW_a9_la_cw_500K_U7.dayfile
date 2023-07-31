@@ -1,0 +1,223 @@
+1.497u 0.021s 0:01.51 100.0%	0+0k 0+920io 0pf+0w
+Calculating SQW_a9_la_cw_500K_U7 in /mnt/n93/848801pascut/SQW_a9_la_cw_500K_U7
+on n93.rutgers.edu with PID 108213
+
+
+
+
+   start        Tue Mar  9 16:52:07 2021 with lapw0 (1/100 to go)
+
+   cycle 0 	Tue Mar  9 16:52:07 2021 7/7 to go
+
+>lapw0      ( 16:52:07 )
+>lapw1      ( 16:52:08 )
+>dmft1      ( 16:52:10 )
+>impurity   ( 16:52:11 )
+>dmft2      ( 18:58:24 )
+0.026u 0.006s 0:00.03 66.6%	0+0k 0+632io 0pf+0w
+>lcore      ( 18:58:27 )
+0.045u 0.017s 0:00.06 83.3%	0+0k 0+1944io 0pf+0w
+>mixer      ( 18:58:27 )
+:ENERGY convergence:  1.0
+:CHARGE convergence:  1.0
+:EF     convergence:  -0.000707452020871
+1.492u 0.018s 0:01.51 99.3%	0+0k 0+904io 0pf+0w
+
+:ITT1    cycle 1 	Tue Mar  9 18:58:27 2021 6/6 to go
+
+>lapw0      ( 18:58:27 )
+>lapw1      ( 18:58:29 )
+>dmft2      ( 18:58:30 )
+0.034u 0.006s 0:00.04 75.0%	0+0k 0+632io 0pf+0w
+>lcore      ( 18:58:32 )
+0.045u 0.018s 0:00.06 83.3%	0+0k 0+1936io 0pf+0w
+>mixer      ( 18:58:32 )
+:ENERGY convergence:  3.46000160789e-06
+:CHARGE convergence:  2.11e-05
+:EF     convergence:  3.2558749797e-05
+1.492u 0.022s 0:01.51 100.0%	0+0k 0+904io 0pf+0w
+
+:ITT1    cycle 2 	Tue Mar  9 18:58:32 2021 5/5 to go
+
+>lapw0      ( 18:58:32 )
+>lapw1      ( 18:58:34 )
+>dmft1      ( 18:58:35 )
+>impurity   ( 18:58:36 )
+>dmft2      ( 21:04:31 )
+0.027u 0.006s 0:00.03 66.6%	0+0k 0+632io 0pf+0w
+>lcore      ( 21:04:33 )
+0.042u 0.013s 0:00.05 100.0%	0+0k 0+1944io 0pf+0w
+>mixer      ( 21:04:33 )
+:ENERGY convergence:  2.52700010606e-05
+:CHARGE convergence:  6.93e-05
+:EF     convergence:  0.000210351851815
+1.497u 0.021s 0:01.51 100.0%	0+0k 0+912io 0pf+0w
+
+:ITT1    cycle 2 	Tue Mar  9 21:04:33 2021 5/5 to go
+
+>lapw0      ( 21:04:33 )
+>lapw1      ( 21:04:35 )
+>dmft2      ( 21:04:36 )
+0.029u 0.005s 0:00.03 66.6%	0+0k 0+632io 0pf+0w
+>lcore      ( 21:04:38 )
+0.046u 0.014s 0:00.06 83.3%	0+0k 0+1936io 0pf+0w
+>mixer      ( 21:04:38 )
+:ENERGY convergence:  2.04000025406e-06
+:CHARGE convergence:  2.47e-05
+:EF     convergence:  -6.6054930635e-05
+1.500u 0.025s 0:01.52 100.0%	0+0k 0+904io 0pf+0w
+
+:ITT1    cycle 3 	Tue Mar  9 21:04:38 2021 4/4 to go
+
+>lapw0      ( 21:04:38 )
+>lapw1      ( 21:04:40 )
+>dmft1      ( 21:04:41 )
+>impurity   ( 21:04:42 )
+>dmft2      ( 23:11:32 )
+0.030u 0.003s 0:00.03 100.0%	0+0k 0+624io 0pf+0w
+>lcore      ( 23:11:35 )
+0.044u 0.014s 0:00.05 100.0%	0+0k 0+1944io 0pf+0w
+>mixer      ( 23:11:35 )
+:ENERGY convergence:  1.65900019056e-05
+:CHARGE convergence:  1.99e-05
+:EF     convergence:  -0.00015977596164
+1.497u 0.019s 0:01.51 99.3%	0+0k 0+904io 0pf+0w
+
+:ITT1    cycle 4 	Tue Mar  9 23:11:35 2021 3/3 to go
+
+>lapw0      ( 23:11:35 )
+>lapw1      ( 23:11:37 )
+>dmft1      ( 23:11:38 )
+>impurity   ( 23:11:39 )
+>dmft2      ( 01:18:34 )
+0.012u 0.006s 0:00.01 100.0%	0+0k 0+632io 0pf+0w
+>lcore      ( 01:18:36 )
+0.045u 0.018s 0:00.06 83.3%	0+0k 0+1944io 0pf+0w
+>mixer      ( 01:18:36 )
+:ENERGY convergence:  5.76999991608e-05
+:CHARGE convergence:  7.41e-05
+:EF     convergence:  0.00149314143847
+1.494u 0.021s 0:01.51 100.0%	0+0k 0+912io 0pf+0w
+
+:ITT1    cycle 4 	Wed Mar 10 01:18:36 2021 3/3 to go
+
+>lapw0      ( 01:18:36 )
+>lapw1      ( 01:18:38 )
+>dmft2      ( 01:18:39 )
+0.023u 0.005s 0:00.02 100.0%	0+0k 0+632io 0pf+0w
+>lcore      ( 01:18:42 )
+0.044u 0.014s 0:00.05 100.0%	0+0k 0+1936io 0pf+0w
+>mixer      ( 01:18:42 )
+:ENERGY convergence:  9.42000042414e-06
+:CHARGE convergence:  3.05e-05
+:EF     convergence:  -0.000209998130375
+1.486u 0.023s 0:01.51 99.3%	0+0k 0+912io 0pf+0w
+
+:ITT1    cycle 5 	Wed Mar 10 01:18:42 2021 2/2 to go
+
+>lapw0      ( 01:18:42 )
+>lapw1      ( 01:18:44 )
+>dmft1      ( 01:18:45 )
+>impurity   ( 01:18:46 )
+>dmft2      ( 03:24:33 )
+0.027u 0.007s 0:00.03 66.6%	0+0k 0+632io 0pf+0w
+>lcore      ( 03:24:35 )
+0.048u 0.020s 0:00.06 100.0%	0+0k 0+1944io 0pf+0w
+>mixer      ( 03:24:36 )
+:ENERGY convergence:  4.55299996247e-05
+:CHARGE convergence:  0.0001048
+:EF     convergence:  -0.00178913208304
+1.511u 0.020s 0:01.53 100.0%	0+0k 0+912io 0pf+0w
+
+:ITT1    cycle 5 	Wed Mar 10 03:24:36 2021 2/2 to go
+
+>lapw0      ( 03:24:36 )
+>lapw1      ( 03:24:37 )
+>dmft2      ( 03:24:39 )
+0.028u 0.005s 0:00.03 66.6%	0+0k 0+632io 0pf+0w
+>lcore      ( 03:24:41 )
+0.051u 0.014s 0:00.06 100.0%	0+0k 0+1936io 0pf+0w
+>mixer      ( 03:24:41 )
+:ENERGY convergence:  6.21000071988e-06
+:CHARGE convergence:  2.8e-05
+:EF     convergence:  0.000202606401661
+1.492u 0.021s 0:01.51 100.0%	0+0k 0+904io 0pf+0w
+
+:ITT1    cycle 6 	Wed Mar 10 03:24:41 2021 1/1 to go
+
+>lapw0      ( 03:24:41 )
+>lapw1      ( 03:24:42 )
+>dmft1      ( 03:24:44 )
+>impurity   ( 03:24:45 )
+>dmft2      ( 05:30:28 )
+0.025u 0.001s 0:00.02 100.0%	0+0k 0+624io 0pf+0w
+>lcore      ( 05:30:29 )
+0.050u 0.018s 0:00.06 100.0%	0+0k 0+1944io 0pf+0w
+>mixer      ( 05:30:30 )
+:ENERGY convergence:  6.2999970396e-07
+:CHARGE convergence:  0.0002134
+:EF     convergence:  0.00194032514913
+1.494u 0.021s 0:01.51 100.0%	0+0k 0+904io 0pf+0w
+
+:ITT1    cycle 6 	Wed Mar 10 05:30:30 2021 1/1 to go
+
+>lapw0      ( 05:30:30 )
+>lapw1      ( 05:30:31 )
+>dmft2      ( 05:30:33 )
+0.023u 0.006s 0:00.02 100.0%	0+0k 0+624io 0pf+0w
+>lcore      ( 05:30:35 )
+0.046u 0.015s 0:00.06 83.3%	0+0k 0+1936io 0pf+0w
+>mixer      ( 05:30:35 )
+:ENERGY convergence:  1.18300013128e-05
+:CHARGE convergence:  7.09e-05
+:EF     convergence:  -0.000770436993677
+1.487u 0.023s 0:01.51 99.3%	0+0k 0+904io 0pf+0w
+
+:ITT2    cycle 6 	Wed Mar 10 05:30:35 2021 1/1 to go
+
+>lapw0      ( 05:30:35 )
+>lapw1      ( 05:30:36 )
+>dmft2      ( 05:30:38 )
+0.017u 0.004s 0:00.02 50.0%	0+0k 0+624io 0pf+0w
+>lcore      ( 05:30:41 )
+0.042u 0.018s 0:00.06 83.3%	0+0k 0+1936io 0pf+0w
+>mixer      ( 05:30:41 )
+:ENERGY convergence:  3.08999733534e-06
+:CHARGE convergence:  4.47e-05
+:EF     convergence:  8.2283130812e-05
+1.496u 0.020s 0:01.51 100.0%	0+0k 0+904io 0pf+0w
+
+:ITT1    cycle 7 	Wed Mar 10 05:30:41 2021 0/0 to go
+
+>lapw0      ( 05:30:41 )
+>lapw1      ( 05:30:42 )
+>dmft1      ( 05:30:44 )
+>impurity   ( 05:30:45 )
+>dmft2      ( 07:36:33 )
+0.027u 0.006s 0:00.03 66.6%	0+0k 0+624io 0pf+0w
+>lcore      ( 07:36:35 )
+0.054u 0.012s 0:00.06 100.0%	0+0k 0+1944io 0pf+0w
+>mixer      ( 07:36:35 )
+:ENERGY convergence:  2.21599984798e-05
+:CHARGE convergence:  7e-05
+:EF     convergence:  -0.000406658029106
+1.494u 0.020s 0:01.51 100.0%	0+0k 0+904io 0pf+0w
+
+:ITT1    cycle 7 	Wed Mar 10 07:36:36 2021 0/0 to go
+
+>lapw0      ( 07:36:36 )
+>lapw1      ( 07:36:37 )
+>dmft2      ( 07:36:39 )
+0.031u 0.004s 0:00.03 100.0%	0+0k 0+624io 0pf+0w
+>lcore      ( 07:36:41 )
+0.055u 0.019s 0:00.07 85.7%	0+0k 0+1936io 0pf+0w
+>mixer      ( 07:36:41 )
+:ENERGY convergence:  8.20000059321e-06
+:CHARGE convergence:  3.48e-05
+:EF     convergence:  0.000228523331164
+1.500u 0.023s 0:01.52 100.0%	0+0k 0+904io 0pf+0w
+
+:ITT1    cycle 8 	Wed Mar 10 07:36:41 2021 -1/99 to go
+
+>lapw0      ( 07:36:41 )
+>lapw1      ( 07:36:43 )

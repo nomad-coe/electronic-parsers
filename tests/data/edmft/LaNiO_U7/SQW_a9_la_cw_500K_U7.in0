@@ -1,0 +1,3 @@
+TOT  XC_PBE     (XC_LDA,XC_PBESOL,XC_WC,XC_MBJ,XC_REVTPSS)                      
+NR2V      IFFT      (R2V)
+   30   30   27    2.00  1    min IFFT-parameters, enhancement factor, iprint
