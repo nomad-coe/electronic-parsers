@@ -291,31 +291,35 @@ class BeyondDFTWorkflowsParser:
 class OrbitalAPWConstructor:
     '''
     Class for storing and sorting the orbitals in a APW basis set.
+    Essentially,
     '''
     def __init__(self, *args, **kwargs):
         '''
-        Initializer for the OrbitalAPWConstructor class. Accept:
-        - args: list of strings defining the input format for the orbitals, should match the quantity names in OrbitalAPW
-          default: ['l_quantum_number', 'energy_parameter', 'type', 'updated']
-        - order: list of strings defining the order in which the orbitals are sorted, in descending order of relevance
-        - comparison: list of strings defining the keys used for comparison of orbitals in `overwrite_orbital`
+         Initializes an OrbitalAPWConstructor instance.
+
+        Parameters:
+        - args: list of strings defining the input format for the orbitals. They should match the attribute names in the OrbitalAPW class.
+            default: ['l_quantum_number', 'energy_parameter', 'type']
+        - kwargs: Optional keyword arguments, which can include:
+        - 'order': list of strings defining the order in which orbitals should be sorted.
+        - 'comparison': list of strings defining the keys used for comparing orbitals.
         '''
-        self.orbitals: list[dict[str, Any]] = []
-        self.wavefunctions: dict[str, Any] = {}
+        self.orbitals: list[dict[str, Any]] = []  # retains the orbitals
+        self.composed_orbital: dict[str, Any] = {}  # retains an orbital composed of wavefunctions
         if args:
-            self.input_format = args
-        self.term_order = kwargs.get(
+            self._input_format = args  # the names of the orbital settings being mapped
+        self._term_order = kwargs.get(
             'order',
             [
                 'l_quantum_number', 'j_quantum_number', 'k_quantum_number',
                 'energy_parameter_n', 'energy_parameter', 'order', 'updated',
             ]
-        )
-        self.term_order.reverse()
-        self.comparison_keys = kwargs.get(
+        )  # order in which the orbitals are to be sorted
+        self._term_order.reverse()
+        self._comparison_keys = kwargs.get(
             'comparison',
             ['l_quantum_number', 'j_quantum_number', 'k_quantum_number']
-        )
+        )  # attributes by which orbitals are compared
 
     def _convert(self, settings: dict[str, Any], **kwargs) -> dict[str, Any]:
         '''
@@ -324,45 +328,65 @@ class OrbitalAPWConstructor:
         '''
         return dict(sorted({**settings, **kwargs}.items()))
 
-    def append_wavefunction(self, settings, **kwargs):
+    def compose_orbital(self, settings: dict[str, Any], **kwargs):
         '''
+        Update the orbital dictionary with the wavefunction attributes.
+        Non-repeating attributes are added as new keys,
+        while repeating attributes are appended to a list or numpy array.
+        Typically used to add local orbitals.
+
+        Parameters:
+        - settings: a dictionary of the wavefunction's settings
+        - kwargs: additional settings that are not present in `input_format` but need to be included in the wavefunction
         '''
-        if self.wavefunctions:
-            for key, val in self.wavefunctions.items():
+        if self.composed_orbital:
+            for key, val in self.composed_orbital.items():
                 converted = self._convert(settings, **kwargs)
-                if getattr(OrbitalAPW, key, {}).get('shape'):
+                if getattr(OrbitalAPW, key, {}).get('shape'):  # determine if the quantity is a vector
                     try:
-                        self.wavefunctions[key].append(converted[key])
+                        self.composed_orbital[key].append(converted[key])
                     except AttributeError:
-                        self.wavefunctions[key] = np.append(self.wavefunctions[key], converted[key])
+                        self.composed_orbital[key] = np.append(self.composed_orbital[key], converted[key])
                 elif val != converted[key]:
                     raise ValueError(f'Wavefunction {key} does not match previous value')
         else:
             for key, val in self._convert(settings, **kwargs).items():
-                if getattr(OrbitalAPW, key, {}).get('shape'):
-                    if hasattr(val, 'units'):  # check if quantity
-                        self.wavefunctions[key] = np.array([val.magnitude]) * val.units
+                if getattr(OrbitalAPW, key, {}).get('shape'):  # determine if the quantity is a vector
+                    if hasattr(val, 'units'):  # check if is a quantity
+                        self.composed_orbital[key] = np.array([val.magnitude]) * val.units
                     else:
-                        self.wavefunctions[key] = [val]
+                        self.composed_orbital[key] = [val]
                 else:
-                    self.wavefunctions[key] = val
+                    self.composed_orbital[key] = val
 
     def unroll_orbital(self, orders: Union[int, list[int]], settings, **kwargs):
         '''
+        Reset the wavefunctions and unroll a (L)APW orbitals into a list of wavefunctions.
+
+        Parameters:
+        - orders: an integer or a list of integers representing the orders of the orbital
+        - settings: settings for the orbital to be appended
+        - kwargs: additional settings that are not present in `input_format` but need to be included in the orbital
         '''
         if isinstance(orders, int):
             orders = list(range(orders))
-        self.wavefunctions = {} # reset wavefunctions
+        self.composed_orbital = {} # reset wavefunctions
         for order in orders:
             new_kwargs = {**kwargs, 'order': order}
-            self.append_wavefunction(settings, **new_kwargs)
+            self.compose_orbital(settings, **new_kwargs)
 
     def append_orbital(self, *settings, **kwargs):
         '''
+        Append an orbital to the list of orbitals,
+        and flush the orbital composed of wavefunctions.
+
+        Parameters:
+        - settings: attributes for the orbital to be appended
+        - kwargs: additional settings that are not present in `input_format` but need to be included in the orbital
         '''
-        if self.wavefunctions:
-            self.orbitals.append(self.wavefunctions)
-            self.wavefunctions = {}
+        if self.composed_orbital:
+            self.orbitals.append(self.composed_orbital)
+            self.composed_orbital = {}
             return
         if len(settings) == 1:
             if new_orbital := self._convert(settings[0], **kwargs):
@@ -376,8 +400,9 @@ class OrbitalAPWConstructor:
 
     def overwrite_orbital(self, *settings, **kwargs):
         '''
+        Overwrite a stored orbital matching the comparison_keys with the new settings.
         '''
-        if not(converted := self.wavefunctions):
+        if not(converted := self.composed_orbital):
             if len(settings) == 1:
                 converted = self._convert(settings[0], **kwargs)
             else:

@@ -53,7 +53,7 @@ from .metainfo.exciting import (
 from ..utils import (
     get_files, BeyondDFTWorkflowsParser, OrbitalAPWConstructor,
 )
-from typing import Any, Iterable, Callable
+from typing import Any, Iterable
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -1628,7 +1628,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                         orb_constr.unroll_orbital(order_map[orb_type], orb)
                         orb_constr.append_orbital()
                     elif orb_type == 'LO':
-                        orb_constr.append_wavefunction(orb)
+                        orb_constr.compose_orbital(orb)
                 orb_constr.append_orbital()
         # read custom settings
         if lines_data := species_data.get('custom', []):
@@ -1639,7 +1639,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                         orb_constr.unroll_orbital(order_map[orb_type], orb)
                         orb_constr.overwrite_orbital()
                     elif orb_type == 'LO':
-                        orb_constr.append_wavefunction(orb)
+                        orb_constr.compose_orbital(orb)
                 orb_constr.append_orbital()
         # read in local orbitals
         if lines_data := species_data.get('lo', []):
@@ -1647,7 +1647,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 if (l := line_data.get('l')) is not None:
                     for wf in line_data.get('wf', []):
                         wf = map_to_metainfo(_convert_keyval(wf.get('key_val', [])))
-                        orb_constr.append_wavefunction(wf, l_quantum_number=l, type='LO')
+                        orb_constr.compose_orbital(wf, l_quantum_number=l, type='LO')
                     orb_constr.append_orbital()
         # write out the orbitals
         bs = BasisSet(
