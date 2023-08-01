@@ -41,6 +41,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 )
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 from .metainfo.wien2k import x_wien2k_section_equiv_atoms
+from ..utils import OrbitalAPWConstructor
 
 
 class In0Parser(TextParser):
@@ -76,14 +77,14 @@ class In1Parser(FileParser):
                             self._results[tag] = int(val)
                         except ValueError:
                             self._results[tag] = float(val)
-                elif re.search(r'K-VECTORS', line):
+                elif re.search(r'K-VECTORS', line):  # typically final line: no. k-vectors after reduction, e-min, e-max, no. bands
                     continue
                 # further specify the species setup
                 elif num_orbitals > 0:
                     line = line.strip().split()
                     orbital_settings = {}
                     for tag, val in zip(['l', 'e_param', 'e_diff', 'diff_search', 'type'], line[:5]):
-                        for converter in (int, float, lambda x: x):
+                        for converter in (int, float, lambda x: x):  # cast the orbital keyword to the correct type
                             try:
                                 orbital_settings[tag] = converter(val)
                                 break
@@ -91,13 +92,15 @@ class In1Parser(FileParser):
                                 pass
                     self._results['species'][-1]['orbital'].append(orbital_settings)
                     num_orbitals -= 1
-                # add a new species setup
+                # extract the default settings for a new atom + no. amendments
                 elif num_orbitals == 0:
-                    species_settings = {'orbital': []}
-                    line = line.strip().split()
-                    species_settings['e_param'] = float(line[0])
-                    species_settings['type'] = int(line[2])
-                    self._results['species'].append(species_settings)
+                    self._results['species'].append(
+                        {
+                            'e_param': float(line[0]),
+                            'type': int(line[2]),
+                            'orbital': [],
+                        }
+                    )
                     num_orbitals = int(line[1])
 
 
@@ -807,11 +810,20 @@ class Wien2kParser:
             sec_k_mesh.points = kpoints[0]
             sec_k_mesh.weights = kpoints[1]
 
-        # basis
+        # basis set
+        def _being_updated(energy_step: float, error_handling: str) -> dict[str, bool]:
+            """Return a dictionary of flags indicating how the energy parameters is being optimized."""
+            response = {'update': True, 'updated': False}
+            if energy_step == 0:
+                response['update'] = False
+            elif error_handling == 'STOP':
+                response['updated'] = True
+            return response
+
         if self.in1_parser.mainfile:
             self.in1_parser.parse()
             if self.in1_parser._results:
-                type_mapping = ('LAPW', 'APW', 'HDLO', 'LO')
+                type_mapping = {0: 'LAPW', 1: 'APW', 2: 'HDLO'}  # maybe change to function?
                 source = self.in1_parser._results
                 em = BasisSetContainer(scope=['wavefunction'])
                 em.basis_set.append(
@@ -821,32 +833,34 @@ class Wien2kParser:
                         cutoff_fractional=source.get('rkmax'),
                     )
                 )
-                for mt in source.get('species', []):
+                for atom in source.get('species', []):  # TODO: rename `mt` to `atom`?
                     bs = BasisSet(
-                        scope=['muffin-tin', 'full-electron'],
-                        spherical_harmonics_cutoff=source.get('lmax'))
+                        scope=['muffin-tin'],  # TODO: add core specs
+                        spherical_harmonics_cutoff=source.get('lmax')  # find default
+                    )
+                    # Write out the orbitals for each atom
                     for l_n in range(source.get('lmax', -1) + 1):
-                        orbital = OrbitalAPW()
-                        orbital.l_quantum_number = l_n
-                        e_param = mt.get('e_param', source.get('e_ref', .5) - .2)  # TODO: check for +.2 case
-                        update = False
-                        apw_type = mt.get('type')
-                        last_orbital_type = None
-                        for orb in mt['orbital']:
-                            if l_n == orb['l']:
-                                e_param = orb.get('e_param', e_param)
-                                update = orb.get('e_diff', 0) is not None
-                                apw_type = orb.get('type', apw_type)
-                                if last_orbital_type == apw_type:
-                                    orbital.energy_parameter = e_param
-                                    orbital.update = update
-                                    orbital.type = type_mapping[3]
-                                    continue
-                                last_orbital_type = apw_type
-                        orbital.energy_parameter = e_param
-                        orbital.update = update
-                        orbital.type = type_mapping[apw_type]
-                        bs.orbital.append(orbital)
+                        orbital_constructor = OrbitalAPWConstructor()
+                        ## e_param = atom.get('e_param', source.get('e_ref', .5) - .2)  # TODO: check for +.2 case
+                        orbital_constructor.append_orbital(
+                            l_n, atom['e_param'], type_mapping(atom.get('type', 0)),
+                        )
+                    # Apply amendments and additions
+                    l_spec = None
+                    for orb in atom['orbital']:
+                        l_spec = orb['l']
+                        if l_spec != l_ref:
+                            orbital_constructor.overwrite_orbital(
+                                l_spec, orb['e_param'], orb.get('type', 0),
+                                **_being_updated(orb.get('e_diff', 0)),
+                            )
+                        else:
+                            orbital_constructor.append_orbital(
+                                l_spec, orb['e_param'], orb.get('type', 0),
+                                **_being_updated(orb.get('e_diff', 0)),
+                            )
+                        l_ref = l_spec
+                    bs.orbital = orbital_constructor.get_orbitals()
                     em.basis_set.append(bs)
                 sec_method.electrons_representation.append(em)
 
