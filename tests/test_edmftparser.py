@@ -33,7 +33,7 @@ def parser():
 
 def test_lanio_u7(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/edmft/LaNiO_U7/SQW_a9_la_cw_500K_U7.indmfl', archive, None)
+    parser.parse('tests/data/edmft/LaNiO_u7_singlepoint/dmft_info.out', archive, None)
 
     # Run tests
     assert len(archive.run) == 1

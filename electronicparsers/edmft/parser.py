@@ -37,6 +37,14 @@ from ..utils import get_files
 from ..wien2k.parser import StructParser  # Wien2k is imported to parse the system information
 
 
+class OutParser(TextParser):
+    def __init__(self):
+        super().__init__()
+
+    def init_quantities(self):
+        self._quantities = []
+
+
 class IndmflParser(TextParser):
     def __init__(self):
         super().__init__()
@@ -103,8 +111,9 @@ class EDMFTParser:
         self._re_namesafe = re.compile(r'[^\w]')
         self._calculation_type = 'dmft'
 
-        self.indmfl_parser = IndmflParser()
+        self.out_parser = OutParser()
         self.struct_parser = StructParser()
+        self.indmfl_parser = IndmflParser()
         self.params_parser = ParamsParser()
 
         self._solver_map = {
@@ -116,11 +125,11 @@ class EDMFTParser:
         self._angular_momentum = ['s', 'p', 'd', 'f']
 
     def parse_system(self):
-        struct_file = get_files('*.struct', self.filepath, self.mainfile)
-        if struct_file:
-            if len(struct_file) > 1:
-                self.logger.warning('Multiple *struct files found; we will parse the last one!')
-            self.struct_parser.mainfile = struct_file[-1]
+        struct_files = get_files('*.struct', self.filepath, self.mainfile)
+        if struct_files:
+            if len(struct_files) > 1:
+                self.logger.warning(f'Multiple *struct files found; we will parse the last one: {struct_files[-1]}')
+            self.struct_parser.mainfile = struct_files[-1]
             atoms = self.struct_parser.get_atoms()
             if atoms is None:
                 return
@@ -198,12 +207,17 @@ class EDMFTParser:
         sec_scc.method_ref = sec_run.method[-1]  # ref DMFT
 
     def init_parser(self):
-        self.indmfl_parser.mainfile = self.mainfile
-        self.indmfl_parser.logger = self.logger
+        self.out_parser.mainfile = self.mainfile
+        self.out_parser.logger = self.logger
         self.struct_parser.mainfile = None
         self.struct_parser.logger = self.logger
+        self.indmfl_parser.mainfile = None
+        self.indmfl_parser.logger = self.logger
         self.params_parser.mainfile = None
         self.params_parser.logger = self.logger
+
+    def get_mainfile_keys(self, **kwargs):
+        return True
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
@@ -214,11 +228,11 @@ class EDMFTParser:
 
         self.init_parser()
 
-        params_file = get_files('*params.dat', self.filepath, self.mainfile)
-        if params_file:
-            if len(params_file) > 1:
-                self.logger.warning(f'Multiple *params.dat files found; we will parse the last one: {params_file[-1]}')
-            self.params_parser.mainfile = params_file[-1]
+        params_files = get_files('*params.dat', self.filepath, self.mainfile)
+        if params_files:
+            if len(params_files) > 1:
+                self.logger.warning(f'Multiple *params.dat files found; we will parse the last one: {params_files[-1]}')
+            self.params_parser.mainfile = params_files[-1]
 
             if self.params_parser.get('general_parameters'):
                 self.general_parameters = dict(self.params_parser.get('general_parameters').get('params', []))
@@ -233,13 +247,20 @@ class EDMFTParser:
         self.parse_system()
 
         # Method.DMFT section
-        if self.general_parameters and self.impurity_parameters:
-            self.parse_initial_model()
-            self.parse_method()
+        indmfl_files = get_files('*.indmfl', self.filepath, self.mainfile)
+        if indmfl_files:
+            if len(indmfl_files) > 1:
+                self.logger.warning(f'Multiple *.indmfl files found; we will parse the last one: {indmfl_files[-1]}')
+            self.indmfl_parser.mainfile = indmfl_files[-1]
+            if self.general_parameters and self.impurity_parameters:
+                self.parse_initial_model()
+                self.parse_method()
 
         # Calculation section
         self.parse_scc()
 
         # Workflow section
+        # self.archive refers to the DMFT1 and DMFT2 SinglePoint entries grouped. Then,
+        # we define DFT+DMFT workflow grouping the DFT Wien2k entry with self.archive.
         workflow = SinglePoint()
         self.archive.workflow2 = workflow
