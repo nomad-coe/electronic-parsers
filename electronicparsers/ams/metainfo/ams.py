@@ -28,6 +28,23 @@ from nomad.datamodel.metainfo import simulation
 m_package = Package()
 
 
+class Program(simulation.run.Program):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_ams_name = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        ''')
+
+    x_ams_engine = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        ''')
+
+
 class BandEnergies(simulation.calculation.BandEnergies):
 
     m_def = Section(validate=False, extends_base_section=True)
@@ -46,7 +63,7 @@ class BandEnergies(simulation.calculation.BandEnergies):
         description='''
         ''')
 
-    x_ams_occupancies = Quantity(
+    x_ams_occupations = Quantity(
         type=np.dtype(np.float64),
         shape=['n_spin_channels', 'n_bands'],
         unit='joule',
@@ -66,6 +83,46 @@ class Energy(simulation.calculation.Energy):
 
     x_ams_v_def_def = SubSection(sub_section=simulation.calculation.EnergyEntry)
 
+    x_ams_orthogonalization = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_orbital_interaction = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_orbital_interaction_a = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_orbital_interaction_efield = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_orbital_interaction_fit_correction = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_orbital_interaction_ts_correction_lda = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_orbital_interaction_ts_correction_nl = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_pauli_coulomb = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_pauli_efield = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_pauli_fit_correction = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_pauli_kinetic = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_pauli_kinetic_coulomb = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_pauli_ts_correction_lda = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_pauli = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_rpa = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_rpa = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_sum_fragments_scf_fit_correction = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_bond = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_mp2 = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
+    x_ams_bond_efield = SubSection(sub_section=simulation.calculation.EnergyEntry)
+
 
 class Forces(simulation.calculation.Forces):
 
@@ -74,6 +131,8 @@ class Forces(simulation.calculation.Forces):
     x_ams_p_matrix = SubSection(sub_section=simulation.calculation.ForcesEntry)
 
     x_ams_electronic_kinetic = SubSection(sub_section=simulation.calculation.ForcesEntry)
+
+    x_ams_electronic = SubSection(sub_section=simulation.calculation.ForcesEntry)
 
     x_ams_xc = SubSection(sub_section=simulation.calculation.ForcesEntry)
 
@@ -254,6 +313,7 @@ class Method(simulation.method.Method):
 
     x_ams_fermi_temperature = Quantity(
         type=np.dtype(np.float64),
+        unit='kelvin',
         shape=[],
         description='''
         ''')
@@ -319,7 +379,7 @@ class Method(simulation.method.Method):
         ''')
 
 
-class BasisSet(simulation.method.BasisSet):
+class BasisSetAtomCentered(simulation.method.BasisSetAtomCentered):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -449,6 +509,41 @@ class AtomParameters(simulation.method.AtomParameters):
         ''')
 
 
+class BandGapDeprecated(simulation.calculation.BandGapDeprecated):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_ams_n_valence_electrons = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_ams_valence_band_index = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_ams_valence_band_spin_index = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_ams_conduction_band_index = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_ams_conduction_band_spin_index = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+
 class Scf(simulation.method.Scf):
 
     m_def = Section(validate=False, extends_base_section=True)
@@ -515,6 +610,53 @@ class Scf(simulation.method.Scf):
 
     x_ams_vsplit = Quantity(
         type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        ''')
+
+
+class KMesh(simulation.method.KMesh):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_ams_general_integration_parameter = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_ams_bz_volume_total = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        ''')
+
+    x_ams_bz_volume_irreducible = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        ''')
+
+    x_ams_bz_volume_numerical_integration = Quantity(
+        type=np.float64,
+        shape=[],
+        description='''
+        ''')
+
+    x_ams_n_points_unique = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_ams_n_simplices = Quantity(
+        type=np.int32,
+        shape=[],
+        description='''
+        ''')
+
+    x_ams_n_points_per_simplex = Quantity(
+        type=np.int32,
         shape=[],
         description='''
         ''')

@@ -34,7 +34,7 @@ def parser():
 
 def test_scf(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/ams/phenylrSmall-metagga.out', archive, None)
+    parser.parse('tests/data/ams/scf/phenylrSmall-metagga.out', archive, None)
 
     sec_run = archive.run[0]
     assert sec_run.program.version == '70630 2018-11-24'
@@ -93,10 +93,10 @@ def test_scf(parser):
     assert len(sec_charges[-1].orbital_projected) == 206
     assert sec_charges[-1].orbital_projected[11].value.magnitude == approx(3.25241857e-20)
     assert sec_charges[-1].orbital_projected[26].orbital == '2s'
-    assert sec_scc.multipoles[0].dipole.total[0] == approx(0.851790)
+    assert sec_scc.multipoles[0].dipole.total[0] == approx(2.84126561e-30)
     assert sec_scc.eigenvalues[0].x_ams_energy_min[0][3].magnitude == approx(-2.51827575e-18)
     assert sec_scc.eigenvalues[0].x_ams_energy_max[1][16].magnitude == approx(-2.32112809e-19)
-    assert sec_scc.eigenvalues[0].x_ams_occupations[1][14] == 0.
+    assert sec_scc.eigenvalues[0].occupations[1][14] == 0.
     assert sec_scc.eigenvalues[0].band_gap[0].value.magnitude == approx(4.22895238e-19)
     assert sec_scc.eigenvalues[0].band_gap[0].energy_highest_occupied.magnitude == approx(-1.07685695e-18)
     assert sec_scc.eigenvalues[0].band_gap[0].x_ams_conduction_band_index == 15
@@ -108,7 +108,7 @@ def test_scf(parser):
 
 def test_geometry_optimization(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/ams/phenylrSmall-geoopt.out', archive, None)
+    parser.parse('tests/data/ams/go/phenylrSmall-geoopt.out', archive, None)
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 22
@@ -135,15 +135,15 @@ def test_geometry_optimization(parser):
     assert sec_systems[9].atoms.lattice_vectors[1][1].magnitude == approx(7.56032016e-10)
 
     sec_methods = archive.run[0].method
-    assert len(sec_methods) == 22
-    assert not sec_methods[16].x_ams_run_config['Store original Bloch functions']
-    assert sec_methods[21].atom_parameters[1].x_ams_cutoff_valence_kinetic == approx(24.05)
-    assert sec_methods[2].electronic.relativity_method == 'scalar_relativistic_atomic_ZORA'
+    assert len(sec_methods) == 1
+    assert not sec_methods[0].x_ams_run_config['Store original Bloch functions']
+    assert sec_methods[0].atom_parameters[1].x_ams_cutoff_valence_kinetic == approx(24.05)
+    assert sec_methods[0].electronic.relativity_method == 'scalar_relativistic_atomic_ZORA'
 
 
 def test_dos(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/ams/NiO-dos.out', archive, None)
+    parser.parse('tests/data/ams/dos/NiO-dos.out', archive, None)
 
     sec_dos = archive.run[0].calculation[0].dos_electronic[0]
     assert np.shape(sec_dos.total[1].value) == (158,)
@@ -151,14 +151,14 @@ def test_dos(parser):
     assert sec_dos.total[1].value[19].magnitude == approx(4.66493971e+14)
 
     archive = EntryArchive()
-    parser.parse('tests/data/ams/NiO-dos-restricted.out', archive, None)
+    parser.parse('tests/data/ams/dos/NiO-dos-restricted.out', archive, None)
     sec_dos = archive.run[0].calculation[0].dos_electronic[0]
     assert np.shape(sec_dos.total[0].value) == (154,)
 
 
 def test_geometry_optimization_new(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/ams/EDUSIF.out', archive, None)
+    parser.parse('tests/data/ams/go/EDUSIF.out', archive, None)
 
     sec_scc = archive.run[0].calculation
     assert len(sec_scc) == 14
@@ -176,9 +176,93 @@ def test_geometry_optimization_new(parser):
     assert sec_scc[-1].charges[1].analysis_method == 'Mulliken'
     assert sec_scc[-1].charges[1].value[29].magnitude == approx(-8.62902976e-20)
     assert sec_scc[-1].eigenvalues[0].x_ams_energy_min[0][11].magnitude == approx(-3.34244189e-18)
-    assert sec_scc[-1].eigenvalues[0].x_ams_occupations[0][775] == approx(2.0)
+    assert sec_scc[-1].eigenvalues[0].occupations[0][775] == approx(2.0)
 
     sec_system = archive.run[0].system
     assert len(sec_system) == 14
     assert sec_system[4].atoms.positions[10][2].magnitude == approx(2.45975365e-09)
     assert sec_system[7].atoms.lattice_vectors[1][1].magnitude == approx(2.5832e-09)
+
+
+def test_adf_sp(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/ams/adf_SP/adf_SP.out', archive, None)
+
+    sec_run = archive.run[0]
+    assert sec_run.program.version == '98925 2021-11-25'
+    assert sec_run.program.x_ams_engine == 'adf'
+
+    assert len(sec_run.method) == 1
+    sec_method = sec_run.method[0]
+    assert sec_method.dft.xc_functional.contributions[0].name == 'LDA_XC_VWN'
+    assert sec_method.electronic.n_spin_channels == 1
+
+    assert len(sec_run.system) == 1
+    sec_system = sec_run.system[0]
+    assert sec_system.atoms.labels[0] == 'O'
+    assert sec_system.atoms.positions.to('bohr')[1][0].magnitude == approx(-3.1867335262123166)
+
+    assert len(sec_run.calculation) == 1
+    sec_calc = sec_run.calculation[0]
+    assert sec_calc.band_gap[0].energy_highest_occupied.to('hartree').magnitude == approx(-0.2576927526332149)
+    assert sec_calc.band_gap[0].energy_lowest_unoccupied.to('hartree').magnitude == approx(-0.3054616645218846)
+    assert sec_calc.energy.fermi.to('hartree').magnitude == approx(-0.28159925821297915)
+    assert sec_calc.energy.x_ams_orthogonalization.value.to('hartree').magnitude == approx(5.416521358379486e-06)
+    assert sec_calc.energy.x_ams_orbital_interaction.value.to('hartree').magnitude == approx(-0.921823054134502)
+    assert sec_calc.energy.x_ams_pauli_coulomb.value.to('hartree').magnitude == approx(-2.492069688604461)
+    assert sec_calc.energy.x_ams_bond.value.to('hartree').magnitude == approx(-0.25256548879865254)
+    assert sec_calc.energy.total.value.to('hartree').magnitude == approx(-0.25256548879865254)
+    assert sec_calc.energy.xc.value.to('hartree').magnitude == approx(-0.25252261177051805)
+    assert sec_calc.charges[0].value.to('elementary_charge').magnitude[1] == approx(-1.2850914998807639e-08)
+
+
+def test_band_go(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/ams/band_pbe_GF/band_GF.out', archive, None)
+
+    sec_run = archive.run[0]
+    assert sec_run.program.version == '98925 2021-11-25'
+    assert sec_run.program.x_ams_engine == 'band'
+
+    assert len(sec_run.system) == 1
+    sec_system = sec_run.system[0]
+    assert sec_system.atoms.labels == ['Cs', 'Cl']
+    assert sec_system.atoms.positions.to('bohr').magnitude[1][2] == approx(-3.892835816729087)
+    assert sec_system.atoms.lattice_vectors.to('bohr').magnitude[1][1] == approx(7.785671633458174)
+    assert np.all(sec_system.atoms.periodic)
+
+    assert len(sec_run.calculation) == 1
+    sec_calc = sec_run.calculation[0]
+    assert sec_calc.energy.total.value.to('hartree').magnitude == approx(-0.23505514020774143)
+    assert sec_calc.forces.total.value.to('hartree / bohr').magnitude[0][0] == approx(3.132257252867465e-22)
+    assert sec_calc.band_gap[0].value.to('hartree').magnitude == approx(0.19174663326676872)
+    assert sec_calc.band_gap[0].energy_highest_occupied.to('hartree').magnitude == approx(-0.31612650570712414)
+    assert sec_calc.band_gap[0].energy_lowest_unoccupied.to('hartree').magnitude == approx(-0.12437987244035544)
+    assert sec_calc.eigenvalues[0].energies.to('hartree').magnitude[0][2][18] == approx(0.7009522244059739)
+    assert sec_calc.eigenvalues[0].occupations[0][3] == approx(1.9999999999999984)
+    assert sec_calc.dos_electronic[0].energies.to('hartree').magnitude[78] == approx(0.04238290440428649)
+    assert sec_calc.dos_electronic[0].total[0].value.to('1 / hartree').magnitude[24] == approx(0.5740645825775643)
+    assert sec_calc.charges[0].value.to('elementary_charge').magnitude[1] == approx(-0.2880699228617729)
+    assert sec_calc.charges[1].value.to('elementary_charge').magnitude[0] == approx(0.6258874446060609)
+
+
+def test_dftb_md(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/ams/dftb_MD/dftb_MD.out', archive, None)
+
+    sec_run = archive.run[0]
+    assert sec_run.program.x_ams_engine == 'dftb'
+
+    sec_system = sec_run.system
+    assert len(sec_system) == 1001
+    assert sec_system[772].atoms.positions.to('bohr').magnitude[10][1] == approx(-3.28424033)
+    assert sec_system[47].atoms.labels[8] == 'H'
+    assert sec_system[144].atoms.velocities.to('bohr / fs').magnitude[9][2] == approx(-0.0024493607814810845)
+
+    sec_calc = sec_run.calculation
+    assert len(sec_calc) == 1001
+    assert sec_calc[20].charges[0].value.to('elementary_charge').magnitude[6] == approx(0.35322952840842603)
+    assert sec_calc[94].energy.total.potential.to('hartree').magnitude == approx(-23.066413874869223)
+    assert sec_calc[502].energy.total.kinetic.to('hartree').magnitude == approx(0.04109780793407973)
+    assert sec_calc[687].time.to('fs').magnitude == approx(171.75)
+    assert sec_calc[341].temperature.magnitude == approx(740.3622235664087)

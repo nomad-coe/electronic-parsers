@@ -17,12 +17,14 @@
 # limitations under the License.
 #
 import os
+import re
 import numpy as np
 import logging
 from datetime import datetime
+from ase.data import chemical_symbols
 
 from nomad.units import ureg
-from nomad.parsing.file_parser.text_parser import TextParser, Quantity
+from nomad.parsing.file_parser.text_parser import TextParser, Quantity, FileParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, XCFunctional, Functional, Electronic, BasisSet, Scf, AtomParameters,
@@ -34,10 +36,13 @@ from nomad.datamodel.metainfo.simulation.system import (
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Dos, DosValues, Energy, EnergyEntry, Forces, ForcesEntry,
     Charges, ChargesValue, Multipoles, MultipolesEntry, BandEnergies, BandGapDeprecated,
+    BandGap
 )
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GeometryOptimization, GeometryOptimizationMethod)
+    GeometryOptimization, GeometryOptimizationMethod, MolecularDynamics)
 from .metainfo import m_env  # pylint: disable=unused-import
+from electronicparsers.utils import get_files
+from .rkf import rkf_to_dict
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -139,7 +144,7 @@ class OutParser(TextParser):
                     ),
                     Quantity(
                         'x_ams_basis_functions_confinement_width',
-                        rf'Basis functions confinement radius\s+({re_float})',
+                        rf'Width\s+({re_float})',
                         dtype=np.float64
                     ),
                 ])
@@ -422,7 +427,7 @@ class OutParser(TextParser):
             Quantity(
                 'atomic_charges',
                 rf'Index +Atom +Charge\s+((?:\d+ +\w+ +{re_float}\s+)+)',
-                str_operation=lambda x: np.transpose([v.strip().split() for v in x.strip().splitlines()])
+                str_operation=lambda x: [v.strip().split()[-1] for v in x.strip().splitlines()]
             ),
             Quantity(
                 'fermi_energy',
@@ -627,8 +632,7 @@ class OutParser(TextParser):
             Quantity(
                 'dipole_moment',
                 rf'direction +dipole.+\s+\=+\s+((?:\w+ +{re_float}.+\s+)+)',
-                str_operation=lambda x: [v.strip().split()[2] for v in x.strip().splitlines()],
-                dtype=np.dtype(np.float64)
+                str_operation=lambda x: ([float(v.strip().split()[2]) for v in x.strip().splitlines()] * ureg.debye).to('C * m').magnitude,
             ),
             Quantity(
                 'band_energy_ranges',
@@ -680,7 +684,11 @@ class OutParser(TextParser):
 
         self._quantities = [
             Quantity('program_version', r'\*\s*r(\d+ \d{4}\-\d\d\-\d\d)', flatten=False),
-            Quantity('time_start', r'RunTime\:\s*(\w{3}\d+\-\d{4}\s*\d+\:\d+\:\d+)', flatten=False),
+            Quantity(
+                'time_start',
+                r'RunTime\:\s*(\w{3}\d+\-\d{4}\s*\d+\:\d+\:\d+)',
+                str_operation=lambda x: (datetime.strptime(x, '%b%d-%Y %H:%M:%S') - datetime(1970, 1, 1)).total_seconds()
+            ),
             Quantity(
                 'single_point',
                 r'SINGLE POINT CALCULATION \*([\s\S]+?)(:?Timing|\Z)',
@@ -690,7 +698,7 @@ class OutParser(TextParser):
                 r'GEOMETRY OPTIMIZATION\s*\*([\s\S]+?)(:?Timing|Performing a single pooint|\Z)',
                 sub_parser=TextParser(quantities=system_quantities + method_quantities + [
                     Quantity(
-                        'iteration',
+                        'step',
                         r'Geometry Convergence after Step\s*([\s\S]+?(?:dE\(predicted\)\:.+|\Z))',
                         repeats=True, sub_parser=TextParser(quantities=calculation_quantities)),
                     Quantity(
@@ -780,9 +788,273 @@ class OutParser(TextParser):
         ]
 
 
+class RKFParser(FileParser):
+    def __init__(self, mainfile=None, logger=None, open=None):
+        super().__init__(mainfile, logger, open)
+        self._energies_map = {
+            'Bond Energy': 'x_ams_bond', 'Corr. due to Orthogonalization': 'x_ams_orthogonalization',
+            'Dispersion Energy': 'x_ams_dispersion', 'Ebond due to Efield': 'x_ams_bond_efield',
+            'Electrostatic Energy': 'electrostatic', 'Kinetic Energy': 'kinetic',
+            'MP2 energy': 'x_ams_mp2', 'Orb.Int. A': 'x_ams_orbital_interaction_a',
+            'Orb.Int. Efield': 'x_ams_orbital_interaction_efield',
+            'Orb.Int. FitCorrection': 'x_ams_orbital_interaction_fit_correction',
+            'Orb.Int. TSCorrection (LDA)': 'x_ams_orbital_interaction_ts_correction_lda',
+            'Orb.Int. TSCorrection (NL)': 'x_ams_orbital_interaction_ts_correction_nl',
+            'Orb.Int. Total': 'x_ams_orbital_interaction', 'Pauli Coulomb': 'x_ams_pauli_coulomb',
+            'Pauli Efield': 'x_ams_pauli_efield', 'Pauli FitCorrection': 'x_ams_pauli_fit_correction',
+            'Pauli Kinetic': 'x_ams_pauli_kinetic', 'Pauli Kinetic+Coulomb': 'x_ams_pauli_kinetic_coulomb',
+            'Pauli TS Correction (LDA)': 'x_ams_pauli_ts_correction_lda', 'Pauli Total': 'x_ams_pauli',
+            'RPA energy': 'x_ams_rpa', 'SCF Bond Energy': 'x_ams_bond',
+            'SumFragmentsSCF FitCorrection': 'x_ams_sum_fragments_scf_fit_correction',
+            'XC Energy': 'xc',
+            # 'XC energies': 'xc_values_per_atom'
+        }
+        # TODO verfiy list
+        self._ldapot = {1: 'VWN', 2: 'Stoll', 3: 'PW92'}
+
+    @property
+    def data(self):
+        if self._file_handler is None:
+            try:
+                self._file_handler = rkf_to_dict(self.mainfile)
+            except Exception:
+                self.logger.error('Error reading rkf file')
+        return self._file_handler
+
+    def parse(self, key=None):
+        if self.data is None:
+            return
+
+        if self._results is None:
+            self._results = {}
+
+        general = self.data.get('General', {})
+        # TODO determine if program version is same as release, formatting required
+        # for compatibility with text output
+        self._results['program_version'] = general.get(
+            'release', '').replace('(', '').replace(')', '').split('r')[-1]
+        self._results['program_x_ams_name'] = general.get('program')
+        self._results['program_x_ams_engine'] = general.get('engine')
+
+        nspin = general.get('nspin', 1)
+        xc_functional = {}
+        if (ldapot := general.get('ldapot')) is not None:
+            xc_functional['LDA'] = self._ldapot.get(ldapot)
+        if (ggapot := general.get('ggapot', '').strip()):
+            xc_functional['GGA'] = ggapot
+        if (mgga := general.get('MetaGGAConfig', {}).get('metagga', '').strip()):
+            xc_functional['MGGA'] = mgga
+        # TODO parse hybrid, hf
+        self._results['model_parameters'] = {
+            'spin': nspin > 1,
+            'dft_potential': xc_functional
+        }
+
+        k_space_sampling = {}
+        if (kspace := self.data.get('kspace')) is not None:
+            k_space_sampling['x_ams_n_simplices'] = kspace.get('nsimpl')
+            k_space_sampling['x_ams_n_points_unique'] = kspace.get('kuniqu')
+            self._results['k_space_sampling'] = k_space_sampling
+
+        if (kpoints_config := self.data.get('KPointsConfig')) is not None:
+            k_space_sampling['x_ams_general_integration_parameter'] = kpoints_config.get('interpolation')
+            k_space_sampling['grid'] = kpoints_config.get('parameters')
+
+        engine_results = self.data.get('EngineResults', {})
+
+        files = [val for key, val in engine_results.items() if key.startswith('Files')]
+        for n, name in enumerate(files):
+            rkf_files = get_files(name, self.mainfile)
+            if not rkf_files:
+                self.logger.warning('rkf file not found in directory.')
+                files[n] = None
+                continue
+            if len(rkf_files) > 1:
+                self.logger.warning('Multiple rkf files found in directory')
+            files[n] = rkf_files[0]
+
+        labels = []
+        if (molecule := self.data.get('Molecule')) is not None:
+            labels = [chemical_symbols[n] for n in molecule.get('AtomicNumbers', [])]
+            if not labels:
+                labels = molecule.get('AtomSmbols').split()
+            positions = molecule.get('Coords', [])
+            try:
+                positions = np.reshape(positions, (len(labels), 3)) * ureg.bohr
+            except Exception:
+                self.logger.warning('Cannot read atom positions.')
+            self._results['labels_positions'] = [labels, positions]
+            if (lattice_vectors := molecule.get('LatticeVectors')) is not None:
+                self._results['lattice_vectors'] = np.reshape(lattice_vectors, (3, 3)) * ureg.bohr
+
+        calc_type = None
+        calc_results = {}
+
+        if (amsresults := self.data.get('AMSResults')) is not None:
+            if (charges := amsresults.get('Charges')) is not None:
+                self._results['atomic_charges'] = amsresults.get('Charges')
+            if (dipole := amsresults.get('DipoleMoment')) is not None:
+                dipole = np.sqrt(np.sum(np.array(dipole) ** 2))
+                self._results['dipole_moment'] = ([dipole] * ureg.elementary_charge * ureg.bohr).to('C * m').magnitude
+            if (energy := amsresults.get('Energy')) is not None:
+                self._results['energy_total'] = energy * ureg.hartree
+            if (gradients := amsresults.get('Gradients')) is not None:
+                self._results['forces_total'] = np.reshape(gradients, (len(labels), 3)) * ureg.hartree / ureg.bohr
+            if (hessian := amsresults.get('Hessian')) is not None:
+                hessian = np.reshape(hessian, (len(labels), 3, len(labels), 3))
+                self._results['hessian_matrix'] = (np.transpose(hessian, axes=(
+                    0, 2, 1, 3)) * ureg.hartree / ureg.bohr ** 2).to('J / m ** 2').magnitude
+
+        if (history := self.data.get('History')) is not None:
+            calc_type = 'geometry_optimization'
+            n_entries = history.get('nEntries', 0)
+            calc_results['step'] = [None] * n_entries
+            for n in range(n_entries):
+                positions = history.get(f'Coords({n + 1})')
+                if positions is not None:
+                    positions = np.reshape(positions, (len(labels), 3)) * ureg.bohr
+                calc_results['step'][n] = {'labels_positions': [labels, positions]}
+                if (energy_total := history.get(f'Energy({n + 1})')) is not None:
+                    calc_results['step'][n]['energy_total'] = energy_total * ureg.hartree
+
+        if (mdhistory := self.data.get('MDHistory')) is not None:
+            calc_type = 'molecular_dynamics'
+            n_entries = mdhistory.get('nEntries', 0)
+            if len(calc_results.get('step', [])) != n_entries:
+                self.logger.warning('Inconsistent number of entries in history.')
+            else:
+                block_size = mdhistory.get('blockSize', 1)
+                for n in range(n_entries):
+                    calc_results['step'][n]['atomic_charges'] = mdhistory.get(f'Charges({n + 1})')
+                    energies = {}
+                    nblock = (n // block_size) + 1
+                    ndata = n % block_size
+                    if (total := mdhistory.get(f'TotalEnergy({nblock})')) is not None:
+                        energies['total'] = (total if isinstance(total, float) else total[ndata]) * ureg.hartree
+                    if (kinetic := mdhistory.get(f'KineticEnergy({nblock})')) is not None:
+                        energies['total_kinetic'] = (kinetic if isinstance(kinetic, float) else kinetic[ndata]) * ureg.hartree
+                    if (potential := mdhistory.get(f'PotentialEnergy({nblock})')) is not None:
+                        energies['total_potential'] = (potential if isinstance(potential, float) else potential[ndata]) * ureg.hartree
+                    calc_results['step'][n]['energies'] = energies
+                    if (step := mdhistory.get(f'Step({nblock})')) is not None:
+                        calc_results['step'][n]['step'] = step if isinstance(step, int) else step[ndata]
+                    if (time := mdhistory.get(f'Time({nblock})')) is not None:
+                        calc_results['step'][n]['time'] = (time if isinstance(time, float) else time[ndata]) * ureg.fs
+                    if (temperature := mdhistory.get(f'Temperature({nblock})')) is not None:
+                        calc_results['step'][n]['temperature'] = (temperature if isinstance(temperature, float) else temperature[ndata]) * ureg.kelvin
+                    if (velocities := mdhistory.get(f'Velocities({n + 1})')) is not None:
+                        calc_results['step'][n]['velocities'] = np.reshape(velocities, (len(labels), 3)) * ureg.bohr / ureg.fs
+
+        if history is None and files:
+            if len(files) != 1:
+                self.logger.warning('Inconsistent number of rkf files found.')
+            calc_type = 'single_point'
+            calc_results = RKFParser(mainfile=files[0] if files else None).parse()
+
+        elif history:
+            # pass
+            if len(files) == 1:
+                calc_results['step'][-1] = RKFParser(mainfile=files[0]).parse()
+            elif len(files) == n_entries:
+                for n, name in enumerate(files):
+                    calc_results['step'][n] = RKFParser(mainfile=name).parse()
+            else:
+                self.logger.warning('Inconsistent number of rkf files found.')
+
+        if calc_type is not None:
+            self._results[calc_type] = calc_results
+
+        if (energy := self.data.get('Energy')) is not None:
+            self._results['energies'] = {}
+            for ams_key, nomad_key in self._energies_map.items():
+                val = energy.get(ams_key)
+                if val is not None:
+                    self._results['energies'][nomad_key] = val * ureg.hartree
+
+        if (geometry := self.data.get('geometry')) is not None:
+            if (lattice_vectors := geometry.get('standard_lattice')) is not None:
+                self._results['lattice_vectors'] = np.reshape(lattice_vectors, (3, 3)) * ureg.bohr
+
+        if (properties := self.data.get('Properties')) is not None:
+            if (mulliken := properties.get('AtomCharge Mulliken')) is not None:
+                self._results['mulliken_populations'] = {'atom': np.reshape(mulliken, (len(mulliken) // nspin, nspin))}
+
+            if (fermi := properties.get('FermiLevel')) is not None:
+                self._results['fermi_energy'] = fermi * ureg.hartree
+
+            if (dipole := properties.get('Dipole')) is not None:
+                dipole = np.sqrt(np.sum(np.array(dipole) ** 2))
+                self._results['dipole_moment'] = ([dipole] * ureg.elementary_charge * ureg.bohr).to('C * m').magnitude
+
+                self._results['atomic_charges'] = charges
+
+            self._results['band_gap'] = {}
+            if (homo := properties.get('HOMO')) is not None:
+                self._results['band_gap']['energy_highest_occupied'] = homo * ureg.hartree
+            if (lumo := properties.get('LUMO')) is not None:
+                self._results['band_gap']['energy_lowest_unoccupied'] = lumo * ureg.hartree
+
+            # TODO parse other quantities
+
+        if (properties := self.data.get('Scalar Atomic Properties')) is not None:
+            if (mulliken := properties.get('Mulliken Charges')) is not None:
+                self._results['mulliken_populations'] = {'atom': np.reshape(mulliken, (len(mulliken) // nspin, nspin))}
+
+        if (dos := self.data.get('DOS')) is not None:
+            self._results['total_dos'] = {'dos': np.transpose([dos.get('Energies'), *np.reshape(dos.get('Total DOS', []), (
+                dos.get('nSpin', 0), dos.get('nEnergies', 0)
+            ))])}
+
+        eigensystem = self.data.get('eigensystem', {})
+        if eigensystem is not None:
+            eigenvalues = {}
+            if (eigval := eigensystem.get('eigval')) is not None:
+                nspin = eigensystem.get('nspin', 1)
+                nband = eigensystem.get('nband', 0)
+                # TODO check if shape is correct
+                eigenvalues['energies'] = np.reshape(eigval, (nspin, len(eigval) // (nband * nspin), nband)) * ureg.hartree
+                occupations = eigensystem.get('occupationPerBandAndSpin')
+                if occupations is not None:
+                    # TODO check if occ shape is correct
+                    eigenvalues['occupations'] = np.transpose(np.reshape(occupations, (nband, nspin)))
+                self._results['eigenvalues'] = eigenvalues
+
+        if (band_structure := self.data.get('BandStructure')) is not None:
+            if (energy_ranges := band_structure.get('bandsEnergyRange')) is not None:
+                # TODO check if shape is correct
+                nband = band_structure.get('nBand')
+                nspin = band_structure.get('nSpin')
+                energy_ranges = np.transpose(np.reshape(energy_ranges, (nband, nspin, 2)))
+                occupations = self._results.get('eigenvalues', {}).get('occupations')
+                self._results['band_energy_ranges'] = [*energy_ranges, occupations]
+            band_gap = {}
+            if (value := band_structure.get('BandGap')) is not None:
+                band_gap['value'] = value * ureg.hartree
+            if (top_valence_band := band_structure.get('TopValenceBand')) is not None:
+                band_gap['energy_highest_occupied'] = top_valence_band * ureg.hartree
+            if (bottom_conduction_band := band_structure.get('BottomConductionBand')) is not None:
+                band_gap['energy_lowest_unoccupied'] = bottom_conduction_band * ureg.hartree
+            self._results['band_gap'] = band_gap
+
+        if (geoopt := self.data.get('GeoOpt')) is not None:
+            if (gradients := geoopt.get('Gradients_CART')) is not None:
+                self._results['forces_total'] = np.reshape(gradients, (len(labels), 3)) * ureg.hartree / ureg.bohr
+            if (hessian := geoopt.get('Hessian_CART')) is not None:
+                hessian = np.reshape(hessian, (len(labels), 3, len(labels), 3))
+                self._results['hessian_matrix'] = (np.transpose(hessian, axes=(
+                    0, 2, 1, 3)) * ureg.hartree / ureg.bohr ** 2).to('J / m ** 2').magnitude
+        # TODO parse Themodynamics, Vibrations, phonons
+
+        return self
+
+    def keys(self):
+        return self.results.keys()
+
+
 class AMSParser:
     def __init__(self):
         self.out_parser = OutParser()
+        self.rkf_parser = RKFParser()
         self._relativity_map = {
             'scalar (ZORA,APA)': 'scalar_relativistic_atomic_ZORA',
             '---': None,
@@ -791,6 +1063,8 @@ class AMSParser:
     def init_parser(self):
         self.out_parser.mainfile = self.mainfile
         self.out_parser.logger = self.logger
+        self.rkf_parser.logger = self.logger
+        self.parser = self.out_parser
 
     def parse_configurations(self):
         sec_run = self.archive.run[0]
@@ -810,14 +1084,29 @@ class AMSParser:
             for key, val in source.get('energies', dict()).items():
                 if key == 'electronic_kinetic':
                     sec_energy.electronic = EnergyEntry(kinetic=val)
+                elif (match := re.match(r'(\w+)_((?:kinetic|potential|values_per_atom))', key)):
+                    entry = getattr(sec_energy, match.group(1))
+                    entry = entry if entry else EnergyEntry()
+                    entry.m_set(entry.m_get_quantity_definition(match.group(2)), val)
+                    sec_energy.m_add_sub_section(getattr(Energy, match.group(1)), entry)
                 else:
-                    setattr(sec_energy, key, EnergyEntry(value=val))
+                    entry = getattr(sec_energy, key)
+                    entry = entry if entry else EnergyEntry()
+                    entry.value = val
+                    sec_energy.m_add_sub_section(getattr(Energy, key), entry)
 
             # forces
             sec_forces = sec_scc.m_create(Forces)
+            if (forces := source.get('forces_total')) is not None:
+                sec_forces.total = ForcesEntry(value=forces)
             for key, val in source.get('forces', dict()).items():
                 key = key if key == 'total' else f'x_ams_{key}'
-                setattr(sec_forces, key, ForcesEntry(value=val))
+                sec_forces.m_add_sub_section(getattr(Forces, key), ForcesEntry(value=val))
+
+            # md
+            sec_scc.temperature = source.get('temperature')
+            sec_scc.step = source.get('step')
+            sec_scc.time = source.get('time')
 
             # self consistency
             for energy_change in source.get('self_consistency', {}).get('energy_change', []):
@@ -838,9 +1127,9 @@ class AMSParser:
                     sec_dos_values.value = total_dos[spin] * (1 / ureg.hartree)
 
             # atom charges
-            if source.atomic_charges is not None:
+            if (charges := source.get('atomic_charges')) is not None:
                 sec_charges = sec_scc.m_create(Charges)
-                sec_charges.value = source.atomic_charges[-1] * ureg.elementary_charge
+                sec_charges.value = charges * ureg.elementary_charge
 
             for analysis in source.get('atom_charge_analysis', []):
                 for n, method in enumerate(analysis.get('methods', [])):
@@ -876,7 +1165,7 @@ class AMSParser:
                             sec_charges.orbital_projected.append(ChargesValue(
                                 orbital=orbital, spin=nspin, atom_label=atom[0], atom_index=natom,
                                 value=charge * ureg.elementary_charge))
-                sec_charges.total = mulliken.total
+                sec_charges.total = mulliken.get('total')
 
             # dipole
             dipole = source.get('dipole_moment')
@@ -885,19 +1174,31 @@ class AMSParser:
                 sec_multipoles.dipole = MultipolesEntry(total=dipole)
 
             # eigenvalues
-            band_energies = source.get('band_energy_ranges')
-            if band_energies is not None:
-                sec_band_energies = sec_scc.m_create(BandEnergies)
-                sec_band_energies.x_ams_energy_min = band_energies[0] * ureg.hartree
-                sec_band_energies.x_ams_energy_max = band_energies[1] * ureg.hartree
-                sec_band_energies.x_ams_occupations = band_energies[2]
+            if (eigenvalues := source.get('eigenvalues')) is not None:
+                sec_eigenvalues = sec_scc.m_create(BandEnergies)
+                sec_eigenvalues.energies = eigenvalues.get('energies')
+                sec_eigenvalues.occupations = eigenvalues.get('occupations')
+
+            band_energy_ranges = source.get('band_energy_ranges')
+            if band_energy_ranges is not None:
+                sec_band_energies = sec_scc.eigenvalues[0] if sec_scc.eigenvalues else sec_scc.m_create(BandEnergies)
+                sec_band_energies.x_ams_energy_min = band_energy_ranges[0] * ureg.hartree
+                sec_band_energies.x_ams_energy_max = band_energy_ranges[1] * ureg.hartree
+                sec_band_energies.occupations = band_energy_ranges[2]
 
                 # band gap
                 band_gap_info = source.get('band_gap_info')
                 if band_gap_info is not None:
                     sec_band_gap = sec_band_energies.m_create(BandGapDeprecated)
                     for key, val in band_gap_info.items():
-                        setattr(sec_band_gap, key, val)
+                        sec_band_gap.m_set(sec_band_gap.m_get_quantity_definition(key), val)
+
+            if (band_gap := source.get('band_gap')) is not None:
+                sec_band_gap = sec_scc.m_create(BandGap)
+                for key, val in band_gap.items():
+                    sec_band_gap.m_set(sec_band_gap.m_get_quantity_definition(key), val)
+
+            sec_scc.hessian_matrix = source.get('hessian_matrix')
 
             return sec_scc
 
@@ -921,13 +1222,18 @@ class AMSParser:
                 sec_atoms.lattice_vectors = lattice_vectors * unit
                 sec_atoms.periodic = pbc
 
+            sec_atoms.velocities = source.get('velocities')
+
             return sec_system
 
         def parse_method(source):
+            if source is None:
+                return
+
             sec_method = sec_run.m_create(Method)
             sec_atom_centered = BasisSetAtomCentered()
             for key, val in source.get('confinement', {}).items():
-                setattr(sec_atom_centered, key, val)
+                sec_atom_centered.m_set(sec_atom_centered.m_get_quantity_definition(key), val)
             sec_method.electrons_representation = [
                 BasisSetContainer(
                     type='atom-centered orbitals',
@@ -950,34 +1256,34 @@ class AMSParser:
                         sec_atom_param.x_ams_orbital_energies = np.array(val[2], np.float64) * ureg.hartree
                         sec_atom_param.x_ams_orbital_radii = np.array(val[4])
                     else:
-                        setattr(sec_atom_param, key, val)
+                        sec_atom_param.m_set(sec_atom_param.m_get_quantity_definition(key), val)
 
             ranges_orbitals = source.get('ranges_atomic_orbitals', {})
             for atom_type in ranges_orbitals.get('type', []):
                 for sec_atom_param in sec_method.atom_parameters:
                     if sec_atom_param.label == atom_type[0]:
                         for n, key in enumerate(['valence', 'core', 'valence_kinetic', 'core_kinetic']):
-                            setattr(sec_atom_param, f'x_ams_cutoff_{key}', atom_type[n + 1])
+                            sec_atom_param.m_set(sec_atom_param.m_get_quantity_definition(f'x_ams_cutoff_{key}'), atom_type[n + 1])
                         break
 
-            sec_dft = sec_method.m_create(DFT)
-            dft_potential = source.get('model_parameters', {}).get('dft_potential', {})
-            # TODO provide mapping
-            sec_xc_functional = sec_dft.m_create(XCFunctional)
-            for xc_type in ['LDA', 'GGA', 'MGGA']:
-                functionals = dft_potential.get(xc_type, '').split()
-                kind = ['XC'] if len(functionals) == 1 else ['X', 'C']
-                for n, functional in enumerate(functionals):
-                    functional = functional.rstrip('x').rstrip('c').upper()
-                    if kind[n] == 'X':
-                        sec_xc_functional.exchange.append(
-                            Functional(name='%s_%s_%s' % (xc_type, kind[n], functional)))
-                    elif kind[n] == 'C':
-                        sec_xc_functional.correlation.append(
-                            Functional(name='%s_%s_%s' % (xc_type, kind[n], functional)))
-                    else:
-                        sec_xc_functional.contributions.append(
-                            Functional(name='%s_%s_%s' % (xc_type, kind[n], functional)))
+            if (dft_potential := source.get('model_parameters', {}).get('dft_potential', {})) is not None:
+                sec_dft = sec_method.m_create(DFT)
+                # TODO provide mapping
+                sec_xc_functional = sec_dft.m_create(XCFunctional)
+                for xc_type in ['LDA', 'GGA', 'MGGA']:
+                    functionals = dft_potential.get(xc_type, '').split()
+                    kind = ['XC'] if len(functionals) == 1 else ['X', 'C']
+                    for n, functional in enumerate(functionals):
+                        functional = functional.rstrip('x').rstrip('c').upper()
+                        if kind[n] == 'X':
+                            sec_xc_functional.exchange.append(
+                                Functional(name='%s_%s_%s' % (xc_type, kind[n], functional)))
+                        elif kind[n] == 'C':
+                            sec_xc_functional.correlation.append(
+                                Functional(name='%s_%s_%s' % (xc_type, kind[n], functional)))
+                        else:
+                            sec_xc_functional.contributions.append(
+                                Functional(name='%s_%s_%s' % (xc_type, kind[n], functional)))
 
             sec_electronic = sec_method.m_create(Electronic)
             model_parameters = source.get('model_parameters', {})
@@ -986,25 +1292,25 @@ class AMSParser:
             sec_electronic.relativity_method = self._relativity_map.get(model_parameters.get('relativistic_corrections'))
             for key, val in model_parameters.items():
                 if hasattr(Method, key):
-                    setattr(sec_method, key, val)
+                    sec_method.m_set(sec_method.m_get_quantity_definition(key), val)
 
-            if source.total_charge is not None:
-                sec_electronic.charge = source.total_charge
+            if (charge := source.get('total_charge')) is not None:
+                sec_electronic.charge = charge
 
             # TODO add smearing params
-            if source.scf_options is not None:
+            if (scf_options := source.get('scf_options')) is not None:
                 sec_scf = sec_method.m_create(Scf)
-                for key, val in source.scf_options.items():
-                    setattr(sec_scf, key, val)
+                for key, val in scf_options.items():
+                    sec_scf.m_set(sec_scf.m_get_quantity_definition(key), val)
 
-            if source.k_space_sampling is not None:
+            if (k_space_sampling := source.get('k_space_sampling')) is not None:
                 sec_k_mesh = sec_method.m_create(KMesh)
-                for key, val in source.k_space_sampling.items():
-                    setattr(sec_k_mesh, key, val)
+                for key, val in k_space_sampling.items():
+                    sec_k_mesh.m_set(sec_k_mesh.m_get_quantity_definition(key), val)
 
-            for key, val in source.items():
+            for key in source.keys():
                 if hasattr(Method, key):
-                    setattr(sec_method, key, val)
+                    sec_method.m_set(sec_method.m_get_quantity_definition(key), source.get(key))
 
             return sec_method
 
@@ -1014,26 +1320,36 @@ class AMSParser:
 
             sec_scc = parse_scc(source)
             sec_system = parse_system(source)
-            sec_method = parse_method(source)
             sec_scc.system_ref = sec_system
-            sec_scc.method_ref = sec_method
 
-        parse_calculation(self.out_parser.single_point)
-
-        geometry_opt = self.out_parser.geometry_optimization
-        if geometry_opt is not None:
+        workflow = None
+        if (geometry_opt := self.parser.geometry_optimization) is not None:
             workflow = GeometryOptimization(method=GeometryOptimizationMethod())
             for key, val in geometry_opt.items():
-                if key == 'iteration':
-                    for iteration in val:
-                        parse_calculation(iteration)
-                elif key.startswith('x_ams'):
-                    setattr(workflow, key, val)
+                if key == 'step':
+                    for step in val:
+                        parse_calculation(step)
+                elif key.startswith('x_ams') and hasattr(GeometryOptimization, key):
+                    workflow.m_set(workflow.m_get_quantity_definition(key), val)
+            sec_method = parse_method(geometry_opt)
+            sec_run.calculation[-1].method_ref = sec_method
             workflow.method.convergence_tolerance_energy_difference = geometry_opt.get('convergence_tolerance_energy_difference')
             workflow.method.convergence_tolerance_displacement_maximum = geometry_opt.get('convergence_tolerance_displacement_maximum')
             workflow.method.convergence_tolerance_force_maximum = geometry_opt.get('convergence_tolerance_force_maximum')
 
-            self.archive.workflow2 = workflow
+        elif (md := self.parser.molecular_dynamics) is not None:
+            workflow = MolecularDynamics()
+            sec_method = parse_method(md)
+            for step in md.get('step', []):
+                parse_calculation(step)
+                sec_run.calculation[-1].method_ref = sec_method
+
+        elif (sp := self.parser.get('single_point')) is not None:
+            sec_method = parse_method(sp)
+            parse_calculation(sp)
+            sec_run.calculation[-1].method_ref = sec_method
+
+        self.archive.workflow2 = workflow
 
     def parse(self, filepath, archive, logger):
         self.mainfile = os.path.abspath(filepath)
@@ -1042,11 +1358,21 @@ class AMSParser:
 
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
-        sec_run.program = Program(name='AMS', version=self.out_parser.get('program_version', ''))
+        rkf_files = get_files('ams.rkf', self.mainfile)
+        if rkf_files:
+            if len(rkf_files) > 1:
+                self.logger.warning('Multiple ams.rkf files found.')
+            self.parser = self.rkf_parser
+            self.parser.mainfile = os.path.join(os.path.dirname(filepath), rkf_files[0])
 
-        if self.out_parser.get('time_start') is not None:
-            dt = datetime.strptime(self.out_parser.time_start, '%b%d-%Y %H:%M:%S') - datetime(1970, 1, 1)
-            sec_run.time_run = TimeRun(date_start=dt.total_seconds())
+        sec_run = self.archive.m_create(Run)
+        sec_run.program = Program(name='AMS', version=self.parser.get('program_version', ''))
+        for key in self.parser.results.keys():
+            if key.startswith('program_x_ams'):
+                sec_run.program.m_set(sec_run.program.m_get_quantity_definition(
+                    key.strip('program_')), self.parser.get(key))
+
+        if (start := self.parser.get('time_start')) is not None:
+            sec_run.time_run = TimeRun(date_start=start)
 
         self.parse_configurations()
