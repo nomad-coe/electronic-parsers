@@ -123,6 +123,7 @@ class Energy(simulation.calculation.Energy):
 
     x_ams_bond_efield = SubSection(sub_section=simulation.calculation.EnergyEntry)
 
+
 class Forces(simulation.calculation.Forces):
 
     m_def = Section(validate=False, extends_base_section=True)
