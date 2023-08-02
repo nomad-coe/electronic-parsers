@@ -136,7 +136,7 @@ class KFReader:
         for e in ['<', '>']:
             if struct.unpack(str(e + self.word), one)[0] == 1:
                 self.endian = e
-                d = {'q': '8 bytes', 'i': '4 bytes', '<': 'little endian', '>': 'big endian'}
+                # d = {'q': '8 bytes', 'i': '4 bytes', '<': 'little endian', '>': 'big endian'}
 
     def _read_block(self, f, pos):
         """Read a single block of binary data from posistion *pos* in file *f*."""
@@ -240,7 +240,7 @@ class KFReader:
                     for i in range(le):
                         indexblock = self._read_block(f, pb + i)
                         body = self._parse(indexblock[hlen:], [(32, 's'), (6, self.word)])
-                        for var, vlb, vstart, vlen, _xx1, vused, vtype in body:
+                        for var, vlb, vstart, _, _, vused, vtype in body:
                             try:
                                 var = var.decode()
                             except UnicodeDecodeError:
@@ -326,7 +326,7 @@ class KFFile:
         self.autosave = autosave
         self.path = os.path.abspath(path)
         self.tmpdata = OrderedDict()
-        self.reader = KFReader(self.path) if os.path.isfile(self.path) else None
+        self.reader = KFReader(self.path)
 
     def read(self, section, variable, return_as_list=False):
         """Extract and return data for a *variable* located in a *section*.
@@ -362,8 +362,8 @@ class KFFile:
             self.tmpdata[section] = OrderedDict()
         self.tmpdata[section][variable] = value
 
-        if self.autosave:
-            self.save()
+        # if self.autosave:
+        #     self.save()
 
     def sections(self):
         """Return a list with all section names, ordered alphabetically."""
