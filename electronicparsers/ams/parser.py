@@ -687,7 +687,7 @@ class OutParser(TextParser):
             Quantity(
                 'time_start',
                 r'RunTime\:\s*(\w{3}\d+\-\d{4}\s*\d+\:\d+\:\d+)',
-                str_operation=lambda x: (datetime.strptime(x, '%b%d-%Y %H:%M:%S') - datetime(1970, 1 ,1)).total_seconds()
+                str_operation=lambda x: (datetime.strptime(x, '%b%d-%Y %H:%M:%S') - datetime(1970, 1, 1)).total_seconds()
             ),
             Quantity(
                 'single_point',
@@ -788,7 +788,6 @@ class OutParser(TextParser):
         ]
 
 
-
 class RKFParser(FileParser):
     def __init__(self, mainfile=None, logger=None, open=None):
         super().__init__(mainfile, logger, open)
@@ -811,7 +810,7 @@ class RKFParser(FileParser):
             # 'XC energies': 'xc_values_per_atom'
         }
         # TODO verfiy list
-        self._ldapot = {1 : 'VWN', 2: 'Stoll', 3: 'PW92'}
+        self._ldapot = {1: 'VWN', 2: 'Stoll', 3: 'PW92'}
 
     @property
     def data(self):
@@ -861,7 +860,6 @@ class RKFParser(FileParser):
             k_space_sampling['x_ams_general_integration_parameter'] = kpoints_config.get('interpolation')
             k_space_sampling['grid'] = kpoints_config.get('parameters')
 
-
         engine_results = self.data.get('EngineResults', {})
 
         files = [val for key, val in engine_results.items() if key.startswith('Files')]
@@ -877,7 +875,7 @@ class RKFParser(FileParser):
 
         labels = []
         if (molecule := self.data.get('Molecule')) is not None:
-            labels = [chemical_symbols[n] for n in  molecule.get('AtomicNumbers', [])]
+            labels = [chemical_symbols[n] for n in molecule.get('AtomicNumbers', [])]
             if not labels:
                 labels = molecule.get('AtomSmbols').split()
             positions = molecule.get('Coords', [])
@@ -904,7 +902,7 @@ class RKFParser(FileParser):
                 self._results['forces_total'] = np.reshape(gradients, (len(labels), 3)) * ureg.hartree / ureg.bohr
             if (hessian := amsresults.get('Hessian')) is not None:
                 hessian = np.reshape(hessian, (len(labels), 3, len(labels), 3))
-                self._results['hessian_matrix'] =  (np.transpose(hessian, axes=(
+                self._results['hessian_matrix'] = (np.transpose(hessian, axes=(
                     0, 2, 1, 3)) * ureg.hartree / ureg.bohr ** 2).to('J / m ** 2').magnitude
 
         if (history := self.data.get('History')) is not None:
@@ -918,7 +916,6 @@ class RKFParser(FileParser):
                 calc_results['step'][n] = {'labels_positions': [labels, positions]}
                 if (energy_total := history.get(f'Energy({n + 1})')) is not None:
                     calc_results['step'][n]['energy_total'] = energy_total * ureg.hartree
-
 
         if (mdhistory := self.data.get('MDHistory')) is not None:
             calc_type = 'molecular_dynamics'
@@ -1044,7 +1041,7 @@ class RKFParser(FileParser):
                 self._results['forces_total'] = np.reshape(gradients, (len(labels), 3)) * ureg.hartree / ureg.bohr
             if (hessian := geoopt.get('Hessian_CART')) is not None:
                 hessian = np.reshape(hessian, (len(labels), 3, len(labels), 3))
-                self._results['hessian_matrix'] =  (np.transpose(hessian, axes=(
+                self._results['hessian_matrix'] = (np.transpose(hessian, axes=(
                     0, 2, 1, 3)) * ureg.hartree / ureg.bohr ** 2).to('J / m ** 2').magnitude
         # TODO parse Themodynamics, Vibrations, phonons
 
