@@ -103,6 +103,24 @@ class ParamsParser(TextParser):
                         repeats=True)]))]
 
 
+class ImpurityGfOutParser(TextParser):
+    def __init__(self):
+        super().__init__()
+
+    @property
+    def data(self):
+        if self.mainfile:
+            return np.loadtxt(self.mainfile)
+
+    def init_quantities(self):
+        self._quantities = [
+            Quantity(
+                'parameters',
+                r'\# *nf\=([\d\.]+) *mu\=([\d\.\-]+) *T\=([\d\.]+) *TrSigmaG\=([\d\.\-]+) *Epot\=([\d\.\-]+) *Ekin\=([\d\.\-]+) *mom\=([\[\]\,\d\.\-]+)',
+                repeats=False)
+        ]
+
+
 class EDMFTParser:
     level = 1
 
@@ -115,6 +133,8 @@ class EDMFTParser:
         self.indmfl_parser = IndmflParser()
         self.params_parser = ParamsParser()
         self.iterate_parser = DataTextParser()
+        self.imp_gf_parser = ImpurityGfOutParser()
+        self.latt_gf_parser = DataTextParser()
 
         self._solver_map = {
             'CTQMC': 'CT-HYB',
@@ -123,6 +143,12 @@ class EDMFTParser:
         }
 
         self._angular_momentum = ['s', 'p', 'd', 'f']
+
+        self._gf_files_map = {
+            'imp.0/Gf.out.*': 'greens_function_iw',
+            'imp.0/Sig.out.*': 'self_energy_iw',
+            'imp.0/Delta.inp.*': 'hybridization_function_iw'
+        }
 
     def parse_system(self):
         struct_files = get_files('*.struct', self.filepath, self.mainfile)
@@ -187,14 +213,14 @@ class EDMFTParser:
         # DMFT method
         sec_dmft = sec_method.m_create(DMFT)
         n_corr_atoms = self.indmfl_parser.get('n_corr_atoms', 1)
-        sec_dmft.n_atoms_per_unit_cell = n_corr_atoms
+        sec_dmft.n_impurities = n_corr_atoms
         if self.indmfl_parser.get('siginds_corr', {}).get('cix'):  # TODO ask @Alvin why this is populated locally, but not when processing
             n_orbitals = [orb[-1] for orb in self.indmfl_parser.get('siginds_corr', {}).get('cix')]
             sec_dmft.n_correlated_orbitals = n_orbitals
         if self.impurity_parameters.get('nf0'):
             n_corr_elect = self.impurity_parameters.get('nf0') / n_corr_atoms
             corr_elect = [n_corr_elect] * n_corr_atoms  # TODO ask Lucian if this makes sense
-            sec_dmft.n_correlated_electrons = corr_elect
+            sec_dmft.n_electrons = corr_elect
         sec_dmft.inverse_temperature = self.impurity_parameters.get('beta', 0.0) / ureg.eV
         sec_dmft.magnetic_state = 'paramagnetic'  # TODO ask Lucian if this is correct
         sec_dmft.impurity_solver = self._solver_map.get(self.general_parameters.get('solver', ''))
@@ -204,17 +230,31 @@ class EDMFTParser:
         # info.iterate n_latt and n_imp columns? imp.X subfolders?
         sec_run = self.archive.run[-1]
 
-        def _create_calculation_section():
+        def create_calculation_section():
             sec_scc = sec_run.m_create(Calculation)
             if sec_run.m_xpath('system'):
                 sec_scc.system_ref = sec_run.system[-1]
             sec_scc.method_ref = sec_run.method[-1]  # ref DMFT
             return sec_scc
 
-        n_dft_dmft = self.general_parameters.get('max_dmft_iterations', 1)
-        n_max_dft = self.general_parameters.get('max_lda_iterations', 1)
-        n_max_dmft = self.general_parameters.get('finish', 1)
+        def call_calculation_section(i_scc):
+            if sec_run.calculation:
+                return sec_run.calculation[i_scc]
+            else:
+                return sec_run.m_create(Calculation)
 
+        def extract_greens_functions_data(sec_scc, sec_gfs, n_orbitals, gf_data):
+            # Adding FreqMesh
+            iw = gf_data[:, 0]
+            sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=len(iw), points=iw * 1j * ureg.eV)
+            method_ref = sec_scc.method_ref
+            method_ref.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
+            sec_gfs.matsubara_freq = iw
+            # defining the full Gf in the basis n_atoms x 2 x n_orbitals x n_iw
+            gf_orb_data = np.array([gf_data[:, 2 * n + 1] + gf_data[:, 2 * n + 2] * 1j for n in range(n_orbitals)])
+            return np.array([[gf_orb_data, gf_orb_data]])
+
+        n_orbitals = sec_run.method[-1].dmft.n_correlated_orbitals[0]
         iterate_files = get_files('info.iterate', self.filepath, self.mainfile)
         if iterate_files:
             if len(iterate_files) > 1:
@@ -227,11 +267,11 @@ class EDMFTParser:
                 for i_dmft in range(len(data_scf)):
                     iter_dmft = np.int32(data_scf[i_dmft][1])
                     if i_dmft == 0:
-                        sec_scc = _create_calculation_section()
+                        sec_scc = create_calculation_section()
                     else:
                         previous_iter_dmft = np.int32(data_scf[i_dmft - 1][1])
                         if previous_iter_dmft != iter_dmft:
-                            sec_scc = _create_calculation_section()
+                            sec_scc = create_calculation_section()
 
                     sec_scf_iteration = sec_scc.m_create(ScfIteration)
                     # Energies
@@ -244,45 +284,54 @@ class EDMFTParser:
                     sec_charges_latt = sec_scf_iteration.m_create(Charges)
                     sec_charges_latt.kind = 'lattice'
                     sec_charges_latt.n_atoms = sec_scc.method_ref.dmft.n_atoms_per_unit_cell
-                    sec_charges_latt.n_orbitals = sec_scc.method_ref.dmft.n_correlated_orbitals
+                    sec_charges_latt.n_orbitals = n_orbitals
                     sec_charges_latt.n_electrons = [data_scf[i_dmft][8]]
                     sec_charges_imp = sec_scf_iteration.m_create(Charges)
                     sec_charges_imp.kind = 'impurity'
                     sec_charges_imp.n_atoms = sec_scc.method_ref.dmft.n_atoms_per_unit_cell
-                    sec_charges_imp.n_orbitals = sec_scc.method_ref.dmft.n_correlated_orbitals
+                    sec_charges_imp.n_orbitals = n_orbitals
                     sec_charges_imp.n_electrons = [data_scf[i_dmft][9]]
 
+        # Impurity Green's function, self-energy, hybridization function parsing
+        for imp_path in self._gf_files_map.keys():
+            impurity_files = get_files(imp_path, self.filepath, self.mainfile)  # Hybridization function
+            if impurity_files:
+                impurity_files.sort()
+                for i_scc, f in enumerate(impurity_files):
+                    # Calculation and GreensFunction sections
+                    sec_scc = call_calculation_section(i_scc)
+                    if sec_scc.greens_functions:
+                        sec_gfs = sec_scc.greens_functions[-1]
+                    else:
+                        sec_gfs = sec_scc.m_create(GreensFunctions)
+                        sec_gfs.type = 'impurity'
+                    # Parsing data
+                    self.imp_gf_parser.mainfile = f
+                    imp_gf_data = self.imp_gf_parser.data
+                    impurity_data = extract_greens_functions_data(sec_scc, sec_gfs, n_orbitals, imp_gf_data) if imp_gf_data is not None else None
+                    if impurity_data is not None:
+                        sec_gfs.m_set(sec_gfs.m_get_quantity_definition(self._gf_files_map[imp_path]), impurity_data)
+                    if self.imp_gf_parser.get('parameters'):
+                        sec_gfs.chemical_potential = self.imp_gf_parser.get('parameters')[1] * ureg.eV
 
-        impurity_gf_files = get_files('imp.0/Gf.out.*', self.filepath, self.mainfile)  # Greens function
-        impurity_sigma_files = get_files('imp.0/Sig.out.*', self.filepath, self.mainfile)  # Self-energy
-        impurity_delta_files = get_files('imp.0/Delta.inp.*', self.filepath, self.mainfile)  # Hybridization function
-        if impurity_gf_files or impurity_sigma_files or impurity_delta_files:
-            impurity_gf_files.sort()
-            impurity_sigma_files.sort()
-            impurity_delta_files.sort()
-            # Check whether info.iterate generated Calculation sections already
-            if sec_run.calculation is not None:
-                for i_scc, sec_scc in enumerate(sec_run.calculation):
-                    # Check if calculation is converged
-                    if sec_scc.scf_iteration is not None:
-                        last_scf_iteration = sec_scc.scf_iteration[-1]
-                        if last_scf_iteration.charges is not None:
-                            n_latt = last_scf_iteration.charges[0].n_electrons[0]
-                            n_imp = last_scf_iteration.charges[1].n_electrons[0]
-                            delta_n = abs(n_latt - n_imp)
-                            sec_scc.calculation_converged = delta_n <= 2e-3  # TODO ask @LucianPascut about this condition
+        # Parse lattice GFs quantities at the last Calculation
+        if sec_run.calculation is not None:
+            sec_scc = sec_run.calculation[-1]
+            latt_gf_files = get_files('*.gc1', self.filepath, self.mainfile)
+            if latt_gf_files:
+                if len(latt_gf_files) > 1:
+                    self.logger.warning(f'Multiple *.gc1 files found; we will parse the last one: {latt_gf_files[-1]}')
+                self.latt_gf_parser.mainfile = latt_gf_files[-1]
+                latt_gf_data = self.latt_gf_parser.data
+                lattice_data = extract_greens_functions_data(sec_scc, sec_gfs, n_orbitals, latt_gf_data) if latt_gf_data is not None else None
+                # Populating GreensFunctions section
+                sec_gfs = sec_scc.m_create(GreensFunctions)
+                sec_gfs.type = 'lattice'
+                sec_gfs.greens_function_iw = lattice_data
 
-                    gf_file = impurity_gf_files[i_scc]
-                    sigma_file = impurity_sigma_files[i_scc]
-                    delta_file = impurity_delta_files[i_scc]
-                    sec_gfs = sec_scc.m_create(GreensFunctions)
-            else:
-                for i_scc in range(len(impurity_gf_files)):
-                    sec_scc = sec_run.m_create(Calculation)
-                    gf_file = impurity_gf_files[i_scc]
-                    sigma_file = impurity_sigma_files[i_scc]
-                    delta_file = impurity_delta_files[i_scc]
-                    sec_gfs = sec_scc.m_create(GreensFunctions)
+
+            # latt_sigma_files = get_files('*sig.inp1', self.filepath, self.mainfile)
+
 
     def init_parser(self):
         self.out_parser.mainfile = self.mainfile
@@ -295,6 +344,10 @@ class EDMFTParser:
         self.params_parser.logger = self.logger
         self.iterate_parser.mainfile = None
         self.iterate_parser.logger = self.logger
+        self.imp_gf_parser.mainfile = None
+        self.imp_gf_parser.logger = self.logger
+        self.latt_gf_parser.mainfile = None
+        self.latt_gf_parser.logger = self.logger
 
     def get_mainfile_keys(self, **kwargs):
         return True
