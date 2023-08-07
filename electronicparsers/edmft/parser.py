@@ -134,7 +134,7 @@ class EDMFTParser:
         self.params_parser = ParamsParser()
         self.iterate_parser = DataTextParser()
         self.imp_gf_parser = ImpurityGfOutParser()
-        self.latt_gf_parser = DataTextParser()
+        self.lattice_parser = DataTextParser()
 
         self._solver_map = {
             'CTQMC': 'CT-HYB',
@@ -149,6 +149,8 @@ class EDMFTParser:
             'imp.0/Sig.out.*': 'self_energy_iw',
             'imp.0/Delta.inp.*': 'hybridization_function_iw'
         }
+
+        self._gf_lattice = ['greens_function_iw', 'self_energy_iw']
 
     def parse_system(self):
         struct_files = get_files('*.struct', self.filepath, self.mainfile)
@@ -237,18 +239,19 @@ class EDMFTParser:
             sec_scc.method_ref = sec_run.method[-1]  # ref DMFT
             return sec_scc
 
-        def call_calculation_section(i_scc):
+        def _call_calculation_section(i_scc):
             if sec_run.calculation:
                 return sec_run.calculation[i_scc]
             else:
                 return sec_run.m_create(Calculation)
 
-        def extract_greens_functions_data(sec_scc, sec_gfs, n_orbitals, gf_data):
+        def extract_greens_functions_data(sec_scc, sec_gfs, n_orbitals, gf_data, create_freq_mesh=True):
             # Adding FreqMesh
             iw = gf_data[:, 0]
-            sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=len(iw), points=iw * 1j * ureg.eV)
-            method_ref = sec_scc.method_ref
-            method_ref.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
+            if create_freq_mesh:
+                sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=len(iw), points=iw * 1j * ureg.eV)
+                method_ref = sec_scc.method_ref
+                method_ref.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
             sec_gfs.matsubara_freq = iw
             # defining the full Gf in the basis n_atoms x 2 x n_orbitals x n_iw
             gf_orb_data = np.array([gf_data[:, 2 * n + 1] + gf_data[:, 2 * n + 2] * 1j for n in range(n_orbitals)])
@@ -299,7 +302,7 @@ class EDMFTParser:
                 impurity_files.sort()
                 for i_scc, f in enumerate(impurity_files):
                     # Calculation and GreensFunction sections
-                    sec_scc = call_calculation_section(i_scc)
+                    sec_scc = _call_calculation_section(i_scc)
                     if sec_scc.greens_functions:
                         sec_gfs = sec_scc.greens_functions[-1]
                     else:
@@ -317,21 +320,27 @@ class EDMFTParser:
         # Parse lattice GFs quantities at the last Calculation
         if sec_run.calculation is not None:
             sec_scc = sec_run.calculation[-1]
-            latt_gf_files = get_files('*.gc1', self.filepath, self.mainfile)
-            if latt_gf_files:
-                if len(latt_gf_files) > 1:
-                    self.logger.warning(f'Multiple *.gc1 files found; we will parse the last one: {latt_gf_files[-1]}')
-                self.latt_gf_parser.mainfile = latt_gf_files[-1]
-                latt_gf_data = self.latt_gf_parser.data
-                lattice_data = extract_greens_functions_data(sec_scc, sec_gfs, n_orbitals, latt_gf_data) if latt_gf_data is not None else None
-                # Populating GreensFunctions section
+            lattice_gf_files = get_files('*.gc1', self.filepath, self.mainfile)
+            lattice_sigma_files = get_files('sig.inp1', self.filepath, self.mainfile)
+            if lattice_gf_files or lattice_sigma_files:
                 sec_gfs = sec_scc.m_create(GreensFunctions)
                 sec_gfs.type = 'lattice'
-                sec_gfs.greens_function_iw = lattice_data
+            for i_files, lattice_files in enumerate([lattice_gf_files, lattice_sigma_files]):
+                if lattice_files:
+                    if len(lattice_files) > 1:
+                        self.logger.warning(f'Multiple lattice files (*.gc* or sig.inp1) files found; we will parse the last one: {lattice_files[-1]}')
+                    self.lattice_parser.mainfile = lattice_files[-1]
+                    lattice_data = self.lattice_parser.data
+                    # Extracting Matsubara freqs and GF data without storing FrequencyMesh -> this
+                    # is because impurity and lattice GFs can have different size in Matsubara frequencies.
+                    extracted_lattice_data = extract_greens_functions_data(sec_scc, sec_gfs, n_orbitals, lattice_data, False) if lattice_data is not None else None
+                    sec_gfs.m_set(sec_gfs.m_get_quantity_definition(self._gf_lattice[i_files]), extracted_lattice_data)
 
+    def parse_maxent_archive(archive):
+        pass
 
-            # latt_sigma_files = get_files('*sig.inp1', self.filepath, self.mainfile)
-
+    def parse_dmft_maxent_workflow(maxent_archive, workflow_archive):
+        pass
 
     def init_parser(self):
         self.out_parser.mainfile = self.mainfile
@@ -346,10 +355,15 @@ class EDMFTParser:
         self.iterate_parser.logger = self.logger
         self.imp_gf_parser.mainfile = None
         self.imp_gf_parser.logger = self.logger
-        self.latt_gf_parser.mainfile = None
-        self.latt_gf_parser.logger = self.logger
+        self.lattice_parser.mainfile = None
+        self.lattice_parser.logger = self.logger
 
     def get_mainfile_keys(self, **kwargs):
+        filepath = kwargs.get('filename')
+        mainfile = os.path.basename(filepath)
+        maxent_files = get_files('maxent_params.dat', filepath, mainfile)
+        if maxent_files is not None:
+            return ['MaxEnt', 'DMFT_MaxEnt']
         return True
 
     def parse(self, filepath, archive, logger):
@@ -397,3 +411,16 @@ class EDMFTParser:
         # we define DFT+DMFT workflow grouping the DFT Wien2k entry with self.archive.
         workflow = SinglePoint()
         self.archive.workflow2 = workflow
+
+        # Checking if MaxEnt calculation is present in a subfolder.
+        # maxent_archive = self._child_archives.get('MaxEnt')
+        # if dmft_maxent_archive:
+            # Parse first the MaxEnt SinglePoint archive
+            # self.parse_maxent_archive(maxent_archive)
+
+            # Then parse the DMFT with MaxEnt continuation workflow archive.
+            # dmft_maxent_archive = self._child_archives.get('DMFT_MaxEnt')
+            # try:
+                # self.parse_dmft_maxent_workflow(maxent_archive, dmft_maxent_archive)
+            # except Exception:
+                # self.logger.error('Error parsing the automatic DMFT with MaxEnt continuation workflow.')
