@@ -1071,13 +1071,13 @@ class CP2KParser:
                         val = int(val.strip('svn:'))
                     except Exception:
                         continue
-                setattr(sec_program_information, 'x_cp2k_%s' % key, val)
+                sec_program_information.m_set(sec_program_information.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
         dbcsr_settings = self.settings.get('dbcsr', {})
         if dbcsr_settings:
             sec_dbcsr = sec_run.m_create(x_cp2k_section_dbcsr)
             for key, val in dbcsr_settings.items():
-                setattr(sec_dbcsr, 'x_cp2k_%s' % key, val)
+                sec_dbcsr.m_set(sec_dbcsr.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
         program_settings = self.settings.get('program', {})
         if program_settings:
@@ -1090,13 +1090,13 @@ class CP2KParser:
                     key, val = 'start_id', val[0]
                 section = sec_endinformation if key.startswith('end') else sec_startinformation
                 val = val[0] if isinstance(val, list) else val
-                setattr(section, 'x_cp2k_%s' % key, val)
+                section.m_set(section.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
         global_settings = self.settings.get('global', {})
         if global_settings:
             sec_global_settings = sec_run.m_create(x_cp2k_section_global_settings)
             for key, val in global_settings.items():
-                setattr(sec_global_settings, 'x_cp2k_%s' % key, val)
+                sec_global_settings.m_set(sec_global_settings.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
         restart = self.out_parser.get('restart')
         if restart is not None:
@@ -1132,8 +1132,7 @@ class CP2KParser:
                 if sec_def is not None:
                     sub_section = section.m_create(sec_def.section_cls)
                     for key, val in data.items():
-                        sec_name = '%s_%s' % (name, key)
-                        parse(sec_name, val, sub_section)
+                        parse(f'{name}_{key}', val, sub_section)
 
             elif isinstance(data, list) and data:
                 for val in data:
@@ -1144,7 +1143,7 @@ class CP2KParser:
                 name = override_keyword(name)
                 quantity_def = resolve_definition(name)
                 if quantity_def is not None:
-                    setattr(section, name, quantity_def.type(data))
+                    section.m_set(section.m_get_quantity_definition(name), quantity_def.type(data))
 
         input_files = get_files(input_filename, self.filepath, self.mainfile, deep=False)
         if not input_files:
@@ -1189,7 +1188,7 @@ class CP2KParser:
                         sec_scf_energy.m_add_sub_section(getattr(
                             Energy, key.replace('energy_', '')), EnergyEntry(value=val))
                     else:
-                        setattr(sec_scf, key, val)
+                        sec_scf.m_set(sec_scf.m_get_quantity_definition(key), val)
 
         atom_forces = source.get('atom_forces', self.get_forces(source._frame))
         if atom_forces is not None:
@@ -1293,7 +1292,7 @@ class CP2KParser:
                     self.parse_system(atomic_coord)
                 else:
                     self.parse_system(n)
-                if sec_run.system[n] is not None:
+                if sec_run.system is not None and sec_run.system[n]:
                     sec_scc.system_ref = sec_run.system[n]
 
         single_point = quickstep.get('single_point')
@@ -1400,12 +1399,12 @@ class CP2KParser:
             sec_vdw = sec_method.m_create(x_cp2k_section_vdw_settings)
             for key, val in vdw.items():
                 if val == '':
-                    setattr(sec_vdw, 'x_cp2k_vdw_name', key)
+                    sec_vdw.m_set(sec_vdw.m_get_quantity_definition('x_cp2k_vdw_name'), key)
                     vdw_name = self._vdw_map.get(key, None)
                     if vdw_name is not None:
                         sec_method.van_der_Waals_method = vdw_name
                 else:
-                    setattr(sec_vdw, 'x_cp2k_vdw_%s' % key, val)
+                    sec_vdw.m_set(sec_vdw.m_get_quantity_definition(f'x_cp2k_vdw_{key}'), val)
 
         stress_method = self.inp_parser.get('FORCE_EVAL/STRESS_TENSOR')
         if stress_method is not None:
@@ -1422,10 +1421,10 @@ class CP2KParser:
                     key = 'x_cp2k_%s' % key
                 if val is None:
                     continue
-                setattr(section, key, val)
+                section.m_set(section.m_get_quantity_definition(key), val)
         if self.settings['qs']:
             for key, val in self.settings['qs'].items():
-                setattr(sec_quickstep_settings, 'x_cp2k_%s' % key, val)
+                sec_quickstep_settings.m_set(sec_quickstep_settings.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
         atomic_kind_info = quickstep.get('atomic_kind_information', None)
         if atomic_kind_info is not None:
@@ -1438,9 +1437,9 @@ class CP2KParser:
                     if val is None:
                         continue
                     if key in ['kind_label', 'kind_number_of_atoms']:
-                        setattr(sec_atom_kind, 'x_cp2k_%s' % key, str(val))
+                        sec_atom_kind.m_set(sec_atom_kind.m_get_quantity_definition(f'x_cp2k_{key}'), str(val))
                     else:
-                        setattr(sec_kind_basis_set, 'x_cp2k_%s' % key, val)
+                        sec_kind_basis_set.m_set(sec_kind_basis_set.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
                 sec_method_atom_kind = sec_method.m_create(AtomParameters)
                 atom_kind_label = re.sub(r'\d', '', atom.kind_label)
@@ -1455,9 +1454,9 @@ class CP2KParser:
                 if val is None:
                     continue
                 if key in ['orbital_basis_functions', 'local_part_of_gth_pseudopotential', 'non_local_part_of_gth_pseudopotential']:
-                    setattr(sec_maximum, 'x_cp2k_%s' % key, val)
+                    sec_maximum.m_set(sec_maximum.m_get_quantity_definition(f'x_cp2k_{key}'), val)
                 else:
-                    setattr(sec_total, 'x_cp2k_%s' % key, val)
+                    sec_total.m_set(sec_total.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
         sec_scf = sec_method.m_create(Scf)
         scf_parameters = quickstep.get('scf_parameters', None)
@@ -1465,7 +1464,7 @@ class CP2KParser:
             for key, val in scf_parameters.items():
                 if val is None:
                     continue
-                setattr(sec_scf, key, val)
+                sec_scf.m_set(sec_scf.m_get_quantity_definition(key), val)
 
     @property
     def sampling_method(self):
@@ -1508,7 +1507,7 @@ class CP2KParser:
                     elif isinstance(val, str):
                         val = val.strip()
 
-                    setattr(sec_geometry_opt_step, 'x_cp2k_optimization_%s' % name, val)
+                    sec_geometry_opt_step.m_set(sec_geometry_opt_step.m_get_quantity_definition(f'x_cp2k_optimization_{name}'), val)
 
             if sec_geometry_opt.x_cp2k_section_geometry_optimization_step:
                 geometry_change = sec_geometry_opt_step.x_cp2k_optimization_step_size_convergence_limit
@@ -1532,12 +1531,12 @@ class CP2KParser:
                     continue
                 if key in ['coordinates', 'simulation_cell', 'velocities', 'energies', 'dump']:
                     val = val.split()
-                    setattr(sec_md_settings, 'x_cp2k_md_%s_print_frequency' % key, int(val[0]))
-                    setattr(sec_md_settings, 'x_cp2k_md_%s_filename' % key, val[1])
+                    sec_md_settings.m_set(sec_md_settings.m_get_quantity_definition(f'x_cp2k_md_{name}_print_frequency'), int(val[0]))
+                    sec_md_settings.m_set(sec_md_settings.m_get_quantity_definition(f'x_cp2k_md_{name}_filename'), val[1])
                 elif key == 'print_frequency':
-                    setattr(sec_md_settings, 'x_cp2k_md_%s' % key, int(val.split()[0]))
+                    sec_md_settings.m_set(sec_md_settings.m_get_quantity_definition(f'x_cp2k_md_{key}'), int(val.split()[0]))
                 else:
-                    setattr(sec_md_settings, 'x_cp2k_md_%s' % key, val)
+                    sec_md_settings.m_set(sec_md_settings.m_get_quantity_definition(f'x_cp2k_md_{key}'), val)
 
         self.archive.workflow2 = workflow
 
