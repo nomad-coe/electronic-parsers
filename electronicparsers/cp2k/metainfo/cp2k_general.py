@@ -20,7 +20,7 @@ import numpy as np            # pylint: disable=unused-import
 import typing                 # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference
+    Reference, JSON
 )
 
 from nomad.datamodel.metainfo import simulation
@@ -47,148 +47,6 @@ class x_cp2k_section_restart_information(MSection):
         shape=[],
         description='''
         Name of a restarted quantity.
-        ''')
-
-
-class x_cp2k_section_dbcsr(MSection):
-    '''
-    The DBCSR (Distributed Block Compressed Sparse Row) information.
-    '''
-
-    m_def = Section(validate=False)
-
-    x_cp2k_dbcsr_multiplication_driver = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        DBCSR Multiplication driver
-        ''')
-
-    x_cp2k_dbcsr_multrec_recursion_limit = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        DBCSR Multrec recursion limit
-        ''')
-
-    x_cp2k_dbcsr_multiplication_stack_size = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        DBCSR Multiplication stack size.
-        ''')
-
-    x_cp2k_dbcsr_multiplication_size_stacks = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        DBCSR Multiplication size of stacks.
-        ''')
-
-    x_cp2k_dbcsr_use_subcommunicators = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        Boolean indicating if subcommunicators are used.
-        ''')
-
-    x_cp2k_dbcsr_use_mpi_combined_types = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        Boolean indicating if MPI combined types are used.
-        ''')
-
-    x_cp2k_dbcsr_use_mpi_memory_allocation = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        Boolean indicating if MPI memory allocation is used.
-        ''')
-
-    x_cp2k_dbcsr_use_communication_thread = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        Boolean indicating if communication thread is used.
-        ''')
-
-    x_cp2k_dbcsr_communication_thread_load = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        Load of the communication thread.
-        ''')
-
-
-class x_cp2k_section_global_settings(MSection):
-    '''
-    Global settings for this calculation.
-    '''
-
-    m_def = Section(validate=False)
-
-    x_cp2k_basis_set_filename = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        The name of the basis set file.
-        ''')
-
-    x_cp2k_coordinate_filename = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        The name of the coordinate file.
-        ''')
-
-    x_cp2k_geminal_filename = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        The name of the geminal file.
-        ''')
-
-    x_cp2k_mm_potential_filename = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        The name of the MM potential file.
-        ''')
-
-    x_cp2k_potential_filename = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        The name of the potential file.
-        ''')
-
-    x_cp2k_method_name = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        The method name for this run.
-        ''')
-
-    x_cp2k_preferred_fft_library = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        The name of the preferred FFT library.
-        ''')
-
-    x_cp2k_preferred_diagonalization_library = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        The name of the preferred diagonalization library.
-        ''')
-
-    x_cp2k_run_type = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        The run type for this calculation.
         ''')
 
 
@@ -358,35 +216,6 @@ class x_cp2k_section_maximum_angular_momentum(MSection):
         shape=[],
         description='''
         Maximum angular momentum of orbital basis functions.
-        ''')
-
-
-class x_cp2k_section_program_information(MSection):
-    '''
-    Contains information about the software version used for this run.
-    '''
-
-    m_def = Section(validate=False)
-
-    x_cp2k_input_filename = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        The name of the CP2K input file that produced this calculation.
-        ''')
-
-    x_cp2k_program_compilation_datetime = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        The time when this program was compiled.
-        ''')
-
-    x_cp2k_svn_revision = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        The SVN revision number.
         ''')
 
 
@@ -942,17 +771,26 @@ class Run(simulation.run.Run):
         sub_section=SectionProxy('x_cp2k_section_restart_information'),
         repeats=True)
 
-    x_cp2k_section_dbcsr = SubSection(
-        sub_section=SectionProxy('x_cp2k_section_dbcsr'),
-        repeats=True)
+    x_cp2k_program_information = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        A JSON quantity containing all code-specific code information.
+        ''')
 
-    x_cp2k_section_global_settings = SubSection(
-        sub_section=SectionProxy('x_cp2k_section_global_settings'),
-        repeats=True)
+    x_cp2k_dbcsr = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        A JSON quantity containing all code-specific DBCSR (a sparse matrix library) information.
+        ''')
 
-    x_cp2k_section_program_information = SubSection(
-        sub_section=SectionProxy('x_cp2k_section_program_information'),
-        repeats=True)
+    x_cp2k_global_settings = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        A JSON quantity containing all code-specific global information.
+        ''')
 
     x_cp2k_section_startinformation = SubSection(
         sub_section=SectionProxy('x_cp2k_section_startinformation'),
@@ -997,6 +835,13 @@ class Method(simulation.method.Method):
     x_cp2k_section_quickstep_settings = SubSection(
         sub_section=SectionProxy('x_cp2k_section_quickstep_settings'),
         repeats=True)
+
+    x_cp2k_quickstep_settings = Quantity(
+        type=JSON,
+        shape=[],
+        description='''
+        A JSON quantity containing all code-specific global information.
+        ''')
 
     x_cp2k_section_vdw_settings = SubSection(
         sub_section=SectionProxy('x_cp2k_section_vdw_settings'),

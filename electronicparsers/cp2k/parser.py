@@ -44,9 +44,9 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     MolecularDynamics, MolecularDynamicsMethod
 )
 
-from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings, x_cp2k_section_dbcsr,\
-    x_cp2k_section_startinformation, x_cp2k_section_end_information, x_cp2k_section_program_information,\
-    x_cp2k_section_global_settings, x_cp2k_section_vdw_settings, x_cp2k_section_atomic_kinds,\
+from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings,\
+    x_cp2k_section_startinformation, x_cp2k_section_end_information,\
+    x_cp2k_section_vdw_settings, x_cp2k_section_atomic_kinds,\
     x_cp2k_section_atomic_kind, x_cp2k_section_kind_basis_set, x_cp2k_section_total_numbers,\
     x_cp2k_section_maximum_angular_momentum, x_cp2k_section_md_settings,\
     x_cp2k_section_restart_information, x_cp2k_section_geometry_optimization,\
@@ -1064,20 +1064,12 @@ class CP2KParser:
             sec_run.program = Program(
                 name='CP2K', version=version[0] if isinstance(version, list) else version,
                 compilation_host=host[0] if isinstance(host, list) else host)
-            sec_program_information = sec_run.m_create(x_cp2k_section_program_information)
-            for key, val in cp2k_settings.items():
-                if key == 'svn_revision':
-                    try:
-                        val = int(val.strip('svn:'))
-                    except Exception:
-                        continue
-                sec_program_information.m_set(sec_program_information.m_get_quantity_definition(f'x_cp2k_{key}'), val)
+            sec_run.x_cp2k_program_information = cp2k_settings
 
         dbcsr_settings = self.settings.get('dbcsr', {})
-        if dbcsr_settings:
-            sec_dbcsr = sec_run.m_create(x_cp2k_section_dbcsr)
-            for key, val in dbcsr_settings.items():
-                sec_dbcsr.m_set(sec_dbcsr.m_get_quantity_definition(f'x_cp2k_{key}'), val)
+        sec_run.x_cp2k_dbcsr = dbcsr_settings if dbcsr_settings else None
+        global_settings = self.settings.get('global', {})
+        sec_run.x_cp2k_global_settings = global_settings if global_settings else None
 
         program_settings = self.settings.get('program', {})
         if program_settings:
@@ -1091,12 +1083,6 @@ class CP2KParser:
                 section = sec_endinformation if key.startswith('end') else sec_startinformation
                 val = val[0] if isinstance(val, list) else val
                 section.m_set(section.m_get_quantity_definition(f'x_cp2k_{key}'), val)
-
-        global_settings = self.settings.get('global', {})
-        if global_settings:
-            sec_global_settings = sec_run.m_create(x_cp2k_section_global_settings)
-            for key, val in global_settings.items():
-                sec_global_settings.m_set(sec_global_settings.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
         restart = self.out_parser.get('restart')
         if restart is not None:
@@ -1409,17 +1395,13 @@ class CP2KParser:
             sec_method.stress_tensor_method = stress_method.replace('_', ' ').title()
 
         sec_quickstep_settings = sec_method.m_create(x_cp2k_section_quickstep_settings)
-        if self.settings['dft']:
-            for key, val in self.settings['dft'].items():
-                section = sec_dft
-                if key == 'self_interaction_correction_method':
-                    val = self._self_interaction_map.get(val, None)
-                elif key == 'spin_restriction':
-                    section = sec_quickstep_settings
-                    key = 'x_cp2k_%s' % key
-                if val is None:
-                    continue
-                section.m_set(section.m_get_quantity_definition(key), val)
+        dft_settings = self.settings.get('dft', {})
+        if dft_settings:
+            sec_dft.x_cp2k_quickstep_settings = dft_settings
+            si_correction = dft_settings.get('self_interaction_correction_method')
+            if si_correction:
+                val = self._self_interaction_map.get(si_correction)
+                sec_dft.self_interaction_correction_method = val
         if self.settings['qs']:
             for key, val in self.settings['qs'].items():
                 sec_quickstep_settings.m_set(sec_quickstep_settings.m_get_quantity_definition(f'x_cp2k_{key}'), val)
@@ -1461,6 +1443,8 @@ class CP2KParser:
         if scf_parameters is not None:
             for key, val in scf_parameters.items():
                 if val is None:
+                    continue
+                if key == 'md':
                     continue
                 sec_scf.m_set(sec_scf.m_get_quantity_definition(key), val)
 
@@ -1505,7 +1489,7 @@ class CP2KParser:
                     elif isinstance(val, str):
                         val = val.strip()
 
-                    sec_geometry_opt_step.m_set(sec_geometry_opt_step.m_get_quantity_definition(f'x_cp2k_optimization_{name}'), val)
+                    setattr(sec_geometry_opt_step, f'x_cp2k_optimization_{name}', val)
 
             if sec_geometry_opt.x_cp2k_section_geometry_optimization_step:
                 geometry_change = sec_geometry_opt_step.x_cp2k_optimization_step_size_convergence_limit
@@ -1529,12 +1513,12 @@ class CP2KParser:
                     continue
                 if key in ['coordinates', 'simulation_cell', 'velocities', 'energies', 'dump']:
                     val = val.split()
-                    sec_md_settings.m_set(sec_md_settings.m_get_quantity_definition(f'x_cp2k_md_{name}_print_frequency'), int(val[0]))
-                    sec_md_settings.m_set(sec_md_settings.m_get_quantity_definition(f'x_cp2k_md_{name}_filename'), val[1])
+                    setattr(sec_md_settings, f'x_cp2k_md_{key}_print_frequency', int(val[0]))
+                    setattr(sec_md_settings, f'x_cp2k_md_{key}_filename', val[1])
                 elif key == 'print_frequency':
-                    sec_md_settings.m_set(sec_md_settings.m_get_quantity_definition(f'x_cp2k_md_{key}'), int(val.split()[0]))
+                    setattr(sec_md_settings, f'x_cp2k_md_{key}', int(val.split()[0]))
                 else:
-                    sec_md_settings.m_set(sec_md_settings.m_get_quantity_definition(f'x_cp2k_md_{key}'), val)
+                    setattr(sec_md_settings, f'x_cp2k_md_{key}', val)
 
         self.archive.workflow2 = workflow
 
