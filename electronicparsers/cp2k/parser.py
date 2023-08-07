@@ -1224,6 +1224,8 @@ class CP2KParser:
             if velocities is not None:
                 sec_atoms.velocities = velocities
 
+        return sec_system
+
     def parse_configurations_quickstep(self):
         sec_run = self.archive.run[-1]
         quickstep = self.out_parser.get(self._calculation_type)
@@ -1275,9 +1277,11 @@ class CP2KParser:
                     atomic_coord = quickstep.get('atomic_coordinates')
                     if atomic_coord is not None:
                         atomic_coord._frame = 0
-                    self.parse_system(atomic_coord)
+                    sec_system = self.parse_system(atomic_coord)
                 else:
-                    self.parse_system(n)
+                    sec_system = self.parse_system(n)
+                if sec_system:
+                    sec_scc.system_ref = sec_system
 
         single_point = quickstep.get('single_point')
         if single_point is not None:
@@ -1285,14 +1289,14 @@ class CP2KParser:
             atomic_coord = quickstep.get('atomic_coordinates')
             if atomic_coord is not None:
                 atomic_coord._frame = 0
-                self.parse_system(atomic_coord)
+                sec_system = self.parse_system(atomic_coord)
             else:
                 self.logger.warning('Could not parse system information for the SinglePoint calculation.')
             sec_scc = self.parse_scc(single_point)
             if sec_run.method[-1] is not None:
                 sec_scc.method_ref = sec_run.method[-1]
-            if sec_run.system[-1] is not None:
-                sec_scc.system_ref = sec_run.system[-1]
+            if sec_system is not None:
+                sec_scc.system_ref = sec_system
 
         geometry_optimization = quickstep.get('geometry_optimization')
         if geometry_optimization is not None:
