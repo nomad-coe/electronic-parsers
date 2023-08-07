@@ -71,7 +71,7 @@ def test_srvo3(parser):
     sec_dmft = sec_run.method[1].dmft
     assert sec_dmft.n_correlated_orbitals.shape == (1,)
     assert sec_dmft.n_correlated_orbitals[0] == 3
-    assert sec_dmft.n_correlated_electrons == approx(1.0)
+    assert sec_dmft.n_electrons == approx(1.0)
     assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.get('beta'))
     assert sec_dmft.impurity_solver == 'CT-HYB'
     # Frequency and Time meshes

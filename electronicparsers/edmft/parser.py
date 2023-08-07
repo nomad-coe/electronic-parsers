@@ -283,12 +283,12 @@ class EDMFTParser:
                     # Lattice and impurity occupations
                     sec_charges_latt = sec_scf_iteration.m_create(Charges)
                     sec_charges_latt.kind = 'lattice'
-                    sec_charges_latt.n_atoms = sec_scc.method_ref.dmft.n_atoms_per_unit_cell
+                    sec_charges_latt.n_atoms = sec_scc.method_ref.dmft.n_impurities
                     sec_charges_latt.n_orbitals = n_orbitals
                     sec_charges_latt.n_electrons = [data_scf[i_dmft][8]]
                     sec_charges_imp = sec_scf_iteration.m_create(Charges)
                     sec_charges_imp.kind = 'impurity'
-                    sec_charges_imp.n_atoms = sec_scc.method_ref.dmft.n_atoms_per_unit_cell
+                    sec_charges_imp.n_atoms = sec_scc.method_ref.dmft.n_impurities
                     sec_charges_imp.n_orbitals = n_orbitals
                     sec_charges_imp.n_electrons = [data_scf[i_dmft][9]]
 

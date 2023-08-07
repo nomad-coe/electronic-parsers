@@ -253,21 +253,21 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
 
         # DMFT section
         sec_dmft = sec_method.m_create(DMFT)
-        sec_dmft.n_atoms_per_unit_cell = data.attrs.get(f'general.nat', 0)
+        sec_dmft.n_impurities = data.attrs.get(f'general.nat', 0)
         if data.attrs.get(f'general.beta'):
             sec_dmft.inverse_temperature = data.attrs.get(f'general.beta') / ureg.eV
         if data.attrs.get(f'general.magnetism'):
             sec_dmft.magnetic_state = data.attrs.get(f'general.magnetism') + 'magnetic'
         corr_orbs_per_atoms = []
         occ_per_atoms = []
-        for i in range(sec_dmft.n_atoms_per_unit_cell):
+        for i in range(sec_dmft.n_impurities):
             nd = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_nd
             np = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_np
             corr_orbs_per_atoms.append(nd + np)
             if data.attrs.get(f'general.totdens'):
                 occ_per_atoms.append(data.attrs.get(f'general.totdens'))
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
-        sec_dmft.n_correlated_electrons = occ_per_atoms
+        sec_dmft.n_electrons = occ_per_atoms
         sec_dmft.impurity_solver = 'CT-HYB'
         # FrequencyMesh
         iw = self.data.get('.axes').get('iw')
@@ -305,7 +305,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         for keys in self.data[calc_keys[0]]:
             if keys.startswith('ineq'):
                 n_ineq += 1
-        n_atoms = sec_run.method[-1].dmft.n_atoms_per_unit_cell
+        n_atoms = sec_run.method[-1].dmft.n_impurities
 
         filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), self.mainfile)
         farg = 'r+b'  # Always reading the hdf5 mainfile
