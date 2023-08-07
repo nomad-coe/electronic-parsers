@@ -863,15 +863,18 @@ class RKFParser(FileParser):
         engine_results = self.data.get('EngineResults', {})
 
         files = [val for key, val in engine_results.items() if key.startswith('Files')]
+        warning = None
         for n, name in enumerate(files):
             rkf_files = get_files(name, self.mainfile)
             if not rkf_files:
-                self.logger.warning('rkf file not found in directory.')
+                warning = 'rkf file not found in directory.'
                 files[n] = None
                 continue
             if len(rkf_files) > 1:
-                self.logger.warning('Multiple rkf files found in directory')
+                warning = 'Multiple rkf files found in directory'
             files[n] = rkf_files[0]
+        if warning:
+            self.logger.warning(warning)
 
         labels = []
         if (molecule := self.data.get('Molecule')) is not None:
