@@ -873,7 +873,8 @@ class RKFParser(FileParser):
             if len(rkf_files) > 1:
                 warning = 'Multiple rkf files found in directory'
             files[n] = rkf_files[0]
-        self.logger.warning(warning)
+        if warning:
+            self.logger.warning(warning)
 
         labels = []
         if (molecule := self.data.get('Molecule')) is not None:
