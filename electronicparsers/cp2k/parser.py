@@ -1292,8 +1292,6 @@ class CP2KParser:
                     self.parse_system(atomic_coord)
                 else:
                     self.parse_system(n)
-                if sec_run.system is not None and sec_run.system[n]:
-                    sec_scc.system_ref = sec_run.system[n]
 
         single_point = quickstep.get('single_point')
         if single_point is not None:
