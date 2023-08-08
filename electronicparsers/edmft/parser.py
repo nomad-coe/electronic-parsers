@@ -198,6 +198,11 @@ class EDMFTParser:
         self.maxent_sigout_parser = MaxEntSigOutParser()
 
     def parse_system(self, sec_run):
+        """Parses the system from the Wien2k *.struct file and using the Wien2k parsing functions.
+
+        Args:
+            sec_run (MSection): Run section to be populated with System.
+        """
         struct_files = get_files('*.struct', self.filepath, self.mainfile)
         if struct_files:
             if len(struct_files) > 1:
@@ -215,6 +220,9 @@ class EDMFTParser:
             sec_atoms.periodic = atoms.get_pbc()
 
     def parse_initial_model(self):
+        """Parses the initial model for running DMFT SinglePoint. It is composed of the
+        projection matrix plus the Hubbard-Kanamori parameters.
+        """
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
 
@@ -248,6 +256,8 @@ class EDMFTParser:
                 sec_hubbard_kanamori.j = sec_hubbard_kanamori.jh
 
     def parse_method(self):
+        """Parses DMFT SinglePoint method parameters.
+        """
         sec_run = self.archive.run[-1]
 
         sec_method = sec_run.m_create(Method)
@@ -274,11 +284,25 @@ class EDMFTParser:
         sec_dmft.impurity_solver = self._solver_map.get(self.general_parameters.get('solver', ''))
 
     def parse_scc(self):
-        # TODO ask about extensions when more than one impurity: iparams0, iparams1,
+        """Parses output calculation from a DMFT SinglePoint calculation. Each DMFT calculation
+        step is composed of a scf convergnece, as explained in the documentation workflow
+        graphs: http://hauleweb.rutgers.edu/tutorials/Overview.html
+
+        Each calculation section is then composed of:
+            a) Iteration energy and charge quantities inside scf_iteration.
+            b) Impurity GF quantities in Matsubara frequency space. The last
+            calculation contains the last output quantities to be compared with the lattice GF
+            quantities.
+            c) The final calculation also contains the lattice GF quantities.
+        """
+        # TODO: (1) ask about extensions when more than one impurity: iparams0, iparams1,
         # info.iterate n_latt and n_imp columns? imp.X subfolders?
+        # (2) how to check convergence (Gimp - Glatt < criteria)?
         sec_run = self.archive.run[-1]
 
         def create_calculation_section():
+            """Creates a calculation section and includes system_ref and method_ref.
+            """
             sec_scc = sec_run.m_create(Calculation)
             if sec_run.m_xpath('system'):
                 sec_scc.system_ref = sec_run.system[-1]
@@ -286,12 +310,28 @@ class EDMFTParser:
             return sec_scc
 
         def _call_calculation_section(i_scc):
+            """Call the calculation section if present, if not, creates a new calculation section.
+
+            Args:
+                i_scc (int): The element in the list sec_run.calculation
+            """
             if sec_run.calculation:
                 return sec_run.calculation[i_scc]
             else:
                 return sec_run.m_create(Calculation)
 
         def extract_greens_functions_data(sec_scc, sec_gfs, n_orbitals, gf_data, create_freq_mesh=True):
+            """Extracts GF data from gf_data as read from the data output files, and populates
+            sec_gfs with it.
+
+            Args:
+                sec_scc (MSection): Calculation section for updating the method_ref.
+                sec_gfs (MSection): GreensFunctions section to be populated with gf_data
+                n_orbitals (int): Number of correlated orbitals.
+                gf_data (np.array): Data extracted from the data output files.
+                create_freq_mesh (bool, optional): Creates a FrequencyMesh section and the
+                calculation.method_ref if true. Defaults to True.
+            """
             # Adding FreqMesh
             iw = gf_data[:, 0]
             if create_freq_mesh:
@@ -416,6 +456,10 @@ class EDMFTParser:
         return True
 
     def parse_maxent_archive(self, archive):
+        """Populates the MaxEnt SinglePoint archive. This will contain:
+            1- The analytical continuation method parameters.
+            2- The self-energy in real frequencies.
+        """
         self.init_parser()
         sec_run = archive.m_create(Run)
         sec_run.program = Program(name='eDMFT')
@@ -492,6 +536,10 @@ class EDMFTParser:
         self.archive.workflow2 = workflow
 
     def parse_dmft_maxent_workflow(self, maxent_archive, workflow_archive):
+        """Populates the DMFT+MaxEnt workflow archive. This will contain:
+            1- The Green's function in real frequencies and the Spectral density function (to be compared with the DOS).
+            2- Tasks pointing to the DMFT SinglePoint and MaxEnt SinglePoint entries.
+        """
         self.init_parser()
         sec_run = workflow_archive.m_create(Run)
         sec_run.program = Program(name='eDMFT')
