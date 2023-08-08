@@ -256,7 +256,7 @@ class EDMFTParser:
         # Code-specific parameters
         sec_edmft_params = sec_method.m_create(x_edmft_method_parameters)
         sec_edmft_params.x_edmft_general = self.general_parameters
-        sec_edmft_params.x_edmft_impurity = self.impurity_parameters
+        sec_edmft_params.x_edmft_impurity_solver = self.impurity_parameters
 
         # DMFT method
         sec_dmft = sec_method.m_create(DMFT)
