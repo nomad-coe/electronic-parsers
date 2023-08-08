@@ -411,9 +411,6 @@ class EDMFTParser:
             sec_scc = sec_run.calculation[-1]
             lattice_gf_files = get_files('*.gc1', self.filepath, self.mainfile)
             lattice_sigma_files = get_files('sig.inp1', self.filepath, self.mainfile)
-            # if lattice_gf_files or lattice_sigma_files:
-                # sec_gfs = sec_scc.m_create(GreensFunctions)
-                # sec_gfs.type = 'lattice'
             for i_files, lattice_files in enumerate([lattice_gf_files, lattice_sigma_files]):
                 if lattice_files:
                     if len(lattice_files) > 1:
@@ -468,15 +465,15 @@ class EDMFTParser:
             def opt_function(x, x0, L, Nw):
                 d = x[0]
                 w = x[1]
-                return np.array([L - w / np.tan(d), x0 - w * np.tan(np.pi / (2 * Nw) - d / Nw) ])
+                return np.array([L - w / np.tan(d), x0 - w * np.tan(np.pi / (2 * Nw) - d / Nw)])
 
             xi = x0 / L
             d0 = 0.5 * Nw * (np.tan(np.pi / (2 * Nw)) - np.sqrt(np.tan(np.pi / (2 * Nw))**2 - 4 * xi / Nw))
             w0 = L * d0
 
-            sol = optimize.root(opt_function, [d0, w0], args=(x0, L, Nw) )
+            sol = optimize.root(opt_function, [d0, w0], args=(x0, L, Nw))
             (d, w) = sol.x
-            return w * np.tan(np.linspace(0, 1 , 2 * Nw + 1) * (np.pi - 2 * d) - np.pi / 2 + d)
+            return w * np.tan(np.linspace(0, 1, 2 * Nw + 1) * (np.pi - 2 * d) - np.pi / 2 + d)
 
         def parse_maxent_method(maxent_file):
             sec_method = sec_run.m_create(Method)

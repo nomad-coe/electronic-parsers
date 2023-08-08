@@ -33,8 +33,7 @@ def parser():
 
 def test_srvo3(parser):
     archive = EntryArchive()
-    #parser.parse('tests/data/w2dynamics/SrVO3_beta60-2021-12-03-Fri-13-38-46.hdf5', archive, None)
-    parser.parse('/home/josepizarro/nomad/dependencies/parsers/electronic/tests/data/w2dynamics/SrVO3_beta60-2021-12-03-Fri-13-38-46.hdf5', archive, None)
+    parser.parse('tests/data/w2dynamics/SrVO3_beta60-2021-12-03-Fri-13-38-46.hdf5', archive, None)
 
     # Run tests
     assert len(archive.run) == 1

@@ -33,8 +33,7 @@ def parser():
 
 def test_lanio2_u7_singlepoint(parser):
     archive = EntryArchive()
-    # parser.parse('tests/data/edmft/LaNiO2_u7_singlepoint/dmft_info.out', archive, None)
-    parser.parse('/home/josepizarro/nomad/dependencies/parsers/electronic/tests/data/edmft/LaNiO2_u7_singlepoint/dmft_info.out', archive, None)
+    parser.parse('tests/data/edmft/LaNiO2_u7_singlepoint/dmft_info.out', archive, None)
 
     # Run tests
     assert len(archive.run) == 1
