@@ -33,6 +33,7 @@ class x_w2dynamics_axes(MSection):
     '''
 
     m_def = Section(validate=False)
+
     x_w2dynamics_iwb_g4 = Quantity(
         type=np.float64,
         shape=['N4iwb'],

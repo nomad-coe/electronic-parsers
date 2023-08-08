@@ -33,7 +33,8 @@ def parser():
 
 def test_srvo3(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/w2dynamics/SrVO3_beta60-2021-12-03-Fri-13-38-46.hdf5', archive, None)
+    #parser.parse('tests/data/w2dynamics/SrVO3_beta60-2021-12-03-Fri-13-38-46.hdf5', archive, None)
+    parser.parse('/home/josepizarro/nomad/dependencies/parsers/electronic/tests/data/w2dynamics/SrVO3_beta60-2021-12-03-Fri-13-38-46.hdf5', archive, None)
 
     # Run tests
     assert len(archive.run) == 1
@@ -77,9 +78,9 @@ def test_srvo3(parser):
     # Frequency and Time meshes
     assert sec_run.m_xpath('method[-1].frequency_mesh') and sec_run.m_xpath('method[-1].time_mesh')
     sec_freq_mesh = sec_run.method[-1].frequency_mesh
-    assert sec_freq_mesh.points[22].to('eV').magnitude == approx(-123.30751165339937j)
+    assert sec_freq_mesh.points[22][0].to('eV').magnitude == approx(-123.30751165339937j)
     sec_time_mesh = sec_run.method[-1].time_mesh
-    assert sec_time_mesh.points[40] == approx(2.4024024024024024j)
+    assert sec_time_mesh.points[40][0] == approx(2.4024024024024024j)
 
     # Calculation tests
     assert len(sec_run.calculation) == 1

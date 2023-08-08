@@ -83,10 +83,10 @@ def test_srvo3(parser):
     assert sec_run.m_xpath('method[-1].frequency_mesh') and sec_run.m_xpath('method[-1].time_mesh')
     sec_freq_mesh = sec_run.method[-1].frequency_mesh
     assert sec_freq_mesh.n_points == 501
-    assert sec_freq_mesh.points[15].to('eV').magnitude == approx(-97.10000000000001j)
+    assert sec_freq_mesh.points[15][0].to('eV').magnitude == approx(-97.10000000000001j)
     sec_time_mesh = sec_run.method[-1].time_mesh
     assert sec_time_mesh.n_points == 10001
-    assert sec_time_mesh.points[76] == approx(0.076j)
+    assert sec_time_mesh.points[76][0] == approx(0.076j)
 
     # Calculation tests
     assert len(sec_run.calculation) == 1

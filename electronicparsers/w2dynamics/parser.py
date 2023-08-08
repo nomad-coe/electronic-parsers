@@ -272,14 +272,14 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         # FrequencyMesh
         iw = self.data.get('.axes').get('iw')
         if iw is not None:
-            iw = iw[:] * 1j * ureg.eV
-            sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=len(iw), points=iw)
+            iw = iw[:].reshape((len(iw), 1))
+            sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=len(iw), points=iw * 1j * ureg.eV)
             sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # TimeMesh
         tau = self.data.get('.axes').get('tau')
         if tau is not None:
-            tau = tau[:] * 1j
-            sec_tau_mesh = TimeMesh(dimensionality=1, n_points=len(tau), points=tau)
+            tau = tau[:].reshape((len(tau), 1))
+            sec_tau_mesh = TimeMesh(dimensionality=1, n_points=len(tau), points=tau * 1j)
             sec_method.m_add_sub_section(Method.time_mesh, sec_tau_mesh)
 
     def parse_scc(self):
