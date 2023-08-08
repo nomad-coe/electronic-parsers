@@ -530,7 +530,8 @@ class EDMFTParser:
 
         # Workflow
         workflow = SinglePoint()
-        self.archive.workflow2 = workflow
+        workflow.name = 'MaxEnt'
+        archive.workflow2 = workflow
 
     def parse_dmft_maxent_workflow(self, maxent_archive, workflow_archive):
         """Populates the DMFT+MaxEnt workflow archive. This will contain:
