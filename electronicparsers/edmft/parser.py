@@ -33,6 +33,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Charges, GreensFunctions
 )
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
+from .metainfo.edmft import x_edmft_method_parameters
 from ..utils import get_files
 from ..wien2k.parser import StructParser  # Wien2k is imported to parse the system information
 
@@ -230,8 +231,9 @@ class EDMFTParser:
         sec_method.starting_method_ref = sec_run.method[0]  # ref to the Non- and InteractionHamiltonian
 
         # Code-specific parameters
-        sec_method.x_edmft_general_parameters = self.general_parameters
-        sec_method.x_edmft_impurity_solver_parameters = self.impurity_parameters
+        sec_edmft_params = sec_method.m_create(x_edmft_method_parameters)
+        sec_edmft_params.x_edmft_general = self.general_parameters
+        sec_edmft_params.x_edmft_impurity = self.impurity_parameters
 
         # DMFT method
         sec_dmft = sec_method.m_create(DMFT)
@@ -270,6 +272,7 @@ class EDMFTParser:
             # Adding FreqMesh
             iw = gf_data[:, 0]
             if create_freq_mesh:
+                iw = iw.reshape((len(iw), 1))
                 sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=len(iw), points=iw * 1j * ureg.eV)
                 method_ref = sec_scc.method_ref
                 method_ref.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
@@ -413,7 +416,8 @@ class EDMFTParser:
                     self.logger.warning(f'Multiple maxent_params.dat files found; we will parse the last one: {maxent_params_files[-1]}')
                 self.maxent_params_parser.mainfile = maxent_params_files[-1]
                 params = dict(self.maxent_params_parser.get('parameters'))
-                sec_method.x_edmft_maxent_parameters = params
+                sec_maxent_params = sec_method.m_create(x_edmft_method_parameters)
+                sec_maxent_params.x_edmft_maxent = params
                 sec_freq_mesh = FrequencyMesh(
                     dimensionality=1,
                     sampling_method='Tan',
@@ -421,6 +425,7 @@ class EDMFTParser:
                 )
                 try:
                     freqs = _freq_tan_points(params.get('x0'), params.get('L'), params.get('Nw'))
+                    freqs = freqs.reshape((len(freqs), 1))
                     sec_freq_mesh.points = freqs * ureg.eV
                 except Exception:
                     self.logger.warning('Real frequency mesh could not be extracted.')

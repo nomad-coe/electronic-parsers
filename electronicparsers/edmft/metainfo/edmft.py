@@ -27,6 +27,32 @@ from nomad.datamodel.metainfo import simulation
 m_package = Package()
 
 
+class x_edmft_method_parameters(MSection):
+    '''
+    Section grouping the different input method parameters.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_edmft_general = Quantity(
+        type=JSON,
+        description='''
+        General input parameters for the calculation.
+        ''')
+
+    x_edmft_impurity_solver = Quantity(
+        type=JSON,
+        description='''
+        Impurity solver parameters as defined in the dictionary 'iparams0'.
+        ''')
+
+    x_edmft_maxent = Quantity(
+        type=JSON,
+        description='''
+        MaxEnt parameters used to perform the analytical continuation.
+        ''')
+
+
 class Method(simulation.method.Method):
     '''
     Section containing the various parameters that define the theory and the
@@ -35,20 +61,4 @@ class Method(simulation.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_edmft_general_parameters = Quantity(
-        type=JSON,
-        description='''
-        General input parameters for the calculation.
-        ''')
-
-    x_edmft_impurity_solver_parameters = Quantity(
-        type=JSON,
-        description='''
-        Impurity solver parameters as defined in the dictionary 'iparams0'.
-        ''')
-
-    x_edmft_maxent_parameters = Quantity(
-        type=JSON,
-        description='''
-        MaxEnt parameters used to perform the analytical continuation.
-        ''')
+    x_edmft_method = SubSection(sub_section=x_edmft_method_parameters.m_def, repeats=False)
