@@ -168,6 +168,7 @@ class EDMFTParser:
     def __init__(self):
         self._re_namesafe = re.compile(r'[^\w]')
         self._calculation_type = 'dmft'
+        self._child_archives = {}
 
         self.out_parser = OutParser()
         self.struct_parser = StructParser()

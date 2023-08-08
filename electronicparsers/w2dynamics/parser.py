@@ -73,6 +73,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         self.wout_parser = WOutParser()
         self.hr_parser = HrParser()
         self.data = None
+        self._child_archives = {}
 
         self._hubbard_kanamori_map = {
             'u': 'u',
