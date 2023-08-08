@@ -141,6 +141,27 @@ class MaxentParamsParser(TextParser):
                 str_operation=str_multiply_to_float)]
 
 
+class MaxEntSigOutParser(TextParser):
+    def __init__(self):
+        super().__init__()
+
+    @property
+    def data(self):
+        if self.mainfile:
+            return np.loadtxt(self.mainfile)
+
+    def init_quantities(self):
+        def str_to_array(val_in):
+            val = [float(v) for v in val_in.split(', ')]
+            return val
+
+        self._quantities = [
+            Quantity(
+                'aux_sigma',
+                r'\# *s\_oo\= *\[([\d\.\,\-\s]+)\]',
+                repeats=False, str_operation=str_to_array)]
+
+
 class EDMFTParser:
     level = 2
 
@@ -173,6 +194,7 @@ class EDMFTParser:
         self._gf_lattice = ['greens_function_iw', 'self_energy_iw']
 
         self.maxent_params_parser = MaxentParamsParser()
+        self.maxent_sigout_parser = MaxEntSigOutParser()
 
     def parse_system(self, sec_run):
         struct_files = get_files('*.struct', self.filepath, self.mainfile)
@@ -380,6 +402,9 @@ class EDMFTParser:
         self.lattice_parser.mainfile = None
         self.lattice_parser.logger = self.logger
         self.maxent_params_parser.mainfile = None
+        self.maxent_params_parser.logger = self.logger
+        self.maxent_sigout_parser.mainfile = None
+        self.maxent_sigout_parser.logger = self.logger
 
     def get_mainfile_keys(self, **kwargs):
         filepath = kwargs.get('filename')
@@ -408,38 +433,59 @@ class EDMFTParser:
             (d, w) = sol.x
             return w * np.tan(np.linspace(0, 1 , 2 * Nw + 1) * (np.pi - 2 * d) - np.pi / 2 + d)
 
-        def parse_maxent_method():
+        def parse_maxent_method(maxent_file):
             sec_method = sec_run.m_create(Method)
-            maxent_params_files = get_files('maxent_params.dat', self.filepath, self.mainfile)
-            if maxent_params_files:
-                if len(maxent_params_files) > 1:
-                    self.logger.warning(f'Multiple maxent_params.dat files found; we will parse the last one: {maxent_params_files[-1]}')
-                self.maxent_params_parser.mainfile = maxent_params_files[-1]
-                params = dict(self.maxent_params_parser.get('parameters'))
-                sec_maxent_params = sec_method.m_create(x_edmft_method_parameters)
-                sec_maxent_params.x_edmft_maxent = params
-                sec_freq_mesh = FrequencyMesh(
-                    dimensionality=1,
-                    sampling_method='Tan',
-                    n_points=params.get('Nw', 1)
-                )
-                try:
-                    freqs = _freq_tan_points(params.get('x0'), params.get('L'), params.get('Nw'))
-                    freqs = freqs.reshape((len(freqs), 1))
-                    sec_freq_mesh.points = freqs * ureg.eV
-                except Exception:
-                    self.logger.warning('Real frequency mesh could not be extracted.')
-                sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
+            self.maxent_params_parser.mainfile = maxent_file
+            params = dict(self.maxent_params_parser.get('parameters'))
+            sec_maxent_params = sec_method.m_create(x_edmft_method_parameters)
+            sec_maxent_params.x_edmft_maxent = params
+            sec_freq_mesh = FrequencyMesh(
+                dimensionality=1,
+                sampling_method='Tan',
+                n_points=params.get('Nw', 1)
+            )
+            try:
+                freqs = _freq_tan_points(params.get('x0'), params.get('L'), params.get('Nw'))
+                freqs = freqs.reshape((len(freqs), 1))
+                sec_freq_mesh.points = freqs * ureg.eV
+            except Exception:
+                self.logger.warning('Real frequency mesh could not be extracted.')
+            sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
-        def parse_maxent_scc():
-            pass
+        def parse_maxent_scc(maxent_file):
+            sigout_files = get_files('Sig.out', maxent_file, os.path.basename(maxent_file))
+            if sigout_files:
+                if len(sigout_files) > 1:
+                    self.logger.warning(f'Multiple Sig.out files found; we will parse the last one: {sigout_files[-1]}')
+                self.maxent_sigout_parser.mainfile = sigout_files[-1]
+                data = self.maxent_sigout_parser.data
+                sec_scc = sec_run.m_create(Calculation)
+                sec_scc.system_ref = sec_run.system[-1]
+                sec_scc.method_ref = sec_run.method[-1]
+                sec_gfs = sec_scc.m_create(GreensFunctions)
+                sec_gfs.frequencies = data[:, 0]
+                try:
+                    n_orbitals = self.archive.run[-1].method[-1].dmft.n_correlated_orbitals[0]  # getting them from DMFT SinglePoint
+                    sigout_orb_data = np.array([data[:, 2 * n + 1] + data[:, 2 * n + 2] * 1j for n in range(n_orbitals)])
+                    sec_gfs.self_energy_freq = np.array([[sigout_orb_data, sigout_orb_data]])
+                except Exception:
+                    self.logger.warning('Could not extract self-energy in real frequencies data.')
+                aux_sigma = self.maxent_sigout_parser.get('aux_sigma', [])
+                if aux_sigma is not None:
+                    sec_gfs.x_edmft_self_energy_infinity = aux_sigma
 
         # System
         self.parse_system(sec_run)
-        # Method
-        parse_maxent_method()
-        # MaxEnt calculation
-        parse_maxent_scc()
+
+        # Method and MaxEnt calculation
+        maxent_params_files = get_files('maxent_params.dat', self.filepath, self.mainfile)
+        if maxent_params_files:
+            if len(maxent_params_files) > 1:
+                self.logger.warning(f'Multiple maxent_params.dat files found; we will parse the last one: {maxent_params_files[-1]}')
+            maxent_file = maxent_params_files[-1]
+            parse_maxent_method(maxent_file)
+            parse_maxent_scc(maxent_file)
+
         # Workflow
         workflow = SinglePoint()
         self.archive.workflow2 = workflow

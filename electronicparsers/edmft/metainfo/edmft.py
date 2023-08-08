@@ -62,3 +62,21 @@ class Method(simulation.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_edmft_method = SubSection(sub_section=x_edmft_method_parameters.m_def, repeats=False)
+
+
+class GreensFunctions(simulation.calculation.GreensFunctions):
+    '''
+    Section containing the code-specific output GreensFunction quantities.
+    '''
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_edmft_self_energy_infinity = Quantity(
+        type=np.float64,
+        shape=['n_correlated_orbitals'],
+        description='''
+        Self-energy function used to calculate the analytically continuated auxiliary
+        function via the formula:
+            Gc (iw) = 1 / (iw - Sigma + s_oo)
+        where s_oo is the parsed function.
+        ''')
