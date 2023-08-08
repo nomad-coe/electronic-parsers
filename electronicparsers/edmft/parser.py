@@ -20,13 +20,14 @@ import numpy as np
 import os
 import logging
 import re
+from scipy import optimize
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, HubbardKanamoriModel, KMesh, FrequencyMesh, TimeMesh, DMFT, AtomParameters
+    Method, HubbardKanamoriModel, FrequencyMesh, DMFT, AtomParameters
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Charges, GreensFunctions
@@ -121,8 +122,26 @@ class ImpurityGfOutParser(TextParser):
         ]
 
 
+class MaxentParamsParser(TextParser):
+    def __init__(self):
+        super().__init__()
+
+    def init_quantities(self):
+        def str_multiply_to_float(val_in):
+            val = val_in.split("*")
+            return float(val[0]) * float(val[1])
+
+        self._quantities = [
+            Quantity(
+                'parameters', r'\'([a-zA-Z\d\_]+)\' *\: *\ ([\d\.\*a-zA-Z]+)\'*\, *\#',
+                repeats=True),
+            Quantity(
+                'smearing', r'\'gwidth\' *\: *([\d\*\.]+)\, *\#',
+                str_operation=str_multiply_to_float)]
+
+
 class EDMFTParser:
-    level = 1
+    level = 2
 
     def __init__(self):
         self._re_namesafe = re.compile(r'[^\w]')
@@ -152,7 +171,9 @@ class EDMFTParser:
 
         self._gf_lattice = ['greens_function_iw', 'self_energy_iw']
 
-    def parse_system(self):
+        self.maxent_params_parser = MaxentParamsParser()
+
+    def parse_system(self, sec_run):
         struct_files = get_files('*.struct', self.filepath, self.mainfile)
         if struct_files:
             if len(struct_files) > 1:
@@ -162,7 +183,7 @@ class EDMFTParser:
             if atoms is None:
                 return
 
-            sec_system = self.archive.run[-1].m_create(System)
+            sec_system = sec_run.m_create(System)
             sec_atoms = sec_system.m_create(Atoms)
             sec_atoms.lattice_vectors = np.array(atoms.get_cell()) * ureg.angstrom
             sec_atoms.positions = atoms.get_positions() * ureg.angstrom
@@ -258,6 +279,8 @@ class EDMFTParser:
             return np.array([[gf_orb_data, gf_orb_data]])
 
         n_orbitals = sec_run.method[-1].dmft.n_correlated_orbitals[0]
+
+        # Parsing iteration steps for each of the calculation steps
         iterate_files = get_files('info.iterate', self.filepath, self.mainfile)
         if iterate_files:
             if len(iterate_files) > 1:
@@ -295,7 +318,7 @@ class EDMFTParser:
                     sec_charges_imp.n_orbitals = n_orbitals
                     sec_charges_imp.n_electrons = [data_scf[i_dmft][9]]
 
-        # Impurity Green's function, self-energy, hybridization function parsing
+        # Impurity Green's function, self-energy, hybridization function parsing for each calculation step
         for imp_path in self._gf_files_map.keys():
             impurity_files = get_files(imp_path, self.filepath, self.mainfile)  # Hybridization function
             if impurity_files:
@@ -317,30 +340,26 @@ class EDMFTParser:
                     if self.imp_gf_parser.get('parameters'):
                         sec_gfs.chemical_potential = self.imp_gf_parser.get('parameters')[1] * ureg.eV
 
-        # Parse lattice GFs quantities at the last Calculation
+        # Parse lattice GFs quantities in the last calculation
         if sec_run.calculation is not None:
             sec_scc = sec_run.calculation[-1]
             lattice_gf_files = get_files('*.gc1', self.filepath, self.mainfile)
             lattice_sigma_files = get_files('sig.inp1', self.filepath, self.mainfile)
-            if lattice_gf_files or lattice_sigma_files:
-                sec_gfs = sec_scc.m_create(GreensFunctions)
-                sec_gfs.type = 'lattice'
+            # if lattice_gf_files or lattice_sigma_files:
+                # sec_gfs = sec_scc.m_create(GreensFunctions)
+                # sec_gfs.type = 'lattice'
             for i_files, lattice_files in enumerate([lattice_gf_files, lattice_sigma_files]):
                 if lattice_files:
                     if len(lattice_files) > 1:
                         self.logger.warning(f'Multiple lattice files (*.gc* or sig.inp1) files found; we will parse the last one: {lattice_files[-1]}')
                     self.lattice_parser.mainfile = lattice_files[-1]
+                    sec_gfs = sec_scc.m_create(GreensFunctions)
+                    sec_gfs.type = 'lattice'
                     lattice_data = self.lattice_parser.data
                     # Extracting Matsubara freqs and GF data without storing FrequencyMesh -> this
                     # is because impurity and lattice GFs can have different size in Matsubara frequencies.
                     extracted_lattice_data = extract_greens_functions_data(sec_scc, sec_gfs, n_orbitals, lattice_data, False) if lattice_data is not None else None
                     sec_gfs.m_set(sec_gfs.m_get_quantity_definition(self._gf_lattice[i_files]), extracted_lattice_data)
-
-    def parse_maxent_archive(archive):
-        pass
-
-    def parse_dmft_maxent_workflow(maxent_archive, workflow_archive):
-        pass
 
     def init_parser(self):
         self.out_parser.mainfile = self.mainfile
@@ -357,6 +376,7 @@ class EDMFTParser:
         self.imp_gf_parser.logger = self.logger
         self.lattice_parser.mainfile = None
         self.lattice_parser.logger = self.logger
+        self.maxent_params_parser.mainfile = None
 
     def get_mainfile_keys(self, **kwargs):
         filepath = kwargs.get('filename')
@@ -365,6 +385,74 @@ class EDMFTParser:
         if maxent_files is not None:
             return ['MaxEnt', 'DMFT_MaxEnt']
         return True
+
+    def parse_maxent_archive(self, archive):
+        self.init_parser()
+        sec_run = archive.m_create(Run)
+        sec_run.program = Program(name='eDMFT')
+
+        def _freq_tan_points(x0, L, Nw):
+            def opt_function(x, x0, L, Nw):
+                d = x[0]
+                w = x[1]
+                return np.array([L - w / np.tan(d), x0 - w * np.tan(np.pi / (2 * Nw) - d / Nw) ])
+
+            xi = x0 / L
+            d0 = 0.5 * Nw * (np.tan(np.pi / (2 * Nw)) - np.sqrt(np.tan(np.pi / (2 * Nw))**2 - 4 * xi / Nw))
+            w0 = L * d0
+
+            sol = optimize.root(opt_function, [d0, w0], args=(x0, L, Nw) )
+            (d, w) = sol.x
+            return w * np.tan(np.linspace(0, 1 , 2 * Nw + 1) * (np.pi - 2 * d) - np.pi / 2 + d)
+
+        def parse_maxent_method():
+            sec_method = sec_run.m_create(Method)
+            maxent_params_files = get_files('maxent_params.dat', self.filepath, self.mainfile)
+            if maxent_params_files:
+                if len(maxent_params_files) > 1:
+                    self.logger.warning(f'Multiple maxent_params.dat files found; we will parse the last one: {maxent_params_files[-1]}')
+                self.maxent_params_parser.mainfile = maxent_params_files[-1]
+                params = dict(self.maxent_params_parser.get('parameters'))
+                sec_method.x_edmft_maxent_parameters = params
+                sec_freq_mesh = FrequencyMesh(
+                    dimensionality=1,
+                    sampling_method='Tan',
+                    n_points=params.get('Nw', 1)
+                )
+                try:
+                    freqs = _freq_tan_points(params.get('x0'), params.get('L'), params.get('Nw'))
+                    sec_freq_mesh.points = freqs * ureg.eV
+                except Exception:
+                    self.logger.warning('Real frequency mesh could not be extracted.')
+                sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
+
+        def parse_maxent_scc():
+            pass
+
+        # System
+        self.parse_system(sec_run)
+        # Method
+        parse_maxent_method()
+        # MaxEnt calculation
+        parse_maxent_scc()
+        # Workflow
+        workflow = SinglePoint()
+        self.archive.workflow2 = workflow
+
+    def parse_dmft_maxent_workflow(self, maxent_archive, workflow_archive):
+        self.init_parser()
+        sec_run = workflow_archive.m_create(Run)
+        sec_run.program = Program(name='eDMFT')
+
+        def parse_gfs_real_freqs():
+            sec_scc = sec_run.m_create(Calculation)
+
+        # System
+        self.parse_system(sec_run)
+        # G(w) and DOS calculation
+        parse_gfs_real_freqs()
+        # Workflow
+        # workflow =
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
@@ -391,7 +479,7 @@ class EDMFTParser:
         sec_run.program = Program(name='eDMFT')
 
         # System section
-        self.parse_system()
+        self.parse_system(sec_run)
 
         # Method.DMFT section
         indmfl_files = get_files('*.indmfl', self.filepath, self.mainfile)
@@ -407,18 +495,20 @@ class EDMFTParser:
         self.parse_scc()
 
         # Workflow section
-        # self.archive refers to the DMFT1 and DMFT2 SinglePoint entries grouped. Then,
-        # we define DFT+DMFT workflow grouping the DFT Wien2k entry with self.archive.
         workflow = SinglePoint()
         self.archive.workflow2 = workflow
 
-        # Checking if MaxEnt calculation is present in a subfolder.
-        # maxent_archive = self._child_archives.get('MaxEnt')
-        # if dmft_maxent_archive:
-            # Parse first the MaxEnt SinglePoint archive
-            # self.parse_maxent_archive(maxent_archive)
+        # DMFT+MaxEnt workflow
+        maxent_archive = self._child_archives.get('MaxEnt')
+        if maxent_archive:
+            # Parse first the MaxEnt SinglePoint archive.
+            # MaxEnt contains the analytical continuation of the imaginary axis Self-energy
+            # into the real frequencies space.
+            self.parse_maxent_archive(maxent_archive)
 
             # Then parse the DMFT with MaxEnt continuation workflow archive.
+            # DMFT+MaxEnt contains the DMFT SinglePoint, the MaxEnt point, as well as the
+            # calculation of the Green's function and DOS in the real frequency axis.
             # dmft_maxent_archive = self._child_archives.get('DMFT_MaxEnt')
             # try:
                 # self.parse_dmft_maxent_workflow(maxent_archive, dmft_maxent_archive)

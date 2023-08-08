@@ -46,3 +46,9 @@ class Method(simulation.method.Method):
         description='''
         Impurity solver parameters as defined in the dictionary 'iparams0'.
         ''')
+
+    x_edmft_maxent_parameters = Quantity(
+        type=JSON,
+        description='''
+        MaxEnt parameters used to perform the analytical continuation.
+        ''')
