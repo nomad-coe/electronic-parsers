@@ -26,7 +26,7 @@ from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod,
+    GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod, MaxEnt, MaxEntMethod,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
 
@@ -277,6 +277,58 @@ class BeyondDFTWorkflowsParser:
             workflow.m_add_sub_section(XS.tasks, task)
 
         xs_workflow_archive.workflow2 = workflow
+
+    def parse_dmft_maxent_workflow(self, maxent_archive: EntryArchive, workflow_archive: EntryArchive):
+        """Automatically parses the DMFT+MaxEnt workflow. Here, `self.archive` is the DMFT archive.
+
+        Args:
+            maxent_archive (EntryArchive): the MaxEnt archive
+            workflow_archive (EntryArchive): the DMFT+MaxEnt workflow archive
+        """
+
+        workflow = MaxEnt(method=MaxEntMethod())
+
+        # Method
+        method_dmft = extract_section(self.archive, 'run/method/dmft')
+        method_maxent = extract_section(maxent_archive, 'run/method')
+        workflow.method.dmft_method_ref = method_dmft
+        workflow.method.maxent_method_ref = method_maxent
+
+        # Inputs and Outputs
+        input_structure = extract_section(self.archive, 'run/system')
+        dmft_calculation = extract_section(self.archive, 'run/calculation')
+        maxent_calculation = extract_section(maxent_archive, 'run/calculation')
+        workflow_maxent_calculation = extract_section(workflow_archive, 'run/calculation')
+        if input_structure:
+            workflow.m_add_sub_section(
+                MaxEnt.inputs, Link(name='Input structure', section=input_structure))
+        if maxent_calculation and workflow_maxent_calculation:
+            outputs = [
+                Link(name='Output MaxEnt Sigma calculation', section=maxent_calculation),
+                Link(name='Output MaxEnt GF and DOS calculation', section=workflow_maxent_calculation)]
+            workflow.outputs = outputs
+
+        # DMFT task
+        if self.archive.workflow2:
+            task = TaskReference(task=self.archive.workflow2)
+            task.name = 'DMFT'
+            if input_structure:
+                task.inputs = [Link(name='Input structure', section=input_structure)]
+            if dmft_calculation:
+                task.outputs = [Link(name='Output DMFT calculation', section=dmft_calculation)]
+            workflow.m_add_sub_section(MaxEnt.tasks, task)
+
+        # MaxEnt task
+        if maxent_archive.workflow2:
+            task = TaskReference(task=maxent_archive.workflow2)
+            task.name = 'MaxEnt'
+            if dmft_calculation:
+                task.inputs = [Link(name='Output DMFT calculation', section=dmft_calculation)]
+            if maxent_calculation:
+                task.outputs = [Link(name='Output MaxEnt Sigma calculation', section=maxent_calculation)]
+            workflow.m_add_sub_section(GW.tasks, task)
+
+        workflow_archive.workflow2 = workflow
 
     def parse_dmft_workflow(self, wannier_archive: EntryArchive, dmft_workflow_archive: EntryArchive):
         self.run_workflow_archive(dmft_workflow_archive)
