@@ -224,7 +224,7 @@ class SolidDMFTParser:
         # TimeMesh
         if sec_method.m_xpath('x_soliddmft_general.x_soliddmft_n_tau'):
             n_tau = sec_method.x_soliddmft_general.x_soliddmft_n_tau
-            tau = [n * beta * 1j / (n_tau - 1) for n in range(n_tau)]
+            tau = np.array([n * beta * 1j / (n_tau - 1) for n in range(n_tau)])
             tau = tau.reshape((len(tau), 1))
             sec_time_mesh = TimeMesh(dimensionality=1, n_points=n_tau, points=tau)
             sec_method.m_add_sub_section(Method.time_mesh, sec_time_mesh)

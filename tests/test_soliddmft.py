@@ -74,7 +74,7 @@ def test_srvo3(parser):
     sec_dmft = sec_run.method[-1].dmft
     assert sec_dmft.n_impurities == 1
     assert sec_dmft.n_correlated_orbitals[0] == 3
-    assert sec_dmft.n_electrons == approx(1.0000225214138097)
+    assert sec_dmft.n_electrons[0] == approx(1.0000225214138097)
     assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(10.0)
     assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(sec_run.method[-1].x_soliddmft_general.x_soliddmft_beta)
     assert sec_dmft.impurity_solver == 'CT-HYB'
