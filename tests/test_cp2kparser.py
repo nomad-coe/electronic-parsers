@@ -37,13 +37,11 @@ def test_single_point(parser):
 
     sec_run = archive.run[0]
     assert sec_run.program.version == 'CP2K version 2.6.2'
-    assert len(sec_run.x_cp2k_section_dbcsr[0]) == 9
-    assert sec_run.x_cp2k_section_global_settings[0].x_cp2k_run_type == 'ENERGY_FORCE'
+    assert sec_run.x_cp2k_global_settings.get('run_type') == 'ENERGY_FORCE'
 
     assert sec_run.x_cp2k_section_startinformation[0].x_cp2k_start_id == 8212
     assert sec_run.x_cp2k_section_end_information[0].x_cp2k_end_time == '2016-02-08 22:11:17.875'
-    assert sec_run.x_cp2k_section_program_information[0].x_cp2k_svn_revision == 15893
-    assert len(sec_run.x_cp2k_section_quickstep_calculation) == 1
+    assert sec_run.x_cp2k_program_information.get('svn_revision') == 'svn:15893'
 
     sec_input = sec_run.x_cp2k_section_input[0]
     assert sec_input.x_cp2k_section_input_GLOBAL[0].x_cp2k_input_GLOBAL_PROJECT_NAME == 'Si_bulk8'
@@ -84,8 +82,6 @@ def test_single_point(parser):
 def test_geometry_optimization(parser):
     archive = EntryArchive()
     parser.parse('tests/data/cp2k/geometry_optimization/H2O.out', archive, None)
-
-    assert len(archive.run[0].x_cp2k_section_quickstep_calculation) == 101
 
     sec_workflow = archive.workflow2
     assert sec_workflow.method.method == 'conjugate gradient'

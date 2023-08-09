@@ -44,14 +44,15 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     MolecularDynamics, MolecularDynamicsMethod
 )
 
-from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings, x_cp2k_section_dbcsr,\
-    x_cp2k_section_startinformation, x_cp2k_section_end_information, x_cp2k_section_program_information,\
-    x_cp2k_section_global_settings, x_cp2k_section_vdw_settings, x_cp2k_section_atomic_kinds,\
+from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings,\
+    x_cp2k_section_startinformation, x_cp2k_section_end_information,\
+    x_cp2k_section_vdw_settings, x_cp2k_section_atomic_kinds,\
     x_cp2k_section_atomic_kind, x_cp2k_section_kind_basis_set, x_cp2k_section_total_numbers,\
-    x_cp2k_section_maximum_angular_momentum, x_cp2k_section_quickstep_calculation,\
-    x_cp2k_section_scf_iteration, x_cp2k_section_stress_tensor, x_cp2k_section_md_settings,\
+    x_cp2k_section_maximum_angular_momentum, x_cp2k_section_md_settings,\
     x_cp2k_section_restart_information, x_cp2k_section_geometry_optimization,\
     x_cp2k_section_geometry_optimization_step
+
+from ..utils import get_files
 
 
 units_map = {
@@ -414,7 +415,7 @@ class CP2KOutParser(TextParser):
             '%s' % key.lower().replace(' ', '_').replace('-', '_'),
             rf'%s:\s*({re_float})' % key, dtype=float, unit='hartree', repeats=True) for key in [
                 'Hartree energy', 'Exchange-correlation energy', 'Electronic kinetic energy',
-                'Total energy']]
+                'Total energy', 'Fermi energy']]
         # what is the difference between Total energy and ENERGY| Total
 
         scf_wavefunction_optimization_quantities = [
@@ -456,14 +457,6 @@ class CP2KOutParser(TextParser):
                 'stress_eigenvalues_eigenvectors',
                 r' EIGENVECTORS AND EIGENVALUES OF THE STRESS TENSOR\s*([\d\.\-\s]+)',
                 str_operation=str_to_stress_eigenvalues, convert=False)] + energy_quantities
-
-        single_point_quantities = [
-            Quantity(
-                'self_consistent',
-                r'SCF WAVEFUNCTION OPTIMIZATION([\s\S]+?)\Z', repeats=False,
-                sub_parser=TextParser(quantities=scf_wavefunction_optimization_quantities)),
-            # TODO add rpa, etc.
-        ]
 
         geometry_optimization_quantities = [
             Quantity(
@@ -627,8 +620,8 @@ class CP2KOutParser(TextParser):
             # TODO add mp2, rpa, gw
             Quantity(
                 'single_point',
-                r'( Iteration\s*Convergence\s*Energy[\s\S]+?(?:\-{50}\n\s*\-|MD_ENERGIES))',
-                sub_parser=TextParser(quantities=single_point_quantities)),
+                r'SCF WAVEFUNCTION OPTIMIZATION([\s\S]+?)(?:\-{50}\n\s*\-|MD_ENERGIES|\Z)', repeats=False,
+                sub_parser=TextParser(quantities=scf_wavefunction_optimization_quantities)),
             Quantity(
                 'geometry_optimization',
                 r'STARTING GEOMETRY OPTIMIZATION([\s\S]+?(?:GEOMETRY OPTIMIZATION COMPLETED|\Z))',
@@ -671,6 +664,7 @@ class CP2KOutParser(TextParser):
                 'quickstep',
                 r'\.\.\. make the atoms dance([\s\S]+?(?:\-{79}\s*\-|\Z))',
                 sub_parser=TextParser(quantities=quickstep_quantities)),
+            Quantity('spin_polarized', r'\| Spin unrestricted \(spin\-polarized\) Kohn\-Sham calculation *([a-zA-Z]+)', repeats=False),
             Quantity(
                 'qs_dftb',
                 r'  #####   #####        # ######  ####### ####### ######\s*'
@@ -1057,11 +1051,101 @@ class CP2KParser:
 
         return functionals
 
-    def parse_scc(self, source):
-        if source is None:
+    def parse_settings(self):
+        '''
+        Parses the initial settings of the CP2K calculation.
+        '''
+        sec_run = self.archive.run[-1]
+
+        cp2k_settings = self.settings.get('cp2k', {})
+        if cp2k_settings:
+            version = cp2k_settings.get('program_version')
+            host = cp2k_settings.get('program_compilation_host')
+            sec_run.program = Program(
+                name='CP2K', version=version[0] if isinstance(version, list) else version,
+                compilation_host=host[0] if isinstance(host, list) else host)
+            sec_run.x_cp2k_program_information = cp2k_settings
+
+        dbcsr_settings = self.settings.get('dbcsr', {})
+        sec_run.x_cp2k_dbcsr = dbcsr_settings if dbcsr_settings else None
+        global_settings = self.settings.get('global', {})
+        sec_run.x_cp2k_global_settings = global_settings if global_settings else None
+
+        program_settings = self.settings.get('program', {})
+        if program_settings:
+            sec_startinformation = sec_run.m_create(x_cp2k_section_startinformation)
+            sec_endinformation = sec_run.m_create(x_cp2k_section_end_information)
+            section = sec_startinformation
+            for key, val in program_settings.items():
+                if key == 'id' and isinstance(val, list):
+                    sec_endinformation.x_cp2k_end_id = val[1]
+                    key, val = 'start_id', val[0]
+                section = sec_endinformation if key.startswith('end') else sec_startinformation
+                val = val[0] if isinstance(val, list) else val
+                section.m_set(section.m_get_quantity_definition(f'x_cp2k_{key}'), val)
+
+        restart = self.out_parser.get('restart')
+        if restart is not None:
+            sec_restart = sec_run.m_create(x_cp2k_section_restart_information)
+            sec_restart.x_cp2k_restart_file_name = restart.get('filename')
+            sec_restart.x_cp2k_restarted_quantity_name = ' '.join(restart.get('quantities'))
+
+    def parse_input(self):
+        '''
+        Parses input file from the settings.
+        '''
+        input_filename = self.settings.get('cp2k', {}).get('input_filename', None)
+        if input_filename is None:
             return
 
-        sec_scc = self.archive.run[-1].m_create(Calculation)
+        definitions = dict(m_env.all_definitions_by_name)
+
+        def resolve_definition(name):
+            return definitions.get(name, [None])[0]
+
+        def override_keyword(name):
+            # override keys to be compatible with metainfo name
+            # TODO change metainfo name
+            if name.endswith('_VALUE'):
+                return name.replace('VALUE', 'SECTION_PARAMETERS')
+            elif name.endswith('KIND_RI_AUX_BASIS'):
+                return name.replace('BASIS', 'BASIS_SET')
+            return name
+
+        def parse(name, data, section):
+            if isinstance(data, InpValue):
+                sec_def = resolve_definition(name)
+                if sec_def is not None:
+                    sub_section = section.m_create(sec_def.section_cls)
+                    for key, val in data.items():
+                        parse(f'{name}_{key}', val, sub_section)
+
+            elif isinstance(data, list) and data:
+                for val in data:
+                    parse(name, val, section)
+
+            else:
+                name = name.replace('_section', '')
+                name = override_keyword(name)
+                quantity_def = resolve_definition(name)
+                if quantity_def is not None:
+                    section.m_set(section.m_get_quantity_definition(name), quantity_def.type(data))
+
+        input_files = get_files(input_filename, self.filepath, self.mainfile, deep=False)
+        if not input_files:
+            self.logger.warning(f'Input file {input_filename} not found.')
+            return
+        if len(input_files) > 1:
+            self.logger.warning(f'Multiple input files found. We will parse {input_files[0]}.')
+        self.inp_parser.mainfile = input_files[0]
+
+        parse('x_cp2k_section_input', self.inp_parser.tree, self.archive.run[-1])
+
+    def parse_scc(self, source):
+        sec_run = self.archive.run[-1]
+        if source is None:
+            return
+        sec_scc = sec_run.m_create(Calculation)
 
         sec_energy = sec_scc.m_create(Energy)
         if source.get('energy_total') is not None:
@@ -1070,6 +1154,9 @@ class CP2KParser:
             sec_energy.kinetic_electronic = EnergyEntry(value=source.get('electronic_kinetic_energy')[-1])
         if source.get('exchange_correlation_energy') is not None:
             sec_energy.xc = EnergyEntry(value=source.get('exchange_correlation_energy')[-1])
+        if source.get('fermi_energy') is not None:
+            sec_energy.fermi = source.get('fermi_energy')[-1]
+            sec_energy.highest_occupied = source.get('fermi_energy')[-1]
 
         if source.get('stress_tensor') is not None:
             sec_stress = sec_scc.m_create(Stress)
@@ -1087,7 +1174,7 @@ class CP2KParser:
                         sec_scf_energy.m_add_sub_section(getattr(
                             Energy, key.replace('energy_', '')), EnergyEntry(value=val))
                     else:
-                        setattr(sec_scf, key, val)
+                        sec_scf.m_set(sec_scf.m_get_quantity_definition(key), val)
 
         atom_forces = source.get('atom_forces', self.get_forces(source._frame))
         if atom_forces is not None:
@@ -1095,10 +1182,10 @@ class CP2KParser:
             sec_forces = sec_scc.m_create(Forces)
             sec_forces.total = ForcesEntry(value=atom_forces)
 
-        # TODO add dos
         return sec_scc
 
     def parse_system(self, trajectory):
+        sec_run = self.archive.run[-1]
 
         trajectory = 0 if trajectory is None else trajectory
 
@@ -1107,11 +1194,10 @@ class CP2KParser:
             trajectory = self.get_trajectory(frame)
             if trajectory is not None:
                 trajectory._frame = frame
-
         if trajectory is None:
             return
 
-        sec_system = self.archive.run[-1].m_create(System)
+        sec_system = sec_run.m_create(System)
         sec_atoms = sec_system.m_create(Atoms)
 
         lattice_vectors = self.get_lattice_vectors(trajectory._frame)
@@ -1143,38 +1229,6 @@ class CP2KParser:
     def parse_configurations_quickstep(self):
         sec_run = self.archive.run[-1]
         quickstep = self.out_parser.get(self._calculation_type)
-
-        # quickstep extension to scc quantities
-        def parse_quickstep_calculation(source):
-            if source is None:
-                return
-            sec_quickstep_calc = sec_run.m_create(x_cp2k_section_quickstep_calculation)
-            for key in ['energy_total', 'atom_forces']:
-                val = source.get(key)
-                if val is not None:
-                    setattr(sec_quickstep_calc, 'x_cp2k_%s' % key, val)
-                sec_quickstep_calc.x_cp2k_quickstep_converged = source.get('converged') is not None
-
-            if source.get('electronic_kinetic_energy') is not None:
-                sec_quickstep_calc.x_cp2k_electronic_kinetic_energy = source.get('electronic_kinetic_energy')[-1]
-
-            for iteration in source.get('iteration', []):
-                sec_scf = sec_quickstep_calc.m_create(x_cp2k_section_scf_iteration)
-                for key, val in iteration.items():
-                    if val is not None:
-                        setattr(sec_scf, 'x_cp2k_%s' % key, val)
-
-            if source.stress_tensor is not None:
-                sec_stress = sec_quickstep_calc.m_create(x_cp2k_section_stress_tensor)
-                if source.stress_tensor_one_third_of_trace is not None:
-                    val = source.stress_tensor_one_third_of_trace
-                    sec_stress.stress_tensor_one_third_of_trace = val.to('pascal').magnitude
-                if source.stress_tensor_determinant is not None:
-                    sec_stress.stress_tensor_determinant = val.to('pascal**3').magnitude
-                if source.stress_eigenvalues_eigenvectors is not None:
-                    val = source.stress_eigenvalues_eigenvectors
-                    sec_stress.x_cp2k_stress_tensor_eigenvalues = val[0].to('pascal').magnitude
-                    sec_stress.x_cp2k_stress_tensor_eigenvectors = val[1]
 
         def parse_md_step(source):
             # we put md output in scc, originally in frame sequence
@@ -1210,9 +1264,6 @@ class CP2KParser:
             for n, calculation in enumerate(calculations):
                 self_consistent = calculation.get('self_consistent', [])
                 self_consistent = [self_consistent] if not isinstance(self_consistent, list) else self_consistent
-                # there may be several wave function optimizations in a calculation
-                for scf in self_consistent:
-                    parse_quickstep_calculation(scf)
 
                 # write only the last one to scc
                 scf = self_consistent[-1] if self_consistent else calculation
@@ -1229,15 +1280,23 @@ class CP2KParser:
                     sec_system = self.parse_system(atomic_coord)
                 else:
                     sec_system = self.parse_system(n)
-
-                if sec_system is not None:
-                    sec_scc.single_configuration_calculation_to_system_ref = sec_system
-
-            sec_scc.single_configuration_to_calculation_method_ref = sec_run.method[-1]
+                if sec_system:
+                    sec_scc.system_ref = sec_system
 
         single_point = quickstep.get('single_point')
         if single_point is not None:
-            parse_calculations([single_point])
+            single_point._frame = 0
+            atomic_coord = quickstep.get('atomic_coordinates')
+            if atomic_coord is not None:
+                atomic_coord._frame = 0
+                sec_system = self.parse_system(atomic_coord)
+            else:
+                self.logger.warning('Could not parse system information for the SinglePoint calculation.')
+            sec_scc = self.parse_scc(single_point)
+            if sec_run.method[-1] is not None:
+                sec_scc.method_ref = sec_run.method[-1]
+            if sec_system is not None:
+                sec_scc.system_ref = sec_system
 
         geometry_optimization = quickstep.get('geometry_optimization')
         if geometry_optimization is not None:
@@ -1328,32 +1387,28 @@ class CP2KParser:
             sec_vdw = sec_method.m_create(x_cp2k_section_vdw_settings)
             for key, val in vdw.items():
                 if val == '':
-                    setattr(sec_vdw, 'x_cp2k_vdw_name', key)
+                    sec_vdw.m_set(sec_vdw.m_get_quantity_definition('x_cp2k_vdw_name'), key)
                     vdw_name = self._vdw_map.get(key, None)
                     if vdw_name is not None:
                         sec_method.van_der_Waals_method = vdw_name
                 else:
-                    setattr(sec_vdw, 'x_cp2k_vdw_%s' % key, val)
+                    sec_vdw.m_set(sec_vdw.m_get_quantity_definition(f'x_cp2k_vdw_{key}'), val)
 
         stress_method = self.inp_parser.get('FORCE_EVAL/STRESS_TENSOR')
         if stress_method is not None:
             sec_method.stress_tensor_method = stress_method.replace('_', ' ').title()
 
         sec_quickstep_settings = sec_method.m_create(x_cp2k_section_quickstep_settings)
-        if self.settings['dft']:
-            for key, val in self.settings['dft'].items():
-                section = sec_dft
-                if key == 'self_interaction_correction_method':
-                    val = self._self_interaction_map.get(val, None)
-                elif key == 'spin_restriction':
-                    section = sec_quickstep_settings
-                    key = 'x_cp2k_%s' % key
-                if val is None:
-                    continue
-                setattr(section, key, val)
+        dft_settings = self.settings.get('dft', {})
+        if dft_settings:
+            sec_dft.x_cp2k_quickstep_settings = dft_settings
+            si_correction = dft_settings.get('self_interaction_correction_method')
+            if si_correction:
+                val = self._self_interaction_map.get(si_correction)
+                sec_dft.self_interaction_correction_method = val
         if self.settings['qs']:
             for key, val in self.settings['qs'].items():
-                setattr(sec_quickstep_settings, 'x_cp2k_%s' % key, val)
+                sec_quickstep_settings.m_set(sec_quickstep_settings.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
         atomic_kind_info = quickstep.get('atomic_kind_information', None)
         if atomic_kind_info is not None:
@@ -1366,13 +1421,14 @@ class CP2KParser:
                     if val is None:
                         continue
                     if key in ['kind_label', 'kind_number_of_atoms']:
-                        setattr(sec_atom_kind, 'x_cp2k_%s' % key, str(val))
+                        sec_atom_kind.m_set(sec_atom_kind.m_get_quantity_definition(f'x_cp2k_{key}'), str(val))
                     else:
-                        setattr(sec_kind_basis_set, 'x_cp2k_%s' % key, val)
+                        sec_kind_basis_set.m_set(sec_kind_basis_set.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
                 sec_method_atom_kind = sec_method.m_create(AtomParameters)
-                sec_method_atom_kind.label = atom.kind_label
-                sec_method_atom_kind.atom_number = self.get_atomic_number(atom.kind_label)
+                atom_kind_label = re.sub(r'\d', '', atom.kind_label)
+                sec_method_atom_kind.label = atom_kind_label
+                sec_method_atom_kind.atom_number = self.get_atomic_number(atom_kind_label)
 
         total_maximum_numbers = quickstep.get('total_maximum_numbers', None)
         if total_maximum_numbers is not None:
@@ -1382,9 +1438,9 @@ class CP2KParser:
                 if val is None:
                     continue
                 if key in ['orbital_basis_functions', 'local_part_of_gth_pseudopotential', 'non_local_part_of_gth_pseudopotential']:
-                    setattr(sec_maximum, 'x_cp2k_%s' % key, val)
+                    sec_maximum.m_set(sec_maximum.m_get_quantity_definition(f'x_cp2k_{key}'), val)
                 else:
-                    setattr(sec_total, 'x_cp2k_%s' % key, val)
+                    sec_total.m_set(sec_total.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
         sec_scf = sec_method.m_create(Scf)
         scf_parameters = quickstep.get('scf_parameters', None)
@@ -1392,7 +1448,9 @@ class CP2KParser:
             for key, val in scf_parameters.items():
                 if val is None:
                     continue
-                setattr(sec_scf, key, val)
+                if key == 'md':
+                    continue
+                sec_scf.m_set(sec_scf.m_get_quantity_definition(key), val)
 
     @property
     def sampling_method(self):
@@ -1435,7 +1493,7 @@ class CP2KParser:
                     elif isinstance(val, str):
                         val = val.strip()
 
-                    setattr(sec_geometry_opt_step, 'x_cp2k_optimization_%s' % name, val)
+                    setattr(sec_geometry_opt_step, f'x_cp2k_optimization_{name}', val)
 
             if sec_geometry_opt.x_cp2k_section_geometry_optimization_step:
                 geometry_change = sec_geometry_opt_step.x_cp2k_optimization_step_size_convergence_limit
@@ -1459,65 +1517,20 @@ class CP2KParser:
                     continue
                 if key in ['coordinates', 'simulation_cell', 'velocities', 'energies', 'dump']:
                     val = val.split()
-                    setattr(sec_md_settings, 'x_cp2k_md_%s_print_frequency' % key, int(val[0]))
-                    setattr(sec_md_settings, 'x_cp2k_md_%s_filename' % key, val[1])
+                    setattr(sec_md_settings, f'x_cp2k_md_{key}_print_frequency', int(val[0]))
+                    setattr(sec_md_settings, f'x_cp2k_md_{key}_filename', val[1])
                 elif key == 'print_frequency':
-                    setattr(sec_md_settings, 'x_cp2k_md_%s' % key, int(val.split()[0]))
+                    setattr(sec_md_settings, f'x_cp2k_md_{key}', int(val.split()[0]))
                 else:
-                    setattr(sec_md_settings, 'x_cp2k_md_%s' % key, val)
+                    setattr(sec_md_settings, f'x_cp2k_md_{key}', val)
 
         self.archive.workflow2 = workflow
-
-    def parse_input(self):
-        # TODO include extended input
-        input_filename = self.settings['cp2k'].get('input_filename', None)
-        if input_filename is None:
-            return
-
-        definitions = dict(m_env.all_definitions_by_name)
-
-        def resolve_definition(name):
-            return definitions.get(name, [None])[0]
-
-        def override_keyword(name):
-            # override keys to be compatible with metainfo name
-            # TODO change metainfo name
-            if name.endswith('_VALUE'):
-                return name.replace('VALUE', 'SECTION_PARAMETERS')
-            elif name.endswith('KIND_RI_AUX_BASIS'):
-                return name.replace('BASIS', 'BASIS_SET')
-            return name
-
-        def parse(name, data, section):
-            if isinstance(data, InpValue):
-                sec_def = resolve_definition(name)
-                if sec_def is not None:
-                    sub_section = section.m_create(sec_def.section_cls)
-                    for key, val in data.items():
-                        sec_name = '%s_%s' % (name, key)
-                        parse(sec_name, val, sub_section)
-
-            elif isinstance(data, list) and data:
-                for val in data:
-                    parse(name, val, section)
-
-            else:
-                name = name.replace('_section', '')
-                name = override_keyword(name)
-                quantity_def = resolve_definition(name)
-                if quantity_def is not None:
-                    setattr(section, name, quantity_def.type(data))
-
-        self.inp_parser.mainfile = os.path.join(self.maindir, input_filename)
-        if self.inp_parser.mainfile is None or self.inp_parser.tree is None:
-            return
-
-        parse('x_cp2k_section_input', self.inp_parser.tree, self.archive.run[-1])
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
+        self.mainfile = os.path.basename(self.filepath)
         self.logger = logger if logger is not None else logging.getLogger(__name__)
 
         self.init_parser()
@@ -1529,51 +1542,8 @@ class CP2KParser:
                 self._calculation_type = calculation_type
                 break
 
-        sec_run = self.archive.m_create(Run)
-        version = self.settings['cp2k']['program_version']
-        host = self.settings['cp2k']['program_compilation_host']
-        sec_run.program = Program(
-            name='CP2K', version=version[0] if isinstance(version, list) else version,
-            compilation_host=host[0] if isinstance(host, list) else host)
-
-        if self.settings['dbcsr']:
-            sec_dbcsr = sec_run.m_create(x_cp2k_section_dbcsr)
-            for key, val in self.settings['dbcsr'].items():
-                setattr(sec_dbcsr, 'x_cp2k_%s' % key, val)
-
-        if self.settings['program']:
-            sec_startinformation = sec_run.m_create(x_cp2k_section_startinformation)
-            sec_endinformation = sec_run.m_create(x_cp2k_section_end_information)
-            section = sec_startinformation
-            for key, val in self.settings['program'].items():
-                if key == 'id' and isinstance(val, list):
-                    sec_endinformation.x_cp2k_end_id = val[1]
-                    key, val = 'start_id', val[0]
-                section = sec_endinformation if key.startswith('end') else sec_startinformation
-                val = val[0] if isinstance(val, list) else val
-                setattr(section, 'x_cp2k_%s' % key, val)
-
-        if self.settings['cp2k']:
-            sec_program_information = sec_run.m_create(x_cp2k_section_program_information)
-            for key, val in self.settings['cp2k'].items():
-                if key == 'svn_revision':
-                    try:
-                        val = int(val.strip('svn:'))
-                    except Exception:
-                        continue
-                setattr(sec_program_information, 'x_cp2k_%s' % key, val)
-
-        if self.settings['global']:
-            sec_global_settings = sec_run.m_create(x_cp2k_section_global_settings)
-            for key, val in self.settings['global'].items():
-                setattr(sec_global_settings, 'x_cp2k_%s' % key, val)
-
-        restart = self.out_parser.get('restart')
-        if restart is not None:
-            sec_restart = sec_run.m_create(x_cp2k_section_restart_information)
-            sec_restart.x_cp2k_restart_file_name = restart.get('filename')
-            sec_restart.x_cp2k_restarted_quantity_name = ' '.join(restart.get('quantities'))
-
+        self.archive.m_create(Run)
+        self.parse_settings()
         self.parse_input()
 
         if self._calculation_type in ['quickstep', 'qs_dftb']:
