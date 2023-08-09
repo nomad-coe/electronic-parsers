@@ -36,7 +36,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 )
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 from .metainfo.edmft import x_edmft_method_parameters
-from ..utils import get_files
+from ..utils import get_files, DataANDTextParser
 from ..wien2k.parser import StructParser  # Wien2k is imported to parse the system information
 
 
@@ -107,14 +107,9 @@ class ParamsParser(TextParser):
                         repeats=True)]))]
 
 
-class ImpurityGfOutParser(TextParser):
+class ImpurityGfOutParser(DataANDTextParser):
     def __init__(self):
         super().__init__()
-
-    @property
-    def data(self):
-        if self.mainfile:
-            return np.loadtxt(self.mainfile)
 
     def init_quantities(self):
         self._quantities = [
@@ -143,14 +138,9 @@ class MaxentParamsParser(TextParser):
                 str_operation=str_multiply_to_float)]
 
 
-class MaxEntSigOutParser(TextParser):
+class MaxEntSigOutParser(DataANDTextParser):
     def __init__(self):
         super().__init__()
-
-    @property
-    def data(self):
-        if self.mainfile:
-            return np.loadtxt(self.mainfile)
 
     def init_quantities(self):
         def str_to_array(val_in):
