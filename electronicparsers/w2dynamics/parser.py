@@ -106,7 +106,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         log_files = get_files('*.log', self.filepath, self.mainfile)
         if log_files:
             if len(log_files) > 1:
-                self.logger.warning(f'Multiple logging files found, the last one will be parsed: {log_files[-1]}')
+                self.logger.warning('Multiple logging files found, the last one will be parsed.', data={'files': log_files})
 
             self.log_parser.mainfile = log_files[-1]
             return self.log_parser.get('program_version', None)
@@ -140,7 +140,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         wann90_files = get_files('*.wout', self.filepath, self.mainfile, deep=False)
         if wann90_files:  # parse crystal from Wannier90
             if len(wann90_files) > 1:
-                self.logger.warning(f'Multiple Wannier90.wout files found, the last one will be parsed: {wann90_files[-1]}')
+                self.logger.warning(f'Multiple Wannier90.wout files found, the last one will be parsed.', data={'files': wann90_files})
 
             self.wout_parser.mainfile = wann90_files[-1]
             sec_system = sec_run.m_create(System)

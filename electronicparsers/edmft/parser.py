@@ -220,7 +220,7 @@ class EDMFTParser:
         if not struct_files:
             return
         if len(struct_files) > 1:
-            self.logger.warning(f'Multiple *struct files found; we will parse the last one: {os.path.basename(struct_files[-1])}')
+            self.logger.warning('Multiple *struct files found; we will parse the last one.', data={'files': struct_files})
         self.struct_parser.mainfile = struct_files[-1]
         atoms = self.struct_parser.get_atoms()
         if atoms is None:
@@ -353,7 +353,7 @@ class EDMFTParser:
         iterate_files = get_files('info.iterate', self.filepath, self.mainfile)
         if iterate_files:
             if len(iterate_files) > 1:
-                self.logger.warning(f'Multiple info.iterate files found; we will parse the last one: {os.path.basename(iterate_files[-1])}')
+                self.logger.warning('Multiple info.iterate files found; we will parse the last one.', data={'files': iterate_files})
             self.iterate_parser.mainfile = iterate_files[-1]
             data_scf = self.iterate_parser.data
             if data_scf is not None:
@@ -416,7 +416,7 @@ class EDMFTParser:
             for i_files, lattice_files in enumerate([lattice_gf_files, lattice_sigma_files]):
                 if lattice_files:
                     if len(lattice_files) > 1:
-                        self.logger.warning(f'Multiple lattice files (*.gc* or sig.inp1) files found; we will parse the last one: {os.path.basename(lattice_files[-1])}')
+                        self.logger.warning('Multiple lattice files (*.gc* or sig.inp1) found; we will parse the last one.', data={'files': lattice_files})
                     self.lattice_parser.mainfile = lattice_files[-1]
                     sec_gfs = sec_scc.m_create(GreensFunctions)
                     sec_gfs.type = 'lattice'
@@ -527,14 +527,14 @@ class EDMFTParser:
         maxent_params_files = get_files('maxent_params.dat', self.filepath, self.mainfile)
         if maxent_params_files:
             if len(maxent_params_files) > 1:
-                self.logger.warning(f'Multiple maxent_params.dat files found; we will parse the last one: {os.path.basename(maxent_params_files[-1])}')
+                self.logger.warning('Multiple maxent_params.dat files found; we will parse the last one.', data={'files': maxent_params_files})
             maxent_file = maxent_params_files[-1]
             self.maxent_params_parser.mainfile = maxent_file
             parse_maxent_method(maxent_file)
             sigout_files = get_files('Sig.out', maxent_file, os.path.basename(maxent_file))
             if sigout_files:
                 if len(sigout_files) > 1:
-                    self.logger.warning(f'Multiple Sig.out files found; we will parse the last one: {os.path.basename(sigout_files[-1])}')
+                    self.logger.warning('Multiple Sig.out files found; we will parse the last one.', data={'files': sigout_files})
                 self.maxent_sigout_parser.mainfile = sigout_files[-1]
                 parse_maxent_scc()
 
@@ -574,7 +574,7 @@ class EDMFTParser:
         params_files = get_files('*params.dat', self.filepath, self.mainfile)
         if params_files:
             if len(params_files) > 1:
-                self.logger.warning(f'Multiple *params.dat files found; we will parse the last one: {os.path.basename(params_files[-1])}')
+                self.logger.warning('Multiple *params.dat files found; we will parse the last one.', data={'files': params_files})
             self.params_parser.mainfile = params_files[-1]
 
             if self.params_parser.get('general_parameters'):
@@ -593,7 +593,7 @@ class EDMFTParser:
         indmfl_files = get_files('*.indmfl', self.filepath, self.mainfile)
         if indmfl_files:
             if len(indmfl_files) > 1:
-                self.logger.warning(f'Multiple *.indmfl files found; we will parse the last one: {os.path.basename(indmfl_files[-1])}')
+                self.logger.warning('Multiple *.indmfl files found; we will parse the last one.', data={'files': indmfl_files})
             self.indmfl_parser.mainfile = indmfl_files[-1]
             if self.general_parameters and self.impurity_parameters:
                 self.parse_initial_model()
