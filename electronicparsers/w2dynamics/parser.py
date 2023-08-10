@@ -348,7 +348,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
                 if sec_run.method[-1].m_xpath('time_mesh'):
                     sec_gf.tau = sec_run.method[-1].time_mesh.points.imag
                 if self.data.get(key).get('mu') is not None:
-                    sec_gf.chemical_potential = self.data.get(key).get('mu').get('value')
+                    sec_gf.chemical_potential = np.float64(self.data.get(key).get('mu').get('value')) * ureg.eV
                 norb = self.data.get('.config').attrs.get('atoms.1.nd')
                 for subkey in self._inequivalent_atom_map.keys():
                     parameters = []

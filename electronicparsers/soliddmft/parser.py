@@ -338,7 +338,7 @@ class SolidDMFTParser:
         n_iw = sec_scc.method_ref.x_soliddmft_general.x_soliddmft_n_iw
         sec_gf.tau = [n * beta / (n_tau - 1) for n in range(n_tau)]
         sec_gf.matsubara_freq = [(2 * (n - n_iw) + 1) / beta for n in range(2 * n_iw)]
-        sec_gf.chemical_potential = sec_scc.scf_iteration[-1].x_soliddmft_observables.x_soliddmft_mu
+        sec_gf.chemical_potential = sec_scc.scf_iteration[-1].x_soliddmft_observables.x_soliddmft_mu * ureg.eV
         nat = sec_scc.method_ref.dmft.n_impurities
         norb = sec_scc.method_ref.dmft.n_correlated_orbitals
         for keys in self._gf_map.keys():
