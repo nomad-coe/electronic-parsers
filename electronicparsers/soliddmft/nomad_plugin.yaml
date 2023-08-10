@@ -1,11 +1,11 @@
 code_category: Atomistic code
 code_homepage: https://github.com/TRIQS/solid_dmft
-code_name: soliddmft
+code_name: solid_dmft
 metadata:
   codeCategory: Atomistic code
   codeLabel: solid_dmft
   codeLabelStyle: All in lowercase
-  codeName: soliddmft
+  codeName: solid_dmft
   codeUrl: https://github.com/TRIQS/solid_dmft
   codeVersion: ''
   parserDirName: dependencies/parsers/electronic/electronicparsers/soliddmft/
@@ -17,8 +17,7 @@ metadata:
 
     | --- | --- |
 
-    | `*.h5` | **Mainfile:** h5 file containing all i/o parameters w/ arbitrary name
-    |
+    | `*.h5` | **Mainfile:** h5 file containing all i/o parameters w/ arbitrary name |
 
     '
 name: parsers/soliddmft
