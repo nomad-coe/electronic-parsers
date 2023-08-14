@@ -246,8 +246,9 @@ class Wannier90Parser():
             setattr(sec_wann, self._input_projection_mapping[key], self.wout_parser.get(key))
         if self.wout_parser.get('Niter'):
             sec_wann.is_maximally_localized = self.wout_parser.get('Niter', 0) > 1
-        sec_wann.energy_window_outer = self.wout_parser.get('energy_windows').outer
-        sec_wann.energy_window_inner = self.wout_parser.get('energy_windows').inner
+        if self.wout_parser.get('energy_windows'):
+            sec_wann.energy_window_outer = self.wout_parser.get('energy_windows').outer
+            sec_wann.energy_window_inner = self.wout_parser.get('energy_windows').inner
 
     def parse_winput(self):
         sec_run = self.archive.run[-1]
@@ -435,7 +436,11 @@ class Wannier90Parser():
         n_spin = 1
 
         # reshaping bands into the NOMAD band_structure style
-        bands = np.transpose(np.reshape(data[1], (n_bands, n_kpoints)))
+        try:
+            bands = np.transpose(np.reshape(data[1], (n_bands, n_kpoints)))
+        except Exception:
+            self.logger.warning('Could not reshape the bands into the NOMAD dimensions.')
+            return
         bkp_init = 0
         for n in range(n_segments):
             sec_k_band_segment = sec_k_band.m_create(BandEnergies)
