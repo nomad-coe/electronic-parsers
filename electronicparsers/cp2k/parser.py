@@ -697,6 +697,7 @@ class CP2KOutParser(TextParser):
 
 
 class CP2KPDOSParser(TextParser):
+    # TODO change to DataTextParser when @Alvin implements it.
     def __init__(self):
         super().__init__(None)
 
@@ -1378,7 +1379,7 @@ class CP2KParser:
                     atomic_coord = quickstep.get('atomic_coordinates')
                     if atomic_coord is not None:
                         atomic_coord._frame = 0
-                    self.parse_system(atomic_coord)
+                    sec_system = self.parse_system(atomic_coord)
                 else:
                     sec_system = self.parse_system(frame)
                 if sec_system:
