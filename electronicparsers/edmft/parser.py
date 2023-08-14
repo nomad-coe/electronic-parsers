@@ -368,11 +368,10 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                 self.logger.warning('Multiple info.iterate files found; we will parse the last one.', data={'files': iterate_files})
             self.iterate_parser.mainfile = iterate_files[-1]
             data_scf = [] if self.iterate_parser.data is None else self.iterate_parser.data
-            previous_iter_dmft = 0
+            calculations = sec_run.calculation
             for i_dmft, data in enumerate(data_scf):
                 iter_dmft = np.int32(data[1])
-                if i_dmft == 0 or previous_iter_dmft != iter_dmft:
-                    sec_scc = create_calculation_section()
+                sec_scc = create_calculation_section() if len(calculations) <= iter_dmft else calculations[iter_dmft]
 
                 sec_scf_iteration = sec_scc.m_create(ScfIteration)
                 # Energies
@@ -392,8 +391,6 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                 sec_charges_imp.n_atoms = sec_scc.method_ref.dmft.n_impurities
                 sec_charges_imp.n_orbitals = n_orbitals
                 sec_charges_imp.n_electrons = [data_scf[i_dmft][9]]
-
-                previous_iter_dmft = iter_dmft
 
         # Impurity Green's function, self-energy, hybridization function parsing for each calculation step
         for imp_path in self._gf_files_map.keys():
