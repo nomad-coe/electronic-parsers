@@ -282,14 +282,16 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
             n_orbitals = [orb[-1] for orb in self.indmfl_parser.get('siginds_corr', {}).get('cix')]
             sec_dmft.n_correlated_orbitals = n_orbitals
         if self.impurity_parameters.get('nf0'):
-            n_corr_elect = self.impurity_parameters.get('nf0') / n_corr_atoms
+            n_corr_elect = self.impurity_parameters.get('nf0', 1.0) / n_corr_atoms
             corr_elect = [n_corr_elect] * n_corr_atoms  # TODO ask Lucian if this makes sense
             sec_dmft.n_electrons = corr_elect
         sec_dmft.inverse_temperature = self.impurity_parameters.get('beta', 0.0) / ureg.eV
         sec_dmft.magnetic_state = 'paramagnetic'  # TODO ask Lucian if this is correct
         sec_dmft.impurity_solver = self._solver_map.get(self.general_parameters.get('solver', ''))
 
-    def extract_greens_functions_data(self, sec_scc: Calculation, sec_gfs: GreensFunctions, n_orbitals: np.int32, gf_data: np.ndarray, mesh_type: str, create_freq_mesh: bool = True):
+    def extract_greens_functions_data(
+            self, sec_scc: Calculation, sec_gfs: GreensFunctions, n_orbitals: np.int32,
+            gf_data: np.ndarray, mesh_type: str, create_freq_mesh: bool = True):
         """Extracts GF data from gf_data as read from the data output files, and populates
         sec_gfs with it.
 
@@ -303,6 +305,8 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                 calculation.method_ref if true. Defaults to True.
         """
         # Adding FreqMesh
+        if gf_data is None:
+            return
         freq = gf_data[:, 0]
         if mesh_type == 'imaginary':
             sec_gfs.matsubara_freq = freq
@@ -313,8 +317,11 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         if create_freq_mesh:
             freq = freq.reshape((len(freq), 1))
             sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=len(freq), points=freq * ureg.eV)
-            method_ref = sec_scc.method_ref
-            method_ref.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
+            try:
+                method_ref = sec_scc.method_ref
+                method_ref.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
+            except Exception:
+                pass
 
         # Defining the full Gf in the basis n_atoms x 2 x n_orbitals x n_freq
         gf_orb_data = np.array([gf_data[:, 2 * n + 1] + gf_data[:, 2 * n + 2] * 1j for n in range(n_orbitals)])
@@ -341,12 +348,18 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
             """Creates a calculation section and includes system_ref and method_ref.
             """
             sec_scc = sec_run.m_create(Calculation)
-            if sec_run.m_xpath('system'):
+            if sec_run.system is not None:
                 sec_scc.system_ref = sec_run.system[-1]
-            sec_scc.method_ref = sec_run.method[-1]  # ref DMFT
+            if sec_run.method is not None:
+                sec_scc.method_ref = sec_run.method[-1]  # ref DMFT
             return sec_scc
 
-        n_orbitals = sec_run.method[-1].dmft.n_correlated_orbitals[0]
+        if sec_run.m_xpath('method[-1].dmft.n_correlated_orbitals') is not None:
+            n_orbitals = sec_run.method[-1].dmft.n_correlated_orbitals[0]
+        else:
+            self.logger.warning('Number of orbitals could not be extracted. We cannot parse '
+                                'the output calculation information.')
+            return
 
         # Parsing iteration steps for each of the calculation steps
         iterate_files = get_files('info.iterate', self.filepath, self.mainfile)
@@ -354,36 +367,33 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
             if len(iterate_files) > 1:
                 self.logger.warning('Multiple info.iterate files found; we will parse the last one.', data={'files': iterate_files})
             self.iterate_parser.mainfile = iterate_files[-1]
-            data_scf = self.iterate_parser.data
-            if data_scf is not None:
-                previous_iter_dmft = 0
-                for i_dmft in range(len(data_scf)):
-                    iter_dmft = np.int32(data_scf[i_dmft][1])
-                    if i_dmft == 0:
-                        sec_scc = create_calculation_section()
-                    else:
-                        previous_iter_dmft = np.int32(data_scf[i_dmft - 1][1])
-                        if previous_iter_dmft != iter_dmft:
-                            sec_scc = create_calculation_section()
+            data_scf = [] if self.iterate_parser.data is None else self.iterate_parser.data
+            previous_iter_dmft = 0
+            for i_dmft, data in enumerate(data_scf):
+                iter_dmft = np.int32(data[1])
+                if i_dmft == 0 or previous_iter_dmft != iter_dmft:
+                    sec_scc = create_calculation_section()
 
-                    sec_scf_iteration = sec_scc.m_create(ScfIteration)
-                    # Energies
-                    sec_energy = sec_scf_iteration.m_create(Energy)
-                    sec_energy.chemical_potential = data_scf[i_dmft][3] * ureg.eV
-                    sec_energy.double_counting = data_scf[i_dmft][4] * ureg.eV
-                    sec_energy.total = EnergyEntry(value=data_scf[i_dmft][5] * ureg.rydberg)
-                    sec_energy.free = EnergyEntry(value=data_scf[i_dmft][7] * ureg.rydberg)
-                    # Lattice and impurity occupations
-                    sec_charges_latt = sec_scf_iteration.m_create(Charges)
-                    sec_charges_latt.kind = 'lattice'
-                    sec_charges_latt.n_atoms = sec_scc.method_ref.dmft.n_impurities
-                    sec_charges_latt.n_orbitals = n_orbitals
-                    sec_charges_latt.n_electrons = [data_scf[i_dmft][8]]
-                    sec_charges_imp = sec_scf_iteration.m_create(Charges)
-                    sec_charges_imp.kind = 'impurity'
-                    sec_charges_imp.n_atoms = sec_scc.method_ref.dmft.n_impurities
-                    sec_charges_imp.n_orbitals = n_orbitals
-                    sec_charges_imp.n_electrons = [data_scf[i_dmft][9]]
+                sec_scf_iteration = sec_scc.m_create(ScfIteration)
+                # Energies
+                sec_energy = sec_scf_iteration.m_create(Energy)
+                sec_energy.chemical_potential = data_scf[i_dmft][3] * ureg.eV
+                sec_energy.double_counting = data_scf[i_dmft][4] * ureg.eV
+                sec_energy.total = EnergyEntry(value=data_scf[i_dmft][5] * ureg.rydberg)
+                sec_energy.free = EnergyEntry(value=data_scf[i_dmft][7] * ureg.rydberg)
+                # Lattice and impurity occupations
+                sec_charges_latt = sec_scf_iteration.m_create(Charges)
+                sec_charges_latt.kind = 'lattice'
+                sec_charges_latt.n_atoms = sec_scc.method_ref.dmft.n_impurities
+                sec_charges_latt.n_orbitals = n_orbitals
+                sec_charges_latt.n_electrons = [data_scf[i_dmft][8]]
+                sec_charges_imp = sec_scf_iteration.m_create(Charges)
+                sec_charges_imp.kind = 'impurity'
+                sec_charges_imp.n_atoms = sec_scc.method_ref.dmft.n_impurities
+                sec_charges_imp.n_orbitals = n_orbitals
+                sec_charges_imp.n_electrons = [data_scf[i_dmft][9]]
+
+                previous_iter_dmft = iter_dmft
 
         # Impurity Green's function, self-energy, hybridization function parsing for each calculation step
         for imp_path in self._gf_files_map.keys():
@@ -401,7 +411,9 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                     # Parsing data
                     self.imp_gf_parser.mainfile = f
                     imp_gf_data = self.imp_gf_parser.data
-                    impurity_data = self.extract_greens_functions_data(sec_scc, sec_gfs, n_orbitals, imp_gf_data, 'imaginary') if imp_gf_data is not None else None
+                    impurity_data = self.extract_greens_functions_data(
+                        sec_scc, sec_gfs, n_orbitals, imp_gf_data, 'imaginary'
+                    ) if imp_gf_data is not None else None
                     if impurity_data is not None:
                         sec_gfs.m_set(sec_gfs.m_get_quantity_definition(self._gf_files_map[imp_path]), impurity_data)
                     if self.imp_gf_parser.get('parameters'):
@@ -422,7 +434,9 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                     lattice_data = self.lattice_parser.data
                     # Extracting Matsubara freqs and GF data without storing FrequencyMesh -> this
                     # is because impurity and lattice GFs can have different size in Matsubara frequencies.
-                    extracted_lattice_data = self.extract_greens_functions_data(sec_scc, sec_gfs, n_orbitals, lattice_data, 'imaginary', False) if lattice_data is not None else None
+                    extracted_lattice_data = self.extract_greens_functions_data(
+                        sec_scc, sec_gfs, n_orbitals, lattice_data, 'imaginary', False
+                    ) if lattice_data is not None else None
                     sec_gfs.m_set(sec_gfs.m_get_quantity_definition(self._gf_lattice[i_files]), extracted_lattice_data)
 
     def init_parser(self):
@@ -504,6 +518,8 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
             which is also stored in the archive.
             """
             data = self.maxent_sigout_parser.data
+            if data is None:
+                return
             sec_scc = sec_run.m_create(Calculation)
             sec_scc.system_ref = sec_run.system[-1]
             sec_scc.method_ref = sec_run.method[-1]
@@ -553,7 +569,8 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
 
         def parse_gfs_real_freqs():
             sec_scc = sec_run.m_create(Calculation)
-            sec_scc.system_ref = sec_run.system[-1]
+            if sec_run.system is not None:
+                sec_scc.system_ref = sec_run.system[-1]
             maxent_indmfl_files = get_files('**/*.indmfl', self.filepath, self.mainfile)
             if not maxent_indmfl_files:
                 return
@@ -577,7 +594,9 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                                 sec_gfs = sec_scc.m_create(GreensFunctions)
                                 sec_gfs.type = 'lattice'
                                 lattice_data = self.lattice_parser.data
-                                extracted_lattice_data = self.extract_greens_functions_data(sec_scc, sec_gfs, n_orbitals, lattice_data, 'real', False) if lattice_data is not None else None
+                                extracted_lattice_data = self.extract_greens_functions_data(
+                                    sec_scc, sec_gfs, n_orbitals, lattice_data, 'real', False
+                                ) if lattice_data is not None else None
                                 sec_gfs.m_set(sec_gfs.m_get_quantity_definition(self._gf_lattice_maxent[i_files]), extracted_lattice_data)
                                 # Parsing DOS as - Im G / np.pi
                                 if lattice_files == lattice_gf_files:
