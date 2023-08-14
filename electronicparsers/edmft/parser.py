@@ -473,21 +473,21 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         sec_run = archive.m_create(Run)
         sec_run.program = Program(name='eDMFT')
 
-        def _freq_tan_points(x0: float, L: float, Nw: int):
+        def _freq_tan_points(x0: float, l: float, n_w: int):
             """Defines the frequency mesh points in a 'Tan' mesh. Following script by @LucianPascut.
             """
-            def opt_function(x: np.ndarray, x0: float, L: float, Nw: int):
+            def opt_function(x: np.ndarray, x0: float, l: float, n_w: int):
                 d = x[0]
                 w = x[1]
-                return np.array([L - w / np.tan(d), x0 - w * np.tan(np.pi / (2 * Nw) - d / Nw)])
+                return np.array([l - w / np.tan(d), x0 - w * np.tan(np.pi / (2 * n_w) - d / n_w)])
 
-            xi = x0 / L
-            d0 = 0.5 * Nw * (np.tan(np.pi / (2 * Nw)) - np.sqrt(np.tan(np.pi / (2 * Nw))**2 - 4 * xi / Nw))
-            w0 = L * d0
+            xi = x0 / l
+            d0 = 0.5 * n_w * (np.tan(np.pi / (2 * n_w)) - np.sqrt(np.tan(np.pi / (2 * n_w))**2 - 4 * xi / n_w))
+            w0 = l * d0
 
-            sol = optimize.root(opt_function, [d0, w0], args=(x0, L, Nw))
+            sol = optimize.root(opt_function, [d0, w0], args=(x0, l, n_w))
             (d, w) = sol.x
-            return w * np.tan(np.linspace(0, 1, 2 * Nw + 1) * (np.pi - 2 * d) - np.pi / 2 + d)
+            return w * np.tan(np.linspace(0, 1, 2 * n_w + 1) * (np.pi - 2 * d) - np.pi / 2 + d)
 
         def parse_maxent_method():
             """Populates method section with MaxEnt parameters and the real space FrequencyMesh.
