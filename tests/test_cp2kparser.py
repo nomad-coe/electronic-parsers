@@ -92,13 +92,13 @@ def test_geometry_optimization(parser):
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 13
-    assert sec_sccs[7].energy.xc.value.magnitude == approx(-1.79924161e-17)
-    assert len(sec_sccs[2].scf_iteration) == 7
-    assert sec_sccs[11].scf_iteration[-1].energy.total.value.magnitude == approx(-7.48333145e-17)
+    assert sec_sccs[7].energy.xc.value.to('hartree').magnitude == approx(-4.1274870248)
+    assert len(sec_sccs[2].scf_iteration) == 6
+    assert sec_sccs[11].scf_iteration[-1].energy.total.value.to('hartree').magnitude == approx(-17.1646260706)
 
     sec_systems = archive.run[0].system
     assert len(sec_systems) == 13
-    assert sec_systems[6].atoms.positions[1][1].magnitude == approx(2.25671575e-10)
+    assert sec_systems[6].atoms.positions[1][1].to('angstrom').magnitude == approx(2.2567157451)
 
 
 def test_molecular_dynamics(parser):
@@ -110,12 +110,12 @@ def test_molecular_dynamics(parser):
     assert sec_workflow.method.x_cp2k_section_md_settings[0].x_cp2k_md_print_frequency == 1
 
     sec_sccs = archive.run[0].calculation
-    assert len(sec_sccs) == 12
+    assert len(sec_sccs) == 11
     assert len(sec_sccs[6].scf_iteration) == 7
-    assert sec_sccs[3].energy.total.value.magnitude == approx(-1.49661312e-16)
-    assert sec_sccs[9].energy.kinetic.value.magnitude == approx(2.4094966278264588e-20)
-    assert sec_sccs[7].temperature.magnitude == approx(218.299664775)
+    assert sec_sccs[3].energy.total.value.to('hartree').magnitude == approx(-34.32799897809764)
+    assert sec_sccs[9].energy.kinetic.value.to('hartree').magnitude == approx(0.005371243)
+    assert sec_sccs[7].temperature.magnitude == approx(230.324748558)
 
     sec_systems = archive.run[0].system
-    assert len(sec_systems) == 12
-    assert sec_systems[5].atoms.positions[4][0].magnitude == approx(5.8374765e-11)
+    assert len(sec_systems) == 11
+    assert sec_systems[5].atoms.positions[4][0].to('angstrom').magnitude == approx(0.5824842170)

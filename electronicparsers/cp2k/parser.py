@@ -46,7 +46,7 @@ from nomad.datamodel.metainfo.simulation.workflow import (
 
 from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings,\
     x_cp2k_section_startinformation, x_cp2k_section_end_information,\
-    x_cp2k_section_vdw_settings, x_cp2k_section_atomic_kinds,\
+    x_cp2k_section_atomic_kinds,\
     x_cp2k_section_atomic_kind, x_cp2k_section_kind_basis_set, x_cp2k_section_total_numbers,\
     x_cp2k_section_maximum_angular_momentum, x_cp2k_section_md_settings,\
     x_cp2k_section_restart_information, x_cp2k_section_geometry_optimization,\
@@ -488,15 +488,11 @@ class CP2KOutParser(TextParser):
                 'initial',
                 r' INITIAL\| (.+? {2})=\s+(.+)', str_operation=str_to_header, repeats=True),
             Quantity(
-                'self_consistent',
-                r'SCF WAVEFUNCTION OPTIMIZATION([\s\S]+?)(?:\*\n *ENSEM|\Z)', repeats=False,
-                sub_parser=TextParser(quantities=scf_wavefunction_optimization_quantities)),
-            Quantity(
                 'md_step',
-                r'(BLE TYPE[\s\S]+?)(?:\*\n *ENSEM|\Z)',
+                r'(SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?ENSEMBLE TYPE[\s\S]+?\*{50})',
                 repeats=True, sub_parser=TextParser(quantities=[
                     Quantity(
-                        'ensemble_type', r'BLE TYPE\s*=\s*(.+)'),
+                        'ensemble_type', r'ENSEMBLE TYPE\s*=\s*(.+)'),
                     Quantity(
                         'step_number', r'STEP NUMBER\s*=\s*(\d+)', dtype=int),
                     Quantity(
@@ -553,7 +549,7 @@ class CP2KOutParser(TextParser):
                         dtype=float),
                     Quantity(
                         'self_consistent',
-                        r'FUNCTION OPTIMIZATION([\s\S]+?)(?: SCF WAVE|\Z)', repeats=True,
+                        r'(SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?)\*{50}', repeats=True,
                         sub_parser=TextParser(quantities=scf_wavefunction_optimization_quantities))])
             )
         ]
@@ -567,10 +563,9 @@ class CP2KOutParser(TextParser):
             Quantity('rpa', r'(RI-RPA\|)'),
             Quantity(
                 'functional', r' FUNCTIONAL\| (\S+):', repeats=True),
-            # TODO find example and verify
             Quantity(
                 'vdw',
-                r' vdW POTENTIAL\| +(.+? {2}) +(.+)', str_operation=str_to_header, repeats=True),
+                r' vdW POTENTIAL\| .+?([A-Z]\. [A-Z].+? \(\d+\))', flatten=False, repeats=True),
             Quantity(
                 'qs',
                 r' QS\| ((?:Method|Density cutoff)).*?:( {2}) +(.+)',
@@ -749,6 +744,7 @@ class CP2KParser:
             'B3LYP': [XCFunctionalProperty('HYB_GGA_XC_B3LYP')],
             'TPSS': [XCFunctionalProperty('MGGA_X_TPSS'), XCFunctionalProperty('MGGA_C_TPSS')]}
         self._ensemble_map = {'NVE': 'NVE', 'NVT': 'NVT', 'NPT_F': 'NPT', 'NPT_I': 'NPT'}
+        # TODO extend map
         self._vdw_map = {
             "S. Grimme, JCC 27: 1787 (2006)": "G06",
             "S. Grimme et al, JCP 132: 154104 (2010)": "G10"}
@@ -792,8 +788,7 @@ class CP2KParser:
                 self.out_parser.get(self._calculation_type, {}).get('dft', []))
             self._settings['qs'] = to_dict(
                 self.out_parser.get(self._calculation_type, {}).get('qs', []))
-            self._settings['vdw'] = to_dict(
-                self.out_parser.get(self._calculation_type, {}).get('vdw', []))
+            self._settings['vdw'] = self.out_parser.get(self._calculation_type, {}).get('vdw', [])
             self._settings['dbcsr'] = to_dict(self.out_parser.get('dbcsr', []), False)
             self._settings['program'] = to_dict(self.out_parser.get('program', []))
             self._settings['cp2k'] = to_dict(self.out_parser.get('cp2k', []), False)
@@ -1269,8 +1264,9 @@ class CP2KParser:
                 scf = self_consistent[-1] if self_consistent else calculation
                 scf._frame = n
                 sec_scc = self.parse_scc(scf)
-                if calculation.get('ensemble_type') is not None:
-                    calculation._frame = n
+                md = self.sampling_method == 'molecular_dynamics'
+                if md:
+                    calculation._frame = n + 1
                     parse_md_step(calculation)
 
                 if n == 0:
@@ -1279,37 +1275,41 @@ class CP2KParser:
                         atomic_coord._frame = 0
                     sec_system = self.parse_system(atomic_coord)
                 else:
-                    sec_system = self.parse_system(n)
+                    sec_system = self.parse_system(n + 1 if md else n)
                 if sec_system:
                     sec_scc.system_ref = sec_system
 
-        single_point = quickstep.get('single_point')
-        if single_point is not None:
+        def parse_single_point(single_point, system):
             single_point._frame = 0
+            sec_scc = self.parse_scc(single_point)
+            sec_system = self.parse_system(system)
+            if sec_run.method:
+                sec_scc.method_ref = sec_run.method[-1]
+            sec_scc.system_ref = sec_system
+
+        if (geometry_optimization := quickstep.get('geometry_optimization')) is not None:
+            # initial self consistent
+            parse_calculations([geometry_optimization])
+            optimization_steps = geometry_optimization.get('optimization_step', [])
+            parse_calculations(optimization_steps)
+            # final scf
+            if (single_point := quickstep.get('single_point')) is not None:
+                parse_single_point(single_point, len(optimization_steps))
+
+        elif (molecular_dynamics := quickstep.get('molecular_dynamics')) is not None:
+            # initial self consistent
+            if (single_point := quickstep.get('single_point')) is not None:
+                parse_single_point(single_point, 0)
+            # md steps
+            parse_calculations(molecular_dynamics.get('md_step', []))
+
+        elif (single_point := quickstep.get('single_point')) is not None:
             atomic_coord = quickstep.get('atomic_coordinates')
             if atomic_coord is not None:
                 atomic_coord._frame = 0
-                sec_system = self.parse_system(atomic_coord)
             else:
                 self.logger.warning('Could not parse system information for the SinglePoint calculation.')
-            sec_scc = self.parse_scc(single_point)
-            if sec_run.method[-1] is not None:
-                sec_scc.method_ref = sec_run.method[-1]
-            if sec_system is not None:
-                sec_scc.system_ref = sec_system
-
-        geometry_optimization = quickstep.get('geometry_optimization')
-        if geometry_optimization is not None:
-            # initial self consistent
-            optimization_steps = [geometry_optimization]
-            optimization_steps.extend(geometry_optimization.get('optimization_step', []))
-            parse_calculations(optimization_steps)
-
-        molecular_dynamics = quickstep.get('molecular_dynamics')
-        if molecular_dynamics is not None:
-            md_steps = [molecular_dynamics]
-            md_steps.extend(molecular_dynamics.get('md_step', []))
-            parse_calculations(md_steps)
+            parse_single_point(single_point, atomic_coord)
 
     def _parse_basis_set(self) -> list[BasisSet]:
         '''Scopes are based on https://10.1016/j.cpc.2004.12.014'''
@@ -1381,18 +1381,12 @@ class CP2KParser:
                     name=functional.name, weight=functional.weight))
 
         # van der Waals settings
-        # TODO test this no example, add parameter, put in main metainfo
         vdw = self.settings['vdw']
         if vdw:
-            sec_vdw = sec_method.m_create(x_cp2k_section_vdw_settings)
-            for key, val in vdw.items():
-                if val == '':
-                    sec_vdw.m_set(sec_vdw.m_get_quantity_definition('x_cp2k_vdw_name'), key)
-                    vdw_name = self._vdw_map.get(key, None)
-                    if vdw_name is not None:
-                        sec_method.van_der_Waals_method = vdw_name
-                else:
-                    sec_vdw.m_set(sec_vdw.m_get_quantity_definition(f'x_cp2k_vdw_{key}'), val)
+            # TODO include vdw parameters
+            for val in vdw:
+                if (vdw_name := self._vdw_map.get(val)) is not None:
+                    sec_method.van_der_waals_method = vdw_name
 
         stress_method = self.inp_parser.get('FORCE_EVAL/STRESS_TENSOR')
         if stress_method is not None:
