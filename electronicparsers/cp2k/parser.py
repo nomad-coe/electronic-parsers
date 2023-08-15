@@ -46,7 +46,7 @@ from nomad.datamodel.metainfo.simulation.workflow import (
 
 from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings,\
     x_cp2k_section_startinformation, x_cp2k_section_end_information,\
-    x_cp2k_section_vdw_settings, x_cp2k_section_atomic_kinds,\
+    x_cp2k_section_atomic_kinds,\
     x_cp2k_section_atomic_kind, x_cp2k_section_kind_basis_set, x_cp2k_section_total_numbers,\
     x_cp2k_section_maximum_angular_momentum, x_cp2k_section_md_settings,\
     x_cp2k_section_restart_information, x_cp2k_section_geometry_optimization,\
