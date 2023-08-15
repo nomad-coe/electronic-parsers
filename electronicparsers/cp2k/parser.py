@@ -1296,7 +1296,7 @@ class CP2KParser:
             if (single_point := quickstep.get('single_point')) is not None:
                 parse_single_point(single_point, len(optimization_steps))
 
-        elif (molecular_dynamics := quickstep.get('molecular_dynamics'))is not None:
+        elif (molecular_dynamics := quickstep.get('molecular_dynamics')) is not None:
             # initial self consistent
             if (single_point := quickstep.get('single_point')) is not None:
                 parse_single_point(single_point, 0)
