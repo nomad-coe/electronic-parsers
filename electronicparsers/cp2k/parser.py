@@ -704,7 +704,7 @@ class CP2KPDOSParser(TextParser):
     def init_quantities(self):
         self._quantities = [
             Quantity('atom_kind', r'\# *Projected DOS for atomic kind *([\da-zA-Z]+) *at'),
-            Quantity('columns', rf'\# *MO([\s\S]+?)(?:[\n\r])', repeats=False)]
+            Quantity('orbitals', r' *Occupation(.+)', repeats=False)]
 
     @property
     def data(self):
@@ -1186,62 +1186,6 @@ class CP2KParser:
             return
         sec_scc = sec_run.m_create(Calculation)
 
-        def parse_dos(files, target):
-            try:
-                energy_fermi = target.energy.fermi
-            except Exception:
-                self.logger.warning('Error finding the Fermi level: not found in the output parsing.')
-                return
-
-            sec_dos = target.m_create(Dos, Calculation.dos_electronic)
-            sec_dos.energy_fermi = energy_fermi
-            sec_dos.energy_shift = energy_fermi
-
-            atoms = []
-            for f in files:
-                self.pdos_parser.mainfile = f
-                atom_kind = self.pdos_parser.get('atom_kind')
-                atoms.append(atom_kind)
-            # This stores a list of tuples ordered depending on the atom_kind label. Useful
-            # when dealing with spin-polarized calculations
-            atom_kind_in_files_sorted = sorted(list(zip(files, atoms)), key=lambda x: x[1])
-
-            spin = 0
-            previous_atom_kind = None
-            total_value = 0.0
-            for f, atom_kind in atom_kind_in_files_sorted:
-                self.pdos_parser.mainfile = f
-                data = np.transpose(self.pdos_parser.data)
-                if data is not None:
-                    sec_dos.n_energies = len(data[1])
-                    sec_dos.energies = data[1] * ureg.hartree
-                    if self.out_parser.get('spin_polarized') == 'UKS':  # unrestricted Kohn-Sham (spin-polarized) calculation
-                        sec_dos.n_spin_channels = 2
-                        spin = 1  if atom_kind == previous_atom_kind else 0
-
-                    # TODO example showed that for both spin channels, the n_energies can
-                    # be different. Check this with @andreaalbino
-
-                        # sec_dos_total = sec_dos.m_create(DosValues, Dos.total) if atom_kind == previous_atom_kind else sec_dos_total
-                        # sec_dos_total.spin = spin
-                    orbital_values = data[3:]
-                    atom_label = re.sub(r'\d', '', atom_kind)
-                    atom_index = re.sub(r'[a-zA-Z]', '', atom_kind)
-                    if self.pdos_parser.get('columns'):
-                        orbital_labels = self.pdos_parser.get('columns')[3:]
-                        for i, orbital_val in enumerate(orbital_values):
-                            sec_orbital_dos = sec_dos.m_create(DosValues, Dos.orbital_projected)
-                            sec_orbital_dos.value = orbital_val
-                            sec_orbital_dos.atom_label = atom_label
-                            sec_orbital_dos.atom_index = atom_index if atom_index else None
-                            sec_orbital_dos.orbital = orbital_labels[i]
-                            sec_orbital_dos.spin = spin
-                else:
-                    self.logger.warning(f'Error extracting data from {f}.')
-                previous_atom_kind = atom_kind
-
-            print(sec_dos)
-
         sec_energy = sec_scc.m_create(Energy)
         if source.get('energy_total') is not None:
             sec_energy.total = source.get('energy_total')
@@ -1276,11 +1220,6 @@ class CP2KParser:
             atom_forces = np.array(atom_forces, np.float64) * ureg.hartree / ureg.bohr
             sec_forces = sec_scc.m_create(Forces)
             sec_forces.total = ForcesEntry(value=atom_forces)
-
-        # Parsing DOS and PDOS if .pdos files are present.
-        pdos_files = get_files('*.pdos', self.filepath, self.mainfile)
-        if pdos_files:
-            parse_dos(pdos_files, sec_scc)
 
         return sec_scc
 
@@ -1324,6 +1263,76 @@ class CP2KParser:
             if velocities is not None:
                 sec_atoms.velocities = velocities
 
+        return sec_system
+
+    def parse_dos(self, scc):
+        # Parsing DOS and PDOS if .pdos files are present.
+        pdos_files = get_files('*.pdos', self.filepath, self.mainfile)
+        if pdos_files is None:
+            return
+
+        # Unrestricted Kohn-Sham (spin-polarized) calculation
+        n_spin_channels = 2 if self.out_parser.get('spin_polarized') == 'UKS' else 1
+        # We resolve the number of atom parameters (or kinds) to check if they match the number of PDOS files
+        if self.archive.m_xpath('run[-1].method[-1].atom_parameters') is None:
+            self.logger.warning('Could not extract the number of atom kinds from method.')
+            return
+        n_atom_params = len(self.archive.run[-1].method[-1].atom_parameters)
+
+        # We sort in case the name has an implicit order (e.g. for different spin channels)
+        pdos_files.sort()
+        atoms = []
+        for f in pdos_files:
+            self.pdos_parser.mainfile = f
+            atom_kind = self.pdos_parser.get('atom_kind')
+            atoms.append(atom_kind)
+        # This stores a list of tuples ordered depending on the atom_kind label. Useful
+        # when dealing with spin-polarized calculations
+        atom_kind_in_files_sorted = sorted(list(zip(pdos_files, atoms)), key=lambda x: x[1])
+        if len(atom_kind_in_files_sorted) != (n_spin_channels * n_atom_params):
+            self.logger.warning('The number of PDOS files does not match the number of spin channels '
+                                'times the number of atom parameters. We cannot parse the PDOS.')
+            return
+
+        if n_spin_channels == 2:
+            dos = [Dos(n_spin_channels=2, spin_channel=0), Dos(n_spin_channels=2, spin_channel=1)]
+        else:
+            dos = [Dos(n_spin_channels=1)]
+
+        for index, (f, atom_kind) in enumerate(atom_kind_in_files_sorted):
+            self.pdos_parser.mainfile = f
+            if self.pdos_parser.data is None:
+                break
+            data = np.transpose(self.pdos_parser.data)
+            # We assume alternate ordering depending on the spin channel
+            sec_dos = dos[0] if index % 2 == 0 else dos[-1]
+
+            # Setting up constant quantities independent of the pdos file and common for
+            # the same spin channel files.
+            if index == 0 or index == 1:
+                sec_dos.n_energies = len(data[1])
+                sec_dos.energies = data[1] * ureg.hartree
+                try:
+                    homo_index = np.where(np.diff(data[2]) == -1)[0][0]
+                    homo = data[1][homo_index]
+                    sec_dos.energy_fermi = homo * ureg.hartree
+                    sec_dos.energy_shift = homo * ureg.hartree
+                except Exception:
+                    pass
+
+            orbital_values = data[3:]
+            atom_label = re.sub(r'\d', '', atom_kind)
+            atom_index = re.sub(r'[a-zA-Z]', '', atom_kind)
+            if self.pdos_parser.get('orbitals'):
+                orbital_labels = self.pdos_parser.get('orbitals')
+                for i, orbital_val in enumerate(orbital_values):
+                    sec_dos_orbital = sec_dos.m_create(DosValues, Dos.orbital_projected)
+                    sec_dos_orbital.value = orbital_val
+                    sec_dos_orbital.atom_label = atom_label
+                    sec_dos_orbital.atom_index = atom_index if atom_index else None
+                    sec_dos_orbital.orbital = orbital_labels[i]
+        scc.dos_electronic = dos
+
     def parse_configurations_quickstep(self):
         sec_run = self.archive.run[-1]
         quickstep = self.out_parser.get(self._calculation_type)
@@ -1363,6 +1372,14 @@ class CP2KParser:
 
                 self_consistent = calculation.get('self_consistent', [])
                 self_consistent = [self_consistent] if not isinstance(self_consistent, list) else self_consistent
+
+                if n == 0:
+                    atomic_coord = quickstep.get('atomic_coordinates')
+                    if atomic_coord is not None:
+                        atomic_coord._frame = 0
+                    sec_system = self.parse_system(atomic_coord)
+                else:
+                    sec_system = self.parse_system(n + 1 if md else n)
 
                 # write only the last one to scc
                 scf = self_consistent[-1] if self_consistent else calculation
