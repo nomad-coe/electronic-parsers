@@ -79,6 +79,12 @@ def test_single_point(parser):
     assert archive.workflow2.m_def.name == 'SinglePoint'
 
 
+def test_pdos(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/cp2k/pdos/10anelli.out', archive, None)
+    assert archive
+
+
 def test_geometry_optimization(parser):
     archive = EntryArchive()
     parser.parse('tests/data/cp2k/geometry_optimization/H2O.out', archive, None)
