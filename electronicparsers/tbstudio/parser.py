@@ -29,7 +29,7 @@ from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms, AtomsGroup
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, AtomParameters, KMesh, TightBinding, SlaterKoster, TightBindingOrbital, SlaterKosterBond
+    Method, AtomParameters, KMesh, TB, SlaterKoster, TightBindingOrbital, SlaterKosterBond
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, BandStructure, BandEnergies, Energy, HoppingMatrix
@@ -349,7 +349,7 @@ class TBStudioParser:
         """
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
-        sec_tb = sec_method.m_create(TightBinding)
+        sec_tb = sec_method.m_create(TB)
         sec_sk = sec_tb.m_create(SlaterKoster)
 
         n_orbitals = len(self.tb_model['orbitals'])
