@@ -412,8 +412,8 @@ class OutcarTextParser(TextParser):
                 'species', r'(\w+) +([A-Z][a-z]*).+?:\s*energy of atom +\d+', dtype=str, repeats=True),  # TODO: deprecate
             Quantity(
                 'kpoints',
-                r'Following reciprocal coordinates:[\s\S]+?\n([\d\.\s\-]+)',
-                repeats=False, dtype=float),
+                r'Following reciprocal coordinates:\n\s+Coordinates\s+Weight\n([\d\.\s\-]+)',
+                repeats=True, dtype=float),
             Quantity(
                 'nbands', r'NBANDS\s*=\s*(\d+)', dtype=int, repeats=False),
             Quantity(
@@ -514,14 +514,15 @@ class OutcarContentParser(ContentParser):
     @property
     def kpoints_info(self):
         if self._kpoints_info is None:
-            self._kpoints_info = dict()
-            kpts_occs = self.parser.get('kpoints')
-            if kpts_occs is not None:
-                kpts_occs = np.reshape(kpts_occs, (len(kpts_occs) // 4, 4)).T
-                self._kpoints_info['points'] = kpts_occs[0:3].T
-                k_mults = kpts_occs[3].T
-                self._kpoints_info['multiplicities'] = k_mults
-                self._kpoints_info['weights'] = k_mults / np.sum(k_mults)
+            self._kpoints_info = []
+            for kpts_occs in self.parser.get('kpoints'):
+                if kpts_occs is not None:
+                    self._kpoints_info.append({})
+                    kpts_occs = np.reshape(kpts_occs, (len(kpts_occs) // 4, 4)).T
+                    self._kpoints_info[-1]['points'] = kpts_occs[0:3].T
+                    k_mults = kpts_occs[3].T
+                    self._kpoints_info[-1]['multiplicities'] = k_mults
+                    self._kpoints_info[-1]['weights'] = k_mults / np.sum(k_mults)
         return self._kpoints_info
 
     @property
@@ -675,7 +676,7 @@ class OutcarContentParser(ContentParser):
         return forces, stress
 
     def get_eigenvalues(self, n_calc):
-        n_kpts = len(self.kpoints_info.get('points', []))
+        n_kpts = len(self.kpoints_info[n_calc].get('points', []))
         eigenvalues = self.parser.get(
             'calculation', [{}] * (n_calc + 1))[n_calc].get('eigenvalues')
 
@@ -1333,7 +1334,7 @@ class VASPParser():
 
     def parse_kpoints(self, section):
         sec_k_mesh = section.m_create(KMesh)
-        for key, val in self.parser.kpoints_info.items():
+        for key, val in self.parser.kpoints_info[-1].items():
             if val is not None:
                 try:
                     setattr(sec_k_mesh, key, val)
@@ -1580,6 +1581,7 @@ class VASPParser():
 
         def parse_eigenvalues(n_calc):
             eigenvalues = self.parser.get_eigenvalues(n_calc)
+            kpoint_source = self.parser.kpoints_info[n_calc]
             if eigenvalues is None:
                 return
 
@@ -1587,7 +1589,7 @@ class VASPParser():
             eigenvalues = np.transpose(eigenvalues)
             eigs = eigenvalues[0].T
             occs = eigenvalues[1].T
-            kpoints = self.parser.kpoints_info.get('points', [])
+            kpoints = kpoint_source.get('points', [])
 
             # get valence(conduction) and maximum(minimum)
             # we have a case where no band is occupied, i.e. valence_max should be below
@@ -1601,13 +1603,13 @@ class VASPParser():
             sec_scc.energy.highest_occupied = max(valence_max) * ureg.eV
             sec_scc.energy.lowest_unoccupied = min(conduction_min) * ureg.eV
 
-            if self.parser.kpoints_info.get('sampling_method', None) == 'Line-path':
+            if kpoint_source.get('sampling_method', None) == 'Line-path':
                 sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
                 for n in range(len(eigs)):
                     sec_band_gap = sec_k_band.m_create(BandGapDeprecated)
                     sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
                     sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
-                divisions = self.parser.kpoints_info.get('grid', None)
+                divisions = kpoint_source.get('grid', None)
                 if divisions is None:
                     return
                 n_segments = len(kpoints) // divisions
@@ -1627,8 +1629,8 @@ class VASPParser():
                 eigs = eigs * ureg.eV
                 sec_eigenvalues = sec_scc.m_create(BandEnergies)
                 sec_eigenvalues.kpoints = kpoints
-                sec_eigenvalues.kpoints_weights = self.parser.kpoints_info.get('weights', [])
-                sec_eigenvalues.kpoints_multiplicities = self.parser.kpoints_info.get('multiplicities', [])
+                sec_eigenvalues.kpoints_weights = kpoint_source.get('weights', [])
+                sec_eigenvalues.kpoints_multiplicities = kpoint_source.get('multiplicities', [])
                 sec_eigenvalues.energies = eigs
                 sec_eigenvalues.occupations = occs
 
