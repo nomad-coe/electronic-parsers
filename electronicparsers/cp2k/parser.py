@@ -1271,6 +1271,77 @@ class CP2KParser:
         if pdos_files is None:
             return
 
+        def _gaussian(center, height, width):
+            '''
+            Compute a Gaussian curve for a given set of points.
+
+            Parameters
+            ----------
+            center: float
+                The center of the Gaussian curve.
+            height: float
+                The height of the Gaussian curve.
+            width: float
+                The width of the Gaussian curve.
+
+            Returns
+            -------
+            curve: callable
+                A callable function that calculates the Gaussian curve for given x values.
+            '''
+            return lambda x: height * np.exp(-(((center - x) / float(width))**2))
+
+        def _histogram(data, delta_energy=1e-3, sigma=3e-3, accuracy=10):
+            '''
+            Compute a histogram from a set of data points.
+
+            Parameters
+            ----------
+            data_set: numpy array
+                The data set to be used to compute the histogram.
+            delta_energy: float
+                The step size for energy integration.
+            sigma: float
+                The standard deviation of the Gaussian curve.
+            accuracy: float
+                The accuracy of the Gaussian curve.
+
+            Returns
+            -------
+            gaussian_mesh: numpy array
+                An array of x values for the Gaussian curve.
+            gaussian_curve: numpy array
+                An array of y values for the Gaussian curve,
+                (one column for each orbital + one column for the sum of orbitals).
+            energy_min: float
+                The minimum energy value.
+            energy_max: float
+                The maximum energy value.
+            '''
+            energy_min, energy_max = np.min(data[:, 0]), np.max(data[:, 0])
+            if (energy_max - energy_min) % delta_energy != 0:
+                energy_max = energy_min + (((energy_max - energy_min) // delta_energy) + 1) * delta_energy
+            x_mesh = np.arange(energy_min + delta_energy / 2, energy_max, delta_energy)
+            y_mesh = np.zeros((data.shape[1] - 1, x_mesh.shape[0]))
+
+            for i in range(data.shape[0]):
+                eigenvalue = data[i, :]
+                if eigenvalue[0] >= energy_min:
+                    mesh_index = int((eigenvalue[0] - energy_min) // delta_energy)
+                    for j in range(data.shape[1] - 1):
+                        y_mesh[j, mesh_index] += eigenvalue[j + 1]
+
+            gaussian_mesh = np.arange(energy_min, energy_max + delta_energy / accuracy, delta_energy / accuracy)
+            gaussian_curve = np.zeros((y_mesh.shape[0] + 1, gaussian_mesh.shape[0]))
+            gaussian_curve_sum = np.zeros((1, gaussian_mesh.shape[0]))
+            for i in range(y_mesh.shape[0]):
+                for j in range(x_mesh.shape[0] - 1):
+                    gaussian_curve[i] += _gaussian(x_mesh[j], y_mesh[i, j], sigma)(gaussian_mesh)
+                gaussian_curve_sum += gaussian_curve[i]
+            # print("# column ", y_mesh.shape[0] + 1, "...")
+            gaussian_curve[y_mesh.shape[0]] = gaussian_curve_sum
+            return gaussian_mesh, gaussian_curve
+
         # Unrestricted Kohn-Sham (spin-polarized) calculation
         n_spin_channels = 2 if self.out_parser.get('spin_polarized') == 'UKS' else 1
         # We resolve the number of atom parameters (or kinds) to check if they match the number of PDOS files
@@ -1303,9 +1374,17 @@ class CP2KParser:
             self.pdos_parser.mainfile = f
             if self.pdos_parser.data is None:
                 break
-            data = np.transpose(self.pdos_parser.data)
+            data = self.pdos_parser.data
+
             # We assume alternate ordering depending on the spin channel
             sec_dos = dos[0] if index % 2 == 0 else dos[-1]
+
+            # We use the (updated 2023) script provided by CP2K developers to resolve the
+            # PDOS by convoluting the histogram stored in the .pdos files.
+            n_orbitals = len(data[0]) - 3
+            cp2k_data = [[i[1]] + [i[j] for j in range(3, n_orbitals + 3)] for i in data]
+            data = np.array(cp2k_data)
+            gaussian_mesh, gaussian_curves = _histogram(data)
 
             # Setting up constant quantities independent of the pdos file and common for
             # the same spin channel files.
