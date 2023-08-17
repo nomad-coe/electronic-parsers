@@ -1036,36 +1036,40 @@ class RunContentParser(ContentParser):
     @property
     def kpoints_info(self):
         if self._kpoints_info is None:
-            self._kpoints_info = dict()
-            # initialize parsing of k_points
-            method = self._get_key_values(
-                '/modeling[0]/kpoints[0]/generation[0]/param')
-            if method:
-                self._kpoints_info['sampling_method'] = RunContentParser.sampling_method_mapping[method['param']]
-            divisions = self._get_key_values(
-                '/modeling[0]/kpoints[0]/generation[0]/v[@name="divisions"]')
-            if not divisions:
-                divisions = self._get_key_values(
-                    '/modeling[0]/kpoints[0]/generation[0]/i[@name="divisions"]')
-            if divisions:
-                self._kpoints_info['grid'] = divisions['divisions']
-            volumeweight = self._get_key_values('/modeling[0]/kpoints[0]/generation[0]/i[@name="volumeweight"]')
-            if volumeweight:
-                volumeweight = (volumeweight['volumeweight'] * ureg.angstrom ** 3).to('m**3')
-                # TODO set propert unit in metainfo
-                self._kpoints_info['x_vasp_tetrahedron_volume'] = volumeweight.magnitude
-            points = self._get_key_values(
-                '/modeling[0]/kpoints[0]/varray[@name="kpointlist"]/v', array=True)
-            if points:
-                self._kpoints_info['points'] = points['v']
-            weights = self._get_key_values(
-                '/modeling[0]/kpoints[0]/varray[@name="weights"]/v', array=True)
-            if weights:
-                self._kpoints_info['weights'] = weights['v']
-            tetrahedrons = self._get_key_values(
-                '/modeling[0]/kpoints[0]/varray[@name="tetrahedronlist"]/v', array=True)
-            if tetrahedrons:
-                self._kpoints_info['x_vasp_tetrahedrons_list'] = tetrahedrons['v']
+            self._kpoints_info = []
+
+            stem = f'/modeling[0]/calculation'
+            for calc_index in range(len(self._get_key_values(stem).get('calculation', []))):
+                kpoint_dict = {}
+                kpoint_path = f'/modeling[0]/calculation[{calc_index}]/kpoints[0]'
+
+                method = self._get_key_values(f'{kpoint_path}/generation[0]/param')
+
+                kpoint_dict['sampling_method'] = RunContentParser.sampling_method_mapping[method['param']]
+
+                divisions = self._get_key_values(f'{kpoint_path}/generation[0]/v[@name="divisions"]')
+                if not divisions:
+                    divisions = self._get_key_values(f'{kpoint_path}/generation[0]/i[@name="divisions"]')
+                if divisions:
+                    kpoint_dict['grid'] = divisions['divisions']
+
+                volumeweight = self._get_key_values(f'{kpoint_path}/generation[0]/i[@name="volumeweight"]')
+                if volumeweight:
+                    volumeweight = (volumeweight['volumeweight'] * ureg.angstrom ** 3).to('m**3')
+                    kpoint_dict['x_vasp_tetrahedron_volume'] = volumeweight.magnitude
+
+                points = self._get_key_values(f'{kpoint_path}/varray[@name="kpointlist"]/v', array=True)
+                if points:
+                    kpoint_dict['points'] = points['v']
+
+                weights = self._get_key_values(f'{kpoint_path}/varray[@name="weights"]/v', array=True)
+                if weights:
+                    kpoint_dict['weights'] = weights['v']
+
+                tetrahedrons = self._get_key_values(f'{kpoint_path}/varray[@name="tetrahedronlist"]/v', array=True)
+                if tetrahedrons:
+                    kpoint_dict['x_vasp_tetrahedrons_list'] = tetrahedrons['v']
+                self._kpoints_info.append(kpoint_dict)
         return self._kpoints_info
 
     @property
@@ -1219,7 +1223,7 @@ class RunContentParser(ContentParser):
         return forces, stress
 
     def get_eigenvalues(self, n_calc):
-        n_kpts = len(self.kpoints_info.get('points', []))
+        n_kpts = len(self.kpoints_info[n_calc].get('points', []))
         root = '/modeling[0]/calculation[%s]/eigenvalues[0]/array[0]/set[0]' % n_calc
         eigenvalues = self._get_key_values(
             f'{root}/r', array=True).get('r', None)
