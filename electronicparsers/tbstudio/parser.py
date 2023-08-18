@@ -383,13 +383,13 @@ class TBStudioParser:
                 center1.atom_index = atom1['index']
                 center1.shell = atom1['shell']
                 indices = re.findall(r'-?\d+', atom1['cell'])
-                center1.cell = [int(index) for index in indices]
+                center1.cell_index = [int(index) for index in indices]
 
                 center2 = sec_bonds.m_create(TightBindingOrbital, TwoCenterBond.center2)
                 center2.atom_index = atom2['index']
                 center2.shell = atom2['shell']
                 indices = re.findall(r'-?\d+', atom2['cell'])
-                center2.cell = [int(index) for index in indices]
+                center2.cell_index = [int(index) for index in indices]
                 for sk_label, sk_integral in h_sk.items():
                     setattr(sec_bonds, sk_label, sk_integral)
 
@@ -401,13 +401,13 @@ class TBStudioParser:
                 center1.atom_index = atom1['index']
                 center1.shell = atom1['shell']
                 indices = re.findall(r'-?\d+', atom1['cell'])
-                center1.cell = [int(index) for index in indices]
+                center1.cell_index = [int(index) for index in indices]
 
                 center2 = sec_overlaps.m_create(TightBindingOrbital, TwoCenterBond.center2)
                 center2.atom_index = atom2['index']
                 center2.shell = atom2['shell']
                 indices = re.findall(r'-?\d+', atom2['cell'])
-                center2.cell = [int(index) for index in indices]
+                center2.cell_index = [int(index) for index in indices]
                 for sk_label, sk_integral in s_sk.items():
                     setattr(sec_overlaps, sk_label, sk_integral)
 
