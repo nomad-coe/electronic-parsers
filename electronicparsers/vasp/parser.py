@@ -1033,15 +1033,23 @@ class RunContentParser(ContentParser):
         'listgenerated': 'Line-path',
     }
 
+    def _find_kpoints(self) -> list[str]:
+        stem = '/modeling[0]/calculation'
+        n_ionic_updates = len(self._get_key_values(stem).get('calculation', []))
+        if n_ionic_updates:
+            if not self._get_key_values(f'{stem}[0]/kpoints').get('kpoints', []):
+                return ['/modeling[0]/kpoints[0]' for _ in range(n_ionic_updates)]
+            return [f'{stem}[{ionic_update_index}]/kpoints[0]' for ionic_update_index in range(n_ionic_updates)]
+        return ['/modeling[0]/kpoints[0]']  # in case the calculation is a single-point
+
     @property
     def kpoints_info(self):
         if self._kpoints_info is None:
             self._kpoints_info = []
 
-            stem = f'/modeling[0]/calculation'
-            for calc_index in range(len(self._get_key_values(stem).get('calculation', []))):
+            # set stem
+            for kpoint_path in self._find_kpoints():
                 kpoint_dict = {}
-                kpoint_path = f'/modeling[0]/calculation[{calc_index}]/kpoints[0]'
 
                 method = self._get_key_values(f'{kpoint_path}/generation[0]/param')
 
