@@ -77,8 +77,10 @@ def load_tbm(file):
 
     # Load workflow if does exist
     model['DFTNomadEntryID'] = None
+    model['DFTNomadUploadID'] = None
     if 'type' in tbm['DFTSource'] and tbm['DFTSource']['type'].lower() == 'nomad':
-        model['DFTNomadEntryID'] = tbm['DFTSource']['source']
+        model['DFTNomadUploadID'] = tbm['DFTSource']['source']['upload_id']
+        model['DFTNomadEntryID'] = tbm['DFTSource']['source']['entry_id']
 
     # Load lattice vectors
     model['a'] = [parse_float(tbm['vars']['a[0]'], 0), parse_float(tbm['vars']['a[1]'], 0), parse_float(tbm['vars']['a[2]'], 0)]
@@ -439,7 +441,8 @@ class TBStudioParser:
         filepath = kwargs.get('filename')
         tb_model = load_tbm(filepath)
         dft_nomad_entry_id = tb_model['DFTNomadEntryID']
-        if dft_nomad_entry_id is not None and dft_nomad_entry_id != '':
+        dft_nomad_upload_id = tb_model['DFTNomadUploadID']
+        if dft_nomad_entry_id is not None and dft_nomad_entry_id != '' and dft_nomad_upload_id is not None and dft_nomad_upload_id != '':
             return ['TB_workflow']
         else:
             return True
@@ -454,6 +457,7 @@ class TBStudioParser:
         sec_run.program = Program(name="TBStudio")
         self.tb_model = load_tbm(filepath)
         dft_nomad_entry_id = self.tb_model['DFTNomadEntryID']
+        dft_nomad_upload_id = self.tb_model['DFTNomadUploadID']
 
         self.parse_system()
         self.parse_method()
@@ -463,10 +467,10 @@ class TBStudioParser:
         workflow.name = "Tight Binding Calculation"
         self.archive.workflow2 = workflow
 
-        if dft_nomad_entry_id is not None and dft_nomad_entry_id != '':
+        if dft_nomad_entry_id is not None and dft_nomad_entry_id != '' and dft_nomad_upload_id is not None and dft_nomad_upload_id != '':
             dft_archive = None
             try:
-                dft_archive = archive.m_context.resolve_archive('/entries/{}/archive'.format(dft_nomad_entry_id))
+                dft_archive = archive.m_context.load_archive(dft_nomad_entry_id, dft_nomad_upload_id, None)
             except:
                 pass
             if dft_archive:
@@ -482,3 +486,10 @@ class TBStudioParser:
                         Link(name='DFT band structure', section=dft_archive.run[0].calculation[0]))
                     workflow.outputs.append(
                         Link(name='TB band structure', section=archive.run[0].calculation[0]))
+
+                    tb_wofkflow_archive = self._child_archives['TB_workflow']
+                    tb_wofkflow_archive.run.append(Run(
+                        program=Program(name="TB Workflow"),
+                        calculation=[Calculation(band_structure_electronic=[dft_archive.run[-1].calculation[-1].band_structure_electronic[0], self.archive.run[-1].calculation[-1].band_structure_electronic[0]])],
+                        system=[dft_archive.run[-1].system[-1].m_copy()]
+                    ))
