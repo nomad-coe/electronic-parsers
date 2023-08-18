@@ -310,7 +310,7 @@ class OutcarTextParser(TextParser):
             return dict(version=version, subversion=subversion, platform=platform, date=date, time=time)
 
         def str_to_positions(val_in):
-            re_position = re.compile(r'\d*\s*(\-*\d+\.\d+)\s*(\-*\d+\.\d+)\s*(\-*\d+\.\d+)')
+            re_position = re.compile(r'\d*\s*(\-?\d*\.\d+)\s*(\-?\d*\.\d+)\s*(\-?\d*\.\d+)')
             positions = []
             for val in val_in.strip().split('\n'):
                 position = re_position.search(val)
