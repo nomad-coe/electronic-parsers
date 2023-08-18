@@ -53,7 +53,7 @@ from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings,\
     x_cp2k_section_restart_information, x_cp2k_section_geometry_optimization,\
     x_cp2k_section_geometry_optimization_step, x_cp2k_pdos_histogram
 
-from ..utils import get_files
+from ..utils import get_files, is_approximately_equal
 
 
 units_map = {
@@ -1267,23 +1267,40 @@ class CP2KParser:
         return sec_system
 
     def parse_dos(self, scc):
+        """Parses the projected DOS by resolving the histogram from the *.pdos files, and
+        convoluting this data with a Gaussian distribution function.
+
+        Args:
+            scc (Calculation): section calculation where the Dos is stored.
+        """
         # Parsing DOS and PDOS if .pdos files are present.
         pdos_files = get_files('*.pdos', self.filepath, self.mainfile)
         if pdos_files is None:
             return
 
-        def _gaussian_convolution_pdos(data, sigma=0.5, delta_energy=0.02):
+        def _gaussian_convolution_pdos(data, width, delta_energy):
+            """Convolutes / smoothes the histogram data with a Gaussian distribution function as defined
+            in scipy.stats.norm. The mesh of energies is also expanded (with delta_energy in eV)
+            to resolve better the Gaussians.
+
+            Args:
+                data (np.array): array containing the data read from the pdos file. Dimensions are (n_energies, n_columns)
+                width (float): standard deviation or width of the Gaussian distribution.
+                delta_energy (float): the spacing of the new energies mesh.
+
+            Returns:
+                new_energies, convoluted_pdos: returns the new X and Y data for the convoluted PDOS.
+            """
             energies_eV = data[:, 1] * 27.211  # in eV
             orbital_contributions = data[:, 3:]
 
-            energy_min = np.min(energies_eV) - 10 * sigma
-            energy_max = np.max(energies_eV) + 10 * sigma
-            # n_mesh = int((energy_max - energy_min) / delta_energy) + 1
+            energy_min = np.min(energies_eV) - 2 * width
+            energy_max = np.max(energies_eV) + 2 * width
             new_energies = np.arange(energy_min, energy_max, delta_energy)
 
             n_orbitals = orbital_contributions.shape[1]
 
-            gaussian = norm(loc=0, scale=sigma)
+            gaussian = norm(loc=0, scale=width)
 
             convoluted_pdos = np.zeros((len(new_energies), n_orbitals))
             for i, new_energy in enumerate(new_energies):
@@ -1332,7 +1349,9 @@ class CP2KParser:
 
             # We use the (updated 2017 Tiziano Müller) script provided by CP2K developers to resolve the
             # PDOS by convoluting the histogram stored in the .pdos files.
-            convoluted_energies, convoluted_pdos = _gaussian_convolution_pdos(data)
+            width = 0.5  # in eV
+            delta_energy = 0.01  # in eV
+            convoluted_energies, convoluted_pdos = _gaussian_convolution_pdos(data, width, delta_energy)
 
             # Setting up constant quantities independent of the pdos file and common for
             # the same spin channel files.
@@ -1341,7 +1360,7 @@ class CP2KParser:
                 sec_dos.n_energies = len(convoluted_energies)
                 sec_dos.energies = convoluted_energies * ureg.eV
                 try:
-                    homo_index = np.where(np.diff(data[2]) == -1)[0][0]
+                    homo_index = np.where(is_approximately_equal(np.diff(data[2]), -1.0, 1e-1))[0][0]
                     homo = data[1][homo_index]
                     sec_dos.energy_fermi = homo * ureg.hartree
                     sec_dos.energy_shift = homo * ureg.hartree
@@ -1359,16 +1378,19 @@ class CP2KParser:
                 sec_dos_histogram.x_cp2k_pdos_histogram_atom_label = atom_label
                 sec_dos_histogram.x_cp2k_pdos_histogram_atom_index = atom_index if atom_index else None
                 sec_dos_histogram.x_cp2k_pdos_histogram_orbital = orbital_labels
+                sec_dos_histogram.x_cp2k_gaussian_width = width * ureg.eV
+                sec_dos_histogram.x_cp2k_gaussian_delta_energy = delta_energy * ureg.eV
                 for i, conv_pdos in enumerate(convoluted_pdos):
                     sec_dos_orbital = sec_dos.m_create(DosValues, Dos.orbital_projected)
                     sec_dos_orbital.value = conv_pdos
                     sec_dos_orbital.atom_label = atom_label
                     sec_dos_orbital.atom_index = atom_index if atom_index else None
                     sec_dos_orbital.orbital = orbital_labels[i]
+
+        self.logger.warning(f'We are convoluting the reported .pdos histogram with a Gaussian '
+                            f'distribution function (as defined in scipy.stats.norm). We used a new '
+                            f'energy mesh with delta_energy = {delta_energy} eV, and a width = {width} eV.')
         scc.dos_electronic = dos
-        self.logger.warning('We are convoluting the reported .pdos histogram with a Gaussian '
-                            'distribution function (as defined in scipy.stats.norm). We used a new '
-                            'energy mesh with delta_energy = 0.02 eV, and a width = 0.5 eV.')
 
     def parse_configurations_quickstep(self):
         sec_run = self.archive.run[-1]

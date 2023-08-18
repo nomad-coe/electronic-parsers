@@ -890,6 +890,20 @@ class x_cp2k_pdos_histogram(MSection):
         Orbital label for the projected DOS histogram.
         ''')
 
+    x_cp2k_gaussian_width = Quantity(
+        type=np.float64,
+        unit='joule',
+        description='''
+        Width of the Gaussian distribution function.
+        ''')
+
+    x_cp2k_gaussian_delta_energy = Quantity(
+        type=np.float64,
+        unit='joule',
+        description='''
+        New energies mesh separation.
+        ''')
+
 
 class Calculation(simulation.calculation.Calculation):
 
