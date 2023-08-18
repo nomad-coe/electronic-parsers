@@ -1189,9 +1189,9 @@ class CP2KParser:
 
         sec_energy = sec_scc.m_create(Energy)
         if source.get('energy_total') is not None:
-            sec_energy.total = source.get('energy_total')
+            sec_energy.total = EnergyEntry(value=source.get('energy_total'))
         if source.get('electronic_kinetic_energy') is not None:
-            sec_energy.kinetic_electronic = source.get('electronic_kinetic_energy')[-1]
+            sec_energy.kinetic_electronic = EnergyEntry(value=source.get('electronic_kinetic_energy')[-1])
         if source.get('exchange_correlation_energy') is not None:
             sec_energy.xc = EnergyEntry(value=source.get('exchange_correlation_energy')[-1])
         if source.get('fermi_energy') is not None:
@@ -1433,14 +1433,6 @@ class CP2KParser:
 
                 self_consistent = calculation.get('self_consistent', [])
                 self_consistent = [self_consistent] if not isinstance(self_consistent, list) else self_consistent
-
-                if n == 0:
-                    atomic_coord = quickstep.get('atomic_coordinates')
-                    if atomic_coord is not None:
-                        atomic_coord._frame = 0
-                    sec_system = self.parse_system(atomic_coord)
-                else:
-                    sec_system = self.parse_system(n + 1 if md else n)
 
                 # write only the last one to scc
                 scf = self_consistent[-1] if self_consistent else calculation
