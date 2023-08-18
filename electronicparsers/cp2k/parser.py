@@ -1390,7 +1390,8 @@ class CP2KParser:
 
         self.logger.warning(f'We are convoluting the reported .pdos histogram with a Gaussian '
                             f'distribution function (as defined in scipy.stats.norm). We used a new '
-                            f'energy mesh with delta_energy = {delta_energy} eV, and a width = {width} eV.')
+                            f'energy mesh with delta_energy = {delta_energy} eV, and a Gaussian '
+                            f'distribution function with a width = {width} eV.')
         scc.dos_electronic = dos
 
     def parse_configurations_quickstep(self):
