@@ -22,6 +22,7 @@ import logging
 import re
 import ase
 from ase import io as aseio
+from scipy.stats import norm
 
 from .metainfo import m_env
 from nomad.units import ureg
@@ -50,7 +51,7 @@ from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings,\
     x_cp2k_section_atomic_kind, x_cp2k_section_kind_basis_set, x_cp2k_section_total_numbers,\
     x_cp2k_section_maximum_angular_momentum, x_cp2k_section_md_settings,\
     x_cp2k_section_restart_information, x_cp2k_section_geometry_optimization,\
-    x_cp2k_section_geometry_optimization_step
+    x_cp2k_section_geometry_optimization_step, x_cp2k_pdos_histogram
 
 from ..utils import get_files
 
@@ -1271,76 +1272,26 @@ class CP2KParser:
         if pdos_files is None:
             return
 
-        def _gaussian(center, height, width):
-            '''
-            Compute a Gaussian curve for a given set of points.
+        def _gaussian_convolution_pdos(data, sigma=0.5, delta_energy=0.02):
+            energies_eV = data[:, 1] * 27.211  # in eV
+            orbital_contributions = data[:, 3:]
 
-            Parameters
-            ----------
-            center: float
-                The center of the Gaussian curve.
-            height: float
-                The height of the Gaussian curve.
-            width: float
-                The width of the Gaussian curve.
+            energy_min = np.min(energies_eV) - 10 * sigma
+            energy_max = np.max(energies_eV) + 10 * sigma
+            # n_mesh = int((energy_max - energy_min) / delta_energy) + 1
+            new_energies = np.arange(energy_min, energy_max, delta_energy)
 
-            Returns
-            -------
-            curve: callable
-                A callable function that calculates the Gaussian curve for given x values.
-            '''
-            return lambda x: height * np.exp(-(((center - x) / float(width))**2))
+            n_orbitals = orbital_contributions.shape[1]
 
-        def _histogram(data, delta_energy=1e-3, sigma=3e-3, accuracy=10):
-            '''
-            Compute a histogram from a set of data points.
+            gaussian = norm(loc=0, scale=sigma)
 
-            Parameters
-            ----------
-            data_set: numpy array
-                The data set to be used to compute the histogram.
-            delta_energy: float
-                The step size for energy integration.
-            sigma: float
-                The standard deviation of the Gaussian curve.
-            accuracy: float
-                The accuracy of the Gaussian curve.
-
-            Returns
-            -------
-            gaussian_mesh: numpy array
-                An array of x values for the Gaussian curve.
-            gaussian_curve: numpy array
-                An array of y values for the Gaussian curve,
-                (one column for each orbital + one column for the sum of orbitals).
-            energy_min: float
-                The minimum energy value.
-            energy_max: float
-                The maximum energy value.
-            '''
-            energy_min, energy_max = np.min(data[:, 0]), np.max(data[:, 0])
-            if (energy_max - energy_min) % delta_energy != 0:
-                energy_max = energy_min + (((energy_max - energy_min) // delta_energy) + 1) * delta_energy
-            x_mesh = np.arange(energy_min + delta_energy / 2, energy_max, delta_energy)
-            y_mesh = np.zeros((data.shape[1] - 1, x_mesh.shape[0]))
-
-            for i in range(data.shape[0]):
-                eigenvalue = data[i, :]
-                if eigenvalue[0] >= energy_min:
-                    mesh_index = int((eigenvalue[0] - energy_min) // delta_energy)
-                    for j in range(data.shape[1] - 1):
-                        y_mesh[j, mesh_index] += eigenvalue[j + 1]
-
-            gaussian_mesh = np.arange(energy_min, energy_max + delta_energy / accuracy, delta_energy / accuracy)
-            gaussian_curve = np.zeros((y_mesh.shape[0] + 1, gaussian_mesh.shape[0]))
-            gaussian_curve_sum = np.zeros((1, gaussian_mesh.shape[0]))
-            for i in range(y_mesh.shape[0]):
-                for j in range(x_mesh.shape[0] - 1):
-                    gaussian_curve[i] += _gaussian(x_mesh[j], y_mesh[i, j], sigma)(gaussian_mesh)
-                gaussian_curve_sum += gaussian_curve[i]
-            # print("# column ", y_mesh.shape[0] + 1, "...")
-            gaussian_curve[y_mesh.shape[0]] = gaussian_curve_sum
-            return gaussian_mesh, gaussian_curve
+            convoluted_pdos = np.zeros((len(new_energies), n_orbitals))
+            for i, new_energy in enumerate(new_energies):
+                for j in range(n_orbitals):
+                    convoluted_pdos[i, j] = np.sum(
+                        orbital_contributions[:, j] * gaussian.pdf(new_energy - energies_eV)
+                    )
+            return new_energies, np.transpose(convoluted_pdos)
 
         # Unrestricted Kohn-Sham (spin-polarized) calculation
         n_spin_channels = 2 if self.out_parser.get('spin_polarized') == 'UKS' else 1
@@ -1379,18 +1330,16 @@ class CP2KParser:
             # We assume alternate ordering depending on the spin channel
             sec_dos = dos[0] if index % 2 == 0 else dos[-1]
 
-            # We use the (updated 2023) script provided by CP2K developers to resolve the
+            # We use the (updated 2017 Tiziano Müller) script provided by CP2K developers to resolve the
             # PDOS by convoluting the histogram stored in the .pdos files.
-            n_orbitals = len(data[0]) - 3
-            cp2k_data = [[i[1]] + [i[j] for j in range(3, n_orbitals + 3)] for i in data]
-            data = np.array(cp2k_data)
-            gaussian_mesh, gaussian_curves = _histogram(data)
+            convoluted_energies, convoluted_pdos = _gaussian_convolution_pdos(data)
 
             # Setting up constant quantities independent of the pdos file and common for
             # the same spin channel files.
+            data = np.transpose(data)
             if index == 0 or index == 1:
-                sec_dos.n_energies = len(data[1])
-                sec_dos.energies = data[1] * ureg.hartree
+                sec_dos.n_energies = len(convoluted_energies)
+                sec_dos.energies = convoluted_energies * ureg.eV
                 try:
                     homo_index = np.where(np.diff(data[2]) == -1)[0][0]
                     homo = data[1][homo_index]
@@ -1399,18 +1348,27 @@ class CP2KParser:
                 except Exception:
                     pass
 
-            orbital_values = data[3:]
+            orbital_histogram = data[3:]
             atom_label = re.sub(r'\d', '', atom_kind)
             atom_index = re.sub(r'[a-zA-Z]', '', atom_kind)
-            if self.pdos_parser.get('orbitals'):
-                orbital_labels = self.pdos_parser.get('orbitals')
-                for i, orbital_val in enumerate(orbital_values):
+            if self.pdos_parser.get('orbitals', []):
+                orbital_labels = self.pdos_parser.get('orbitals', [])
+                sec_dos_histogram = scc.m_create(x_cp2k_pdos_histogram)
+                sec_dos_histogram.x_cp2k_pdos_histogram_energies = data[1] * ureg.hartree
+                sec_dos_histogram.x_cp2k_pdos_histogram_values = orbital_histogram
+                sec_dos_histogram.x_cp2k_pdos_histogram_atom_label = atom_label
+                sec_dos_histogram.x_cp2k_pdos_histogram_atom_index = atom_index if atom_index else None
+                sec_dos_histogram.x_cp2k_pdos_histogram_orbital = orbital_labels
+                for i, conv_pdos in enumerate(convoluted_pdos):
                     sec_dos_orbital = sec_dos.m_create(DosValues, Dos.orbital_projected)
-                    sec_dos_orbital.value = orbital_val
+                    sec_dos_orbital.value = conv_pdos
                     sec_dos_orbital.atom_label = atom_label
                     sec_dos_orbital.atom_index = atom_index if atom_index else None
                     sec_dos_orbital.orbital = orbital_labels[i]
         scc.dos_electronic = dos
+        self.logger.warning('We are convoluting the reported .pdos histogram with a Gaussian '
+                            'distribution function (as defined in scipy.stats.norm). We used a new '
+                            'energy mesh with delta_energy = 0.02 eV, and a width = 0.5 eV.')
 
     def parse_configurations_quickstep(self):
         sec_run = self.archive.run[-1]
