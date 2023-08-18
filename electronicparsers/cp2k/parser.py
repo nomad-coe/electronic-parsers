@@ -163,7 +163,9 @@ class XYZTrajParser(TextParser):
                 'trajectory', r'([A-Z][a-z]?[\w\.\-\s]+?)(?:\s+\d\n|\Z)',
                 str_operation=get_trajectory, repeats=True),
             Quantity(
-                'energy', r'E\s*=\s*(\S+)', repeats=True, dtype=float)]
+                'energy', r'E\s*=\s*(\S+)', repeats=True, dtype=float),
+            Quantity(
+                'iter', r'i += *(\d+)', repeats=True, dtype=int)]
 
 
 class TrajParser(FileParser):
@@ -173,6 +175,7 @@ class TrajParser(FileParser):
         self.format = None
         self.units = None
         self.type = kwargs.get('type', 'positions')
+        self._frequency = 1
 
     @property
     def trajectory(self):
@@ -182,18 +185,21 @@ class TrajParser(FileParser):
 
             result = None
             labels = []
-            # ase is better as it reads also symbols
+            iter = []
+            # custom parser
+            if self.format == 'xyz':
+                self._xyz_parser.mainfile = self.mainfile
+                result = [traj.positions for traj in self._xyz_parser.get('trajectory', [])]
+                labels = [traj.labels for traj in self._xyz_parser.get('trajectory', [])]
+                iter = self._xyz_parser.get('iter', [])
+
             try:
                 atoms_list = [atoms for atoms in aseio.iread(self.mainfile, format=self.format)]
                 result = [atoms.positions for atoms in atoms_list]
                 labels = [list(atoms.symbols) for atoms in atoms_list]
 
-            # custom parser
             except Exception:
-                if self.format == 'xyz':
-                    self._xyz_parser.mainfile = self.mainfile
-                    result = [traj.positions for traj in self._xyz_parser.get('trajectory', [])]
-                    labels = [traj.labels for traj in self._xyz_parser.get('trajectory', [])]
+                pass
 
             if result is None:
                 try:
@@ -226,9 +232,21 @@ class TrajParser(FileParser):
             for n, labels_i in enumerate(labels):
                 result[n]._data.update({'labels': labels_i})
 
+            # add iter number to trajectory
+            for n, iter_i in enumerate(iter):
+                result[n]._data.update({'iter': iter_i})
+
+            self._results = {'iter': iter}
             self._file_handler = result
 
         return self._file_handler
+
+    def get_trajectory(self, frame):
+        trajectory = self.trajectory
+        if self.iter:
+            return trajectory[self.iter.index(frame)]
+        else:
+            return trajectory[frame // self._frequency]
 
 
 re_float = r'[-+]?\d+\.?\d*(?:[Ee][-+]\d+)?'
@@ -768,6 +786,7 @@ class CP2KParser:
         self._method = None
         self._calculation_type = None
 
+
     @property
     def settings(self):
         if self._settings is None:
@@ -851,11 +870,11 @@ class CP2KParser:
         if self.get_ensemble_type(frame).lower() == 'REFTRAJ':
             frame -= 1
 
-        if frame % self.velocities_parser._frequency != 0 or frame < 0:
+        if frame < 0:
             return
 
         try:
-            return self.velocities_parser.trajectory[frame // self.velocities_parser._frequency]
+            return self.velocities_parser.get_trajectory(frame)
         except Exception:
             self.logger.error('Error reading velocities.')
 
@@ -907,11 +926,11 @@ class CP2KParser:
         if self.get_ensemble_type(frame) == 'REFTRAJ':
             frame -= 1
 
-        if frame % self.traj_parser._frequency != 0 or frame < 0:
+        if frame < 0:
             return
 
         try:
-            return self.traj_parser.trajectory[frame // self.traj_parser._frequency]
+            return self.traj_parser.get_trajectory(frame)
         except Exception:
             self.logger.error('Error reading trajectory.')
 
@@ -967,6 +986,9 @@ class CP2KParser:
                         return
                 return self.get_lattice_vectors(0)
 
+        # TODO how does the lattice file looks like during restart
+        frame -= (self._step_start - 1)
+
         if self.get_ensemble_type(frame) == 'REFTRAJ':
             frame -= 1
 
@@ -986,6 +1008,7 @@ class CP2KParser:
                 return dict()
             self.energy_parser.mainfile = os.path.join(self.maindir, filename)
             self.energy_parser._frequency = frequency
+            self.energy_parser._step = [d[0] for d in self.energy_parser.data] if self.energy_parser.data is not None else []
 
         if self.energy_parser.mainfile is None:
             return dict()
@@ -993,11 +1016,11 @@ class CP2KParser:
         if self.get_ensemble_type(frame) == 'REFTRAJ':
             frame -= 1
 
-        if frame % self.energy_parser._frequency != 0 or frame < 0:
+        if frame < 0:
             return dict()
 
         try:
-            data = self.energy_parser.data[frame // self.energy_parser._frequency]
+            data = self.energy_parser.data[self.energy_parser._step.index(frame)]
             return dict(
                 step=data[0],
                 time=data[1] * ureg.femtosecond,
@@ -1226,8 +1249,6 @@ class CP2KParser:
         quickstep = self.out_parser.get(self._calculation_type)
 
         def parse_md_step(source):
-            # we put md output in scc, originally in frame sequence
-            # TODO put in workflow
             md_output = self.get_md_output(source._frame)
             md_output = md_output if md_output else source
             calc = sec_run.calculation[-1]
@@ -1257,51 +1278,46 @@ class CP2KParser:
 
         def parse_calculations(calculations):
             for n, calculation in enumerate(calculations):
+                if calculation is None:
+                    continue
+
                 self_consistent = calculation.get('self_consistent', [])
                 self_consistent = [self_consistent] if not isinstance(self_consistent, list) else self_consistent
 
                 # write only the last one to scc
                 scf = self_consistent[-1] if self_consistent else calculation
-                scf._frame = n
+                frame = n + self._step_start - 1
+                scf._frame = frame
                 sec_scc = self.parse_scc(scf)
                 md = self.sampling_method == 'molecular_dynamics'
                 if md:
-                    calculation._frame = n + 1
+                    calculation._frame = frame
+                    # calculation._frame = frame + 1
                     parse_md_step(calculation)
 
-                if n == 0:
+                if frame == 0:
                     atomic_coord = quickstep.get('atomic_coordinates')
                     if atomic_coord is not None:
                         atomic_coord._frame = 0
                     sec_system = self.parse_system(atomic_coord)
                 else:
-                    sec_system = self.parse_system(n + 1 if md else n)
+                    sec_system = self.parse_system(frame)
                 if sec_system:
                     sec_scc.system_ref = sec_system
-
-        def parse_single_point(single_point, system):
-            single_point._frame = 0
-            sec_scc = self.parse_scc(single_point)
-            sec_system = self.parse_system(system)
-            if sec_run.method:
-                sec_scc.method_ref = sec_run.method[-1]
-            sec_scc.system_ref = sec_system
+                if self.archive.run[-1].method:
+                    sec_scc.method_ref = self.archive.run[-1].method[-1]
 
         if (geometry_optimization := quickstep.get('geometry_optimization')) is not None:
-            # initial self consistent
-            parse_calculations([geometry_optimization])
             optimization_steps = geometry_optimization.get('optimization_step', [])
-            parse_calculations(optimization_steps)
             # final scf
-            if (single_point := quickstep.get('single_point')) is not None:
-                parse_single_point(single_point, len(optimization_steps))
+            single_point = quickstep.get('single_point')
+            parse_calculations([geometry_optimization] + optimization_steps + [single_point])
 
         elif (molecular_dynamics := quickstep.get('molecular_dynamics')) is not None:
             # initial self consistent
-            if (single_point := quickstep.get('single_point')) is not None:
-                parse_single_point(single_point, 0)
+            single_point = quickstep.get('single_point')
             # md steps
-            parse_calculations(molecular_dynamics.get('md_step', []))
+            parse_calculations([single_point] + molecular_dynamics.get('md_step', []))
 
         elif (single_point := quickstep.get('single_point')) is not None:
             atomic_coord = quickstep.get('atomic_coordinates')
@@ -1309,7 +1325,7 @@ class CP2KParser:
                 atomic_coord._frame = 0
             else:
                 self.logger.warning('Could not parse system information for the SinglePoint calculation.')
-            parse_single_point(single_point, atomic_coord)
+            parse_calculations([single_point])
 
     def _parse_basis_set(self) -> list[BasisSet]:
         '''Scopes are based on https://10.1016/j.cpc.2004.12.014'''
@@ -1539,6 +1555,11 @@ class CP2KParser:
         self.archive.m_create(Run)
         self.parse_settings()
         self.parse_input()
+
+        # if restarts: STEP_START_VALUE > 0, initial scf calc done at STEP_START_VALUE - 1
+        self._step_start = 1
+        if run_type := self.inp_parser.get('GLOBAL/RUN_TYPE'):
+            self._step_start = int(self.inp_parser.get(f'MOTION/{run_type}/STEP_START_VAL', self._step_start))
 
         if self._calculation_type in ['quickstep', 'qs_dftb']:
             self.parse_method_quickstep()
