@@ -1364,6 +1364,7 @@ class CP2KParser:
                     homo = data[1][homo_index]
                     sec_dos.energy_fermi = homo * ureg.hartree
                     sec_dos.energy_shift = homo * ureg.hartree
+                    scc.energy = Energy(fermi=homo* ureg.hartree)
                 except Exception:
                     pass
 
@@ -1382,7 +1383,7 @@ class CP2KParser:
                 sec_dos_histogram.x_cp2k_gaussian_delta_energy = delta_energy * ureg.eV
                 for i, conv_pdos in enumerate(convoluted_pdos):
                     sec_dos_orbital = sec_dos.m_create(DosValues, Dos.orbital_projected)
-                    sec_dos_orbital.value = conv_pdos
+                    sec_dos_orbital.value = conv_pdos / ureg.eV
                     sec_dos_orbital.atom_label = atom_label
                     sec_dos_orbital.atom_index = atom_index if atom_index else None
                     sec_dos_orbital.orbital = orbital_labels[i]
