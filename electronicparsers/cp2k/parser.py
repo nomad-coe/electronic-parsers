@@ -786,7 +786,6 @@ class CP2KParser:
         self._method = None
         self._calculation_type = None
 
-
     @property
     def settings(self):
         if self._settings is None:
