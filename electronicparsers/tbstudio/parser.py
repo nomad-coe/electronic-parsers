@@ -490,6 +490,6 @@ class TBStudioParser:
                     tb_wofkflow_archive = self._child_archives['TB_workflow']
                     tb_wofkflow_archive.run.append(Run(
                         program=Program(name="TB Workflow"),
-                        calculation=[Calculation(band_structure_electronic=[dft_archive.run[-1].calculation[-1].band_structure_electronic[0], self.archive.run[-1].calculation[-1].band_structure_electronic[0]])],
+                        calculation=[Calculation(band_structure_electronic=[dft_archive.run[-1].calculation[-1].band_structure_electronic[0], self.archive.run[-1].calculation[-1].band_structure_electronic[0].m_copy(deep=True)])],
                         system=[dft_archive.run[-1].system[-1].m_copy()]
                     ))
