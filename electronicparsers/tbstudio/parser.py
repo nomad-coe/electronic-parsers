@@ -29,7 +29,7 @@ from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms, AtomsGroup
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, AtomParameters, KMesh, TB, SlaterKoster, TightBindingOrbital, SlaterKosterBond
+    Method, AtomParameters, KMesh, TB, SlaterKoster, TightBindingOrbital, SlaterKosterBond, TwoCenterBond
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, BandStructure, BandEnergies, Energy, HoppingMatrix
@@ -352,31 +352,64 @@ class TBStudioParser:
         sec_tb = sec_method.m_create(TB)
         sec_sk = sec_tb.m_create(SlaterKoster)
 
-        n_orbitals = len(self.tb_model['orbitals'])
         orbitals = self.tb_model['orbitals']
-        sec_orbitals = sec_sk.m_create(TightBindingOrbital, SlaterKoster.orbitals)
+
+        for atom_index, orbital in enumerate(orbitals):
+            shells = self.tb_model['final_os'][orbital]
+            for iShell, shellOrbitals in enumerate(shells.values()):
+                for orbital_name, onSite in shellOrbitals.items():
+                    sec_orbitals = sec_sk.m_create(TightBindingOrbital, SlaterKoster.orbitals)
+                    sec_orbitals.orbital_name = orbital_name
+                    sec_orbitals.atom_index = atom_index
+                    sec_orbitals.shell = iShell
+                    sec_orbitals.onsite_energy = onSite
 
         for bond in self.tb_model['bonds']:
             atom1 = bond['atom1']
             atom2 = bond['atom2']
-            type = bond['type']
+            bond_type = bond['type']
             h_sk = None
             s_sk = None
             if self.tb_model['final_sk'] != {}:
-                h_sk = self.tb_model['final_sk'][type]
+                h_sk = self.tb_model['final_sk'][bond_type]
             if self.tb_model['final_overlap'] != {}:
-                s_sk = self.tb_model['final_overlap'][type]
+                s_sk = self.tb_model['final_overlap'][bond_type]
 
             if h_sk is not None:
                 sec_bonds = sec_sk.m_create(SlaterKosterBond, SlaterKoster.bonds)
-                sec_bonds.bond_label = type
-                sec_bonds.index1 = atom1['index']
-                sec_bonds.index2 = atom2['index']
+                sec_bonds.bond_label = bond_type
+
+                center1 = sec_bonds.m_create(TightBindingOrbital, TwoCenterBond.center1)
+                center1.atom_index = atom1['index']
+                center1.shell = atom1['shell']
+                indices = re.findall(r'-?\d+', atom1['cell'])
+                center1.cell = [int(index) for index in indices]
+
+                center2 = sec_bonds.m_create(TightBindingOrbital, TwoCenterBond.center2)
+                center2.atom_index = atom2['index']
+                center2.shell = atom2['shell']
+                indices = re.findall(r'-?\d+', atom2['cell'])
+                center2.cell = [int(index) for index in indices]
+                for sk_label, sk_integral in h_sk.items():
+                    setattr(sec_bonds, sk_label, sk_integral)
+
             if s_sk is not None:
                 sec_overlaps = sec_sk.m_create(SlaterKosterBond, SlaterKoster.overlaps)
-                sec_overlaps.bond_label = type
-                sec_overlaps.index1 = atom1['index']
-                sec_overlaps.index2 = atom2['index']
+                sec_overlaps.bond_label = bond_type
+
+                center1 = sec_overlaps.m_create(TightBindingOrbital, TwoCenterBond.center1)
+                center1.atom_index = atom1['index']
+                center1.shell = atom1['shell']
+                indices = re.findall(r'-?\d+', atom1['cell'])
+                center1.cell = [int(index) for index in indices]
+
+                center2 = sec_overlaps.m_create(TightBindingOrbital, TwoCenterBond.center2)
+                center2.atom_index = atom2['index']
+                center2.shell = atom2['shell']
+                indices = re.findall(r'-?\d+', atom2['cell'])
+                center2.cell = [int(index) for index in indices]
+                for sk_label, sk_integral in s_sk.items():
+                    setattr(sec_overlaps, sk_label, sk_integral)
 
     def parse_scc(self):
         """Populates run.calculation with the output of the calculation.
