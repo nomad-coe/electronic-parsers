@@ -512,20 +512,29 @@ class OutcarContentParser(ContentParser):
             return 0
 
     @property
-    def kpoints_info(self):
+    def kpoints_info(self) -> list[dict]:
+        '''
+        Extracts the `points`, `weights`, and `multiplicities` of the k-point regexes in OUTCAR.
+        - for multiple ionic steps:
+          the list index follows the ionic steps (for later matching with `eigenvalues`).
+        - for frequency calculations:
+          the last k-point set is high-symmetry set reported at the start of the OUTCAR file.
+        '''
         if self._kpoints_info is None:
             self._kpoints_info = []
-            index = 0
-            for kpts_occs in self.parser.get('kpoints', []):
+            for kpts_index, kpts_occs in enumerate(self.parser.get('kpoints', [])):
                 kpoint_info = {}
                 kpts_occs = np.reshape(kpts_occs, (len(kpts_occs) // 4, 4)).T
                 kpoint_info['points'] = kpts_occs[0:3].T
                 k_mults = kpts_occs[3].T
                 kpoint_info['multiplicities'] = k_mults
                 kpoint_info['weights'] = k_mults / np.sum(k_mults)
-                kpoint_info['index'] = index
-                index += 1
+                if None in kpoint_info.values(): # Only write out full k-point sets
+                    continue
+                kpoint_info['index'] = kpts_index
                 self._kpoints_info.append(kpoint_info)
+            if len(self._kpoints_info) > 1:
+                self._kpoints_info = self._kpoints_info[1:] + self._kpoints_info[0]
         return self._kpoints_info
 
     @property
@@ -1037,21 +1046,31 @@ class RunContentParser(ContentParser):
     }
 
     def _find_kpoints(self) -> list[str]:
-        stem = '/modeling[0]/calculation'
-        n_ionic_updates = len(self._get_key_values(stem).get('calculation', []))
+        stem_1 = '/modeling[0]/calculation'
+        stem_2 = '/modeling[0]/kpoints[0]'
+        kpts = []
+        n_ionic_updates = len(self._get_key_values(stem_1).get('calculation', []))
         if n_ionic_updates:
-            if not self._get_key_values(f'{stem}[0]/kpoints').get('kpoints', []):
-                return ['/modeling[0]/kpoints[0]' for _ in range(n_ionic_updates)]
-            return [f'{stem}[{ionic_update_index}]/kpoints[0]' for ionic_update_index in range(n_ionic_updates)]
-        return ['/modeling[0]/kpoints[0]']  # in case the calculation is a single-point
+            # check if kpoints are defined for each ionic update
+            if not self._get_key_values(f'{stem_1}[0]/kpoints').get('kpoints', []):
+                kpts = [stem_2 for _ in range(n_ionic_updates)]
+            else:
+                kpts = [f'{stem_1}[{ionic_update_index}]/kpoints[0]' for ionic_update_index in range(n_ionic_updates)]
+        return kpts + [stem_2]
 
     @property
-    def kpoints_info(self):
+    def kpoints_info(self) -> list[dict]:
+        '''
+        Extracts the `points`, `weights`, and `multiplicities` of the k-point regexes in vasprun.xml.
+        - for multiple ionic steps:
+          the list index follows the ionic steps (for later matching with `eigenvalues`).
+        - for frequency calculations:
+          the last k-point set is high-symmetry set reported under <modeling>.
+        '''
         if self._kpoints_info is None:
             self._kpoints_info = []
 
-            # set stem
-            for kpoint_path in self._find_kpoints():
+            for kpoint_index, kpoint_path in enumerate(self._find_kpoints()):
                 kpoint_dict = {}
 
                 method = self._get_key_values(f'{kpoint_path}/generation[0]/param')
@@ -1080,7 +1099,16 @@ class RunContentParser(ContentParser):
                 tetrahedrons = self._get_key_values(f'{kpoint_path}/varray[@name="tetrahedronlist"]/v', array=True)
                 if tetrahedrons:
                     kpoint_dict['x_vasp_tetrahedrons_list'] = tetrahedrons['v']
+
+                if None in kpoint_dict.values():
+                    continue
+                kpoint_dict['index'] = kpoint_index
+
                 self._kpoints_info.append(kpoint_dict)
+
+            if len(self._kpoints_info) > 1:
+                self._kpoints_info = self._kpoints_info[1:] + self._kpoints_info[0]
+
         return self._kpoints_info
 
     @property
