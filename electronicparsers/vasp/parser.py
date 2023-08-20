@@ -515,14 +515,17 @@ class OutcarContentParser(ContentParser):
     def kpoints_info(self):
         if self._kpoints_info is None:
             self._kpoints_info = []
-            for kpts_occs in self.parser.get('kpoints'):
-                if kpts_occs is not None:
-                    self._kpoints_info.append({})
-                    kpts_occs = np.reshape(kpts_occs, (len(kpts_occs) // 4, 4)).T
-                    self._kpoints_info[-1]['points'] = kpts_occs[0:3].T
-                    k_mults = kpts_occs[3].T
-                    self._kpoints_info[-1]['multiplicities'] = k_mults
-                    self._kpoints_info[-1]['weights'] = k_mults / np.sum(k_mults)
+            index = 0
+            for kpts_occs in self.parser.get('kpoints', []):
+                kpoint_info = {}
+                kpts_occs = np.reshape(kpts_occs, (len(kpts_occs) // 4, 4)).T
+                kpoint_info['points'] = kpts_occs[0:3].T
+                k_mults = kpts_occs[3].T
+                kpoint_info['multiplicities'] = k_mults
+                kpoint_info['weights'] = k_mults / np.sum(k_mults)
+                kpoint_info['index'] = index
+                index += 1
+                self._kpoints_info.append(kpoint_info)
         return self._kpoints_info
 
     @property
@@ -1594,7 +1597,7 @@ class VASPParser():
         def parse_eigenvalues(n_calc):
             eigenvalues = self.parser.get_eigenvalues(n_calc)
             kpoint_source = self.parser.kpoints_info[n_calc]
-            if eigenvalues is None:
+            if eigenvalues or kpoint_source is None:
                 return
 
             sec_scc = sec_run.calculation[-1]
@@ -1641,8 +1644,8 @@ class VASPParser():
                 eigs = eigs * ureg.eV
                 sec_eigenvalues = sec_scc.m_create(BandEnergies)
                 sec_eigenvalues.kpoints = kpoints
-                sec_eigenvalues.kpoints_weights = kpoint_source.get('weights', [])
-                sec_eigenvalues.kpoints_multiplicities = kpoint_source.get('multiplicities', [])
+                sec_eigenvalues.kpoints_weights = kpoint_source.get('weights', None)
+                sec_eigenvalues.kpoints_multiplicities = kpoint_source.get('multiplicities', None)
                 sec_eigenvalues.energies = eigs
                 sec_eigenvalues.occupations = occs
 
