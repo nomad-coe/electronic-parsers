@@ -1333,14 +1333,14 @@ class CP2KParser:
                                 'times the number of atom parameters. We cannot parse the PDOS.')
             return
 
-        if n_spin_channels == 2:
-            dos = [Dos(n_spin_channels=2, spin_channel=0), Dos(n_spin_channels=2, spin_channel=1)]
-        else:
-            dos = [Dos(n_spin_channels=1)]
+        dos = [
+            Dos(n_spin_channels=2, spin_channel=0), Dos(n_spin_channels=2, spin_channel=1)
+        ] if n_spin_channels == 2 else [Dos(n_spin_channels=1)]
 
         for index, (f, atom_kind) in enumerate(atom_kind_in_files_sorted):
             self.pdos_parser.mainfile = f
             if self.pdos_parser.data is None:
+                self.logger.warning('Could not read the data from the *.pdos files.')
                 break
             data = self.pdos_parser.data
 
@@ -1390,9 +1390,7 @@ class CP2KParser:
                     sec_dos_orbital.orbital = orbital_labels[i]
 
         self.logger.warning(f'We are convoluting the reported .pdos histogram with a Gaussian '
-                            f'distribution function (as defined in scipy.stats.norm). We used a new '
-                            f'energy mesh with delta_energy = {delta_energy} eV, and a Gaussian '
-                            f'distribution function with a width = {width} eV.')
+                            f'distribution function (as defined in scipy.stats.norm).')
         scc.dos_electronic = dos
 
     def parse_configurations_quickstep(self):
