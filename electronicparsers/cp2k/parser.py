@@ -703,6 +703,7 @@ class CP2KPDOSParser(TextParser):
         super().__init__(None)
 
     def init_quantities(self):
+        self._data = None
         self._quantities = [
             Quantity('atom_kind', r'\# *Projected DOS for atomic kind *([\da-zA-Z]+) *at'),
             Quantity('orbitals', r' *Occupation(.+)', repeats=False),
@@ -710,8 +711,9 @@ class CP2KPDOSParser(TextParser):
 
     @property
     def data(self):
-        if self.mainfile:
-            return np.loadtxt(self.mainfile)
+        if self._data is None:
+            self._data = np.loadtxt(self.mainfile)
+        return self._data
 
 
 class CP2KParser:
