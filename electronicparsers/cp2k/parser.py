@@ -1349,6 +1349,7 @@ class CP2KParser:
 
             # We use the (updated 2017 Tiziano Müller) script provided by CP2K developers to resolve the
             # PDOS by convoluting the histogram stored in the .pdos files.
+            # TODO implement a more automatic way of defining width if possible.
             width = 0.5  # in eV
             delta_energy = 0.01  # in eV
             convoluted_energies, convoluted_pdos = _gaussian_convolution_pdos(data, width, delta_energy)
