@@ -705,7 +705,8 @@ class CP2KPDOSParser(TextParser):
     def init_quantities(self):
         self._quantities = [
             Quantity('atom_kind', r'\# *Projected DOS for atomic kind *([\da-zA-Z]+) *at'),
-            Quantity('orbitals', r' *Occupation(.+)', repeats=False)]
+            Quantity('orbitals', r' *Occupation(.+)', repeats=False),
+            Quantity('iter', r' *at iteration step i *\= *(\d+)')]
 
     @property
     def data(self):
@@ -1266,16 +1267,17 @@ class CP2KParser:
 
         return sec_system
 
-    def parse_dos(self, scc):
+    def parse_dos(self, scc, pdos_files):
         """Parses the projected DOS by resolving the histogram from the *.pdos files, and
         convoluting this data with a Gaussian distribution function.
 
         Args:
             scc (Calculation): section calculation where the Dos is stored.
+            pdos_files: list of *.pdos files with iteration step coinciding with the
+                last converged SinglePoint calculation.
         """
         # Parsing DOS and PDOS if .pdos files are present.
-        pdos_files = get_files('*.pdos', self.filepath, self.mainfile)
-        if pdos_files is None:
+        if not pdos_files:
             return
 
         def _gaussian_convolution_pdos(data, width, delta_energy):
@@ -1455,20 +1457,47 @@ class CP2KParser:
                 if self.archive.run[-1].method:
                     sec_scc.method_ref = self.archive.run[-1].method[-1]
 
+        def get_pdos_files(n_calcs):
+            """Reads the number of calculations and the pdos_files iteration integer, and
+            return only the files coinciding with the SinglePoint calculation.
+
+            Args:
+                n_calcs (int): number of calculations.
+
+            Returns:
+                pdos_files: list of *.pdos files with iteration step coinciding with the
+                    last converged SinglePoint calculation.
+            """
+            pdos_files = get_files('*.pdos', self.filepath, self.mainfile)
+            if pdos_files is not None:
+                for i, file in enumerate(pdos_files):
+                    self.pdos_parser.mainfile = file
+                    iter_step = self.pdos_parser.get('iter', n_calcs - 1) + 1  # added default to match ADD_LAST = NO
+                    if iter_step != n_calcs:
+                        pdos_files.pop(i)
+            return pdos_files
+
         if (geometry_optimization := quickstep.get('geometry_optimization')) is not None:
             optimization_steps = geometry_optimization.get('optimization_step', [])
             # final scf
             single_point = quickstep.get('single_point')
-            parse_calculations([geometry_optimization] + optimization_steps + [single_point])
+            calculations = [geometry_optimization] + optimization_steps + [single_point]
+            parse_calculations(calculations)
+            # PDOS parsing
             if single_point and sec_run.calculation is not None:
-                self.parse_dos(sec_run.calculation[-1])
+                n_calcs = len(calculations)
+                pdos_files = get_pdos_files(n_calcs)
+                self.parse_dos(sec_run.calculation[-1], pdos_files)
         elif (molecular_dynamics := quickstep.get('molecular_dynamics')) is not None:
             # initial self consistent
             single_point = quickstep.get('single_point')
             # md steps
-            parse_calculations([single_point] + molecular_dynamics.get('md_step', []))
+            calculations = [single_point] + molecular_dynamics.get('md_step', [])
+            parse_calculations(calculations)
+            # PDOS parsing
             if single_point and sec_run.calculation is not None:
-                self.parse_dos(sec_run.calculation[0])
+                pdos_files = get_pdos_files(1)
+                self.parse_dos(sec_run.calculation[0], pdos_files)
         elif (single_point := quickstep.get('single_point')) is not None:
             atomic_coord = quickstep.get('atomic_coordinates')
             if atomic_coord is not None:
@@ -1476,7 +1505,9 @@ class CP2KParser:
             else:
                 self.logger.warning('Could not parse system information for the SinglePoint calculation.')
             parse_calculations([single_point])
-            self.parse_dos(sec_run.calculation[-1])
+            # PDOS parsing
+            pdos_files = get_pdos_files(1)
+            self.parse_dos(sec_run.calculation[-1], pdos_files)
 
     def _parse_basis_set(self) -> list[BasisSet]:
         '''Scopes are based on https://10.1016/j.cpc.2004.12.014'''
