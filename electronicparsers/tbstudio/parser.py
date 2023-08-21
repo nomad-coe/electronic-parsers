@@ -21,23 +21,22 @@ import os
 import logging
 import numpy as np
 
-from matid.data.element_data import get_symbols
 from nomad.units import ureg
-from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.system import (
-    System, Atoms, AtomsGroup
+    System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, AtomParameters, KMesh, TB, SlaterKoster, TightBindingOrbital, SlaterKosterBond, TwoCenterBond
+    Method, TB, SlaterKoster, TightBindingOrbital, SlaterKosterBond, TwoCenterBond
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
-    Calculation, Dos, BandStructure, BandEnergies, Energy, HoppingMatrix
+    Calculation, BandStructure, BandEnergies
 )
-from nomad.datamodel.metainfo.simulation.workflow import SinglePoint, SimulationWorkflow
-from nomad.datamodel.metainfo.workflow import TaskReference, Link
+from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 import json
 import re
+from nomad.datamodel.metainfo.workflow import Workflow
+from ..utils import BeyondDFTWorkflowsParser
 
 
 def parse_int(string, default):
@@ -319,7 +318,7 @@ def load_tbm(file):
     return model
 
 
-class TBStudioParser:
+class TBStudioParser(BeyondDFTWorkflowsParser):
     level = 1
 
     def __init__(self):
@@ -437,6 +436,13 @@ class TBStudioParser:
 
         sec_scc.band_structure_electronic.append(sec_k_band)
 
+    def parse_workflow(self):
+        sec_workflow = self.archive.m_create(Workflow)
+        workflow = SinglePoint()
+        sec_workflow.type = 'single_point'
+        workflow.name = "Tight Binding Calculation"
+        self.archive.workflow2 = workflow
+
     def get_mainfile_keys(self, **kwargs):
         filepath = kwargs.get('filename')
         tb_model = load_tbm(filepath)
@@ -448,8 +454,9 @@ class TBStudioParser:
             return True
 
     def parse(self, filepath, archive, logger):
+        tb_archive = archive
         self.filepath = os.path.abspath(filepath)
-        self.archive = archive
+        self.archive = tb_archive
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
 
@@ -463,33 +470,13 @@ class TBStudioParser:
         self.parse_method()
         self.parse_scc()
 
-        workflow = SinglePoint()
-        workflow.name = "Tight Binding Calculation"
-        self.archive.workflow2 = workflow
-
+        self.parse_workflow()
         if dft_nomad_entry_id is not None and dft_nomad_entry_id != '' and dft_nomad_upload_id is not None and dft_nomad_upload_id != '':
-            dft_archive = None
+            first_principles_calculation_archive = None
             try:
-                dft_archive = archive.m_context.load_archive(dft_nomad_entry_id, dft_nomad_upload_id, None)
+                first_principles_calculation_archive = archive.m_context.load_archive(dft_nomad_entry_id, dft_nomad_upload_id, None)
             except:
                 pass
-            if dft_archive:
-                if self._child_archives:
-                    tb_workflow = SimulationWorkflow()
-                    tb_workflow.name = "Tight Binding"
-                    self._child_archives['TB_workflow'].workflow2 = tb_workflow
-                    tb_workflow.tasks.append(TaskReference(task=dft_archive.workflow2))
-                    tb_workflow.tasks.append(TaskReference(task=self.archive.workflow2))
-
-                    workflow.inputs.append(Link(name='Atomic structure', section=dft_archive.run[0].system[0]))
-                    workflow.inputs.append(
-                        Link(name='DFT band structure', section=dft_archive.run[0].calculation[0]))
-                    workflow.outputs.append(
-                        Link(name='TB band structure', section=archive.run[0].calculation[0]))
-
-                    tb_wofkflow_archive = self._child_archives['TB_workflow']
-                    tb_wofkflow_archive.run.append(Run(
-                        program=Program(name="TB Workflow"),
-                        calculation=[Calculation(band_structure_electronic=[dft_archive.run[-1].calculation[-1].band_structure_electronic[0], self.archive.run[-1].calculation[-1].band_structure_electronic[0].m_copy(deep=True)])],
-                        system=[dft_archive.run[-1].system[-1].m_copy()]
-                    ))
+            if first_principles_calculation_archive and self._child_archives:
+                tb_workflow_archive = self._child_archives.get('TB_workflow')
+                self.parse_tb_workflow(tb_archive, first_principles_calculation_archive, tb_workflow_archive)
