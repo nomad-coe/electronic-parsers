@@ -1173,10 +1173,10 @@ class CP2KParser:
 
         input_files = get_files(input_filename, self.filepath, self.mainfile, deep=False)
         if not input_files:
-            self.logger.warning(f'Input file {input_filename} not found.')
+            self.logger.warning(f'Input file not found.')
             return
         if len(input_files) > 1:
-            self.logger.warning(f'Multiple input files found. We will parse {input_files[0]}.')
+            self.logger.warning(f'Multiple input files found. We will parse the first read file.')
         self.inp_parser.mainfile = input_files[0]
 
         parse('x_cp2k_section_input', self.inp_parser.tree, self.archive.run[-1])
