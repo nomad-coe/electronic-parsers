@@ -1441,7 +1441,6 @@ class CP2KParser:
                 md = self.sampling_method == 'molecular_dynamics'
                 if md:
                     calculation._frame = frame
-                    # calculation._frame = frame + 1
                     parse_md_step(calculation)
 
                 if frame == 0:
@@ -1461,13 +1460,15 @@ class CP2KParser:
             # final scf
             single_point = quickstep.get('single_point')
             parse_calculations([geometry_optimization] + optimization_steps + [single_point])
-
+            if single_point and sec_run.calculation is not None:
+                self.parse_dos(sec_run.calculation[-1])
         elif (molecular_dynamics := quickstep.get('molecular_dynamics')) is not None:
             # initial self consistent
             single_point = quickstep.get('single_point')
             # md steps
             parse_calculations([single_point] + molecular_dynamics.get('md_step', []))
-
+            if single_point and sec_run.calculation is not None:
+                self.parse_dos(sec_run.calculation[0])
         elif (single_point := quickstep.get('single_point')) is not None:
             atomic_coord = quickstep.get('atomic_coordinates')
             if atomic_coord is not None:
@@ -1475,6 +1476,7 @@ class CP2KParser:
             else:
                 self.logger.warning('Could not parse system information for the SinglePoint calculation.')
             parse_calculations([single_point])
+            self.parse_dos(sec_run.calculation[-1])
 
     def _parse_basis_set(self) -> list[BasisSet]:
         '''Scopes are based on https://10.1016/j.cpc.2004.12.014'''
