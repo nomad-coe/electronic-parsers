@@ -53,7 +53,7 @@ from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings,\
     x_cp2k_section_restart_information, x_cp2k_section_geometry_optimization,\
     x_cp2k_section_geometry_optimization_step, x_cp2k_pdos_histogram
 
-from ..utils import get_files, is_approximately_equal
+from ..utils import get_files
 
 
 units_map = {
@@ -1361,7 +1361,7 @@ class CP2KParser:
                 sec_dos.n_energies = len(convoluted_energies)
                 sec_dos.energies = convoluted_energies * ureg.eV
                 try:
-                    homo_index = np.where(is_approximately_equal(np.diff(data[2]), -1.0, 1e-1))[0][0]
+                    homo_index = np.where(np.isclose(np.diff(data[2]), -1, atol=1e-1))[0][0]
                     homo = data[1][homo_index]
                     sec_dos.energy_fermi = homo * ureg.hartree
                     sec_dos.energy_shift = homo * ureg.hartree
