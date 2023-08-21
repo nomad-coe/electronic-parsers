@@ -1365,7 +1365,7 @@ class CP2KParser:
                     homo = data[1][homo_index]
                     sec_dos.energy_fermi = homo * ureg.hartree
                     sec_dos.energy_shift = homo * ureg.hartree
-                    scc.energy = Energy(fermi=homo* ureg.hartree)
+                    scc.energy = Energy(fermi=homo * ureg.hartree)
                 except Exception:
                     pass
 
