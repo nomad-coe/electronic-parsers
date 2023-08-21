@@ -113,6 +113,12 @@ def test_pdos(parser):
     assert sec_scc[0].x_cp2k_pdos[0].x_cp2k_gaussian_delta_energy.to('eV').magnitude == approx(0.01)
     assert len(sec_scc[0].x_cp2k_pdos[0].x_cp2k_pdos_histogram_orbital) == 9
     assert sec_scc[0].x_cp2k_pdos[0].x_cp2k_pdos_histogram_orbital == ['s', 'py', 'pz', 'px', 'd-2', 'd-1', 'd0', 'd+1', 'd+2']
+    # Testing values
+    dos_values = sec_dos[0].orbital_projected[2]
+    assert dos_values.atom_label == 'C'
+    assert dos_values.orbital == 'pz'
+    assert dos_values.value.to('1/eV').magnitude[1050] == approx(1.2619316298909414e-05)
+    assert (dos_values.value.to('1/eV').magnitude > 0).all()
 
 
 def test_geometry_optimization(parser):
