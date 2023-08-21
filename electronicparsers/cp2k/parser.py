@@ -1267,7 +1267,7 @@ class CP2KParser:
 
         return sec_system
 
-    def parse_dos(self, scc, pdos_files):
+    def parse_dos(self, scc: Calculation, pdos_files: list[str]):
         """Parses the projected DOS by resolving the histogram from the *.pdos files, and
         convoluting this data with a Gaussian distribution function.
 
@@ -1280,7 +1280,7 @@ class CP2KParser:
         if not pdos_files:
             return
 
-        def _gaussian_convolution_pdos(data, width, delta_energy):
+        def _gaussian_convolution_pdos(data: np.ndarray, width: float, delta_energy: float):
             """Convolutes / smoothes the histogram data with a Gaussian distribution function as defined
             in scipy.stats.norm. The mesh of energies is also expanded (with delta_energy in eV)
             to resolve better the Gaussians.
@@ -1457,7 +1457,7 @@ class CP2KParser:
                 if self.archive.run[-1].method:
                     sec_scc.method_ref = self.archive.run[-1].method[-1]
 
-        def get_pdos_files(n_calcs):
+        def get_pdos_files(n_calcs: int):
             """Reads the number of calculations and the pdos_files iteration integer, and
             return only the files coinciding with the SinglePoint calculation.
 
