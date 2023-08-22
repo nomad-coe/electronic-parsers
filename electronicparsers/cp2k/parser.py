@@ -1376,7 +1376,7 @@ class CP2KParser:
             orbital_histogram = data[3:]
             atom_label = re.sub(r'\d', '', atom_kind)
             atom_index = re.sub(r'[a-zA-Z]', '', atom_kind)
-            if self.pdos_parser.get('orbitals', []):
+            if self.pdos_parser.get('orbitals', []) is not None:
                 orbital_labels = self.pdos_parser.get('orbitals', [])
                 sec_dos_histogram = scc.m_create(x_cp2k_pdos_histogram)
                 sec_dos_histogram.x_cp2k_pdos_histogram_energies = data[1] * ureg.hartree
