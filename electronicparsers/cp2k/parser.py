@@ -702,8 +702,10 @@ class CP2KPDOSParser(TextParser):
     def __init__(self):
         super().__init__(None)
 
-    def init_quantities(self):
+    def init_parameters(self):
         self._data = None
+
+    def init_quantities(self):
         self._quantities = [
             Quantity('atom_kind', r'\# *Projected DOS for atomic kind *([\da-zA-Z]+) *at'),
             Quantity('orbitals', r' *Occupation(.+)', repeats=False),
