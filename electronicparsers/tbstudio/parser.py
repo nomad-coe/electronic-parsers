@@ -30,7 +30,7 @@ from nomad.datamodel.metainfo.simulation.method import (
     Method, TB, SlaterKoster, TightBindingOrbital, SlaterKosterBond, TwoCenterBond
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
-    Calculation, BandStructure, BandEnergies
+    Calculation, BandStructure, BandEnergies, Energy
 )
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 import json
@@ -424,15 +424,18 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         if band_segments_points is None or len(tb_bands) < 1 or len(frac_k_points) < 1:
             return
 
+        fermi_level_joules = self.tb_model['fermi_level'] * ureg.eV
         sec_scc = sec_run.calculation[-1]
+        sec_energy = sec_scc.m_create(Energy, Calculation.energy)
+        sec_energy.fermi = fermi_level_joules
 
         sec_k_band = BandStructure()
-        sec_k_band.energy_fermi = self.tb_model['fermi_level'] * ureg.eV
+        sec_k_band.energy_fermi = fermi_level_joules
 
         for n1, n2 in band_segments_points:
             sec_k_band_segment = sec_k_band.m_create(BandEnergies)
             sec_k_band_segment.kpoints = frac_k_points[n1: n2 + 1]
-            sec_k_band_segment.energies = np.array([tb_bands[n1: n2 + 1]]) * ureg.eV
+            sec_k_band_segment.energies = (np.array([tb_bands[n1: n2 + 1]]) + self.tb_model['fermi_level']) * ureg.eV
 
         sec_scc.band_structure_electronic.append(sec_k_band)
 
@@ -440,7 +443,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         sec_workflow = self.archive.m_create(Workflow)
         workflow = SinglePoint()
         sec_workflow.type = 'single_point'
-        workflow.name = "Tight Binding Calculation"
+        workflow.name = "Tight Binding Model"
         self.archive.workflow2 = workflow
 
     def get_mainfile_keys(self, **kwargs):
