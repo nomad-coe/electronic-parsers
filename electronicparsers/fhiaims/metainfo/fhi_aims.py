@@ -776,15 +776,9 @@ class ScfIeration(simulation.calculation.ScfIteration):
         Fit acccuracy for the Fast-Fourier Transforms necessary in the scGW formalism
         ''',)
 
-    x_fhi_aims_scf_date_start = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        -
-        ''',)
-
     x_fhi_aims_scf_time_start = Quantity(
-        type=str,
+        type=np.dtype(np.float64),
+        unit='s',
         shape=[],
         description='''
         -
@@ -1279,15 +1273,9 @@ class Run(simulation.run.Run):
         -
         ''')
 
-    x_fhi_aims_program_execution_date = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        -
-        ''')
-
     x_fhi_aims_program_execution_time = Quantity(
-        type=str,
+        type=np.float64,
+        unit='s',
         shape=[],
         description='''
         -

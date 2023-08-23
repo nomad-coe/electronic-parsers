@@ -23,6 +23,7 @@ import json
 import hashlib
 from typing import Any
 import re
+from datetime import datetime
 
 from nomad.units import ureg
 
@@ -302,11 +303,13 @@ class FHIAimsOutParser(TextParser):
                     rf'{re_n} *\d+\s*({re_float})\s*({re_float})\s*{re_float}',
                     repeats=True)]))
 
+        date_time = Quantity(
+            'date_time', rf'Date\s*:\s*(\d+), Time\s*:\s*([\d\.]+)\s*', repeats=False,
+            convert=False, str_operation=lambda x: datetime.strptime(x, '%Y%m%d %H%M%S.%f').timestamp())
+
         scf_quantities = [
-            Quantity(
-                'date_time', rf'{re_n} *Date\s*:(\s*\d+), Time\s*:(\s*[\d\.]+)\s*',
-                repeats=False, convert=False),
             # TODO add section_eigenvalues to scf_iteration
+            date_time,
             eigenvalues,
             Quantity(
                 'energy_components',
@@ -335,7 +338,11 @@ class FHIAimsOutParser(TextParser):
             Quantity(
                 'fermi_level',  # newer version
                 rf'{re_n} *\| Chemical potential \(Fermi level\)\:\s*([\-\d\.]+)\s*(\w+)',
-                str_operation=lambda x: float(x.split()[0]) * units_mapping.get(x.split()[1], 1))]
+                str_operation=lambda x: float(x.split()[0]) * units_mapping.get(x.split()[1], 1)),
+            Quantity(
+                'time_calculation',
+                r'Time for this iteration +: +[\d\.]+ s +([\d\.]+) s', dtype=float)
+        ]
 
         def str_to_scf_convergence2(val_in):
             val = val_in.split('|')
@@ -434,9 +441,6 @@ class FHIAimsOutParser(TextParser):
                     'scf_convergence', r'([\s\S]+)', str_operation=str_to_scf_convergence2,
                     repeats=False, convert=False)])),
             Quantity(
-                'date_time', rf'{re_n} *Date\s*:(\s*\d+), Time\s*:(\s*[\d\.]+)\s*', repeats=False,
-                convert=False),
-            Quantity(
                 'structure',
                 rf'Atomic structure(.|\n)*\| *Atom *x \[A\] *y \[A\] *z \[A\]([\s\S]+?Species[\s\S]+?(?:{re_n} *{re_n}| 1\: ))',
                 repeats=False, convert=False, sub_parser=TextParser(quantities=structure_quantities)),
@@ -472,8 +476,8 @@ class FHIAimsOutParser(TextParser):
                 'forces_raw', rf'{re_n} *Total forces\([\s\d]+\)\s*:([\s\d\.\-\+Ee]+){re_n}', repeats=True,
                 dtype=float),
             Quantity(
-                'time_force_evaluation',
-                rf'{re_n} *\| Time for this force evaluation\s*:\s*([\d\.]+) s\s*([\d\.]+) s',
+                'time_calculation',
+                rf'{re_n} *\| Time for this force evaluation\s*:\s*[\d\.]+ s\s*([\d\.]+) s',
                 repeats=False, dtype=float),
             Quantity(
                 'total_dos_files', r'Calculating total density of states([\s\S]+?)\-{5}',
@@ -495,7 +499,9 @@ class FHIAimsOutParser(TextParser):
                         'atom_hirshfeld', r'\| Atom\s*\d+:([\s\S]+?)\-{5}',
                         str_operation=str_to_hirshfeld, repeats=True, convert=False)])),
             Quantity(
-                'converged', r'Self\-consistency cycle (converged)\.', repeats=False, dtype=str)]
+                'converged', r'Self\-consistency cycle (converged)\.', repeats=False, dtype=str),
+            date_time
+        ]
 
         molecular_dynamics_quantities = [
             Quantity(
@@ -562,12 +568,7 @@ class FHIAimsOutParser(TextParser):
             Quantity(
                 Program.compilation_host, r'on host ([\w\.\-]+)',
                 repeats=False),
-            Quantity(
-                xsection_run.x_fhi_aims_program_execution_date, r'Date\s*:\s*([0-9]+)',
-                repeats=False),
-            Quantity(
-                xsection_run.x_fhi_aims_program_execution_time, rf'Time\s*:\s*([0-9\.]+){re_n}',
-                repeats=False),
+            date_time,
             Quantity(
                 TimeRun.cpu1_start,
                 r'Time zero on CPU 1\s*:\s*([0-9\-E\.]+)\s*(?P<__unit>\w+)\.',
@@ -721,7 +722,18 @@ class FHIAimsOutParser(TextParser):
                 'molecular_dynamics',
                 rf'{re_n} *Molecular dynamics: Attempting to update all nuclear coordinates\.'
                 rf'([\s\S]+?(?:{tail}))',
-                repeats=True, sub_parser=TextParser(quantities=[*calculation_quantities, *molecular_dynamics_quantities]))]
+                repeats=True, sub_parser=TextParser(quantities=[*calculation_quantities, *molecular_dynamics_quantities])),
+            Quantity(
+                'timing',
+                r'(Date.+\s+Computational steps[\s\S]+?\Z)',
+                sub_parser=TextParser(quantities=[
+                date_time,
+                Quantity(
+                    'total_time',
+                    r'\| Total time +: +[\d\.]+ s +([\d\.]+) s', dtype=float),
+                ])
+            )
+        ]
         # TODO add SOC perturbed eigs, dielectric function
 
     def get_number_of_spin_channels(self):
@@ -1104,6 +1116,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
     def parse_configurations(self):
         sec_run = self.archive.run[-1]
+        time_initial = sec_run.x_fhi_aims_program_execution_time
 
         def read_dos(dos_file):
             dos_file = self.get_fhiaims_file(dos_file)
@@ -1237,10 +1250,12 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             sec_scc = sec_run.calculation[-1]
             sec_scf = sec_scc.m_create(ScfIteration)
 
-            date_time = iteration.get('date_time')
-            if date_time is not None:
-                sec_scf.x_fhi_aims_scf_date_start = date_time[0]
-                sec_scf.x_fhi_aims_scf_time_start = date_time[1]
+            if iteration.get('date_time') is not None:
+                sec_scf.x_fhi_aims_scf_time_start = iteration.date_time * ureg.s
+            if iteration.get('time_calculation') is not None:
+                sec_scf.time_calculation = iteration.time_calculation * ureg.s
+            if sec_scf.x_fhi_aims_scf_time_start is not None and sec_scf.time_calculation is not None:
+                sec_scf.time_physical = sec_scf.x_fhi_aims_scf_time_start + sec_scf.time_calculation - time_initial
 
             sec_energy = sec_scf.m_create(Energy)
             energies = iteration.get('energy_components', {})
@@ -1374,9 +1389,10 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                     except Exception:
                         self.logger.warning('Error setting raw forces.')
 
-            time_calculation = section.get('time_force_evaluation')
-            if time_calculation is not None:
-                sec_scc.time_calculation = time_calculation
+            if section.time_calculation is not None:
+                sec_scc.time_calculation = section.time_calculation * ureg.s
+                if section.date_time is not None:
+                    sec_scc.time_physical = section.date_time * ureg.s + sec_scc.time_calculation - time_initial
 
             scf_iterations = section.get('self_consistency', [])
             sec_scc.n_scf_iterations = len(scf_iterations)
@@ -1460,8 +1476,15 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         if not sec_run.calculation:
             return
 
+        sec_scc = sec_run.calculation[-1]
+        timing = self.out_parser.timing
+        if timing is not None:
+            sec_scc.time_physical = timing.total_time
+            if len(sec_run.calculation) > 1 and sec_run.calculation[-2].time_physical:
+                sec_scc.time_calculation = sec_scc.time_physical - sec_run.calculation[-2].time_physical
+
         # bandstructure
-        fermi_energy = sec_run.calculation[0].energy.fermi
+        fermi_energy = sec_scc.energy.fermi
         self.parse_bandstructure(fermi_energy)
 
     def parse_workflow(self):
@@ -1887,7 +1910,6 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
         section_run_keys = [
             'x_fhi_aims_program_compilation_date', 'x_fhi_aims_program_compilation_time',
-            'x_fhi_aims_program_execution_date', 'x_fhi_aims_program_execution_time',
             'raw_id', 'x_fhi_aims_number_of_tasks']
         for key in section_run_keys:
             value = self.out_parser.get(key)
@@ -1897,6 +1919,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 setattr(sec_run, key, value)
             except Exception:
                 self.logger.warning('Error setting run metainfo', details={key: key})
+        sec_run.x_fhi_aims_program_execution_time = self.out_parser.get('date_time', 0.) * ureg.s
 
         sec_parallel_tasks = sec_run.m_create(x_fhi_aims_section_parallel_tasks)
         # why embed section not just let task be an array
