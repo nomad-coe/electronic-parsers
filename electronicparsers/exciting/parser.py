@@ -938,7 +938,7 @@ class ExcitingInfoParser(TextParser):
 
         self._miscellaneous_keys_mapping = {
             'x_exciting_gap': (r'Estimated fundamental gap', ureg.hartree),
-            'time': (r'Wall time \(seconds\)', ureg.s)}
+            'time_physical': (r'Wall time \(seconds\)', ureg.s)}
 
         for name, key_unit in self._miscellaneous_keys_mapping.items():
             scf_quantities.append(Quantity(
@@ -1021,7 +1021,7 @@ class ExcitingInfoParser(TextParser):
                 'energy_total', r'Total energy at this optimization step\s*\:\s*([\-\d\.Ee]+)',
                 unit=ureg.hartree, repeats=False, dtype=float),
             Quantity(
-                'time', r'Time spent in this optimization step\s*\:\s*([\-\d\.Ee]+)\s*seconds',
+                'time_calculation', r'Time spent in this optimization step\s*\:\s*([\-\d\.Ee]+)\s*seconds',
                 unit=ureg.s, repeats=False, dtype=float)
         ]
 
@@ -1061,6 +1061,10 @@ class ExcitingInfoParser(TextParser):
             r'Hybrids module started([\s\S]+?)Hybrids module stopped',
             sub_parser=TextParser(quantities=module_quantities)
         ))
+
+        self._quantities.append(Quantity(
+            'total_time', r' Total time spent \(seconds\) +: +([\d\.]+)',
+            unit=ureg.s, repeats=False, dtype=float))
 
     def get_atom_labels(self, section):
         labels = section.get('symbols')
@@ -2362,11 +2366,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 val = iteration.get(name)
                 if val is None:
                     continue
-
-                if name == 'time':
-                    msection.time_calculation = val
-                else:
-                    setattr(msection, name, val)
+                setattr(msection, name, val)
 
         # energy, moment, charge contributions
         parse_scf(final, sec_scc)
@@ -2503,6 +2503,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             return sec_scc
 
         # groundstate and hybrids calculation
+        initial_time = None
         for module in ['groundstate', 'hybrids']:
             sec_scc = parse_configuration(self.info_parser.get(module))
             if sec_scc is None:
@@ -2528,10 +2529,20 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             for f in exciting_files:
                 self.parse_file(f, sec_scc)
 
+            if sec_scc.scf_iteration:
+                initial_time = sec_scc.scf_iteration[-1].time_physical
+                sec_scc.time_physical = initial_time
+                sec_scc.time_calculation = initial_time
+
+        initial_time = 0 * ureg.s if initial_time is None else initial_time
         # structure optimization
         structure_optimization = self.info_parser.get('structure_optimization', {})
         for optimization_step in structure_optimization.get('optimization_step', []):
             sec_scc = parse_configuration(optimization_step)
+            time = optimization_step.get('time_calculation', 0)
+            sec_scc.time_calculation = time
+            initial_time += sec_scc.time_calculation
+            sec_scc.time_physical = initial_time
 
             if optimization_step.get('method') is not None:
                 sec_scc.x_exciting_geometry_optimization_method = optimization_step.get('method')
@@ -2547,6 +2558,12 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_scc = parse_configuration(structure_optimization)
         if sec_scc is None:
             return
+
+        if (total_time := self.info_parser.total_time) is not None:
+            sec_scc.time_physical = total_time
+            sec_scc.time_calculation = sec_scc.time_physical - initial_time
+            # if not sec_scc.time_calculation and sec_run.calculation[-1].physical_time:
+                # sec_scc.time_calculation = sec_run.calculation[-1].physical_time + sec_scc.time_calculation
 
         # volume optimizations
         volume_index = 1
