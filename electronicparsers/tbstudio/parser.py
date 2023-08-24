@@ -432,6 +432,16 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         sec_k_band = BandStructure()
         sec_k_band.energy_fermi = fermi_level_joules
 
+        a = self.tb_model['a']
+        b = self.tb_model['b']
+        c = self.tb_model['c']
+        pi = np.arccos(-1.0)
+        vol = np.dot(a, np.cross(b, c))
+        astar = 2 * pi * np.cross(b, c) / vol * 10**9
+        bstar = 2 * pi * np.cross(c, a) / vol * 10**9
+        cstar = 2 * pi * np.cross(a, b) / vol * 10**9
+        sec_k_band.reciprocal_cell = [astar, bstar, cstar]
+
         for n1, n2 in band_segments_points:
             sec_k_band_segment = sec_k_band.m_create(BandEnergies)
             sec_k_band_segment.kpoints = frac_k_points[n1: n2 + 1]
