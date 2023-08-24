@@ -24,13 +24,12 @@ from glob import glob
 from typing import Union
 from nomad.utils import extract_section
 from nomad.datamodel import EntryArchive
-from nomad.datamodel.metainfo.simulation.run import Run, Program
+from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
     GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod, TB, TBMethod, MaxEnt, MaxEntMethod,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
-from nomad.datamodel.metainfo.simulation.calculation import Calculation
 
 def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = True):
     """Get files following the `pattern` with respect to the file `stripname` (usually this
@@ -167,9 +166,9 @@ class BeyondDFTWorkflowsParser:
             tb_workflow_archive (EntryArchive): the Tight-Binding workflow archive
         """
         self.run_workflow_archive(tb_workflow_archive)
-
+        tb_workflow_archive.run[-1].m_add_sub_section(Run.system, first_principles_calculation_archive.run[-1].system[-1])
         workflow = TB(method=TBMethod())
-        workflow.name = 'TB'
+        workflow.name = 'TB Fitting'
 
         # Method
         method_tb = extract_section(tb_archive, 'run/method/tb')
@@ -181,37 +180,32 @@ class BeyondDFTWorkflowsParser:
         tb_calculation = extract_section(tb_archive, 'run/calculation')
         if input_structure:
             workflow.m_add_sub_section(
-                TB.inputs, Link(name='Input structure', section=input_structure))
+                TB.inputs, Link(name='Structure', section=input_structure))
         if tb_calculation:
             workflow.m_add_sub_section(
-                TB.outputs, Link(name='Output TB Calculation', section=tb_calculation))
+                TB.outputs, Link(name='TB Model', section=tb_calculation))
 
         # First Principles Calculation task
         if self.archive.workflow2:
-            task = TaskReference(task=first_principles_calculation_archive.workflow2)
-            task.name = 'First Principles Calculation'
+            first_principles_task = TaskReference(task=first_principles_calculation_archive.workflow2)
+            first_principles_task.name = 'First-Principles Calculation'
             if input_structure:
-                task.inputs = [Link(name='Input structure', section=input_structure)]
+                first_principles_task.inputs = [Link(name='Structure', section=input_structure)]
             if first_principles_calculation:
-                task.outputs = [Link(name='Output First Principles Calculation', section=first_principles_calculation)]
-            workflow.m_add_sub_section(TB.tasks, task)
+                first_principles_task.outputs = [Link(name='First Principles Calculation', section=first_principles_calculation)]
+            workflow.m_add_sub_section(TB.tasks, first_principles_task)
 
         # TB task
         if tb_archive.workflow2:
-            task = TaskReference(task=tb_archive.workflow2)
-            task.name = 'TB Workflow'
+            tb_task = TaskReference(task=tb_archive.workflow2)
+            tb_task.name = 'Tight-Binding'
             if first_principles_calculation:
-                task.inputs = [Link(name='Input First Principles Calculation', section=first_principles_calculation)]
+                tb_task.inputs = [Link(name='First-Principles Calculation', section=first_principles_calculation)]
             if tb_calculation:
-                task.outputs = [Link(name='Output TB calculation', section=tb_calculation)]
-            workflow.m_add_sub_section(TB.tasks, task)
+                tb_task.outputs = [Link(name='TB Model', section=tb_calculation)]
+            workflow.m_add_sub_section(TB.tasks, tb_task)
 
         tb_workflow_archive.workflow2 = workflow
-
-        tb_workflow_archive.run[-1].calculation.append(Calculation(
-                band_structure_electronic=[
-                    first_principles_calculation_archive.run[-1].calculation[-1].band_structure_electronic[0],
-                    tb_archive.run[-1].calculation[-1].band_structure_electronic[0].m_copy(deep=True)]))
 
     def parse_photon_workflow(self):
         """Automatically parses the PhotonPolarization workflow. Here, `self.archive` is
