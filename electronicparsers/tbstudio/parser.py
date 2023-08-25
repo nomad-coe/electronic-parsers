@@ -72,7 +72,7 @@ def load_tbm(file):
     if application_full_name != 'Tight Binding Studio' or not release_version:
         raise Exception('The file is not a valid TBStudio tight binding model.')
 
-    model = {}
+    model = dict({'version': release_version})
 
     # Load workflow if does exist
     model['DFTNomadEntryID'] = None
@@ -349,6 +349,9 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         """Populates run.method with the input methodological parameters.
         """
         sec_run = self.archive.run[-1]
+
+        sec_run.program = Program(name='TBStudio', version=self.tb_model['version'])
+
         sec_method = sec_run.m_create(Method)
         sec_tb = sec_method.m_create(TB)
         sec_sk = sec_tb.m_create(SlaterKoster)
