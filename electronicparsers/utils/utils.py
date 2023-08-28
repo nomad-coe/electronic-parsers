@@ -168,7 +168,7 @@ class BeyondDFTWorkflowsParser:
         self.run_workflow_archive(tb_workflow_archive)
         tb_workflow_archive.run[-1].m_add_sub_section(Run.system, first_principles_calculation_archive.run[-1].system[-1])
         workflow = TB(method=TBMethod())
-        workflow.name = 'TB Fitting'
+        workflow.name = 'TB'
 
         # Method
         method_tb = extract_section(tb_archive, 'run/method/tb')
@@ -183,16 +183,16 @@ class BeyondDFTWorkflowsParser:
                 TB.inputs, Link(name='Input Structure', section=input_structure))
         if tb_calculation:
             workflow.m_add_sub_section(
-                TB.outputs, Link(name='TB Model', section=tb_calculation))
+                TB.outputs, Link(name='Output TB Model', section=tb_calculation))
 
         # First Principles Calculation task
         if self.archive.workflow2:
             first_principles_task = TaskReference(task=first_principles_calculation_archive.workflow2)
             first_principles_task.name = 'First-Principles Calculation'
             if input_structure:
-                first_principles_task.inputs = [Link(name='Structure', section=input_structure)]
+                first_principles_task.inputs = [Link(name='Input Structure', section=input_structure)]
             if first_principles_calculation:
-                first_principles_task.outputs = [Link(name='First Principles Calculation', section=first_principles_calculation)]
+                first_principles_task.outputs = [Link(name='Output First Principles Calculation', section=first_principles_calculation)]
             workflow.m_add_sub_section(TB.tasks, first_principles_task)
 
         # TB task
@@ -200,7 +200,7 @@ class BeyondDFTWorkflowsParser:
             tb_task = TaskReference(task=tb_archive.workflow2)
             tb_task.name = 'TB'
             if first_principles_calculation:
-                tb_task.inputs = [Link(name='First-Principles Calculation', section=first_principles_calculation)]
+                tb_task.inputs = [Link(name='Input First-Principles Calculation', section=first_principles_calculation)]
             if tb_calculation:
                 tb_task.outputs = [Link(name='Output TB calculation', section=tb_calculation)]
             workflow.m_add_sub_section(TB.tasks, tb_task)
