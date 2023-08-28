@@ -180,7 +180,7 @@ class BeyondDFTWorkflowsParser:
         tb_calculation = extract_section(tb_archive, 'run/calculation')
         if input_structure:
             workflow.m_add_sub_section(
-                TB.inputs, Link(name='Structure', section=input_structure))
+                TB.inputs, Link(name='Input Structure', section=input_structure))
         if tb_calculation:
             workflow.m_add_sub_section(
                 TB.outputs, Link(name='TB Model', section=tb_calculation))
@@ -198,11 +198,11 @@ class BeyondDFTWorkflowsParser:
         # TB task
         if tb_archive.workflow2:
             tb_task = TaskReference(task=tb_archive.workflow2)
-            tb_task.name = 'Tight-Binding'
+            tb_task.name = 'TB'
             if first_principles_calculation:
                 tb_task.inputs = [Link(name='First-Principles Calculation', section=first_principles_calculation)]
             if tb_calculation:
-                tb_task.outputs = [Link(name='TB Model', section=tb_calculation)]
+                tb_task.outputs = [Link(name='Output TB calculation', section=tb_calculation)]
             workflow.m_add_sub_section(TB.tasks, tb_task)
 
         tb_workflow_archive.workflow2 = workflow
