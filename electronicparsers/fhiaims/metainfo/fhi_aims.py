@@ -88,6 +88,30 @@ class x_fhi_aims_section_controlIn_basis_func(MSection):
         -
         ''')
 
+    x_fhi_aims_controlIn_basis_func_gauss_l = Quantity(
+        type=np.dtype(np.int32),
+        shape=[],
+        description='''
+        "L is an integer number, specifying the angular momentum"
+        - Manual FHI-aims v201716_2
+        ''')
+
+    x_fhi_aims_controlIn_basis_func_gauss_alphas = Quantity(
+        type=np.dtype(np.float64),
+        shape=['*'],
+        unit='1 / meter ** 2',
+        description='''
+        "The exponent defining a (primitive) Gaussian function"
+        - Manual FHI-aims v201716_2
+        ''')
+
+    x_fhi_aims_controlIn_basis_func_gauss_coeffs = Quantity(
+        type=np.dtype(np.float64),
+        shape=['*'],
+        description='''
+        Weights in linearly composed Gaussian functions.
+        ''')
+
     x_fhi_aims_controlIn_basis_func_type = Quantity(
         type=str,
         shape=[],
@@ -145,20 +169,6 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
         angular leven for the hartreee part
         ''')
 
-    x_fhi_aims_controlIn_mass = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        mass of the nucleus in atomic mass units
-        ''')
-
-    x_fhi_aims_controlIn_nucleus = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        charge of the nucleus
-        ''')
-
     x_fhi_aims_controlIn_outer_grid = Quantity(
         type=np.dtype(np.float64),
         shape=[],
@@ -180,6 +190,13 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
         radial multiplier
         ''')
 
+    x_fhi_aims_controlIn_hash = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        -
+        ''')
+
     x_fhi_aims_controlIn_species_name = Quantity(
         type=str,
         shape=[],
@@ -189,75 +206,6 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
 
     x_fhi_aims_section_controlIn_basis_func = SubSection(
         sub_section=SectionProxy('x_fhi_aims_section_controlIn_basis_func'),
-        repeats=True)
-
-
-class x_fhi_aims_section_controlInOut_atom_species(MSection):
-    '''
-    -
-    '''
-
-    m_def = Section(validate=False)
-
-    x_fhi_aims_controlInOut_pure_gaussian = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_species_charge = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='coulomb',
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_species_cut_pot_scale = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_species_cut_pot_width = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='meter',
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_species_cut_pot = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='meter',
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_species_mass = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='kilogram',
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_species_name = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_section_controlInOut_basis_func = SubSection(
-        sub_section=SectionProxy('x_fhi_aims_section_controlInOut_basis_func'),
-        repeats=True)
-
-    x_fhi_aims_section_vdW_TS = SubSection(
-        sub_section=SectionProxy('x_fhi_aims_section_vdW_TS'),
         repeats=True)
 
 
@@ -275,73 +223,8 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
         -
         ''')
 
-    x_fhi_aims_controlInOut_basis_func_gauss_alpha = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='1 / meter ** 2',
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_basis_func_gauss_l = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_basis_func_gauss_N = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_basis_func_gauss_weight = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_basis_func_l = Quantity(
-        type=str,
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_basis_func_n = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description='''
-        -
-        ''')
-
     x_fhi_aims_controlInOut_basis_func_occ = Quantity(
         type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_basis_func_primitive_gauss_alpha = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        unit='1 / meter ** 2',
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_basis_func_radius = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        -
-        ''')
-
-    x_fhi_aims_controlInOut_basis_func_type = Quantity(
-        type=str,
         shape=[],
         description='''
         -
@@ -1386,9 +1269,45 @@ class AtomParameters(simulation.method.AtomParameters):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_fhi_aims_section_controlInOut_atom_species = SubSection(
-        sub_section=SectionProxy('x_fhi_aims_section_controlInOut_atom_species'),
+    x_fhi_aims_controlInOut_pure_gaussian = Quantity(
+        type=str,
+        shape=[],
+        description='''
+        -
+        ''')
+
+    x_fhi_aims_controlInOut_species_cut_pot_scale = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        description='''
+        -
+        ''')
+
+    x_fhi_aims_controlInOut_species_cut_pot_width = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='meter',
+        description='''
+        -
+        ''')
+
+    x_fhi_aims_controlInOut_species_cut_pot = Quantity(
+        type=np.dtype(np.float64),
+        shape=[],
+        unit='meter',
+        description='''
+        -
+        ''')
+
+    x_fhi_aims_section_vdW_TS = SubSection(
+        sub_section=SectionProxy('x_fhi_aims_section_vdW_TS'),
         repeats=True)
+
+    x_fhi_aims_section_controlIn_basis_set = Quantity(
+        type=Reference(SectionProxy('x_fhi_aims_section_controlIn_basis_set')),
+        shape=[],
+        description='''-''',
+    )
 
 
 class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):

@@ -17,9 +17,12 @@
 # limitations under the License.
 #
 
+import json
 import os
 from glob import glob
 
+from nomad.metainfo import MSection
+from nomad.metainfo.util import MSubSectionList
 from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
@@ -27,6 +30,8 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
+from nomad.utils import hash
+from typing import Union
 
 
 def extract_section(source: EntryArchive, path: str):
@@ -81,6 +86,54 @@ def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = Tru
 
     filenames = [f for f in filenames if os.access(f, os.F_OK)]
     return filenames
+
+
+def hash_section(
+        sections: Union[MSection, list[MSection]],
+        subsections: Union[bool, list[bool]],
+        **kwargs,
+    ) -> str:
+    '''
+    General function for converting basis set sections to a hash for comparison.
+    Basis sets may contain element-specific settings, which typically are tackled separately.
+    The option consists of adding also general settings to the hash.
+
+    There are two modes determining whether sections are defined by the `quantities` provided (`inclusion`)
+    or rather `quantities` are explicitly removed (`exclusion`).
+
+    `sections`: sections to be hashed together
+    `subsections`: list of bools, indicating whether to include subsections. Must be of same length as basis_settings.
+    `mode`: str, either `include` or `exclude` (default)
+    `quantities`: list of str, quantities to be included or excluded
+    '''
+    sections = [sections] if isinstance(sections, MSection) else sections
+    subsections = [subsections] if isinstance(subsections, bool) else subsections
+    mode: str = kwargs.get('mode', 'exclude')
+    quantities: list[str] = kwargs.get('quantities', [])
+    # sanity checks
+    try:
+        evaluation_settings = zip(sections, subsections)
+    except Exception:  # TODO: specify exception
+        raise ValueError(
+            f'''basis_settings:{sections} and subsections:{subsections}
+            must be of same length.'''
+        )
+    # filter out subsections
+    to_compare: list[dict[str, any]] = []
+    for section, subsection_bool in evaluation_settings:
+        section_dict = section.m_to_dict()
+        to_write = {}
+        for key, val in section_dict.items():
+            if not subsection_bool and\
+                isinstance(getattr(section, key), (MSection, MSubSectionList)):
+                    continue
+            if key == 'm_def' or\
+                (mode == 'exclude' and key not in quantities) or\
+                (mode == 'include' and key in quantities):
+                    to_write[key] = val
+        to_compare.append(to_write)
+    # hash the filtered sections
+    return hash(*to_compare)
 
 
 class BeyondDFTWorkflowsParser:
