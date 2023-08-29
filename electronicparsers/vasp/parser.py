@@ -529,7 +529,10 @@ class OutcarContentParser(ContentParser):
                 k_mults = kpts_occs[3].T
                 kpoint_info['multiplicities'] = k_mults
                 kpoint_info['weights'] = k_mults / np.sum(k_mults)
-                if None in kpoint_info.values(): # Only write out full k-point sets
+                if len(kpoint_info.values()): # Only write out full k-point sets
+                    if any([x is None for x in kpoint_info.values()]):
+                        continue
+                else:
                     continue
                 kpoint_info['index'] = kpts_index
                 self._kpoints_info.append(kpoint_info)
@@ -687,7 +690,7 @@ class OutcarContentParser(ContentParser):
 
         return forces, stress
 
-    def get_eigenvalues(self, n_calc):
+    def get_eigenvalues(self, n_calc) -> Union[list, None]:
         n_kpts = len(self.kpoints_info[n_calc].get('points', []))
         eigenvalues = self.parser.get(
             'calculation', [{}] * (n_calc + 1))[n_calc].get('eigenvalues')
@@ -1100,14 +1103,14 @@ class RunContentParser(ContentParser):
                 if tetrahedrons:
                     kpoint_dict['x_vasp_tetrahedrons_list'] = tetrahedrons['v']
 
-                if None in kpoint_dict.values():
+                if any([x is None for x in kpoint_dict.values()]):
                     continue
                 kpoint_dict['index'] = kpoint_index
 
                 self._kpoints_info.append(kpoint_dict)
 
             if len(self._kpoints_info) > 1:
-                self._kpoints_info = self._kpoints_info[1:] + self._kpoints_info[0]
+                self._kpoints_info = self._kpoints_info[1:] + [self._kpoints_info[0]]
 
         return self._kpoints_info
 
@@ -1261,7 +1264,7 @@ class RunContentParser(ContentParser):
             array=True).get('v', None)
         return forces, stress
 
-    def get_eigenvalues(self, n_calc):
+    def get_eigenvalues(self, n_calc) -> Union[list, None]:
         n_kpts = len(self.kpoints_info[n_calc].get('points', []))
         root = '/modeling[0]/calculation[%s]/eigenvalues[0]/array[0]/set[0]' % n_calc
         eigenvalues = self._get_key_values(
@@ -1624,8 +1627,13 @@ class VASPParser():
 
         def parse_eigenvalues(n_calc):
             eigenvalues = self.parser.get_eigenvalues(n_calc)
+            if isinstance(eigenvalues, (list, np.ndarray)):
+                if any([x is None for x in eigenvalues]):
+                    return
+            else:
+                return
             kpoint_source = self.parser.kpoints_info[n_calc]
-            if eigenvalues or kpoint_source is None:
+            if any([x is None for x in kpoint_source]):
                 return
 
             sec_scc = sec_run.calculation[-1]
