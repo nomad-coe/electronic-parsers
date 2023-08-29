@@ -515,10 +515,7 @@ class OutcarContentParser(ContentParser):
     def kpoints_info(self) -> list[dict]:
         '''
         Extracts the `points`, `weights`, and `multiplicities` of the k-point regexes in OUTCAR.
-        - for multiple ionic steps:
-          the list index follows the ionic steps (for later matching with `eigenvalues`).
-        - for frequency calculations:
-          the last k-point set is high-symmetry set reported at the start of the OUTCAR file.
+        The list index follows the ionic steps (for later matching with `eigenvalues`).
         '''
         if self._kpoints_info is None:
             self._kpoints_info = []
@@ -536,8 +533,6 @@ class OutcarContentParser(ContentParser):
                     continue
                 kpoint_info['index'] = kpts_index
                 self._kpoints_info.append(kpoint_info)
-            if len(self._kpoints_info) > 1:
-                self._kpoints_info = self._kpoints_info[1:] + self._kpoints_info[0]
         return self._kpoints_info
 
     @property
