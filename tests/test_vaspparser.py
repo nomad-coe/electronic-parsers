@@ -433,10 +433,16 @@ def test_vibrational_outcar(parser):
     archive = EntryArchive()
     parser.parse(f'tests/data/vasp/vibrational/OUTCAR', archive, None)
     run = archive.run[0]
-    calc = run.calculation
-    eigs_lens = [len(c.eigenvalues[0].occupations[0]) for c in calc]
+    eigs_lens = [len(c.eigenvalues[0].occupations[0]) for c in run.calculation]
     eigs_lens_ref = [13] * 21
     eigs_lens_ref[0] = 8
     eigs_lens_ref[7:13] = [24] * 6
     eigs_lens_ref[17:19] = [18] * 2
     assert eigs_lens == eigs_lens_ref
+
+
+def test_vibrational_xml(parser):
+    archive = EntryArchive()
+    parser.parse(f'tests/data/vasp/vibrational/vasprun.xml', archive, None)
+    run = archive.run[0]
+    assert len(run.calculation[-1].eigenvalues[0].occupations[0]) == 8

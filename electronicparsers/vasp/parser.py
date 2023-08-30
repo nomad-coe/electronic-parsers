@@ -526,7 +526,7 @@ class OutcarContentParser(ContentParser):
                 k_mults = kpts_occs[3].T
                 kpoint_info['multiplicities'] = k_mults
                 kpoint_info['weights'] = k_mults / np.sum(k_mults)
-                if len(kpoint_info.values()): # Only write out full k-point sets
+                if len(kpoint_info.values()):  # Only write out full k-point sets
                     if any([x is None for x in kpoint_info.values()]):
                         continue
                 else:
@@ -1060,10 +1060,7 @@ class RunContentParser(ContentParser):
     def kpoints_info(self) -> list[dict]:
         '''
         Extracts the `points`, `weights`, and `multiplicities` of the k-point regexes in vasprun.xml.
-        - for multiple ionic steps:
-          the list index follows the ionic steps (for later matching with `eigenvalues`).
-        - for frequency calculations:
-          the last k-point set is high-symmetry set reported under <modeling>.
+        For multiple ionic steps: the list index follows the ionic steps (for later matching with `eigenvalues`).
         '''
         if self._kpoints_info is None:
             self._kpoints_info = []
@@ -1103,9 +1100,6 @@ class RunContentParser(ContentParser):
                 kpoint_dict['index'] = kpoint_index
 
                 self._kpoints_info.append(kpoint_dict)
-
-            if len(self._kpoints_info) > 1:
-                self._kpoints_info = self._kpoints_info[1:] + [self._kpoints_info[0]]
 
         return self._kpoints_info
 
