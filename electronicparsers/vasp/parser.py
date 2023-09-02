@@ -512,27 +512,29 @@ class OutcarContentParser(ContentParser):
             return 0
 
     @property
-    def kpoints_info(self) -> list[dict]:
+    def kpoints_info(self) -> dict[str, dict[str, Any]]:
         '''
         Extracts the `points`, `weights`, and `multiplicities` of the k-point regexes in OUTCAR.
         The list index follows the ionic steps (for later matching with `eigenvalues`).
         '''
-        if self._kpoints_info is None:
-            self._kpoints_info = []
-            for kpts_index, kpts_occs in enumerate(self.parser.get('kpoints', [])):
-                kpoint_info = {}
+        if self._kpoints_info is not None:
+            return self._kpoints_info
+
+        self._kpoints_info = {}
+        for kpts_index, kpts_occs in enumerate(self.parser.get('kpoints', [])):
+            kpoint_info = {}
+            try:  # sanity check
                 kpts_occs = np.reshape(kpts_occs, (len(kpts_occs) // 4, 4)).T
-                kpoint_info['points'] = kpts_occs[0:3].T
-                k_mults = kpts_occs[3].T
-                kpoint_info['multiplicities'] = k_mults
-                kpoint_info['weights'] = k_mults / np.sum(k_mults)
-                if len(kpoint_info.values()):  # Only write out full k-point sets
-                    if any([x is None for x in kpoint_info.values()]):
-                        continue
-                else:
-                    continue
-                kpoint_info['index'] = kpts_index
-                self._kpoints_info.append(kpoint_info)
+            except Exception:
+                continue
+            kpoint_info['points'] = kpts_occs[0:3].T
+            k_mults = kpts_occs[3].T
+            kpoint_info['multiplicities'] = k_mults
+            kpoint_info['weights'] = k_mults / np.sum(k_mults)
+            self._kpoints_info[f'calc {kpts_index}'] = kpoint_info
+        # change the last ionic step to the summary
+        self._kpoints_info[f'summary'] = self._kpoints_info[f'calc {kpts_index}']
+        del self._kpoints_info[f'calc {kpts_index}']
         return self._kpoints_info
 
     @property
@@ -686,7 +688,9 @@ class OutcarContentParser(ContentParser):
         return forces, stress
 
     def get_eigenvalues(self, n_calc) -> Union[list, None]:
-        n_kpts = len(self.kpoints_info[n_calc].get('points', []))
+        n_kpts = len(self.kpoints_info.get(f'calc {n_calc}', {}).get('points', []))
+        if n_kpts == 0:
+            n_kpts = len(self.kpoints_info.get(f'summary', {}).get('points', []))
         eigenvalues = self.parser.get(
             'calculation', [{}] * (n_calc + 1))[n_calc].get('eigenvalues')
 
@@ -1043,63 +1047,64 @@ class RunContentParser(ContentParser):
         'listgenerated': 'Line-path',
     }
 
-    def _find_kpoints(self) -> list[str]:
-        stem_1 = '/modeling[0]/calculation'
-        stem_2 = '/modeling[0]/kpoints[0]'
-        kpts = []
-        n_ionic_updates = len(self._get_key_values(stem_1).get('calculation', []))
-        if n_ionic_updates:
-            # check if kpoints are defined for each ionic update
-            if not self._get_key_values(f'{stem_1}[0]/kpoints').get('kpoints', []):
-                kpts = [stem_2 for _ in range(n_ionic_updates)]
-            else:
-                kpts = [f'{stem_1}[{ionic_update_index}]/kpoints[0]' for ionic_update_index in range(n_ionic_updates)]
-        return kpts + [stem_2]
-
-    @property
-    def kpoints_info(self) -> list[dict]:
+    def _convert_kpoint(self, xml_path: str) -> dict[str, Any]:
         '''
         Extracts the `points`, `weights`, and `multiplicities` of the k-point regexes in vasprun.xml.
+        '''
+        default_path = '/modeling[0]/kpoints[0]'
+        kpoint_dict = {}
+
+        points = self._get_key_values(f'{xml_path}/varray[@name="kpointlist"]/v', array=True)
+        if points:
+            kpoint_dict['points'] = points['v']
+        else:
+            return {}
+
+        weights = self._get_key_values(f'{xml_path}/varray[@name="weights"]/v', array=True)
+        if weights:
+            kpoint_dict['weights'] = weights['v']
+
+        method = self._get_key_values(f'{default_path}/generation[0]/param')
+        kpoint_dict['sampling_method'] = RunContentParser.sampling_method_mapping[method['param']]
+
+        divisions = self._get_key_values(f'{xml_path}/generation[0]/v[@name="divisions"]')
+        if not divisions:
+            divisions = self._get_key_values(f'{xml_path}/generation[0]/i[@name="divisions"]')
+        if divisions:
+            kpoint_dict['grid'] = divisions['divisions']
+
+        volumeweight = self._get_key_values(f'{xml_path}/generation[0]/i[@name="volumeweight"]')
+        if volumeweight:
+            volumeweight = (volumeweight['volumeweight'] * ureg.angstrom ** 3).to('m**3')
+            kpoint_dict['x_vasp_tetrahedron_volume'] = volumeweight.magnitude
+
+        tetrahedrons = self._get_key_values(f'{xml_path}/varray[@name="tetrahedronlist"]/v', array=True)
+        if tetrahedrons:
+            kpoint_dict['x_vasp_tetrahedrons_list'] = tetrahedrons['v']
+
+        return kpoint_dict
+
+    @property
+    def kpoints_info(self) -> dict[str, dict]:
+        '''
         For multiple ionic steps: the list index follows the ionic steps (for later matching with `eigenvalues`).
         '''
-        if self._kpoints_info is None:
-            self._kpoints_info = []
+        if self._kpoints_info is not None:
+            return self._kpoints_info
 
-            for kpoint_index, kpoint_path in enumerate(self._find_kpoints()):
-                kpoint_dict = {}
+        self._kpoints_info = {}
 
-                method = self._get_key_values(f'{kpoint_path}/generation[0]/param')
+        calc_index = 0
+        while True:
+            kpoint_path = f'/modeling[0]/calculation[{calc_index}]/kpoints[0]'
+            kpoints_dict = self._convert_kpoint(kpoint_path)
+            if not kpoints_dict:
+                break
+            self._kpoints_info[f'calc {calc_index}'] = self._convert_kpoint(kpoint_path)
+            calc_index += 1
 
-                kpoint_dict['sampling_method'] = RunContentParser.sampling_method_mapping[method['param']]
-
-                divisions = self._get_key_values(f'{kpoint_path}/generation[0]/v[@name="divisions"]')
-                if not divisions:
-                    divisions = self._get_key_values(f'{kpoint_path}/generation[0]/i[@name="divisions"]')
-                if divisions:
-                    kpoint_dict['grid'] = divisions['divisions']
-
-                volumeweight = self._get_key_values(f'{kpoint_path}/generation[0]/i[@name="volumeweight"]')
-                if volumeweight:
-                    volumeweight = (volumeweight['volumeweight'] * ureg.angstrom ** 3).to('m**3')
-                    kpoint_dict['x_vasp_tetrahedron_volume'] = volumeweight.magnitude
-
-                points = self._get_key_values(f'{kpoint_path}/varray[@name="kpointlist"]/v', array=True)
-                if points:
-                    kpoint_dict['points'] = points['v']
-
-                weights = self._get_key_values(f'{kpoint_path}/varray[@name="weights"]/v', array=True)
-                if weights:
-                    kpoint_dict['weights'] = weights['v']
-
-                tetrahedrons = self._get_key_values(f'{kpoint_path}/varray[@name="tetrahedronlist"]/v', array=True)
-                if tetrahedrons:
-                    kpoint_dict['x_vasp_tetrahedrons_list'] = tetrahedrons['v']
-
-                if any([x is None for x in kpoint_dict.values()]):
-                    continue
-                kpoint_dict['index'] = kpoint_index
-
-                self._kpoints_info.append(kpoint_dict)
+        kpoint_path = f'/modeling[0]/kpoints[0]'
+        self._kpoints_info[f'summary'] = self._convert_kpoint(kpoint_path)
 
         return self._kpoints_info
 
@@ -1254,8 +1259,10 @@ class RunContentParser(ContentParser):
         return forces, stress
 
     def get_eigenvalues(self, n_calc) -> Union[list, None]:
-        n_kpts = len(self.kpoints_info[n_calc].get('points', []))
-        root = '/modeling[0]/calculation[%s]/eigenvalues[0]/array[0]/set[0]' % n_calc
+        n_kpts = len(self.kpoints_info.get(f'calc {n_calc}', {}).get('points', []))
+        if n_kpts == 0:
+            n_kpts = len(self.kpoints_info.get(f'summary', {}).get('points', []))
+        root = f'/modeling[0]/calculation[{n_calc}]/eigenvalues[0]/array[0]/set[0]'
         eigenvalues = self._get_key_values(
             f'{root}/r', array=True).get('r', None)
         if eigenvalues is None:
@@ -1369,7 +1376,7 @@ class VASPParser():
 
     def parse_kpoints(self, section):
         sec_k_mesh = section.m_create(KMesh)
-        for key, val in self.parser.kpoints_info[-1].items():
+        for key, val in self.parser.kpoints_info['summary'].items():
             if val is not None:
                 try:
                     setattr(sec_k_mesh, key, val)
@@ -1621,7 +1628,11 @@ class VASPParser():
                     return
             else:
                 return
-            kpoint_source = self.parser.kpoints_info[n_calc]
+            try:
+                kpoint_source = self.parser.kpoints_info[f'calc {n_calc}']
+            except KeyError:
+                kpoint_source = self.parser.kpoints_info['summary']
+            # typically there will be less eigenvalues than k-points, but it's fine to add a safety check
             if any([x is None for x in kpoint_source]):
                 return
 
