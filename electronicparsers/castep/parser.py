@@ -1056,14 +1056,23 @@ class CastepParser:
                         setattr(sec_sedc, name, val.to('joule').magnitude)
 
             # scf iteration
-            for scf in source.get('scf', []):
+            for n, scf in enumerate(source.get('scf', [])):
                 sec_scf = sec_scc.m_create(ScfIteration)
                 sec_scf_energy = sec_scf.m_create(Energy)
                 sec_scf.energy.total = EnergyEntry(value=scf[0] * energy_unit)
                 if len(scf) == 4:
                     sec_scf_energy.fermi = scf[1] * energy_unit
                 sec_scf_energy.change = scf[-2] * energy_unit
-                sec_scf.time_calculation = scf[-1]
+                sec_scf.time_physical = scf[-1] * ureg.s
+                if n:
+                    time_start = source.scf[n - 1][-1] * ureg.s
+                else:
+                    time_start = sec_run.calculation[-2].time_physical if len(sec_run.calculation) > 1 else 0 * ureg.s
+                sec_scf.time_calculation = sec_scf.time_physical - time_start
+
+            if sec_scc.scf_iteration:
+                sec_scc.time_physical = sec_scc.scf_iteration[-1].time_physical
+                sec_scc.time_calculation = sum([scf.time_calculation for scf in sec_scc.scf_iteration])
 
             return sec_scc
 
@@ -1278,6 +1287,13 @@ class CastepParser:
         # times
         time = self.out_parser.get('time')
         if time is not None:
+            total_time = None
             sec_time = sec_run.m_create(x_castep_section_time)
             for key, val in time:
+                if key == 'Total':
+                    total_time = val
                 setattr(sec_time, 'x_castep_%s_time' % key.lower(), val)
+            if total_time is not None and len(sec_run.calculation) > 2:
+                sec_scc = sec_run.calculation[-1]
+                sec_scc.time_physical = total_time * ureg.s
+                sec_scc.time_calculation = sec_scc.time_physical - sec_run.calculation[-2].time_physical
