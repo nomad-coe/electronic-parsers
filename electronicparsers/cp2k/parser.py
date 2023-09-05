@@ -416,6 +416,7 @@ class CP2KOutParser(TextParser):
         def str_to_iteration(val_in):
             val = val_in.strip().split()
             return {
+                'time_calculation': float(val[-4]) * ureg.s,
                 'energy_total': float(val[-2]) * ureg.hartree,
                 'energy_change': float(val[-1]) * ureg.hartree}
 
@@ -1162,6 +1163,7 @@ class CP2KParser:
         sec_run = self.archive.run[-1]
         if source is None:
             return
+        time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
         sec_scc = sec_run.m_create(Calculation)
 
         sec_energy = sec_scc.m_create(Energy)
@@ -1181,6 +1183,7 @@ class CP2KParser:
 
         # self consistency
         for iteration in source.get('iteration', []):
+            time_initial = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else time_initial
             sec_scf = sec_scc.m_create(ScfIteration)
             sec_scf_energy = sec_scf.m_create(Energy)
             for key, val in iteration.items():
@@ -1190,8 +1193,14 @@ class CP2KParser:
                     elif key.startswith('energy_'):
                         sec_scf_energy.m_add_sub_section(getattr(
                             Energy, key.replace('energy_', '')), EnergyEntry(value=val))
+                    elif key == 'time_calculation':
+                        sec_scf.time_calculation = val
+                        sec_scf.time_physical = val + time_initial
                     else:
                         sec_scf.m_set(sec_scf.m_get_quantity_definition(key), val)
+        if sec_scc.scf_iteration:
+            sec_scc.time_calculation = sum([iteration.time_calculation for iteration in sec_scc.scf_iteration])
+            sec_scc.time_physical = sec_scc.scf_iteration[-1].time_physical
 
         atom_forces = source.get('atom_forces', self.get_forces(source._frame))
         if atom_forces is not None:
