@@ -1,0 +1,763 @@
+********------ parameter change ------***********
+ntail = 300
+********------ parameter change ------***********
+finish = 7
+********------ parameter change ------***********
+cc = 5e-05
+********------ parameter change ------***********
+ec = 5e-05
+********------ parameter change ------***********
+max_lda_iterations = 100
+********------ parameter change ------***********
+iparams0 = {'nom': [100, '# Number of\t  Matsubara frequency points sampled'], 'svd_lmax': [25, '# We will use SVD \t  basis to expand G, with this cutoff'], 'tsample': [30, '# How often to\t  record measurements'], 'J': [1.0, '# Coulomb repulsion \t  (F0)'], 'M': [75000000.0, '# Total number of\t  Monte Carlo steps'], 'CoulombF': ["'Full'", "# Form of Coulomb repulsion. 'Full'rotational invariant form of C.I."], 'beta': [23.2, '# Inverse temperature T=116K'], 'U': [7.0, '# Coulomb repulsion \t  (F0)'], 'GlobalFlip': [500000, '# How often to try a \t  global flip'], 'exe': ['ctqmc', '# Name of the executable'], 'warmup': [100000.0, '# Warmup number of \t  QMC steps'], 'mode': ['SH', '# We will use\t  self-energy sampling, and Hubbard I tail'], 'nf0': [8.0, '# Nominal occupancy\t  nd for double-counting']}
+********------ parameter change ------***********
+fh_info = <open file 'dmft_info.out', mode 'w' at 0x2b401d471c00>
+********------ parameter change ------***********
+DCs = exactd
+Znucs= {1: 28}
+iSiginds= {0: [[1, 0, 0, 0, 0], [0, 2, 0, 0, 0], [0, 0, 3, 0, 0], [0, 0, 0, 4, 0], [0, 0, 0, 0, 5]]}
+Impurity-lattice connection: icols_ind= {0: [1]}
+connection -- impurity_projector= [0]
+UlamJ = {iatom : (U,lambda,epsilon,[J2,J4,...]), ....}
+UlamJ= {0: (7.0, 1e-06, 4.095931310351191, [0.3831003088286781, 0.3833179195991742])}
+icols_inv= {1: 1, 2: 2, 3: 3, 4: 4, 5: 5}
+--------- Preparing GF calculation ---------
+#<prep-dmft1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d -p dmft1  >> dmft1_info.out 2>&1
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.55335522838531, 51.33855064356251, 49.54483950295789, 49.54456267743003, 49.09124906880113]
+Edc= [52.75089599219434, 52.65662362509717, 52.70829815324154, 52.70829738426664, 52.619798308098275]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+Relaxing Structure= False
+********------ parameter change ------***********
+iparams0 = {'nom': [100, '# Number of\t  Matsubara frequency points sampled'], 'svd_lmax': [25, '# We will use SVD \t  basis to expand G, with this cutoff'], 'tsample': [30, '# How often to\t  record measurements'], 'J': [1.0, '# Coulomb repulsion \t  (F0)'], 'M': [75000000.0, '# Total number of\t  Monte Carlo steps'], 'CoulombF': ["'Full'", "# Form of Coulomb repulsion. 'Full'rotational invariant form of C.I."], 'beta': [23.2, '# Inverse temperature T=116K'], 'U': [7.0, '# Coulomb repulsion \t  (F0)'], 'GlobalFlip': [500000, '# How often to try a \t  global flip'], 'exe': ['ctqmc', '# Name of the executable'], 'warmup': [100000.0, '# Warmup number of \t  QMC steps'], 'mode': ['SH', '# We will use\t  self-energy sampling, and Hubbard I tail'], 'nf0': [8.0, '# Nominal occupancy\t  nd for double-counting']}
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+Running ---- dmft1 -----
+#<dmft1>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft dmft1.def >> dmft1_info.out 
+9.10user 2.86system 0:01.05elapsed 1132%CPU (0avgtext+0avgdata 40680maxresident)k
+0inputs+20560outputs (28major+146592minor)pagefaults 0swaps
+case=SQW_a9_la_cw_500K_U7, indlt=SQW_a9_la_cw_500K_U7.dlt?, outdlt=imp.?/Delta.imp, inE=SQW_a9_la_cw_500K_U7.Eimp?, outE=imp.?/Eimp.inp, m_extn=
+icols= {0: [1, 2, 3, 4, 5]}
+cols= {1: [1, 2, 3, 4, 5]}
+allcols= [1 2 3 4 5]
+max(allcols)= 5
+noccur= [1 1 1 1 1]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.dlt1 cols= [1, 2, 3, 4, 5]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.gc1 cols= [1, 2, 3, 4, 5]
+icix=0 saving into: imp.0/Delta.imp imp.0/Glatt.imp cols= [1, 2, 3, 4, 5]
+1 Taking from col #(1,2) and putting into #(1,2)
+2 Taking from col #(3,4) and putting into #(3,4)
+3 Taking from col #(5,6) and putting into #(5,6)
+4 Taking from col #(7,8) and putting into #(7,8)
+5 Taking from col #(9,10) and putting into #(9,10)
+nl_imp= {0: array([1.5925552, 1.1506385, 1.8916293, 1.891368 , 1.9550987])}
+nd_imp= {0: 8.48129}
+#<sjoin>:  /opt/apps/ompi/edmftf/bin//sjoin.py -m 1.0
+UpdateAtom= True
+Running ----- impurity solver -----
+case=SQW_a9_la_cw_500K_U7, isig=imp.?/sig.out, osig=sig.inp
+icols= {0: [1, 2, 3, 4, 5]}
+colsp= {1: [1, 2, 3, 4, 5]} colsm= {1: []}
+allcols= [1 2 3 4 5]
+len(allcols)= 5
+len(noccur)= 5
+missing_columns= {}
+noccur= [1 1 1 1 1]
+shape(rSigma) (11, 1107)
+shape(rs_oo)= (5,)
+icix=0 reading from: imp.0/sig.out cols= [1, 2, 3, 4, 5]
+writting into  1 and 2 from data at  1 and 2
+writting into  3 and 4 from data at  3 and 4
+writting into  5 and 6 from data at  5 and 6
+writting into  7 and 8 from data at  7 and 8
+writting into  9 and 10 from data at  9 and 10
+writting s_oo into  0 from 0
+writting s_oo into  1 from 1
+writting s_oo into  2 from 2
+writting s_oo into  3 from 3
+writting s_oo into  4 from 4
+Taking care of high frequency
+Eimp= [-52.93532387 -52.96768343 -53.1263692  -53.12636846 -53.44724012]
+Edc= [52.75089599 52.65662363 52.70829815 52.70829738 52.61979831]
+ncorr= 8.47615749008
+#<sgather>:  /opt/apps/ompi/edmftf/bin//sgather.py
+------- DMFT part of the step #  0 done ---------
+
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.55152611826734, 51.33345499328936, 49.54272458180408, 49.54291275832484, 49.09073804063581]
+Edc= [52.748698847918185, 52.65451393635595, 52.70612165214315, 52.706100817955104, 52.617684002305744]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+29.54user 27.98system 0:02.89elapsed 1984%CPU (0avgtext+0avgdata 62728maxresident)k
+0inputs+21848outputs (28major+209386minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 0 0 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.55152611826734, 51.33345499328936, 49.54272458180408, 49.54291275832484, 49.09073804063581]
+Edc= [52.748698847918185, 52.65451393635595, 52.70612165214315, 52.706100817955104, 52.617684002305744]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+18.79user 14.41system 0:01.87elapsed 1773%CPU (0avgtext+0avgdata 62496maxresident)k
+0inputs+21128outputs (28major+217580minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 1 0 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.55152611826734, 51.33345499328936, 49.54272458180408, 49.54291275832484, 49.09073804063581]
+Edc= [52.748698847918185, 52.65451393635595, 52.70612165214315, 52.706100817955104, 52.617684002305744]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+nl_imp= {0: array([1.59278061, 1.13893577, 1.89422011, 1.89422011, 1.95673134])}
+nd_imp= {0: 8.47688794}
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+Running ---- dmft1 -----
+#<dmft1>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft dmft1.def >> dmft1_info.out 
+9.12user 3.11system 0:01.06elapsed 1150%CPU (0avgtext+0avgdata 39008maxresident)k
+0inputs+20536outputs (28major+147315minor)pagefaults 0swaps
+case=SQW_a9_la_cw_500K_U7, indlt=SQW_a9_la_cw_500K_U7.dlt?, outdlt=imp.?/Delta.imp, inE=SQW_a9_la_cw_500K_U7.Eimp?, outE=imp.?/Eimp.inp, m_extn=
+icols= {0: [1, 2, 3, 4, 5]}
+cols= {1: [1, 2, 3, 4, 5]}
+allcols= [1 2 3 4 5]
+max(allcols)= 5
+noccur= [1 1 1 1 1]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.dlt1 cols= [1, 2, 3, 4, 5]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.gc1 cols= [1, 2, 3, 4, 5]
+icix=0 saving into: imp.0/Delta.imp imp.0/Glatt.imp cols= [1, 2, 3, 4, 5]
+1 Taking from col #(1,2) and putting into #(1,2)
+2 Taking from col #(3,4) and putting into #(3,4)
+3 Taking from col #(5,6) and putting into #(5,6)
+4 Taking from col #(7,8) and putting into #(7,8)
+5 Taking from col #(9,10) and putting into #(9,10)
+nl_imp= {0: array([1.5921255, 1.1512098, 1.8917212, 1.8914907, 1.9546615])}
+nd_imp= {0: 8.481209}
+#<sjoin>:  /opt/apps/ompi/edmftf/bin//sjoin.py -m 1.0
+UpdateAtom= True
+Running ----- impurity solver -----
+case=SQW_a9_la_cw_500K_U7, isig=imp.?/sig.out, osig=sig.inp
+icols= {0: [1, 2, 3, 4, 5]}
+colsp= {1: [1, 2, 3, 4, 5]} colsm= {1: []}
+allcols= [1 2 3 4 5]
+len(allcols)= 5
+len(noccur)= 5
+missing_columns= {}
+noccur= [1 1 1 1 1]
+shape(rSigma) (11, 1107)
+shape(rs_oo)= (5,)
+icix=0 reading from: imp.0/sig.out cols= [1, 2, 3, 4, 5]
+writting into  1 and 2 from data at  1 and 2
+writting into  3 and 4 from data at  3 and 4
+writting into  5 and 6 from data at  5 and 6
+writting into  7 and 8 from data at  7 and 8
+writting into  9 and 10 from data at  9 and 10
+writting s_oo into  0 from 0
+writting s_oo into  1 from 1
+writting s_oo into  2 from 2
+writting s_oo into  3 from 3
+writting s_oo into  4 from 4
+Taking care of high frequency
+Eimp= [-52.932677   -52.96450439 -53.12351374 -53.12349289 -53.44419444]
+Edc= [52.74869885 52.65451394 52.70612165 52.70610082 52.617684  ]
+ncorr= 8.4758970415
+#<sgather>:  /opt/apps/ompi/edmftf/bin//sgather.py
+------- DMFT part of the step #  0 done ---------
+
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.5500657343628, 51.33194855247537, 49.54121292061416, 49.54122957849005, 49.089217461634]
+Edc= [52.746933998878404, 52.65277451544959, 52.704347715178244, 52.7043469922735, 52.6159378757276]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+19.05user 14.78system 0:01.89elapsed 1785%CPU (0avgtext+0avgdata 62756maxresident)k
+0inputs+21160outputs (28major+218298minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 0 1 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.5500657343628, 51.33194855247537, 49.54121292061416, 49.54122957849005, 49.089217461634]
+Edc= [52.746933998878404, 52.65277451544959, 52.704347715178244, 52.7043469922735, 52.6159378757276]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+18.23user 13.38system 0:01.81elapsed 1746%CPU (0avgtext+0avgdata 61468maxresident)k
+0inputs+21144outputs (28major+216340minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 1 1 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.5500657343628, 51.33194855247537, 49.54121292061416, 49.54122957849005, 49.089217461634]
+Edc= [52.746933998878404, 52.65277451544959, 52.704347715178244, 52.7043469922735, 52.6159378757276]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+nl_imp= {0: array([1.5930553 , 1.13875378, 1.89416678, 1.89416678, 1.9567887 ])}
+nd_imp= {0: 8.47693135}
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+Running ---- dmft1 -----
+#<dmft1>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft dmft1.def >> dmft1_info.out 
+9.07user 2.98system 0:01.06elapsed 1136%CPU (0avgtext+0avgdata 38940maxresident)k
+0inputs+20520outputs (28major+147942minor)pagefaults 0swaps
+case=SQW_a9_la_cw_500K_U7, indlt=SQW_a9_la_cw_500K_U7.dlt?, outdlt=imp.?/Delta.imp, inE=SQW_a9_la_cw_500K_U7.Eimp?, outE=imp.?/Eimp.inp, m_extn=
+icols= {0: [1, 2, 3, 4, 5]}
+cols= {1: [1, 2, 3, 4, 5]}
+allcols= [1 2 3 4 5]
+max(allcols)= 5
+noccur= [1 1 1 1 1]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.dlt1 cols= [1, 2, 3, 4, 5]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.gc1 cols= [1, 2, 3, 4, 5]
+icix=0 saving into: imp.0/Delta.imp imp.0/Glatt.imp cols= [1, 2, 3, 4, 5]
+1 Taking from col #(1,2) and putting into #(1,2)
+2 Taking from col #(3,4) and putting into #(3,4)
+3 Taking from col #(5,6) and putting into #(5,6)
+4 Taking from col #(7,8) and putting into #(7,8)
+5 Taking from col #(9,10) and putting into #(9,10)
+nl_imp= {0: array([1.5923664, 1.1511414, 1.8915146, 1.8915898, 1.9547216])}
+nd_imp= {0: 8.481334}
+#<sjoin>:  /opt/apps/ompi/edmftf/bin//sjoin.py -m 1.0
+UpdateAtom= True
+Running ----- impurity solver -----
+case=SQW_a9_la_cw_500K_U7, isig=imp.?/sig.out, osig=sig.inp
+icols= {0: [1, 2, 3, 4, 5]}
+colsp= {1: [1, 2, 3, 4, 5]} colsm= {1: []}
+allcols= [1 2 3 4 5]
+len(allcols)= 5
+len(noccur)= 5
+missing_columns= {}
+noccur= [1 1 1 1 1]
+shape(rSigma) (11, 1107)
+shape(rs_oo)= (5,)
+icix=0 reading from: imp.0/sig.out cols= [1, 2, 3, 4, 5]
+writting into  1 and 2 from data at  1 and 2
+writting into  3 and 4 from data at  3 and 4
+writting into  5 and 6 from data at  5 and 6
+writting into  7 and 8 from data at  7 and 8
+writting into  9 and 10 from data at  9 and 10
+writting s_oo into  0 from 0
+writting s_oo into  1 from 1
+writting s_oo into  2 from 2
+writting s_oo into  3 from 3
+writting s_oo into  4 from 4
+Taking care of high frequency
+Eimp= [-52.93108123 -52.96312574 -53.12196497 -53.12196424 -53.44279709]
+Edc= [52.746934   52.65277452 52.70434772 52.70434699 52.61593788]
+ncorr= 8.47574673758
+#<sgather>:  /opt/apps/ompi/edmftf/bin//sgather.py
+------- DMFT part of the step #  0 done ---------
+
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54927702542525, 51.33087993567116, 49.54054128462808, 49.5402444058931, 49.08824437814351]
+Edc= [52.74588868670333, 52.65179180000486, 52.70330360857416, 52.70332989467745, 52.61495532866239]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+30.13user 27.12system 0:02.89elapsed 1979%CPU (0avgtext+0avgdata 62060maxresident)k
+0inputs+21152outputs (28major+200535minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 0 2 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54927702542525, 51.33087993567116, 49.54054128462808, 49.5402444058931, 49.08824437814351]
+Edc= [52.74588868670333, 52.65179180000486, 52.70330360857416, 52.70332989467745, 52.61495532866239]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+nl_imp= {0: array([1.59306611, 1.13864538, 1.89420294, 1.89420294, 1.95677898])}
+nd_imp= {0: 8.47689636}
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+Running ---- dmft1 -----
+#<dmft1>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft dmft1.def >> dmft1_info.out 
+8.95user 2.88system 0:01.01elapsed 1166%CPU (0avgtext+0avgdata 39024maxresident)k
+0inputs+20560outputs (28major+147649minor)pagefaults 0swaps
+case=SQW_a9_la_cw_500K_U7, indlt=SQW_a9_la_cw_500K_U7.dlt?, outdlt=imp.?/Delta.imp, inE=SQW_a9_la_cw_500K_U7.Eimp?, outE=imp.?/Eimp.inp, m_extn=
+icols= {0: [1, 2, 3, 4, 5]}
+cols= {1: [1, 2, 3, 4, 5]}
+allcols= [1 2 3 4 5]
+max(allcols)= 5
+noccur= [1 1 1 1 1]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.dlt1 cols= [1, 2, 3, 4, 5]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.gc1 cols= [1, 2, 3, 4, 5]
+icix=0 saving into: imp.0/Delta.imp imp.0/Glatt.imp cols= [1, 2, 3, 4, 5]
+1 Taking from col #(1,2) and putting into #(1,2)
+2 Taking from col #(3,4) and putting into #(3,4)
+3 Taking from col #(5,6) and putting into #(5,6)
+4 Taking from col #(7,8) and putting into #(7,8)
+5 Taking from col #(9,10) and putting into #(9,10)
+nl_imp= {0: array([1.5923752, 1.1510436, 1.891432 , 1.8917428, 1.9547179])}
+nd_imp= {0: 8.481311}
+#<sjoin>:  /opt/apps/ompi/edmftf/bin//sjoin.py -m 1.0
+UpdateAtom= True
+Running ----- impurity solver -----
+case=SQW_a9_la_cw_500K_U7, isig=imp.?/sig.out, osig=sig.inp
+icols= {0: [1, 2, 3, 4, 5]}
+colsp= {1: [1, 2, 3, 4, 5]} colsm= {1: []}
+allcols= [1 2 3 4 5]
+len(allcols)= 5
+len(noccur)= 5
+missing_columns= {}
+noccur= [1 1 1 1 1]
+shape(rSigma) (11, 1107)
+shape(rs_oo)= (5,)
+icix=0 reading from: imp.0/sig.out cols= [1, 2, 3, 4, 5]
+writting into  1 and 2 from data at  1 and 2
+writting into  3 and 4 from data at  3 and 4
+writting into  5 and 6 from data at  5 and 6
+writting into  7 and 8 from data at  7 and 8
+writting into  9 and 10 from data at  9 and 10
+writting s_oo into  0 from 0
+writting s_oo into  1 from 1
+writting s_oo into  2 from 2
+writting s_oo into  3 from 3
+writting s_oo into  4 from 4
+Taking care of high frequency
+Eimp= [-52.92986653 -52.96205381 -53.12077351 -53.12079982 -53.44172272]
+Edc= [52.74588869 52.6517918  52.70330361 52.70332989 52.61495533]
+ncorr= 8.47553128606
+#<sgather>:  /opt/apps/ompi/edmftf/bin//sgather.py
+------- DMFT part of the step #  0 done ---------
+
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54822760928957, 51.3296813910462, 49.53885001021293, 49.53906353500543, 49.08696650085624]
+Edc= [52.74443768349696, 52.650348773770915, 52.70187009297186, 52.7018502369296, 52.613505049478896]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+18.75user 13.62system 0:01.85elapsed 1749%CPU (0avgtext+0avgdata 62856maxresident)k
+0inputs+21152outputs (28major+216922minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 0 3 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54822760928957, 51.3296813910462, 49.53885001021293, 49.53906353500543, 49.08696650085624]
+Edc= [52.74443768349696, 52.650348773770915, 52.70187009297186, 52.7018502369296, 52.613505049478896]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+30.30user 27.75system 0:02.91elapsed 1994%CPU (0avgtext+0avgdata 62972maxresident)k
+0inputs+21144outputs (28major+202145minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 1 3 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54822760928957, 51.3296813910462, 49.53885001021293, 49.53906353500543, 49.08696650085624]
+Edc= [52.74443768349696, 52.650348773770915, 52.70187009297186, 52.7018502369296, 52.613505049478896]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+nl_imp= {0: array([1.59293392, 1.13894821, 1.89410537, 1.89410537, 1.95676191])}
+nd_imp= {0: 8.47685478}
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+Running ---- dmft1 -----
+#<dmft1>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft dmft1.def >> dmft1_info.out 
+8.72user 2.49system 0:01.01elapsed 1103%CPU (0avgtext+0avgdata 39024maxresident)k
+0inputs+20584outputs (28major+146873minor)pagefaults 0swaps
+case=SQW_a9_la_cw_500K_U7, indlt=SQW_a9_la_cw_500K_U7.dlt?, outdlt=imp.?/Delta.imp, inE=SQW_a9_la_cw_500K_U7.Eimp?, outE=imp.?/Eimp.inp, m_extn=
+icols= {0: [1, 2, 3, 4, 5]}
+cols= {1: [1, 2, 3, 4, 5]}
+allcols= [1 2 3 4 5]
+max(allcols)= 5
+noccur= [1 1 1 1 1]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.dlt1 cols= [1, 2, 3, 4, 5]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.gc1 cols= [1, 2, 3, 4, 5]
+icix=0 saving into: imp.0/Delta.imp imp.0/Glatt.imp cols= [1, 2, 3, 4, 5]
+1 Taking from col #(1,2) and putting into #(1,2)
+2 Taking from col #(3,4) and putting into #(3,4)
+3 Taking from col #(5,6) and putting into #(5,6)
+4 Taking from col #(7,8) and putting into #(7,8)
+5 Taking from col #(9,10) and putting into #(9,10)
+nl_imp= {0: array([1.5922402, 1.151291 , 1.8915534, 1.8914174, 1.9546967])}
+nd_imp= {0: 8.481199}
+#<sjoin>:  /opt/apps/ompi/edmftf/bin//sjoin.py -m 1.0
+UpdateAtom= True
+Running ----- impurity solver -----
+case=SQW_a9_la_cw_500K_U7, isig=imp.?/sig.out, osig=sig.inp
+icols= {0: [1, 2, 3, 4, 5]}
+colsp= {1: [1, 2, 3, 4, 5]} colsm= {1: []}
+allcols= [1 2 3 4 5]
+len(allcols)= 5
+len(noccur)= 5
+missing_columns= {}
+noccur= [1 1 1 1 1]
+shape(rSigma) (11, 1107)
+shape(rs_oo)= (5,)
+icix=0 reading from: imp.0/sig.out cols= [1, 2, 3, 4, 5]
+writting into  1 and 2 from data at  1 and 2
+writting into  3 and 4 from data at  3 and 4
+writting into  5 and 6 from data at  5 and 6
+writting into  7 and 8 from data at  7 and 8
+writting into  9 and 10 from data at  9 and 10
+writting s_oo into  0 from 0
+writting s_oo into  1 from 1
+writting s_oo into  2 from 2
+writting s_oo into  3 from 3
+writting s_oo into  4 from 4
+Taking care of high frequency
+Eimp= [-52.93006297 -52.96221064 -53.12097033 -53.12095045 -53.44186109]
+Edc= [52.74443768 52.65034877 52.70187009 52.70185024 52.61350505]
+ncorr= 8.47546194647
+#<sgather>:  /opt/apps/ompi/edmftf/bin//sgather.py
+------- DMFT part of the step #  0 done ---------
+
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54773380375552, 51.32970810561155, 49.53847180238703, 49.53865550408651, 49.08621489687039]
+Edc= [52.74400056013748, 52.64986804234293, 52.70142096244712, 52.70139529293077, 52.61300707315882]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+29.94user 27.12system 0:02.86elapsed 1995%CPU (0avgtext+0avgdata 63104maxresident)k
+0inputs+21936outputs (28major+204323minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 0 4 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54773380375552, 51.32970810561155, 49.53847180238703, 49.53865550408651, 49.08621489687039]
+Edc= [52.74400056013748, 52.64986804234293, 52.70142096244712, 52.70139529293077, 52.61300707315882]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+18.98user 14.44system 0:01.88elapsed 1776%CPU (0avgtext+0avgdata 65076maxresident)k
+0inputs+21152outputs (28major+218246minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 1 4 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54773380375552, 51.32970810561155, 49.53847180238703, 49.53865550408651, 49.08621489687039]
+Edc= [52.74400056013748, 52.64986804234293, 52.70142096244712, 52.70139529293077, 52.61300707315882]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+nl_imp= {0: array([1.59302193, 1.13861962, 1.89418765, 1.89418765, 1.95681778])}
+nd_imp= {0: 8.47683465}
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+Running ---- dmft1 -----
+#<dmft1>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft dmft1.def >> dmft1_info.out 
+9.04user 2.72system 0:01.02elapsed 1149%CPU (0avgtext+0avgdata 38924maxresident)k
+0inputs+20536outputs (28major+146548minor)pagefaults 0swaps
+case=SQW_a9_la_cw_500K_U7, indlt=SQW_a9_la_cw_500K_U7.dlt?, outdlt=imp.?/Delta.imp, inE=SQW_a9_la_cw_500K_U7.Eimp?, outE=imp.?/Eimp.inp, m_extn=
+icols= {0: [1, 2, 3, 4, 5]}
+cols= {1: [1, 2, 3, 4, 5]}
+allcols= [1 2 3 4 5]
+max(allcols)= 5
+noccur= [1 1 1 1 1]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.dlt1 cols= [1, 2, 3, 4, 5]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.gc1 cols= [1, 2, 3, 4, 5]
+icix=0 saving into: imp.0/Delta.imp imp.0/Glatt.imp cols= [1, 2, 3, 4, 5]
+1 Taking from col #(1,2) and putting into #(1,2)
+2 Taking from col #(3,4) and putting into #(3,4)
+3 Taking from col #(5,6) and putting into #(5,6)
+4 Taking from col #(7,8) and putting into #(7,8)
+5 Taking from col #(9,10) and putting into #(9,10)
+nl_imp= {0: array([1.5923412, 1.1510051, 1.8915195, 1.8916233, 1.954764 ])}
+nd_imp= {0: 8.481253}
+#<sjoin>:  /opt/apps/ompi/edmftf/bin//sjoin.py -m 1.0
+UpdateAtom= True
+Running ----- impurity solver -----
+case=SQW_a9_la_cw_500K_U7, isig=imp.?/sig.out, osig=sig.inp
+icols= {0: [1, 2, 3, 4, 5]}
+colsp= {1: [1, 2, 3, 4, 5]} colsm= {1: []}
+allcols= [1 2 3 4 5]
+len(allcols)= 5
+len(noccur)= 5
+missing_columns= {}
+noccur= [1 1 1 1 1]
+shape(rSigma) (11, 1107)
+shape(rs_oo)= (5,)
+icix=0 reading from: imp.0/sig.out cols= [1, 2, 3, 4, 5]
+writting into  1 and 2 from data at  1 and 2
+writting into  3 and 4 from data at  3 and 4
+writting into  5 and 6 from data at  5 and 6
+writting into  7 and 8 from data at  7 and 8
+writting into  9 and 10 from data at  9 and 10
+writting s_oo into  0 from 0
+writting s_oo into  1 from 1
+writting s_oo into  2 from 2
+writting s_oo into  3 from 3
+writting s_oo into  4 from 4
+Taking care of high frequency
+Eimp= [-52.92768464 -52.95984943 -53.11860759 -53.1185819  -53.43949684]
+Edc= [52.74400056 52.64986804 52.70142096 52.70139529 52.61300707]
+ncorr= 8.47530212804
+#<sgather>:  /opt/apps/ompi/edmftf/bin//sgather.py
+------- DMFT part of the step #  0 done ---------
+
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54664200977097, 51.32906114046652, 49.5373974302551, 49.53781137115744, 49.08510834739441]
+Edc= [52.74295898716178, 52.64876715184201, 52.70036914562186, 52.70032803475768, 52.611892142782644]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+18.06user 13.16system 0:01.79elapsed 1743%CPU (0avgtext+0avgdata 61468maxresident)k
+0inputs+21144outputs (28major+217095minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 0 5 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54664200977097, 51.32906114046652, 49.5373974302551, 49.53781137115744, 49.08510834739441]
+Edc= [52.74295898716178, 52.64876715184201, 52.70036914562186, 52.70032803475768, 52.611892142782644]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+19.10user 14.89system 0:01.90elapsed 1783%CPU (0avgtext+0avgdata 62488maxresident)k
+0inputs+21160outputs (28major+217233minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 1 5 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54664200977097, 51.32906114046652, 49.5373974302551, 49.53781137115744, 49.08510834739441]
+Edc= [52.74295898716178, 52.64876715184201, 52.70036914562186, 52.70032803475768, 52.611892142782644]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+28.90user 26.88system 0:02.80elapsed 1988%CPU (0avgtext+0avgdata 62416maxresident)k
+0inputs+21168outputs (28major+210162minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 2 5 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54664200977097, 51.32906114046652, 49.5373974302551, 49.53781137115744, 49.08510834739441]
+Edc= [52.74295898716178, 52.64876715184201, 52.70036914562186, 52.70032803475768, 52.611892142782644]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+nl_imp= {0: array([1.59312638, 1.13840523, 1.8941982 , 1.8941982 , 1.95681152])}
+nd_imp= {0: 8.47673953}
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+Running ---- dmft1 -----
+#<dmft1>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft dmft1.def >> dmft1_info.out 
+9.28user 2.88system 0:01.07elapsed 1137%CPU (0avgtext+0avgdata 39036maxresident)k
+0inputs+20560outputs (28major+147411minor)pagefaults 0swaps
+case=SQW_a9_la_cw_500K_U7, indlt=SQW_a9_la_cw_500K_U7.dlt?, outdlt=imp.?/Delta.imp, inE=SQW_a9_la_cw_500K_U7.Eimp?, outE=imp.?/Eimp.inp, m_extn=
+icols= {0: [1, 2, 3, 4, 5]}
+cols= {1: [1, 2, 3, 4, 5]}
+allcols= [1 2 3 4 5]
+max(allcols)= 5
+noccur= [1 1 1 1 1]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.dlt1 cols= [1, 2, 3, 4, 5]
+icix=1 reading from: SQW_a9_la_cw_500K_U7.gc1 cols= [1, 2, 3, 4, 5]
+icix=0 saving into: imp.0/Delta.imp imp.0/Glatt.imp cols= [1, 2, 3, 4, 5]
+1 Taking from col #(1,2) and putting into #(1,2)
+2 Taking from col #(3,4) and putting into #(3,4)
+3 Taking from col #(5,6) and putting into #(5,6)
+4 Taking from col #(7,8) and putting into #(7,8)
+5 Taking from col #(9,10) and putting into #(9,10)
+nl_imp= {0: array([1.5923921, 1.1508354, 1.8915704, 1.8915372, 1.9547342])}
+nd_imp= {0: 8.481069}
+#<sjoin>:  /opt/apps/ompi/edmftf/bin//sjoin.py -m 1.0
+UpdateAtom= True
+Running ----- impurity solver -----
+case=SQW_a9_la_cw_500K_U7, isig=imp.?/sig.out, osig=sig.inp
+icols= {0: [1, 2, 3, 4, 5]}
+colsp= {1: [1, 2, 3, 4, 5]} colsm= {1: []}
+allcols= [1 2 3 4 5]
+len(allcols)= 5
+len(noccur)= 5
+missing_columns= {}
+noccur= [1 1 1 1 1]
+shape(rSigma) (11, 1107)
+shape(rs_oo)= (5,)
+icix=0 reading from: imp.0/sig.out cols= [1, 2, 3, 4, 5]
+writting into  1 and 2 from data at  1 and 2
+writting into  3 and 4 from data at  3 and 4
+writting into  5 and 6 from data at  5 and 6
+writting into  7 and 8 from data at  7 and 8
+writting into  9 and 10 from data at  9 and 10
+writting s_oo into  0 from 0
+writting s_oo into  1 from 1
+writting s_oo into  2 from 2
+writting s_oo into  3 from 3
+writting s_oo into  4 from 4
+Taking care of high frequency
+Eimp= [-52.92866796 -52.96138304 -53.11971857 -53.1196774  -53.44093059]
+Edc= [52.74295899 52.64876715 52.70036915 52.70032803 52.61189214]
+ncorr= 8.47537125049
+#<sgather>:  /opt/apps/ompi/edmftf/bin//sgather.py
+------- DMFT part of the step #  0 done ---------
+
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54754847822697, 51.32893188874063, 49.5378077491854, 49.53792829366937, 49.0858829261005]
+Edc= [52.743331541472934, 52.649309134355065, 52.70076962669391, 52.70075578542333, 52.612458005099484]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+18.99user 14.90system 0:02.00elapsed 1690%CPU (0avgtext+0avgdata 61468maxresident)k
+0inputs+21160outputs (28major+217593minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 0 6 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def
+case=SQW_a9_la_cw_500K_U7, nom=100, ntail=300, insig=sig.inp, outsig=sig.inp[1-n]
+s_oo= [50.54754847822697, 51.32893188874063, 49.5378077491854, 49.53792829366937, 49.0858829261005]
+Edc= [52.743331541472934, 52.649309134355065, 52.70076962669391, 52.70075578542333, 52.612458005099484]
+..... Creating logarithmic mesh
+..... Going over all correlated blocks
+icix= 1 colsp= [1, 2, 3, 4, 5] colsm= []
+--------- Preparing Charge calculation ---------
+#<prep-dmft2>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -d --mode c -m 1 -x 1.0 -w 1.0 -p dmft2 >> dmft2_info.out 2>&1
+#<ssplit>:  /opt/apps/ompi/edmftf/bin//ssplit.py -n 100 -t 300
+#<dmft2>:  /usr/bin/time /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./dmft2 dmft2.def >> dmft2_info.out 
+18.74user 14.54system 0:01.99elapsed 1667%CPU (0avgtext+0avgdata 61728maxresident)k
+0inputs+21160outputs (28major+217040minor)pagefaults 0swaps
+#<lcore>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lcore
+#<mixer>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  mixer
+------- LDA(charge) step 1 6 done ---------
+#<lapw0>:  /opt/apps/ompi/wien/wien2k_19/x -f SQW_a9_la_cw_500K_U7  lapw0
+#<lapw1>:  /opt/apps/ompi/edmftf/bin//x_dmft.py -p  lapw1
+sys.argv= ['/opt/apps/ompi/edmftf/bin//x_dmft.py', '-p', 'lapw1']
+DmftEnvironment: mpi_prefix.dat exists -- running in parallel mode.
+   /opt/sw/ompi/intel/18.0/bin/mpirun -n 100
+Parallel vector/energy files written.
+..... running: /opt/sw/ompi/intel/18.0/bin/mpirun -n 100 ./lapw1 lapw1.def

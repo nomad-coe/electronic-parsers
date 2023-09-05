@@ -71,15 +71,15 @@ def test_srvo3(parser):
     sec_dmft = sec_run.method[1].dmft
     assert sec_dmft.n_correlated_orbitals.shape == (1,)
     assert sec_dmft.n_correlated_orbitals[0] == 3
-    assert sec_dmft.n_correlated_electrons == approx(1.0)
+    assert sec_dmft.n_electrons[0] == approx(1.0)
     assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.get('beta'))
     assert sec_dmft.impurity_solver == 'CT-HYB'
     # Frequency and Time meshes
     assert sec_run.m_xpath('method[-1].frequency_mesh') and sec_run.m_xpath('method[-1].time_mesh')
     sec_freq_mesh = sec_run.method[-1].frequency_mesh
-    assert sec_freq_mesh.points[22].to('eV').magnitude == approx(-123.30751165339937j)
+    assert sec_freq_mesh.points[22][0].to('eV').magnitude == approx(-123.30751165339937j)
     sec_time_mesh = sec_run.method[-1].time_mesh
-    assert sec_time_mesh.points[40] == approx(2.4024024024024024j)
+    assert sec_time_mesh.points[40][0] == approx(2.4024024024024024j)
 
     # Calculation tests
     assert len(sec_run.calculation) == 1
@@ -92,7 +92,7 @@ def test_srvo3(parser):
     assert sec_gfs.self_energy_iw.dtype == 'complex128'
     assert sec_gfs.self_energy_iw.shape == (1, 2, 3, 2400)
     assert sec_gfs.greens_function_iw[0][0][2][1450] == approx(-0.0019060478736177338 - 0.037816153432527574j)
-    assert sec_gfs.chemical_potential.magnitude == approx(14.159227949307798)
+    assert sec_gfs.chemical_potential.to('eV').magnitude == approx(14.159227949307798)
     # SCF tests
     sec_scf = sec_scc.scf_iteration
     assert len(sec_scf) == 4

@@ -73,6 +73,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         self.wout_parser = WOutParser()
         self.hr_parser = HrParser()
         self.data = None
+        self._child_archives = {}
 
         self._hubbard_kanamori_map = {
             'u': 'u',
@@ -105,7 +106,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         log_files = get_files('*.log', self.filepath, self.mainfile)
         if log_files:
             if len(log_files) > 1:
-                self.logger.warning(f'Multiple logging files found, the last one will be parsed: {log_files[-1]}')
+                self.logger.warning('Multiple logging files found, the last one will be parsed.', data={'files': log_files})
 
             self.log_parser.mainfile = log_files[-1]
             return self.log_parser.get('program_version', None)
@@ -139,7 +140,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         wann90_files = get_files('*.wout', self.filepath, self.mainfile, deep=False)
         if wann90_files:  # parse crystal from Wannier90
             if len(wann90_files) > 1:
-                self.logger.warning(f'Multiple Wannier90.wout files found, the last one will be parsed: {wann90_files[-1]}')
+                self.logger.warning(f'Multiple Wannier90.wout files found, the last one will be parsed.', data={'files': wann90_files})
 
             self.wout_parser.mainfile = wann90_files[-1]
             sec_system = sec_run.m_create(System)
@@ -209,8 +210,6 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             elif data.attrs.get(f'atoms.{n+1}.hamiltonian') == 'Kanamori':
                 sec_hubbard_kanamori_model.j = sec_hubbard_kanamori_model.jh
 
-            sec_hubbard_kanamori_model.double_counting_correction = data.attrs.get('general.dc')
-
     def parse_method(self, data):
         """Parses DMFT and code-specific metadata from `.config` in the hdf5 mainfile
 
@@ -255,33 +254,33 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
 
         # DMFT section
         sec_dmft = sec_method.m_create(DMFT)
-        sec_dmft.n_atoms_per_unit_cell = data.attrs.get(f'general.nat', 0)
+        sec_dmft.n_impurities = data.attrs.get(f'general.nat', 0)
         if data.attrs.get(f'general.beta'):
             sec_dmft.inverse_temperature = data.attrs.get(f'general.beta') / ureg.eV
         if data.attrs.get(f'general.magnetism'):
             sec_dmft.magnetic_state = data.attrs.get(f'general.magnetism') + 'magnetic'
         corr_orbs_per_atoms = []
         occ_per_atoms = []
-        for i in range(sec_dmft.n_atoms_per_unit_cell):
+        for i in range(sec_dmft.n_impurities):
             nd = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_nd
             np = sec_method.x_w2dynamics_config.x_w2dynamics_config_atoms[i].x_w2dynamics_np
             corr_orbs_per_atoms.append(nd + np)
             if data.attrs.get(f'general.totdens'):
                 occ_per_atoms.append(data.attrs.get(f'general.totdens'))
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
-        sec_dmft.n_correlated_electrons = occ_per_atoms
+        sec_dmft.n_electrons = occ_per_atoms
         sec_dmft.impurity_solver = 'CT-HYB'
         # FrequencyMesh
         iw = self.data.get('.axes').get('iw')
         if iw is not None:
-            iw = iw[:] * 1j * ureg.eV
-            sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=len(iw), points=iw)
+            iw = iw[:].reshape((len(iw), 1))
+            sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=len(iw), points=iw * 1j * ureg.eV)
             sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # TimeMesh
         tau = self.data.get('.axes').get('tau')
         if tau is not None:
-            tau = tau[:] * 1j
-            sec_tau_mesh = TimeMesh(dimensionality=1, n_points=len(tau), points=tau)
+            tau = tau[:].reshape((len(tau), 1))
+            sec_tau_mesh = TimeMesh(dimensionality=1, n_points=len(tau), points=tau * 1j)
             sec_method.m_add_sub_section(Method.time_mesh, sec_tau_mesh)
 
     def parse_scc(self):
@@ -307,7 +306,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         for keys in self.data[calc_keys[0]]:
             if keys.startswith('ineq'):
                 n_ineq += 1
-        n_atoms = sec_run.method[-1].dmft.n_atoms_per_unit_cell
+        n_atoms = sec_run.method[-1].dmft.n_impurities
 
         filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), self.mainfile)
         farg = 'r+b'  # Always reading the hdf5 mainfile
@@ -349,7 +348,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
                 if sec_run.method[-1].m_xpath('time_mesh'):
                     sec_gf.tau = sec_run.method[-1].time_mesh.points.imag
                 if self.data.get(key).get('mu') is not None:
-                    sec_gf.chemical_potential = self.data.get(key).get('mu').get('value')
+                    sec_gf.chemical_potential = np.float64(self.data.get(key).get('mu').get('value')) * ureg.eV
                 norb = self.data.get('.config').attrs.get('atoms.1.nd')
                 for subkey in self._inequivalent_atom_map.keys():
                     parameters = []

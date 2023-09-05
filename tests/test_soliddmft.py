@@ -72,9 +72,9 @@ def test_srvo3(parser):
     assert len(sec_run.method[-1].x_soliddmft_advanced) == 8
     assert sec_run.method[-1].starting_method_ref == sec_run.method[0]
     sec_dmft = sec_run.method[-1].dmft
-    assert sec_dmft.n_atoms_per_unit_cell == 1
+    assert sec_dmft.n_impurities == 1
     assert sec_dmft.n_correlated_orbitals[0] == 3
-    assert sec_dmft.n_correlated_electrons == approx(1.0000225214138097)
+    assert sec_dmft.n_electrons[0] == approx(1.0000225214138097)
     assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(10.0)
     assert sec_dmft.inverse_temperature.to('1/eV').magnitude == approx(sec_run.method[-1].x_soliddmft_general.x_soliddmft_beta)
     assert sec_dmft.impurity_solver == 'CT-HYB'
@@ -83,10 +83,10 @@ def test_srvo3(parser):
     assert sec_run.m_xpath('method[-1].frequency_mesh') and sec_run.m_xpath('method[-1].time_mesh')
     sec_freq_mesh = sec_run.method[-1].frequency_mesh
     assert sec_freq_mesh.n_points == 501
-    assert sec_freq_mesh.points[15].to('eV').magnitude == approx(-97.10000000000001j)
+    assert sec_freq_mesh.points[15][0].to('eV').magnitude == approx(-97.10000000000001j)
     sec_time_mesh = sec_run.method[-1].time_mesh
     assert sec_time_mesh.n_points == 10001
-    assert sec_time_mesh.points[76] == approx(0.076j)
+    assert sec_time_mesh.points[76][0] == approx(0.076j)
 
     # Calculation tests
     assert len(sec_run.calculation) == 1
@@ -100,7 +100,7 @@ def test_srvo3(parser):
     assert sec_gfs.self_energy_iw.dtype == 'complex128'
     assert sec_gfs.self_energy_iw.shape == (1, 2, 3, 1002)
     assert sec_gfs.greens_function_tau[0][1][1][1025] == approx(-0.14109113749664728 + 0j)
-    assert sec_gfs.chemical_potential.magnitude == approx(0.0378235342396917)
+    assert sec_gfs.chemical_potential.to('eV').magnitude == approx(0.0378235342396917)
     assert np.sum(sec_gfs.orbital_occupations) == approx(1.008321846227956)
     assert sec_gfs.quasiparticle_weights.shape == (1, 2, 3)
     assert sec_gfs.quasiparticle_weights[0][0][0] == approx(0.16195076915540912)
@@ -108,5 +108,5 @@ def test_srvo3(parser):
     sec_scf = sec_scc.scf_iteration
     assert len(sec_scf) == 3
     assert sec_scf[0].energy.fermi.to('eV').magnitude == approx(-0.027041)
-    assert sec_scf[-1].energy.fermi.to('eV').magnitude == approx(sec_gfs.chemical_potential.magnitude)
+    assert sec_scf[-1].energy.fermi.to('eV').magnitude == approx(sec_gfs.chemical_potential.to('eV').magnitude)
     assert sec_scf[1].x_soliddmft_convergence_obs.x_soliddmft_d_G0[0] == 0.03463529305810029

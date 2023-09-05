@@ -15,7 +15,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+from nomad.metainfo import Environment
 
-from .utils import (
-    extract_section, get_files, BeyondDFTWorkflowsParser, DataANDTextParser
-)
+from . import edmft
+
+m_env = Environment()
+m_env.m_add_sub_section(Environment.packages, edmft.m_package)

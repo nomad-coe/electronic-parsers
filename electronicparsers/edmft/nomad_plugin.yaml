@@ -1,0 +1,53 @@
+code_category: Atomistic code
+code_homepage: http://hauleweb.rutgers.edu/tutorials/
+code_name: eDMFT
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: eDMFT
+  codeLabelStyle: e in lower case, DMFT in capitals
+  codeName: eDMFT
+  codeUrl: http://hauleweb.rutgers.edu/tutorials/
+  parserDirName: dependencies/parsers/electronic/electronicparsers/edmft/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  parserSpecific: ''
+  preamble: ''
+  status: production
+  tableOfFiles: '| Input Filename | Description |
+
+    | --- | --- |
+
+    | `dmft_info.out` | **Mainfile:** output full DMFT loop text file |
+
+    | `dmft1_info.out` | output DMFT1 loop text file |
+
+    | `dmft2_info.out` | output DMFT2 loop text file |
+
+    | `*.indmfl` | input basis parameters text file |
+
+    | `*params.dat` | input DMFT parameters text file |
+
+    | `*.struct` | output text file with data for the structure (specific to WIEN2k) |
+
+    | `*projectorw.dat` | output data file with projectors |
+
+    | `*.dayfile` | output sfc charge information for DMFT2->DFT |
+
+    | `info.iterate` | output sfc information; use second Ftot+T*Simp column for the free energy |
+
+    | `*.gcJ` | output Greens function lattice data per DMFT loop J |
+
+    | `imp.X/Gf.out.I.J` | output Greens function data for impurity X per DFT+DMFT loop I and DMFT loop J |
+
+    | `sig.inpJ` | output self-energy lattice data per DMFT loop J |
+
+    | `imp.X/Sig.out.I.J` | output self-energy data for impurity X data per DFT+DMFT loop I and DMFT loop J |
+
+    | `*.dltJ` | output hybridization function data per DMFT loop J |
+
+    | `imp.X/Delta.inp.I.J` | output hybridization function data for impurity X data DFT+DMFT loop I and DMFT loop J |
+
+    '
+name: parsers/edmft
+parser_class_name: electronicparsers.edmft.parser.EDMFTParser
+python_package: electronicparsers.edmft
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/edmft
