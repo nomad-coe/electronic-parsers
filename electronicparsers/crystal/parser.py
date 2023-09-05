@@ -365,7 +365,7 @@ class CrystalParser:
                             'geo_opt_step',
                             fr' (?:COORDINATE AND CELL OPTIMIZATION|COORDINATE OPTIMIZATION) - POINT\s+{integer}{br}' +\
                             fr'([\s\S]*?)' +\
-                            fr' (?:TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT OPTI|\* OPT END)',
+                            fr' ((?:TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT OPTI|\* OPT END).+)',
                             sub_parser=TextParser(quantities=[
                                 Quantity(
                                     'lattice_parameters',
@@ -395,6 +395,7 @@ class CrystalParser:
                                     repeats=False,
                                 ),
                                 Quantity('energy', fr' TOTAL ENERGY\({word}\)\(AU\)\(\s*{integer}\)\s*{flt_c}', unit=ureg.hartree, repeats=False),
+                                Quantity('time_physical', fr'OPT.+? TELAPSE\s+({flt})')
                             ]),
                             repeats=True,
                         ),
@@ -925,6 +926,8 @@ class CrystalParser:
                 i_system = system
                 i_energy = steps[0]["energy"]
                 scc.energy.total = EnergyEntry(value=i_energy)
+                scc.time_physical = steps[0]["time_physical"]
+                scc.time_calculation = steps[0]["time_physical"]
 
                 frames = []
                 for step in steps[1:]:
@@ -953,8 +956,15 @@ class CrystalParser:
 
                     i_scc.system_ref = i_system
                     i_scc.method_ref = method
+                    i_scc.time_physical = step["time_physical"]
+                    if i_scc.time_physical:
+                        i_scc.time_calculation = i_scc.time_physical - run.calculation[-2].time_physical
 
                     frames.append(i_scc)
+                if frames:
+                    i_scc.time_physical = run.time_run.date_end - run.time_run.date_start
+                    i_scc.time_calculation = i_scc.time_physical - run.calculation[-2].time_physical
+
                 archive.workflow2.results.is_converged_geometry = geo_opt["converged"] == "CONVERGED"  # pylint: disable=E1136
 
         # Remove ghost atom information. The metainfo does not provide a very
