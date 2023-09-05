@@ -473,19 +473,19 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         sec_run = archive.m_create(Run)
         sec_run.program = Program(name='eDMFT')
 
-        def _freq_tan_points(x0: float, l: float, n_w: int):
+        def _freq_tan_points(x0: float, l0: float, n_w: int):
             """Defines the frequency mesh points in a 'Tan' mesh. Following script by @LucianPascut.
             """
-            def opt_function(x: np.ndarray, x0: float, l: float, n_w: int):
+            def opt_function(x: np.ndarray, x0: float, l0: float, n_w: int):
                 d = x[0]
                 w = x[1]
-                return np.array([l - w / np.tan(d), x0 - w * np.tan(np.pi / (2 * n_w) - d / n_w)])
+                return np.array([l0 - w / np.tan(d), x0 - w * np.tan(np.pi / (2 * n_w) - d / n_w)])
 
-            xi = x0 / l
+            xi = x0 / l0
             d0 = 0.5 * n_w * (np.tan(np.pi / (2 * n_w)) - np.sqrt(np.tan(np.pi / (2 * n_w))**2 - 4 * xi / n_w))
-            w0 = l * d0
+            w0 = l0 * d0
 
-            sol = optimize.root(opt_function, [d0, w0], args=(x0, l, n_w))
+            sol = optimize.root(opt_function, [d0, w0], args=(x0, l0, n_w))
             (d, w) = sol.x
             return w * np.tan(np.linspace(0, 1, 2 * n_w + 1) * (np.pi - 2 * d) - np.pi / 2 + d)
 
