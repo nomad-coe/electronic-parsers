@@ -78,7 +78,7 @@ class MainfileParser(TextParser):
                     rf'((?:df +[A-Z][a-z]* +{re_f} +{re_f} +{re_f}.+\s+)+)',
                     sub_parser=TextParser(quantities=coordinates_quantities)
                 ),
-                Quantity('energy_total', rf'Ef +({re_f})', dtype=np.float64, unit=ureg.hartree),
+                Quantity('final', rf'Ef +({re_f}.+){re_n} *{re_n}', dtype=np.float64),
                 Quantity('energy_binding', rf'binding energy +({re_f})Ha', dtype=np.float64, unit=ureg.hartree),
             ])
         )
@@ -371,18 +371,24 @@ class Dmol3Parser:
             target = sec_run.m_create(Calculation) if target is None else target
 
             # energies
-            target.energy = Energy(
-                total=EnergyEntry(value=source.energy_total),
-                x_dmol3_binding=EnergyEntry(value=source.energy_binding))
+            time_initial = sec_run.calculation[-2].time_physical if len(sec_run.calculation) > 1 else 0 * ureg.s
+            if source.final is not None:
+                target.energy = Energy(
+                    total=EnergyEntry(value=source.final[0] * ureg.hartree),
+                    x_dmol3_binding=EnergyEntry(value=source.energy_binding))
+                target.time_physical = source.final[3] * ureg.minute
+                target.time_calculation = target.time_physical - time_initial
 
             # scf iteration
             for iteration in source.get('iteration', []):
+                time_initial = target.scf_iteration[-1].time_physical if target.scf_iteration else time_initial
                 sec_scf = target.m_create(ScfIteration)
                 sec_scf.energy = Energy(
                     total=EnergyEntry(value=iteration[0] * ureg.hartree),
                     x_dmol3_binding=EnergyEntry(value=iteration[1] * ureg.hartree),
                 )
-                sec_scf.time_calculation = iteration[3] * ureg.minute
+                sec_scf.time_physical = iteration[3] * ureg.minute
+                sec_scf.time_calculation = sec_scf.time_physical - time_initial
             # add energies data from last scf step
             if source.iteration:
                 target.energy.x_dmol3_binding = sec_scf.energy.x_dmol3_binding
@@ -438,6 +444,7 @@ class Dmol3Parser:
 
             return target
 
+        # TODO put workflows into separate archives
         workflow = None
         if self.mainfile_parser.optimization is not None:
             for scf in self.mainfile_parser.optimization.get('scf', []):
