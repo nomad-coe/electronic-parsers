@@ -9,7 +9,6 @@ metadata:
   codeUrl: http://exciting-code.org/
   parserDirName: dependencies/electronic/electronicparsers/exciting/
   parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
-  parserLastUpdate: 18.10.2022
   parserSpecific: ''
   preamble: ''
   status: production

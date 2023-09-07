@@ -185,17 +185,17 @@ class SolidDMFTParser:
 
         # DMFT
         sec_dmft = sec_method.m_create(DMFT)
-        sec_dmft.n_atoms_per_unit_cell = self.dft_input.get('n_inequiv_shells', 1)[()]
+        sec_dmft.n_impurities = self.dft_input.get('n_inequiv_shells', 1)[()]
         corr_orbs_per_atoms = []
         occ_per_atoms = []
-        for i in range(sec_dmft.n_atoms_per_unit_cell):
+        for i in range(sec_dmft.n_impurities):
             corr_orbs_per_atoms.append(
                 self.dft_input['corr_shells'][str(i)].get('dim', 1)[()])
             total_occupation = self.dmft_results['observables']['imp_occ'][str(i)]['down']['0'][()] + \
                 self.dmft_results['observables']['imp_occ'][str(i)]['up']['0'][()]
             occ_per_atoms.append(total_occupation)
         sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
-        sec_dmft.n_correlated_electrons = occ_per_atoms
+        sec_dmft.n_electrons = occ_per_atoms
         beta = sec_method.x_soliddmft_general.x_soliddmft_beta
         sec_dmft.inverse_temperature = beta / ureg.eV
         if sec_method.x_soliddmft_general.x_soliddmft_magnetic:
@@ -217,13 +217,15 @@ class SolidDMFTParser:
         # FrequencyMesh
         if sec_method.m_xpath('x_soliddmft_general.x_soliddmft_n_iw'):
             n_iw = sec_method.x_soliddmft_general.x_soliddmft_n_iw
-            iw = [(2 * (n - n_iw) + 1) * 1j / beta for n in range(2 * n_iw)] * ureg.eV
-            sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=n_iw, points=iw)
+            iw = np.array([(2 * (n - n_iw) + 1) * 1j / beta for n in range(2 * n_iw)])
+            iw = iw.reshape((len(iw), 1))
+            sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=n_iw, points=iw * ureg.eV)
             sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # TimeMesh
         if sec_method.m_xpath('x_soliddmft_general.x_soliddmft_n_tau'):
             n_tau = sec_method.x_soliddmft_general.x_soliddmft_n_tau
-            tau = [n * beta * 1j / (n_tau - 1) for n in range(n_tau)]
+            tau = np.array([n * beta * 1j / (n_tau - 1) for n in range(n_tau)])
+            tau = tau.reshape((len(tau), 1))
             sec_time_mesh = TimeMesh(dimensionality=1, n_points=n_tau, points=tau)
             sec_method.m_add_sub_section(Method.time_mesh, sec_time_mesh)
 
@@ -259,7 +261,7 @@ class SolidDMFTParser:
             # GF quantities
             for gf_key in self.iteration_gfs:
                 param = []
-                for i in range(sec_scc.method_ref.dmft.n_atoms_per_unit_cell):  # atom index
+                for i in range(sec_scc.method_ref.dmft.n_impurities):  # atom index
                     gf_key_mod = f'{gf_key}_{i}'
                     for s in self.dmft_results[it_key][gf_key_mod].keys():
                         if s == 'block_names':
@@ -303,7 +305,7 @@ class SolidDMFTParser:
                 if keys == 'iteration':  # skipping unused keys
                     continue
                 if keys.startswith('E_'):
-                    if len(self.dmft_results['observables'][keys]) > sec_scc.method_ref.dmft.n_atoms_per_unit_cell:
+                    if len(self.dmft_results['observables'][keys]) > sec_scc.method_ref.dmft.n_impurities:
                         if self.dmft_results['observables'][keys][str(it)][()] != b'none':
                             param = self.dmft_results['observables'][keys][str(it)][()]
                     else:
@@ -336,8 +338,8 @@ class SolidDMFTParser:
         n_iw = sec_scc.method_ref.x_soliddmft_general.x_soliddmft_n_iw
         sec_gf.tau = [n * beta / (n_tau - 1) for n in range(n_tau)]
         sec_gf.matsubara_freq = [(2 * (n - n_iw) + 1) / beta for n in range(2 * n_iw)]
-        sec_gf.chemical_potential = sec_scc.scf_iteration[-1].x_soliddmft_observables.x_soliddmft_mu
-        nat = sec_scc.method_ref.dmft.n_atoms_per_unit_cell
+        sec_gf.chemical_potential = sec_scc.scf_iteration[-1].x_soliddmft_observables.x_soliddmft_mu * ureg.eV
+        nat = sec_scc.method_ref.dmft.n_impurities
         norb = sec_scc.method_ref.dmft.n_correlated_orbitals
         for keys in self._gf_map.keys():
             funct = getattr(sec_scc.scf_iteration[-1].x_soliddmft_iter, f'x_soliddmft_{keys}')[:, :, 0] \

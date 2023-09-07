@@ -1004,9 +1004,10 @@ class RKFParser(FileParser):
                 self._results['mulliken_populations'] = {'atom': np.reshape(mulliken, (len(mulliken) // nspin, nspin))}
 
         if (dos := self.data.get('DOS')) is not None:
-            self._results['total_dos'] = {'dos': np.transpose([dos.get('Energies'), *np.reshape(dos.get('Total DOS', []), (
-                dos.get('nSpin', 0), dos.get('nEnergies', 0)
-            ))])}
+            if np.ndim(dos.get('Energies')) > 0:
+                self._results['total_dos'] = {'dos': np.transpose([dos.get('Energies'), *np.reshape(dos.get('Total DOS', []), (
+                    dos.get('nSpin', 0), dos.get('nEnergies', 0)
+                ))])}
 
         eigensystem = self.data.get('eigensystem', {})
         if eigensystem is not None:
@@ -1374,8 +1375,6 @@ class AMSParser:
             if key.startswith('program_x_ams'):
                 sec_run.program.m_set(sec_run.program.m_get_quantity_definition(
                     key.strip('program_')), self.parser.get(key))
-
-        if (start := self.parser.get('time_start')) is not None:
-            sec_run.time_run = TimeRun(date_start=start)
-
+            if key == 'time_start':
+                sec_run.time_run = TimeRun(date_start=self.parser.get(key))
         self.parse_configurations()
