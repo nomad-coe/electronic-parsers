@@ -1254,6 +1254,8 @@ class AMSParser:
             for function in source.get('radial_functions', []):
                 sec_atom_param = sec_method.m_create(AtomParameters)
                 for key, val in function.items():
+                    if val is None:
+                        continue
                     if key == 'orbital_parameters':
                         sec_atom_param.orbitals = [str(v) for v in val[0]]
                         sec_atom_param.charges = val[1]
