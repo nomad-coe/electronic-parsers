@@ -1122,13 +1122,14 @@ class AMSParser:
             total_dos = source.get('total_dos', {}).get('dos')
             if total_dos is not None:
                 total_dos = np.transpose(total_dos)
-                sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-                sec_dos.energies = total_dos[0] * ureg.hartree
-                total_dos = total_dos[1:]
-                for spin in range(len(total_dos)):
+                n_spin_channels = len(total_dos[1:])
+                for spin in range(n_spin_channels):
+                    sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                    sec_dos.n_spin_channels = n_spin_channels
+                    sec_dos.spin_channel = spin if n_spin_channels == 2 else None
+                    sec_dos.energies = total_dos[0] * ureg.hartree
                     sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
-                    sec_dos_values.spin = spin
-                    sec_dos_values.value = total_dos[spin] * (1 / ureg.hartree)
+                    sec_dos_values.value = total_dos[spin + 1] / ureg.hartree
 
             # atom charges
             if (charges := source.get('atomic_charges')) is not None:

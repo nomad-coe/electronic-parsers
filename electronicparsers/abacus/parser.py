@@ -1186,13 +1186,17 @@ class ABACUSParser:
                 return
             self.tdos_parser.mainfile = os.path.join(
                 self.out_parser.maindir, tdos_file)
-            sec_dos = Dos()
-            sec_scc.dos_electronic.append(sec_dos)
-            data = self.tdos_parser.data.T
+            data = self.tdos_parser.data
+            if data is None:
+                return
+            data = data.T
+            sec_dos = Dos(n_spin_channels=1)
             sec_dos.n_energies = len(data[0])
             sec_dos.energies = data[0] * ureg.eV
-            sec_dos.total.append(DosValues(value=data[1:] * (1 / ureg.eV)))
+            sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+            sec_dos_total.value = data[1] / ureg.eV
             # TODO: parse PDOS file
+            sec_scc.m_add_sub_section(Calculation.dos_electronic, sec_dos)
 
         def parse_scf(iteration):
             sec_scc = sec_run.calculation[-1]
