@@ -55,7 +55,7 @@ def test_single_point(parser):
     sec_scfs = sec_scc.scf_iteration
     assert len(sec_scfs) == 6
     assert sec_scfs[2].energy.total.value.magnitude == approx(-3.33233301e-16)
-    assert sec_scfs[5].time_calculation.magnitude == 0.3
+    assert sec_scfs[5].time_physical.magnitude == 0.3
     assert sec_scfs[4].energy.change.magnitude == approx(-7.45516347e-23)
 
     sec_system = archive.run[0].system[0]
@@ -75,7 +75,7 @@ def test_geometry_optimization(parser):
     assert len(sec_sccs) == 4
     assert sec_sccs[0].energy.correlation.value.magnitude == approx(-1.42869721e-18)
     assert sec_sccs[1].forces.total.value[2][2].magnitude == approx(-2.20633015e-10)
-    assert len(sec_sccs[2].scf_iteration) == 5
+    assert len(sec_sccs[2].scf_iteration) == 4
 
     sec_systems = archive.run[0].system
     assert sec_systems[0].atoms.positions[1][2].magnitude == approx(5.6568542e-11)

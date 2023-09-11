@@ -52,8 +52,7 @@ class OutParser(TextParser):
         super().__init__()
 
     def init_quantities(self):
-        re_float = r'[\d\.\-\+ED]+'
-
+        re_float = r'[-+]?\d+\.\d*(?:[EeDd][-+]\d+)?'
         def str_to_functional(val_in):
             val = [v.strip() for v in val_in.strip().rsplit('  ', 1)]
             if len(val) == 2:
@@ -133,6 +132,9 @@ class OutParser(TextParser):
                         'iteration',
                         rf'd\=\s*\d+,ls=[\d\.]+,diis\s*\d+\s*({re_float})\s*({re_float})\s*{re_float}\s*{re_float}\s*({re_float})',
                         dtype=np.dtype(np.float64), repeats=True)])),
+            Quantity(
+                'time_calculation',
+                rf'Total iterative time = +({re_float})s', dtype=np.float64, unit=ureg.s)
         ]
 
         dft_gradient_quantities = [
@@ -142,7 +144,7 @@ class OutParser(TextParser):
                 str_operation=str_to_labels_positions_forces, convert=False),
             Quantity(
                 'energy',
-                r'\@ Step\s*Energy.+\s*\@[\-\s]+\@\s*(.+)'),
+                r'Step\s*Energy.+[\-\s\@]+(.+)')
         ]
 
         pw_quantities = geometry_quantities + [
@@ -214,7 +216,7 @@ class OutParser(TextParser):
                         str_operation=lambda x: [[vi.strip() for vi in v.split('=')] for v in x.split('\n')]),
                     Quantity(
                         'iteration',
-                        r'p\s+\d+\s*\-+\s*(Geometry[\s\S]+?(?:\-+\s*Ste|\Z))',
+                        r'p\s+\d+\s*\-+\s*(Geometry[\s\S]+?(?:\-+\n +Ste|\Z))',
                         repeats=True, sub_parser=TextParser(quantities=calculation_quantities))])),
             Quantity(
                 'molecular_dynamics',
@@ -321,7 +323,9 @@ class NWChemParser:
         return sec_system
 
     def parse_scc(self, source):
-        sec_scc = self.archive.run[0].m_create(Calculation)
+        sec_run = self.archive.run[0]
+        initial_time = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
+        sec_scc = sec_run.m_create(Calculation)
 
         # we only read the results from the last dft and gradients module
         dft = source.get('dft', [{}])[-1]
@@ -342,7 +346,8 @@ class NWChemParser:
         energy = dft_gradient.get('energy')
         if energy is not None:
             sec_energy.total = EnergyEntry(value=energy[1] * ureg.hartree)
-            sec_scc.time_calculation = energy[-1]
+            sec_scc.time_physical = energy[-1] * ureg.s
+            sec_scc.time_calculation = sec_scc.time_physical - initial_time
 
         # forces
         forces = dft_gradient.get('labels_positions_forces', dft.get('labels_positions_forces'))
@@ -379,13 +384,19 @@ class NWChemParser:
         scf = dft.get('self_consistency', source.get('self_consistency'))
         if scf is not None:
             for iteration in scf.get('iteration', []):
+                initial_time = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else initial_time
                 sec_scf = sec_scc.m_create(ScfIteration)
                 sec_scf_energy = sec_scf.m_create(Energy)
                 iteration = [fix_dfloat(i) if isinstance(i, str) else i for i in iteration]
                 sec_scf_energy.total = EnergyEntry(value=iteration[0] * ureg.hartree)
                 sec_scf_energy.change = iteration[1] * ureg.hartree
                 if len(iteration) > 2:
-                    sec_scf.time_calculation = iteration[2]
+                    sec_scf.time_physical = iteration[2] * ureg.s
+                    sec_scf.time_calculation = sec_scf.time_physical - initial_time
+
+        if dft.get('time_calculation') is not None:
+            sec_scc.time_calculation = dft.time_calculation
+            sec_scc.time_physical = initial_time + dft.time_calculation
 
         return sec_scc
 
