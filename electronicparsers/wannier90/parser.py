@@ -477,6 +477,7 @@ class Wannier90Parser():
         self.dos_dat_parser.mainfile = dos_files[0]
 
         sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+        sec_dos.n_spin_channels = 1  # TODO add spin polarized case
         sec_dos.energy_fermi = energy_fermi
         sec_dos.energy_shift = energy_fermi
 
