@@ -1,4 +1,3 @@
-#
 # Copyright The NOMAD Authors.
 #
 # This file is part of NOMAD.
@@ -824,74 +823,45 @@ class OutcarContentParser(ContentParser):
 
 class RunXmlContentHandler(ContentHandler):
     def __init__(self):
-        self._text = ''
-        self._path = []
+        self.stack = []
+        self.tree = {}
+        self.current_text = ''
 
-        self._data = {}
-        self.n_calculations = 0
-
-        # data, attrs, last_sibling, last_sibling_index
-        self._stack = [(self._data, {}, None, -1)]
-
-    def startElement(self, tag, attrs):
-        data, last_attrs, last_sibling, last_sibling_index = self._stack[-1]
-
-        name = attrs.get('name')
-        if not name and tag in ('i', 'v', 'r', 'c'):
-            self._stack.append((data, attrs, None, -1,))
-
+    def startElement(self, name, attrs):
+        node = {"tag": name, "attributes": dict(attrs), "children": []}
+        if self.stack:
+            self.stack[-1]["children"].append(node)
         else:
-            if tag == last_sibling:
-                index = last_sibling_index + 1
-            else:
-                index = 0
+            self.tree = node
+        self.stack.append(node)
 
-            self._stack[-1] = (data, last_attrs, tag, index)
-
-            if name:
-                segment = f'{tag}[@name="{name}"]'
-            else:
-                segment = f'{tag}[{index}]'
-
-            self._stack.append((data.setdefault(segment, {}), attrs, None, -1,))
-
-    def endElement(self, tag):
-        text = self._text
-        self._text = ''
-
-        data, attrs, _, _ = self._stack.pop()
-
-        if tag == 'calculation':
-            self.n_calculations += 1
-
-        data.setdefault('_data', []).append({tag: text, **attrs})
-
-    def clear_stack(self):
-        while len(self._stack) > 0:
-            self.endElement(self._stack[-1][2])
+    def endElement(self, name):
+        new_text = self.current_text.strip()
+        if new_text:  # If there is text inside an element
+            self.stack[-1]['text'] = new_text
+        self.current_text = ''  # Reset text storage
+        self.stack.pop()
 
     def characters(self, content):
-        self._text += content
+        self.current_text += content
 
-    def _combine_sub_tree(self, data, results):
-        for key, value in data.items():
-            if key == '_data':
-                results.extend(value)
-            else:
-                self._combine_sub_tree(value, results)
+    def clear_stack(self):
+        self.stack = []
+        self.tree = {}
+        self.current_text = ''
 
-        return results
+    def combine_sub_tree(self, node):
+        if not node:
+            return None
+        subtree = {"tag": node["tag"], "attributes": node["attributes"]}
+        if "text" in node:
+            subtree["text"] = node["text"]
+        if "children" in node:
+            subtree["children"] = [self.combine_sub_tree(child) for child in node["children"]]
+        return subtree
 
-    def __getitem__(self, key):
-        try:
-            data = self._data
-            segments = key.strip('/').split('/')
-            for segment in segments:
-                data = data[segment]
-
-            return self._combine_sub_tree(data, [])
-        except KeyError:
-            return []
+def __getitem__(self, path):
+    return self._get_key_values(path, repeats=False)
 
 
 class RunFileParser(FileParser):
@@ -914,16 +884,11 @@ class RunFileParser(FileParser):
     def results(self):
         return self._results
 
-    @property
-    def n_calculations(self):
-        return self._results.n_calculations
-
 
 class RunContentParser(ContentParser):
     def __init__(self):
         super().__init__()
         self.parser = None
-        self._re_attrib = re.compile(r'\[@name="(\w+)"\]')
         self._dtypes = {'string': str, 'int': int, 'logical': bool, '': float, 'float': float}
 
     def init_parser(self, filepath, logger):
@@ -936,74 +901,63 @@ class RunContentParser(ContentParser):
 
         self.parser.parse()
 
+    def parse_float_str_vector(self, str_vector: List[str]):
+        return ['nan' if '*' in x else x for x in str_vector]
+
     def _get_key_values(self, path, repeats=False, array=False):
-        def parse_float_str_vector(str_vector: List[str]):
-            return ['nan' if '*' in x else x for x in str_vector]
+        # Split the path into its parts
+        parts = path.split("/")
+        parts = [part for part in parts if part]
 
-        root, base_name = path.strip('/').rsplit('/', 1)
+        def _parse_part(part):
+            # Extract tag, index, and attributes from a path part
+            tag_match = re.match(r"(\w+)", part)
+            index_match = re.search(r"\[(\d+)\]", part)
+            attr_match = re.search(r"\[@(\w+)=[\"'](.+?)[\"']\]", part)
 
-        attrib = re.search(self._re_attrib, base_name)
-        if attrib:
-            attrib = attrib.group(1)
-            base_name = re.sub(self._re_attrib, '', base_name)
+            tag = tag_match.group(1) if tag_match else None
+            index = int(index_match.group(1)) if index_match else None
+            attr_key = attr_match.group(1) if attr_match else None
+            attr_value = attr_match.group(2) if attr_match else None
+            return tag, index, attr_key, attr_value
 
-        # removes all non indexed segments from the path to collect data from the
-        # whole remaining sub-tree.
-        sections = []
-        for section in root.split('/'):
-            if not section.endswith(']'):
-                break
-            sections.append(section)
-        root = '/'.join(sections) if sections else root
+        def _search(node, parts, is_root=False):
+            matches = []
 
-        data = [
-            (d.get(base_name), d.get('name', ''), d.get('type', ''),)
-            for d in self.parser.results[root]]
+            if is_root:
+                matches.extend(_search(node, parts))
+            else:
+                if not parts:
+                    return [node]
 
-        if len(data) == 0:
-            return dict()
+                tag, index, attr_key, attr_value = _parse_part(parts[0])
+                remaining_parts = parts[1:]
 
-        result = dict()
+                if node["tag"] == tag:
+                    if index is None or index == 0:  # root is effectively at index 0
+                        if not attr_key or (attr_key and node["attributes"].get(attr_key) == attr_value):
+                            if remaining_parts:
+                                for child in node.get("children", []):
+                                    matches.extend(_search(child, remaining_parts))
+                            else:
+                                matches.append(node)
+            return matches
+
+        results = _search(self.parser.results.tree, parts, is_root=True)
+
+        if repeats:
+            return results
+
         if array:
-            value = [
-                parse_float_str_vector(item[0].split())
-                for item in data if item[0]]
-            value = [d[0] if len(d) == 1 and not repeats else d for d in value]
-            dtype = data[0][2]
-            try:
-                result[base_name] = np.array(value, dtype=self._dtypes.get(dtype, float))
-            except Exception:
-                self.parser.logger.error('Error parsing array.')
+            return [results[0]] if results else []
 
-        else:
-            for value, name, dtype in data:
-                if not value:
-                    continue
-                if attrib and name != attrib:
-                    continue
-                name = name if name else base_name
-                dtype = self._dtypes.get(dtype, str)
-                value = value.split()
-                if dtype == bool:
-                    value = [v == 'T' for v in value]
-                if dtype == float:
-                    # prevent nan printouts
-                    value = parse_float_str_vector(value)
-                # using numpy array does not work
-                value = convert(value, dtype)
-                value = value[0] if len(value) == 1 else value
-                result.setdefault(name, [])
-                result[name].append(value)
-            if not repeats:
-                for key, val in result.items():
-                    result[key] = val[0] if len(val) == 1 else val
-
-        return result
+        return results[0] if results else {}
 
     @property
     def header(self):
         if self._header is None:
-            self._header = self._get_key_values('/modeling[0]/generator[0]/i')
+            self._header = self._get_key_values('/modeling/generator/i', repeats=True)
+            self._header = {h['attributes']['name']: h['text'] for h in self._header}
             for key, val in self._header.items():
                 if not isinstance(val, str):
                     self._header[key] = ' '.join(val)
