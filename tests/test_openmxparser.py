@@ -124,6 +124,7 @@ def test_AlN(parser):
 
     workflow = archive.workflow2
     assert workflow.method.method == "steepest_descent"
+    assert workflow.method.optimization_steps_maximum == 50
     assert workflow.method.convergence_tolerance_force_maximum.magnitude == approx(
         (0.0003 * units.hartree / units.bohr).to_base_units().magnitude)
 
@@ -182,7 +183,9 @@ def test_C2N2(parser):
     scc = run.calculation
     assert len(scc) == 100
     assert scc[0].temperature.magnitude == approx(300.0)
+    assert scc[0].time == approx(0.0)
     assert scc[99].temperature.magnitude == approx(46.053)
+    assert scc[99].time.magnitude == approx(49.5e-15)
     assert np.shape(scc[0].forces.total.value) == (4, 3)
     assert scc[0].forces.total.value[0][0].magnitude == approx(HaB_to_N(0.10002))
     assert scc[99].forces.total.value[2][2].magnitude == approx(HaB_to_N(-0.00989))
@@ -198,6 +201,27 @@ def test_C2N2(parser):
 
     workflow = archive.workflow2
     assert workflow.method.thermodynamic_ensemble == "NVT"
+    assert len(workflow.method.thermostat_parameters) == 2
+    thermostat = workflow.method.thermostat_parameters[0]
+    assert thermostat.thermostat_type == "nose_hoover"
+    assert thermostat.temperature_profile == "constant"
+    assert thermostat.temperature_update_frame_start == 1
+    assert thermostat.temperature_update_frame_end == 50
+    assert thermostat.reference_temperature_start.magnitude == approx(300.0)
+    assert thermostat.reference_temperature_end.magnitude == approx(300.0)
+    thermostat = workflow.method.thermostat_parameters[1]
+    assert thermostat.thermostat_type == "nose_hoover"
+    assert thermostat.temperature_profile == "linear"
+    assert thermostat.temperature_update_frame_start == 50
+    assert thermostat.temperature_update_frame_end == 100
+    assert thermostat.reference_temperature_start.magnitude == approx(300.0)
+    assert thermostat.reference_temperature_end.magnitude == approx(1000.0)
+    assert workflow.method.coordinate_save_frequency == 1
+    assert workflow.method.velocity_save_frequency == 1
+    assert workflow.method.force_save_frequency == 1
+    assert workflow.method.thermodynamics_save_frequency == 1
+    assert workflow.method.integration_timestep.magnitude == approx(0.5e-15)
+    assert workflow.method.n_steps == 100
 
     system = run.system[0]
     assert np.shape(system.atoms.velocities) == (4, 3)
