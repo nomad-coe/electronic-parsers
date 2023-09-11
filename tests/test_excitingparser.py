@@ -113,24 +113,28 @@ def test_dos_spinpol(parser):
 
     sec_run = archive.run[0]
     sec_method = sec_run.method[0]
-    sec_scc = sec_run.calculation[0]
-    sec_dos = sec_scc.dos_electronic[0]
-
     assert list(sec_method.k_mesh.grid) == [8] * 3
     assert list(sec_method.k_mesh.offset) == [.0] * 3
 
-    assert np.shape(sec_dos.total[0].value) == (500,)
-    assert (sec_dos.energies[79].to('Ha') - sec_scc.energy.fermi.to('Ha')).magnitude == approx(-0.684)
-    assert sec_dos.total[0].value[126].to('1/Ha').magnitude == approx(20.83182629)
-    assert sec_dos.total[1].value[136].to('1/Ha').magnitude == approx(2.109103733)
-    assert (sec_dos.energies[240].to('Ha') - sec_scc.energy.fermi.to('Ha')).magnitude == approx(-0.4e-01)
-    assert sec_dos.total[0].value[220].to('1/Ha').magnitude == approx(62.06860954)
-    assert sec_dos.total[1].value[78].to('1/Ha').magnitude == approx(47.70198869)
+    sec_scc = sec_run.calculation[0]
+    assert len(sec_scc.dos_electronic) == 2
+    sec_dos_up = sec_scc.dos_electronic[0]
+    sec_dos_down = sec_scc.dos_electronic[1]
+    assert np.shape(sec_dos_up.total[0].value) == (500,)
+    assert (sec_dos_up.energies[79].to('Ha') - sec_scc.energy.fermi.to('Ha')).magnitude == approx(-0.684)
+    assert (sec_dos_up.energies[240].to('Ha') - sec_scc.energy.fermi.to('Ha')).magnitude == approx(-0.4e-01)
+    assert sec_dos_up.total[0].value[126].to('1/Ha').magnitude == approx(20.83182629)
+    assert sec_dos_down.total[0].value[136].to('1/Ha').magnitude == approx(2.109103733)
+    assert sec_dos_up.total[0].value[220].to('1/Ha').magnitude == approx(62.06860954)
+    assert sec_dos_down.total[0].value[78].to('1/Ha').magnitude == approx(47.70198869)
 
-    assert len(sec_dos.atom_projected) == 150
-    assert np.shape(sec_dos.atom_projected[149].value) == (500,)
-    assert sec_dos.atom_projected[7].value[116].to('1/Ha').magnitude == approx(0.04694462204)  # atom_index=1, spin=1, l=1, m=0
-    assert sec_dos.atom_projected[123].value[85].to('1/Ha').magnitude == approx(3.405855654e-06)  # atom_index=0, spin=1, l=20, m=0
+    assert len(sec_dos_up.atom_projected) == 75 and len(sec_dos_down.atom_projected) == 75
+    assert np.shape(sec_dos_up.atom_projected[73].value) == (500,)
+    assert sec_dos_up.atom_projected[11].atom_index == 2
+    assert sec_dos_up.atom_projected[11].m_kind == 'spherical'
+    assert np.all(sec_dos_up.atom_projected[11].lm == np.array([3, 0]))
+    assert sec_dos_up.atom_projected[11].value[85].to('1/Ha').magnitude == approx(0.027132587730000005)
+    assert sec_dos_down.atom_projected[11].value[85].to('1/Ha').magnitude == approx(0.0001147139711)
 
 
 @pytest.mark.skip('To be updated: TDDFT currently not supported by FAIRmat')
