@@ -1334,30 +1334,42 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             return
         energy_fermi = (energy_fermi.magnitude * ureg.joule).to('hartree')
 
-        sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-        sec_dos.n_energies = self.dos_parser.number_of_dos
-        sec_dos.energies = self.dos_parser.energies + energy_fermi
         totaldos = self.dos_parser.get('totaldos')
+        n_spin_channels = len(totaldos)
         for spin in range(len(totaldos)):
-            sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
-            sec_dos_values.spin = spin
-            sec_dos_values.value = totaldos[spin]
+            sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+            sec_dos.n_spin_channels = n_spin_channels
+            sec_dos.spin_channels = spin if n_spin_channels == 2 else None
+            sec_dos.n_energies = self.dos_parser.number_of_dos
+            sec_dos.energies = self.dos_parser.energies + energy_fermi
+            sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+            sec_dos_total.value = totaldos[spin]
 
+        # TODO fix this partial DOS parsing --> it is wrong, probably it is the orbital_projected.
         partialdos = self.dos_parser.get('partialdos')
         if partialdos is None:
             return
 
         partialdos = partialdos.to('1/joule').magnitude
-        lm_values = np.column_stack((np.arange(len(partialdos)), np.zeros(len(partialdos), dtype=np.int32)))
-        for lm in range(len(partialdos)):
-            for spin in range(len(partialdos[lm])):
-                for atom in range(len(partialdos[lm][spin])):
-                    sec_dos_values = sec_dos.m_create(DosValues, Dos.atom_projected)
-                    sec_dos_values.m_kind = 'spherical'
-                    sec_dos_values.lm = lm_values[lm]
-                    sec_dos_values.spin = spin
-                    sec_dos_values.atom_index = atom
-                    sec_dos_values.value = partialdos[lm][spin][atom]
+        n_energies = self.dos_parser.number_of_dos
+        n_lm = len(partialdos)
+        n_atoms = partialdos.shape[2]
+        partialdos = np.reshape(partialdos, (n_spin_channels, n_lm, n_atoms, n_energies))
+        lm_values = np.column_stack((np.arange(n_lm), np.zeros(n_lm, dtype=np.int32)))
+        for spin in range(n_spin_channels):
+            if sec_scc.dos_electronic is not None and sec_scc.dos_electronic[spin]:
+                sec_dos = sec_scc.dos_electronic[spin]
+            else:
+                sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                sec_dos.n_spin_channels = n_spin_channels
+                sec_dos.spin_channel = spin if n_spin_channels == 2 else None
+            for lm in range(n_lm):
+                for atom in range(n_atoms):
+                    sec_dos_atom = sec_dos.m_create(DosValues, Dos.atom_projected)
+                    sec_dos_atom.m_kind = 'spherical'
+                    sec_dos_atom.lm = lm_values[lm]
+                    sec_dos_atom.atom_index = atom
+                    sec_dos_atom.value = partialdos[spin][lm][atom]
 
     def _parse_bandstructure(self, sec_scc):
         # we need to set nspin again as this is overwritten when setting mainfile
@@ -1487,17 +1499,16 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # energy dos_up dos_down
         nspin = self.info_parser.get_number_of_spin_channels()
 
-        sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-        sec_dos.n_energies = len(data) // nspin
-
         data = np.reshape(data, (nspin, len(data) // nspin, 2))
         data = np.transpose(data, axes=(2, 0, 1))
-
-        sec_dos.energies = data[0][0] * ureg.hartree + energy_fermi
         dos = data[1] * (1 / ureg.hartree)
-        for spin in range(len(dos)):
+        for spin in range(nspin):
+            sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+            sec_dos.n_spin_channels = nspin
+            sec_dos.spin_channel = spin if nspin == 2 else None
+            sec_dos.n_energies = len(data) // nspin
+            sec_dos.energies = data[0][0] * ureg.hartree + energy_fermi
             sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
-            sec_dos_values.spin = spin
             sec_dos_values.value = dos[spin]
 
         # TODO add PDOS
