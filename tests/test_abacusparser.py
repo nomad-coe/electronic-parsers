@@ -34,7 +34,7 @@ def parser():
 
 def test_band(parser):
     archive = EntryArchive()
-    parser.parse(r'tests/data/abacus/Si_band/running_nscf.log', archive, None)
+    parser.parse('tests/data/abacus/Si_band/running_nscf.log', archive, None)
 
     sec_run = archive.run[0]
     assert sec_run.program.version == 'Parallel, in development'
@@ -120,7 +120,7 @@ def test_band(parser):
 # TODO iteration is None in sub_section
 def test_dos(parser):
     archive = EntryArchive()
-    parser.parse(r'tests/data/abacus/Si_dos/running_nscf.log', archive, None)
+    parser.parse('tests/data/abacus/Si_dos/running_nscf.log', archive, None)
 
     sec_run = archive.run[0]
     assert len(sec_run.calculation) == 1
@@ -129,12 +129,18 @@ def test_dos(parser):
     assert sec_k_band.energy_fermi.magnitude == approx(1.055136698179135e-18)
     energy_reference = sec_k_band.energy_fermi.to('eV').magnitude
 
+    assert len(sec_scc.dos_electronic) == 1
     sec_dos = sec_scc.dos_electronic[0]
-    assert sec_dos.energies.shape == (2265, )
-    assert sec_dos.total[0].value.shape == (1, 2265)
+    assert sec_dos.n_spin_channels == len(sec_scc.dos_electronic)
+    assert not sec_dos.spin_channel
+    n_energies = sec_dos.n_energies
+    assert n_energies == 2265
+    assert sec_dos.energies.shape == (n_energies, )
+    assert len(sec_dos.total) == 1
+    assert sec_dos.total[0].value.shape == (n_energies, )
 
     energies = sec_dos.energies.to('eV').magnitude
-    values = (sec_dos.total[0].value).to('1/eV').magnitude
+    values = sec_dos.total[0].value.to('1/eV').magnitude
     nonzero = np.unique(values.nonzero())
     energies = energies[nonzero]
     energies.sort()
@@ -146,7 +152,7 @@ def test_dos(parser):
 
 def test_scf(parser):
     archive = EntryArchive()
-    parser.parse(r'tests/data/abacus/Si_scf/running_scf.log', archive, None)
+    parser.parse('tests/data/abacus/Si_scf/running_scf.log', archive, None)
 
     sec_run = archive.run[0]
     assert sec_run.x_abacus_program_execution_time.magnitude == approx(1.0)
@@ -191,7 +197,7 @@ def test_scf(parser):
 
 def test_geomopt(parser):
     archive = EntryArchive()
-    parser.parse(r'tests/data/abacus/Si_geomopt/running_cell-relax.log', archive, None)
+    parser.parse('tests/data/abacus/Si_geomopt/running_cell-relax.log', archive, None)
 
     sec_run = archive.run[0]
 
@@ -219,7 +225,7 @@ def test_geomopt(parser):
 
 def test_md(parser):
     archive = EntryArchive()
-    parser.parse(r'tests/data/abacus/Sn_md/running_md.log', archive, None)
+    parser.parse('tests/data/abacus/Sn_md/running_md.log', archive, None)
 
     sec_run = archive.run[0]
     assert sec_run.x_abacus_md_nstep_in == 10
@@ -240,7 +246,7 @@ def test_md(parser):
 # TODO no test data
 def test_hse(parser):
     archive = EntryArchive()
-    parser.parse(r'tests/data/abacus/GaSb_hse/running_scf.log', archive, None)
+    parser.parse('tests/data/abacus/GaSb_hse/running_scf.log', archive, None)
 
     sec_run = archive.run[0]
     assert sec_run.x_abacus_program_execution_time.magnitude == 8837
@@ -271,28 +277,33 @@ def test_hse(parser):
 
 def test_spin2(parser):
     archive = EntryArchive()
-    parser.parse(r'tests/data/abacus/Si_spin2/running_nscf.log', archive, None)
-
+    parser.parse('tests/data/abacus/Si_spin2/running_nscf.log', archive, None)
     sec_run = archive.run[0]
-    sec_scc = sec_run.calculation[0]
-    # TODO fermi energy not set
-    sec_k_band = sec_scc.band_structure_electronic[0]
-    assert sec_k_band.energy_fermi.magnitude == 0
-    sec_dos = sec_scc.dos_electronic[0]
-    assert sec_dos.energies.shape == (2265, )
-    assert sec_dos.total[0].value.shape == (2, 2265)
-    sec_k_band = sec_scc.band_structure_electronic[0]
-    sec_k_band_segment = sec_k_band.segment[0]
-    assert sec_k_band_segment.energies.shape == (2, 1728, 8)
-    assert sec_k_band_segment.energies[0][1][2].magnitude == approx(1.0292510870946719e-18)
 
     sec_method = sec_run.method[0]
     assert sec_method.electronic.n_spin_channels == 2
 
+    sec_scc = sec_run.calculation[0]
+    # TODO fermi energy not set
+    sec_k_band = sec_scc.band_structure_electronic[0]
+    assert sec_k_band.energy_fermi.magnitude == 0
+    sec_k_band_segment = sec_k_band.segment[0]
+    assert sec_k_band_segment.energies.shape == (2, 1728, 8)
+    assert sec_k_band_segment.energies[0][1][2].magnitude == approx(1.0292510870946719e-18)
+
+    assert len(sec_scc.dos_electronic) == 2
+    sec_dos_up = sec_scc.dos_electronic[0]
+    sec_dos_down = sec_scc.dos_electronic[1]
+    assert sec_dos_up.spin_channel == 0
+    assert sec_dos_up.spin_channel != sec_dos_down.spin_channel
+    assert sec_dos_up.energies.shape == (2265, )
+    assert len(sec_dos_up.total) == len(sec_dos_down.total)
+    assert sec_dos_up.total[0].value.shape == (2265, )
+
 
 def test_dftu(parser):
     archive = EntryArchive()
-    parser.parse(r'tests/data/abacus/MnBiTe_dftu/running_scf.log', archive, None)
+    parser.parse('tests/data/abacus/MnBiTe_dftu/running_scf.log', archive, None)
 
     sec_run = archive.run[0]
 
