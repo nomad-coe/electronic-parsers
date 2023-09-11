@@ -1211,8 +1211,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
             sec_dos.n_spin_channels = nsppol
             sec_dos.spin_channel = spin if nsppol == 2 else None
+            sec_dos.n_energies = len(dos_spin[0])
             sec_dos.energies = dos_spin[0] * ureg.hartree
-            sec_dos.n_energies = len(dos_spin)
 
             sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
             sec_dos_total.value = dos_spin[1] / ureg.hartree
