@@ -838,7 +838,11 @@ class RunXmlContentHandler(ContentHandler):
     def endElement(self, name):
         new_text = self.current_text.strip()
         if new_text:  # If there is text inside an element
-            self.stack[-1]['text'] = new_text
+            try:
+                new_value = float(new_text)
+            except ValueError:
+                new_value = new_text  # If conversion fails, use the original text
+            self.stack[-1]['text'] = new_value
         self.current_text = ''  # Reset text storage
         self.stack.pop()
 
@@ -860,8 +864,8 @@ class RunXmlContentHandler(ContentHandler):
             subtree["children"] = [self.combine_sub_tree(child) for child in node["children"]]
         return subtree
 
-def __getitem__(self, path):
-    return self._get_key_values(path, repeats=False)
+    def __getitem__(self, path):
+        return self._get_key_values(path)
 
 
 class RunFileParser(FileParser):
@@ -904,7 +908,7 @@ class RunContentParser(ContentParser):
     def parse_float_str_vector(self, str_vector: List[str]):
         return ['nan' if '*' in x else x for x in str_vector]
 
-    def _get_key_values(self, path, repeats=False, array=False):
+    def _get_key_values(self, path, array=False):
         # Split the path into its parts
         parts = path.split("/")
         parts = [part for part in parts if part]
@@ -945,23 +949,16 @@ class RunContentParser(ContentParser):
 
         results = _search(self.parser.results.tree, parts, is_root=True)
 
-        if repeats:
+        if array or len(results) > 1:
             return results
-
-        if array:
-            return [results[0]] if results else []
 
         return results[0] if results else {}
 
     @property
     def header(self):
         if self._header is None:
-            self._header = self._get_key_values('/modeling/generator/i', repeats=True)
-            self._header = {h['attributes']['name']: h['text'] for h in self._header}
-            for key, val in self._header.items():
-                if not isinstance(val, str):
-                    self._header[key] = ' '.join(val)
-        return self._header
+            self._header = self._get_key_values('/modeling/generator/i')
+            return {h['attributes']['name']: h['text'] for h in self._header}
 
     def get_incar(self):
         if self._incar is not None and self._incar.get('incar', None) is not None:
