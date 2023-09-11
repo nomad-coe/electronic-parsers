@@ -150,6 +150,7 @@ def test_dos(parser):
     sec_method = sec_run.method[0]
     assert sec_method.k_mesh.n_points == 413
     assert sec_method.k_mesh.points is None
+    assert len(sec_run.calculation[0].dos_electronic) == 1
     sec_dos = sec_run.calculation[0].dos_electronic[0]
     assert np.shape(sec_dos.total[0].value) == (1801,)
     assert len(sec_dos.energies) == 1801
