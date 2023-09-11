@@ -1154,7 +1154,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
                     # Check if data can be read
                     data = read_dos(files)
-                    if dos is None:
+                    if data is None:
                         continue
 
                     if sec_scc.dos_electronic is not None:

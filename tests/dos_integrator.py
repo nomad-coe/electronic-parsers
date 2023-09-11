@@ -19,24 +19,23 @@
 import numpy as np
 
 
-def integrate_dos(dos, spin_pol, e_fermi=None):
+def integrate_dos(dos, e_fermi=None):
     """Integrate the DOS value over the spin channels stated in `spin_pol`.
     When the sampling range is wide enough and `e_fermi` is given,
     the integral should yield the number of valence electrons.
     The explicit integral serves to check energy and value units."""
     # Restrain integral to the occupied states
     if e_fermi:
-        occ_energy = [e.magnitude for e in dos.energies if e <= e_fermi]
+        occ_energy = [[e.magnitude for e in dos_spin.energies if e <= e_fermi] for dos_spin in dos]
     else:
-        occ_energy = [e.magnitude for e in dos.energies]
+        occ_energy = [[e.magnitude for e in dos_spin.energies] for dos_spin in dos]
     # Perofrm the integration
     dos_integrated = 0.
-    spins = [0, 1] if spin_pol else [0]
-    for spin in spins:
+    for ispin, dos_spin in enumerate(dos):
         try:
-            spin_channel = dos.total[spin].value[:len(occ_energy)]
+            spin_channel = dos_spin.total[0].value[:len(occ_energy[ispin])]
         except IndexError:
             raise IndexError('Check the no. spin-channels')
         occ_value = [v.magnitude for v in spin_channel]
-        dos_integrated += np.trapz(x=occ_energy, y=occ_value)
+        dos_integrated += np.trapz(x=occ_energy[ispin], y=occ_value)
     return dos_integrated

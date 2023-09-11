@@ -130,13 +130,18 @@ def test_band_spinpol(parser):
     assert sec_k_band.segment[2].kpoints[14][2] == approx(0.5)
 
     # test DOS
-    sec_dos = sec_scc.dos_electronic[0]
-    assert np.shape(sec_dos.energies) == (50,)
-    assert np.shape(sec_dos.total[1].value) == (50,)
-    assert sec_dos.energies[46].magnitude == approx(-1.1999976e-18)
-    assert sec_dos.total[0].value[46].to('1 / eV').magnitude == approx(.18127036)
-    assert sec_dos.total[1].value[15].to('1 / eV').magnitude == approx(.57150097)
-    dos_integrated = integrate_dos(sec_dos, True, sec_scc.energy.fermi)
+    sec_dos = sec_scc.dos_electronic
+    assert len(sec_dos) == 2
+    sec_dos_up = sec_dos[0]
+    sec_dos_down = sec_dos[1]
+    assert sec_dos_up.n_spin_channels == sec_dos_down.n_spin_channels
+    assert sec_dos_up.spin_channel == 0 and sec_dos_down.spin_channel == 1
+    assert np.shape(sec_dos_up.energies) == (50,)
+    assert np.shape(sec_dos_up.total[0].value) == (50,)
+    assert sec_dos_up.energies[46].magnitude == approx(-1.1999976e-18)
+    assert sec_dos_up.total[0].value[46].to('1 / eV').magnitude == approx(.18127036)
+    assert sec_dos_down.total[0].value[15].to('1 / eV').magnitude == approx(.57150097)
+    dos_integrated = integrate_dos(sec_dos, sec_scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 8.
 
     # v151211 test for the Fermi level
@@ -173,11 +178,12 @@ def test_dos_silicon(silicon, version, normalization_factor):
     """Tests that the DOS of silicon is parsed correctly.
     """
     scc = silicon[version].run[-1].calculation[0]
-    dos = scc.dos_electronic[0]
     energy_reference = scc.energy.fermi.to('eV').magnitude
-    energies = dos.energies.to('eV').magnitude
-    values = np.array([d.value.magnitude for d in dos.total])
-    dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
+    dos = scc.dos_electronic
+    assert len(dos) == 1
+    energies = dos[0].energies.to('eV').magnitude
+    values = np.array([d.value.magnitude for d in dos[0].total])
+    dos_integrated = integrate_dos(dos, scc.energy.fermi)
 
     assert pytest.approx(dos_integrated, abs=5e-2) == 8
     assert dos.total[0].x_fhi_aims_normalization_factor_raw_data == normalization_factor
@@ -201,23 +207,33 @@ def test_dos(parser):
     assert list(sec_method.k_mesh.grid) == [10] * 3
 
     sec_scc = archive.run[0].calculation[0]
-    sec_dos = sec_scc.dos_electronic[0]
-    assert np.shape(sec_dos.energies) == (50,)
-    assert np.shape(sec_dos.total[0].value) == (50,)
-    assert sec_dos.total[0].value[0].to('1 / eV').magnitude == approx(0.00233484)
-    assert sec_dos.total[0].value[-1].to('1 / eV').magnitude == approx(0.49471595)
+    sec_dos = sec_scc.dos_electronic
+    assert len(sec_dos) == 1
+    assert np.shape(sec_dos[0].energies) == (50,)
+    assert np.shape(sec_dos[0].total[0].value) == (50,)
+    assert sec_dos[0].total[0].value[0].to('1 / eV').magnitude == approx(0.00233484)
+    assert sec_dos[0].total[0].value[-1].to('1 / eV').magnitude == approx(0.49471595)
 
-    dos_integrated = integrate_dos(sec_dos, False, sec_scc.energy.fermi)
+    dos_integrated = integrate_dos(sec_dos, sec_scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 3.  # 3rd valence shell
 
-    sec_species_dos = sec_dos.species_projected
-    assert np.shape(sec_species_dos[7].value) == (50,)
-    assert sec_species_dos[0].value[44].to('1 / eV').magnitude == approx(0.62432797)  # Na total
-    assert sec_species_dos[1].value[37].to('1 / eV').magnitude == approx(0.12585650)  # Cl total
-    assert sec_species_dos[4].value[3].to('1 / eV').magnitude == approx(0.07198767)  # Na l=1
-    assert sec_species_dos[7].value[5].to('1 / eV').magnitude == approx(0.00394778)  # Cl l=2
+    # PDOS
+    assert sec_dos[0].m_xpath('species_projected') and sec_dos[0].m_xpath('orbital_projected')
+    sec_dos_species = sec_dos[0].species_projected
+    assert len(sec_dos_species) == 2
+    assert sec_dos_species[0].atom_label == 'Na' and sec_dos_species[1].atom_label == 'Cl'
+    assert sec_dos_species[0].value[3].magnitude == approx(8.316466310418057e+17)
+    assert sec_dos_species[1].value[3].magnitude == approx(7.471934333552389e+18)
+    sec_dos_orbital = sec_dos[0].orbital_projected
+    assert len(sec_dos_orbital) == 7
+    atom_labels = ['Na'] * 3 + ['Cl'] * 4
+    orbital_labels = ['s', 'p', 'd'] + ['s', 'p', 'd', 'f']
+    sec_atom_labels = [orbital_dos.atom_label for orbital_dos in sec_dos_orbital]
+    sec_orbital_labels = [orbital_dos.orbital for orbital_dos in sec_dos_orbital]
+    assert sec_atom_labels == atom_labels and sec_orbital_labels == orbital_labels
 
 
+@pytest.mark.skip('Test is too heavy to be added to the pipeline.')
 @pytest.mark.parametrize("tier", ['tight', 'intermediate', 'light_spd'])
 def test_native_tiers(tier):
     archive = EntryArchive()
