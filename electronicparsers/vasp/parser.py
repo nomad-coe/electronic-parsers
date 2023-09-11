@@ -1653,21 +1653,29 @@ class VASPParser():
                     sec_dos.spin_channel = spin if n_spin_channels == 2 else None
                     sec_dos.energies = energies * ureg.eV
                     sec_dos.energy_fermi = efermi * ureg.eV
-                    sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
-                    sec_dos_values.value = values[spin] / ureg.eV
-                    sec_dos_values.value_integrated = integrated[spin]
+                    sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+                    sec_dos_total.value = values[spin] / ureg.eV
+                    sec_dos_total.value_integrated = integrated[spin]
 
-                    # TODO rework on the atom_projected and orbital_projected DOS and add examples to testing
-                    dos, fields = self.parser.get_partial_dos(n_calc)
-                    if dos is not None:
-                        for lm in range(len(dos)):
-                            for spin in range(len(dos[lm])):
-                                for atom in range(len(dos[lm][spin])):
-                                    sec_dos_atom = sec_dos[spin].m_create(DosValues, Dos.atom_projected)
-                                    sec_dos_atom.m_kind = 'polynomial'
-                                    sec_dos_atom.lm = lm_converter.get(fields[lm], [-1, -1])
-                                    sec_dos_atom.atom_index = atom
-                                    sec_dos_atom.value = dos[lm][spin][atom] / ureg.eV
+                # TODO rework on the atom_projected and orbital_projected DOS and add examples to testing
+                dos, fields = self.parser.get_partial_dos(n_calc)
+                if dos is not None:
+                    n_lm, n_atoms, n_energies = dos.shape[0], dos.shape[2], dos.shape[3]
+                    dos = np.reshape(dos, (n_spin_channels, n_atoms, n_lm, n_energies))
+                    for spin in range(n_spin_channels):
+                        if sec_scc.dos_electronic is not None and sec_scc.dos_electronic[spin]:
+                            sec_dos = sec_scc.dos_electronic[spin]
+                        else:
+                            sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                            sec_dos.n_spin_channels = n_spin_channels
+                            sec_dos.spin_channel = spin if n_spin_channels == 2 else None
+                        for atom in range(n_atoms):
+                            for lm in range(n_lm):
+                                sec_dos_orbital = sec_dos.m_create(DosValues, Dos.orbital_projected)
+                                sec_dos_orbital.m_kind = 'polynomial'
+                                sec_dos_orbital.lm = lm_converter.get(fields[lm], [-1, -1])
+                                sec_dos_orbital.atom_index = atom
+                                sec_dos_orbital.value = dos[spin][atom][lm] / ureg.eV
 
             if efermi is not None:
                 sec_run.calculation[-1].energy.fermi = efermi * ureg.eV
