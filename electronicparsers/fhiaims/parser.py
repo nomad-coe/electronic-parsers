@@ -1158,10 +1158,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                         continue
 
                     if sec_scc.dos_electronic is not None:
-                        if n_spin != 2:
-                            sec_dos = sec_scc.dos_electronic[0]
-                        else:
-                            sec_dos = sec_scc.dos_electronic[0] if 'spin_up' in files else sec_scc.dos_electronic[1]
+                        sec_dos = sec_scc.dos_electronic[1] if 'spin_dn' in files else sec_scc.dos_electronic[0]
                     else:
                         sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
                     sec_dos.m_kind = 'integrated'
