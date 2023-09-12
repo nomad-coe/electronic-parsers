@@ -25,6 +25,7 @@ from tests.dos_integrator import integrate_dos
 
 
 _root_dir = 'tests/data/fhiaims/'
+silicon_versions = ('v071914_7', 'v171221_1')
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -37,12 +38,7 @@ def parser():
 
 
 @pytest.fixture(scope='module')
-def silicon_versions():
-    return ('v071914_7', 'v171221_1')
-
-
-@pytest.fixture(scope='module')
-def silicon(parser, silicon_versions):
+def silicon(parser):
     silicon = {}
     for version in silicon_versions:
         archive = EntryArchive()
@@ -53,12 +49,10 @@ def silicon(parser, silicon_versions):
 
 
 @pytest.fixture(scope='module')
-def silicon_normalization_factors(silicon_versions):
-    normalization_factors = [.5, 1]
-    return dict(zip(silicon_versions, normalization_factors))
+def silicon_normalization_factors():
+    return dict(zip(silicon_versions, [.5, 1]))
 
 
-@pytest.fixture(scope='module')
 def parse_native_tiers(tier):
     archive = EntryArchive()
     FHIAimsParser().parse(f'{_root_dir}/native_tiers/{tier}/aims.out', archive, None)
@@ -160,7 +154,7 @@ def test_band_spinpol(parser):
     assert sec_k_band.energy_fermi == sec_scc.energy.fermi
 
 
-@pytest.mark.parametrize("version", silicon_versions())
+@pytest.mark.parametrize("version", silicon_versions)
 def test_band_silicon(silicon, version):
     """Tests that the band structure of silicon is parsed correctly.
     """
@@ -184,7 +178,7 @@ def test_band_silicon(silicon, version):
     assert gap == approx(0.60684)
 
 
-@pytest.mark.parametrize("version", silicon_versions())
+@pytest.mark.parametrize("version", silicon_versions)
 def test_dos_silicon(silicon, version, silicon_normalization_factors):
     """Tests that the DOS of silicon is parsed correctly.
     """
