@@ -538,6 +538,13 @@ class OutParser(TextParser):
                                 'value',
                                 rf'\d+ +({re_f}) +({re_f}) +({re_f})',
                                 repeats=True, dtype=np.dtype(np.float64))]))])),
+            # read user time since total time seems to be imprecise
+            Quantity(
+                'module_time',
+                rf'Module time\:\s+user time += +({re_f}) seconds', dtype=np.float64),
+            Quantity(
+                'total_time',
+                rf'Total time\:\s+user time += +({re_f}) seconds', dtype=np.float64)
         ]
 
         self._quantities = [
@@ -857,7 +864,6 @@ class Psi4Parser:
             'scf', 'scf_grad', 'mp', 'ci', 'mcscf', 'mcscf_detci', 'cc', 'cc_energy',
             'cc_lambda', 'cc_density']
         for module in self.out_parser.get('module', []):
-            calculations_ref = []
             for name in module_names:
                 for submodule in module.get(name, []):
                     self._method = submodule.get('method', name.split('_', maxsplit=1)[0].upper())
@@ -869,7 +875,9 @@ class Psi4Parser:
                             calc.system_ref = self.archive.run[-1].system[-1]
                         if self.archive.run[-1].method:
                             calc.method_ref = self.archive.run[-1].method[-1]
-                    calculations_ref.append(calc)
+                        # TODO are these calcs done in series?
+                        calc.time_calculation = module.module_time
+                        calc.time_physical = module.total_time
             if module.options is not None:
                 self.archive.run[-1].method[-1].x_psi4_options = module.options[1]
 
@@ -899,6 +907,8 @@ class Psi4Parser:
                         total=EnergyEntry(value=energy[0] * ureg.hartree),
                         change=energy[1] * ureg.hartree)
                 calc.system_ref = self.archive.run[-1].system[-1]
+                calc.time_calculation = module.module_time
+                calc.time_physical = module.total_time
                 opt_calculations_ref.append(calc)
         if opt_calculations_ref:
             convergence = module.optking.convergence_criteria
