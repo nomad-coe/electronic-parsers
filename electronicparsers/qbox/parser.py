@@ -175,7 +175,12 @@ class QboxXMLParser(TextParser):
                                 ])
                             ),
 
-                        ]))
+                        ])),
+                    Quantity(
+                        'time_calculation',
+                        rf'\<timing name=.+?({re_f}).+?{re_f}',
+                        str_operation=lambda x: np.sum(np.array(x.split(), dtype=np.float64))
+                    )
                 ])
             )
         ]
@@ -249,6 +254,7 @@ class QboxParser:
             return symmetrized * ureg.GPa
 
         for iteration in self.out_parser.run[index].get('iteration', []):
+            time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
             sec_scc = sec_run.m_create(Calculation)
             sec_scc.energy = Energy()
             sec_system = sec_run.m_create(System)
@@ -303,6 +309,10 @@ class QboxParser:
                 forces = [atom.force for atom in atoms]
                 if forces:
                     sec_scc.forces = Forces(total=ForcesEntry(value=forces * (ureg.hartree / ureg.bohr)))
+
+            if iteration.time_calculation is not None:
+                sec_scc.time_calculation = iteration.time_calculation
+                sec_scc.time_physical = time_initial + sec_scc.time_calculation
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
