@@ -29,15 +29,15 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, GreensFunctions
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, HubbardKanamoriModel, LatticeModelHamiltonian, KMesh, FrequencyMesh, TimeMesh,
-    DMFT
+    Method, AtomParameters, HubbardKanamoriModel, LatticeModelHamiltonian, KMesh, FrequencyMesh,
+    TimeMesh, DMFT
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from .metainfo.soliddmft import (
-    x_soliddmft_general_parameters, x_soliddmft_solver_parameters, x_soliddmft_advanced_parameters,
-    x_soliddmft_dft_input_parameters, x_soliddmft_iter_parameters, x_soliddmft_convergence_obs_parameters,
+    x_soliddmft_iter_parameters, x_soliddmft_convergence_obs_parameters,
     x_soliddmft_observables_parameters
 )
+from nomad.parsing.parser import to_hdf5
 
 
 class SolidDMFTParser:
@@ -46,15 +46,6 @@ class SolidDMFTParser:
         self._calculation_type = 'dmft'
 
         self.code_keys = ['solid_dmft', 'solver', 'triqs']
-
-        # These keys are parsed somewhere else differently
-        self.skip_dataset_keys = ['afm_mapping', 'corr_shells', 'dim_reps', 'shells']
-
-        self.input_params = {
-            'general_params': x_soliddmft_general_parameters,
-            'solver_params': x_soliddmft_solver_parameters,
-            'advanced_params': x_soliddmft_advanced_parameters
-        }
 
         self.angular_momentum = ['s', 'p', 'd', 'f']
 
@@ -118,6 +109,8 @@ class SolidDMFTParser:
             setattr_to_target(target, name, value)
 
     def parse_system(self):
+        """Parses the system information and stores it under self.archive.run[0].system.
+        """
         # TODO speak with solid_dmft devs to include this info in the output
         sec_run = self.archive.run[-1]
         if self.dft_input.get('kpt_basis'):
@@ -128,14 +121,29 @@ class SolidDMFTParser:
             pass
 
     def parse_input_model(self, data):
+        """Parses the input model and stores it under self.archive.run[0].method[0] and it
+        is composed of:
+            1- the projection matrix
+            2- the Hubbard-Kanamori parameters.
+
+        Args:
+            data (HDF5file): the data read from the mainfile .h5 file.
+        """
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
         sec_hamiltonian = sec_method.m_create(LatticeModelHamiltonian)
 
         # DFTTools code-specific input
-        sec_dft_param = sec_method.m_create(x_soliddmft_dft_input_parameters)
-        for param in ['dft_input', 'dft_misc_input']:
-            self.parse_dataset(data[param], sec_dft_param)
+        for group_name in ['dft_input', 'dft_misc_input', 'dft_symmcorr_input']:
+            if not data.get(group_name):
+                continue
+            params = {}
+            for keys, values in data.get(group_name).items():
+                if isinstance(values, h5py.Dataset):
+                    if not isinstance(values[()], np.ndarray):
+                        val = values[()].decode() if type(values[()]) == bytes else values[()]
+                        params[keys] = val
+            sec_method.m_set(sec_method.m_get_quantity_definition(f'x_soliddmft_{group_name}'), params)
 
         # HoppingMatrix || ProjectionMatrix
         sec_hamiltonian.projection_matrix = self.dft_input.get('proj_mat')[()][:, 0, :, :, :, 0] \
@@ -144,11 +152,22 @@ class SolidDMFTParser:
         # HubbardKanamoriModel
         # TODO add parse for full_slater
         # TODO add parse for crpa file
-        for i in range(self.dft_input.get('n_inequiv_shells', 1)[()]):
-            sec_hubbard_kanamori_model = sec_hamiltonian.m_create(HubbardKanamoriModel)
+        n_impurities = self.dft_input.get('n_inequiv_shells')[()] if self.dft_input.get('n_inequiv_shells') else 1
+        for i in range(n_impurities):
+            sec_atom_parameters = sec_method.m_create(AtomParameters)
+            atom_impurity = self.dft_input.get('corr_shells')
+            if atom_impurity:
+                atom_index = atom_impurity.get(f'{i}').get('atom')
+                sec_atom_parameters.atom_index = atom_index[()] if atom_index else None
+                n_orbitals = atom_impurity.get(f'{i}').get('dim')
+                l_number = atom_impurity.get(f'{i}').get('l')
+                if n_orbitals and l_number:
+                    sec_atom_parameters.n_orbitals = n_orbitals[()]
+                    angular_momentum = self.angular_momentum[l_number[()]]
+                    orbital_labels = [f'{angular_momentum}{ml}' for ml in range(n_orbitals[()])]
+                    sec_atom_parameters.orbitals = orbital_labels
 
-            sec_hubbard_kanamori_model.orbital = self.angular_momentum[
-                self.dft_input['corr_shells'][str(i)].get('l', 2)[()]]
+            sec_hubbard_kanamori_model = sec_atom_parameters.m_create(HubbardKanamoriModel)
             sec_hubbard_kanamori_model.u = self.dmft_input['general_params']['U'][str(i)][()] * ureg.eV
             sec_hubbard_kanamori_model.jh = self.dmft_input['general_params']['J'][str(i)][()] * ureg.eV
             # solid_dmft keeps spin-rotational invariance
@@ -166,53 +185,71 @@ class SolidDMFTParser:
                 self.dmft_input['general_params'].get('dc_type', 0)[()]]  # set to 'fll' by default
 
     def parse_method(self):
+        """Parses DMFT and code-specific metadata from 'DMFT_input' and stores it under
+        self.archive.run[0].method[1].
+        """
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
         # ref to the Non- and InteractionHamiltonian
         sec_method.starting_method_ref = sec_run.method[0]
 
         # Code-specific
-        for param in self.input_params.keys():
-            sec_param = sec_method.m_create(self.input_params[param])
-            self.parse_dataset(self.dmft_input[param], sec_param)
+        for group_name in ['general_params', 'solver_params', 'advanced_params']:
+            if not self.dmft_input.get(group_name):
+                continue
+            params = {}
+            for keys, values in self.dmft_input.get(group_name).items():
+                if isinstance(values, h5py.Dataset):
+                    if not values.shape:
+                        val = values[()].decode() if type(values[()]) == bytes else values[()]
+                        params[keys] = val
+            sec_method.m_set(sec_method.m_get_quantity_definition(f'x_soliddmft_{group_name}'), params)
 
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
-        sec_k_mesh.n_points = int(self.dft_input.get('n_k', 1)[()])
-        if self.dft_input.get('kpts'):
-            sec_k_mesh.points = np.complex128(self.dft_input.get('kpts')[:])
-        sec_k_mesh.weights = self.dft_input.get('kpt_weights')
+        n_k = self.dft_input.get('n_k')
+        sec_k_mesh.n_points = n_k[()] if n_k else 1
+        kpts = self.dft_input.get('kpts')
+        sec_k_mesh.points = np.complex128(kpts[()]) if kpts else None
+        kpt_weights = self.dft_input.get('kpt_weights')
+        sec_k_mesh.weights = kpt_weights[()] if kpt_weights else None
 
         # DMFT
         sec_dmft = sec_method.m_create(DMFT)
-        sec_dmft.n_impurities = self.dft_input.get('n_inequiv_shells', 1)[()]
-        corr_orbs_per_atoms = []
-        occ_per_atoms = []
-        for i in range(sec_dmft.n_impurities):
-            corr_orbs_per_atoms.append(
-                self.dft_input['corr_shells'][str(i)].get('dim', 1)[()])
-            total_occupation = self.dmft_results['observables']['imp_occ'][str(i)]['down']['0'][()] + \
-                self.dmft_results['observables']['imp_occ'][str(i)]['up']['0'][()]
-            occ_per_atoms.append(total_occupation)
-        sec_dmft.n_correlated_orbitals = corr_orbs_per_atoms
-        sec_dmft.n_electrons = occ_per_atoms
-        beta = sec_method.x_soliddmft_general.x_soliddmft_beta
-        sec_dmft.inverse_temperature = beta / ureg.eV
-        if sec_method.x_soliddmft_general.x_soliddmft_magnetic:
-            if sec_method.x_soliddmft_general.x_soliddmft_magmom is None:
-                self.logger.warning('The magnetic flag is set to true, but the initial magnetic moment is not resolved. '
-                                    'Is this really a magnetic calculation without an initial magmom seed?')
-            else:
-                if all(signs == 1.0 for signs in np.sign(sec_method.x_soliddmft_general.x_soliddmft_magmom)):
+        n_impurities = self.dft_input.get('n_inequiv_shells')
+        sec_dmft.n_impurities = n_impurities[()] if n_impurities else 1
+        try:
+            impurity_orbitals = []
+            impurity_occupation = []
+            for i in range(n_impurities):
+                n_orbitals = self.dft_input.get('corr_shells', {}).get(f'{i}', {}).get('dim', 1)
+                impurity_orbitals.append(n_orbitals[()])
+                occupation = self.dmft_results.get('observables', {}).get('imp_occ', {}).get(f'{i}')
+                total_occupation = occupation['down']['0'][()] + occupation['up']['0'][()]
+                impurity_occupation.append(total_occupation)
+            sec_dmft.n_correlated_orbitals = impurity_orbitals
+            sec_dmft.n_electrons = impurity_occupation
+        except Exception:
+            self.logger.warning('Could not set the impurity number of orbitals and nominal occupation.')
+        beta = self.dmft_input.get('general_params', {}).get('beta')
+        sec_dmft.inverse_temperature = beta[()] / ureg.eV if beta else None
+        magnetic_flag = self.dmft_input.get('general_params', {}).get('magnetic')[()] if self.dmft_input.get('general_params', {}).get('magnetic') else False
+        if magnetic_flag:
+            magmom = self.dmft_input.get('general_params', {}).get('magmom')
+            if magmom:
+                magmom = magmom[()]
+                if all(signs == 1.0 for signs in np.sign(magmom)):
                     sec_dmft.magnetic_state = 'ferromagnetic'
                 else:
                     sec_dmft.magnetic_state = 'antiferromagnetic'
+            else:
+                self.logger.warning('The magnetic flag is set to true, but the initial magnetic moment is not resolved. '
+                                    'Is this really a magnetic calculation without an initial magmom seed?')
         else:
             sec_dmft.magnetic_state = 'paramagnetic'
-        for keys in self._solver_map.keys():
-            if sec_method.x_soliddmft_general.x_soliddmft_solver_type == keys:
-                sec_dmft.impurity_solver = self._solver_map[keys]
-                break
+        solver_type = self.dmft_input.get('general_params', {}).get('solver_type')
+        if solver_type:
+            sec_dmft.impurity_solver = self._solver_map[keys]
 
         # FrequencyMesh
         if sec_method.m_xpath('x_soliddmft_general.x_soliddmft_n_iw'):
@@ -367,13 +404,9 @@ class SolidDMFTParser:
             self.logger.error('Error opening h5 file.')
             data = None
             return
-
-        try:
-            self.dft_input = data.get('dft_input')
-            self.dmft_input = data.get('DMFT_input')
-            self.dmft_results = data.get('DMFT_results')
-        except Exception:
-            self.logger.error('dft_input, DMFT_input or DMFT_results Groups not found in the output file.')
+        self.dft_input = data.get('dft_input')
+        self.dmft_input = data.get('DMFT_input')
+        self.dmft_results = data.get('DMFT_results')
 
         sec_run = archive.m_create(Run)
 
