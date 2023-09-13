@@ -26,7 +26,7 @@ from tests.dos_integrator import integrate_dos
 
 _root_dir = 'tests/data/fhiaims/'
 silicon_versions = ('v071914_7', 'v171221_1')
-silicon_normalizations = (0.5, 1)
+silicon_normalization_map = list(zip(silicon_versions, (0.5, 1)))
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -168,7 +168,7 @@ def test_band_silicon(silicon, version):
     assert gap == approx(0.60684)
 
 
-@pytest.mark.parametrize("version", silicon_versions, silicon_normalizations)
+@pytest.mark.parametrize("version, normalization_factor", silicon_normalization_map)
 def test_dos_silicon(silicon, version, normalization_factor):
     """Tests that the DOS of silicon is parsed correctly.
     """
