@@ -337,7 +337,11 @@ class OutcarTextParser(TextParser):
             Quantity(
                 'energy_components',
                 r'Free energy of the ion-electron system \(eV\)\s*\-+([\s\S]+?)\-{10}',
-                str_operation=get_key_values, convert=False)
+                str_operation=get_key_values, convert=False),
+            Quantity(
+                'time',
+                r'LOOP\: +cpu time +([\d\.]+)\: +real time +([\d\.]+)',
+                dtype=np.dtype(np.float64))
         ]
 
         calculation_quantities = [
@@ -390,13 +394,18 @@ class OutcarTextParser(TextParser):
                 str_operation=str_to_eigenvalues),
             Quantity(
                 'convergence',
-                r'(aborting loop because EDIFF is reached)')]
+                r'(aborting loop because EDIFF is reached)'),
+            Quantity(
+                'time',
+                r'LOOP\+\: +cpu time +([\d\.]+)\: +real time +([\d\.]+)',
+                dtype=np.dtype(np.float64)
+            )]
 
         self._quantities = [
             Quantity(
                 'calculation',
                 r'(\-\-\s*Iteration\s*\d+\(\s*1\s*\)\s*[\s\S]+?)'
-                r'((?:FREE ENERGIE OF THE ION\-ELECTRON SYSTEM \(eV\)[\s\S]+?\-{100})|\Z)',
+                r'((?:FREE ENERGIE OF THE ION\-ELECTRON SYSTEM \(eV\)[\s\S]+?LOOP\+.+)|\Z)',
                 repeats=True, sub_parser=TextParser(quantities=calculation_quantities)),
             Quantity(
                 'header',
@@ -601,6 +610,14 @@ class OutcarContentParser(ContentParser):
         Each element of the list corresponds to a pseudo-potential.'''
 
         return super().get_pseudopotential(self.parser.mainfile)
+
+    def get_time_calc(self, n_calc):
+        return self.parser.get(
+            'calculation', [{}] * (n_calc + 1))[n_calc].get('time', [None, None])
+
+    def get_time_scf(self, n_calc):
+        return [scf.time for scf in self.parser.get(
+            'calculation', [{}] * (n_calc + 1))[n_calc].get('scf_iteration', [])]
 
     def get_n_scf(self, n_calc):
         return len(self.parser.get(
@@ -1153,12 +1170,19 @@ class RunContentParser(ContentParser):
             type=type
         )
 
+    def get_time_calc(self, n_calc):
+        return self._get_key_values(
+            f'/modeling[0]/calculation[{n_calc}]/time[@name="totalsc"]').get('totalsc', [None, None])
+
+    def get_time_scf(self, n_calc):
+        return self._get_key_values(
+            f'/modeling[0]/calculation[{n_calc}]/scstep/time[@name="total"]').get('total', [])
+
     def get_n_scf(self, n_calc):
         if self._n_scf is None:
             self._n_scf = [None] * self.n_calculations
         if self._n_scf[n_calc] is None:
-            self._n_scf[n_calc] = len(self._get_key_values(
-                '/modeling[0]/calculation[%d]/scstep/time[@name="total"]' % n_calc).get('total', []))
+            self._n_scf[n_calc] = len(self.get_time_scf(n_calc))
         return self._n_scf[n_calc]
 
     def get_structure(self, n_calc):
@@ -1673,9 +1697,23 @@ class VASPParser():
         sec_scc = None
         for n in range(self.parser.n_calculations):
             # energies
+            time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
             sec_scc = parse_energy(n, None)
+            sec_scc.time_calculation = self.parser.get_time_calc(n)[-1]
+            if sec_scc.time_calculation:
+                sec_scc.time_physical = time_initial + sec_scc.time_calculation
+
+            time_scf = self.parser.get_time_scf(n)
             for n_scf in range(self.parser.get_n_scf(n)):
-                parse_energy(n, n_scf)
+                time_initial = sec_scc.scf_iteration[-1].time_physical if n_scf > 0 else time_initial
+                sec_scf = parse_energy(n, n_scf)
+                sec_scf.time_calculation = time_scf[n_scf][-1]
+                if sec_scf.time_calculation:
+                    sec_scf.time_physical = time_initial + sec_scf.time_calculation
+            if not sec_scc.time_calculation:
+                sec_scc.time_calculation = sum([scf.time_calculation for scf in sec_scc.scf_iteration])
+                if sec_scc.time_calculation:
+                    sec_scc.time_physical = sec_scc.scf_iteration[-1].time_physical
 
             # forces and stress
             forces, stress = self.parser.get_forces_stress(n)
