@@ -26,6 +26,7 @@ from tests.dos_integrator import integrate_dos
 
 _root_dir = 'tests/data/fhiaims/'
 silicon_versions = ('v071914_7', 'v171221_1')
+silicon_normalizations = (0.5, 1)
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -46,17 +47,6 @@ def silicon(parser):
                      archive, None)
         silicon[version] = archive
     return silicon
-
-
-@pytest.fixture(scope='module')
-def silicon_normalization_factors():
-    return dict(zip(silicon_versions, [.5, 1]))
-
-
-def parse_native_tiers(tier):
-    archive = EntryArchive()
-    FHIAimsParser().parse(f'{_root_dir}/native_tiers/{tier}/aims.out', archive, None)
-    return archive
 
 
 def test_scf_spinpol(parser):
@@ -178,8 +168,8 @@ def test_band_silicon(silicon, version):
     assert gap == approx(0.60684)
 
 
-@pytest.mark.parametrize("version", silicon_versions)
-def test_dos_silicon(silicon, version, silicon_normalization_factors):
+@pytest.mark.parametrize("version", silicon_versions, silicon_normalizations)
+def test_dos_silicon(silicon, version, normalization_factor):
     """Tests that the DOS of silicon is parsed correctly.
     """
     scc = silicon[version].run[-1].calculation[0]
@@ -190,7 +180,7 @@ def test_dos_silicon(silicon, version, silicon_normalization_factors):
     dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
 
     assert pytest.approx(dos_integrated, abs=5e-2) == 8
-    assert dos.total[0].x_fhi_aims_normalization_factor_raw_data == silicon_normalization_factors[version]
+    assert dos.total[0].x_fhi_aims_normalization_factor_raw_data == normalization_factor
 
     # Check that an appropriately sized band gap is found at the given
     # reference energy
@@ -230,7 +220,9 @@ def test_dos(parser):
 
 @pytest.mark.parametrize("tier", ['tight', 'intermediate', 'light_spd'])
 def test_native_tiers(tier):
-    archive = parse_native_tiers(tier)
+    archive = EntryArchive()
+    FHIAimsParser().parse(f'{_root_dir}/native_tiers/{tier}/aims.out', archive, None)
+
     sec_er = archive.run[0].method[0].electrons_representation[0]
     assert sec_er.native_tier == f'{tier}_defaults_2020'
 
