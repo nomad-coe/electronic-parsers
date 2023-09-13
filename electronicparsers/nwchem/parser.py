@@ -53,6 +53,7 @@ class OutParser(TextParser):
 
     def init_quantities(self):
         re_float = r'[-+]?\d+\.\d*(?:[EeDd][-+]\d+)?'
+
         def str_to_functional(val_in):
             val = [v.strip() for v in val_in.strip().rsplit('  ', 1)]
             if len(val) == 2:

@@ -2272,6 +2272,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         if final is None:
             return
 
+        time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
+
         sec_scc = sec_run.m_create(Calculation)
         k_grid = self.info_parser.get('k_grid')
         if k_grid is not None:
@@ -2380,8 +2382,22 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # scf iterations
         scf_iterations = section.get('scf_iteration', [])
         for scf_iteration in scf_iterations:
+            time_initial_scf = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else time_initial
             sec_scf_iteration = sec_scc.m_create(ScfIteration)
             parse_scf(scf_iteration, sec_scf_iteration)
+            if sec_scf_iteration.time_physical:
+                sec_scf_iteration.time_calculation = sec_scf_iteration.time_physical - time_initial_scf
+
+        sec_scc.time_calculation = section.get('time_calculation', 0)
+        sec_scc.time_physical = time_initial + sec_scc.time_calculation
+
+        if not sec_scc.time_calculation and sec_scc.scf_iteration:
+            sec_scc.time_physical = sec_scc.scf_iteration[-1].time_physical
+            sec_scc.time_calculation = sum([scf.time_calculation if scf.time_calculation else 0 for scf in sec_scc.scf_iteration])
+
+        if not sec_scc.time_calculation and self.info_parser.total_time is not None:
+            sec_scc.time_physical = self.info_parser.total_time
+            sec_scc.time_calculation = sec_scc.time_physical - time_initial
 
         return sec_scc
 
@@ -2503,7 +2519,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             return sec_scc
 
         # groundstate and hybrids calculation
-        initial_time = None
         for module in ['groundstate', 'hybrids']:
             sec_scc = parse_configuration(self.info_parser.get(module))
             if sec_scc is None:
@@ -2529,20 +2544,10 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             for f in exciting_files:
                 self.parse_file(f, sec_scc)
 
-            if sec_scc.scf_iteration:
-                initial_time = sec_scc.scf_iteration[-1].time_physical
-                sec_scc.time_physical = initial_time
-                sec_scc.time_calculation = initial_time
-
-        initial_time = 0 * ureg.s if initial_time is None else initial_time
         # structure optimization
         structure_optimization = self.info_parser.get('structure_optimization', {})
         for optimization_step in structure_optimization.get('optimization_step', []):
             sec_scc = parse_configuration(optimization_step)
-            time = optimization_step.get('time_calculation', 0)
-            sec_scc.time_calculation = time
-            initial_time += sec_scc.time_calculation
-            sec_scc.time_physical = initial_time
 
             if optimization_step.get('method') is not None:
                 sec_scc.x_exciting_geometry_optimization_method = optimization_step.get('method')
@@ -2558,12 +2563,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_scc = parse_configuration(structure_optimization)
         if sec_scc is None:
             return
-
-        if (total_time := self.info_parser.total_time) is not None:
-            sec_scc.time_physical = total_time
-            sec_scc.time_calculation = sec_scc.time_physical - initial_time
-            # if not sec_scc.time_calculation and sec_run.calculation[-1].physical_time:
-                # sec_scc.time_calculation = sec_run.calculation[-1].physical_time + sec_scc.time_calculation
 
         # volume optimizations
         volume_index = 1

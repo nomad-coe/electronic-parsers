@@ -727,10 +727,10 @@ class FHIAimsOutParser(TextParser):
                 'timing',
                 r'(Date.+\s+Computational steps[\s\S]+?\Z)',
                 sub_parser=TextParser(quantities=[
-                date_time,
-                Quantity(
-                    'total_time',
-                    r'\| Total time +: +[\d\.]+ s +([\d\.]+) s', dtype=float),
+                    date_time,
+                    Quantity(
+                        'total_time',
+                        r'\| Total time +: +[\d\.]+ s +([\d\.]+) s', dtype=float),
                 ])
             )
         ]

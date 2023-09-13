@@ -535,8 +535,7 @@ class OutParser(TextParser):
                 'wall_time',
                 rf'total\s*wall\-time\s*:\s*(?:({re_float}) days)*\s*(?:({re_float}) hours)*'
                 rf'\s*(?:({re_float}) minutes and)*\s*({re_float}) seconds',
-                str_operation=str_to_time, convert=False),
-            ]
+                str_operation=str_to_time, convert=False)]
 
         aoforce_quantities = module_quantities + [
             Quantity(
