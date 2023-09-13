@@ -137,7 +137,7 @@ class OutParser(TextParser):
             info['atom'] = [v.title() for v in info.get('atom', [])]
             return info
 
-        def str_to_cpu_time(val_in):
+        def str_to_time(val_in):
             time = 0.
             for n, v in enumerate(reversed(val_in.split())):
                 multiplier = 24 * 3600 if n == 3 else 60 ** n
@@ -530,7 +530,13 @@ class OutParser(TextParser):
                 'cpu_time',
                 rf'total\s*cpu-time\s*:\s*(?:({re_float}) days)*\s*(?:({re_float}) hours)*'
                 rf'\s*(?:({re_float}) minutes and)*\s*({re_float}) seconds',
-                str_operation=str_to_cpu_time, convert=False)]
+                str_operation=str_to_time, convert=False),
+            Quantity(
+                'wall_time',
+                rf'total\s*wall\-time\s*:\s*(?:({re_float}) days)*\s*(?:({re_float}) hours)*'
+                rf'\s*(?:({re_float}) minutes and)*\s*({re_float}) seconds',
+                str_operation=str_to_time, convert=False),
+            ]
 
         aoforce_quantities = module_quantities + [
             Quantity(
@@ -828,6 +834,7 @@ class TurbomoleParser:
 
     def parse_scc(self):
         sec_run = self.archive.run[0]
+        time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
         sec_scc = sec_run.m_create(Calculation)
 
         n_atoms = self.get_number_of_atoms()
@@ -1040,6 +1047,9 @@ class TurbomoleParser:
         if energy_vdW is not None:
             sec_scc.energy.van_der_waals = EnergyEntry(value=energy_vdW, kind='DFTD3')
 
+        if self.module.wall_time is not None:
+            sec_scc.time_calculation = self.module.wall_time = self.module.wall_time * ureg.s
+            sec_scc.time_physical = time_initial + sec_scc.time_calculation
         return sec_scc
 
     def parse_method(self):
