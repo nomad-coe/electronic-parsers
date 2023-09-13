@@ -1981,7 +1981,7 @@ class QuantumEspressoOutParser(TextParser):
                 r'negative rho \(up, down\):\s*([\d\.E\-\+]+)\s*([\d\.E\-\+]+)', dtype=float),
             Quantity(
                 'total_time',
-                r'total cpu time spent up to now is\s*([\d\.]+)', unit='seconds', repeats=True),
+                r'total cpu time spent up to now is\s*([\d\.]+)', unit=ureg.s, repeats=True),
         ]
 
         scf_quantities = [Quantity(
@@ -2013,7 +2013,7 @@ class QuantumEspressoOutParser(TextParser):
                     dtype=float, unit='bohr_magneton'),
                 Quantity(
                     'total_time',
-                    r'total cpu time spent up to now is\s*([\d\.]+)', unit='seconds')
+                    r'total cpu time spent up to now is\s*([\d\.]+)', unit=ureg.s)
             ] + diagonalization_quantities))] + calculation_quantities
 
         # TODO add electric field calculation
@@ -2142,6 +2142,7 @@ class QuantumEspressoParser:
 
     def parse_scc(self, run, calculation):
         sec_run = self.archive.run[-1]
+        initial_time = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
         sec_scc = sec_run.m_create(Calculation)
 
         # energies
@@ -2252,7 +2253,8 @@ class QuantumEspressoParser:
         # time
         time = calculation.get('total_time')
         if time is not None:
-            sec_scc.time = time[-1]
+            sec_scc.time_physical = time[-1]
+            sec_scc.time_calculation = sec_scc.time_physical - initial_time
 
         def parse_diagonalization(source, target):
             diagonalization = {
@@ -2289,6 +2291,7 @@ class QuantumEspressoParser:
 
         # scf_iteration
         for iteration in calculation.get('iteration', []):
+            initial_time = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else initial_time
             sec_scf_iteration = sec_scc.m_create(ScfIteration)
 
             energies = iteration.get('energies', {})
@@ -2325,7 +2328,8 @@ class QuantumEspressoParser:
 
             time = iteration.get('total_time')
             if time is not None:
-                sec_scf_iteration.time_calculation = time
+                sec_scf_iteration.time_physical = time
+                sec_scf_iteration.time_calculation = sec_scf_iteration.time_physical - initial_time
 
             parse_diagonalization(iteration, sec_scf_iteration)
 
