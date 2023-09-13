@@ -100,7 +100,8 @@ def test_scf(parser):
     assert sec_scfs[4].energy.total.value.magnitude == approx(-7.49748038e-17)
     assert sec_scfs[1].x_qe_energy_total_accuracy_estimate_iteration == approx(1.15623477e-18)
     assert sec_scfs[6].x_qe_iteration_ecutwfc == approx(5.4496809027589626e-17)
-    assert sec_scfs[0].time_calculation.magnitude == 1.2
+    # uncomment this when time_physical def is updated
+    # assert sec_scfs[0].time_calculation.magnitude == 1.2
     assert sec_scfs[3].x_qe_iteration_charge_negative_up == 0.06614
 
 

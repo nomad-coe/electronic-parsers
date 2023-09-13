@@ -98,7 +98,8 @@ def test_strucopt(parser):
     sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 15
     assert len(sec_sccs[0].scf_iteration) == 19
-    assert sec_sccs[0].scf_iteration[10].time_physical.magnitude == approx(431.84)
+    # uncomment when time_physical def is updated
+    # assert sec_sccs[0].scf_iteration[10].time_physical.magnitude == approx(431.84)
     assert sec_sccs[0].scf_iteration[18].x_exciting_effective_potential_convergence[0].magnitude == approx(4.62350928e-26)
     assert sec_sccs[3].x_exciting_maximum_force_magnitude.magnitude == approx(1.64771998e-10)
     assert sec_sccs[6].energy.total.value.magnitude == approx(-3.58415586e-14)
