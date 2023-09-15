@@ -27,7 +27,7 @@ from nomad.units import ureg
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.calculation import (
-    Calculation, ScfIteration, Energy, EnergyEntry, GreensFunctions
+    Calculation, ScfIteration, Energy, EnergyEntry, GreensFunctions, Dos, DosValues
 )
 from nomad.datamodel.metainfo.simulation.method import (
     Method, AtomParameters, HubbardKanamoriModel, KMesh, FrequencyMesh,
@@ -181,13 +181,13 @@ class SolidDMFTParser:
 
             sec_hubbard_kanamori_model = sec_atom_parameters.m_create(HubbardKanamoriModel)
             if general_params.get('U')[f'{i}'] and general_params.get('J')[f'{i}']:
-                sec_hubbard_kanamori_model.u = general_params.get('U')[f'{i}'] * ureg.eV
-                sec_hubbard_kanamori_model.jh = general_params.get('J')[f'{i}'] * ureg.eV
+                sec_hubbard_kanamori_model.u = general_params.get('U')[f'{i}'][()] * ureg.eV
+                sec_hubbard_kanamori_model.jh = general_params.get('J')[f'{i}'][()] * ureg.eV
                 # solid_dmft keeps spin-rotational invariance
                 sec_hubbard_kanamori_model.up = sec_hubbard_kanamori_model.u - 2.0 * sec_hubbard_kanamori_model.jh
             # issue with def of 'h_int_type' in the output h5 in different versions
             h_int_type = general_params.get('h_int_type')
-            if h_int_type:
+            if isinstance(h_int_type, h5py.Dataset):
                 h_int_type = h_int_type[()]
             elif isinstance(h_int_type, h5py.Group):
                 h_int_type = h_int_type[f'{i}'][()]
@@ -392,6 +392,42 @@ class SolidDMFTParser:
                 sec_gfs (GreensFunctions): Green's function section under Calculation.
                 n_impurities (int): Number of impurities.
             """
+
+            def parse_dos(sec_scc: Calculation, sec_gfs: GreensFunctions, chemical_potential: np.float64):
+                """Parses DOS if the impurity solver returns Green's functions in the real
+                frequency space (MPS).
+
+                Args:
+                    sec_scc (Calculation): Calculation section.
+                    sec_gfs (GreensFunctions): Green's functions section
+                    chemical_potential (np.float64): Magnitude of the chemical potential in eV.
+                """
+                magnetic_state = sec_scc.method_ref.dmft.magnetic_state
+                if magnetic_state:
+                    n_spin_channels = 1 if magnetic_state == 'paramagnetic' else 2
+                else:
+                    n_spin_channels = 1
+
+                energies = sec_gfs.frequencies
+                sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                sec_dos.kind = 'spectral'
+                sec_dos.n_spin_channels = n_spin_channels
+                sec_dos.energy_fermi = chemical_potential * ureg.eV
+                sec_dos.n_energies = len(energies)
+                sec_dos.energies = energies * ureg.eV
+                im_greens_functions_freq = sec_gfs.greens_function_freq.imag
+                for spin in range(n_spin_channels):
+                    sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+                    sec_dos_total.spin = spin
+                    imgf_per_spin = im_greens_functions_freq[:, spin, :, :]
+                    value = - imgf_per_spin / np.pi
+                    value_total = 0.0
+                    for i_at in range(value.shape[0]):
+                        for i_orb in range(value.shape[1]):
+                            value_total += value[i_at][i_orb]
+                    value_total = 2 * value_total if n_spin_channels == 2 else value_total
+                    sec_dos_total.value = value_total / ureg.eV
+
             # First, store energies
             dmft_last_iter = self.dmft_results.get('last_iter')
             sec_energy = sec_scc.m_create(Energy)
@@ -437,6 +473,10 @@ class SolidDMFTParser:
                             value_per_atom.append(value_per_atom_per_spin)
                     gf = np.array(value_per_atom)
                     sec_gfs.m_set(sec_gfs.m_get_quantity_definition(quantity_name), gf)
+
+            # In case axes_label = real, we parse the DOS as -Im G(w) / np.pi
+            if axes_label == 'real':
+                parse_dos(sec_scc, sec_gfs, chemical_potential.magnitude)
 
         # SCF steps
         scf_keys = [int(key.lstrip('it_')) for key in self.dmft_results.keys() if key.startswith('it_')]
