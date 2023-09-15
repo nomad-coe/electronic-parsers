@@ -21,6 +21,7 @@ import numpy as np
 import os
 from glob import glob
 
+from typing import Union, Any, Dict
 from nomad.parsing.file_parser import TextParser
 from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
@@ -83,6 +84,24 @@ def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = Tru
 
     filenames = [f for f in filenames if os.access(f, os.F_OK)]
     return filenames
+
+
+def numpy_type_to_json_serializable(quantity: Union[np.bool_, np.int32, np.int64, np.float64]):
+    """ Converts numpy data types to native Python types suitable for JSON serialization.
+
+    Args:
+        quantity (Union[np.bool_, np.int32, np.int64, np.float64]): The numpy data type
+            value to be converted.
+
+    Returns:
+        Union[bool, int, float]: The converted native Python type.
+    """
+    if isinstance(quantity, np.bool_):
+        return bool(quantity)
+    if isinstance(quantity, np.int32) or isinstance(quantity, np.int64):
+        return int(quantity)
+    if isinstance(quantity, np.float64):
+        return float(quantity)
 
 
 class BeyondDFTWorkflowsParser:

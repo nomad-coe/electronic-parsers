@@ -22,7 +22,7 @@ import logging
 import h5py
 import re
 
-from typing import Union, Any, Dict
+from typing import Any, Dict
 from nomad.units import ureg
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 from nomad.datamodel.metainfo.simulation.run import Run, Program
@@ -36,6 +36,7 @@ from nomad.datamodel.metainfo.simulation.method import (
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from .metainfo.soliddmft import x_soliddmft_observables_parameters
 from nomad.parsing.parser import to_hdf5
+from ..utils import numpy_type_to_json_serializable
 
 
 class SolidDMFTParser:
@@ -82,23 +83,6 @@ class SolidDMFTParser:
             }
         }
 
-    def _numpy_type_to_json_serializable(self, quantity: Union[np.bool_, np.int32, np.int64, np.float64]):
-        """ Converts numpy data types to native Python types suitable for JSON serialization.
-
-        Args:
-        - quantity (Union[np.bool_, np.int32, np.int64, np.float64]): The numpy data type
-                value to be converted.
-
-        Returns:
-        - Union[bool, int, float]: The converted native Python type.
-        """
-        if isinstance(quantity, np.bool_):
-            return bool(quantity)
-        if isinstance(quantity, np.int32) or isinstance(quantity, np.int64):
-            return int(quantity)
-        if isinstance(quantity, np.float64):
-            return float(quantity)
-
     def parse_groups_datasets(self, group: h5py.Group):
         """Parses datasets within a specified HDF5 group.
 
@@ -118,7 +102,7 @@ class SolidDMFTParser:
             if isinstance(value, h5py.Dataset):
                 if not value.shape:
                     val = value[()].decode() if isinstance(value[()], bytes) else value[()]
-                    params[key] = self._numpy_type_to_json_serializable(val)
+                    params[key] = numpy_type_to_json_serializable(val)
         return params
 
     def parse_system(self):
@@ -330,7 +314,7 @@ class SolidDMFTParser:
             for key, value in convergence_obs.items():
                 if len(value) > 0 and key != 'iteration':
                     if key == 'd_mu':
-                        conv_obs[key] = self._numpy_type_to_json_serializable(
+                        conv_obs[key] = numpy_type_to_json_serializable(
                             value.get(f'{i_scf}')[()])
                     else:
                         for i_imp in range(n_impurities):
@@ -339,7 +323,7 @@ class SolidDMFTParser:
                                 if d_orb_occ:
                                     sec_scf.x_soliddmft_convergence_orb_occ = d_orb_occ[()]
                             else:
-                                conv_obs[f'{key}_imp{i_imp}'] = self._numpy_type_to_json_serializable(
+                                conv_obs[f'{key}_imp{i_imp}'] = numpy_type_to_json_serializable(
                                     value.get(f'{i_imp}')[f'{i_scf}'][()])
             sec_scf.x_soliddmft_convergence_obs = conv_obs
 
