@@ -142,7 +142,7 @@ class SolidDMFTParser:
         proj_mat = self.dft_input.get('proj_mat')
         if proj_mat:
             proj_mat = proj_mat[()]
-            sec_method.x_soliddmft_projection_matrix = proj_mat[:, 0, :, :, :, 0] + 1j* proj_mat[:, 0, :, :, :, 1]
+            sec_method.x_soliddmft_projection_matrix = proj_mat[:, 0, :, :, :, 0] + 1j * proj_mat[:, 0, :, :, :, 1]
 
         # HubbardKanamoriModel
         # TODO add parse for full_slater

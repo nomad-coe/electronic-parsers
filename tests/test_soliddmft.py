@@ -53,7 +53,7 @@ def test_srvo3(parser):
     # input Hamiltonian
     sec_input_model = sec_run.method[0]
     assert sec_input_model.atom_parameters and sec_input_model.x_soliddmft_projection_matrix is not None
-    assert sec_input_model.x_soliddmft_projection_matrix.shape == (729, 1, 3 ,5)
+    assert sec_input_model.x_soliddmft_projection_matrix.shape == (729, 1, 3, 5)
     assert len(sec_input_model.atom_parameters) == 1
     assert sec_input_model.atom_parameters[0].atom_index == 2
     assert sec_input_model.atom_parameters[0].n_orbitals == 3
