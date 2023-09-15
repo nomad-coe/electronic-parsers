@@ -19,7 +19,7 @@
 import numpy as np
 
 from nomad.metainfo import (  # pylint: disable=unused-import
-    MSection, Package, Quantity, Section, SubSection, JSON
+    MSection, Package, Quantity, Section, SubSection, JSON, HDF5Reference
 )
 from nomad.datamodel.metainfo import simulation
 
@@ -70,6 +70,15 @@ class Method(simulation.run.Method):
         Advanced DMFT input parameters.
         ''')
 
+    # TODO determine standard dimensions for projection_matrix:
+    #   KMesh.n_points x n_atoms_per_unit_cell x n_orbitals? x n_bands?
+    x_soliddmft_projection_matrix = Quantity(
+        type=np.complex128,
+        shape=['*', '*', '*', '*'],
+        description='''
+        Projection matrices from Bloch bands to virtual projected orbitals.
+        ''')
+
 
 class Program(simulation.run.Program):
     '''
@@ -109,60 +118,6 @@ class Program(simulation.run.Program):
         ''')
 
 
-class x_soliddmft_convergence_obs_parameters(MSection):
-    '''
-    Section containing the convergence of each observable of solid_dmft.
-    '''
-
-    m_def = Section(validate=False)
-
-    x_soliddmft_d_Etot = Quantity(
-        type=np.float64,
-        shape=[],
-        description='''
-        Total energy stepwise difference.
-        ''')
-
-    x_soliddmft_d_G0 = Quantity(
-        type=np.float64,
-        shape=[],
-        description='''
-        ''')
-
-    x_soliddmft_d_Gimp = Quantity(
-        type=np.float64,
-        shape=[],
-        description='''
-        ''')
-
-    x_soliddmft_d_Sigma = Quantity(
-        type=np.float64,
-        shape=[],
-        description='''
-        ''')
-
-    x_soliddmft_d_imp_occ = Quantity(
-        type=np.float64,
-        shape=[],
-        description='''
-        Impurity occupation stepwise difference
-        ''')
-
-    x_soliddmft_d_mu = Quantity(
-        type=np.float64,
-        shape=[],
-        description='''
-        Chemical potential stepwise difference.
-        ''')
-
-    x_soliddmft_d_orb_occ = Quantity(
-        type=np.float64,
-        shape=[],
-        description='''
-        Orbital occupation stepwise difference.
-        ''')
-
-
 class x_soliddmft_observables_parameters(MSection):
     '''
     Section containing the post-processed observables of solid_dmft.
@@ -170,76 +125,65 @@ class x_soliddmft_observables_parameters(MSection):
 
     m_def = Section(validate=False)
 
-    x_soliddmft_E_DC = Quantity(
-        type=np.float64,
-        shape=[],
+    x_soliddmft_Delta_time = Quantity(
+        type=HDF5Reference,
+        shape=['*'],
         description='''
-        EDC in the total energy expression. Double counting energy contribution.
+        Imaginary or real frequency hybridization function.
+            dim n_inequiv_shells x corr_shells.dim x n_tau x 2 (real+imag)
         ''')
 
-    x_soliddmft_E_bandcorr = Quantity(
-        type=np.float64,
-        shape=[],
+    x_soliddmft_Delta_freq = Quantity(
+        type=HDF5Reference,
+        shape=['*'],
         description='''
-        Sum of the E_DC and E_int_imp terms.
+        Imaginary time hybridization function.
+            dim n_inequiv_shells x corr_shells.dim x n_tau x 2 (real+imag)
         ''')
 
-    x_soliddmft_E_corr_en = Quantity(
-        type=np.float64,
-        shape=[],
+    x_soliddmft_G0_freq = Quantity(
+        type=HDF5Reference,
         description='''
-        Ecorr in the total energy expression. DMFT correction to the kinetic energy.
+        Imaginary or real frequency Weiss field.
+            dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
         ''')
 
-    x_soliddmft_E_dft = Quantity(
-        type=np.float64,
-        shape=[],
+    x_soliddmft_Gimp_freq = Quantity(
+        type=HDF5Reference,
         description='''
-        EDFT in the total energy expression. System energy as computed by the DFT code at
-        every csc iteration.
+        Imaginary or real frequency impurity green function.
+            dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
         ''')
 
-    x_soliddmft_E_int = Quantity(
-        type=np.float64,
-        shape=[],
+    x_soliddmft_Gimp_time = Quantity(
+        type=HDF5Reference,
         description='''
-        Eint in the total energy expression. Energy contribution from the electronic
-        interactions within the single impurity.
+        Imaginary time representation of the impurity green function.
+            dim n_inequiv_shells x corr_shells.dim x n_tau x 2 (real+imag)
         ''')
 
-    x_soliddmft_E_tot = Quantity(
-        type=np.float64,
-        shape=[],
+    x_soliddmft_Sigma_freq = Quantity(
+        type=HDF5Reference,
         description='''
-        Total energy computed as:
-            Etot = Edft + Ecorr + Eint - EDC
-        ''')
-
-    x_soliddmft_mu = Quantity(
-        type=np.float64,
-        shape=[],
-        description='''
-        Chemical potential fed to the solver at the present iteration (pre-dichotomy adjustement).
+        Imaginary frequency self-energy obtained from the Dyson equation.
+            dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
         ''')
 
     x_soliddmft_imp_gb2 = Quantity(
-        type=np.float64,
-        shape=['*'],
+        type=HDF5Reference,
         description='''
         Site G(beta/2), proxy for total density of states at the Fermi level. Low values
         correlate with the presence of a gap.
         ''')
 
     x_soliddmft_imp_occ = Quantity(
-        type=np.float64,
-        shape=['*'],
+        type=HDF5Reference,
         description='''
         Total mean site occupation.
         ''')
 
     x_soliddmft_orb_Z = Quantity(
-        type=np.float64,
-        shape=['*', '*'],
+        type=HDF5Reference,
         description='''
         Orbital resolved quasiparticle weight (eff_mass / renormalized_mass). As obtained
         by linearizing the self-energy around w=0:
@@ -247,110 +191,16 @@ class x_soliddmft_observables_parameters(MSection):
         ''')
 
     x_soliddmft_orb_gb2 = Quantity(
-        type=np.float64,
-        shape=['*', '*'],
+        type=HDF5Reference,
         description='''
         Orbital resolved G(beta/2), proxy for projected density of states at the Fermi
         level. Low value of orb_gb2 correlated with the presence of a gap.
         ''')
 
     x_soliddmft_orb_occ = Quantity(
-        type=np.float64,
-        shape=['*', '*'],
+        type=HDF5Reference,
         description='''
         Orbital mean site occupation.
-        ''')
-
-
-class x_soliddmft_iter_parameters(MSection):
-    '''
-    Section containing the post-processed observables of solid_dmft.
-    '''
-
-    m_def = Section(validate=False)
-
-    x_soliddmft_DC_energ = Quantity(
-        type=np.float64,
-        shape=['*'],
-        description='''
-        Double counting correction. After parser dim = ['n_inequiv_shells']
-        ''')
-
-    x_soliddmft_DC_pot = Quantity(
-        type=np.float64,
-        shape=['*', '*', '*'],
-        description='''
-        Double counting potential. After parser dim = ['2 * n_inequiv_shells',
-        'n_correlated_orbitals', 'n_correlated_orbitals'].
-        ''')
-
-    x_soliddmft_Delta_time = Quantity(
-        type=np.float64,
-        shape=['*', '*', '*'],
-        description='''
-        Imaginary time hybridization function.
-            dim n_inequiv_shells x corr_shells.dim x n_tau x 2 (real+imag)
-        ''')
-
-    x_soliddmft_G0_freq = Quantity(
-        type=np.float64,
-        shape=['*', '*', '*'],
-        description='''
-        Imaginary frequency Weiss field.
-            dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
-        ''')
-
-    x_soliddmft_Gimp_freq = Quantity(
-        type=np.float64,
-        shape=['*', '*', '*'],
-        description='''
-        Imaginary frequency impurity green function.
-            dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
-        ''')
-
-    x_soliddmft_Gimp_time = Quantity(
-        type=np.float64,
-        shape=['*', '*', '*'],
-        description='''
-        Imaginary time representation of the impurity green function.
-            dim n_inequiv_shells x corr_shells.dim x n_tau x 2 (real+imag)
-        ''')
-
-    x_soliddmft_Sigma_freq = Quantity(
-        type=np.float64,
-        shape=['*', '*', '*'],
-        description='''
-        Imaginary frequency self-energy obtained from the Dyson equation.
-            dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
-        ''')
-
-    x_soliddmft_chemical_potential_pre = Quantity(
-        type=np.float64,
-        shape=[],
-        description='''
-        Chemical potential before the solver iteration.
-        ''')
-
-    x_soliddmft_chemical_potential_post = Quantity(
-        type=np.float64,
-        shape=[],
-        description='''
-        Chemical potential after the solver iteration.
-        ''')
-
-    x_soliddmft_dens_mat_pre = Quantity(
-        type=np.float64,
-        shape=['*', '*'],
-        description='''
-        Density matrix before the solver iteration. After parser dim = ['2 * n_inequiv_shells * n_correlated_orbitals',
-        '2'], where the second index goes for real and imaginary
-        ''')
-
-    x_soliddmft_dens_mat_post = Quantity(
-        type=np.float64,
-        shape=['*', '*'],
-        description='''
-        Density matrix after the solver iteration.
         ''')
 
 
@@ -362,8 +212,18 @@ class ScfIteration(simulation.calculation.ScfIteration):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_soliddmft_iter = SubSection(sub_section=x_soliddmft_iter_parameters.m_def, repeats=False)
+    x_soliddmft_convergence_obs = Quantity(
+        type=JSON,
+        description='''
+        Convergence of the observable parameters per impurity: Etot, G0, Gimp, Sigma,
+        imp_occ, mu.
+        ''')
 
-    x_soliddmft_convergence_obs = SubSection(sub_section=x_soliddmft_convergence_obs_parameters.m_def, repeats=False)
+    x_soliddmft_convergence_orb_occ = Quantity(
+        type=np.float64,
+        shape=['n_orbitals'],
+        description='''
+        Convergence of the orbital occupations in the impurity.
+        ''')
 
-    x_soliddmft_observables = SubSection(sub_section=x_soliddmft_observables_parameters.m_def, repeats=False)
+    x_soliddmft_observables = SubSection(sub_section=x_soliddmft_observables_parameters.m_def, repeats=True)
