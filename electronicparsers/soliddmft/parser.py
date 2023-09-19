@@ -84,12 +84,12 @@ class SolidDMFTParser:
         }
 
     def _extract_dataset(self, dataset: Optional[h5py.Dataset],
-                         default: Union[np.bool_, np.int32, np.int64, np.float64, np.ndarray, None] = None):
+                         default: Union[bool, int, float, np.ndarray, None] = None):
         """Extracts the dataset information or defines a default value.
 
         Args:
             dataset (Optional[h5py.Dataset]): H5py dataset to be extracted.
-            default (Union[np.bool_, np.int32, np.int64, np.float64, np.ndarray], optional): Default value. Defaults to None.
+            default (Union[bool, int, float, np.ndarray, None], optional): Default value. Defaults to None.
 
         Returns:
             Union[np.bool_, np.int32, np.int64, np.float64, np.ndarray]: Returns the value associated with the dataset.
@@ -440,7 +440,7 @@ class SolidDMFTParser:
             # In case axes_label = real, we parse the DOS as -Im G(w) / np.pi
             if axes_label == 'real':
                 magnetic_state = sec_scc.method_ref.dmft.magnetic_state
-                n_spin_channels = 2 if magnetic_state != 'paramagnetic' else 1
+                n_spin_channels = 1 if magnetic_state == 'paramagnetic' else 2
 
                 energies = sec_gfs.frequencies[:, 0]
                 sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
@@ -450,10 +450,10 @@ class SolidDMFTParser:
                 sec_dos.n_energies = len(energies)
                 sec_dos.energies = energies * ureg.eV
                 im_greens_functions_freq = sec_gfs.greens_function_freq.imag
-                for spin in range(n_spin_channels):
+                for spin_channel in range(n_spin_channels):
                     sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
-                    sec_dos_total.spin = spin
-                    imgf_per_spin = im_greens_functions_freq[:, spin, :, :]
+                    sec_dos_total.spin = spin_channel
+                    imgf_per_spin = im_greens_functions_freq[:, spin_channel, :, :]
                     value = - imgf_per_spin / np.pi
                     value_total = 0.0
                     for i_at in range(value.shape[0]):
