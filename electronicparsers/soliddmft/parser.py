@@ -84,7 +84,7 @@ class SolidDMFTParser:
         }
 
     def _extract_dataset(self, dataset: Optional[h5py.Dataset],
-                         default: Union[np.bool_, np.int32, np.int64, np.float64, np.ndarray, None]=None):
+                         default: Union[np.bool_, np.int32, np.int64, np.float64, np.ndarray, None] = None):
         """Extracts the dataset information or defines a default value.
 
         Args:
@@ -114,7 +114,10 @@ class SolidDMFTParser:
         for key, value in group.items():
             if isinstance(value, h5py.Dataset):
                 if not value.shape:
-                    val = value[()].decode() if isinstance(value[()], bytes) else value[()]
+                    value = self._extract_dataset(value)
+                    if not value:
+                        continue
+                    val = value.decode() if isinstance(value, bytes) else value
                     params[key] = numpy_type_to_json_serializable(val)
         return params
 
@@ -127,7 +130,7 @@ class SolidDMFTParser:
             sec_system = sec_run.m_create(System)
             sec_atoms = sec_system.m_create(Atoms)
             kpt_basis = self._extract_dataset(self.dft_input.get('kpt_basis'))
-            if kpt_basis:
+            if kpt_basis is not None:
                 sec_atoms.lattice_vectors_reciprocal = kpt_basis / ureg.angstrom
         else:
             pass
@@ -181,7 +184,7 @@ class SolidDMFTParser:
             sec_hubbard_kanamori_model = sec_atom_parameters.m_create(HubbardKanamoriModel)
             hubbard_u = self._extract_dataset(general_params.get('U').get(n_imp))
             hubbard_j = self._extract_dataset(general_params.get('J').get(n_imp))
-            if hubbard_u and hubbard_j:
+            if hubbard_u is not None and hubbard_j is not None:
                 sec_hubbard_kanamori_model.u = hubbard_u * ureg.eV
                 sec_hubbard_kanamori_model.jh = hubbard_j * ureg.eV
                 # solid_dmft keeps spin-rotational invariance
@@ -223,12 +226,13 @@ class SolidDMFTParser:
 
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
-        n_k = self.dft_input.get('n_k')
-        sec_k_mesh.n_points = n_k[()] if n_k else 1
-        kpts = self.dft_input.get('kpts')
-        sec_k_mesh.points = np.complex128(kpts[()]) if kpts else None
-        kpt_weights = self.dft_input.get('kpt_weights')
-        sec_k_mesh.weights = kpt_weights[()] if kpt_weights else None
+        n_k = self._extract_dataset(self.dft_input.get('n_k'), 1)
+        sec_k_mesh.n_points = n_k
+        kpts = self._extract_dataset(self.dft_input.get('kpts'))
+        if kpts is not None:
+            sec_k_mesh.points = np.complex128(kpts)
+        kpt_weights = self._extract_dataset(self.dft_input.get('kpt_weights'))
+        sec_k_mesh.weights = kpt_weights
 
         # DMFT
         sec_dmft = sec_method.m_create(DMFT)
@@ -271,14 +275,14 @@ class SolidDMFTParser:
         n_iw = self._extract_dataset(dmft_general_params.get('n_iw'))
         if n_iw:
             iw = np.array([(2 * (n - n_iw) + 1) * 1j / beta for n in range(2 * n_iw)])
-            iw = iw.reshape((len(iw), 1))
+            iw = iw.reshape((2 * n_iw, 1))
             sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=n_iw, points=iw * ureg.eV)
             sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # TimeMesh
         n_tau = self._extract_dataset(dmft_general_params.get('n_tau'))
         if n_tau:
             tau = np.array([n * beta * 1j / (n_tau - 1) for n in range(n_tau)])
-            tau = tau.reshape((len(tau), 1))
+            tau = tau.reshape((n_tau, 1))
             sec_time_mesh = TimeMesh(dimensionality=1, n_points=n_tau, points=tau)
             sec_method.m_add_sub_section(Method.time_mesh, sec_time_mesh)
         # FrequencyMesh
@@ -287,6 +291,7 @@ class SolidDMFTParser:
             w_min = self._extract_dataset(dmft_general_params.get('w_range', {}).get('0'), 0.0)
             w_max = self._extract_dataset(dmft_general_params.get('w_range', {}).get('1'), 0.0)
             freq = np.linspace(w_min, w_max, n_w)
+            freq = freq.reshape((n_w, 1))
             sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=n_w, points=freq * ureg.eV)
             sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
@@ -437,7 +442,7 @@ class SolidDMFTParser:
                 magnetic_state = sec_scc.method_ref.dmft.magnetic_state
                 n_spin_channels = 2 if magnetic_state != 'paramagnetic' else 1
 
-                energies = sec_gfs.frequencies
+                energies = sec_gfs.frequencies[:, 0]
                 sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
                 sec_dos.kind = 'spectral'
                 sec_dos.n_spin_channels = n_spin_channels
@@ -524,15 +529,17 @@ class SolidDMFTParser:
         if self.dmft_input['version'] is not None:
             for name in self.code_keys:
                 hash = self._extract_dataset(self.dmft_input['version'].get(f'{name}_hash'))
-                if name == 'solid_dmft':
-                    sec_program.x_soliddmft_hash = hash.decode()
-                else:
-                    setattr(sec_program, f'x_soliddmft_{name}_hash', hash.decode())
+                if hash:
+                    if name == 'solid_dmft':
+                        sec_program.x_soliddmft_hash = hash.decode()
+                    else:
+                        setattr(sec_program, f'x_soliddmft_{name}_hash', hash.decode())
                 version = self._extract_dataset(self.dmft_input['version'].get(f'{name}_version'))
-                if name == 'solid_dmft':
-                    sec_program.version = version.decode()
-                else:
-                    setattr(sec_program, f'x_soliddmft_{name}_version', version.decode())
+                if version:
+                    if name == 'solid_dmft':
+                        sec_program.version = version.decode()
+                    else:
+                        setattr(sec_program, f'x_soliddmft_{name}_version', version.decode())
 
         # System section
         self.parse_system()
