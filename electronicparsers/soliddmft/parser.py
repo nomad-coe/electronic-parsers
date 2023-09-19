@@ -84,6 +84,15 @@ class SolidDMFTParser:
         }
 
     def _extract_dataset(self, dataset: h5py.Dataset, default: Union[np.bool_, np.int32, np.int64, np.float64]=None):
+        """Extracts the dataset information or defines a default value.
+
+        Args:
+            dataset (h5py.Dataset): H5py dataset to be extracted.
+            default (Union[np.bool_, np.int32, np.int64, np.float64], optional): Default value. Defaults to None.
+
+        Returns:
+            Union[np.bool_, np.int32, np.int64, np.float64]: Returns the value associated with the dataset.
+        """
         return dataset[()] if dataset else default
 
     def parse_groups_datasets(self, group: h5py.Group):
