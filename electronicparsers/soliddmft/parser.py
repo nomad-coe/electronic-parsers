@@ -22,7 +22,7 @@ import logging
 import h5py
 import re
 
-from typing import Any, Dict
+from typing import Any, Dict, Union
 from nomad.units import ureg
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 from nomad.datamodel.metainfo.simulation.run import Run, Program
@@ -83,6 +83,9 @@ class SolidDMFTParser:
             }
         }
 
+    def _extract_dataset(self, dataset: h5py.Dataset, default: Union[np.bool_, np.int32, np.int64, np.float64]=None):
+        return dataset[()] if dataset else default
+
     def parse_groups_datasets(self, group: h5py.Group):
         """Parses datasets within a specified HDF5 group.
 
@@ -113,7 +116,9 @@ class SolidDMFTParser:
         if self.dft_input.get('kpt_basis'):
             sec_system = sec_run.m_create(System)
             sec_atoms = sec_system.m_create(Atoms)
-            sec_atoms.lattice_vectors_reciprocal = self.dft_input.get('kpt_basis')[()] / ureg.angstrom
+            kpt_basis = self._extract_dataset(self.dft_input.get('kpt_basis'))
+            if kpt_basis:
+                sec_atoms.lattice_vectors_reciprocal = kpt_basis / ureg.angstrom
         else:
             pass
 
@@ -139,9 +144,8 @@ class SolidDMFTParser:
             sec_method.m_set(sec_method.m_get_quantity_definition(f'x_soliddmft_{group_name}'), params)
 
         # HoppingMatrix || ProjectionMatrix
-        proj_mat = self.dft_input.get('proj_mat')
-        if proj_mat:
-            proj_mat = proj_mat[()]
+        proj_mat = self._extract_dataset(self.dft_input.get('proj_mat'))
+        if proj_mat is not None:
             sec_method.x_soliddmft_projection_matrix = proj_mat[:, 0, :, :, :, 0] + 1j * proj_mat[:, 0, :, :, :, 1]
 
         # HubbardKanamoriModel
@@ -149,41 +153,41 @@ class SolidDMFTParser:
         # TODO add parse for crpa file
         n_impurities = self.dft_input.get('n_inequiv_shells')[()] if self.dft_input.get('n_inequiv_shells') else 1
         general_params = self.dmft_input.get('general_params')
-        for i in range(n_impurities):
+        for n in range(n_impurities):
+            n_imp = str(n)
             sec_atom_parameters = sec_method.m_create(AtomParameters)
             atom_impurity = self.dft_input.get('corr_shells')
             if atom_impurity:
-                atom_index = atom_impurity.get(f'{i}').get('atom')
-                sec_atom_parameters.atom_index = atom_index[()] if atom_index else None
-                n_orbitals = atom_impurity.get(f'{i}').get('dim')
-                l_number = atom_impurity.get(f'{i}').get('l')
+                atom_index = self._extract_dataset(atom_impurity.get(n_imp).get('atom'))
+                sec_atom_parameters.atom_index = atom_index
+                n_orbitals = self._extract_dataset(atom_impurity.get(n_imp).get('dim'))
+                l_number = self._extract_dataset(atom_impurity.get(n_imp).get('l'))
                 if n_orbitals and l_number:
-                    sec_atom_parameters.n_orbitals = n_orbitals[()]
-                    angular_momentum = self.angular_momentum[l_number[()]]
-                    orbital_labels = [f'{angular_momentum}{ml}' for ml in range(n_orbitals[()])]
+                    sec_atom_parameters.n_orbitals = n_orbitals
+                    angular_momentum = self.angular_momentum[l_number]
+                    orbital_labels = [f'{angular_momentum}{ml}' for ml in range(n_orbitals)]
                     sec_atom_parameters.orbitals = orbital_labels
 
             sec_hubbard_kanamori_model = sec_atom_parameters.m_create(HubbardKanamoriModel)
-            if general_params.get('U')[f'{i}'] and general_params.get('J')[f'{i}']:
-                sec_hubbard_kanamori_model.u = general_params.get('U')[f'{i}'][()] * ureg.eV
-                sec_hubbard_kanamori_model.jh = general_params.get('J')[f'{i}'][()] * ureg.eV
+            hubbard_u = self._extract_dataset(general_params.get('U').get(n_imp))
+            hubbard_j = self._extract_dataset(general_params.get('J').get(n_imp))
+            if hubbard_u and hubbard_j:
+                sec_hubbard_kanamori_model.u = hubbard_u * ureg.eV
+                sec_hubbard_kanamori_model.jh = hubbard_j * ureg.eV
                 # solid_dmft keeps spin-rotational invariance
                 sec_hubbard_kanamori_model.up = sec_hubbard_kanamori_model.u - 2.0 * sec_hubbard_kanamori_model.jh
             # issue with def of 'h_int_type' in the output h5 in different versions
             h_int_type = general_params.get('h_int_type')
             if isinstance(h_int_type, h5py.Dataset):
-                h_int_type = h_int_type[()]
+                h_int_type = self._extract_dataset(h_int_type)
             elif isinstance(h_int_type, h5py.Group):
-                h_int_type = h_int_type[f'{i}'][()]
+                h_int_type = self._extract_dataset(h_int_type.get(n_imp))
             if h_int_type == b'density_density':
                 sec_hubbard_kanamori_model.j = 0.0
             elif h_int_type == b'kanamori':
                 sec_hubbard_kanamori_model.j = sec_hubbard_kanamori_model.jh
-            dc_type = general_params.get('dc_type')
-            if dc_type:
-                sec_hubbard_kanamori_model.double_counting_correction = self.dc_type[dc_type[()]]
-            else:  # set to 'fll' by default
-                sec_hubbard_kanamori_model.double_counting_correction = self.dc_type[0]
+            dc_type = self._extract_dataset(general_params.get('dc_type'), 0)  # set to 'fll' by default
+            sec_hubbard_kanamori_model.double_counting_correction = self.dc_type[dc_type]
 
     def parse_method(self):
         """Extracts the DMFT and related code-specific parameters from the 'DMFT_input' group.
@@ -218,66 +222,60 @@ class SolidDMFTParser:
 
         # DMFT
         sec_dmft = sec_method.m_create(DMFT)
-        n_impurities = self.dft_input.get('n_inequiv_shells')
-        sec_dmft.n_impurities = n_impurities[()] if n_impurities else 1
-        try:
-            impurity_orbitals = []
-            impurity_occupation = []
-            for i in range(n_impurities[()]):
-                n_orbitals = self.dft_input.get('corr_shells', {}).get(f'{i}', {}).get('dim', 1)
-                impurity_orbitals.append(n_orbitals[()])
-                occupation = self.dmft_results.get('observables', {}).get('imp_occ', {}).get(f'{i}')
-                total_occupation = occupation['down']['0'][()] + occupation['up']['0'][()]
-                impurity_occupation.append(total_occupation)
-            sec_dmft.n_correlated_orbitals = impurity_orbitals
-            sec_dmft.n_electrons = impurity_occupation
-        except Exception:
-            self.logger.warning('Could not set the impurity number of orbitals and nominal occupation.')
+        n_impurities = self._extract_dataset(self.dft_input.get('n_inequiv_shells'), 1)
+        sec_dmft.n_impurities = n_impurities
+        impurity_orbitals = []
+        impurity_occupation = []
+        for n in range(n_impurities):
+            n_imp = str(n)
+            # Number of impurity orbitals
+            n_orbitals = self._extract_dataset(self.dft_input.get('corr_shells', {}).get(n_imp, {}).get('dim'), 1)
+            impurity_orbitals.append(n_orbitals)
+            # Impurity occupation
+            occupation = self.dmft_results.get('observables', {}).get('imp_occ', {}).get(n_imp)
+            total_occupation = self._extract_dataset(occupation['down']['0']) + self._extract_dataset(occupation['up']['0'])
+            impurity_occupation.append(total_occupation)
+        sec_dmft.n_correlated_orbitals = impurity_orbitals
+        sec_dmft.n_electrons = impurity_occupation
+        # Beta
         dmft_general_params = self.dmft_input.get('general_params', {})
-        beta = dmft_general_params.get('beta')
+        beta = self._extract_dataset(dmft_general_params.get('beta'))
         if beta:
-            beta = beta[()]
             sec_dmft.inverse_temperature = beta / ureg.eV
-        magnetic_flag = dmft_general_params.get('magnetic')[()] if self.dmft_input.get('general_params', {}).get('magnetic') else False
+        magnetic_flag = self._extract_dataset(dmft_general_params.get('magnetic'), False)
         if magnetic_flag:
             magmom = dmft_general_params.get('magmom')
             if len(magmom) > 0:
-                magmom = [magmom.get(keys)[()] for keys in magmom.keys()]
-                if all(signs == 1.0 for signs in np.sign(magmom)):
-                    sec_dmft.magnetic_state = 'ferromagnetic'
-                else:
-                    sec_dmft.magnetic_state = 'antiferromagnetic'
+                magmom = [self._extract_dataset(magmom.get(keys)) for keys in magmom.keys()]
+                sec_dmft.magnetic_state = 'ferromagnetic' if all(signs == 1.0 for signs in np.sign(magmom)) else 'antiferromagnetic'
             else:
                 self.logger.warning('The magnetic flag is set to true, but the initial magnetic moment is not resolved. '
                                     'Is this really a magnetic calculation without an initial magmom seed?')
         else:
             sec_dmft.magnetic_state = 'paramagnetic'
-        solver_type = dmft_general_params.get('solver_type')
+        solver_type = self._extract_dataset(dmft_general_params.get('solver_type'))
         if solver_type:
-            sec_dmft.impurity_solver = self._solver_map[solver_type[()].decode()]
+            sec_dmft.impurity_solver = self._solver_map[solver_type.decode()]
 
         # MatsFrequencyMesh
-        n_iw = dmft_general_params.get('n_iw')
+        n_iw = self._extract_dataset(dmft_general_params.get('n_iw'))
         if n_iw:
-            n_iw = n_iw[()]
             iw = np.array([(2 * (n - n_iw) + 1) * 1j / beta for n in range(2 * n_iw)])
             iw = iw.reshape((len(iw), 1))
             sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=n_iw, points=iw * ureg.eV)
             sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # TimeMesh
-        n_tau = dmft_general_params.get('n_tau')
+        n_tau = self._extract_dataset(dmft_general_params.get('n_tau'))
         if n_tau:
-            n_tau = n_tau[()]
             tau = np.array([n * beta * 1j / (n_tau - 1) for n in range(n_tau)])
             tau = tau.reshape((len(tau), 1))
             sec_time_mesh = TimeMesh(dimensionality=1, n_points=n_tau, points=tau)
             sec_method.m_add_sub_section(Method.time_mesh, sec_time_mesh)
         # FrequencyMesh
-        n_w = dmft_general_params.get('n_w')
+        n_w = self._extract_dataset(dmft_general_params.get('n_w'))
         if n_w:
-            n_w = n_w[()]
-            w_min = dmft_general_params.get('w_range', {}).get('0')[()] if dmft_general_params.get('w_range', {}).get('0') else 0.0
-            w_max = dmft_general_params.get('w_range', {}).get('1')[()] if dmft_general_params.get('w_range', {}).get('1') else 0.0
+            w_min = self._extract_dataset(dmft_general_params.get('w_range', {}).get('0'), 0.0)
+            w_max = self._extract_dataset(dmft_general_params.get('w_range', {}).get('1'), 0.0)
             freq = np.linspace(w_min, w_max, n_w)
             sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=n_w, points=freq * ureg.eV)
             sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
@@ -293,11 +291,7 @@ class SolidDMFTParser:
         sec_scc.system_ref = sec_run.system[-1] if sec_run.system else None
         sec_scc.method_ref = sec_run.method[-1]  # ref to DMFT
 
-        # Resolving h5 path for to_hdf5 method
-        filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), self.mainfile)
-        farg = 'r+b'  # Always reading the h5 mainfile
-
-        def parse_scf(sec_scc: Calculation, i_scf: int, n_impurities: int,
+        def parse_scf(file, sec_scc: Calculation, i_scf: int, n_impurities: int,
                       convergence_obs: Dict[str, Any], observables: Dict[str, Any]):
             """Parses the scf iterations.
 
@@ -312,85 +306,126 @@ class SolidDMFTParser:
             # Convergence of the observables per scf iteration step
             conv_obs = {}
             for key, value in convergence_obs.items():
-                if len(value) > 0 and key != 'iteration':
-                    if key == 'd_mu':
-                        conv_obs[key] = numpy_type_to_json_serializable(
-                            value.get(f'{i_scf}')[()])
-                    else:
-                        for i_imp in range(n_impurities):
-                            if key == 'd_orb_occ':
-                                d_orb_occ = value.get(f'{i_imp}')[f'{i_scf}']
-                                if d_orb_occ:
-                                    sec_scf.x_soliddmft_convergence_orb_occ = d_orb_occ[()]
-                            else:
-                                conv_obs[f'{key}_imp{i_imp}'] = numpy_type_to_json_serializable(
-                                    value.get(f'{i_imp}')[f'{i_scf}'][()])
+                if len(value) == 0 or key == 'iteration':
+                    continue
+                if key == 'd_mu':
+                    val = self._extract_dataset(value.get(f'{i_scf}'))
+                    conv_obs[key] = numpy_type_to_json_serializable(val)
+                else:
+                    for n in range(n_impurities):
+                        n_imp = str(n)
+                        if key == 'd_orb_occ':
+                            d_orb_occ = self._extract_dataset(value.get(n_imp)[f'{i_scf}'])
+                            sec_scf.x_soliddmft_convergence_orb_occ = d_orb_occ
+                        else:
+                            val = self._extract_dataset(value.get(n_imp)[f'{i_scf}'])
+                            conv_obs[f'{key}_imp{n_imp}'] = numpy_type_to_json_serializable(val)
             sec_scf.x_soliddmft_convergence_obs = conv_obs
 
             # Energy per scf iteration step
             sec_energy = sec_scf.m_create(Energy)
-            total_energy = observables.get('E_tot', {}).get(f'{i_scf + 1}')
+            total_energy = self._extract_dataset(observables.get('E_tot', {}).get(f'{i_scf + 1}'))
             if total_energy:
-                total_energy = total_energy[()] * ureg.eV
+                total_energy = total_energy * ureg.eV
                 sec_energy.total = EnergyEntry(value=total_energy)
-            chemical_potential = observables.get('mu', {}).get(f'{i_scf + 1}')
+            chemical_potential = self._extract_dataset(observables.get('mu', {}).get(f'{i_scf + 1}'))
             if chemical_potential:
-                sec_energy.chemical_potential = chemical_potential[()] * ureg.eV
+                sec_energy.chemical_potential = chemical_potential * ureg.eV
             dc_energy = []
-            for i_imp in range(n_impurities):
-                dc_energy_atom = observables.get('E_DC', {}).get(f'{i_imp}').get(f'{i_scf + 1}')
-                if dc_energy_atom:
-                    dc_energy.append(dc_energy_atom[()])
+            for n in range(n_impurities):
+                dc_energy_atom = self._extract_dataset(observables.get('E_DC', {}).get(f'{n}').get(f'{i_scf + 1}'))
+                dc_energy.append(dc_energy_atom)
             sec_energy.double_counting = EnergyEntry(values_per_atom=dc_energy * ureg.eV)
 
             # Observables per scf iteration step
             scf_iteration = self.dmft_results.get(f'it_{i_scf + 1}')
-            for i_imp in range(n_impurities):
+            for n in range(n_impurities):
+                n_imp = str(n_imp)
                 sec_obs_scf = sec_scf.m_create(x_soliddmft_observables_parameters)
                 for gf_iteration in self.iteration_gfs:
-                    if f'{gf_iteration}_{i_imp}' in scf_iteration.keys():
-                        value_per_spin_orbital = scf_iteration.get(f'{gf_iteration}_{i_imp}')
+                    if f'{gf_iteration}_{n_imp}' in scf_iteration.keys():
+                        value_per_spin_orbital = scf_iteration.get(f'{gf_iteration}_{n_imp}')
                         value_tot = []
                         for spin_orb in value_per_spin_orbital.keys():
                             if spin_orb == 'block_names':
                                 continue
                             value = value_per_spin_orbital.get(spin_orb).get('data')
-                            value = to_hdf5(value, f, f'DMFT_results/it_{i_scf + 1}/{gf_iteration}_{i_imp}/{spin_orb}/data')
+                            value = to_hdf5(value, file, f'DMFT_results/it_{i_scf + 1}/{gf_iteration}_{n_imp}/{spin_orb}/data')
                             value_tot.append(value)
                         sec_obs_scf.m_set(sec_obs_scf.m_get_quantity_definition(f'x_soliddmft_{gf_iteration}'), value_tot)
                 for gf_observable in self.observable_gfs:
                     if gf_observable in observables.keys():
-                        value_per_spin_orbital = observables.get(gf_observable).get(f'{i_imp}')
+                        value_per_spin_orbital = observables.get(gf_observable).get(f'{n_imp}')
                         value_tot = []
                         for spin_orb in value_per_spin_orbital.keys():
                             value = value_per_spin_orbital.get(spin_orb).get(f'{i_scf + 1}')
-                            value = to_hdf5(value, f, f'DMFT_results/observables/{gf_observable}/{i_imp}/{spin_orb}/{i_scf + 1}')
+                            value = to_hdf5(value, file, f'DMFT_results/observables/{gf_observable}/{n_imp}/{spin_orb}/{i_scf + 1}')
                             value_tot.append(value)
                         sec_obs_scf.m_set(sec_obs_scf.m_get_quantity_definition(f'x_soliddmft_{gf_observable}'), value_tot)
 
-        def parse_gfs(sec_scc: Calculation, sec_gfs: GreensFunctions, n_impurities: int):
+        def parse_gfs(sec_scc: Calculation, n_impurities: int):
             """Parses Green's functions quantities.
 
             Args:
                 sec_scc (Calculation): Calculation section.
-                sec_gfs (GreensFunctions): Green's function section under Calculation.
                 n_impurities (int): Number of impurities.
             """
+            sec_gfs = sec_scc.m_create(GreensFunctions)
 
-            def parse_dos(sec_scc: Calculation, sec_gfs: GreensFunctions, chemical_potential: np.float64):
-                """Parses DOS if the impurity solver returns Green's functions in the real
-                frequency space (MPS).
+            # First, store energies
+            dmft_last_iter = self.dmft_results.get('last_iter')
+            sec_energy = sec_scc.m_create(Energy)
+            if dmft_last_iter.get('DC_energ'):
+                dc_energy = [self._extract_dataset(dmft_last_iter.get('DC_energ').get(keys)) for keys in dmft_last_iter.get('DC_energ')]
+                sec_energy.double_counting = EnergyEntry(values_per_atom=dc_energy * ureg.eV)
+            chemical_potential = self._extract_dataset(dmft_last_iter.get('chemical_potential_post'))
+            if chemical_potential:
+                sec_energy.chemical_potential = chemical_potential * ureg.eV
+                sec_gfs.chemical_potential = chemical_potential * ureg.eV
 
-                Args:
-                    sec_scc (Calculation): Calculation section.
-                    sec_gfs (GreensFunctions): Green's functions section
-                    chemical_potential (np.float64): Magnitude of the chemical potential in eV.
-                """
-                magnetic_state = sec_scc.method_ref.dmft.magnetic_state
-                if magnetic_state:
-                    n_spin_channels = 1 if magnetic_state == 'paramagnetic' else 2
+            # Read axes label
+            axes_label = ''
+            for freq_mesh in sec_scc.method_ref.frequency_mesh:
+                points = freq_mesh.points.to('eV').magnitude
+                if np.isreal(points).all():
+                    sec_gfs.frequencies = np.real(points)
+                    axes_label = 'real'
                 else:
-                    n_spin_channels = 1
+                    sec_gfs.matsubara_freq = np.imag(points)
+                    axes_label = 'matsubara'
+            axes = self._gf_freq_map[axes_label]
+            if sec_scc.method_ref.time_mesh:
+                sec_gfs.tau = sec_scc.method_ref.time_mesh[0].points.imag
+
+            # Finally, store GF quantities
+            n_orbitals = sec_scc.method_ref.dmft.n_correlated_orbitals
+            if n_orbitals is not None:
+                for gf_quantity in self.iteration_gfs:
+                    quantity_name = axes.get(gf_quantity)
+                    if not quantity_name:
+                        continue
+                    value_per_atom = []
+                    for n in range(n_impurities):
+                        n_orb = n_orbitals[n]
+                        if not dmft_last_iter.get(f'{gf_quantity}_{n}'):
+                            continue
+                        value = dmft_last_iter.get(f'{gf_quantity}_{n}')
+                        value_per_atom_per_spin = []
+                        for spin in ['down', 'up']:
+                            value_per_atom_per_spin_per_orbital = []
+                            for i_orb in range(n_orb):
+                                val = value.get(f'{spin}_{i_orb}').get('data')
+                                val = val[:, 0, 0, 0] + 1j * val[:, 0, 0, 1]
+                                value_per_atom_per_spin_per_orbital.append(val)
+                            value_per_atom_per_spin.append(value_per_atom_per_spin_per_orbital)
+                        value_per_atom.append(value_per_atom_per_spin)
+                    gf = np.array(value_per_atom)
+                    sec_gfs.m_set(sec_gfs.m_get_quantity_definition(quantity_name), gf)
+
+            # In case axes_label = real, we parse the DOS as -Im G(w) / np.pi
+            if axes_label == 'real':
+                magnetic_state = sec_scc.method_ref.dmft.magnetic_state
+                n_spin_channels = 2 if magnetic_state != 'paramagnetic' else 1
 
                 energies = sec_gfs.frequencies
                 sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
@@ -411,56 +446,7 @@ class SolidDMFTParser:
                             value_total += value[i_at][i_orb]
                     value_total = 2 * value_total if n_spin_channels == 2 else value_total
                     sec_dos_total.value = value_total / ureg.eV
-
-            # First, store energies
-            dmft_last_iter = self.dmft_results.get('last_iter')
-            sec_energy = sec_scc.m_create(Energy)
-            if dmft_last_iter.get('DC_energ'):
-                dc_energy = [dmft_last_iter.get('DC_energ').get(keys)[()] for keys in dmft_last_iter.get('DC_energ')]
-                sec_energy.double_counting = EnergyEntry(values_per_atom=dc_energy * ureg.eV)
-            chemical_potential = dmft_last_iter.get('chemical_potential_post')[()] * ureg.eV if dmft_last_iter.get('chemical_potential_post') else None
-            if chemical_potential:
-                sec_energy.chemical_potential = chemical_potential
-                sec_gfs.chemical_potential = chemical_potential
-            # Then, store GFs
-            axes_label = ''
-            for freq_mesh in sec_scc.method_ref.frequency_mesh:
-                points = freq_mesh.points.to('eV').magnitude
-                if np.isreal(points).all():
-                    sec_gfs.frequencies = np.real(points)
-                    axes_label = 'real'
-                else:
-                    sec_gfs.matsubara_freq = np.imag(points)
-                    axes_label = 'matsubara'
-            axes = self._gf_freq_map[axes_label]
-            if sec_scc.method_ref.time_mesh:
-                sec_gfs.tau = sec_scc.method_ref.time_mesh[0].points.imag
-
-            if sec_scc.method_ref.dmft.n_correlated_orbitals is not None:
-                for gf_quantity in self.iteration_gfs:
-                    quantity_name = axes.get(gf_quantity)
-                    if not quantity_name:
-                        continue
-                    value_per_atom = []
-                    for i_imp in range(n_impurities):
-                        n_orb = sec_scc.method_ref.dmft.n_correlated_orbitals[i_imp]
-                        if dmft_last_iter.get(f'{gf_quantity}_{i_imp}'):
-                            value = dmft_last_iter.get(f'{gf_quantity}_{i_imp}')
-                            value_per_atom_per_spin = []
-                            for spin in ['down', 'up']:
-                                value_per_atom_per_spin_per_orbital = []
-                                for i_orb in range(n_orb):
-                                    val = value.get(f'{spin}_{i_orb}').get('data')
-                                    val = val[:, 0, 0, 0] + 1j * val[:, 0, 0, 1]
-                                    value_per_atom_per_spin_per_orbital.append(val)
-                                value_per_atom_per_spin.append(value_per_atom_per_spin_per_orbital)
-                            value_per_atom.append(value_per_atom_per_spin)
-                    gf = np.array(value_per_atom)
-                    sec_gfs.m_set(sec_gfs.m_get_quantity_definition(quantity_name), gf)
-
-            # In case axes_label = real, we parse the DOS as -Im G(w) / np.pi
-            if axes_label == 'real':
-                parse_dos(sec_scc, sec_gfs, chemical_potential.magnitude)
+            return sec_gfs
 
         # SCF steps
         scf_keys = [int(key.lstrip('it_')) for key in self.dmft_results.keys() if key.startswith('it_')]
@@ -474,29 +460,30 @@ class SolidDMFTParser:
         n_impurities = self.dft_input.get('n_inequiv_shells')[()]
         convergence_obs = self.dmft_results.get('convergence_obs', {})
         observables = self.dmft_results.get('observables', {})
+        # Resolving h5 path for to_hdf5 method
+        filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), self.mainfile)
+        farg = 'r+b'  # Always reading the h5 mainfile
         if self.archive.m_context:
             with self.archive.m_context.raw_file(filename, farg) as f:
                 for i_scf in range(len(scf_keys)):
-                    parse_scf(sec_scc, i_scf, n_impurities, convergence_obs, observables)
+                    parse_scf(f, sec_scc, i_scf, n_impurities, convergence_obs, observables)
 
         # Greens functions quantities
-        sec_gfs = sec_scc.m_create(GreensFunctions)
-        parse_gfs(sec_scc, sec_gfs, n_impurities)
+        sec_gfs = parse_gfs(sec_scc, n_impurities)
         # and related quantities
         quasiparticle_weights = []
         orbital_occupations = []
         orb_Z = observables.get('orb_Z')
         orb_occ = observables.get('orb_occ')
-        for i_imp in range(n_impurities):
-            orb_Z_per_impurity = orb_Z.get(f'{i_imp}')
+        for n in range(n_impurities):
+            n_imp = str(n)
+            orb_Z_per_impurity = orb_Z.get(n_imp)
             quasiparticle_weights_per_impurity = []
-            orb_occ_per_impurity = orb_occ.get(f'{i_imp}')
+            orb_occ_per_impurity = orb_occ.get(n_imp)
             orbital_occupations_per_impurity = []
             for spin in ['down', 'up']:
-                if orb_Z_per_impurity.get(spin, {}).get(f'{n_iter_scf}'):
-                    quasiparticle_weights_per_impurity.append(orb_Z_per_impurity.get(spin).get(f'{n_iter_scf}')[()])
-                if orb_occ_per_impurity.get(spin, {}).get(f'{n_iter_scf}'):
-                    orbital_occupations_per_impurity.append(orb_occ_per_impurity.get(spin).get(f'{n_iter_scf}')[()])
+                quasiparticle_weights_per_impurity.append(self._extract_dataset(orb_Z_per_impurity.get(spin).get(f'{n_iter_scf}')))
+                orbital_occupations_per_impurity.append(self._extract_dataset(orb_occ_per_impurity.get(spin).get(f'{n_iter_scf}')))
             quasiparticle_weights.append(quasiparticle_weights_per_impurity)
             orbital_occupations.append(orbital_occupations_per_impurity)
         sec_gfs.quasiparticle_weights = quasiparticle_weights
@@ -526,18 +513,16 @@ class SolidDMFTParser:
         sec_program.name = 'solid_dmft'
         if self.dmft_input['version'] is not None:
             for name in self.code_keys:
-                hash = self.dmft_input['version'].get(f'{name}_hash', None)
-                version = self.dmft_input['version'].get(f'{name}_version', None)
-                if hash is not None:
-                    if name == 'solid_dmft':
-                        sec_program.x_soliddmft_hash = hash[()].decode()
-                    else:
-                        setattr(sec_program, f'x_soliddmft_{name}_hash', hash[()].decode())
-                if version is not None:
-                    if name == 'solid_dmft':
-                        sec_program.version = version[()].decode()
-                    else:
-                        setattr(sec_program, f'x_soliddmft_{name}_version', version[()].decode())
+                hash = self._extract_dataset(self.dmft_input['version'].get(f'{name}_hash'))
+                if name == 'solid_dmft':
+                    sec_program.x_soliddmft_hash = hash.decode()
+                else:
+                    setattr(sec_program, f'x_soliddmft_{name}_hash', hash.decode())
+                version = self._extract_dataset(self.dmft_input['version'].get(f'{name}_version'))
+                if name == 'solid_dmft':
+                    sec_program.version = version.decode()
+                else:
+                    setattr(sec_program, f'x_soliddmft_{name}_version', version.decode())
 
         # System section
         self.parse_system()
