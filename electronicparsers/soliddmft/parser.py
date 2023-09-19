@@ -22,7 +22,7 @@ import logging
 import h5py
 import re
 
-from typing import Any, Dict, Union
+from typing import Any, Dict, Union, Optional
 from nomad.units import ureg
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 from nomad.datamodel.metainfo.simulation.run import Run, Program
@@ -83,15 +83,16 @@ class SolidDMFTParser:
             }
         }
 
-    def _extract_dataset(self, dataset: h5py.Dataset, default: Union[np.bool_, np.int32, np.int64, np.float64]=None):
+    def _extract_dataset(self, dataset: Optional[h5py.Dataset],
+                         default: Union[np.bool_, np.int32, np.int64, np.float64, np.ndarray, None]=None):
         """Extracts the dataset information or defines a default value.
 
         Args:
-            dataset (h5py.Dataset): H5py dataset to be extracted.
-            default (Union[np.bool_, np.int32, np.int64, np.float64], optional): Default value. Defaults to None.
+            dataset (Optional[h5py.Dataset]): H5py dataset to be extracted.
+            default (Union[np.bool_, np.int32, np.int64, np.float64, np.ndarray], optional): Default value. Defaults to None.
 
         Returns:
-            Union[np.bool_, np.int32, np.int64, np.float64]: Returns the value associated with the dataset.
+            Union[np.bool_, np.int32, np.int64, np.float64, np.ndarray]: Returns the value associated with the dataset.
         """
         return dataset[()] if dataset else default
 
