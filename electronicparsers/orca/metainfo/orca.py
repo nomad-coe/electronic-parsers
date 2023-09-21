@@ -1085,12 +1085,6 @@ class Calculation(simulation.calculation.Calculation):
         description='''
         ''')
 
-    x_orca_scf_gradient = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
-        description='''
-        ''')
-
 
 class GeometryOptimization(simulation.workflow.GeometryOptimization):
 

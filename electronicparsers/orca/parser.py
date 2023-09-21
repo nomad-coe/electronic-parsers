@@ -861,10 +861,11 @@ class OrcaParser:
         timings = self_consistent.get('timings', {})
         for key, val in timings.items():
             if val is not None:
-                setattr(sec_scc, 'x_orca_%s' % key, val.magnitude)
                 if key == 'final_time' or key == 'scf_gradient':
                     sec_scc.time_calculation = val
                     sec_scc.time_physical = initial_time + sec_scc.time_calculation
+                else:
+                    setattr(sec_scc, 'x_orca_%s' % key, val.magnitude)
 
         return sec_scc
 
