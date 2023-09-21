@@ -25,6 +25,8 @@ from tests.dos_integrator import integrate_dos
 
 
 _root_dir = 'tests/data/fhiaims/'
+silicon_versions = ('v071914_7', 'v171221_1')
+silicon_normalization_map = list(zip(silicon_versions, (0.5, 1)))
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -37,12 +39,7 @@ def parser():
 
 
 @pytest.fixture(scope='module')
-def silicon_versions():
-    return ('v071914_7', 'v171221_1')
-
-
-@pytest.fixture(scope='module')
-def silicon(parser, silicon_versions):
+def silicon(parser):
     silicon = {}
     for version in silicon_versions:
         archive = EntryArchive()
@@ -50,19 +47,6 @@ def silicon(parser, silicon_versions):
                      archive, None)
         silicon[version] = archive
     return silicon
-
-
-@pytest.fixture(scope='module')
-def silicon_normalization_factors(silicon_versions):
-    normalization_factors = [.5, 1]
-    return dict(zip(silicon_versions, normalization_factors))
-
-
-@pytest.fixture(scope='module')
-def parse_native_tiers(tier):
-    archive = EntryArchive()
-    FHIAimsParser().parse(f'{_root_dir}/native_tiers/{tier}/aims.out', archive, None)
-    return archive
 
 
 def test_scf_spinpol(parser):
@@ -160,7 +144,7 @@ def test_band_spinpol(parser):
     assert sec_k_band.energy_fermi == sec_scc.energy.fermi
 
 
-@pytest.mark.parametrize("version", silicon_versions())
+@pytest.mark.parametrize("version", silicon_versions)
 def test_band_silicon(silicon, version):
     """Tests that the band structure of silicon is parsed correctly.
     """
@@ -184,8 +168,8 @@ def test_band_silicon(silicon, version):
     assert gap == approx(0.60684)
 
 
-@pytest.mark.parametrize("version", silicon_versions())
-def test_dos_silicon(silicon, version, silicon_normalization_factors):
+@pytest.mark.parametrize("version, normalization_factor", silicon_normalization_map)
+def test_dos_silicon(silicon, version, normalization_factor):
     """Tests that the DOS of silicon is parsed correctly.
     """
     scc = silicon[version].run[-1].calculation[0]
@@ -196,7 +180,7 @@ def test_dos_silicon(silicon, version, silicon_normalization_factors):
     dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
 
     assert pytest.approx(dos_integrated, abs=5e-2) == 8
-    assert dos.total[0].x_fhi_aims_normalization_factor_raw_data == silicon_normalization_factors[version]
+    assert dos.total[0].x_fhi_aims_normalization_factor_raw_data == normalization_factor
 
     # Check that an appropriately sized band gap is found at the given
     # reference energy
@@ -236,7 +220,9 @@ def test_dos(parser):
 
 @pytest.mark.parametrize("tier", ['tight', 'intermediate', 'light_spd'])
 def test_native_tiers(tier):
-    archive = parse_native_tiers(tier)
+    archive = EntryArchive()
+    FHIAimsParser().parse(f'{_root_dir}/native_tiers/{tier}/aims.out', archive, None)
+
     sec_er = archive.run[0].method[0].electrons_representation[0]
     assert sec_er.native_tier == f'{tier}_defaults_2020'
 
