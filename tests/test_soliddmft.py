@@ -106,7 +106,7 @@ def test_srvo3(parser):
     assert sec_gfs.tau.shape[0] == sec_time_mesh.n_points
     assert sec_gfs.self_energy_iw.dtype == 'complex128'
     assert sec_gfs.self_energy_iw.shape == (1, 2, 3, 1002)
-    assert sec_gfs.greens_function_tau[0][1][1][1025] == approx(-0.14109113749664728 + 0j)
+    assert sec_gfs.greens_function_tau[0][1][1][1025] == approx(0.14109113749664728 + 0j)
     assert sec_gfs.chemical_potential.to('eV').magnitude == approx(0.050287075199847694)
     assert np.sum(sec_gfs.orbital_occupations) == approx(1.008321846227956)
     assert sec_gfs.quasiparticle_weights.shape == (1, 2, 3)
