@@ -22,7 +22,7 @@ import logging
 import h5py
 import re
 
-from typing import Any, Dict, Union, Optional
+from typing import Any, Dict, Union
 from nomad.units import ureg
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 from nomad.datamodel.metainfo.simulation.run import Run, Program
