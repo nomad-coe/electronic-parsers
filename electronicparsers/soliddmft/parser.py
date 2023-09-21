@@ -83,43 +83,36 @@ class SolidDMFTParser:
             }
         }
 
-    def _extract_dataset(self, dataset: Optional[h5py.Dataset],
-                         default: Union[bool, int, float, np.ndarray, None] = None):
-        """Extracts the dataset information or defines a default value.
+    def extract_groups_datasets(self, data: Union[h5py.Dataset, h5py.Group],
+                                default: Union[bool, int, float, np.ndarray, None] = None):
+        """Extracts the content from the h5 file groups and datasets.
+
+        For a dataset, returns the extracted data or the default. For a group, returns a
+        dictionary with dataset names as keys and their content as values. If the content
+        is a byte string, it is decoded to a regular string.
 
         Args:
-            dataset (Optional[h5py.Dataset]): H5py dataset to be extracted.
-            default (Union[bool, int, float, np.ndarray, None], optional): Default value. Defaults to None.
+            data (Union[h5py.Dataset, h5py.Group]): The dataset or group to extract from.
+            default (Union[bool, int, float, np.ndarray, None], optional): The default value
+                to return if data does not exists. Defaults to None.
 
         Returns:
-            Union[np.bool_, np.int32, np.int64, np.float64, np.ndarray]: Returns the value associated with the dataset.
+            - For Dataset: The content of the dataset.
+            - For Group: Dictionary with dataset names as keys and their content as values.
+            - Otherwise: The default value.
         """
-        return dataset[()] if dataset else default
-
-    def parse_groups_datasets(self, group: h5py.Group):
-        """Parses datasets within a specified HDF5 group.
-
-        Iterates over items in the given group and checks if each item is a dataset.
-        If the dataset is scalar, retrieves its value and ensures it's in a native Python
-        type suitable for JSON serialization.
-
-        Args:
-        - group (h5py.Group): The HDF5 group to be parsed.
-
-        Returns:
-        - params (dict): A dictionary with keys corresponding to dataset names and values
-                        as native Python types suitable for JSON serialization.
-        """
-        params = {}
-        for key, value in group.items():
-            if isinstance(value, h5py.Dataset):
-                if not value.shape:
-                    value = self._extract_dataset(value)
-                    if not value:
-                        continue
-                    val = value.decode() if isinstance(value, bytes) else value
-                    params[key] = numpy_type_to_json_serializable(val)
-        return params
+        if isinstance(data, h5py.Dataset):
+            return data[()]
+        elif isinstance(data, h5py.Group):
+            params = {}
+            for key, value in data.items():
+                if not isinstance(value, h5py.Dataset) or value.shape or not value:
+                    continue
+                val = value[()].decode() if isinstance(value[()], bytes) else value[()]
+                params[key] = numpy_type_to_json_serializable(val)
+            return params
+        else:
+            return default
 
     def parse_system(self):
         """Parses the system information and stores it under self.archive.run[0].system.
@@ -129,7 +122,7 @@ class SolidDMFTParser:
         if self.dft_input.get('kpt_basis'):
             sec_system = sec_run.m_create(System)
             sec_atoms = sec_system.m_create(Atoms)
-            kpt_basis = self._extract_dataset(self.dft_input.get('kpt_basis'))
+            kpt_basis = self.extract_groups_datasets(self.dft_input.get('kpt_basis'))
             if kpt_basis is not None:
                 sec_atoms.lattice_vectors_reciprocal = kpt_basis / ureg.angstrom
         else:
@@ -153,28 +146,28 @@ class SolidDMFTParser:
             group = data.get(group_name)
             if not group:
                 continue
-            params = self.parse_groups_datasets(group)
+            params = self.extract_groups_datasets(group)
             sec_method.m_set(sec_method.m_get_quantity_definition(f'x_soliddmft_{group_name}'), params)
 
         # HoppingMatrix || ProjectionMatrix
-        proj_mat = self._extract_dataset(self.dft_input.get('proj_mat'))
+        proj_mat = self.extract_groups_datasets(self.dft_input.get('proj_mat'))
         if proj_mat is not None:
             sec_method.x_soliddmft_projection_matrix = proj_mat[:, 0, :, :, :, 0] + 1j * proj_mat[:, 0, :, :, :, 1]
 
         # HubbardKanamoriModel
         # TODO add parse for full_slater
         # TODO add parse for crpa file
-        n_impurities = self.dft_input.get('n_inequiv_shells')[()] if self.dft_input.get('n_inequiv_shells') else 1
+        n_impurities = self.extract_groups_datasets(self.dft_input.get('n_inequiv_shells'), 1)
         general_params = self.dmft_input.get('general_params')
         for n in range(n_impurities):
             n_imp = str(n)
             sec_atom_parameters = sec_method.m_create(AtomParameters)
             atom_impurity = self.dft_input.get('corr_shells')
             if atom_impurity:
-                atom_index = self._extract_dataset(atom_impurity.get(n_imp).get('atom'))
+                atom_index = self.extract_groups_datasets(atom_impurity.get(n_imp).get('atom'))
                 sec_atom_parameters.atom_index = atom_index
-                n_orbitals = self._extract_dataset(atom_impurity.get(n_imp).get('dim'))
-                l_number = self._extract_dataset(atom_impurity.get(n_imp).get('l'))
+                n_orbitals = self.extract_groups_datasets(atom_impurity.get(n_imp).get('dim'))
+                l_number = self.extract_groups_datasets(atom_impurity.get(n_imp).get('l'))
                 if n_orbitals and l_number:
                     sec_atom_parameters.n_orbitals = n_orbitals
                     angular_momentum = self.angular_momentum[l_number]
@@ -182,8 +175,8 @@ class SolidDMFTParser:
                     sec_atom_parameters.orbitals = orbital_labels
 
             sec_hubbard_kanamori_model = sec_atom_parameters.m_create(HubbardKanamoriModel)
-            hubbard_u = self._extract_dataset(general_params.get('U').get(n_imp))
-            hubbard_j = self._extract_dataset(general_params.get('J').get(n_imp))
+            hubbard_u = self.extract_groups_datasets(general_params.get('U').get(n_imp))
+            hubbard_j = self.extract_groups_datasets(general_params.get('J').get(n_imp))
             if hubbard_u is not None and hubbard_j is not None:
                 sec_hubbard_kanamori_model.u = hubbard_u * ureg.eV
                 sec_hubbard_kanamori_model.jh = hubbard_j * ureg.eV
@@ -192,14 +185,14 @@ class SolidDMFTParser:
             # issue with def of 'h_int_type' in the output h5 in different versions
             h_int_type = general_params.get('h_int_type')
             if isinstance(h_int_type, h5py.Dataset):
-                h_int_type = self._extract_dataset(h_int_type)
+                h_int_type = self.extract_groups_datasets(h_int_type)
             elif isinstance(h_int_type, h5py.Group):
-                h_int_type = self._extract_dataset(h_int_type.get(n_imp))
+                h_int_type = self.extract_groups_datasets(h_int_type.get(n_imp))
             if h_int_type == b'density_density':
                 sec_hubbard_kanamori_model.j = 0.0
             elif h_int_type == b'kanamori':
                 sec_hubbard_kanamori_model.j = sec_hubbard_kanamori_model.jh
-            dc_type = self._extract_dataset(general_params.get('dc_type'), 0)  # set to 'fll' by default
+            dc_type = self.extract_groups_datasets(general_params.get('dc_type'), 0)  # set to 'fll' by default
             sec_hubbard_kanamori_model.double_counting_correction = self.dc_type[dc_type]
 
     def parse_method(self):
@@ -221,75 +214,75 @@ class SolidDMFTParser:
             group = self.dmft_input.get(group_name)
             if not group:
                 continue
-            params = self.parse_groups_datasets(group)
+            params = self.extract_groups_datasets(group)
             sec_method.m_set(sec_method.m_get_quantity_definition(f'x_soliddmft_{group_name}'), params)
 
         # KMesh
         sec_k_mesh = sec_method.m_create(KMesh)
-        n_k = self._extract_dataset(self.dft_input.get('n_k'), 1)
+        n_k = self.extract_groups_datasets(self.dft_input.get('n_k'), 1)
         sec_k_mesh.n_points = n_k
-        kpts = self._extract_dataset(self.dft_input.get('kpts'))
+        kpts = self.extract_groups_datasets(self.dft_input.get('kpts'))
         if kpts is not None:
             sec_k_mesh.points = np.complex128(kpts)
-        kpt_weights = self._extract_dataset(self.dft_input.get('kpt_weights'))
+        kpt_weights = self.extract_groups_datasets(self.dft_input.get('kpt_weights'))
         sec_k_mesh.weights = kpt_weights
 
         # DMFT
         sec_dmft = sec_method.m_create(DMFT)
-        n_impurities = self._extract_dataset(self.dft_input.get('n_inequiv_shells'), 1)
+        n_impurities = self.extract_groups_datasets(self.dft_input.get('n_inequiv_shells'), 1)
         sec_dmft.n_impurities = n_impurities
         impurity_orbitals = []
         impurity_occupation = []
         for n in range(n_impurities):
             n_imp = str(n)
             # Number of impurity orbitals
-            n_orbitals = self._extract_dataset(self.dft_input.get('corr_shells', {}).get(n_imp, {}).get('dim'), 1)
+            n_orbitals = self.extract_groups_datasets(self.dft_input.get('corr_shells', {}).get(n_imp, {}).get('dim'), 1)
             impurity_orbitals.append(n_orbitals)
             # Impurity occupation
             occupation = self.dmft_results.get('observables', {}).get('imp_occ', {}).get(n_imp)
-            total_occupation = self._extract_dataset(occupation['down']['0']) + self._extract_dataset(occupation['up']['0'])
+            total_occupation = self.extract_groups_datasets(occupation['down']['0']) + self.extract_groups_datasets(occupation['up']['0'])
             impurity_occupation.append(total_occupation)
         sec_dmft.n_correlated_orbitals = impurity_orbitals
         sec_dmft.n_electrons = impurity_occupation
         # Beta
         dmft_general_params = self.dmft_input.get('general_params', {})
-        beta = self._extract_dataset(dmft_general_params.get('beta'))
+        beta = self.extract_groups_datasets(dmft_general_params.get('beta'))
         if beta:
             sec_dmft.inverse_temperature = beta / ureg.eV
-        magnetic_flag = self._extract_dataset(dmft_general_params.get('magnetic'), False)
+        magnetic_flag = self.extract_groups_datasets(dmft_general_params.get('magnetic'), False)
         if magnetic_flag:
             magmom = dmft_general_params.get('magmom')
             if len(magmom) > 0:
-                magmom = [self._extract_dataset(magmom.get(keys)) for keys in magmom.keys()]
+                magmom = [self.extract_groups_datasets(magmom.get(keys)) for keys in magmom.keys()]
                 sec_dmft.magnetic_state = 'ferromagnetic' if all(signs == 1.0 for signs in np.sign(magmom)) else 'antiferromagnetic'
             else:
                 self.logger.warning('The magnetic flag is set to true, but the initial magnetic moment is not resolved. '
                                     'Is this really a magnetic calculation without an initial magmom seed?')
         else:
             sec_dmft.magnetic_state = 'paramagnetic'
-        solver_type = self._extract_dataset(dmft_general_params.get('solver_type'))
+        solver_type = self.extract_groups_datasets(dmft_general_params.get('solver_type'))
         if solver_type:
             sec_dmft.impurity_solver = self._solver_map[solver_type.decode()]
 
         # MatsFrequencyMesh
-        n_iw = self._extract_dataset(dmft_general_params.get('n_iw'))
+        n_iw = self.extract_groups_datasets(dmft_general_params.get('n_iw'))
         if n_iw:
             iw = np.array([(2 * (n - n_iw) + 1) * 1j / beta for n in range(2 * n_iw)])
             iw = iw.reshape((2 * n_iw, 1))
             sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=n_iw, points=iw * ureg.eV)
             sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # TimeMesh
-        n_tau = self._extract_dataset(dmft_general_params.get('n_tau'))
+        n_tau = self.extract_groups_datasets(dmft_general_params.get('n_tau'))
         if n_tau:
             tau = np.array([n * beta * 1j / (n_tau - 1) for n in range(n_tau)])
             tau = tau.reshape((n_tau, 1))
             sec_time_mesh = TimeMesh(dimensionality=1, n_points=n_tau, points=tau)
             sec_method.m_add_sub_section(Method.time_mesh, sec_time_mesh)
         # FrequencyMesh
-        n_w = self._extract_dataset(dmft_general_params.get('n_w'))
+        n_w = self.extract_groups_datasets(dmft_general_params.get('n_w'))
         if n_w:
-            w_min = self._extract_dataset(dmft_general_params.get('w_range', {}).get('0'), 0.0)
-            w_max = self._extract_dataset(dmft_general_params.get('w_range', {}).get('1'), 0.0)
+            w_min = self.extract_groups_datasets(dmft_general_params.get('w_range', {}).get('0'), 0.0)
+            w_max = self.extract_groups_datasets(dmft_general_params.get('w_range', {}).get('1'), 0.0)
             freq = np.linspace(w_min, w_max, n_w)
             freq = freq.reshape((n_w, 1))
             sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=n_w, points=freq * ureg.eV)
@@ -306,11 +299,13 @@ class SolidDMFTParser:
         sec_scc.system_ref = sec_run.system[-1] if sec_run.system else None
         sec_scc.method_ref = sec_run.method[-1]  # ref to DMFT
 
-        def parse_scf(file, sec_scc: Calculation, i_scf: int, n_impurities: int,
+        def parse_scf(filename: str, farg: str, sec_scc: Calculation, i_scf: int, n_impurities: int,
                       convergence_obs: Dict[str, Any], observables: Dict[str, Any]):
             """Parses the scf iterations.
 
             Args:
+                filename: Path to the h5 file.
+                farg: Arguments for reading and decoding the h5 file.
                 sec_scc (Calculation): Calculation section.
                 i_scf (int): Scf iteration index.
                 n_impurities (int): Number of impurities.
@@ -324,59 +319,63 @@ class SolidDMFTParser:
                 if len(value) == 0 or key == 'iteration':
                     continue
                 if key == 'd_mu':
-                    val = self._extract_dataset(value.get(f'{i_scf}'))
+                    val = self.extract_groups_datasets(value.get(f'{i_scf}'))
                     conv_obs[key] = numpy_type_to_json_serializable(val)
                 else:
                     for n in range(n_impurities):
                         n_imp = str(n)
                         if key == 'd_orb_occ':
-                            d_orb_occ = self._extract_dataset(value.get(n_imp)[f'{i_scf}'])
+                            d_orb_occ = self.extract_groups_datasets(value.get(n_imp)[f'{i_scf}'])
                             sec_scf.x_soliddmft_convergence_orb_occ = d_orb_occ
                         else:
-                            val = self._extract_dataset(value.get(n_imp)[f'{i_scf}'])
+                            val = self.extract_groups_datasets(value.get(n_imp)[f'{i_scf}'])
                             conv_obs[f'{key}_imp{n_imp}'] = numpy_type_to_json_serializable(val)
             sec_scf.x_soliddmft_convergence_obs = conv_obs
 
             # Energy per scf iteration step
             sec_energy = sec_scf.m_create(Energy)
-            total_energy = self._extract_dataset(observables.get('E_tot', {}).get(f'{i_scf + 1}'))
+            total_energy = self.extract_groups_datasets(observables.get('E_tot', {}).get(f'{i_scf + 1}'))
             if total_energy:
                 total_energy = total_energy * ureg.eV
                 sec_energy.total = EnergyEntry(value=total_energy)
-            chemical_potential = self._extract_dataset(observables.get('mu', {}).get(f'{i_scf + 1}'))
+            chemical_potential = self.extract_groups_datasets(observables.get('mu', {}).get(f'{i_scf + 1}'))
             if chemical_potential:
                 sec_energy.chemical_potential = chemical_potential * ureg.eV
             dc_energy = []
             for n in range(n_impurities):
-                dc_energy_atom = self._extract_dataset(observables.get('E_DC', {}).get(f'{n}').get(f'{i_scf + 1}'))
+                dc_energy_atom = self.extract_groups_datasets(observables.get('E_DC', {}).get(f'{n}').get(f'{i_scf + 1}'))
                 dc_energy.append(dc_energy_atom)
             sec_energy.double_counting = EnergyEntry(values_per_atom=dc_energy * ureg.eV)
 
             # Observables per scf iteration step
             scf_iteration = self.dmft_results.get(f'it_{i_scf + 1}')
-            for n in range(n_impurities):
-                n_imp = str(n_imp)
-                sec_obs_scf = sec_scf.m_create(x_soliddmft_observables_parameters)
-                for gf_iteration in self.iteration_gfs:
-                    if f'{gf_iteration}_{n_imp}' in scf_iteration.keys():
-                        value_per_spin_orbital = scf_iteration.get(f'{gf_iteration}_{n_imp}')
-                        value_tot = []
-                        for spin_orb in value_per_spin_orbital.keys():
-                            if spin_orb == 'block_names':
+            if self.archive.m_context:
+                with self.archive.m_context.raw_file(filename, farg) as file:
+                    for n in range(n_impurities):
+                        n_imp = str(n_imp)
+                        sec_obs_scf = sec_scf.m_create(x_soliddmft_observables_parameters)
+                        for gf_iteration in self.iteration_gfs:
+                            if f'{gf_iteration}_{n_imp}' not in scf_iteration.keys():
                                 continue
-                            value = value_per_spin_orbital.get(spin_orb).get('data')
-                            value = to_hdf5(value, file, f'DMFT_results/it_{i_scf + 1}/{gf_iteration}_{n_imp}/{spin_orb}/data')
-                            value_tot.append(value)
-                        sec_obs_scf.m_set(sec_obs_scf.m_get_quantity_definition(f'x_soliddmft_{gf_iteration}'), value_tot)
-                for gf_observable in self.observable_gfs:
-                    if gf_observable in observables.keys():
-                        value_per_spin_orbital = observables.get(gf_observable).get(f'{n_imp}')
-                        value_tot = []
-                        for spin_orb in value_per_spin_orbital.keys():
-                            value = value_per_spin_orbital.get(spin_orb).get(f'{i_scf + 1}')
-                            value = to_hdf5(value, file, f'DMFT_results/observables/{gf_observable}/{n_imp}/{spin_orb}/{i_scf + 1}')
-                            value_tot.append(value)
-                        sec_obs_scf.m_set(sec_obs_scf.m_get_quantity_definition(f'x_soliddmft_{gf_observable}'), value_tot)
+                            value_per_spin_orbital = scf_iteration.get(f'{gf_iteration}_{n_imp}')
+                            value_tot = []
+                            for spin_orb in value_per_spin_orbital.keys():
+                                if spin_orb == 'block_names':
+                                    continue
+                                value = value_per_spin_orbital.get(spin_orb).get('data')
+                                value = to_hdf5(value, file, f'DMFT_results/it_{i_scf + 1}/{gf_iteration}_{n_imp}/{spin_orb}/data')
+                                value_tot.append(value)
+                            sec_obs_scf.m_set(sec_obs_scf.m_get_quantity_definition(f'x_soliddmft_{gf_iteration}'), value_tot)
+                        for gf_observable in self.observable_gfs:
+                            if gf_observable not in observables.keys():
+                                continue
+                            value_per_spin_orbital = observables.get(gf_observable).get(f'{n_imp}')
+                            value_tot = []
+                            for spin_orb in value_per_spin_orbital.keys():
+                                value = value_per_spin_orbital.get(spin_orb).get(f'{i_scf + 1}')
+                                value = to_hdf5(value, file, f'DMFT_results/observables/{gf_observable}/{n_imp}/{spin_orb}/{i_scf + 1}')
+                                value_tot.append(value)
+                            sec_obs_scf.m_set(sec_obs_scf.m_get_quantity_definition(f'x_soliddmft_{gf_observable}'), value_tot)
 
         def parse_gfs(sec_scc: Calculation, n_impurities: int):
             """Parses Green's functions quantities.
@@ -391,9 +390,9 @@ class SolidDMFTParser:
             dmft_last_iter = self.dmft_results.get('last_iter')
             sec_energy = sec_scc.m_create(Energy)
             if dmft_last_iter.get('DC_energ'):
-                dc_energy = [self._extract_dataset(dmft_last_iter.get('DC_energ').get(keys)) for keys in dmft_last_iter.get('DC_energ')]
+                dc_energy = [self.extract_groups_datasets(dmft_last_iter.get('DC_energ').get(keys)) for keys in dmft_last_iter.get('DC_energ')]
                 sec_energy.double_counting = EnergyEntry(values_per_atom=dc_energy * ureg.eV)
-            chemical_potential = self._extract_dataset(dmft_last_iter.get('chemical_potential_post'))
+            chemical_potential = self.extract_groups_datasets(dmft_last_iter.get('chemical_potential_post'))
             if chemical_potential:
                 sec_energy.chemical_potential = chemical_potential * ureg.eV
                 sec_gfs.chemical_potential = chemical_potential * ureg.eV
@@ -435,6 +434,8 @@ class SolidDMFTParser:
                             value_per_atom_per_spin.append(value_per_atom_per_spin_per_orbital)
                         value_per_atom.append(value_per_atom_per_spin)
                     gf = np.array(value_per_atom)
+                    if gf_quantity == 'Gimp_time':  # setting G(tau) to positive values as in other codes
+                        gf = - gf
                     sec_gfs.m_set(sec_gfs.m_get_quantity_definition(quantity_name), gf)
 
             # In case axes_label = real, we parse the DOS as -Im G(w) / np.pi
@@ -478,10 +479,8 @@ class SolidDMFTParser:
         # Resolving h5 path for to_hdf5 method
         filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), self.mainfile)
         farg = 'r+b'  # Always reading the h5 mainfile
-        if self.archive.m_context:
-            with self.archive.m_context.raw_file(filename, farg) as f:
-                for i_scf in range(len(scf_keys)):
-                    parse_scf(f, sec_scc, i_scf, n_impurities, convergence_obs, observables)
+        for i_scf in range(len(scf_keys)):
+            parse_scf(filename, farg, sec_scc, i_scf, n_impurities, convergence_obs, observables)
 
         # Greens functions quantities
         sec_gfs = parse_gfs(sec_scc, n_impurities)
@@ -497,8 +496,8 @@ class SolidDMFTParser:
             orb_occ_per_impurity = orb_occ.get(n_imp)
             orbital_occupations_per_impurity = []
             for spin in ['down', 'up']:
-                quasiparticle_weights_per_impurity.append(self._extract_dataset(orb_Z_per_impurity.get(spin).get(f'{n_iter_scf}')))
-                orbital_occupations_per_impurity.append(self._extract_dataset(orb_occ_per_impurity.get(spin).get(f'{n_iter_scf}')))
+                quasiparticle_weights_per_impurity.append(self.extract_groups_datasets(orb_Z_per_impurity.get(spin).get(f'{n_iter_scf}')))
+                orbital_occupations_per_impurity.append(self.extract_groups_datasets(orb_occ_per_impurity.get(spin).get(f'{n_iter_scf}')))
             quasiparticle_weights.append(quasiparticle_weights_per_impurity)
             orbital_occupations.append(orbital_occupations_per_impurity)
         sec_gfs.quasiparticle_weights = quasiparticle_weights
@@ -528,13 +527,13 @@ class SolidDMFTParser:
         sec_program.name = 'solid_dmft'
         if self.dmft_input['version'] is not None:
             for name in self.code_keys:
-                hash = self._extract_dataset(self.dmft_input['version'].get(f'{name}_hash'))
+                hash = self.extract_groups_datasets(self.dmft_input['version'].get(f'{name}_hash'))
                 if hash:
                     if name == 'solid_dmft':
                         sec_program.x_soliddmft_hash = hash.decode()
                     else:
                         setattr(sec_program, f'x_soliddmft_{name}_hash', hash.decode())
-                version = self._extract_dataset(self.dmft_input['version'].get(f'{name}_version'))
+                version = self.extract_groups_datasets(self.dmft_input['version'].get(f'{name}_version'))
                 if version:
                     if name == 'solid_dmft':
                         sec_program.version = version.decode()
