@@ -17,6 +17,5 @@
 # limitations under the License.
 
 from .utils import (
-    extract_section, get_files, numpy_type_to_json_serializable, BeyondDFTWorkflowsParser,
-    DataANDTextParser
+    get_files, numpy_type_to_json_serializable, BeyondDFTWorkflowsParser, DataANDTextParser
 )
