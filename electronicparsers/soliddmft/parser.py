@@ -299,8 +299,8 @@ class SolidDMFTParser:
         sec_scc.system_ref = sec_run.system[-1] if sec_run.system else None
         sec_scc.method_ref = sec_run.method[-1]  # ref to DMFT
 
-        def parse_scf(filename: str, farg: str, sec_scc: Calculation, i_scf: int, n_impurities: int,
-                      convergence_obs: Dict[str, Any], observables: Dict[str, Any]):
+        def parse_scf(filename: str, sec_scc: Calculation, i_scf: int, n_impurities: int,
+                      convergence_obs: Dict[str, Any], observables: Dict[str, Any], farg: str = 'r+b'):
             """Parses the scf iterations.
 
             Args:
@@ -478,9 +478,8 @@ class SolidDMFTParser:
         observables = self.dmft_results.get('observables', {})
         # Resolving h5 path for to_hdf5 method
         filename = os.path.join(os.path.dirname(self.filepath.split("/raw/")[-1]), self.mainfile)
-        farg = 'r+b'  # Always reading the h5 mainfile
         for i_scf in range(len(scf_keys)):
-            parse_scf(filename, farg, sec_scc, i_scf, n_impurities, convergence_obs, observables)
+            parse_scf(filename, sec_scc, i_scf, n_impurities, convergence_obs, observables)
 
         # Greens functions quantities
         sec_gfs = parse_gfs(sec_scc, n_impurities)
