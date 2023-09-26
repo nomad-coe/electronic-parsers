@@ -79,13 +79,16 @@ def test_geomopt(parser):
     sec_run = archive.run[0]
     assert len(sec_run.method) == 6
     assert len(sec_run.system) == 6
-    assert len(sec_run.calculation) == 6
+    sec_scc = sec_run.calculation
+    assert len(sec_scc) == 6
 
     assert sec_run.method[2].x_orca_nb_grid_pts_after_weights_screening == 34298
     assert sec_run.method[4].x_orca_integr_weight_cutoff == 1e-14
     assert sec_run.system[1].atoms.positions[2][1].magnitude == approx(9.54068e-11)
-    assert len(sec_run.calculation[0].scf_iteration) == 13
-    assert sec_run.calculation[-1].x_orca_elec_energy == approx(-6.34048432e-16)
+    assert len(sec_scc[0].scf_iteration) == 13
+    assert sec_scc[-1].x_orca_elec_energy == approx(-6.34048432e-16)
+    assert sec_scc[0].time_calculation.magnitude == approx(3.373)
+    assert sec_scc[2].time_physical.magnitude == approx(7.373)
 
 
 def test_spinpol(parser):

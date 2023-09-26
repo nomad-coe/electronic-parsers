@@ -69,6 +69,8 @@ def test_optimization(parser):
     assert sec_calc[10].vibrational_frequencies[0].x_dmol3_normal_modes[5][2][0] == approx(-0.1073)
     assert sec_calc[10].x_dmol3_h_rot == approx(0.889)
     assert sec_calc[10].x_dmol3_c_vib == approx(5.816)
+    assert sec_calc[3].time_physical.magnitude == approx(0.150 * 60)
+    assert sec_calc[7].time_calculation.magnitude == approx(0.6)
 
     sec_workflow = archive.workflow2
     # TODO handle multiple workflow sections

@@ -72,6 +72,10 @@ def test_geometry_optimization(parser):
     assert sec_calc[4].forces.total.value[1][2].magnitude == approx(1.09986959e-23)
     assert sec_calc[2].scf_iteration[0].energy.total.value.magnitude == approx(-4.93903272e-18)
     assert sec_calc[3].scf_iteration[4].energy.change.magnitude == approx(-6.80556151e-30)
+    assert sec_calc[2].time_calculation.magnitude == approx(1.13)
+    assert sec_calc[3].time_physical.magnitude == approx(5.88)
+    assert sec_calc[1].scf_iteration[6].time_physical.magnitude == approx(3.64)
+    assert sec_calc[4].scf_iteration[2].time_calculation.magnitude == approx(0.14)
 
 
 def test_molecular_dynamics(parser):
@@ -92,6 +96,8 @@ def test_molecular_dynamics(parser):
     assert calc[39].energy.total.potential.magnitude == approx(-4.86144243e-18)
     assert calc[41].energy.total.kinetic.magnitude == approx(6.61026239e-20)
     assert calc[8].temperature.magnitude == approx(71.351)
+    assert calc[7].time_calculation.magnitude == approx(0.23)
+    assert calc[13].time_physical.magnitude == approx(3.32)
 
     md = archive.workflow2
     assert md.method.thermodynamic_ensemble == 'NVE'

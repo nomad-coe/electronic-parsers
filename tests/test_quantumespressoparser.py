@@ -126,6 +126,10 @@ def test_multirun(parser):
     assert sec_runs[0].calculation[0].eigenvalues[0].kpoints[10][1] == approx(-0.1667096)
     assert sec_runs[1].calculation[0].eigenvalues[0].energies[0][3][-5].magnitude == approx(1.42385437e-19)
     assert sec_runs[2].calculation[0].eigenvalues[0].energies[1][-10].magnitude[35] == approx(-7.25180392e-18)
+    assert sec_runs[0].calculation[0].time_calculation.magnitude == approx(9828.2)
+    assert sec_runs[0].calculation[0].time_physical.magnitude == approx(9828.2)
+    assert sec_runs[1].calculation[0].scf_iteration[6].time_calculation.magnitude == approx(68.2)
+    assert sec_runs[2].calculation[0].scf_iteration[11].time_physical.magnitude == approx(1189.6)
 
 
 def test_md(parser):
@@ -141,6 +145,10 @@ def test_md(parser):
     assert archive.run[0].system[6].atoms.positions[1][2].magnitude == approx(6.66987013e-11)
     assert sec_sccs[-3].forces.total.value_raw[1][1].magnitude == approx(9.55685747e-10)
     assert len(sec_sccs[22].scf_iteration) == 3
+    assert sec_sccs[9].time_physical.magnitude == approx(0.4)
+    assert sec_sccs[20].time_calculation.magnitude == approx(0)
+    assert sec_sccs[2].scf_iteration[1].time_physical.magnitude == approx(0.1)
+    assert sec_sccs[5].scf_iteration[2].time_calculation.magnitude == approx(0)
 
 
 def test_dos(parser):

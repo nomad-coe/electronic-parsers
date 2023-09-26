@@ -102,6 +102,11 @@ def test_geomopt(parser):
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 6
+    assert sec_sccs[0].scf_iteration[8].time_calculation.magnitude == approx(1.505)
+    assert sec_sccs[0].scf_iteration[4].time_physical.magnitude == approx(9.79)
+    assert sec_sccs[1].time_calculation.magnitude == approx(25.106)
+    assert sec_sccs[3].time_physical.magnitude == approx(111.124)
+    assert sec_sccs[5].time_calculation.magnitude == approx(0.004000167846669456)
 
     assert np.shape(sec_sccs[1].eigenvalues[0].energies[0][0]) == (20,)
     assert sec_sccs[2].energy.correlation.value.magnitude == approx(-9.34966824e-18)
@@ -251,12 +256,14 @@ def test_md(parser):
     assert sec_calculation[4].temperature.magnitude == approx(339.815893902375)
     assert sec_calculation[4].energy.kinetic.value.magnitude == approx(2.111251998587359e-20)
     assert sec_calculation[4].energy.potential.value.magnitude == approx(-3.3301149258970176e-16)
+    assert sec_calculation[1].time_calculation.magnitude == approx(26.922)
+    assert sec_calculation[2].time_physical.magnitude == approx(70.35599994659424)
 
     sec_workflow = archive.workflow2
     assert sec_workflow.method.thermodynamic_ensemble == 'NVT'
     assert sec_workflow.method.integration_timestep.magnitude == approx(1e-15)
     assert sec_workflow.method.n_steps == 5
-    sec_thermostat = sec_workflow.method.thermostat_parameters
+    sec_thermostat = sec_workflow.method.thermostat_parameters[0]
     assert sec_thermostat.thermostat_type == 'nose_hoover'
     assert sec_thermostat.reference_temperature.magnitude == approx(300.0)
     assert sec_thermostat.coupling_constant.magnitude == approx(3.706267724423911e-14)

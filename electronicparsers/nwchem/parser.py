@@ -385,7 +385,7 @@ class NWChemParser:
         scf = dft.get('self_consistency', source.get('self_consistency'))
         if scf is not None:
             for iteration in scf.get('iteration', []):
-                initial_time = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else initial_time
+                scf_initial_time = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else initial_time
                 sec_scf = sec_scc.m_create(ScfIteration)
                 sec_scf_energy = sec_scf.m_create(Energy)
                 iteration = [fix_dfloat(i) if isinstance(i, str) else i for i in iteration]
@@ -393,9 +393,9 @@ class NWChemParser:
                 sec_scf_energy.change = iteration[1] * ureg.hartree
                 if len(iteration) > 2:
                     sec_scf.time_physical = iteration[2] * ureg.s
-                    sec_scf.time_calculation = sec_scf.time_physical - initial_time
+                    sec_scf.time_calculation = sec_scf.time_physical - scf_initial_time
 
-        if dft.get('time_calculation') is not None:
+        if not sec_scc.time_calculation and dft.get('time_calculation') is not None:
             sec_scc.time_calculation = dft.time_calculation
             sec_scc.time_physical = initial_time + dft.time_calculation
 

@@ -95,6 +95,10 @@ def test_geometry_optimization(parser):
     assert sec_sccs[7].energy.xc.value.to('hartree').magnitude == approx(-4.1274870248)
     assert len(sec_sccs[2].scf_iteration) == 6
     assert sec_sccs[11].scf_iteration[-1].energy.total.value.to('hartree').magnitude == approx(-17.1646260706)
+    assert sec_sccs[1].scf_iteration[1].time_calculation.magnitude == approx(0.5)
+    assert sec_sccs[2].time_physical.magnitude == approx(14.4)
+    assert sec_sccs[3].scf_iteration[3].time_physical.magnitude == approx(16.3)
+    assert sec_sccs[4].time_calculation.magnitude == approx(1.8)
 
     sec_systems = archive.run[0].system
     assert len(sec_systems) == 13
@@ -115,6 +119,8 @@ def test_molecular_dynamics(parser):
     assert sec_sccs[3].energy.total.value.to('hartree').magnitude == approx(-34.32799897809764)
     assert sec_sccs[9].energy.kinetic.value.to('hartree').magnitude == approx(0.005371243)
     assert sec_sccs[7].temperature.magnitude == approx(230.324748558)
+    assert sec_sccs[1].time_physical.magnitude == approx(5.2)
+    assert sec_sccs[3].time_calculation.magnitude == approx(2.0)
 
     sec_systems = archive.run[0].system
     assert len(sec_systems) == 11

@@ -78,7 +78,7 @@ class MainfileParser(TextParser):
                     rf'((?:df +[A-Z][a-z]* +{re_f} +{re_f} +{re_f}.+\s+)+)',
                     sub_parser=TextParser(quantities=coordinates_quantities)
                 ),
-                Quantity('final', rf'Ef +({re_f}.+){re_n} *{re_n}', dtype=np.float64),
+                Quantity('final', rf'\-+\s+Total E.+\s+\-+\s+Ef +({re_f}.+)', dtype=np.float64),
                 Quantity('energy_binding', rf'binding energy +({re_f})Ha', dtype=np.float64, unit=ureg.hartree),
             ])
         )
@@ -376,7 +376,7 @@ class Dmol3Parser:
                 target.energy = Energy(
                     total=EnergyEntry(value=source.final[0] * ureg.hartree),
                     x_dmol3_binding=EnergyEntry(value=source.energy_binding))
-                target.time_physical = source.final[3] * ureg.minute
+                target.time_physical = source.final[-2] * ureg.minute
                 target.time_calculation = target.time_physical - time_initial
 
             # scf iteration
@@ -387,7 +387,7 @@ class Dmol3Parser:
                     total=EnergyEntry(value=iteration[0] * ureg.hartree),
                     x_dmol3_binding=EnergyEntry(value=iteration[1] * ureg.hartree),
                 )
-                sec_scf.time_physical = iteration[3] * ureg.minute
+                sec_scf.time_physical = iteration[-2] * ureg.minute
                 sec_scf.time_calculation = sec_scf.time_physical - time_initial
             # add energies data from last scf step
             if source.iteration:

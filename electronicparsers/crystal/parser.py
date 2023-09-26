@@ -491,6 +491,7 @@ class CrystalParser:
                     repeats=False,
                 ),
                 Quantity("end_timestamp", fr' EEEEEEEEEE TERMINATION  DATE\s+(.*? TIME .*?){br}', str_operation=lambda x: x, repeats=False),
+                Quantity("time_end", fr'END +TELAPSE +({flt_c})', dtype=np.float64),
 
                 # Filepaths
                 Quantity("f25_filepath1", fr'file fort\.25 saved as ([\s\S]+?){br}', str_operation=lambda x: x, repeats=False),
@@ -962,7 +963,7 @@ class CrystalParser:
 
                     frames.append(i_scc)
                 if frames:
-                    i_scc.time_physical = run.time_run.date_end - run.time_run.date_start
+                    i_scc.time_physical = out["time_end"]
                     i_scc.time_calculation = i_scc.time_physical - run.calculation[-2].time_physical
 
                 archive.workflow2.results.is_converged_geometry = geo_opt["converged"] == "CONVERGED"  # pylint: disable=E1136

@@ -77,6 +77,10 @@ def test_geometry_optimization(parser):
     assert sec_sccs[0].energy.correlation.value.magnitude == approx(-1.42869721e-18)
     assert sec_sccs[1].forces.total.value[2][2].magnitude == approx(-2.20633015e-10)
     assert len(sec_sccs[2].scf_iteration) == 4
+    assert sec_sccs[0].time_physical.magnitude == approx(0.4)
+    assert sec_sccs[1].scf_iteration[1].time_calculation.magnitude == approx(0.1)
+    assert sec_sccs[2].scf_iteration[3].time_physical.magnitude == approx(1.6)
+    assert sec_sccs[3].time_calculation.magnitude == approx(0.3)
 
     sec_systems = archive.run[0].system
     assert sec_systems[0].atoms.positions[1][2].magnitude == approx(5.6568542e-11)
@@ -92,6 +96,8 @@ def test_molecular_dynamics(parser):
     assert sec_sccs[2].energy.xc.value.magnitude == approx(-4.04565658e-17)
     assert sec_sccs[5].x_nwchem_section_qmd_step[0].x_nwchem_qmd_step_total_energy.magnitude == approx(-3.32745352e-16)
     assert sec_sccs[2].x_nwchem_section_qmd_step[0].x_nwchem_qmd_step_dipole[1] == approx(1.141435e-01)
+    assert sec_sccs[2].time_calculation.magnitude == approx(0.4)
+    assert sec_sccs[4].time_physical.magnitude == approx(1.8)
 
 
 def test_pw(parser):

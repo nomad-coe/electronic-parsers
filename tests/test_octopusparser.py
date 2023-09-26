@@ -65,6 +65,9 @@ def test_scf(parser):
     assert len(sec_scf) == 8
     assert sec_scf[3].energy.total.value.magnitude == approx(-6.91495422e-17)
     assert sec_scf[7].time_calculation.magnitude == 9.42
+    assert sec_scf[2].time_physical.magnitude == approx(127.9)
+    assert sec_scc.time_physical.magnitude == approx(298.09)
+    assert sec_scc.time_calculation.magnitude == approx(298.09)
 
 
 def test_spinpol(parser):

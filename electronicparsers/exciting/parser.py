@@ -2395,10 +2395,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_scc.time_physical = sec_scc.scf_iteration[-1].time_physical
             sec_scc.time_calculation = sum([scf.time_calculation if scf.time_calculation else 0 for scf in sec_scc.scf_iteration])
 
-        if not sec_scc.time_calculation and self.info_parser.total_time is not None:
-            sec_scc.time_physical = self.info_parser.total_time
-            sec_scc.time_calculation = sec_scc.time_physical - time_initial
-
         return sec_scc
 
     def parse_system(self, section):
@@ -2560,9 +2556,15 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 sec_scc.x_exciting_maximum_force_magnitude = force_convergence[0]
                 sec_scc.x_exciting_geometry_optimization_threshold_force = force_convergence[1]
 
+        time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
         sec_scc = parse_configuration(structure_optimization)
+
         if sec_scc is None:
             return
+
+        if not sec_scc.time_calculation and self.info_parser.total_time is not None:
+            sec_scc.time_physical = self.info_parser.total_time
+            sec_scc.time_calculation = sec_scc.time_physical - time_initial
 
         # volume optimizations
         volume_index = 1

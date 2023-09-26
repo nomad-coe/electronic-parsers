@@ -730,7 +730,7 @@ class FHIAimsOutParser(TextParser):
                     date_time,
                     Quantity(
                         'total_time',
-                        r'\| Total time +: +[\d\.]+ s +([\d\.]+) s', dtype=float),
+                        r'\| Total time +: +[\d\.]+ s +([\d\.]+) s', dtype=np.float64),
                 ])
             )
         ]
