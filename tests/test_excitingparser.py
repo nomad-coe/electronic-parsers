@@ -187,7 +187,8 @@ def test_gw(silicon_gw):
     assert sec_gw.screening.n_empty_states == sec_gw.n_empty_states
     assert (sec_gw.screening.k_mesh.grid == np.array([2, 2, 2])).all()
     assert (sec_gw.q_mesh.grid == np.array([2, 2, 2])).all()
-    sec_freq_mesh = sec_methods[-1].frequency_mesh
+    assert len(sec_methods[-1].frequency_mesh) == 1
+    sec_freq_mesh = sec_methods[-1].frequency_mesh[0]
     assert sec_freq_mesh.sampling_method == 'Gauss-Legendre'
     assert sec_freq_mesh.n_points == 32
     assert sec_freq_mesh.points[4].to('hartree').magnitude == approx(0.125 + 0j)

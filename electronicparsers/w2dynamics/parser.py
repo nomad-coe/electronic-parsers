@@ -344,9 +344,9 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             if key.endswith('last'):
                 sec_gf = sec_scc.m_create(GreensFunctions)
                 if sec_run.method[-1].m_xpath('frequency_mesh'):
-                    sec_gf.matsubara_freq = sec_run.method[-1].frequency_mesh.points.to('eV').magnitude.imag
+                    sec_gf.matsubara_freq = sec_run.method[-1].frequency_mesh[0].points.to('eV').magnitude.imag
                 if sec_run.method[-1].m_xpath('time_mesh'):
-                    sec_gf.tau = sec_run.method[-1].time_mesh.points.imag
+                    sec_gf.tau = sec_run.method[-1].time_mesh[0].points.imag
                 if self.data.get(key).get('mu') is not None:
                     sec_gf.chemical_potential = np.float64(self.data.get(key).get('mu').get('value')) * ureg.eV
                 norb = self.data.get('.config').attrs.get('atoms.1.nd')

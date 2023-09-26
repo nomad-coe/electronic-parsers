@@ -76,9 +76,10 @@ def test_srvo3(parser):
     assert sec_dmft.impurity_solver == 'CT-HYB'
     # Frequency and Time meshes
     assert sec_run.m_xpath('method[-1].frequency_mesh') and sec_run.m_xpath('method[-1].time_mesh')
-    sec_freq_mesh = sec_run.method[-1].frequency_mesh
+    assert len(sec_run.method[-1].frequency_mesh) == 1 and len(sec_run.method[-1].time_mesh) == 1
+    sec_freq_mesh = sec_run.method[-1].frequency_mesh[0]
     assert sec_freq_mesh.points[22][0].to('eV').magnitude == approx(-123.30751165339937j)
-    sec_time_mesh = sec_run.method[-1].time_mesh
+    sec_time_mesh = sec_run.method[-1].time_mesh[0]
     assert sec_time_mesh.points[40][0] == approx(2.4024024024024024j)
 
     # Calculation tests

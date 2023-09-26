@@ -128,9 +128,9 @@ def test_gw(parser):
     assert sec_gw.n_empty_states == 500
     assert sec_gw.screening.n_empty_states == sec_gw.n_empty_states
     assert sec_gw.q_mesh.n_points == sec_method[-1].k_mesh.n_points
-    assert sec_method[-1].m_xpath('frequency_mesh')
-    assert sec_method[-1].frequency_mesh.n_points == 2
-    assert sec_method[-1].frequency_mesh.points[-1].to('eV').magnitude == approx(31.855950000000004j)
+    assert len(sec_method[-1].frequency_mesh) == 1
+    assert sec_method[-1].frequency_mesh[0].n_points == 2
+    assert sec_method[-1].frequency_mesh[0].points[-1].to('eV').magnitude == approx(31.855950000000004j)
 
     # Calculation
     sec_scc = sec_run.calculation
