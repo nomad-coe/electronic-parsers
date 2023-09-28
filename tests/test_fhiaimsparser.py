@@ -256,7 +256,7 @@ def test_md(parser):
     assert sec_workflow.method.thermodynamic_ensemble == 'NVT'
     assert sec_workflow.method.integration_timestep.magnitude == approx(1e-15)
     assert sec_workflow.method.n_steps == 5
-    sec_thermostat = sec_workflow.method.thermostat_parameters
+    sec_thermostat = sec_workflow.method.thermostat_parameters[0]
     assert sec_thermostat.thermostat_type == 'nose_hoover'
     assert sec_thermostat.reference_temperature.magnitude == approx(300.0)
     assert sec_thermostat.coupling_constant.magnitude == approx(3.706267724423911e-14)

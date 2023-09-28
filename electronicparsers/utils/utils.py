@@ -22,6 +22,7 @@ import os
 from glob import glob
 
 from typing import Union
+from nomad.utils import extract_section
 from nomad.parsing.file_parser import TextParser
 from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
@@ -30,30 +31,6 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod, MaxEnt, MaxEntMethod,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
-
-
-def extract_section(source: EntryArchive, path: str):
-    """Extract the (last) section from `source` given by `path`. Separators in path are done
-    using `/`. Examples:
-
-    section_system = extract_section(archive, 'run/system)
-    spectra = extract_section(archive, 'run/calculation/spectra')
-
-    Args:
-        source (EntryArchive): targeted archive
-        path (str): path to the desired section to be extracted
-
-    Returns:
-        MSection: extracted section
-    """
-    section_segments = path.split('/')
-    for section in section_segments:
-        try:
-            value = getattr(source, section)
-            source = value[-1] if isinstance(value, list) else value
-        except Exception:
-            return
-    return source
 
 
 def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = True):
@@ -141,17 +118,17 @@ class BeyondDFTWorkflowsParser:
         workflow.name = 'GW'
 
         # Method
-        method_gw = extract_section(gw_archive, 'run/method/gw')
-        method_xcfunctional = extract_section(self.archive, 'run/method/dft/xc_functional')
-        method_basisset = extract_section(self.archive, 'run/method/electrons_representation')
+        method_gw = extract_section(gw_archive, ['run', 'method', 'gw'])
+        method_xcfunctional = extract_section(self.archive, ['run', 'method', 'dft', 'xc_functional'])
+        method_basisset = extract_section(self.archive, ['run', 'method', 'electrons_representation'])
         workflow.method.gw_method_ref = method_gw
         workflow.method.starting_point = method_xcfunctional
         workflow.method.electrons_representation = method_basisset
 
         # Inputs and Outputs
-        input_structure = extract_section(self.archive, 'run/system')
-        dft_calculation = extract_section(self.archive, 'run/calculation')
-        gw_calculation = extract_section(gw_archive, 'run/calculation')
+        input_structure = extract_section(self.archive, ['run', 'system'])
+        dft_calculation = extract_section(self.archive, ['run', 'calculation'])
+        gw_calculation = extract_section(gw_archive, ['run', 'calculation'])
         if input_structure:
             workflow.m_add_sub_section(
                 GW.inputs, Link(name='Input structure', section=input_structure))
@@ -191,14 +168,14 @@ class BeyondDFTWorkflowsParser:
         workflow.name = 'BSE'  # this entry contains the full BSE calculation for all photon polarizations
 
         # Method
-        method_bse = extract_section(self.archive, 'run/method/bse')
+        method_bse = extract_section(self.archive, ['run', 'method', 'bse'])
         workflow.method.bse_method_ref = method_bse
 
         # Inputs
-        input_structure = extract_section(self.archive, 'run/system')
+        input_structure = extract_section(self.archive, ['run', 'system'])
         workflow.m_add_sub_section(
             PhotonPolarization.inputs, Link(name='Input structure', section=input_structure))
-        input_method = extract_section(self.archive, 'run/method')
+        input_method = extract_section(self.archive, ['run', 'method'])
         workflow.m_add_sub_section(
             PhotonPolarization.inputs, Link(name='Input BSE methodology', section=input_method))
 
@@ -207,7 +184,7 @@ class BeyondDFTWorkflowsParser:
         for index, path in enumerate(self._child_archives.keys()):
             archive = self._child_archives.get(path)
 
-            output_polarization = extract_section(archive, 'run/calculation')
+            output_polarization = extract_section(archive, ['run', 'calculation'])
             if output_polarization:
                 workflow.m_add_sub_section(
                     PhotonPolarization.outputs,
@@ -258,8 +235,8 @@ class BeyondDFTWorkflowsParser:
         workflow.name = 'XS'
 
         # Inputs and Outputs
-        input_structure = extract_section(self.archive, 'run/system')
-        dft_calculation = extract_section(self.archive, 'run/calculation')
+        input_structure = extract_section(self.archive, ['run', 'system'])
+        dft_calculation = extract_section(self.archive, ['run', 'calculation'])
         polarization_calculations = extract_polarization_outputs()
         if input_structure:
             workflow.m_add_sub_section(
@@ -308,16 +285,16 @@ class BeyondDFTWorkflowsParser:
         workflow = MaxEnt(method=MaxEntMethod())
 
         # Method
-        method_dmft = extract_section(self.archive, 'run/method/dmft')
-        method_maxent = extract_section(maxent_archive, 'run/method')
+        method_dmft = extract_section(self.archive, ['run', 'method', 'dmft'])
+        method_maxent = extract_section(maxent_archive, ['run', 'method'])
         workflow.method.dmft_method_ref = method_dmft
         workflow.method.maxent_method_ref = method_maxent
 
         # Inputs and Outputs
-        input_structure = extract_section(self.archive, 'run/system')
-        dmft_calculation = extract_section(self.archive, 'run/calculation')
-        maxent_calculation = extract_section(maxent_archive, 'run/calculation')
-        workflow_maxent_calculation = extract_section(workflow_archive, 'run/calculation')
+        input_structure = extract_section(self.archive, ['run', 'system'])
+        dmft_calculation = extract_section(self.archive, ['run', 'calculation'])
+        maxent_calculation = extract_section(maxent_archive, ['run', 'calculation'])
+        workflow_maxent_calculation = extract_section(workflow_archive, ['run', 'calculation'])
         if input_structure:
             workflow.m_add_sub_section(
                 MaxEnt.inputs, Link(name='Input structure', section=input_structure))
@@ -366,15 +343,15 @@ class BeyondDFTWorkflowsParser:
         workflow.name = 'DMFT'
 
         # Method
-        method_proj = extract_section(wannier_archive, 'run/method/projection')
-        method_dmft = extract_section(self.archive, 'run/method/dmft')
+        method_proj = extract_section(wannier_archive, ['run', 'method', 'projection'])
+        method_dmft = extract_section(self.archive, ['run', 'method', 'dmft'])
         workflow.method.projection_method_ref = method_proj
         workflow.method.dmft_method_ref = method_dmft
 
         # Inputs and Outputs
-        input_structure = extract_section(wannier_archive, 'run/system')
-        wannier_calculation = extract_section(wannier_archive, 'run/calculation')
-        dmft_calculation = extract_section(self.archive, 'run/calculation')
+        input_structure = extract_section(wannier_archive, ['run', 'system'])
+        wannier_calculation = extract_section(wannier_archive, ['run', 'calculation'])
+        dmft_calculation = extract_section(self.archive, ['run', 'calculation'])
         if input_structure:
             workflow.m_add_sub_section(
                 DMFT.inputs, Link(name='Input structure', section=input_structure))
