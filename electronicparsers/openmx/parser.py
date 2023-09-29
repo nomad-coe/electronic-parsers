@@ -37,7 +37,7 @@ from nomad.datamodel.metainfo.simulation.method import (
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.workflow import (
     GeometryOptimization, GeometryOptimizationMethod,
-    MolecularDynamics, MolecularDynamicsMethod)
+    MolecularDynamics, MolecularDynamicsMethod, ThermostatParameters)
 
 from .metainfo.openmx import OpenmxSCC  # pylint: disable=unused-import
 
@@ -96,8 +96,11 @@ mainfile_parser = TextParser(quantities=[
     Quantity('Atoms.UnitVectors.Unit',
              r'(?i)Atoms.UnitVectors.Unit\s+([a-z]{2,3})', repeats=False),
     Quantity('scf.Hubbard.U', r'(?i)scf.Hubbard.U\s+(on|off)', repeats=False),
+    Quantity('MD.maxIter', r'MD\.maxIter\s+(\d+)', repeats=False),
     Quantity('MD.Type', r'(?i)MD\.Type\s+([a-z_\d]{3,6})', repeats=False),
+    Quantity('MD.TimeStep', r'MD\.TimeStep\s+([\d\.e-]+)', repeats=False),
     Quantity('MD.Opt.criterion', r'(?i)MD\.Opt\.criterion\s+([\d\.e-]+)', repeats=False),
+    Quantity('MD.TempControl', r'<MD.TempControl([\s\S]+)MD.TempControl>', repeats=False),
     Quantity('scf.maxIter', r'scf.maxIter\s+(\d+)', repeats=False),
     Quantity('scf.criterion', r'scf.criterion\s+([-\.eE\d]+)', repeats=False),
     Quantity('scf.ElectronicTemperature', r'scf.ElectronicTemperature\s+(\S+)', repeats=False),
@@ -114,6 +117,7 @@ def read_md_file(md_file):
     with open(md_file, 'r') as f:
         cell_vectors_re = re.compile(r'Cell_Vectors=((?:\s+-?\d+\.\d+)+)')
         temperature_re = re.compile(r'Temperature=\s+(\d+\.\d+)')
+        time_re = re.compile(r'time=\s+(\d+\.\d+)')
         for line in f:
             line_list = line.split()
             if len(line_list) == 1:
@@ -133,6 +137,9 @@ def read_md_file(md_file):
                 if temperature is not None:
                     temperature = temperature.group(1)
                     result[-1]['temperature'] = temperature
+                time = time_re.search(line)
+                if time is not None:
+                    result[-1]['time'] = float(time.group(1))
                 step_header = False
             else:
                 result[-1]['positions'][atomindex][0:3] = [
@@ -198,6 +205,40 @@ def parse_structure(system, logger):
         logger.warning('Failed to parse the input structure.')
 
 
+def parse_temperature_profile(data, thermo_type):
+    steps = data[0]
+    thermostats = []
+
+    for i in range(steps):
+        if i == 0 and int(data[1]) == 1:
+            continue
+
+        thermostat = ThermostatParameters()
+        if "VS" in thermo_type:
+            thermostat.thermostat_type = "velocity_rescaling_woodcock"
+            cols = 4
+        if "NH" in thermo_type:
+            thermostat.thermostat_type = "nose_hoover"
+            cols = 2
+
+        if i == 0:
+            thermostat.reference_temperature_start = data[i * cols + 2] * units.K
+            thermostat.temperature_update_frame_start = 1
+        else:
+            thermostat.reference_temperature_start = data[(i - 1) * cols + 2] * units.K
+            thermostat.temperature_update_frame_start = data[(i - 1) * cols + 1]
+        thermostat.reference_temperature_end = data[i * cols + 2] * units.K
+        thermostat.temperature_update_frame_end = data[i * cols + 1]
+
+        if thermostat.reference_temperature_start == thermostat.reference_temperature_end:
+            thermostat.temperature_profile = "constant"
+        else:
+            thermostat.temperature_profile = "linear"
+
+        thermostats.append(thermostat)
+    return thermostats
+
+
 class OpenmxParser:
     def __init__(self):
         pass
@@ -222,9 +263,12 @@ class OpenmxParser:
             workflow = None
             for current_md_type in md_types_list:
                 if current_md_type[0] in md_type:
+                    max_iters = mainfile_parser.get('MD.maxIter')
                     if current_md_type[1] == 'geometry_optimization':
                         workflow = GeometryOptimization(method=GeometryOptimizationMethod())
                         workflow.method.method = current_md_type[2]
+                        if max_iters is not None:
+                            workflow.method.optimization_steps_maximum = max_iters
                         criterion = mainfile_parser.get('MD.Opt.criterion')
                         if criterion is not None:
                             workflow.method.convergence_tolerance_force_maximum = (
@@ -233,8 +277,29 @@ class OpenmxParser:
                             workflow.method.convergence_tolerance_force_maximum = (
                                 1e-4 * units.hartree / units.bohr)
                     else:
-                        workflow = MolecularDynamics(method=MolecularDynamicsMethod())
+                        md_temp_control = mainfile_parser.get('MD.TempControl')
+                        if "VS" in md_type:
+                            thermostats = parse_temperature_profile(md_temp_control, "VS")
+                        elif "NH" in md_type:
+                            thermostats = parse_temperature_profile(md_temp_control, "NH")
+
+                        workflow = MolecularDynamics(
+                            method=MolecularDynamicsMethod(
+                                thermostat_parameters=thermostats))
                         workflow.method.thermodynamic_ensemble = current_md_type[2]
+                        # Everything is saved every time step
+                        workflow.method.coordinate_save_frequency = 1
+                        workflow.method.velocity_save_frequency = 1
+                        workflow.method.force_save_frequency = 1
+                        workflow.method.thermodynamics_save_frequency = 1
+
+                        md_timestep = mainfile_parser.get('MD.TimeStep')
+                        if md_timestep is not None:
+                            workflow.method.integration_timestep = md_timestep * units.fs
+
+                        if max_iters is not None:
+                            workflow.method.n_steps = max_iters
+
             self.archive.workflow2 = workflow
 
     def parse_method(self):
@@ -399,5 +464,10 @@ class OpenmxParser:
                     temperature = mdfile_md_steps[i].get('temperature')
                     if temperature is not None:
                         sec_calc.temperature = temperature * units.kelvin
+                    # Time is also printed for geometry optimizations, but it is meaningless there.
+                    if isinstance(self.archive.workflow2, MolecularDynamics):
+                        time = mdfile_md_steps[i].get('time')
+                        if time is not None:
+                            sec_calc.time = time * units.fs
 
         self.parse_eigenvalues()
