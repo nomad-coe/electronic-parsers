@@ -248,6 +248,9 @@ class TrajParser(FileParser):
         else:
             return trajectory[frame // self._frequency]
 
+    def parse(self, key=None):
+        pass
+
 
 re_float = r'[-+]?\d+\.?\d*(?:[Ee][-+]\d+)?'
 

@@ -71,6 +71,9 @@ class AuxiliaryOutParser(FileParser):
                     self._file_handler[-1].extend(value[self._start:])
         return self._file_handler
 
+    def parse(self, key=None):
+        pass
+
 
 class EigenvaluesParser(TextParser):
     def __init__(self):

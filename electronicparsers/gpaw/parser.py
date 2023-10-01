@@ -269,6 +269,9 @@ class GPW2Parser(FileParser):
         else:
             return self.get_parameter('occupations').get('width')
 
+    def parse(self, key=None):
+        pass
+
 
 class GPAWParser:
     def __init__(self):
