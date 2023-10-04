@@ -36,7 +36,8 @@ import logging
 from datetime import datetime
 import ase
 import re
-from xml.sax import ContentHandler, make_parser  # type: ignore
+from xml.sax import ContentHandler, make_parser
+from nomad.metainfo.metainfo import MetainfoError  # type: ignore
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser
@@ -1797,3 +1798,7 @@ class VASPParser():
         sec_run.calculation[-1].stress = Stress()
         sec_run.calculation[-1].stress.total = StressEntry()
         sec_run.calculation[-1].stress.total.value = np.array([[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]]) * ureg.kbar
+        try:
+            sec_run.calculation[-1].stress.total.value_alter = np.array([[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]]) * ureg.kbar
+        except MetainfoError:
+            print('Just `type=float` does not work')
