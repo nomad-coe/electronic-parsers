@@ -1793,3 +1793,7 @@ class VASPParser():
         self.parse_configurations()
 
         self.parse_workflow()
+
+        sec_run.calculation[-1].stress = Stress()
+        sec_run.calculation[-1].stress.total = StressEntry()
+        sec_run.calculation[-1].stress.total.value = np.array([[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]]) * ureg.kbar
