@@ -905,7 +905,6 @@ class CrystalParser:
                     n_spin_channels = len(dos_values)
                     for spin in range(n_spin_channels):
                         sec_dos = scc_dos.m_create(Dos, Calculation.dos_electronic)
-                        sec_dos.n_spin_channels = n_spin_channels
                         sec_dos.spin_channel = spin if n_spin_channels == 2 else None
                         sec_dos.energies = (start_energy + np.arange(rows) * de) * ureg.hartree
                         sec_dos_total = sec_dos.m_create(DosValues, Dos.total)

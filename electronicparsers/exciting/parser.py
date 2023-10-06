@@ -1338,7 +1338,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         n_spin_channels = len(totaldos)
         for spin in range(len(totaldos)):
             sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-            sec_dos.n_spin_channels = n_spin_channels
             sec_dos.spin_channels = spin if n_spin_channels == 2 else None
             sec_dos.n_energies = self.dos_parser.number_of_dos
             sec_dos.energies = self.dos_parser.energies + energy_fermi
@@ -1361,7 +1360,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 sec_dos = sec_scc.dos_electronic[spin]
             else:
                 sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-                sec_dos.n_spin_channels = n_spin_channels
                 sec_dos.spin_channel = spin if n_spin_channels == 2 else None
             for lm in range(n_lm):
                 for atom in range(n_atoms):
@@ -1504,7 +1502,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         dos = data[1] * (1 / ureg.hartree)
         for spin in range(nspin):
             sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-            sec_dos.n_spin_channels = nspin
             sec_dos.spin_channel = spin if nspin == 2 else None
             sec_dos.n_energies = len(data) // nspin
             sec_dos.energies = data[0][0] * ureg.hartree + energy_fermi

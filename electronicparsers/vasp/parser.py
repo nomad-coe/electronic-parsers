@@ -1649,7 +1649,6 @@ class VASPParser():
                 n_spin_channels = len(values)
                 for spin in range(n_spin_channels):
                     sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-                    sec_dos.n_spin_channels = n_spin_channels
                     sec_dos.spin_channel = spin if n_spin_channels == 2 else None
                     sec_dos.energies = energies * ureg.eV
                     sec_dos.energy_fermi = efermi * ureg.eV
@@ -1667,7 +1666,6 @@ class VASPParser():
                             sec_dos = sec_scc.dos_electronic[spin]
                         else:
                             sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-                            sec_dos.n_spin_channels = n_spin_channels
                             sec_dos.spin_channel = spin if n_spin_channels == 2 else None
                         for atom in range(n_atoms):
                             for lm in range(n_lm):

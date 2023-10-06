@@ -137,7 +137,6 @@ def test_lacu2o4_real_freq(parser):
     sec_scc = sec_run.calculation[-1]
     assert sec_scc.dos_electronic
     assert sec_scc.dos_electronic[0].kind == 'spectral'
-    assert sec_scc.dos_electronic[0].n_spin_channels == 1
     assert sec_scc.dos_electronic[0].n_energies == 3001
     assert sec_scc.m_xpath('greens_functions[0].frequencies') is not None
     assert sec_scc.m_xpath('greens_functions[0].greens_function_freq') is not None

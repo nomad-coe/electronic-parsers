@@ -107,7 +107,6 @@ def test_dos(parser, caplog):
     assert len(sec_scc.dos_electronic) == 2
     sec_dos_up = sec_scc.dos_electronic[0]
     sec_dos_down = sec_scc.dos_electronic[1]
-    assert sec_dos_up.n_spin_channels == sec_dos_down.n_spin_channels
     assert sec_dos_up.spin_channel == 0 and sec_dos_down.spin_channel == 1
     assert sec_dos_up.energies[26].magnitude == approx(-9.76582818e-19)
     assert np.shape(sec_dos_down.total[0].value) == (1000,)

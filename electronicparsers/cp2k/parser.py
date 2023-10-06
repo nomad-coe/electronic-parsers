@@ -1340,8 +1340,8 @@ class CP2KParser:
             return
 
         dos = [
-            Dos(n_spin_channels=2, spin_channel=0), Dos(n_spin_channels=2, spin_channel=1)
-        ] if n_spin_channels == 2 else [Dos(n_spin_channels=1)]
+            Dos(spin_channel=0), Dos(spin_channel=1)
+        ] if n_spin_channels == 2 else [Dos()]
 
         for index, (f, atom_kind) in enumerate(atom_kind_in_files_sorted):
             self.pdos_parser.mainfile = f

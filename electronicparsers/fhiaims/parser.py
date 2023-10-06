@@ -1135,7 +1135,6 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 dos = data[1: n_spin + 1] / ureg.eV
                 for spin in range(n_spin):
                     sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-                    sec_dos.n_spin_channels = n_spin
                     sec_dos.spin_channel = spin if n_spin == 2 else None
                     sec_dos.n_energies = len(energies)
                     sec_dos.energies = energies

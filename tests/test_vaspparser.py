@@ -158,7 +158,6 @@ def test_vasprunxml_relax(parser):
     assert [len(scc.eigenvalues) for scc in sec_sccs] == [0, 0, 1]
     assert [len(scc.dos_electronic) for scc in sec_sccs] == [0, 0, 2]
     sec_dos = sec_sccs[-1].dos_electronic
-    assert sec_dos[0].n_spin_channels == sec_dos[1].n_spin_channels
     assert sec_dos[0].spin_channel == 0 and sec_dos[1].spin_channel == 1
     dos_integrated = integrate_dos(sec_dos, sec_sccs[-1].energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 22.

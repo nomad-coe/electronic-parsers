@@ -2506,7 +2506,6 @@ class QuantumEspressoParser:
                 integrated = np.reshape(data[2], (nspin, len(energies[0])))
                 for spin in range(nspin):
                     sec_dos = sec_run.calculation[-1].m_create(Dos, Calculation.dos_electronic)
-                    sec_dos.n_spin_channels = nspin
                     sec_dos.spin_channel = spin if nspin == 2 else None
                     sec_dos.energies = energies[0] * ureg.eV
                     sec_dos_total = sec_dos.m_create(DosValues, Dos.total)

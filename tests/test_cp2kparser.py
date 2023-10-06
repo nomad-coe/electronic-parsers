@@ -97,7 +97,6 @@ def test_pdos(parser):
     sec_dos = sec_scc[0].dos_electronic
     assert len(sec_dos) == 2
     # Unrestricted spin-polarized calculation
-    assert sec_dos[0].n_spin_channels == 2
     assert sec_dos[0].spin_channel == 0
     assert sec_dos[1].spin_channel == 1
     assert sec_dos[0].n_energies == 3713

@@ -476,14 +476,12 @@ class Wannier90Parser():
         # Parsing only first *dos.dat file
         self.dos_dat_parser.mainfile = dos_files[0]
 
+        # TODO add spin polarized case
         sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-        sec_dos.n_spin_channels = 1  # TODO add spin polarized case
         sec_dos.energy_fermi = energy_fermi
-
         data = np.transpose(self.dos_dat_parser.data)
         sec_dos.n_energies = len(data[0])
         sec_dos.energies = data[0] * ureg.eV
-
         sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
         sec_dos_values.value = data[1] / ureg.eV
 

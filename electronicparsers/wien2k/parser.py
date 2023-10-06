@@ -693,7 +693,6 @@ class Wien2kParser:
                 n_spin_channels = len(dos[1])
                 for spin in range(n_spin_channels):
                     sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-                    sec_dos.n_spin_channels = n_spin_channels
                     sec_dos.spin_channel = spin if n_spin_channels == 2 else None
                     sec_dos.energies = dos[0] * ureg.rydberg
                     sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
@@ -711,7 +710,6 @@ class Wien2kParser:
                                 sec_dos = sec_scc.dos_electronic[spin]
                             else:
                                 sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-                                sec_dos.n_spin_channels = len(dos[2][species])
                                 sec_dos.spin_channel = spin if len(dos[2][species]) == 2 else None
                             sec_dos_species = sec_dos.m_create(DosValues, Dos.species_projected)
                             sec_dos_species.atom_label = labels[species]

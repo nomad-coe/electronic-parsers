@@ -1125,7 +1125,6 @@ class AMSParser:
                 n_spin_channels = len(total_dos[1:])
                 for spin in range(n_spin_channels):
                     sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-                    sec_dos.n_spin_channels = n_spin_channels
                     sec_dos.spin_channel = spin if n_spin_channels == 2 else None
                     sec_dos.energies = total_dos[0] * ureg.hartree
                     sec_dos_values = sec_dos.m_create(DosValues, Dos.total)

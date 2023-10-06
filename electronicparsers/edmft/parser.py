@@ -599,7 +599,6 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                                 if lattice_files == lattice_gf_files:
                                     sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
                                     sec_dos.kind = 'spectral'
-                                    sec_dos.n_spin_channels = 1
                                     sec_dos.energy_fermi = 0.0 * ureg.eV
                                     sec_dos.n_energies = len(lattice_data[:, 0])
                                     sec_dos.energies = lattice_data[:, 0] * ureg.eV

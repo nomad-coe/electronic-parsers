@@ -380,7 +380,6 @@ class ElkParser:
             dos_data = np.transpose(self.dos_parser.data)
             sec_dos = sec_calc.m_create(Dos, Calculation.dos_electronic)
             # TODO determine how dos are printed in spin polarised case
-            sec_dos.n_spin_channels = 1
             sec_dos.energies = dos_data[0] * ureg.hartree
             sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
             sec_dos_total.value = dos_data[1] / ureg.hartree

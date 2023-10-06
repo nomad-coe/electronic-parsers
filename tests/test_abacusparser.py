@@ -131,7 +131,6 @@ def test_dos(parser):
 
     assert len(sec_scc.dos_electronic) == 1
     sec_dos = sec_scc.dos_electronic[0]
-    assert sec_dos.n_spin_channels == len(sec_scc.dos_electronic)
     assert not sec_dos.spin_channel
     n_energies = sec_dos.n_energies
     assert n_energies == 2265

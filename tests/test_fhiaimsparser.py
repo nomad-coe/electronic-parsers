@@ -134,7 +134,6 @@ def test_band_spinpol(parser):
     assert len(sec_dos) == 2
     sec_dos_up = sec_dos[0]
     sec_dos_down = sec_dos[1]
-    assert sec_dos_up.n_spin_channels == sec_dos_down.n_spin_channels
     assert sec_dos_up.spin_channel == 0 and sec_dos_down.spin_channel == 1
     assert np.shape(sec_dos_up.energies) == (50,)
     assert np.shape(sec_dos_up.total[0].value) == (50,)
