@@ -443,17 +443,16 @@ class SolidDMFTParser:
                 magnetic_state = sec_scc.method_ref.dmft.magnetic_state
                 n_spin_channels = 1 if magnetic_state == 'paramagnetic' else 2
 
-                energies = sec_gfs.frequencies[:, 0]
-                sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-                sec_dos.kind = 'spectral'
-                sec_dos.n_spin_channels = n_spin_channels
-                sec_dos.energy_fermi = chemical_potential * ureg.eV
-                sec_dos.n_energies = len(energies)
-                sec_dos.energies = energies * ureg.eV
                 im_greens_functions_freq = sec_gfs.greens_function_freq.imag
                 for spin_channel in range(n_spin_channels):
-                    sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
-                    sec_dos_total.spin = spin_channel
+                    sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                    sec_dos.spin_channel = spin_channel if n_spin_channels == 2 else None
+                    sec_dos.kind = 'spectral'
+                    sec_dos.energy_fermi = chemical_potential * ureg.eV
+                    energies = sec_gfs.frequencies[:, 0]
+                    sec_dos.n_energies = len(energies)
+                    sec_dos.energies = energies * ureg.eV
+                    # Total values
                     imgf_per_spin = im_greens_functions_freq[:, spin_channel, :, :]
                     value = - imgf_per_spin / np.pi
                     value_total = 0.0
@@ -461,6 +460,7 @@ class SolidDMFTParser:
                         for i_orb in range(value.shape[1]):
                             value_total += value[i_at][i_orb]
                     value_total = 2 * value_total if n_spin_channels == 2 else value_total
+                    sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
                     sec_dos_total.value = value_total / ureg.eV
             return sec_gfs
 
