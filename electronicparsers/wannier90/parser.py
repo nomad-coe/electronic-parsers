@@ -479,7 +479,6 @@ class Wannier90Parser():
         sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
         sec_dos.n_spin_channels = 1  # TODO add spin polarized case
         sec_dos.energy_fermi = energy_fermi
-        sec_dos.energy_shift = energy_fermi
 
         data = np.transpose(self.dos_dat_parser.data)
         sec_dos.n_energies = len(data[0])

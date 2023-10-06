@@ -80,7 +80,6 @@ def test_lco(parser):
     assert len(sec_dos) == 1
     assert sec_dos[0].n_energies == 692
     assert sec_dos[0].n_energies == len(sec_dos[0].energies)
-    assert sec_dos[0].energy_shift == sec_dos[0].energy_fermi
     assert len(sec_dos[0].total[0].value) == sec_dos[0].n_energies
     # x_wannier90 tests
     sec_hoppings = sec_scc.hopping_matrix[0]

@@ -1370,7 +1370,6 @@ class CP2KParser:
                     homo_index = np.where(np.isclose(np.diff(data[2]), -1, atol=1e-1))[0][0]
                     homo = data[1][homo_index]
                     sec_dos.energy_fermi = homo * ureg.hartree
-                    sec_dos.energy_shift = homo * ureg.hartree
                     scc.energy = Energy(fermi=homo * ureg.hartree)
                 except Exception:
                     pass
