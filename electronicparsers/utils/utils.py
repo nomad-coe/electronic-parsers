@@ -188,7 +188,7 @@ class BeyondDFTWorkflowsParser:
         # First Principles Calculation task
         if self.archive.workflow2:
             first_principles_task = TaskReference(task=first_principles_calculation_archive.workflow2)
-            first_principles_task.name = 'First-Principles Calculation'
+            first_principles_task.name = 'First Principles'
             if input_structure:
                 first_principles_task.inputs = [Link(name='Input Structure', section=input_structure)]
             if first_principles_calculation:
@@ -200,9 +200,9 @@ class BeyondDFTWorkflowsParser:
             tb_task = TaskReference(task=tb_archive.workflow2)
             tb_task.name = 'TB'
             if first_principles_calculation:
-                tb_task.inputs = [Link(name='Input First-Principles Calculation', section=first_principles_calculation)]
+                tb_task.inputs = [Link(name='Input First Principles Calculation', section=first_principles_calculation)]
             if tb_calculation:
-                tb_task.outputs = [Link(name='Output TB calculation', section=tb_calculation)]
+                tb_task.outputs = [Link(name='Output TB Model', section=tb_calculation)]
             workflow.m_add_sub_section(TB.tasks, tb_task)
 
         tb_workflow_archive.workflow2 = workflow
