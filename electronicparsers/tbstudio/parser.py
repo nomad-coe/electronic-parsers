@@ -37,6 +37,7 @@ import json
 import re
 from nomad.datamodel.metainfo.workflow import Workflow
 from ..utils import BeyondDFTWorkflowsParser
+from ase.data import chemical_symbols
 
 
 class TBStudioParser(BeyondDFTWorkflowsParser):
@@ -64,26 +65,22 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         sec_atoms.lattice_vectors = [self.a, self.b, self.c] * ureg.angstrom
 
         xyz_coords = []
-        for r in self.tbm['grids']['XYZ_Coords']['value']:
+        atomic_labels = []
+        for r, atomic_number in zip(self.tbm['grids']['XYZ_Coords']['value'], self.tbm['grids']['KABC_Coords']['value']):
+            # Check if x, y, and z are provided then accept it otherwise it is taken as the end of table
+            # This is the same behaviour that tbstudio does to accept or ignore a row
             try:
                 x = np.float64(r[0])
                 y = np.float64(r[1])
                 z = np.float64(r[2])
+                atom_num = np.int64(atomic_number[0])
                 xyz_coords.append([x, y, z])
+                atomic_labels.append(chemical_symbols[atom_num])
             except:
                 break
 
         sec_atoms.positions = xyz_coords * ureg.angstrom
-
-        kinds = []
-        for r in self.tbm['grids']['KABC_Coords']['value']:
-            try:
-                k = np.int64(r[0])
-                kinds.append(k)
-            except:
-                break
-
-        sec_atoms.species = kinds
+        sec_atoms.labels = atomic_labels
 
         tb_l = np.int64(self.tbm['vars'].get('TBl[0]', '0'))
         tb_m = np.int64(self.tbm['vars'].get('TBm[0]', '0'))
