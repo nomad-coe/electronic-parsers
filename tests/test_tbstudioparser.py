@@ -43,14 +43,14 @@ def test_parser(parser):
 
     assert len(sec_run.system) == 1
     sec_system = sec_run.system[-1]
-    assert (sec_system.atoms.species == [6, 6]).all()
+    assert sec_system.atoms.labels == ['C', 'C']
 
     a = [1.23435, 2.14452, 0.0]
     b = [1.23435, -2.14452, 0.0]
     c = [0.0, 0.0, 20.0]
     positions = [[0.00414, -0.004863, 10.0], [1.238611, -0.72006, 10.0]]
-    assert sec_system.atoms.lattice_vectors.magnitude * 10 ** 10 == approx(np.array([a, b, c]))
-    assert sec_system.atoms.positions.magnitude * 10 ** 10 == approx(np.array(positions))
+    assert sec_system.atoms.lattice_vectors.to('angstrom').magnitude == approx(np.array([a, b, c]))
+    assert sec_system.atoms.positions.to('angstrom').magnitude == approx(np.array(positions))
     assert sec_system.atoms.periodic == [True, True, False]
 
     assert len(sec_run.method) == 1
