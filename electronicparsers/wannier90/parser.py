@@ -38,6 +38,13 @@ from runschema.method import Method, AtomParameters, KMesh, Wannier, TB
 from runschema.system import System, Atoms, AtomsGroup
 from ..utils import get_files
 
+# New schema
+from nomad.datamodel.metainfo.computation import Computation
+from nomad.datamodel.metainfo.computation.system import (
+    System as System2,
+    Atoms as Atoms2,
+)
+
 re_n = r"[\n\r]"
 
 
@@ -251,21 +258,22 @@ class Wannier90Parser:
 
     def parse_system(self):
         sec_run = self.archive.run[-1]
-        sec_system = System()
-        sec_run.system.append(sec_system)
+        sec_system = sec_run.m_create(System)
+        sec_system2 = self.archive.m_create(Computation).m_create(System2)
 
         structure = self.wout_parser.get("structure")
         if structure is None:
             self.logger.error("Error parsing the structure from .wout")
             return
 
-        sec_atoms = Atoms()
-        sec_system.atoms = sec_atoms
+        sec_atoms = sec_system.m_create(Atoms)
+        sec_atoms2 = sec_system2.m_create(Atoms2)
         if self.wout_parser.get("lattice_vectors", []):
             lattice_vectors = np.vstack(
                 self.wout_parser.get("lattice_vectors", [])[-3:]
             )
             sec_atoms.lattice_vectors = lattice_vectors * ureg.angstrom
+            sec_atoms2.lattice_vectors = lattice_vectors * ureg.angstrom
         if self.wout_parser.get("reciprocal_lattice_vectors") is not None:
             sec_atoms.lattice_vectors_reciprocal = (
                 np.vstack(self.wout_parser.get("reciprocal_lattice_vectors")[-3:])
@@ -277,8 +285,11 @@ class Wannier90Parser:
         )
         sec_atoms.periodic = pbc
         sec_atoms.labels = structure.get("labels")
+        sec_atoms2.periodic = pbc
+        sec_atoms2.labels = structure.get("labels")
         if structure.get("positions") is not None:
             sec_atoms.positions = structure.get("positions") * ureg.angstrom
+            sec_atoms2.positions = structure.get("positions") * ureg.angstrom
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
