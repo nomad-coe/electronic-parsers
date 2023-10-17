@@ -66,7 +66,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
 
         xyz_coords = []
         atomic_labels = []
-        for r, atomic_number in zip(self.tbm['grids']['XYZ_Coords']['value'], self.tbm['grids']['KABC_Coords']['value']):
+        for r, atomic_number in zip(self.tbm['grids']['XYZ_Coords'].get('value', []), self.tbm['grids']['KABC_Coords'].get('value', [])):
             # Check if x, y, and z are provided then accept it otherwise it is taken as the end of table
             # This is the same behaviour that tbstudio does to accept or ignore a row
             try:
