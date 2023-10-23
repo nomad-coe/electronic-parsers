@@ -22,6 +22,7 @@ import numpy as np
 
 from nomad.units import ureg
 
+from nomad.datamodel import EntryArchive
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from simulationworkflowschema import SinglePoint
 from runschema.run import Run, Program
@@ -39,11 +40,10 @@ from runschema.system import System, Atoms, AtomsGroup
 from ..utils import get_files
 
 # New schema
+from nomad.datamodel.metainfo.basesections import Program as BaseProgram
 from nomad.datamodel.metainfo.computation import Computation
-from nomad.datamodel.metainfo.computation.system import (
-    System as System2,
-    Atoms as Atoms2,
-)
+from nomad.datamodel.metainfo.computation.system import ModelSystem, Atoms as Atoms2
+
 
 re_n = r"[\n\r]"
 
@@ -256,10 +256,10 @@ class Wannier90Parser:
             "gpaw",
         ]
 
-    def parse_system(self):
+    def parse_system(self, sec_computation):
         sec_run = self.archive.run[-1]
         sec_system = sec_run.m_create(System)
-        sec_system2 = self.archive.m_create(Computation).m_create(System2)
+        sec_system2 = sec_computation.m_create(ModelSystem)
 
         structure = self.wout_parser.get("structure")
         if structure is None:
@@ -285,7 +285,7 @@ class Wannier90Parser:
         )
         sec_atoms.periodic = pbc
         sec_atoms.labels = structure.get("labels")
-        sec_atoms2.periodic = pbc
+        sec_atoms2.periodic_boundary_conditions = pbc
         sec_atoms2.labels = structure.get("labels")
         if structure.get("positions") is not None:
             sec_atoms.positions = structure.get("positions") * ureg.angstrom
@@ -653,7 +653,7 @@ class Wannier90Parser:
         self.wout_parser.logger = self.logger
         self.hr_parser.logger = self.logger
 
-    def parse(self, filepath, archive, logger):
+    def parse(self, filepath: str, archive: EntryArchive, logger):
         self.filepath = filepath
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
@@ -662,8 +662,13 @@ class Wannier90Parser:
 
         self.init_parser()
 
-        sec_run = Run()
-        self.archive.run.append(sec_run)
+        sec_run = self.archive.m_create(Run)
+        sec_computation = Computation()
+        sec_computation.program = BaseProgram(
+            name="Wannier90",
+            version=self.wout_parser.get("version", ""),
+            link="https://wannier.org/",
+        )
 
         # Program section
         sec_run.program = Program(
@@ -671,7 +676,7 @@ class Wannier90Parser:
         )
         # TODO TimeRun section
 
-        self.parse_system()
+        self.parse_system(sec_computation)
 
         self.parse_method()
 
@@ -682,3 +687,7 @@ class Wannier90Parser:
 
         workflow = SinglePoint()
         self.archive.workflow2 = workflow
+
+        # Adding computation to data
+        archive.m_add_sub_section(EntryArchive.data, sec_computation)
+        print(archive)
