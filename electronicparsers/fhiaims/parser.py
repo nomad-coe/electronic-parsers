@@ -845,7 +845,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             'Hirshfeld volume': 'x_fhi_aims_hirschfeld_volume'
         }
 
-        self.orbital_lm_map = ['s', 'p', 'd', 'f', 'g']
+        self.orbital_lm_map = ['s', 'p', 'd', 'f', 'g', 'h']  # ask devs about 'g' and 'h' orbitals (?)
 
         self._gw_flag_map = {
             'gw': 'G0W0',
