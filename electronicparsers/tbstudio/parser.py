@@ -76,7 +76,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                 atom_num = np.int64(atomic_number[0])
                 xyz_coords.append([x, y, z])
                 atomic_labels.append(chemical_symbols[atom_num])
-            except:
+            except Exception as e:
                 break
 
         sec_atoms.positions = xyz_coords * ureg.angstrom
@@ -128,7 +128,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                     break
                 else:
                     os_name = row[0]
-                    orbital_info = re.search("^(.*) \((.*)\)$", os_name)
+                    orbital_info = re.search(r'^(.*) \((.*)\)$', os_name)
                     tbAtom = orbital_info[1]
                     shell = orbital_info[2]
                     if tbAtom not in final_os:
@@ -138,15 +138,10 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                             final_os[tbAtom][shell] = {}
             else:
                 orbital = row[0]
-                initial = 0
-                try:
-                    initial = np.float64(row[1])
-                except:
-                    pass
                 final = 0
                 try:
                     final = np.float64(row[2])
-                except:
+                except Exception as e:
                     pass
 
                 final_os[tbAtom][shell][orbital] = final
@@ -174,7 +169,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                 sk_integral = row[0]
                 try:
                     final_sk[tb_bond][sk_integral] = np.float64(row[2])
-                except:
+                except Exception as e:
                     final_sk[tb_bond][sk_integral] = 0
 
         final_overlap = {}
@@ -190,7 +185,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                 sk_integral = row[0]
                 try:
                     final_overlap[tb_bond][sk_integral] = np.float64(row[2])
-                except:
+                except Exception as e:
                     final_overlap[tb_bond][sk_integral] = 0
 
         bonds = []
@@ -200,7 +195,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                 allCells = allBonds.keys()
                 for cells in allCells:
                     cellBonds = allBonds[cells]
-                    cells_info = re.search("^(\(.*\))-\((.*)\)$", cells)
+                    cells_info = re.search(r'^(\(.*\))-(\(.*\))$', cells)
                     cell1 = cells_info[1]
                     cell2 = cells_info[2]
                     is_active = cellBonds['state'] == 4
@@ -210,7 +205,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                             is_bond_active = allAtoms[atoms]['state'] == 4
                             if is_bond_active:
                                 atoms_info = re.search(
-                                    "^\[ \(i,n\)=\((\d+),(\d+)\) , \(j,m\)=\((\d+),(\d+)\) , (.*) ]$", atoms)
+                                    r'^\[ \(i,n\)=\((\d+),(\d+)\) , \(j,m\)=\((\d+),(\d+)\) , (.*) ]$', atoms)
                                 index1 = atoms_info[1]
                                 shell1 = atoms_info[2]
                                 index2 = atoms_info[3]
@@ -366,7 +361,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
             first_principles_calculation_archive = None
             try:
                 first_principles_calculation_archive = archive.m_context.load_archive(dft_nomad_entry_id, dft_nomad_upload_id, None)
-            except:
+            except Exception as e:
                 pass
             if first_principles_calculation_archive and self._child_archives:
                 tb_workflow_archive = self._child_archives.get('TB_workflow')

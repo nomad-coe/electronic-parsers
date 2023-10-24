@@ -31,6 +31,7 @@ from nomad.datamodel.metainfo.simulation.workflow import (
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
 
+
 def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = True):
     """Get files following the `pattern` with respect to the file `stripname` (usually this
     being the mainfile of the given parser) up to / down from the `filepath` (`deep=True` going
