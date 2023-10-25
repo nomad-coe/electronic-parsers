@@ -73,10 +73,10 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                 x = np.float64(r[0])
                 y = np.float64(r[1])
                 z = np.float64(r[2])
-                atom_num = np.int64(atomic_number[0])
+                atom_num = int(atomic_number[0])
                 xyz_coords.append([x, y, z])
                 atomic_labels.append(chemical_symbols[atom_num])
-            except Exception as e:
+            except Exception:
                 break
 
         sec_atoms.positions = xyz_coords * ureg.angstrom
@@ -141,7 +141,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                 final = 0
                 try:
                     final = np.float64(row[2])
-                except Exception as e:
+                except Exception:
                     pass
 
                 final_os[tbAtom][shell][orbital] = final
@@ -169,7 +169,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                 sk_integral = row[0]
                 try:
                     final_sk[tb_bond][sk_integral] = np.float64(row[2])
-                except Exception as e:
+                except Exception:
                     final_sk[tb_bond][sk_integral] = 0
 
         final_overlap = {}
@@ -185,7 +185,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                 sk_integral = row[0]
                 try:
                     final_overlap[tb_bond][sk_integral] = np.float64(row[2])
-                except Exception as e:
+                except Exception:
                     final_overlap[tb_bond][sk_integral] = 0
 
         bonds = []
@@ -224,9 +224,9 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
             bond_type = bond['type']
             h_sk = None
             s_sk = None
-            if final_sk != {}:
+            if final_sk:
                 h_sk = final_sk[bond_type]
-            if final_overlap != {}:
+            if final_overlap:
                 s_sk = final_overlap[bond_type]
 
             if h_sk is not None:
@@ -361,8 +361,8 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
             first_principles_calculation_archive = None
             try:
                 first_principles_calculation_archive = archive.m_context.load_archive(dft_nomad_entry_id, dft_nomad_upload_id, None)
-            except Exception as e:
-                pass
+            except Exception:
+                self.logger.warning('TBStudio Workflow was not found.')
             if first_principles_calculation_archive and self._child_archives:
                 tb_workflow_archive = self._child_archives.get('TB_workflow')
                 self.parse_tb_workflow(tb_archive, first_principles_calculation_archive, tb_workflow_archive)
