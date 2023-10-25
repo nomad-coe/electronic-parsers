@@ -999,7 +999,7 @@ def to_k_points(segments):
     return all_k_points
 
 
-def to_system(atomic_numbers, labels, positions, lattice, pos_type, wrap=False):
+def to_system(atomic_numbers, labels, positions, lattice, dimensionality, wrap=False):
     """Converts a Crystal-specific structure format into cartesian positions
     and lattice vectors (if present). The conversion depends on the material
     type.
@@ -1018,12 +1018,12 @@ def to_system(atomic_numbers, labels, positions, lattice, pos_type, wrap=False):
         lattice_vectors = None
 
     # Convert positions based on the given type
-    if pos_type == 0:
+    if dimensionality == 0:
         if lattice_vectors is not None and wrap:
             cart_pos = atomutils.wrap_positions(positions, lattice_vectors)
         else:
             cart_pos = positions
-    elif pos_type == 2:
+    elif dimensionality == 2:
         n_atoms = atomic_numbers.shape[0]
         scaled_pos = np.zeros((n_atoms, 3), dtype=np.float64)
         scaled_pos[:, 0:2] = positions[:, 0:2]
@@ -1033,7 +1033,7 @@ def to_system(atomic_numbers, labels, positions, lattice, pos_type, wrap=False):
             wrapped_pos = scaled_pos
         cart_pos = atomutils.to_cartesian(wrapped_pos, lattice_vectors)
         cart_pos[:, 2:3] = positions[:, 2:3]
-    elif pos_type == 1:
+    elif dimensionality == 1:
         n_atoms = atomic_numbers.shape[0]
         scaled_pos = np.zeros((n_atoms, 3), dtype=np.float64)
         scaled_pos[:, 0:1] = positions[:, 0:1]
@@ -1043,7 +1043,7 @@ def to_system(atomic_numbers, labels, positions, lattice, pos_type, wrap=False):
             wrapped_pos = scaled_pos
         cart_pos = atomutils.to_cartesian(wrapped_pos, lattice_vectors)
         cart_pos[:, 1:3] = positions[:, 1:3]
-    elif pos_type == 3:
+    elif dimensionality == 3:
         scaled_pos = atomutils.wrap_positions(positions) if wrap else positions
         cart_pos = atomutils.to_cartesian(scaled_pos, lattice_vectors)
 
