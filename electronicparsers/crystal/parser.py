@@ -612,16 +612,12 @@ class CrystalParser:
         system_edited = out["system_edited"]
         labels_positions = out["labels_positions"]
         lattice_vectors_restart = out["lattice_vectors_restart"]
-        pbc = None if material_type == "MOLECULAR CALCULATION" else np.array([True, True, True])
+        dimensionality = out["dimensionality"]
+        pbc = np.array([True] * dimensionality + [False] * (3 - dimensionality))
 
         # By default the system is read from the configuration at the beginning
         # of the file: it may come from restart or clean start
         atomic_numbers = None
-        pos_type = {
-            "MOLECULAR CALCULATION": "cartesian",
-            "SLAB CALCULATION": "slab",
-            None: "scaled",
-        }.get(material_type)
         if labels_positions is not None:
             atomic_numbers = labels_positions[:, 2]  # pylint: disable=E1136
             atom_labels = labels_positions[:, 3]  # pylint: disable=E1136
@@ -633,14 +629,12 @@ class CrystalParser:
             atom_labels = labels_positions[:, 2]  # pylint: disable=E1136
             atom_pos = labels_positions[:, 4:7]  # pylint: disable=E1136
             lattice = lattice_vectors_restart
-            pos_type = "cartesian"
 
         # If any geometry edits (supercells, substitutions, dispplacements,
         # deformations, nanotube construction, etc.) are done on top of the
         # original system, they override the original system.
         if system_edited is not None:
             if system_edited["labels_positions_nanotube"] is not None:  # pylint: disable=E1136
-                pos_type = "nanotube"
                 labels_positions = system_edited["labels_positions_nanotube"]  # pylint: disable=E1136
             else:
                 labels_positions = system_edited["labels_positions"]  # pylint: disable=E1136
@@ -662,13 +656,12 @@ class CrystalParser:
             atom_labels,
             atom_pos,
             lattice,
-            pos_type=pos_type,
+            dimensionality,
         )
 
         system.atoms = Atoms(
             lattice_vectors=lattice_vectors, periodic=pbc, positions=cart_pos,
             species=atomic_numbers, labels=atom_labels)
-        dimensionality = out["dimensionality"]
         system.x_crystal_dimensionality = dimensionality
         crystal_family = out["crystal_family"]
         system.x_crystal_family = crystal_family
@@ -948,7 +941,7 @@ class CrystalParser:
                         i_atom_labels,
                         i_atom_pos,
                         i_lattice_parameters,
-                        pos_type,
+                        dimensionality,
                     )
                     i_system.atoms = Atoms(
                         species=i_atomic_numbers, labels=i_atom_labels, positions=i_cart_pos,
@@ -1006,7 +999,7 @@ def to_k_points(segments):
     return all_k_points
 
 
-def to_system(atomic_numbers, labels, positions, lattice, pos_type="scaled", wrap=False):
+def to_system(atomic_numbers, labels, positions, lattice, pos_type, wrap=False):
     """Converts a Crystal-specific structure format into cartesian positions
     and lattice vectors (if present). The conversion depends on the material
     type.
@@ -1025,12 +1018,12 @@ def to_system(atomic_numbers, labels, positions, lattice, pos_type="scaled", wra
         lattice_vectors = None
 
     # Convert positions based on the given type
-    if pos_type == "cartesian":
+    if pos_type == 0:
         if lattice_vectors is not None and wrap:
             cart_pos = atomutils.wrap_positions(positions, lattice_vectors)
         else:
             cart_pos = positions
-    elif pos_type == "slab":
+    elif pos_type == 2:
         n_atoms = atomic_numbers.shape[0]
         scaled_pos = np.zeros((n_atoms, 3), dtype=np.float64)
         scaled_pos[:, 0:2] = positions[:, 0:2]
@@ -1040,7 +1033,7 @@ def to_system(atomic_numbers, labels, positions, lattice, pos_type="scaled", wra
             wrapped_pos = scaled_pos
         cart_pos = atomutils.to_cartesian(wrapped_pos, lattice_vectors)
         cart_pos[:, 2:3] = positions[:, 2:3]
-    elif pos_type == "nanotube":
+    elif pos_type == 1:
         n_atoms = atomic_numbers.shape[0]
         scaled_pos = np.zeros((n_atoms, 3), dtype=np.float64)
         scaled_pos[:, 0:1] = positions[:, 0:1]
@@ -1050,7 +1043,7 @@ def to_system(atomic_numbers, labels, positions, lattice, pos_type="scaled", wra
             wrapped_pos = scaled_pos
         cart_pos = atomutils.to_cartesian(wrapped_pos, lattice_vectors)
         cart_pos[:, 1:3] = positions[:, 1:3]
-    elif pos_type == "scaled":
+    elif pos_type == 3:
         scaled_pos = atomutils.wrap_positions(positions) if wrap else positions
         cart_pos = atomutils.to_cartesian(scaled_pos, lattice_vectors)
 
