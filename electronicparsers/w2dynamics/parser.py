@@ -131,18 +131,29 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             if value.shape:
                 setattr(target, f'x_w2dynamics_{name}', value[:])
 
-    def parse_system(self):
+    def parse_system(self, wannier90_name: str):
         """Parses System from the Wannier90 output file (*.wout) if present in the upload.
         Otherwise, a warning appears.
+
+        Args:
+            wannier90_name (str): name of the initial Wannier90 *_hk.dat initial model used
         """
         sec_run = self.archive.run[-1]
 
-        wann90_files = get_files('*.wout', self.filepath, self.mainfile, deep=False)
-        if wann90_files:  # parse crystal from Wannier90
-            if len(wann90_files) > 1:
-                self.logger.warning(f'Multiple Wannier90.wout files found, the last one will be parsed.', data={'files': wann90_files})
+        wannier90_mainfiles = get_files('*.wout', self.filepath, self.mainfile, deep=False)
+        if wannier90_mainfiles:  # parse crystal from Wannier90
+            # We scan for the proper Wannier90 file that matches the HDF5 group '.config' content
+            if len(wannier90_mainfiles) > 1:
+                self.logger.warning('Multiple Wannier90 *.wout files found, we will scan these files '
+                                    'and match them with .config/general.hkfile. If this is not '
+                                    'found, we will consider the last Wannier90 *.wout file.', data={'files': wannier90_mainfiles})
+                if wannier90_name:
+                    matched_wannier90_mainfile = [filename for filename in wannier90_mainfiles if wannier90_name in filename]
+                    if matched_wannier90_mainfile:
+                        wannier90_mainfiles = matched_wannier90_mainfile
+            wannier90_mainfile = wannier90_mainfiles[-1]
 
-            self.wout_parser.mainfile = wann90_files[-1]
+            self.wout_parser.mainfile = wannier90_mainfile
             sec_system = sec_run.m_create(System)
 
             structure = self.wout_parser.get('structure')
@@ -165,29 +176,46 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         else:  # TODO parse specific lattice model: discuss it Jonas Schwab
             self.logger.warning('Wannier90 output files not found in the same folder, cannot resolve the system metainfo.')
 
-    def parse_input_model(self, data):
+    def parse_input_model(self, data: h5py.Group, wannier90_name: str):
         """Parses input model into Run.Method.LatticeModelHamiltonian in two differentiated
         subsections:
             1- Hopping matrices from the Wannier90 *hr.dat file
             2- HubbardKanamoriHamiltonian from the hdf5 mainfile
 
         Args:
-            data (HDF5group): group `.config` from the hdf5 mainfile
+            data (h5py.Group): group `.config` from the hdf5 mainfile
+            wannier90_name (str): name of the initial Wannier90 *_hk.dat initial model used
         """
         sec_run = self.archive.run[0]
         sec_hamiltonian = sec_run.m_create(Method).m_create(LatticeModelHamiltonian)
 
         # HoppingMatrix
-        hr_files = get_files('*hr.dat', self.filepath, self.mainfile, deep=False)
-        if hr_files:  # parse tight-binding model from Wannier90
-            self.hr_parser.mainfile = hr_files[-1]
+        wannier90_hr_files = get_files('*hr.dat', self.filepath, self.mainfile, deep=False)
+        if wannier90_hr_files:  # parse tight-binding model from Wannier90
+            # We scan for the proper Wannier90 file that matches the HDF5 group '.config' content
+            if len(wannier90_hr_files) > 1:
+                self.logger.warning('Multiple Wannier90 *_hr.dat files found, we will scan these files '
+                                    'and match them with .config/general.hkfile. If this is not '
+                                    'found, we will consider the last Wannier90 *_hr.dat file.', data={'files': wannier90_hr_files})
+                if wannier90_name:
+                    matched_wannier90_hr_file = [filename for filename in wannier90_hr_files if wannier90_name in filename]
+                    if matched_wannier90_hr_file:
+                        wannier90_hr_files = matched_wannier90_hr_file
+            wannier90_hr_file = wannier90_hr_files[-1]
+
+            self.hr_parser.mainfile = wannier90_hr_file
             sec_hopping_matrix = sec_hamiltonian.m_create(HoppingMatrix)
             sec_hopping_matrix.n_orbitals = self.wout_parser.get('Nwannier')
-            sec_hopping_matrix.n_wigner_seitz_points = self.hr_parser.get('degeneracy_factors')[1]
-            sec_hopping_matrix.degeneracy_factors = self.hr_parser.get('degeneracy_factors')[2:]
-            full_hoppings = np.array(self.hr_parser.get('hoppings'))
-            sec_hopping_matrix.value = np.reshape(
-                full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
+            deg_factors = self.hr_parser.get('degeneracy_factors', [])
+            if deg_factors is not None:
+                sec_hopping_matrix.n_wigner_seitz_points = deg_factors[1]
+                sec_hopping_matrix.degeneracy_factors = deg_factors[2:]
+                full_hoppings = self.hr_parser.get('hoppings', [])
+                try:
+                    sec_hopping_matrix.value = np.reshape(
+                        full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
+                except Exception:
+                    self.logger.warning('Could not parse the hopping matrix values. Please, revise your output files.')
         else:  # TODO parse specific lattice model
             self.logger.warning('Wannier90 _hr.dat files not found in the same folder, cannot resolve the initial model metainfo.')
 
@@ -210,11 +238,11 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             elif data.attrs.get(f'atoms.{n+1}.hamiltonian') == 'Kanamori':
                 sec_hubbard_kanamori_model.j = sec_hubbard_kanamori_model.jh
 
-    def parse_method(self, data):
+    def parse_method(self, data: h5py.Group):
         """Parses DMFT and code-specific metadata from `.config` in the hdf5 mainfile
 
         Args:
-            data (HDF5group): group `.config` from the hdf5 mainfile
+            data (h5py.Group): group `.config` from the hdf5 mainfile
         """
         sec_run = self.archive.run[0]
 
@@ -434,11 +462,17 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         self.parse_axes(self.data.get('.axes'), sec_axes)
 
         # System section
-        self.parse_system()
-
+        if self.data.get('.config'):
+            wannier90_name = self.data.get('.config').attrs.get('general.hkfile')
+            if wannier90_name:
+                wannier90_name = wannier90_name.split('_')[0]
+            else:
+                self.logger.warning('HDF5 attribute .config/general.hkfile not found. We will '
+                                    'scan the folder to find the Wannier90 input model.')
+            self.parse_system(wannier90_name)
         # Method.DMFT section with inputs (HoppingMatrix + InteractionModel)
-        self.parse_input_model(self.data.get('.config'))
-        self.parse_method(self.data.get('.config'))
+            self.parse_input_model(self.data.get('.config'), wannier90_name)
+            self.parse_method(self.data.get('.config'))
 
         # Calculation section
         self.parse_scc()
