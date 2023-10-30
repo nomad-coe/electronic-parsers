@@ -353,10 +353,11 @@ class Wannier90Parser():
             sec_hopping_matrix.n_wigner_seitz_points = deg_factors[1]
             sec_hopping_matrix.degeneracy_factors = deg_factors[2:]
             full_hoppings = self.hr_parser.get('hoppings', [])
-            if full_hoppings is not None:
+            try:
                 sec_hopping_matrix.value = np.reshape(
                     full_hoppings, (sec_hopping_matrix.n_wigner_seitz_points, sec_hopping_matrix.n_orbitals * sec_hopping_matrix.n_orbitals, 7))
-
+            except Exception:
+                self.logger.warning('Could not parse the hopping matrix values. Please, revise your output files.')
         try:
             sec_scc_energy = sec_scc.m_create(Energy)
             # Setting Fermi level to the first orbital onsite energy
