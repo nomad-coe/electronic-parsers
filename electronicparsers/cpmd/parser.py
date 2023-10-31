@@ -197,9 +197,9 @@ class MainfileParser(TextParser):
 
 class TrajectoryParser(DataTextParser):
     def init_parameters(self):
-        if self._file_handler is None:
+        if self.data is None:
             return
-        data = np.transpose(self._file_handler)
+        data = np.transpose(self.data)
         # first column is the md step
         n_frames = int(np.amax(data[0]))
         # atoms are denoted by same step index
@@ -208,7 +208,7 @@ class TrajectoryParser(DataTextParser):
         n_data = len(data) // 3
         # we remove the index
         data = np.transpose(data[1:])
-        self._file_handler = np.reshape(data, (n_frames, n_atoms, n_data, 3))
+        self._results['data'] = np.reshape(data, (n_frames, n_atoms, n_data, 3))
 
 
 # we simply make our own parser instead of using MDAnalysis for a simple xyz file
