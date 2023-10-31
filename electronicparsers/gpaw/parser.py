@@ -52,7 +52,6 @@ class GPWParser(TarParser):
         super().reset()
         self._info = None
 
-
     @property
     def info(self):
         if self._info is None:
