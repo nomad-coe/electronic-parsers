@@ -48,8 +48,10 @@ class GPWParser(TarParser):
             'atom_positions': 'CartesianPositions', 'occupation': 'OccupationNumbers',
             'kpoints': 'IBZKPoints'}
 
-    def init_parameters(self):
+    def reset(self):
+        super().reset()
         self._info = None
+
 
     @property
     def info(self):
@@ -149,7 +151,8 @@ class GPW2Parser(FileParser):
     def __init__(self):
         super().__init__(None)
 
-    def init_parameters(self):
+    def reset(self):
+        super().reset()
         self._info = None
 
     @property
