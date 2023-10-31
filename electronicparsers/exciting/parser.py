@@ -1338,7 +1338,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         n_spin_channels = len(totaldos)
         for spin in range(len(totaldos)):
             sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-            sec_dos.spin_channels = spin if n_spin_channels == 2 else None
+            sec_dos.spin_channel = spin if n_spin_channels == 2 else None
             sec_dos.n_energies = self.dos_parser.number_of_dos
             sec_dos.energies = self.dos_parser.energies + energy_fermi
             sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
@@ -2520,8 +2520,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             exciting_files = ['EIGVAL.OUT', 'FERMISURF.bxsf', 'FS.bxsf']
 
             # Parse DFT DOS from one of the files
-            bs_files = ['dos.xml', 'TDOS.OUT']
-            for fname in bs_files:
+            dos_files = ['dos.xml', 'TDOS.OUT']
+            for fname in dos_files:
                 if self.file_exists(fname):
                     exciting_files.append(fname)
                     break

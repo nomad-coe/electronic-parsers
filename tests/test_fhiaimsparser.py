@@ -185,7 +185,7 @@ def test_dos_silicon(silicon, version, normalization_factor):
     dos_integrated = integrate_dos(dos, scc.energy.fermi)
 
     assert pytest.approx(dos_integrated, abs=5e-2) == 8
-    assert dos.total[0].x_fhi_aims_normalization_factor_raw_data == normalization_factor
+    assert dos[0].total[0].x_fhi_aims_normalization_factor_raw_data == normalization_factor
 
     # Check that an appropriately sized band gap is found at the given
     # reference energy
@@ -232,7 +232,6 @@ def test_dos(parser):
     assert sec_atom_labels == atom_labels and sec_orbital_labels == orbital_labels
 
 
-@pytest.mark.skip('Test is too heavy to be added to the pipeline.')
 @pytest.mark.parametrize("tier", ['tight', 'intermediate', 'light_spd'])
 def test_native_tiers(tier):
     archive = EntryArchive()
