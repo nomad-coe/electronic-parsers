@@ -2658,7 +2658,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         sec_run.program = Program(
             name='exciting', version=self.info_parser.get('program_version', '').strip(),
-            github_commit_hash=self.info_parser.hash_id)
+            sub_version=self.info_parser.hash_id)
 
         # method goes first since reference needed for sec_scc
         if self._calculation_type == 'gw':
