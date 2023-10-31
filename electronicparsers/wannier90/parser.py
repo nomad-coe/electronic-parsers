@@ -261,7 +261,7 @@ class Wannier90Parser():
             return
 
         # Parsing from input
-        win_files = get_files('*.win', self.filepath, '*.wout')
+        win_files = get_files('*.win', self.filepath, self.mainfile)
         if not win_files:
             self.logger.warning('Input .win file not found.')
             return
@@ -339,7 +339,7 @@ class Wannier90Parser():
                 self.logger.warning('Projected orbital labels not found from win.')
 
     def parse_hoppings(self):
-        hr_files = get_files('*hr.dat', self.filepath, '*.wout')
+        hr_files = get_files('*hr.dat', self.filepath, self.mainfile)
         if not hr_files:
             return
         self.hr_parser.mainfile = hr_files[0]
@@ -412,7 +412,7 @@ class Wannier90Parser():
             energy_fermi = 0.0 * ureg.eV
         energy_fermi_eV = energy_fermi.to('electron_volt').magnitude
 
-        band_files = get_files('*band.dat', self.filepath, '*.wout')
+        band_files = get_files('*band.dat', self.filepath, self.mainfile)
         if not band_files:
             return
         if len(band_files) > 1:
@@ -468,7 +468,7 @@ class Wannier90Parser():
             self.logger.warning('Error setting the Fermi level: not found from hoppings. Setting it to 0 eV')
             energy_fermi = 0.0 * ureg.eV
 
-        dos_files = get_files('*dos.dat', self.filepath, '*.wout')
+        dos_files = get_files('*dos.dat', self.filepath, self.mainfile)
         if not dos_files:
             return
         if len(dos_files) > 1:
@@ -476,14 +476,12 @@ class Wannier90Parser():
         # Parsing only first *dos.dat file
         self.dos_dat_parser.mainfile = dos_files[0]
 
+        # TODO add spin polarized case
         sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
         sec_dos.energy_fermi = energy_fermi
-        sec_dos.energy_shift = energy_fermi
-
         data = np.transpose(self.dos_dat_parser.data)
         sec_dos.n_energies = len(data[0])
         sec_dos.energies = data[0] * ureg.eV
-
         sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
         sec_dos_values.value = data[1] / ureg.eV
 

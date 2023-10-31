@@ -93,25 +93,26 @@ def test_dos(parser):
     sec_scc = archive.run[0].calculation
     assert len(sec_scc) == 2
     assert sec_scc[-1].m_xpath('dos_electronic')  # dos always stored after dataset 1
-    sec_dos = sec_scc[-1].dos_electronic[0]
-    assert sec_dos.n_energies == 1601
-    assert sec_dos.energies[0].magnitude == approx(-3.487795777765736e-18)
-    assert sec_dos.energies[543].magnitude == approx(-1.1204543936072428e-18)
-    assert sec_dos.energies[-1].magnitude == approx(-sec_dos.energies[0].magnitude)
-    assert len(sec_dos.total) == 2
-    assert sec_dos.total[0].spin == 0
-    assert sec_dos.total[1].spin == 1
-    assert sec_dos.total[0].value[151].magnitude == approx(3.01852536e+14)
-    assert sec_dos.total[0].value[180].magnitude == approx(5.46018208e+15)
-    assert sec_dos.total[0].value_integrated[151] == approx(1.3e-5)
-    assert sec_dos.total[0].value_integrated[180] == approx(2.39e-4)
+    assert len(sec_scc[-1].dos_electronic) == 2
+    sec_dos_up = sec_scc[-1].dos_electronic[0]
+    sec_dos_down = sec_scc[-1].dos_electronic[1]
+    assert sec_dos_up.spin_channel == 0 and sec_dos_down.spin_channel == 1
+    assert sec_dos_up.n_energies == 1601
+    assert sec_dos_up.energies[0].magnitude == approx(-3.487795777765736e-18)
+    assert sec_dos_up.energies[543].magnitude == approx(-1.1204543936072428e-18)
+    assert sec_dos_up.energies[-1].magnitude == approx(-sec_dos_up.energies[0].magnitude)
+    assert len(sec_dos_up.total) == 1
+    sec_dos_up_total = sec_dos_up.total[0]
+    assert sec_dos_up_total.value[151].magnitude == approx(3.01852536e+14)
+    assert sec_dos_up_total.value[180].magnitude == approx(5.46018208e+15)
+    assert sec_dos_up_total.value_integrated[151] == approx(1.3e-5)
+    assert sec_dos_up_total.value_integrated[180] == approx(2.39e-4)
 
 
 def test_gw(parser):
     archive = EntryArchive()
     parser._calculation_type = 'gw'
     parser.parse('tests/data/abinit/ZrO2_GW/A1.abo', archive, None)
-
     sec_run = archive.run[-1]
 
     # Method

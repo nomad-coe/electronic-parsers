@@ -690,12 +690,13 @@ class Wien2kParser:
         if dos is not None:
             # total dos
             if len(dos[1]) > 0:
-                sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-                sec_dos.energies = dos[0] * ureg.rydberg
-                for spin in range(len(dos[1])):
-                    sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
-                    sec_dos_values.spin = spin
-                    sec_dos_values.value = dos[1][spin] * (1 / ureg.rydberg)
+                n_spin_channels = len(dos[1])
+                for spin in range(n_spin_channels):
+                    sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                    sec_dos.spin_channel = spin if n_spin_channels == 2 else None
+                    sec_dos.energies = dos[0] * ureg.rydberg
+                    sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+                    sec_dos_total.value = dos[1][spin] * (1 / ureg.rydberg)
 
             # projected dos
             if len(dos[2]) > 0:
@@ -705,10 +706,14 @@ class Wien2kParser:
                 else:
                     for species in range(len(dos[2])):
                         for spin in range(len(dos[2][species])):
-                            sec_dos_values = sec_dos.m_create(DosValues, Dos.species_projected)
-                            sec_dos_values.atom_label = labels[species]
-                            sec_dos_values.spin = spin
-                            sec_dos_values.value = dos[2][species][spin] * (1 / ureg.rydberg)
+                            if sec_scc.dos_electronic is not None:
+                                sec_dos = sec_scc.dos_electronic[spin]
+                            else:
+                                sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                                sec_dos.spin_channel = spin if len(dos[2][species]) == 2 else None
+                            sec_dos_species = sec_dos.m_create(DosValues, Dos.species_projected)
+                            sec_dos_species.atom_label = labels[species]
+                            sec_dos_species.value = dos[2][species][spin] * (1 / ureg.rydberg)
 
     def parse_system(self):
         sec_system = self.archive.run[0].m_create(System)

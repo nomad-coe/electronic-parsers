@@ -1206,16 +1206,16 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         nsppol = self.out_parser.get_input_var('nsppol', 2, 1)
         dos = np.reshape(dos, (nsppol, len(dos) // nsppol, np.size(dos) // len(dos)))
 
-        sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-        sec_dos.energies = dos.T[0].T[0] * ureg.hartree
-        sec_dos.n_energies = np.shape(dos)[1]
+        for spin in range(nsppol):
+            dos_spin = np.transpose(dos[spin])
+            sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+            sec_dos.spin_channel = spin if nsppol == 2 else None
+            sec_dos.n_energies = len(dos_spin[0])
+            sec_dos.energies = dos_spin[0] * ureg.hartree
 
-        dos = np.transpose(dos, axes=(0, 2, 1))
-        for spin in range(len(dos)):
-            sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
-            sec_dos_values.spin = spin
-            sec_dos_values.value = dos[spin][1] * (1 / ureg.hartree)
-            sec_dos_values.value_integrated = dos[spin][2]
+            sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+            sec_dos_total.value = dos_spin[1] / ureg.hartree
+            sec_dos_total.value_integrated = dos_spin[2]
 
     def parse_groundstate_datasets(self):
         '''

@@ -91,6 +91,8 @@ def test_vasprunxml_static(parser):
     assert sec_scc.energy.total.value.magnitude == approx(-2.3264377e-19)
     assert np.shape(sec_scc.forces.total.value) == (1, 3)
     assert sec_scc.stress.total.value[2][2].magnitude == approx(-2.78384438e+08)
+    assert np.shape(sec_scc.eigenvalues[0].energies[0][887]) == (37,)
+    assert sec_scc.scf_iteration[2].energy.total_t0.value.magnitude == approx(-2.27580485e-19,)
 
     # Check the k-point sampling
     k_mesh = sec_method.k_mesh
@@ -102,15 +104,17 @@ def test_vasprunxml_static(parser):
     assert (k_mesh.x_vasp_tetrahedrons_list[0] == [4, 1, 2, 2, 18]).all()
 
     # test DOS values
-    assert len(sec_scc.dos_electronic[0].energies) == 5000
-    assert sec_scc.dos_electronic[0].total[0].value[1838].magnitude == approx((.1369 / ureg.eV).to(1 / ureg.joule).magnitude)
-    assert len(sec_scc.dos_electronic[0].atom_projected) == 9
-    assert sec_scc.dos_electronic[0].atom_projected[0].value[-1].magnitude == approx(3.40162245e+17)
-    assert np.shape(sec_scc.eigenvalues[0].energies[0][887]) == (37,)
-    assert sec_scc.scf_iteration[2].energy.total_t0.value.magnitude == approx(-2.27580485e-19,)
-
+    sec_dos = sec_scc.dos_electronic
+    assert len(sec_dos) == 1
+    assert len(sec_dos[0].energies) == 5000
+    assert sec_dos[0].total[0].value[1838].magnitude == approx((.1369 / ureg.eV).to(1 / ureg.joule).magnitude)
+    assert len(sec_dos[0].orbital_projected) == 9
+    orbital_labels = [[0, 0], [1, 1], [1, 2], [1, 0], [2, 1], [2, 4], [2, 5], [2, 2], [2, 0]]
+    sec_orbital_labels = [list(orbital_dos.lm) for orbital_dos in sec_dos[0].orbital_projected]
+    assert sec_orbital_labels == orbital_labels
+    assert sec_dos[0].orbital_projected[0].value[-1].magnitude == approx(3.40162245e+17)
     # test DOS integrated
-    dos_integrated = integrate_dos(sec_scc.dos_electronic[0], False, sec_scc.energy.fermi)
+    dos_integrated = integrate_dos(sec_dos, sec_scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1e-2) == 8. - 6.  # dos starts from 6 electrons already
 
 
@@ -152,8 +156,10 @@ def test_vasprunxml_relax(parser):
     assert sec_sccs[2].energy.lowest_unoccupied.magnitude == approx(7.93718304e-19)
     assert sec_sccs[2].energy.highest_occupied.magnitude == approx(7.93702283e-19)
     assert [len(scc.eigenvalues) for scc in sec_sccs] == [0, 0, 1]
-    assert [len(scc.dos_electronic) for scc in sec_sccs] == [0, 0, 1]
-    dos_integrated = integrate_dos(sec_sccs[-1].dos_electronic[0], True, sec_sccs[-1].energy.fermi)
+    assert [len(scc.dos_electronic) for scc in sec_sccs] == [0, 0, 2]
+    sec_dos = sec_sccs[-1].dos_electronic
+    assert sec_dos[0].spin_channel == 0 and sec_dos[1].spin_channel == 1
+    dos_integrated = integrate_dos(sec_dos, sec_sccs[-1].energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 22.
 
 
@@ -205,9 +211,10 @@ def test_dos_silicon(silicon_dos):
 
     scc = silicon_dos.run[-1].calculation[0]
     k_mesh = silicon_dos.run[-1].method[-1].k_mesh
-    dos = scc.dos_electronic[-1]
-    energies = dos.energies.to(ureg.electron_volt).magnitude
-    values = np.array([d.value.magnitude for d in dos.total])
+    dos = scc.dos_electronic
+    assert len(dos) == 1
+    energies = dos[-1].energies.to(ureg.electron_volt).magnitude
+    values = np.array([d.value.magnitude for d in dos[-1].total])
 
     # Check the k-point sampling
     assert list(k_mesh.grid) == [15] * 3
@@ -231,7 +238,7 @@ def test_dos_silicon(silicon_dos):
     assert gap == approx(0.83140)
 
     # Check that the no. valence electrons is recovered
-    dos_integrated = integrate_dos(dos, False, scc.energy.fermi)
+    dos_integrated = integrate_dos(dos, scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1e-2) == 8.
 
 
@@ -290,11 +297,13 @@ def test_outcar(parser):
     assert sec_eigs.kpoints_multiplicities[1] == 8
 
     # check DOS
+    assert len(sec_scc.dos_electronic) == 1
     sec_dos = sec_scc.dos_electronic[0]
     assert len(sec_dos.energies) == 301
     assert sec_dos.total[0].value[282].magnitude == approx((.2545E+01 / ureg.eV).to(1 / ureg.joule).magnitude)
-    assert sec_dos.atom_projected[10].value[-15].magnitude == approx(1.51481425e+17)
-    assert sec_dos.atom_projected[5].value[-16].magnitude == approx(1.71267009e+16)
+    assert len(sec_dos.orbital_projected) == 32
+    assert sec_dos.orbital_projected[10].value[-15].magnitude == approx(1.51481425e+17)
+    assert sec_dos.orbital_projected[5].value[-16].magnitude == approx(1.71267009e+16)
     assert sec_dos.total[0].value_integrated[-1] == 30.0  # This runs up to the conduction band
 #    BUG EMIN is stored in the fermi energy!!
 #    dos_integrated = integrate_dos(sec_dos, False, sec_scc.energy.fermi)

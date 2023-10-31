@@ -22,6 +22,7 @@ import logging
 import re
 import ase
 from ase import io as aseio
+from scipy.stats import norm
 
 from .metainfo import m_env
 from nomad.units import ureg
@@ -37,7 +38,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Stress, StressEntry, ScfIteration, Forces,
-    ForcesEntry
+    ForcesEntry, Dos, DosValues
 )
 from nomad.datamodel.metainfo.simulation.workflow import (
     SinglePoint, GeometryOptimization, GeometryOptimizationMethod,
@@ -50,7 +51,7 @@ from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings,\
     x_cp2k_section_atomic_kind, x_cp2k_section_kind_basis_set, x_cp2k_section_total_numbers,\
     x_cp2k_section_maximum_angular_momentum, x_cp2k_section_md_settings,\
     x_cp2k_section_restart_information, x_cp2k_section_geometry_optimization,\
-    x_cp2k_section_geometry_optimization_step
+    x_cp2k_section_geometry_optimization_step, x_cp2k_pdos_histogram
 
 from ..utils import get_files
 
@@ -696,10 +697,32 @@ class CP2KOutParser(TextParser):
         ]
 
 
+class CP2KPDOSParser(TextParser):
+    # TODO change to DataTextParser when @Alvin implements it.
+    def __init__(self):
+        super().__init__(None)
+
+    def init_parameters(self):
+        self._data = None
+
+    def init_quantities(self):
+        self._quantities = [
+            Quantity('atom_kind', r'\# *Projected DOS for atomic kind *([\da-zA-Z]+) *at'),
+            Quantity('orbitals', r' *Occupation(.+)', repeats=False),
+            Quantity('iter', r' *at iteration step i *\= *(\d+)')]
+
+    @property
+    def data(self):
+        if self._data is None:
+            self._data = np.loadtxt(self.mainfile)
+        return self._data
+
+
 class CP2KParser:
     def __init__(self):
         self.out_parser = CP2KOutParser()
         self.inp_parser = InpParser()
+        self.pdos_parser = CP2KPDOSParser()
         # use a custom xyz parser as the output of cp2k is sometimes not up to standard
         self.traj_parser = TrajParser(type='positions')
         self.velocities_parser = TrajParser(type='velocities')
@@ -775,12 +798,14 @@ class CP2KParser:
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
         self.inp_parser.mainfile = None
+        self.pdos_parser.mainfile = None
         self.traj_parser.mainfile = None
         self.velocities_parser.mainfile = None
         self.energy_parser.mainfile = None
         self.force_parser.mainfile = None
         self.out_parser.logger = self.logger
         self.inp_parser.logger = self.logger
+        self.pdos_parser.logger = self.logger
         self.traj_parser.logger = self.logger
         self.velocities_parser.logger = self.logger
         self.energy_parser.logger = self.logger
@@ -1153,10 +1178,10 @@ class CP2KParser:
 
         input_files = get_files(input_filename, self.filepath, self.mainfile, deep=False)
         if not input_files:
-            self.logger.warning(f'Input file {input_filename} not found.')
+            self.logger.warning(f'Input file not found.')
             return
         if len(input_files) > 1:
-            self.logger.warning(f'Multiple input files found. We will parse {input_files[0]}.')
+            self.logger.warning(f'Multiple input files found. We will parse the first read file.')
         self.inp_parser.mainfile = input_files[0]
 
         parse('x_cp2k_section_input', self.inp_parser.tree, self.archive.run[-1])
@@ -1246,6 +1271,133 @@ class CP2KParser:
 
         return sec_system
 
+    def parse_dos(self, scc: Calculation, pdos_files: list[str]):
+        """Parses the projected DOS by resolving the histogram from the *.pdos files, and
+        convoluting this data with a Gaussian distribution function.
+
+        Args:
+            scc (Calculation): section calculation where the Dos is stored.
+            pdos_files: list of *.pdos files with iteration step coinciding with the
+                last converged SinglePoint calculation.
+        """
+        # Parsing DOS and PDOS if .pdos files are present.
+        if not pdos_files:
+            return
+
+        def _gaussian_convolution_pdos(data: np.ndarray, width: float, delta_energy: float):
+            """Convolutes / smoothes the histogram data with a Gaussian distribution function as defined
+            in scipy.stats.norm. The mesh of energies is also expanded (with delta_energy in eV)
+            to resolve better the Gaussians.
+
+            Args:
+                data (np.array): array containing the data read from the pdos file. Dimensions are (n_energies, n_columns)
+                width (float): standard deviation or width of the Gaussian distribution.
+                delta_energy (float): the spacing of the new energies mesh.
+
+            Returns:
+                new_energies, convoluted_pdos: returns the new X and Y data for the convoluted PDOS.
+            """
+            energies_eV = data[:, 1] * 27.211  # in eV
+            orbital_contributions = data[:, 3:]
+
+            energy_min = np.min(energies_eV) - 2 * width
+            energy_max = np.max(energies_eV) + 2 * width
+            new_energies = np.arange(energy_min, energy_max, delta_energy)
+
+            n_orbitals = orbital_contributions.shape[1]
+
+            gaussian = norm(loc=0, scale=width)
+
+            convoluted_pdos = np.zeros((len(new_energies), n_orbitals))
+            for i, new_energy in enumerate(new_energies):
+                for j in range(n_orbitals):
+                    convoluted_pdos[i, j] = np.sum(
+                        orbital_contributions[:, j] * gaussian.pdf(new_energy - energies_eV)
+                    )
+            return new_energies, np.transpose(convoluted_pdos)
+
+        # Unrestricted Kohn-Sham (spin-polarized) calculation
+        n_spin_channels = 2 if self.out_parser.get('spin_polarized') == 'UKS' else 1
+        # We resolve the number of atom parameters (or kinds) to check if they match the number of PDOS files
+        if self.archive.m_xpath('run[-1].method[-1].atom_parameters') is None:
+            self.logger.warning('Could not extract the number of atom kinds from method.')
+            return
+        n_atom_params = len(self.archive.run[-1].method[-1].atom_parameters)
+
+        # We sort in case the name has an implicit order (e.g. for different spin channels)
+        pdos_files.sort()
+        atoms = []
+        for f in pdos_files:
+            self.pdos_parser.mainfile = f
+            atom_kind = self.pdos_parser.get('atom_kind')
+            atoms.append(atom_kind)
+        # This stores a list of tuples ordered depending on the atom_kind label. Useful
+        # when dealing with spin-polarized calculations
+        atom_kind_in_files_sorted = sorted(list(zip(pdos_files, atoms)), key=lambda x: x[1])
+        if len(atom_kind_in_files_sorted) != (n_spin_channels * n_atom_params):
+            self.logger.warning('The number of PDOS files does not match the number of spin channels '
+                                'times the number of atom parameters. We cannot parse the PDOS.')
+            return
+
+        dos = [
+            Dos(spin_channel=0), Dos(spin_channel=1)
+        ] if n_spin_channels == 2 else [Dos()]
+
+        for index, (f, atom_kind) in enumerate(atom_kind_in_files_sorted):
+            self.pdos_parser.mainfile = f
+            if self.pdos_parser.data is None:
+                self.logger.warning('Could not read the data from the *.pdos files.')
+                break
+            data = self.pdos_parser.data
+
+            # We assume alternate ordering depending on the spin channel
+            sec_dos = dos[0] if index % 2 == 0 else dos[-1]
+
+            # We use the (updated 2017 Tiziano Müller) script provided by CP2K developers to resolve the
+            # PDOS by convoluting the histogram stored in the .pdos files.
+            # TODO implement a more automatic way of defining width if possible.
+            width = 0.5  # in eV
+            delta_energy = 0.01  # in eV
+            convoluted_energies, convoluted_pdos = _gaussian_convolution_pdos(data, width, delta_energy)
+
+            # Setting up constant quantities independent of the pdos file and common for
+            # the same spin channel files.
+            data = np.transpose(data)
+            if index == 0 or index == 1:
+                sec_dos.n_energies = len(convoluted_energies)
+                sec_dos.energies = convoluted_energies * ureg.eV
+                try:
+                    homo_index = np.where(np.isclose(np.diff(data[2]), -1, atol=1e-1))[0][0]
+                    homo = data[1][homo_index]
+                    sec_dos.energy_fermi = homo * ureg.hartree
+                    scc.energy = Energy(fermi=homo * ureg.hartree)
+                except Exception:
+                    pass
+
+            orbital_histogram = data[3:]
+            atom_label = re.sub(r'\d', '', atom_kind)
+            atom_index = re.sub(r'[a-zA-Z]', '', atom_kind)
+            if self.pdos_parser.get('orbitals', []) is not None:
+                orbital_labels = self.pdos_parser.get('orbitals', [])
+                sec_dos_histogram = scc.m_create(x_cp2k_pdos_histogram)
+                sec_dos_histogram.x_cp2k_pdos_histogram_energies = data[1] * ureg.hartree
+                sec_dos_histogram.x_cp2k_pdos_histogram_values = orbital_histogram
+                sec_dos_histogram.x_cp2k_pdos_histogram_atom_label = atom_label
+                sec_dos_histogram.x_cp2k_pdos_histogram_atom_index = atom_index if atom_index else None
+                sec_dos_histogram.x_cp2k_pdos_histogram_orbital = orbital_labels
+                sec_dos_histogram.x_cp2k_gaussian_width = width * ureg.eV
+                sec_dos_histogram.x_cp2k_gaussian_delta_energy = delta_energy * ureg.eV
+                for i, conv_pdos in enumerate(convoluted_pdos):
+                    sec_dos_orbital = sec_dos.m_create(DosValues, Dos.orbital_projected)
+                    sec_dos_orbital.value = conv_pdos / ureg.eV
+                    sec_dos_orbital.atom_label = atom_label
+                    sec_dos_orbital.atom_index = atom_index if atom_index else None
+                    sec_dos_orbital.orbital = orbital_labels[i]
+
+        self.logger.warning(f'We are convoluting the reported .pdos histogram with a Gaussian '
+                            f'distribution function (as defined in scipy.stats.norm).')
+        scc.dos_electronic = dos
+
     def parse_configurations_quickstep(self):
         sec_run = self.archive.run[-1]
         quickstep = self.out_parser.get(self._calculation_type)
@@ -1294,7 +1446,6 @@ class CP2KParser:
                 md = self.sampling_method == 'molecular_dynamics'
                 if md:
                     calculation._frame = frame
-                    # calculation._frame = frame + 1
                     parse_md_step(calculation)
 
                 if frame == 0:
@@ -1309,18 +1460,47 @@ class CP2KParser:
                 if self.archive.run[-1].method:
                     sec_scc.method_ref = self.archive.run[-1].method[-1]
 
+        def get_pdos_files(n_calcs: int):
+            """Reads the number of calculations and the pdos_files iteration integer, and
+            return only the files coinciding with the SinglePoint calculation.
+
+            Args:
+                n_calcs (int): number of calculations.
+
+            Returns:
+                pdos_files: list of *.pdos files with iteration step coinciding with the
+                    last converged SinglePoint calculation.
+            """
+            pdos_files = get_files('*.pdos', self.filepath, self.mainfile)
+            if pdos_files is not None:
+                for i, file in enumerate(pdos_files):
+                    self.pdos_parser.mainfile = file
+                    iter_step = self.pdos_parser.get('iter', n_calcs - 1) + 1  # added default to match ADD_LAST = NO
+                    if iter_step != n_calcs:
+                        pdos_files.pop(i)
+            return pdos_files
+
         if (geometry_optimization := quickstep.get('geometry_optimization')) is not None:
             optimization_steps = geometry_optimization.get('optimization_step', [])
             # final scf
             single_point = quickstep.get('single_point')
-            parse_calculations([geometry_optimization] + optimization_steps + [single_point])
-
+            calculations = [geometry_optimization] + optimization_steps + [single_point]
+            parse_calculations(calculations)
+            # PDOS parsing
+            if single_point and sec_run.calculation is not None:
+                n_calcs = len(calculations)
+                pdos_files = get_pdos_files(n_calcs)
+                self.parse_dos(sec_run.calculation[-1], pdos_files)
         elif (molecular_dynamics := quickstep.get('molecular_dynamics')) is not None:
             # initial self consistent
             single_point = quickstep.get('single_point')
             # md steps
-            parse_calculations([single_point] + molecular_dynamics.get('md_step', []))
-
+            calculations = [single_point] + molecular_dynamics.get('md_step', [])
+            parse_calculations(calculations)
+            # PDOS parsing
+            if single_point and sec_run.calculation is not None:
+                pdos_files = get_pdos_files(1)
+                self.parse_dos(sec_run.calculation[0], pdos_files)
         elif (single_point := quickstep.get('single_point')) is not None:
             atomic_coord = quickstep.get('atomic_coordinates')
             if atomic_coord is not None:
@@ -1328,6 +1508,9 @@ class CP2KParser:
             else:
                 self.logger.warning('Could not parse system information for the SinglePoint calculation.')
             parse_calculations([single_point])
+            # PDOS parsing
+            pdos_files = get_pdos_files(1)
+            self.parse_dos(sec_run.calculation[-1], pdos_files)
 
     def _parse_basis_set(self) -> list[BasisSet]:
         '''Scopes are based on https://10.1016/j.cpc.2004.12.014'''

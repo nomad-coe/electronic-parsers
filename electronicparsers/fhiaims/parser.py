@@ -845,6 +845,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             'Hirshfeld volume': 'x_fhi_aims_hirschfeld_volume'
         }
 
+        self.orbital_lm_map = ['s', 'p', 'd', 'f', 'g', 'h']  # ask devs about 'g' and 'h' orbitals (?)
+
         self._gw_flag_map = {
             'gw': 'G0W0',
             'gw_expt': 'G0W0',
@@ -1114,49 +1116,11 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 return
             return np.transpose(self.dos_parser.data)
 
-        def read_projected_dos(dos_files):
-            dos = []
-            dos_dn = []
-            n_atoms = 0
-            l_max = []
-            for dos_file in dos_files:
-                data = read_dos(dos_file)
-                if data is None or np.size(data) == 0:
-                    continue
-                # we first read the spin_dn just to make sure the spin dn component exists
-                if 'spin_up' in dos_file:
-                    data_dn = read_dos(dos_file.replace('spin_up', 'spin_dn'))
-                    if data_dn is None:
-                        continue
-                    # the maximum l is arbitrary for different species, so we cant stack
-                    dos_dn.append(data_dn[1:])
-                l_max.append(len(data[1:]))
-                # column 0 is energy column 1 is total
-                energy = data[0]
-                dos.append(data[1:])
-                n_atoms += 1
-
-            if not dos:
-                return None, None
-            energies = energy * ureg.eV
-            # we cut the l components up to the minimum (or pad zeros?)
-            n_l = min(l_max)
-            n_spin = 2 if dos_dn else 1
-            dos = [d[:n_l] for d in dos]
-            if dos_dn:
-                dos_dn = [d[:n_l] for d in dos_dn]
-                dos = [dos, dos_dn]
-            dos = np.transpose(np.reshape(
-                dos, (n_spin, n_atoms, n_l, len(energies))), axes=(2, 0, 1, 3))
-            dos = dos / ureg.eV
-            return energies, dos
-
         def parse_dos(section):
             version_normalization_cutoff = 71914.7
             version_normalization = .5
 
             sec_scc = sec_run.calculation[-1]
-            sec_dos = None
             energies = None
 
             n_spin = self.out_parser.get_number_of_spin_channels()
@@ -1166,51 +1130,61 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 data = read_dos(dos_file)
                 if data is None or np.size(data) == 0:
                     continue
-                sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
                 energies = data[0] * ureg.eV
-                sec_dos.n_energies = len(energies)
-                sec_dos.energies = energies
                 # dos unit is 1/(eV-cell volume)
                 dos = data[1: n_spin + 1] / ureg.eV
-                for spin in range(len(dos)):
-                    sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
-                    sec_dos_values.spin = spin
+                for spin in range(n_spin):
+                    sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                    sec_dos.spin_channel = spin if n_spin == 2 else None
+                    sec_dos.n_energies = len(energies)
+                    sec_dos.energies = energies
+                    sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
                     if float(sec_run.program.version) <= version_normalization_cutoff:
-                        sec_dos_values.x_fhi_aims_normalization_factor_raw_data = version_normalization
+                        sec_dos_total.x_fhi_aims_normalization_factor_raw_data = version_normalization
                         dos[spin] /= version_normalization
-                    sec_dos_values.value = dos[spin]
+                    sec_dos_total.value = dos[spin]
 
-            # parse projected
-            # projected does for different spins on separate files
-            # we only include spin_up, add spin_dn in loop
+            # Parse projected
+            # TODO: check if this is the histogram or the integrated one
             for projection_type in ['atom', 'species']:
-                proj_dos_files, species = section.get(
-                    '%s_projected_dos_files' % projection_type, [[], []])
-                proj_dos_files = [f for f in proj_dos_files if 'spin_dn' not in f]
-                if proj_dos_files:
-                    if sec_dos is None:
-                        sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
-                    energies, dos = read_projected_dos(proj_dos_files)
-                    if dos is None:
-                        continue
-                    sec_def = Dos.atom_projected if projection_type == 'atom' else Dos.species_projected
+                proj_dos_files, species = section.get(f'{projection_type}_projected_dos_files', [[], []])
+                for files in proj_dos_files:
+                    species_label = next((label for label in species if label in files), None)
 
-                    n_l = len(dos[1:])
-                    lm_values = np.column_stack((np.arange(n_l), np.zeros(n_l, dtype=np.int32)))
-                    for lm in range(len(dos)):
-                        for spin in range(len(dos[lm])):
-                            for atom in range(len(dos[lm][spin])):
-                                sec_dos_values = sec_dos.m_create(DosValues, sec_def)
-                                sec_dos.m_kind = 'integrated'
-                                if lm > 0:
-                                    # the first one is total so no lm label
-                                    sec_dos_values.lm = lm_values[lm - 1]
-                                sec_dos_values.spin = spin
-                                if projection_type == 'atom':
-                                    sec_dos_values.atom_index = atom
-                                else:
-                                    sec_dos_values.atom_label = species[atom]
-                                sec_dos_values.value = dos[lm][spin][atom]
+                    # Check if data can be read
+                    data = read_dos(files)
+                    if data is None:
+                        continue
+
+                    if sec_scc.dos_electronic is not None:
+                        sec_dos = sec_scc.dos_electronic[1] if 'spin_dn' in files else sec_scc.dos_electronic[0]
+                    else:
+                        sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                    sec_dos.m_kind = 'integrated'
+
+                    # Projected DOS section definition
+                    sec_def = Dos.atom_projected if projection_type == 'atom' else Dos.species_projected
+                    if sec_dos.m_get(sec_def):
+                        created_section = False
+                        for index, dos_proj in enumerate(sec_dos.m_get(sec_def)):
+                            if dos_proj.atom_label == species_label:
+                                sec_dos_proj = sec_dos.m_get(sec_def)[index]
+                                created_section = True
+                                break
+                        if not created_section:
+                            sec_dos_proj = sec_dos.m_create(DosValues, sec_def)
+                    else:
+                        sec_dos_proj = sec_dos.m_create(DosValues, sec_def)
+                    sec_dos_proj.atom_label = species_label
+                    sec_dos_proj.value = data[1] / ureg.eV
+                    # Orbital projections
+                    data = data[2:]
+                    for lindex, dos_l in enumerate(data):
+                        sec_dos_orbital = sec_dos.m_create(DosValues, Dos.orbital_projected)
+                        sec_dos_orbital.atom_label = species_label
+                        orbital_label = self.orbital_lm_map[lindex]
+                        sec_dos_orbital.orbital = orbital_label
+                        sec_dos_orbital.value = dos_l
 
         def get_eigenvalues(section):
             data = section.get('eigenvalues', [None])[-1]

@@ -848,6 +848,65 @@ class Method(simulation.method.Method):
         repeats=True)
 
 
+class x_cp2k_pdos_histogram(MSection):
+    '''
+    Section with projected DOS histogram data.
+    '''
+
+    m_def = Section(validate=False)
+
+    x_cp2k_pdos_histogram_energies = Quantity(
+        type=np.float64,
+        shape=['n_energies'],
+        unit='joule',
+        description='''
+        Values of the histogram energies.
+        ''')
+
+    x_cp2k_pdos_histogram_values = Quantity(
+        type=np.float64,
+        shape=['n_orbitals', 'n_energies'],
+        description='''
+        Values of the projected orbital / atomic / species histogram. This is then convoluted
+        with a Gaussian distribution function and stored in the corresponding projected DOS value.
+        ''')
+
+    x_cp2k_pdos_histogram_atom_label = Quantity(
+        type=str,
+        description='''
+        Atom label for the projected DOS histogram.
+        ''')
+
+    x_cp2k_pdos_histogram_atom_index = Quantity(
+        type=np.int32,
+        description='''
+        Atom index for the projected DOS histogram.
+        ''')
+
+    x_cp2k_pdos_histogram_orbital = Quantity(
+        type=str,
+        shape=['n_orbitals'],
+        description='''
+        Orbital label for the projected DOS histogram.
+        ''')
+
+    x_cp2k_gaussian_width = Quantity(
+        type=np.float64,
+        unit='joule',
+        description='''
+        Width of the Gaussian distribution function.
+        ''')
+
+    x_cp2k_gaussian_delta_energy = Quantity(
+        type=np.float64,
+        unit='joule',
+        description='''
+        New energies mesh separation.
+        ''')
+
+
 class Calculation(simulation.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
+
+    x_cp2k_pdos = SubSection(sub_section=x_cp2k_pdos_histogram.m_def, repeats=True)

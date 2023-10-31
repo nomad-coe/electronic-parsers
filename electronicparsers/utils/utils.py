@@ -42,7 +42,7 @@ def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = Tru
         pattern (str): targeted pattern to be found
         filepath (str): filepath to start the search
         stripname (str, optional): name with respect to which do the search. Defaults to ''.
-        deep (bool, optional): boolean setting the path in the folders to scan (up or down). Defaults to True.
+        deep (bool, optional): boolean setting the path in the folders to scan (down or up). Defaults to down=True.
 
     Returns:
         list: List of found files.

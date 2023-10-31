@@ -79,6 +79,47 @@ def test_single_point(parser):
     assert archive.workflow2.m_def.name == 'SinglePoint'
 
 
+def test_pdos(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/cp2k/graphene_15x15_pdos/Grafene15x15-alone-smear-cell-opt.out', archive, None)
+
+    assert len(archive.run) == 1
+    sec_run = archive.run[-1]
+    assert sec_run.program.version == 'CP2K version 6.1'
+    assert sec_run.method[-1].dft.xc_functional.exchange[0].name == 'MGGA_X_TPSS'
+    assert sec_run.method[-1].dft.xc_functional.exchange[1].name == 'GGA_X_PBE'
+    assert sec_run.method[-1].dft.xc_functional.correlation[0].name == 'MGGA_C_TPSS'
+    assert sec_run.method[-1].dft.xc_functional.correlation[1].name == 'GGA_C_PBE'
+
+    sec_scc = sec_run.calculation
+    assert len(sec_scc) == 1
+    assert sec_scc[0].dos_electronic is not None
+    sec_dos = sec_scc[0].dos_electronic
+    assert len(sec_dos) == 2
+    # Unrestricted spin-polarized calculation
+    assert sec_dos[0].spin_channel == 0
+    assert sec_dos[1].spin_channel == 1
+    assert sec_dos[0].n_energies == 3713
+    assert sec_dos[0].orbital_projected is not None
+    assert len(sec_dos[0].orbital_projected) == 9
+    assert sec_dos[1].n_energies == 3713
+    assert len(sec_dos[0].orbital_projected) == len(sec_dos[1].orbital_projected)
+    assert sec_dos[0].energy_fermi.to('hartree').magnitude == approx(-0.16863)
+    # Storing original histogram
+    assert sec_scc[0].x_cp2k_pdos is not None
+    assert len(sec_scc[0].x_cp2k_pdos) == 2
+    assert sec_scc[0].x_cp2k_pdos[0].x_cp2k_gaussian_width.to('eV').magnitude == approx(0.5)
+    assert sec_scc[0].x_cp2k_pdos[0].x_cp2k_gaussian_delta_energy.to('eV').magnitude == approx(0.01)
+    assert len(sec_scc[0].x_cp2k_pdos[0].x_cp2k_pdos_histogram_orbital) == 9
+    assert sec_scc[0].x_cp2k_pdos[0].x_cp2k_pdos_histogram_orbital == ['s', 'py', 'pz', 'px', 'd-2', 'd-1', 'd0', 'd+1', 'd+2']
+    # Testing values
+    dos_values = sec_dos[0].orbital_projected[2]
+    assert dos_values.atom_label == 'C'
+    assert dos_values.orbital == 'pz'
+    assert dos_values.value.to('1/eV').magnitude[1050] == approx(1.2619316298909414e-05)
+    assert (dos_values.value.to('1/eV').magnitude > 0).all()
+
+
 def test_geometry_optimization(parser):
     archive = EntryArchive()
     parser.parse('tests/data/cp2k/geometry_optimization/H2O.out', archive, None)

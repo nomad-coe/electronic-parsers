@@ -95,17 +95,25 @@ def test_dos(parser, caplog):
     assert len(caplog.records) == 1
     assert "Different number of eigenvalues" in caplog.records[0].msg
 
-    sec_eigenvalues = archive.run[0].calculation[0].eigenvalues[0]
+    sec_scc = archive.run[0].calculation[0]
+
+    sec_eigenvalues = sec_scc.eigenvalues[0]
     assert np.shape(sec_eigenvalues.energies) == (2, 70, 43)
     assert sec_eigenvalues.energies[0][2][42].magnitude == approx(3.88893e-18)
     assert sec_eigenvalues.energies[0][52][11].magnitude == approx(-1.81337e-18)
     assert sec_eigenvalues.energies[0][69][42].magnitude == approx(3.88971e-18)
     assert sec_eigenvalues.energies[1][68][41].magnitude == approx(3.695777e-18)
 
-    sec_dos = archive.run[0].calculation[0].dos_electronic[0]
-    assert np.shape(sec_dos.total[1].value) == (1000,)
-    assert sec_dos.energies[26].magnitude == approx(-9.76582818e-19)
-    assert sec_dos.total[1].value[334].magnitude == approx(1.32586595e+19)
+    assert len(sec_scc.dos_electronic) == 2
+    sec_dos_up = sec_scc.dos_electronic[0]
+    sec_dos_down = sec_scc.dos_electronic[1]
+    assert sec_dos_up.spin_channel == 0 and sec_dos_down.spin_channel == 1
+    assert sec_dos_up.energies[26].magnitude == approx(-9.76582818e-19)
+    assert np.shape(sec_dos_down.total[0].value) == (1000,)
+    assert sec_dos_down.total[0].value[334].magnitude == approx(1.32586595e+19)
 
-    assert np.shape(sec_dos.species_projected[1].value) == (1000,)
-    assert sec_dos.species_projected[1].value[926].magnitude == approx(1.20913559e+18)
+    assert len(sec_dos_up.species_projected) == 2 and len(sec_dos_up.species_projected) == len(sec_dos_down.species_projected)
+    assert sec_dos_up.species_projected[0].atom_label == 'Cr'
+    assert sec_dos_up.species_projected[1].atom_label == 'O'
+    assert np.shape(sec_dos_up.species_projected[0].value) == (1000,)
+    assert sec_dos_up.species_projected[1].value[926].magnitude == approx(2.7395685667470246e+17)

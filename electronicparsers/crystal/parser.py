@@ -890,25 +890,25 @@ class CrystalParser:
                     scc_dos = run.m_create(Calculation)
                     scc_dos.system_ref = system
                     scc_dos.method_ref = method
-                    sec_dos = scc_dos.m_create(Dos, Calculation.dos_electronic)
-
+                    scc_dos.energy = Energy(fermi=fermi_energy * ureg.hartree)
+                    # Getting row information
                     first_row = dos_f25["first_row"]
                     cols = int(first_row[0])
                     rows = int(first_row[1])
                     de = first_row[3]
                     fermi_energy = first_row[4]
-                    scc_dos.energy = Energy(fermi=fermi_energy * ureg.hartree)
-
                     second_row = dos_f25["second_row"]
                     start_energy = second_row[1]
-                    sec_dos.energies = (start_energy + np.arange(rows) * de) * ureg.hartree
-
-                    dos_values = dos_f25["values"]
-                    dos_values = to_array(cols, rows, dos_values)
+                    dos_values = to_array(cols, rows, dos_f25["values"])
                     dos_values = dos_values.T
-                    for n_spin, dos_value in enumerate(dos_values):
-                        sec_dos.spin = n_spin
-                        sec_dos.total.append(DosValues(value=dos_value))
+                    # Writing into the arhcive
+                    n_spin_channels = len(dos_values)
+                    for spin in range(n_spin_channels):
+                        sec_dos = scc_dos.m_create(Dos, Calculation.dos_electronic)
+                        sec_dos.spin_channel = spin if n_spin_channels == 2 else None
+                        sec_dos.energies = (start_energy + np.arange(rows) * de) * ureg.hartree
+                        sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+                        sec_dos_total.value = dos_values[spin]
 
         # Sampling
         geo_opt = out["geo_opt"]
