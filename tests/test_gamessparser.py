@@ -88,6 +88,8 @@ def test_gamess_geometry_opt(parser):
     assert sec_eigs.energies[0][0][2].magnitude == approx(-2.24483256e-18)
     assert sec_eigs.occupations[0][0][4] == 0
     assert sec_calc[2].forces.total.value[1][2].magnitude == approx(-1.04055078e-10)
+    assert sec_calc[2].time_physical.magnitude == approx(0.2)
+    assert sec_calc[6].time_calculation.magnitude == approx(0.)
 
     sec_system = sec_run[0].system
     assert len(sec_system) == 7

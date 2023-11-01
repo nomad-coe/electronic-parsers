@@ -65,7 +65,8 @@ class OutParser(TextParser):
             'Diagonalization': 'diagonalization', 'Density matrix formation': 'density_matrix_formation',
             'Population analysis': 'population_analysis', 'Initial guess': 'initial_guess',
             'Orbital Transformation': 'orbital_transformation', 'Orbital Orthonormalization': 'orbital_orthonormalization',
-            'DIIS solution': 'diis_solution', 'Grid generation': 'grid_generation'}
+            'DIIS solution': 'diis_solution', 'Grid generation': 'grid_generation',
+            'Total SCF gradient time': 'scf_gradient'}
 
         def str_to_cartesian_coordinates(val_in):
             val = [v.split() for v in val_in.strip().split('\n')]
@@ -274,7 +275,12 @@ class OutParser(TextParser):
                 r'\n *TIMINGS\s*\-+\s*([\s\S]+?)\-{10}',
                 sub_parser=TextParser(quantities=[Quantity(
                     name, rf'%s\s*\.+\s*({re_float})' % key, dtype=float, unit=ureg.s)
-                    for key, name in self._timing_mapping.items()]))
+                    for key, name in self._timing_mapping.items()])),
+            Quantity(
+                'time_calculation',
+                r'Total SCF time\: (\d+) days (\d+) hours (\d+) min (\d+) sec ',
+                dytpe=np.dtype(np.float64)
+            )
         ]
 
         # TODO parse more properties, add to metainfo
@@ -764,7 +770,9 @@ class OrcaParser:
         return sec_system
 
     def parse_scc(self, section):
-        sec_scc = self.archive.run[-1].m_create(Calculation)
+        sec_run = self.archive.run[-1]
+        initial_time = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
+        sec_scc = sec_run.m_create(Calculation)
 
         self_consistent = section.get('self_consistent')
         if self_consistent is None:
@@ -846,10 +854,18 @@ class OrcaParser:
                 spectrum[5:7]) * ureg.elementary_charge * ureg.bohr
 
         # timings
+        time = self_consistent.get('time_calculation')
+        if time is not None:
+            sec_scc.time_calculation = time[0] * 24 * 3600 + time[1] * 3600 + time[2] * 60 + time[3]
+            sec_scc.time_physical = initial_time + sec_scc.time_calculation
         timings = self_consistent.get('timings', {})
         for key, val in timings.items():
             if val is not None:
-                setattr(sec_scc, 'x_orca_%s' % key, val.magnitude)
+                if key == 'final_time' or key == 'scf_gradient':
+                    sec_scc.time_calculation = val
+                    sec_scc.time_physical = initial_time + sec_scc.time_calculation
+                else:
+                    setattr(sec_scc, 'x_orca_%s' % key, val.magnitude)
 
         return sec_scc
 

@@ -84,7 +84,7 @@ class MainfileParser(TextParser):
             Quantity('x_cpmd_gnmax', rf'GNMAX= +({re_f})', dtype=np.float64),
             Quantity('x_cpmd_gnorm', rf'GNORM= +({re_f})', dtype=np.float64),
             Quantity('x_cpmd_cnstr', rf'CNSTR= +({re_f})', dtype=np.float64),
-            Quantity('time_calculation', rf'CNSTR= +({re_f})', dtype=np.float64),
+            Quantity('time_calculation', rf'TCPU= +({re_f})', dtype=np.float64),
         ]
 
         self._quantities = [
@@ -290,6 +290,7 @@ class CPMDParser:
             return sec_system
 
         def parse_calculation(source):
+            time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
             sec_calc = sec_run.m_create(Calculation)
 
             if source.energies is not None:
@@ -299,9 +300,10 @@ class CPMDParser:
                         sec_energy.total.kinetic = val
                     setattr(sec_energy, key, EnergyEntry(value=val))
 
-            for scf in source.get('scf', []):
+            for n, scf in enumerate(source.get('scf', [])):
                 sec_scf = sec_calc.m_create(ScfIteration)
                 sec_scf.time_calculation = scf[-1] * ureg.s
+                sec_scf.time_physical = (sec_calc.scf_iteration[n - 1].time_physical if n else time_initial) + sec_scf.time_calculation
                 sec_scf.energy = Energy(
                     total=EnergyEntry(value=scf[3] * ureg.hartree), change=scf[4] * ureg.hartree)
 
@@ -309,7 +311,9 @@ class CPMDParser:
                 sec_calc.forces = Forces(
                     total=ForcesEntry(value=[val[5:8] for val in source.atom_coordinates_forces] * ureg.hartree / ureg.bohr))
 
-            sec_calc.time_calculation = source.time_calculation
+            if source.time_calculation:
+                sec_calc.time_calculation = source.time_calculation * ureg.s
+                sec_calc.time_physical = time_initial + sec_calc.time_calculation
             if source.energies is None and source.scf is not None:
                 sec_calc.energy = sec_scf.energy
 
@@ -419,6 +423,7 @@ class CPMDParser:
                 if len(trajectory[n_frame][0]) > 1:
                     sec_system.atoms.velocities = trajectory[n_frame, :, 1, :] * ureg.bohr / (ureg.dirac_constant / ureg.hartree)
 
+                time_initial = sec_run.calculation[-1].time_physical if n_frame else 0 * ureg.s
                 sec_calc = sec_run.m_create(Calculation)
                 if len(trajectory[n_frame][0]) > 2:
                     sec_calc.forces = trajectory[n_frame, :, 1, :] * ureg.hartree / ureg.bohr
@@ -431,6 +436,7 @@ class CPMDParser:
                             start = energies_n
                             write_energies(energies[energies_n], sec_calc)
                             break
+                sec_calc.time_physical = sec_calc.time_calculation + time_initial
 
         sec_method = sec_run.m_create(Method)
         cutoff = self.mainfile_parser.get('supercell', {}).get(

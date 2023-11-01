@@ -64,6 +64,8 @@ def test_spin_pol(parser):
     assert sec_calc.charges[0].orbital_projected[5].atom_label == 'O'
     assert sec_calc.charges[0].orbital_projected[6].orbital == 'py'
     assert sec_calc.spin_S2 == approx(2.002364)
+    assert sec_calc.time_calculation.magnitude == approx(0.008)
+    assert sec_calc.time_physical.magnitude == approx(0.016)
 
 
 def test_non_spin_pol(parser):

@@ -79,7 +79,9 @@ def test_ccsdf12(parser):
     sec_scfs = sec_sccs[0].scf_iteration
     assert len(sec_scfs) == 13
     assert sec_scfs[8].energy.total.value.magnitude == approx(-2.99844594e-15)
-    assert sec_scfs[2].time_calculation.magnitude == 2.09
+    assert sec_sccs[0].time_calculation.magnitude == 40 * 60 + 7
+    assert sec_sccs[0].scf_iteration[2].time_physical.magnitude == approx(5.89)
+    assert sec_sccs[0].scf_iteration[4].time_calculation.magnitude == approx(1.89)
 
 
 def test_grad_statpt_dscf(parser):

@@ -654,9 +654,11 @@ class OctopusParser:
 
         # self-consistent
         # SCF energies are printed only in output
+        initial_time = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
         for scf in self.out_parser.get('self_consistent', []):
             sec_scc = sec_run.m_create(Calculation)
             for iteration in scf.get('iteration', []):
+                initial_time = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else initial_time
                 sec_scf = sec_scc.m_create(ScfIteration)
                 sec_scf_energy = sec_scf.m_create(Energy)
                 fermi_level = iteration.get('fermi_level')
@@ -670,6 +672,10 @@ class OctopusParser:
                 time = iteration.get('time')
                 if time is not None:
                     sec_scf.time_calculation = time
+                    sec_scf.time_physical = initial_time + sec_scf.time_calculation
+            if sec_scc.scf_iteration:
+                sec_scc.time_calculation = sum(scf.time_calculation for scf in sec_scc.scf_iteration)
+                sec_scc.time_physical = sec_scc.scf_iteration[-1].time_physical
 
         # time-dependent
         # each td iteration is an scc

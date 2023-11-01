@@ -79,6 +79,8 @@ def test_relax(parser):
     assert sec_scc[11].energy.total.value.magnitude == approx(-7.44306125e-17)
     assert sec_scc[18].energy.kinetic_electronic.value.magnitude == approx(5.37898452e-17)
     assert len(sec_scc[6].scf_iteration) == 10
+    assert sec_scc[7].time_calculation.magnitude == approx(1.475)
+    assert sec_scc[2].time_physical.magnitude == approx(4.269)
 
 
 def test_stress(parser):

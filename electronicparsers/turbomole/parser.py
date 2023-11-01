@@ -140,11 +140,18 @@ class OutParser(TextParser):
             info['atom'] = [v.title() for v in info.get('atom', [])]
             return info
 
-        def str_to_cpu_time(val_in):
+        def str_to_time(val_in):
             time = 0.
-            for n, v in enumerate(reversed(val_in.split())):
-                multiplier = 24 * 3600 if n == 3 else 60 ** n
-                time += float(v) * multiplier
+            multipliers = {'d': 24 * 3600, 'h': 3600, 'm': 60, 's': 1}
+            for unit, multiplier in multipliers.items():
+                match = re.search(rf'([\d\.]+) {unit}', val_in)
+                if match:
+                    time += float(match.group(1)) * multiplier
+            if not time:
+                try:
+                    time = float(val_in)
+                except Exception:
+                    pass
             return time
 
         def str_to_hessian(val_in):
@@ -530,10 +537,9 @@ class OutParser(TextParser):
                 'eigenvalue_file',
                 r'orbitals \$\S+\s*will be written to file (\w+)', repeats=True),
             Quantity(
-                'cpu_time',
-                rf'total\s*cpu-time\s*:\s*(?:({re_float}) days)*\s*(?:({re_float}) hours)*'
-                rf'\s*(?:({re_float}) minutes and)*\s*({re_float}) seconds',
-                str_operation=str_to_cpu_time, convert=False)]
+                'wall_time',
+                rf'total\s*wall\-time\s*:(.+)',
+                str_operation=str_to_time, convert=False)]
 
         aoforce_quantities = module_quantities + [
             Quantity(
@@ -831,6 +837,7 @@ class TurbomoleParser:
 
     def parse_scc(self):
         sec_run = self.archive.run[0]
+        time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
         sec_scc = sec_run.m_create(Calculation)
 
         n_atoms = self.get_number_of_atoms()
@@ -981,6 +988,7 @@ class TurbomoleParser:
         energies = [0.] + [iteration.get('energies', {}).get(
             'energy_total_scf_iteration') for iteration in self_consistency.get('iteration', [])]
         for n, iteration in enumerate(self_consistency.get('iteration', [])):
+            time_initial_scf = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else time_initial
             sec_iteration = sec_scc.m_create(ScfIteration)
             sec_iteration_energy = sec_iteration.m_create(Energy)
 
@@ -1001,6 +1009,7 @@ class TurbomoleParser:
                     getattr(Energy, key.lower()), EnergyEntry(value=val))
             if iteration.get('time'):
                 sec_iteration.time_calculation = iteration.get('time')
+                sec_iteration.time_physical = time_initial_scf + sec_iteration.time_calculation
             # miscellaneous scf quantities
             scf_keys = [
                 'damping_scf_iteration', 'norm_diis_scf_iteration', 'delta_eigenvalues',
@@ -1043,6 +1052,9 @@ class TurbomoleParser:
         if energy_vdW is not None:
             sec_scc.energy.van_der_waals = EnergyEntry(value=energy_vdW, kind='DFTD3')
 
+        if self.module.wall_time is not None:
+            sec_scc.time_calculation = self.module.wall_time * ureg.s
+            sec_scc.time_physical = time_initial + sec_scc.time_calculation
         return sec_scc
 
     def parse_method(self):

@@ -125,7 +125,8 @@ class MainfileParser(TextParser):
                 str_operation=lambda x: [v.split() for v in x.strip().splitlines()]
             ),
             Quantity('spin_S2', rf'\(S\*\*2\) += +({re_f})', dtype=np.float64),
-            Quantity('calculation_time', rf'COMPUTATION TIME += +({re_f}) SECONDS', dtype=np.float64, unit=ureg.s)
+            Quantity('time_physical', rf'WALL\-CLOCK TIME += +({re_f}) SECONDS', dtype=np.float64, unit=ureg.s),
+            Quantity('time_calculation', rf'COMPUTATION TIME += +({re_f}) SECONDS', dtype=np.float64, unit=ureg.s)
         ]
 
 
@@ -221,6 +222,7 @@ class MopacParser:
                             atom_index=n_atom, atom_label=atom[1]))
 
         sec_calc.spin_S2 = self.mainfile_parser.spin_S2
+        sec_calc.time_physical = self.mainfile_parser.time_physical
         sec_calc.time_calculation = self.mainfile_parser.time_calculation
 
         sec_calc.system_ref = sec_system

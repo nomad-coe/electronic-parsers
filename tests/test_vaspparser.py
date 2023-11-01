@@ -161,6 +161,10 @@ def test_vasprunxml_relax(parser):
     assert sec_dos[0].spin_channel == 0 and sec_dos[1].spin_channel == 1
     dos_integrated = integrate_dos(sec_dos, sec_sccs[-1].energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 22.
+    assert sec_sccs[1].time_calculation.magnitude == approx(438.32)
+    assert sec_sccs[2].time_physical.magnitude == approx(1235.66)
+    assert sec_sccs[0].scf_iteration[2].time_calculation.magnitude == approx(43.00)
+    assert sec_sccs[1].scf_iteration[1].time_physical.magnitude == approx(612.72)
 
 
 def test_vasprunxml_bands(parser):
@@ -295,6 +299,9 @@ def test_outcar(parser):
     assert sec_eigs.energies[0][9][14].magnitude == approx(1.41810256e-18)
     assert sec_eigs.occupations[0][49][9] == 2.0
     assert sec_eigs.kpoints_multiplicities[1] == 8
+    assert sec_scc.time_calculation.magnitude == approx(391.97)
+    assert sec_scfs[1].time_physical.magnitude == approx(53.39)
+    assert sec_scfs[2].time_calculation.magnitude == approx(33.36)
 
     # check DOS
     assert len(sec_scc.dos_electronic) == 1
