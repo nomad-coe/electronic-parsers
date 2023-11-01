@@ -17,11 +17,16 @@
 # limitations under the License.
 #
 import numpy as np
+import pytest
 from electronicparsers.crystal import CrystalParser
 from nomad.datamodel import EntryArchive
 
 
 parser = CrystalParser()
+
+
+def approx(value, abs=0, rel=1e-6):
+    return pytest.approx(value, abs=abs, rel=rel)
 
 
 def parse(filepath):
@@ -181,6 +186,10 @@ def test_geo_opt():
     asserts_basic(archive)
     asserts_basic_code_specific(archive, run_type="geo_opt")
     asserts_geo_opt(archive)
+    calcs = archive.run[-1].calculation
+    assert calcs[1].time_physical.magnitude == approx(1232.5)
+    assert calcs[4].time_calculation.magnitude == approx(388.61)
+    assert calcs[7].time_physical.magnitude == approx(4531.44)
 
 
 def test_band_structure():

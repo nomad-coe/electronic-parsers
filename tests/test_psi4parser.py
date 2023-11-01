@@ -237,6 +237,8 @@ def test_gradient(parser):
     assert calc[18].forces.total.value[1][2].magnitude == approx(-9.9316642e-10)
     assert calc[20].forces.contributions[1].kind == 'One-electron'
     assert calc[20].forces.contributions[2].value[1][2].magnitude == approx(1.43696057e-09)
+    assert calc[3].time_calculation.magnitude == approx(0.28)
+    assert calc[10].time_physical.magnitude == approx(3.24)
 
 
 def test_cc(parser):
@@ -257,6 +259,8 @@ def test_cc(parser):
     assert calc[5].energy.contributions[5].value.magnitude == approx(-8.87549814e-22)
     assert calc[6].energy.contributions[0].value.magnitude == approx(3.30311948e-16)
     assert calc[9].forces.total.value[1][1].magnitude == approx(-5.32388792e-10)
+    assert calc[1].time_calculation.magnitude == approx(0.02)
+    assert calc[3].time_physical.magnitude == approx(0.54)
 
     geo_opt = archive.workflow2
     assert geo_opt.method.convergence_tolerance_energy_difference.magnitude == approx(4.35974472e-24)

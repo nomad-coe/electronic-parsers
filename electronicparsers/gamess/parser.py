@@ -99,6 +99,7 @@ class OutParser(TextParser):
 
                 ])
             ),
+            Quantity('time_physical', rf'TOTAL WALL CLOCK TIME= *({re_f}) SECONDS', repeats=True),
             Quantity(
                 'coordinates',
                 rf'((?:COORDINATES OF ALL ATOMS ARE \(ANGS\)\s+ATOM +|ATOM +ATOMIC +COORDINATES \(BOHR\)\s+)'
@@ -664,7 +665,13 @@ class GamessParser:
                     sec_method.dft.xc_functional.contributions.append(Functional(name=xc_functional))
 
     def parse_calculation(self, source):
+        time_initial = self.archive.run[-1].calculation[-1].time_physical if self.archive.run[-1].calculation else 0 * ureg.s
         sec_scc = self.archive.run[-1].m_create(Calculation)
+
+        if source.time_physical is not None:
+            sec_scc.time_physical = source.time_physical[-1] * ureg.s
+            sec_scc.time_calculation = sec_scc.time_physical - time_initial
+
         if source.scf is not None:
             for iteration in source.scf.get('iteration', {}).get('iter', []):
                 sec_scf = sec_scc.m_create(ScfIteration)

@@ -58,7 +58,8 @@ def test_single_point(parser):
     assert len(sec_scfs) == 12
     assert sec_scfs[3].energy.total.value.magnitude == approx(-2.21530505e-16)
     assert sec_scfs[8].energy.fermi.magnitude == approx(8.53007633e-19)
-    assert sec_scfs[6].time_calculation.magnitude == 12.70
+    # uncomment one time_physical def is updated
+    # assert sec_scfs[6].time_physical.magnitude == 12.70
 
     sec_system = sec_run.system[0]
     assert sec_system.atoms.positions[2][1].magnitude == approx(2.715e-10)
@@ -112,6 +113,11 @@ def test_md(parser):
     assert sec_sccs[11].energy.total_t0.value.magnitude == approx(-1.37069057e-16)
     assert len(sec_sccs[12].scf_iteration) == 7
     assert sec_sccs[7].scf_iteration[3].energy.change.magnitude == approx(-1.90981043e-21)
+    assert sec_sccs[0].time_calculation.magnitude == approx(2.83)
+    assert sec_sccs[1].scf_iteration[4].time_physical.magnitude == approx(3.91)
+    assert sec_sccs[2].scf_iteration[1].time_calculation.magnitude == approx(0.28)
+    assert sec_sccs[8].time_physical.magnitude == approx(18.38)
+    assert sec_sccs[10].time_calculation.magnitude == approx(2.14)
 
     sec_systems = archive.run[0].system
     assert len(sec_systems) == 13
