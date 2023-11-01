@@ -223,7 +223,8 @@ class BandstructureDatParser(DataTextParser):
         self._nspin = kwargs.get('nspin', None)
         self._energy_unit = kwargs.get('energy_unit', None)
 
-    def init_parameters(self):
+    def reset(self):
+        super().reset()
         # TODO make a parent clas for bandstructure dat and xml
         self._nspin = None
         self._nkpts_segment = None
@@ -314,7 +315,8 @@ class BandOutParser(DataTextParser):
         self._nspin = kwargs.get('nspin', None)
         self._energy_unit = kwargs.get('energy_unit', None)
 
-    def init_parameters(self):
+    def reset(self):
+        super().reset()
         self._nspin = None
         self._distances = None
         self._band_energies = None
