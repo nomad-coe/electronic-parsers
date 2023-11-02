@@ -197,6 +197,13 @@ class CrystalParser:
                             repeats=False,
                         ),
                         Quantity(
+                            "lattice_positions_raw",
+                            fr'AT\.IRR\.\s+AT\s+AT\.N\.\s+X\s+Y\s+Z\s*{br}' +\
+                            fr'((?:\s+{integer}\s+{integer}\s+{integer}\s+{flt}\s+{flt}\s+{flt}{br})+)',
+                            shape=(-1, 6),
+                            dtype=str,
+                        ),
+                        Quantity(
                             "labels_positions",
                             fr'\s+ATOM\s+X(?:/A|\(ANGSTROM\))\s+Y(?:/B|\(ANGSTROM\))\s+Z(?:/C|\(ANGSTROM\))\s*{br}' +\
                             re.escape(' *******************************************************************************') +\
@@ -1009,31 +1016,22 @@ def to_system(atomic_numbers, labels, positions, lattice, dimensionality):
     positions = positions.astype(np.float64)
 
     # Get the lattice vectors
+    lattice_vectors = None
     if lattice is not None:
         if lattice.shape == (6,):
             lattice_vectors = atomutils.cellpar_to_cell(lattice, degrees=True)
         elif lattice.shape == (3, 3):
             lattice_vectors = lattice
-    else:
-        lattice_vectors = None
 
     # Convert positions based on the given type
-    if dimensionality == 0:
-        cart_pos = positions
-    elif dimensionality == 2:
-        n_atoms = atomic_numbers.shape[0]
-        scaled_pos = np.zeros((n_atoms, 3), dtype=np.float64)
-        scaled_pos[:, 0:2] = positions[:, 0:2]
+    n_atoms = atomic_numbers.shape[0]
+    scaled_pos = np.zeros((n_atoms, 3), dtype=np.float64)
+    scaled_pos[:, :dimensionality] = positions[:, :dimensionality]
+    if lattice_vectors is not None:
         cart_pos = atomutils.to_cartesian(scaled_pos, lattice_vectors)
-        cart_pos[:, 2:3] = positions[:, 2:3]
-    elif dimensionality == 1:
-        n_atoms = atomic_numbers.shape[0]
-        scaled_pos = np.zeros((n_atoms, 3), dtype=np.float64)
-        scaled_pos[:, 0:1] = positions[:, 0:1]
-        cart_pos = atomutils.to_cartesian(scaled_pos, lattice_vectors)
-        cart_pos[:, 1:3] = positions[:, 1:3]
-    elif dimensionality == 3:
-        cart_pos = atomutils.to_cartesian(positions, lattice_vectors)
+        cart_pos[:, dimensionality:] = positions[:, dimensionality:]
+    else:
+        cart_pos = scaled_pos
 
     if lattice_vectors is not None:
         lattice_vectors *= ureg.angstrom
