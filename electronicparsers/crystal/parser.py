@@ -620,7 +620,10 @@ class CrystalParser:
         labels_positions = out["labels_positions"]
         lattice_vectors_restart = out["lattice_vectors_restart"]
         dimensionality = out["dimensionality"]
-        pbc = np.array([True] * dimensionality + [False] * (3 - dimensionality))
+        if dimensionality == 0:
+            pbc = np.array([False] * 3)
+        else:
+            pbc = np.array([True] * 3)
 
         # By default the system is read from the configuration at the beginning
         # of the file: it may come from restart or clean start
