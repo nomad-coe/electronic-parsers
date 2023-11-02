@@ -615,7 +615,6 @@ class CrystalParser:
         # System. There are several alternative sources for this information
         # depending on the run type.
         system = run.m_create(System)
-        material_type = out["material_type"]
         system_edited = out["system_edited"]
         labels_positions = out["labels_positions"]
         lattice_vectors_restart = out["lattice_vectors_restart"]
