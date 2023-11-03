@@ -620,9 +620,9 @@ class CrystalParser:
         lattice_vectors_restart = out["lattice_vectors_restart"]
         dimensionality = out["dimensionality"]
         if dimensionality == 0:
-            pbc = np.array([False] * 3)
+            pbc = np.zeros(3, dtype=bool)
         else:
-            pbc = np.array([True] * 3)
+            pbc = np.ones(3, dtype=bool)
 
         # By default the system is read from the configuration at the beginning
         # of the file: it may come from restart or clean start
