@@ -195,22 +195,6 @@ class MainfileParser(TextParser):
         return {val[0]: val[1] for val in self.get('info', {}).get('simulation_parameters', [])}
 
 
-class TrajectoryParser(DataTextParser):
-    def init_parameters(self):
-        if self._file_handler is None:
-            return
-        data = np.transpose(self._file_handler)
-        # first column is the md step
-        n_frames = int(np.amax(data[0]))
-        # atoms are denoted by same step index
-        n_atoms = int(np.count_nonzero(data[0] == 1))
-        # for FTRAJECTORY, we expect also forces in addition to positions, velocities
-        n_data = len(data) // 3
-        # we remove the index
-        data = np.transpose(data[1:])
-        self._file_handler = np.reshape(data, (n_frames, n_atoms, n_data, 3))
-
-
 # we simply make our own parser instead of using MDAnalysis for a simple xyz file
 class XYZParser(TextParser):
     def __init__(self):
@@ -236,7 +220,7 @@ class XYZParser(TextParser):
 class CPMDParser:
     def __init__(self):
         self.mainfile_parser = MainfileParser()
-        self.trajectory_parser = TrajectoryParser()
+        self.trajectory_parser = DataTextParser()
         self.xyz_parser = XYZParser()
         self.energies_parser = DataTextParser()
         self._method_map = {
@@ -382,6 +366,17 @@ class CPMDParser:
                 else:
                     trajectory = self.trajectory_parser.data
                     trajectory = [] if trajectory is None else trajectory
+                    if trajectory is not None:
+                        trajectory = np.transpose(trajectory)
+                        # first column is the md step
+                        n_frames = int(np.amax(trajectory[0]))
+                        # atoms are denoted by same step index
+                        n_atoms = int(np.count_nonzero(trajectory[0] == 1))
+                        # for FTRAJECTORY, we expect also forces in addition to positions, velocities
+                        n_data = len(trajectory) // 3
+                        # we remove the index
+                        trajectory = np.transpose(trajectory[1:])
+                        trajectory = np.reshape(trajectory, (n_frames, n_atoms, n_data, 3))
 
             # we also initialize energies parser
             energies = None
