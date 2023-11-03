@@ -267,7 +267,10 @@ def asserts_basic(archive, method_type="DFT", system_type="3D", vdw=None, forces
         if system_type != "0D":
             assert system.atoms.lattice_vectors is not None
             assert system.atoms.lattice_vectors.shape == (3, 3)
-            assert system.atoms.periodic == [True, True, True]
+            assert system.atoms.periodic == [True] * 3
+        else:
+            assert system.atoms.lattice_vectors is None
+            assert system.atoms.periodic == [False] * 3
         assert system.atoms.positions.shape[0] == n_atoms
         assert system.atoms.species.shape[0] == n_atoms
         assert len(system.atoms.labels) == n_atoms

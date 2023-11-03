@@ -168,25 +168,19 @@ class CrystalParser:
                     dtype=str,
                     repeats=False,
                 ),
+                Quantity(
+                    "labels_positions_raw",
+                    fr'AT\.IRR\.\s+AT\s+AT\.N\.\s+X\s+Y\s+Z\s*{br}' +\
+                    fr'((?:\s+{integer}\s+{integer}\s+{integer}\s+{flt}\s+{flt}\s+{flt}{br})+)',
+                    shape=(-1, 6),
+                    dtype=str,
+                ),
 
                 # Used to capture an edited geometry. Can contain
                 # substitutions, supercells, deformations etc. in any order.
                 Quantity(
                     'system_edited',
                     fr' \*\s+GEOMETRY EDITING([\s\S]+?)T = ATOM BELONGING TO THE ASYMMETRIC UNIT',
-                    # too many [\s\S] causing problems
-                    # re.escape(' *******************************************************************************') + fr'{br}' +\
-                    # fr' LATTICE PARAMETERS \(ANGSTROMS AND DEGREES\) - BOHR =\s*0?\.\d+ ANGSTROM{br}' +\
-                    # fr' (?:PRIMITIVE CELL - CENTRING CODE [\s\S]+?VOLUME=\s*{flt} - DENSITY\s*{flt} g/cm\^3|PRIMITIVE CELL){br}' +\
-                    # fr'\s+A\s+B\s+C\s+ALPHA\s+BETA\s+GAMMA\s*{br}' +\
-                    # fr'(\s+{flt}\s+{flt}\s+{flt}\s+{flt}\s+{flt}\s+{flt}{br}' +\
-                    # re.escape(' *******************************************************************************') + fr'{br}' +\
-                    # fr' ATOMS IN THE ASYMMETRIC UNIT\s+{integer} - ATOMS IN THE UNIT CELL:\s+{integer}{br}' +\
-                    # fr'\s+ATOM\s+X(?:/A|\(ANGSTROM\))\s+Y(?:/B|\(ANGSTROM\))\s+Z(?:/C|\(ANGSTROM\))(?:\s+R\(ANGS\))?\s*{br}' +\
-                    # re.escape(' *******************************************************************************') +\
-                    # fr'(?:\s+{integer}\s+(?:T|F)\s+{integer}\s+[\s\S]+?\s+{flt}\s+{flt}\s+{flt}(?:\s+{flt})?{br})+)' +\
-                    # fr'{br}' +\
-                    # fr' T = ATOM BELONGING TO THE ASYMMETRIC UNIT',
                     sub_parser=TextParser(quantities=[
                         Quantity(
                             "lattice_parameters",
@@ -608,20 +602,18 @@ class CrystalParser:
         # System. There are several alternative sources for this information
         # depending on the run type.
         system = run.m_create(System)
-        material_type = out["material_type"]
         system_edited = out["system_edited"]
         labels_positions = out["labels_positions"]
         lattice_vectors_restart = out["lattice_vectors_restart"]
-        pbc = None if material_type == "MOLECULAR CALCULATION" else np.array([True, True, True])
+        dimensionality = out["dimensionality"]
+        if dimensionality == 0:
+            pbc = np.zeros(3, dtype=bool)
+        else:
+            pbc = np.ones(3, dtype=bool)
 
         # By default the system is read from the configuration at the beginning
         # of the file: it may come from restart or clean start
         atomic_numbers = None
-        pos_type = {
-            "MOLECULAR CALCULATION": "cartesian",
-            "SLAB CALCULATION": "slab",
-            None: "scaled",
-        }.get(material_type)
         if labels_positions is not None:
             atomic_numbers = labels_positions[:, 2]  # pylint: disable=E1136
             atom_labels = labels_positions[:, 3]  # pylint: disable=E1136
@@ -633,14 +625,12 @@ class CrystalParser:
             atom_labels = labels_positions[:, 2]  # pylint: disable=E1136
             atom_pos = labels_positions[:, 4:7]  # pylint: disable=E1136
             lattice = lattice_vectors_restart
-            pos_type = "cartesian"
 
         # If any geometry edits (supercells, substitutions, dispplacements,
         # deformations, nanotube construction, etc.) are done on top of the
         # original system, they override the original system.
         if system_edited is not None:
             if system_edited["labels_positions_nanotube"] is not None:  # pylint: disable=E1136
-                pos_type = "nanotube"
                 labels_positions = system_edited["labels_positions_nanotube"]  # pylint: disable=E1136
             else:
                 labels_positions = system_edited["labels_positions"]  # pylint: disable=E1136
@@ -662,13 +652,12 @@ class CrystalParser:
             atom_labels,
             atom_pos,
             lattice,
-            pos_type=pos_type,
+            dimensionality,
         )
 
         system.atoms = Atoms(
             lattice_vectors=lattice_vectors, periodic=pbc, positions=cart_pos,
             species=atomic_numbers, labels=atom_labels)
-        dimensionality = out["dimensionality"]
         system.x_crystal_dimensionality = dimensionality
         crystal_family = out["crystal_family"]
         system.x_crystal_family = crystal_family
@@ -948,7 +937,7 @@ class CrystalParser:
                         i_atom_labels,
                         i_atom_pos,
                         i_lattice_parameters,
-                        pos_type,
+                        dimensionality,
                     )
                     i_system.atoms = Atoms(
                         species=i_atomic_numbers, labels=i_atom_labels, positions=i_cart_pos,
@@ -1006,53 +995,32 @@ def to_k_points(segments):
     return all_k_points
 
 
-def to_system(atomic_numbers, labels, positions, lattice, pos_type="scaled", wrap=False):
-    """Converts a Crystal-specific structure format into cartesian positions
-    and lattice vectors (if present). The conversion depends on the material
-    type.
+def to_system(atomic_numbers, labels, positions, lattice, dimensionality):
+    """Converts a Crystal structure format, i.e. scaled for axes with PBC
+    and Cartesian for the rest, to fully Cartesian positions and lattice vectors, if present.
+    The conversion depends on the dimensionality.
     """
     atomic_numbers = std_atomic_number(atomic_numbers.astype(np.int32))
     atom_labels = std_label(labels)
     positions = positions.astype(np.float64)
 
     # Get the lattice vectors
+    lattice_vectors = None
     if lattice is not None:
         if lattice.shape == (6,):
             lattice_vectors = atomutils.cellpar_to_cell(lattice, degrees=True)
         elif lattice.shape == (3, 3):
             lattice_vectors = lattice
-    else:
-        lattice_vectors = None
 
     # Convert positions based on the given type
-    if pos_type == "cartesian":
-        if lattice_vectors is not None and wrap:
-            cart_pos = atomutils.wrap_positions(positions, lattice_vectors)
-        else:
-            cart_pos = positions
-    elif pos_type == "slab":
-        n_atoms = atomic_numbers.shape[0]
-        scaled_pos = np.zeros((n_atoms, 3), dtype=np.float64)
-        scaled_pos[:, 0:2] = positions[:, 0:2]
-        if wrap:
-            wrapped_pos = atomutils.wrap_positions(scaled_pos)
-        else:
-            wrapped_pos = scaled_pos
-        cart_pos = atomutils.to_cartesian(wrapped_pos, lattice_vectors)
-        cart_pos[:, 2:3] = positions[:, 2:3]
-    elif pos_type == "nanotube":
-        n_atoms = atomic_numbers.shape[0]
-        scaled_pos = np.zeros((n_atoms, 3), dtype=np.float64)
-        scaled_pos[:, 0:1] = positions[:, 0:1]
-        if wrap:
-            wrapped_pos = atomutils.wrap_positions(scaled_pos)
-        else:
-            wrapped_pos = scaled_pos
-        cart_pos = atomutils.to_cartesian(wrapped_pos, lattice_vectors)
-        cart_pos[:, 1:3] = positions[:, 1:3]
-    elif pos_type == "scaled":
-        scaled_pos = atomutils.wrap_positions(positions) if wrap else positions
+    n_atoms = atomic_numbers.shape[0]
+    scaled_pos = np.zeros((n_atoms, 3), dtype=np.float64)
+    scaled_pos[:, :dimensionality] = positions[:, :dimensionality]
+    if lattice_vectors is not None:
         cart_pos = atomutils.to_cartesian(scaled_pos, lattice_vectors)
+        cart_pos[:, dimensionality:] = positions[:, dimensionality:]
+    else:
+        cart_pos = scaled_pos
 
     if lattice_vectors is not None:
         lattice_vectors *= ureg.angstrom
