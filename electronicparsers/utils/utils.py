@@ -381,22 +381,3 @@ class BeyondDFTWorkflowsParser:
             workflow.m_add_sub_section(DMFT.tasks, task)
 
         dmft_workflow_archive.workflow2 = workflow
-
-
-class DataANDTextParser(TextParser):  # TODO rename to 'DataTextParser' after changes are done in NOMAD
-    """Parser for structured data text files with a few lines containing unstructured text.
-
-    Args:
-        mainfile: the file to be parsed.
-    """
-    def __init__(self):
-        super().__init__()
-
-    def init_quantities(self):
-        self._data = None
-
-    @property
-    def data(self):
-        if self._data is None:
-            self._data = np.loadtxt(self.mainfile)
-        return self._data

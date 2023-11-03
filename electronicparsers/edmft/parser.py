@@ -35,8 +35,9 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Charges, GreensFunctions, Dos, DosValues
 )
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
+from nomad.parsing.file_parser import DataTextParser
 from .metainfo.edmft import x_edmft_method_parameters
-from ..utils import get_files, DataANDTextParser, BeyondDFTWorkflowsParser
+from ..utils import get_files, BeyondDFTWorkflowsParser
 from ..wien2k.parser import StructParser  # Wien2k is imported to parse the system information
 
 
@@ -107,7 +108,7 @@ class ParamsParser(TextParser):
                         repeats=True)]))]
 
 
-class ImpurityGfOutParser(DataANDTextParser):
+class ImpurityGfOutParser(DataTextParser):
     def __init__(self):
         super().__init__()
 
@@ -138,7 +139,7 @@ class MaxentParamsParser(TextParser):
                 str_operation=str_multiply_to_float)]
 
 
-class MaxEntSigOutParser(DataANDTextParser):
+class MaxEntSigOutParser(DataTextParser):
     def __init__(self):
         super().__init__()
 
