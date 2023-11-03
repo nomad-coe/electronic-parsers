@@ -168,25 +168,19 @@ class CrystalParser:
                     dtype=str,
                     repeats=False,
                 ),
+                Quantity(
+                    "labels_positions_raw",
+                    fr'AT\.IRR\.\s+AT\s+AT\.N\.\s+X\s+Y\s+Z\s*{br}' +\
+                    fr'((?:\s+{integer}\s+{integer}\s+{integer}\s+{flt}\s+{flt}\s+{flt}{br})+)',
+                    shape=(-1, 6),
+                    dtype=str,
+                ),
 
                 # Used to capture an edited geometry. Can contain
                 # substitutions, supercells, deformations etc. in any order.
                 Quantity(
                     'system_edited',
                     fr' \*\s+GEOMETRY EDITING([\s\S]+?)T = ATOM BELONGING TO THE ASYMMETRIC UNIT',
-                    # too many [\s\S] causing problems
-                    # re.escape(' *******************************************************************************') + fr'{br}' +\
-                    # fr' LATTICE PARAMETERS \(ANGSTROMS AND DEGREES\) - BOHR =\s*0?\.\d+ ANGSTROM{br}' +\
-                    # fr' (?:PRIMITIVE CELL - CENTRING CODE [\s\S]+?VOLUME=\s*{flt} - DENSITY\s*{flt} g/cm\^3|PRIMITIVE CELL){br}' +\
-                    # fr'\s+A\s+B\s+C\s+ALPHA\s+BETA\s+GAMMA\s*{br}' +\
-                    # fr'(\s+{flt}\s+{flt}\s+{flt}\s+{flt}\s+{flt}\s+{flt}{br}' +\
-                    # re.escape(' *******************************************************************************') + fr'{br}' +\
-                    # fr' ATOMS IN THE ASYMMETRIC UNIT\s+{integer} - ATOMS IN THE UNIT CELL:\s+{integer}{br}' +\
-                    # fr'\s+ATOM\s+X(?:/A|\(ANGSTROM\))\s+Y(?:/B|\(ANGSTROM\))\s+Z(?:/C|\(ANGSTROM\))(?:\s+R\(ANGS\))?\s*{br}' +\
-                    # re.escape(' *******************************************************************************') +\
-                    # fr'(?:\s+{integer}\s+(?:T|F)\s+{integer}\s+[\s\S]+?\s+{flt}\s+{flt}\s+{flt}(?:\s+{flt})?{br})+)' +\
-                    # fr'{br}' +\
-                    # fr' T = ATOM BELONGING TO THE ASYMMETRIC UNIT',
                     sub_parser=TextParser(quantities=[
                         Quantity(
                             "lattice_parameters",
@@ -195,13 +189,6 @@ class CrystalParser:
                             shape=(6),
                             dtype=np.float64,
                             repeats=False,
-                        ),
-                        Quantity(
-                            "lattice_positions_raw",
-                            fr'AT\.IRR\.\s+AT\s+AT\.N\.\s+X\s+Y\s+Z\s*{br}' +\
-                            fr'((?:\s+{integer}\s+{integer}\s+{integer}\s+{flt}\s+{flt}\s+{flt}{br})+)',
-                            shape=(-1, 6),
-                            dtype=str,
                         ),
                         Quantity(
                             "labels_positions",
@@ -1009,9 +996,9 @@ def to_k_points(segments):
 
 
 def to_system(atomic_numbers, labels, positions, lattice, dimensionality):
-    """Converts a Crystal-specific structure format into cartesian positions
-    and lattice vectors (if present). The conversion depends on the material
-    type.
+    """Converts a Crystal structure format, i.e. scaled for axes with PBC
+    and Cartesian for the rest, to fully Cartesian positions and lattice vectors, if present.
+    The conversion depends on the dimensionality.
     """
     atomic_numbers = std_atomic_number(atomic_numbers.astype(np.int32))
     atom_labels = std_label(labels)
