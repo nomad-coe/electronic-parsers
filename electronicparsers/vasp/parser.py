@@ -47,7 +47,7 @@ from nomad.datamodel.metainfo.simulation.method import (
     XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh, Pseudopotential,
 )
 from nomad.datamodel.metainfo.simulation.system import (
-    System, Atoms
+    System, Atoms, CoreHole
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry,
@@ -1366,6 +1366,14 @@ class VASPParser():
         if sec_k_mesh.points is None:
             sec_k_mesh.points = [[0.] * 3]
 
+    def parse_core_hole(self) -> list[CoreHole]:
+        """"""
+        term_map = {'CLNT': 'atom_index', 'CLN': 'n', 'CLL': 'l', 'CLZ': 'occ'}
+        nomad_core_holes = [self.parser.incar.get(k) for k in term_map.keys()]  # generate a matrix of values
+        nomad_core_holes = np.array(nomad_core_holes).T  # transpose the matrix
+        # TODO: add map for 'occ'
+        return [CoreHole(**dict(zip(term_map.values(), nomad_core_holes)))]
+
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)
         sec_dft = sec_method.m_create(DFT)
@@ -1739,6 +1747,7 @@ class VASPParser():
 
             # structure
             sec_system = parse_system(n)
+            sec_system.core_hole = self.parse_core_hole()
             sec_scc.system_ref = sec_system
             sec_scc.method_ref = sec_run.method[-1]
 
