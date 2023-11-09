@@ -94,8 +94,6 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         """
         sec_run = self.archive.run[-1]
 
-        sec_run.program = Program(name='TBStudio', version=self.tbm['ReleaseVersion'])
-
         sec_method = sec_run.m_create(Method)
         sec_tb = sec_method.m_create(TB)
         sec_sk = sec_tb.m_create(SlaterKoster)
@@ -269,7 +267,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         """Populates run.calculation with the output of the calculation.
         """
         sec_run = self.archive.run[-1]
-        self.archive.run[-1].m_create(Calculation)
+        sec_scc = sec_run.m_create(Calculation)
 
         _k_points = self.tbm['variables']['KPoints']
         frac_k_points = []
@@ -285,34 +283,22 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         if band_segments_points is None or len(tb_bands) < 1 or len(frac_k_points) < 1:
             return
 
-        fermi_level_joules = self.tbm['variables']['ChemP'] * ureg.eV
-        sec_scc = sec_run.calculation[-1]
+        fermi_level = self.tbm['variables'].get('ChemP')
+        if not fermi_level:
+            self.logger.warning('Could not extract the Fermi level, so that the BandStructure is not resolved')
+            return
+
         sec_energy = sec_scc.m_create(Energy, Calculation.energy)
-        sec_energy.fermi = fermi_level_joules
-
+        sec_energy.fermi = fermi_level * ureg.eV if fermi_level else None
         sec_k_band = BandStructure()
-        sec_k_band.energy_fermi = fermi_level_joules
-
-        pi = np.arccos(-1.0)
-        vol = np.dot(self.a, np.cross(self.b, self.c))
-        astar = 2 * pi * np.cross(self.b, self.c) / vol * 10**9
-        bstar = 2 * pi * np.cross(self.c, self.a) / vol * 10**9
-        cstar = 2 * pi * np.cross(self.a, self.b) / vol * 10**9
-        sec_k_band.reciprocal_cell = [astar, bstar, cstar]
+        sec_k_band.energy_fermi = sec_energy.fermi
 
         for n1, n2 in band_segments_points:
             sec_k_band_segment = sec_k_band.m_create(BandEnergies)
             sec_k_band_segment.kpoints = frac_k_points[n1: n2 + 1]
-            sec_k_band_segment.energies = (np.array([tb_bands[n1: n2 + 1]]) + self.tbm['variables']['ChemP']) * ureg.eV
+            sec_k_band_segment.energies = (np.array([tb_bands[n1: n2 + 1]]) + fermi_level) * ureg.eV
 
         sec_scc.band_structure_electronic.append(sec_k_band)
-
-    def parse_workflow(self):
-        sec_workflow = self.archive.m_create(Workflow)
-        workflow = SinglePoint()
-        sec_workflow.type = 'single_point'
-        workflow.name = "Tight Binding Model"
-        self.archive.workflow2 = workflow
 
     def get_mainfile_keys(self, **kwargs):
         filepath = kwargs.get('filename')
@@ -333,18 +319,23 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
             return True
 
     def parse(self, filepath, archive, logger):
-        tb_archive = archive
         self.filepath = os.path.abspath(filepath)
-        self.archive = tb_archive
+        self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
 
         sec_run = self.archive.m_create(Run)
-        sec_run.program = Program(name="TBStudio")
 
-        f = open(filepath)
-        self.tbm = json.load(f)
-        f.close()
+        try:
+            f = open(self.filepath)
+            tbm = json.load(f)
+            f.close()
+        except Exception:
+            self.logger.error('Error opening json output file.')
+            return
+
+        self.tbm = tbm
+        sec_run.program = Program(name='TBStudio', version=self.tbm.get('ReleaseVersion', ''))
 
         dft_nomad_entry_id = None
         dft_nomad_upload_id = None
@@ -356,7 +347,9 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         self.parse_method()
         self.parse_scc()
 
-        self.parse_workflow()
+        workflow = SinglePoint()
+        self.archive.workflow2 = workflow
+
         if dft_nomad_entry_id is not None and dft_nomad_entry_id != '' and dft_nomad_upload_id is not None and dft_nomad_upload_id != '':
             first_principles_calculation_archive = None
             try:
@@ -365,4 +358,4 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                 self.logger.warning('TBStudio Workflow was not found.')
             if first_principles_calculation_archive and self._child_archives:
                 tb_workflow_archive = self._child_archives.get('TB_workflow')
-                self.parse_tb_workflow(tb_archive, first_principles_calculation_archive, tb_workflow_archive)
+                self.parse_tb_workflow(archive, first_principles_calculation_archive, tb_workflow_archive)
