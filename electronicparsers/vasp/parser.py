@@ -58,7 +58,12 @@ from simulationworkflowschema import (
     GeometryOptimizationMethod, MolecularDynamics)
 
 re_n = r'[\n\r]'
-
+corehole_map = {
+    'atom_indices': ('CLNT', 1),
+    'n': ('CLN', 1),
+    'l': ('CLL', 0),
+    'occ': ('CLZ', 1.),
+}
 
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
@@ -1373,10 +1378,9 @@ class VASPParser():
         source = self.parser.incar
         if source.get('ICORELEVEL', 0) == 0:
             return []
-        term_map = {'CLNT': 'atom_indices', 'CLN': 'n', 'CLL': 'l', 'CLZ': 'occ'}
-        nomad_core_holes = [source.get(k) for k in term_map.keys()]
+        nomad_core_holes = [source.get(v[0], v[1]) for v in corehole_map.values()]
         # TODO: add map for 'occ'
-        return [CoreHole(**dict(zip(term_map.values(), nomad_core_holes)))]
+        return [CoreHole(**dict(zip(corehole_map.keys(), nomad_core_holes)))]
 
     def parse_method(self):
         sec_method = self.archive.run[-1].m_create(Method)
