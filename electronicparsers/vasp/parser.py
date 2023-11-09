@@ -1367,10 +1367,14 @@ class VASPParser():
             sec_k_mesh.points = [[0.] * 3]
 
     def parse_core_hole(self) -> list[CoreHole]:
-        """"""
-        term_map = {'CLNT': 'atom_index', 'CLN': 'n', 'CLL': 'l', 'CLZ': 'occ'}
-        nomad_core_holes = [self.parser.incar.get(k) for k in term_map.keys()]  # generate a matrix of values
-        nomad_core_holes = np.array(nomad_core_holes).T  # transpose the matrix
+        """
+        Map the core hole information `CoreHole` section
+        """
+        source = self.parser.incar
+        if source.get('ICORELEVEL', 0) == 0:
+            return []
+        term_map = {'CLNT': 'atom_indices', 'CLN': 'n', 'CLL': 'l', 'CLZ': 'occ'}
+        nomad_core_holes = [source.get(k) for k in term_map.keys()]
         # TODO: add map for 'occ'
         return [CoreHole(**dict(zip(term_map.values(), nomad_core_holes)))]
 
