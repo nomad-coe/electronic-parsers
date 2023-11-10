@@ -35,7 +35,6 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
 import json
 import re
-from nomad.datamodel.metainfo.workflow import Workflow
 from ..utils import BeyondDFTWorkflowsParser
 from ase.data import chemical_symbols
 
