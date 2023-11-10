@@ -1338,6 +1338,9 @@ _libxc_shortcut = {
 }
 
 
+class PseudoPotentialParser(TextParser):
+
+
 class QuantumEspressoRunParser(TextParser):
     def __init__(self, quantities):
         super().__init__(quantities=quantities)

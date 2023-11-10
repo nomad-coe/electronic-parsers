@@ -27,7 +27,7 @@ from nomad.parsing.file_parser import DataTextParser, TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.system import System, Atoms
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, KMesh, Photon, CoreHole, Screening, BSE
+    Method, KMesh, Photon, CoreHoleSpectra, Screening, BSE
 )
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Spectra
 from simulationworkflowschema import SinglePoint
@@ -143,7 +143,7 @@ class OceanParser(BeyondDFTWorkflowsParser):
         # Core-Hole (either K=1s or L23=2p depenging on the first edge found)
         bse_core_data = bse_data.get('core')
         if bse_core_data:
-            sec_core_hole = CoreHole(
+            sec_core_hole = CoreHoleSpectra(
                 mode=self.mode_bse[bse_core_data.get('strength')],
                 solver=self._bse_solver_map[bse_core_data.get('solver')],
                 broadening=bse_core_data.get('broaden', 0.1) * ureg.eV)
