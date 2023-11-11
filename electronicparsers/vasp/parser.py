@@ -45,13 +45,14 @@ from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetContainer, DFT, HubbardKanamoriModel, AtomParameters,
     XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh, Pseudopotential,
+    CoreHole,
 )
 from nomad.datamodel.metainfo.simulation.system import (
-    System, Atoms, CoreHole
+    System, Atoms, AtomsGroup,
 )
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry,
-    BandEnergies, DosValues, ScfIteration, BandStructure, BandGapDeprecated, Dos, Density
+    BandEnergies, DosValues, ScfIteration, BandStructure, BandGapDeprecated, Dos, Density,
 )
 from simulationworkflowschema import (
     SinglePoint, GeometryOptimization,
@@ -59,7 +60,6 @@ from simulationworkflowschema import (
 
 re_n = r'[\n\r]'
 corehole_map = {
-    'atom_indices': ('CLNT', 1),
     'n': ('CLN', 1),
     'l': ('CLL', 0),
     'occ': ('CLZ', 1.),
@@ -1371,18 +1371,47 @@ class VASPParser():
         if sec_k_mesh.points is None:
             sec_k_mesh.points = [[0.] * 3]
 
-    def parse_core_hole(self) -> list[CoreHole]:
+    def parse_corehole(self) -> (Union[CoreHole, None], Union[AtomsGroup, None], int):
         """
-        Map the core hole information `CoreHole` section
+        Map the core hole information `CoreHole` section.
+        Returns said section and AtomsGroup to which it refers.
         """
         source = self.parser.incar
-        if source.get('ICORELEVEL', 0) == 0:
-            return []
+        corehole_method = source.get('ICORELEVEL', 0)
+        if corehole_method == 0:
+            return (None, None, 0)
+
+        # setup `CoreHole` parameters
+        # apply_icorelevel(corehole_method)
         nomad_core_holes = [source.get(v[0], v[1]) for v in corehole_map.values()]
         # TODO: add map for 'occ'
-        return [CoreHole(**dict(zip(corehole_map.keys(), nomad_core_holes)))]
 
-    def parse_method(self):
+        # setup `AtomsGroup` parameters
+        elem_id = source.get('CLNT', 1) - 1
+        elem_label = self.parser.atom_info['atomtypes']['element'][elem_id]
+        elem_ids = [int(x) for x in self.parser.atom_info['atomtypes']['atomspertype']]
+        atom_ids = list(range(elem_ids[max(0, elem_id - 1)] - 1, elem_ids[elem_id]))
+        atoms_group = AtomsGroup(
+            label='core-hole_' + elem_label,
+            type='core_hole',
+            atom_indices=atom_ids,
+            n_atoms=len(atom_ids),
+        )
+
+        return (
+            CoreHole(
+                **dict(zip(corehole_map.keys(), nomad_core_holes)),
+                atomsgroup_ref=atoms_group,
+            ),
+            atoms_group,
+            elem_id,
+        )
+
+    def parse_method(self) -> dict[str, Any]:
+        '''
+        Parse and attach the method section to the archive.
+        Also return a dictionary with the mapping information for other sections.
+        '''
         sec_method = self.archive.run[-1].m_create(Method)
         sec_dft = sec_method.m_create(DFT)
         sec_method.electronic = Electronic(method='DFT+U' if self.parser.incar.get(
@@ -1450,7 +1479,10 @@ class VASPParser():
                     sec_hubb.double_counting_correction = self.hubbard_dc_corrections.get(parsed_file.get('LDAUTYPE'))
                     sec_hubb.x_vasp_projection_type = 'on-site'
             atom_counts[element[i]] += 1
-        sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters
+        sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters  # TODO: deprecate x_vasp_atom_kind_refs?
+
+        core_hole, corehole_group, corehole_id = self.parse_corehole()
+        sec_method.atom_parameters[corehole_id].core_hole = core_hole
 
         sec_method.electrons_representation = [
             BasisSetContainer(
@@ -1513,6 +1545,10 @@ class VASPParser():
         if tolerance is not None:
             sec_method.scf = Scf(threshold_energy_change=tolerance * ureg.eV)
 
+        return {
+            'atoms_group': [corehole_group],
+        }
+
     def parse_gw(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
@@ -1563,7 +1599,7 @@ class VASPParser():
                     workflow.method.convergence_tolerance_force_maximum = abs(tolerance) * ureg.eV / ureg.angstrom
         self.archive.workflow2 = workflow
 
-    def parse_configurations(self):
+    def parse_configurations(self, atoms_group: list[AtomsGroup] = []):
         sec_run = self.archive.run[-1]
 
         def parse_system(n_calc):
@@ -1590,6 +1626,8 @@ class VASPParser():
             nose = structure.get('nose')
             if nose is not None:
                 sec_system.x_vasp_nose_thermostat = nose
+
+            sec_system.atoms_group = atoms_group
 
             return sec_system
 
@@ -1755,7 +1793,6 @@ class VASPParser():
 
             # structure
             sec_system = parse_system(n)
-            sec_system.core_hole = self.parse_core_hole()
             sec_scc.system_ref = sec_system
             sec_scc.method_ref = sec_run.method[-1]
 
@@ -1851,8 +1888,11 @@ class VASPParser():
         if self._calculation_type == 'gw':
             self.parse_gw()
         else:
-            self.parse_method()
+            method_dict = self.parse_method()
 
-        self.parse_configurations()
+        # Note: the logic for a proper topology might have to become more complex
+        self.parse_configurations(
+            atoms_group=method_dict.get('atoms_group', [])
+        )
 
         self.parse_workflow()
