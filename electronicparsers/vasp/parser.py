@@ -1391,11 +1391,23 @@ class VASPParser():
         elem_label = self.parser.atom_info['atomtypes']['element'][elem_id]
         elem_ids = [int(x) for x in self.parser.atom_info['atomtypes']['atomspertype']]
         atom_ids = list(range(elem_ids[max(0, elem_id - 1)] - 1, elem_ids[elem_id]))
+        sub_groups = [
+            AtomsGroup(
+                label='core-hole',
+                type='atom',
+                atom_indices=i,
+                n_atoms=1,
+                composition_formula=elem_label,
+                is_molecule=False,
+            )
+            for i in atom_ids
+        ]
         atoms_group = AtomsGroup(
             label='core-hole_' + elem_label,
             type='core_hole',
             atom_indices=atom_ids,
             n_atoms=len(atom_ids),
+            atoms_group=sub_groups,
         )
 
         return (
@@ -1483,6 +1495,7 @@ class VASPParser():
 
         core_hole, corehole_group, corehole_id = self.parse_corehole()
         sec_method.atom_parameters[corehole_id].core_hole = core_hole
+        self.logger.info(f'CH: {core_hole}, ID: {corehole_id}, AP: {sec_method.atom_parameters[corehole_id]}')
 
         sec_method.electrons_representation = [
             BasisSetContainer(
