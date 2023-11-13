@@ -344,10 +344,10 @@ class Wannier90Parser():
             return
         self.hr_parser.mainfile = hr_files[0]
 
-        # Assuming method.projection is parsed before
+        # Assuming method.tb is parsed before
         sec_scc = self.archive.run[-1].calculation[-1]
         sec_hopping_matrix = sec_scc.m_create(HoppingMatrix)
-        sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].projection.wannier.n_projected_orbitals
+        sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].tb.wannier.n_projected_orbitals
         deg_factors = self.hr_parser.get('degeneracy_factors', [])
         if deg_factors is not None:
             sec_hopping_matrix.n_wigner_seitz_points = deg_factors[1]
