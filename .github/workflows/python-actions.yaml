@@ -21,15 +21,12 @@ jobs:
     - name: Install dependencies
       run: |
         pip install --upgrade pip
-        pip install .[tests]
+        pip install .[dev]
         pip install ./nomad[parsing,infrastructure]
         pip install types-PyYAML
-    - name: pycodestyle
+    - name: ruff
       run: |
-        python -m pycodestyle --ignore=E501,E701,E731 *parsers tests
-    - name: pylint
-      run: |
-        python -m pylint *parsers tests
+        python -m ruff check .
     - name: mypy
       run: |
         python -m mypy --ignore-missing-imports --follow-imports=silent --no-strict-optional *parsers tests

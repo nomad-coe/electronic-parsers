@@ -2225,7 +2225,7 @@ class QuantumEspressoParser:
         homo = calculation.get('homo_lumo')
         if homo is not None:
             lumo = None
-            if isinstance(homo, np.ndarray) or isinstance(homo, list):
+            if isinstance(homo, (list, np.ndarray)):
                 homo, lumo = homo
             sec_energy.highest_occupied = [float(homo)] * ureg.eV
             if lumo is not None:

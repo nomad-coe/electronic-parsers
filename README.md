@@ -77,6 +77,7 @@ nomad parse --show-archive <path-to-file>
 ```
 
 To parse a file in Python, you can program something like this:
+
 ```python
 import sys
 from nomad.cli.parse import parse, normalize_all
@@ -113,7 +114,7 @@ Clone the parser project and install it in development mode:
 
 ```
 git clone https://github.com/nomad-coe/electronic-parsers.git electronic-parsers
-pip install -e electronic-parsers
+pip install -e "electronic-parsers[dev]"
 ```
 
 Running the parser now, will use the parser's Python code from the clone project.

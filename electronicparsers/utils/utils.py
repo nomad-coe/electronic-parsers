@@ -74,7 +74,7 @@ def numpy_type_to_json_serializable(quantity: Union[np.bool_, np.int32, np.int64
     """
     if isinstance(quantity, np.bool_):
         return bool(quantity)
-    if isinstance(quantity, np.int32) or isinstance(quantity, np.int64):
+    if isinstance(quantity, (np.int32, np.int64)):
         return int(quantity)
     if isinstance(quantity, np.float64):
         return float(quantity)
