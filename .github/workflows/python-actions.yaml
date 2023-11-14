@@ -24,9 +24,6 @@ jobs:
         pip install .[dev]
         pip install ./nomad[parsing,infrastructure]
         pip install types-PyYAML
-    - name: ruff
-      run: |
-        python -m ruff check .
     - name: mypy
       run: |
         python -m mypy --ignore-missing-imports --follow-imports=silent --no-strict-optional *parsers tests
@@ -34,3 +31,9 @@ jobs:
       if: success() || failure()
       run: |
         python -m pytest -sv tests
+
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: chartboost/ruff-action@v1
