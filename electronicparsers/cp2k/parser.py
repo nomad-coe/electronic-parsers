@@ -850,7 +850,7 @@ class CP2KParser:
         if filename.startswith('='):
             filename = filename[1:]
         elif re.match(r'./', filename):
-            filename = filename
+            pass
         else:
             project_name = self.inp_parser.get('GLOBAL/PROJECT_NAME')
             if filename:
