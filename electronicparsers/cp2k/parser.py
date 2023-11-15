@@ -517,7 +517,7 @@ class CP2KOutParser(TextParser):
                     Quantity(
                         'ensemble_type', r'ENSEMBLE TYPE\s*=\s*(.+)'),
                     Quantity(
-                        'step_number', r'STEP NUMBER\s*=\s*(\d+)', dtype=int),
+                        'step', r'STEP NUMBER\s*=\s*(\d+)', dtype=int),
                     Quantity(
                         'time', rf'TIME \[fs\]\s*=\s*({re_float})', dtype=float),
                     Quantity(
@@ -698,25 +698,12 @@ class CP2KOutParser(TextParser):
         ]
 
 
-class CP2KPDOSParser(TextParser):
-    # TODO change to DataTextParser when @Alvin implements it.
-    def __init__(self):
-        super().__init__(None)
-
-    def init_parameters(self):
-        self._data = None
-
+class CP2KPDOSParser(DataTextParser):
     def init_quantities(self):
         self._quantities = [
             Quantity('atom_kind', r'\# *Projected DOS for atomic kind *([\da-zA-Z]+) *at'),
             Quantity('orbitals', r' *Occupation(.+)', repeats=False),
             Quantity('iter', r' *at iteration step i *\= *(\d+)')]
-
-    @property
-    def data(self):
-        if self._data is None:
-            self._data = np.loadtxt(self.mainfile)
-        return self._data
 
 
 class CP2KParser:
@@ -1449,7 +1436,7 @@ class CP2KParser:
 
                 # write only the last one to scc
                 scf = self_consistent[-1] if self_consistent else calculation
-                frame = n + self._step_start - 1
+                frame = calculation.get('step', n)
                 scf._frame = frame
                 sec_scc = self.parse_scc(scf)
                 md = self.sampling_method == 'molecular_dynamics'
