@@ -1494,7 +1494,11 @@ class VASPParser():
         sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters  # TODO: deprecate x_vasp_atom_kind_refs?
 
         core_hole, corehole_group, corehole_id = self.parse_corehole()
+        if core_hole is not None:
         sec_method.atom_parameters[corehole_id].core_hole = core_hole
+        sec_method.atom_parameters[corehole_id].core_hole = core_hole
+        self.logger.info(f'CH: {core_hole}, ID: {corehole_id}, AP: {sec_method.atom_parameters[corehole_id]}')
+            sec_method.atom_parameters[corehole_id].core_hole = core_hole
         self.logger.info(f'CH: {core_hole}, ID: {corehole_id}, AP: {sec_method.atom_parameters[corehole_id]}')
 
         sec_method.electrons_representation = [
