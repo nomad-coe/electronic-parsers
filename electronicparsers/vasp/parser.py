@@ -1413,7 +1413,6 @@ class VASPParser():
         return (
             CoreHole(
                 **dict(zip(corehole_map.keys(), nomad_core_holes)),
-                atomsgroup_ref=atoms_group,
             ),
             atoms_group,
             elem_id,
@@ -1495,11 +1494,7 @@ class VASPParser():
 
         core_hole, corehole_group, corehole_id = self.parse_corehole()
         if core_hole is not None:
-        sec_method.atom_parameters[corehole_id].core_hole = core_hole
-        sec_method.atom_parameters[corehole_id].core_hole = core_hole
-        self.logger.info(f'CH: {core_hole}, ID: {corehole_id}, AP: {sec_method.atom_parameters[corehole_id]}')
             sec_method.atom_parameters[corehole_id].core_hole = core_hole
-        self.logger.info(f'CH: {core_hole}, ID: {corehole_id}, AP: {sec_method.atom_parameters[corehole_id]}')
 
         sec_method.electrons_representation = [
             BasisSetContainer(
@@ -1563,7 +1558,7 @@ class VASPParser():
             sec_method.scf = Scf(threshold_energy_change=tolerance * ureg.eV)
 
         return {
-            'atoms_group': [corehole_group],
+            'atoms_group': corehole_group,
         }
 
     def parse_gw(self):
@@ -1616,7 +1611,7 @@ class VASPParser():
                     workflow.method.convergence_tolerance_force_maximum = abs(tolerance) * ureg.eV / ureg.angstrom
         self.archive.workflow2 = workflow
 
-    def parse_configurations(self, atoms_group: list[AtomsGroup] = []):
+    def parse_configurations(self, atoms_group: Union[AtomsGroup, None] = None):
         sec_run = self.archive.run[-1]
 
         def parse_system(n_calc):
@@ -1644,7 +1639,12 @@ class VASPParser():
             if nose is not None:
                 sec_system.x_vasp_nose_thermostat = nose
 
-            sec_system.atoms_group = atoms_group
+            if atoms_group:
+                sec_system.atoms_group = [atoms_group]
+                # add the reference from any core-hole to its matching atoms_group
+                for atom_parameter in sec_run.method[0].atom_parameters:
+                    if atom_parameter.core_hole is not None:
+                        atom_parameter.core_hole.atomsgroup_ref = sec_system.atoms_group
 
             return sec_system
 
