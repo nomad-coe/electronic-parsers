@@ -9,11 +9,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
-    - name: Check out nomad
-      uses: actions/checkout@v3
-      with:
-        repository: nomad-coe/nomad
-        path: nomad
     - name: Install dependencies
       run: |
         pip install --upgrade pip
