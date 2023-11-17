@@ -1390,31 +1390,30 @@ class VASPParser():
         elem_id = source.get('CLNT', 1) - 1
         elem_label = self.parser.atom_info['atomtypes']['element'][elem_id]
         elem_ids = [int(x) for x in self.parser.atom_info['atomtypes']['atomspertype']]
-        atom_ids = list(range(elem_ids[max(0, elem_id - 1)] - 1, elem_ids[elem_id]))
-        sub_groups = [
-            AtomsGroup(
-                label='core-hole',
-                type='atom',
-                atom_indices=i,
-                n_atoms=1,
-                composition_formula=elem_label,
-                is_molecule=False,
-            )
-            for i in atom_ids
-        ]
-        atoms_group = AtomsGroup(
-            label='core-hole_' + elem_label,
-            type='core_hole',
-            atom_indices=atom_ids,
-            n_atoms=len(atom_ids),
-            atoms_group=sub_groups,
-        )
+        lower_range = elem_ids[elem_id - 1] if elem_id > 1 else 0
+        atom_ids = list(range(lower_range, elem_ids[elem_id]))
 
         return (
             CoreHole(
                 **dict(zip(corehole_map.keys(), nomad_core_holes)),
             ),
-            atoms_group,
+            AtomsGroup(
+                label=elem_label,
+                type='core_hole',
+                atom_indices=atom_ids,
+                n_atoms=len(atom_ids),
+                atoms_group=[
+                    AtomsGroup(
+                        label='core-hole',
+                        type='atom',
+                        atom_indices=[i],
+                        n_atoms=1,
+                        composition_formula=elem_label,
+                        is_molecule=False,
+                    )
+                    for i in atom_ids[:1]
+                ],
+            ),
             elem_id,
         )
 
