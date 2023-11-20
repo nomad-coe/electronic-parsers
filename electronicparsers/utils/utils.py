@@ -392,9 +392,9 @@ class BeyondDFTWorkflowsParser:
         workflow.name = 'DMFT'
 
         # Method
-        method_proj = extract_section(wannier_archive, ['run', 'method', 'projection'])
+        method_proj = extract_section(wannier_archive, ['run', 'method', 'tb'])
         method_dmft = extract_section(self.archive, ['run', 'method', 'dmft'])
-        workflow.method.projection_method_ref = method_proj
+        workflow.method.tb_method_ref = method_proj
         workflow.method.dmft_method_ref = method_dmft
 
         # Inputs and Outputs
@@ -411,12 +411,12 @@ class BeyondDFTWorkflowsParser:
         # Wannier90 task
         if wannier_archive.workflow2:
             task = TaskReference(task=wannier_archive.workflow2)
-            task.name = 'Projection'
+            task.name = 'TB'
             # TODO check why this re-writting is necessary to not repeat sections inside tasks
             if input_structure:
                 task.inputs = [Link(name='Input structure', section=input_structure)]
             if wannier_calculation:
-                task.outputs = [Link(name='Output Projection calculation', section=wannier_calculation)]
+                task.outputs = [Link(name='Output TB calculation', section=wannier_calculation)]
             workflow.m_add_sub_section(DMFT.tasks, task)
 
         # DMFT task
@@ -424,7 +424,7 @@ class BeyondDFTWorkflowsParser:
             task = TaskReference(task=self.archive.workflow2)
             task.name = 'DMFT'
             if wannier_calculation:
-                task.inputs = [Link(name='Output Projection calculation', section=wannier_calculation)]
+                task.inputs = [Link(name='Output TB calculation', section=wannier_calculation)]
             if dmft_calculation:
                 task.outputs = [Link(name='Output DMFT calculation', section=dmft_calculation)]
             workflow.m_add_sub_section(DMFT.tasks, task)
