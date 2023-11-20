@@ -29,7 +29,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, HoppingMatrix
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, AtomParameters, KMesh, Wannier, Projection
+    Method, AtomParameters, KMesh, Wannier, TB
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms, AtomsGroup
 from ..utils import get_files
@@ -229,7 +229,7 @@ class Wannier90Parser():
     def parse_method(self):
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
-        sec_proj = sec_method.m_create(Projection)
+        sec_proj = sec_method.m_create(TB)
         sec_wann = sec_proj.m_create(Wannier)
 
         # k_mesh section
@@ -344,10 +344,10 @@ class Wannier90Parser():
             return
         self.hr_parser.mainfile = hr_files[0]
 
-        # Assuming method.projection is parsed before
+        # Assuming method.tb is parsed before
         sec_scc = self.archive.run[-1].calculation[-1]
         sec_hopping_matrix = sec_scc.m_create(HoppingMatrix)
-        sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].projection.wannier.n_projected_orbitals
+        sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].tb.wannier.n_projected_orbitals
         deg_factors = self.hr_parser.get('degeneracy_factors', [])
         if deg_factors is not None:
             sec_hopping_matrix.n_wigner_seitz_points = deg_factors[1]

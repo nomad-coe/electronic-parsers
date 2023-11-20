@@ -27,7 +27,7 @@ from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
 from nomad.datamodel.metainfo.simulation.workflow import (
-    GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod, MaxEnt, MaxEntMethod,
+    GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod, TB, TBMethod, MaxEnt, MaxEntMethod,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )
 
@@ -157,6 +157,56 @@ class BeyondDFTWorkflowsParser:
             workflow.m_add_sub_section(GW.tasks, task)
 
         gw_workflow_archive.workflow2 = workflow
+
+    def parse_tb_workflow(self, tb_archive: EntryArchive, first_principles_calculation_archive: EntryArchive, tb_workflow_archive: EntryArchive):
+        """Automatically parses the TB workflow. Here, `self.archive` is the DFT archive.
+
+        Args:
+            tb_archive (EntryArchive): the Tight-Binding archive
+            first_principles_calculation_archive (EntryArchive): the first-principles-calculation archive
+            tb_workflow_archive (EntryArchive): the Tight-Binding workflow archive
+        """
+        self.run_workflow_archive(tb_workflow_archive)
+        tb_workflow_archive.run[-1].m_add_sub_section(Run.system, first_principles_calculation_archive.run[-1].system[-1])
+        workflow = TB(method=TBMethod())
+        workflow.name = 'TB'
+
+        # Method
+        method_tb = extract_section(tb_archive, 'run/method/tb')
+        workflow.method.tb_method_ref = method_tb
+
+        # Inputs and Outputs
+        input_structure = extract_section(first_principles_calculation_archive, 'run/system')
+        first_principles_calculation = extract_section(first_principles_calculation_archive, 'run/calculation')
+        tb_calculation = extract_section(tb_archive, 'run/calculation')
+        if input_structure:
+            workflow.m_add_sub_section(
+                TB.inputs, Link(name='Input Structure', section=input_structure))
+        if tb_calculation:
+            workflow.m_add_sub_section(
+                TB.outputs, Link(name='Output TB Model', section=tb_calculation))
+
+        # First Principles Calculation task
+        if self.archive.workflow2:
+            first_principles_task = TaskReference(task=first_principles_calculation_archive.workflow2)
+            first_principles_task.name = 'First Principles'
+            if input_structure:
+                first_principles_task.inputs = [Link(name='Input Structure', section=input_structure)]
+            if first_principles_calculation:
+                first_principles_task.outputs = [Link(name='Output First Principles Calculation', section=first_principles_calculation)]
+            workflow.m_add_sub_section(TB.tasks, first_principles_task)
+
+        # TB task
+        if tb_archive.workflow2:
+            tb_task = TaskReference(task=tb_archive.workflow2)
+            tb_task.name = 'TB'
+            if first_principles_calculation:
+                tb_task.inputs = [Link(name='Input First Principles Calculation', section=first_principles_calculation)]
+            if tb_calculation:
+                tb_task.outputs = [Link(name='Output TB Model', section=tb_calculation)]
+            workflow.m_add_sub_section(TB.tasks, tb_task)
+
+        tb_workflow_archive.workflow2 = workflow
 
     def parse_photon_workflow(self):
         """Automatically parses the PhotonPolarization workflow. Here, `self.archive` is
