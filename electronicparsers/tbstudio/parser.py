@@ -114,8 +114,6 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
             else:
                 orbitals.append(items[selected])
 
-        orbitals = orbitals
-
         final_os = {}
         tbAtom = ''
         shell = ''
