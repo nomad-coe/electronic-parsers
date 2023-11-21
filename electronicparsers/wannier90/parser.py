@@ -308,8 +308,8 @@ class Wannier90Parser():
                     sites = fract_cart_sites(sec_atoms, sec_run.x_wannier90_units, val)
                 else:  # atom label directly specified
                     sites = atom
-                sec_atoms_group.n_atoms = len(sites)  # always 1 (only one atom per proj)
-                sec_atoms_group.label = sites
+                sec_atoms_group.n_atoms = len(sites)  # always 1 (only one atom per proj)  # TODO: either add a check or default to 1
+                sec_atoms_group.label = 'projection'
                 sec_atoms_group.atom_indices = np.where([
                     x == sec_atoms_group.label for x in sec_atoms.labels])[0]
             except Exception:
