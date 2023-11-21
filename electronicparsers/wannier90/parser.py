@@ -292,7 +292,7 @@ class Wannier90Parser():
         sec_run.x_wannier90_n_atoms_proj = len(projections)
         for nat in range(sec_run.x_wannier90_n_atoms_proj):
             sec_atoms_group = sec_system.m_create(AtomsGroup)
-            sec_atoms_group.type = 'projection'
+            sec_atoms_group.type = 'active_atom'
             sec_atoms_group.index = 0  # Always first index (projection on a projection does not exist)
             sec_atoms_group.is_molecule = False
 
