@@ -311,7 +311,7 @@ class Wannier90Parser():
                 sec_atoms_group.n_atoms = len(sites)  # always 1 (only one atom per proj)  # TODO: either add a check or default to 1
                 sec_atoms_group.label = 'projection'
                 sec_atoms_group.atom_indices = np.where([
-                    x == sec_atoms_group.label for x in sec_atoms.labels])[0]
+                    x == sites for x in sec_atoms.labels])[0]
             except Exception:
                 self.logger.warning('Error finding the atom labels for the projection from win.')
 
