@@ -1330,7 +1330,7 @@ class CP2KParser:
         # This stores a list of tuples ordered depending on the atom_kind label. Useful
         # when dealing with spin-polarized calculations
         atom_kind_in_files_sorted = sorted(list(zip(pdos_files, atoms)), key=lambda x: x[1])
-        if len(atom_kind_in_files_sorted) != (n_spin_channels * n_atom_params):
+        if len(atom_kind_in_files_sorted) != (n_spin_channels * n_atom_params) and n_spin_channels == 2:
             self.logger.warning('The number of PDOS files does not match the number of spin channels '
                                 'times the number of atom parameters. We cannot parse the PDOS.')
             return
