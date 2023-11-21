@@ -59,11 +59,6 @@ from simulationworkflowschema import (
     GeometryOptimizationMethod, MolecularDynamics)
 
 re_n = r'[\n\r]'
-corehole_map = {
-    'n': ('CLN', 1),
-    'l': ('CLL', 0),
-    'occ': ('CLZ', 1.),
-}
 
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
@@ -1376,6 +1371,13 @@ class VASPParser():
         Map the core hole information `CoreHole` section.
         Returns said section and AtomsGroup to which it refers.
         """
+
+        corehole_map = {
+            'n_quantum_number': ('CLN', 1),
+            'l_quantum_number': ('CLL', 0),
+            'occupation': ('CLZ', 1.),
+        }  # TODO: add spin
+
         source = self.parser.incar
         corehole_method = source.get('ICORELEVEL', 0)
         if corehole_method == 0:
@@ -1388,7 +1390,6 @@ class VASPParser():
 
         # setup `AtomsGroup` parameters
         elem_id = source.get('CLNT', 1) - 1
-        elem_label = self.parser.atom_info['atomtypes']['element'][elem_id]
         elem_ids = [int(x) for x in self.parser.atom_info['atomtypes']['atomspertype']]
         lower_range = elem_ids[elem_id - 1] if elem_id > 1 else 0
         atom_ids = list(range(lower_range, elem_ids[elem_id]))
@@ -1628,11 +1629,13 @@ class VASPParser():
                 sec_system.x_vasp_nose_thermostat = nose
 
             if atoms_group:
-                sec_system.atoms_group = [atoms_group]
+                if sec_system.atoms_group is None:
+                    sec_system.atoms_group = []
+                sec_system.atoms_group.append(atoms_group)
                 # add the reference from any core-hole to its matching atoms_group
                 for atom_parameter in sec_run.method[0].atom_parameters:
                     if atom_parameter.core_hole is not None:
-                        atom_parameter.core_hole.atomsgroup_ref = sec_system.atoms_group
+                        atom_parameter.core_hole.atomsgroup_ref = sec_system.atoms_group[-1]
 
             return sec_system
 
