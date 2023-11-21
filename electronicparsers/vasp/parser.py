@@ -1398,21 +1398,10 @@ class VASPParser():
                 **dict(zip(corehole_map.keys(), nomad_core_holes)),
             ),
             AtomsGroup(
-                label=elem_label,
-                type='core_hole',
+                label='core-hole',
+                type='active_atom',
                 atom_indices=atom_ids,
                 n_atoms=len(atom_ids),
-                atoms_group=[
-                    AtomsGroup(
-                        label='core-hole',
-                        type='atom',
-                        atom_indices=[i],
-                        n_atoms=1,
-                        composition_formula=elem_label,
-                        is_molecule=False,
-                    )
-                    for i in atom_ids[:1]
-                ],
             ),
             elem_id,
         )
