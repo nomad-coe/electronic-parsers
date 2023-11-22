@@ -1455,7 +1455,7 @@ class VASPParser():
                 except IndexError:
                     self.logger.error(f'Pseudopotential not found for atom {element[i]}')
                 sec_method_atom_kind.mass = pseudopotential['number']['POMASS'] * ureg.amu
-                sec_method_atom_kind.n_valence_electrons = pseudopotential['number']['ZVAL']
+                sec_method_atom_kind.n_electrons = pseudopotential['number']['ZVAL']
                 pp = Pseudopotential()
                 pp.type = 'PAW'
                 if pseudopotential['flag']['LULTRA']:
@@ -1545,6 +1545,21 @@ class VASPParser():
         tolerance = self.parser.incar.get('EDIFF')
         if tolerance is not None:
             sec_method.scf = Scf(threshold_energy_change=tolerance * ureg.eV)
+
+        # perform electron counting
+        # first establish a reference for the number of valence electrons in a neutral system
+        neutral_count = None
+        pp_val_elec = [x.n_electrons for x in sec_method.atom_parameters if x.n_electrons is not None]
+        # correct based on core-holes
+        if pp_val_elec:
+            for x, y in dict(zip(sec_method.atom_parameters, self.parser.atom_info['atomtypes']['atomspertype'])).items():
+                if x.core_hole is not None:
+                    pp_val_elec.append(x.core_hole.occupation * y)  # TODO: check if this is correct
+            neutral_count = sum(pp_val_elec)
+        # extract the number of valence electrons
+        sec_method.electronic.n_electrons = self.parser.incar.get('NELECT', neutral_count)
+        if neutral_count is not None:
+            sec_method.electronic.charge = neutral_count - sec_method.electronic.n_electrons
 
         return {
             'atoms_group': corehole_group,
