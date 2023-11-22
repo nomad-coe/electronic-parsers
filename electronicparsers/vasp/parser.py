@@ -1,4 +1,3 @@
-#
 # Copyright The NOMAD Authors.
 #
 # This file is part of NOMAD.
@@ -421,8 +420,8 @@ class OutcarTextParser(TextParser):
                 'species', r'(\w+) +([A-Z][a-z]*).+?:\s*energy of atom +\d+', dtype=str, repeats=True),  # TODO: deprecate
             Quantity(
                 'kpoints',
-                r'Following reciprocal coordinates:[\s\S]+?\n([\d\.\s\-]+)',
-                repeats=False, dtype=float),
+                r'Following reciprocal coordinates:\n\s+Coordinates\s+Weight\n([\d\.\s\-]+)',
+                repeats=True, dtype=float),
             Quantity(
                 'nbands', r'NBANDS\s*=\s*(\d+)', dtype=int, repeats=False),
             Quantity(
@@ -521,16 +520,29 @@ class OutcarContentParser(ContentParser):
             return 0
 
     @property
-    def kpoints_info(self):
-        if self._kpoints_info is None:
-            self._kpoints_info = dict()
-            kpts_occs = self.parser.get('kpoints')
-            if kpts_occs is not None:
+    def kpoints_info(self) -> dict[str, dict[str, Any]]:
+        '''
+        Extracts the `points`, `weights`, and `multiplicities` of the k-point regexes in OUTCAR.
+        The list index follows the ionic steps (for later matching with `eigenvalues`).
+        '''
+        if self._kpoints_info is not None:
+            return self._kpoints_info
+
+        self._kpoints_info = {}
+        for kpts_index, kpts_occs in enumerate(self.parser.get('kpoints', [])):
+            kpoint_info = {}
+            try:  # sanity check
                 kpts_occs = np.reshape(kpts_occs, (len(kpts_occs) // 4, 4)).T
-                self._kpoints_info['points'] = kpts_occs[0:3].T
-                k_mults = kpts_occs[3].T
-                self._kpoints_info['multiplicities'] = k_mults
-                self._kpoints_info['weights'] = k_mults / np.sum(k_mults)
+            except Exception:
+                continue
+            kpoint_info['points'] = kpts_occs[0:3].T
+            k_mults = kpts_occs[3].T
+            kpoint_info['multiplicities'] = k_mults
+            kpoint_info['weights'] = k_mults / np.sum(k_mults)
+            self._kpoints_info[f'calc {kpts_index}'] = kpoint_info
+        # change the last ionic step to the summary
+        self._kpoints_info[f'summary'] = self._kpoints_info[f'calc {kpts_index}']
+        del self._kpoints_info[f'calc {kpts_index}']
         return self._kpoints_info
 
     @property
@@ -691,8 +703,10 @@ class OutcarContentParser(ContentParser):
 
         return forces, stress
 
-    def get_eigenvalues(self, n_calc):
-        n_kpts = len(self.kpoints_info.get('points', []))
+    def get_eigenvalues(self, n_calc) -> Union[list, None]:
+        n_kpts = len(self.kpoints_info.get(f'calc {n_calc}', {}).get('points', []))
+        if n_kpts == 0:
+            n_kpts = len(self.kpoints_info.get(f'summary', {}).get('points', []))
         eigenvalues = self.parser.get(
             'calculation', [{}] * (n_calc + 1))[n_calc].get('eigenvalues')
 
@@ -826,74 +840,49 @@ class OutcarContentParser(ContentParser):
 
 class RunXmlContentHandler(ContentHandler):
     def __init__(self):
-        self._text = ''
-        self._path = []
+        self.stack = []
+        self.tree = {}
+        self.current_text = ''
 
-        self._data = {}
-        self.n_calculations = 0
-
-        # data, attrs, last_sibling, last_sibling_index
-        self._stack = [(self._data, {}, None, -1)]
-
-    def startElement(self, tag, attrs):
-        data, last_attrs, last_sibling, last_sibling_index = self._stack[-1]
-
-        name = attrs.get('name')
-        if not name and tag in ('i', 'v', 'r', 'c'):
-            self._stack.append((data, attrs, None, -1,))
-
+    def startElement(self, name, attrs):
+        node = {"tag": name, "attributes": dict(attrs), "children": []}
+        if self.stack:
+            self.stack[-1]["children"].append(node)
         else:
-            if tag == last_sibling:
-                index = last_sibling_index + 1
-            else:
-                index = 0
+            self.tree = node
+        self.stack.append(node)
 
-            self._stack[-1] = (data, last_attrs, tag, index)
-
-            if name:
-                segment = f'{tag}[@name="{name}"]'
-            else:
-                segment = f'{tag}[{index}]'
-
-            self._stack.append((data.setdefault(segment, {}), attrs, None, -1,))
-
-    def endElement(self, tag):
-        text = self._text
-        self._text = ''
-
-        data, attrs, _, _ = self._stack.pop()
-
-        if tag == 'calculation':
-            self.n_calculations += 1
-
-        data.setdefault('_data', []).append({tag: text, **attrs})
-
-    def clear_stack(self):
-        while len(self._stack) > 0:
-            self.endElement(self._stack[-1][2])
+    def endElement(self, name):
+        new_text = self.current_text.strip()
+        if new_text:  # If there is text inside an element
+            try:
+                new_value = float(new_text)
+            except ValueError:
+                new_value = new_text  # If conversion fails, use the original text
+            self.stack[-1]['text'] = new_value
+        self.current_text = ''  # Reset text storage
+        self.stack.pop()
 
     def characters(self, content):
-        self._text += content
+        self.current_text += content
 
-    def _combine_sub_tree(self, data, results):
-        for key, value in data.items():
-            if key == '_data':
-                results.extend(value)
-            else:
-                self._combine_sub_tree(value, results)
+    def clear_stack(self):
+        self.stack = []
+        self.tree = {}
+        self.current_text = ''
 
-        return results
+    def combine_sub_tree(self, node):
+        if not node:
+            return None
+        subtree = {"tag": node["tag"], "attributes": node["attributes"]}
+        if "text" in node:
+            subtree["text"] = node["text"]
+        if "children" in node:
+            subtree["children"] = [self.combine_sub_tree(child) for child in node["children"]]
+        return subtree
 
-    def __getitem__(self, key):
-        try:
-            data = self._data
-            segments = key.strip('/').split('/')
-            for segment in segments:
-                data = data[segment]
-
-            return self._combine_sub_tree(data, [])
-        except KeyError:
-            return []
+    def __getitem__(self, path):
+        return self._get_key_values(path)
 
 
 class RunFileParser(FileParser):
@@ -916,16 +905,11 @@ class RunFileParser(FileParser):
     def results(self):
         return self._results
 
-    @property
-    def n_calculations(self):
-        return self._results.n_calculations
-
 
 class RunContentParser(ContentParser):
     def __init__(self):
         super().__init__()
         self.parser = None
-        self._re_attrib = re.compile(r'\[@name="(\w+)"\]')
         self._dtypes = {'string': str, 'int': int, 'logical': bool, '': float, 'float': float}
 
     def init_parser(self, filepath, logger):
@@ -938,78 +922,60 @@ class RunContentParser(ContentParser):
 
         self.parser.parse()
 
-    def _get_key_values(self, path, repeats=False, array=False):
-        def parse_float_str_vector(str_vector: List[str]):
-            return ['nan' if '*' in x else x for x in str_vector]
+    def parse_float_str_vector(self, str_vector: List[str]):
+        return ['nan' if '*' in x else x for x in str_vector]
 
-        root, base_name = path.strip('/').rsplit('/', 1)
+    def _get_key_values(self, path, array=False):
+        # Split the path into its parts
+        parts = path.split("/")
+        parts = [part for part in parts if part]
 
-        attrib = re.search(self._re_attrib, base_name)
-        if attrib:
-            attrib = attrib.group(1)
-            base_name = re.sub(self._re_attrib, '', base_name)
+        def _parse_part(part):
+            # Extract tag, index, and attributes from a path part
+            tag_match = re.match(r"(\w+)", part)
+            index_match = re.search(r"\[(\d+)\]", part)
+            attr_match = re.search(r"\[@(\w+)=[\"'](.+?)[\"']\]", part)
 
-        # removes all non indexed segments from the path to collect data from the
-        # whole remaining sub-tree.
-        sections = []
-        for section in root.split('/'):
-            if not section.endswith(']'):
-                break
-            sections.append(section)
-        root = '/'.join(sections) if sections else root
+            tag = tag_match.group(1) if tag_match else None
+            index = int(index_match.group(1)) if index_match else None
+            attr_key = attr_match.group(1) if attr_match else None
+            attr_value = attr_match.group(2) if attr_match else None
+            return tag, index, attr_key, attr_value
 
-        data = [
-            (d.get(base_name), d.get('name', ''), d.get('type', ''),)
-            for d in self.parser.results[root]]
+        def _search(node, parts, is_root=False):
+            matches = []
 
-        if len(data) == 0:
-            return dict()
+            if is_root:
+                matches.extend(_search(node, parts))
+            else:
+                if not parts:
+                    return [node]
 
-        result = dict()
-        if array:
-            value = [
-                parse_float_str_vector(item[0].split())
-                for item in data if item[0]]
-            value = [d[0] if len(d) == 1 and not repeats else d for d in value]
-            dtype = data[0][2]
-            try:
-                result[base_name] = np.array(value, dtype=self._dtypes.get(dtype, float))
-            except Exception:
-                self.parser.logger.error('Error parsing array.')
+                tag, index, attr_key, attr_value = _parse_part(parts[0])
+                remaining_parts = parts[1:]
 
-        else:
-            for value, name, dtype in data:
-                if not value:
-                    continue
-                if attrib and name != attrib:
-                    continue
-                name = name if name else base_name
-                dtype = self._dtypes.get(dtype, str)
-                value = value.split()
-                if dtype == bool:
-                    value = [v == 'T' for v in value]
-                if dtype == float:
-                    # prevent nan printouts
-                    value = parse_float_str_vector(value)
-                # using numpy array does not work
-                value = convert(value, dtype)
-                value = value[0] if len(value) == 1 else value
-                result.setdefault(name, [])
-                result[name].append(value)
-            if not repeats:
-                for key, val in result.items():
-                    result[key] = val[0] if len(val) == 1 else val
+                if node["tag"] == tag:
+                    if index is None or index == 0:  # root is effectively at index 0
+                        if not attr_key or (attr_key and node["attributes"].get(attr_key) == attr_value):
+                            if remaining_parts:
+                                for child in node.get("children", []):
+                                    matches.extend(_search(child, remaining_parts))
+                            else:
+                                matches.append(node)
+            return matches
 
-        return result
+        results = _search(self.parser.results.tree, parts, is_root=True)
+
+        if array or len(results) > 1:
+            return results
+
+        return results[0] if results else {}
 
     @property
     def header(self):
         if self._header is None:
-            self._header = self._get_key_values('/modeling[0]/generator[0]/i')
-            for key, val in self._header.items():
-                if not isinstance(val, str):
-                    self._header[key] = ' '.join(val)
-        return self._header
+            self._header = self._get_key_values('/modeling/generator/i')
+            return {h['attributes']['name']: h['text'] for h in self._header}
 
     def get_incar(self):
         if self._incar is not None and self._incar.get('incar', None) is not None:
@@ -1049,39 +1015,65 @@ class RunContentParser(ContentParser):
         'listgenerated': 'Line-path',
     }
 
+    def _convert_kpoint(self, xml_path: str) -> dict[str, Any]:
+        '''
+        Extracts the `points`, `weights`, and `multiplicities` of the k-point regexes in vasprun.xml.
+        '''
+        default_path = '/modeling[0]/kpoints[0]'
+        kpoint_dict = {}
+
+        points = self._get_key_values(f'{xml_path}/varray[@name="kpointlist"]/v', array=True)
+        if points:
+            kpoint_dict['points'] = points['v']
+        else:
+            return {}
+
+        weights = self._get_key_values(f'{xml_path}/varray[@name="weights"]/v', array=True)
+        if weights:
+            kpoint_dict['weights'] = weights['v']
+
+        method = self._get_key_values(f'{default_path}/generation[0]/param')
+        kpoint_dict['sampling_method'] = RunContentParser.sampling_method_mapping[method['param']]
+
+        divisions = self._get_key_values(f'{xml_path}/generation[0]/v[@name="divisions"]')
+        if not divisions:
+            divisions = self._get_key_values(f'{xml_path}/generation[0]/i[@name="divisions"]')
+        if divisions:
+            kpoint_dict['grid'] = divisions['divisions']
+
+        volumeweight = self._get_key_values(f'{xml_path}/generation[0]/i[@name="volumeweight"]')
+        if volumeweight:
+            volumeweight = (volumeweight['volumeweight'] * ureg.angstrom ** 3).to('m**3')
+            kpoint_dict['x_vasp_tetrahedron_volume'] = volumeweight.magnitude
+
+        tetrahedrons = self._get_key_values(f'{xml_path}/varray[@name="tetrahedronlist"]/v', array=True)
+        if tetrahedrons:
+            kpoint_dict['x_vasp_tetrahedrons_list'] = tetrahedrons['v']
+
+        return kpoint_dict
+
     @property
-    def kpoints_info(self):
-        if self._kpoints_info is None:
-            self._kpoints_info = dict()
-            # initialize parsing of k_points
-            method = self._get_key_values(
-                '/modeling[0]/kpoints[0]/generation[0]/param')
-            if method:
-                self._kpoints_info['sampling_method'] = RunContentParser.sampling_method_mapping[method['param']]
-            divisions = self._get_key_values(
-                '/modeling[0]/kpoints[0]/generation[0]/v[@name="divisions"]')
-            if not divisions:
-                divisions = self._get_key_values(
-                    '/modeling[0]/kpoints[0]/generation[0]/i[@name="divisions"]')
-            if divisions:
-                self._kpoints_info['grid'] = divisions['divisions']
-            volumeweight = self._get_key_values('/modeling[0]/kpoints[0]/generation[0]/i[@name="volumeweight"]')
-            if volumeweight:
-                volumeweight = (volumeweight['volumeweight'] * ureg.angstrom ** 3).to('m**3')
-                # TODO set propert unit in metainfo
-                self._kpoints_info['x_vasp_tetrahedron_volume'] = volumeweight.magnitude
-            points = self._get_key_values(
-                '/modeling[0]/kpoints[0]/varray[@name="kpointlist"]/v', array=True)
-            if points:
-                self._kpoints_info['points'] = points['v']
-            weights = self._get_key_values(
-                '/modeling[0]/kpoints[0]/varray[@name="weights"]/v', array=True)
-            if weights:
-                self._kpoints_info['weights'] = weights['v']
-            tetrahedrons = self._get_key_values(
-                '/modeling[0]/kpoints[0]/varray[@name="tetrahedronlist"]/v', array=True)
-            if tetrahedrons:
-                self._kpoints_info['x_vasp_tetrahedrons_list'] = tetrahedrons['v']
+    def kpoints_info(self) -> dict[str, dict]:
+        '''
+        For multiple ionic steps: the list index follows the ionic steps (for later matching with `eigenvalues`).
+        '''
+        if self._kpoints_info is not None:
+            return self._kpoints_info
+
+        self._kpoints_info = {}
+
+        calc_index = 0
+        while True:
+            kpoint_path = f'/modeling[0]/calculation[{calc_index}]/kpoints[0]'
+            kpoints_dict = self._convert_kpoint(kpoint_path)
+            if not kpoints_dict:
+                break
+            self._kpoints_info[f'calc {calc_index}'] = self._convert_kpoint(kpoint_path)
+            calc_index += 1
+
+        kpoint_path = f'/modeling[0]/kpoints[0]'
+        self._kpoints_info[f'summary'] = self._convert_kpoint(kpoint_path)
+
         return self._kpoints_info
 
     @property
@@ -1241,9 +1233,11 @@ class RunContentParser(ContentParser):
             array=True).get('v', None)
         return forces, stress
 
-    def get_eigenvalues(self, n_calc):
-        n_kpts = len(self.kpoints_info.get('points', []))
-        root = '/modeling[0]/calculation[%s]/eigenvalues[0]/array[0]/set[0]' % n_calc
+    def get_eigenvalues(self, n_calc) -> Union[list, None]:
+        n_kpts = len(self.kpoints_info.get(f'calc {n_calc}', {}).get('points', []))
+        if n_kpts == 0:
+            n_kpts = len(self.kpoints_info.get(f'summary', {}).get('points', []))
+        root = f'/modeling[0]/calculation[{n_calc}]/eigenvalues[0]/array[0]/set[0]'
         eigenvalues = self._get_key_values(
             f'{root}/r', array=True).get('r', None)
         if eigenvalues is None:
@@ -1357,7 +1351,7 @@ class VASPParser():
 
     def parse_kpoints(self, section):
         sec_k_mesh = section.m_create(KMesh)
-        for key, val in self.parser.kpoints_info.items():
+        for key, val in self.parser.kpoints_info['summary'].items():
             if val is not None:
                 try:
                     setattr(sec_k_mesh, key, val)
@@ -1604,14 +1598,24 @@ class VASPParser():
 
         def parse_eigenvalues(n_calc):
             eigenvalues = self.parser.get_eigenvalues(n_calc)
-            if eigenvalues is None:
+            if isinstance(eigenvalues, (list, np.ndarray)):
+                if any([x is None for x in eigenvalues]):
+                    return
+            else:
+                return
+            try:
+                kpoint_source = self.parser.kpoints_info[f'calc {n_calc}']
+            except KeyError:
+                kpoint_source = self.parser.kpoints_info['summary']
+            # typically there will be less eigenvalues than k-points, but it's fine to add a safety check
+            if any([x is None for x in kpoint_source]):
                 return
 
             sec_scc = sec_run.calculation[-1]
             eigenvalues = np.transpose(eigenvalues)
             eigs = eigenvalues[0].T
             occs = eigenvalues[1].T
-            kpoints = self.parser.kpoints_info.get('points', [])
+            kpoints = kpoint_source.get('points', [])
 
             # get valence(conduction) and maximum(minimum)
             # we have a case where no band is occupied, i.e. valence_max should be below
@@ -1625,13 +1629,13 @@ class VASPParser():
             sec_scc.energy.highest_occupied = max(valence_max) * ureg.eV
             sec_scc.energy.lowest_unoccupied = min(conduction_min) * ureg.eV
 
-            if self.parser.kpoints_info.get('sampling_method', None) == 'Line-path':
+            if kpoint_source.get('sampling_method', None) == 'Line-path':
                 sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
                 for n in range(len(eigs)):
                     sec_band_gap = sec_k_band.m_create(BandGapDeprecated)
                     sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
                     sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
-                divisions = self.parser.kpoints_info.get('grid', None)
+                divisions = kpoint_source.get('grid', None)
                 if divisions is None:
                     return
                 n_segments = len(kpoints) // divisions
@@ -1651,8 +1655,8 @@ class VASPParser():
                 eigs = eigs * ureg.eV
                 sec_eigenvalues = sec_scc.m_create(BandEnergies)
                 sec_eigenvalues.kpoints = kpoints
-                sec_eigenvalues.kpoints_weights = self.parser.kpoints_info.get('weights', [])
-                sec_eigenvalues.kpoints_multiplicities = self.parser.kpoints_info.get('multiplicities', [])
+                sec_eigenvalues.kpoints_weights = kpoint_source.get('weights', None)
+                sec_eigenvalues.kpoints_multiplicities = kpoint_source.get('multiplicities', None)
                 sec_eigenvalues.energies = eigs
                 sec_eigenvalues.occupations = occs
 
