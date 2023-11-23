@@ -484,7 +484,7 @@ class CP2KOutParser(TextParser):
         geometry_optimization_quantities = [
             Quantity(
                 'method',
-                r'\*{3}\s*((?:CONJUGATE GRADIENTS|L-BFGS|BFGS))\s*\*{3}', flatten=False),
+                r'\*{3}\s*((?:CONJUGATE GRADIENTS|L\-BFGS|BFGS))\s*\*{3}', flatten=False),
             Quantity(
                 'self_consistent',
                 r'SCF WAVEFUNCTION OPTIMIZATION([\s\S]+?)OPTIMIZ', repeats=False,
@@ -642,7 +642,7 @@ class CP2KOutParser(TextParser):
                 sub_parser=TextParser(quantities=scf_wavefunction_optimization_quantities)),
             Quantity(
                 'geometry_optimization',
-                r'STARTING GEOMETRY OPTIMIZATION([\s\S]+?(?:GEOMETRY OPTIMIZATION COMPLETED|\Z))',
+                r'STARTING.+?OPTIMIZATION([\s\S]+?(?:OPTIMIZATION COMPLETED|\Z))',
                 sub_parser=TextParser(quantities=geometry_optimization_quantities)),
             Quantity(
                 'molecular_dynamics',
@@ -680,7 +680,7 @@ class CP2KOutParser(TextParser):
             # TODO add restart find example
             Quantity(
                 'quickstep',
-                r'\.\.\. make the atoms dance([\s\S]+?(?:\-{79}\s*\-|\Z))',
+                r'\.\.\. make the atoms dance([\s\S]+?(?:\-{79}\s*\- +\-|\Z))',
                 sub_parser=TextParser(quantities=quickstep_quantities)),
             Quantity('spin_polarized', r'\| Spin unrestricted \(spin\-polarized\) Kohn\-Sham calculation *([a-zA-Z]+)', repeats=False),
             Quantity(
@@ -1330,7 +1330,7 @@ class CP2KParser:
         # This stores a list of tuples ordered depending on the atom_kind label. Useful
         # when dealing with spin-polarized calculations
         atom_kind_in_files_sorted = sorted(list(zip(pdos_files, atoms)), key=lambda x: x[1])
-        if len(atom_kind_in_files_sorted) != (n_spin_channels * n_atom_params):
+        if len(atom_kind_in_files_sorted) != (n_spin_channels * n_atom_params) and n_spin_channels == 2:
             self.logger.warning('The number of PDOS files does not match the number of spin channels '
                                 'times the number of atom parameters. We cannot parse the PDOS.')
             return
@@ -1456,12 +1456,12 @@ class CP2KParser:
                 if self.archive.run[-1].method:
                     sec_scc.method_ref = self.archive.run[-1].method[-1]
 
-        def get_pdos_files(n_calcs: int):
+        def get_pdos_files(n_optimization_steps: int):
             """Reads the number of calculations and the pdos_files iteration integer, and
             return only the files coinciding with the SinglePoint calculation.
 
             Args:
-                n_calcs (int): number of calculations.
+                n_optimization_steps (int): number of optimization steps.
 
             Returns:
                 pdos_files: list of *.pdos files with iteration step coinciding with the
@@ -1471,8 +1471,8 @@ class CP2KParser:
             if pdos_files is not None:
                 for i, file in enumerate(pdos_files):
                     self.pdos_parser.mainfile = file
-                    iter_step = self.pdos_parser.get('iter', n_calcs - 1) + 1  # added default to match ADD_LAST = NO
-                    if iter_step != n_calcs:
+                    iter_step = self.pdos_parser.get('iter', n_optimization_steps)  # added default to match ADD_LAST = NO
+                    if iter_step != n_optimization_steps:
                         pdos_files.pop(i)
             return pdos_files
 
@@ -1484,8 +1484,16 @@ class CP2KParser:
             parse_calculations(calculations)
             # PDOS parsing
             if single_point and sec_run.calculation is not None:
-                n_calcs = len(calculations)
-                pdos_files = get_pdos_files(n_calcs)
+                # The length of optimization_steps might differ from the real number of steps if
+                # the run stopped and was reran.
+                if optimization_steps is not None:
+                    n_optimization_steps = optimization_steps[-1].step
+                    if n_optimization_steps != len(optimization_steps):
+                        self.logger.warning(f'The length of optimization steps sections in '
+                                            f'the *.out file, {len(optimization_steps)} does '
+                                            f'not coincide with the last parsed optimization step '
+                                            f'number, {n_optimization_steps}.')
+                pdos_files = get_pdos_files(n_optimization_steps)
                 self.parse_dos(sec_run.calculation[-1], pdos_files)
         elif (molecular_dynamics := quickstep.get('molecular_dynamics')) is not None:
             # initial self consistent
@@ -1495,7 +1503,7 @@ class CP2KParser:
             parse_calculations(calculations)
             # PDOS parsing
             if single_point and sec_run.calculation is not None:
-                pdos_files = get_pdos_files(1)
+                pdos_files = get_pdos_files(0)
                 self.parse_dos(sec_run.calculation[0], pdos_files)
         elif (single_point := quickstep.get('single_point')) is not None:
             atomic_coord = quickstep.get('atomic_coordinates')
@@ -1505,7 +1513,7 @@ class CP2KParser:
                 self.logger.warning('Could not parse system information for the SinglePoint calculation.')
             parse_calculations([single_point])
             # PDOS parsing
-            pdos_files = get_pdos_files(1)
+            pdos_files = get_pdos_files(0)
             self.parse_dos(sec_run.calculation[-1], pdos_files)
 
     def _parse_basis_set(self) -> list[BasisSet]:
