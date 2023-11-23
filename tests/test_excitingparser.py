@@ -83,6 +83,8 @@ def test_strucopt(parser):
     archive = EntryArchive()
     parser.parse('tests/data/exciting/GaO_strucopt/INFO.OUT', archive, None)
 
+    assert archive.run[0].program.version_internal == '1e47a4bd61d2aa73ef68a31c2f3385676bee2c3a'
+
     sec_systems = archive.run[0].system
     assert len(sec_systems) == 15
     assert sec_systems[0].atoms.labels == ['Ga', 'Ga', 'Ga', 'Ga', 'O', 'O', 'O', 'O', 'O', 'O']

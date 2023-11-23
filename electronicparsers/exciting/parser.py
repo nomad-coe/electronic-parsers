@@ -816,9 +816,12 @@ class ExcitingInfoParser(TextParser):
                 energies[v[0].strip()] = float(v[1]) * ureg.hartree
             return energies
 
-        self._quantities = [Quantity(
-            'program_version', r'\s*EXCITING\s*([\w\-\(\)\. ]+)\s*started', repeats=False,
-            dtype=str, flatten=False)]
+        self._quantities = [
+            Quantity(
+                'program_version', r'\s*EXCITING\s*([\w\-\(\)\. ]+)\s*started', repeats=False,
+                dtype=str, flatten=False),
+            Quantity('hash_id', r'version hash id: +(\S+)', dtype=str)
+        ]
 
         initialization_quantities = [
             Quantity(
@@ -2654,7 +2657,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_run = self.archive.m_create(Run)
 
         sec_run.program = Program(
-            name='exciting', version=self.info_parser.get('program_version', '').strip())
+            name='exciting', version=self.info_parser.get('program_version', '').strip(),
+            version_internal=self.info_parser.hash_id)
 
         # method goes first since reference needed for sec_scc
         if self._calculation_type == 'gw':
