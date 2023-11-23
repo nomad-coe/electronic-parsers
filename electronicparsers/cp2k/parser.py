@@ -484,7 +484,7 @@ class CP2KOutParser(TextParser):
         geometry_optimization_quantities = [
             Quantity(
                 'method',
-                r'\*{3}\s*((?:CONJUGATE GRADIENTS|L-BFGS|BFGS))\s*\*{3}', flatten=False),
+                r'\*{3}\s*((?:CONJUGATE GRADIENTS|L\-BFGS|BFGS))\s*\*{3}', flatten=False),
             Quantity(
                 'self_consistent',
                 r'SCF WAVEFUNCTION OPTIMIZATION([\s\S]+?)OPTIMIZ', repeats=False,
@@ -642,7 +642,7 @@ class CP2KOutParser(TextParser):
                 sub_parser=TextParser(quantities=scf_wavefunction_optimization_quantities)),
             Quantity(
                 'geometry_optimization',
-                r'STARTING GEOMETRY OPTIMIZATION([\s\S]+?(?:GEOMETRY OPTIMIZATION COMPLETED|\Z))',
+                r'STARTING.+?OPTIMIZATION([\s\S]+?(?:OPTIMIZATION COMPLETED|\Z))',
                 sub_parser=TextParser(quantities=geometry_optimization_quantities)),
             Quantity(
                 'molecular_dynamics',
@@ -680,7 +680,7 @@ class CP2KOutParser(TextParser):
             # TODO add restart find example
             Quantity(
                 'quickstep',
-                r'\.\.\. make the atoms dance([\s\S]+?(?:\-{79}\s*\-|\Z))',
+                r'\.\.\. make the atoms dance([\s\S]+?(?:\-{79}\s*\- +\-|\Z))',
                 sub_parser=TextParser(quantities=quickstep_quantities)),
             Quantity('spin_polarized', r'\| Spin unrestricted \(spin\-polarized\) Kohn\-Sham calculation *([a-zA-Z]+)', repeats=False),
             Quantity(
