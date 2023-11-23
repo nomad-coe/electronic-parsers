@@ -29,7 +29,7 @@ respective file format. They both use separate file (:class:`RunFileParser`) and
 (:class:`OutcarTextParser`) parsers to read content content from either xml or text files.
 '''
 
-from typing import List, Any, Union
+from typing import List, Any, Optional, Union
 import os
 import numpy as np
 import logging
@@ -1384,7 +1384,6 @@ class VASPParser():
             return (None, None, 0)
 
         # setup `CoreHole` parameters
-        # apply_icorelevel(corehole_method)
         nomad_core_holes = [source.get(v[0], v[1]) for v in corehole_map.values()]
         # TODO: add map for 'occ'
 
@@ -1549,12 +1548,12 @@ class VASPParser():
         # perform electron counting
         # first establish a reference for the number of valence electrons in a neutral system
         neutral_count = None
-        pp_val_elec = [x.n_electrons for x in sec_method.atom_parameters if x.n_electrons is not None]
+        pp_val_elec = [x.n_electrons for x in sec_method.atom_parameters if x.get('n_electrons')]
         # correct based on core-holes
         if pp_val_elec:
             for x, y in dict(zip(sec_method.atom_parameters, self.parser.atom_info['atomtypes']['atomspertype'])).items():
                 if x.core_hole is not None:
-                    pp_val_elec.append(x.core_hole.occupation * y)  # TODO: check if this is correct
+                    pp_val_elec.append(x.core_hole.occupation * y)  # same, regardless of spin-orbital or not
             neutral_count = sum(pp_val_elec)
         # extract the number of valence electrons
         sec_method.electronic.n_electrons = self.parser.incar.get('NELECT', neutral_count)
@@ -1615,7 +1614,7 @@ class VASPParser():
                     workflow.method.convergence_tolerance_force_maximum = abs(tolerance) * ureg.eV / ureg.angstrom
         self.archive.workflow2 = workflow
 
-    def parse_configurations(self, atoms_group: Union[AtomsGroup, None] = None):
+    def parse_configurations(self, atoms_group: Optional[AtomsGroup] = None):
         sec_run = self.archive.run[-1]
 
         def parse_system(n_calc):
