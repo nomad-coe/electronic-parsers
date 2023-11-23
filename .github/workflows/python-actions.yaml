@@ -1,10 +1,7 @@
-name: python
-
+name: test
 on: [push]
-
 jobs:
-  build:
-
+  install-test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -12,17 +9,10 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
-    - name: Check out nomad
-      uses: actions/checkout@v3
-      with:
-        repository: nomad-coe/nomad
-        path: nomad
-        submodules: true
     - name: Install dependencies
       run: |
         pip install --upgrade pip
         pip install .[dev]
-        pip install ./nomad[parsing,infrastructure]
         pip install types-PyYAML
     - name: mypy
       run: |
