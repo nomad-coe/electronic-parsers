@@ -1375,7 +1375,7 @@ class VASPParser():
         corehole_map = {
             'n_quantum_number': ('CLN', 1),
             'l_quantum_number': ('CLL', 0),
-            'occupation': ('CLZ', 1.),
+            'occupation': ('CLZ', 0.),  # tested with VASP 6.4.1
         }
 
         source = self.parser.incar
