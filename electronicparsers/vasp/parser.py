@@ -1400,7 +1400,7 @@ class VASPParser():
             core_hole,
             AtomsGroup(
                 label='core-hole',
-                type='active_atom',
+                type='active_orbital',
                 atom_indices=atom_ids,
                 n_atoms=len(atom_ids),
             ),
