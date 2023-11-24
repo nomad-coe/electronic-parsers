@@ -23,6 +23,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference, JSON
 )
 from nomad.datamodel.metainfo import simulation
+from nomad.metainfo.util import MEnum
 
 
 m_package = Package()
@@ -44,6 +45,19 @@ class Run(simulation.run.Run):
         shape=[],
         description='''
         date of last modification of the source as string
+        ''')
+
+
+class CoreHole(simulation.method.CoreHole):
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_vasp_core_hole_method = Quantity(
+        type=MEnum(['initial_state', 'final_state']),
+        shape=[],
+        description='''
+        VASP method used to calculate core-hole,
+        i.e. initial or final state approximation.
         ''')
 
 

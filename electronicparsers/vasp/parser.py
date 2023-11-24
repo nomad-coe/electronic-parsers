@@ -45,7 +45,6 @@ from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetContainer, DFT, HubbardKanamoriModel, AtomParameters,
     XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh, Pseudopotential,
-    CoreHole,
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms, AtomsGroup,
@@ -57,6 +56,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 from simulationworkflowschema import (
     SinglePoint, GeometryOptimization,
     GeometryOptimizationMethod, MolecularDynamics)
+from .metainfo.vasp import CoreHole
 
 re_n = r'[\n\r]'
 
@@ -1368,23 +1368,28 @@ class VASPParser():
 
     def parse_corehole(self) -> (Union[CoreHole, None], Union[AtomsGroup, None], int):
         """
-        Map the core hole information `CoreHole` section.
+        Map the core hole information to a `CoreHole` section.
         Returns said section and AtomsGroup to which it refers.
         """
 
+        source = self.parser.incar
+        icorelevel_map = {
+            1: 'initial_state',
+            2: 'final_state',
+        }
         corehole_map = {
-            'n_quantum_number': ('CLN', 1),
-            'l_quantum_number': ('CLL', 0),
-            'occupation': ('CLZ', 0.),  # tested with VASP 6.4.1
+            'n_quantum_number': source.get('CLN', 1),
+            'l_quantum_number': source.get('CLL', 0),
+            'occupation': source.get('CLZ', 0.),  # tested with VASP 6.4.1
+            'x_vasp_core_hole_method': icorelevel_map.get(source.get('ICORELEVEL', 0), ''),
         }
 
-        source = self.parser.incar
-        corehole_method = source.get('ICORELEVEL', 0)
-        if corehole_method == 0:
+        # check if core hole calculation is enabled
+        if not corehole_map['x_vasp_core_hole_method']:
             return (None, None, 0)
 
         # setup `CoreHole` parameters
-        core_hole = CoreHole(**{k: source.get(v[0], v[1]) for k, v in corehole_map.items()})
+        core_hole = CoreHole(**corehole_map)
         core_hole.occupation = core_hole.degeneracy - core_hole.occupation
         if core_hole.occupation < 0.:
             self.logger.warning('Core hole occupation is negative. Setting to 0.')  # TODO: check if this is correct
@@ -1552,9 +1557,15 @@ class VASPParser():
         for param, n_atoms in dict(zip(sec_method.atom_parameters, self.parser.atom_info['atomtypes']['atomspertype'])).items():
             # correct based on core-holes
             # since ZVAL information is centrally reported, it's all or nothing
-            species_electrons = param.n_electrons
-            if param.core_hole is not None:
-                species_electrons += param.core_hole.degeneracy - param.core_hole.occupation  # same, regardless of spin-orbital or not
+            try:
+                species_electrons = param.n_electrons
+            except AttributeError:
+                break
+            try:
+                if param.core_hole.x_vasp_core_hole_method == 'final_state':
+                    species_electrons += param.core_hole.degeneracy - param.core_hole.occupation  # same, regardless of spin-orbital or not
+            except AttributeError:
+                pass
             neutral_count += species_electrons * n_atoms
         # extract the number of valence electrons
         sec_method.electronic.n_electrons = self.parser.incar.get('NELECT', neutral_count)
