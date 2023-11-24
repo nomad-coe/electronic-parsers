@@ -1376,7 +1376,7 @@ class VASPParser():
             'n_quantum_number': ('CLN', 1),
             'l_quantum_number': ('CLL', 0),
             'occupation': ('CLZ', 1.),
-        }  # TODO: add spin
+        }
 
         source = self.parser.incar
         corehole_method = source.get('ICORELEVEL', 0)
@@ -1384,8 +1384,11 @@ class VASPParser():
             return (None, None, 0)
 
         # setup `CoreHole` parameters
-        nomad_core_holes = [source.get(v[0], v[1]) for v in corehole_map.values()]
-        # TODO: add map for 'occ'
+        core_hole = CoreHole(**{k: source.get(v[0], v[1]) for k, v in corehole_map.items()})
+        core_hole.occupation = core_hole.degeneracy - core_hole.occupation
+        if core_hole.occupation < 0.:
+            self.logger.warning('Core hole occupation is negative. Setting to 0.')  # TODO: check if this is correct
+            core_hole.occupation = 0.
 
         # setup `AtomsGroup` parameters
         elem_id = source.get('CLNT', 1) - 1
@@ -1394,9 +1397,7 @@ class VASPParser():
         atom_ids = list(range(lower_range, elem_ids[elem_id]))
 
         return (
-            CoreHole(
-                **dict(zip(corehole_map.keys(), nomad_core_holes)),
-            ),
+            core_hole,
             AtomsGroup(
                 label='core-hole',
                 type='active_atom',
@@ -1547,17 +1548,17 @@ class VASPParser():
 
         # perform electron counting
         # first establish a reference for the number of valence electrons in a neutral system
-        neutral_count = None
-        pp_val_elec = [x.n_electrons for x in sec_method.atom_parameters if x.get('n_electrons')]
-        # correct based on core-holes
-        if pp_val_elec:
-            for x, y in dict(zip(sec_method.atom_parameters, self.parser.atom_info['atomtypes']['atomspertype'])).items():
-                if x.core_hole is not None:
-                    pp_val_elec.append(x.core_hole.occupation * y)  # same, regardless of spin-orbital or not
-            neutral_count = sum(pp_val_elec)
+        neutral_count = 0.
+        for param, n_atoms in dict(zip(sec_method.atom_parameters, self.parser.atom_info['atomtypes']['atomspertype'])).items():
+            # correct based on core-holes
+            # since ZVAL information is centrally reported, it's all or nothing
+            species_electrons = param.n_electrons
+            if param.core_hole is not None:
+                species_electrons += param.core_hole.degeneracy - param.core_hole.occupation  # same, regardless of spin-orbital or not
+            neutral_count += species_electrons * n_atoms
         # extract the number of valence electrons
         sec_method.electronic.n_electrons = self.parser.incar.get('NELECT', neutral_count)
-        if neutral_count is not None:
+        if neutral_count:
             sec_method.electronic.charge = neutral_count - sec_method.electronic.n_electrons
 
         return {
