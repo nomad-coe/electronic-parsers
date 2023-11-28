@@ -38,7 +38,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Charges, ChargesValue, Multipoles, MultipolesEntry, BandEnergies, BandGapDeprecated,
     BandGap
 )
-from nomad.datamodel.metainfo.simulation.workflow import (
+from simulationworkflowschema import (
     GeometryOptimization, GeometryOptimizationMethod, MolecularDynamics)
 from .metainfo import m_env  # pylint: disable=unused-import
 from electronicparsers.utils import get_files

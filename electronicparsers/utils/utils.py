@@ -26,7 +26,7 @@ from nomad.utils import extract_section
 from nomad.datamodel import EntryArchive
 from nomad.datamodel.metainfo.simulation.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
-from nomad.datamodel.metainfo.simulation.workflow import (
+from simulationworkflowschema import (
     GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod, TB, TBMethod, MaxEnt, MaxEntMethod,
     PhotonPolarization, PhotonPolarizationMethod, PhotonPolarizationResults
 )

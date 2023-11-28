@@ -23,6 +23,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference
 )
 from nomad.datamodel.metainfo import simulation
+from simulationworkflowschema import MolecularDynamicsMethod, GeometryOptimizationMethod
 
 
 m_package = Package()
@@ -2095,7 +2096,7 @@ class Method(simulation.method.Method):
         repeats=True)
 
 
-class MolecularDynamicsMethod(simulation.workflow.MolecularDynamicsMethod):
+class MolecularDynamicsMethod(MolecularDynamicsMethod):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2176,7 +2177,7 @@ class MolecularDynamicsMethod(simulation.workflow.MolecularDynamicsMethod):
         ''')
 
 
-class GeometryOptimizationMethod(simulation.workflow.GeometryOptimizationMethod):
+class GeometryOptimizationMethod(GeometryOptimizationMethod):
 
     m_def = Section(validate=False, extends_base_section=True)
 

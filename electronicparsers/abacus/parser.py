@@ -35,7 +35,7 @@ from nomad.datamodel.metainfo.simulation.system import System, Atoms, Symmetry
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, Dos, DosValues, BandStructure, BandEnergies, EnergyEntry, ScfIteration,
     Forces, ForcesEntry, Stress, StressEntry)
-from nomad.datamodel.metainfo.simulation.workflow import (
+from simulationworkflowschema import (
     GeometryOptimization, MolecularDynamics, MolecularDynamicsMethod, GeometryOptimizationMethod,
     SinglePoint, SinglePointMethod)
 from .metainfo.abacus import (

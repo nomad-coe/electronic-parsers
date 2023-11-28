@@ -19,7 +19,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandEnergies
 )
-from nomad.datamodel.metainfo.simulation.workflow import GeometryOptimization
+from simulationworkflowschema import GeometryOptimization
 
 
 re_float = r'[\d\.\-\+Ee]+'

@@ -35,9 +35,10 @@ from nomad.datamodel.metainfo.simulation.method import (
     BasisSetContainer,
 )
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.workflow import (
+from simulationworkflowschema import (
     GeometryOptimization, GeometryOptimizationMethod,
-    MolecularDynamics, MolecularDynamicsMethod, ThermostatParameters)
+    MolecularDynamics, MolecularDynamicsMethod)
+from simulationworkflowschema.molecular_dynamics import ThermostatParameters
 
 from .metainfo.openmx import OpenmxSCC  # pylint: disable=unused-import
 

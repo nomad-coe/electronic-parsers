@@ -36,7 +36,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry,
     Thermodynamics, BandEnergies, ScfIteration, Dos, DosValues
 )
-from nomad.datamodel.metainfo.simulation.workflow import (
+from simulationworkflowschema import (
     SinglePoint, GeometryOptimization, MolecularDynamics
 )
 from .metainfo.quantum_espresso import (

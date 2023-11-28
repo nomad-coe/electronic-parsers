@@ -23,6 +23,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference
 )
 from nomad.datamodel.metainfo import simulation
+import simulationworkflowschema
 
 
 m_package = Package()
@@ -476,7 +477,7 @@ class BandEnergies(simulation.calculation.BandEnergies):
         repeats=True)
 
 
-class GeometryOptimizationMethod(simulation.workflow.GeometryOptimizationMethod):
+class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMethod):
 
     m_def = Section(validate=False, extends_base_section=True)
 

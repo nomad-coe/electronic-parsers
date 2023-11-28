@@ -23,6 +23,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference
 )
 from nomad.datamodel.metainfo import simulation
+import simulationworkflowschema
 
 
 m_package = Package()
@@ -1086,7 +1087,7 @@ class Calculation(simulation.calculation.Calculation):
         ''')
 
 
-class GeometryOptimization(simulation.workflow.GeometryOptimization):
+class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
 
     m_def = Section(validate=False, extends_base_section=True)
 

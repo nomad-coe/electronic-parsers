@@ -32,7 +32,7 @@ from nomad.datamodel.metainfo.simulation.method import (
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, BandStructure, BandEnergies, Energy
 )
-from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
+from simulationworkflowschema import SinglePoint
 import json
 import re
 from ..utils import BeyondDFTWorkflowsParser

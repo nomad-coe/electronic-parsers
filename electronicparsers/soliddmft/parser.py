@@ -24,7 +24,7 @@ import re
 
 from typing import Any, Dict, Union
 from nomad.units import ureg
-from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
+from simulationworkflowschema import SinglePoint
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, GreensFunctions, Dos, DosValues

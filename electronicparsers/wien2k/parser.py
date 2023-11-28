@@ -39,7 +39,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Forces, ForcesEntry, ScfIteration, Energy, EnergyEntry, BandEnergies, Dos,
     DosValues
 )
-from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
+from simulationworkflowschema import SinglePoint
 from .metainfo.wien2k import x_wien2k_section_equiv_atoms
 
 

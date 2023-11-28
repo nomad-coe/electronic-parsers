@@ -37,7 +37,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     StressEntry, Charges, ChargesValue, ScfIteration, BandStructure, BandEnergies,
     VibrationalFrequencies, VibrationalFrequenciesValues
 )
-from nomad.datamodel.metainfo.simulation.workflow import (
+from simulationworkflowschema import (
     GeometryOptimization, GeometryOptimizationMethod, MolecularDynamics, MolecularDynamicsMethod,
     SinglePoint, Phonon
 )
