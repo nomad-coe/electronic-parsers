@@ -23,6 +23,7 @@ import re
 import ase
 from ase import io as aseio
 from scipy.stats import norm
+import MDAnalysis
 
 from .metainfo import m_env
 from nomad.units import ureg
@@ -203,24 +204,39 @@ class TrajParser(FileParser):
                 pass
 
             if result is None:
+                # try:
+                #     import mdtraj
+                #     reader = None
+                #     if self.format in ['xyz', 'xmol', 'atomic']:
+                #         reader = mdtraj.formats.XYZTrajectoryFile(self.mainfile)
+                #     elif self.format == 'dcd':
+                #         reader = mdtraj.formats.DCDTrajectoryFile(self.mainfile)
+                #     elif self.format == 'pdb':
+                #         reader = mdtraj.formats.PDBTrajectoryFile(self.mainfile)
+                #     else:
+                #         self.logger.error('Unsupported trajectory format.')
+                #     if reader is not None:
+                #         # we do not stream to simplify archive writing
+                #         result = reader.read()
+                # except ImportError:
+                #     self.logger.warning('Required MDTraj module not found.')
+                # except Exception:
+                #     self.logger.warning('Error loaging trajectory file.')
+
                 try:
-                    import mdtraj
-                    reader = None
                     if self.format in ['xyz', 'xmol', 'atomic']:
-                        reader = mdtraj.formats.XYZTrajectoryFile(self.mainfile)
+                        coordinates = MDAnalysis.coordinates.XYZ.XYZReader(self.mainfile)
                     elif self.format == 'dcd':
-                        reader = mdtraj.formats.DCDTrajectoryFile(self.mainfile)
+                        coordinates = MDAnalysis.coordinates.DCD.DCDReader(self.mainfile)
                     elif self.format == 'pdb':
-                        reader = mdtraj.formats.PDBTrajectoryFile(self.mainfile)
+                        coordinates = MDAnalysis.coordinates.PDB.PDBReader(self.mainfile)
                     else:
+                        coordinates = None
                         self.logger.error('Unsupported trajectory format.')
-                    if reader is not None:
-                        # we do not stream to simplify archive writing
-                        result = reader.read()
-                except ImportError:
-                    self.logger.warning('Required MDTraj module not found.')
+                    if coordinates is not None:
+                        result = [traj.positions for traj in coordinates.trajectory]
                 except Exception:
-                    self.logger.warning('Error loaging trajectory file.')
+                    self.logger.warning('Error loading trajectory file.')
 
             if result is None:
                 return self._file_handler
