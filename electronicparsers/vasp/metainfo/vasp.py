@@ -48,19 +48,6 @@ class Run(simulation.run.Run):
         ''')
 
 
-class CoreHole(simulation.method.CoreHole):
-
-    m_def = Section(validate=False, extends_base_section=True)
-
-    x_vasp_core_hole_method = Quantity(
-        type=MEnum(['initial_state', 'final_state']),
-        shape=[],
-        description='''
-        VASP method used to calculate core-hole,
-        i.e. initial or final state approximation.
-        ''')
-
-
 class Method(simulation.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)

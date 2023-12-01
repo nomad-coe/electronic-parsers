@@ -29,7 +29,7 @@ respective file format. They both use separate file (:class:`RunFileParser`) and
 (:class:`OutcarTextParser`) parsers to read content content from either xml or text files.
 '''
 
-from typing import List, Any, Optional, Union
+from typing import List, Any, Union
 import os
 import numpy as np
 import logging
@@ -43,7 +43,7 @@ from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, BasisSetContainer, DFT, HubbardKanamoriModel, AtomParameters,
+    CoreHole, Method, BasisSet, BasisSetContainer, DFT, HubbardKanamoriModel, AtomParameters,
     XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh, Pseudopotential,
 )
 from nomad.datamodel.metainfo.simulation.system import (
@@ -53,10 +53,16 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry,
     BandEnergies, DosValues, ScfIteration, BandStructure, BandGapDeprecated, Dos, Density,
 )
+<<<<<<< HEAD
 from simulationworkflowschema import (
     SinglePoint, GeometryOptimization,
     GeometryOptimizationMethod, MolecularDynamics)
 from .metainfo.vasp import CoreHole
+=======
+from nomad.datamodel.metainfo.simulation.workflow import (
+    SinglePoint, GeometryOptimization, GeometryOptimizationMethod, MolecularDynamics,
+)
+>>>>>>> - Update interfacing `parse_core_hole` with the rest of the parser
 
 re_n = r'[\n\r]'
 
@@ -644,11 +650,14 @@ class OutcarContentParser(ContentParser):
 
         return dict(cell=cell, positions=positions, selective=selective, nose=nose)
 
-    def get_valence_basis_set(self) -> list[BasisSet]:
+    def get_basis_set(self) -> list[BasisSet]:
         sec_bases: list[BasisSet] = []
         for tag in ('ENCUT', 'ENAUG'):
             cutoff_value = self.parser.get('parameters', {}).get(tag)
-            sec_basis = BasisSet(type='plane waves')
+            sec_basis = BasisSet(
+                type='plane waves',
+                frozen_core=False if self.parser.results.get('parameters', {}).get('ICORELEVEL', 0) == 1 else True,
+            )  # TODO: write the core eigenvalues to calculation + display them?
             if cutoff_value:
                 sec_basis.cutoff = cutoff_value * ureg.eV  # based on examples
             if tag == 'ENCUT':
@@ -1144,7 +1153,7 @@ class RunContentParser(ContentParser):
         potcar_file = os.path.join(self.parser.maindir, 'POTCAR.stripped')
         return super().get_pseudopotential(potcar_file)
 
-    def get_valence_basis_set(self) -> list[BasisSet]:
+    def get_basis_set(self) -> list[BasisSet]:
         path = '/modeling[0]/parameters/separator[@name="electronic"]'
         sec_bases: list[BasisSet] = []
         for tag in ('ENMAX', 'ENAUG'):
@@ -1154,7 +1163,8 @@ class RunContentParser(ContentParser):
                 sec_basis = BasisSet(
                     type='plane waves',
                     cutoff=cutoff_value * ureg.eV,  # based on examples
-                )
+                    frozen_core=False if self.get_incar_out().get('ICORELEVEL', 0) == 1 else True,
+                )  # TODO: write the core eigenvalues to calculation + display them?
                 if tag == 'ENMAX':
                     sec_basis.scope = ['valence']
                 elif tag == 'ENAUG':
@@ -1366,29 +1376,21 @@ class VASPParser():
         if sec_k_mesh.points is None:
             sec_k_mesh.points = [[0.] * 3]
 
-    def parse_corehole(self) -> (Union[CoreHole, None], Union[AtomsGroup, None], int):
+    def parse_core_hole(self) -> (Union[CoreHole, None], Union[AtomsGroup, None], int):
         """
-        Map the core hole information to a `CoreHole` section.
-        Returns said section and AtomsGroup to which it refers.
+        Map the core-hole information to a `CoreHole` section.
+        Returns the core-hole, the `AtomsGroup` to which it refers, along with the matching element index.
         """
 
         source = self.parser.incar
-        icorelevel_map = {
-            1: 'initial_state',
-            2: 'final_state',
-        }
+
+        # setup `CoreHole` parameters
         corehole_map = {
             'n_quantum_number': source.get('CLN', 1),
             'l_quantum_number': source.get('CLL', 0),
             'occupation': source.get('CLZ', 0.),  # tested with VASP 6.4.1
-            'x_vasp_core_hole_method': icorelevel_map.get(source.get('ICORELEVEL', 0), ''),
         }
 
-        # check if core hole calculation is enabled
-        if not corehole_map['x_vasp_core_hole_method']:
-            return (None, None, 0)
-
-        # setup `CoreHole` parameters
         core_hole = CoreHole(**corehole_map)
         core_hole.occupation = core_hole.degeneracy - core_hole.occupation
         if core_hole.occupation < 0.:
@@ -1485,16 +1487,12 @@ class VASPParser():
                     sec_hubb.x_vasp_projection_type = 'on-site'
             atom_counts[element[i]] += 1
 
-        core_hole, corehole_group, corehole_id = self.parse_corehole()
-        if core_hole is not None:
-            sec_method.atom_parameters[corehole_id].core_hole = core_hole
-
         sec_method.electrons_representation = [
             BasisSetContainer(
                 type='plane waves',
                 scope=['wavefunction'],
                 native_tier=self.parser.get_tier(type='native'),
-                basis_set=self.parser.get_valence_basis_set(),
+                basis_set=self.parser.get_basis_set(),
             )
         ]
 
@@ -1561,8 +1559,7 @@ class VASPParser():
             except AttributeError:
                 break
             try:
-                if param.core_hole.x_vasp_core_hole_method == 'final_state':
-                    species_electrons += param.core_hole.degeneracy - param.core_hole.occupation  # same, regardless of spin-orbital or not
+                species_electrons += param.core_hole.degeneracy - param.core_hole.occupation  # same, regardless of spin-orbital or not
             except AttributeError:
                 pass
             neutral_count += species_electrons * n_atoms
@@ -1570,10 +1567,6 @@ class VASPParser():
         sec_method.electronic.n_electrons = self.parser.incar.get('NELECT', neutral_count)
         if neutral_count:
             sec_method.electronic.charge = neutral_count - sec_method.electronic.n_electrons
-
-        return {
-            'atoms_group': corehole_group,
-        }
 
     def parse_gw(self):
         sec_run = self.archive.run[-1]
@@ -1625,7 +1618,7 @@ class VASPParser():
                     workflow.method.convergence_tolerance_force_maximum = abs(tolerance) * ureg.eV / ureg.angstrom
         self.archive.workflow2 = workflow
 
-    def parse_configurations(self, atoms_group: Optional[AtomsGroup] = None):
+    def parse_configurations(self):
         sec_run = self.archive.run[-1]
 
         def parse_system(n_calc):
@@ -1653,10 +1646,14 @@ class VASPParser():
             if nose is not None:
                 sec_system.x_vasp_nose_thermostat = nose
 
-            if atoms_group:
+            # Check for core-holes
+            if self.parser.incar.get('ICORELEVEL', 0) == 2:
+                core_hole, core_hole_group, corehole_id = self.parse_core_hole()
+                self.archive.run[-1].method[-1].atom_parameters[corehole_id].core_hole = core_hole
+
                 if sec_system.atoms_group is None:
                     sec_system.atoms_group = []
-                sec_system.atoms_group.append(atoms_group)
+                sec_system.atoms_group.append(core_hole_group)
                 # add the reference from any core-hole to its matching atoms_group
                 for atom_parameter in sec_run.method[0].atom_parameters:
                     if atom_parameter.core_hole is not None:
@@ -1924,8 +1921,6 @@ class VASPParser():
             method_dict = self.parse_method()
 
         # Note: the logic for a proper topology might have to become more complex
-        self.parse_configurations(
-            atoms_group=method_dict.get('atoms_group', [])
-        )
+        self.parse_configurations()
 
         self.parse_workflow()
