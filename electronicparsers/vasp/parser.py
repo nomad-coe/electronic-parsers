@@ -1484,7 +1484,6 @@ class VASPParser():
                     sec_hubb.double_counting_correction = self.hubbard_dc_corrections.get(parsed_file.get('LDAUTYPE'))
                     sec_hubb.x_vasp_projection_type = 'on-site'
             atom_counts[element[i]] += 1
-        sec_method.x_vasp_atom_kind_refs = sec_method.atom_parameters  # TODO: deprecate x_vasp_atom_kind_refs?
 
         core_hole, corehole_group, corehole_id = self.parse_corehole()
         if core_hole is not None:
