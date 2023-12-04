@@ -698,7 +698,7 @@ class CP2KOutParser(TextParser):
 class CP2KPDOSParser(DataTextParser):
     def init_quantities(self):
         self._quantities = [
-            Quantity('atom_kind', r'\# *Projected DOS for atomic kind *([\da-zA-Z]+) *at'),
+            Quantity('atom_kind', r'\# *(?:Projected|P\.) DOS for atomic kind *([\da-zA-Z]+) *at'),
             Quantity('orbitals', r' *Occupation(.+)', repeats=False),
             Quantity('iter', r' *at iteration step i *\= *(\d+)')]
 
