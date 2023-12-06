@@ -23,13 +23,13 @@ import numpy as np
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program
+from runschema.method import (
     Method, DFT, XCFunctional, Functional, Electronic, Smearing,
     BasisSetContainer,
 )
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.system import System, Atoms
+from runschema.calculation import (
     Calculation, Charges, ScfIteration, Energy, EnergyEntry, BandEnergies, Dos, DosValues
 )
 from .metainfo import m_env  # pylint: disable=unused-import
@@ -266,10 +266,12 @@ class ElkParser:
 
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         sec_run.program = Program(version=self.mainfile_parser.get('program_version', ''))
 
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         sec_method.electrons_representation = [
             BasisSetContainer(
                 type='(L)APW+lo',
@@ -302,7 +304,8 @@ class ElkParser:
                 except Exception:
                     pass
 
-        sec_system = sec_run.m_create(System)
+        sec_system = System()
+        sec_run.system.append(sec_system)
         species = self.mainfile_parser.get('species', [])
         labels = []
         positions = []
@@ -316,9 +319,11 @@ class ElkParser:
             lattice_vectors=lattice_vectors
         )
 
-        sec_calc = sec_run.m_create(Calculation)
+        sec_calc = Calculation()
+        sec_run.calculation.append(sec_calc)
         for loop in self.mainfile_parser.get('scf', {}).get('loop', []):
-            scf_iteration = sec_calc.m_create(ScfIteration)
+            scf_iteration = ScfIteration()
+            sec_calc.scf_iteration.append(scf_iteration)
 
             # energies
             energies = {key: val * ureg.hartree for key, val in loop.get('energies', {}).get('key_val', [])}
@@ -351,7 +356,8 @@ class ElkParser:
 
             # charges
             if loop.charges is not None:
-                sec_charges = scf_iteration.m_create(Charges)
+                sec_charges = Charges()
+                scf_iteration.charges.append(sec_charges)
                 for key, val in loop.charges.get('key_val', []):
                     name = self._metainfo_map.get(key)
                     if key.lower() == 'total charge':
@@ -362,7 +368,8 @@ class ElkParser:
 
         # eigenvalues
         self.eigenval_parser.mainfile = os.path.join(self.maindir, 'EIGVAL.OUT')
-        sec_eigenvalue = sec_calc.m_create(BandEnergies)
+        sec_eigenvalue = BandEnergies()
+        sec_calc.eigenvalues.append(sec_eigenvalue)
         sec_eigenvalue.kpoints = self.eigenval_parser.get('kpoint')
         eigs_occs = self.eigenval_parser.get('eigenvalue_occupancy', [])
         n_spin = 1 if self.mainfile_parser.get('spin_treatment', '').lower() == 'spin-unpolarised' else 2
@@ -378,10 +385,12 @@ class ElkParser:
         self.dos_parser.mainfile = os.path.join(self.maindir, 'TDOS.OUT')
         if self.dos_parser.data is not None:
             dos_data = np.transpose(self.dos_parser.data)
-            sec_dos = sec_calc.m_create(Dos, Calculation.dos_electronic)
+            sec_dos = Dos()
+            sec_calc.dos_electronic.append(sec_dos)
             # TODO determine how dos are printed in spin polarised case
             sec_dos.energies = dos_data[0] * ureg.hartree
-            sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+            sec_dos_total = DosValues()
+            sec_dos.total.append(sec_dos_total)
             sec_dos_total.value = dos_data[1] / ureg.hartree
 
         # TODO implement geometry_optimization, no example data

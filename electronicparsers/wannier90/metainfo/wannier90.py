@@ -21,13 +21,13 @@ import numpy as np
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, Package, Quantity, Section, SubSection
 )
-from nomad.datamodel.metainfo import simulation
+import runschema
 
 
 m_package = Package()
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 

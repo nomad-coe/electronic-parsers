@@ -21,15 +21,14 @@ import typing                 # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, Reference
 )
-
-from nomad.datamodel.metainfo import simulation
+import runschema
 from nomad.metainfo.metainfo import JSON
 
 
 m_package = Package()
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_psi4_git_rev = Quantity(
@@ -70,7 +69,7 @@ class Run(simulation.run.Run):
         ''')
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_psi4_molecular_point_group = Quantity(
@@ -135,7 +134,7 @@ class System(simulation.system.System):
         ''')
 
 
-class Scf(simulation.method.Scf):
+class Scf(runschema.method.Scf):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_psi4_diis = Quantity(
@@ -169,7 +168,7 @@ class Scf(simulation.method.Scf):
         ''')
 
 
-class BasisSetAtomCentered(simulation.method.BasisSetAtomCentered):
+class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_psi4_blend = Quantity(
@@ -217,7 +216,7 @@ class BasisSetAtomCentered(simulation.method.BasisSetAtomCentered):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_psi4_scf_algorithm_type = Quantity(
@@ -269,7 +268,7 @@ class Method(simulation.method.Method):
         ''')
 
 
-class DFT(simulation.method.DFT):
+class DFT(runschema.method.DFT):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_psi4_molecular_quadrature = Quantity(
@@ -289,7 +288,7 @@ class x_psi4_root_information(MSection):
         ''')
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_psi4_s2_expected = Quantity(

@@ -25,10 +25,10 @@ from datetime import datetime
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.method import Method, BasisSet, BasisSetContainer
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.run import Run, Program, TimeRun
+from runschema.method import Method, BasisSet, BasisSetContainer
+from runschema.system import System, Atoms
+from runschema.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, BandEnergies, Charges, Multipoles,
     MultipolesEntry, VibrationalFrequencies
 )
@@ -319,7 +319,8 @@ class Dmol3Parser:
         self.mainfile_parser.logger = self.logger
         self.mainfile_parser.mainfile = self.filepath
 
-        sec_run = archive.m_create(Run)
+        sec_run = Run()
+        archive.run.append(sec_run)
         sec_run.program = Program(
             version=self.mainfile_parser.get('program_version'),
             x_dmol3_compilation_date=self.mainfile_parser.get('x_dmol3_program_compilation_date')
@@ -330,7 +331,8 @@ class Dmol3Parser:
             sec_run.time_run = TimeRun(date_start=date.timestamp())
 
         # section method
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         # basis set
         sec_method.electrons_representation = [
             BasisSetContainer(
@@ -360,7 +362,8 @@ class Dmol3Parser:
             if source.coordinates is None:
                 return
 
-            sec_system = sec_run.m_create(System)
+            sec_system = System()
+            sec_run.system.append(sec_system)
             sec_system.atoms = Atoms(
                 labels=[v[0] for v in source.coordinates.get('labels_positions', [])],
                 positions=[v[1:4] for v in source.coordinates.get('labels_positions', [])] * ureg.bohr
@@ -368,7 +371,9 @@ class Dmol3Parser:
             return sec_system
 
         def parse_calculation(source, target=None):
-            target = sec_run.m_create(Calculation) if target is None else target
+            if target is None:
+                target = Calculation()
+                sec_run.calculation.append(target)
 
             # energies
             time_initial = sec_run.calculation[-2].time_physical if len(sec_run.calculation) > 1 else 0 * ureg.s
@@ -382,7 +387,8 @@ class Dmol3Parser:
             # scf iteration
             for iteration in source.get('iteration', []):
                 time_initial = target.scf_iteration[-1].time_physical if target.scf_iteration else time_initial
-                sec_scf = target.m_create(ScfIteration)
+                sec_scf = ScfIteration()
+                target.scf_iteration.append(sec_scf)
                 sec_scf.energy = Energy(
                     total=EnergyEntry(value=iteration[0] * ureg.hartree),
                     x_dmol3_binding=EnergyEntry(value=iteration[1] * ureg.hartree),
@@ -395,7 +401,8 @@ class Dmol3Parser:
 
             # eigenvalues
             if source.eigenvalues is not None:
-                sec_eigenvalues = target.m_create(BandEnergies)
+                sec_eigenvalues = BandEnergies()
+                target.eigenvalues.append(sec_eigenvalues)
                 # TODO handle number of kpoints
                 energies = [e[0] for e in source.eigenvalues]
                 # index 1 is energies in eV
@@ -410,7 +417,8 @@ class Dmol3Parser:
                 population = source.get(method)
                 if population is None:
                     continue
-                sec_charges = target.m_create(Charges)
+                sec_charges = Charges()
+                target.charges.append(sec_charges)
                 sec_charges.analysis_method = method
                 if population.charge is not None:
                     sec_charges.value = population.charge * ureg.elementary_charge
@@ -419,12 +427,14 @@ class Dmol3Parser:
 
             # dipole momentp
             if source.dipole_moment is not None:
-                sec_multipole = target.m_create(Multipoles)
+                sec_multipole = Multipoles()
+                target.multipoles.append(sec_multipole)
                 sec_multipole.dipole = MultipolesEntry(total=source.dipole_moment)
 
             # vibrational frequencies
             if source.vibrational_frequencies is not None:
-                sec_vibrations = target.m_create(VibrationalFrequencies)
+                sec_vibrations = VibrationalFrequencies()
+                target.vibrational_frequencies.append(sec_vibrations)
                 sec_vibrations.value = source.vibrational_frequencies
                 # normal modes
                 if source.normal_modes is not None:

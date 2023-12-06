@@ -25,15 +25,15 @@ from ase.data import chemical_symbols
 
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, FileParser
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program, TimeRun
+from runschema.method import (
     Method, DFT, XCFunctional, Functional, Electronic, BasisSet, Scf, AtomParameters,
     KMesh, BasisSetContainer, BasisSetAtomCentered,
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, ScfIteration, Dos, DosValues, Energy, EnergyEntry, Forces, ForcesEntry,
     Charges, ChargesValue, Multipoles, MultipolesEntry, BandEnergies, BandGapDeprecated,
     BandGap
@@ -1074,10 +1074,12 @@ class AMSParser:
         sec_run = self.archive.run[0]
 
         def parse_scc(source, target=None):
-            sec_scc = sec_run.m_create(Calculation) if target is None else target
+            sec_scc = Calculation()
+            sec_run.calculation.append(sec_scc) if target is None else target
 
             # total energy
-            sec_energy = sec_scc.m_create(Energy)
+            sec_energy = Energy()
+            sec_scc.energy = sec_energy
             if source.get('energy_total') is not None:
                 sec_energy.total = EnergyEntry(value=source.get('energy_total'))
 
@@ -1100,7 +1102,8 @@ class AMSParser:
                     sec_energy.m_add_sub_section(getattr(Energy, key), entry)
 
             # forces
-            sec_forces = sec_scc.m_create(Forces)
+            sec_forces = Forces()
+            sec_scc.forces = sec_forces
             if (forces := source.get('forces_total')) is not None:
                 sec_forces.total = ForcesEntry(value=forces)
             for key, val in source.get('forces', dict()).items():
@@ -1114,8 +1117,10 @@ class AMSParser:
 
             # self consistency
             for energy_change in source.get('self_consistency', {}).get('energy_change', []):
-                sec_scf = sec_scc.m_create(ScfIteration)
-                sec_scf_energy = sec_scf.m_create(Energy)
+                sec_scf = ScfIteration()
+                sec_scc.scf_iteration.append(sec_scf)
+                sec_scf_energy = Energy()
+                sec_scf.energy = sec_scf_energy
                 sec_scf_energy.change = energy_change
 
             # dos
@@ -1124,21 +1129,28 @@ class AMSParser:
                 total_dos = np.transpose(total_dos)
                 n_spin_channels = len(total_dos[1:])
                 for spin in range(n_spin_channels):
-                    sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                    sec_dos = Dos()
+                    sec_scc.dos_electronic.append(sec_dos)
                     sec_dos.spin_channel = spin if n_spin_channels == 2 else None
                     sec_dos.energies = total_dos[0] * ureg.hartree
-                    sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
+                    sec_dos_values = DosValues()
+                    sec_dos.total.append(sec_dos_values)
                     sec_dos_values.value = total_dos[spin + 1] / ureg.hartree
 
             # atom charges
             if (charges := source.get('atomic_charges')) is not None:
-                sec_charges = sec_scc.m_create(Charges)
+                sec_charges = Charges()
+                sec_scc.charges.append(sec_charges)
                 sec_charges.value = charges * ureg.elementary_charge
 
             for analysis in source.get('atom_charge_analysis', []):
                 for n, method in enumerate(analysis.get('methods', [])):
                     existing_sec_charges = [sec for sec in sec_scc.charges if sec.analysis_method == method]
-                    sec_charges = existing_sec_charges[0] if existing_sec_charges else sec_scc.m_create(Charges)
+                    if existing_sec_charges:
+                        sec_charges = existing_sec_charges[0]
+                    else:
+                        sec_charges = Charges()
+                        sec_scc.charges.append(sec_charges)
                     sec_charges.analysis_method = method
                     if analysis.spin:
                         sec_charges.spins = analysis.atom_charges[n]
@@ -1149,7 +1161,8 @@ class AMSParser:
             # mulliken populations
             mulliken = source.get('mulliken_populations')
             if mulliken is not None:
-                sec_charges = sec_scc.m_create(Charges)
+                sec_charges = Charges()
+                sec_scc.charges.append(sec_charges)
                 sec_charges.analysis_method = 'Mulliken'
                 # atom/spin resolved
                 atom_charges = np.array(mulliken.get('atom', []))
@@ -1174,18 +1187,24 @@ class AMSParser:
             # dipole
             dipole = source.get('dipole_moment')
             if dipole is not None:
-                sec_multipoles = sec_scc.m_create(Multipoles)
+                sec_multipoles = Multipoles()
+                sec_scc.multipoles.append(sec_multipoles)
                 sec_multipoles.dipole = MultipolesEntry(total=dipole)
 
             # eigenvalues
             if (eigenvalues := source.get('eigenvalues')) is not None:
-                sec_eigenvalues = sec_scc.m_create(BandEnergies)
+                sec_eigenvalues = BandEnergies()
+                sec_scc.eigenvalues.append(sec_eigenvalues)
                 sec_eigenvalues.energies = eigenvalues.get('energies')
                 sec_eigenvalues.occupations = eigenvalues.get('occupations')
 
             band_energy_ranges = source.get('band_energy_ranges')
             if band_energy_ranges is not None:
-                sec_band_energies = sec_scc.eigenvalues[0] if sec_scc.eigenvalues else sec_scc.m_create(BandEnergies)
+                if sec_scc.eigenvalues:
+                    sec_band_energies = sec_scc.eigenvalues[0]
+                else:
+                    sec_band_energies = BandEnergies()
+                    sec_scc.eigenvalues.append(sec_band_energies)
                 sec_band_energies.x_ams_energy_min = band_energy_ranges[0] * ureg.hartree
                 sec_band_energies.x_ams_energy_max = band_energy_ranges[1] * ureg.hartree
                 sec_band_energies.occupations = band_energy_ranges[2]
@@ -1193,12 +1212,14 @@ class AMSParser:
                 # band gap
                 band_gap_info = source.get('band_gap_info')
                 if band_gap_info is not None:
-                    sec_band_gap = sec_band_energies.m_create(BandGapDeprecated)
+                    sec_band_gap = BandGapDeprecated()
+                    sec_band_energies.band_gap.append(sec_band_gap)
                     for key, val in band_gap_info.items():
                         sec_band_gap.m_set(sec_band_gap.m_get_quantity_definition(key), val)
 
             if (band_gap := source.get('band_gap')) is not None:
-                sec_band_gap = sec_scc.m_create(BandGap)
+                sec_band_gap = BandGap()
+                sec_scc.band_gap.append(sec_band_gap)
                 for key, val in band_gap.items():
                     sec_band_gap.m_set(sec_band_gap.m_get_quantity_definition(key), val)
 
@@ -1207,9 +1228,11 @@ class AMSParser:
             return sec_scc
 
         def parse_system(source):
-            sec_system = sec_run.m_create(System)
+            sec_system = System()
+            sec_run.system.append(sec_system)
 
-            sec_atoms = sec_system.m_create(Atoms)
+            sec_atoms = Atoms()
+            sec_system.atoms = sec_atoms
             labels_positions = source.get('labels_positions')
             if labels_positions is not None:
                 sec_atoms.labels = labels_positions[0]
@@ -1234,7 +1257,8 @@ class AMSParser:
             if source is None:
                 return
 
-            sec_method = sec_run.m_create(Method)
+            sec_method = Method()
+            sec_run.method.append(sec_method)
             sec_atom_centered = BasisSetAtomCentered()
             for key, val in source.get('confinement', {}).items():
                 sec_atom_centered.m_set(sec_atom_centered.m_get_quantity_definition(key), val)
@@ -1252,7 +1276,8 @@ class AMSParser:
             ]
 
             for function in source.get('radial_functions', []):
-                sec_atom_param = sec_method.m_create(AtomParameters)
+                sec_atom_param = AtomParameters()
+                sec_method.atom_parameters.append(sec_atom_param)
                 for key, val in function.items():
                     if val is None:
                         continue
@@ -1273,9 +1298,11 @@ class AMSParser:
                         break
 
             if (dft_potential := source.get('model_parameters', {}).get('dft_potential', {})) is not None:
-                sec_dft = sec_method.m_create(DFT)
+                sec_dft = DFT()
+                sec_method.dft = sec_dft
                 # TODO provide mapping
-                sec_xc_functional = sec_dft.m_create(XCFunctional)
+                sec_xc_functional = XCFunctional()
+                sec_dft.xc_functional = sec_xc_functional
                 for xc_type in ['LDA', 'GGA', 'MGGA']:
                     functionals = dft_potential.get(xc_type, '').split()
                     kind = ['XC'] if len(functionals) == 1 else ['X', 'C']
@@ -1291,7 +1318,8 @@ class AMSParser:
                             sec_xc_functional.contributions.append(
                                 Functional(name='%s_%s_%s' % (xc_type, kind[n], functional)))
 
-            sec_electronic = sec_method.m_create(Electronic)
+            sec_electronic = Electronic()
+            sec_method.electronic = sec_electronic
             model_parameters = source.get('model_parameters', {})
             spin = source.get('x_ams_spin_polarization', model_parameters.get('spin'))
             sec_electronic.n_spin_channels = 2 if spin else 1
@@ -1305,12 +1333,14 @@ class AMSParser:
 
             # TODO add smearing params
             if (scf_options := source.get('scf_options')) is not None:
-                sec_scf = sec_method.m_create(Scf)
+                sec_scf = Scf()
+                sec_method.scf = sec_scf
                 for key, val in scf_options.items():
                     sec_scf.m_set(sec_scf.m_get_quantity_definition(key), val)
 
             if (k_space_sampling := source.get('k_space_sampling')) is not None:
-                sec_k_mesh = sec_method.m_create(KMesh)
+                sec_k_mesh = KMesh()
+                sec_method.k_mesh = sec_k_mesh
                 for key, val in k_space_sampling.items():
                     sec_k_mesh.m_set(sec_k_mesh.m_get_quantity_definition(key), val)
 
@@ -1371,7 +1401,8 @@ class AMSParser:
             self.parser = self.rkf_parser
             self.parser.mainfile = os.path.join(os.path.dirname(filepath), rkf_files[0])
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         sec_run.program = Program(name='AMS', version=self.parser.get('program_version', ''))
         for key in self.parser.results.keys():
             if key.startswith('program_x_ams'):

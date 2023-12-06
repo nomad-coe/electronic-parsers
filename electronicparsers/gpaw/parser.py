@@ -23,15 +23,15 @@ from ase.io.ulm import Reader
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser, TarParser, XMLParser, DataTextParser
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program
+from runschema.method import (
     Electronic, Method, DFT, Smearing, XCFunctional, Functional, BasisSet,
     BasisSetContainer, Electronic, Scf
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, BandEnergies, BandStructure,
     Density, Potential, PotentialValue
 )
@@ -332,7 +332,8 @@ class GPAWParser:
         return self.apply_unit(fermi_level, 'energyunit')
 
     def parse_method(self):
-        sec_method = self.archive.run[-1].m_create(Method)
+        sec_method = Method()
+        self.archive.run[-1].method.append(sec_method)
 
         # Basis Set
         def _basisset_type_to_container(basisset_type: str) -> str:
@@ -377,7 +378,8 @@ class GPAWParser:
                 )
             )
 
-        sec_electronic = sec_method.m_create(Electronic)
+        sec_electronic = Electronic()
+        sec_method.electronic = sec_electronic
         sec_electronic.relativity_method = 'pseudo_scalar_relativistic'
         sec_electronic.method = 'DFT'
         charge = self.parser.get_parameter('charge')
@@ -385,7 +387,8 @@ class GPAWParser:
             sec_electronic.charge = int(charge)
 
         threshold_energy = self.parser.get_parameter('energyerror')
-        sec_scf = sec_method.m_create(Scf)
+        sec_scf = Scf()
+        sec_method.scf = sec_scf
         sec_scf.threshold_energy_change = self.apply_unit(threshold_energy, 'energyunit')
 
         smearing_width = self.parser.get_smearing_width()
@@ -393,8 +396,10 @@ class GPAWParser:
             sec_electronic.smearing = Smearing(kind='fermi', width=self.apply_unit(
                 smearing_width, 'energyunit').to('joule').magnitude)
 
-        sec_dft = sec_method.m_create(DFT)
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         xc_functional = self.parser.get_parameter('xcfunctional')
         for xc in self._xc_map.get(xc_functional, [xc_functional]):
             if '_X_' in xc or xc.endswith('_X'):
@@ -418,13 +423,15 @@ class GPAWParser:
 
     def parse_scc(self):
         sec_run = self.archive.run[-1]
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
 
         # energies (in gpw, energies are part of parameters)
         energy_keys = [
             'energy_total', 'energy_free', 'energy_XC', 'energy_kinetic_electronic',
             'energy_correction_entropy']
-        sec_energy = sec_scc.m_create(Energy)
+        sec_energy = Energy()
+        sec_scc.energy = sec_energy
         for key in energy_keys:
             val = self.parser.get_parameter(key)
             if val is not None:
@@ -454,7 +461,8 @@ class GPAWParser:
         # eigenvalues
         eigenvalues = self.parser.get_array('eigenvalues')
         if eigenvalues is not None:
-            sec_eigenvalues = sec_scc.m_create(BandEnergies)
+            sec_eigenvalues = BandEnergies()
+            sec_scc.eigenvalues.append(sec_eigenvalues)
             sec_eigenvalues.kpoints = self.parser.get_array('kpoints')
             values = self.apply_unit(eigenvalues, 'energyunit')
             occupations = self.parser.get_array('occupation')
@@ -465,9 +473,11 @@ class GPAWParser:
         # band path (TODO only in ulm?)
         band_paths = self.parser.get_array('band_paths')
         if band_paths is not None:
-            sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
+            sec_k_band = BandStructure()
+            sec_scc.band_structure_electronic.append(sec_k_band)
             for band_path in band_paths:
-                sec_band_seg = sec_k_band.m_create(BandEnergies)
+                sec_band_seg = BandEnergies()
+                sec_k_band.segment.append(sec_band_seg)
                 if band_path.get('eigenvalues', None) is not None:
                     energies = self.apply_unit(band_path.get('eigenvalues'), 'energyunit')
                     sec_band_seg.energies = energies
@@ -490,7 +500,8 @@ class GPAWParser:
             energyunit = self.apply_unit(1, 'energyunit').units
             density = self.parser.get_array('density')
             if density is not None:
-                sec_density = sec_scc.m_create(Density, Calculation.density_charge)
+                sec_density = Density()
+                sec_scc.density_charge.append(sec_density)
                 sec_density.origin = (origin * lengthunit)
                 sec_density.displacements = (displacements * lengthunit)
                 sec_density.value = density / lengthunit ** 3
@@ -510,8 +521,10 @@ class GPAWParser:
         sec_scc.method_ref = sec_run.method[-1]
 
     def parse_system(self):
-        sec_system = self.archive.run[-1].m_create(System)
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_system = System()
+        self.archive.run[-1].system.append(sec_system)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
 
         cell = self.parser.get_array('unitcell')
         if cell is not None:
@@ -540,7 +553,8 @@ class GPAWParser:
         self.logger = logging.getLogger(__name__) if logger is None else logger
         self.init_parser(filepath, logger)
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         sec_run.program = Program(name='GPAW', version=self.parser.get_program_version())
 
         self.parse_method()

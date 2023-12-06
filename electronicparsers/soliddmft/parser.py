@@ -25,15 +25,15 @@ import re
 from typing import Any, Dict, Union
 from nomad.units import ureg
 from simulationworkflowschema import SinglePoint
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.run import Run, Program
+from runschema.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, GreensFunctions, Dos, DosValues
 )
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.method import (
     Method, AtomParameters, HubbardKanamoriModel, KMesh, FrequencyMesh,
     TimeMesh, DMFT
 )
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
+from runschema.system import System, Atoms
 from .metainfo.soliddmft import x_soliddmft_observables_parameters
 from nomad.parsing.parser import to_hdf5
 from ..utils import numpy_type_to_json_serializable
@@ -120,8 +120,10 @@ class SolidDMFTParser:
         # TODO speak with solid_dmft devs to include this info in the output
         sec_run = self.archive.run[-1]
         if self.dft_input.get('kpt_basis'):
-            sec_system = sec_run.m_create(System)
-            sec_atoms = sec_system.m_create(Atoms)
+            sec_system = System()
+            sec_run.system.append(sec_system)
+            sec_atoms = Atoms()
+            sec_system.atoms = sec_atoms
             kpt_basis = self.extract_groups_datasets(self.dft_input.get('kpt_basis'))
             if kpt_basis is not None:
                 sec_atoms.lattice_vectors_reciprocal = kpt_basis / ureg.angstrom
@@ -139,7 +141,8 @@ class SolidDMFTParser:
             data (HDF5file): The data read from the h5 mainfile.
         """
         sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
 
         # DFTTools code-specific input
         for group_name in ['dft_input', 'dft_misc_input', 'dft_symmcorr_input']:
@@ -161,7 +164,8 @@ class SolidDMFTParser:
         general_params = self.dmft_input.get('general_params')
         for n in range(n_impurities):
             n_imp = str(n)
-            sec_atom_parameters = sec_method.m_create(AtomParameters)
+            sec_atom_parameters = AtomParameters()
+            sec_method.atom_parameters.append(sec_atom_parameters)
             atom_impurity = self.dft_input.get('corr_shells')
             if atom_impurity:
                 atom_index = self.extract_groups_datasets(atom_impurity.get(n_imp).get('atom'))
@@ -174,7 +178,8 @@ class SolidDMFTParser:
                     orbital_labels = [f'{angular_momentum}{ml}' for ml in range(n_orbitals)]
                     sec_atom_parameters.orbitals = orbital_labels
 
-            sec_hubbard_kanamori_model = sec_atom_parameters.m_create(HubbardKanamoriModel)
+            sec_hubbard_kanamori_model = HubbardKanamoriModel()
+            sec_atom_parameters.hubbard_kanamori_model = sec_hubbard_kanamori_model
             hubbard_u = self.extract_groups_datasets(general_params.get('U').get(n_imp))
             hubbard_j = self.extract_groups_datasets(general_params.get('J').get(n_imp))
             if hubbard_u is not None and hubbard_j is not None:
@@ -205,7 +210,8 @@ class SolidDMFTParser:
             If the dataset changes or is restructured, this method may need adjustments.
         """
         sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         # ref to the Non- and InteractionHamiltonian
         sec_method.starting_method_ref = sec_run.method[0]
 
@@ -218,7 +224,8 @@ class SolidDMFTParser:
             sec_method.m_set(sec_method.m_get_quantity_definition(f'x_soliddmft_{group_name}'), params)
 
         # KMesh
-        sec_k_mesh = sec_method.m_create(KMesh)
+        sec_k_mesh = KMesh()
+        sec_method.k_mesh = sec_k_mesh
         n_k = self.extract_groups_datasets(self.dft_input.get('n_k'), 1)
         sec_k_mesh.n_points = n_k
         kpts = self.extract_groups_datasets(self.dft_input.get('kpts'))
@@ -228,7 +235,8 @@ class SolidDMFTParser:
         sec_k_mesh.weights = kpt_weights
 
         # DMFT
-        sec_dmft = sec_method.m_create(DMFT)
+        sec_dmft = DMFT()
+        sec_method.dmft = sec_dmft
         n_impurities = self.extract_groups_datasets(self.dft_input.get('n_inequiv_shells'), 1)
         sec_dmft.n_impurities = n_impurities
         impurity_orbitals = []
@@ -295,7 +303,8 @@ class SolidDMFTParser:
         The parsed information is stored under self.archive.run[0].calculation[0]
         """
         sec_run = self.archive.run[-1]
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
         sec_scc.system_ref = sec_run.system[-1] if sec_run.system else None
         sec_scc.method_ref = sec_run.method[-1]  # ref to DMFT
 
@@ -312,7 +321,8 @@ class SolidDMFTParser:
                 convergence_obs (Dict[str, Any]): Convergence of observables.
                 observables (Dict[str, Any]): Observables.
             """
-            sec_scf = sec_scc.m_create(ScfIteration)
+            sec_scf = ScfIteration()
+            sec_scc.scf_iteration.append(sec_scf)
             # Convergence of the observables per scf iteration step
             conv_obs = {}
             for key, value in convergence_obs.items():
@@ -333,7 +343,8 @@ class SolidDMFTParser:
             sec_scf.x_soliddmft_convergence_obs = conv_obs
 
             # Energy per scf iteration step
-            sec_energy = sec_scf.m_create(Energy)
+            sec_energy = Energy()
+            sec_scf.energy = sec_energy
             total_energy = self.extract_groups_datasets(observables.get('E_tot', {}).get(f'{i_scf + 1}'))
             if total_energy:
                 total_energy = total_energy * ureg.eV
@@ -353,7 +364,8 @@ class SolidDMFTParser:
                 with self.archive.m_context.raw_file(filename, farg) as file:
                     for n in range(n_impurities):
                         n_imp = str(n_imp)
-                        sec_obs_scf = sec_scf.m_create(x_soliddmft_observables_parameters)
+                        sec_obs_scf = x_soliddmft_observables_parameters()
+                        sec_scf.x_soliddmft_observables.append(sec_obs_scf)
                         for gf_iteration in self.iteration_gfs:
                             if f'{gf_iteration}_{n_imp}' not in scf_iteration.keys():
                                 continue
@@ -384,11 +396,13 @@ class SolidDMFTParser:
                 sec_scc (Calculation): Calculation section.
                 n_impurities (int): Number of impurities.
             """
-            sec_gfs = sec_scc.m_create(GreensFunctions)
+            sec_gfs = GreensFunctions()
+            sec_scc.greens_functions.append(sec_gfs)
 
             # First, store energies
             dmft_last_iter = self.dmft_results.get('last_iter')
-            sec_energy = sec_scc.m_create(Energy)
+            sec_energy = Energy()
+            sec_scc.energy = sec_energy
             if dmft_last_iter.get('DC_energ'):
                 dc_energy = [self.extract_groups_datasets(dmft_last_iter.get('DC_energ').get(keys)) for keys in dmft_last_iter.get('DC_energ')]
                 sec_energy.double_counting = EnergyEntry(values_per_atom=dc_energy * ureg.eV)
@@ -445,7 +459,8 @@ class SolidDMFTParser:
 
                 im_greens_functions_freq = sec_gfs.greens_function_freq.imag
                 for spin_channel in range(n_spin_channels):
-                    sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                    sec_dos = Dos()
+                    sec_scc.dos_electronic.append(sec_dos)
                     sec_dos.spin_channel = spin_channel if n_spin_channels == 2 else None
                     sec_dos.kind = 'spectral'
                     sec_dos.energy_fermi = chemical_potential * ureg.eV
@@ -460,7 +475,8 @@ class SolidDMFTParser:
                         for i_orb in range(value.shape[1]):
                             value_total += value[i_at][i_orb]
                     value_total = 2 * value_total if n_spin_channels == 2 else value_total
-                    sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+                    sec_dos_total = DosValues()
+                    sec_dos.total.append(sec_dos_total)
                     sec_dos_total.value = value_total / ureg.eV
             return sec_gfs
 
@@ -519,10 +535,12 @@ class SolidDMFTParser:
         self.dmft_input = data.get('DMFT_input')
         self.dmft_results = data.get('DMFT_results')
 
-        sec_run = archive.m_create(Run)
+        sec_run = Run()
+        archive.run.append(sec_run)
 
         # Program section
-        sec_program = sec_run.m_create(Program)
+        sec_program = Program()
+        sec_run.program = sec_program
         sec_program.name = 'solid_dmft'
         if self.dmft_input['version'] is not None:
             for name in self.code_keys:

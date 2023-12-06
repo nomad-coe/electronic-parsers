@@ -27,14 +27,14 @@ import numpy as np
 from nomad.units import ureg
 from nomad import atomutils  # type: ignore
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.run import Run, Program, TimeRun
+from runschema.system import (
     System, Atoms)
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.method import (
     Method, BasisSet, Electronic, Scf, DFT, XCFunctional, Functional,
     BasisSetAtomCentered, BasisSetContainer,
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandStructure,
     BandEnergies, Dos, DosValues
 )
@@ -577,7 +577,8 @@ class CrystalParser:
                 f25 = self.parse_f25(f25_filepath)
 
         # Run
-        run = archive.m_create(Run)
+        run = Run()
+        archive.run.append(run)
         run.program = Program(name='Crystal', version=out["program_version"])
         run.x_crystal_datetime = out["datetime"]
         run.x_crystal_hostname = out["hostname"]
@@ -601,7 +602,8 @@ class CrystalParser:
 
         # System. There are several alternative sources for this information
         # depending on the run type.
-        system = run.m_create(System)
+        system = System()
+        run.system.append(system)
         system_edited = out["system_edited"]
         labels_positions = out["labels_positions"]
         lattice_vectors_restart = out["lattice_vectors_restart"]
@@ -669,7 +671,8 @@ class CrystalParser:
         system.x_crystal_space_group = space_group
 
         # Method
-        method = run.m_create(Method)
+        method = Method()
+        run.method.append(method)
 
         # Basis set
         basis_set = out["basis_set"]
@@ -789,14 +792,16 @@ class CrystalParser:
         method.x_crystal_n_k_points_gilat = out["n_k_points_gilat"]
 
         # SCC
-        scc = run.m_create(Calculation)
+        scc = Calculation()
+        run.calculation.append(scc)
         scf_block = out["scf_block"]
         if scf_block is not None:
             number_of_scf_iterations = out["number_of_scf_iterations"]
             scc.calculation_converged = number_of_scf_iterations is not None
             for scf in scf_block["scf_iterations"]:  # pylint: disable=E1136
                 energies = scf["energies"]
-                section_scf = scc.m_create(ScfIteration)
+                section_scf = ScfIteration()
+                scc.scf_iteration.append(section_scf)
                 section_scf.energy = Energy()
                 if energies is not None:
                     section_scf.energy.total = EnergyEntry(value=energies[0])
@@ -828,12 +833,14 @@ class CrystalParser:
         # Band structure
         band_structure = out["band_structure"]
         if band_structure is not None:
-            section_band = scc.m_create(BandStructure, Calculation.band_structure_electronic)
+            section_band = BandStructure()
+            scc.band_structure_electronic.append(section_band)
             section_band.reciprocal_cell = atomutils.reciprocal_cell(system.atoms.lattice_vectors.magnitude) * 1 / ureg.meter
             segments = band_structure["segments"]  # pylint: disable=E1136
             k_points = to_k_points(segments)
             for i_seg, segment in enumerate(segments):
-                section_segment = section_band.m_create(BandEnergies)
+                section_segment = BandEnergies()
+                section_band.segment.append(section_segment)
                 _ = segment["start_end"]
                 section_segment.kpoints = k_points[i_seg]
                 section_segment.n_kpoints = k_points[i_seg].shape[0]
@@ -878,7 +885,8 @@ class CrystalParser:
             if f25 is not None:
                 dos_f25 = f25["dos"]
                 if dos_f25 is not None:
-                    scc_dos = run.m_create(Calculation)
+                    scc_dos = Calculation()
+                    run.calculation.append(scc_dos)
                     scc_dos.system_ref = system
                     scc_dos.method_ref = method
                     scc_dos.energy = Energy(fermi=fermi_energy * ureg.hartree)
@@ -895,10 +903,12 @@ class CrystalParser:
                     # Writing into the arhcive
                     n_spin_channels = len(dos_values)
                     for spin in range(n_spin_channels):
-                        sec_dos = scc_dos.m_create(Dos, Calculation.dos_electronic)
+                        sec_dos = Dos()
+                        scc_dos.dos_electronic.append(sec_dos)
                         sec_dos.spin_channel = spin if n_spin_channels == 2 else None
                         sec_dos.energies = (start_energy + np.arange(rows) * de) * ureg.hartree
-                        sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+                        sec_dos_total = DosValues()
+                        sec_dos.total.append(sec_dos_total)
                         sec_dos_total.value = dos_values[spin]
 
         # Sampling
@@ -921,8 +931,10 @@ class CrystalParser:
 
                 frames = []
                 for step in steps[1:]:
-                    i_scc = run.m_create(Calculation)
-                    i_system = run.m_create(System)
+                    i_scc = Calculation()
+                    run.calculation.append(i_scc)
+                    i_system = System()
+                    run.system.append(i_system)
                     i_energy = step["energy"]
                     if step["labels_positions_nanotube"] is not None:
                         i_labels_positions = step["labels_positions_nanotube"]

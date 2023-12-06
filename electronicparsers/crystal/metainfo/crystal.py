@@ -22,13 +22,13 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference
 )
-from nomad.datamodel.metainfo import simulation
+import runschema
 
 
 m_package = Package()
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -68,7 +68,7 @@ class System(simulation.system.System):
         ''')
 
 
-class ScfIteration(simulation.calculation.ScfIteration):
+class ScfIteration(runschema.calculation.ScfIteration):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -105,7 +105,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         ''')
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -187,7 +187,7 @@ class Run(simulation.run.Run):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -506,7 +506,7 @@ class Method(simulation.method.Method):
         ''')
 
 
-class BasisSetAtomCentered(simulation.method.BasisSetAtomCentered):
+class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
 
     m_def = Section(validate=False, extends_base_section=True)
 

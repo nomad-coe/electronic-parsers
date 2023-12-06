@@ -24,15 +24,15 @@ from datetime import datetime
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program, TimeRun
+from runschema.method import (
     Functional, Method, DFT, Electronic, XCFunctional, Smearing,
     BasisSetContainer, BasisSet, AtomParameters
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Thermodynamics, Stress,
     StressEntry, Charges, ChargesValue, ScfIteration, BandStructure, BandEnergies,
     VibrationalFrequencies, VibrationalFrequenciesValues
@@ -748,7 +748,8 @@ class CastepParser:
                     return os.path.join(self.maindir, path)
 
     def parse_method(self):
-        sec_method = self.archive.run[0].m_create(Method)
+        sec_method = Method()
+        self.archive.run[0].method.append(sec_method)
         title = self.out_parser.get('title', {})
 
         # basis set
@@ -769,7 +770,8 @@ class CastepParser:
         )
 
         # DFT
-        sec_dft = sec_method.m_create(DFT)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
         method = 'DFT+U' if self.out_parser.get('dft_u') is not None else 'DFT'
         sec_method.electronic = Electronic(method=method, n_spin_channels=self.n_spin_channels)
 
@@ -781,7 +783,8 @@ class CastepParser:
             xc_functionals = xc_parameters.get('using custom xc functional definition', [])
         xc_functionals = xc_functionals if isinstance(xc_functionals, list) else [xc_functionals]
 
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         for xc_functional in xc_functionals:
             # when custom, a weight is attached
             xc_weight = None
@@ -814,7 +817,8 @@ class CastepParser:
         electronic_parameters = title.get('electronic minimization parameters', {})
         smearing = electronic_parameters.get('smearing scheme')
         if smearing is not None:
-            sec_smearing = sec_method.electronic.m_create(Smearing)
+            sec_smearing = Smearing()
+            sec_method.electronic.smearing = sec_smearing
             sec_smearing.kind = smearing.lower()
             width = electronic_parameters.get('smearing width')
             if width is not None:
@@ -825,7 +829,8 @@ class CastepParser:
             return
 
         for name, mass in species.get('mass', []):
-            sec_atom_parameters = sec_method.m_create(AtomParameters)
+            sec_atom_parameters = AtomParameters()
+            sec_method.atom_parameters.append(sec_atom_parameters)
             sec_atom_parameters.label = name
             sec_atom_parameters.mass = mass
 
@@ -913,7 +918,8 @@ class CastepParser:
 
             if len(kpoint_path) == 0:
                 # write energies to eigenvalues
-                sec_eigenvalues = sec_scc.m_create(BandEnergies)
+                sec_eigenvalues = BandEnergies()
+                sec_scc.eigenvalues.append(sec_eigenvalues)
                 sec_eigenvalues.n_kpoints = len(kpts)
                 sec_eigenvalues.kpoints = kpts
                 sec_eigenvalues.energies = band_energies
@@ -921,15 +927,16 @@ class CastepParser:
                 # write band energies on segments
                 nodes = np.array([path[:3] for path in kpoint_path], dtype=np.dtype(np.float64))
                 labels = ['\u0393' if path[-1].lower() == 'gamma' else path[-1] for path in kpoint_path]
-                sec_bandstructure = sec_scc.m_create(
-                    BandStructure, Calculation.band_structure_electronic)
+                sec_bandstructure = BandStructure()
+                sec_scc.band_structure_electronic.append(sec_bandstructure)
                 start = 0
                 for n, node in enumerate(nodes[1:]):
                     node_index = np.where(kpts == node)[0]
                     for index in node_index:
                         if np.count_nonzero(node_index == index) == 3 and index > start:
                             break
-                    sec_band_segment = sec_bandstructure.m_create(BandEnergies)
+                    sec_band_segment = BandEnergies()
+                    sec_bandstructure.segment.append(sec_band_segment)
                     sec_band_segment.n_bands = len(band_energies[0][start])
                     sec_band_segment.n_kpoints = int(index + 1 - start)
                     sec_band_segment.kpoints = kpts[start:index + 1]
@@ -939,10 +946,12 @@ class CastepParser:
                     start = index
 
         def parse_scc(source):
-            sec_scc = sec_run.m_create(Calculation)
+            sec_scc = Calculation()
+            sec_run.calculation.append(sec_scc)
             energy_unit = self.units.get('energy', 1)
 
-            sec_energy = sec_scc.m_create(Energy)
+            sec_energy = Energy()
+            sec_scc.energy = sec_energy
             if source.get('energy_total') is not None:
                 sec_energy.total = EnergyEntry(value=source.get('energy_total') * energy_unit)
 
@@ -962,15 +971,18 @@ class CastepParser:
             # forces
             forces = source.get('forces')
             if forces is not None:
-                sec_forces = sec_scc.m_create(Forces)
+                sec_forces = Forces()
+                sec_scc.forces = sec_forces
                 sec_forces.total = ForcesEntry(value=forces[1] * self.units.get('force', 1))
 
-            sec_thermo = sec_scc.m_create(Thermodynamics)
+            sec_thermo = Thermodynamics()
+            sec_scc.thermodynamics.append(sec_thermo)
             # stress tensor
             stress_tensor = source.get('stress_tensor')
             if stress_tensor is not None:
                 if stress_tensor.get('stress_tensor') is not None:
-                    sec_stress = sec_scc.m_create(Stress)
+                    sec_stress = Stress()
+                    sec_scc.stress = sec_stress
                     sec_stress.total = StressEntry(
                         value=stress_tensor.get('stress_tensor') * self.units.get('pressure', 1))
                 if stress_tensor.get('pressure') is not None:
@@ -992,7 +1004,8 @@ class CastepParser:
             mulliken = source.get('mulliken')
             if mulliken is not None:
                 species = mulliken.get('Species', [])
-                sec_charges = sec_scc.m_create(Charges)
+                sec_charges = Charges()
+                sec_scc.charges.append(sec_charges)
                 sec_charges.analysis_method = 'mulliken'
                 orbitals = [o for o in 'spdf' if mulliken.get(o) is not None]
                 sec_charges.n_charges_orbitals = len(orbitals)
@@ -1000,7 +1013,8 @@ class CastepParser:
                 sec_charges.value = mulliken['Total']
                 for n, specie in enumerate(species):
                     for orbital in orbitals:
-                        sec_charges_value = sec_charges.m_create(ChargesValue, Charges.orbital_projected)
+                        sec_charges_value = ChargesValue()
+                        sec_charges.orbital_projected.append(sec_charges_value)
                         sec_charges_value.orbital = orbital
                         sec_charges_value.atom_index = n
                         sec_charges_value.atom_label = specie
@@ -1009,18 +1023,22 @@ class CastepParser:
             # vibrational frequencies
             # why are vibrational frequencies section under section_run?
             for vibrational_frequencies in source.get('vibrational_frequencies', []):
-                sec_frequencies = sec_run.m_create(x_castep_section_vibrational_frequencies)
-                sec_vibrations = sec_scc.m_create(VibrationalFrequencies)
+                sec_frequencies = x_castep_section_vibrational_frequencies()
+                sec_run.x_castep_section_vibrational_frequencies.append(sec_frequencies)
+                sec_vibrations = VibrationalFrequencies()
+                sec_scc.vibrational_frequencies.append(sec_vibrations)
                 for key, val in vibrational_frequencies.items():
                     if key == 'vibrational_frequencies':
                         sec_vibrations.value = val * (1 / ureg.cm)
                     elif key == 'ir_intensity':
-                        sec_ir = sec_vibrations.m_create(VibrationalFrequenciesValues, VibrationalFrequencies.infrared)
+                        sec_ir = VibrationalFrequenciesValues()
+                        sec_vibrations.infrared = sec_ir
                         sec_ir.intensity = val
                         if vibrational_frequencies.get('ir_active') is not None:
                             sec_ir.activity = vibrational_frequencies.get('ir_active')
                     elif key == 'raman_activity':
-                        sec_raman = sec_vibrations.m_create(VibrationalFrequenciesValues, VibrationalFrequencies.raman)
+                        sec_raman = VibrationalFrequenciesValues()
+                        sec_vibrations.raman = sec_raman
                         sec_raman.intensity = val
                         if vibrational_frequencies.get('raman_active') is not None:
                             sec_raman.activity = vibrational_frequencies.get('raman_active')
@@ -1028,7 +1046,8 @@ class CastepParser:
 
             # raman tensors
             for raman_tensor in source.get('raman_tensor', []):
-                sec_raman = sec_run.m_create(x_castep_section_raman_tensor)
+                sec_raman = x_castep_section_raman_tensor()
+                sec_run.x_castep_section_raman_tensor.append(sec_raman)
                 unit = (self.units.get('length', ureg.angstrom) / self.units.get('mass', ureg.amu)) * 0.5
                 sec_raman.x_castep_raman_tensor = raman_tensor * unit
 
@@ -1036,7 +1055,8 @@ class CastepParser:
             interaction = source.get('interaction_energy')
             if interaction is not None:
                 for shell in interaction.get('shell', []):
-                    sec_sedc = sec_scc.m_create(x_castep_section_DFT_SEDC)
+                    sec_sedc = x_castep_section_DFT_SEDC()
+                    sec_scc.x_castep_section_DFT_SEDC.append(sec_sedc)
                     sec_sedc.x_castep_shell = shell[0]
                     sec_sedc.x_castep_correction_energy = (shell[1] * energy_unit).to('J').magnitude
                     sec_sedc.x_castep_de_atom = (shell[2] * energy_unit).to('J').magnitude
@@ -1057,8 +1077,10 @@ class CastepParser:
 
             # scf iteration
             for n, scf in enumerate(source.get('scf', [])):
-                sec_scf = sec_scc.m_create(ScfIteration)
-                sec_scf_energy = sec_scf.m_create(Energy)
+                sec_scf = ScfIteration()
+                sec_scc.scf_iteration.append(sec_scf)
+                sec_scf_energy = Energy()
+                sec_scf.energy = sec_scf_energy
                 sec_scf.energy.total = EnergyEntry(value=scf[0] * energy_unit)
                 if len(scf) == 4:
                     sec_scf_energy.fermi = scf[1] * energy_unit
@@ -1077,8 +1099,10 @@ class CastepParser:
             return sec_scc
 
         def parse_system(source):
-            sec_system = sec_run.m_create(System)
-            sec_atoms = sec_system.m_create(Atoms)
+            sec_system = System()
+            sec_run.system.append(sec_system)
+            sec_atoms = Atoms()
+            sec_system.atoms = sec_atoms
             length_unit = self.units.get('length', 1)
 
             unit_cell = source.get('unit_cell', self.out_parser.get('unit_cell', {}))
@@ -1102,7 +1126,8 @@ class CastepParser:
 
             lattice_parameters = unit_cell.get('lattice_parameters')
             if lattice_parameters is not None:
-                sec_positions = sec_system.m_create(x_castep_section_atom_positions)
+                sec_positions = x_castep_section_atom_positions()
+                sec_system.x_castep_section_atom_positions.append(sec_positions)
                 for key, val in lattice_parameters.items():
                     if key in ('a', 'b', 'c'):
                         val *= length_unit
@@ -1115,7 +1140,8 @@ class CastepParser:
             tddft = source.get('tddft')
             if tddft is not None:
                 for energies in tddft.get('energies', []):
-                    sec_tddft = sec_system.m_create(x_castep_section_tddft)
+                    sec_tddft = x_castep_section_tddft()
+                    sec_system.x_castep_section_tddft.append(sec_tddft)
                     energies = energies * self.units.get('energy', ureg.eV)
                     sec_tddft.x_castep_state_energy = energies[1].to('J').magnitude
                     sec_tddft.x_castep_state_energy_error = energies[2].to('J').magnitude
@@ -1218,11 +1244,16 @@ class CastepParser:
                 return
 
             create = True
+            section = None
             for section in sec_run.m_contents():
                 if section.m_def == definition.m_def:
                     create = False
                     break
-            return sec_run.m_create(definition) if create else section
+            if create:
+                section = definition()
+                sub_section_def = sec_run.m_def.all_sub_sections_by_section.get(definition.m_def)[0]
+                sec_run.m_add_sub_section(sub_section_def, section)
+            return section
 
         for key in title.keys():
             section = create_section(section_map.get(key))
@@ -1237,7 +1268,8 @@ class CastepParser:
         # van der Waals
         dft_d = self.out_parser.get('dft_d')
         if dft_d is not None:
-            sec_vdW = sec_run.m_create(x_castep_section_van_der_Waals_parameters)
+            sec_vdW = x_castep_section_van_der_Waals_parameters()
+            sec_run.x_castep_section_van_der_Waals_parameters.append(sec_vdW)
             if dft_d.get('method') is not None:
                 sec_vdW.x_castep_disp_method_name = dft_d.get('method')
             for parameter in dft_d.get('parameter', []):
@@ -1252,7 +1284,8 @@ class CastepParser:
 
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         version = self.out_parser.get('program_version', ['CASTEP', ''])
         sec_run.program = Program(name=version[0])
         if version[1]:
@@ -1288,7 +1321,8 @@ class CastepParser:
         time = self.out_parser.get('time')
         if time is not None:
             total_time = None
-            sec_time = sec_run.m_create(x_castep_section_time)
+            sec_time = x_castep_section_time()
+            sec_run.x_castep_section_time.append(sec_time)
             for key, val in time:
                 if key == 'Total':
                     total_time = val

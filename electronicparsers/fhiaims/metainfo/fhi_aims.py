@@ -22,8 +22,8 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference, MEnum, JSON
 )
-from nomad.datamodel.metainfo import simulation
 import simulationworkflowschema
+import runschema
 
 
 m_package = Package()
@@ -664,7 +664,7 @@ class x_fhi_aims_section_eigenvalues_spin_perturbativeGW(MSection):
     m_def = Section(validate=False)
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -725,7 +725,7 @@ class Calculation(simulation.calculation.Calculation):
         ''')
 
 
-class ScfIeration(simulation.calculation.ScfIteration):
+class ScfIeration(runschema.calculation.ScfIteration):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -842,7 +842,7 @@ class ScfIeration(simulation.calculation.ScfIteration):
         type=float, unit='eV')
 
 
-class DosValues(simulation.calculation.DosValues):
+class DosValues(runschema.calculation.DosValues):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -855,7 +855,7 @@ class DosValues(simulation.calculation.DosValues):
         ''')
 
 
-class BandStructure(simulation.calculation.BandStructure):
+class BandStructure(runschema.calculation.BandStructure):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -895,7 +895,7 @@ class BandStructure(simulation.calculation.BandStructure):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -1226,7 +1226,7 @@ class Method(simulation.method.Method):
         repeats=True)
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -1287,7 +1287,7 @@ class Run(simulation.run.Run):
         repeats=False)
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -1371,7 +1371,7 @@ class System(simulation.system.System):
         ''')
 
 
-class AtomParameters(simulation.method.AtomParameters):
+class AtomParameters(runschema.method.AtomParameters):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -1380,7 +1380,7 @@ class AtomParameters(simulation.method.AtomParameters):
         repeats=True)
 
 
-class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):
+class HubbardKanamoriModel(runschema.method.HubbardKanamoriModel):
 
     m_def = Section(validate=False, extends_base_section=True)
 

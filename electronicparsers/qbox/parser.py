@@ -24,14 +24,14 @@ from datetime import datetime
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.run import Run, Program, TimeRun
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.method import (
     Method, DFT, XCFunctional, Functional
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, ScfIteration, Forces, ForcesEntry, Stress,
     StressEntry, Multipoles, MultipolesEntry
 )
@@ -215,7 +215,8 @@ class QboxParser:
         self.out_parser.logger = self.logger
 
     def parse_run(self, index):
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         sec_run.program = Program(name='qbox', version=self.out_parser.get('program_version'))
 
         def format_time(time):
@@ -226,7 +227,8 @@ class QboxParser:
             date_start=format_time(self.out_parser.start_time),
             date_end=format_time(self.out_parser.end_time))
 
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         parameters = {key: val for key, val in self.out_parser.run[index].get('parameter', [])}
         sec_method.x_qbox_input_parameters = parameters
         if parameters.get('xc') is not None:
@@ -255,9 +257,11 @@ class QboxParser:
 
         for iteration in self.out_parser.run[index].get('iteration', []):
             time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
-            sec_scc = sec_run.m_create(Calculation)
+            sec_scc = Calculation()
+            sec_run.calculation.append(sec_scc)
             sec_scc.energy = Energy()
-            sec_system = sec_run.m_create(System)
+            sec_system = System()
+            sec_run.system.append(sec_system)
             sec_scc.system_ref = sec_system
 
             for key, val in iteration.items():
@@ -265,7 +269,8 @@ class QboxParser:
                     setattr(sec_scc.energy, key.replace('energy_', ''), EnergyEntry(value=val))
 
             if iteration.stress_tensor is not None:
-                sec_stress = sec_scc.m_create(Stress)
+                sec_stress = Stress()
+                sec_scc.stress = sec_stress
                 for contribution in iteration.stress_tensor.get('contribution', []):
                     value = symmetrize_stress(contribution.get('value', []))
                     if contribution.kind is None or contribution.kind == 'ks':
@@ -277,7 +282,8 @@ class QboxParser:
                         ))
 
             if iteration.multipole is not None:
-                sec_multipoles = sec_scc.m_create(Multipoles)
+                sec_multipoles = Multipoles()
+                sec_scc.multipoles.append(sec_multipoles)
                 for multipole in iteration.multipole:
                     # TODO add contributions
                     for dipole in multipole.get('dipole', []):
@@ -289,12 +295,14 @@ class QboxParser:
 
             if iteration.mlwf is not None:
                 for center in iteration.mlwf.get('center', []):
-                    sec_mlwf = sec_scc.m_create(x_qbox_section_MLWF)
+                    sec_mlwf = x_qbox_section_MLWF()
+                    sec_scc.x_qbox_section_MLWF.append(sec_mlwf)
                     sec_mlwf.x_qbox_geometry_MLWF_atom_positions = center[:3] * ureg.bohr
                     sec_mlwf.x_qbox_geometry_MLWF_atom_spread = center[3] * ureg.bohr
 
             for scf in iteration.get('scf', []):
-                sec_scf = sec_scc.m_create(ScfIteration)
+                sec_scf = ScfIteration()
+                sec_scc.scf_iteration.append(sec_scf)
                 sec_scf.energy = Energy(
                     total=EnergyEntry(value=scf.energy_total),
                     sum_eigenvalues=EnergyEntry(value=scf.energy_sum_eigenvalues))

@@ -24,14 +24,14 @@ from ase.data import chemical_symbols
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
 
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program
+from runschema.method import (
     Method, AtomParameters, DFT, XCFunctional, Functional, Electronic, BasisSet,
     BasisSetAtomCentered, BasisSetContainer)
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandEnergies,
     Charges, ChargesValue, Multipoles, MultipolesEntry
 )
@@ -569,7 +569,8 @@ class GamessParser:
         self._nspin = None
 
     def parse_method(self):
-        sec_method = self.archive.run[-1].m_create(Method)
+        sec_method = Method()
+        self.archive.run[-1].method.append(sec_method)
 
         for key in ['basis', 'control', 'system']:
             setattr(sec_method, 'x_gamess_%s_options' % key, {
@@ -579,7 +580,8 @@ class GamessParser:
             setattr(sec_method, 'x_gamess_basis_set_%s' % key.lower(), val)
 
         for value in self.out_parser.get('coordinates', {}).get('label_charge', []):
-            atom = sec_method.m_create(AtomParameters)
+            atom = AtomParameters()
+            sec_method.atom_parameters.append(atom)
             atom.label = value[0]
             atom.charge = float(value[1]) * ureg.elementary_charge
 
@@ -666,7 +668,8 @@ class GamessParser:
 
     def parse_calculation(self, source):
         time_initial = self.archive.run[-1].calculation[-1].time_physical if self.archive.run[-1].calculation else 0 * ureg.s
-        sec_scc = self.archive.run[-1].m_create(Calculation)
+        sec_scc = Calculation()
+        self.archive.run[-1].calculation.append(sec_scc)
 
         if source.time_physical is not None:
             sec_scc.time_physical = source.time_physical[-1] * ureg.s
@@ -674,7 +677,8 @@ class GamessParser:
 
         if source.scf is not None:
             for iteration in source.scf.get('iteration', {}).get('iter', []):
-                sec_scf = sec_scc.m_create(ScfIteration)
+                sec_scf = ScfIteration()
+                sec_scc.scf_iteration.append(sec_scf)
                 sec_scf.energy = Energy(
                     total=EnergyEntry(value=iteration[0] * ureg.hartree),
                     change=iteration[1] * ureg.hartree)
@@ -684,7 +688,8 @@ class GamessParser:
 
             eigenvalues = source.scf.get('eigenvectors', {}).get('eigenvalues')
             if eigenvalues is not None:
-                sec_eigenvalues = sec_scc.m_create(BandEnergies)
+                sec_eigenvalues = BandEnergies()
+                sec_scc.eigenvalues.append(sec_eigenvalues)
                 eigenvalues = np.array(np.hstack(eigenvalues), dtype=np.float64)
                 shape = (self.nspin, 1, np.size(eigenvalues) // self.nspin)
                 sec_eigenvalues.energies = np.reshape(eigenvalues, shape) * ureg.hartree
@@ -694,7 +699,8 @@ class GamessParser:
         properties = source.get('properties')
         if properties is not None:
             energies = {key.strip().lower(): val for key, val in properties.get('energy_components', [])}
-            sec_energy = sec_scc.m_create(Energy)
+            sec_energy = Energy()
+            sec_scc.energy = sec_energy
             for key, val in energies.items():
                 # if key.endswith('potential energy') or key.endswith('kinetic energy'):
                 #     continue
@@ -718,13 +724,15 @@ class GamessParser:
             if population is not None:
                 methods = ['Mulliken', 'Lowdin']
                 for n, method in enumerate(methods):
-                    sec_charges = sec_scc.m_create(Charges)
+                    sec_charges = Charges()
+                    sec_scc.charges.append(sec_charges)
                     sec_charges.analysis_method = method
                     if population.atomic is not None:
                         sec_charges.value = population.atomic[n * 2 + 1] * ureg.elementary_charge
                     if population.atomic_orbitals is not None:
                         for norbital, orbital in enumerate(population.atomic_orbitals[1]):
-                            sec_orbital_charges = sec_charges.m_create(ChargesValue, Charges.orbital_projected)
+                            sec_orbital_charges = ChargesValue()
+                            sec_charges.orbital_projected.append(sec_orbital_charges)
                             sec_orbital_charges.atom_index = population.atomic_orbitals[0][norbital]
                             sec_orbital_charges.orbital = str(orbital)
                             sec_orbital_charges.value = float(population.atomic_orbitals[2 + n][norbital]) * ureg.elementary_charge
@@ -735,7 +743,8 @@ class GamessParser:
                 for nspin, charges in enumerate(population.get('spherical_harmonics', [])[:2]):
                     for norbital in range(len(charges[:-1])):
                         for natom in range(len(charges[norbital])):
-                            sec_orbital_charges = sec_scc.charges[0].m_create(ChargesValue, Charges.orbital_projected)
+                            sec_orbital_charges = ChargesValue()
+                            sec_scc.charges[0].orbital_projected.append(sec_orbital_charges)
                             sec_orbital_charges.atom_index = natom
                             sec_orbital_charges.spin = nspin
                             sec_orbital_charges.orbital = orbitals[norbital]
@@ -744,7 +753,8 @@ class GamessParser:
             moments = properties.get('electrostatic_moments')
             if moments is not None:
                 for dipole in moments.get('dipole', []):
-                    sec_multipoles = sec_scc.m_create(Multipoles)
+                    sec_multipoles = Multipoles()
+                    sec_scc.multipoles.append(sec_multipoles)
                     sec_multipoles.kind = 'electrostatic'
                     sec_multipoles.dipole = MultipolesEntry(
                         # origin=dipole.get('origin'),
@@ -756,7 +766,8 @@ class GamessParser:
     def parse_system(self, source):
         coordinates = source.get('coordinates', self.out_parser.coordinates)
         if coordinates is not None:
-            sec_system = self.archive.run[0].m_create(System)
+            sec_system = System()
+            self.archive.run[0].system.append(sec_system)
             unit = self._units.get(coordinates.get('unit'), 1)
             sec_system.atoms = Atoms(
                 labels=[chemical_symbols[int(lc[1])] for lc in coordinates.get('label_charge', [])],
@@ -768,7 +779,8 @@ class GamessParser:
         self.logger = logging.getLogger(__name__) if logger is None else logger
         self.init_parser()
 
-        run = archive.m_create(Run)
+        run = Run()
+        archive.run.append(run)
         run.program = Program(version=self.out_parser.get('program_version'))
         for key, val in self.out_parser.items():
             if key.startswith('x_gamess_'):

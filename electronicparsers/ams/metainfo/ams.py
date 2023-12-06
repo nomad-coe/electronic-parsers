@@ -22,6 +22,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference, JSON
 )
+import runschema
 from nomad.datamodel.metainfo import simulation
 import simulationworkflowschema
 
@@ -29,7 +30,7 @@ import simulationworkflowschema
 m_package = Package()
 
 
-class Program(simulation.run.Program):
+class Program(runschema.run.Program):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -46,7 +47,7 @@ class Program(simulation.run.Program):
         ''')
 
 
-class BandEnergies(simulation.calculation.BandEnergies):
+class BandEnergies(runschema.calculation.BandEnergies):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -72,78 +73,78 @@ class BandEnergies(simulation.calculation.BandEnergies):
         ''')
 
 
-class Energy(simulation.calculation.Energy):
+class Energy(runschema.calculation.Energy):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_ams_dispersion = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_dispersion = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_fit_error_correction = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_fit_error_correction = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_v_atomic_def = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_v_atomic_def = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_v_def_def = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_v_def_def = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_orthogonalization = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_orthogonalization = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_orbital_interaction = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_orbital_interaction = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_orbital_interaction_a = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_orbital_interaction_a = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_orbital_interaction_efield = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_orbital_interaction_efield = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_orbital_interaction_fit_correction = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_orbital_interaction_fit_correction = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_orbital_interaction_ts_correction_lda = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_orbital_interaction_ts_correction_lda = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_orbital_interaction_ts_correction_nl = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_orbital_interaction_ts_correction_nl = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_pauli_coulomb = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_pauli_coulomb = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_pauli_efield = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_pauli_efield = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_pauli_fit_correction = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_pauli_fit_correction = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_pauli_kinetic = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_pauli_kinetic = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_pauli_kinetic_coulomb = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_pauli_kinetic_coulomb = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_pauli_ts_correction_lda = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_pauli_ts_correction_lda = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_pauli = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_pauli = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_rpa = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_rpa = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_rpa = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_rpa = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_sum_fragments_scf_fit_correction = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_sum_fragments_scf_fit_correction = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_bond = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_bond = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_mp2 = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_mp2 = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
-    x_ams_bond_efield = SubSection(sub_section=simulation.calculation.EnergyEntry)
+    x_ams_bond_efield = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
 
-class Forces(simulation.calculation.Forces):
+class Forces(runschema.calculation.Forces):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_ams_p_matrix = SubSection(sub_section=simulation.calculation.ForcesEntry)
+    x_ams_p_matrix = SubSection(sub_section=runschema.calculation.ForcesEntry)
 
-    x_ams_electronic_kinetic = SubSection(sub_section=simulation.calculation.ForcesEntry)
+    x_ams_electronic_kinetic = SubSection(sub_section=runschema.calculation.ForcesEntry)
 
-    x_ams_electronic = SubSection(sub_section=simulation.calculation.ForcesEntry)
+    x_ams_electronic = SubSection(sub_section=runschema.calculation.ForcesEntry)
 
-    x_ams_xc = SubSection(sub_section=simulation.calculation.ForcesEntry)
+    x_ams_xc = SubSection(sub_section=runschema.calculation.ForcesEntry)
 
-    x_ams_electrostatic = SubSection(sub_section=simulation.calculation.ForcesEntry)
+    x_ams_electrostatic = SubSection(sub_section=runschema.calculation.ForcesEntry)
 
-    x_ams_pair_interactions = SubSection(sub_section=simulation.calculation.ForcesEntry)
+    x_ams_pair_interactions = SubSection(sub_section=runschema.calculation.ForcesEntry)
 
-    x_ams_dispersion = SubSection(sub_section=simulation.calculation.ForcesEntry)
+    x_ams_dispersion = SubSection(sub_section=runschema.calculation.ForcesEntry)
 
-    x_ams_nuclear_repulsion = SubSection(sub_section=simulation.calculation.ForcesEntry)
+    x_ams_nuclear_repulsion = SubSection(sub_section=runschema.calculation.ForcesEntry)
 
 
 class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
@@ -236,7 +237,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -380,7 +381,7 @@ class Method(simulation.method.Method):
         ''')
 
 
-class BasisSetAtomCentered(simulation.method.BasisSetAtomCentered):
+class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -397,7 +398,7 @@ class BasisSetAtomCentered(simulation.method.BasisSetAtomCentered):
         ''')
 
 
-class AtomParameters(simulation.method.AtomParameters):
+class AtomParameters(runschema.method.AtomParameters):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -510,7 +511,7 @@ class AtomParameters(simulation.method.AtomParameters):
         ''')
 
 
-class BandGapDeprecated(simulation.calculation.BandGapDeprecated):
+class BandGapDeprecated(runschema.calculation.BandGapDeprecated):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -545,7 +546,7 @@ class BandGapDeprecated(simulation.calculation.BandGapDeprecated):
         ''')
 
 
-class Scf(simulation.method.Scf):
+class Scf(runschema.method.Scf):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -616,7 +617,7 @@ class Scf(simulation.method.Scf):
         ''')
 
 
-class KMesh(simulation.method.KMesh):
+class KMesh(runschema.method.KMesh):
 
     m_def = Section(validate=False, extends_base_section=True)
 

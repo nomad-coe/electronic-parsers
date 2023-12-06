@@ -27,12 +27,12 @@ from datetime import datetime
 from .metainfo import m_env
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program, TimeRun
+from runschema.method import (
     AtomParameters, Method, BasisSet, BasisSetContainer, Electronic, Smearing, Scf,
     DFT, XCFunctional, Functional, KMesh)
-from nomad.datamodel.metainfo.simulation.system import System, Atoms, Symmetry
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.system import System, Atoms, Symmetry
+from runschema.calculation import (
     Calculation, Energy, Dos, DosValues, BandStructure, BandEnergies, EnergyEntry, ScfIteration,
     Forces, ForcesEntry, Stress, StressEntry)
 from simulationworkflowschema import (
@@ -1127,7 +1127,8 @@ class ABACUSParser:
         nbands = header.get('nbands')
 
         def parse_bandstructure(section):
-            sec_scc = sec_run.m_create(Calculation)
+            sec_scc = Calculation()
+            sec_run.calculation.append(sec_scc)
             sec_nscf = section.get('nonself_consistent')
 
             # atom data
@@ -1171,7 +1172,8 @@ class ABACUSParser:
                     if slabel == 'up':
                         band_k_points.append(state.kpoint.tolist())
                     band_energies.append(state.energies.tolist())
-            sec_k_band_segment = sec_k_band.m_create(BandEnergies)
+            sec_k_band_segment = BandEnergies()
+            sec_k_band.segment.append(sec_k_band_segment)
             sec_k_band_segment.kpoints = np.dot(np.linalg.inv(
                 header.get('reciprocal_vectors')), np.array(band_k_points).T).T
             sec_k_band_segment.energies = np.reshape(
@@ -1192,17 +1194,20 @@ class ABACUSParser:
             data = data.T
             n_spin_channels = len(data[1:])
             for spin in range(n_spin_channels):
-                sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                sec_dos = Dos()
+                sec_scc.dos_electronic.append(sec_dos)
                 sec_dos.spin_channel = spin if n_spin_channels == 2 else None
                 sec_dos.n_energies = len(data[0])
                 sec_dos.energies = data[0] * ureg.eV
-                sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+                sec_dos_total = DosValues()
+                sec_dos.total.append(sec_dos_total)
                 sec_dos_total.value = data[spin + 1] / ureg.eV
             # TODO: parse PDOS file
 
         def parse_scf(iteration):
             sec_scc = sec_run.calculation[-1]
-            sec_scf = sec_scc.m_create(ScfIteration)
+            sec_scf = ScfIteration()
+            sec_scc.scf_iteration.append(sec_scf)
 
             density_errors = iteration.get('density_error')
             sec_scf.x_abacus_density_change_scf_iteration = density_errors
@@ -1222,13 +1227,15 @@ class ABACUSParser:
                 setattr(sec_scf, f'x_abacus_{key}', val)
 
         def parse_system():
-            sec_system = sec_run.m_create(System)
+            sec_system = System()
+            sec_run.system.append(sec_system)
             structure = header.get('positions')
 
             # structure
             alat = header.get('alat')
             sec_system.x_abacus_alat = alat  # bohr
-            sec_atoms = sec_system.m_create(Atoms)
+            sec_atoms = Atoms()
+            sec_system.atoms = sec_atoms
             lattice_vectors = header.get('lattice_vectors') * alat
             sec_atoms.lattice_vectors = lattice_vectors
 
@@ -1259,7 +1266,8 @@ class ABACUSParser:
             # symmetry
             symmetry = header.get('symmetry')
             if symmetry:
-                sec_system_sym = sec_system.m_create(Symmetry)
+                sec_system_sym = Symmetry()
+                sec_system.symmetry.append(sec_system_sym)
                 sec_system_sym.crystal_system = symmetry.get('bravais_name')[
                     1].lower()
                 brav_dict = {
@@ -1291,7 +1299,8 @@ class ABACUSParser:
             sec_system.number_of_electrons_out = self.input_parser.get('nelec')
 
         def parse_section(section):
-            sec_scc = sec_run.m_create(Calculation)
+            sec_scc = Calculation()
+            sec_run.calculation.append(sec_scc)
 
             # atom data
             parse_system()
@@ -1320,7 +1329,8 @@ class ABACUSParser:
                         setattr(sec_scc, f'x_abacus_{key}', val)
 
             # energies
-            sec_energy = sec_scc.m_create(Energy)
+            sec_energy = Energy()
+            sec_scc.energy = sec_energy
             vdw_m_dict = {'d2': 'DFT-D2', 'd3_0': 'DFT-D3(0)', 'd3_bj': 'DFT-D3(BJ)'}
             # TODO AN: I do not quite understand this loop over scf_iterations
             # and the loop over iteration
@@ -1356,7 +1366,8 @@ class ABACUSParser:
             eigenvalues = sub_section.get('energy_occupation')
             if eigenvalues is not None:
                 kpoints, npws, eigs, eig, occs, occ = [], [], [], [], [], []
-                sec_eigenvalues = sec_scc.m_create(BandEnergies)
+                sec_eigenvalues = BandEnergies()
+                sec_scc.eigenvalues.append(sec_eigenvalues)
                 for s_label, data in eigenvalues.items():
                     for state in data:
                         if s_label == 'up':
@@ -1436,8 +1447,10 @@ class ABACUSParser:
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
-        sec_electronic = sec_method.m_create(Electronic)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
+        sec_electronic = Electronic()
+        sec_method.electronic = sec_electronic
         header = self.out_parser.get('header', {})
 
         # input parameters from INPUT file
@@ -1459,7 +1472,8 @@ class ABACUSParser:
             setattr(sec_method, f'x_abacus_{key}', val)
 
         # kmesh
-        sec_kmesh = sec_method.m_create(KMesh)
+        sec_kmesh = KMesh()
+        sec_method.k_mesh = sec_kmesh
         nkstot = header.get('nkstot')
         nkstot_ibz = header.get('nkstot_ibz')
         sec_kmesh.n_points = nkstot_ibz if nkstot_ibz is not None else nkstot
@@ -1505,8 +1519,8 @@ class ABACUSParser:
                     val = orbital_settings.get(key)
                     setattr(bs, f'x_abacus_basis_sets_{key}', val)
                 for i, orb in enumerate(orbital_settings.get('orbital_information', [])):
-                    sec_specie_basis_set = bs.m_create(
-                        x_abacus_section_specie_basis_set)
+                    sec_specie_basis_set = x_abacus_section_specie_basis_set()
+                    bs.x_abacus_section_specie_basis_set.append(sec_specie_basis_set)
                     sec_specie_basis_set.x_abacus_specie_basis_set_filename = os.path.basename(
                         header.get('orbital_files')[i])
                     ln_list = []
@@ -1538,7 +1552,8 @@ class ABACUSParser:
         # atom_kind and pseudopotential settings
         pp_xc = ''
         for i, pp in enumerate(header.get('pseudopotential', [])):
-            sec_atom_parameters = sec_method.m_create(AtomParameters)
+            sec_atom_parameters = AtomParameters()
+            sec_method.atom_parameters.append(sec_atom_parameters)
             sec_atom_parameters.label = header.get('atom_data')[i].get('label')
             sec_atom_parameters.n_valence_electrons = pp.get('valence')
             sec_atom_parameters.pseudopotential_name = os.path.basename(
@@ -1556,8 +1571,10 @@ class ABACUSParser:
         xc_in = self.input_parser.get('xc', None)
         xc = xc_in.upper() if xc_in is not None else pp_xc
         if xc is not None:
-            sec_dft = sec_method.m_create(DFT)
-            sec_xc_func = sec_dft.m_create(XCFunctional)
+            sec_dft = DFT()
+            sec_method.dft = sec_dft
+            sec_xc_func = XCFunctional()
+            sec_dft.xc_functional = sec_xc_func
             sec_method.x_abacus_xc_functional = xc
 
             # hybrid func
@@ -1616,13 +1633,15 @@ class ABACUSParser:
 
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        archive.run.append(sec_run)
         sec_run.program = Program(
             name='ABACUS', version=self.out_parser.get('program_version'))
         header = self.out_parser.get('header', {})
 
         # parallel
-        sec_parallel = sec_run.m_create(x_abacus_section_parallel)
+        sec_parallel = x_abacus_section_parallel()
+        sec_run.x_abacus_section_parallel.append(sec_parallel)
         sec_parallel.x_abacus_nproc = self.out_parser.get('nproc')
         for key in ['kpar', 'bndpar', 'diago_proc']:
             val = self.input_parser.get(key)
@@ -1675,7 +1694,8 @@ class ABACUSParser:
 
         # start date
         date_time = self.out_parser.get('start_date_time')
-        sec_time = sec_run.m_create(TimeRun)
+        sec_time = TimeRun()
+        sec_run.time_run = sec_time
         if date_time is not None:
             date_time = datetime.strptime(
                 date_time.replace(' ', ''), '%a%b%d%H:%M:%S%Y')

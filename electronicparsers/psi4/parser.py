@@ -23,12 +23,12 @@ import numpy as np
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program, TimeRun
+from runschema.system import System, Atoms
+from runschema.method import (
     Electronic, Method, BasisSet, BasisSetAtomCentered, Scf as ScfMethod, DFT,
     XCFunctional, Functional, BasisSetContainer,)
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, ScfIteration, BandEnergies,
     Multipoles, MultipolesEntry, Charges, ChargesValue)
 from simulationworkflowschema import (
@@ -591,7 +591,8 @@ class Psi4Parser:
         if source.geometry is None:
             return
 
-        system = self.archive.run[-1].m_create(System)
+        system = System()
+        self.archive.run[-1].system.append(system)
         atoms = source.geometry.get('atoms', [])
         # TODO determine lattice vectors
         system.atoms = Atoms(
@@ -628,7 +629,8 @@ class Psi4Parser:
         ]
 
     def parse_method(self, source):
-        method = self.archive.run[-1].m_create(Method)
+        method = Method()
+        self.archive.run[-1].method.append(method)
         if self._method is not None:
             method.electronic = Electronic(method=self._method)
             if self._method[:2] in ['MP', 'CI', 'MC', 'CC']:
@@ -655,7 +657,8 @@ class Psi4Parser:
             method.x_psi4_jk_matrices_parameters = source.jk_matrices.get('parameters', (None, None))[1]
 
         if source.algorithm is not None:
-            scf = method.m_create(ScfMethod)
+            scf = ScfMethod()
+            method.scf = scf
             for key, val in source.algorithm.items():
                 try:
                     setattr(scf, key, val)
@@ -663,8 +666,10 @@ class Psi4Parser:
                     pass
 
         if source.dft_potential is not None:
-            dft = method.m_create(DFT)
-            xc_functional = dft.m_create(XCFunctional)
+            dft = DFT()
+            method.dft = dft
+            xc_functional = XCFunctional()
+            dft.xc_functional = xc_functional
             # get xc functional from composite first
             if len(xc_functional.exchange) == 0 and len(xc_functional.correlation) == 0:
                 name, parameters = source.dft_potential.get('composite', (None, None))
@@ -692,25 +697,31 @@ class Psi4Parser:
                 dft.x_psi4_molecular_quadrature = source.dft_potential.molecular_quadrature[1]
 
     def parse_calculation(self, source):
-        calc = self.archive.run[-1].m_create(Calculation)
+        calc = Calculation()
+        self.archive.run[-1].calculation.append(calc)
         ref_calcs = []
 
         def parse_multipole(data, multipoles):
             if len(data) == 3:
-                section = multipoles.m_create(MultipolesEntry, Multipoles.dipole)
+                section = MultipolesEntry()
+                multipoles.dipole = section
                 exponent = 1
             elif len(data) == 6:
-                section = multipoles.m_create(MultipolesEntry, Multipoles.quadrupole)
+                section = MultipolesEntry()
+                multipoles.quadrupole = section
                 exponent = 2
             elif len(data) == 10:
-                section = multipoles.m_create(MultipolesEntry, Multipoles.octupole)
+                section = MultipolesEntry()
+                multipoles.octupole = section
                 exponent = 3
             elif len(data) == 15:
-                section = multipoles.m_create(MultipolesEntry, Multipoles.higher_order)
+                section = MultipolesEntry()
+                multipoles.higher_order.append(section)
                 section.kind = 'hexadecapole'
                 exponent = 4
             else:
-                section = multipoles.m_create(MultipolesEntry, Multipoles.higher_order)
+                section = MultipolesEntry()
+                multipoles.higher_order.append(section)
                 section.kind = '32-pole'
                 exponent = 5
             value = data * ureg.elementary_charge * ureg.bohr ** exponent
@@ -726,7 +737,8 @@ class Psi4Parser:
                 data = source.get('%s_dipole_moment' % multipole)
                 if data is None:
                     continue
-                multipoles = calc.m_create(Multipoles) if len(calc.multipoles) <= n else calc.multipoles[n]
+                multipoles = Multipoles()
+                calc.multipoles.append(multipoles) if len(calc.multipoles) <= n else calc.multipoles[n]
                 multipoles.kind = multipole_kinds[n]
                 parse_multipole(data, multipoles)
 
@@ -737,7 +749,11 @@ class Psi4Parser:
                     continue
                 data = np.transpose(data)
                 for n, value in enumerate(data):
-                    multipoles = calc.m_create(Multipoles) if len(calc.multipoles) <= n else calc.multipoles[n]
+                    if len(calc.multipoles) <= n:
+                        multipoles = Multipoles()
+                        calc.multipoles.append(multipoles)
+                    else:
+                        multipoles = calc.multipoles[n]
                     parse_multipole(value, multipoles)
 
             # TODO verify for non spin polarized
@@ -745,14 +761,16 @@ class Psi4Parser:
             for method in ['mulliken', 'lowdin']:
                 data = source.get('%s_charges' % method)
                 if data is not None:
-                    charges = calc.m_create(Charges)
+                    charges = Charges()
+                    calc.charges.append(charges)
                     charges.analysis_method = method
                     if data.atom is not None:
                         charges.value = [a[-1] for a in data.atom] * ureg.elementary_charge
                         charges.spins = [a[-2] for a in data.atom]
                         for n, atom in enumerate(data.atom):
                             for spin in range(2):
-                                charges_spin = charges.m_create(ChargesValue, Charges.spin_projected)
+                                charges_spin = ChargesValue()
+                                charges.spin_projected.append(charges_spin)
                                 charges_spin.atom_index = n
                                 charges_spin.spin = spin
                                 charges_spin.value = atom[spin] * ureg.elementary_charge
@@ -762,7 +780,8 @@ class Psi4Parser:
         # scf iterations
         if source.iterations is not None:
             for iteration in source.iterations.get('iteration', []):
-                scf = calc.m_create(ScfIteration)
+                scf = ScfIteration()
+                calc.scf_iteration.append(scf)
                 scf.energy = Energy(
                     total=EnergyEntry(value=float(iteration[0]) * ureg.hartree),
                     change=float(iteration[1]) * ureg.hartree)
@@ -777,7 +796,8 @@ class Psi4Parser:
             # for MP calc, the last energy block corresponds to calc
             n_ref = len(source.energy) - 1 if self._method[:2] == 'MP' else 0
             if n != n_ref:
-                ref_calc = self.archive.run[-1].m_create(Calculation)
+                ref_calc = Calculation()
+                self.archive.run[-1].calculation.append(ref_calc)
                 ref_calcs.append(ref_calc)
             ref_calc.energy = Energy()
             for key, val in source.energy[n].get('key_value'):
@@ -805,7 +825,8 @@ class Psi4Parser:
 
         # eigenvalues
         if source.orbital_energies is not None:
-            eigenvalues = calc.m_create(BandEnergies)
+            eigenvalues = BandEnergies()
+            calc.eigenvalues.append(eigenvalues)
             labels, energies, occupations = [], [], []
             n_spin = len(source.orbital_energies) // 2
             for n, orbital_energies in enumerate(source.orbital_energies):
@@ -819,14 +840,19 @@ class Psi4Parser:
         # properties can be calculated using multiple density matrices e.g. for ci/mcscf
         # create additional calculation section
         for n, properties in enumerate(source.get('properties', [])):
-            ref_calc = calc if n == 0 else self.archive.run[-1].m_create(Calculation)
+            if n == 0:
+                ref_calc = calc
+            else:
+                ref_calc = Calculation()
+                self.archive.run[-1].calculation.append(ref_calc)
             if n > 0:
                 ref_calcs.append(ref_calc)
             parse_properties(properties, ref_calc)
 
         # misc
         if source.root_info is not None:
-            root_info = calc.m_create(x_psi4_root_information)
+            root_info = x_psi4_root_information()
+            calc.x_psi4_root_information.append(root_info)
             root_info.x_psi4_root_energy = source.root_info.energy
 
         # reference calculations
@@ -848,7 +874,8 @@ class Psi4Parser:
 
         self.init_parser()
 
-        run = archive.m_create(Run)
+        run = Run()
+        archive.run.append(run)
         run.program = Program(name='Psi4', version=self.out_parser.get('version', ''))
         if self.out_parser.start_time is not None:
             start_time = datetime.strptime(self.out_parser.start_time, '%d %B %Y %H:%M%p')
@@ -883,7 +910,8 @@ class Psi4Parser:
 
             if module.salc is not None:
                 calc = self.archive.run[-1].calculation[-1]
-                forces = calc.m_create(Forces)
+                forces = Forces()
+                calc.forces = forces
                 if module.salc.total_gradient is not None:
                     forces.total = ForcesEntry(
                         value=np.array(module.salc.total_gradient) * ureg.hartree / ureg.bohr)
@@ -897,7 +925,8 @@ class Psi4Parser:
 
             if module.optking is not None:
                 self.parse_system(module.optking)
-                calc = self.archive.run[-1].m_create(Calculation)
+                calc = Calculation()
+                self.archive.run[-1].calculation.append(calc)
                 forces = module.optking.get('geometry', {}).get('forces')
                 if forces is not None:
                     calc.forces = Forces(total=ForcesEntry(value=forces * ureg.hartree / ureg.bohr))

@@ -41,9 +41,14 @@ from xml.sax import ContentHandler, make_parser  # type: ignore
 from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.method import (
-    CoreHole,
+from nomad.datamodel.metainfo.simulation.method import CoreHole
+from runschema.system import (
+    System,
+    Atoms,
+    AtomsGroup,
+)
+from runschema.run import Run, Program
+from runschema.method import (
     Method,
     BasisSet,
     BasisSetContainer,
@@ -59,12 +64,7 @@ from nomad.datamodel.metainfo.simulation.method import (
     FrequencyMesh,
     Pseudopotential,
 )
-from nomad.datamodel.metainfo.simulation.system import (
-    System,
-    Atoms,
-    AtomsGroup,
-)
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation,
     Energy,
     EnergyEntry,
@@ -1636,7 +1636,8 @@ class VASPParser:
         parse_incar(self.parser.get_incar_out(), "x_vasp_incar_out")
 
     def parse_kpoints(self, section):
-        sec_k_mesh = section.m_create(KMesh)
+        sec_k_mesh = KMesh()
+        section.k_mesh = sec_k_mesh
         for key, val in self.parser.kpoints_info.items():
             if val is not None:
                 try:
@@ -1675,12 +1676,10 @@ class VASPParser:
         )
 
     def parse_method(self):
-        """
-        Parse and attach the method section to the archive.
-        Also return a dictionary with the mapping information for other sections.
-        """
-        sec_method = self.archive.run[-1].m_create(Method)
-        sec_dft = sec_method.m_create(DFT)
+        sec_method = Method()
+        self.archive.run[-1].method.append(sec_method)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
         sec_method.electronic = Electronic(
             method="DFT+U" if self.parser.incar.get("LDAU", False) else "DFT"
         )
@@ -1720,7 +1719,8 @@ class VASPParser:
         atom_counts = {e: 0 for e in element}
         pseudopotentials = self.parser.get_pseudopotential()
         for i in range(len(element)):
-            sec_method_atom_kind = sec_method.m_create(AtomParameters)
+            sec_method_atom_kind = AtomParameters()
+            sec_method.atom_parameters.append(sec_method_atom_kind)
             atom_number = ase.data.atomic_numbers.get(element[i], 0)
             sec_method_atom_kind.atom_number = atom_number
             atom_label = (
@@ -1762,7 +1762,8 @@ class VASPParser:
             if hubbard_present:
                 orbital = self.hubbard_orbital_types[int(parsed_file.get("LDAUL")[i])]
                 if orbital:
-                    sec_hubb = sec_method_atom_kind.m_create(HubbardKanamoriModel)
+                    sec_hubb = HubbardKanamoriModel()
+                    sec_method_atom_kind.hubbard_kanamori_model = sec_hubb
                     sec_hubb.orbital = orbital
                     sec_hubb.u = float(parsed_file.get("LDAUU")[i]) * ureg.eV
                     sec_hubb.j = float(parsed_file.get("LDAUJ")[i]) * ureg.eV
@@ -1781,7 +1782,8 @@ class VASPParser:
             )
         ]
 
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         if self.parser.incar.get("LHFCALC", False):
             gga = self.parser.incar.get("GGA", "PE")
             aexx = self.parser.incar.get("AEXX", 0.0)
@@ -1881,8 +1883,10 @@ class VASPParser:
 
     def parse_gw(self):
         sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
-        sec_gw = sec_method.m_create(GW)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
+        sec_gw = GW()
+        sec_method.gw = sec_gw
 
         # input/output incar
         self.parse_incarsinout()
@@ -1939,8 +1943,10 @@ class VASPParser:
         sec_run = self.archive.run[-1]
 
         def parse_system(n_calc):
-            sec_system = sec_run.m_create(System)
-            sec_atoms = sec_system.m_create(Atoms)
+            sec_system = System()
+            sec_run.system.append(sec_system)
+            sec_atoms = Atoms()
+            sec_system.atoms = sec_atoms
 
             structure = self.parser.get_structure(n_calc)
             cell = structure.get("cell", None)
@@ -1991,12 +1997,15 @@ class VASPParser:
 
         def parse_energy(n_calc, n_scf=None):
             if n_scf is None:
-                section = sec_run.m_create(Calculation)
+                section = Calculation()
+                sec_run.calculation.append(section)
             else:
-                section = sec_run.calculation[-1].m_create(ScfIteration)
+                section = ScfIteration()
+                sec_run.calculation[-1].scf_iteration.append(section)
 
             energies = self.parser.get_energies(n_calc, n_scf)
-            sec_energy = section.m_create(Energy)
+            sec_energy = Energy()
+            section.energy = sec_energy
             for key, val in energies.items():
                 metainfo_key = self.parser.metainfo_mapping.get(key, None)
                 if val is None or metainfo_key is None:
@@ -2046,11 +2055,11 @@ class VASPParser:
             sec_scc.energy.lowest_unoccupied = min(conduction_min) * ureg.eV
 
             if self.parser.kpoints_info.get("sampling_method", None) == "Line-path":
-                sec_k_band = sec_scc.m_create(
-                    BandStructure, Calculation.band_structure_electronic
-                )
+                sec_k_band = BandStructure()
+                sec_scc.band_structure_electronic.append(sec_k_band)
                 for n in range(len(eigs)):
-                    sec_band_gap = sec_k_band.m_create(BandGapDeprecated)
+                    sec_band_gap = BandGapDeprecated()
+                    sec_k_band.band_gap.append(sec_band_gap)
                     sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
                     sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
                 divisions = self.parser.kpoints_info.get("grid", None)
@@ -2069,13 +2078,15 @@ class VASPParser:
                 eigs = np.transpose(eigs, axes=(1, 0, 2, 3)) * ureg.eV
                 occs = np.transpose(occs, axes=(1, 0, 2, 3))
                 for n in range(n_segments):
-                    sec_k_band_segment = sec_k_band.m_create(BandEnergies)
+                    sec_k_band_segment = BandEnergies()
+                    sec_k_band.segment.append(sec_k_band_segment)
                     sec_k_band_segment.kpoints = kpoints[n]
                     sec_k_band_segment.energies = eigs[n]
                     sec_k_band_segment.occupations = occs[n]
             else:
                 eigs = eigs * ureg.eV
-                sec_eigenvalues = sec_scc.m_create(BandEnergies)
+                sec_eigenvalues = BandEnergies()
+                sec_scc.eigenvalues.append(sec_eigenvalues)
                 sec_eigenvalues.kpoints = kpoints
                 sec_eigenvalues.kpoints_weights = self.parser.kpoints_info.get(
                     "weights", []
@@ -2119,11 +2130,13 @@ class VASPParser:
 
                 n_spin_channels = len(values)
                 for spin in range(n_spin_channels):
-                    sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                    sec_dos = Dos()
+                    sec_scc.dos_electronic.append(sec_dos)
                     sec_dos.spin_channel = spin if n_spin_channels == 2 else None
                     sec_dos.energies = energies * ureg.eV
                     sec_dos.energy_fermi = efermi * ureg.eV
-                    sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+                    sec_dos_total = DosValues()
+                    sec_dos.total.append(sec_dos_total)
                     sec_dos_total.value = values[spin] / ureg.eV
                     sec_dos_total.value_integrated = integrated[spin]
 
@@ -2139,15 +2152,15 @@ class VASPParser:
                         ):
                             sec_dos = sec_scc.dos_electronic[spin]
                         else:
-                            sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                            sec_dos = Dos()
+                            sec_scc.dos_electronic.append(sec_dos)
                             sec_dos.spin_channel = (
                                 spin if n_spin_channels == 2 else None
                             )
                         for atom in range(n_atoms):
                             for lm in range(n_lm):
-                                sec_dos_orbital = sec_dos.m_create(
-                                    DosValues, Dos.orbital_projected
-                                )
+                                sec_dos_orbital = DosValues()
+                                sec_dos.orbital_projected.append(sec_dos_orbital)
                                 sec_dos_orbital.m_kind = "polynomial"
                                 sec_dos_orbital.lm = lm_converter.get(
                                     fields[lm], [-1, -1]
@@ -2257,22 +2270,17 @@ class VASPParser:
                             )
                             else "wb"
                         )
-                        sec_density = sec_scc.m_create(Density)
-                        try:
-                            if self.archive.m_context:
-                                with self.archive.m_context.raw_file(
-                                    filename, farg
-                                ) as f:
-                                    sec_density.value_hdf5 = to_hdf5(
-                                        np.reshape(
-                                            np.array(charge_density, np.float64), grid
-                                        ),
-                                        f,
-                                        f"{sec_density.m_path()}/value_hdf5",
-                                    )
-                        except Exception:
-                            self.logger.warning("Cannot write charge density to file.")
-                            pass
+                        sec_density = Density()
+                        sec_scc.density_charge.append(sec_density)
+                        if self.archive.m_context:
+                            with self.archive.m_context.raw_file(filename, farg) as f:
+                                sec_density.value_hdf5 = to_hdf5(
+                                    np.reshape(
+                                        np.array(charge_density, np.float64), grid
+                                    ),
+                                    f,
+                                    f"{sec_density.m_path()}/value_hdf5",
+                                )
                     else:
                         sec_scc.density_charge.append(
                             Density(
@@ -2294,7 +2302,8 @@ class VASPParser:
         self.logger = logging.getLogger(__name__) if logger is None else logger
         self.init_parser(filepath, logger)
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         program_name = self.parser.header.get("program", "")
         if program_name.strip().upper() != "VASP":
             sec_run.program = Program()

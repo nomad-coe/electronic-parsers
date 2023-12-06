@@ -22,7 +22,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference, JSON, MEnum
 )
-from nomad.datamodel.metainfo import simulation
+import runschema
 
 
 m_package = Package()
@@ -148,7 +148,7 @@ class x_fleur_section_XC(MSection):
         ''')
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -157,7 +157,7 @@ class Run(simulation.run.Run):
         repeats=True)
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -326,7 +326,7 @@ class System(simulation.system.System):
         repeats=True)
 
 
-class ScfIteration(simulation.calculation.ScfIteration):
+class ScfIteration(runschema.calculation.ScfIteration):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -404,7 +404,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -499,7 +499,7 @@ class Method(simulation.method.Method):
         repeats=True)
 
 
-class OrbitalAPW(simulation.method.OrbitalAPW):
+class OrbitalAPW(runschema.method.OrbitalAPW):
     x_fleur_lo_type = Quantity(
         type=MEnum('SCLO', 'HELO'),
         shape=[],
@@ -509,7 +509,7 @@ class OrbitalAPW(simulation.method.OrbitalAPW):
         ''')
 
 
-class BasisSet(simulation.method.BasisSet):
+class BasisSet(runschema.method.BasisSet):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -533,7 +533,7 @@ class BasisSet(simulation.method.BasisSet):
         ''')
 
 
-class XCFunctional(simulation.method.XCFunctional):
+class XCFunctional(runschema.method.XCFunctional):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -544,7 +544,7 @@ class XCFunctional(simulation.method.XCFunctional):
         ''')
 
 
-class BaseCalculation(simulation.calculation.BaseCalculation):
+class BaseCalculation(runschema.calculation.BaseCalculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 

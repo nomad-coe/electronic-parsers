@@ -22,7 +22,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference
 )
-from nomad.datamodel.metainfo import simulation
+import runschema
 import simulationworkflowschema
 
 
@@ -272,7 +272,7 @@ class x_nwchem_section_qmd_step(MSection):
         ''')
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -293,7 +293,7 @@ class Run(simulation.run.Run):
         repeats=True)
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -316,7 +316,7 @@ class Method(simulation.method.Method):
         repeats=True)
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -407,7 +407,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
         ''')
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 

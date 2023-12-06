@@ -22,7 +22,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference
 )
-from nomad.datamodel.metainfo import simulation
+import runschema
 import simulationworkflowschema
 
 
@@ -107,7 +107,7 @@ class x_orca_section_functionals(MSection):
     m_def = Section(validate=False)
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -500,7 +500,7 @@ class Method(simulation.method.Method):
         repeats=True)
 
 
-class Scf(simulation.method.Scf):
+class Scf(runschema.method.Scf):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -511,7 +511,7 @@ class Scf(simulation.method.Scf):
         ''')
 
 
-class ScfIteration(simulation.calculation.ScfIteration):
+class ScfIteration(runschema.calculation.ScfIteration):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -612,7 +612,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         ''')
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -621,7 +621,7 @@ class System(simulation.system.System):
         repeats=True)
 
 
-class BasisSet(simulation.method.BasisSet):
+class BasisSet(runschema.method.BasisSet):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -740,7 +740,7 @@ class BasisSet(simulation.method.BasisSet):
         ''')
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -1192,7 +1192,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
         repeats=True)
 
 
-class Spectra(simulation.calculation.Spectra):
+class Spectra(runschema.calculation.Spectra):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -1227,7 +1227,7 @@ class Spectra(simulation.calculation.Spectra):
         ''')
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 

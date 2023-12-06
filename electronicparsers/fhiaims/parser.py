@@ -31,15 +31,15 @@ from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 
 from nomad.metainfo import MSection
 
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program, TimeRun
+from runschema.method import (
     Electronic, Method, XCFunctional, Functional, HubbardKanamoriModel, AtomParameters, DFT,
     BasisSet, GW, KMesh, FrequencyMesh, BasisSetContainer,
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, BandStructure, BandEnergies, Dos, DosValues,
     ScfIteration, Energy, EnergyEntry, Stress, StressEntry, Thermodynamics,
     Forces, ForcesEntry
@@ -952,7 +952,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_scc = sec_run.calculation[-1]
 
         energy_fermi_ev = energy_fermi.to(ureg.electron_volt).magnitude
-        sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
+        sec_k_band = BandStructure()
+        sec_scc.band_structure_electronic.append(sec_k_band)
         sec_k_band.energy_fermi = energy_fermi
 
         nspin = self.out_parser.get_number_of_spin_channels()
@@ -988,7 +989,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 self.logger.warning('Inconsistent number of bands found in bandstructure data.')
                 continue
 
-            sec_k_band_segment = sec_k_band.m_create(BandEnergies)
+            sec_k_band_segment = BandEnergies()
+            sec_k_band.segment.append(sec_k_band_segment)
             sec_k_band_segment.kpoints = np.transpose(data[1:4])[0]
             occs = np.transpose(data[4::2])
             # the band energies stored in the band*.out files have already
@@ -1002,14 +1004,17 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_run = self.archive.run[-1]
 
         # GW method
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         # GW
-        sec_gw = sec_method.m_create(GW)
+        sec_gw = GW()
+        sec_method.gw = sec_gw
         sec_gw.type = self._gw_flag_map.get(self.out_parser.get('gw_flag'), None)
         sec_gw.n_states = self.out_parser.get('n_states_gw')
         # KMesh
         if self.out_parser.get('k_grid') is not None:
-            sec_k_mesh = sec_method.m_create(KMesh)
+            sec_k_mesh = KMesh()
+            sec_method.k_mesh = sec_k_mesh
             sec_k_mesh.grid = self.out_parser.get('k_grid')
         # QMesh copied from KMesh
             sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
@@ -1035,9 +1040,11 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
         # GW calculation
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
         # References
-        sec_energy = sec_scc.m_create(Energy)
+        sec_energy = Energy()
+        sec_scc.energy = sec_energy
         for n, section in enumerate(self.out_parser.get('full_scf', [])):
             # skip frames for large trajectories
             if (n % self.frame_rate) > 0:
@@ -1067,7 +1074,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             return
 
         for energies in gw_scf_energies:
-            sec_gw_scf_iteration = sec_scc.m_create(ScfIteration)
+            sec_gw_scf_iteration = ScfIteration()
+            sec_scc.scf_iteration.append(sec_gw_scf_iteration)
             for key, val in energies.items():
                 metainfo_key = self._energy_map.get(key, None)
                 if metainfo_key is not None:
@@ -1079,7 +1087,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                             details={key: metainfo_key})
 
         if gw_eigenvalues is not None:
-            sec_eigs_gw = sec_scc.m_create(BandEnergies)
+            sec_eigs_gw = BandEnergies()
+            sec_scc.eigenvalues.append(sec_eigs_gw)
             for key, name in self._gw_qp_energies_map.items():
                 # TODO verify shape of eigenvalues
                 val = gw_eigenvalues[key] if key == 'occ_num' else gw_eigenvalues[key] * ureg.eV
@@ -1100,8 +1109,10 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         if structure is None:
             return
 
-        sec_system = sec_run.m_create(System)
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_system = System()
+        sec_run.system.append(sec_system)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
         if lattice_vectors is not None:
             sec_atoms.lattice_vectors = lattice_vectors
         if lattice_vectors_reciprocal is not None:
@@ -1148,11 +1159,13 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 # dos unit is 1/(eV-cell volume)
                 dos = data[1: n_spin + 1] / ureg.eV
                 for spin in range(n_spin):
-                    sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                    sec_dos = Dos()
+                    sec_scc.dos_electronic.append(sec_dos)
                     sec_dos.spin_channel = spin if n_spin == 2 else None
                     sec_dos.n_energies = len(energies)
                     sec_dos.energies = energies
-                    sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+                    sec_dos_total = DosValues()
+                    sec_dos.total.append(sec_dos_total)
                     if float(sec_run.program.version) <= version_normalization_cutoff:
                         sec_dos_total.x_fhi_aims_normalization_factor_raw_data = version_normalization
                         dos[spin] /= version_normalization
@@ -1173,7 +1186,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                     if sec_scc.dos_electronic is not None:
                         sec_dos = sec_scc.dos_electronic[1] if 'spin_dn' in files else sec_scc.dos_electronic[0]
                     else:
-                        sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                        sec_dos = Dos()
+                        sec_scc.dos_electronic.append(sec_dos)
                     sec_dos.m_kind = 'integrated'
 
                     # Projected DOS section definition
@@ -1186,15 +1200,18 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                                 created_section = True
                                 break
                         if not created_section:
-                            sec_dos_proj = sec_dos.m_create(DosValues, sec_def)
+                            sec_dos_proj = DosValues()
+                            sec_dos.m_add_sub_section(sec_def, sec_dos_proj)
                     else:
-                        sec_dos_proj = sec_dos.m_create(DosValues, sec_def)
+                        sec_dos_proj = DosValues()
+                        sec_dos.m_add_sub_section(sec_def, sec_dos_proj)
                     sec_dos_proj.atom_label = species_label
                     sec_dos_proj.value = data[1] / ureg.eV
                     # Orbital projections
                     data = data[2:]
                     for lindex, dos_l in enumerate(data):
-                        sec_dos_orbital = sec_dos.m_create(DosValues, Dos.orbital_projected)
+                        sec_dos_orbital = DosValues()
+                        sec_dos.orbital_projected.append(sec_dos_orbital)
                         sec_dos_orbital.atom_label = species_label
                         orbital_label = self.orbital_lm_map[lindex]
                         sec_dos_orbital.orbital = orbital_label
@@ -1223,7 +1240,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
         def parse_scf(iteration):
             sec_scc = sec_run.calculation[-1]
-            sec_scf = sec_scc.m_create(ScfIteration)
+            sec_scf = ScfIteration()
+            sec_scc.scf_iteration.append(sec_scf)
 
             if iteration.get('date_time') is not None:
                 sec_scf.x_fhi_aims_scf_time_start = iteration.date_time * ureg.s
@@ -1232,7 +1250,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             if sec_scf.x_fhi_aims_scf_time_start is not None and sec_scf.time_calculation is not None:
                 sec_scf.time_physical = sec_scf.x_fhi_aims_scf_time_start + sec_scf.time_calculation - time_initial
 
-            sec_energy = sec_scf.m_create(Energy)
+            sec_energy = Energy()
+            sec_scf.energy = sec_energy
             energies = iteration.get('energy_components', {})
             convergence = iteration.get('scf_convergence', {})
             energies.update(convergence)
@@ -1263,7 +1282,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             # eigenvalues scf iteration
             eigenvalues = get_eigenvalues(iteration)
             if eigenvalues is not None:
-                sec_eigenvalues = sec_scf.m_create(BandEnergies)
+                sec_eigenvalues = BandEnergies()
+                sec_scf.eigenvalues.append(sec_eigenvalues)
                 if eigenvalues[0] is not None:
                     sec_eigenvalues.kpoints = eigenvalues[0]
                 sec_eigenvalues.energies = eigenvalues[1]
@@ -1272,13 +1292,15 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             # stress tensor
             stress_tensor = iteration.get('stress_tensor')
             if stress_tensor is not None:
-                sec_stress = sec_scf.m_create(Stress)
+                sec_stress = Stress()
+                sec_scf.stress = sec_stress
                 sec_stress.total = StressEntry(value=stress_tensor)
 
             # pressure
             pressure = iteration.get('pressure')
             if pressure is not None:
-                sec_thermo = sec_scf.m_create(Thermodynamics)
+                sec_thermo = Thermodynamics()
+                sec_scf.thermodynamics.append(sec_thermo)
                 sec_thermo.pressure = pressure
 
         def parse_vdW(section):
@@ -1297,8 +1319,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             for sec in sec_atom_type:
                 for atom in atoms:
                     if sec.label == atom['atom']:
-                        sec_vdW_ts = sec.x_fhi_aims_section_controlInOut_atom_species[-1].m_create(
-                            x_fhi_aims_section_vdW_TS)
+                        sec_vdW_ts = x_fhi_aims_section_vdW_TS()
+                        sec.x_fhi_aims_section_controlInOut_atom_species[-1].x_fhi_aims_section_vdW_TS.append(sec_vdW_ts)
                         for key, val in atom.items():
                             metainfo_name = self._property_map.get(key, None)
                             if metainfo_name is None:
@@ -1314,11 +1336,13 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         def parse_section(section):
             self.parse_system(section)
 
-            sec_scc = sec_run.m_create(Calculation)
+            sec_scc = Calculation()
+            sec_run.calculation.append(sec_scc)
             sec_scc.system_ref = sec_run.system[-1]
             sec_scc.method_ref = sec_run.method[-1]
 
-            sec_energy = sec_scc.m_create(Energy)
+            sec_energy = Energy()
+            sec_scc.energy = sec_energy
             energy = section.get('energy', {})
             energy.update(section.get('energy_components', [{}])[-1])
             energy.update(section.get('energy_xc', {}))
@@ -1342,7 +1366,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             eigenvalues = get_eigenvalues(section)
             # get if from last scf iteration
             if eigenvalues is not None:
-                sec_eigenvalues = sec_scc.m_create(BandEnergies)
+                sec_eigenvalues = BandEnergies()
+                sec_scc.eigenvalues.append(sec_eigenvalues)
                 if eigenvalues[0] is not None:
                     sec_eigenvalues.kpoints = eigenvalues[0]
                 sec_eigenvalues.energies = eigenvalues[1]
@@ -1351,7 +1376,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             # TODO add force contributions and stress
             forces = section.get('forces', None)
             if forces is not None:
-                sec_forces = sec_scc.m_create(Forces)
+                sec_forces = Forces()
+                sec_scc.forces = sec_forces
                 sec_forces.free = ForcesEntry(value=forces)
 
                 forces_raw = section.get('forces_raw', None)
@@ -1481,7 +1507,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 md_run = control_inout.get('md_run')
                 workflow.method.integration_timestep = control_inout.get('md_timestep')
 
-                sec_thermostat_parameters = workflow.method.m_create(ThermostatParameters)
+                sec_thermostat_parameters = ThermostatParameters()
+                workflow.method.thermostat_parameters.append(sec_thermostat_parameters)
                 if md_run:
                     workflow.method.thermodynamic_ensemble = md_run[0]
                     sec_thermostat_parameters.thermostat_type = self._md_methods_map.get(md_run[1])
@@ -1501,10 +1528,12 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
 
         # extract the k-grid
-        sec_kmesh = sec_method.m_create(KMesh)
+        sec_kmesh = KMesh()
+        sec_method.k_mesh = sec_kmesh
         sec_kmesh.grid = self.out_parser.get('k_grid')
         sec_kmesh.offset = self.out_parser.get('k_offset')
 
@@ -1521,8 +1550,10 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 ]
             )
         ]
-        sec_dft = sec_method.m_create(DFT)
-        sec_electronic = sec_method.m_create(Electronic)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
+        sec_electronic = Electronic()
+        sec_method.electronic = sec_electronic
         sec_electronic.method = 'DFT'
 
         # control parameters from out file
@@ -1537,7 +1568,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             self.control_parser.mainfile = control_file[0]
 
         def parse_basis_set(species):
-            sec_basis_set = sec_method.m_create(x_fhi_aims_section_controlIn_basis_set)
+            sec_basis_set = x_fhi_aims_section_controlIn_basis_set()
+            sec_method.x_fhi_aims_section_controlIn_basis_set.append(sec_basis_set)
             basis_funcs = ['gaussian', 'hydro', 'valence', 'ion_occ', 'ionic', 'confined']
             for key, val in species.items():
                 if key == 'species':
@@ -1548,8 +1580,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                     pass
                 elif key in basis_funcs:
                     for i in range(len(val)):
-                        sec_basis_func = sec_basis_set.m_create(
-                            x_fhi_aims_section_controlIn_basis_func)
+                        sec_basis_func = x_fhi_aims_section_controlIn_basis_func()
+                        sec_basis_set.x_fhi_aims_section_controlIn_basis_func.append(sec_basis_func)
                         sec_basis_func.x_fhi_aims_controlIn_basis_func_type = key
                         sec_basis_func.x_fhi_aims_controlIn_basis_func_n = int(val[i][0])
                         sec_basis_func.x_fhi_aims_controlIn_basis_func_l = str(val[i][1])
@@ -1714,7 +1746,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
             # convert parsed xc to meta info
             xc_meta_list = self._xc_map.get(xc, [])
-            sec_xc_functional = subsection.m_create(XCFunctional)
+            sec_xc_functional = XCFunctional()
+            subsection.xc_functional = sec_xc_functional
             for xc_meta in xc_meta_list:
                 name = xc_meta.get('name')
                 functional = Functional(name=name)
@@ -1743,9 +1776,10 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         sec_method = self.archive.run[-1].method[-1]
 
         def parse_atom_type(species):
-            sec_atom_type = sec_method.m_create(AtomParameters)
-            sec_atom_species = sec_atom_type.m_create(
-                x_fhi_aims_section_controlInOut_atom_species)
+            sec_atom_type = AtomParameters()
+            sec_method.atom_parameters.append(sec_atom_type)
+            sec_atom_species = x_fhi_aims_section_controlInOut_atom_species()
+            sec_atom_type.x_fhi_aims_section_controlInOut_atom_species.append(sec_atom_species)
             for key, val in species.items():
                 if key == 'nuclear charge':
                     charge = val[0] * ureg.elementary_charge
@@ -1765,7 +1799,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                     sec_atom_species.x_fhi_aims_controlInOut_species_cut_pot_width = val[0][1] * ureg.angstrom
                     sec_atom_species.x_fhi_aims_controlInOut_species_cut_pot_scale = val[0][2]
                 elif "request for '+U'" in key:
-                    sec_hubbard = sec_atom_type.m_create(HubbardKanamoriModel)
+                    sec_hubbard = HubbardKanamoriModel()
+                    sec_atom_type.hubbard_kanamori_model = sec_hubbard
                     sec_hubbard.orbital = f'{val[0][0]}{val[0][1]}'
                     sec_hubbard.u_effective = val[0][-2] * ureg.eV
                     sec_hubbard.double_counting_correction = 'Dudarev'
@@ -1773,31 +1808,31 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                     sec_hubbard.x_fhi_aims_petukhov_mixing_factor = self.out_parser.get('petukhov')
                 elif 'free-atom' in key or 'free-ion' in key:
                     for i in range(len(val)):
-                        sec_basis_func = sec_atom_species.m_create(
-                            x_fhi_aims_section_controlInOut_basis_func)
+                        sec_basis_func = x_fhi_aims_section_controlInOut_basis_func()
+                        sec_atom_species.x_fhi_aims_section_controlInOut_basis_func.append(sec_basis_func)
                         sec_basis_func.x_fhi_aims_controlInOut_basis_func_type = ' '.join(key.split()[:-1])
                         sec_basis_func.x_fhi_aims_controlInOut_basis_func_n = val[i][0]
                         sec_basis_func.x_fhi_aims_controlInOut_basis_func_l = val[i][1]
                         sec_basis_func.x_fhi_aims_controlInOut_basis_func_occ = val[i][2]
                 elif 'hydrogenic' in key:
                     for i in range(len(val)):
-                        sec_basis_func = sec_atom_species.m_create(
-                            x_fhi_aims_section_controlInOut_basis_func)
+                        sec_basis_func = x_fhi_aims_section_controlInOut_basis_func()
+                        sec_atom_species.x_fhi_aims_section_controlInOut_basis_func.append(sec_basis_func)
                         sec_basis_func.x_fhi_aims_controlInOut_basis_func_type = ' '.join(key.split()[:-1])
                         sec_basis_func.x_fhi_aims_controlInOut_basis_func_n = val[i][0]
                         sec_basis_func.x_fhi_aims_controlInOut_basis_func_l = val[i][1]
                         sec_basis_func.x_fhi_aims_controlInOut_basis_func_eff_charge = val[i][2]
                 elif 'ionic' in key:
                     for i in range(len(val)):
-                        sec_basis_func = sec_atom_species.m_create(
-                            x_fhi_aims_section_controlInOut_basis_func)
+                        sec_basis_func = x_fhi_aims_section_controlInOut_basis_func()
+                        sec_atom_species.x_fhi_aims_section_controlInOut_basis_func.append(sec_basis_func)
                         sec_basis_func.x_fhi_aims_controlInOut_basis_func_type = 'ionic basis'
                         sec_basis_func.x_fhi_aims_controlInOut_basis_func_n = val[i][0]
                         sec_basis_func.x_fhi_aims_controlInOut_basis_func_l = val[i][1]
                 elif 'basis function' in key:
                     for i in range(len(val)):
-                        sec_basis_func = sec_atom_species.m_create(
-                            x_fhi_aims_section_controlInOut_basis_func)
+                        sec_basis_func = x_fhi_aims_section_controlInOut_basis_func()
+                        sec_atom_species.x_fhi_aims_section_controlInOut_basis_func.append(sec_basis_func)
                         sec_basis_func.x_fhi_aims_controlInOut_basis_func_type = key.split(
                             'basis')[0].strip()
                         if val[i][0] == 'L':
@@ -1875,7 +1910,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         sec_run.program = Program(
             name='FHI-aims', version=self.out_parser.get('version', ''),
             compilation_host=self.out_parser.get('compilation_host', ''))
@@ -1896,14 +1932,15 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 self.logger.warning('Error setting run metainfo', details={key: key})
         sec_run.x_fhi_aims_program_execution_time = self.out_parser.get('date_time', 0.) * ureg.s
 
-        sec_parallel_tasks = sec_run.m_create(x_fhi_aims_section_parallel_tasks)
+        sec_parallel_tasks = x_fhi_aims_section_parallel_tasks()
+        sec_run.x_fhi_aims_section_parallel_tasks = sec_parallel_tasks
         # why embed section not just let task be an array
 
         task_nrs = self.out_parser.get('x_fhi_aims_parallel_task_nr', [])
         task_hosts = self.out_parser.get('x_fhi_aims_parallel_task_host', [])
         for i in range(len(task_nrs)):
-            sec_parallel_task_assignement = sec_parallel_tasks.m_create(
-                x_fhi_aims_section_parallel_task_assignement)
+            sec_parallel_task_assignement = x_fhi_aims_section_parallel_task_assignement()
+            sec_parallel_tasks.x_fhi_aims_section_parallel_task_assignement.append(sec_parallel_task_assignement)
             sec_parallel_task_assignement.x_fhi_aims_parallel_task_nr = task_nrs[i]
             sec_parallel_task_assignement.x_fhi_aims_parallel_task_host = task_hosts[i]
 

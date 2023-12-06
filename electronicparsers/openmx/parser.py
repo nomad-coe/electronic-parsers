@@ -27,15 +27,17 @@ from os import path
 
 from nomad.datamodel import EntryArchive
 from nomad.units import ureg as units
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.run import Run, Program
+from runschema.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, BandEnergies, Forces, ForcesEntry
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     AtomsGroup, System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.method import (
-    AtomParameters, CoreHole, Method, BasisSet, DFT, Pseudopotential, XCFunctional, Functional, Electronic, Smearing, Scf,
+# TODO move to runschema
+from nomad.datamodel.metainfo.simulation.method import CoreHole
+from runschema.method import (
+    AtomParameters, Method, BasisSet, DFT, Pseudopotential, XCFunctional, Functional, Electronic, Smearing, Scf,
     BasisSetContainer,
 )
 from nomad.parsing.file_parser import TextParser, Quantity
@@ -45,7 +47,6 @@ from simulationworkflowschema import (
 from simulationworkflowschema.molecular_dynamics import ThermostatParameters
 from nomad.quantum_states import RussellSaundersState
 
-from .metainfo.openmx import OpenmxSCC  # pylint: disable=unused-import
 
 '''
 This is parser for OpenMX DFT code.
@@ -435,7 +436,8 @@ class OpenmxParser:
 
     def parse_method(self):
         # setup
-        sec_method = self.archive.run[-1].m_create(Method)
+        sec_method = Method()
+        self.archive.run[-1].method.append(sec_method)
         sec_method.atom_parameters = []
 
         for species in mainfile_parser.results['species'].results['species']:
@@ -459,8 +461,10 @@ class OpenmxParser:
         ]
 
         # DFT (+U)
-        sec_dft = sec_method.m_create(DFT)
-        sec_electronic = sec_method.m_create(Electronic)
+        sec_dft = DFT()
+        sec_electronic = Electronic()
+        sec_method.dft = sec_dft
+        sec_method.electronic = sec_electronic
         sec_electronic.method = 'DFT'
         # FIXME: add some testcase for DFT+U
         scf_hubbard_u = mainfile_parser.get('scf.Hubbard.U')
@@ -469,7 +473,8 @@ class OpenmxParser:
                 sec_electronic.method = 'DFT+U'
 
         scf_xctype = mainfile_parser.get('scf.XcType')
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         for xc in xc_functional_dictionary[scf_xctype]:
             if '_X_' in xc or xc.endswith('_X'):
                 sec_xc_functional.exchange.append(Functional(name=xc))
@@ -488,7 +493,8 @@ class OpenmxParser:
             sec_electronic.n_spin_channels = 1
             self.spinpolarized = False
 
-        sec_smearing = sec_electronic.m_create(Smearing)
+        sec_smearing = Smearing()
+        sec_electronic.smearing = sec_smearing
         sec_smearing.kind = 'fermi'
         scf_ElectronicTemperature = mainfile_parser.get('scf.ElectronicTemperature')
         if scf_ElectronicTemperature is not None:
@@ -497,7 +503,8 @@ class OpenmxParser:
             sec_smearing.width = (300 * units.kelvin * units.k).to_base_units().magnitude
 
         scf_maxiter = mainfile_parser.get('scf.maxIter')
-        sec_scf = sec_method.m_create(Scf)
+        sec_scf = Scf()
+        sec_method.scf = sec_scf
         if scf_maxiter is not None:
             sec_scf.n_max_iteration = scf_maxiter
 
@@ -506,7 +513,8 @@ class OpenmxParser:
             sec_scf.threshold_energy_change = scf_criterion * units.hartree
 
     def parse_eigenvalues(self):
-        eigenvalues = self.archive.run[-1].calculation[-1].m_create(BandEnergies)
+        eigenvalues = BandEnergies()
+        self.archive.run[-1].calculation[-1].eigenvalues.append(eigenvalues)
         values = mainfile_parser.get('eigenvalues')
         if values is not None:
             kpoints = values.get('kpoints')
@@ -541,7 +549,8 @@ class OpenmxParser:
             mdfile_md_steps = None
 
         # Some basic values
-        sec_run = archive.m_create(Run)
+        sec_run = Run()
+        archive.run.append(sec_run)
 
         sec_run.program = Program(name='OpenMX', version=str(mainfile_parser.get('program_version')))
 
@@ -573,20 +582,23 @@ class OpenmxParser:
 
         if mainfile_md_steps is not None:
             for i, md_step in enumerate(mainfile_md_steps):
-                system = sec_run.m_create(System)
+                system = System()
+                sec_run.system.append(system)
                 if not ignore_md_file:
                     parse_md_file(i, mdfile_md_steps, system)
                 elif i == 0:
                     # Get the initial position from out file as a fallback if the md file is missing.
                     parse_structure(system, logger)
 
-                sec_calc = sec_run.m_create(Calculation)
+                sec_calc = Calculation()
+                sec_run.calculation.append(sec_calc)
                 sec_calc.system_ref = system
                 sec_calc.method_ref = sec_run.method[-1]
                 scf_steps = md_step.get('SCF')
                 if scf_steps is not None:
                     for scf_step in scf_steps:
-                        scf = sec_calc.m_create(ScfIteration)
+                        scf = ScfIteration()
+                        sec_calc.scf_iteration.append(scf)
                         u_ele = scf_step.get('Uele')
                         if u_ele is not None:
                             scf.energy = Energy(sum_eigenvalues=EnergyEntry(value=u_ele * units.hartree))

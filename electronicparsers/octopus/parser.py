@@ -8,15 +8,15 @@ from ase import units as ase_units
 from .metainfo import m_env
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program
+from runschema.method import (
     Electronic, Functional, Smearing, Method, DFT, BasisSet, BasisSetContainer,
     XCFunctional, KMesh
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandEnergies
 )
 from simulationworkflowschema import GeometryOptimization
@@ -656,11 +656,14 @@ class OctopusParser:
         # SCF energies are printed only in output
         initial_time = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
         for scf in self.out_parser.get('self_consistent', []):
-            sec_scc = sec_run.m_create(Calculation)
+            sec_scc = Calculation()
+            sec_run.calculation.append(sec_scc)
             for iteration in scf.get('iteration', []):
                 initial_time = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else initial_time
-                sec_scf = sec_scc.m_create(ScfIteration)
-                sec_scf_energy = sec_scf.m_create(Energy)
+                sec_scf = ScfIteration()
+                sec_scc.scf_iteration.append(sec_scf)
+                sec_scf_energy = Energy()
+                sec_scf.energy = sec_scf_energy
                 fermi_level = iteration.get('fermi_level')
                 unit = None
                 if fermi_level is not None:
@@ -681,7 +684,8 @@ class OctopusParser:
         # each td iteration is an scc
         for td in self.out_parser.get('time_dependent', []):
             for iteration in td.get('iteration', []):
-                sec_scc = sec_run.m_create(Calculation)
+                sec_scc = Calculation()
+                sec_run.calculation.append(sec_scc)
                 energy = iteration.get('energy', None)
                 if energy is not None:
                     sec_scc.energy = Energy(total=EnergyEntry(
@@ -697,7 +701,8 @@ class OctopusParser:
 
         # TODO test geometry optimizations, cannot find an exaple
         for minimization in self.out_parser.get('minimization', []):
-            sec_scc = sec_run.m_create(Calculation)
+            sec_scc = Calculation()
+            sec_run.calculation.append(sec_scc)
             energy_total = minimization.get('energy_total')
             if energy_total is not None:
                 sec_scc.energy = Energy(total=EnergyEntry(value=energy_total))
@@ -710,10 +715,12 @@ class OctopusParser:
                     atoms = read(path, format='xyz')
                 except Exception:
                     continue
-                sec_system = sec_run.m_create(System)
+                sec_system = System()
+                sec_run.system.append(sec_system)
                 # TODO xyz does not contain cell info right?
                 cell = cell if cell is None else atoms.get_cell() * ureg.angstrom
-                sec_atoms = sec_system.m_create(Atoms)
+                sec_atoms = Atoms()
+                sec_system.atoms = sec_atoms
                 sec_atoms.lattice_vectors = cell
                 sec_atoms.periodic = pbc
                 sec_atoms.positions = atoms.get_positions() * ureg.angstrom
@@ -725,7 +732,8 @@ class OctopusParser:
             # final results are printed only in static/info
             # energies
             energies = self.info_parser.get('energies', {})
-            sec_energy = sec_scc.m_create(Energy)
+            sec_energy = Energy()
+            sec_scc.energy = sec_energy
             for key, val in energies.items():
                 metainfo_key = self._metainfo_keys_mapping.get(key, None)
                 if metainfo_key is None:
@@ -747,7 +755,8 @@ class OctopusParser:
                 kpts, eigs, occs = list(zip(*[e for e in eigenvalues.eigenvalues if e is not None]))
                 eigs = np.transpose(eigs, axes=(2, 0, 1))
                 occs = np.transpose(occs, axes=(2, 0, 1))
-                sec_eigenvalues = sec_scc.m_create(BandEnergies)
+                sec_eigenvalues = BandEnergies()
+                sec_scc.eigenvalues.append(sec_eigenvalues)
                 if len(kpts) > 0:
                     sec_eigenvalues.kpoints = kpts
                 eigs = eigs * self._units_mapping.get(self.info.get('energyunit').lower())
@@ -767,7 +776,8 @@ class OctopusParser:
 
     def parse_system(self):
         sec_run = self.archive.run[-1]
-        sec_system = sec_run.m_create(System)
+        sec_system = System()
+        sec_run.system.append(sec_system)
 
         symbols, coordinates = self.log_parser.get_coordinates()
         if len(coordinates) == 0:
@@ -796,7 +806,8 @@ class OctopusParser:
             self.logger.error('Error parsing atom positions and labels.')
             return
 
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
 
         cell = self.out_parser.get('grid', {}).get('cell')
         if cell is not None:
@@ -818,15 +829,19 @@ class OctopusParser:
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
-        k_mesh = sec_method.m_create(KMesh)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
+        k_mesh = KMesh()
+        sec_method.k_mesh = k_mesh
         brillouin_zone_sampling = self.info_parser.get('brillouin_zone_sampling')
         if brillouin_zone_sampling is not None:
             if brillouin_zone_sampling.results is not None:
                 k_mesh.grid = brillouin_zone_sampling.results.get('kgrid')
 
-        sec_electronic = sec_method.m_create(Electronic)
-        sec_dft = sec_method.m_create(DFT)
+        sec_electronic = Electronic()
+        sec_method.electronic = sec_electronic
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
 
         # basis set
         sec_method.electrons_representation.append(
@@ -886,7 +901,8 @@ class OctopusParser:
                     xc_functionals = []
                     self.logger.error(
                         'Error resolving xc functional', data=dict(XCfunctional=xc_functional))
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         for xc_functional in xc_functionals:
             if '_X_' in xc_functional or xc_functional.endswith('_X'):
                 sec_xc_functional.exchange.append(Functional(name=xc_functional))
@@ -941,7 +957,8 @@ class OctopusParser:
         self.maindir = os.path.dirname(os.path.abspath(filepath))
         self.init_parser(filepath, logger)
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         header = self.out_parser.header
         sec_run.program = Program(name='Octopus', version=str(header.get('Version', '')))
         sec_run.x_octopus_log_svn_revision = int(header.get('Revision', 0))

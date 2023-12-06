@@ -23,16 +23,16 @@ import logging
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextParser
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program
+from runschema.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional, Scf, BasisSet, KMesh,
     FrequencyMesh, Screening, GW, Photon, BSE, CoreHoleSpectra, BasisSetContainer,
     OrbitalAPW, AtomParameters,
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, EnergyEntry, Charges,
     Forces, ForcesEntry, ScfIteration, BandGap, Spectra, ElectronicStructureProvenance
 )
@@ -1346,11 +1346,13 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         totaldos = self.dos_parser.get('totaldos')
         n_spin_channels = len(totaldos)
         for spin in range(len(totaldos)):
-            sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+            sec_dos = Dos()
+            sec_scc.dos_electronic.append(sec_dos)
             sec_dos.spin_channel = spin if n_spin_channels == 2 else None
             sec_dos.n_energies = self.dos_parser.number_of_dos
             sec_dos.energies = self.dos_parser.energies + energy_fermi
-            sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+            sec_dos_total = DosValues()
+            sec_dos.total.append(sec_dos_total)
             sec_dos_total.value = totaldos[spin]
 
         # TODO fix this partial DOS parsing --> it is wrong, probably it is the orbital_projected.
@@ -1368,11 +1370,13 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             if sec_scc.dos_electronic is not None and sec_scc.dos_electronic[spin]:
                 sec_dos = sec_scc.dos_electronic[spin]
             else:
-                sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                sec_dos = Dos()
+                sec_scc.dos_electronic.append(sec_dos)
                 sec_dos.spin_channel = spin if n_spin_channels == 2 else None
             for lm in range(n_lm):
                 for atom in range(n_atoms):
-                    sec_dos_atom = sec_dos.m_create(DosValues, Dos.atom_projected)
+                    sec_dos_atom = DosValues()
+                    sec_dos.atom_projected.append(sec_dos_atom)
                     sec_dos_atom.m_kind = 'spherical'
                     sec_dos_atom.lm = lm_values[lm]
                     sec_dos_atom.atom_index = atom
@@ -1393,14 +1397,16 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 continue
             energy_fermi = energy_fermi.to("hartree")
 
-            sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
+            sec_k_band = BandStructure()
+            sec_scc.band_structure_electronic.append(sec_k_band)
             sec_k_band.energy_fermi = energy_fermi
 
             band_k_points = self.bandstructure_parser.get('band_k_points')
             nkpts_segment = self.bandstructure_parser.number_of_k_points_per_segment
             band_seg_labels = self.bandstructure_parser.get('band_segm_labels')
             for nb in range(len(band_energies[n])):
-                sec_k_band_segment = sec_k_band.m_create(BandEnergies)
+                sec_k_band_segment = BandEnergies()
+                sec_k_band.segment.append(sec_k_band_segment)
                 sec_k_band_segment.n_kpoints = nkpts_segment[nb]
                 sec_k_band_segment.kpoints = band_k_points[nb]
                 sec_k_band_segment.endpoints_labels = band_seg_labels[nb]
@@ -1423,7 +1429,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 res = res * ureg.hartree
             return res
 
-        sec_eigenvalues = sec_scc.m_create(BandEnergies)
+        sec_eigenvalues = BandEnergies()
+        sec_scc.eigenvalues.append(sec_eigenvalues)
         sec_eigenvalues.kpoints = self.eigval_parser.get('k_points')
         sec_eigenvalues.occupations = get_data('occupancies')
         sec_eigenvalues.energies = get_data('eigenvalues')
@@ -1433,7 +1440,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         if fermi_surface is None:
             return
 
-        sec_fermisurface = sec_scc.m_create(x_exciting_section_fermi_surface)
+        sec_fermisurface = x_exciting_section_fermi_surface()
+        sec_scc.x_exciting_section_fermi_surface.append(sec_fermisurface)
 
         band_parameters = self.fermisurf_parser.get('band_parameters', None)
         if band_parameters is not None:
@@ -1476,7 +1484,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 return
             return np.reshape(data, (nspin, len(data) // nspin, len(data[0])))
 
-        sec_gw_eigenvalues = sec_scc.m_create(BandEnergies)
+        sec_gw_eigenvalues = BandEnergies()
+        sec_scc.eigenvalues.append(sec_gw_eigenvalues)
         sec_gw_eigenvalues.qp_linearization_prefactor = reshape(get_data('Znk'))
         sec_gw_eigenvalues.n_bands = len(eigs_gw[0])
         sec_gw_eigenvalues.n_kpoints = len(eigs_gw)
@@ -1510,11 +1519,13 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         data = np.transpose(data, axes=(2, 0, 1))
         dos = data[1] * (1 / ureg.hartree)
         for spin in range(nspin):
-            sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+            sec_dos = Dos()
+            sec_scc.dos_electronic.append(sec_dos)
             sec_dos.spin_channel = spin if nspin == 2 else None
             sec_dos.n_energies = len(data) // nspin
             sec_dos.energies = data[0][0] * ureg.hartree + energy_fermi
-            sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
+            sec_dos_values = DosValues()
+            sec_dos.total.append(sec_dos_values)
             sec_dos_values.value = dos[spin]
 
         # TODO add PDOS
@@ -1533,13 +1544,15 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             return
         energy_fermi = (energy_fermi.magnitude * ureg.joule).to('hartree')
 
-        sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
+        sec_k_band = BandStructure()
+        sec_scc.band_structure_electronic.append(sec_k_band)
         sec_k_band.energy_fermi = energy_fermi
 
         band_k_points = self.bandstructure_dat_parser.band_k_points
         nkpts_segment = self.bandstructure_dat_parser.number_of_k_points_per_segment
         for nb in range(len(band_energies)):
-            sec_k_band_segment = sec_k_band.m_create(BandEnergies)
+            sec_k_band_segment = BandEnergies()
+            sec_k_band.segment.append(sec_k_band_segment)
             sec_k_band_segment.n_kpoints = nkpts_segment[nb]
             sec_k_band_segment.kpoints = band_k_points[nb]
             sec_k_band_segment.energies = band_energies[nb] + energy_fermi
@@ -1557,12 +1570,14 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         if sec_scc.energy is not None:
             energy_fermi = sec_scc.energy.fermi
         energy_fermi = (energy_fermi.magnitude * ureg.joule).to('hartree')
-        sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
+        sec_k_band = BandStructure()
+        sec_scc.band_structure_electronic.append(sec_k_band)
         sec_k_band.energy_fermi = energy_fermi
 
         nkpts_segment = self.band_out_parser.number_of_k_points_per_segment
         for nb in range(len(band_energies)):
-            sec_k_band_segment = sec_k_band.m_create(BandEnergies)
+            sec_k_band_segment = BandEnergies()
+            sec_k_band.segment.append(sec_k_band_segment)
             sec_k_band_segment.n_kpoints = nkpts_segment[nb]
             sec_k_band_segment.value = band_energies[nb] + energy_fermi
 
@@ -1811,7 +1826,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
             sec_scc.x_exciting_xs_bse_number_of_components = n_components
             n_excitons = len(data[0]) // n_components
-            scc_section = sec_scc.m_create(x_exciting_exciton_calculation)
+            scc_section = x_exciting_exciton_calculation()
+            sec_scc.x_exciting_exciton = scc_section
             scc_section.x_exciting_xs_bse_number_of_excitons = n_excitons
             scc_section.x_exciting_xs_bse_exciton_energies = np.reshape(
                 data[1], (n_components, n_excitons)) * ureg.hartree
@@ -1830,7 +1846,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             n_epsilon = len(data[0]) // n_components
 
             sec_scc.x_exciting_xs_bse_number_of_energy_points = n_epsilon
-            scc_section = sec_scc.m_create(x_exciting_epsilon_calculation)
+            scc_section = x_exciting_epsilon_calculation()
+            sec_scc.x_exciting_epsilon = scc_section
             scc_section.x_exciting_xs_bse_epsilon_energies = np.reshape(
                 data[0], (n_components, n_epsilon)) * ureg.hartree
             scc_section.x_exciting_xs_bse_epsilon_re = np.reshape(
@@ -1838,7 +1855,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             scc_section.x_exciting_xs_bse_epsilon_im = np.reshape(
                 data[2], (n_components, n_epsilon))
 
-            sec_spectra = sec_scc.m_create(Spectra)
+            sec_spectra = Spectra()
+            sec_scc.spectra.append(sec_spectra)
             sec_spectra.n_energies = n_epsilon
             sec_spectra.excitation_energies = data[0] * ureg.hartree
             sec_spectra.intensities = data[2]
@@ -1849,7 +1867,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             data = np.transpose(np.vstack(data))
             n_sigma = len(data[0]) // n_components
 
-            scc_section = sec_scc.m_create(x_exciting_sigma_calculation)
+            scc_section = x_exciting_sigma_calculation()
+            sec_scc.x_exciting_sigma = scc_section
             scc_section.x_exciting_xs_bse_sigma_energies = np.reshape(
                 data[0], (n_components, n_sigma)) * ureg.hartree
             scc_section.x_exciting_xs_bse_sigma_re = np.reshape(
@@ -1862,7 +1881,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             data = np.transpose(np.vstack(data))
             n_loss = len(data[0]) // n_components
 
-            scc_section = sec_scc.m_create(x_exciting_loss_calculation)
+            scc_section = x_exciting_loss_calculation()
+            sec_scc.x_exciting_loss = scc_section
             scc_section.x_exciting_xs_bse_loss_energies = np.reshape(
                 data[0], (n_components, n_loss)) * ureg.hartree
             scc_section.x_exciting_xs_bse_loss = np.reshape(
@@ -1875,7 +1895,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             if sec_run.m_xpath('calculation'):
                 sec_scc = sec_run.calculation[-1]
             else:
-                sec_scc = sec_run.m_create(Calculation)
+                sec_scc = Calculation()
+                sec_run.calculation.append(sec_scc)
             self.data_xs_parser.mainfile = file
             if self.data_xs_parser.data is None:
                 continue
@@ -1939,8 +1960,16 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             if archive is None:
                 return
 
-            sec_run = archive.run[0] if archive.run else archive.m_create(Run)
-            return sec_run.calculation[0] if sec_run.calculation else sec_run.m_create(Calculation)
+            if archive.run:
+                sec_run = archive.run[0]
+            else:
+                sec_run = Run()
+                archive.run.append(sec_run)
+            if sec_run.calculation:
+                sec_scc = sec_run.calculation[0]
+            else:
+                sec_scc = Calculation()
+            return sec_scc
 
         for path in get_files('*_OC*001.OUT', self.filepath, 'INFO.OUT'):
             sec_scc = get_xs_calculation(path)
@@ -1956,7 +1985,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             quantity = basename.split('_')[0]
 
             if quantity == 'EPSILON' and '_FXC' in basename:
-                sec_scc = sec_run.m_create(Calculation)
+                sec_scc = Calculation()
+                sec_run.calculation.append(sec_scc)
                 sec_scc.x_exciting_xs_tddft_number_of_epsilon_values = len(data[0][0][0])
                 sec_scc.x_exciting_xs_tddft_epsilon_energies = data[0][0][0] * ureg.hartree
                 sec_scc.x_exciting_xs_tddft_dielectric_function_local_field = data[1:]
@@ -1978,13 +2008,15 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
     def parse_polarization(self, path):
         sec_run = self._child_archives.get(path).run[-1]
-        sec_photon = sec_run.m_create(Method).m_create(Photon)
+        sec_photon = Photon()
+        sec_run.method.append(Method(photon=[sec_photon]))
         # TODO check with developers if this is correct
         sec_photon.momentum_transfer = sec_run.method[0].get('x_exciting_xs_qpointset_qpoint')
 
     def parse_xs(self):
         sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         if sec_run.m_xpath('method[0]'):
             sec_method.starting_method_ref = sec_run.method[0]
 
@@ -1992,13 +2024,15 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         self.parse_file('input.xml', sec_method, self._xs_info_file)
 
         # BSE
-        sec_bse = sec_method.m_create(BSE)
+        sec_bse = BSE()
+        sec_method.bse = sec_bse
         sec_bse.type = self._bse_type_map[sec_run.method[-1].x_exciting_xs_bse_type]
         sec_bse.solver = 'Full-diagonalization'
         sec_bse.n_empty_states = sec_run.method[-1].x_exciting_xs_number_of_empty_states
         sec_bse.broadening = sec_run.method[-1].x_exciting_xs_broadening
         # KMesh
-        sec_k_mesh = sec_method.m_create(KMesh)
+        sec_k_mesh = KMesh()
+        sec_method.k_mesh = sec_k_mesh
         sec_k_mesh.grid = sec_run.method[-1].x_exciting_xs_ngridk  # TODO change to output parsing
         # QMesh
         sec_q_mesh = KMesh(grid=sec_run.method[-1].x_exciting_xs_ngridq)
@@ -2037,7 +2071,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             self._parse_xs_tddft()
 
     def parse_photons(self, path):
-        sec_run = self._child_archives.get(path).m_create(Run)
+        sec_run = Run()
+        self._child_archives.get(path).run.append(sec_run)
 
         # Program
         sec_run.program = Program(
@@ -2066,17 +2101,23 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     self.input_xml_parser.get(f'{path}/{keys}', source[keys]))
 
         parse_exciting_gw_inputs(self._gw_input_default, 'gw', sec_gw)
-        sec_freqgrid = sec_gw.m_create(x_exciting_freqgrid_parameters)
+        sec_freqgrid = x_exciting_freqgrid_parameters()
+        sec_gw.x_exciting_freqgrid = sec_freqgrid
         parse_exciting_gw_inputs(self._freqgrid_input_default, 'gw/freqgrid', sec_freqgrid)
-        sec_selfenergy = sec_gw.m_create(x_exciting_selfenergy_parameters)
+        sec_selfenergy = x_exciting_selfenergy_parameters()
+        sec_gw.x_exciting_selfenergy = sec_selfenergy
         parse_exciting_gw_inputs(self._selfenergy_input_default, 'gw/selfenergy', sec_selfenergy)
-        sec_wgrid = sec_gw.m_create(x_exciting_wgrid_parameters)
+        sec_wgrid = x_exciting_wgrid_parameters()
+        sec_gw.x_exciting_wgrid = sec_wgrid
         parse_exciting_gw_inputs(self._wgrid_input_default, 'gw/wgrid', sec_wgrid)
-        sec_mixbasis = sec_gw.m_create(x_exciting_mixbasis_parameters)
+        sec_mixbasis = x_exciting_mixbasis_parameters()
+        sec_gw.x_exciting_mixbasis = sec_mixbasis
         parse_exciting_gw_inputs(self._barecoul_input_default, 'gw/mixbasis', sec_mixbasis)
-        sec_barecoul = sec_gw.m_create(x_exciting_barecoul_parameters)
+        sec_barecoul = x_exciting_barecoul_parameters()
+        sec_gw.x_exciting_barecoul = sec_barecoul
         parse_exciting_gw_inputs(self._barecoul_input_default, 'gw/barecoul', sec_barecoul)
-        sec_scrcoul = sec_gw.m_create(x_exciting_scrcoul_parameters)
+        sec_scrcoul = x_exciting_scrcoul_parameters()
+        sec_gw.x_exciting_scrcoul = sec_scrcoul
         parse_exciting_gw_inputs(self._scrcoul_input_default, 'gw/scrcoul', sec_scrcoul)
 
         gmaxvr = self.info_parser.get_initialization_parameter('x_exciting_gmaxvr', 0)
@@ -2089,8 +2130,10 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_run = self.archive.run[-1]
 
         # GW Method
-        sec_method = sec_run.m_create(Method)
-        sec_gw = sec_method.m_create(GW)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
+        sec_gw = GW()
+        sec_method.gw = sec_gw
 
         # parse input xml files: code-specific metainfo
         for f in ['input_gw.xml', 'input-gw.xml', 'input.xml']:
@@ -2099,7 +2142,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # GW
         sec_gw.type = 'G0W0'
         # KMesh
-        sec_k_mesh = sec_method.m_create(KMesh)
+        sec_k_mesh = KMesh()
+        sec_method.k_mesh = sec_k_mesh
         sec_k_mesh.grid = sec_gw.x_exciting_ngridq
         # QMesh same as KMesh
         sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
@@ -2143,7 +2187,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_gw.n_empty_states = sec_screening.n_empty_states
 
         # GW Calculation
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
         # parse properties
         self.info_gw_parser.mainfile = self._gw_info_file
 
@@ -2167,9 +2212,11 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         gw_band_gap = self.info_gw_parser.get(
             'direct_band_gap', self.info_gw_parser.get('fundamental_band_gap'))
         if gw_band_gap is not None:
-            sec_gap = sec_scc.m_create(BandGap)
+            sec_gap = BandGap()
+            sec_scc.band_gap.append(sec_gap)
             sec_gap.value = gw_band_gap
-            sec_gap_provenance = sec_gap.m_create(ElectronicStructureProvenance)
+            sec_gap_provenance = ElectronicStructureProvenance()
+            sec_gap.provenance = sec_gap_provenance
             sec_gap_provenance.label = 'parser'
 
         sec_scc.method_ref = sec_method
@@ -2190,10 +2237,12 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
 
         if sec_method.k_mesh is None:  # TODO revise need in the future
-            k_mesh = sec_method.m_create(KMesh)
+            k_mesh = KMesh()
+            sec_method.k_mesh = k_mesh
             k_mesh.grid = self.info_parser.get_initialization_parameter('kpoint_grid', default=[1] * 3)
             k_mesh.offset = self.info_parser.get_initialization_parameter('kpoint_offset', default=[0.] * 3)
 
@@ -2203,15 +2252,18 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             self.parse_file(species_file, sec_method)
 
         # XC functional
-        sec_dft = sec_method.m_create(DFT)
-        sec_electronic = sec_method.m_create(Electronic)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
+        sec_electronic = Electronic()
+        sec_method.electronic = sec_electronic
         sec_electronic.method = 'DFT'
 
         smearing_kind_map = {
             'Gaussian': 'gaussian', 'Methfessel-Paxton': 'methfessel-paxton',
             'Fermi-Dirac': 'fermi', 'Extended': 'tetrahedra'}
 
-        sec_smearing = sec_electronic.m_create(Smearing)
+        sec_smearing = Smearing()
+        sec_electronic.smearing = sec_smearing
         smearing_kind = self.info_parser.get_initialization_parameter('smearing_kind')
         if smearing_kind is not None:
             if not isinstance(smearing_kind, str):
@@ -2235,7 +2287,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             if metainfo_name == 'x_exciting_scf_threshold_energy_change':
                 sec_method.scf = Scf(threshold_energy_change=threshold)
 
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         self.parse_xc_functional(sec_xc_functional)
 
         sec_electronic.n_spin_channels = self.info_parser.get_number_of_spin_channels()
@@ -2287,17 +2340,20 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
 
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
         k_grid = self.info_parser.get('k_grid')
         if k_grid is not None:
-            sec_kmesh = sec_scc.m_create(KMesh)
+            sec_kmesh = KMesh()
+            sec_scc.k_mesh = sec_kmesh
             sec_kmesh.grid = k_grid
             sec_kmesh.offset = self.info_parser.get('k_offset', [0.] * 3)
 
         def parse_scf(iteration, msection):
 
             energy_total = iteration.get('energy_total')
-            sec_energy = msection.m_create(Energy)
+            sec_energy = Energy()
+            msection.energy = sec_energy
             if energy_total is not None:
                 sec_energy.total = EnergyEntry(value=energy_total)
 
@@ -2336,11 +2392,14 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     continue
                 if key == 'x_exciting_section_MT_charge_atom':
                     for n in range(len(val)):
-                        sec_mt_charge_atom = msection.m_create(x_exciting_section_MT_charge_atom)
+                        sec_mt_charge_atom = x_exciting_section_MT_charge_atom()
+                        section_def = msection.m_def.all_sub_sections_by_section.get(x_exciting_section_MT_charge_atom.m_def)[0]
+                        msection.m_add_sub_section(section_def, sec_mt_charge_atom)
                         sec_mt_charge_atom.x_exciting_MT_charge_atom_index = n + 1
                         sec_mt_charge_atom.x_exciting_MT_charge_atom_symbol = val[n][0]
                         sec_mt_charge_atom.x_exciting_MT_charge_atom_value = val[n][1]
-                        sec_charges = msection.m_create(Charges)
+                        sec_charges = Charges()
+                        msection.charges.append(sec_charges)
                         sec_charges.value = [
                             val[n][1].magnitude for n in range(len(val))] * val[0][1].units
                         sec_charges.total = charge_contributions.get('total charge')
@@ -2361,7 +2420,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     continue
                 if key == 'x_exciting_section_MT_moment_atom':
                     for n in range(len(val)):
-                        sec_mt_moment_atom = msection.m_create(x_exciting_section_MT_moment_atom)
+                        sec_mt_moment_atom = x_exciting_section_MT_moment_atom()
+                        section_def = msection.m_def.all_sub_sections_by_section.get(x_exciting_section_MT_moment_atom.m_def)[0]
+                        msection.m_add_sub_section(section_def, sec_mt_moment_atom)
                         sec_mt_moment_atom.x_exciting_MT_moment_atom_index = n + 1
                         sec_mt_moment_atom.x_exciting_MT_moment_atom_symbol = val[n][0]
                         sec_mt_moment_atom.x_exciting_MT_moment_atom_value = val[n][1]
@@ -2389,14 +2450,16 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # forces
         forces = section.get('forces')
         if forces is not None:
-            sec_forces = sec_scc.m_create(Forces)
+            sec_forces = Forces()
+            sec_scc.forces = sec_forces
             sec_forces.total = ForcesEntry(value=np.reshape(forces, (np.size(forces) // 3, 3)))
 
         # scf iterations
         scf_iterations = section.get('scf_iteration', [])
         for scf_iteration in scf_iterations:
             time_initial_scf = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else time_initial
-            sec_scf_iteration = sec_scc.m_create(ScfIteration)
+            sec_scf_iteration = ScfIteration()
+            sec_scc.scf_iteration.append(sec_scf_iteration)
             parse_scf(scf_iteration, sec_scf_iteration)
             if sec_scf_iteration.time_physical:
                 sec_scf_iteration.time_calculation = sec_scf_iteration.time_physical - time_initial_scf
@@ -2442,9 +2505,11 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         if positions is None or atom_labels is None:
             return
 
-        sec_system = sec_run.m_create(System)
+        sec_system = System()
+        sec_run.system.append(sec_system)
 
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
         sec_atoms.positions = positions
         sec_atoms.labels = atom_labels
         sec_atoms.periodic = [True] * 3
@@ -2464,7 +2529,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 continue
 
             if name == 'x_exciting_spin_treatment':
-                sub_sec = sec_system.m_create(x_exciting_section_spin)
+                sub_sec = x_exciting_section_spin()
+                sec_system.x_exciting_section_spin.append(sub_sec)
                 sub_sec.x_exciting_spin_treatment = val
             elif name == 'x_exciting_species_rtmin':
                 setattr(sec_system, name, ' '.join([str(v) for v in val]))
@@ -2477,7 +2543,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # species
         species = self.info_parser.get_initialization_parameter('species', [])
         for specie in species:
-            sec_atoms_group = sec_system.m_create(x_exciting_section_atoms_group)
+            sec_atoms_group = x_exciting_section_atoms_group()
+            sec_system.x_exciting_section_atoms_group.append(sec_atoms_group)
             sec_atoms_group.x_exciting_geometry_atom_labels = specie.get('symbol')
             sec_atoms_group.x_exciting_geometry_atom_number = str(specie.get('number'))
             sec_atoms_group.x_exciting_muffin_tin_points = specie.get('radial_points')
@@ -2654,7 +2721,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
 
         sec_run.program = Program(
             name='exciting', version=self.info_parser.get('program_version', '').strip(),

@@ -25,15 +25,15 @@ from ase.data import atomic_numbers
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, FileParser
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program, TimeRun
+from runschema.method import (
     AtomParameters, Functional, Method, Electronic, BasisSet,
     BasisSetAtomCentered, Smearing, XCFunctional, DFT, BasisSetContainer,
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry,
     Thermodynamics, BandEnergies, ScfIteration
 )
@@ -798,8 +798,10 @@ class TurbomoleParser:
 
     def parse_system(self):
         sec_run = self.archive.run[0]
-        sec_system = sec_run.m_create(System)
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_system = System()
+        sec_run.system.append(sec_system)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
 
         info = self.module.get('atomic_info', {}).get('info', {})
         if info.get('coordinates') is not None:
@@ -818,8 +820,10 @@ class TurbomoleParser:
             cluster = point_charges.get(name, None)
             if cluster is None:
                 continue
-            sec_system_cluster = sec_run.m_create(System)
-            sec_atoms = sec_system_cluster.m_create(Atoms)
+            sec_system_cluster = System()
+            sec_run.system.append(sec_system_cluster)
+            sec_atoms = Atoms()
+            sec_system_cluster.atoms = sec_atoms
             sec_atoms.positions = cluster.get('coordinates')
             sec_atoms.labels = cluster.get('labels')
             if name == 'redefined':
@@ -838,12 +842,14 @@ class TurbomoleParser:
     def parse_scc(self):
         sec_run = self.archive.run[0]
         time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
 
         n_atoms = self.get_number_of_atoms()
 
         # energies
-        sec_energy = sec_scc.m_create(Energy)
+        sec_energy = Energy()
+        sec_scc.energy = sec_energy
         for key, val in self.module.get('energies', {}).items():
             key = self.metainfo_map.get(key, None)
             if key is None:
@@ -863,8 +869,10 @@ class TurbomoleParser:
         for name, energies in self.module.items():
             if not name.startswith('energies_') or energies is None:
                 continue
-            sec_scc_module = sec_run.m_create(Calculation)
-            sec_scc_module_energy = sec_scc_module.m_create(Energy)
+            sec_scc_module = Calculation()
+            sec_run.calculation.append(sec_scc_module)
+            sec_scc_module_energy = Energy()
+            sec_scc_module.energy = sec_scc_module_energy
             for key, val in energies.items():
                 key = self.metainfo_map.get(key, None)
                 if key is None:
@@ -874,7 +882,8 @@ class TurbomoleParser:
                         Energy, key.replace('energy_', '').lower()), EnergyEntry(value=val))
                 else:
                     setattr(sec_scc_module, key, val)
-            sec_method_module = sec_run.m_create(Method)
+            sec_method_module = Method()
+            sec_run.method.append(sec_method_module)
             sec_method_module.electronic = Electronic(method=name.lstrip('energies_'))
             sec_scc_module.method_ref = sec_method_module
             # add reference to main sec_scc
@@ -893,11 +902,14 @@ class TurbomoleParser:
             # sec_scc_thermo = None
             for thermo in thermodynamics:
                 if current_t != thermo.get('t', 0.) or current_p != thermo.get('p', 0.):
-                    sec_scc_thermo = sec_run.m_create(Calculation)
+                    sec_scc_thermo = Calculation()
+                    sec_run.calculation.append(sec_scc_thermo)
                     sec_scc_thermo.starting_calculation_ref = sec_scc
                     sec_scc_thermo.calculations_ref = [sec_scc]
-                    sec_thermo = sec_scc_thermo.m_create(Thermodynamics)
-                    sec_scc_thermo_energy = sec_scc_thermo.m_create(Energy)
+                    sec_thermo = Thermodynamics()
+                    sec_scc_thermo.thermodynamics.append(sec_thermo)
+                    sec_scc_thermo_energy = Energy()
+                    sec_scc_thermo.energy = sec_scc_thermo_energy
                 current_t, current_p = thermo.get('t', 0.), thermo.get('p', 0.)
                 if sec_scc_thermo is not None:
                     for key, val in thermo.items():
@@ -968,7 +980,8 @@ class TurbomoleParser:
                     eigenvalues.append(np.hstack(self.eigenvalues_parser.get('eigenvalues', [])))
                     occupation.append(np.hstack(self.eigenvalues_parser.get('occupation', [])))
                     irrep.append(np.hstack(self.eigenvalues_parser.get('irrep', [])))
-                    sec_eigenvalues = sec_scc.m_create(BandEnergies)
+                    sec_eigenvalues = BandEnergies()
+                    sec_scc.eigenvalues.append(sec_eigenvalues)
                     values = np.reshape(np.array(
                         eigenvalues, dtype=float), (len(eigenvalue_files), 1, len(eigenvalues[0]))) * ureg.hartree
                     occupations = np.reshape(np.array(
@@ -989,8 +1002,10 @@ class TurbomoleParser:
             'energy_total_scf_iteration') for iteration in self_consistency.get('iteration', [])]
         for n, iteration in enumerate(self_consistency.get('iteration', [])):
             time_initial_scf = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else time_initial
-            sec_iteration = sec_scc.m_create(ScfIteration)
-            sec_iteration_energy = sec_iteration.m_create(Energy)
+            sec_iteration = ScfIteration()
+            sec_scc.scf_iteration.append(sec_iteration)
+            sec_iteration_energy = Energy()
+            sec_iteration.energy = sec_iteration_energy
 
             for key, val in iteration.get('energies', {}).items():
                 if key.startswith('energy_'):
@@ -1039,7 +1054,8 @@ class TurbomoleParser:
                 'eigenvalue_ks_ExchangeCorrelation': 'value_ks_xc',
                 'ExchangeCorrelation_perturbativeGW_derivation': 'x_turbomole_ExchangeCorrelation_perturbativeGW_derivation'
             }
-            sec_eigs_gw = sec_scc.m_create(BandEnergies)
+            sec_eigs_gw = BandEnergies()
+            sec_scc.eigenvalues.append(sec_eigs_gw)
             for key, name in gw_metainfo_map.items():
                 val = [q.get(key) for q in self.module.gw.get('qp_states', [])]
                 # TODO verify shape for spin polarized
@@ -1058,15 +1074,19 @@ class TurbomoleParser:
         return sec_scc
 
     def parse_method(self):
-        sec_method = self.archive.run[0].m_create(Method)
-        sec_dft = sec_method.m_create(DFT)
-        sec_electronic = sec_method.m_create(Electronic)
+        sec_method = Method()
+        self.archive.run[0].method.append(sec_method)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
+        sec_electronic = Electronic()
+        sec_method.electronic = sec_electronic
 
         method = self.get_electronic_structure_method()
         if method is not None:
             sec_electronic.method = method
         sec_electronic.n_spin_channels = self.get_number_of_spin_channels()
-        sec_smearing = sec_electronic.m_create(Smearing)
+        sec_smearing = Smearing()
+        sec_electronic.smearing = sec_smearing
         for key, val in self.module.get('smearing', {}).items():
             setattr(sec_smearing, key, val)
 
@@ -1075,7 +1095,8 @@ class TurbomoleParser:
             info = atomic_info.get('info', {})
             atom_kind = list(set(info.get('atom', [])))
             for atom in atom_kind:
-                sec_atom_kind = sec_method.m_create(AtomParameters)
+                sec_atom_kind = AtomParameters()
+                sec_method.atom_parameters.append(sec_atom_kind)
                 sec_atom_kind.atom_number = atomic_numbers.get(atom, 0)
                 sec_atom_kind.label = atom
 
@@ -1103,7 +1124,8 @@ class TurbomoleParser:
                 sec_method.electrons_representation.append(em)
 
         # XC Functionals
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         dft_functional = self.module.get('dft_functional')
         if dft_functional is not None:
             for functional in self.xc_functional_map.get(dft_functional.get('functional'), ['HF_X']):
@@ -1180,7 +1202,8 @@ class TurbomoleParser:
 
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
 
         sec_run.program = Program(name='turbomole')
 

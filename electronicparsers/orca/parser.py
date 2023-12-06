@@ -23,15 +23,15 @@ import numpy as np
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
 
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program
+from runschema.method import (
     Electronic, Method, BasisSet, DFT, XCFunctional, Functional,
     BasisSetContainer, Scf,
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, ScfIteration, BandEnergies, Charges,
     ChargesValue, Spectra,
 )
@@ -606,7 +606,8 @@ class OrcaParser:
             'PWLDA': 'LDA', 'P86': 'GGA', 'LYP': 'GGA'}
 
     def parse_method(self, section):
-        sec_method = self.archive.run[-1].m_create(Method)
+        sec_method = Method()
+        self.archive.run[-1].method.append(sec_method)
 
         trivial = [None] * 2
         _native_tier_map = {
@@ -671,8 +672,10 @@ class OrcaParser:
                             setattr(sec_basis_set, 'x_orca_%s%s' % (key, ext), val[n])
                     em.basis_set.append(sec_basis_set)
 
-        sec_dft = sec_method.m_create(DFT)
-        sec_electronic = sec_method.m_create(Electronic)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
+        sec_electronic = Electronic()
+        sec_method.electronic = sec_electronic
         # TODO identify DFT+U
         sec_electronic.method = 'DFT'
 
@@ -727,7 +730,8 @@ class OrcaParser:
                 if len(xc_functionals) == 0:
                     self.logger.warning('Cannot resolve xc functional', data=dict(name=xc_functional))
 
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         for functional in xc_functionals:
             if '_X_' in functional or functional.endswith('_X'):
                 sec_xc_functional.exchange.append(Functional(name=functional))
@@ -744,7 +748,8 @@ class OrcaParser:
                 continue
             method = calculation.get('electronic_structure_method')
             method = calculation_type.upper() if method is None else method
-            sec_method = self.archive.run[-1].m_create(Method)
+            sec_method = Method()
+            self.archive.run[-1].method.append(sec_method)
             sec_method.electronic = Electronic(method=method)
 
             for key, val in calculation.items():
@@ -760,8 +765,10 @@ class OrcaParser:
         return sec_method
 
     def parse_system(self, section):
-        sec_system = self.archive.run[-1].m_create(System)
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_system = System()
+        self.archive.run[-1].system.append(sec_system)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
         if section.get('cartesian_coordinates') is not None:
             symbols, coordinates = section.get('cartesian_coordinates')
             sec_atoms.labels = symbols
@@ -772,13 +779,15 @@ class OrcaParser:
     def parse_scc(self, section):
         sec_run = self.archive.run[-1]
         initial_time = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
 
         self_consistent = section.get('self_consistent')
         if self_consistent is None:
             return sec_scc
 
-        sec_energy = sec_scc.m_create(Energy)
+        sec_energy = Energy()
+        sec_scc.energy = sec_energy
         scf_energy = self_consistent.get('total_scf_energy', None)
         if scf_energy is not None:
             sec_energy.total = EnergyEntry(value=scf_energy.get('energy_total'))
@@ -796,7 +805,8 @@ class OrcaParser:
         scf_iterations = self_consistent.get('scf_iterations', None)
         if scf_iterations is not None:
             for energy in scf_iterations.get('energy', []):
-                sec_scf_iteration = sec_scc.m_create(ScfIteration)
+                sec_scf_iteration = ScfIteration()
+                sec_scc.scf_iteration.append(sec_scf_iteration)
                 sec_scf_iteration.energy = Energy(total=EnergyEntry(value=energy))
 
         # method-specific quantities
@@ -813,7 +823,8 @@ class OrcaParser:
         # eigenvalues
         orbital_energies = self_consistent.get('orbital_energies')
         if orbital_energies is not None:
-            sec_eigenvalues = sec_scc.m_create(BandEnergies)
+            sec_eigenvalues = BandEnergies()
+            sec_scc.eigenvalues.append(sec_eigenvalues)
             orbital_energies = np.transpose(orbital_energies[:2])
             occupation = orbital_energies[1].T
             occupation = np.reshape(occupation, (len(occupation), 1, len(occupation[0])))
@@ -828,13 +839,15 @@ class OrcaParser:
             atomic_charges = mulliken.get('atomic_charges')
             orbital_charges = mulliken.get('orbital_charges')
 
-            sec_charges = sec_scc.m_create(Charges)
+            sec_charges = Charges()
+            sec_scc.charges.append(sec_charges)
             sec_charges.analysis_method = 'mulliken'
             sec_charges.n_charges_atoms = len(atomic_charges.get('species', []))
             sec_charges.value = atomic_charges.charge
             for atom in range(len(atomic_charges.get('species', []))):
                 for orbital, orbital_charge in orbital_charges.atom[atom].get('charge', []):
-                    sec_charges_value = sec_charges.m_create(ChargesValue, Charges.orbital_projected)
+                    sec_charges_value = ChargesValue()
+                    sec_charges.orbital_projected.append(sec_charges_value)
                     sec_charges_value.atom_index = atom
                     sec_charges_value.atom_label = orbital_charges.atom[atom].species
                     sec_charges_value.orbital = orbital
@@ -845,7 +858,8 @@ class OrcaParser:
         # excitations
         spectrum = section.get('tddft', {}).get('absorption_spectrum_electric')
         if spectrum is not None:
-            sec_spectra = sec_scc.m_create(Spectra)
+            sec_spectra = Spectra()
+            sec_scc.spectra.append(sec_spectra)
             spectrum = [val for val in spectrum if len(val) == 8]
             spectrum = np.transpose(spectrum)
             sec_spectra.excitation_energies = (spectrum[1] * ureg.c * ureg.h / ureg.cm)
@@ -926,7 +940,8 @@ class OrcaParser:
         self.logger = logging.getLogger(__name__) if logger is None else logger
         self.init_parser(filepath, logger)
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         sec_run.program = Program(name='ORCA')
         version = []
         for key in ['program_version', 'program_svn', 'program_compilation_date']:

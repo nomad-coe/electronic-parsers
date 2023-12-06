@@ -24,14 +24,14 @@ from nomad.units import ureg
 
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from simulationworkflowschema import SinglePoint
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.run import Run, Program
+from runschema.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, HoppingMatrix
 )
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.method import (
     Method, AtomParameters, KMesh, Wannier, TB
 )
-from nomad.datamodel.metainfo.simulation.system import System, Atoms, AtomsGroup
+from runschema.system import System, Atoms, AtomsGroup
 from ..utils import get_files
 
 
@@ -206,14 +206,16 @@ class Wannier90Parser():
 
     def parse_system(self):
         sec_run = self.archive.run[-1]
-        sec_system = sec_run.m_create(System)
+        sec_system = System()
+        sec_run.system.append(sec_system)
 
         structure = self.wout_parser.get('structure')
         if structure is None:
             self.logger.error('Error parsing the structure from .wout')
             return
 
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
         if self.wout_parser.get('lattice_vectors', []):
             lattice_vectors = np.vstack(self.wout_parser.get('lattice_vectors', [])[-3:])
             sec_atoms.lattice_vectors = lattice_vectors * ureg.angstrom
@@ -228,14 +230,18 @@ class Wannier90Parser():
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
-        sec_proj = sec_method.m_create(TB)
-        sec_wann = sec_proj.m_create(Wannier)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
+        sec_proj = TB()
+        sec_method.tb = sec_proj
+        sec_wann = Wannier()
+        sec_proj.wannier = sec_wann
 
         # k_mesh section
         kmesh = self.wout_parser.get('k_mesh')
         if kmesh:
-            sec_k_mesh = sec_method.m_create(KMesh)
+            sec_k_mesh = KMesh()
+            sec_method.k_mesh = sec_k_mesh
             sec_k_mesh.n_points = kmesh.get('n_points')
             sec_k_mesh.grid = kmesh.get('grid', [])
             if kmesh.get('k_points') is not None:
@@ -291,7 +297,8 @@ class Wannier90Parser():
         # Populating AtomsGroup for projected atoms
         sec_run.x_wannier90_n_atoms_proj = len(projections)
         for nat in range(sec_run.x_wannier90_n_atoms_proj):
-            sec_atoms_group = sec_system.m_create(AtomsGroup)
+            sec_atoms_group = AtomsGroup()
+            sec_system.atoms_group.append(sec_atoms_group)
             sec_atoms_group.type = 'active_orbitals'
             sec_atoms_group.index = 0  # Always first index (projection on a projection does not exist)
             sec_atoms_group.is_molecule = False
@@ -319,7 +326,8 @@ class Wannier90Parser():
             # suggestion: shift to wout for projection?
             try:
                 orbitals = projections[nat][1].split(';')
-                sec_atom_parameters = sec_method.m_create(AtomParameters)
+                sec_atom_parameters = AtomParameters()
+                sec_method.atom_parameters.append(sec_atom_parameters)
                 sec_atom_parameters.n_orbitals = len(orbitals)
                 angular_momentum = []
                 for orb in orbitals:
@@ -342,7 +350,8 @@ class Wannier90Parser():
 
         # Assuming method.tb is parsed before
         sec_scc = self.archive.run[-1].calculation[-1]
-        sec_hopping_matrix = sec_scc.m_create(HoppingMatrix)
+        sec_hopping_matrix = HoppingMatrix()
+        sec_scc.hopping_matrix.append(sec_hopping_matrix)
         sec_hopping_matrix.n_orbitals = self.archive.run[-1].method[-1].tb.wannier.n_projected_orbitals
         deg_factors = self.hr_parser.get('degeneracy_factors', [])
         if deg_factors is not None:
@@ -355,7 +364,8 @@ class Wannier90Parser():
             except Exception:
                 self.logger.warning('Could not parse the hopping matrix values. Please, revise your output files.')
         try:
-            sec_scc_energy = sec_scc.m_create(Energy)
+            sec_scc_energy = Energy()
+            sec_scc.energy = sec_scc_energy
             # Setting Fermi level to the first orbital onsite energy
             n_wigner_seitz_points_half = int(0.5 * sec_hopping_matrix.n_wigner_seitz_points)
             energy_fermi = sec_hopping_matrix.value[n_wigner_seitz_points_half][0][5] * ureg.eV
@@ -416,7 +426,8 @@ class Wannier90Parser():
         # Parsing only first *_band.dat file
         self.band_dat_parser.mainfile = band_files[0]
 
-        sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
+        sec_k_band = BandStructure()
+        sec_scc.band_structure_electronic.append(sec_k_band)
         sec_k_band.energy_fermi = energy_fermi
         try:
             sec_k_band.reciprocal_cell = self.archive.run[-1].system[0].atoms.lattice_vectors_reciprocal
@@ -440,7 +451,8 @@ class Wannier90Parser():
             return
         bkp_init = 0
         for n in range(n_segments):
-            sec_k_band_segment = sec_k_band.m_create(BandEnergies)
+            sec_k_band_segment = BandEnergies()
+            sec_k_band.segment.append(sec_k_band_segment)
             sec_k_band_segment.n_kpoints = band_segments_points[n]
             sec_k_band_segment.kpoints = kpoints[n]
 
@@ -473,17 +485,20 @@ class Wannier90Parser():
         self.dos_dat_parser.mainfile = dos_files[0]
 
         # TODO add spin polarized case
-        sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+        sec_dos = Dos()
+        sec_scc.dos_electronic.append(sec_dos)
         sec_dos.energy_fermi = energy_fermi
         data = np.transpose(self.dos_dat_parser.data)
         sec_dos.n_energies = len(data[0])
         sec_dos.energies = data[0] * ureg.eV
-        sec_dos_values = sec_dos.m_create(DosValues, Dos.total)
+        sec_dos_values = DosValues()
+        sec_dos.total.append(sec_dos_values)
         sec_dos_values.value = data[1] / ureg.eV
 
     def parse_scc(self):
         sec_run = self.archive.run[-1]
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
 
         # Refs for calculation
         sec_scc.method_ref = sec_run.method[-1]
@@ -512,7 +527,8 @@ class Wannier90Parser():
 
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
 
         # Program section
         sec_run.program = Program(

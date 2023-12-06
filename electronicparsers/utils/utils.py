@@ -24,7 +24,7 @@ from glob import glob
 from typing import Union
 from nomad.utils import extract_section
 from nomad.datamodel import EntryArchive
-from nomad.datamodel.metainfo.simulation.run import Run
+from runschema.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
 from simulationworkflowschema import (
     GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod, TB, TBMethod, MaxEnt, MaxEntMethod,

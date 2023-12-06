@@ -23,8 +23,8 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference, JSON
 )
 
-from nomad.datamodel.metainfo import simulation
 import simulationworkflowschema
+import runschema
 
 
 m_package = Package()
@@ -765,7 +765,7 @@ class x_cp2k_section_kind_basis_set(MSection):
         ''')
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -830,7 +830,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
         repeats=True)
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -907,7 +907,7 @@ class x_cp2k_pdos_histogram(MSection):
         ''')
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 

@@ -22,7 +22,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference, JSON
 )
-from nomad.datamodel.metainfo import simulation
+import runschema
 
 
 m_package = Package()
@@ -202,7 +202,7 @@ class x_qbox_section_xml_file(MSection):
         ''')
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -286,7 +286,7 @@ class System(simulation.system.System):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -388,7 +388,7 @@ class Method(simulation.method.Method):
         repeats=True)
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -408,7 +408,7 @@ class Run(simulation.run.Run):
         repeats=True)
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -421,26 +421,26 @@ class Calculation(simulation.calculation.Calculation):
         repeats=True)
 
 
-class Energy(simulation.calculation.Energy):
+class Energy(runschema.calculation.Energy):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_qbox_conf = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
+    x_qbox_conf = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 
-    x_qbox_ps = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
+    x_qbox_ps = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 
-    x_qbox_nl = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
+    x_qbox_nl = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 
-    x_qbox_sr = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
+    x_qbox_sr = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 
-    x_qbox_self = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
+    x_qbox_self = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 
-    x_qbox_ts = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
+    x_qbox_ts = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 
-    x_qbox_exf = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
+    x_qbox_exf = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 
-    x_qbox_pv = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
+    x_qbox_pv = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 
-    x_qbox_efield = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
+    x_qbox_efield = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 
-    x_qbox_enthalpy = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
+    x_qbox_enthalpy = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)

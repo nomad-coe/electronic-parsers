@@ -25,15 +25,15 @@ import re
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
 from simulationworkflowschema import SinglePoint
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.run import Run, Program
+from runschema.calculation import (
     Calculation, ScfIteration, Energy, GreensFunctions
 )
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.method import (
     Method, HoppingMatrix, HubbardKanamoriModel, LatticeModelHamiltonian, FrequencyMesh,
     TimeMesh, DMFT
 )
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
+from runschema.system import System, Atoms
 from .metainfo.w2dynamics import (
     x_w2dynamics_axes, x_w2dynamics_quantities, x_w2dynamics_config_parameters,
     x_w2dynamics_config_atoms_parameters
@@ -154,14 +154,16 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             wannier90_mainfile = wannier90_mainfiles[-1]
 
             self.wout_parser.mainfile = wannier90_mainfile
-            sec_system = sec_run.m_create(System)
+            sec_system = System()
+            sec_run.system.append(sec_system)
 
             structure = self.wout_parser.get('structure')
             if structure is None:
                 self.logger.error('Error parsing the structure from .wout')
                 return
 
-            sec_atoms = sec_system.m_create(Atoms)
+            sec_atoms = Atoms()
+            sec_system.atoms = sec_atoms
             if self.wout_parser.get('lattice_vectors', []):
                 lattice_vectors = np.vstack(self.wout_parser.get('lattice_vectors', [])[-3:])
                 sec_atoms.lattice_vectors = lattice_vectors * ureg.angstrom
@@ -187,7 +189,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             wannier90_name (str): name of the initial Wannier90 *_hk.dat initial model used
         """
         sec_run = self.archive.run[0]
-        sec_hamiltonian = sec_run.m_create(Method).m_create(LatticeModelHamiltonian)
+        sec_hamiltonian = LatticeModelHamiltonian()
+        sec_run.method.append(Method(lattice_model_hamiltonian=[sec_hamiltonian]))
 
         # HoppingMatrix
         wannier90_hr_files = get_files('*hr.dat', self.filepath, self.mainfile, deep=False)
@@ -204,7 +207,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             wannier90_hr_file = wannier90_hr_files[-1]
 
             self.hr_parser.mainfile = wannier90_hr_file
-            sec_hopping_matrix = sec_hamiltonian.m_create(HoppingMatrix)
+            sec_hopping_matrix = HoppingMatrix()
+            sec_hamiltonian.hopping_matrix = sec_hopping_matrix
             sec_hopping_matrix.n_orbitals = self.wout_parser.get('Nwannier')
             deg_factors = self.hr_parser.get('degeneracy_factors', [])
             if deg_factors is not None:
@@ -223,7 +227,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         # TODO add parse of slater integrals
         # TODO add parse of the u_matrix.dat file
         for n in range(data.attrs.get('general.nat', 1)):
-            sec_hubbard_kanamori_model = sec_hamiltonian.m_create(HubbardKanamoriModel)
+            sec_hubbard_kanamori_model = HubbardKanamoriModel()
+            sec_hamiltonian.hubbard_kanamori_model.append(sec_hubbard_kanamori_model)
 
             angular_momentum = 'd'
             sec_hubbard_kanamori_model.orbital = angular_momentum
@@ -246,7 +251,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         """
         sec_run = self.archive.run[0]
 
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         # ref to the Non- and InteractionHamiltonian
         sec_method.starting_method_ref = sec_run.method[0]
 
@@ -259,7 +265,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             return key, value
 
         # Parse Method.x_w2dynamics_config general and qmc quantities
-        sec_config = sec_method.m_create(x_w2dynamics_config_parameters)
+        sec_config = x_w2dynamics_config_parameters()
+        sec_method.x_w2dynamics_config = sec_config
         config_general = {}
         config_qmc = {}
         for keys in data.attrs.keys():
@@ -273,7 +280,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         sec_config.x_w2dynamics_config_qmc = config_qmc
         # Parse Method.x_w2dynamics_config atoms quantities
         for i in range(data.attrs.get(f'general.nat', 0)):
-            sec_config_subsection = sec_config.m_create(x_w2dynamics_config_atoms_parameters)
+            sec_config_subsection = x_w2dynamics_config_atoms_parameters()
+            sec_config.x_w2dynamics_config_atoms.append(sec_config_subsection)
             for key in data.attrs.keys():
                 if key.startswith(f'atoms.{i+1}'):
                     keys_mod = (key.replace('-', '_')).split('.')
@@ -281,7 +289,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
                     setattr(sec_config_subsection, f'x_w2dynamics_{keys_mod[-1]}', parameters)
 
         # DMFT section
-        sec_dmft = sec_method.m_create(DMFT)
+        sec_dmft = DMFT()
+        sec_method.dmft = sec_dmft
         sec_dmft.n_impurities = data.attrs.get(f'general.nat', 0)
         if data.attrs.get(f'general.beta'):
             sec_dmft.inverse_temperature = data.attrs.get(f'general.beta') / ureg.eV
@@ -318,7 +327,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         The last step is used to store the converged quantities.
         """
         sec_run = self.archive.run[0]
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
         if sec_run.m_xpath('system'):
             sec_scc.system_ref = sec_run.system[-1]
         sec_scc.method_ref = sec_run.method[-1]  # ref DMFT
@@ -341,14 +351,16 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         for key in calc_keys:
             if key not in self.data.keys():
                 continue
-            sec_scf_iteration = sec_scc.m_create(ScfIteration)
+            sec_scf_iteration = ScfIteration()
+            sec_scc.scf_iteration.append(sec_scf_iteration)
             if self.archive.m_context:
                 with self.archive.m_context.raw_file(filename, farg) as f:
                     for subkey in self.data.get(key).keys():
                         parameter = self.data.get(key).get(subkey)
                         if subkey == 'mu':
                             value = parameter.get('value')
-                            sec_energy = sec_scf_iteration.m_create(Energy)
+                            sec_energy = Energy()
+                            sec_scf_iteration.energy = sec_energy
                             sec_energy.fermi = np.float64(value) * ureg.eV
                         elif subkey not in ineq_keys:
                             value = parameter.get('value')[:]
@@ -356,7 +368,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
                             name = self._re_namesafe.sub('_', subkey)
                             setattr(sec_scf_iteration, f'x_w2dynamics_{name}', value)
                         else:
-                            sec_ineq = sec_scf_iteration.m_create(x_w2dynamics_quantities)
+                            sec_ineq = x_w2dynamics_quantities()
+                            sec_scf_iteration.x_w2dynamics_ineq.append(sec_ineq)
                             for name in parameter.keys():
                                 # resolve value from 'value'
                                 value = parameter.get(name)
@@ -370,7 +383,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
 
             # Storing converged quantities from dmft-last or stat-last
             if key.endswith('last'):
-                sec_gf = sec_scc.m_create(GreensFunctions)
+                sec_gf = GreensFunctions()
+                sec_scc.greens_functions.append(sec_gf)
                 if sec_run.method[-1].m_xpath('frequency_mesh'):
                     sec_gf.matsubara_freq = sec_run.method[-1].frequency_mesh[0].points.to('eV').magnitude.imag
                 if sec_run.method[-1].m_xpath('time_mesh'):
@@ -451,14 +465,16 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             data = None
             return
 
-        sec_run = archive.m_create(Run)
+        sec_run = Run()
+        archive.run.append(sec_run)
 
         # Program section
         sec_run.program = Program(
             name='w2dynamics', version=self.parse_program_version())
 
         # run.x_w2dynamics_axes section
-        sec_axes = sec_run.m_create(x_w2dynamics_axes)
+        sec_axes = x_w2dynamics_axes()
+        sec_run.x_w2dynamics_axes = sec_axes
         self.parse_axes(self.data.get('.axes'), sec_axes)
 
         # System section

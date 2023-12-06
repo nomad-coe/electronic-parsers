@@ -22,7 +22,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference
 )
-from nomad.datamodel.metainfo import simulation
+import runschema
 
 
 m_package = Package()
@@ -437,7 +437,7 @@ class x_qe_t_section_input_occupations(MSection):
         ''')
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -1266,7 +1266,7 @@ class Calculation(simulation.calculation.Calculation):
         repeats=True)
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -1419,7 +1419,7 @@ class Run(simulation.run.Run):
         repeats=True)
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2080,7 +2080,7 @@ class Method(simulation.method.Method):
         repeats=True)
 
 
-class AtomParameters(simulation.method.AtomParameters):
+class AtomParameters(runschema.method.AtomParameters):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2253,7 +2253,7 @@ class AtomParameters(simulation.method.AtomParameters):
         ''')
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2701,7 +2701,7 @@ class System(simulation.system.System):
         ''')
 
 
-class Functional(simulation.method.Functional):
+class Functional(runschema.method.Functional):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2734,7 +2734,7 @@ class Functional(simulation.method.Functional):
         ''')
 
 
-class ScfIteration(simulation.calculation.ScfIteration):
+class ScfIteration(runschema.calculation.ScfIteration):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2890,7 +2890,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         repeats=True)
 
 
-class BandEnergies(simulation.calculation.BandEnergies):
+class BandEnergies(runschema.calculation.BandEnergies):
 
     m_def = Section(validate=False, extends_base_section=True)
 

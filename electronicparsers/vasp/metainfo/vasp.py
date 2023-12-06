@@ -22,14 +22,13 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference, JSON
 )
-from nomad.datamodel.metainfo import simulation
-from nomad.metainfo.util import MEnum
+import runschema
 
 
 m_package = Package()
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -48,7 +47,7 @@ class Run(simulation.run.Run):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -74,7 +73,7 @@ class Method(simulation.method.Method):
         ''')
 
     x_vasp_atom_kind_refs = Quantity(
-        type=simulation.method.AtomParameters,
+        type=runschema.method.AtomParameters,
         shape=['number_of_atoms'],
         description='''
         reference to the atom kinds of each atom
@@ -96,7 +95,7 @@ class Method(simulation.method.Method):
         ''')
 
 
-class KMesh(simulation.method.KMesh):
+class KMesh(runschema.method.KMesh):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -116,7 +115,7 @@ class KMesh(simulation.method.KMesh):
         ''')
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -128,7 +127,7 @@ class System(simulation.system.System):
         ''')
 
 
-class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):
+class HubbardKanamoriModel(runschema.method.HubbardKanamoriModel):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -140,7 +139,7 @@ class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):
         ''')
 
 
-class GW(simulation.method.GW):
+class GW(runschema.method.GW):
 
     m_def = Section(validate=False, extends_base_section=True)
 

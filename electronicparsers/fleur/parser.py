@@ -24,17 +24,17 @@ import re
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import (
+from runschema.run import (
     Run, Program, TimeRun
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.method import (
     Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing,
     AtomParameters, BasisSetContainer, OrbitalAPW
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandEnergies
 )
 from .metainfo.fleur import x_fleur_header
@@ -621,9 +621,11 @@ class FleurParser:
         self.init_parser()
 
         header = self.parser.get('header', {})
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         sec_run.program = Program(name='fleur', version=header.get('program_version'))
-        sec_header = sec_run.m_create(x_fleur_header)
+        sec_header = x_fleur_header()
+        sec_run.x_fleur_header.append(sec_header)
         for key, val in header.items():
             if key.startswith('x_fleur'):
                 setattr(sec_header, key, val)
@@ -632,7 +634,8 @@ class FleurParser:
             dt = datetime.strptime(self.parser.start_time, '%Y/%m/%d %H:%M:%S %z')
             sec_run.time_run = TimeRun(date_start=dt.timestamp())
 
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         input = self.parser.get('input')
         if input is not None:
             for key in ['parameters', 'input_parameters']:
@@ -680,7 +683,8 @@ class FleurParser:
         if exchange_correlation is not None:
             exchange_correlation = [xc.strip() for xc in exchange_correlation.strip().split(' ', 1)]
             sec_method.dft = DFT()
-            sec_xc_functional = sec_method.dft.m_create(XCFunctional)
+            sec_xc_functional = XCFunctional()
+            sec_method.dft.xc_functional = sec_xc_functional
             for xc_functional in self._xc_map.get(exchange_correlation[0], []):
                 if '_X_' in xc_functional or xc_functional.endswith('_X'):
                     sec_xc_functional.exchange.append(Functional(name=xc_functional))
@@ -699,7 +703,8 @@ class FleurParser:
                 setattr(sec_method, key, val)
 
         labels, positions, lattice_vectors = self.parser.get_system()
-        sec_system = sec_run.m_create(System)
+        sec_system = System()
+        sec_run.system.append(sec_system)
         sec_system.x_fleur_parameters = dict()
         if labels is not None:
             sec_system.atoms = Atoms(
@@ -712,15 +717,19 @@ class FleurParser:
                 if key.startswith('x_fleur'):
                     setattr(sec_system, key, val)
 
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
         sec_scc.system_ref = sec_system
 
         scf = None
         nspin = sec_method.x_fleur_parameters.get('jspins', sec_system.x_fleur_parameters.get('jspins', 1))
         for scf in self.parser.get('scf_iteration', []):
-            sec_scf = sec_scc.m_create(ScfIteration)
-            sec_scf_energy = sec_scf.m_create(Energy)
-            sec_eigenvalues = sec_scf.m_create(BandEnergies)
+            sec_scf = ScfIteration()
+            sec_scc.scf_iteration.append(sec_scf)
+            sec_scf_energy = Energy()
+            sec_scf.energy = sec_scf_energy
+            sec_eigenvalues = BandEnergies()
+            sec_scf.eigenvalues.append(sec_eigenvalues)
 
             for key, val in scf.items():
                 if val is None:

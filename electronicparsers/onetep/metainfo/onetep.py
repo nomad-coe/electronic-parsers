@@ -22,7 +22,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference, JSON
 )
-from nomad.datamodel.metainfo import simulation
+import runschema
 import simulationworkflowschema
 
 
@@ -2086,7 +2086,7 @@ class x_onetep_section_orbital_information(MSection):
         ''')
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2434,7 +2434,7 @@ class Run(simulation.run.Run):
         repeats=True)
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2585,7 +2585,7 @@ class System(simulation.system.System):
         repeats=True)
 
 
-class BasisSet(simulation.method.BasisSet):
+class BasisSet(runschema.method.BasisSet):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2604,7 +2604,7 @@ class BasisSet(simulation.method.BasisSet):
         ''')
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2856,16 +2856,16 @@ class Calculation(simulation.calculation.Calculation):
     x_onetep_section_tddft = SubSection(sub_section=x_onetep_section_tddft.m_def, repeats=True)
 
 
-class Energy(simulation.calculation.Energy):
+class Energy(runschema.calculation.Energy):
 
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_onetep_pseudopotential_local = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
+    x_onetep_pseudopotential_local = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 
-    x_onetep_pseudopotential_non_local = SubSection(sub_section=simulation.calculation.EnergyEntry.m_def)
+    x_onetep_pseudopotential_non_local = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2998,7 +2998,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
         ''')
 
 
-class BandStructure(simulation.calculation.BandStructure):
+class BandStructure(runschema.calculation.BandStructure):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -3037,7 +3037,7 @@ class BandStructure(simulation.calculation.BandStructure):
         repeats=True)
 
 
-class ScfIteration(simulation.calculation.ScfIteration):
+class ScfIteration(runschema.calculation.ScfIteration):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -3049,7 +3049,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         ''')
 
 
-class AtomParameters(simulation.method.AtomParameters):
+class AtomParameters(runschema.method.AtomParameters):
 
     m_def = Section(validate=False, extends_base_section=True)
 

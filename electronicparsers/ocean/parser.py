@@ -24,12 +24,14 @@ from ase.data import chemical_symbols
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import DataTextParser, TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.method import (
-    Method, KMesh, Photon, CoreHoleSpectra, Screening, BSE
+from runschema.run import Run, Program
+from runschema.system import System, Atoms
+from runschema.method import (
+    Method, KMesh, Photon, Screening, BSE
 )
-from nomad.datamodel.metainfo.simulation.calculation import Calculation, Spectra
+# TODO move this to runschema
+from nomad.datamodel.metainfo.simulation.method import CoreHoleSpectra
+from runschema.calculation import Calculation, Spectra
 from simulationworkflowschema import SinglePoint
 from .metainfo.ocean import (
     x_ocean_bse_parameters, x_ocean_screen_parameters, x_ocean_core_haydock_parameters,
@@ -83,7 +85,9 @@ class OceanParser(BeyondDFTWorkflowsParser):
 
     def parse_system(self, path, data):
         sec_run = self._child_archives.get(path).run[-1]
-        sec_atoms = sec_run.m_create(System).m_create(Atoms)
+        sec_atoms = Atoms()
+        sec_system = System(atoms=sec_atoms)
+        sec_run.system.append(sec_system)
 
         if data.get('avecs'):
             sec_atoms.lattice_vectors = data.get('avecs') * ureg.bohr
@@ -98,7 +102,9 @@ class OceanParser(BeyondDFTWorkflowsParser):
 
     def parse_polarization(self, path):
         sec_run = self._child_archives.get(path).run[-1]
-        sec_photon = sec_run.m_create(Method).m_create(Photon)
+        sec_photon = Photon()
+        sec_method = Method(photon=[sec_photon])
+        sec_run.method.append(sec_method)
 
         # NOT IDEAL: photonN should be in the same folder: patch due for the upload mr5PRdbVQUm-d7awz3Q9Uw
         photon_file = [f for f in os.listdir(self.maindir) if f.startswith('photon') and f.endswith(path[-1:])]
@@ -113,19 +119,22 @@ class OceanParser(BeyondDFTWorkflowsParser):
 
     def parse_method(self, archive):
         sec_run = archive.run[-1]
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         if sec_run.m_xpath('method[0].photon'):
             sec_method.starting_method_ref = sec_run.method[0]
 
         # BSE
-        sec_bse = sec_method.m_create(BSE)
+        sec_bse = BSE()
+        sec_method.bse = sec_bse
         bse_data = self.data.get('bse', {})
         sec_bse.type = 'Singlet'
         sec_bse.solver = self._bse_solver_map[bse_data.get('val', {}).get('solver')]
         sec_bse.n_states = bse_data.get('nbands', 1)
         sec_bse.broadening = bse_data.get('val', {}).get('broaden', 0.1) * ureg.eV
         # KMesh
-        sec_k_mesh = sec_method.m_create(KMesh)
+        sec_k_mesh = KMesh()
+        sec_method.k_mesh = sec_k_mesh
         sec_k_mesh.grid = bse_data.get('kmesh', [])
         # QMesh copied from KMesh
         sec_bse.m_add_sub_section(BSE.q_mesh, sec_k_mesh)
@@ -153,11 +162,13 @@ class OceanParser(BeyondDFTWorkflowsParser):
 
         # code-specific parameters
         # BSE
-        sec_bse_ocean = sec_method.m_create(x_ocean_bse_parameters)
+        sec_bse_ocean = x_ocean_bse_parameters()
+        sec_method.x_ocean_bse = sec_bse_ocean
         sec_bse_ocean.x_ocean_screen_radius = bse_core_data.get('screen_radius')
         sec_bse_ocean.x_ocean_xmesh = bse_data.get('xmesh')
         # screening
-        sec_bse_screen = sec_method.m_create(x_ocean_screen_parameters)
+        sec_bse_screen = x_ocean_screen_parameters()
+        sec_method.x_ocean_screen = sec_bse_screen
         screen_keys = [
             'all_augment', 'augment', 'convertstyle', 'dft_energy_range', 'inversionstyle',
             'kshift', 'mimic_exciting_bands', 'shells']
@@ -176,26 +187,30 @@ class OceanParser(BeyondDFTWorkflowsParser):
         sec_method.x_ocean_edges = edges
         # core
         if bse_core_data.get('solver') == 'haydock':
-            sec_haydock = sec_bse_ocean.m_create(x_ocean_core_haydock_parameters)
+            sec_haydock = x_ocean_core_haydock_parameters()
+            sec_bse_ocean.x_ocean_core_haydock = sec_haydock
             sec_haydock.x_ocean_converge_spacing = bse_core_data['haydock']['converge'].get('spacing')
             sec_haydock.x_ocean_converge_thresh = bse_core_data['haydock']['converge'].get('thresh')
             sec_haydock.x_ocean_niter = bse_core_data['haydock'].get('niter')
         elif bse_core_data.get('solver') == 'gmres':
-            sec_gmres = sec_bse_ocean.m_create(x_ocean_core_gmres_parameters)
+            sec_gmres = x_ocean_core_gmres_parameters()
+            sec_bse_ocean.x_ocean_core_gmres = sec_gmres
             gmres_keys = ['echamp', 'elist', 'erange', 'estyle', 'ffff', 'gprc', 'nloop']
             for key in gmres_keys:
                 setattr(sec_gmres, f'x_ocean_{key}', bse_core_data['gmres'].get(key))
 
     def parse_scc(self, path):
         sec_run = self._child_archives.get(path).run[-1]
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
         sec_scc.system_ref = sec_run.system[-1]
         sec_scc.method_ref = sec_run.method[-1]  # ref to BSE method section
 
         # absorption spectra (main calculation)
         self.spectra_parser.mainfile = os.path.join(self.maindir, path)
         data_spct = self.spectra_parser.data
-        sec_spectra = sec_scc.m_create(Spectra)
+        sec_spectra = Spectra()
+        sec_scc.spectra.append(sec_spectra)
         sec_spectra.type = self.data['calc'].get('mode').upper()
         sec_spectra.n_energies = len(data_spct)
         sec_spectra.excitation_energies = data_spct[:, 0] * ureg.eV
@@ -208,7 +223,8 @@ class OceanParser(BeyondDFTWorkflowsParser):
             return
         self.lanczos_parser.mainfile = os.path.join(self.maindir, lanc_file[0])
         data_lancz = self.lanczos_parser.get('data')
-        sec_lanczos = sec_scc.m_create(x_ocean_lanczos_results)
+        sec_lanczos = x_ocean_lanczos_results()
+        sec_scc.x_ocean_lanczos.append(sec_lanczos)
         n_dimension = int(data_lancz[0][0]) + 1
         sec_lanczos.x_ocean_n_tridiagonal_matrix = n_dimension
         sec_lanczos.x_ocean_scaling_factor = data_lancz[0][1]
@@ -220,10 +236,12 @@ class OceanParser(BeyondDFTWorkflowsParser):
 
     def parse_photons(self, path):
         # For each spectra, we parse the data in one entry
-        sec_run = self._child_archives.get(path).m_create(Run)
+        sec_run = Run()
+        self._child_archives.get(path).run.append(sec_run)
 
         # Program
-        sec_program = sec_run.m_create(Program)
+        sec_program = Program()
+        sec_run.program = sec_program
         sec_program.name = 'OCEAN'
         sec_program.version = self.data['version'].get('.')
         sec_program.x_ocean_commit_hash = self.data['version'].get('hash')
@@ -276,7 +294,8 @@ class OceanParser(BeyondDFTWorkflowsParser):
             if self._child_archives.get(child):
                 self.parse_photons(child)
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         if self._child_archives.get(child):
             if self._child_archives.get(child).run[-1].program and self._child_archives.get(child).run[-1].system:
                 sec_run.program = self._child_archives.get(child).run[-1].program
@@ -284,7 +303,8 @@ class OceanParser(BeyondDFTWorkflowsParser):
         else:
             self.logger.warning('Cannot resolve program and system from the first photon archive. '
                                 'Generating empty sections.')
-            sec_run.m_create(Program)
-            sec_run.m_create(System)
+            sec_run.program = Program()
+            sec_system = System()
+            sec_run.system.append(sec_system)
         self.parse_method(self.archive)
         self.parse_photon_workflow()
