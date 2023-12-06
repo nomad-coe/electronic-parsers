@@ -34,7 +34,7 @@ from nomad.datamodel.metainfo.simulation.method import (
 from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Charges, GreensFunctions, Dos, DosValues
 )
-from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
+from simulationworkflowschema import SinglePoint
 from nomad.parsing.file_parser import DataTextParser
 from .metainfo.edmft import x_edmft_method_parameters
 from ..utils import get_files, BeyondDFTWorkflowsParser

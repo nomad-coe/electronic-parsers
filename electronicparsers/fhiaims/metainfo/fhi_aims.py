@@ -23,6 +23,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference, MEnum, JSON
 )
 from nomad.datamodel.metainfo import simulation
+import simulationworkflowschema
 
 
 m_package = Package()
@@ -1398,7 +1399,7 @@ class HubbardKanamoriModel(simulation.method.HubbardKanamoriModel):
         ''')
 
 
-class MolecularDynamicsMethod(simulation.workflow.MolecularDynamicsMethod):
+class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
 
     m_def = Section(validate=False, extends_base_section=True)
 

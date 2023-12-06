@@ -38,7 +38,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandStructure,
     BandEnergies, Dos, DosValues
 )
-from nomad.datamodel.metainfo.simulation.workflow import (
+from simulationworkflowschema import (
     GeometryOptimization, GeometryOptimizationMethod, GeometryOptimizationResults)
 from .metainfo.crystal import x_crystal_section_shell
 

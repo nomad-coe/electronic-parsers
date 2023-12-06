@@ -53,7 +53,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry,
     BandEnergies, DosValues, ScfIteration, BandStructure, BandGapDeprecated, Dos, Density
 )
-from nomad.datamodel.metainfo.simulation.workflow import (
+from simulationworkflowschema import (
     SinglePoint, GeometryOptimization,
     GeometryOptimizationMethod, MolecularDynamics)
 

@@ -41,7 +41,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Stress, StressEntry, ScfIteration, Forces,
     ForcesEntry, Dos, DosValues
 )
-from nomad.datamodel.metainfo.simulation.workflow import (
+from simulationworkflowschema import (
     SinglePoint, GeometryOptimization, GeometryOptimizationMethod,
     MolecularDynamics, MolecularDynamicsMethod
 )

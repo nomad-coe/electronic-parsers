@@ -32,7 +32,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, BandEnergies, Charges, Multipoles,
     MultipolesEntry, VibrationalFrequencies
 )
-from nomad.datamodel.metainfo.simulation.workflow import (
+from simulationworkflowschema import (
     GeometryOptimization, GeometryOptimizationMethod,
     Thermodynamics, ThermodynamicsResults
 )

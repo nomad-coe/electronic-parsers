@@ -35,7 +35,7 @@ from nomad.datamodel.metainfo.simulation.system import (
 from nomad.datamodel.metainfo.simulation.method import (
     Method, BasisSet, BasisSetContainer
 )
-from nomad.datamodel.metainfo.simulation.workflow import (
+from simulationworkflowschema import (
     SinglePoint, GeometryOptimization, GeometryOptimizationMethod,
     MolecularDynamics, MolecularDynamicsMethod)
 from .metainfo.cpmd_general import (

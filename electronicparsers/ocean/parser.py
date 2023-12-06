@@ -30,7 +30,7 @@ from nomad.datamodel.metainfo.simulation.method import (
     Method, KMesh, Photon, CoreHole, Screening, BSE
 )
 from nomad.datamodel.metainfo.simulation.calculation import Calculation, Spectra
-from nomad.datamodel.metainfo.simulation.workflow import SinglePoint
+from simulationworkflowschema import SinglePoint
 from .metainfo.ocean import (
     x_ocean_bse_parameters, x_ocean_screen_parameters, x_ocean_core_haydock_parameters,
     x_ocean_core_gmres_parameters, x_ocean_lanczos_results

@@ -44,10 +44,11 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     ScfIteration, Energy, EnergyEntry, Stress, StressEntry, Thermodynamics,
     Forces, ForcesEntry
 )
-from nomad.datamodel.metainfo.simulation.workflow import (
+from simulationworkflowschema import (
     SinglePoint, GeometryOptimization,
-    MolecularDynamics, MolecularDynamicsMethod, MolecularDynamicsResults,
-    ThermostatParameters)
+    MolecularDynamics, MolecularDynamicsMethod, MolecularDynamicsResults
+)
+from simulationworkflowschema.molecular_dynamics import ThermostatParameters
 
 from .metainfo.fhi_aims import Run as xsection_run, Method as xsection_method,\
     x_fhi_aims_section_parallel_task_assignement, x_fhi_aims_section_parallel_tasks,\
