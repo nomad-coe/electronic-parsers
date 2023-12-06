@@ -1566,7 +1566,7 @@ class VASPParser():
         # extract the number of valence electrons
         sec_method.electronic.n_electrons = self.parser.incar.get('NELECT', neutral_count)
         if neutral_count:
-            sec_method.electronic.charge = neutral_count - sec_method.electronic.n_electrons
+            sec_method.electronic.charge = (neutral_count - sec_method.electronic.n_electrons) * ureg.e
 
     def parse_gw(self):
         sec_run = self.archive.run[-1]
