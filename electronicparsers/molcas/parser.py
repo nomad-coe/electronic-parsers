@@ -21,7 +21,7 @@ import re
 import numpy as np
 
 from nomad.units import ureg
-from nomad.parsing.file_parser import BasicParser
+from simulationparsers.utils import BasicParser
 
 
 class MolcasParser:

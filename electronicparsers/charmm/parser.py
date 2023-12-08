@@ -20,7 +20,7 @@
 import re
 import numpy as np
 
-from nomad.parsing.file_parser import BasicParser
+from simulationparsers.utils import BasicParser
 from nomad.units import ureg
 
 

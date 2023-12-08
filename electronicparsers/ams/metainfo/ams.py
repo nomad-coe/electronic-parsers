@@ -23,7 +23,6 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference, JSON
 )
 import runschema
-from nomad.datamodel.metainfo import simulation
 import simulationworkflowschema
 
 

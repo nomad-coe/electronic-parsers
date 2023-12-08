@@ -22,13 +22,13 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference
 )
-from nomad.datamodel.metainfo import simulation
+import runschema
 
 
 m_package = Package()
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -47,7 +47,7 @@ class Run(simulation.run.Run):
         ''')
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -90,7 +90,7 @@ class System(simulation.system.System):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -123,7 +123,7 @@ class Method(simulation.method.Method):
         ''')
 
 
-# class HubbardModel(simulation.method.HubbardModel):
+# class HubbardModel(runschema.method.HubbardModel):
 
 #     m_def = Section(validate=False, extends_base_section=True)
 
