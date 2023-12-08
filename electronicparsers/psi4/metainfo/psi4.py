@@ -21,7 +21,7 @@ import typing                 # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, Reference
 )
-import runschema
+import runschema.run, runschema.calculation, runschema.method, runschema.system  # pylint: disable=unused-import
 from nomad.metainfo.metainfo import JSON
 
 

@@ -21,7 +21,7 @@ import numpy as np
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, Package, Quantity, Section, SubSection, JSON, HDF5Reference
 )
-import runschema
+import runschema.run, runschema.calculation, runschema.method, runschema.system  # pylint: disable=unused-import
 
 
 m_package = Package()
