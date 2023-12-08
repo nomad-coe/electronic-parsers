@@ -23,7 +23,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference
 )
 import simulationworkflowschema
-import runschema
+import runschema.run, runschema.calculation, runschema.method, runschema.system  # pylint: disable=unused-import
 
 
 m_package = Package()
