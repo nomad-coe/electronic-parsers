@@ -16,6 +16,7 @@
 # limitations under the License.
 #
 
+from copy import deepcopy
 import logging
 from typing import Optional
 import numpy as np
@@ -77,7 +78,7 @@ species_and_coordinates_parser = TextParser(quantities=[
 ])
 
 species_definition_parser = TextParser(quantities=[
-    Quantity('species', rf'({element}\d*)\s+([-\w\.]+)\s+(\w+)',
+    Quantity('species', rf'({element}\d*)\s+([-\w\.]+)\s+(\w+)\s*\n',
              repeats=True),
 ])
 
@@ -274,37 +275,38 @@ class OpenmxParser:
         '''
         l_mapping = dict(zip('spdf', range(4)))
         l_quantum = '[spdf]'
-        _remove_extension = lambda x: re.sub(r'[\.(pao, vps)]$', '', x)
+        _remove_extension = lambda x: re.sub(r'(\.pao|\.vps)', '', x)
         _extract_method = lambda x: re.search(r'_([A-Z]+)19', x)
         _extract_orbital = lambda x: re.search(rf'_(\d)({l_quantum})$', x)
         _extract_elem_cutoff = lambda x: re.match(rf'({element})([\d\.]+)[_-]', x)
         _extract_lmax = lambda x: re.search(rf'({l_quantum})\d$', x)
 
+        _definitions = deepcopy(definitions)
         try:
-            definitions[1] = _remove_extension(definitions[1])
-            definitions[2] = _remove_extension(definitions[2])
+            _definitions[1] = _remove_extension(_definitions[1])
+            _definitions[2] = _remove_extension(_definitions[2])
         except IndexError:
-            logger.error(f'Species definition must be of length 3: {definitions}')
+            logger.error(f'Species definition must be of length 3: {_definitions}')
 
         # evaluate pseudopotential
         pseudopotential, core_hole = Pseudopotential(
             type = 'US MBK',
             norm_conserving = True
         ), None  # TODO: add basis set
-        pseudopotential.name = f'{definitions[1]} {definitions[2]}'
-        pseudopotential.cutoff = float(_extract_elem_cutoff(definitions[1]).group(2)) * units.hartree
+        pseudopotential.name = f'{_definitions[1]} {_definitions[2]}'
+        pseudopotential.cutoff = float(_extract_elem_cutoff(_definitions[1]).group(2)) * units.hartree
         try:
-            pseudopotential.l_max = l_mapping[_extract_lmax(definitions[1]).group(1)]
+            pseudopotential.l_max = l_mapping[_extract_lmax(_definitions[1]).group(1)]
         except KeyError:
-            logger.error(f'Unknown l-quantum symbol: {definitions[1]}')
+            logger.error(f'Unknown l-quantum symbol: {_definitions[1]}')
         try:
-            pseudopotential.xc_functional_name = xc_functional_dictionary[_extract_method(definitions[2]).group(1)]
+            pseudopotential.xc_functional_name = xc_functional_dictionary[_extract_method(_definitions[2]).group(1)]
         except KeyError:
-            logger.error(f'Unknown exchange-correlation functional: {definitions[2]}')
+            logger.error(f'Unknown exchange-correlation functional: {_definitions[2]}')
 
         # evaluate core_hole
         try:
-            nq, lq = _extract_orbital(definitions[2]).groups()
+            nq, lq = _extract_orbital(_definitions[2]).groups()
             core_hole = CoreHole(
                 n_quantum_number = int(nq),
                 l_quantum_number = l_mapping[lq],
@@ -380,7 +382,7 @@ class OpenmxParser:
         sec_method = self.archive.run[-1].m_create(Method)
         sec_method.atom_parameters = []
         for species in mainfile_parser.results['species'].results['species']:
-            atom_parameters = AtomParameters()
+            atom_parameters = AtomParameters(label=species[0],)
             atom_parameters.pseudopotential, atom_parameters.core_hole = self.parse_species(species, logger)
             sec_method.atom_parameters.append(atom_parameters)
         sec_method.electrons_representation = [
