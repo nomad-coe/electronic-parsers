@@ -31,7 +31,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, BandEnergies, Forces, ForcesEntry
 )
 from nomad.datamodel.metainfo.simulation.system import (
-    System, Atoms
+    AtomsGroup, System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.method import (
     AtomParameters, CoreHole, Method, BasisSet, DFT, Pseudopotential, XCFunctional, Functional, Electronic, Smearing, Scf,
@@ -266,6 +266,19 @@ class OpenmxParser:
     def __init__(self):
         pass
 
+    @property
+    def atom_index_dict(self) -> dict[str, list[int]]:
+        '''Return the indexes by species label.
+        - column_index: the column index of the species labels (default = 0)'''
+        result = {}
+        for index, item in enumerate(mainfile_parser.results['atoms'].results['atom']):
+            key, value = item[0], index
+            if key in result:
+                result[key].append(value)
+            else:
+                result[key] = [value]
+        return result
+
     def parse_species(self, definitions: list[str], logger: logging.Logger) -> tuple[Pseudopotential, Optional[CoreHole]]:
         '''
         Extract `Pseudopotential` and `CoreHole` (if present) from the atomic species definition.
@@ -277,7 +290,8 @@ class OpenmxParser:
         l_quantum = '[spdf]'
         _remove_extension = lambda x: re.sub(r'(\.pao|\.vps)', '', x)
         _extract_method = lambda x: re.search(r'_([A-Z]+)19', x)
-        _extract_orbital = lambda x: re.search(rf'_(\d)({l_quantum})$', x)
+        #  _extract_orbital = lambda x: re.search(rf'_(\d)({l_quantum})$', x)
+        _extract_core_hole = lambda x: re.search(rf'_(\d)({l_quantum})_CH', x)
         _extract_elem_cutoff = lambda x: re.match(rf'({element})([\d\.]+)[_-]', x)
         _extract_lmax = lambda x: re.search(rf'({l_quantum})\d$', x)
 
@@ -306,7 +320,7 @@ class OpenmxParser:
 
         # evaluate core_hole
         try:
-            nq, lq = _extract_orbital(_definitions[2]).groups()
+            nq, lq = _extract_core_hole(_definitions[1]).groups()
             core_hole = CoreHole(
                 n_quantum_number = int(nq),
                 l_quantum_number = l_mapping[lq],
@@ -379,12 +393,17 @@ class OpenmxParser:
             self.archive.workflow2 = workflow
 
     def parse_method(self, logger: logging.Logger):
+        # setup
         sec_method = self.archive.run[-1].m_create(Method)
-        sec_method.atom_parameters = []
+        sec_method.atom_parameters: list[AtomParameters] = []
+
         for species in mainfile_parser.results['species'].results['species']:
+            # add atom parameters
             atom_parameters = AtomParameters(label=species[0],)
             atom_parameters.pseudopotential, atom_parameters.core_hole = self.parse_species(species, logger)
             sec_method.atom_parameters.append(atom_parameters)
+
+        # add basis set
         sec_method.electrons_representation = [
             BasisSetContainer(
                 type='atom-centered orbitals',
@@ -398,6 +417,7 @@ class OpenmxParser:
             )
         ]
 
+        # DFT (+U)
         sec_dft = sec_method.m_create(DFT)
         sec_electronic = sec_method.m_create(Electronic)
         sec_electronic.method = 'DFT'
@@ -543,5 +563,24 @@ class OpenmxParser:
                         time = mdfile_md_steps[i].get('time')
                         if time is not None:
                             sec_calc.time = time * units.fs
+
+        # set core-hole atoms groups
+        sec_system = self.archive.run[-1].system[-1]
+        sec_method = self.archive.run[-1].method[-1]
+        for atom_parameters in sec_method.atom_parameters:
+            if atom_parameters.core_hole is not None:
+                if sec_system.atoms_group is None:
+                    sec_system.atoms_group: list[AtomsGroup] = []
+                try:
+                    sec_system.atoms_group.append(
+                        AtomsGroup(
+                            label='core-hole',
+                            type='active_orbital',
+                            atom_indices=self.atom_index_dict[atom_parameters.label],
+                            n_atoms=len(self.atom_index_dict[atom_parameters.label]),
+                        )
+                    )
+                except KeyError:
+                    continue
 
         self.parse_eigenvalues()
