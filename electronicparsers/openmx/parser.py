@@ -16,6 +16,7 @@
 # limitations under the License.
 #
 
+from typing import Optional
 import numpy as np
 import re
 import io
@@ -31,7 +32,7 @@ from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing, Scf,
+    CoreHole, Method, BasisSet, DFT, Pseudopotential, XCFunctional, Functional, Electronic, Smearing, Scf,
     BasisSetContainer,
 )
 from nomad.parsing.file_parser import TextParser, Quantity
@@ -243,6 +244,51 @@ def parse_temperature_profile(data, thermo_type):
 class OpenmxParser:
     def __init__(self):
         pass
+
+    def parse_species(self, definition: str) -> tuple[Pseudopotential, Optional[CoreHole]]:
+        '''
+        Extract `Pseudopotential` and `CoreHole` (if present) from the atomic species definition.
+        An explanation of the format can be found at https://www.openmx-square.org/openmx_man3.9/node32.html
+        For an overview of all conventional potentials and partial atomic orbitals, see https://www.openmx-square.org/vps_pao2019/
+        and https://www.openmx-square.org/vps_pao_core2019/ for core-holes.
+        '''
+        definitions = definition.strip().split()
+        element = '[A-Z][a-z]?'
+        l_quantum = '[spdf]'
+        basis_set_orbital = f'{l_quantum}\d'
+        _remove_extension = lambda x: re.sub(r'[\.(pao, vps)]$', '', x)
+        _extract_method = lambda x: re.match(r'_([A-Z]+19)', x)
+        _extract_orbital = lambda x: re.match(r'_(\d)([spdf])$', x)
+        _extract_elem_cutoff = lambda x: re.match(rf'^({element})([\d\.]+)[_-]', x)
+        _extract_basis_set = lambda x: re.match(rf'-({basis_set_orbital}+)$', x)
+        _extract_lmax = lambda x: re.match(rf'({l_quantum})\d$', x)
+
+        definitions[1] = _remove_extension(definitions[1])
+        definitions[2] = _remove_extension(definitions[2])
+
+        # evaluate pseudopotential
+        pseudopotential, core_hole = Pseudopotential(), None  # TODO: add basis set
+        pseudopotential.name = f'{definitions[1]} {definitions[2]}'
+        pseudopotential.xc_functional_name = _extract_method(definitions[1]).group(1)
+        pseudopotential.cutoff = float(_extract_elem_cutoff(definitions[2]).group(2))
+        pseudopotential.type = 'US MBK'
+        pseudopotential.norm_conserving = True
+        pseudopotential.l_max = int(_extract_lmax(_extract_basis_set(definitions[2]).group(1)).group(1))
+
+        # evaluate core_hole
+        nq, lq = _extract_orbital(pseudopotential.name).groups()
+        if any(nq, lq):
+            l_mapping = dict(zip('spdf', range(4)))
+            core_hole = CoreHole(
+                n_quantum_number = int(nq),
+                occupation = 0.,
+            )
+            try:
+                core_hole.l_quantum_number = l_mapping[lq]
+            except KeyError:
+                raise ValueError('Unknown orbital type: {}'.format(lq))
+
+        return pseudopotential, core_hole
 
     def parse_workflow(self):
         md_type = mainfile_parser.get('MD.Type')

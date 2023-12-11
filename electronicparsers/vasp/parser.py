@@ -1466,7 +1466,7 @@ class VASPParser():
                 pp = Pseudopotential()
                 pp.type = 'PAW'
                 if pseudopotential['flag']['LULTRA']:
-                    pp.type = 'USPP'  # TODO check if this is correct
+                    pp.type = 'US V'  # TODO check if this is correct
                 pp.cutoff = pseudopotential['number']['ENMAX'] * ureg.eV
                 try:
                     pp.xc_functional_name = self.parser.xc_functional_mapping.get(
