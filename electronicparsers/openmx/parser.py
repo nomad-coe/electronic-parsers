@@ -16,6 +16,7 @@
 # limitations under the License.
 #
 
+import logging
 from typing import Optional
 import numpy as np
 import re
@@ -32,7 +33,7 @@ from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    CoreHole, Method, BasisSet, DFT, Pseudopotential, XCFunctional, Functional, Electronic, Smearing, Scf,
+    AtomParameters, CoreHole, Method, BasisSet, DFT, Pseudopotential, XCFunctional, Functional, Electronic, Smearing, Scf,
     BasisSetContainer,
 )
 from nomad.parsing.file_parser import TextParser, Quantity
@@ -49,6 +50,17 @@ This is parser for OpenMX DFT code.
 
 # A = (1 * units.angstrom).to_base_units().magnitude
 
+element = '[A-Z][a-z]?'
+xc_functional_dictionary = {
+    'GGA-PBE': ['GGA_C_PBE', 'GGA_X_PBE'],
+    'LDA': ['LDA_X', 'LDA_C_PZ'],
+    'LSDA-CA': ['LDA_X', 'LDA_C_PZ'],
+    'LSDA-PW': ['LDA_X', 'LDA_C_PW'],
+    None: ['LDA_X', 'LDA_C_PZ']
+}
+xc_functional_dictionary['PBE'] = xc_functional_dictionary['GGA-PBE']
+xc_functional_dictionary['CA'] = xc_functional_dictionary['LSDA-CA']
+
 scf_step_parser = TextParser(quantities=[
     Quantity('NormRD', r'NormRD=\s*([\d\.]+)', repeats=False),
     Quantity('Uele', r'Uele=\s*([-\d\.]+)', repeats=False)
@@ -60,8 +72,13 @@ md_step_parser = TextParser(quantities=[
 ])
 
 species_and_coordinates_parser = TextParser(quantities=[
-    Quantity('atom', r'\s*\d+\s*([A-Za-z]{1,2})\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\s+[\d\.]+\s*[\d\.]+\s*',
+    Quantity('atom', rf'\s*\d+\s*({element}\d*)\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\s+[\d\.]+\s*[\d\.]+\s*',
              repeats=True)
+])
+
+species_definition_parser = TextParser(quantities=[
+    Quantity('species', rf'({element}\d*)\s+([-\w\.]+)\s+(\w+)',
+             repeats=True),
 ])
 
 
@@ -88,6 +105,9 @@ mainfile_parser = TextParser(quantities=[
         'atoms', r'<Atoms.SpeciesAndCoordinates([\s\S]+)Atoms.SpeciesAndCoordinates>',
         sub_parser=species_and_coordinates_parser,
         repeats=False),
+    Quantity(
+        'species', r'<Definition\.of\.Atomic\.Species([\s\S]+)Definition\.of\.Atomic\.Species>',
+        sub_parser=species_definition_parser,),
     Quantity(
         'input_lattice_vectors', r'(?i)<Atoms.UnitVectors\s+((?:-?\d+\.\d+\s+)+)Atoms.UnitVectors>',
         repeats=False),
@@ -245,48 +265,55 @@ class OpenmxParser:
     def __init__(self):
         pass
 
-    def parse_species(self, definition: str) -> tuple[Pseudopotential, Optional[CoreHole]]:
+    def parse_species(self, definitions: list[str], logger: logging.Logger) -> tuple[Pseudopotential, Optional[CoreHole]]:
         '''
         Extract `Pseudopotential` and `CoreHole` (if present) from the atomic species definition.
         An explanation of the format can be found at https://www.openmx-square.org/openmx_man3.9/node32.html
         For an overview of all conventional potentials and partial atomic orbitals, see https://www.openmx-square.org/vps_pao2019/
         and https://www.openmx-square.org/vps_pao_core2019/ for core-holes.
         '''
-        definitions = definition.strip().split()
-        element = '[A-Z][a-z]?'
+        l_mapping = dict(zip('spdf', range(4)))
         l_quantum = '[spdf]'
-        basis_set_orbital = f'{l_quantum}\d'
         _remove_extension = lambda x: re.sub(r'[\.(pao, vps)]$', '', x)
-        _extract_method = lambda x: re.match(r'_([A-Z]+19)', x)
-        _extract_orbital = lambda x: re.match(r'_(\d)([spdf])$', x)
-        _extract_elem_cutoff = lambda x: re.match(rf'^({element})([\d\.]+)[_-]', x)
-        _extract_basis_set = lambda x: re.match(rf'-({basis_set_orbital}+)$', x)
-        _extract_lmax = lambda x: re.match(rf'({l_quantum})\d$', x)
+        _extract_method = lambda x: re.search(r'_([A-Z]+)19', x)
+        _extract_orbital = lambda x: re.search(rf'_(\d)({l_quantum})$', x)
+        _extract_elem_cutoff = lambda x: re.match(rf'({element})([\d\.]+)[_-]', x)
+        _extract_lmax = lambda x: re.search(rf'({l_quantum})\d$', x)
 
-        definitions[1] = _remove_extension(definitions[1])
-        definitions[2] = _remove_extension(definitions[2])
+        try:
+            definitions[1] = _remove_extension(definitions[1])
+            definitions[2] = _remove_extension(definitions[2])
+        except IndexError:
+            logger.error(f'Species definition must be of length 3: {definitions}')
 
         # evaluate pseudopotential
-        pseudopotential, core_hole = Pseudopotential(), None  # TODO: add basis set
+        pseudopotential, core_hole = Pseudopotential(
+            type = 'US MBK',
+            norm_conserving = True
+        ), None  # TODO: add basis set
         pseudopotential.name = f'{definitions[1]} {definitions[2]}'
-        pseudopotential.xc_functional_name = _extract_method(definitions[1]).group(1)
-        pseudopotential.cutoff = float(_extract_elem_cutoff(definitions[2]).group(2))
-        pseudopotential.type = 'US MBK'
-        pseudopotential.norm_conserving = True
-        pseudopotential.l_max = int(_extract_lmax(_extract_basis_set(definitions[2]).group(1)).group(1))
+        pseudopotential.cutoff = float(_extract_elem_cutoff(definitions[1]).group(2)) * units.hartree
+        try:
+            pseudopotential.l_max = l_mapping[_extract_lmax(definitions[1]).group(1)]
+        except KeyError:
+            logger.error(f'Unknown l-quantum symbol: {definitions[1]}')
+        try:
+            pseudopotential.xc_functional_name = xc_functional_dictionary[_extract_method(definitions[2]).group(1)]
+        except KeyError:
+            logger.error(f'Unknown exchange-correlation functional: {definitions[2]}')
 
         # evaluate core_hole
-        nq, lq = _extract_orbital(pseudopotential.name).groups()
-        if any(nq, lq):
-            l_mapping = dict(zip('spdf', range(4)))
+        try:
+            nq, lq = _extract_orbital(definitions[2]).groups()
             core_hole = CoreHole(
                 n_quantum_number = int(nq),
+                l_quantum_number = l_mapping[lq],
                 occupation = 0.,
             )
-            try:
-                core_hole.l_quantum_number = l_mapping[lq]
-            except KeyError:
-                raise ValueError('Unknown orbital type: {}'.format(lq))
+        except AttributeError:
+            pass
+        except KeyError:
+            logger.error(f'Unknown l-quantum symbol: {lq}')
 
         return pseudopotential, core_hole
 
@@ -349,8 +376,13 @@ class OpenmxParser:
 
             self.archive.workflow2 = workflow
 
-    def parse_method(self):
+    def parse_method(self, logger: logging.Logger):
         sec_method = self.archive.run[-1].m_create(Method)
+        sec_method.atom_parameters = []
+        for species in mainfile_parser.results['species'].results['species']:
+            atom_parameters = AtomParameters()
+            atom_parameters.pseudopotential, atom_parameters.core_hole = self.parse_species(species, logger)
+            sec_method.atom_parameters.append(atom_parameters)
         sec_method.electrons_representation = [
             BasisSetContainer(
                 type='atom-centered orbitals',
@@ -358,7 +390,7 @@ class OpenmxParser:
                 basis_set=[
                     BasisSet(
                         type='numeric AOs',
-                        scope=['full-election'],
+                        scope=['full-electron'],  # TODO: double check
                     )
                 ]
             )
@@ -373,13 +405,6 @@ class OpenmxParser:
             if scf_hubbard_u.lower() == 'on':
                 sec_electronic.method = 'DFT+U'
 
-        xc_functional_dictionary = {
-            'GGA-PBE': ['GGA_C_PBE', 'GGA_X_PBE'],
-            'LDA': ['LDA_X', 'LDA_C_PZ'],
-            'LSDA-CA': ['LDA_X', 'LDA_C_PZ'],
-            'LSDA-PW': ['LDA_X', 'LDA_C_PW'],
-            None: ['LDA_X', 'LDA_C_PZ']
-        }
         scf_xctype = mainfile_parser.get('scf.XcType')
         sec_xc_functional = sec_dft.m_create(XCFunctional)
         for xc in xc_functional_dictionary[scf_xctype]:
@@ -460,7 +485,7 @@ class OpenmxParser:
 
         self.parse_workflow()
 
-        self.parse_method()
+        self.parse_method(logger)
 
         mainfile_md_steps = mainfile_parser.get('md_step')
         if mainfile_md_steps is not None:
