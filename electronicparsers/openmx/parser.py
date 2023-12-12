@@ -78,7 +78,12 @@ species_and_coordinates_parser = TextParser(quantities=[
 ])
 
 species_definition_parser = TextParser(quantities=[
-    Quantity('species', rf'({element}\d*)\s+([-\w\.]+)\s+(\w+)\s*\n',
+    Quantity('species', rf'({element}\d*)\s+([-\w\.]+)\s+(\w+)',
+             repeats=True),
+])
+
+core_hole_parser = TextParser(quantities=[
+    Quantity('core_hole', rf'(\d+)\s+({element})\s+(\d+)',
              repeats=True),
 ])
 
@@ -109,6 +114,9 @@ mainfile_parser = TextParser(quantities=[
     Quantity(
         'species', r'<Definition\.of\.Atomic\.Species([\s\S]+)Definition\.of\.Atomic\.Species>',
         sub_parser=species_definition_parser,),
+    Quantity(
+        'core_hole', r'<Definition\.of\.Core\.Hole([\s\S]+)Definition\.of\.Core\.Hole>',
+        sub_parser=core_hole_parser,),
     Quantity(
         'input_lattice_vectors', r'(?i)<Atoms.UnitVectors\s+((?:-?\d+\.\d+\s+)+)Atoms.UnitVectors>',
         repeats=False),
