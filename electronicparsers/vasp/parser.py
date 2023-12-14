@@ -1384,19 +1384,6 @@ class VASPParser():
 
         source = self.parser.incar
 
-        # setup `CoreHole` parameters
-        corehole_map = {
-            'n_quantum_number': source.get('CLN', 1),
-            'l_quantum_number': source.get('CLL', 0),
-            'occupation': source.get('CLZ', 0.),  # tested with VASP 6.4.1
-        }
-
-        core_hole = CoreHole(**corehole_map)
-        core_hole.occupation = core_hole.degeneracy - core_hole.occupation
-        if core_hole.occupation < 0.:
-            self.logger.warning('Core hole occupation is negative. Setting to 0.')  # TODO: check if this is correct
-            core_hole.occupation = 0.
-
         # setup `AtomsGroup` parameters
         elem_id = source.get('CLNT', 1) - 1
         elem_ids = [int(x) for x in self.parser.atom_info['atomtypes']['atomspertype']]
@@ -1404,7 +1391,12 @@ class VASPParser():
         atom_ids = list(range(lower_range, elem_ids[elem_id]))
 
         return (
-            core_hole,
+            CoreHole(
+                n_quantum_number=source.get('CLN', 1),
+                l_quantum_number=source.get('CLL', 0),
+                n_electrons_excited=source.get('CLZ', 0.),  # tested with VASP 6.4.1
+                dscf_state='final',
+            ),
             AtomsGroup(
                 label='core-hole',
                 type='active_orbital',
@@ -1559,7 +1551,7 @@ class VASPParser():
             except AttributeError:
                 break
             try:
-                species_electrons += param.core_hole.degeneracy - param.core_hole.occupation  # same, regardless of spin-orbital or not
+                species_electrons -= param.core_hole.n_electrons_excited
             except AttributeError:
                 pass
             neutral_count += species_electrons * n_atoms
@@ -1647,6 +1639,7 @@ class VASPParser():
                 sec_system.x_vasp_nose_thermostat = nose
 
             # Check for core-holes
+            ## note that this check should be added to `parse_core_hole` if other kinds of atom_parameters are set
             if self.parser.incar.get('ICORELEVEL', 0) == 2:
                 core_hole, core_hole_group, corehole_id = self.parse_core_hole()
                 self.archive.run[-1].method[-1].atom_parameters[corehole_id].core_hole = core_hole

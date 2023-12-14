@@ -84,7 +84,7 @@ species_definition_parser = TextParser(quantities=[
 
 core_hole_parser = TextParser(quantities=[
     Quantity('core_hole', rf'(\d+)\s+({element})\s+(\d+)',
-             repeats=True),
+             repeats=False),  # TODO: consider `repeats = True` case
 ])
 
 
@@ -327,17 +327,35 @@ class OpenmxParser:
             logger.error(f'Unknown exchange-correlation functional: {_definitions[2]}')
 
         # evaluate core_hole
-        try:
-            nq, lq = _extract_core_hole(_definitions[1]).groups()
+        quantum_nums_flag = _extract_core_hole(_definitions[1])  # this checks the PAO, the PP is only necessary for the final state
+        if quantum_nums_flag:
+            quantum_nums = quantum_nums_flag.groups()
             core_hole = CoreHole(
-                n_quantum_number = int(nq),
-                l_quantum_number = l_mapping[lq],
-                occupation = 0.,
+                n_quantum_number=int(quantum_nums[0]),
             )
-        except AttributeError:
-            pass
-        except KeyError:
-            logger.error(f'Unknown l-quantum symbol: {lq}')
+            try:
+                core_hole.l_quantum_number = l_mapping[quantum_nums[1]]
+            except KeyError:
+                logger.error(f'Unknown l-quantum symbol: {quantum_nums[1]}')
+
+            core_hole_flags = mainfile_parser.results.get('core_hole')
+            if core_hole_flags:
+                core_hole.dscf_state = 'final'
+                spinpol = mainfile_parser.get('scf.SpinPolarization', '').lower()
+                if spinpol == 'on':
+                    core_hole.n_electrons_excited = 1.
+                    core_hole.ms_quantum_bool = not bool(int(core_hole_flags.results['core_hole'][2] / core_hole.degeneracy))
+                elif spinpol == 'off':
+                    core_hole.n_electrons_excited = 2.  # TODO: verify
+                    logger.warning('''
+                    Unexpected spin-restricted setting when using final-state core-hole computation.
+                    This is not recommended by the manual. For now assuming double electron (bosonic) excitation.
+                    ''')
+                else:
+                    logger.warning('Could not set all quantum numbers: non-collinear calculations not yet supported')
+            else:
+                core_hole.dscf_state = 'initial'  # this will be a hook in $\Delta$-SCF
+                core_hole.n_electrons_excited = 0.
 
         return pseudopotential, core_hole
 
