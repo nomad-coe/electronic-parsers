@@ -51,6 +51,18 @@ This is parser for OpenMX DFT code.
 
 # A = (1 * units.angstrom).to_base_units().magnitude
 
+def _j_mapping() -> dict[tuple[int, int], tuple[float, float]]:
+    '''Reproduce table 12 given in https://www.openmx-square.org/openmx_man3.9/node192.html'''
+    mapping: dict[tuple[int, int], tuple[float, float]] = {}
+    for ll in range(4):
+        counter = 0
+        for jj in (.5, -.5):
+            j = ll + jj
+            for mj in range(-j, j + 1):
+                counter += 1
+                mapping[(ll, counter)] = (j, mj)
+    return mapping
+
 element = '[A-Z][a-z]?'
 xc_functional_dictionary = {
     'GGA-PBE': ['GGA_C_PBE', 'GGA_X_PBE'],
@@ -344,7 +356,10 @@ class OpenmxParser:
                 spinpol = mainfile_parser.get('scf.SpinPolarization', '').lower()
                 if spinpol == 'on':
                     core_hole.n_electrons_excited = 1.
-                    core_hole.ms_quantum_bool = not bool(int(core_hole_flags.results['core_hole'][2] / core_hole.degeneracy))
+                    core_hole.ms_quantum_bool = not bool(int(core_hole_flags.results['core_hole'][2] / core_hole.multiplicity))
+                elif spinpol == 'nc':
+                    core_hole.n_electrons_excited = 1.
+                    core_hole.j_quantum_number, core_hole.mj_quantum_number = _j_mapping()[core_hole.l_quantum_number, core_hole_flags.results['core_hole'][3]]
                 elif spinpol == 'off':
                     core_hole.n_electrons_excited = 2.  # TODO: verify
                     logger.warning('''
@@ -352,7 +367,7 @@ class OpenmxParser:
                     This is not recommended by the manual. For now assuming double electron (bosonic) excitation.
                     ''')
                 else:
-                    logger.warning('Could not set all quantum numbers: non-collinear calculations not yet supported')
+                    logger.warning('Spin-state not yet recognized')
             else:
                 core_hole.dscf_state = 'initial'  # this will be a hook in $\Delta$-SCF
                 core_hole.n_electrons_excited = 0.
