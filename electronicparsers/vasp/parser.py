@@ -29,7 +29,7 @@ respective file format. They both use separate file (:class:`RunFileParser`) and
 (:class:`OutcarTextParser`) parsers to read content content from either xml or text files.
 '''
 
-from typing import List, Any, Union
+from typing import List, Any, Union, Optional
 import os
 import numpy as np
 import logging
@@ -1376,20 +1376,18 @@ class VASPParser():
         if sec_k_mesh.points is None:
             sec_k_mesh.points = [[0.] * 3]
 
-    def parse_core_hole(self) -> (Union[CoreHole, None], Union[AtomsGroup, None], int):
+    def parse_core_hole(self) -> (Optional[CoreHole], Optional[AtomsGroup], int):
         """
         Map the core-hole information to a `CoreHole` section.
         Returns the core-hole, the `AtomsGroup` to which it refers, along with the matching element index.
         """
 
         source = self.parser.incar
-
         # setup `AtomsGroup` parameters
         elem_id = source.get('CLNT', 1) - 1
         elem_ids = [int(x) for x in self.parser.atom_info['atomtypes']['atomspertype']]
         lower_range = elem_ids[elem_id - 1] if elem_id > 1 else 0
         atom_ids = list(range(lower_range, elem_ids[elem_id]))
-
         return (
             CoreHole(
                 n_quantum_number=source.get('CLN', 1),

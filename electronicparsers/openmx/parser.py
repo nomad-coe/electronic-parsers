@@ -306,47 +306,47 @@ class OpenmxParser:
         For an overview of all conventional potentials and partial atomic orbitals, see https://www.openmx-square.org/vps_pao2019/
         and https://www.openmx-square.org/vps_pao_core2019/ for core-holes.
         '''
-        l_mapping = dict(zip('spdf', range(4)))
         l_quantum = '[spdf]'
-        _remove_extension = lambda x: re.sub(r'(\.pao|\.vps)', '', x)
-        _extract_method = lambda x: re.search(r'_([A-Z]+)19', x)
-        #  _extract_orbital = lambda x: re.search(rf'_(\d)({l_quantum})$', x)
-        _extract_core_hole = lambda x: re.search(rf'_(\d)({l_quantum})_CH', x)
-        _extract_elem_cutoff = lambda x: re.match(rf'({element})([\d\.]+)[_-]', x)
-        _extract_lmax = lambda x: re.search(rf'({l_quantum})\d$', x)
+        remove_extension = lambda x: re.sub(r'(\.pao|\.vps)', '', x)
+        extract_method = lambda x: re.search(r'_([A-Z]+)19', x)
+        #  extract_orbital = lambda x: re.search(rf'_(\d)({l_quantum})$', x)
+        extract_core_hole = lambda x: re.search(rf'_(\d)({l_quantum})_CH', x)
+        extract_elem_cutoff = lambda x: re.match(rf'({element})([\d\.]+)[_-]', x)
+        extract_lmax = lambda x: re.search(rf'({l_quantum})\d$', x)
 
-        _definitions = deepcopy(definitions)
+        definitions = deepcopy(definitions)
         try:
-            _definitions[1] = _remove_extension(_definitions[1])
-            _definitions[2] = _remove_extension(_definitions[2])
+            definitions[1] = remove_extension(definitions[1])
+            definitions[2] = remove_extension(definitions[2])
         except IndexError:
-            logger.error(f'Species definition must be of length 3: {_definitions}')
+            logger.error(f'Species definition must be of length 3: {definitions}')
 
         # evaluate pseudopotential
         pseudopotential, core_hole = Pseudopotential(
             type = 'US MBK',
             norm_conserving = True
         ), None  # TODO: add basis set
-        pseudopotential.name = f'{_definitions[1]} {_definitions[2]}'
-        pseudopotential.cutoff = float(_extract_elem_cutoff(_definitions[1]).group(2)) * units.hartree
+        pseudopotential.name = f'{definitions[1]} {definitions[2]}'
+        pseudopotential.cutoff = float(extract_elem_cutoff(definitions[1]).group(2)) * units.hartree
         try:
-            pseudopotential.l_max = l_mapping[_extract_lmax(_definitions[1]).group(1)]
+            pseudopotential.l_max = CoreHole.l_quantum_numbers[extract_lmax(definitions[1]).group(1)]
         except KeyError:
-            logger.error(f'Unknown l-quantum symbol: {_definitions[1]}')
+            logger.error(f'Unknown l-quantum symbol: {definitions[1]}')
         try:
-            pseudopotential.xc_functional_name = xc_functional_dictionary[_extract_method(_definitions[2]).group(1)]
+            pseudopotential.xc_functional_name = xc_functional_dictionary[extract_method(definitions[2]).group(1)]
         except KeyError:
-            logger.error(f'Unknown exchange-correlation functional: {_definitions[2]}')
+            logger.error(f'Unknown exchange-correlation functional: {definitions[2]}')
 
         # evaluate core_hole
-        quantum_nums_flag = _extract_core_hole(_definitions[1])  # this checks the PAO, the PP is only necessary for the final state
+        quantum_nums_flag = extract_core_hole(definitions[1])  # this checks the PAO, the PP is only necessary for the final state
         if quantum_nums_flag:
             quantum_nums = quantum_nums_flag.groups()
-            core_hole = CoreHole(
-                n_quantum_number=int(quantum_nums[0]),
-            )
             try:
-                core_hole.l_quantum_number = l_mapping[quantum_nums[1]]
+                core_hole = CoreHole(
+                    n_quantum_number=int(quantum_nums[0]),
+                    l_quantum_number=CoreHole.l_quantum_numbers[quantum_nums[1]],
+                    n_electrons_excited=1,
+                )
             except KeyError:
                 logger.error(f'Unknown l-quantum symbol: {quantum_nums[1]}')
 
@@ -355,22 +355,19 @@ class OpenmxParser:
                 core_hole.dscf_state = 'final'
                 spinpol = mainfile_parser.get('scf.SpinPolarization', '').lower()
                 if spinpol == 'on':
-                    core_hole.n_electrons_excited = 1.
-                    core_hole.ms_quantum_bool = not bool(int(core_hole_flags.results['core_hole'][2] / core_hole.multiplicity))
+                    # first all up, then all down: https://www.openmx-square.org/openmx_man3.9/node192.html
+                    core_hole.ms_quantum_bool = not bool(int(core_hole_flags.results['core_hole'][2] / core_hole.get_l_degeneracy()))
                 elif spinpol == 'nc':
-                    core_hole.n_electrons_excited = 1.
                     core_hole.j_quantum_number, core_hole.mj_quantum_number = _j_mapping()[core_hole.l_quantum_number, core_hole_flags.results['core_hole'][3]]
                 elif spinpol == 'off':
-                    core_hole.n_electrons_excited = 2.  # TODO: verify
                     logger.warning('''
                     Unexpected spin-restricted setting when using final-state core-hole computation.
-                    This is not recommended by the manual. For now assuming double electron (bosonic) excitation.
+                    This is not recommended by the manual. For now assuming single-electron excitation of unspecified spin.
                     ''')
                 else:
                     logger.warning('Spin-state not yet recognized')
             else:
                 core_hole.dscf_state = 'initial'  # this will be a hook in $\Delta$-SCF
-                core_hole.n_electrons_excited = 0.
 
         return pseudopotential, core_hole
 
@@ -440,7 +437,7 @@ class OpenmxParser:
 
         for species in mainfile_parser.results['species'].results['species']:
             # add atom parameters
-            atom_parameters = AtomParameters(label=species[0],)
+            atom_parameters = AtomParameters(label=species[0])
             atom_parameters.pseudopotential, atom_parameters.core_hole = self.parse_species(species, logger)
             sec_method.atom_parameters.append(atom_parameters)
 
