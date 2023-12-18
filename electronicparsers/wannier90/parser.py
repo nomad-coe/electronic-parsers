@@ -42,7 +42,7 @@ from ..utils import get_files
 # New schema
 from nomad.datamodel.metainfo.basesections import Program as BaseProgram
 from nomad.datamodel.metainfo.computation import Computation
-from nomad.datamodel.metainfo.computation.system import ModelSystem, Atoms as Atoms2, SystemGroups
+from nomad.datamodel.metainfo.computation.system import ModelSystem, AtomicCell
 
 
 re_n = r"[\n\r]"
@@ -267,7 +267,7 @@ class Wannier90Parser:
             return
 
         sec_atoms = sec_system.m_create(Atoms)
-        sec_atoms2 = sec_system2.m_create(Atoms2)
+        sec_atoms2 = sec_system2.m_create(AtomicCell)
         if self.wout_parser.get("lattice_vectors", []):
             lattice_vectors = np.vstack(
                 self.wout_parser.get("lattice_vectors", [])[-3:]
@@ -429,65 +429,74 @@ class Wannier90Parser:
     def parse_winput2(self, sec_computation):
         sec_run = sec_computation
         try:
-            sec_system = sec_run.system[-1]
-            sec_atoms = sec_system.atoms[0]
+            sec_system = sec_run.model_system[-1]
+            sec_atoms = sec_system.atomic_cell[0]
         except Exception:
-            self.logger.warning('Could not extract system.atoms and method sections for parsing win.')
+            self.logger.warning(
+                "Could not extract system.atoms and method sections for parsing win."
+            )
             return
 
         # Parsing from input
-        win_files = get_files('*.win', self.filepath, '*.wout')
+        win_files = get_files("*.win", self.filepath, "*.wout")
         if not win_files:
-            self.logger.warning('Input .win file not found.')
+            self.logger.warning("Input .win file not found.")
             return
         if len(win_files) > 1:
-            self.logger.warning('Multiple win files found. We will parse the first one.')
+            self.logger.warning(
+                "Multiple win files found. We will parse the first one."
+            )
         self.win_parser.mainfile = win_files[0]
 
         def fract_cart_sites(sec_atoms, units, val):
             for pos in sec_atoms.positions.to(units):
                 if np.array_equal(val, pos.magnitude):
-                    index = sec_atoms.positions.magnitude.tolist().index(pos.magnitude.tolist())
+                    index = sec_atoms.positions.magnitude.tolist().index(
+                        pos.magnitude.tolist()
+                    )
                     return sec_atoms.labels[index]
 
         # Set units in case these are defined in .win
-        projections = self.win_parser.get('projections', [])
+        projections = self.win_parser.get("projections", [])
         if projections:
             if not isinstance(projections, list):
                 projections = [projections]
-            if projections[0][0] in ['Bohr', 'Angstrom']:
+            if projections[0][0] in ["Bohr", "Angstrom"]:
                 x_wannier90_units = self._input_projection_units[projections[0][0]]
                 projections.pop(0)
             else:
-                x_wannier90_units = 'angstrom'
-            if projections[0][0] == 'random':
+                x_wannier90_units = "angstrom"
+            if projections[0][0] == "random":
                 return
 
         # Populating AtomsGroup for projected atoms
         for nat in range(len(projections)):
-            sec_atoms_group = sec_system.m_create(SystemGroups)
-            sec_atoms_group.type = 'projected_atom'
+            sec_atoms_group = sec_system.m_create(ModelSystem)
+            sec_atoms_group.type = "active_atom"
             # sec_atoms_group.index = 0  # Always first index (projection on a projection does not exist)
-            sec_atoms_group.is_molecule = False
+            # sec_atoms_group.is_molecule = False
 
             # atom label always index=0
             try:
                 atom = projections[nat][0]
-                if atom.startswith('f='):  # fractional coordinates
-                    val = [float(x) for x in atom.replace('f=', '').split(',')]
+                if atom.startswith("f="):  # fractional coordinates
+                    val = [float(x) for x in atom.replace("f=", "").split(",")]
                     val = np.dot(val, sec_atoms.lattice_vectors.magnitude)
                     sites = fract_cart_sites(sec_atoms, x_wannier90_units, val)
-                elif atom.startswith('c='):  # cartesian coordinates
-                    val = [float(x) for x in atom.replace('c=', '').split(',')]
+                elif atom.startswith("c="):  # cartesian coordinates
+                    val = [float(x) for x in atom.replace("c=", "").split(",")]
                     sites = fract_cart_sites(sec_atoms, x_wannier90_units, val)
                 else:  # atom label directly specified
                     sites = atom
-                sec_atoms_group.n_entities = len(sites)  # always 1 (only one atom per proj)
-                sec_atoms_group.label = sites
-                sec_atoms_group.entity_indices = np.where([
-                    x == sec_atoms_group.label for x in sec_atoms.labels])[0]
+                # sec_atoms_group.n_entities = len(sites)  # always 1 (only one atom per proj)
+                sec_atoms_group.tree_label = sites
+                sec_atoms_group.atom_indices = np.where(
+                    [x == sec_atoms_group.tree_label for x in sec_atoms.labels]
+                )[0]
             except Exception:
-                self.logger.warning('Error finding the atom labels for the projection from win.')
+                self.logger.warning(
+                    "Error finding the atom labels for the projection from win."
+                )
 
     def parse_hoppings(self):
         hr_files = get_files("*hr.dat", self.filepath, self.mainfile)
