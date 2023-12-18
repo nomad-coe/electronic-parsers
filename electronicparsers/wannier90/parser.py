@@ -29,7 +29,11 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, HoppingMatrix
 )
 from nomad.datamodel.metainfo.simulation.method import (
+<<<<<<< HEAD
     AtomicOrbitalState, Method, AtomParameters, KMesh, Wannier, TB
+=======
+    Method, AtomParameters, KMesh, Wannier, Projection
+>>>>>>> Change to label `active_orbitals`
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms, AtomsGroup
 from ..utils import get_files
@@ -292,7 +296,7 @@ class Wannier90Parser():
         sec_run.x_wannier90_n_atoms_proj = len(projections)
         for nat in range(sec_run.x_wannier90_n_atoms_proj):
             sec_atoms_group = sec_system.m_create(AtomsGroup)
-            sec_atoms_group.type = 'active_orbital'
+            sec_atoms_group.type = 'active_orbitals'
             sec_atoms_group.index = 0  # Always first index (projection on a projection does not exist)
             sec_atoms_group.is_molecule = False
 

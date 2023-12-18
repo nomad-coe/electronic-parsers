@@ -613,7 +613,7 @@ class OpenmxParser:
                     sec_system.atoms_group.append(
                         AtomsGroup(
                             label='core-hole',
-                            type='active_orbital',
+                            type='active_orbitals',
                             atom_indices=self.atom_index_dict[atom_parameters.label],
                             n_atoms=len(self.atom_index_dict[atom_parameters.label]),
                         )
