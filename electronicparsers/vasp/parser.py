@@ -53,16 +53,10 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry,
     BandEnergies, DosValues, ScfIteration, BandStructure, BandGapDeprecated, Dos, Density,
 )
-<<<<<<< HEAD
 from simulationworkflowschema import (
     SinglePoint, GeometryOptimization,
     GeometryOptimizationMethod, MolecularDynamics)
 from .metainfo.vasp import CoreHole
-=======
-from nomad.datamodel.metainfo.simulation.workflow import (
-    SinglePoint, GeometryOptimization, GeometryOptimizationMethod, MolecularDynamics,
-)
->>>>>>> - Update interfacing `parse_core_hole` with the rest of the parser
 
 re_n = r'[\n\r]'
 
