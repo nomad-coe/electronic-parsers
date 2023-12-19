@@ -42,6 +42,7 @@ from simulationworkflowschema import (
     GeometryOptimization, GeometryOptimizationMethod,
     MolecularDynamics, MolecularDynamicsMethod)
 from simulationworkflowschema.molecular_dynamics import ThermostatParameters
+from nomad.quantum_states import RussellSaundersState
 
 from .metainfo.openmx import OpenmxSCC  # pylint: disable=unused-import
 
@@ -55,12 +56,11 @@ def _j_mapping() -> dict[tuple[int, int], tuple[float, float]]:
     '''Reproduce table 12 given in https://www.openmx-square.org/openmx_man3.9/node192.html'''
     mapping: dict[tuple[int, int], tuple[float, float]] = {}
     for ll in range(4):
-        counter = 0
-        for jj in (.5, -.5):
-            j = ll + jj
-            for mj in range(-j, j + 1):
-                counter += 1
-                mapping[(ll, counter)] = (j, mj)
+        second_index = 1
+        for jj in RussellSaundersState.generate_Js(abs(ll + .5), abs(ll - .5), rising=False):
+            for mj in RussellSaundersState.generate_MJs(jj, rising=False):
+                mapping[(ll, second_index)] = (jj, mj)
+                second_index += 1
     return mapping
 
 element = '[A-Z][a-z]?'
@@ -290,7 +290,7 @@ class OpenmxParser:
     def atom_index_dict(self) -> dict[str, list[int]]:
         '''Return the indexes by species label.
         - column_index: the column index of the species labels (default = 0)'''
-        result = {}
+        result: dict[str, list[int]] = {}
         for index, item in enumerate(mainfile_parser.results['atoms'].results['atom']):
             key, value = item[0], index
             if key in result:
@@ -433,7 +433,7 @@ class OpenmxParser:
     def parse_method(self, logger: logging.Logger):
         # setup
         sec_method = self.archive.run[-1].m_create(Method)
-        sec_method.atom_parameters: list[AtomParameters] = []
+        sec_method.atom_parameters = []
 
         for species in mainfile_parser.results['species'].results['species']:
             # add atom parameters
@@ -608,7 +608,7 @@ class OpenmxParser:
         for atom_parameters in sec_method.atom_parameters:
             if atom_parameters.core_hole is not None:
                 if sec_system.atoms_group is None:
-                    sec_system.atoms_group: list[AtomsGroup] = []
+                    sec_system.atoms_group = []
                 try:
                     sec_system.atoms_group.append(
                         AtomsGroup(

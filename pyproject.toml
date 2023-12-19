@@ -62,3 +62,10 @@ include = ["electronicparsers*"]
 
 [tool.setuptools.package-data]
 electronicparsers = ['*/metadata.yaml', '*/README.md']
+
+[tool.mypy]
+strict = false
+ignore_missing_imports = true
+follow_imports = "silent"
+no_strict_optional = true
+disable_error_code = "import, annotation-unchecked"

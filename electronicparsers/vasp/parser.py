@@ -56,7 +56,6 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 from simulationworkflowschema import (
     SinglePoint, GeometryOptimization,
     GeometryOptimizationMethod, MolecularDynamics)
-from .metainfo.vasp import CoreHole
 
 re_n = r'[\n\r]'
 
@@ -1370,7 +1369,7 @@ class VASPParser():
         if sec_k_mesh.points is None:
             sec_k_mesh.points = [[0.] * 3]
 
-    def parse_core_hole(self) -> (Optional[CoreHole], Optional[AtomsGroup], int):
+    def parse_core_hole(self) -> tuple[Optional[CoreHole], Optional[AtomsGroup], int]:
         """
         Map the core-hole information to a `CoreHole` section.
         Returns the core-hole, the `AtomsGroup` to which it refers, along with the matching element index.
@@ -1398,7 +1397,7 @@ class VASPParser():
             elem_id,
         )
 
-    def parse_method(self) -> dict[str, Any]:
+    def parse_method(self):
         '''
         Parse and attach the method section to the archive.
         Also return a dictionary with the mapping information for other sections.
@@ -1903,7 +1902,7 @@ class VASPParser():
         if self._calculation_type == 'gw':
             self.parse_gw()
         else:
-            method_dict = self.parse_method()
+            self.parse_method()
 
         # Note: the logic for a proper topology might have to become more complex
         self.parse_configurations()

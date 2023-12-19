@@ -29,7 +29,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, Dos, DosValues, BandStructure, BandEnergies, Energy, HoppingMatrix
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    AtomicOrbitalState, Method, AtomParameters, KMesh, Wannier, TB
+    Method, AtomParameters, KMesh, Wannier, TB
 )
 from nomad.datamodel.metainfo.simulation.system import System, Atoms, AtomsGroup
 from ..utils import get_files
