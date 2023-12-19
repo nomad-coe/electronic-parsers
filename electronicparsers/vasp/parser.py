@@ -1633,7 +1633,11 @@ class VASPParser():
             ## note that this check should be added to `parse_core_hole` if other kinds of atom_parameters are set
             if self.parser.incar.get('ICORELEVEL', 0) == 2:
                 core_hole, core_hole_group, corehole_id = self.parse_core_hole()
-                self.archive.run[-1].method[-1].atom_parameters[corehole_id].core_hole = core_hole
+                if (sec_method := sec_run.method):
+                    try:
+                        sec_method[-1].atom_parameters[corehole_id].core_hole = core_hole
+                    except (IndexError, AttributeError, TypeError):
+                        self.logger.error(f'Error setting core-hole: no atom_parameters with index {corehole_id}')
 
                 if sec_system.atoms_group is None:
                     sec_system.atoms_group = []

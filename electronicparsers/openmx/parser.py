@@ -17,6 +17,7 @@
 #
 
 from copy import deepcopy
+from functools import cached_property
 import logging
 from typing import Optional
 import numpy as np
@@ -207,7 +208,7 @@ def parse_md_file(i, mdfile_md_steps, system):
     )
 
 
-def parse_structure(system, logger):
+def parse_structure(system, logger: logging.Logger):
     atoms_units = mainfile_parser.get('Atoms.SpeciesAndCoordinates.Unit')
     lattice_vectors = mainfile_parser.get('input_lattice_vectors')
     lattice_units = mainfile_parser.get('Atoms.UnitVectors.Unit')
@@ -286,7 +287,7 @@ class OpenmxParser:
     def __init__(self):
         pass
 
-    @property
+    @cached_property
     def atom_index_dict(self) -> dict[str, list[int]]:
         '''Return the indexes by species label.
         - column_index: the column index of the species labels (default = 0)'''
@@ -299,7 +300,7 @@ class OpenmxParser:
                 result[key] = [value]
         return result
 
-    def parse_species(self, definitions: list[str], logger: logging.Logger) -> tuple[Pseudopotential, Optional[CoreHole]]:
+    def parse_species(self, definitions: list[str]) -> tuple[Pseudopotential, Optional[CoreHole]]:
         '''
         Extract `Pseudopotential` and `CoreHole` (if present) from the atomic species definition.
         An explanation of the format can be found at https://www.openmx-square.org/openmx_man3.9/node32.html
@@ -319,7 +320,8 @@ class OpenmxParser:
             definitions[1] = remove_extension(definitions[1])
             definitions[2] = remove_extension(definitions[2])
         except IndexError:
-            logger.error(f'Species definition must be of length 3: {definitions}')
+            self.logger.error(f'Species definition must be of length 3: {definitions}')
+            return None, None
 
         # evaluate pseudopotential
         pseudopotential, core_hole = Pseudopotential(
@@ -331,11 +333,11 @@ class OpenmxParser:
         try:
             pseudopotential.l_max = CoreHole.l_quantum_numbers[extract_lmax(definitions[1]).group(1)]
         except KeyError:
-            logger.error(f'Unknown l-quantum symbol: {definitions[1]}')
+            self.logger.error(f'Unknown l-quantum symbol: {definitions[1]}')
         try:
             pseudopotential.xc_functional_name = xc_functional_dictionary[extract_method(definitions[2]).group(1)]
         except KeyError:
-            logger.error(f'Unknown exchange-correlation functional: {definitions[2]}')
+            self.logger.error(f'Unknown exchange-correlation functional: {definitions[2]}')
 
         # evaluate core_hole
         quantum_nums_flag = extract_core_hole(definitions[1])  # this checks the PAO, the PP is only necessary for the final state
@@ -348,7 +350,8 @@ class OpenmxParser:
                     n_electrons_excited=1,
                 )
             except KeyError:
-                logger.error(f'Unknown l-quantum symbol: {quantum_nums[1]}')
+                self.logger.error(f'Unknown l-quantum symbol: {quantum_nums[1]}')
+                return pseudopotential, None
 
             core_hole_flags = mainfile_parser.results.get('core_hole')
             if core_hole_flags:
@@ -360,12 +363,12 @@ class OpenmxParser:
                 elif spinpol == 'nc':
                     core_hole.j_quantum_number, core_hole.mj_quantum_number = _j_mapping()[core_hole.l_quantum_number, core_hole_flags.results['core_hole'][3]]
                 elif spinpol == 'off':
-                    logger.warning('''
+                    self.logger.warning('''
                     Unexpected spin-restricted setting when using final-state core-hole computation.
                     This is not recommended by the manual. For now assuming single-electron excitation of unspecified spin.
                     ''')
                 else:
-                    logger.warning('Spin-state not yet recognized')
+                    self.logger.warning('Spin-state not yet recognized')
             else:
                 core_hole.dscf_state = 'initial'  # this will be a hook in $\Delta$-SCF
 
@@ -430,7 +433,7 @@ class OpenmxParser:
 
             self.archive.workflow2 = workflow
 
-    def parse_method(self, logger: logging.Logger):
+    def parse_method(self):
         # setup
         sec_method = self.archive.run[-1].m_create(Method)
         sec_method.atom_parameters = []
@@ -438,7 +441,7 @@ class OpenmxParser:
         for species in mainfile_parser.results['species'].results['species']:
             # add atom parameters
             atom_parameters = AtomParameters(label=species[0])
-            atom_parameters.pseudopotential, atom_parameters.core_hole = self.parse_species(species, logger)
+            atom_parameters.pseudopotential, atom_parameters.core_hole = self.parse_species(species)
             sec_method.atom_parameters.append(atom_parameters)
 
         # add basis set
@@ -523,6 +526,7 @@ class OpenmxParser:
 
     def parse(self, mainfile: str, archive: EntryArchive, logger):
         self.archive = archive
+        self.logger = logger
 
         # Use the previously defined parsers on the given mainfile
         mainfile_parser.mainfile = mainfile
@@ -545,7 +549,7 @@ class OpenmxParser:
 
         self.parse_workflow()
 
-        self.parse_method(logger)
+        self.parse_method()
 
         mainfile_md_steps = mainfile_parser.get('md_step')
         if mainfile_md_steps is not None:
@@ -565,7 +569,7 @@ class OpenmxParser:
             # This is unlikely, but signals a problem with the md file, so just
             # ignore it.
             ignore_md_file = True
-            logger.warning(".md file does not contain enough MD steps")
+            self.logger.warning(".md file does not contain enough MD steps")
 
         if mainfile_md_steps is not None:
             for i, md_step in enumerate(mainfile_md_steps):
@@ -603,22 +607,23 @@ class OpenmxParser:
                             sec_calc.time = time * units.fs
 
         # set core-hole atoms groups
-        sec_system = self.archive.run[-1].system[-1]
-        sec_method = self.archive.run[-1].method[-1]
-        for atom_parameters in sec_method.atom_parameters:
-            if atom_parameters.core_hole is not None:
-                if sec_system.atoms_group is None:
-                    sec_system.atoms_group = []
-                try:
-                    sec_system.atoms_group.append(
-                        AtomsGroup(
-                            label='core-hole',
-                            type='active_orbitals',
-                            atom_indices=self.atom_index_dict[atom_parameters.label],
-                            n_atoms=len(self.atom_index_dict[atom_parameters.label]),
+        try:
+            sec_system = sec_run[-1].system[-1]
+            sec_method = sec_run[-1].method[-1]
+            for atom_parameters in sec_method.atom_parameters:
+                if atom_parameters.core_hole is not None:
+                    try:
+                        sec_system.atoms_group.append(
+                            AtomsGroup(
+                                label='core-hole',
+                                type='active_orbitals',
+                                atom_indices=self.atom_index_dict[atom_parameters.label],
+                                n_atoms=len(self.atom_index_dict[atom_parameters.label]),
+                            )
                         )
-                    )
-                except KeyError:
-                    continue
+                    except KeyError:
+                        continue
+        except (IndexError, AttributeError):
+            pass
 
         self.parse_eigenvalues()
