@@ -1445,7 +1445,7 @@ class VASPParser():
                 except IndexError:
                     self.logger.error(f'Pseudopotential not found for atom {element[i]}')
                 sec_method_atom_kind.mass = pseudopotential['number']['POMASS'] * ureg.amu
-                sec_method_atom_kind.n_electrons = pseudopotential['number']['ZVAL']
+                sec_method_atom_kind.n_valence_electrons = pseudopotential['number']['ZVAL']
                 pp = Pseudopotential()
                 pp.type = 'PAW'
                 if pseudopotential['flag']['LULTRA']:
