@@ -49,8 +49,8 @@ def test_lco(parser):
     assert sec_system.atoms.periodic == [True, True, True]
     assert sec_system.m_xpath('atoms_group')
     assert len(sec_system.atoms_group) == 1
-    assert sec_system.atoms_group[-1].label == 'Cu'
-    assert sec_system.atoms_group[-1].type == 'projection'
+    assert sec_system.atoms_group[-1].label == 'projection'
+    assert sec_system.atoms_group[-1].type == 'active_orbitals'
     assert sec_system.atoms_group[-1].index == 0
     assert sec_system.atoms_group[-1].atom_indices[0] == 2
 

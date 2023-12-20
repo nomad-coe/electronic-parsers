@@ -16,6 +16,10 @@
 # limitations under the License.
 #
 
+from copy import deepcopy
+from functools import cached_property
+import logging
+from typing import Optional
 import numpy as np
 import re
 import io
@@ -28,10 +32,10 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, BandEnergies, Forces, ForcesEntry
 )
 from nomad.datamodel.metainfo.simulation.system import (
-    System, Atoms
+    AtomsGroup, System, Atoms
 )
 from nomad.datamodel.metainfo.simulation.method import (
-    Method, BasisSet, DFT, XCFunctional, Functional, Electronic, Smearing, Scf,
+    AtomParameters, CoreHole, Method, BasisSet, DFT, Pseudopotential, XCFunctional, Functional, Electronic, Smearing, Scf,
     BasisSetContainer,
 )
 from nomad.parsing.file_parser import TextParser, Quantity
@@ -39,6 +43,7 @@ from simulationworkflowschema import (
     GeometryOptimization, GeometryOptimizationMethod,
     MolecularDynamics, MolecularDynamicsMethod)
 from simulationworkflowschema.molecular_dynamics import ThermostatParameters
+from nomad.quantum_states import RussellSaundersState
 
 from .metainfo.openmx import OpenmxSCC  # pylint: disable=unused-import
 
@@ -47,6 +52,28 @@ This is parser for OpenMX DFT code.
 '''
 
 # A = (1 * units.angstrom).to_base_units().magnitude
+
+def _j_mapping() -> dict[tuple[int, int], tuple[float, float]]:
+    '''Reproduce table 12 given in https://www.openmx-square.org/openmx_man3.9/node192.html'''
+    mapping: dict[tuple[int, int], tuple[float, float]] = {}
+    for ll in range(4):
+        second_index = 1
+        for jj in RussellSaundersState.generate_Js(abs(ll + .5), abs(ll - .5), rising=False):
+            for mj in RussellSaundersState.generate_MJs(jj, rising=False):
+                mapping[(ll, second_index)] = (jj, mj)
+                second_index += 1
+    return mapping
+
+element = '[A-Z][a-z]?'
+xc_functional_dictionary = {
+    'GGA-PBE': ['GGA_C_PBE', 'GGA_X_PBE'],
+    'LDA': ['LDA_X', 'LDA_C_PZ'],
+    'LSDA-CA': ['LDA_X', 'LDA_C_PZ'],
+    'LSDA-PW': ['LDA_X', 'LDA_C_PW'],
+    None: ['LDA_X', 'LDA_C_PZ']
+}
+xc_functional_dictionary['PBE'] = xc_functional_dictionary['GGA-PBE']
+xc_functional_dictionary['CA'] = xc_functional_dictionary['LSDA-CA']
 
 scf_step_parser = TextParser(quantities=[
     Quantity('NormRD', r'NormRD=\s*([\d\.]+)', repeats=False),
@@ -59,8 +86,18 @@ md_step_parser = TextParser(quantities=[
 ])
 
 species_and_coordinates_parser = TextParser(quantities=[
-    Quantity('atom', r'\s*\d+\s*([A-Za-z]{1,2})\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\s+[\d\.]+\s*[\d\.]+\s*',
+    Quantity('atom', rf'\s*\d+\s*({element}\d*)\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\s+[\d\.]+\s*[\d\.]+\s*',
              repeats=True)
+])
+
+species_definition_parser = TextParser(quantities=[
+    Quantity('species', rf'({element}\d*)\s+([-\w\.]+)\s+(\w+)',
+             repeats=True),
+])
+
+core_hole_parser = TextParser(quantities=[
+    Quantity('core_hole', rf'(\d+)\s+({element})\s+(\d+)',
+             repeats=False),  # TODO: consider `repeats = True` case
 ])
 
 
@@ -87,6 +124,12 @@ mainfile_parser = TextParser(quantities=[
         'atoms', r'<Atoms.SpeciesAndCoordinates([\s\S]+)Atoms.SpeciesAndCoordinates>',
         sub_parser=species_and_coordinates_parser,
         repeats=False),
+    Quantity(
+        'species', r'<Definition\.of\.Atomic\.Species([\s\S]+)Definition\.of\.Atomic\.Species>',
+        sub_parser=species_definition_parser,),
+    Quantity(
+        'core_hole', r'<Definition\.of\.Core\.Hole([\s\S]+)Definition\.of\.Core\.Hole>',
+        sub_parser=core_hole_parser,),
     Quantity(
         'input_lattice_vectors', r'(?i)<Atoms.UnitVectors\s+((?:-?\d+\.\d+\s+)+)Atoms.UnitVectors>',
         repeats=False),
@@ -165,7 +208,7 @@ def parse_md_file(i, mdfile_md_steps, system):
     )
 
 
-def parse_structure(system, logger):
+def parse_structure(system, logger: logging.Logger):
     atoms_units = mainfile_parser.get('Atoms.SpeciesAndCoordinates.Unit')
     lattice_vectors = mainfile_parser.get('input_lattice_vectors')
     lattice_units = mainfile_parser.get('Atoms.UnitVectors.Unit')
@@ -244,6 +287,93 @@ class OpenmxParser:
     def __init__(self):
         pass
 
+    @cached_property
+    def atom_index_dict(self) -> dict[str, list[int]]:
+        '''Return the indexes by species label.
+        - column_index: the column index of the species labels (default = 0)'''
+        result: dict[str, list[int]] = {}
+        for index, item in enumerate(mainfile_parser.results['atoms'].results['atom']):
+            key, value = item[0], index
+            if key in result:
+                result[key].append(value)
+            else:
+                result[key] = [value]
+        return result
+
+    def parse_species(self, definitions: list[str]) -> tuple[Pseudopotential, Optional[CoreHole]]:
+        '''
+        Extract `Pseudopotential` and `CoreHole` (if present) from the atomic species definition.
+        An explanation of the format can be found at https://www.openmx-square.org/openmx_man3.9/node32.html
+        For an overview of all conventional potentials and partial atomic orbitals, see https://www.openmx-square.org/vps_pao2019/
+        and https://www.openmx-square.org/vps_pao_core2019/ for core-holes.
+        '''
+        l_quantum = '[spdf]'
+        remove_extension = lambda x: re.sub(r'(\.pao|\.vps)', '', x)
+        extract_method = lambda x: re.search(r'_([A-Z]+)19', x)
+        #  extract_orbital = lambda x: re.search(rf'_(\d)({l_quantum})$', x)
+        extract_core_hole = lambda x: re.search(rf'_(\d)({l_quantum})_CH', x)
+        extract_elem_cutoff = lambda x: re.match(rf'({element})([\d\.]+)[_-]', x)
+        extract_lmax = lambda x: re.search(rf'({l_quantum})\d$', x)
+
+        definitions = deepcopy(definitions)
+        try:
+            definitions[1] = remove_extension(definitions[1])
+            definitions[2] = remove_extension(definitions[2])
+        except IndexError:
+            self.logger.error(f'Species definition must be of length 3: {definitions}')
+            return None, None
+
+        # evaluate pseudopotential
+        pseudopotential, core_hole = Pseudopotential(
+            type = 'US MBK',
+            norm_conserving = True
+        ), None  # TODO: add basis set
+        pseudopotential.name = f'{definitions[1]} {definitions[2]}'
+        pseudopotential.cutoff = float(extract_elem_cutoff(definitions[1]).group(2)) * units.hartree
+        try:
+            pseudopotential.l_max = CoreHole.l_quantum_numbers[extract_lmax(definitions[1]).group(1)]
+        except KeyError:
+            self.logger.error(f'Unknown l-quantum symbol: {definitions[1]}')
+        try:
+            pseudopotential.xc_functional_name = xc_functional_dictionary[extract_method(definitions[2]).group(1)]
+        except KeyError:
+            self.logger.error(f'Unknown exchange-correlation functional: {definitions[2]}')
+
+        # evaluate core_hole
+        quantum_nums_flag = extract_core_hole(definitions[1])  # this checks the PAO, the PP is only necessary for the final state
+        if quantum_nums_flag:
+            quantum_nums = quantum_nums_flag.groups()
+            try:
+                core_hole = CoreHole(
+                    n_quantum_number=int(quantum_nums[0]),
+                    l_quantum_number=CoreHole.l_quantum_numbers[quantum_nums[1]],
+                    n_electrons_excited=1,
+                )
+            except KeyError:
+                self.logger.error(f'Unknown l-quantum symbol: {quantum_nums[1]}')
+                return pseudopotential, None
+
+            core_hole_flags = mainfile_parser.results.get('core_hole')
+            if core_hole_flags:
+                core_hole.dscf_state = 'final'
+                spinpol = mainfile_parser.get('scf.SpinPolarization', '').lower()
+                if spinpol == 'on':
+                    # first all up, then all down: https://www.openmx-square.org/openmx_man3.9/node192.html
+                    core_hole.ms_quantum_bool = not bool(int(core_hole_flags.results['core_hole'][2] / core_hole.get_l_degeneracy()))
+                elif spinpol == 'nc':
+                    core_hole.j_quantum_number, core_hole.mj_quantum_number = _j_mapping()[core_hole.l_quantum_number, core_hole_flags.results['core_hole'][3]]
+                elif spinpol == 'off':
+                    self.logger.warning('''
+                    Unexpected spin-restricted setting when using final-state core-hole computation.
+                    This is not recommended by the manual. For now assuming single-electron excitation of unspecified spin.
+                    ''')
+                else:
+                    self.logger.warning('Spin-state not yet recognized')
+            else:
+                core_hole.dscf_state = 'initial'  # this will be a hook in $\Delta$-SCF
+
+        return pseudopotential, core_hole
+
     def parse_workflow(self):
         md_type = mainfile_parser.get('MD.Type')
         md_types_list = [
@@ -304,7 +434,17 @@ class OpenmxParser:
             self.archive.workflow2 = workflow
 
     def parse_method(self):
+        # setup
         sec_method = self.archive.run[-1].m_create(Method)
+        sec_method.atom_parameters = []
+
+        for species in mainfile_parser.results['species'].results['species']:
+            # add atom parameters
+            atom_parameters = AtomParameters(label=species[0])
+            atom_parameters.pseudopotential, atom_parameters.core_hole = self.parse_species(species)
+            sec_method.atom_parameters.append(atom_parameters)
+
+        # add basis set
         sec_method.electrons_representation = [
             BasisSetContainer(
                 type='atom-centered orbitals',
@@ -312,12 +452,13 @@ class OpenmxParser:
                 basis_set=[
                     BasisSet(
                         type='numeric AOs',
-                        scope=['full-election'],
+                        scope=['full-electron'],  # TODO: double check
                     )
                 ]
             )
         ]
 
+        # DFT (+U)
         sec_dft = sec_method.m_create(DFT)
         sec_electronic = sec_method.m_create(Electronic)
         sec_electronic.method = 'DFT'
@@ -327,13 +468,6 @@ class OpenmxParser:
             if scf_hubbard_u.lower() == 'on':
                 sec_electronic.method = 'DFT+U'
 
-        xc_functional_dictionary = {
-            'GGA-PBE': ['GGA_C_PBE', 'GGA_X_PBE'],
-            'LDA': ['LDA_X', 'LDA_C_PZ'],
-            'LSDA-CA': ['LDA_X', 'LDA_C_PZ'],
-            'LSDA-PW': ['LDA_X', 'LDA_C_PW'],
-            None: ['LDA_X', 'LDA_C_PZ']
-        }
         scf_xctype = mainfile_parser.get('scf.XcType')
         sec_xc_functional = sec_dft.m_create(XCFunctional)
         for xc in xc_functional_dictionary[scf_xctype]:
@@ -392,6 +526,7 @@ class OpenmxParser:
 
     def parse(self, mainfile: str, archive: EntryArchive, logger):
         self.archive = archive
+        self.logger = logger
 
         # Use the previously defined parsers on the given mainfile
         mainfile_parser.mainfile = mainfile
@@ -434,7 +569,7 @@ class OpenmxParser:
             # This is unlikely, but signals a problem with the md file, so just
             # ignore it.
             ignore_md_file = True
-            logger.warning(".md file does not contain enough MD steps")
+            self.logger.warning(".md file does not contain enough MD steps")
 
         if mainfile_md_steps is not None:
             for i, md_step in enumerate(mainfile_md_steps):
@@ -470,5 +605,25 @@ class OpenmxParser:
                         time = mdfile_md_steps[i].get('time')
                         if time is not None:
                             sec_calc.time = time * units.fs
+
+        # set core-hole atoms groups
+        try:
+            sec_system = sec_run[-1].system[-1]
+            sec_method = sec_run[-1].method[-1]
+            for atom_parameters in sec_method.atom_parameters:
+                if atom_parameters.core_hole is not None:
+                    try:
+                        sec_system.atoms_group.append(
+                            AtomsGroup(
+                                label='core-hole',
+                                type='active_orbitals',
+                                atom_indices=self.atom_index_dict[atom_parameters.label],
+                                n_atoms=len(self.atom_index_dict[atom_parameters.label]),
+                            )
+                        )
+                    except KeyError:
+                        continue
+        except (IndexError, AttributeError):
+            pass
 
         self.parse_eigenvalues()

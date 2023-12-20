@@ -23,6 +23,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference, JSON
 )
 from nomad.datamodel.metainfo import simulation
+from nomad.metainfo.util import MEnum
 
 
 m_package = Package()

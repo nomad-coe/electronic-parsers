@@ -26,7 +26,7 @@ from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextP
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional, Scf, BasisSet, KMesh,
-    FrequencyMesh, Screening, GW, Photon, BSE, CoreHole, BasisSetContainer,
+    FrequencyMesh, Screening, GW, Photon, BSE, CoreHoleSpectra, BasisSetContainer,
     OrbitalAPW, AtomParameters,
 )
 from nomad.datamodel.metainfo.simulation.system import (
@@ -2018,7 +2018,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         # CoreHole
         if sec_run.method[-1].x_exciting_xs_bse_xas:
-            sec_core_hole = CoreHole(
+            sec_core_hole = CoreHoleSpectra(
                 mode='absorption',
                 broadening=sec_run.method[-1].x_exciting_xs_broadening)
             sec_bse.m_add_sub_section(BSE.core_hole, sec_core_hole)

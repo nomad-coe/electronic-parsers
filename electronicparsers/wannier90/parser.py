@@ -163,42 +163,42 @@ class Wannier90Parser():
         # Angular momentum [l, mr] following Wannier90 tables 3.1 and 3.2
         # TODO move to normalization or utils in nomad?
         self._angular_momentum_orbital_map = {
-            's': [0, 1],
-            'px': [1, 1],
-            'py': [1, 2],
-            'pz': [1, 3],
-            'dz2': [2, 1],
-            'dxz': [2, 2],
-            'dyz': [2, 3],
-            'dx2-y2': [2, 4],
-            'dxy': [2, 5],
-            'fz3': [3, 1],
-            'fxz2': [3, 2],
-            'fyz2': [3, 3],
-            'fz(x2-y2)': [3, 4],
-            'fxyz': [3, 5],
-            'fx(x2-3y2)': [3, 6],
-            'fy(3x2-y2)': [3, 7],
-            'sp-1': [-1, 1],
-            'sp-2': [-1, 2],
-            'sp2-1': [-2, 1],
-            'sp2-2': [-2, 2],
-            'sp2-3': [-2, 3],
-            'sp3-1': [-3, 1],
-            'sp3-2': [-3, 2],
-            'sp3-3': [-3, 3],
-            'sp3-4': [-3, 4],
-            'sp3d-1': [-4, 1],
-            'sp3d-2': [-4, 2],
-            'sp3d-3': [-4, 3],
-            'sp3d-4': [-4, 4],
-            'sp3d-5': [-4, 5],
-            'sp3d2-1': [-5, 1],
-            'sp3d2-2': [-5, 2],
-            'sp3d2-3': [-5, 3],
-            'sp3d2-4': [-5, 4],
-            'sp3d2-5': [-5, 5],
-            'sp3d2-6': [-5, 6]
+            (0, 1): 's',
+            (1, 1): 'px',
+            (1, 2): 'py',
+            (1, 3): 'pz',
+            (2, 1): 'dz2',
+            (2, 2): 'dxz',
+            (2, 3): 'dyz',
+            (2, 4): 'dx2-y2',
+            (2, 5): 'dxy',
+            (3, 1): 'fz3',
+            (3, 2): 'fxz2',
+            (3, 3): 'fyz2',
+            (3, 4): 'fz(x2-y2)',
+            (3, 5): 'fxyz',
+            (3, 6): 'fx(x2-3y2)',
+            (3, 7): 'fy(3x2-y2)',
+            (-1, 1): 'sp-1',
+            (-1, 2): 'sp-2',
+            (-2, 1): 'sp2-1',
+            (-2, 2): 'sp2-2',
+            (-2, 3): 'sp2-3',
+            (-3, 1): 'sp3-1',
+            (-3, 2): 'sp3-2',
+            (-3, 3): 'sp3-3',
+            (-3, 4): 'sp3-4',
+            (-4, 1): 'sp3d-1',
+            (-4, 2): 'sp3d-2',
+            (-4, 3): 'sp3d-3',
+            (-4, 4): 'sp3d-4',
+            (-4, 5): 'sp3d-5',
+            (-5, 1): 'sp3d2-1',
+            (-5, 2): 'sp3d2-2',
+            (-5, 3): 'sp3d2-3',
+            (-5, 4): 'sp3d2-4',
+            (-5, 5): 'sp3d2-5',
+            (-5, 6): 'sp3d2-6'
         }
 
         self._dft_codes = [
@@ -292,7 +292,7 @@ class Wannier90Parser():
         sec_run.x_wannier90_n_atoms_proj = len(projections)
         for nat in range(sec_run.x_wannier90_n_atoms_proj):
             sec_atoms_group = sec_system.m_create(AtomsGroup)
-            sec_atoms_group.type = 'projection'
+            sec_atoms_group.type = 'active_orbitals'
             sec_atoms_group.index = 0  # Always first index (projection on a projection does not exist)
             sec_atoms_group.is_molecule = False
 
@@ -308,14 +308,15 @@ class Wannier90Parser():
                     sites = fract_cart_sites(sec_atoms, sec_run.x_wannier90_units, val)
                 else:  # atom label directly specified
                     sites = atom
-                sec_atoms_group.n_atoms = len(sites)  # always 1 (only one atom per proj)
-                sec_atoms_group.label = sites
+                sec_atoms_group.n_atoms = len(sites)  # always 1 (only one atom per proj)  # TODO: either add a check or default to 1
+                sec_atoms_group.label = 'projection'
                 sec_atoms_group.atom_indices = np.where([
-                    x == sec_atoms_group.label for x in sec_atoms.labels])[0]
+                    x == sites for x in sec_atoms.labels])[0]
             except Exception:
                 self.logger.warning('Error finding the atom labels for the projection from win.')
 
             # orbital angular momentum always index=1
+            # suggestion: shift to wout for projection?
             try:
                 orbitals = projections[nat][1].split(';')
                 sec_atom_parameters = sec_method.m_create(AtomParameters)
@@ -323,15 +324,10 @@ class Wannier90Parser():
                 angular_momentum = []
                 for orb in orbitals:
                     if orb.startswith('l='):  # using angular momentum numbers
-                        lmom = orb.split(',mr')[0]
-                        mrmom = orb.split(',mr')[-1]
-                        val_lmom = [int(x) for x in lmom.replace('l=', '').split(',')]
-                        val_mrmom = [int(x) for x in mrmom.replace('=', '').split(',')]
-                        val_angmtm = [val_lmom[0], val_mrmom[0]]
-                        for key, val in self._angular_momentum_orbital_map.items():
-                            orb_ang_mom = [val[i] == val_angmtm[i] for i in range(2)]
-                            if all(orb_ang_mom):
-                                angular_momentum.append(key)
+                        lmom = int(orb.split(',mr')[0].replace('l=', '').split(',')[0])
+                        mrmom = int(orb.split(',mr')[-1].replace('=', '').split(',')[0])
+                        if (orb_ang_mom := self._angular_momentum_orbital_map.get((lmom, mrmom))):  # shouldn't a missing numerical code rather generate a warning?
+                            angular_momentum.append(orb_ang_mom)
                     else:  # ang mom label directly specified
                         angular_momentum.append(orb)
                 sec_atom_parameters.orbitals = np.array(angular_momentum)
