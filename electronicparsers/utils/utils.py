@@ -100,7 +100,8 @@ class BeyondDFTWorkflowsParser:
         if workflow_archive.run:
             sec_run = workflow_archive.run[-1]
         else:
-            sec_run = workflow_archive.m_create(Run)
+            sec_run = Run()
+            workflow_archive.run.append(sec_run)
         sec_run.program = self.archive.run[-1].program
 
     def parse_gw_workflow(self, gw_archive: EntryArchive, gw_workflow_archive: EntryArchive):

@@ -2947,7 +2947,7 @@ class QuantumEspressoParser:
                 diagonalization_section = x_qe_section_bands_diagonalization
             sec_diagonalization = diagonalization_section()
             sec_def = target.m_def.all_sub_sections_by_section.get(diagonalization_section.m_def)[0]
-            target.m_add_sub_section(sec_def, diagonalization_section)
+            target.m_add_sub_section(sec_def, sec_diagonalization)
             for key, val in diagonalization.items():
                 if val is None:
                     continue
