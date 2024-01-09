@@ -19,8 +19,6 @@
 import os
 import numpy as np
 import logging
-import re
-from datetime import datetime
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
@@ -60,7 +58,7 @@ class MagresFileParser(TextParser):
             Quantity('cutoffenergy_units', rf'units *calc\_cutoffenergy *([a-zA-Z]+)'),
             Quantity(
                 'calculation',
-                r'(\[calculation\][\s\S]+?)(?:\[\/calculation\])',
+                r'([\[\<]*calculation[\>\]]*[\s\S]+?)(?:[\[\<]*\/calculation[\>\]]*)',
                 sub_parser=TextParser(quantities=[
                     Quantity('code', r'calc\_code *([a-zA-Z]+)'),
                     Quantity('code_version', r'calc\_code\_version *([a-zA-Z\d\.]+)'),
@@ -91,58 +89,58 @@ class MagresFileParser(TextParser):
             ),
             Quantity(
                 'atoms',
-                r'(\[atoms\][\s\S]+?)(?:\[\/atoms\])',
+                r'([\[\<]*atoms[\>\]]*[\s\S]+?)(?:[\[\<]*\/atoms[\>\]]*)',
                 sub_parser=TextParser(quantities=[
                     Quantity('lattice', rf'lattice({re_float*9})'),
                     Quantity('symmetry', r'symmetry *([\w\-\+\,]+)', repeats=True),
                     Quantity(
                         'atom',
-                        rf'atom *([a-zA-Z]+) *[a-zA-Z]* *([\d]+) *({re_float*3})',
+                        rf'atom *([a-zA-Z]+) *[a-zA-Z\d]* *([\d]+) *({re_float*3})',
                         repeats=True
                     ),
                 ]),
             ),
             Quantity(
                 'magres',
-                r'(\[magres\][\s\S]+?)(?:\[\/magres\])',
+                r'([\[\<]*magres[\>\]]*[\s\S]+?)(?:[\[\<]*\/magres[\>\]]*)',
                 sub_parser=TextParser(quantities=[
                     Quantity(
-                        'ms', rf'ms *([a-zA-Z]+) *(\d+)({re_float*9})', repeats=True),
+                        'ms', rf'ms *(\w+) *(\d+)({re_float*9})', repeats=True),
                     Quantity(
-                        'efg', rf'efg *([a-zA-Z]+) *(\d+)({re_float*9})', repeats=True),
+                        'efg', rf'efg *(\w+) *(\d+)({re_float*9})', repeats=True),
                     Quantity(
                         'efg_local',
-                        rf'efg_local *([a-zA-Z]+) *(\d+)({re_float*9})',
+                        rf'efg_local *(\w+) *(\d+)({re_float*9})',
                         repeats=True
                     ),
                     Quantity(
                         'efg_nonlocal',
-                        rf'efg_nonlocal *([a-zA-Z]+) *(\d+)({re_float*9})',
+                        rf'efg_nonlocal *(\w+) *(\d+)({re_float*9})',
                         repeats=True
                     ),
                     Quantity(
                         'isc',
-                        rf'isc *([a-zA-Z]+) *(\d+) *([a-zA-Z]+) *(\d+)({re_float*9})',
+                        rf'isc *(\w+) *(\d+) *(\w+) *(\d+)({re_float*9})',
                         repeats=True
                     ),
                     Quantity(
                         'isc_fc',
-                        rf'isc_fc *([a-zA-Z]+) *(\d+) *([a-zA-Z]+) *(\d+)({re_float*9})',
+                        rf'isc_fc *(\w+) *(\d+) *(\w+) *(\d+)({re_float*9})',
                         repeats=True
                     ),
                     Quantity(
                         'isc_orbital_p',
-                        rf'isc_orbital_p *([a-zA-Z]+) *(\d+) *([a-zA-Z]+) *(\d+)({re_float*9})',
+                        rf'isc_orbital_p *(\w+) *(\d+) *(\w+) *(\d+)({re_float*9})',
                         repeats=True
                     ),
                     Quantity(
                         'isc_orbital_d',
-                        rf'isc_orbital_d *([a-zA-Z]+) *(\d+) *([a-zA-Z]+) *(\d+)({re_float*9})',
+                        rf'isc_orbital_d *(\w+) *(\d+) *(\w+) *(\d+)({re_float*9})',
                         repeats=True
                     ),
                     Quantity(
                         'isc_spin',
-                        rf'isc_spin *([a-zA-Z]+) *(\d+) *([a-zA-Z]+) *(\d+)({re_float*9})',
+                        rf'isc_spin *(\w+) *(\d+) *(\w+) *(\d+)({re_float*9})',
                         repeats=True
                     ),
                     Quantity('sus', rf'sus *({re_float*9})', repeats=True),
@@ -196,10 +194,9 @@ class MagresParser:
         }
         for key, value in allowed_units.items():
             data = self.magres_file_parser.get(f'{key}_units', '')
-            if data != value:
+            if data and data != value:
                 self.logger.warning(f'The units of {key} are not parsed if they are {data}. '
                                     f'We will use the default units, {value}.')
-                return
 
     def parse_system(self):
         sec_run = self.archive.run[-1]
@@ -256,10 +253,10 @@ class MagresParser:
         # Basis set parsing (adding cutoff energies units check)
         cutoff = calculation_params.get('cutoffenergy')
         if cutoff.dimensionless:
-            cutoff_units = calculation_params.get('cutoffenergy_units', 'eV')
+            cutoff_units = self.magres_file_parser.get('cutoffenergy_units', 'eV')
             if cutoff_units == 'Hartree':
                 cutoff_units = 'hartree'
-            cutoff = cutoff * ureg(cutoff_units)
+            cutoff = cutoff.magnitude * ureg(cutoff_units)
         sec_basis_set = BasisSetContainer(
             type='plane waves',
             scope=['wavefunction'],
@@ -294,6 +291,9 @@ class MagresParser:
         sec_scc.system_ref = sec_run.system[-1]
         sec_scc.method_ref = sec_run.method[-1]
         atoms = sec_scc.system_ref.atoms.labels
+        if not atoms:
+            self.logger.warning('Could not find the parsed atomic cell information.')
+            return
         n_atoms = len(atoms)
 
         # Magnetic Shielding Tensor (ms) parsing
@@ -306,7 +306,7 @@ class MagresParser:
         # Electric Field Gradient (efg) parsing
         efg_contributions = {
             'efg_local': 'local',
-            'efg_nonlocal': 'nonlocal',
+            'efg_nonlocal': 'non_local',
             'efg': 'total'
         }
         for tag, contribution in efg_contributions.items():
@@ -349,9 +349,13 @@ class MagresParser:
 
         sec_run = self.archive.m_create(Run)
         calculation_params = self.magres_file_parser.get('calculation')
+        if calculation_params.get('code', '') != 'CASTEP':
+            self.logger.error('Only CASTEP-based NMR simulations are supported by the '
+                              'magres parser.')
+            return
         sec_run.program = Program(
             name=calculation_params.get('code', ''),
-            version=calculation_params.get('version', ''),
+            version=calculation_params.get('code_version', ''),
         )
 
         self.parse_system()
