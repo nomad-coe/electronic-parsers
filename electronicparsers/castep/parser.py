@@ -51,6 +51,7 @@ from .metainfo.castep import x_castep_section_phonons, x_castep_section_scf_para
     x_castep_section_tddft, x_castep_section_DFT_SEDC,\
     x_castep_section_van_der_Waals_parameters, x_castep_section_time, x_castep_section_raman_tensor
 
+from ..utils import get_files
 
 # TODO map all castep units
 units_map = {
@@ -559,7 +560,9 @@ class OutParser(TextParser):
             Quantity(
                 'time',
                 r'([A-Z]\w+) time\s+\=\s*([\d\.]+) s',
-                dtype=np.float64, repeats=True)]
+                dtype=np.float64, repeats=True),
+            Quantity('nmr_flag', r'\|\s*Welcome to Materials Studio CASTEP\-([A-Z]+)\s*\|', repeats=False),
+        ]
 
 
 class CastepParser:
@@ -1316,6 +1319,14 @@ class CastepParser:
         self.parse_configurations()
 
         self.parse_parameters()
+
+        # Parsing magres files if present
+        nmr_flag = self.out_parser.get('nmr_flag', '') == 'NMR'
+        if nmr_flag:
+            self.logger.info('NMR flag found in the main output file.')
+            magres_files = get_files('*magres*', self.filepath, self.mainfile)
+            if len(magres_files) > 0:
+                sec_run.x_castep_nmr_magres_flag = nmr_flag
 
         # times
         time = self.out_parser.get('time')
