@@ -24,10 +24,9 @@ from datetime import datetime
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
+from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
-    Functional, Method, DFT, Electronic, XCFunctional, Smearing,
-    BasisSetContainer, BasisSet, AtomParameters
+    Functional, Method, DFT, XCFunctional, BasisSetContainer, BasisSet, KMesh
 )
 from nomad.datamodel.metainfo.simulation.system import (
     System, Atoms
@@ -159,6 +158,23 @@ class MagresParser:
     def __init__(self):
         self.magres_file_parser = MagresFileParser()
 
+        self._xc_functional_map = {
+            'LDA': ['LDA_C_PZ', 'LDA_X_PZ'],
+            'PW91': ['GGA_C_PW91', 'GGA_X_PW91'],
+            'PBE': ['GGA_C_PBE', 'GGA_X_PBE'],
+            'RPBE': ['GGA_X_RPBE'],
+            'WC': ['GGA_C_PBE_GGA_X_WC'],
+            'PBESOL': ['GGA_X_RPBE'],
+            'BLYP': ['GGA_C_LYP', 'LDA_X_B88'],
+            'B3LYP': ['HYB_GGA_XC_B3LYP5'],
+            'HF': ['HF_X'],
+            'HF-LDA': ['HF_X_LDA_C_PW'],
+            'PBE0': ['HYB_GGA_XC_PBEH'],
+            'HSE03': ['HYB_GGA_XC_HSE03'],
+            'HSE06': ['HYB_GGA_XC_HSE06'],
+            'RSCAN': ['MGGA_X_RSCAN', 'MGGA_C_RSCAN'],
+        }
+
     def init_parser(self):
         self.magres_file_parser.mainfile = self.filepath
         self.magres_file_parser.logger = self.logger
@@ -181,8 +197,8 @@ class MagresParser:
         for key, value in allowed_units.items():
             data = self.magres_file_parser.get(f'{key}_units', '')
             if data != value:
-                self.logger.warning(f'The units of {key} are not allowed for {value}. We '
-                                    'will be use the default units.')
+                self.logger.warning(f'The units of {key} are not parsed if they are {data}. '
+                                    f'We will use the default units, {value}.')
                 return
 
     def parse_system(self):
@@ -215,8 +231,54 @@ class MagresParser:
         sec_atoms.positions = atom_positions * ureg.angstrom
 
     def parse_method(self, calculation_params):
+        # Only CASTEP-like method parameters is being supported.
         sec_run = self.archive.run[-1]
         sec_method = sec_run.m_create(Method)
+        sec_method.label = 'NMR'
+        sec_dft = sec_method.m_create(DFT)
+
+        # XC functional parsing
+        xc_functional = calculation_params.get('xcfunctional', 'LDA')
+        xc_functional_labels = self._xc_functional_map.get(xc_functional)
+        if xc_functional_labels:
+            sec_xc_functional = sec_dft.m_create(XCFunctional)
+            for functional in xc_functional_labels:
+                sec_functional = Functional(name=functional)
+                if '_X_' in functional or functional.endswith('_X'):
+                    sec_xc_functional.m_add_sub_section(XCFunctional.exchange, sec_functional)
+                elif '_C_' in functional or functional.endswith('_C'):
+                    sec_xc_functional.m_add_sub_section(XCFunctional.correlation, sec_functional)
+                elif 'HYB' in functional:
+                    sec_xc_functional.m_add_sub_section(XCFunctional.hybrid, sec_functional)
+                else:
+                    sec_xc_functional.m_add_sub_section(XCFunctional.contributions, sec_functional)
+
+        # Basis set parsing (adding cutoff energies units check)
+        cutoff = calculation_params.get('cutoffenergy')
+        if cutoff.dimensionless:
+            cutoff_units = calculation_params.get('cutoffenergy_units', 'eV')
+            if cutoff_units == 'Hartree':
+                cutoff_units = 'hartree'
+            cutoff = cutoff * ureg(cutoff_units)
+        sec_basis_set = BasisSetContainer(
+            type='plane waves',
+            scope=['wavefunction'],
+            basis_set = [
+                BasisSet(
+                    scope=['valence'],
+                    type='plane waves',
+                    cutoff=cutoff
+                )
+            ]
+        )
+        sec_method.m_add_sub_section(Method.electrons_representation, sec_basis_set)
+
+        # KMesh parsing
+        sec_k_mesh = KMesh(
+            grid=calculation_params.get('kpoint_mp_grid', [1, 1, 1]),
+            offset=calculation_params.get('kpoint_mp_offset', [0, 0, 0])
+        )
+        sec_method.m_add_sub_section(Method.k_mesh, sec_k_mesh)
 
     def parse_calculation(self):
         sec_run = self.archive.run[-1]
@@ -236,7 +298,7 @@ class MagresParser:
 
         # Magnetic Shielding Tensor (ms) parsing
         data = magres_data.get('ms', [])
-        if data is not None:
+        if len(data) > 0:
             values = np.reshape([d[2:] for d in data], (n_atoms, 3, 3))
             sec_ms = sec_scc.m_create(MagneticShielding)
             sec_ms.value = values * 1e-6 * ureg('dimensionless')
@@ -249,7 +311,7 @@ class MagresParser:
         }
         for tag, contribution in efg_contributions.items():
             data = magres_data.get(tag, [])
-            if not data:
+            if len(data) == 0:
                 continue
             values = np.reshape([d[2:] for d in data], (n_atoms, 3, 3))
             sec_efg = sec_scc.m_create(ElectricFieldGradient)
@@ -271,7 +333,7 @@ class MagresParser:
 
         # Magnetic Susceptibility (sus) parsing
         data = magres_data.get('sus', [])
-        if data is not None:
+        if len(data) > 0:
             values = np.reshape(data, (3, 3))
             sec_sus = sec_scc.m_create(MagneticSusceptibility)
             sec_sus.scale_dimension = 'macroscopic'
