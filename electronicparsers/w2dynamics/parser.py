@@ -502,6 +502,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
         wannier90_files = get_files('*.wout', self.filepath, self.mainfile, deep=False)
         if len(wannier90_files) == 1:
             wannier90_path = wannier90_files[-1].split('raw/')[-1]
+            filepath_stripped = self.filepath.split('raw/')[-1]
             try:
                 upload_id = self.archive.metadata.upload_id
                 search_ids = search(
@@ -513,6 +514,8 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
                 metadata = [[sid['entry_id'], sid['mainfile']] for sid in search_ids]
                 if len(metadata) > 1:
                     for entry_id, mainfile in metadata:
+                        if mainfile == filepath_stripped:  # we skipped the current parsed mainfile
+                            continue
                         entry_archive = archive.m_context.load_archive(entry_id, upload_id, None)
                         if wannier90_path == mainfile:  # TODO add condition on system section or is this enough? System is resolved anyways from wannier90_path
                             wannier90_archive = entry_archive
