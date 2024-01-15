@@ -1717,14 +1717,6 @@ class Run(runschema.run.Run):
         Temporary storing electronic structure method
         ''')
 
-    x_castep_nmr_magres_flag = Quantity(
-        type=bool,
-        description='''
-        Flag specifying if a NMR calculation was performed and if the output was stored
-        in a magres file format. This is useful when linking the corresponding NMR
-        workflow (in this case, CASTEP + magres), which is handled by the magres parser.
-        ''')
-
     x_castep_section_vibrational_frequencies = SubSection(
         sub_section=SectionProxy('x_castep_section_vibrational_frequencies'),
         repeats=True)

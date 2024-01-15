@@ -1106,9 +1106,6 @@ class CastepParser:
         if nmr_flag:
             self.logger.info("NMR flag found in the main output file.")
             sec_method.label = "NMR"
-            magres_files = get_files("*magres*", self.filepath, self.mainfile)
-            if len(magres_files) > 0:
-                sec_run.x_castep_nmr_magres_flag = nmr_flag
 
     def parse_workflow(self):
         workflow = None
