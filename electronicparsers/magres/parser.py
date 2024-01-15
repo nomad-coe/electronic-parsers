@@ -34,6 +34,11 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 )
 from simulationworkflowschema import SinglePoint
 
+from ..utils import get_files, BeyondDFTWorkflowsParser
+# For the automatic workflow NMR
+from nomad.search import search
+from nomad.app.v1.models import MetadataRequired
+
 
 re_float = r' *[-+]?\d+\.\d*(?:[Ee][-+]\d+)? *'
 
@@ -150,7 +155,7 @@ class MagresFileParser(TextParser):
 
 
 
-class MagresParser:
+class MagresParser(BeyondDFTWorkflowsParser):
     level = 1
 
     def __init__(self):
@@ -300,8 +305,10 @@ class MagresParser:
         data = magres_data.get('ms', [])
         if len(data) > 0:
             values = np.reshape([d[2:] for d in data], (n_atoms, 3, 3))
+            isotropic_value = np.trace(values, axis1=1, axis2=2) / 3.0
             sec_ms = sec_scc.m_create(MagneticShielding)
             sec_ms.value = values * 1e-6 * ureg('dimensionless')
+            sec_ms.isotropic_value = isotropic_value * 1e-6 * ureg('dimensionless')
 
         # Electric Field Gradient (efg) parsing
         efg_contributions = {
@@ -326,8 +333,16 @@ class MagresParser:
             'isc_spin': 'spin_dipolar',
             'isc': 'total',
         }
-        # isc_contributions = ['_fc', '_orbital_p', '_orbital_d', '_spin', '']
-        # for contribution in isc_contributions:
+        for tag, contribution in isc_contributions.items():
+            # TODO the data is organized weirdly in the file, we need to transform it properly
+            data = magres_data.get(tag, [])
+            if len(data) == 0:
+                continue
+            # values = np.array(data)
+            # sec_isc = sec_scc.m_create(SpinSpinCoupling)
+            # sec_isc.contribution = contribution
+            # sec_isc.reduced_value = values * 1e19 * ureg('K^2/J')
+
             # atom_indices = np.array(magres_data.get(f'isc{contribution}', []))[:, :4]
             # values = np.array(magres_data.get(f'isc{contribution}', []))[:, 4:]
 
@@ -339,6 +354,14 @@ class MagresParser:
             sec_sus.scale_dimension = 'macroscopic'
             sec_sus.value = values * 1e-6 * ureg('dimensionless')
 
+    def get_mainfile_keys(self, **kwargs):
+        filepath = kwargs.get('filename')
+        mainfile = os.path.basename(filepath)
+        castep_files = get_files('*.castep', filepath, mainfile, deep=False)
+        if len(castep_files) > 0:
+            return ['NMR_workflow']
+        return True
+
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
         self.archive = archive
@@ -349,12 +372,13 @@ class MagresParser:
 
         sec_run = self.archive.m_create(Run)
         calculation_params = self.magres_file_parser.get('calculation')
-        if calculation_params.get('code', '') != 'CASTEP':
+        program_name = calculation_params.get('code', '')
+        if program_name != 'CASTEP':
             self.logger.error('Only CASTEP-based NMR simulations are supported by the '
                               'magres parser.')
             return
         sec_run.program = Program(
-            name=calculation_params.get('code', ''),
+            name=program_name,
             version=calculation_params.get('code_version', ''),
         )
 
@@ -366,3 +390,36 @@ class MagresParser:
 
         workflow = SinglePoint()
         self.archive.workflow2 = workflow
+
+        # Checking if other mainfiles are present, if the closest is a CASTEP, tries to
+        # link it with the corresponding magres entry
+        castep_files = get_files('*.castep', self.filepath, os.path.basename(filepath), deep=False)
+        for castep_file in castep_files:
+            filepath_stripped = self.filepath.split('raw/')[-1]
+            try:
+                upload_id = self.archive.metadata.upload_id
+                search_ids = search(
+                    owner='visible',
+                    user_id=self.archive.metadata.main_author.user_id,
+                    query={'upload_id': upload_id},
+                    required=MetadataRequired(include=['entry_id', 'mainfile'])
+                ).data
+                metadata = [[sid['entry_id'], sid['mainfile']] for sid in search_ids]
+                if len(metadata) > 1:
+                    for entry_id, mainfile in metadata:
+                        if mainfile == filepath_stripped:  # we skipped the current parsed mainfile
+                            continue
+                        entry_archive = archive.m_context.load_archive(entry_id, upload_id, None)
+                        method_label = entry_archive.run[-1].method[-1].label
+                        print(entry_id, mainfile, entry_archive, method_label)
+                        if method_label == 'NMR':
+                            castep_archive = entry_archive
+                            nmr_workflow_archive = self._child_archives.get('NMR_workflow')
+                            self.parse_nmr_workflow(castep_archive, nmr_workflow_archive)
+                            break
+            except Exception:
+                self.logger.warning('Could not resolve the automatic workflow for magres '
+                                    'when trying to link with the CASTEP NMR entry. '
+                                    'You can try reorganizing the data in the folders: '
+                                    'CASTEP NMR files in the top-most folder and magres '
+                                    'file in the same folder or one folder below CASTEP.')
