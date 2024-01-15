@@ -390,14 +390,6 @@ class MagresParser(BeyondDFTWorkflowsParser):
             sec_sus.scale_dimension = "macroscopic"
             sec_sus.value = values * 1e-6 * ureg("dimensionless")
 
-    def get_mainfile_keys(self, **kwargs):
-        filepath = kwargs.get("filename")
-        mainfile = os.path.basename(filepath)
-        castep_files = get_files("*.castep", filepath, mainfile, deep=False)
-        if len(castep_files) > 0:
-            return ["NMR_workflow"]
-        return True
-
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
         self.archive = archive
@@ -426,50 +418,38 @@ class MagresParser(BeyondDFTWorkflowsParser):
 
         self.parse_calculation()
 
-        workflow = SinglePoint()
-        self.archive.workflow2 = workflow
-
         # Checking if other mainfiles are present, if the closest is a CASTEP, tries to
         # link it with the corresponding magres entry
-        castep_files = get_files(
-            "*.castep", self.filepath, os.path.basename(filepath), deep=False
-        )
-        for castep_file in castep_files:
-            filepath_stripped = self.filepath.split("raw/")[-1]
-            try:
-                upload_id = self.archive.metadata.upload_id
-                search_ids = search(
-                    owner="visible",
-                    user_id=self.archive.metadata.main_author.user_id,
-                    query={"upload_id": upload_id},
-                    required=MetadataRequired(include=["entry_id", "mainfile"]),
-                ).data
-                metadata = [[sid["entry_id"], sid["mainfile"]] for sid in search_ids]
-                if len(metadata) > 1:
-                    for entry_id, mainfile in metadata:
-                        if (
-                            mainfile == filepath_stripped
-                        ):  # we skipped the current parsed mainfile
-                            continue
-                        entry_archive = archive.m_context.load_archive(
-                            entry_id, upload_id, None
-                        )
-                        method_label = entry_archive.run[-1].method[-1].label
-                        print(entry_id, mainfile, entry_archive, method_label)
-                        if method_label == "NMR":
-                            castep_archive = entry_archive
-                            nmr_workflow_archive = self._child_archives.get(
-                                "NMR_workflow"
-                            )
-                            self.parse_nmr_workflow(
-                                castep_archive, nmr_workflow_archive
-                            )
-                            break
-            except Exception:
-                self.logger.warning(
-                    "Could not resolve the automatic workflow for magres "
-                    "when trying to link with the CASTEP NMR entry. "
-                    "You can try reorganizing the data in the folders: "
-                    "CASTEP NMR files in the top-most folder and magres "
-                    "file in the same folder or one folder below CASTEP."
-                )
+        filepath_stripped = self.filepath.split("raw/")[-1]
+        try:
+            upload_id = self.archive.metadata.upload_id
+            search_ids = search(
+                owner="visible",
+                user_id=self.archive.metadata.main_author.user_id,
+                query={"upload_id": upload_id},
+                required=MetadataRequired(include=["entry_id", "mainfile"]),
+            ).data
+            metadata = [[sid["entry_id"], sid["mainfile"]] for sid in search_ids]
+            if len(metadata) > 1:
+                for entry_id, mainfile in metadata:
+                    if (
+                        mainfile == filepath_stripped
+                    ):  # we skipped the current parsed mainfile
+                        continue
+                    entry_archive = archive.m_context.load_archive(
+                        entry_id, upload_id, None
+                    )
+                    method_label = entry_archive.run[-1].method[-1].label
+                    if method_label == "NMR":
+                        castep_archive = entry_archive
+                        # We write the workflow NMRMagRes directly in the magres entry
+                        self.parse_nmr_magres_workflow(castep_archive)
+                        break
+        except Exception:
+            self.logger.warning(
+                "Could not resolve the automatic workflow for magres "
+                "when trying to link with the CASTEP NMR entry. "
+                "You can try reorganizing the data in the folders: "
+                "CASTEP NMR files in the top-most folder and magres "
+                "file in the same folder or one folder below CASTEP."
+            )

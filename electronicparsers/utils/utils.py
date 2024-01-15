@@ -40,6 +40,9 @@ from simulationworkflowschema import (
     PhotonPolarization,
     PhotonPolarizationMethod,
     PhotonPolarizationResults,
+    NMRMagRes,
+    NMRMagResMethod,
+    NMRMagResResults,
 )
 
 
@@ -569,7 +572,47 @@ class BeyondDFTWorkflowsParser:
 
         dmft_workflow_archive.workflow2 = workflow
 
-    def parse_nmr_workflow(
-        self, dft_archive: EntryArchive, nmr_workflow_archive: EntryArchive
-    ):
-        self.run_workflow_archive(nmr_workflow_archive)
+    def parse_nmr_magres_workflow(self, nmr_archive: EntryArchive):
+        """Automatically parses the NMR Magres workflow. Here, `self.archive` is the
+        NMR magres SinglePoint archive. We are connecting the original NMR first principles
+        calculation with the NMR magres file format.
+
+        Args:
+            nrm_archive (EntryArchive): the NMR (first principles) SinglePoint archive
+        """
+        workflow = NMRMagRes(method=NMRMagResMethod(), results=NMRMagResResults())
+        workflow.name = "NMR MagRes"
+
+        # Method
+        method_nmr = extract_section(nmr_archive, ["run", "method"])
+        workflow.method.nmr_method_ref = method_nmr
+
+        # Inputs and Outputs
+        input_structure = extract_section(self.archive, ["run", "system"])
+        nmr_magres_calculation = extract_section(self.archive, ["run", "calculation"])
+        if input_structure:
+            workflow.m_add_sub_section(
+                NMRMagRes.inputs, Link(name="Input structure", section=input_structure)
+            )
+        if nmr_magres_calculation:
+            workflow.m_add_sub_section(
+                NMRMagRes.outputs,
+                Link(name="Output NMR calculation", section=nmr_magres_calculation),
+            )
+
+        # NMR (first principles) task
+        if nmr_archive.workflow2:
+            task = TaskReference(task=nmr_archive.workflow2)
+            task.name = "NMR FirstPrinciples"
+            if input_structure:
+                task.inputs = [Link(name="Input structure", section=input_structure)]
+            if nmr_magres_calculation:
+                task.outputs = [
+                    Link(
+                        name="Output NMR calculation",
+                        section=nmr_magres_calculation,
+                    )
+                ]
+            workflow.m_add_sub_section(NMRMagRes.tasks, task)
+
+        self.archive.workflow2 = workflow
