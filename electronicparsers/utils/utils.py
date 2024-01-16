@@ -219,17 +219,21 @@ class BeyondDFTWorkflowsParser:
         workflow.name = "TB"
 
         # Method
-        method_tb = extract_section(tb_archive, "run/method/tb")
+        method_first_principles = extract_section(
+            first_principles_calculation_archive, ["run", "method"]
+        )
+        method_tb = extract_section(tb_archive, ["run", "method", "tb"])
+        workflow.method.first_principles_method_ref = method_first_principles
         workflow.method.tb_method_ref = method_tb
 
         # Inputs and Outputs
         input_structure = extract_section(
-            first_principles_calculation_archive, "run/system"
+            first_principles_calculation_archive, ["run", "system"]
         )
         first_principles_calculation = extract_section(
-            first_principles_calculation_archive, "run/calculation"
+            first_principles_calculation_archive, ["run", "calculation"]
         )
-        tb_calculation = extract_section(tb_archive, "run/calculation")
+        tb_calculation = extract_section(tb_archive, ["run", "calculation"])
         if input_structure:
             workflow.m_add_sub_section(
                 TB.inputs, Link(name="Input Structure", section=input_structure)
