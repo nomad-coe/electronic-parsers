@@ -588,7 +588,7 @@ class BeyondDFTWorkflowsParser:
         workflow.method.nmr_method_ref = method_nmr
 
         # Inputs and Outputs
-        input_structure = extract_section(self.archive, ["run", "system"])
+        input_structure = extract_section(nmr_archive, ["run", "system"])
         nmr_magres_calculation = extract_section(self.archive, ["run", "calculation"])
         if input_structure:
             workflow.m_add_sub_section(
