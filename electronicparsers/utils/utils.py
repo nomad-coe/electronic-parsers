@@ -43,7 +43,7 @@ from simulationworkflowschema import (
 )
 
 # Special file-format workflow definition
-from ..magres.metainfo.magres import (
+from .magres_workflow import (
     NMRMagRes,
     NMRMagResMethod,
     NMRMagResResults,
@@ -253,7 +253,7 @@ class BeyondDFTWorkflowsParser:
             first_principles_task = TaskReference(
                 task=first_principles_calculation_archive.workflow2
             )
-            first_principles_task.name = "First Principles"
+            first_principles_task.name = "FirstPrinciples"
             if input_structure:
                 first_principles_task.inputs = [
                     Link(name="Input Structure", section=input_structure)
@@ -261,7 +261,7 @@ class BeyondDFTWorkflowsParser:
             if first_principles_calculation:
                 first_principles_task.outputs = [
                     Link(
-                        name="Output First Principles Calculation",
+                        name="Output FirstPrinciples Calculation",
                         section=first_principles_calculation,
                     )
                 ]
@@ -276,7 +276,7 @@ class BeyondDFTWorkflowsParser:
             if first_principles_calculation:
                 tb_task.inputs = [
                     Link(
-                        name="Input First Principles Calculation",
+                        name="Input FirstPrinciples Calculation",
                         section=first_principles_calculation,
                     )
                 ]
