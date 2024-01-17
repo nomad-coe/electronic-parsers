@@ -16,17 +16,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import numpy as np  # pylint: disable=unused-import
 from nomad.metainfo import SubSection, Quantity, Reference
 from nomad.datamodel.metainfo.simulation.method import Method
 from simulationworkflowschema import (
-    MagneticOutputs,
+    SimulationWorkflowResults,
     SimulationWorkflowMethod,
     SerialSimulation,
 )
 
 
-class NMRMagResResults(MagneticOutputs):
+class NMRMagResResults(SimulationWorkflowResults):
     """
     Groups the NMR magres outputs.
     """
@@ -60,4 +59,3 @@ class NMRMagRes(SerialSimulation):
 
     def normalize(self, archive, logger):
         super().normalize(archive, logger)
-        # TODO add results

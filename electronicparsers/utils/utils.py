@@ -585,23 +585,27 @@ class BeyondDFTWorkflowsParser:
 
         dmft_workflow_archive.workflow2 = workflow
 
-    def parse_nmr_magres_workflow(self, nmr_archive: EntryArchive):
-        """Automatically parses the NMR Magres workflow. Here, `self.archive` is the
-        NMR magres SinglePoint archive. We are connecting the original NMR first principles
-        calculation with the NMR magres file format.
+    def parse_nmr_magres_file_format(self, nmr_first_principles_archive: EntryArchive):
+        """
+        Automatically parses the NMR Magres workflow. Here, `self.archive` is the
+        NMR magres archive in which we will link the original NMR first principles (CASTEP
+        or QuantumEspresso-GIPAW)
 
         Args:
-            nrm_archive (EntryArchive): the NMR (first principles) SinglePoint archive
+            nmr_first_principles_archive (EntryArchive): the NMR (first principles)
+            SinglePoint archive
         """
         workflow = NMRMagRes(method=NMRMagResMethod(), results=NMRMagResResults())
         workflow.name = "NMR MagRes"
 
         # Method
-        method_nmr = extract_section(nmr_archive, ["run", "method"])
+        method_nmr = extract_section(nmr_first_principles_archive, ["run", "method"])
         workflow.method.nmr_method_ref = method_nmr
 
         # Inputs and Outputs
-        input_structure = extract_section(nmr_archive, ["run", "system"])
+        input_structure = extract_section(
+            nmr_first_principles_archive, ["run", "system"]
+        )
         nmr_magres_calculation = extract_section(self.archive, ["run", "calculation"])
         if input_structure:
             workflow.m_add_sub_section(
@@ -614,8 +618,8 @@ class BeyondDFTWorkflowsParser:
             )
 
         # NMR (first principles) task
-        if nmr_archive.workflow2:
-            task = TaskReference(task=nmr_archive.workflow2)
+        if nmr_first_principles_archive.workflow2:
+            task = TaskReference(task=nmr_first_principles_archive.workflow2)
             task.name = "NMR FirstPrinciples"
             if input_structure:
                 task.inputs = [Link(name="Input structure", section=input_structure)]

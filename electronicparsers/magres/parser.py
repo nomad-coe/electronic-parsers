@@ -21,6 +21,7 @@ import numpy as np
 import logging
 
 from nomad.units import ureg
+from nomad.datamodel import EntryArchive
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.datamodel.metainfo.simulation.run import Run, Program
 from nomad.datamodel.metainfo.simulation.method import (
@@ -40,13 +41,11 @@ from nomad.datamodel.metainfo.simulation.calculation import (
     MagneticShielding,
     MagneticSusceptibility,
 )
-from simulationworkflowschema import SinglePoint
-
-from ..utils import get_files, BeyondDFTWorkflowsParser
 
 # For the automatic workflow NMR
 from nomad.search import search
 from nomad.app.v1.models import MetadataRequired
+from ..utils import BeyondDFTWorkflowsParser
 
 
 re_float = r" *[-+]?\d+\.\d*(?:[Ee][-+]\d+)? *"
@@ -443,7 +442,7 @@ class MagresParser(BeyondDFTWorkflowsParser):
                     if method_label == "NMR":
                         castep_archive = entry_archive
                         # We write the workflow NMRMagRes directly in the magres entry
-                        self.parse_nmr_magres_workflow(castep_archive)
+                        self.parse_nmr_magres_file_format(castep_archive)
                         break
         except Exception:
             self.logger.warning(
