@@ -27,19 +27,23 @@ from nomad.datamodel import EntryArchive
 from runschema.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
 from simulationworkflowschema import (
-    GW,
-    GWMethod,
-    DMFT,
-    DMFTMethod,
+    DFTPlusGW,
+    DFTPlusGWMethod,
+    DFTPlusTBPlusDMFT,
+    DFTPlusTBPlusDMFTMethod,
     XS,
     XSMethod,
-    TB,
-    TBMethod,
-    MaxEnt,
-    MaxEntMethod,
+    FirstPrinciplesPlusTB,
+    FirstPrinciplesPlusTBMethod,
+    DMFTPlusMaxEnt,
+    DMFTPlusMaxEntMethod,
     PhotonPolarization,
     PhotonPolarizationMethod,
     PhotonPolarizationResults,
+)
+
+# Special file-format workflow definition
+from ..magres.metainfo.magres import (
     NMRMagRes,
     NMRMagResMethod,
     NMRMagResResults,
@@ -141,8 +145,7 @@ class BeyondDFTWorkflowsParser:
             Run.system, self.archive.run[-1].system[-1]
         )
 
-        workflow = GW(method=GWMethod())
-        workflow.name = "GW"
+        workflow = DFTPlusGW(method=DFTPlusGWMethod())
 
         # Method
         method_gw = extract_section(gw_archive, ["run", "method", "gw"])
@@ -162,11 +165,12 @@ class BeyondDFTWorkflowsParser:
         gw_calculation = extract_section(gw_archive, ["run", "calculation"])
         if input_structure:
             workflow.m_add_sub_section(
-                GW.inputs, Link(name="Input structure", section=input_structure)
+                DFTPlusGW.inputs, Link(name="Input structure", section=input_structure)
             )
         if gw_calculation:
             workflow.m_add_sub_section(
-                GW.outputs, Link(name="Output GW calculation", section=gw_calculation)
+                DFTPlusGW.outputs,
+                Link(name="Output GW calculation", section=gw_calculation),
             )
 
         # DFT task
@@ -180,7 +184,7 @@ class BeyondDFTWorkflowsParser:
                 task.outputs = [
                     Link(name="Output DFT calculation", section=dft_calculation)
                 ]
-            workflow.m_add_sub_section(GW.tasks, task)
+            workflow.m_add_sub_section(DFTPlusGW.tasks, task)
 
         # GW task
         if gw_archive.workflow2:
@@ -194,7 +198,7 @@ class BeyondDFTWorkflowsParser:
                 task.outputs = [
                     Link(name="Output GW calculation", section=gw_calculation)
                 ]
-            workflow.m_add_sub_section(GW.tasks, task)
+            workflow.m_add_sub_section(DFTPlusGW.tasks, task)
 
         gw_workflow_archive.workflow2 = workflow
 
@@ -215,8 +219,7 @@ class BeyondDFTWorkflowsParser:
         tb_workflow_archive.run[-1].m_add_sub_section(
             Run.system, first_principles_calculation_archive.run[-1].system[-1]
         )
-        workflow = TB(method=TBMethod())
-        workflow.name = "TB"
+        workflow = FirstPrinciplesPlusTB(method=FirstPrinciplesPlusTBMethod())
 
         # Method
         method_first_principles = extract_section(
@@ -236,11 +239,13 @@ class BeyondDFTWorkflowsParser:
         tb_calculation = extract_section(tb_archive, ["run", "calculation"])
         if input_structure:
             workflow.m_add_sub_section(
-                TB.inputs, Link(name="Input Structure", section=input_structure)
+                FirstPrinciplesPlusTB.inputs,
+                Link(name="Input Structure", section=input_structure),
             )
         if tb_calculation:
             workflow.m_add_sub_section(
-                TB.outputs, Link(name="Output TB Model", section=tb_calculation)
+                FirstPrinciplesPlusTB.outputs,
+                Link(name="Output TB Model", section=tb_calculation),
             )
 
         # First Principles Calculation task
@@ -260,7 +265,9 @@ class BeyondDFTWorkflowsParser:
                         section=first_principles_calculation,
                     )
                 ]
-            workflow.m_add_sub_section(TB.tasks, first_principles_task)
+            workflow.m_add_sub_section(
+                FirstPrinciplesPlusTB.tasks, first_principles_task
+            )
 
         # TB task
         if tb_archive.workflow2:
@@ -275,7 +282,7 @@ class BeyondDFTWorkflowsParser:
                 ]
             if tb_calculation:
                 tb_task.outputs = [Link(name="Output TB Model", section=tb_calculation)]
-            workflow.m_add_sub_section(TB.tasks, tb_task)
+            workflow.m_add_sub_section(FirstPrinciplesPlusTB.tasks, tb_task)
 
         tb_workflow_archive.workflow2 = workflow
 
@@ -447,7 +454,7 @@ class BeyondDFTWorkflowsParser:
             workflow_archive (EntryArchive): the DMFT+MaxEnt workflow archive
         """
 
-        workflow = MaxEnt(method=MaxEntMethod())
+        workflow = DMFTPlusMaxEnt(method=DMFTPlusMaxEntMethod())
 
         # Method
         method_dmft = extract_section(self.archive, ["run", "method", "dmft"])
@@ -464,7 +471,8 @@ class BeyondDFTWorkflowsParser:
         )
         if input_structure:
             workflow.m_add_sub_section(
-                MaxEnt.inputs, Link(name="Input structure", section=input_structure)
+                DMFTPlusMaxEnt.inputs,
+                Link(name="Input structure", section=input_structure),
             )
         if maxent_calculation and workflow_maxent_calculation:
             outputs = [
@@ -488,7 +496,7 @@ class BeyondDFTWorkflowsParser:
                 task.outputs = [
                     Link(name="Output DMFT calculation", section=dmft_calculation)
                 ]
-            workflow.m_add_sub_section(MaxEnt.tasks, task)
+            workflow.m_add_sub_section(DMFTPlusMaxEnt.tasks, task)
 
         # MaxEnt task
         if maxent_archive.workflow2:
@@ -505,13 +513,14 @@ class BeyondDFTWorkflowsParser:
                         section=maxent_calculation,
                     )
                 ]
-            workflow.m_add_sub_section(GW.tasks, task)
+            workflow.m_add_sub_section(DMFTPlusMaxEnt.tasks, task)
 
         workflow_archive.workflow2 = workflow
 
     def parse_dmft_workflow(
         self, wannier_archive: EntryArchive, dmft_workflow_archive: EntryArchive
     ):
+        # TODO extend for DFT tasks
         self.run_workflow_archive(dmft_workflow_archive)
         # Check if system exists in the DMFT archive or not, and whether it exists on the
         # Wannier90 archive or not, and then add it.
@@ -524,8 +533,7 @@ class BeyondDFTWorkflowsParser:
                 self.archive.run[-1].m_add_sub_section(Run.system, sec_system)
                 dmft_workflow_archive.run[-1].m_add_sub_section(Run.system, sec_system)
 
-        workflow = DMFT(method=DMFTMethod())
-        workflow.name = "DMFT"
+        workflow = DFTPlusTBPlusDMFT(method=DFTPlusTBPlusDMFTMethod())
 
         # Method
         method_proj = extract_section(wannier_archive, ["run", "method", "tb"])
@@ -539,11 +547,12 @@ class BeyondDFTWorkflowsParser:
         dmft_calculation = extract_section(self.archive, ["run", "calculation"])
         if input_structure:
             workflow.m_add_sub_section(
-                DMFT.inputs, Link(name="Input structure", section=input_structure)
+                DFTPlusTBPlusDMFT.inputs,
+                Link(name="Input structure", section=input_structure),
             )
         if dmft_calculation:
             workflow.m_add_sub_section(
-                DMFT.outputs,
+                DFTPlusTBPlusDMFT.outputs,
                 Link(name="Output DMFT calculation", section=dmft_calculation),
             )
 
@@ -558,7 +567,7 @@ class BeyondDFTWorkflowsParser:
                 task.outputs = [
                     Link(name="Output TB calculation", section=wannier_calculation)
                 ]
-            workflow.m_add_sub_section(DMFT.tasks, task)
+            workflow.m_add_sub_section(DFTPlusTBPlusDMFT.tasks, task)
 
         # DMFT task
         if self.archive.workflow2:
@@ -572,7 +581,7 @@ class BeyondDFTWorkflowsParser:
                 task.outputs = [
                     Link(name="Output DMFT calculation", section=dmft_calculation)
                 ]
-            workflow.m_add_sub_section(DMFT.tasks, task)
+            workflow.m_add_sub_section(DFTPlusTBPlusDMFT.tasks, task)
 
         dmft_workflow_archive.workflow2 = workflow
 
