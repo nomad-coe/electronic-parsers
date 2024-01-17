@@ -375,8 +375,8 @@ class MagresParser(BeyondDFTWorkflowsParser):
                 continue
             # values = np.array(data)
             # sec_isc = sec_scc.m_create(SpinSpinCoupling)
-            # sec_isc.contribution = contribution
-            # sec_isc.reduced_value = values * 1e19 * ureg('K^2/J')
+            # sec_isc.indirect_contribution = contribution
+            # sec_isc.indirect_reduced_value = values * 1e19 * ureg('K^2/J')
 
             # atom_indices = np.array(magres_data.get(f'isc{contribution}', []))[:, :4]
             # values = np.array(magres_data.get(f'isc{contribution}', []))[:, 4:]
