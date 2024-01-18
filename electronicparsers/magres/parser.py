@@ -405,7 +405,7 @@ class MagresParser(BeyondDFTWorkflowsParser):
         for tag, contribution in isc_contributions.items():
             # TODO the data is organized differently to the NOMAD metainfo, we need to transform it properly
             data = magres_data.get(tag, [])
-            if np.size(data) == n_atoms**2 * (
+            if np.size(data) != n_atoms**2 * (
                 9 + 4
             ):  # 4 extra columns with atom labels
                 continue
@@ -462,6 +462,7 @@ class MagresParser(BeyondDFTWorkflowsParser):
 
         # We try to resolve the entry_id and mainfile of other entries in the upload
         filepath_stripped = self.filepath.split("raw/")[-1]
+        metadata = []
         try:
             upload_id = self.archive.metadata.upload_id
             search_ids = search(
@@ -476,21 +477,20 @@ class MagresParser(BeyondDFTWorkflowsParser):
                 "Could not resolve the entry_id and mainfile of other entries in the upload."
             )
             return
-        if len(metadata) > 1:
-            for entry_id, mainfile in metadata:
-                if mainfile == filepath_stripped:  # we skip the current parsed mainfile
-                    continue
-                # We try to load the archive from its context and connect both the CASTEP
-                # and the magres entries
-                try:
-                    entry_archive = archive.m_context.load_archive(
-                        entry_id, upload_id, None
-                    )
-                    method_label = entry_archive.run[-1].method[-1].label
-                    if method_label == "NMR":
-                        castep_archive = entry_archive
-                        # We write the workflow NMRMagRes directly in the magres entry
-                        self.parse_nmr_magres_file_format(castep_archive)
-                        break
-                except Exception:
-                    continue
+        for entry_id, mainfile in metadata:
+            if mainfile == filepath_stripped:  # we skip the current parsed mainfile
+                continue
+            # We try to load the archive from its context and connect both the CASTEP
+            # and the magres entries
+            try:
+                entry_archive = archive.m_context.load_archive(
+                    entry_id, upload_id, None
+                )
+                method_label = entry_archive.run[-1].method[-1].label
+                if method_label == "NMR":
+                    castep_archive = entry_archive
+                    # We write the workflow NMRMagRes directly in the magres entry
+                    self.parse_nmr_magres_file_format(castep_archive)
+                    break
+            except Exception:
+                continue
