@@ -949,7 +949,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             atom_positions = np.dot(xred, rprim.transpose()) * ureg.bohr
         else:
             if natom == 1:  # handling exception
-                atom_positions = np.array([0.0, 0.0, 0.0])
+                atom_positions = np.array([[0.0, 0.0, 0.0]])
             else:
                 self.logger.warning('Could not resolve atom positions.')
                 return
