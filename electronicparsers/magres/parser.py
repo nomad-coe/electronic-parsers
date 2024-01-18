@@ -210,6 +210,10 @@ class MagresParser(BeyondDFTWorkflowsParser):
         self.magres_file_parser.logger = self.logger
 
     def _check_units_magres(self):
+        """
+        Check if the units of the NMR quantities are magres standard. If not, a warning
+        is issued and the default units are used.
+        """
         allowed_units = {
             "lattice": "Angstrom",
             "atom": "Angstrom",
@@ -366,7 +370,7 @@ class MagresParser(BeyondDFTWorkflowsParser):
 
         # Magnetic Shielding Tensor (ms) parsing
         data = magres_data.get("ms", [])
-        if len(data) > 0:
+        if np.size(data) == n_atoms * (9 + 2):  # 2 extra columns with atom labels
             values = np.reshape([d[2:] for d in data], (n_atoms, 3, 3))
             isotropic_value = np.trace(values, axis1=1, axis2=2) / 3.0
             sec_ms = MagneticShielding()
@@ -382,7 +386,7 @@ class MagresParser(BeyondDFTWorkflowsParser):
         }
         for tag, contribution in efg_contributions.items():
             data = magres_data.get(tag, [])
-            if len(data) == 0:
+            if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
                 continue
             values = np.reshape([d[2:] for d in data], (n_atoms, 3, 3))
             sec_efg = ElectricFieldGradient()
@@ -401,7 +405,9 @@ class MagresParser(BeyondDFTWorkflowsParser):
         for tag, contribution in isc_contributions.items():
             # TODO the data is organized differently to the NOMAD metainfo, we need to transform it properly
             data = magres_data.get(tag, [])
-            if len(data) == 0:
+            if np.size(data) == n_atoms**2 * (
+                9 + 4
+            ):  # 4 extra columns with atom labels
                 continue
             values = np.reshape([d[4:] for d in data], (n_atoms, n_atoms, 3, 3))
             sec_isc = SpinSpinCoupling()
@@ -411,7 +417,7 @@ class MagresParser(BeyondDFTWorkflowsParser):
 
         # Magnetic Susceptibility (sus) parsing
         data = magres_data.get("sus", [])
-        if len(data) > 0:
+        if np.size(data) == 9:
             values = np.reshape(data, (3, 3))
             sec_sus = MagneticSusceptibility()
             sec_sus.scale_dimension = "macroscopic"
@@ -454,8 +460,7 @@ class MagresParser(BeyondDFTWorkflowsParser):
         # Add run to the Archive
         self.archive.run.append(sec_run)
 
-        # Checking if other mainfiles are present, if the closest is a CASTEP, tries to
-        # link it with the corresponding magres entry
+        # We try to resolve the entry_id and mainfile of other entries in the upload
         filepath_stripped = self.filepath.split("raw/")[-1]
         try:
             upload_id = self.archive.metadata.upload_id
@@ -466,12 +471,18 @@ class MagresParser(BeyondDFTWorkflowsParser):
                 required=MetadataRequired(include=["entry_id", "mainfile"]),
             ).data
             metadata = [[sid["entry_id"], sid["mainfile"]] for sid in search_ids]
-            if len(metadata) > 1:
-                for entry_id, mainfile in metadata:
-                    if (
-                        mainfile == filepath_stripped
-                    ):  # we skipped the current parsed mainfile
-                        continue
+        except Exception:
+            self.logger.warning(
+                "Could not resolve the entry_id and mainfile of other entries in the upload."
+            )
+            return
+        if len(metadata) > 1:
+            for entry_id, mainfile in metadata:
+                if mainfile == filepath_stripped:  # we skip the current parsed mainfile
+                    continue
+                # We try to load the archive from its context and connect both the CASTEP
+                # and the magres entries
+                try:
                     entry_archive = archive.m_context.load_archive(
                         entry_id, upload_id, None
                     )
@@ -481,11 +492,5 @@ class MagresParser(BeyondDFTWorkflowsParser):
                         # We write the workflow NMRMagRes directly in the magres entry
                         self.parse_nmr_magres_file_format(castep_archive)
                         break
-        except Exception:
-            self.logger.warning(
-                "Could not resolve the automatic workflow for magres "
-                "when trying to link with the CASTEP NMR entry. "
-                "You can try reorganizing the data in the folders: "
-                "CASTEP NMR files in the top-most folder and magres "
-                "file in the same folder or one folder below CASTEP."
-            )
+                except Exception:
+                    continue
