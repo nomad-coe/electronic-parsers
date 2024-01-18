@@ -237,11 +237,14 @@ class MagresParser(BeyondDFTWorkflowsParser):
                     },
                 )
 
-    def parse_system(self):
+    def parse_system(self, sec_run: Run):
         """
         Parse the System section by extracting information about the atomic structure:
         lattice vectors, periodic boundary conditions, atom positions and labels from the
         magres file.
+
+        Args:
+            sec_run (Run): the section Run where System will be added.
         """
         sec_atoms = Atoms()
 
@@ -275,12 +278,11 @@ class MagresParser(BeyondDFTWorkflowsParser):
         sec_atoms.positions = atom_positions * ureg.angstrom
 
         # Add Atoms to System and this to Run
-        sec_run = self.archive.run[-1]
         sec_system = System()
         sec_system.atoms = sec_atoms
         sec_run.system.append(sec_system)
 
-    def parse_method(self, calculation_params: TextParser):
+    def parse_method(self, calculation_params: TextParser, sec_run: Run):
         """
         Parse the Method section by extracting information about the NMR method:basis set,
         exchange-correlation functional, cutoff energy, and K mesh.
@@ -289,6 +291,7 @@ class MagresParser(BeyondDFTWorkflowsParser):
 
         Args:
             calculation_params (TextParser): the parsed [calculation][/calculation] block parameters.
+            sec_run (Run): the section Run where Method will be added.
         """
         sec_method = Method(label="NMR")
 
@@ -333,18 +336,18 @@ class MagresParser(BeyondDFTWorkflowsParser):
         sec_method.k_mesh = sec_k_mesh
 
         # Add Method to Run
-        sec_run = self.archive.run[-1]
         sec_run.method.append(sec_method)
 
-    def parse_calculation(self):
+    def parse_calculation(self, sec_run: Run):
         """
         Parse the Calculation section by extracting information about the magnetic outputs
         in the magres file: magnetic shielding tensor, electric field gradient, indirect
         spin-spin coupling, and magnetic susceptibility. It also stores references to the
         System and Method sections.
-        """
-        sec_run = self.archive.run[-1]
 
+        Args:
+            sec_run (Run): the section Run where System will be added.
+        """
         # Check if [magres][/magres] was correctly parsed
         magres_data = self.magres_file_parser.get("magres")
         if not magres_data:
@@ -396,18 +399,15 @@ class MagresParser(BeyondDFTWorkflowsParser):
             "isc": "total",
         }
         for tag, contribution in isc_contributions.items():
-            # TODO the data is organized weirdly in the file, we need to transform it properly
+            # TODO the data is organized differently to the NOMAD metainfo, we need to transform it properly
             data = magres_data.get(tag, [])
             if len(data) == 0:
                 continue
-            # values = np.array(data)
-            # sec_isc = SpinSpinCoupling()
-            # sec_isc.indirect_contribution = contribution
-            # sec_isc.indirect_reduced_value = values * 1e19 * ureg('K^2/J')
-            # sec_scc.spin_spin_coupling.append(sec_isc)
-
-            # atom_indices = np.array(magres_data.get(f'isc{contribution}', []))[:, :4]
-            # values = np.array(magres_data.get(f'isc{contribution}', []))[:, 4:]
+            values = np.reshape([d[4:] for d in data], (n_atoms, n_atoms, 3, 3))
+            sec_isc = SpinSpinCoupling()
+            sec_isc.indirect_contribution = contribution
+            sec_isc.indirect_reduced_value = values * 1e19 * ureg("K^2/J")
+            sec_scc.spin_spin_coupling.append(sec_isc)
 
         # Magnetic Susceptibility (sus) parsing
         data = magres_data.get("sus", [])
@@ -445,11 +445,11 @@ class MagresParser(BeyondDFTWorkflowsParser):
         )
 
         # Parse main sections under Run
-        self.parse_system()
+        self.parse_system(sec_run)
 
-        self.parse_method(calculation_params)
+        self.parse_method(calculation_params, sec_run)
 
-        self.parse_calculation()
+        self.parse_calculation(sec_run)
 
         # Add run to the Archive
         self.archive.run.append(sec_run)
