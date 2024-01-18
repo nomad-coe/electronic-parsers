@@ -228,13 +228,22 @@ class MagresParser(BeyondDFTWorkflowsParser):
             data = self.magres_file_parser.get(f"{key}_units", "")
             if data and data != value:
                 self.logger.warning(
-                    f"The units of {key} are not parsed if they are {data}. "
-                    f"We will use the default units, {value}."
+                    f"The units of the NMR quantities are not parsed if they are not magres standard. "
+                    f"We will use the default units.",
+                    data={
+                        "quantities": key,
+                        "standard_units": value,
+                        "parsed_units": data,
+                    },
                 )
 
     def parse_system(self):
-        sec_run = self.archive.run[-1]
-        sec_atoms = sec_run.m_create(System).m_create(Atoms)
+        """
+        Parse the System section by extracting information about the atomic structure:
+        lattice vectors, periodic boundary conditions, atom positions and labels from the
+        magres file.
+        """
+        sec_atoms = Atoms()
 
         # Check if [atoms][/atoms] was correctly parsed
         atoms = self.magres_file_parser.get("atoms")
@@ -265,36 +274,42 @@ class MagresParser(BeyondDFTWorkflowsParser):
         sec_atoms.labels = atom_labels
         sec_atoms.positions = atom_positions * ureg.angstrom
 
-    def parse_method(self, calculation_params):
-        # Only CASTEP-like method parameters is being supported.
+        # Add Atoms to System and this to Run
         sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
-        sec_method.label = "NMR"
-        sec_dft = sec_method.m_create(DFT)
+        sec_system = System()
+        sec_system.atoms = sec_atoms
+        sec_run.system.append(sec_system)
+
+    def parse_method(self, calculation_params: TextParser):
+        """
+        Parse the Method section by extracting information about the NMR method:basis set,
+        exchange-correlation functional, cutoff energy, and K mesh.
+
+        Note: only CASTEP-like method parameters are currently being supported.
+
+        Args:
+            calculation_params (TextParser): the parsed [calculation][/calculation] block parameters.
+        """
+        sec_method = Method(label="NMR")
 
         # XC functional parsing
+        sec_dft = DFT()
         xc_functional = calculation_params.get("xcfunctional", "LDA")
         xc_functional_labels = self._xc_functional_map.get(xc_functional)
         if xc_functional_labels:
-            sec_xc_functional = sec_dft.m_create(XCFunctional)
+            sec_xc_functional = XCFunctional()
             for functional in xc_functional_labels:
                 sec_functional = Functional(name=functional)
                 if "_X_" in functional or functional.endswith("_X"):
-                    sec_xc_functional.m_add_sub_section(
-                        XCFunctional.exchange, sec_functional
-                    )
+                    sec_xc_functional.exchange.append(sec_functional)
                 elif "_C_" in functional or functional.endswith("_C"):
-                    sec_xc_functional.m_add_sub_section(
-                        XCFunctional.correlation, sec_functional
-                    )
+                    sec_xc_functional.correlation.append(sec_functional)
                 elif "HYB" in functional:
-                    sec_xc_functional.m_add_sub_section(
-                        XCFunctional.hybrid, sec_functional
-                    )
+                    sec_xc_functional.hybrid.append(sec_functional)
                 else:
-                    sec_xc_functional.m_add_sub_section(
-                        XCFunctional.contributions, sec_functional
-                    )
+                    sec_xc_functional.contributions.append(sec_functional)
+            sec_dft.xc_functional = sec_xc_functional
+            sec_method.dft = sec_dft
 
         # Basis set parsing (adding cutoff energies units check)
         cutoff = calculation_params.get("cutoffenergy")
@@ -308,16 +323,26 @@ class MagresParser(BeyondDFTWorkflowsParser):
             scope=["wavefunction"],
             basis_set=[BasisSet(scope=["valence"], type="plane waves", cutoff=cutoff)],
         )
-        sec_method.m_add_sub_section(Method.electrons_representation, sec_basis_set)
+        sec_method.electrons_representation.append(sec_basis_set)
 
         # KMesh parsing
         sec_k_mesh = KMesh(
             grid=calculation_params.get("kpoint_mp_grid", [1, 1, 1]),
             offset=calculation_params.get("kpoint_mp_offset", [0, 0, 0]),
         )
-        sec_method.m_add_sub_section(Method.k_mesh, sec_k_mesh)
+        sec_method.k_mesh = sec_k_mesh
+
+        # Add Method to Run
+        sec_run = self.archive.run[-1]
+        sec_run.method.append(sec_method)
 
     def parse_calculation(self):
+        """
+        Parse the Calculation section by extracting information about the magnetic outputs
+        in the magres file: magnetic shielding tensor, electric field gradient, indirect
+        spin-spin coupling, and magnetic susceptibility. It also stores references to the
+        System and Method sections.
+        """
         sec_run = self.archive.run[-1]
 
         # Check if [magres][/magres] was correctly parsed
@@ -327,7 +352,7 @@ class MagresParser(BeyondDFTWorkflowsParser):
             return
 
         # Creating Calculation and adding System and Method refs
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
         sec_scc.system_ref = sec_run.system[-1]
         sec_scc.method_ref = sec_run.method[-1]
         atoms = sec_scc.system_ref.atoms.labels
@@ -341,9 +366,10 @@ class MagresParser(BeyondDFTWorkflowsParser):
         if len(data) > 0:
             values = np.reshape([d[2:] for d in data], (n_atoms, 3, 3))
             isotropic_value = np.trace(values, axis1=1, axis2=2) / 3.0
-            sec_ms = sec_scc.m_create(MagneticShielding)
+            sec_ms = MagneticShielding()
             sec_ms.value = values * 1e-6 * ureg("dimensionless")
             sec_ms.isotropic_value = isotropic_value * 1e-6 * ureg("dimensionless")
+            sec_scc.magnetic_shielding.append(sec_ms)
 
         # Electric Field Gradient (efg) parsing
         efg_contributions = {
@@ -356,9 +382,10 @@ class MagresParser(BeyondDFTWorkflowsParser):
             if len(data) == 0:
                 continue
             values = np.reshape([d[2:] for d in data], (n_atoms, 3, 3))
-            sec_efg = sec_scc.m_create(ElectricFieldGradient)
+            sec_efg = ElectricFieldGradient()
             sec_efg.contribution = contribution
             sec_efg.value = values * 9.717362e21 * ureg("V/m^2")
+            sec_scc.electric_field_gradient.append(sec_efg)
 
         # Indirect Spin-Spin Coupling (isc) parsing
         isc_contributions = {
@@ -374,9 +401,10 @@ class MagresParser(BeyondDFTWorkflowsParser):
             if len(data) == 0:
                 continue
             # values = np.array(data)
-            # sec_isc = sec_scc.m_create(SpinSpinCoupling)
+            # sec_isc = SpinSpinCoupling()
             # sec_isc.indirect_contribution = contribution
             # sec_isc.indirect_reduced_value = values * 1e19 * ureg('K^2/J')
+            # sec_scc.spin_spin_coupling.append(sec_isc)
 
             # atom_indices = np.array(magres_data.get(f'isc{contribution}', []))[:, :4]
             # values = np.array(magres_data.get(f'isc{contribution}', []))[:, 4:]
@@ -385,9 +413,13 @@ class MagresParser(BeyondDFTWorkflowsParser):
         data = magres_data.get("sus", [])
         if len(data) > 0:
             values = np.reshape(data, (3, 3))
-            sec_sus = sec_scc.m_create(MagneticSusceptibility)
+            sec_sus = MagneticSusceptibility()
             sec_sus.scale_dimension = "macroscopic"
             sec_sus.value = values * 1e-6 * ureg("dimensionless")
+            sec_scc.magnetic_susceptibility.append(sec_sus)
+
+        # Add Calculation to Run
+        sec_run.calculation.append(sec_scc)
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
@@ -397,7 +429,8 @@ class MagresParser(BeyondDFTWorkflowsParser):
         self.init_parser()
         self._check_units_magres()
 
-        sec_run = self.archive.m_create(Run)
+        # Create Run with Program information
+        sec_run = Run()
         calculation_params = self.magres_file_parser.get("calculation")
         program_name = calculation_params.get("code", "")
         if program_name != "CASTEP":
@@ -411,11 +444,15 @@ class MagresParser(BeyondDFTWorkflowsParser):
             version=calculation_params.get("code_version", ""),
         )
 
+        # Parse main sections under Run
         self.parse_system()
 
         self.parse_method(calculation_params)
 
         self.parse_calculation()
+
+        # Add run to the Archive
+        self.archive.run.append(sec_run)
 
         # Checking if other mainfiles are present, if the closest is a CASTEP, tries to
         # link it with the corresponding magres entry
