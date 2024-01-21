@@ -24,9 +24,10 @@ import logging
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, XMLParser, DataTextParser
 from runschema.run import Run, Program
+from nomad.datamodel.metainfo.simulation.method import CoreHoleSpectra
 from runschema.method import (
     Method, DFT, Electronic, Smearing, XCFunctional, Functional, Scf, BasisSet, KMesh,
-    FrequencyMesh, Screening, GW, Photon, BSE, CoreHoleSpectra, BasisSetContainer,
+    FrequencyMesh, Screening, GW, Photon, BSE, BasisSetContainer,
     OrbitalAPW, AtomParameters,
 )
 from runschema.system import (
