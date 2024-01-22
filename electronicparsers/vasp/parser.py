@@ -41,7 +41,6 @@ from xml.sax import ContentHandler, make_parser  # type: ignore
 from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.method import CoreHole
 from runschema.system import (
     System,
     Atoms,
@@ -63,6 +62,7 @@ from runschema.method import (
     GW,
     FrequencyMesh,
     Pseudopotential,
+    CoreHole,
 )
 from runschema.calculation import (
     Calculation,
