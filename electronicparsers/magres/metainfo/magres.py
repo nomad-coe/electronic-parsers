@@ -16,13 +16,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from nomad.metainfo import SubSection, Quantity, Reference
+from nomad.metainfo import SubSection, Quantity, Reference, Package
 from nomad.datamodel.metainfo.simulation.method import Method
 from simulationworkflowschema import (
     SimulationWorkflowResults,
     SimulationWorkflowMethod,
     SerialSimulation,
 )
+
+m_package = Package()
 
 
 class NMRMagResResults(SimulationWorkflowResults):
