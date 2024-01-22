@@ -29,15 +29,26 @@ from nomad.datamodel import EntryArchive
 from nomad.units import ureg as units
 from runschema.run import Run, Program
 from runschema.calculation import (
-    Calculation, ScfIteration, Energy, EnergyEntry, BandEnergies, Forces, ForcesEntry
+    Calculation,
+    ScfIteration,
+    Energy,
+    EnergyEntry,
+    BandEnergies,
+    Forces,
+    ForcesEntry,
 )
-from runschema.system import (
-    AtomsGroup, System, Atoms
-)
-# TODO move to runschema
-from nomad.datamodel.metainfo.simulation.method import CoreHole
+from runschema.system import AtomsGroup, System, Atoms
 from runschema.method import (
-    AtomParameters, Method, BasisSet, DFT, Pseudopotential, XCFunctional, Functional, Electronic, Smearing, Scf,
+    AtomParameters,
+    Method,
+    BasisSet,
+    DFT,
+    Pseudopotential,
+    XCFunctional,
+    Functional,
+    Electronic,
+    Smearing,
+    Scf,
     BasisSetContainer,
     CoreHole,
 )
@@ -593,14 +604,14 @@ class OpenmxParser:
         sec_electronic = Electronic()
         sec_method.dft = sec_dft
         sec_method.electronic = sec_electronic
-        sec_electronic.method = 'DFT'
+        sec_electronic.method = "DFT"
         # FIXME: add some testcase for DFT+U
         scf_hubbard_u = mainfile_parser.get("scf.Hubbard.U")
         if scf_hubbard_u is not None:
             if scf_hubbard_u.lower() == "on":
                 sec_electronic.method = "DFT+U"
 
-        scf_xctype = mainfile_parser.get('scf.XcType')
+        scf_xctype = mainfile_parser.get("scf.XcType")
         sec_xc_functional = XCFunctional()
         sec_dft.xc_functional = sec_xc_functional
         for xc in xc_functional_dictionary[scf_xctype]:
@@ -623,8 +634,8 @@ class OpenmxParser:
 
         sec_smearing = Smearing()
         sec_electronic.smearing = sec_smearing
-        sec_smearing.kind = 'fermi'
-        scf_ElectronicTemperature = mainfile_parser.get('scf.ElectronicTemperature')
+        sec_smearing.kind = "fermi"
+        scf_ElectronicTemperature = mainfile_parser.get("scf.ElectronicTemperature")
         if scf_ElectronicTemperature is not None:
             sec_smearing.width = (
                 (scf_ElectronicTemperature * units.kelvin * units.k)
@@ -636,7 +647,7 @@ class OpenmxParser:
                 (300 * units.kelvin * units.k).to_base_units().magnitude
             )
 
-        scf_maxiter = mainfile_parser.get('scf.maxIter')
+        scf_maxiter = mainfile_parser.get("scf.maxIter")
         sec_scf = Scf()
         sec_method.scf = sec_scf
         if scf_maxiter is not None:
@@ -649,7 +660,7 @@ class OpenmxParser:
     def parse_eigenvalues(self):
         eigenvalues = BandEnergies()
         self.archive.run[-1].calculation[-1].eigenvalues.append(eigenvalues)
-        values = mainfile_parser.get('eigenvalues')
+        values = mainfile_parser.get("eigenvalues")
         if values is not None:
             kpoints = values.get("kpoints")
             if kpoints is not None:
@@ -735,7 +746,7 @@ class OpenmxParser:
                     for scf_step in scf_steps:
                         scf = ScfIteration()
                         sec_calc.scf_iteration.append(scf)
-                        u_ele = scf_step.get('Uele')
+                        u_ele = scf_step.get("Uele")
                         if u_ele is not None:
                             scf.energy = Energy(
                                 sum_eigenvalues=EnergyEntry(value=u_ele * units.hartree)

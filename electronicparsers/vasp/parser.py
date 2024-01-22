@@ -41,18 +41,44 @@ from xml.sax import ContentHandler, make_parser  # type: ignore
 from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.method import CoreHole
 from runschema.system import (
-    System, Atoms, AtomsGroup,
+    System,
+    Atoms,
+    AtomsGroup,
 )
 from runschema.run import Run, Program
 from runschema.method import (
-    Method, BasisSet, BasisSetContainer, DFT, HubbardKanamoriModel, AtomParameters,
-    XCFunctional, Functional, Electronic, Scf, KMesh, GW, FrequencyMesh, Pseudopotential,
+    Method,
+    BasisSet,
+    BasisSetContainer,
+    DFT,
+    HubbardKanamoriModel,
+    AtomParameters,
+    XCFunctional,
+    Functional,
+    Electronic,
+    Scf,
+    KMesh,
+    GW,
+    FrequencyMesh,
+    Pseudopotential,
+    CoreHole,
 )
 from runschema.calculation import (
-    Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry,
-    BandEnergies, DosValues, ScfIteration, BandStructure, BandGapDeprecated, Dos, Density,
+    Calculation,
+    Energy,
+    EnergyEntry,
+    Forces,
+    ForcesEntry,
+    Stress,
+    StressEntry,
+    BandEnergies,
+    DosValues,
+    ScfIteration,
+    BandStructure,
+    BandGapDeprecated,
+    Dos,
+    Density,
 )
 from simulationworkflowschema import (
     SinglePoint,
@@ -60,8 +86,6 @@ from simulationworkflowschema import (
     GeometryOptimizationMethod,
     MolecularDynamics,
 )
-from .metainfo import m_env  # pylint: disable=unused-import
-
 
 re_n = r"[\n\r]"
 
@@ -1656,8 +1680,9 @@ class VASPParser:
         self.archive.run[-1].method.append(sec_method)
         sec_dft = DFT()
         sec_method.dft = sec_dft
-        sec_method.electronic = Electronic(method='DFT+U' if self.parser.incar.get(
-            'LDAU', False) else 'DFT')
+        sec_method.electronic = Electronic(
+            method="DFT+U" if self.parser.incar.get("LDAU", False) else "DFT"
+        )
 
         # input/output incar
         self.parse_incarsinout()
@@ -1759,13 +1784,13 @@ class VASPParser:
 
         sec_xc_functional = XCFunctional()
         sec_dft.xc_functional = sec_xc_functional
-        if self.parser.incar.get('LHFCALC', False):
-            gga = self.parser.incar.get('GGA', 'PE')
-            aexx = self.parser.incar.get('AEXX', 0.0)
-            aggax = self.parser.incar.get('AGGAX', 1.0)
-            aggac = self.parser.incar.get('AGGAC', 1.0)
-            aldac = self.parser.incar.get('ALDAC', 1.0)
-            hfscreen = self.parser.incar.get('HFSCREEN', 0.0)
+        if self.parser.incar.get("LHFCALC", False):
+            gga = self.parser.incar.get("GGA", "PE")
+            aexx = self.parser.incar.get("AEXX", 0.0)
+            aggax = self.parser.incar.get("AGGAX", 1.0)
+            aggac = self.parser.incar.get("AGGAC", 1.0)
+            aldac = self.parser.incar.get("ALDAC", 1.0)
+            hfscreen = self.parser.incar.get("HFSCREEN", 0.0)
 
             if hfscreen == 0.2:
                 sec_xc_functional.hybrid.append(Functional(name="HYB_GGA_XC_HSE06"))
@@ -2029,7 +2054,7 @@ class VASPParser:
             sec_scc.energy.highest_occupied = max(valence_max) * ureg.eV
             sec_scc.energy.lowest_unoccupied = min(conduction_min) * ureg.eV
 
-            if self.parser.kpoints_info.get('sampling_method', None) == 'Line-path':
+            if self.parser.kpoints_info.get("sampling_method", None) == "Line-path":
                 sec_k_band = BandStructure()
                 sec_scc.band_structure_electronic.append(sec_k_band)
                 for n in range(len(eigs)):
@@ -2129,13 +2154,17 @@ class VASPParser:
                         else:
                             sec_dos = Dos()
                             sec_scc.dos_electronic.append(sec_dos)
-                            sec_dos.spin_channel = spin if n_spin_channels == 2 else None
+                            sec_dos.spin_channel = (
+                                spin if n_spin_channels == 2 else None
+                            )
                         for atom in range(n_atoms):
                             for lm in range(n_lm):
                                 sec_dos_orbital = DosValues()
                                 sec_dos.orbital_projected.append(sec_dos_orbital)
-                                sec_dos_orbital.m_kind = 'polynomial'
-                                sec_dos_orbital.lm = lm_converter.get(fields[lm], [-1, -1])
+                                sec_dos_orbital.m_kind = "polynomial"
+                                sec_dos_orbital.lm = lm_converter.get(
+                                    fields[lm], [-1, -1]
+                                )
                                 sec_dos_orbital.atom_index = atom
                                 sec_dos_orbital.value = dos[spin][atom][lm] / ureg.eV
 
@@ -2229,8 +2258,18 @@ class VASPParser:
                     # TODO remove temporary fix
                     if hasattr(Density, "value_hdf5"):
                         from nomad.parsing.parser import to_hdf5
-                        filename = os.path.join(os.path.dirname(self.filepath.split('/raw/')[-1]), f'{os.path.basename(self.filepath)}.archive.hdf5')
-                        farg = 'r+b' if os.path.isfile(os.path.join(os.path.dirname(self.filepath), filename)) else 'wb'
+
+                        filename = os.path.join(
+                            os.path.dirname(self.filepath.split("/raw/")[-1]),
+                            f"{os.path.basename(self.filepath)}.archive.hdf5",
+                        )
+                        farg = (
+                            "r+b"
+                            if os.path.isfile(
+                                os.path.join(os.path.dirname(self.filepath), filename)
+                            )
+                            else "wb"
+                        )
                         sec_density = Density()
                         sec_scc.density_charge.append(sec_density)
                         if self.archive.m_context:
@@ -2265,8 +2304,8 @@ class VASPParser:
 
         sec_run = Run()
         self.archive.run.append(sec_run)
-        program_name = self.parser.header.get('program', '')
-        if program_name.strip().upper() != 'VASP':
+        program_name = self.parser.header.get("program", "")
+        if program_name.strip().upper() != "VASP":
             sec_run.program = Program()
             self.logger.error(
                 "invalid program name", data=dict(program_name=program_name)
