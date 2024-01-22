@@ -2508,7 +2508,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             cpu1_start=self.out_parser.get("cpu1_start", 0),
             wall_start=self.out_parser.get("wall_start", 0),
         )
-        return
+
         section_run_keys = [
             "x_fhi_aims_program_compilation_date",
             "x_fhi_aims_program_compilation_time",
