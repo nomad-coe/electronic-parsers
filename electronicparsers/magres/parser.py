@@ -411,8 +411,8 @@ class MagresParser(BeyondDFTWorkflowsParser):
                 continue
             values = np.reshape([d[4:] for d in data], (n_atoms, n_atoms, 3, 3))
             sec_isc = SpinSpinCoupling()
-            sec_isc.indirect_contribution = contribution
-            sec_isc.indirect_reduced_value = values * 1e19 * ureg("K^2/J")
+            sec_isc.contribution = contribution
+            sec_isc.reduced_value = values * 1e19 * ureg("K^2/J")
             sec_scc.spin_spin_coupling.append(sec_isc)
 
         # Magnetic Susceptibility (sus) parsing
