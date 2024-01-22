@@ -37,7 +37,7 @@ from runschema.calculation import (
 from simulationworkflowschema import SinglePoint
 from nomad.parsing.file_parser import DataTextParser
 from .metainfo.edmft import x_edmft_method_parameters
-from electronicparsers.utils import BeyondDFTWorkflowsParser
+from electronicparsers.utils import get_files, BeyondDFTWorkflowsParser
 from ..wien2k.parser import StructParser  # Wien2k is imported to parse the system information
 
 
