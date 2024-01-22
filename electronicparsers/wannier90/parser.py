@@ -36,7 +36,7 @@ from runschema.calculation import (
 )
 from runschema.method import Method, AtomParameters, KMesh, Wannier, TB
 from runschema.system import System, Atoms, AtomsGroup
-from electronicparsers.utils import get_files
+from ..utils import get_files
 
 re_n = r"[\n\r]"
 

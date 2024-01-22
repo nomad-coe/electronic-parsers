@@ -36,7 +36,7 @@ from runschema.method import (
 from runschema.system import System, Atoms
 from .metainfo.soliddmft import x_soliddmft_observables_parameters
 from nomad.parsing.parser import to_hdf5
-from electronicparsers.utils import numpy_type_to_json_serializable
+from ..utils import numpy_type_to_json_serializable
 
 
 class SolidDMFTParser:

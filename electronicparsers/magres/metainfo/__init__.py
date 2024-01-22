@@ -19,7 +19,6 @@
 from nomad.metainfo import Environment
 
 from . import magres
-from .magres import *
 
 m_env = Environment()
 m_env.m_add_sub_section(Environment.packages, magres.m_package)

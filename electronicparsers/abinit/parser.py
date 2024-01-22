@@ -44,7 +44,7 @@ from .metainfo.abinit import (
     x_abinit_ks_band_gaps_params, x_abinit_qp_band_gaps_params, x_abinit_sigma_params,
     x_abinit_epsilon_inv_params
 )
-from electronicparsers.utils import BeyondDFTWorkflowsParser
+from ..utils import BeyondDFTWorkflowsParser
 
 ABINIT_NATIVE_IXC = {
     0: [{}],

@@ -43,7 +43,7 @@ from simulationworkflowschema import (
 )
 
 # Special file-format workflow definition
-from electronicparsers.magres.metainfo import (
+from .magres_workflow import (
     NMRMagRes,
     NMRMagResMethod,
     NMRMagResResults,

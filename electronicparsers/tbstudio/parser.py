@@ -35,7 +35,7 @@ from runschema.calculation import (
 from simulationworkflowschema import SinglePoint
 import json
 import re
-from electronicparsers.utils import BeyondDFTWorkflowsParser
+from ..utils import BeyondDFTWorkflowsParser
 from ase.data import chemical_symbols
 
 

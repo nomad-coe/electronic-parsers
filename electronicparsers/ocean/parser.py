@@ -36,7 +36,7 @@ from .metainfo.ocean import (
     x_ocean_core_gmres_parameters,
     x_ocean_lanczos_results,
 )
-from electronicparsers.utils import BeyondDFTWorkflowsParser
+from ..utils import BeyondDFTWorkflowsParser
 
 
 class PhotonParser(TextParser):

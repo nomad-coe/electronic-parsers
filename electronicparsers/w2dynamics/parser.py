@@ -41,7 +41,7 @@ from .metainfo.w2dynamics import (
 from ..wannier90.parser import WOutParser, HrParser
 from nomad.parsing.parser import to_hdf5
 # For automatic workflows
-from electronicparsers.utils import get_files, BeyondDFTWorkflowsParser
+from ..utils import get_files, BeyondDFTWorkflowsParser
 from nomad.search import search
 from nomad.app.v1.models import MetadataRequired
 

@@ -17,3 +17,4 @@
 # limitations under the License.
 
 from .utils import get_files, numpy_type_to_json_serializable, BeyondDFTWorkflowsParser
+from .magres_workflow import NMRMagRes, NMRMagResMethod, NMRMagResResults
