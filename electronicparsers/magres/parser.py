@@ -45,7 +45,7 @@ from nomad.datamodel.metainfo.simulation.calculation import (
 # For the automatic workflow NMR
 from nomad.search import search
 from nomad.app.v1.models import MetadataRequired
-from ..utils import BeyondDFTWorkflowsParser
+from electronicparsers.utils import BeyondDFTWorkflowsParser
 
 
 re_float = r" *[-+]?\d+\.\d*(?:[Ee][-+]\d+)? *"

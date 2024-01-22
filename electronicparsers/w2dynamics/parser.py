@@ -39,10 +39,9 @@ from .metainfo.w2dynamics import (
     x_w2dynamics_config_atoms_parameters
 )
 from ..wannier90.parser import WOutParser, HrParser
-from ..utils import get_files
 from nomad.parsing.parser import to_hdf5
 # For automatic workflows
-from ..utils import BeyondDFTWorkflowsParser
+from electronicparsers.utils import get_files, BeyondDFTWorkflowsParser
 from nomad.search import search
 from nomad.app.v1.models import MetadataRequired
 

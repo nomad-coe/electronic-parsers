@@ -16,16 +16,46 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import numpy as np
-
-from nomad.metainfo import (  # pylint: disable=unused-import
-    MSection,
-    Package,
-    Quantity,
-    Section,
-    SubSection,
+from nomad.metainfo import SubSection, Quantity, Reference
+from nomad.datamodel.metainfo.simulation.method import Method
+from simulationworkflowschema import (
+    SimulationWorkflowResults,
+    SimulationWorkflowMethod,
+    SerialSimulation,
 )
-from nomad.datamodel.metainfo import simulation
 
 
-m_package = Package()
+class NMRMagResResults(SimulationWorkflowResults):
+    """
+    Groups the NMR magres outputs.
+    """
+
+    pass
+
+
+class NMRMagResMethod(SimulationWorkflowMethod):
+    """
+    References the NMR (first principles) input methodology.
+    """
+
+    nmr_method_ref = Quantity(
+        type=Reference(Method),
+        description="""
+        Reference to the NMR (first principles) methodology.
+        """,
+    )
+
+
+class NMRMagRes(SerialSimulation):
+    """
+    The NMR MagRes workflow is generated in an extra EntryArchive IF both the NMR (first
+    principles) and the NMR magres SinglePoint EntryArchives are present in the
+    upload.
+    """
+
+    method = SubSection(sub_section=NMRMagResMethod)
+
+    results = SubSection(sub_section=NMRMagResResults)
+
+    def normalize(self, archive, logger):
+        super().normalize(archive, logger)

@@ -83,7 +83,7 @@ from .metainfo.fhi_aims import (
     x_fhi_aims_section_vdW_TS,
 )
 
-from ..utils import BeyondDFTWorkflowsParser
+from electronicparsers.utils import BeyondDFTWorkflowsParser
 
 
 re_float = r"[-+]?\d+\.\d*(?:[Ee][-+]\d+)?"

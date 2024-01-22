@@ -83,7 +83,7 @@ from .metainfo.exciting import (
     x_exciting_barecoul_parameters,
     x_exciting_scrcoul_parameters,
 )
-from ..utils import get_files, BeyondDFTWorkflowsParser
+from electronicparsers.utils import get_files, BeyondDFTWorkflowsParser
 from typing import Any, Iterable
 
 

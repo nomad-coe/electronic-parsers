@@ -54,7 +54,7 @@ from .metainfo.cp2k_general import x_cp2k_section_quickstep_settings,\
     x_cp2k_section_restart_information, x_cp2k_section_geometry_optimization,\
     x_cp2k_section_geometry_optimization_step, x_cp2k_pdos_histogram
 
-from ..utils import get_files
+from electronicparsers.utils import get_files
 
 
 units_map = {

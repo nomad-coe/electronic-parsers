@@ -22,3 +22,5 @@ from . import magres
 
 m_env = Environment()
 m_env.m_add_sub_section(Environment.packages, magres.m_package)
+
+from .magres import *
