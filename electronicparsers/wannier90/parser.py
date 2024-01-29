@@ -41,7 +41,8 @@ from ..utils import get_files
 
 # New schema
 from nomad.datamodel.metainfo.basesections import Program as BaseProgram
-from simulationdataschema import Computation, ModelSystem, AtomicCell
+from simulationdataschema import Simulation
+from simulationdataschema.model_system import ModelSystem, AtomicCell
 
 
 re_n = r"[\n\r]"
@@ -734,12 +735,7 @@ class Wannier90Parser:
         self.init_parser()
 
         sec_run = self.archive.m_create(Run)
-        sec_computation = Computation()
-        sec_computation.program = BaseProgram(
-            name="Wannier90",
-            version=self.wout_parser.get("version", ""),
-            link="https://wannier.org/",
-        )
+        sec_simulation = Simulation()
 
         # Program section
         sec_run.program = Program(
@@ -747,19 +743,23 @@ class Wannier90Parser:
         )
         # TODO TimeRun section
 
-        self.parse_system(sec_computation)
+        self.parse_system(sec_simulation)
 
         self.parse_method()
 
         # Parsing AtomsGroup and AtomParameters for System and Method from the input file .win
         self.parse_winput()
-        self.parse_winput2(sec_computation)
 
         self.parse_scc()
 
         workflow = SinglePoint()
         self.archive.workflow2 = workflow
 
-        # Adding computation to data
-        archive.m_add_sub_section(EntryArchive.data, sec_computation)
-        print(archive)
+        # Adding Simulation to data
+        sec_simulation.program = BaseProgram(
+            name="Wannier90",
+            version=self.wout_parser.get("version", ""),
+            link="https://wannier.org/",
+        )
+        self.parse_winput2(sec_simulation)
+        archive.m_add_sub_section(EntryArchive.data, sec_simulation)
