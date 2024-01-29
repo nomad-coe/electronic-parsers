@@ -1,0 +1,54 @@
+System.CurrrentDirectory         ./
+System.Name                      graphite
+level.of.stdout                  1
+level.of.fileout                 1
+DATA.PATH /home/ondracka/software/openmx3.9/DFT_DATA19/
+
+Species.Number                     1
+<Definition.of.Atomic.Species
+  C     C6.0-s2p2d1       C_PBE19
+Definition.of.Atomic.Species>
+
+Atoms.Number                       4
+Atoms.SpeciesAndCoordinates.Unit   FRAC
+<Atoms.SpeciesAndCoordinates
+   1    C    0.00012594339435   -0.00017115313766    0.25000000000579     2.0     2.0
+   2    C   -0.00012594580218    0.00017115531145    0.74999999999039     2.0     2.0
+   3    C    0.33349831136748    0.66657062405295    0.24999999999422     2.0     2.0
+   4    C    0.66650168521597    0.33342937413430    0.74999999999650     2.0     2.0
+Atoms.SpeciesAndCoordinates>
+
+Atoms.UnitVectors.Unit  Ang
+<Atoms.UnitVectors
+  2.468376752380223   0.000123312064324   0.000000000085350 
+ -1.233998988544795   2.137575324622041  -0.000000000136683 
+  0.000000000057065  -0.000000000042396   6.738039278770702 
+Atoms.UnitVectors>
+
+scf.XcType                    GGA-PBE
+scf.SpinPolarization          off
+scf.ElectronicTemperature     1000.0
+scf.energycutoff              500.0
+scf.maxIter                   100
+scf.EigenvalueSolver          band
+scf.Kgrid                     12  12  4
+scf.Mixing.Type               rmm-diisk
+scf.Init.Mixing.Weight        0.05
+scf.Min.Mixing.Weight         0.01
+scf.Max.Mixing.Weight         0.30
+scf.Mixing.History            25
+scf.Mixing.StartPulay         15
+scf.criterion                 1.0e-8
+scf.dftD                      on
+version.dftD                  3
+scf.stress.tensor             on
+
+MD.Type                       OptC5
+MD.maxIter                    50
+MD.Opt.criterion              0.0003
+
+scf.restart    on
+
+scf.fixed.grid     0.00000000000000    0.00000000000000    0.00000000000000
+
+MD.Current.Iter  50

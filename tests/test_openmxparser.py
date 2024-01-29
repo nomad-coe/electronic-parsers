@@ -117,6 +117,7 @@ def test_AlN(parser):
     assert method.electronic.n_spin_channels == 1
     assert method.electronic.method == 'DFT'
     assert method.electronic.smearing.width == approx(K_to_J(300))
+    assert method.electronic.van_der_waals_method == ''
     assert method.dft.xc_functional.correlation[0].name == 'GGA_C_PBE'
     assert method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
     assert method.scf.n_max_iteration == 100
@@ -253,6 +254,7 @@ def test_CrO2(parser):
     assert method.electronic.n_spin_channels == 2
     assert method.electronic.method == 'DFT+U'
     assert method.electronic.smearing.width == approx(K_to_J(500))
+    assert method.electronic.van_der_waals_method == ''
     assert method.dft.xc_functional.exchange[0].name == 'LDA_X'
     assert method.dft.xc_functional.correlation[0].name == 'LDA_C_PW'
     assert method.scf.n_max_iteration == 40
@@ -265,3 +267,21 @@ def test_CrO2(parser):
     assert np.shape(eigenvalues.energies) == (2, 100, 90)
     assert eigenvalues.energies[0, 42, 8].magnitude == approx(Ha_to_J(-0.92962144255459))
     assert eigenvalues.energies[1, 99, 89].magnitude == approx(Ha_to_J(13.66867939417960))
+
+
+def test_graphite(parser):
+    '''
+    Variable cell optimization of graphite with PBE and DFT-D3
+    '''
+    archive = EntryArchive()
+    parser.parse('tests/data/openmx/graphite_cell_optimization/graphite.out', archive, logging)
+
+    run = archive.run[0]
+
+    method = run.method[0]
+    assert method.electronic.n_spin_channels == 1
+    assert method.electronic.method == 'DFT'
+    assert method.electronic.smearing.width == approx(K_to_J(1000))
+    assert method.electronic.van_der_waals_method == 'G10'
+    assert method.scf.n_max_iteration == 100
+    assert method.scf.threshold_energy_change.magnitude == approx(Ha_to_J(1e-8))
