@@ -40,9 +40,12 @@ from runschema.system import System, Atoms, AtomsGroup
 from ..utils import get_files
 
 # New schema
-from nomad.datamodel.metainfo.basesections import Program as BaseProgram
-from simulationdataschema import Simulation
+from simulationdataschema import Simulation, Program as BaseProgram
 from simulationdataschema.model_system import ModelSystem, AtomicCell
+# from simulationdataschema.model_method import (
+#     Wannier as ModelWannier,
+#     KMesh as ModelKMesh,
+# )
 
 
 re_n = r"[\n\r]"
@@ -202,6 +205,12 @@ class Wannier90Parser:
             "conv_tol": "convergence_tolerance_max_localization",
         }
 
+        self._input_projection_mapping2 = {
+            "Nwannier": "n_orbitals",
+            "Nband": "n_bloch_bands",
+            "conv_tol": "convergence_tolerance_max_localization",
+        }
+
         self._input_projection_units = {"Ang": "angstrom", "Bohr": "bohr"}
 
         # Angular momentum [l, mr] following Wannier90 tables 3.1 and 3.2
@@ -256,10 +265,9 @@ class Wannier90Parser:
             "gpaw",
         ]
 
-    def parse_system(self, sec_computation):
+    def parse_system(self):
         sec_run = self.archive.run[-1]
         sec_system = sec_run.m_create(System)
-        sec_system2 = sec_computation.m_create(ModelSystem)
 
         structure = self.wout_parser.get("structure")
         if structure is None:
@@ -267,13 +275,11 @@ class Wannier90Parser:
             return
 
         sec_atoms = sec_system.m_create(Atoms)
-        sec_atoms2 = sec_system2.m_create(AtomicCell)
         if self.wout_parser.get("lattice_vectors", []):
             lattice_vectors = np.vstack(
                 self.wout_parser.get("lattice_vectors", [])[-3:]
             )
             sec_atoms.lattice_vectors = lattice_vectors * ureg.angstrom
-            sec_atoms2.lattice_vectors = lattice_vectors * ureg.angstrom
         if self.wout_parser.get("reciprocal_lattice_vectors") is not None:
             sec_atoms.lattice_vectors_reciprocal = (
                 np.vstack(self.wout_parser.get("reciprocal_lattice_vectors")[-3:])
@@ -285,10 +291,30 @@ class Wannier90Parser:
         )
         sec_atoms.periodic = pbc
         sec_atoms.labels = structure.get("labels")
+        if structure.get("positions") is not None:
+            sec_atoms.positions = structure.get("positions") * ureg.angstrom
+
+    def parse_system2(self, sec_computation):
+        sec_system2 = sec_computation.m_create(ModelSystem)
+
+        structure = self.wout_parser.get("structure")
+        if structure is None:
+            self.logger.error("Error parsing the structure from .wout")
+            return
+
+        sec_atoms2 = sec_system2.m_create(AtomicCell)
+        if self.wout_parser.get("lattice_vectors", []):
+            lattice_vectors = np.vstack(
+                self.wout_parser.get("lattice_vectors", [])[-3:]
+            )
+            sec_atoms2.lattice_vectors = lattice_vectors * ureg.angstrom
+
+        pbc = (
+            [True, True, True] if lattice_vectors is not None else [False, False, False]
+        )
         sec_atoms2.periodic_boundary_conditions = pbc
         sec_atoms2.labels = structure.get("labels")
         if structure.get("positions") is not None:
-            sec_atoms.positions = structure.get("positions") * ureg.angstrom
             sec_atoms2.positions = structure.get("positions") * ureg.angstrom
 
     def parse_method(self):
@@ -320,6 +346,32 @@ class Wannier90Parser:
         if self.wout_parser.get("energy_windows"):
             sec_wann.energy_window_outer = self.wout_parser.get("energy_windows").outer
             sec_wann.energy_window_inner = self.wout_parser.get("energy_windows").inner
+
+    # def parse_method2(self, sec_simulation):
+    #     # Wannier90 section
+    #     sec_wann = ModelWannier()
+    #     for key in self._input_projection_mapping2.keys():
+    #         setattr(
+    #             sec_wann,
+    #             self._input_projection_mapping2[key],
+    #             self.wout_parser.get(key),
+    #         )
+    #     if self.wout_parser.get("Niter"):
+    #         sec_wann.is_maximally_localized = self.wout_parser.get("Niter", 0) > 1
+    #     if self.wout_parser.get("energy_windows"):
+    #         sec_wann.energy_window_outer = self.wout_parser.get("energy_windows").outer
+    #         sec_wann.energy_window_inner = self.wout_parser.get("energy_windows").inner
+    #     sec_simulation.m_add_sub_section(Simulation.model_method, sec_wann)
+
+    #     # KMesh section
+    #     kmesh = self.wout_parser.get("k_mesh")
+    #     if kmesh:
+    #         sec_k_mesh = ModelKMesh()
+    #         sec_k_mesh.n_points = kmesh.get("n_points")
+    #         sec_k_mesh.grid = kmesh.get("grid", [])
+    #         if kmesh.get("k_points") is not None:
+    #             sec_k_mesh.points = np.complex128(kmesh.k_points[::2])
+    #         sec_simulation.model_method[-1].k_mesh = sec_k_mesh
 
     def parse_winput(self):
         sec_run = self.archive.run[-1]
@@ -489,9 +541,9 @@ class Wannier90Parser:
                 else:  # atom label directly specified
                     sites = atom
                 # sec_atoms_group.n_entities = len(sites)  # always 1 (only one atom per proj)
-                sec_atoms_group.tree_label = sites
+                sec_atoms_group.branch_label = sites
                 sec_atoms_group.atom_indices = np.where(
-                    [x == sec_atoms_group.tree_label for x in sec_atoms.labels]
+                    [x == sec_atoms_group.branch_label for x in sec_atoms.labels]
                 )[0]
             except Exception:
                 self.logger.warning(
@@ -725,7 +777,7 @@ class Wannier90Parser:
         self.wout_parser.logger = self.logger
         self.hr_parser.logger = self.logger
 
-    def parse(self, filepath: str, archive: EntryArchive, logger):
+    def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
@@ -734,8 +786,8 @@ class Wannier90Parser:
 
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
-        sec_simulation = Simulation()
+        sec_run = Run()
+        self.archive.run.append(sec_run)
 
         # Program section
         sec_run.program = Program(
@@ -743,7 +795,7 @@ class Wannier90Parser:
         )
         # TODO TimeRun section
 
-        self.parse_system(sec_simulation)
+        self.parse_system()
 
         self.parse_method()
 
@@ -756,10 +808,13 @@ class Wannier90Parser:
         self.archive.workflow2 = workflow
 
         # Adding Simulation to data
+        sec_simulation = Simulation()
         sec_simulation.program = BaseProgram(
             name="Wannier90",
             version=self.wout_parser.get("version", ""),
             link="https://wannier.org/",
         )
+        self.parse_system2(sec_simulation)
+        # self.parse_method2(sec_simulation)
         self.parse_winput2(sec_simulation)
-        archive.m_add_sub_section(EntryArchive.data, sec_simulation)
+        self.archive.m_add_sub_section(EntryArchive.data, sec_simulation)
