@@ -227,6 +227,8 @@ mainfile_parser = TextParser(
             r"scf.ElectronicTemperature\s+(\S+)",
             repeats=False,
         ),
+        Quantity("scf.dftD", r"scf.dftD\s+([a-z]+)", repeats=False),
+        Quantity("version.dftD", r"version.dftD\s+([23])", repeats=False),
         Quantity(
             "have_timing",
             r"Computational Time \(second\)([\s\S]+)Others.+",
@@ -656,6 +658,21 @@ class OpenmxParser:
         scf_criterion = mainfile_parser.get("scf.criterion")
         if scf_criterion is not None:
             sec_scf.threshold_energy_change = scf_criterion * units.hartree
+
+        # vdw correction
+        scf_dftd = mainfile_parser.get('scf.dftD')
+        if scf_dftd == "on":
+            dftf_ver = mainfile_parser.get('version.dftD')
+            #TODO: review the G06/G10 nomenclature after schema migration
+            if dftf_ver is None or dftf_ver == 2:
+                sec_electronic.van_der_waals_method = "G06"
+            elif dftf_ver == 3:
+                sec_electronic.van_der_waals_method = "G10"
+            else:
+                self.logger.warning("Unexpected version.dftD value.")
+        else:
+            sec_electronic.van_der_waals_method = ""
+
 
     def parse_eigenvalues(self):
         eigenvalues = BandEnergies()

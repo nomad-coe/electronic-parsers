@@ -1,0 +1,48 @@
+System.CurrrentDirectory         ./
+System.Name                      graphite
+level.of.stdout                  1
+level.of.fileout                 1
+DATA.PATH /home/ondracka/software/openmx3.9/DFT_DATA19/
+
+Species.Number                     1
+<Definition.of.Atomic.Species
+  C     C6.0-s2p2d1       C_PBE19
+Definition.of.Atomic.Species>
+
+Atoms.Number                       4
+Atoms.SpeciesAndCoordinates.Unit   FRAC
+<Atoms.SpeciesAndCoordinates
+  1     C     0.0000000   0.0000000   0.2500000    2.0  2.0
+  2     C     0.0000000   0.0000000   0.7500000    2.0  2.0
+  3     C     0.3333333   0.6666667   0.2500000    2.0  2.0
+  4     C     0.6666667   0.3333333   0.7500000    2.0  2.0
+Atoms.SpeciesAndCoordinates>
+
+Atoms.UnitVectors.Unit             Ang
+<Atoms.UnitVectors
+     2.4672913     0.0000000     0.0000000
+    -1.2336456     2.1367369     0.0000000
+     0.0000000     0.0000000     6.7030730
+Atoms.UnitVectors>
+
+scf.XcType                    GGA-PBE
+scf.SpinPolarization          off
+scf.ElectronicTemperature     1000.0
+scf.energycutoff              500.0
+scf.maxIter                   100
+scf.EigenvalueSolver          band
+scf.Kgrid                     12  12  4
+scf.Mixing.Type               rmm-diisk
+scf.Init.Mixing.Weight        0.05
+scf.Min.Mixing.Weight         0.01
+scf.Max.Mixing.Weight         0.30
+scf.Mixing.History            25
+scf.Mixing.StartPulay         15
+scf.criterion                 1.0e-8
+scf.dftD                      on
+version.dftD                  3
+scf.stress.tensor             on
+
+MD.Type                       OptC5
+MD.maxIter                    50
+MD.Opt.criterion              0.0003
