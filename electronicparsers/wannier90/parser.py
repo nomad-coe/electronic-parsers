@@ -41,8 +41,7 @@ from ..utils import get_files
 
 # New schema
 from nomad.datamodel.metainfo.basesections import Program as BaseProgram
-from nomad.datamodel.metainfo.computation import Computation
-from nomad.datamodel.metainfo.computation.system import ModelSystem, AtomicCell
+from simulationdataschema import Computation, ModelSystem, AtomicCell
 
 
 re_n = r"[\n\r]"
