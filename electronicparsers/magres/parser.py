@@ -21,10 +21,9 @@ import numpy as np
 import logging
 
 from nomad.units import ureg
-from nomad.datamodel import EntryArchive
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program
+from runschema.method import (
     Functional,
     Method,
     DFT,
@@ -33,8 +32,8 @@ from nomad.datamodel.metainfo.simulation.method import (
     BasisSet,
     KMesh,
 )
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.system import System, Atoms
+from runschema.calculation import (
     Calculation,
     SpinSpinCoupling,
     ElectricFieldGradient,
