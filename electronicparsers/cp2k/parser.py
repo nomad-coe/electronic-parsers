@@ -927,7 +927,7 @@ class CP2KParser:
                 filename = self._normalize_filename(filename)
                 traj_format = self.inp_parser.get('MOTION/PRINT/TRAJECTORY/FORMAT', 'XYZ').strip()
                 traj_format = self._file_extension_map.get(traj_format, 'xyz')
-                filename = '%s-pos-1.%s' % (filename, traj_format)
+                filename = f'{filename}-pos-1.{traj_format}'
                 frequency = 1
 
             self.traj_parser.mainfile = os.path.join(self.maindir, filename)
@@ -944,7 +944,10 @@ class CP2KParser:
         try:
             return self.traj_parser.get_trajectory(frame)
         except Exception:
-            self.logger.error('Error reading trajectory.')
+            self.logger.error(
+                'Error reading trajectory for the specific frame.',
+                data={'frame': frame},
+            )
 
     def get_lattice_vectors(self, frame):
         lattice_vectors = None
@@ -1169,8 +1172,16 @@ class CP2KParser:
 
         input_files = get_files(input_filename, self.filepath, self.mainfile, deep=False)
         if not input_files:
-            self.logger.warning(f'Input file not found.')
-            return
+            self.logger.warning(
+                'Input .inp or .restart files not found. We will attempt finding the input '
+                'file if CP2K has appended -1 to the .restart file name.'
+            )
+            # Patch to check if the input is .restart and CP2K appended a -1 after the name
+            if '.restart' in input_filename:
+                appended_filename = input_filename.split('.restart')[0] + '-1.restart'
+                input_files = get_files(appended_filename, self.filepath, self.mainfile, deep=False)
+            else:
+                return
         if len(input_files) > 1:
             self.logger.warning(f'Multiple input files found. We will parse the first read file.')
         self.inp_parser.mainfile = input_files[0]
@@ -1464,6 +1475,14 @@ class CP2KParser:
                     sec_system = self.parse_system(atomic_coord)
                 else:
                     sec_system = self.parse_system(frame)
+                    # Patch when dealing with GeometryOptimizations which have missing iteration frames
+                    if sec_system is None and n == len(calculations) - 1:
+                        self.logger.warning(
+                            'Could not parse system information for the last frame. '
+                            'We will attempt to parse the system information from (frame + 1).',
+                            data={'frame': frame},
+                        )
+                        sec_system = self.parse_system(frame + 1)
                 if sec_system:
                     sec_scc.system_ref = sec_system
                 if self.archive.run[-1].method:
@@ -1501,11 +1520,15 @@ class CP2KParser:
                 # the run stopped and was reran.
                 if optimization_steps is not None:
                     n_optimization_steps = optimization_steps[-1].step
-                    if n_optimization_steps != len(optimization_steps):
-                        self.logger.warning(f'The length of optimization steps sections in '
-                                            f'the *.out file, {len(optimization_steps)} does '
-                                            f'not coincide with the last parsed optimization step '
-                                            f'number, {n_optimization_steps}.')
+                    if n_optimization_steps != len(optimization_steps) + 1:
+                        self.logger.warning(
+                            'The length of optimization steps sections in the *.out file, does '
+                            'not coincide with the last parsed optimization step number.',
+                            data = {
+                                'length optimization_steps': len(optimization_steps),
+                                'last optimization step': n_optimization_steps,
+                            },
+                        )
                 pdos_files = get_pdos_files(n_optimization_steps)
                 self.parse_dos(sec_run.calculation[-1], pdos_files)
         elif (molecular_dynamics := quickstep.get('molecular_dynamics')) is not None:
