@@ -22,7 +22,10 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference
 )
-from nomad.datamodel.metainfo import simulation
+import runschema.run  # pylint: disable=unused-import
+import runschema.calculation  # pylint: disable=unused-import
+import runschema.method  # pylint: disable=unused-import
+import runschema.system  # pylint: disable=unused-import
 
 
 m_package = Package()
@@ -168,7 +171,7 @@ class x_elk_section_xc(MSection):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -417,7 +420,7 @@ class Method(simulation.method.Method):
         repeats=True)
 
 
-class Energy(simulation.calculation.Energy):
+class Energy(runschema.calculation.Energy):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -534,7 +537,7 @@ class Energy(simulation.calculation.Energy):
         ''')
 
 
-class Charges(simulation.calculation.Charges):
+class Charges(runschema.calculation.Charges):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -560,7 +563,7 @@ class Charges(simulation.calculation.Charges):
         ''')
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 

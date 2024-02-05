@@ -24,7 +24,7 @@ from glob import glob
 from typing import Union
 from nomad.utils import extract_section
 from nomad.datamodel import EntryArchive
-from nomad.datamodel.metainfo.simulation.run import Run
+from runschema.run import Run
 from nomad.datamodel.metainfo.workflow import Link, TaskReference
 from simulationworkflowschema import (
     GW, GWMethod, DMFT, DMFTMethod, XS, XSMethod, TB, TBMethod, MaxEnt, MaxEntMethod,
@@ -100,7 +100,8 @@ class BeyondDFTWorkflowsParser:
         if workflow_archive.run:
             sec_run = workflow_archive.run[-1]
         else:
-            sec_run = workflow_archive.m_create(Run)
+            sec_run = Run()
+            workflow_archive.run.append(sec_run)
         sec_run.program = self.archive.run[-1].program
 
     def parse_gw_workflow(self, gw_archive: EntryArchive, gw_workflow_archive: EntryArchive):

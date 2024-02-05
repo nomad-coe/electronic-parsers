@@ -25,10 +25,10 @@ import numpy as np
 import logging
 
 from nomad.units import ureg
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.method import Method, BasisSet, BasisSetContainer
-from nomad.datamodel.metainfo.simulation.calculation import Calculation, Forces, ForcesEntry
+from runschema.run import Run, Program, TimeRun
+from runschema.system import System, Atoms
+from runschema.method import Method, BasisSet, BasisSetContainer
+from runschema.calculation import Calculation, Forces, ForcesEntry
 from nomad.parsing.file_parser import Quantity, TextParser
 
 from xml.etree import ElementTree
@@ -79,14 +79,16 @@ class QBallParser:
         self.mainfile_parser.mainfile = mainfile
         self.mainfile_parser.parse()
 
-        run = archive.m_create(Run)
+        run = Run()
+        archive.run.append(run)
         run.program = Program(name='qball')
         run.time_run = TimeRun(
             date_start=str_to_timestamp(self.mainfile_parser.get("start_time")),
             date_end=str_to_timestamp(self.mainfile_parser.get("end_time")))
 
         # method
-        method = run.m_create(Method)
+        method = Method()
+        run.method.append(method)
         # TODO add dft functionals
         if "plane waves" in contents:
             method.electrons_representation = [
@@ -107,7 +109,8 @@ class QBallParser:
         element_tree = ElementTree.fromstring(contents)
 
         # system
-        system = run.m_create(System)
+        system = System()
+        run.system.append(system)
         system.atoms = Atoms(
             labels=[atom.attrib["name"] for atom in element_tree.find("run").find("iteration").find("atomset").iter("atom")],
             positions=np.array([
@@ -115,7 +118,8 @@ class QBallParser:
                 for atom in element_tree.find("run").find("iteration").find("atomset").iter("atom")]) * ureg.bohr)
 
         # calculation
-        calculation = run.m_create(Calculation)
+        calculation = Calculation()
+        run.calculation.append(calculation)
         calculation.forces = Forces(total=ForcesEntry(value=np.array([
             [float(force) for force in atom.find("force").text.split()]
             for atom in element_tree.find("run").find("iteration").find("atomset").iter("atom")]) * ureg.hartree / ureg.bohr))

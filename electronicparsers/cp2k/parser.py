@@ -28,16 +28,16 @@ import MDAnalysis
 from .metainfo import m_env
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, FileParser, DataTextParser
-from nomad.datamodel.metainfo.simulation.run import (
+from runschema.run import (
     Run, Program)
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.method import (
     Method, DFT, XCFunctional, Functional, BasisSet, BasisSetContainer,
     AtomParameters, Scf, Electronic, BasisSetAtomCentered
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, Stress, StressEntry, ScfIteration, Forces,
     ForcesEntry, Dos, DosValues
 )
@@ -1103,8 +1103,10 @@ class CP2KParser:
 
         program_settings = self.settings.get('program', {})
         if program_settings:
-            sec_startinformation = sec_run.m_create(x_cp2k_section_startinformation)
-            sec_endinformation = sec_run.m_create(x_cp2k_section_end_information)
+            sec_startinformation = x_cp2k_section_startinformation()
+            sec_run.x_cp2k_section_startinformation.append(sec_startinformation)
+            sec_endinformation = x_cp2k_section_end_information()
+            sec_run.x_cp2k_section_end_information.append(sec_endinformation)
             section = sec_startinformation
             for key, val in program_settings.items():
                 if key == 'id' and isinstance(val, list):
@@ -1116,7 +1118,8 @@ class CP2KParser:
 
         restart = self.out_parser.get('restart')
         if restart is not None:
-            sec_restart = sec_run.m_create(x_cp2k_section_restart_information)
+            sec_restart = x_cp2k_section_restart_information()
+            sec_run.x_cp2k_section_restart_information.append(sec_restart)
             sec_restart.x_cp2k_restart_file_name = restart.get('filename')
             sec_restart.x_cp2k_restarted_quantity_name = ' '.join(restart.get('quantities'))
 
@@ -1146,7 +1149,10 @@ class CP2KParser:
             if isinstance(data, InpValue):
                 sec_def = resolve_definition(name)
                 if sec_def is not None:
-                    sub_section = section.m_create(sec_def.section_cls)
+                    sub_section = sec_def.section_cls()
+                    sub_section_def = section.m_def.all_sub_sections_by_section.get(sec_def.section_cls.m_def)[0]
+
+                    section.m_add_sub_section(sub_section_def, sub_section)
                     for key, val in data.items():
                         parse(f'{name}_{key}', val, sub_section)
 
@@ -1176,9 +1182,11 @@ class CP2KParser:
         if source is None:
             return
         time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
 
-        sec_energy = sec_scc.m_create(Energy)
+        sec_energy = Energy()
+        sec_scc.energy = sec_energy
         if source.get('energy_total') is not None:
             sec_energy.total = EnergyEntry(value=source.get('energy_total'))
         if source.get('electronic_kinetic_energy') is not None:
@@ -1190,14 +1198,17 @@ class CP2KParser:
             sec_energy.highest_occupied = source.get('fermi_energy')[-1]
 
         if source.get('stress_tensor') is not None:
-            sec_stress = sec_scc.m_create(Stress)
+            sec_stress = Stress()
+            sec_scc.stress = sec_stress
             sec_stress.total = StressEntry(value=source.get('stress_tensor'))
 
         # self consistency
         for iteration in source.get('iteration', []):
             time_initial = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else time_initial
-            sec_scf = sec_scc.m_create(ScfIteration)
-            sec_scf_energy = sec_scf.m_create(Energy)
+            sec_scf = ScfIteration()
+            sec_scc.scf_iteration.append(sec_scf)
+            sec_scf_energy = Energy()
+            sec_scf.energy = sec_scf_energy
             for key, val in iteration.items():
                 if val is not None:
                     if key == 'energy_change':
@@ -1217,7 +1228,8 @@ class CP2KParser:
         atom_forces = source.get('atom_forces', self.get_forces(source._frame))
         if atom_forces is not None:
             atom_forces = np.array(atom_forces, np.float64) * ureg.hartree / ureg.bohr
-            sec_forces = sec_scc.m_create(Forces)
+            sec_forces = Forces()
+            sec_scc.forces = sec_forces
             sec_forces.total = ForcesEntry(value=atom_forces)
 
         return sec_scc
@@ -1235,8 +1247,10 @@ class CP2KParser:
         if trajectory is None:
             return
 
-        sec_system = sec_run.m_create(System)
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_system = System()
+        sec_run.system.append(sec_system)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
 
         lattice_vectors = self.get_lattice_vectors(trajectory._frame)
 
@@ -1372,7 +1386,8 @@ class CP2KParser:
             atom_index = re.sub(r'[a-zA-Z]', '', atom_kind)
             if self.pdos_parser.get('orbitals', []) is not None:
                 orbital_labels = self.pdos_parser.get('orbitals', [])
-                sec_dos_histogram = scc.m_create(x_cp2k_pdos_histogram)
+                sec_dos_histogram = x_cp2k_pdos_histogram()
+                scc.x_cp2k_pdos.append(sec_dos_histogram)
                 sec_dos_histogram.x_cp2k_pdos_histogram_energies = data[1] * ureg.hartree
                 sec_dos_histogram.x_cp2k_pdos_histogram_values = orbital_histogram
                 sec_dos_histogram.x_cp2k_pdos_histogram_atom_label = atom_label
@@ -1381,7 +1396,8 @@ class CP2KParser:
                 sec_dos_histogram.x_cp2k_gaussian_width = width * ureg.eV
                 sec_dos_histogram.x_cp2k_gaussian_delta_energy = delta_energy * ureg.eV
                 for i, conv_pdos in enumerate(convoluted_pdos):
-                    sec_dos_orbital = sec_dos.m_create(DosValues, Dos.orbital_projected)
+                    sec_dos_orbital = DosValues()
+                    sec_dos.orbital_projected.append(sec_dos_orbital)
                     sec_dos_orbital.value = conv_pdos / ureg.eV
                     sec_dos_orbital.atom_label = atom_label
                     sec_dos_orbital.atom_index = atom_index if atom_index else None
@@ -1546,7 +1562,8 @@ class CP2KParser:
 
     def parse_method_quickstep(self):
         sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
 
         sec_method.electrons_representation = [
             BasisSetContainer(
@@ -1557,7 +1574,8 @@ class CP2KParser:
         ]
         quickstep = self.out_parser.get(self._calculation_type, sec_method)
 
-        sec_dft = sec_method.m_create(DFT)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
         # electronic structure method
         # TODO include methods
         if quickstep.get('dft') is not None:
@@ -1570,7 +1588,8 @@ class CP2KParser:
             sec_method.electronic = Electronic(method='RPA')
 
         # xc functionals
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         for functional in self.get_xc_functionals():
             if '_X_' in functional.name:
                 sec_xc_functional.exchange.append(Functional(
@@ -1594,7 +1613,8 @@ class CP2KParser:
         if stress_method is not None:
             sec_method.stress_tensor_method = stress_method.replace('_', ' ').title()
 
-        sec_quickstep_settings = sec_method.m_create(x_cp2k_section_quickstep_settings)
+        sec_quickstep_settings = x_cp2k_section_quickstep_settings()
+        sec_method.x_cp2k_section_quickstep_settings.append(sec_quickstep_settings)
         dft_settings = self.settings.get('dft', {})
         if dft_settings:
             sec_dft.x_cp2k_quickstep_settings = dft_settings
@@ -1608,11 +1628,14 @@ class CP2KParser:
 
         atomic_kind_info = quickstep.get('atomic_kind_information', None)
         if atomic_kind_info is not None:
-            sec_atom_kinds = sec_quickstep_settings.m_create(x_cp2k_section_atomic_kinds)
+            sec_atom_kinds = x_cp2k_section_atomic_kinds()
+            sec_quickstep_settings.x_cp2k_section_atomic_kinds.append(sec_atom_kinds)
             for atom in atomic_kind_info.get('atom', []):
                 # why necessary to make a separate section
-                sec_atom_kind = sec_atom_kinds.m_create(x_cp2k_section_atomic_kind)
-                sec_kind_basis_set = sec_atom_kind.m_create(x_cp2k_section_kind_basis_set)
+                sec_atom_kind = x_cp2k_section_atomic_kind()
+                sec_atom_kinds.x_cp2k_section_atomic_kind.append(sec_atom_kind)
+                sec_kind_basis_set = x_cp2k_section_kind_basis_set()
+                sec_atom_kind.x_cp2k_section_kind_basis_set.append(sec_kind_basis_set)
                 for key, val in atom.items():
                     if val is None:
                         continue
@@ -1621,15 +1644,18 @@ class CP2KParser:
                     else:
                         sec_kind_basis_set.m_set(sec_kind_basis_set.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
-                sec_method_atom_kind = sec_method.m_create(AtomParameters)
+                sec_method_atom_kind = AtomParameters()
+                sec_method.atom_parameters.append(sec_method_atom_kind)
                 atom_kind_label = re.sub(r'\d', '', atom.kind_label)
                 sec_method_atom_kind.label = atom_kind_label
                 sec_method_atom_kind.atom_number = self.get_atomic_number(atom_kind_label)
 
         total_maximum_numbers = quickstep.get('total_maximum_numbers', None)
         if total_maximum_numbers is not None:
-            sec_total = sec_quickstep_settings.m_create(x_cp2k_section_total_numbers)
-            sec_maximum = sec_quickstep_settings.m_create(x_cp2k_section_maximum_angular_momentum)
+            sec_total = x_cp2k_section_total_numbers()
+            sec_quickstep_settings.x_cp2k_section_total_numbers.append(sec_total)
+            sec_maximum = x_cp2k_section_maximum_angular_momentum()
+            sec_quickstep_settings.x_cp2k_section_maximum_angular_momentum.append(sec_maximum)
             for key, val in total_maximum_numbers.items():
                 if val is None:
                     continue
@@ -1638,7 +1664,8 @@ class CP2KParser:
                 else:
                     sec_total.m_set(sec_total.m_get_quantity_definition(f'x_cp2k_{key}'), val)
 
-        sec_scf = sec_method.m_create(Scf)
+        sec_scf = Scf()
+        sec_method.scf = sec_scf
         scf_parameters = quickstep.get('scf_parameters', None)
         if scf_parameters is not None:
             for key, val in scf_parameters.items():
@@ -1669,12 +1696,14 @@ class CP2KParser:
                 if not method:
                     self.logger.error('Cannot resolve optimization method.')
                 workflow.method.method = method
-            sec_geometry_opt = workflow.m_create(x_cp2k_section_geometry_optimization)
+            sec_geometry_opt = x_cp2k_section_geometry_optimization()
+            workflow.x_cp2k_section_geometry_optimization.append(sec_geometry_opt)
             for step in optimization.get('optimization_step', []):
                 information = step.information
                 if information is None:
                     continue
-                sec_geometry_opt_step = sec_geometry_opt.m_create(x_cp2k_section_geometry_optimization_step)
+                sec_geometry_opt_step = x_cp2k_section_geometry_optimization_step()
+                sec_geometry_opt.x_cp2k_section_geometry_optimization_step.append(sec_geometry_opt_step)
                 for key, val in information.items():
                     if val is None:
                         continue
@@ -1704,7 +1733,8 @@ class CP2KParser:
             workflow = MolecularDynamics(method=MolecularDynamicsMethod())
             workflow.method.thermodynamic_ensemble = self._ensemble_map.get(self.get_ensemble_type(0), None)
             workflow.method.integration_timestep = self.get_time_step()
-            sec_md_settings = workflow.method.m_create(x_cp2k_section_md_settings)
+            sec_md_settings = x_cp2k_section_md_settings()
+            workflow.method.x_cp2k_section_md_settings.append(sec_md_settings)
 
             # Parse code specific MD information
             ignored = {'time_step', 'ensemble_type', 'file_type'}
@@ -1738,7 +1768,7 @@ class CP2KParser:
                 self._calculation_type = calculation_type
                 break
 
-        self.archive.m_create(Run)
+        self.archive.run.append(Run())
         self.parse_settings()
         self.parse_input()
 

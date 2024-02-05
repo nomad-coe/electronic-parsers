@@ -22,7 +22,7 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference
 )
-from nomad.datamodel.metainfo.simulation import method
+from runschema import method
 
 
 m_package = Package()

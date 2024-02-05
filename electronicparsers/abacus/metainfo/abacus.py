@@ -22,9 +22,10 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference
 )
-
-from nomad.datamodel.metainfo import simulation
-
+import runschema.run  # pylint: disable=unused-import
+import runschema.calculation  # pylint: disable=unused-import
+import runschema.method  # pylint: disable=unused-import
+import runschema.system  # pylint: disable=unused-import
 
 m_package = Package()
 
@@ -160,7 +161,7 @@ class x_abacus_section_specie_basis_set(MSection):
         ''')
 
 
-class BasisSet(simulation.method.BasisSet):
+class BasisSet(runschema.method.BasisSet):
     '''
     section for numerical atomic orbitals of ABACUS
     '''
@@ -204,7 +205,7 @@ class BasisSet(simulation.method.BasisSet):
         repeats=True,)
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -284,7 +285,7 @@ class Calculation(simulation.calculation.Calculation):
         ''')
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -351,7 +352,7 @@ class Run(simulation.run.Run):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -544,7 +545,7 @@ class Method(simulation.method.Method):
         categories=[x_abacus_input_settings, x_abacus_exx_settings])
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -616,7 +617,7 @@ class System(simulation.system.System):
         ''',)
 
 
-class Symmetry(simulation.system.Symmetry):
+class Symmetry(runschema.system.Symmetry):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_abacus_ibrav = Quantity(
@@ -655,7 +656,7 @@ class Symmetry(simulation.system.Symmetry):
         ''')
 
 
-class AtomParameters(simulation.method.AtomParameters):
+class AtomParameters(runschema.method.AtomParameters):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_abacus_pp_type = Quantity(
@@ -694,7 +695,7 @@ class AtomParameters(simulation.method.AtomParameters):
         ''',)
 
 
-class ScfIteration(simulation.calculation.ScfIteration):
+class ScfIteration(runschema.calculation.ScfIteration):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -732,7 +733,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         ''',)
 
 
-class BandEnergies(simulation.calculation.BandEnergies):
+class BandEnergies(runschema.calculation.BandEnergies):
 
     m_def = Section(validate=False, extends_base_section=True)
 

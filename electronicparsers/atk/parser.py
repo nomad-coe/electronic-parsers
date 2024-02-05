@@ -28,11 +28,11 @@ from ase import Atoms as aseAtoms
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser, TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program
+from runschema.method import (
     Method, Electronic, Smearing, DFT, XCFunctional, Functional)
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.system import System, Atoms
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry)
 
 
@@ -223,7 +223,8 @@ class ATKParser:
         sec_run = self.archive.run[0]
 
         def parse_method(name):
-            sec_method = sec_run.m_create(Method)
+            sec_method = Method()
+            sec_run.method.append(sec_method)
 
             parameters = self.nc_parser.get('parameters').get(name)
             if parameters is None:
@@ -239,8 +240,10 @@ class ATKParser:
                 smearing=Smearing(
                     kind='fermi', width=self.calculator_parser.get('smearing_width', 0.0)))
 
-            sec_dft = sec_method.m_create(DFT)
-            sec_xc_functional = sec_dft.m_create(XCFunctional)
+            sec_dft = DFT()
+            sec_method.dft = sec_dft
+            sec_xc_functional = XCFunctional()
+            sec_dft.xc_functional = sec_xc_functional
             for xc_functional in self._xc_functional_map.get(self.calculator_parser.get('xc_functional'), []):
                 if '_XC' in xc_functional:
                     sec_xc_functional.contributions.append(Functional(name=xc_functional))
@@ -259,8 +262,10 @@ class ATKParser:
             if atoms is None:
                 return
 
-            sec_system = sec_run.m_create(System)
-            sec_atoms = sec_system.m_create(Atoms)
+            sec_system = System()
+            sec_run.system.append(sec_system)
+            sec_atoms = Atoms()
+            sec_system.atoms = sec_atoms
             sec_atoms.labels = atoms.get_chemical_symbols()
             sec_atoms.positions = atoms.get_positions() * ureg.angstrom
             sec_atoms.lattice_vectors = atoms.get_cell().array * ureg.angstrom
@@ -272,10 +277,12 @@ class ATKParser:
             return sec_system
 
         def parse_scc(fingerprint):
-            sec_scc = sec_run.m_create(Calculation)
+            sec_scc = Calculation()
+            sec_run.calculation.append(sec_scc)
 
             # energies
-            sec_energy = sec_scc.m_create(Energy)
+            sec_energy = Energy()
+            sec_scc.energy = sec_energy
             energy_total = 0.
             for key, val in self.nc_parser.get('energies').get(fingerprint, {}).items():
                 key = self._metainfo_map.get(key)
@@ -288,7 +295,8 @@ class ATKParser:
             # forces
             forces = self.nc_parser.get('forces').get(fingerprint)
             if forces is not None:
-                sec_forces = sec_scc.m_create(Forces)
+                sec_forces = Forces()
+                sec_scc.forces = sec_forces
                 sec_forces.total = ForcesEntry(value=forces)
 
             return sec_scc
@@ -310,7 +318,8 @@ class ATKParser:
 
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         sec_run.program_name = 'ATK'
         version = self.nc_parser.get('version', 'unavailable')
         sec_run.program = Program(name='ATK', version=version)

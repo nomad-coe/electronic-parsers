@@ -25,12 +25,12 @@ from ase.data import chemical_symbols
 
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program, TimeRun
+from runschema.method import (
     Method, BasisSet, BasisSetContainer, Electronic, Smearing, Scf, DFT, XCFunctional,
     Functional, KMesh, FrequencyMesh, Screening, GW)
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.system import System, Atoms
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, Stress, StressEntry, Dos,
     DosValues, BandStructure, BandEnergies, ScfIteration)
 from simulationworkflowschema import (
@@ -916,8 +916,10 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         # TODO reshape input_var arrays
         sec_run = self.archive.run[-1]
         for i in range(len(self.dataset)):
-            sec_dataset = sec_run.m_create(x_abinit_section_dataset)
-            sec_input = sec_dataset.m_create(x_abinit_section_input)
+            sec_dataset = x_abinit_section_dataset()
+            sec_run.x_abinit_section_dataset.append(sec_dataset)
+            sec_input = x_abinit_section_input()
+            sec_dataset.x_abinit_section_input = sec_input
             for key, val in self.out_parser.input_vars.items():
                 if val[i] is None:
                     continue
@@ -947,13 +949,15 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             atom_positions = np.dot(xred, rprim.transpose()) * ureg.bohr
         else:
             if natom == 1:  # handling exception
-                atom_positions = np.array([0.0, 0.0, 0.0])
+                atom_positions = np.array([[0.0, 0.0, 0.0]])
             else:
                 self.logger.warning('Could not resolve atom positions.')
                 return
 
-        sec_system = sec_run.m_create(System)
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_system = System()
+        sec_run.system.append(sec_system)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
         sec_atoms.labels = atom_labels
         sec_atoms.positions = atom_positions
         sec_atoms.periodic = pbc
@@ -966,9 +970,12 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             '', '', '', 'fermi', 'marzari-vanderbilt', 'marzari-vanderbilt',
             'methfessel-paxton', 'gaussian', '']
 
-        sec_method = sec_run.m_create(Method)
-        sec_dft = sec_method.m_create(DFT)
-        sec_electronic = sec_method.m_create(Electronic)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
+        sec_electronic = Electronic()
+        sec_method.electronic = sec_electronic
         sec_electronic.method = 'DFT'
         # defined in DATASET 2
         if len(self.dataset) == 1:
@@ -977,7 +984,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             nsppol = int(self.out_parser.get_input_var('nsppol', 2, 1))
         sec_electronic.n_spin_channels = nsppol
 
-        sec_scf = sec_method.m_create(Scf)
+        sec_scf = Scf()
+        sec_method.scf = sec_scf
         sec_scf.n_max_iteration = int(self.out_parser.get_input_var('nstep', 1, 1))
         toldfe = self.out_parser.get_input_var('toldfe', 1, 0.0)
         if toldfe is not None:
@@ -985,7 +993,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
         occopt = self.out_parser.get_input_var('occopt', 1, 1)
         smearing = smearing_kinds[occopt] if occopt < len(smearing_kinds) else ''
-        sec_smearing = sec_electronic.m_create(Smearing)
+        sec_smearing = Smearing()
+        sec_electronic.smearing = sec_smearing
         sec_smearing.kind = smearing
         tsmear = self.out_parser.get_input_var('tsmear', 1, 0.01)
         if tsmear is not None:
@@ -1022,7 +1031,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             if functional2 > 0:
                 xc_functionals.append(ABINIT_LIBXC_IXC.get(functional2))
 
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         for xc_functional in xc_functionals:
             for value in sorted(xc_functional.values()):
                 if '_X_' in value:
@@ -1037,7 +1047,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         # Parsing KMesh
         if self.out_parser.get_input_var('kptopt', 1, 4) < 0:  # negative kptopt sets band structure
             return
-        sec_k_mesh = sec_method.m_create(KMesh)
+        sec_k_mesh = KMesh()
+        sec_method.k_mesh = sec_k_mesh
         # Two exclusive input vars: ngkpt and kptrlatt
         for key_var in ['ngkpt', 'kptrlatt']:
             value = self.out_parser.get_input_var(key_var, 1)
@@ -1051,15 +1062,18 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
     def parse_gw(self):
         sec_run = self.archive.run[-1]
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
 
         # GW
-        sec_gw = sec_method.m_create(GW)
+        sec_gw = GW()
+        sec_method.gw = sec_gw
         # KMesh
         nkptgw = self.out_parser.get_input_var('nkptgw', 4, 0)
         if nkptgw > 0:
             kptgw = np.reshape(self.out_parser.get_input_var('kptgw', 4, []), (nkptgw, 3))
-            sec_k_mesh = sec_method.m_create(KMesh)
+            sec_k_mesh = KMesh()
+            sec_method.k_mesh = sec_k_mesh
             sec_k_mesh.n_points = nkptgw
             sec_k_mesh.points = kptgw
         # QMesh same as KMesh
@@ -1173,11 +1187,13 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             occs = np.reshape(occs, (nsppol, len(occs) // nsppol, np.size(occs) // len(occs)))
 
         # TODO is this is good enough or should we parse ndivsm?
-        sec_k_band = sec_scc.m_create(BandStructure, Calculation.band_structure_electronic)
+        sec_k_band = BandStructure()
+        sec_scc.band_structure_electronic.append(sec_k_band)
         sec_k_band.energy_fermi = energy_fermi
         for k in range(len(kpts)):
             if k > 0:
-                sec_k_band_segment = sec_k_band.m_create(BandEnergies)
+                sec_k_band_segment = BandEnergies()
+                sec_k_band.segment.append(sec_k_band_segment)
                 sec_k_band_segment.n_kpoints = 2
                 sec_k_band_segment.kpoints = kpts[k - 1:k + 1]
                 sec_k_band_segment.n_bands = nband
@@ -1197,7 +1213,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             return
 
         if sec_run.calculation[-1] is None:
-            sec_scc = sec_run.m_create(Calculation)
+            sec_scc = Calculation()
+            sec_run.calculation.append(sec_scc)
         else:
             sec_scc = sec_run.calculation[-1]
 
@@ -1208,12 +1225,14 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
         for spin in range(nsppol):
             dos_spin = np.transpose(dos[spin])
-            sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+            sec_dos = Dos()
+            sec_scc.dos_electronic.append(sec_dos)
             sec_dos.spin_channel = spin if nsppol == 2 else None
             sec_dos.n_energies = len(dos_spin[0])
             sec_dos.energies = dos_spin[0] * ureg.hartree
 
-            sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+            sec_dos_total = DosValues()
+            sec_dos.total.append(sec_dos_total)
             sec_dos_total.value = dos_spin[1] / ureg.hartree
             sec_dos_total.value_integrated = dos_spin[2]
 
@@ -1225,12 +1244,14 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         sec_run = self.archive.run[-1]
 
         def parse_configurations(section):
-            sec_scc = sec_run.m_create(Calculation)
+            sec_scc = Calculation()
+            sec_run.calculation.append(sec_scc)
             if sec_run.system is not None:
                 sec_scc.system_ref = sec_run.system[-1]
             sec_scc.method_ref = sec_run.method[-1]
 
-            sec_energy = sec_scc.m_create(Energy)
+            sec_energy = Energy()
+            sec_scc.energy = sec_energy
             for key in self.out_parser.energy_components.keys():
                 energy = section.get(key)
                 if energy is None:
@@ -1246,12 +1267,14 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
             forces = section.get('cartesian_forces')
             if forces is not None:
-                sec_forces = sec_scc.m_create(Forces)
+                sec_forces = Forces()
+                sec_scc.forces = sec_forces
                 sec_forces.total = ForcesEntry(value_raw=forces)
 
             stress_tensor = section.get('stress_tensor')
             if stress_tensor is not None:
-                sec_stress = sec_scc.m_create(Stress)
+                sec_stress = Stress()
+                sec_scc.stress = sec_stress
                 sec_stress.total = StressEntry(value=stress_tensor)
 
             fermi_energy = section.get('fermi_energy')
@@ -1267,8 +1290,10 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
             energy_total_scf_iteration = self_consistent.get('energy_total_scf_iteration', [])
             for energy in energy_total_scf_iteration:
-                sec_scf_iteration = sec_scc.m_create(ScfIteration)
-                sec_energy = sec_scf_iteration.m_create(Energy)
+                sec_scf_iteration = ScfIteration()
+                sec_scc.scf_iteration.append(sec_scf_iteration)
+                sec_energy = Energy()
+                sec_scf_iteration.energy = sec_energy
                 sec_energy.total = EnergyEntry(value=energy[0] * ureg.hartree)
 
         for nd in range(self.out_parser.n_datasets):
@@ -1282,8 +1307,10 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             relaxation = self.dataset[nd].get('relaxation', [])
             for step in relaxation:
                 if relaxation.index(step) > 0:  # not parsing system for step 1
-                    sec_system = sec_run.m_create(System)
-                    sec_atoms = sec_system.m_create(Atoms)
+                    sec_system = System()
+                    sec_run.system.append(sec_system)
+                    sec_atoms = Atoms()
+                    sec_system.atoms = sec_atoms
                     atom_positions = step.get('cartesian_coordinates')
                     sec_atoms.positions = atom_positions
                     sec_atoms.labels = sec_run.system[0].atoms.labels
@@ -1307,7 +1334,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             if sec_run.calculation:
                 sec_scc = sec_run.calculation[-1]
             else:
-                sec_scc = sec_run.m_create(Calculation)
+                sec_scc = Calculation()
+                sec_run.calculation.append(sec_scc)
             if sec_run.system is not None:
                 sec_scc.system_ref = sec_run.system[-1]
             sec_scc.method_ref = sec_run.method[-1]
@@ -1319,7 +1347,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             setattr(section, f'x_abinit_{keys}', value)
 
         def parse_meshes(section, keys, value):
-            sec_mesh = section.m_create(x_abinit_mesh)
+            sec_mesh = x_abinit_mesh()
+            section.x_abinit_kqmesh.append(sec_mesh)
             sec_mesh.x_abinit_type = keys
             for subkeys in value.keys():
                 setattr(sec_mesh, f'x_abinit_{subkeys}', value[subkeys])
@@ -1328,7 +1357,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         scr_dataset = self.out_parser.get('screening_dataset')
         if scr_dataset:
             sec_scc = initialize_calculation_section()
-            sec_scr = sec_scc.m_create(x_abinit_screening_dataset)
+            sec_scr = x_abinit_screening_dataset()
+            sec_scc.x_abinit_screening.append(sec_scr)
 
             for keys in scr_dataset.keys():
                 value = scr_dataset.get(keys)
@@ -1338,7 +1368,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                     if keys == 'frequencies':
                         sec_scr.x_abinit_frequencies = value['values']
                     elif keys == 'chi_q':
-                        sec_chi_q = sec_scr.m_create(x_abinit_chi_q_data)
+                        sec_chi_q = x_abinit_chi_q_data()
+                        sec_scr.x_abinit_chi_q = sec_chi_q
                         for subkeys in value.keys():
                             setattr(sec_chi_q, f'x_abinit_{subkeys}', value[subkeys])
                     else:
@@ -1348,7 +1379,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         gw_dataset = self.out_parser.get('gw_dataset')
         if gw_dataset:
             sec_scc = initialize_calculation_section()
-            sec_gw_abinit = sec_scc.m_create(x_abinit_gw_dataset)
+            sec_gw_abinit = x_abinit_gw_dataset()
+            sec_scc.x_abinit_gw.append(sec_gw_abinit)
 
             for keys in gw_dataset.keys():
                 value = gw_dataset.get(keys)
@@ -1356,11 +1388,13 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                     parse_quantities(sec_gw_abinit, keys, value)
                 else:
                     if keys == 'ks_band_gaps':
-                        sec_ks_gaps = sec_gw_abinit.m_create(x_abinit_ks_band_gaps_params)
+                        sec_ks_gaps = x_abinit_ks_band_gaps_params()
+                        sec_gw_abinit.x_abinit_ks_band_gaps.append(sec_ks_gaps)
                         for subkeys in value.keys():
                             setattr(sec_ks_gaps, f'x_abinit_{subkeys}', value[subkeys])
                     elif keys == 'sigma_parameters':
-                        sec_sigma = sec_gw_abinit.m_create(x_abinit_sigma_params)
+                        sec_sigma = x_abinit_sigma_params()
+                        sec_gw_abinit.x_abinit_sigma.append(sec_sigma)
                         for subkeys in value.keys():
                             if subkeys == 'model' and value[subkeys]:
                                 val = ' '.join([str(v) for v in value[subkeys]])
@@ -1370,7 +1404,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                                 val = value[subkeys]
                             setattr(sec_sigma, f'x_abinit_{subkeys}', val)
                     elif keys == 'epsilon_inv':
-                        sec_epsiloninv = sec_gw_abinit.m_create(x_abinit_epsilon_inv_params)
+                        sec_epsiloninv = x_abinit_epsilon_inv_params()
+                        sec_gw_abinit.x_abinit_epsilon_inv.append(sec_epsiloninv)
                         for subkeys in value.keys():
                             val = dict(value[subkeys])
                             setattr(sec_epsiloninv, f'x_abinit_{subkeys}', val)
@@ -1379,7 +1414,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
         # GW specific outputs
         for selfenergy in gw_dataset.get('self_energy_ee', []):
-            sec_k_eigen = sec_scc.m_create(BandEnergies)
+            sec_k_eigen = BandEnergies()
+            sec_scc.eigenvalues.append(sec_k_eigen)
             sec_k_eigen.n_kpoints = 1
             kpoints = [selfenergy.get('kpoint', []) for k in range(sec_k_eigen.n_kpoints)]
             sec_k_eigen.kpoints = kpoints
@@ -1387,7 +1423,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             selfenergy_data = np.array(selfenergy.get('data', []))
             if selfenergy.get('params'):
                 sec_k_eigen.n_spin_channels = selfenergy.get('params')[0][-1]
-                sec_gap = sec_k_eigen.m_create(x_abinit_qp_band_gaps_params)
+                sec_gap = x_abinit_qp_band_gaps_params()
+                sec_k_eigen.x_abinit_qp_band_gaps_params = sec_gap
                 sec_gap.x_abinit_value = selfenergy.get('params')[1][-1] * ureg.eV  # KS gap
                 sec_gap.x_abinit_value_fundamental = selfenergy.get('params')[2][-1] * ureg.eV  # QP gap
                 for i in self._selfenergy_data_map.keys():
@@ -1437,7 +1474,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         if 4 in self.out_parser.dataset_numbers and (1 and 2 and 3) not in self.out_parser.dataset_numbers:
             self._calculation_type = 'gw'
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         sec_run.program = Program(
             name='ABINIT', version=self.out_parser.get('program_version', ''),
             compilation_host=self.out_parser.get('program_compilation_host', ''))

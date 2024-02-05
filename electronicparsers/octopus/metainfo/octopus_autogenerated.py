@@ -22,7 +22,10 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference
 )
-from nomad.datamodel.metainfo import simulation
+import runschema.run  # pylint: disable=unused-import
+import runschema.calculation  # pylint: disable=unused-import
+import runschema.method  # pylint: disable=unused-import
+import runschema.system  # pylint: disable=unused-import
 
 
 m_package = Package()
@@ -44,7 +47,7 @@ class x_octopus_parserlog(MCategory):
     m_def = Category()
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 

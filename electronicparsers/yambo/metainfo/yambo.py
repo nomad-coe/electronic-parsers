@@ -17,12 +17,14 @@
 # limitations under the License.
 #
 import numpy as np            # pylint: disable=unused-import
-from nomad.datamodel.metainfo.simulation import run                 # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, Reference, JSON
 )
 
-from nomad.datamodel.metainfo import simulation
+import runschema.run  # pylint: disable=unused-import
+import runschema.calculation  # pylint: disable=unused-import
+import runschema.method  # pylint: disable=unused-import
+import runschema.system  # pylint: disable=unused-import
 
 
 m_package = Package()
@@ -145,7 +147,7 @@ class x_yambo_parameters(MSection):
         ''')
 
 
-class Program(simulation.run.Program):
+class Program(runschema.run.Program):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_yambo_build = Quantity(
@@ -161,7 +163,7 @@ class Program(simulation.run.Program):
         ''')
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_yambo_job_string = Quantity(
@@ -257,7 +259,7 @@ class Run(simulation.run.Run):
     x_yambo_input = SubSection(sub_section=x_yambo_io.m_def, repeats=False)
 
 
-class x_yambo_local_xc_nonlocal_fock_bandenergies(simulation.calculation.BandEnergies):
+class x_yambo_local_xc_nonlocal_fock_bandenergies(runschema.calculation.BandEnergies):
     m_def = Section(validate=False)
 
     x_yambo_sx = Quantity(
@@ -275,7 +277,7 @@ class x_yambo_local_xc_nonlocal_fock_bandenergies(simulation.calculation.BandEne
         ''')
 
 
-class x_yambo_bare_xc_bandenergies(simulation.calculation.BandEnergies):
+class x_yambo_bare_xc_bandenergies(runschema.calculation.BandEnergies):
     m_def = Section(validate=False)
 
     x_yambo_dft = Quantity(
@@ -293,7 +295,7 @@ class x_yambo_bare_xc_bandenergies(simulation.calculation.BandEnergies):
         ''')
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_yambo_electronic_temperature = Quantity(
@@ -478,7 +480,7 @@ class x_yambo_transferred_momenta(x_yambo_module):
     m_def = Section(validate=False)
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_yambo_transferred_momenta = SubSection(sub_section=x_yambo_transferred_momenta.m_def, repeats=True)

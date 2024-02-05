@@ -21,7 +21,10 @@ import numpy as np
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, Package, Quantity, Section, SubSection, JSON, HDF5Reference
 )
-from nomad.datamodel.metainfo import simulation
+import runschema.run  # pylint: disable=unused-import
+import runschema.calculation  # pylint: disable=unused-import
+import runschema.method  # pylint: disable=unused-import
+import runschema.system  # pylint: disable=unused-import
 
 
 m_package = Package()
@@ -1013,7 +1016,7 @@ class x_w2dynamics_config_parameters(MSection):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
     '''
     Section containing the various parameters that define the theory and the
     approximations (convergence, thresholds, etc.) behind the calculation.
@@ -1024,7 +1027,7 @@ class Method(simulation.method.Method):
     x_w2dynamics_config = SubSection(sub_section=x_w2dynamics_config_parameters.m_def, repeats=False)
 
 
-class ScfIteration(simulation.calculation.ScfIteration):
+class ScfIteration(runschema.calculation.ScfIteration):
     '''
     Every scf_iteration section represents a self-consistent field (SCF) iteration,
     and gives detailed information on the SCF procedure of the specified quantities.
@@ -1084,7 +1087,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
     x_w2dynamics_ineq = SubSection(sub_section=x_w2dynamics_quantities.m_def, repeats=True)
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 

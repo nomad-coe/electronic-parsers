@@ -25,10 +25,10 @@ from ase.data import chemical_symbols
 
 from nomad.parsing.file_parser import TextParser, Quantity, FileParser
 from nomad.units import ureg
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.method import Method
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.run import Run, Program, TimeRun
+from runschema.system import System, Atoms
+from runschema.method import Method
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, BandEnergies)
 from .metainfo.yambo import (
     x_yambo_dipoles, x_yambo_dynamic_dielectric_matrix_fragment, x_yambo_io,
@@ -461,20 +461,28 @@ class YamboParser:
         if source is None:
             return
 
-        method = self.archive.run[-1].m_create(Method) if target is None else target
+        if target is None:
+            method = Method()
+            self.archive.run[-1].method.append(method)
+        else:
+            method = target
 
-        section = method.m_create(self._module)
+        section = self._module()
+        section_def = method.m_def.all_sub_sections_by_section.get(self._module.m_def)[0]
+        method.m_add_sub_section(section_def, section)
 
         for input in source.get('input', []):
             parameters = {key.strip(): val for key, val in input.get('key_value', [])}
-            x_yambo_input = section.m_create(x_yambo_io, x_yambo_module.x_yambo_input)
+            x_yambo_input = x_yambo_io()
+            section.x_yambo_input.append(x_yambo_input)
             x_yambo_input.x_yambo_file = input.file
             x_yambo_input.x_yambo_sn = input.sn
             x_yambo_input.x_yambo_parameters = parameters
 
         for output in source.get('output', []):
             parameters = {key.strip(): val for key, val in output.get('key_value', [])}
-            x_yambo_output = section.m_create(x_yambo_io, x_yambo_module.x_yambo_output)
+            x_yambo_output = x_yambo_io()
+            section.x_yambo_output.append(x_yambo_output)
             x_yambo_output.x_yambo_file = output.file
             x_yambo_output.x_yambo_sn = output.sn
             x_yambo_output.x_yambo_parameters = parameters
@@ -487,7 +495,11 @@ class YamboParser:
         if source is None:
             return
 
-        calc = self.archive.run[-1].m_create(Calculation) if target is None else target
+        if target is None:
+            calc = Calculation()
+            self.archive.run[-1].calculation.append(calc)
+        else:
+            calc = target
         valence_conduction = source.get('valence_conduction', [
             source.get('valence', 0.), source.get('conduction', 0.)
         ])
@@ -501,12 +513,14 @@ class YamboParser:
             calc.x_yambo_empty_bands = [int(s) for s in states[-1]]
 
         if self.netcdf_parser.EIGENVALUES is not None:
-            eigenvalues = calc.m_create(BandEnergies)
+            eigenvalues = BandEnergies()
+            calc.eigenvalues.append(eigenvalues)
             eigenvalues.kpoints = np.transpose(self.netcdf_parser.get('K-POINTS'))
             eigenvalues.energies = self.netcdf_parser.EIGENVALUES * ureg.eV
 
         elif source.eigenenergies is not None:
-            eigenvalues = calc.m_create(BandEnergies)
+            eigenvalues = BandEnergies()
+            calc.eigenvalues.append(eigenvalues)
             eigenvalues.kpoints = source.eigenenergies.kpoints
             eigenvalues.kpoints_weights = source.eigenenergies.kpoints_weights
             # TODO deal with spin polarized data
@@ -515,7 +529,8 @@ class YamboParser:
                 eigenvalues.kpoints), np.size(energies) // len(eigenvalues.kpoints))) * ureg.eV
 
         if self.netcdf_parser.QP_E_Eo_Z is not None or self.netcdf_parser.QP_E is not None:
-            gw_band_energies = calc.m_create(BandEnergies)
+            gw_band_energies = BandEnergies()
+            calc.eigenvalues.append(gw_band_energies)
             n_spin = self.netcdf_parser.QP_table.shape[1] // 2
             gw_band_energies.kpoints = self.netcdf_parser.QP_kpts.T
             if self.netcdf_parser.QP_E_Eo_Z is not None:
@@ -531,7 +546,8 @@ class YamboParser:
             gw_band_energies.qp_linearization_prefactor = np.reshape(z, shape)
 
         elif source.qp_energy is not None:
-            gw_band_energies = calc.m_create(BandEnergies)
+            gw_band_energies = BandEnergies()
+            calc.eigenvalues.append(gw_band_energies)
             qp_energy = source.qp_energy
             gw_band_energies.kpoints = [q.kpoint for q in qp_energy]
             energies = np.transpose([q.band for q in qp_energy])
@@ -542,7 +558,11 @@ class YamboParser:
 
         if self.netcdf_parser.Sx_Vxc is not None or self.netcdf_parser.Sx is not None:
             n_spin = self.netcdf_parser.QP_table.shape[1] // 2
-            gw_band_energies = calc.eigenvalues[-1] if calc.eigenvalues else calc.m_create(BandEnergies)
+            if calc.eigenvalues:
+                gw_band_energies = calc.eigenvalues[-1]
+            else:
+                gw_band_energies = BandEnergies()
+                calc.eigenvalues.append(gw_band_energies)
             if self.netcdf_parser.Sx_Vxc is not None:
                 if self.netcdf_parser.Sx_Vxc.shape[0] % 8 == 0:
                     qp = self.netcdf_parser.Sx_Vxc.reshape(-1, 8).T
@@ -572,7 +592,8 @@ class YamboParser:
         # read structure data from netcdf input file
         self.netcdf_parser.mainfile = os.path.join(self.maindir, self.mainfile_parser.cpu_files_io.input.file)
         if self.netcdf_parser.mainfile is not None:
-            system = run.m_create(System)
+            system = System()
+            run.system.append(system)
             positions = self.netcdf_parser.get('ATOM_POS', [])
             n_atoms = self.netcdf_parser.N_ATOMS
             atom_numbers = np.hstack([[self.netcdf_parser.atomic_numbers[int(n)]] * int(
@@ -588,7 +609,8 @@ class YamboParser:
         self.parse_calculation(energies_occupations)
 
         # input parameters from mainfile
-        input = run.m_create(x_yambo_io)
+        input = x_yambo_io()
+        run.x_yambo_input = input
         input.x_yambo_file = self.mainfile_parser.cpu_files_io.input.file
         input.x_yambo_sn = self.mainfile_parser.cpu_files_io.input.sn
         parameters = {key.strip(): val for key, val in self.mainfile_parser.cpu_files_io.input.get('key_value', [])}
@@ -613,7 +635,8 @@ class YamboParser:
                 self.netcdf_parser.mainfile = os.path.join(path, filename)
                 if self.netcdf_parser.mainfile is None:
                     continue
-                fragment = ddm.m_create(x_yambo_dynamic_dielectric_matrix_fragment)
+                fragment = x_yambo_dynamic_dielectric_matrix_fragment()
+                ddm.x_yambo_fragment.append(fragment)
                 self.netcdf_parser.parse()
                 for key in self.netcdf_parser._keys:
                     val = self.netcdf_parser.get(key)
@@ -634,9 +657,12 @@ class YamboParser:
         calc = self.parse_calculation(source.hf_occupations)
 
         if source.corrections is not None:
-            calc = self.archive.run[-1].m_create(Calculation) if calc is None else calc
+            if calc is None:
+                calc = Calculation()
+                self.archive.run[-1].calculation.append(calc)
             if len(calc.x_yambo_local_xc_nonlocal_fock_bandenergies) == 0:
-                band_energy = calc.m_create(x_yambo_local_xc_nonlocal_fock_bandenergies)
+                band_energy = x_yambo_local_xc_nonlocal_fock_bandenergies()
+                calc.x_yambo_local_xc_nonlocal_fock_bandenergies.append(band_energy)
                 sx, vxc = np.transpose([c.band for c in source.corrections])
                 band_energy.x_yambo_sx = np.reshape(sx, (1, *np.shape(sx.T))) * ureg.eV
                 band_energy.x_yambo_vxc = np.reshape(vxc, (1, *np.shape(vxc.T))) * ureg.eV
@@ -653,9 +679,12 @@ class YamboParser:
         self.parse_method(source)
         calc = self.parse_calculation(source.hf_occupations)
         if source.xc_hf_dft is not None:
-            calc = self.archive.run[-1].m_create(Calculation) if calc is None else calc
+            if calc is None:
+                calc = Calculation()
+                self.archive.run[-1].calculation.append(calc)
             if len(calc.x_yambo_bare_xc_bandenergies) == 0:
-                band_energy = calc.m_create(x_yambo_bare_xc_bandenergies)
+                band_energy = x_yambo_bare_xc_bandenergies()
+                calc.x_yambo_bare_xc_bandenergies.append(band_energy)
                 hf, dft = np.transpose([h.band for h in source.xc_hf_dft])
                 hf, dft = hf.T, dft.T
                 band_energy.x_yambo_hf = np.reshape(hf, (1, *np.shape(hf))) * ureg.eV
@@ -693,7 +722,8 @@ class YamboParser:
 
         self.init_parser()
 
-        run = self.archive.m_create(Run)
+        run = Run()
+        self.archive.run.append(run)
         run.program = Program(
             name='YAMBO', version=self.mainfile_parser.get('version', ''),
             x_yambo_build=self.mainfile_parser.get('build', ''),

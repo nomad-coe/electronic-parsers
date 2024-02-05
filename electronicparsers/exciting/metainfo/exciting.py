@@ -22,7 +22,10 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference
 )
-from nomad.datamodel.metainfo import simulation
+import runschema.run  # pylint: disable=unused-import
+import runschema.calculation  # pylint: disable=unused-import
+import runschema.method  # pylint: disable=unused-import
+import runschema.system  # pylint: disable=unused-import
 
 
 m_package = Package()
@@ -704,7 +707,7 @@ class x_exciting_scrcoul_parameters(MSection):
         ''')
 
 
-class GW(simulation.method.GW):
+class GW(runschema.method.GW):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -992,7 +995,7 @@ class x_exciting_loss_calculation(MSection):
         ''')
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -1462,7 +1465,7 @@ class Calculation(simulation.calculation.Calculation):
     x_exciting_loss = SubSection(sub_section=x_exciting_loss_calculation.m_def, repeats=False)
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -1847,7 +1850,7 @@ class x_exciting_section_MT_moment_atom(MSection):
         ''')
 
 
-class ScfIteration(simulation.calculation.ScfIteration):
+class ScfIteration(runschema.calculation.ScfIteration):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2092,7 +2095,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         repeats=True)
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -2544,7 +2547,7 @@ class Method(simulation.method.Method):
         ''')
 
 
-class Run(simulation.run.Run):
+class Run(runschema.run.Run):
 
     m_def = Section(validate=False, extends_base_section=True)
 

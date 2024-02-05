@@ -21,7 +21,10 @@ import numpy as np
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, Package, Quantity, Section, SubSection, JSON
 )
-from nomad.datamodel.metainfo import simulation
+import runschema.run  # pylint: disable=unused-import
+import runschema.calculation  # pylint: disable=unused-import
+import runschema.method  # pylint: disable=unused-import
+import runschema.system  # pylint: disable=unused-import
 
 
 m_package = Package()
@@ -53,7 +56,7 @@ class x_edmft_method_parameters(MSection):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
     '''
     Section containing the various parameters that define the theory and the
     approximations (convergence, thresholds, etc.) behind the calculation.
@@ -64,7 +67,7 @@ class Method(simulation.method.Method):
     x_edmft_method = SubSection(sub_section=x_edmft_method_parameters.m_def, repeats=False)
 
 
-class GreensFunctions(simulation.calculation.GreensFunctions):
+class GreensFunctions(runschema.calculation.GreensFunctions):
     '''
     Section containing the code-specific output GreensFunction quantities.
     '''

@@ -23,16 +23,16 @@ from datetime import datetime
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import (
+from runschema.run import (
     Run, Program, TimeRun
 )
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.method import (
     Method, DFT, XCFunctional, Functional, BasisSet, BasisSetContainer,
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, ScfIteration, Forces, ForcesEntry, Stress,
     StressEntry, Multipoles, MultipolesEntry, Charges, ChargesValue
 )
@@ -315,7 +315,8 @@ class SiestaParser:
         self.maindir = os.path.dirname(self.filepath)
         self.init_parser()
 
-        sec_run = archive.m_create(Run)
+        sec_run = Run()
+        archive.run.append(sec_run)
         header = self.out_parser.get('header')
         if header is not None:
             sec_run.program = Program(name='Siesta', version=header.program_version)
@@ -340,7 +341,8 @@ class SiestaParser:
         if self.out_parser.input_data_file is not None:
             self.fdf_parser._file_handler = self.out_parser.input_data_file.encode()
 
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         parameters = self.fdf_parser.get('parameters')
         sec_method.x_siesta_input_parameters = parameters
         sec_method.x_siesta_simulation_parameters = {
@@ -370,7 +372,8 @@ class SiestaParser:
         # parse atomic basis info
 
         def parse_system(source):
-            sec_system = sec_run.m_create(System)
+            sec_system = System()
+            sec_run.system.append(sec_system)
             lattice_vectors = source.get('lattice_vectors')
             atoms = source.get('atoms')
             source = atoms if atoms is not None else source
@@ -390,9 +393,11 @@ class SiestaParser:
             return sec_system
 
         def parse_calculation(source):
-            sec_calc = sec_run.m_create(Calculation)
+            sec_calc = Calculation()
+            sec_run.calculation.append(sec_calc)
             # energy
-            sec_energy = sec_calc.m_create(Energy)
+            sec_energy = Energy()
+            sec_calc.energy = sec_energy
             for key, val in source.get('energy', {}).get('contribution', []):
                 if key in self._metainfo_map:
                     setattr(sec_energy, self._metainfo_map[key], EnergyEntry(value=val * ureg.eV))
@@ -411,13 +416,15 @@ class SiestaParser:
 
             # dipoles
             if source.electric_dipole is not None:
-                sec_multipoles = sec_calc.m_create(Multipoles)
+                sec_multipoles = Multipoles()
+                sec_calc.multipoles.append(sec_multipoles)
                 sec_multipoles.kind = 'electric'
                 sec_multipoles.dipole = MultipolesEntry(total=source.electric_dipole)
 
             # multipoles
             if source.mulliken is not None:
-                sec_charges = sec_calc.m_create(Charges)
+                sec_charges = Charges()
+                sec_calc.charges.append(sec_charges)
                 atoms = source.mulliken.get('atom', [])
                 spin = source.mulliken.get('spin', 1)
                 n_atoms = len(atoms) // spin
@@ -444,7 +451,8 @@ class SiestaParser:
             # TODO parse more properties
             # scf steps
             for step in source.get('scf', {}).get('step', []):
-                sec_scf = sec_calc.m_create(ScfIteration)
+                sec_scf = ScfIteration()
+                sec_calc.scf_iteration.append(sec_scf)
                 sec_scf.energy = Energy(
                     total=EnergyEntry(value=step[1] * ureg.eV), fermi=step[4] * ureg.eV,
                     free=EnergyEntry(value=step[2] * ureg.eV))

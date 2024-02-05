@@ -22,7 +22,10 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference
 )
-from nomad.datamodel.metainfo import simulation
+import runschema.run  # pylint: disable=unused-import
+import runschema.calculation  # pylint: disable=unused-import
+import runschema.method  # pylint: disable=unused-import
+import runschema.system  # pylint: disable=unused-import
 
 
 m_package = Package()
@@ -58,7 +61,7 @@ class x_dmol3_section_mulliken_population(MSection):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -336,7 +339,7 @@ class Method(simulation.method.Method):
         ''')
 
 
-class ScfIteration(simulation.calculation.ScfIteration):
+class ScfIteration(runschema.calculation.ScfIteration):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -370,7 +373,7 @@ class ScfIteration(simulation.calculation.ScfIteration):
         ''')
 
 
-class BandEnergies(simulation.calculation.BandEnergies):
+class BandEnergies(runschema.calculation.BandEnergies):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -390,7 +393,7 @@ class BandEnergies(simulation.calculation.BandEnergies):
         ''')
 
 
-class System(simulation.system.System):
+class System(runschema.system.System):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -426,7 +429,7 @@ class System(simulation.system.System):
         ''')
 
 
-class Program(simulation.run.Program):
+class Program(runschema.run.Program):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -438,18 +441,18 @@ class Program(simulation.run.Program):
         ''')
 
 
-class Energy(simulation.calculation.Energy):
+class Energy(runschema.calculation.Energy):
 
     m_def = Section(validate=False, extends_base_section=True)
 
     x_dmol3_binding = SubSection(
-        sub_section=simulation.calculation.EnergyEntry.m_def,
+        sub_section=runschema.calculation.EnergyEntry.m_def,
         description='''
         Binding energy.
         ''')
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -574,7 +577,7 @@ class Calculation(simulation.calculation.Calculation):
         repeats=True)
 
 
-class VibrationalFrequencies(simulation.calculation.VibrationalFrequencies):
+class VibrationalFrequencies(runschema.calculation.VibrationalFrequencies):
 
     m_def = Section(validate=False, extends_base_section=True)
 

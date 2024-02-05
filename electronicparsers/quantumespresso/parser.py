@@ -24,8 +24,8 @@ import os
 
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program, TimeRun
+from runschema.method import (
     Electronic,
     Method,
     DFT,
@@ -37,8 +37,8 @@ from nomad.datamodel.metainfo.simulation.method import (
     AtomParameters,
     KMesh,
 )
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.system import System, Atoms
+from runschema.calculation import (
     Calculation,
     Energy,
     EnergyEntry,
@@ -2794,11 +2794,14 @@ class QuantumEspressoParser:
         initial_time = (
             sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
         )
-        sec_scc = sec_run.m_create(Calculation)
+
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
 
         # energies
-        energies = calculation.get("energies", {})
-        sec_energy = sec_scc.m_create(Energy)
+        energies = calculation.get('energies', {})
+        sec_energy = Energy()
+        sec_scc.energy = sec_energy
         for key, val in energies.items():
             if val is None:
                 continue
@@ -2834,8 +2837,9 @@ class QuantumEspressoParser:
             sec_scc.x_qe_dispersion_force_total = total_force.to("newton").magnitude
 
         # stress
-        sec_thermo = sec_scc.m_create(Thermodynamics)
-        stress = calculation.get("stress")
+        sec_thermo = Thermodynamics()
+        sec_scc.thermodynamics.append(sec_thermo)
+        stress = calculation.get('stress')
         if stress is not None:
             sec_thermo.pressure = stress[0].to("pascal")
             sec_scc.stress = Stress(total=StressEntry(value=stress[1]))
@@ -2843,7 +2847,8 @@ class QuantumEspressoParser:
         # eigenvalues
         eigenvalues = calculation.get("band_energies")
         if eigenvalues is not None:
-            sec_eigenvalues = sec_scc.m_create(BandEnergies)
+            sec_eigenvalues = BandEnergies()
+            sec_scc.eigenvalues.append(sec_eigenvalues)
             n_spin = run.get_number_of_spin_channels()
             k_points = calculation.get("k_points")
             n_eigs = len(eigenvalues[0])
@@ -2940,7 +2945,9 @@ class QuantumEspressoParser:
             else:
                 metainfo_ext = "_bands"
                 diagonalization_section = x_qe_section_bands_diagonalization
-            sec_diagonalization = target.m_create(diagonalization_section)
+            sec_diagonalization = diagonalization_section()
+            sec_def = target.m_def.all_sub_sections_by_section.get(diagonalization_section.m_def)[0]
+            target.m_add_sub_section(sec_def, sec_diagonalization)
             for key, val in diagonalization.items():
                 if val is None:
                     continue
@@ -2968,10 +2975,12 @@ class QuantumEspressoParser:
                 if sec_scc.scf_iteration
                 else initial_time
             )
-            sec_scf_iteration = sec_scc.m_create(ScfIteration)
+            sec_scf_iteration = ScfIteration()
+            sec_scc.scf_iteration.append(sec_scf_iteration)
 
-            energies = iteration.get("energies", {})
-            sec_scf_energy = sec_scf_iteration.m_create(Energy)
+            energies = iteration.get('energies', {})
+            sec_scf_energy = Energy()
+            sec_scf_iteration.energy = sec_scf_energy
             for key, val in energies.items():
                 if val is None:
                     continue
@@ -3061,8 +3070,10 @@ class QuantumEspressoParser:
         if labels_positions is None:
             return
 
-        sec_system = sec_run.m_create(System)
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_system = System()
+        sec_run.system.append(sec_system)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
         sec_atoms.labels = [
             self._re_label.match(label).group(1) for label in labels_positions[0]
         ]
@@ -3216,20 +3227,24 @@ class QuantumEspressoParser:
                 dos = np.reshape(data[1], (nspin, len(energies[0])))
                 integrated = np.reshape(data[2], (nspin, len(energies[0])))
                 for spin in range(nspin):
-                    sec_dos = sec_run.calculation[-1].m_create(
-                        Dos, Calculation.dos_electronic
-                    )
+                    sec_dos = Dos()
+                    sec_run.calculation[-1].dos_electronic.append(sec_dos)
                     sec_dos.spin_channel = spin if nspin == 2 else None
                     sec_dos.energies = energies[0] * ureg.eV
-                    sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+                    sec_dos_total = DosValues()
+                    sec_dos.total.append(sec_dos_total)
                     sec_dos_total.value = dos[spin] / ureg.eV
                     sec_dos_total.value_integrated = integrated[spin]
 
     def parse_method(self, run):
-        sec_method = self.archive.run[-1].m_create(Method)
-        sec_kmesh = sec_method.m_create(KMesh)
-        sec_dft = sec_method.m_create(DFT)
-        sec_electronic = sec_method.m_create(Electronic)
+        sec_method = Method()
+        self.archive.run[-1].method.append(sec_method)
+        sec_kmesh = KMesh()
+        sec_method.k_mesh = sec_kmesh
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
+        sec_electronic = Electronic()
+        sec_method.electronic = sec_electronic
 
         sec_kmesh.n_points = run.get_header("k_points", {}).get("nk", 1)
         sec_kmesh.points = run.get_header("k_points", {}).get("points", None)
@@ -3253,7 +3268,8 @@ class QuantumEspressoParser:
                 continue
             setattr(sec_method, key, val)
 
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         for xc_functional in xc_functionals:
             sec_functional = Functional()
             for key, val in xc_functional.items():
@@ -3332,8 +3348,9 @@ class QuantumEspressoParser:
             sec_method.x_qe_potential_mixing_iterations = mixing_scheme[0]
             sec_method.x_qe_potential_mixing_scheme = mixing_scheme[1]
 
-        sec_smearing = sec_electronic.m_create(Smearing)
-        smearing = run.get_header("k_points", {}).get("smearing", None)
+        sec_smearing = Smearing()
+        sec_electronic.smearing = sec_smearing
+        smearing = run.get_header('k_points', {}).get('smearing', None)
         if smearing in self.smearing_map:
             sec_smearing.kind = self.smearing_map[smearing]
 
@@ -3417,7 +3434,8 @@ class QuantumEspressoParser:
         ]
 
         for pp in pseudopotential:
-            sec_method_atom_kind = sec_method.m_create(AtomParameters)
+            sec_method_atom_kind = AtomParameters()
+            sec_method.atom_parameters.append(sec_method_atom_kind)
             for key, val in pp.items():
                 if val is None:
                     continue
@@ -3485,9 +3503,10 @@ class QuantumEspressoParser:
         # TODO include x_qe_warning
         for run in self.out_parser.get("run", []):
             self.sampling_method = None
-            sec_run = self.archive.m_create(Run)
-            sec_run.program = Program(name="Quantum Espresso")
-            name_version = run.get("program_name_version")
+            sec_run = Run()
+            self.archive.run.append(sec_run)
+            sec_run.program = Program(name='Quantum Espresso')
+            name_version = run.get('program_name_version')
             if name_version is not None:
                 sec_run.x_qe_program_name = name_version[0]
                 sec_run.program.version = " ".join(name_version[1:]).lstrip("v.")
@@ -3501,7 +3520,8 @@ class QuantumEspressoParser:
                     date_start=(date_time - datetime(1970, 1, 1)).total_seconds()
                 )
 
-            sec_compile_options = sec_run.m_create(x_qe_section_compile_options)
+            sec_compile_options = x_qe_section_compile_options()
+            sec_run.x_qe_section_compile_options.append(sec_compile_options)
             for key in [
                 "compile_parallel_version",
                 "ntypx",
@@ -3520,8 +3540,9 @@ class QuantumEspressoParser:
                 val = run.get(key)
                 if val is not None:
                     if sec_parallel is None:
-                        sec_parallel = sec_run.m_create(x_qe_section_parallel)
-                    setattr(sec_parallel, "x_qe_%s" % key, val)
+                        sec_parallel = x_qe_section_parallel()
+                        sec_run.x_qe_section_parallel.append(sec_parallel)
+                    setattr(sec_parallel, 'x_qe_%s' % key, val)
 
             for key in ["input_filename", "input_positions_cell_dirname"]:
                 val = run.get(key)

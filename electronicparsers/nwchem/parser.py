@@ -23,15 +23,15 @@ import re
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program
+from runschema.method import (
     Electronic, Method, DFT, XCFunctional, Functional, BasisSet, Scf,
     BasisSetContainer,
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, ScfIteration
 )
 from simulationworkflowschema import (
@@ -297,7 +297,8 @@ class NWChemParser:
         self.out_parser.logger = self.logger
 
     def parse_system(self, source):
-        sec_system = self.archive.run[0].m_create(System)
+        sec_system = System()
+        self.archive.run[0].system.append(sec_system)
 
         labels, positions = source.get('labels_positions', [[], []])
         if len(positions) == 0:
@@ -310,7 +311,8 @@ class NWChemParser:
         if len(positions) == 0:
             labels, positions = self.out_parser.get('input', {}).get('labels_positions', [[], []])
 
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
         sec_atoms.labels = labels
         sec_atoms.positions = positions
 
@@ -326,14 +328,16 @@ class NWChemParser:
     def parse_scc(self, source):
         sec_run = self.archive.run[0]
         initial_time = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
 
         # we only read the results from the last dft and gradients module
         dft = source.get('dft', [{}])[-1]
         dft_gradient = source.get('dft_gradient', [{}])[-1]
 
         # energies
-        sec_energy = sec_scc.m_create(Energy)
+        sec_energy = Energy()
+        sec_scc.energy = sec_energy
         for key, val in source.get('energy', dft.get('energy', [])):
             key = self._metainfo_map.get(key)
             if key is not None:
@@ -363,7 +367,8 @@ class NWChemParser:
         # md properties
         qmd_info = dft.get('qmd_info')
         if qmd_info is not None:
-            sec_qmd = sec_scc.m_create(x_nwchem_section_qmd_step)
+            sec_qmd = x_nwchem_section_qmd_step()
+            sec_scc.x_nwchem_section_qmd_step.append(sec_qmd)
             for key, val in qmd_info:
                 val = val.split()
                 if key == 'Time elapsed (fs)':
@@ -386,8 +391,10 @@ class NWChemParser:
         if scf is not None:
             for iteration in scf.get('iteration', []):
                 scf_initial_time = sec_scc.scf_iteration[-1].time_physical if sec_scc.scf_iteration else initial_time
-                sec_scf = sec_scc.m_create(ScfIteration)
-                sec_scf_energy = sec_scf.m_create(Energy)
+                sec_scf = ScfIteration()
+                sec_scc.scf_iteration.append(sec_scf)
+                sec_scf_energy = Energy()
+                sec_scf.energy = sec_scf_energy
                 iteration = [fix_dfloat(i) if isinstance(i, str) else i for i in iteration]
                 sec_scf_energy.total = EnergyEntry(value=iteration[0] * ureg.hartree)
                 sec_scf_energy.change = iteration[1] * ureg.hartree
@@ -402,7 +409,8 @@ class NWChemParser:
         return sec_scc
 
     def parse_method(self, source):
-        sec_method = self.archive.run[0].m_create(Method)
+        sec_method = Method()
+        self.archive.run[0].method.append(sec_method)
 
         def resolve_functional_combination(functionals):
             names = []
@@ -421,14 +429,17 @@ class NWChemParser:
                         names.append([name, None])
             return names
 
-        sec_dft = sec_method.m_create(DFT)
-        sec_electronic = sec_method.m_create(Electronic)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
+        sec_electronic = Electronic()
+        sec_method.electronic = sec_electronic
         sec_electronic.method = 'DFT'
 
         dft = source.get('dft', [{}])[-1]
 
         general_info = dft.get('general_info', {})
-        sec_scf = sec_method.m_create(Scf)
+        sec_scf = Scf()
+        sec_method.scf = sec_scf
         for key, val in general_info.get('info', []):
             key = self._metainfo_map.get(key)
             if key is None:
@@ -442,7 +453,8 @@ class NWChemParser:
                 setattr(sec_method, key, val)
 
         xc_functionals = dft.get('xc_info', {}).get('functional', [])
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         for name, weight in resolve_functional_combination(xc_functionals):
             functional = Functional(name=name)
             if weight is not None:
@@ -550,12 +562,14 @@ class NWChemParser:
 
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
 
         sec_run.program = Program(name='NWChem', version=self.out_parser.get('version', ''))
 
         # job information
-        sec_info = sec_run.m_create(x_nwchem_section_start_information)
+        sec_info = x_nwchem_section_start_information()
+        sec_run.x_nwchem_section_start_information.append(sec_info)
         for key, val in self.out_parser.get('job_info', {}).get('info', []):
             if val is None:
                 continue

@@ -21,13 +21,16 @@ import numpy as np
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, Package, Quantity, Section, SubSection, JSON, HDF5Reference
 )
-from nomad.datamodel.metainfo import simulation
+import runschema.run  # pylint: disable=unused-import
+import runschema.calculation  # pylint: disable=unused-import
+import runschema.method  # pylint: disable=unused-import
+import runschema.system  # pylint: disable=unused-import
 
 
 m_package = Package()
 
 
-class Method(simulation.run.Method):
+class Method(runschema.run.Method):
     '''
     Contains the specifications of the method.
     '''
@@ -80,7 +83,7 @@ class Method(simulation.run.Method):
         ''')
 
 
-class Program(simulation.run.Program):
+class Program(runschema.run.Program):
     '''
     Contains the specifications of the program.
     '''
@@ -204,7 +207,7 @@ class x_soliddmft_observables_parameters(MSection):
         ''')
 
 
-class ScfIteration(simulation.calculation.ScfIteration):
+class ScfIteration(runschema.calculation.ScfIteration):
     '''
     Every scf_iteration section represents a self-consistent field (SCF) iteration,
     and gives detailed information on the SCF procedure of the specified quantities.

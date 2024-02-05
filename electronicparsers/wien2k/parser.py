@@ -27,15 +27,15 @@ from ase import Atoms
 from nomad.units import ureg
 from nomad.parsing.file_parser.file_parser import FileParser
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program, TimeRun
+from runschema.method import (
     Electronic, Method, DFT, Smearing, XCFunctional, Functional, KMesh, BasisSet,
     BasisSetContainer, OrbitalAPW
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Forces, ForcesEntry, ScfIteration, Energy, EnergyEntry, BandEnergies, Dos,
     DosValues
 )
@@ -614,11 +614,14 @@ class Wien2kParser:
         if self.out_parser.get('iteration') is None:
             return
 
-        sec_scc = self.archive.run[0].m_create(Calculation)
+        sec_scc = Calculation()
+        self.archive.run[0].calculation.append(sec_scc)
 
         for iteration in self.out_parser.get('iteration'):
-            sec_scf = sec_scc.m_create(ScfIteration)
-            sec_scf_energy = sec_scf.m_create(Energy)
+            sec_scf = ScfIteration()
+            sec_scc.scf_iteration.append(sec_scf)
+            sec_scf_energy = Energy()
+            sec_scf.energy = sec_scf_energy
             for key in iteration.keys():
                 if iteration.get(key) is None:
                     continue
@@ -680,7 +683,8 @@ class Wien2kParser:
         # eigenvalues
         eigenvalues = self.get_eigenvalues()
         if eigenvalues is not None:
-            sec_eigenvalues = sec_scc.m_create(BandEnergies)
+            sec_eigenvalues = BandEnergies()
+            sec_scc.eigenvalues.append(sec_eigenvalues)
             sec_eigenvalues.kpoints = eigenvalues[1]
             sec_eigenvalues.kpoints_multiplicities = eigenvalues[2]
             sec_eigenvalues.energies = eigenvalues[0] * ureg.rydberg
@@ -692,10 +696,12 @@ class Wien2kParser:
             if len(dos[1]) > 0:
                 n_spin_channels = len(dos[1])
                 for spin in range(n_spin_channels):
-                    sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                    sec_dos = Dos()
+                    sec_scc.dos_electronic.append(sec_dos)
                     sec_dos.spin_channel = spin if n_spin_channels == 2 else None
                     sec_dos.energies = dos[0] * ureg.rydberg
-                    sec_dos_total = sec_dos.m_create(DosValues, Dos.total)
+                    sec_dos_total = DosValues()
+                    sec_dos.total.append(sec_dos_total)
                     sec_dos_total.value = dos[1][spin] * (1 / ureg.rydberg)
 
             # projected dos
@@ -709,22 +715,27 @@ class Wien2kParser:
                             if sec_scc.dos_electronic is not None:
                                 sec_dos = sec_scc.dos_electronic[spin]
                             else:
-                                sec_dos = sec_scc.m_create(Dos, Calculation.dos_electronic)
+                                sec_dos = Dos()
+                                sec_scc.dos_electronic.append(sec_dos)
                                 sec_dos.spin_channel = spin if len(dos[2][species]) == 2 else None
-                            sec_dos_species = sec_dos.m_create(DosValues, Dos.species_projected)
+                            sec_dos_species = DosValues()
+                            sec_dos.species_projected.append(sec_dos_species)
                             sec_dos_species.atom_label = labels[species]
                             sec_dos_species.value = dos[2][species][spin] * (1 / ureg.rydberg)
 
     def parse_system(self):
-        sec_system = self.archive.run[0].m_create(System)
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_system = System()
+        self.archive.run[0].system.append(sec_system)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
 
         self.struct_parser.mainfile = self.get_wien2k_file('struct')
         for key, val in self.struct_parser.get('lattice', {}).items():
             setattr(sec_system, 'x_wien2k_%s' % key, val)
 
         for atom in self.struct_parser.get('atom', []):
-            sec_atom = sec_system.m_create(x_wien2k_section_equiv_atoms)
+            sec_atom = x_wien2k_section_equiv_atoms()
+            sec_system.x_wien2k_section_equiv_atoms.append(sec_atom)
             for key, val in atom.items():
                 setattr(sec_atom, 'x_wien2k_%s' % key, val)
 
@@ -738,9 +749,12 @@ class Wien2kParser:
         sec_atoms.periodic = atoms.get_pbc()
 
     def parse_method(self):
-        sec_method = self.archive.run[0].m_create(Method)
-        sec_dft = sec_method.m_create(DFT)
-        sec_electronic = sec_method.m_create(Electronic)
+        sec_method = Method()
+        self.archive.run[0].method.append(sec_method)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
+        sec_electronic = Electronic()
+        sec_method.electronic = sec_electronic
         sec_electronic.method = 'DFT'
         sec_electronic.n_spin_channels = self.get_nspin()
 
@@ -750,7 +764,8 @@ class Wien2kParser:
         # better to read it from scf?
         xc_functional = self.in0_parser.get('xc_functional', None)
         xc_functional = xc_functional if isinstance(xc_functional, list) else [xc_functional]
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         for name in xc_functional:
             functionals = self._xc_functional_map.get(name)
             if functionals is None:
@@ -795,7 +810,8 @@ class Wien2kParser:
 
         smearing, width = self.in2_parser.get('smearing', [None, None])
         if smearing is not None:
-            sec_smearing = sec_electronic.m_create(Smearing)
+            sec_smearing = Smearing()
+            sec_electronic.smearing = sec_smearing
             if smearing.startswith('GAUSS'):
                 smearing = 'gaussian'
             elif smearing.startswith('TEMP'):
@@ -808,7 +824,8 @@ class Wien2kParser:
         # read kpoints from klist
         kpoints = self.get_kpoints()
         if kpoints is not None:
-            sec_k_mesh = sec_method.m_create(KMesh)
+            sec_k_mesh = KMesh()
+            sec_method.k_mesh = sec_k_mesh
             sec_k_mesh.points = kpoints[0]
             sec_k_mesh.weights = kpoints[1]
 
@@ -864,7 +881,8 @@ class Wien2kParser:
 
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
 
         sec_run.program = Program(name='WIEN2k', version=self.out_parser.get('version', ''))
         start_date = self.out_parser.get('start_date')

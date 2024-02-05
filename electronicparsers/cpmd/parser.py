@@ -25,14 +25,14 @@ from datetime import datetime
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.run import Run, Program, TimeRun
+from runschema.calculation import (
     Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.method import (
     Method, BasisSet, BasisSetContainer
 )
 from simulationworkflowschema import (
@@ -243,14 +243,16 @@ class CPMDParser:
 
         self.init_parser()
 
-        sec_run = archive.m_create(Run)
+        sec_run = Run()
+        archive.run.append(sec_run)
         header = self.mainfile_parser.get('header', {})
         sec_run.program = Program(version=header.get('program_version'))
         if header.get('date_start') is not None:
             sec_run.time_run = TimeRun(date_start=datetime.strptime(
                 header.get('date_start'), '%Y-%m-%d %H:%M:%S.%f').timestamp())
 
-        sec_start_info = sec_run.m_create(x_cpmd_section_start_information)
+        sec_start_info = x_cpmd_section_start_information()
+        sec_run.x_cpmd_section_start_information.append(sec_start_info)
         for key, val in header.items():
             if key.startswith('x_cpmd'):
                 setattr(sec_start_info, key, val)
@@ -259,12 +261,14 @@ class CPMDParser:
             if source.atom_coordinates_forces is None:
                 return
 
-            sec_system = sec_run.m_create(System)
+            sec_system = System()
+            sec_run.system.append(sec_system)
             sec_system.atoms = Atoms(
                 labels=[val[1] for val in source.atom_coordinates_forces],
                 positions=np.array([val[2:5] for val in source.atom_coordinates_forces]) * ureg.bohr
             )
-            sec_supercell = sec_system.m_create(x_cpmd_section_supercell)
+            sec_supercell = x_cpmd_section_supercell()
+            sec_system.x_cpmd_section_supercell.append(sec_supercell)
             for key, val in self.mainfile_parser.get('supercell', {}).items():
                 if key == 'lattice_vectors':
                     sec_system.atoms.lattice_vectors = val * ureg.bohr
@@ -275,17 +279,20 @@ class CPMDParser:
 
         def parse_calculation(source):
             time_initial = sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
-            sec_calc = sec_run.m_create(Calculation)
+            sec_calc = Calculation()
+            sec_run.calculation.append(sec_calc)
 
             if source.energies is not None:
-                sec_energy = sec_calc.m_create(Energy)
+                sec_energy = Energy()
+                sec_calc.energy = sec_energy
                 for key, val in source.energies.items():
                     if key == 'kinetic':
                         sec_energy.total.kinetic = val
                     setattr(sec_energy, key, EnergyEntry(value=val))
 
             for n, scf in enumerate(source.get('scf', [])):
-                sec_scf = sec_calc.m_create(ScfIteration)
+                sec_scf = ScfIteration()
+                sec_calc.scf_iteration.append(sec_scf)
                 sec_scf.time_calculation = scf[-1] * ureg.s
                 sec_scf.time_physical = (sec_calc.scf_iteration[n - 1].time_physical if n else time_initial) + sec_scf.time_calculation
                 sec_scf.energy = Energy(
@@ -333,11 +340,12 @@ class CPMDParser:
         elif self.mainfile_parser.molecular_dynamics is not None:
             workflow = MolecularDynamics(method=MolecularDynamicsMethod())
             workflow.method.thermodynamic_ensemble = resolve_ensemble_type()
-            sec_averaged = workflow.m_create(x_cpmd_section_md_averaged_quantities)
+            sec_averaged = x_cpmd_section_md_averaged_quantities()
+            workflow.x_cpmd_section_md_averaged_quantities.append(sec_averaged)
             for value in self.mainfile_parser.molecular_dynamics.get('averaged', []):
                 name = '_'.join(value[:-2]).lower()
-                setattr(sec_averaged, f'x_cpmd_{name}_mean', value[-2])
-                setattr(sec_averaged, f'x_cpmd_{name}_std', value[-1])
+                sec_averaged.m_set(sec_averaged.m_get_quantity_definition(f'x_cpmd_{name}_mean'), value[-2])
+                sec_averaged.m_set(sec_averaged.m_get_quantity_definition(f'x_cpmd_{name}_std'), value[-1])
 
             # TODO read trajectory from other file formats dcd
             # read atom positions and velocities from (F)TRAJECTORY
@@ -408,7 +416,8 @@ class CPMDParser:
             lattice_vectors = self.mainfile_parser.get('supercell', {}).get('lattice_vectors')
             lattice_vectors = lattice_vectors * ureg.bohr if lattice_vectors else lattice_vectors
             for n_frame in range(len(trajectory)):
-                sec_system = sec_run.m_create(System)
+                sec_system = System()
+                sec_run.system.append(sec_system)
                 sec_system.atoms = Atoms(
                     labels=[atom[1] for atom in self.mainfile_parser.get('atoms', [])],
                     positions=trajectory[n_frame, :, 0, :] * ureg.bohr,
@@ -419,7 +428,8 @@ class CPMDParser:
                     sec_system.atoms.velocities = trajectory[n_frame, :, 1, :] * ureg.bohr / (ureg.dirac_constant / ureg.hartree)
 
                 time_initial = sec_run.calculation[-1].time_physical if n_frame else 0 * ureg.s
-                sec_calc = sec_run.m_create(Calculation)
+                sec_calc = Calculation()
+                sec_run.calculation.append(sec_calc)
                 if len(trajectory[n_frame][0]) > 2:
                     sec_calc.forces = trajectory[n_frame, :, 1, :] * ureg.hartree / ureg.bohr
 
@@ -433,7 +443,8 @@ class CPMDParser:
                             break
                 sec_calc.time_physical = sec_calc.time_calculation + time_initial
 
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         cutoff = self.mainfile_parser.get('supercell', {}).get(
             'x_cpmd_wave_function_cutoff')
         if cutoff is not None:

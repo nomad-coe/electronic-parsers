@@ -28,14 +28,14 @@ except Exception:
     pass
 
 from nomad.units import ureg
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.run import Run, Program
+from runschema.method import (
     Method, DFT, XCFunctional, Functional, Electronic, Scf, BasisSet, BasisSetContainer
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, ScfIteration
 )
 
@@ -186,7 +186,8 @@ class BigDFTParser:
         return default
 
     def parse_method(self):
-        sec_method = self.archive.run[-1].m_create(Method)
+        sec_method = Method()
+        self.archive.run[-1].method.append(sec_method)
         sec_method.electrons_representation = [
             BasisSetContainer(
                 type='real-space grid',
@@ -196,10 +197,12 @@ class BigDFTParser:
                 ]
             )
         ]
-        sec_dft = sec_method.m_create(DFT)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
 
         data = self._extract('dft', self.yaml_dict, {})
-        sec_electronic = sec_method.m_create(Electronic)
+        sec_electronic = Electronic()
+        sec_method.electronic = sec_electronic
         sec_electronic.charge = self._extract('qcharge', data, 0)
         sec_electronic.n_spin_channels = self._extract('nspin', data, 1)
         sec_method.scf = Scf(n_max_iteration=self._extract('itermax', data, 0))
@@ -215,7 +218,8 @@ class BigDFTParser:
             xc_functionals = self.xc_mapping.get(xc_id, [])
 
         xc_functionals = [f for f in xc_functionals if f is not None]
-        sec_xc_functional = sec_dft.m_create(XCFunctional)
+        sec_xc_functional = XCFunctional()
+        sec_dft.xc_functional = sec_xc_functional
         for functional in xc_functionals:
             if '_X_' in functional:
                 sec_xc_functional.exchange.append(Functional(name=functional))
@@ -226,7 +230,8 @@ class BigDFTParser:
         sec_xc_functional.name = '_'.join(xc_functionals)
 
     def parse_system(self):
-        sec_system = self.archive.run[-1].m_create(System)
+        sec_system = System()
+        self.archive.run[-1].system.append(sec_system)
 
         data = self._extract('Atomic structure', self.yaml_dict, {})
         labels = []
@@ -238,7 +243,8 @@ class BigDFTParser:
                     labels.append(label)
                     positions.append(position)
 
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
         if labels:
             sec_atoms.positions = positions * ureg.angstrom
             sec_atoms.labels = labels
@@ -263,15 +269,18 @@ class BigDFTParser:
             sec_atoms.periodic = [True, False, True]
 
     def parse_scc(self):
-        sec_scc = self.archive.run[-1].m_create(Calculation)
+        sec_scc = Calculation()
+        self.archive.run[-1].calculation.append(sec_scc)
 
         energy = self._extract('Energy (Hartree)', self.yaml_dict)
-        sec_energy = sec_scc.m_create(Energy)
+        sec_energy = Energy()
+        sec_scc.energy = sec_energy
         if energy is not None:
             sec_energy.total = EnergyEntry(value=energy * ureg.hartree)
 
         forces = self._extract('Atomic Forces (Ha/Bohr)', self.yaml_dict)
-        sec_forces = sec_scc.m_create(Forces)
+        sec_forces = Forces()
+        sec_scc.forces = sec_forces
         if forces is not None:
             sec_forces.total = ForcesEntry(
                 value=[list(f.values())[0] for f in forces] * (ureg.hartree / ureg.bohr))
@@ -290,10 +299,12 @@ class BigDFTParser:
         wavefunction = self._extract('wavefunctions iterations', subspace, [])
         sec_scc.n_scf_iterations = len(wavefunction)
         for iteration in wavefunction:
-            sec_scf = sec_scc.m_create(ScfIteration)
+            sec_scf = ScfIteration()
+            sec_scc.scf_iteration.append(sec_scf)
             energies = self._extract('energies', iteration, {})
             energies.update(iteration.items())
-            sec_scf_energy = sec_scf.m_create(Energy)
+            sec_scf_energy = Energy()
+            sec_scf.energy = sec_scf_energy
             for key, val in energies.items():
                 key = energy_mapping.get(key.lower())
                 if key is not None:
@@ -324,7 +335,8 @@ class BigDFTParser:
             for yaml_dict in yaml_dicts:
                 self.yaml_dict = yaml_dict
 
-                sec_run = self.archive.m_create(Run)
+                sec_run = Run()
+                self.archive.run.append(sec_run)
                 sec_run.program = Program(
                     name='BigDFT',
                     version=str(self.yaml_dict.pop('Version Number', '')))

@@ -20,7 +20,10 @@ import numpy as np            # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, Package, Quantity, Section, SubSection, MEnum
 )
-from nomad.datamodel.metainfo import simulation
+import runschema.run  # pylint: disable=unused-import
+import runschema.calculation  # pylint: disable=unused-import
+import runschema.method  # pylint: disable=unused-import
+import runschema.system  # pylint: disable=unused-import
 
 
 m_package = Package()
@@ -250,7 +253,7 @@ class x_ocean_screen_parameters(MSection):
         ''')
 
 
-class Method(simulation.run.Method):
+class Method(runschema.run.Method):
     '''
     Section containing the various parameters that define the theory and the
     approximations (convergence, thresholds, etc.) behind the calculation.
@@ -318,7 +321,7 @@ class x_ocean_lanczos_results(MSection):
         ''')
 
 
-class Calculation(simulation.run.Calculation):
+class Calculation(runschema.run.Calculation):
     '''
     Contains computed properties of a configuration as defined by the corresponding
     section system and with the simulation method defined by section method. The
@@ -334,7 +337,7 @@ class Calculation(simulation.run.Calculation):
     x_ocean_lanczos = SubSection(sub_section=x_ocean_lanczos_results.m_def, repeats=True)
 
 
-class Program(simulation.run.Program):
+class Program(runschema.run.Program):
     '''
     Contains the specifications of the program.
     '''

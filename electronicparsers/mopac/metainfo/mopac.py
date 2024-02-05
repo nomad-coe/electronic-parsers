@@ -22,13 +22,16 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
     Reference, JSON
 )
-from nomad.datamodel.metainfo import simulation
+import runschema.run  # pylint: disable=unused-import
+import runschema.calculation  # pylint: disable=unused-import
+import runschema.method  # pylint: disable=unused-import
+import runschema.system  # pylint: disable=unused-import
 
 
 m_package = Package()
 
 
-class Calculation(simulation.calculation.Calculation):
+class Calculation(runschema.calculation.Calculation):
 
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -41,7 +44,7 @@ class Calculation(simulation.calculation.Calculation):
         ''')
 
 
-class Method(simulation.method.Method):
+class Method(runschema.method.Method):
 
     m_def = Section(validate=False, extends_base_section=True)
 

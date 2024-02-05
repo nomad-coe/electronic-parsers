@@ -24,10 +24,10 @@ from datetime import datetime
 
 from nomad.parsing.file_parser import TextParser, Quantity
 from nomad.units import ureg
-from nomad.datamodel.metainfo.simulation.run import Run, Program, TimeRun
-from nomad.datamodel.metainfo.simulation.method import Method
-from nomad.datamodel.metainfo.simulation.system import System, Atoms
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.run import Run, Program, TimeRun
+from runschema.method import Method
+from runschema.system import System, Atoms
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, BandEnergies,
     Multipoles, MultipolesEntry, Charges, ChargesValue
 )
@@ -147,7 +147,8 @@ class MopacParser:
         self.mainfile_parser.mainfile = self.filepath
         self.mainfile_parser.logger = self.logger
 
-        sec_run = archive.m_create(Run)
+        sec_run = Run()
+        archive.run.append(sec_run)
         sec_run.program = Program(
             name='mopac',
             version=self.mainfile_parser.get('program_version'))
@@ -157,7 +158,8 @@ class MopacParser:
             sec_run.time_run = TimeRun(
                 date_start=datetime.strptime(date_start, '%b %d %H:%M:%S %Y').timestamp())
 
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         sec_method.x_mopac_calculation_parameters = {
             v[0]: v[1] for v in self.mainfile_parser.get('calculation', {}).get('parameters', [])}
 
@@ -166,12 +168,14 @@ class MopacParser:
                 sec_method.x_mopac_method = method
                 break
 
-        sec_system = sec_run.m_create(System)
+        sec_system = System()
+        sec_run.system.append(sec_system)
         sec_system.atoms = Atoms(
             labels=[v[1] for v in self.mainfile_parser.get('coordinates', [])],
             positions=[v[2:5] for v in self.mainfile_parser.get('coordinates', [])] * ureg.angstrom)
 
-        sec_calc = sec_run.m_create(Calculation)
+        sec_calc = Calculation()
+        sec_run.calculation.append(sec_calc)
         sec_calc.x_mopac_fhof = self.mainfile_parser.x_mopac_fhof
 
         sec_calc.energy = Energy(
@@ -193,7 +197,8 @@ class MopacParser:
             occupations = np.zeros(np.shape(eigenvalues))
             for spin, max_occupied in enumerate(occupied):
                 occupations[spin, 0:max_occupied] = 2 // len(occupied)
-            sec_eigenvalues = sec_calc.m_create(BandEnergies)
+            sec_eigenvalues = BandEnergies()
+            sec_calc.eigenvalues.append(sec_eigenvalues)
             # only Gamma-point calculation
             sec_eigenvalues.kpoints = np.zeros((1, 3))
             shape = (len(eigenvalues), 1, len(eigenvalues[0]))
@@ -202,12 +207,14 @@ class MopacParser:
 
         dipole = self.mainfile_parser.dipole
         if dipole is not None:
-            sec_multipoles = sec_calc.m_create(Multipoles)
+            sec_multipoles = Multipoles()
+            sec_calc.multipoles.append(sec_multipoles)
             sec_multipoles.dipole = MultipolesEntry(total=dipole[-1][-1])
 
         atomic_population = self.mainfile_parser.atomic_population
         if atomic_population is not None:
-            sec_charges = sec_calc.m_create(Charges)
+            sec_charges = Charges()
+            sec_calc.charges.append(sec_charges)
             # atom projections
             sec_charges.value = [c[3] for c in atomic_population] * ureg.elementary_charge
             orbital_population = self.mainfile_parser.get('orbital_population')

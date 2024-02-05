@@ -22,14 +22,14 @@ import logging
 import numpy as np
 
 from nomad.units import ureg
-from nomad.datamodel.metainfo.simulation.run import Run, Program
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.run import Run, Program
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.method import (
     Method, TB, SlaterKoster, TightBindingOrbital, SlaterKosterBond, TwoCenterBond
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, BandStructure, BandEnergies, Energy
 )
 from simulationworkflowschema import SinglePoint
@@ -49,8 +49,10 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         """Populates run.system with the input structural parameters.
         """
         sec_run = self.archive.run[-1]
-        sec_system = sec_run.m_create(System)
-        sec_atoms = sec_system.m_create(Atoms)
+        sec_system = System()
+        sec_run.system.append(sec_system)
+        sec_atoms = Atoms()
+        sec_system.atoms = sec_atoms
 
         # Load lattice vectors
         if self.tbm.get('vars') is None:
@@ -93,9 +95,12 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         """
         sec_run = self.archive.run[-1]
 
-        sec_method = sec_run.m_create(Method)
-        sec_tb = sec_method.m_create(TB)
-        sec_sk = sec_tb.m_create(SlaterKoster)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
+        sec_tb = TB()
+        sec_method.tb = sec_tb
+        sec_sk = SlaterKoster()
+        sec_tb.slater_koster = sec_sk
 
         orbitals = []
         lastInd = 0
@@ -145,7 +150,8 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
             shells = final_os[orbital]
             for iShell, shellOrbitals in enumerate(shells.values()):
                 for orbital_name, onSite in shellOrbitals.items():
-                    sec_orbitals = sec_sk.m_create(TightBindingOrbital, SlaterKoster.orbitals)
+                    sec_orbitals = TightBindingOrbital()
+                    sec_sk.orbitals.append(sec_orbitals)
                     sec_orbitals.orbital_name = orbital_name
                     sec_orbitals.atom_index = atom_index
                     sec_orbitals.shell = iShell
@@ -225,16 +231,19 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                 s_sk = final_overlap[bond_type]
 
             if h_sk is not None:
-                sec_bonds = sec_sk.m_create(SlaterKosterBond, SlaterKoster.bonds)
+                sec_bonds = SlaterKosterBond()
+                sec_sk.bonds.append(sec_bonds)
                 sec_bonds.bond_label = bond_type
 
-                center1 = sec_bonds.m_create(TightBindingOrbital, TwoCenterBond.center1)
+                center1 = TightBindingOrbital()
+                sec_bonds.center1 = center1
                 center1.atom_index = atom1['index']
                 center1.shell = atom1['shell']
                 indices = re.findall(r'-?\d+', atom1['cell'])
                 center1.cell_index = [int(index) for index in indices]
 
-                center2 = sec_bonds.m_create(TightBindingOrbital, TwoCenterBond.center2)
+                center2 = TightBindingOrbital()
+                sec_bonds.center2 = center2
                 center2.atom_index = atom2['index']
                 center2.shell = atom2['shell']
                 indices = re.findall(r'-?\d+', atom2['cell'])
@@ -243,16 +252,19 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                     setattr(sec_bonds, sk_label, sk_integral)
 
             if s_sk is not None:
-                sec_overlaps = sec_sk.m_create(SlaterKosterBond, SlaterKoster.overlaps)
+                sec_overlaps = SlaterKosterBond()
+                sec_sk.overlaps.append(sec_overlaps)
                 sec_overlaps.bond_label = bond_type
 
-                center1 = sec_overlaps.m_create(TightBindingOrbital, TwoCenterBond.center1)
+                center1 = TightBindingOrbital()
+                sec_overlaps.center1 = center1
                 center1.atom_index = atom1['index']
                 center1.shell = atom1['shell']
                 indices = re.findall(r'-?\d+', atom1['cell'])
                 center1.cell_index = [int(index) for index in indices]
 
-                center2 = sec_overlaps.m_create(TightBindingOrbital, TwoCenterBond.center2)
+                center2 = TightBindingOrbital()
+                sec_overlaps.center2 = center2
                 center2.atom_index = atom2['index']
                 center2.shell = atom2['shell']
                 indices = re.findall(r'-?\d+', atom2['cell'])
@@ -264,7 +276,8 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         """Populates run.calculation with the output of the calculation.
         """
         sec_run = self.archive.run[-1]
-        sec_scc = sec_run.m_create(Calculation)
+        sec_scc = Calculation()
+        sec_run.calculation.append(sec_scc)
 
         _k_points = self.tbm['variables']['KPoints']
         frac_k_points = []
@@ -285,13 +298,15 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
             self.logger.warning('Could not extract the Fermi level, so that the BandStructure is not resolved')
             return
 
-        sec_energy = sec_scc.m_create(Energy, Calculation.energy)
+        sec_energy = Energy()
+        sec_scc.energy = sec_energy
         sec_energy.fermi = fermi_level * ureg.eV if fermi_level else None
         sec_k_band = BandStructure()
         sec_k_band.energy_fermi = sec_energy.fermi
 
         for n1, n2 in band_segments_points:
-            sec_k_band_segment = sec_k_band.m_create(BandEnergies)
+            sec_k_band_segment = BandEnergies()
+            sec_k_band.segment.append(sec_k_band_segment)
             sec_k_band_segment.kpoints = frac_k_points[n1: n2 + 1]
             sec_k_band_segment.energies = (np.array([tb_bands[n1: n2 + 1]]) + fermi_level) * ureg.eV
 
@@ -321,7 +336,8 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else logging
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
 
         try:
             f = open(self.filepath)

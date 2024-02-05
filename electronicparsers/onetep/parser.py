@@ -23,15 +23,15 @@ from datetime import datetime
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
-from nomad.datamodel.metainfo.simulation.run import (
+from runschema.run import (
     Run, Program, TimeRun)
-from nomad.datamodel.metainfo.simulation.method import (
+from runschema.method import (
     Method, DFT, XCFunctional, Functional, BasisSet, BasisSetContainer,
 )
-from nomad.datamodel.metainfo.simulation.system import (
+from runschema.system import (
     System, Atoms
 )
-from nomad.datamodel.metainfo.simulation.calculation import (
+from runschema.calculation import (
     Calculation, Energy, EnergyEntry, Forces, ForcesEntry, ScfIteration, Charges
 )
 from .metainfo.onetep import (
@@ -327,7 +327,8 @@ class OnetepParser:
             if cell is None:
                 return
 
-            sec_system = self.archive.run[-1].m_create(System)
+            sec_system = System()
+            self.archive.run[-1].system.append(sec_system)
             positions = cell.get('positions')
             positions = positions * ureg.bohr if isinstance(positions, list) else positions
             sec_system.atoms = Atoms(positions=positions, labels=cell.get('labels'))
@@ -335,17 +336,20 @@ class OnetepParser:
             return sec_system
 
         def parse_scc(source):
-            sec_scc = self.archive.run[-1].m_create(Calculation)
+            sec_scc = Calculation()
+            self.archive.run[-1].calculation.append(sec_scc)
 
             # scf iteration
             for iteration in source.get('iteration', []):
-                sec_scf = sec_scc.m_create(ScfIteration)
+                sec_scf = ScfIteration()
+                sec_scc.scf_iteration.append(sec_scf)
                 sec_scf.energy = Energy(
                     total=EnergyEntry(value=iteration.energy_total))
 
             energies = source.get('energy_components')
             if energies is not None:
-                sec_energy = sec_scc.m_create(Energy)
+                sec_energy = Energy()
+                sec_scc.energy = sec_energy
                 for contribution in energies.get('contribution', []):
                     key = self._metainfo_map.get(contribution[0])
                     if key is not None:
@@ -357,7 +361,8 @@ class OnetepParser:
                 sec_scc.forces = Forces(total=ForcesEntry(value=source.forces.value * (ureg.hartree / ureg.bohr)))
 
             if source.get('mulliken') is not None:
-                sec_charges = sec_scc.m_create(Charges)
+                sec_charges = Charges()
+                sec_scc.charges.append(sec_charges)
                 sec_charges.analysis_method = 'Mulliken'
                 sec_charges.value = [v[3] for v in source.get('mulliken', [])] * ureg.elementary_charge
 
@@ -374,7 +379,8 @@ class OnetepParser:
         self.maindir = os.path.dirname(self.filepath)
         self.init_parser()
 
-        sec_run = self.archive.m_create(Run)
+        sec_run = Run()
+        self.archive.run.append(sec_run)
         sec_run.program = Program(
             name=self.out_parser.get('program_name'), version=self.out_parser.get('program_version'))
 
@@ -390,7 +396,8 @@ class OnetepParser:
         self.input_parser.mainfile = os.path.join(self.maindir, self.out_parser.get('input_file', ''))
 
         input_parameters = {key: val for key, val in self.out_parser.get('input', {}).get('parameter', [])}
-        sec_method = sec_run.m_create(Method)
+        sec_method = Method()
+        sec_run.method.append(sec_method)
         sec_method.x_onetep_input_parameters = input_parameters
         if input_parameters.get('xc_functional') is not None:
             sec_method.dft = DFT(xc_functional=XCFunctional())
@@ -431,9 +438,11 @@ class OnetepParser:
         elif self.out_parser.tddft is not None:
             self.parse_configuration(self.out_parser.tddft)
             if self.out_parser.tddft is not None:
-                sec_tddft = sec_run.calculation[-1].m_create(x_onetep_section_tddft)
+                sec_tddft = x_onetep_section_tddft()
+                sec_run.calculation[-1].x_onetep_section_tddft.append(sec_tddft)
                 for excitation in self.out_parser.tddft.get('excitation', []):
-                    sec_excitation = sec_tddft.m_create(x_onetep_section_tddft_excitations)
+                    sec_excitation = x_onetep_section_tddft_excitations()
+                    sec_tddft.x_onetep_section_tddft_excitations.append(sec_excitation)
                     sec_excitation.x_onetep_tddft_excit_energy = excitation[1] * ureg.hartree
                     sec_excitation.x_onetep_tddft_excit_oscill_str = excitation[2]
                     sec_excitation.x_onetep_tddft_excit_lifetime = excitation[3] * ureg.ns
