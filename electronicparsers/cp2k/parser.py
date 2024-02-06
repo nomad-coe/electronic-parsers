@@ -1130,8 +1130,9 @@ class CP2KParser:
         '''
         Parses input file from the settings.
         '''
-        input_filename = self.settings.get('cp2k', {}).get('input_filename', None)
-        if input_filename is None:
+        input_filename = self.settings.get('cp2k', {}).get('input_filename')
+        project_name = self.settings.get('global', {}).get('project_name')
+        if input_filename is None and project_name is None:
             return
 
         definitions = dict(m_env.all_definitions_by_name)
@@ -1173,13 +1174,14 @@ class CP2KParser:
         input_files = get_files(input_filename, self.filepath, self.mainfile, deep=False)
         if not input_files:
             self.logger.warning(
-                'Input .inp or .restart files not found. We will attempt finding the input '
-                'file if CP2K has appended -1 to the .restart file name.'
+                'Input *.inp file not found. We will attempt finding the restart file from '
+                'the project_name appending a -1, <project_name>-1.restart.',
+                data={'project_name': project_name},
             )
             # Patch to check if the input is .restart and CP2K appended a -1 after the name
-            if '.restart' in input_filename:
-                appended_filename = input_filename.split('.restart')[0] + '-1.restart'
-                input_files = get_files(appended_filename, self.filepath, self.mainfile, deep=False)
+            if project_name:
+                project_filename = f'{project_name}-1.restart'
+                input_files = get_files(project_filename, self.filepath, self.mainfile, deep=False)
             else:
                 return
         if len(input_files) > 1:
