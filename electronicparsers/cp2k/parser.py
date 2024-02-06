@@ -1522,7 +1522,7 @@ class CP2KParser:
                 # the run stopped and was reran.
                 if optimization_steps is not None:
                     n_optimization_steps = optimization_steps[-1].step
-                    if n_optimization_steps != len(optimization_steps) + 1:
+                    if n_optimization_steps != len(optimization_steps):
                         self.logger.warning(
                             'The length of optimization steps sections in the *.out file, does '
                             'not coincide with the last parsed optimization step number.',
