@@ -33,7 +33,7 @@ def parser():
 
 def test_single_point(parser):
     archive = EntryArchive()
-    parser.parse('/home/josepizarro/nomad/dependencies/parsers/electronic/tests/data/cp2k/single_point/si_bulk8.out', archive, None)
+    parser.parse('tests/data/cp2k/single_point/si_bulk8.out', archive, None)
 
     sec_run = archive.run[0]
     assert sec_run.program.version == 'CP2K version 2.6.2'
@@ -81,7 +81,7 @@ def test_single_point(parser):
 
 def test_pdos(parser):
     archive = EntryArchive()
-    parser.parse('/home/josepizarro/nomad/dependencies/parsers/electronic/tests/data/cp2k/graphene_15x15_pdos/Grafene15x15-alone-smear-cell-opt.out', archive, None)
+    parser.parse('tests/data/cp2k/graphene_15x15_pdos/Grafene15x15-alone-smear-cell-opt.out', archive, None)
 
     assert len(archive.run) == 1
     sec_run = archive.run[-1]
@@ -122,7 +122,7 @@ def test_pdos(parser):
 
 def test_geometry_optimization(parser):
     archive = EntryArchive()
-    parser.parse('/home/josepizarro/nomad/dependencies/parsers/electronic/tests/data/cp2k/geometry_optimization/H2O.out', archive, None)
+    parser.parse('tests/data/cp2k/geometry_optimization/H2O.out', archive, None)
 
     sec_workflow = archive.workflow2
     assert sec_workflow.method.method == 'conjugate gradient'
@@ -148,7 +148,7 @@ def test_geometry_optimization(parser):
 
 def test_molecular_dynamics(parser):
     archive = EntryArchive()
-    parser.parse('/home/josepizarro/nomad/dependencies/parsers/electronic/tests/data/cp2k/molecular_dynamics/H2O-32.out', archive, None)
+    parser.parse('tests/data/cp2k/molecular_dynamics/H2O-32.out', archive, None)
 
     sec_workflow = archive.workflow2
     assert sec_workflow.method.thermodynamic_ensemble == 'NVE'
