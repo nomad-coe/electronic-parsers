@@ -15,6 +15,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+from nomad.metainfo import Environment
 
-from .utils import get_files, numpy_type_to_json_serializable, BeyondDFTWorkflowsParser
-from .magres_workflow import NMRMagRes, NMRMagResMethod, NMRMagResResults
+from . import magres
+
+m_env = Environment()
+m_env.m_add_sub_section(Environment.packages, magres.m_package)

@@ -15,6 +15,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+import numpy as np            # pylint: disable=unused-import
+import typing                 # pylint: disable=unused-import
+from nomad.metainfo import (  # pylint: disable=unused-import
+    MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
+    Reference
+)
 
-from .utils import get_files, numpy_type_to_json_serializable, BeyondDFTWorkflowsParser
-from .magres_workflow import NMRMagRes, NMRMagResMethod, NMRMagResResults
+
+m_package = Package()

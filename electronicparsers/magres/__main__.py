@@ -15,6 +15,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+import sys
+import json
+import logging
 
-from .utils import get_files, numpy_type_to_json_serializable, BeyondDFTWorkflowsParser
-from .magres_workflow import NMRMagRes, NMRMagResMethod, NMRMagResResults
+from nomad.utils import configure_logging
+from nomad.datamodel import EntryArchive
+from electronicparsers.magres import MagresParser
+
+if __name__ == "__main__":
+    configure_logging(console_log_level=logging.DEBUG)
+    archive = EntryArchive()
+    MagresParser().parse(sys.argv[1], archive, logging)
+    json.dump(archive.m_to_dict(), sys.stdout, indent=2)

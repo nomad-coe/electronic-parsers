@@ -15,6 +15,5 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-from .utils import get_files, numpy_type_to_json_serializable, BeyondDFTWorkflowsParser
-from .magres_workflow import NMRMagRes, NMRMagResMethod, NMRMagResResults
+#
+from .parser import MagresParser

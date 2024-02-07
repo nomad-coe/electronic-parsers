@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: https://www.ccpnc.ac.uk/docs/magres
+code_name: magres
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: magres
+  codeLabelStyle: all in lower case
+  codeName: magres
+  codeUrl: https://www.ccpnc.ac.uk/docs/magres
+  parserDirName: dependencies/electronic/electronicparsers/magres/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/magres
+parser_class_name: electronicparsers.magres.parser.MagresParser
+python_package: electronicparsers.magres
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/magres
