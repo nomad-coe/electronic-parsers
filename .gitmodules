@@ -1,0 +1,3 @@
+[submodule "electronicparsers/molpro"]
+        path = electronicelectronicparsers/molpro
+        url = https://github.com/nomad-coe/nomad-parser-molpro-plugin.git
