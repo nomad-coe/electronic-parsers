@@ -42,13 +42,79 @@ from ..utils import get_files
 # New schema
 from simulationdataschema import Simulation, Program as BaseProgram
 from simulationdataschema.model_system import ModelSystem, AtomicCell
-# from simulationdataschema.model_method import (
-#     Wannier as ModelWannier,
-#     KMesh as ModelKMesh,
-# )
+from simulationdataschema.atoms_state import (
+    AtomsState,
+    HubbardInteractions,
+    CoreHole,
+    OrbitalsState,
+)
+from simulationdataschema.model_method import (
+    Wannier as ModelWannier,
+    KMesh as ModelKMesh,
+)
 
 
 re_n = r"[\n\r]"
+
+
+def test(template, atom_indices: list[int], **kwargs):
+    simulation = Simulation()
+    template.m_add_sub_section(EntryArchive.data, simulation)
+    simulation.program = Program(name="VASP", version="4.6.35")
+    model_system = ModelSystem()
+    simulation.model_system.append(model_system)
+    atomic_cell = AtomicCell(
+        lattice_vectors=[
+            [5.76372622e-10, 0.0, 0.0],
+            [0.0, 5.76372622e-10, 0.0],
+            [0.0, 0.0, 4.0755698899999997e-10],
+        ],
+        positions=[
+            [2.88186311e-10, 0.0, 2.0377849449999999e-10],
+            [0.0, 2.88186311e-10, 2.0377849449999999e-10],
+            [0.0, 0.0, 0.0],
+            [2.88186311e-10, 2.88186311e-10, 0.0],
+        ],
+        periodic_boundary_conditions=[True, True, True],
+    )
+    model_system.atomic_cell.append(atomic_cell)
+    atoms_state = [
+        AtomsState(chemical_symbol="Br"),
+        AtomsState(chemical_symbol="K"),
+        AtomsState(chemical_symbol="Si"),
+        AtomsState(chemical_symbol="Si"),
+    ]
+    atomic_cell.atoms_state = atoms_state
+    elements = [
+        atom.chemical_symbol for atom in model_system.atomic_cell[0].atoms_state
+    ]
+
+    # set atom_parameters and core_holes
+    list_terms = {"j_quantum_number", "mj_quantum_number"}
+    for active_index, atom_index in enumerate(atom_indices):
+        atom_state = atomic_cell.atoms_state[atom_index]
+        core_hole = CoreHole()
+        for k, v in kwargs.items():
+            try:
+                if k not in list_terms and isinstance(
+                    v, list
+                ):  # this supports lists of several quantities for multiple core-holes
+                    if len(v):
+                        setattr(core_hole, k, v[active_index])
+                    else:
+                        setattr(core_hole, k, [])
+                else:
+                    setattr(core_hole, k, v)
+            except AttributeError:
+                pass
+        atom_state.core_hole = core_hole
+        model_system2 = ModelSystem(
+            type="active_atom",
+            branch_label=elements[atom_index],
+            atom_indices=[atom_index],
+        )
+        model_system.model_system.append(model_system2)
+    return template
 
 
 class WOutParser(TextParser):
@@ -296,6 +362,7 @@ class Wannier90Parser:
 
     def parse_system2(self, sec_computation):
         sec_system2 = sec_computation.m_create(ModelSystem)
+        sec_system2.is_representative = True
 
         structure = self.wout_parser.get("structure")
         if structure is None:
@@ -313,7 +380,10 @@ class Wannier90Parser:
             [True, True, True] if lattice_vectors is not None else [False, False, False]
         )
         sec_atoms2.periodic_boundary_conditions = pbc
-        sec_atoms2.labels = structure.get("labels")
+        labels = structure.get("labels")
+        for label in labels:
+            sec_atoms2_state = AtomsState(chemical_symbol=label)
+            sec_atoms2.atoms_state.append(sec_atoms2_state)
         if structure.get("positions") is not None:
             sec_atoms2.positions = structure.get("positions") * ureg.angstrom
 
@@ -347,31 +417,31 @@ class Wannier90Parser:
             sec_wann.energy_window_outer = self.wout_parser.get("energy_windows").outer
             sec_wann.energy_window_inner = self.wout_parser.get("energy_windows").inner
 
-    # def parse_method2(self, sec_simulation):
-    #     # Wannier90 section
-    #     sec_wann = ModelWannier()
-    #     for key in self._input_projection_mapping2.keys():
-    #         setattr(
-    #             sec_wann,
-    #             self._input_projection_mapping2[key],
-    #             self.wout_parser.get(key),
-    #         )
-    #     if self.wout_parser.get("Niter"):
-    #         sec_wann.is_maximally_localized = self.wout_parser.get("Niter", 0) > 1
-    #     if self.wout_parser.get("energy_windows"):
-    #         sec_wann.energy_window_outer = self.wout_parser.get("energy_windows").outer
-    #         sec_wann.energy_window_inner = self.wout_parser.get("energy_windows").inner
-    #     sec_simulation.m_add_sub_section(Simulation.model_method, sec_wann)
+    def parse_method2(self, sec_simulation):
+        # Wannier90 section
+        sec_wann = ModelWannier()
+        for key in self._input_projection_mapping2.keys():
+            setattr(
+                sec_wann,
+                self._input_projection_mapping2[key],
+                self.wout_parser.get(key),
+            )
+        if self.wout_parser.get("Niter"):
+            sec_wann.is_maximally_localized = self.wout_parser.get("Niter", 0) > 1
+        if self.wout_parser.get("energy_windows"):
+            sec_wann.energy_window_outer = self.wout_parser.get("energy_windows").outer
+            sec_wann.energy_window_inner = self.wout_parser.get("energy_windows").inner
+        sec_simulation.m_add_sub_section(Simulation.model_method, sec_wann)
 
-    #     # KMesh section
-    #     kmesh = self.wout_parser.get("k_mesh")
-    #     if kmesh:
-    #         sec_k_mesh = ModelKMesh()
-    #         sec_k_mesh.n_points = kmesh.get("n_points")
-    #         sec_k_mesh.grid = kmesh.get("grid", [])
-    #         if kmesh.get("k_points") is not None:
-    #             sec_k_mesh.points = np.complex128(kmesh.k_points[::2])
-    #         sec_simulation.model_method[-1].k_mesh = sec_k_mesh
+        # KMesh section
+        kmesh = self.wout_parser.get("k_mesh")
+        if kmesh:
+            sec_k_mesh = ModelKMesh()
+            sec_k_mesh.n_points = kmesh.get("n_points")
+            sec_k_mesh.grid = kmesh.get("grid", [])
+            if kmesh.get("k_points") is not None:
+                sec_k_mesh.points = np.complex128(kmesh.k_points[::2])
+            sec_simulation.model_method[-1].k_mesh = sec_k_mesh
 
     def parse_winput(self):
         sec_run = self.archive.run[-1]
@@ -482,7 +552,7 @@ class Wannier90Parser:
         sec_run = sec_computation
         try:
             sec_system = sec_run.model_system[-1]
-            sec_atoms = sec_system.atomic_cell[0]
+            sec_atomic_cell = sec_system.atomic_cell[0]
         except Exception:
             self.logger.warning(
                 "Could not extract system.atoms and method sections for parsing win."
@@ -500,13 +570,13 @@ class Wannier90Parser:
             )
         self.win_parser.mainfile = win_files[0]
 
-        def fract_cart_sites(sec_atoms, units, val):
-            for pos in sec_atoms.positions.to(units):
+        def fract_cart_sites(sec_atomic_cell, units, val):
+            for pos in sec_atomic_cell.positions.to(units):
                 if np.array_equal(val, pos.magnitude):
-                    index = sec_atoms.positions.magnitude.tolist().index(
+                    index = sec_atomic_cell.positions.magnitude.tolist().index(
                         pos.magnitude.tolist()
                     )
-                    return sec_atoms.labels[index]
+                    return sec_atomic_cell.atoms_state[index].chemical_symbol
 
         # Set units in case these are defined in .win
         projections = self.win_parser.get("projections", [])
@@ -533,22 +603,75 @@ class Wannier90Parser:
                 atom = projections[nat][0]
                 if atom.startswith("f="):  # fractional coordinates
                     val = [float(x) for x in atom.replace("f=", "").split(",")]
-                    val = np.dot(val, sec_atoms.lattice_vectors.magnitude)
-                    sites = fract_cart_sites(sec_atoms, x_wannier90_units, val)
+                    val = np.dot(val, sec_atomic_cell.lattice_vectors.magnitude)
+                    sites = fract_cart_sites(sec_atomic_cell, x_wannier90_units, val)
                 elif atom.startswith("c="):  # cartesian coordinates
                     val = [float(x) for x in atom.replace("c=", "").split(",")]
-                    sites = fract_cart_sites(sec_atoms, x_wannier90_units, val)
+                    sites = fract_cart_sites(sec_atomic_cell, x_wannier90_units, val)
                 else:  # atom label directly specified
                     sites = atom
                 # sec_atoms_group.n_entities = len(sites)  # always 1 (only one atom per proj)
                 sec_atoms_group.branch_label = sites
                 sec_atoms_group.atom_indices = np.where(
-                    [x == sec_atoms_group.branch_label for x in sec_atoms.labels]
+                    [
+                        atom.chemical_symbol == sec_atoms_group.branch_label
+                        for atom in sec_atomic_cell.atoms_state
+                    ]
                 )[0]
+
+                # Test hubbard
+                # sec_hubbard = HubbardInteractions(u=3.0 * ureg.eV, j=0.5 * ureg.eV)
+                # sec_atomic_cell.atoms_state[
+                #     sec_atoms_group.atom_indices[0]
+                # ].hubbard_interactions = sec_hubbard
             except Exception:
                 self.logger.warning(
                     "Error finding the atom labels for the projection from win."
                 )
+                return
+
+            # orbital angular momentum always index=1
+            # suggestion: shift to wout for projection?
+            for atom_index in sec_atoms_group.atom_indices:
+                atom_state = sec_atomic_cell.atoms_state[atom_index]
+                if atom != atom_state.chemical_symbol:
+                    continue
+                try:
+                    orbitals = projections[nat][1].split(";")
+                    angular_momentum = None
+                    for orb in orbitals:
+                        sec_orbital_state = OrbitalsState()
+                        # sec_orbital_state.n_orbitals = len(orbitals)
+                        if orb.startswith("l="):  # using angular momentum numbers
+                            lmom = int(
+                                orb.split(",mr")[0].replace("l=", "").split(",")[0]
+                            )
+                            mrmom = int(
+                                orb.split(",mr")[-1].replace("=", "").split(",")[0]
+                            )
+                            if (
+                                orb_ang_mom := self._angular_momentum_orbital_map.get(
+                                    (lmom, mrmom)
+                                )
+                            ):  # shouldn't a missing numerical code rather generate a warning?
+                                angular_momentum = orb_ang_mom
+                        else:  # ang mom label directly specified
+                            angular_momentum = orb
+                        matched_angular_momentum = next(
+                            (
+                                key
+                                for key, val in self._angular_momentum_orbital_map.items()
+                                if val == angular_momentum
+                            ),
+                            None,
+                        )
+                        (
+                            sec_orbital_state.l_quantum_number,
+                            sec_orbital_state.ml_quantum_number,
+                        ) = matched_angular_momentum
+                        atom_state.orbitals_state.append(sec_orbital_state)
+                except Exception:
+                    self.logger.warning("Projected orbital labels not found from win.")
 
     def parse_hoppings(self):
         hr_files = get_files("*hr.dat", self.filepath, self.mainfile)
@@ -815,6 +938,27 @@ class Wannier90Parser:
             link="https://wannier.org/",
         )
         self.parse_system2(sec_simulation)
-        # self.parse_method2(sec_simulation)
+        self.parse_method2(sec_simulation)
         self.parse_winput2(sec_simulation)
-        self.archive.m_add_sub_section(EntryArchive.data, sec_simulation)
+        archive.m_add_sub_section(EntryArchive.data, sec_simulation)
+
+        # TEST
+        # settings = [
+        #     {"e": 0.15, "li": 3, "ls": "f"},
+        #     {"state": "initial", "e": 0.3, "li": 3, "ls": "f", "n": 4},
+        #     {"e": 0.9, "li": 2, "ls": "d", "n": 4, "ml": -2, "mls": "xy"},
+        #     {"e": 0.25, "li": 3, "ls": "f", "ms": False},
+        #     {"e": 0.5, "li": 1, "ls": "p", "n": 4, "ml": 0, "mls": "z", "ms": False},
+        # ]
+        # for sett in settings:
+        #     test(
+        #         archive,
+        #         sett.get("i", [0]),
+        #         n_electrons_excited=sett.get("e", 0),
+        #         l_quantum_number=sett.get("li", 0),
+        #         n_quantum_number=sett.get("n"),
+        #         ml_quantum_number=sett.get("ml"),
+        #         ms_quantum_bool=sett.get("ms"),
+        #         j_quantum_number=sett.get("ji", []),
+        #         mj_quantum_number=sett.get("mj", []),
+        #     )
