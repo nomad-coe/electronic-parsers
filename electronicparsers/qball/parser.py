@@ -39,7 +39,6 @@ def str_to_timestamp(s: str):
 
 
 class QBallParser:
-
     mainfile_parser = TextParser(
         quantities=[
             Quantity(
@@ -64,7 +63,7 @@ class QBallParser:
         pass
 
     def parse(self, mainfile, archive, logger=None):
-        logger = logger if logger is not None else logging.getLogger('__name__')
+        logger = logger if logger is not None else logging.getLogger("__name__")
 
         if mainfile.endswith(".gz"):
             open_file = gzip.open
@@ -81,10 +80,11 @@ class QBallParser:
 
         run = Run()
         archive.run.append(run)
-        run.program = Program(name='qball')
+        run.program = Program(name="qball")
         run.time_run = TimeRun(
             date_start=str_to_timestamp(self.mainfile_parser.get("start_time")),
-            date_end=str_to_timestamp(self.mainfile_parser.get("end_time")))
+            date_end=str_to_timestamp(self.mainfile_parser.get("end_time")),
+        )
 
         # method
         method = Method()
@@ -94,13 +94,13 @@ class QBallParser:
             method.electrons_representation = [
                 BasisSetContainer(
                     type="plane waves",
-                    scope=['wavefunction'],
+                    scope=["wavefunction"],
                     basis_set=[
                         BasisSet(
                             type="plane waves",
-                            scope=['valence'],
+                            scope=["valence"],
                         )
-                    ]
+                    ],
                 )
             ]
         else:
@@ -112,14 +112,40 @@ class QBallParser:
         system = System()
         run.system.append(system)
         system.atoms = Atoms(
-            labels=[atom.attrib["name"] for atom in element_tree.find("run").find("iteration").find("atomset").iter("atom")],
-            positions=np.array([
-                [float(pos) for pos in atom.find("position").text.split()]
-                for atom in element_tree.find("run").find("iteration").find("atomset").iter("atom")]) * ureg.bohr)
+            labels=[
+                atom.attrib["name"]
+                for atom in element_tree.find("run")
+                .find("iteration")
+                .find("atomset")
+                .iter("atom")
+            ],
+            positions=np.array(
+                [
+                    [float(pos) for pos in atom.find("position").text.split()]
+                    for atom in element_tree.find("run")
+                    .find("iteration")
+                    .find("atomset")
+                    .iter("atom")
+                ]
+            )
+            * ureg.bohr,
+        )
 
         # calculation
         calculation = Calculation()
         run.calculation.append(calculation)
-        calculation.forces = Forces(total=ForcesEntry(value=np.array([
-            [float(force) for force in atom.find("force").text.split()]
-            for atom in element_tree.find("run").find("iteration").find("atomset").iter("atom")]) * ureg.hartree / ureg.bohr))
+        calculation.forces = Forces(
+            total=ForcesEntry(
+                value=np.array(
+                    [
+                        [float(force) for force in atom.find("force").text.split()]
+                        for atom in element_tree.find("run")
+                        .find("iteration")
+                        .find("atomset")
+                        .iter("atom")
+                    ]
+                )
+                * ureg.hartree
+                / ureg.bohr
+            )
+        )

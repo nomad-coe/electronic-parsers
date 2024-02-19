@@ -16,11 +16,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import numpy as np            # pylint: disable=unused-import
-import typing                 # pylint: disable=unused-import
+import numpy as np  # pylint: disable=unused-import
+import typing  # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
-    MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference
+    MSection,
+    MCategory,
+    Category,
+    Package,
+    Quantity,
+    Section,
+    SubSection,
+    SectionProxy,
+    Reference,
 )
 from runschema import method
 
@@ -29,33 +36,36 @@ m_package = Package()
 
 
 class Method(method.Method):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_atk_density_convergence_criterion = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Density convergence criteria to break the SCF cycle
-        ''')
+        """,
+    )
 
     x_atk_mix_old = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
+        description="""
         Number of old densities in the density mixer
-        ''')
+        """,
+    )
 
     x_atk_mix_weight = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Mixing weight in density mixer
-        ''')
+        """,
+    )
 
     x_atk_monkhorstpack_sampling = Quantity(
         type=np.dtype(np.int32),
         shape=[3],
-        description='''
+        description="""
         Monkhorstpack grid sampling
-        ''')
+        """,
+    )

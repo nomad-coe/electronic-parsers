@@ -23,51 +23,64 @@ from datetime import datetime
 
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity
-from runschema.run import (
-    Run, Program, TimeRun
-)
+from runschema.run import Run, Program, TimeRun
 from runschema.method import (
-    Method, DFT, XCFunctional, Functional, BasisSet, BasisSetContainer,
+    Method,
+    DFT,
+    XCFunctional,
+    Functional,
+    BasisSet,
+    BasisSetContainer,
 )
-from runschema.system import (
-    System, Atoms
-)
+from runschema.system import System, Atoms
 from runschema.calculation import (
-    Calculation, Energy, EnergyEntry, ScfIteration, Forces, ForcesEntry, Stress,
-    StressEntry, Multipoles, MultipolesEntry, Charges, ChargesValue
+    Calculation,
+    Energy,
+    EnergyEntry,
+    ScfIteration,
+    Forces,
+    ForcesEntry,
+    Stress,
+    StressEntry,
+    Multipoles,
+    MultipolesEntry,
+    Charges,
+    ChargesValue,
 )
-from simulationworkflowschema import (
-    GeometryOptimization, SinglePoint
-)
+from simulationworkflowschema import GeometryOptimization, SinglePoint
 
 
-re_n = r'[\n\r]'
-re_f = r'[-+]?\d+\.\d*(?:[DdEe][-+]\d+)?'
+re_n = r"[\n\r]"
+re_f = r"[-+]?\d+\.\d*(?:[DdEe][-+]\d+)?"
 
 
 class FDFParser(TextParser):
     def init_quantities(self):
         def to_parameter(val_in):
-            key, val = val_in.strip().split(' ', 1)
-            if val[0].isdecimal() or val[0] == '-':
+            key, val = val_in.strip().split(" ", 1)
+            if val[0].isdecimal() or val[0] == "-":
                 val = val.split()[0]
-            elif val.lower() in ['true', 'false']:
-                val = val == 'true'
+            elif val.lower() in ["true", "false"]:
+                val = val == "true"
             return [key, val]
 
         def to_block(val_in):
-            key, val = val_in.strip().split(' ', 1)
+            key, val = val_in.strip().split(" ", 1)
             return [key, [v.strip().split() for v in val.strip().splitlines()]]
 
         self._quantities = [
             Quantity(
-                'parameter', rf'([A-Za-z][\w\.]+) +([ \w\.\/]+?)(?:\#|{re_n})',
-                repeats=True, str_operation=to_parameter
+                "parameter",
+                rf"([A-Za-z][\w\.]+) +([ \w\.\/]+?)(?:\#|{re_n})",
+                repeats=True,
+                str_operation=to_parameter,
             ),
             Quantity(
-                'block', rf'\%block ([A-Za-z][\w\.]+)\s+([\s\S]+?)\%endblock',
-                repeats=True, str_operation=to_block
-            )
+                "block",
+                rf"\%block ([A-Za-z][\w\.]+)\s+([\s\S]+?)\%endblock",
+                repeats=True,
+                str_operation=to_block,
+            ),
         ]
 
     def parse(self, key=None):
@@ -75,26 +88,26 @@ class FDFParser(TextParser):
 
         # add atoms info
         species, coordinates, lattice_vectors = None, None, None
-        parameters = {key: val for key, val in self._results.get('parameter', [])}
-        self._results['parameters'] = parameters
+        parameters = {key: val for key, val in self._results.get("parameter", [])}
+        self._results["parameters"] = parameters
 
         # scaling of the lattice vectors
-        lattice_constant = parameters.get('LatticeConstant', 1.0) * ureg.angstrom
+        lattice_constant = parameters.get("LatticeConstant", 1.0) * ureg.angstrom
         # units of the atomic coordinates
-        coordinates_format = parameters.get('AtomicCoordinatesFormat')
+        coordinates_format = parameters.get("AtomicCoordinatesFormat")
 
-        for block in self._results.get('block', []):
-            if block[0] == 'ChemicalSpeciesLabel':
+        for block in self._results.get("block", []):
+            if block[0] == "ChemicalSpeciesLabel":
                 species = [b[2] for b in block[1]]
-            elif block[0] == 'LatticeVectors':
+            elif block[0] == "LatticeVectors":
                 lattice_vectors = block[1] * lattice_constant
-            elif block[0] == 'AtomicCoordinatesAndAtomicSpecies':
+            elif block[0] == "AtomicCoordinatesAndAtomicSpecies":
                 coordinates = np.array([b[0:3] for b in block[1]], dtype=np.float64)
 
-        self._results['positions'] = coordinates
-        self._results['labels'] = species
-        self._results['lattice_vectors'] = lattice_vectors
-        self._results['coordinates_format'] = coordinates_format
+        self._results["positions"] = coordinates
+        self._results["labels"] = species
+        self._results["lattice_vectors"] = lattice_vectors
+        self._results["coordinates_format"] = coordinates_format
 
 
 class OutParser(TextParser):
@@ -112,162 +125,231 @@ class OutParser(TextParser):
 
         calc_quantities = [
             Quantity(
-                'lattice_vectors',
-                r'outcell\: Unit cell vectors \(Ang\)\:\s+([\s\d\.\-]+)',
-                shape=(3, 3), dtype=np.dtype(np.float64), unit=ureg.angstrom
+                "lattice_vectors",
+                r"outcell\: Unit cell vectors \(Ang\)\:\s+([\s\d\.\-]+)",
+                shape=(3, 3),
+                dtype=np.dtype(np.float64),
+                unit=ureg.angstrom,
             ),
             Quantity(
-                'atoms',
-                r'outcoor: Atomic coordinates(.+[\s\w\.\-]+)',
-                sub_parser=TextParser(quantities=[
-                    Quantity('coordinates_format', r'\((\S+)\)', dtype=str),
-                    Quantity('labels', r' +([A-Z][a-z]*)', repeats=True, dtype=str),
-                    Quantity('positions', rf'({re_f} +{re_f} +{re_f})', repeats=True, dtype=np.dtype(np.float64))
-                ])
+                "atoms",
+                r"outcoor: Atomic coordinates(.+[\s\w\.\-]+)",
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity("coordinates_format", r"\((\S+)\)", dtype=str),
+                        Quantity("labels", r" +([A-Z][a-z]*)", repeats=True, dtype=str),
+                        Quantity(
+                            "positions",
+                            rf"({re_f} +{re_f} +{re_f})",
+                            repeats=True,
+                            dtype=np.dtype(np.float64),
+                        ),
+                    ]
+                ),
             ),
             Quantity(
-                'energy',
-                rf'Program\'s energy decomposition \(eV\)\:([\s\S]+?){re_n} *{re_n}',
-                sub_parser=TextParser(quantities=[
-                    Quantity(
-                        'contribution', rf'siesta\: +(\S+) *= *({re_f})',
-                        repeats=True
-                    )
-                ])
+                "energy",
+                rf"Program\'s energy decomposition \(eV\)\:([\s\S]+?){re_n} *{re_n}",
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            "contribution",
+                            rf"siesta\: +(\S+) *= *({re_f})",
+                            repeats=True,
+                        )
+                    ]
+                ),
             ),
             Quantity(
-                'scf',
-                rf'scf\: iscf +Eharris\(eV\).+([\s\S]+?){re_n} *{re_n}',
-                sub_parser=TextParser(quantities=[
-                    Quantity(
-                        'step', rf'scf\: +\d+ +({re_f} +{re_f} +{re_f} +{re_f} +{re_f})',
-                        repeats=True, dtype=np.dtype(np.float64))
-                ])
+                "scf",
+                rf"scf\: iscf +Eharris\(eV\).+([\s\S]+?){re_n} *{re_n}",
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            "step",
+                            rf"scf\: +\d+ +({re_f} +{re_f} +{re_f} +{re_f} +{re_f})",
+                            repeats=True,
+                            dtype=np.dtype(np.float64),
+                        )
+                    ]
+                ),
             ),
             Quantity(
-                'energy_total', rf'siesta\: E_KS\(eV\) = +({re_f})',
-                dtype=np.float64, unit=ureg.eV
+                "energy_total",
+                rf"siesta\: E_KS\(eV\) = +({re_f})",
+                dtype=np.float64,
+                unit=ureg.eV,
             ),
             Quantity(
-                'energy',
-                rf'Final energy \(eV\)\:([\s\S]+?Total.+)',
-                sub_parser=TextParser(quantities=[
-                    Quantity(
-                        'contribution', rf'siesta: +([ \w\.\-]+?) *= *({re_f})',
-                        repeats=True, str_operation=lambda x: [v.strip() for v in x.rsplit(' ', 1)]
-                    )
-                ])
+                "energy",
+                rf"Final energy \(eV\)\:([\s\S]+?Total.+)",
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            "contribution",
+                            rf"siesta: +([ \w\.\-]+?) *= *({re_f})",
+                            repeats=True,
+                            str_operation=lambda x: [
+                                v.strip() for v in x.rsplit(" ", 1)
+                            ],
+                        )
+                    ]
+                ),
             ),
             Quantity(
-                'forces',
-                r'siesta\: Atomic forces \(eV/Ang\)\:([\s\S]+?Tot.+)',
-                sub_parser=TextParser(quantities=[
-                    Quantity(
-                        'atomic', rf'\d+ +({re_f} +{re_f} +{re_f})',
-                        repeats=True, dtype=np.dtype(np.float64)
-                    )
-                ])
+                "forces",
+                r"siesta\: Atomic forces \(eV/Ang\)\:([\s\S]+?Tot.+)",
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            "atomic",
+                            rf"\d+ +({re_f} +{re_f} +{re_f})",
+                            repeats=True,
+                            dtype=np.dtype(np.float64),
+                        )
+                    ]
+                ),
             ),
             Quantity(
-                'stress_tensor',
-                rf'Stress\-tensor\-Voigt \(kbar\)\: +({re_f} +{re_f} +{re_f} +{re_f} +{re_f} +{re_f})',
-                str_operation=to_stress_tensor
+                "stress_tensor",
+                rf"Stress\-tensor\-Voigt \(kbar\)\: +({re_f} +{re_f} +{re_f} +{re_f} +{re_f} +{re_f})",
+                str_operation=to_stress_tensor,
             ),
             Quantity(
-                'stress_tensor',
-                rf'Stress tensor \(static\) \(eV/Ang\*\*3\)\:([\s\S]+?){re_n} *{re_n}',
-                str_operation=lambda x: [v.strip().split()[1:4] for v in x.strip().splitlines()],
-                dtype=np.dtype(np.float64), unit=ureg.eV / ureg.angstrom ** 3
+                "stress_tensor",
+                rf"Stress tensor \(static\) \(eV/Ang\*\*3\)\:([\s\S]+?){re_n} *{re_n}",
+                str_operation=lambda x: [
+                    v.strip().split()[1:4] for v in x.strip().splitlines()
+                ],
+                dtype=np.dtype(np.float64),
+                unit=ureg.eV / ureg.angstrom**3,
             ),
             Quantity(
-                'electric_dipole',
-                rf'Electric dipole \(Debye\) += +({re_f} +{re_f} +{re_f})',
-                dtype=np.dtype(np.float64)
+                "electric_dipole",
+                rf"Electric dipole \(Debye\) += +({re_f} +{re_f} +{re_f})",
+                dtype=np.dtype(np.float64),
             ),
             Quantity(
-                'mulliken',
-                r'mulliken\: Atomic and Orbital Populations\:([\s\S]+?)siesta\:',
-                sub_parser=TextParser(quantities=[
-                    Quantity(
-                        'atom',
-                        rf'(Species\:[\s\S]+?){re_n} *{re_n}',
-                        repeats=True, sub_parser=TextParser(quantities=[
-                            Quantity('label', r'Species\: *(\S+)', dtype=str),
-                            Quantity('orbital', r'(\d[spdSPD]\S*) ', dtype=str, repeats=True),
-                            Quantity('values', rf'(\d+ +{re_f} +{re_f}[\d\.\-\s]+)', dtype=np.dtype(np.float64))
-                        ])
-                    ),
-                    Quantity('spin', r'(Spin DOWN)', str_operation=lambda x: 2),
-                    Quantity('q_tot', rf'Qtot = +({re_f})', repeats=True, dtype=np.float64)
-                ])
-            )
+                "mulliken",
+                r"mulliken\: Atomic and Orbital Populations\:([\s\S]+?)siesta\:",
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            "atom",
+                            rf"(Species\:[\s\S]+?){re_n} *{re_n}",
+                            repeats=True,
+                            sub_parser=TextParser(
+                                quantities=[
+                                    Quantity("label", r"Species\: *(\S+)", dtype=str),
+                                    Quantity(
+                                        "orbital",
+                                        r"(\d[spdSPD]\S*) ",
+                                        dtype=str,
+                                        repeats=True,
+                                    ),
+                                    Quantity(
+                                        "values",
+                                        rf"(\d+ +{re_f} +{re_f}[\d\.\-\s]+)",
+                                        dtype=np.dtype(np.float64),
+                                    ),
+                                ]
+                            ),
+                        ),
+                        Quantity("spin", r"(Spin DOWN)", str_operation=lambda x: 2),
+                        Quantity(
+                            "q_tot",
+                            rf"Qtot = +({re_f})",
+                            repeats=True,
+                            dtype=np.float64,
+                        ),
+                    ]
+                ),
+            ),
         ]
 
         self._quantities = [
             Quantity(
-                'header',
-                r'(S[\s\S]+?)\*',
-                sub_parser=TextParser(quantities=[
-                    Quantity(
-                        'program_version', r'(?:SIESTA|Siesta Version:) *(.+)',
-                        flatten=False, dtype=str
-                    ),
-                    Quantity(
-                        'x_siesta_arch', r'Architecture *: +(.+)',
-                        flatten=False, dtype=str
-                    ),
-                    Quantity(
-                        'x_siesta_compiler_flags', r'Compiler flags *: +(.+)',
-                        flatten=False, dtype=str
-                    ),
-                    Quantity(
-                        'x_siesta_parallel', r'(PARALLEL) version',
-                        str_operation=lambda x: True
-                    ),
-                ])
+                "header",
+                r"(S[\s\S]+?)\*",
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            "program_version",
+                            r"(?:SIESTA|Siesta Version:) *(.+)",
+                            flatten=False,
+                            dtype=str,
+                        ),
+                        Quantity(
+                            "x_siesta_arch",
+                            r"Architecture *: +(.+)",
+                            flatten=False,
+                            dtype=str,
+                        ),
+                        Quantity(
+                            "x_siesta_compiler_flags",
+                            r"Compiler flags *: +(.+)",
+                            flatten=False,
+                            dtype=str,
+                        ),
+                        Quantity(
+                            "x_siesta_parallel",
+                            r"(PARALLEL) version",
+                            str_operation=lambda x: True,
+                        ),
+                    ]
+                ),
             ),
             Quantity(
-                'input_data_file',
-                r'(Dump of input data file.+[\s\S]+?End of input data file)',
-                flatten=False, dtype=str
+                "input_data_file",
+                r"(Dump of input data file.+[\s\S]+?End of input data file)",
+                flatten=False,
+                dtype=str,
             ),
             Quantity(
-                'simulation_parameters',
-                r'Simulation parameters.+([\s\S]+?)\*{10}',
-                sub_parser=TextParser(quantities=[
-                    Quantity(
-                        'redata', r'redata\: (.+?= +\S+)',
-                        str_operation=lambda x: [v.strip() for v in x.rsplit('=')], repeats=True
-                    )
-                ])
+                "simulation_parameters",
+                r"Simulation parameters.+([\s\S]+?)\*{10}",
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            "redata",
+                            r"redata\: (.+?= +\S+)",
+                            str_operation=lambda x: [v.strip() for v in x.rsplit("=")],
+                            repeats=True,
+                        )
+                    ]
+                ),
+            ),
+            Quantity("x_siesta_n_nodes", r"Running on +(\d+) nodes", dtype=np.int32),
+            Quantity(
+                "run_start",
+                r"Start of run: +(\d+-[A-Z]+-\d+) +(\d+:\d+:\d+)",
+                flatten=False,
+                dtype=str,
             ),
             Quantity(
-                'x_siesta_n_nodes', r'Running on +(\d+) nodes',
-                dtype=np.int32
+                "run_end",
+                r"End of run: +(\d+-[A-Z]+-\d+) +(\d+:\d+:\d+)",
+                flatten=False,
+                dtype=str,
             ),
             Quantity(
-                'run_start', r'Start of run: +(\d+-[A-Z]+-\d+) +(\d+:\d+:\d+)',
-                flatten=False, dtype=str
+                "single_point",
+                r"(Single\-point calculation[\s\S]+?Target enthalpy.+)",
+                sub_parser=TextParser(quantities=calc_quantities),
             ),
             Quantity(
-                'run_end', r'End of run: +(\d+-[A-Z]+-\d+) +(\d+:\d+:\d+)',
-                flatten=False, dtype=str
-            ),
-            Quantity(
-                'single_point',
-                r'(Single\-point calculation[\s\S]+?Target enthalpy.+)',
-                sub_parser=TextParser(quantities=calc_quantities)
-            ),
-            Quantity(
-                'geometry_optimization',
-                r'\={5}\s+(Begin[\s\S]+?)outcoor\: Re',
-                sub_parser=TextParser(quantities=[
-                    Quantity(
-                        'step',
-                        r'(Begin.+?opt\. move += +\d+[\s\S]+?Target enthalpy.+)',
-                        repeats=True, sub_parser=TextParser(quantities=calc_quantities)
-                    )
-                ])
+                "geometry_optimization",
+                r"\={5}\s+(Begin[\s\S]+?)outcoor\: Re",
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            "step",
+                            r"(Begin.+?opt\. move += +\d+[\s\S]+?Target enthalpy.+)",
+                            repeats=True,
+                            sub_parser=TextParser(quantities=calc_quantities),
+                        )
+                    ]
+                ),
             ),
         ] + calc_quantities
 
@@ -277,29 +359,34 @@ class SiestaParser:
         self.out_parser = OutParser()
         self.fdf_parser = FDFParser()
         self._xc_map = {
-            'ca': ('LDA_X', 'LDA_C_PZ'),
-            'pz': ('LDA_X', 'LDA_C_PZ'),
-            'pw92': ('LDA_X', 'LDA_C_PW'),
+            "ca": ("LDA_X", "LDA_C_PZ"),
+            "pz": ("LDA_X", "LDA_C_PZ"),
+            "pw92": ("LDA_X", "LDA_C_PW"),
             # TODO 'PW91': '',
-            'pbe': ('GGA_X_PBE', 'GGA_C_PBE'),
-            'revpbe': ('GGA_X_PBE_R', 'GGA_C_PBE'),
-            'rpbe': ('GGA_X_RPBE', 'GGA_C_PBE'),
+            "pbe": ("GGA_X_PBE", "GGA_C_PBE"),
+            "revpbe": ("GGA_X_PBE_R", "GGA_C_PBE"),
+            "rpbe": ("GGA_X_RPBE", "GGA_C_PBE"),
             # TODO 'WC': ('GGA_X_WC', ),
-            'am05': ('GGA_X_AM05', 'GGA_C_AM05'),
-            'pbesol': ('GGA_X_PBE_SOL', 'GGA_C_PBE_SOL'),
-            'blyp': ('GGA_X_B88', 'GGA_C_LYP'),
-            'df1': ('gga_x_pbe_r', 'vdw_c_df1'),
-            'drsll': ('gga_x_pbe_r', 'vdw_c_df1'),
-            'lmkll': ('gga_x_rpw86', 'vdw_c_df2'),
-            'df2': ('gga_x_rpw86', 'vdw_c_df2'),
-            'kbm': ('GGA_X_OPTB88_VDW', 'vdw_c_df1'),
-            'c09': ('GGA_X_C09X', 'vdw_c_df1'),
-            'bh': ('GGA_X_LV_RPW86', 'vdw_c_df1'),
+            "am05": ("GGA_X_AM05", "GGA_C_AM05"),
+            "pbesol": ("GGA_X_PBE_SOL", "GGA_C_PBE_SOL"),
+            "blyp": ("GGA_X_B88", "GGA_C_LYP"),
+            "df1": ("gga_x_pbe_r", "vdw_c_df1"),
+            "drsll": ("gga_x_pbe_r", "vdw_c_df1"),
+            "lmkll": ("gga_x_rpw86", "vdw_c_df2"),
+            "df2": ("gga_x_rpw86", "vdw_c_df2"),
+            "kbm": ("GGA_X_OPTB88_VDW", "vdw_c_df1"),
+            "c09": ("GGA_X_C09X", "vdw_c_df1"),
+            "bh": ("GGA_X_LV_RPW86", "vdw_c_df1"),
         }
         self._metainfo_map = {
-            'Etot': 'total', 'FreeEng': 'free', 'Exc': 'xc', 'Band Struct.': 'sum_eigenvalues',
-            'Hartree': 'electrostatic', 'Exch.-corr.': 'xc', 'Ion-ion': 'nuclear_repulsion',
-            'Total': 'total'
+            "Etot": "total",
+            "FreeEng": "free",
+            "Exc": "xc",
+            "Band Struct.": "sum_eigenvalues",
+            "Hartree": "electrostatic",
+            "Exch.-corr.": "xc",
+            "Ion-ion": "nuclear_repulsion",
+            "Total": "total",
         }
 
     def init_parser(self):
@@ -317,24 +404,26 @@ class SiestaParser:
 
         sec_run = Run()
         archive.run.append(sec_run)
-        header = self.out_parser.get('header')
+        header = self.out_parser.get("header")
         if header is not None:
-            sec_run.program = Program(name='Siesta', version=header.program_version)
+            sec_run.program = Program(name="Siesta", version=header.program_version)
             for key, val in header.items():
-                if key.startswith('x_siesta'):
+                if key.startswith("x_siesta"):
                     setattr(sec_run, key, val)
 
         for key, val in self.out_parser.items():
-            if key.startswith('x_siesta'):
+            if key.startswith("x_siesta"):
                 setattr(sec_run, key, val)
 
         def get_date(time):
             if time is None:
                 return
-            return datetime.strptime(time, '%d-%b-%Y %H:%M:%S').timestamp()
+            return datetime.strptime(time, "%d-%b-%Y %H:%M:%S").timestamp()
 
         sec_run.time_run = TimeRun(
-            date_start=get_date(self.out_parser.run_start), date_end=get_date(self.out_parser.run_end))
+            date_start=get_date(self.out_parser.run_start),
+            date_end=get_date(self.out_parser.run_end),
+        )
 
         # input parameters from data file
         self.fdf_parser.mainfile = self.out_parser.mainfile
@@ -343,30 +432,42 @@ class SiestaParser:
 
         sec_method = Method()
         sec_run.method.append(sec_method)
-        parameters = self.fdf_parser.get('parameters')
+        parameters = self.fdf_parser.get("parameters")
         sec_method.x_siesta_input_parameters = parameters
         sec_method.x_siesta_simulation_parameters = {
-            key: val for key, val in self.out_parser.get('simulation_parameters', {}).get('redata', [])}
+            key: val
+            for key, val in self.out_parser.get("simulation_parameters", {}).get(
+                "redata", []
+            )
+        }
         sec_method.dft = DFT(xc_functional=XCFunctional())
-        for xc_functional in self._xc_map.get(parameters.get('xc.authors').lower(), []):
-            if '_X_' in xc_functional:
-                sec_method.dft.xc_functional.exchange.append(Functional(name=xc_functional))
-            elif '_C_' in xc_functional:
-                sec_method.dft.xc_functional.correlation.append(Functional(name=xc_functional))
-            elif '_HYB_' in xc_functional:
-                sec_method.dft.xc_functional.hybrid.append(Functional(name=xc_functional))
+        for xc_functional in self._xc_map.get(parameters.get("xc.authors").lower(), []):
+            if "_X_" in xc_functional:
+                sec_method.dft.xc_functional.exchange.append(
+                    Functional(name=xc_functional)
+                )
+            elif "_C_" in xc_functional:
+                sec_method.dft.xc_functional.correlation.append(
+                    Functional(name=xc_functional)
+                )
+            elif "_HYB_" in xc_functional:
+                sec_method.dft.xc_functional.hybrid.append(
+                    Functional(name=xc_functional)
+                )
             else:
-                sec_method.dft.xc_functional.contributions.append(Functional(name=xc_functional))
+                sec_method.dft.xc_functional.contributions.append(
+                    Functional(name=xc_functional)
+                )
         sec_method.electrons_representation = [
             BasisSetContainer(
-                type='atom-centered orbitals',
-                scope=['wavefunction'],
+                type="atom-centered orbitals",
+                scope=["wavefunction"],
                 basis_set=[
                     BasisSet(
-                        type='numeric AOs',
-                        scope=['full-election'],
+                        type="numeric AOs",
+                        scope=["full-election"],
                     )
-                ]
+                ],
             )
         ]
         # parse atomic basis info
@@ -374,21 +475,23 @@ class SiestaParser:
         def parse_system(source):
             sec_system = System()
             sec_run.system.append(sec_system)
-            lattice_vectors = source.get('lattice_vectors')
-            atoms = source.get('atoms')
+            lattice_vectors = source.get("lattice_vectors")
+            atoms = source.get("atoms")
             source = atoms if atoms is not None else source
-            positions = source.get('positions')
+            positions = source.get("positions")
             if positions is not None:
-                coordinates_format = source.get('coordinates_format', 'Ang').lower()
-                if coordinates_format == 'ang':
+                coordinates_format = source.get("coordinates_format", "Ang").lower()
+                if coordinates_format == "ang":
                     positions = positions * ureg.angstrom
-                elif coordinates_format in ['fractional', 'scaledcartesian']:
+                elif coordinates_format in ["fractional", "scaledcartesian"]:
                     if lattice_vectors is not None:
                         positions = np.dot(positions, lattice_vectors)
 
             sec_system.atoms = Atoms(
-                positions=positions, labels=source.get('labels'),
-                lattice_vectors=lattice_vectors)
+                positions=positions,
+                labels=source.get("labels"),
+                lattice_vectors=lattice_vectors,
+            )
 
             return sec_system
 
@@ -398,17 +501,27 @@ class SiestaParser:
             # energy
             sec_energy = Energy()
             sec_calc.energy = sec_energy
-            for key, val in source.get('energy', {}).get('contribution', []):
+            for key, val in source.get("energy", {}).get("contribution", []):
                 if key in self._metainfo_map:
-                    setattr(sec_energy, self._metainfo_map[key], EnergyEntry(value=val * ureg.eV))
+                    setattr(
+                        sec_energy,
+                        self._metainfo_map[key],
+                        EnergyEntry(value=val * ureg.eV),
+                    )
                 else:
-                    sec_energy.contributions.append(EnergyEntry(kind=key, value=val * ureg.eV))
+                    sec_energy.contributions.append(
+                        EnergyEntry(kind=key, value=val * ureg.eV)
+                    )
             if source.energy_total is not None:
                 sec_energy.total = EnergyEntry(value=source.energy_total)
 
             # forces
             if source.forces is not None and source.forces.atomic is not None:
-                sec_calc.forces = Forces(total=ForcesEntry(value=source.forces.atomic * ureg.eV / ureg.angstrom))
+                sec_calc.forces = Forces(
+                    total=ForcesEntry(
+                        value=source.forces.atomic * ureg.eV / ureg.angstrom
+                    )
+                )
 
             # stress tensor
             if source.stress_tensor is not None:
@@ -418,45 +531,60 @@ class SiestaParser:
             if source.electric_dipole is not None:
                 sec_multipoles = Multipoles()
                 sec_calc.multipoles.append(sec_multipoles)
-                sec_multipoles.kind = 'electric'
+                sec_multipoles.kind = "electric"
                 sec_multipoles.dipole = MultipolesEntry(total=source.electric_dipole)
 
             # multipoles
             if source.mulliken is not None:
                 sec_charges = Charges()
                 sec_calc.charges.append(sec_charges)
-                atoms = source.mulliken.get('atom', [])
-                spin = source.mulliken.get('spin', 1)
+                atoms = source.mulliken.get("atom", [])
+                spin = source.mulliken.get("spin", 1)
                 n_atoms = len(atoms) // spin
                 value = np.zeros(n_atoms)
                 for atom_n, atom in enumerate(atoms):
                     spin_n = atom_n // n_atoms
-                    for orb_n, orb in enumerate(atom.get('orbital', [])):
+                    for orb_n, orb in enumerate(atom.get("orbital", [])):
                         # TODO map orb to lm value
-                        sec_charges.orbital_projected.append(ChargesValue(
-                            spin=spin_n, atom_label=atom.label, orbital=orb,
-                            value=atom.values[orb_n + 2] * ureg.elementary_charge  # 0: index 1: sum
-                        ))
+                        sec_charges.orbital_projected.append(
+                            ChargesValue(
+                                spin=spin_n,
+                                atom_label=atom.label,
+                                orbital=orb,
+                                value=atom.values[orb_n + 2]
+                                * ureg.elementary_charge,  # 0: index 1: sum
+                            )
+                        )
                     if spin == 2:
                         # spin peojected
-                        sec_charges.spin_projected.append(ChargesValue(
-                            spin=spin_n, atom_label=atom.label, value=atom.values[1] * ureg.elementary_charge
-                        ))
+                        sec_charges.spin_projected.append(
+                            ChargesValue(
+                                spin=spin_n,
+                                atom_label=atom.label,
+                                value=atom.values[1] * ureg.elementary_charge,
+                            )
+                        )
                     value[atom_n % n_atoms] += atom.values[1]
 
-                sec_charges.analysis_method = 'Mulliken'
+                sec_charges.analysis_method = "Mulliken"
                 sec_charges.value = value * ureg.elementary_charge
-                sec_charges.total = sum(source.mulliken.get('qtot', [])) * ureg.elementary_charge
+                sec_charges.total = (
+                    sum(source.mulliken.get("qtot", [])) * ureg.elementary_charge
+                )
 
             # TODO parse more properties
             # scf steps
-            for step in source.get('scf', {}).get('step', []):
+            for step in source.get("scf", {}).get("step", []):
                 sec_scf = ScfIteration()
                 sec_calc.scf_iteration.append(sec_scf)
                 sec_scf.energy = Energy(
-                    total=EnergyEntry(value=step[1] * ureg.eV), fermi=step[4] * ureg.eV,
-                    free=EnergyEntry(value=step[2] * ureg.eV))
-                sec_scf.energy.types.append(EnergyEntry(kind='Harris', value=step[0] * ureg.eV))
+                    total=EnergyEntry(value=step[1] * ureg.eV),
+                    fermi=step[4] * ureg.eV,
+                    free=EnergyEntry(value=step[2] * ureg.eV),
+                )
+                sec_scf.energy.types.append(
+                    EnergyEntry(kind="Harris", value=step[0] * ureg.eV)
+                )
 
             return sec_calc
 
@@ -470,7 +598,7 @@ class SiestaParser:
             archive.workflow2 = SinglePoint()
 
         if self.out_parser.geometry_optimization is not None:
-            for step in self.out_parser.geometry_optimization.get('step', []):
+            for step in self.out_parser.geometry_optimization.get("step", []):
                 parse_configurations(step)
             archive.workflow2 = GeometryOptimization()
 

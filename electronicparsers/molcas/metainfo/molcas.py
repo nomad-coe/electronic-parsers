@@ -16,11 +16,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import numpy as np            # pylint: disable=unused-import
-import typing                 # pylint: disable=unused-import
+import numpy as np  # pylint: disable=unused-import
+import typing  # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
-    MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference
+    MSection,
+    MCategory,
+    Category,
+    Package,
+    Quantity,
+    Section,
+    SubSection,
+    SectionProxy,
+    Reference,
 )
 import runschema.run  # pylint: disable=unused-import
 import runschema.calculation  # pylint: disable=unused-import
@@ -32,105 +39,113 @@ m_package = Package()
 
 
 class x_molcas_section_frequency(MSection):
-    '''
+    """
     Section for Molcas frequency (symmetry, frequency, intensity)
-    '''
+    """
 
     m_def = Section(validate=False)
 
     x_molcas_frequency_value = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Molcas frequency value
-        ''')
+        """,
+    )
 
     x_molcas_imaginary_frequency_value = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Molcas imaginary frequency value
-        ''')
+        """,
+    )
 
     x_molcas_frequency_intensity = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Molcas intensity value
-        ''')
+        """,
+    )
 
     x_molcas_frequency_symmetry = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Molcas symmetry for frequencies
-        ''')
+        """,
+    )
 
 
 class x_molcas_section_basis(MSection):
-    '''
+    """
     Section for Molcas basis sets
-    '''
+    """
 
     m_def = Section(validate=False)
 
     x_molcas_basis_atom_label = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Molcas basis set atom label.
-        ''')
+        """,
+    )
 
     x_molcas_basis_name = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Molcas basis set name.  Repeated strings of '.' are compressed to a single '.'.
         Any leading or trailing '.' are stripped.
-        ''')
+        """,
+    )
 
 
 class Method(runschema.method.Method):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_molcas_method_name = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Molcas method name (without UHF; see x_molcas_uhf)
-        ''')
+        """,
+    )
 
     x_molcas_uhf = Quantity(
         type=bool,
         shape=[],
-        description='''
+        description="""
         If the Molcas method is UHF.
-        ''')
+        """,
+    )
 
     x_molcas_section_basis = SubSection(
-        sub_section=SectionProxy('x_molcas_section_basis'),
-        repeats=True)
+        sub_section=SectionProxy("x_molcas_section_basis"), repeats=True
+    )
 
 
 class Calculation(runschema.calculation.Calculation):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_molcas_slapaf_grad_norm = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Molcas slapaf (geometry optimization) grad (force) norm
-        ''')
+        """,
+    )
 
     x_molcas_slapaf_grad_max = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Molcas slapaf (geometry optimization) grad (force) max
-        ''')
+        """,
+    )
 
     x_molcas_section_frequency = SubSection(
-        sub_section=SectionProxy('x_molcas_section_frequency'),
-        repeats=True)
+        sub_section=SectionProxy("x_molcas_section_frequency"), repeats=True
+    )

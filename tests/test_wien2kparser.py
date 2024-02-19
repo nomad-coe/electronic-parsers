@@ -27,26 +27,26 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def parser():
     return Wien2kParser()
 
 
 def test_single_point(parser, caplog):
     archive = EntryArchive()
-    parser.parse('tests/data/wien2k/basic/ok.scf', archive, None)
+    parser.parse("tests/data/wien2k/basic/ok.scf", archive, None)
 
     assert len(caplog.records) == 0
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == '12.1 22/7/2012'
+    assert sec_run.program.version == "12.1 22/7/2012"
     assert sec_run.time_run.date_start.magnitude == 1397313280.0
 
     sec_method = archive.run[0].method[0]
-    assert sec_method.dft.xc_functional.correlation[0].name == 'GGA_C_PBE_SOL'
+    assert sec_method.dft.xc_functional.correlation[0].name == "GGA_C_PBE_SOL"
     assert sec_method.x_wien2k_ifft[1] == 120
     assert sec_method.electrons_representation[0].basis_set[0].cutoff_fractional == 7.0
-    assert sec_method.electronic.smearing.kind == 'tetrahedra'
+    assert sec_method.electronic.smearing.kind == "tetrahedra"
     assert sec_method.x_wien2k_in2_espermin == 0.50
 
     sec_scc = archive.run[0].calculation[0]
@@ -64,12 +64,12 @@ def test_single_point(parser, caplog):
     assert np.shape(sec_system.atoms.positions) == (49, 3)
     assert sec_system.atoms.positions[18][1].magnitude == approx(9.94126646e-10)
     assert sec_system.atoms.lattice_vectors[1][1].magnitude == approx(1.06500038e-09)
-    assert sec_system.atoms.labels == ['C'] * 49
+    assert sec_system.atoms.labels == ["C"] * 49
 
 
 def test_eigenvalues(parser, caplog):
     archive = EntryArchive()
-    parser.parse('tests/data/wien2k/eigenvalues/64k_8Rk_mBJkol.scf', archive, None)
+    parser.parse("tests/data/wien2k/eigenvalues/64k_8Rk_mBJkol.scf", archive, None)
 
     assert len(caplog.records) == 1
     assert "Different number of eigenvalues" in caplog.records[0].msg
@@ -84,13 +84,13 @@ def test_eigenvalues(parser, caplog):
     sec_dos = archive.run[0].calculation[0].dos_electronic[0]
     assert np.shape(sec_dos.total[0].value) == (1251,)
     assert len(sec_dos.energies) == 1251
-    assert sec_dos.total[0].value[1178].magnitude == approx(5.93635529e+19)
+    assert sec_dos.total[0].value[1178].magnitude == approx(5.93635529e19)
     assert sec_dos.energies[285].magnitude == approx(-9.37345115e-19)
 
 
 def test_dos(parser, caplog):
     archive = EntryArchive()
-    parser.parse('tests/data/wien2k/dos/CrO2-sp.scf', archive, None)
+    parser.parse("tests/data/wien2k/dos/CrO2-sp.scf", archive, None)
 
     assert len(caplog.records) == 1
     assert "Different number of eigenvalues" in caplog.records[0].msg
@@ -110,10 +110,14 @@ def test_dos(parser, caplog):
     assert sec_dos_up.spin_channel == 0 and sec_dos_down.spin_channel == 1
     assert sec_dos_up.energies[26].magnitude == approx(-9.76582818e-19)
     assert np.shape(sec_dos_down.total[0].value) == (1000,)
-    assert sec_dos_down.total[0].value[334].magnitude == approx(1.32586595e+19)
+    assert sec_dos_down.total[0].value[334].magnitude == approx(1.32586595e19)
 
-    assert len(sec_dos_up.species_projected) == 2 and len(sec_dos_up.species_projected) == len(sec_dos_down.species_projected)
-    assert sec_dos_up.species_projected[0].atom_label == 'Cr'
-    assert sec_dos_up.species_projected[1].atom_label == 'O'
+    assert len(sec_dos_up.species_projected) == 2 and len(
+        sec_dos_up.species_projected
+    ) == len(sec_dos_down.species_projected)
+    assert sec_dos_up.species_projected[0].atom_label == "Cr"
+    assert sec_dos_up.species_projected[1].atom_label == "O"
     assert np.shape(sec_dos_up.species_projected[0].value) == (1000,)
-    assert sec_dos_up.species_projected[1].value[926].magnitude == approx(2.7395685667470246e+17)
+    assert sec_dos_up.species_projected[1].value[926].magnitude == approx(
+        2.7395685667470246e17
+    )

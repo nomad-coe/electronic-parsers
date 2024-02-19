@@ -26,27 +26,27 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def parser():
     return NWChemParser()
 
 
 def test_single_point(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/nwchem/single_point.out', archive, None)
+    parser.parse("tests/data/nwchem/single_point.out", archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == '6.6'
-    assert sec_run.x_nwchem_section_start_information[0].x_nwchem_ga_revision == '10594'
+    assert sec_run.program.version == "6.6"
+    assert sec_run.x_nwchem_section_start_information[0].x_nwchem_ga_revision == "10594"
 
     sec_method = archive.run[0].method[0]
-    assert sec_method.electrons_representation[0].basis_set[0].type == 'gaussians'
+    assert sec_method.electrons_representation[0].basis_set[0].type == "gaussians"
     assert sec_method.scf.n_max_iteration == 50
     assert len(sec_method.dft.xc_functional.correlation) == 1
-    assert sec_method.dft.xc_functional.correlation[0].name == 'MGGA_C_TPSS'
+    assert sec_method.dft.xc_functional.correlation[0].name == "MGGA_C_TPSS"
     assert sec_method.dft.xc_functional.exchange[0].weight == 1.0
 
-    assert archive.workflow2.m_def.name == 'SinglePoint'
+    assert archive.workflow2.m_def.name == "SinglePoint"
 
     sec_scc = archive.run[0].calculation[0]
     assert sec_scc.energy.total.value.magnitude == approx(-3.332424186333889e-16)
@@ -66,11 +66,13 @@ def test_single_point(parser):
 
 def test_geometry_optimization(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/nwchem/geometry_optimization.out', archive, None)
+    parser.parse("tests/data/nwchem/geometry_optimization.out", archive, None)
 
     sec_methods = archive.run[0].method
     assert len(sec_methods) == 4
-    assert sec_methods[1].scf.threshold_energy_change.magnitude == approx(4.35974472e-24)
+    assert sec_methods[1].scf.threshold_energy_change.magnitude == approx(
+        4.35974472e-24
+    )
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 4
@@ -89,20 +91,24 @@ def test_geometry_optimization(parser):
 
 def test_molecular_dynamics(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/nwchem/molecular_dynamics.out', archive, None)
+    parser.parse("tests/data/nwchem/molecular_dynamics.out", archive, None)
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 6
     assert sec_sccs[2].energy.xc.value.magnitude == approx(-4.04565658e-17)
-    assert sec_sccs[5].x_nwchem_section_qmd_step[0].x_nwchem_qmd_step_total_energy.magnitude == approx(-3.32745352e-16)
-    assert sec_sccs[2].x_nwchem_section_qmd_step[0].x_nwchem_qmd_step_dipole[1] == approx(1.141435e-01)
+    assert sec_sccs[5].x_nwchem_section_qmd_step[
+        0
+    ].x_nwchem_qmd_step_total_energy.magnitude == approx(-3.32745352e-16)
+    assert sec_sccs[2].x_nwchem_section_qmd_step[0].x_nwchem_qmd_step_dipole[
+        1
+    ] == approx(1.141435e-01)
     assert sec_sccs[2].time_calculation.magnitude == approx(0.4)
     assert sec_sccs[4].time_physical.magnitude == approx(1.8)
 
 
 def test_pw(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/nwchem/pw.out', archive, None)
+    parser.parse("tests/data/nwchem/pw.out", archive, None)
 
     sec_sccs = archive.run[0].calculation
     assert sec_sccs[1].energy.total.value.magnitude == approx(-8.89979631e-17)

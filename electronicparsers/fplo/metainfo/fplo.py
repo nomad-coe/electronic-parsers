@@ -16,11 +16,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import numpy as np            # pylint: disable=unused-import
-import typing                 # pylint: disable=unused-import
+import numpy as np  # pylint: disable=unused-import
+import typing  # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
-    MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference
+    MSection,
+    MCategory,
+    Category,
+    Package,
+    Quantity,
+    Section,
+    SubSection,
+    SectionProxy,
+    Reference,
 )
 import runschema.run  # pylint: disable=unused-import
 import runschema.calculation  # pylint: disable=unused-import
@@ -32,98 +39,106 @@ m_package = Package()
 
 
 class Run(runschema.run.Run):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fplo_program_version_sub = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         FPLO sub version
-        ''')
+        """,
+    )
 
     x_fplo_program_compilation_options = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         FPLO compilation options
-        ''')
+        """,
+    )
 
 
 class System(runschema.system.System):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fplo_reciprocal_cell = Quantity(
         type=np.dtype(np.float64),
         shape=[3, 3],
-        unit='1 / meter',
-        description='''
+        unit="1 / meter",
+        description="""
         Reciprocal Lattice vectors (in Cartesian coordinates). The first index runs over
         the $x,y,z$ Cartesian coordinates, and the second index runs over the 3 lattice
         vectors.
-        ''')
+        """,
+    )
 
     x_fplo_atom_idx = Quantity(
         type=np.dtype(np.int32),
-        shape=['number_of_atoms'],
-        description='''
+        shape=["number_of_atoms"],
+        description="""
         FPLO-internal index for each atom
-        ''')
+        """,
+    )
 
     x_fplo_atom_wyckoff_idx = Quantity(
         type=np.dtype(np.int32),
-        shape=['number_of_atoms'],
-        description='''
+        shape=["number_of_atoms"],
+        description="""
         Wyckoff position index of each atom
-        ''')
+        """,
+    )
 
     x_fplo_atom_cpa_block = Quantity(
         type=np.dtype(np.int32),
-        shape=['number_of_atoms'],
-        description='''
+        shape=["number_of_atoms"],
+        description="""
         CPA block of each atom
-        ''')
+        """,
+    )
 
     x_fplo_structure_type = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         FPLO structure type: Crystal/Molecule
-        ''')
+        """,
+    )
 
 
 class Method(runschema.method.Method):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fplo_xc_functional_number = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
+        description="""
         FPLO number xc functional
-        ''')
+        """,
+    )
 
     x_fplo_xc_functional = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         FPLO notation of xc functional
-        ''')
+        """,
+    )
 
     x_fplo_dft_plus_u_projection_type = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         FPLO notation of DFT+U projection
-        ''')
+        """,
+    )
 
     x_fplo_dft_plus_u_functional = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         FPLO notation of DFT+U functional
-        ''')
+        """,
+    )
 
 
 # class HubbardModel(runschema.method.HubbardModel):

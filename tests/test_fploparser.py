@@ -26,7 +26,7 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def parser():
     return FploParser()
 
@@ -34,14 +34,14 @@ def parser():
 def test_basic(parser):
     archive = EntryArchive()
 
-    parser.parse('tests/data/fplo/hcp_ti/out', archive, None)
+    parser.parse("tests/data/fplo/hcp_ti/out", archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == '14.00 M-CPA 47'
+    assert sec_run.program.version == "14.00 M-CPA 47"
 
     sec_system = archive.run[0].system[0]
     assert sec_system.atoms.lattice_vectors[0][1].magnitude == approx(-1.475e-10)
-    assert sec_system.atoms.labels == ['Ti', 'Ti']
+    assert sec_system.atoms.labels == ["Ti", "Ti"]
     assert sec_system.atoms.positions[1][2].magnitude == approx(-1.17e-10)
 
     sec_sccs = sec_run.calculation
@@ -53,6 +53,6 @@ def test_basic(parser):
 def test_1(parser):
     archive = EntryArchive()
 
-    parser.parse('tests/data/fplo/dhcp_gd/out', archive, None)
+    parser.parse("tests/data/fplo/dhcp_gd/out", archive, None)
 
     assert len(archive.run[0].system[0].atoms.positions) == 4

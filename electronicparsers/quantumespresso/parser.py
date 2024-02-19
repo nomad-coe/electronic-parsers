@@ -2799,7 +2799,7 @@ class QuantumEspressoParser:
         sec_run.calculation.append(sec_scc)
 
         # energies
-        energies = calculation.get('energies', {})
+        energies = calculation.get("energies", {})
         sec_energy = Energy()
         sec_scc.energy = sec_energy
         for key, val in energies.items():
@@ -2839,7 +2839,7 @@ class QuantumEspressoParser:
         # stress
         sec_thermo = Thermodynamics()
         sec_scc.thermodynamics.append(sec_thermo)
-        stress = calculation.get('stress')
+        stress = calculation.get("stress")
         if stress is not None:
             sec_thermo.pressure = stress[0].to("pascal")
             sec_scc.stress = Stress(total=StressEntry(value=stress[1]))
@@ -2946,7 +2946,9 @@ class QuantumEspressoParser:
                 metainfo_ext = "_bands"
                 diagonalization_section = x_qe_section_bands_diagonalization
             sec_diagonalization = diagonalization_section()
-            sec_def = target.m_def.all_sub_sections_by_section.get(diagonalization_section.m_def)[0]
+            sec_def = target.m_def.all_sub_sections_by_section.get(
+                diagonalization_section.m_def
+            )[0]
             target.m_add_sub_section(sec_def, sec_diagonalization)
             for key, val in diagonalization.items():
                 if val is None:
@@ -2978,7 +2980,7 @@ class QuantumEspressoParser:
             sec_scf_iteration = ScfIteration()
             sec_scc.scf_iteration.append(sec_scf_iteration)
 
-            energies = iteration.get('energies', {})
+            energies = iteration.get("energies", {})
             sec_scf_energy = Energy()
             sec_scf_iteration.energy = sec_scf_energy
             for key, val in energies.items():
@@ -3350,7 +3352,7 @@ class QuantumEspressoParser:
 
         sec_smearing = Smearing()
         sec_electronic.smearing = sec_smearing
-        smearing = run.get_header('k_points', {}).get('smearing', None)
+        smearing = run.get_header("k_points", {}).get("smearing", None)
         if smearing in self.smearing_map:
             sec_smearing.kind = self.smearing_map[smearing]
 
@@ -3505,8 +3507,8 @@ class QuantumEspressoParser:
             self.sampling_method = None
             sec_run = Run()
             self.archive.run.append(sec_run)
-            sec_run.program = Program(name='Quantum Espresso')
-            name_version = run.get('program_name_version')
+            sec_run.program = Program(name="Quantum Espresso")
+            name_version = run.get("program_name_version")
             if name_version is not None:
                 sec_run.x_qe_program_name = name_version[0]
                 sec_run.program.version = " ".join(name_version[1:]).lstrip("v.")
@@ -3542,7 +3544,7 @@ class QuantumEspressoParser:
                     if sec_parallel is None:
                         sec_parallel = x_qe_section_parallel()
                         sec_run.x_qe_section_parallel.append(sec_parallel)
-                    setattr(sec_parallel, 'x_qe_%s' % key, val)
+                    setattr(sec_parallel, "x_qe_%s" % key, val)
 
             for key in ["input_filename", "input_positions_cell_dirname"]:
                 val = run.get(key)
