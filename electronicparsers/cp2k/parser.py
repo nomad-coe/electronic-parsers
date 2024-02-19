@@ -1150,7 +1150,6 @@ class CP2KParser:
 
     def get_atomic_number(self, element: str) -> Optional[int]:
         """Convert the element symbol to its corresponding atomic number.
-        It will first try to use the submitted element symbol, and else resort to the extracted number.
 
         Dependencies:
         - ase.data.atomic_numbers
@@ -1158,15 +1157,7 @@ class CP2KParser:
 
         if match := re.match(r"([A-Z][a-z]?)", element):
             return ase.data.atomic_numbers.get(match.group(1), None)
-        else:
-            try:
-                return (
-                    self.out_parser.get(self._calculation_type, {})
-                    .get("atomic_coordinates")
-                    .atomic_numbers.get(element, None)
-                )  # TODO: useful?
-            except AttributeError:
-                return None
+        return None
 
     def get_ensemble_type(self, frame):
         if self.sampling_method != "molecular_dynamics":
