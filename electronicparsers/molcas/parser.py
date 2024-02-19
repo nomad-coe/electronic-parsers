@@ -26,23 +26,33 @@ from simulationparsers.utils import BasicParser
 
 class MolcasParser:
     def __init__(self):
-        re_f = r'\-*\d+\.\d+E*e*\-*\+*\d*'
+        re_f = r"\-*\d+\.\d+E*e*\-*\+*\d*"
 
         def get_positions(val):
             try:
-                labels, positions = zip(*re.findall(rf'\d+ +([A-Z][a-z]*)\d* +({re_f} +{re_f} +{re_f})', val))
-                positions = np.array([v.split() for v in positions], dtype=np.dtype(np.float64)) * ureg.angstrom
+                labels, positions = zip(
+                    *re.findall(
+                        rf"\d+ +([A-Z][a-z]*)\d* +({re_f} +{re_f} +{re_f})", val
+                    )
+                )
+                positions = (
+                    np.array([v.split() for v in positions], dtype=np.dtype(np.float64))
+                    * ureg.angstrom
+                )
             except Exception:
                 labels, positions = [], []
             return dict(atom_labels=labels, atom_positions=positions)
 
         self._parser = BasicParser(
-            'MOLCAS',
+            "MOLCAS",
             units_mapping=dict(length=ureg.bohr, energy=ureg.hartree),
             # include code name to distinguish gamess and firefly
-            program_version=r'version ([\d\.]+ patchlevel \d+)',
-            atom_labels_atom_positions=(r'No\. +Label +X +Y +Z\s*([\s\S]+?)\n *\n', get_positions),
-            energy_total=rf'Total.* energy *\:*\=* *({re_f})'
+            program_version=r"version ([\d\.]+ patchlevel \d+)",
+            atom_labels_atom_positions=(
+                r"No\. +Label +X +Y +Z\s*([\s\S]+?)\n *\n",
+                get_positions,
+            ),
+            energy_total=rf"Total.* energy *\:*\=* *({re_f})",
         )
 
     def parse(self, mainfile, archive, logger=None):

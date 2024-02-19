@@ -19,7 +19,11 @@
 import numpy as np
 
 from nomad.metainfo import (  # pylint: disable=unused-import
-    MSection, Package, Quantity, Section, SubSection
+    MSection,
+    Package,
+    Quantity,
+    Section,
+    SubSection,
 )
 import runschema.run  # pylint: disable=unused-import
 import runschema.calculation  # pylint: disable=unused-import
@@ -31,21 +35,22 @@ m_package = Package()
 
 
 class Run(runschema.run.Run):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_wannier90_n_atoms_proj = Quantity(
         type=np.int32,
         shape=[],
-        description='''
+        description="""
         Number of atoms used in the Wannier90 projection.
-        ''')
+        """,
+    )
 
     x_wannier90_units = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Optional. Either Ang or Bohr to specify whether the projection centres specified
         in this block (if given in Cartesian co-ordinates) are in units of Angstrom or
         Bohr, respectively. The default value is Ang.
-        ''')
+        """,
+    )

@@ -16,11 +16,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import numpy as np            # pylint: disable=unused-import
-import typing                 # pylint: disable=unused-import
+import numpy as np  # pylint: disable=unused-import
+import typing  # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
-    MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference
+    MSection,
+    MCategory,
+    Category,
+    Package,
+    Quantity,
+    Section,
+    SubSection,
+    SectionProxy,
+    Reference,
 )
 import runschema.run  # pylint: disable=unused-import
 import runschema.calculation  # pylint: disable=unused-import
@@ -33,411 +40,448 @@ m_package = Package()
 
 
 class x_nwchem_section_start_information(MSection):
-    '''
+    """
     Contains information about the starting conditions for this run
-    '''
+    """
 
     m_def = Section(validate=False)
 
     x_nwchem_input_filename = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         .
-        ''')
+        """,
+    )
 
     x_nwchem_start_datetime = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The run start date and time.
-        ''')
+        """,
+    )
 
     x_nwchem_compilation_datetime = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The compilation date and time.
-        ''')
+        """,
+    )
 
     x_nwchem_run_host_name = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The host on which this calculation was made on.
-        ''')
+        """,
+    )
 
     x_nwchem_source = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The source directory of the code.
-        ''')
+        """,
+    )
 
     x_nwchem_branch = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The main branch of the code.
-        ''')
+        """,
+    )
 
     x_nwchem_revision = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The SVN revision of the code.
-        ''')
+        """,
+    )
 
     x_nwchem_ga_revision = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The ga revision.
-        ''')
+        """,
+    )
 
     x_nwchem_input_prefix = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The input prefix.
-        ''')
+        """,
+    )
 
     x_nwchem_db_filename = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The database filename.
-        ''')
+        """,
+    )
 
     x_nwchem_status = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Status of the run.
-        ''')
+        """,
+    )
 
     x_nwchem_nproc = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Number of processes used.
-        ''')
+        """,
+    )
 
     x_nwchem_time_left = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Time left in seconds.
-        ''')
+        """,
+    )
 
     x_nwchem_program_name = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The name of the program that was run.
-        ''')
+        """,
+    )
 
 
 class x_nwchem_section_xc_part(MSection):
-    '''
+    """
     Describes a part of the XC functional that is used in the calculation. Can be a local
     or non-local part, can be exchange or correlation, can have a weight.
-    '''
+    """
 
     m_def = Section(validate=False)
 
     x_nwchem_xc_functional_name = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The name of the XC functional
-        ''')
+        """,
+    )
 
     x_nwchem_xc_functional_weight = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         The weight of the XC functional.
-        ''')
+        """,
+    )
 
     x_nwchem_xc_functional_type = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The type of the XC functional, local or non-local
-        ''')
+        """,
+    )
 
 
 class x_nwchem_section_geometry(MSection):
-    '''
+    """
     Contains system information for a calculation to follow. Contains all of the
     geometries used in different NWChem tasks contained by this calculations.
-    '''
+    """
 
     m_def = Section(validate=False)
 
 
 class x_nwchem_section_geo_opt_module(MSection):
-    '''
+    """
     Section for a geometry optimization task.
-    '''
+    """
 
     m_def = Section(validate=False)
 
     x_nwchem_section_geo_opt_step = SubSection(
-        sub_section=SectionProxy('x_nwchem_section_geo_opt_step'),
-        repeats=True)
+        sub_section=SectionProxy("x_nwchem_section_geo_opt_step"), repeats=True
+    )
 
 
 class x_nwchem_section_geo_opt_step(MSection):
-    '''
+    """
     Section for a geometry optimization step.
-    '''
+    """
 
     m_def = Section(validate=False)
 
     x_nwchem_geo_opt_step_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         The energy for a geometry optimization step.
-        ''')
+        """,
+    )
 
 
 class x_nwchem_section_qmd_module(MSection):
-    '''
+    """
     Section for QMD Module.
-    '''
+    """
 
     m_def = Section(validate=False)
 
 
 class x_nwchem_section_qmd_step(MSection):
-    '''
+    """
     DFT QMD step
-    '''
+    """
 
     m_def = Section(validate=False)
 
     x_nwchem_qmd_step_time = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='second',
-        description='''
+        unit="second",
+        description="""
         Elapsed simulation time.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_step_kinetic_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='joule',
-        description='''
+        unit="joule",
+        description="""
         Kinetic energy.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_step_potential_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='joule',
-        description='''
+        unit="joule",
+        description="""
         Potential energy.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_step_total_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='joule',
-        description='''
+        unit="joule",
+        description="""
         Total energy.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_step_target_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='kelvin',
-        description='''
+        unit="kelvin",
+        description="""
         Target temperature.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_step_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='kelvin',
-        description='''
+        unit="kelvin",
+        description="""
         Temperature.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_step_dipole = Quantity(
         type=np.dtype(np.float64),
         shape=[3],
-        description='''
+        description="""
         Electric dipole moment.
-        ''')
+        """,
+    )
 
 
 class Run(runschema.run.Run):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_nwchem_section_start_information = SubSection(
-        sub_section=SectionProxy('x_nwchem_section_start_information'),
-        repeats=True)
+        sub_section=SectionProxy("x_nwchem_section_start_information"), repeats=True
+    )
 
     x_nwchem_section_geometry = SubSection(
-        sub_section=SectionProxy('x_nwchem_section_geometry'),
-        repeats=True)
+        sub_section=SectionProxy("x_nwchem_section_geometry"), repeats=True
+    )
 
     x_nwchem_section_geo_opt_module = SubSection(
-        sub_section=SectionProxy('x_nwchem_section_geo_opt_module'),
-        repeats=True)
+        sub_section=SectionProxy("x_nwchem_section_geo_opt_module"), repeats=True
+    )
 
     x_nwchem_section_qmd_module = SubSection(
-        sub_section=SectionProxy('x_nwchem_section_qmd_module'),
-        repeats=True)
+        sub_section=SectionProxy("x_nwchem_section_qmd_module"), repeats=True
+    )
 
 
 class Method(runschema.method.Method):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_nwchem_xc_functional_shortcut = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Shorcut for a XC functional definition.
-        ''')
+        """,
+    )
 
     x_nwchem_electron_spin_restriction = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Electron spin restriction.
-        ''')
+        """,
+    )
 
     x_nwchem_section_xc_part = SubSection(
-        sub_section=SectionProxy('x_nwchem_section_xc_part'),
-        repeats=True)
+        sub_section=SectionProxy("x_nwchem_section_xc_part"), repeats=True
+    )
 
 
 class Calculation(runschema.calculation.Calculation):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_nwchem_energy_one_electron = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         The one-electron energy in a DFT calculation.
-        ''')
+        """,
+    )
 
     x_nwchem_energy_coulomb = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         The Coulomb energy energy in a DFT calculation.
-        ''')
+        """,
+    )
 
     x_nwchem_energy_nuclear_repulsion = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         The nuclear repulsion energy in a DFT calculation.
-        ''')
+        """,
+    )
 
     x_nwchem_section_qmd_step = SubSection(
-        sub_section=SectionProxy('x_nwchem_section_qmd_step'),
-        repeats=True)
+        sub_section=SectionProxy("x_nwchem_section_qmd_step"), repeats=True
+    )
 
 
 class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_nwchem_qmd_number_of_nuclear_steps = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
+        description="""
         Number of nuclear steps.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_nuclear_time_step = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Nuclear time step.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_target_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Target temperature.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_thermostat = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Thermostat for QMD.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_tau = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Tau for QMD thermostat.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_random_seed = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
+        description="""
         Random seed.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_nuclear_integrator = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Integrator for nuclei.
-        ''')
+        """,
+    )
 
     x_nwchem_qmd_initial_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Initial temperature
-        ''')
+        """,
+    )
 
 
 class System(runschema.system.System):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_nwchem_reciprocal_simulation_cell = Quantity(
         type=np.dtype(np.float64),
         shape=[3, 3],
-        description='''
+        description="""
         The simulation cell in reciprocal space.
-        ''')
+        """,
+    )
 
     x_nwchem_lattice_basis_vector_lengths = Quantity(
         type=np.dtype(np.float64),
         shape=[3],
-        description='''
+        description="""
         The lengths of the basis vectors.
-        ''')
+        """,
+    )
 
     x_nwchem_lattice_basis_vector_angles = Quantity(
         type=np.dtype(np.float64),
         shape=[3],
-        description='''
+        description="""
         The angles between the basis vectors.
-        ''')
+        """,
+    )
 
     x_nwchem_lattice_omega = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         The lattice omega value.
-        ''')
+        """,
+    )

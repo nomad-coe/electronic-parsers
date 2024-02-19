@@ -26,7 +26,7 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def parser():
     return CharmmParser()
 
@@ -34,13 +34,13 @@ def parser():
 def test_basic(parser):
     archive = EntryArchive()
 
-    parser.parse('tests/data/charmm/brbtest/brbtest.out', archive, None)
+    parser.parse("tests/data/charmm/brbtest/brbtest.out", archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == 'Free Version 41b2   February 15, 2017'
+    assert sec_run.program.version == "Free Version 41b2   February 15, 2017"
 
     sec_system = archive.run[0].system[0]
-    assert sec_system.atoms.labels[1] == 'C'
+    assert sec_system.atoms.labels[1] == "C"
     assert sec_system.atoms.positions[10][1].magnitude == approx(-7.7269e-11)
 
     sec_scc = sec_run.calculation[0]
@@ -50,11 +50,11 @@ def test_basic(parser):
 def test_1(parser):
     archive = EntryArchive()
 
-    parser.parse('tests/data/charmm/enertest/enertest.out', archive, None)
+    parser.parse("tests/data/charmm/enertest/enertest.out", archive, None)
 
     sec_system = archive.run[0].system[0]
     assert len(sec_system.atoms.positions) == 580
-    assert sec_system.atoms.labels[86] == 'O'
+    assert sec_system.atoms.labels[86] == "O"
     assert sec_system.atoms.positions[11][1].magnitude == approx(-4.005e-10)
 
     sec_sccs = archive.run[0].calculation

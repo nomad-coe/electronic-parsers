@@ -28,536 +28,978 @@ from nomad.units import ureg
 from nomad import atomutils  # type: ignore
 from nomad.parsing.file_parser import TextParser, Quantity
 from runschema.run import Run, Program, TimeRun
-from runschema.system import (
-    System, Atoms)
+from runschema.system import System, Atoms
 from runschema.method import (
-    Method, BasisSet, Electronic, Scf, DFT, XCFunctional, Functional,
-    BasisSetAtomCentered, BasisSetContainer,
+    Method,
+    BasisSet,
+    Electronic,
+    Scf,
+    DFT,
+    XCFunctional,
+    Functional,
+    BasisSetAtomCentered,
+    BasisSetContainer,
 )
 from runschema.calculation import (
-    Calculation, ScfIteration, Energy, EnergyEntry, Forces, ForcesEntry, BandStructure,
-    BandEnergies, Dos, DosValues
+    Calculation,
+    ScfIteration,
+    Energy,
+    EnergyEntry,
+    Forces,
+    ForcesEntry,
+    BandStructure,
+    BandEnergies,
+    Dos,
+    DosValues,
 )
 from simulationworkflowschema import (
-    GeometryOptimization, GeometryOptimizationMethod, GeometryOptimizationResults)
+    GeometryOptimization,
+    GeometryOptimizationMethod,
+    GeometryOptimizationResults,
+)
 from .metainfo.crystal import x_crystal_section_shell
 
 
 def capture(regex):
-    return r'(' + regex + r')'
+    return r"(" + regex + r")"
 
 
-flt = r'-?(?:\d+\.?\d*|\d*\.?\d+)(?:E[\+-]?\d+)?'  # Floating point number
-flt_c = capture(flt)                               # Captures a floating point number
-flt_crystal_c = r'(-?\d+(?:.\d+)?\*\*-?.*\d+)'     # Crystal specific floating point syntax
-ws = r'\s+'                                        # Series of white-space characters
-integer = r'-?\d+'                                 # Integer number
-integer_c = capture(integer)                       # Captures integer number
-word = r'[a-zA-Z]+'                                # A single alphanumeric word
-word_c = capture(word)                             # Captures a single alphanumeric word
-br = r'\r?\n'                                      # Newline that works for both Windows and Unix. Crystal can be run on a Windows machine as well.
+flt = r"-?(?:\d+\.?\d*|\d*\.?\d+)(?:E[\+-]?\d+)?"  # Floating point number
+flt_c = capture(flt)  # Captures a floating point number
+flt_crystal_c = r"(-?\d+(?:.\d+)?\*\*-?.*\d+)"  # Crystal specific floating point syntax
+ws = r"\s+"  # Series of white-space characters
+integer = r"-?\d+"  # Integer number
+integer_c = capture(integer)  # Captures integer number
+word = r"[a-zA-Z]+"  # A single alphanumeric word
+word_c = capture(word)  # Captures a single alphanumeric word
+br = r"\r?\n"  # Newline that works for both Windows and Unix. Crystal can be run on a Windows machine as well.
 
 
 class CrystalParser:
-    """NOMAD-lab parser for Crystal.
-    """
+    """NOMAD-lab parser for Crystal."""
+
     def __init__(self):
         pass
 
     def parse_output(self, filepath):
-        """Reads the calculation output.
-        """
+        """Reads the calculation output."""
         outputparser = TextParser(
             filepath,
             quantities=[
                 # Header
-                Quantity("datetime", fr'(?:Date\:|date)\s+(.*?){br}', str_operation=lambda x: x, repeats=False),
-                Quantity("hostname", fr'(?:Running on\:|hostname)\s+(.*?){br}', str_operation=lambda x: x, repeats=False),
-                Quantity("os", fr'(?:system)\s+(.*?){br}', str_operation=lambda x: x, repeats=False),
-                Quantity("user", fr'user\s+(.*?){br}', str_operation=lambda x: x, repeats=False),
-                Quantity("input_path", fr'(?:Input data|input data in)\s+(.*?){br}', str_operation=lambda x: x, repeats=False),
-                Quantity("output_path", fr'(?:Output\:|output data in)\s+(.*?){br}', str_operation=lambda x: x, repeats=False),
-                Quantity("executable_path", fr'(?:Executable\:|crystal executable in)\s+(.*?){br}', str_operation=lambda x: x, repeats=False),
-                Quantity("tmpdir", fr'(?:Temporary directory\:|temporary directory)\s+(.*?){br}', str_operation=lambda x: x, repeats=False),
-                Quantity("system_type", fr'(CRYSTAL|SLAB|POLYMER|HELIX|MOLECULE|EXTERNAL|DLVINPUT)', repeats=False),
-                Quantity("calculation_type", fr'(OPTGEOM|FREQCALC|ANHARM)', repeats=False),
-
+                Quantity(
+                    "datetime",
+                    rf"(?:Date\:|date)\s+(.*?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "hostname",
+                    rf"(?:Running on\:|hostname)\s+(.*?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "os",
+                    rf"(?:system)\s+(.*?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "user",
+                    rf"user\s+(.*?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "input_path",
+                    rf"(?:Input data|input data in)\s+(.*?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "output_path",
+                    rf"(?:Output\:|output data in)\s+(.*?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "executable_path",
+                    rf"(?:Executable\:|crystal executable in)\s+(.*?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "tmpdir",
+                    rf"(?:Temporary directory\:|temporary directory)\s+(.*?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "system_type",
+                    rf"(CRYSTAL|SLAB|POLYMER|HELIX|MOLECULE|EXTERNAL|DLVINPUT)",
+                    repeats=False,
+                ),
+                Quantity(
+                    "calculation_type", rf"(OPTGEOM|FREQCALC|ANHARM)", repeats=False
+                ),
                 # Input
                 Quantity(
                     "dftd3",
-                    fr'(DFTD3{br}[\s\S]*?END{br})',
-                    sub_parser=TextParser(quantities=[
-                        Quantity(
-                            "version",
-                            r'(VERSION \d)',
-                            str_operation=lambda x: x,
-                            repeats=False,
-                        ),
-                    ]),
+                    rf"(DFTD3{br}[\s\S]*?END{br})",
+                    sub_parser=TextParser(
+                        quantities=[
+                            Quantity(
+                                "version",
+                                r"(VERSION \d)",
+                                str_operation=lambda x: x,
+                                repeats=False,
+                            ),
+                        ]
+                    ),
                     repeats=False,
                 ),
                 Quantity(
                     "grimme",
-                    fr'(GRIMME{br}[\s\S]*?END{br})',
+                    rf"(GRIMME{br}[\s\S]*?END{br})",
                     repeats=False,
                 ),
                 Quantity(
                     "dft",
-                    fr'(DFT{br}[\w\s]*?END{br})',
-                    sub_parser=TextParser(quantities=[
-                        Quantity(
-                            "exchange",
-                            fr'EXCHANGE{br}(LDA|VBH|BECKE|PBE|PBESOL|mPW91|PWGGA|SOGGA|WCGGA)',
-                            repeats=False,
-                        ),
-                        Quantity(
-                            "correlation",
-                            fr'CORRELAT{br}(PZ|VBH|VWN|LYP|P86|PBE|PBESOL|PWGGA|PWLSD|WL)',
-                            repeats=False,
-                        ),
-                        Quantity(
-                            "exchange_correlation",
-                            fr'(SVWN|BLYP|PBEXC|PBESOLXC|SOGGAXC|B3PW|B3LYP|PBE0|PBESOL0|B1WC|WCILYP|B97H|PBE0-13|HYBRID|NONLOCAL|HSE06|HSESOL|HISS|RSHXLDA|wB97|wB97X|LC-WPBE|LC-WPBESOL|LC-WBLYP|M05-2X|M05|M062X|M06HF|M06L|M06|B2PLYP|B2GPPLYP|mPW2PLYP|DHYBRID)',
-                            repeats=False,
-                        ),
-                    ]),
+                    rf"(DFT{br}[\w\s]*?END{br})",
+                    sub_parser=TextParser(
+                        quantities=[
+                            Quantity(
+                                "exchange",
+                                rf"EXCHANGE{br}(LDA|VBH|BECKE|PBE|PBESOL|mPW91|PWGGA|SOGGA|WCGGA)",
+                                repeats=False,
+                            ),
+                            Quantity(
+                                "correlation",
+                                rf"CORRELAT{br}(PZ|VBH|VWN|LYP|P86|PBE|PBESOL|PWGGA|PWLSD|WL)",
+                                repeats=False,
+                            ),
+                            Quantity(
+                                "exchange_correlation",
+                                rf"(SVWN|BLYP|PBEXC|PBESOLXC|SOGGAXC|B3PW|B3LYP|PBE0|PBESOL0|B1WC|WCILYP|B97H|PBE0-13|HYBRID|NONLOCAL|HSE06|HSESOL|HISS|RSHXLDA|wB97|wB97X|LC-WPBE|LC-WPBESOL|LC-WBLYP|M05-2X|M05|M062X|M06HF|M06L|M06|B2PLYP|B2GPPLYP|mPW2PLYP|DHYBRID)",
+                                repeats=False,
+                            ),
+                        ]
+                    ),
                     repeats=False,
                 ),
-                Quantity("program_version", fr'{br} \*\s+CRYSTAL([\d]+)\s+\*', repeats=False, dtype=str),
-                Quantity("distribution", fr'{br} \*\s*({word} : \d+[\.\d+]*)', str_operation=lambda x: x, repeats=False),
-                Quantity("start_timestamp", fr' EEEEEEEEEE STARTING  DATE\s+(.*? TIME .*?){br}', str_operation=lambda x: x, repeats=False),
-                Quantity("title", fr' EEEEEEEEEE STARTING  DATE.*?{br}\s*(.*?){br}{br}', str_operation=lambda x: x, repeats=False),
-                Quantity("hamiltonian_type", fr' (KOHN-SHAM HAMILTONIAN|HARTREE-FOCK HAMILTONIAN)', str_operation=lambda x: x, repeats=False),
-                Quantity("xc_out", fr' \(EXCHANGE\)\[CORRELATION\] FUNCTIONAL:(\([\s\S]+?\)\[[\s\S]+?\])', str_operation=lambda x: x, repeats=False),
-                Quantity("hybrid_out", fr' HYBRID EXCHANGE - PERCENTAGE OF FOCK EXCHANGE\s+{flt_c}', repeats=False),
-
-                # Geometry optimization settings
-                Quantity('initial_trust_radius', fr' INITIAL TRUST RADIUS\s+{flt_c}', repeats=False),
-                Quantity('maximum_trust_radius', fr' MAXIMUM TRUST RADIUS\s+{flt_c}', repeats=False),
-                Quantity('maximum_gradient_component', fr' MAXIMUM GRADIENT COMPONENT\s+{flt_c}', repeats=False),
-                Quantity('rms_gradient_component', fr' R\.M\.S\. OF GRADIENT COMPONENT\s+{flt_c}', repeats=False),
-                Quantity('rms_displacement_component', fr' R\.M\.S\. OF DISPLACEMENT COMPONENTS\s+{flt_c}', repeats=False),
-                Quantity('geometry_change', fr' MAXIMUM DISPLACEMENT COMPONENT\s+{flt_c}', unit=ureg.bohr, repeats=False),
-                Quantity('energy_change', fr' THRESHOLD ON ENERGY CHANGE\s+{flt_c}', unit=ureg.hartree, repeats=False),
-                Quantity('extrapolating_polynomial_order', fr' EXTRAPOLATING POLYNOMIAL ORDER{ws}{integer_c}', repeats=False),
-                Quantity('max_steps', fr' MAXIMUM ALLOWED NUMBER OF STEPS\s+{integer_c}', repeats=False),
-                Quantity('sorting_of_energy_points', fr'SORTING OF ENERGY POINTS\:\s+{word_c}', repeats=False),
-
-                # System
-                Quantity("material_type", fr' ((?:MOLECULAR|SLAB) CALCULATION){br}', str_operation=lambda x: x, repeats=False),
-                Quantity("crystal_family", fr' CRYSTAL FAMILY\s*:\s*([\s\S]+?)\s*{br}', str_operation=lambda x: x, repeats=False),
-                Quantity("crystal_class", fr' CRYSTAL CLASS  \(GROTH - 1921\)\s*:\s*([\s\S]+?)\s*{br}', str_operation=lambda x: x, repeats=False),
-                Quantity("space_group", fr' SPACE GROUP \(CENTROSYMMETRIC\)\s*:\s*([\s\S]+?)\s*{br}', str_operation=lambda x: x, repeats=False),
-                Quantity("dimensionality", fr' GEOMETRY FOR WAVE FUNCTION - DIMENSIONALITY OF THE SYSTEM\s+(\d)', repeats=False),
                 Quantity(
-                    'lattice_parameters',
-                    fr' (?:PRIMITIVE CELL - CENTRING CODE\s*[\s\S]*?\s*VOLUME=\s*{flt} - DENSITY\s*{flt} g/cm\^3{br}|PRIMITIVE CELL{br})' +\
-                    fr'\s+A\s+B\s+C\s+ALPHA\s+BETA\s+GAMMA.*\s+' +\
-                    fr'{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}',
+                    "program_version",
+                    rf"{br} \*\s+CRYSTAL([\d]+)\s+\*",
+                    repeats=False,
+                    dtype=str,
+                ),
+                Quantity(
+                    "distribution",
+                    rf"{br} \*\s*({word} : \d+[\.\d+]*)",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "start_timestamp",
+                    rf" EEEEEEEEEE STARTING  DATE\s+(.*? TIME .*?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "title",
+                    rf" EEEEEEEEEE STARTING  DATE.*?{br}\s*(.*?){br}{br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "hamiltonian_type",
+                    rf" (KOHN-SHAM HAMILTONIAN|HARTREE-FOCK HAMILTONIAN)",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "xc_out",
+                    rf" \(EXCHANGE\)\[CORRELATION\] FUNCTIONAL:(\([\s\S]+?\)\[[\s\S]+?\])",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "hybrid_out",
+                    rf" HYBRID EXCHANGE - PERCENTAGE OF FOCK EXCHANGE\s+{flt_c}",
+                    repeats=False,
+                ),
+                # Geometry optimization settings
+                Quantity(
+                    "initial_trust_radius",
+                    rf" INITIAL TRUST RADIUS\s+{flt_c}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "maximum_trust_radius",
+                    rf" MAXIMUM TRUST RADIUS\s+{flt_c}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "maximum_gradient_component",
+                    rf" MAXIMUM GRADIENT COMPONENT\s+{flt_c}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "rms_gradient_component",
+                    rf" R\.M\.S\. OF GRADIENT COMPONENT\s+{flt_c}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "rms_displacement_component",
+                    rf" R\.M\.S\. OF DISPLACEMENT COMPONENTS\s+{flt_c}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "geometry_change",
+                    rf" MAXIMUM DISPLACEMENT COMPONENT\s+{flt_c}",
+                    unit=ureg.bohr,
+                    repeats=False,
+                ),
+                Quantity(
+                    "energy_change",
+                    rf" THRESHOLD ON ENERGY CHANGE\s+{flt_c}",
+                    unit=ureg.hartree,
+                    repeats=False,
+                ),
+                Quantity(
+                    "extrapolating_polynomial_order",
+                    rf" EXTRAPOLATING POLYNOMIAL ORDER{ws}{integer_c}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "max_steps",
+                    rf" MAXIMUM ALLOWED NUMBER OF STEPS\s+{integer_c}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "sorting_of_energy_points",
+                    rf"SORTING OF ENERGY POINTS\:\s+{word_c}",
+                    repeats=False,
+                ),
+                # System
+                Quantity(
+                    "material_type",
+                    rf" ((?:MOLECULAR|SLAB) CALCULATION){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "crystal_family",
+                    rf" CRYSTAL FAMILY\s*:\s*([\s\S]+?)\s*{br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "crystal_class",
+                    rf" CRYSTAL CLASS  \(GROTH - 1921\)\s*:\s*([\s\S]+?)\s*{br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "space_group",
+                    rf" SPACE GROUP \(CENTROSYMMETRIC\)\s*:\s*([\s\S]+?)\s*{br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "dimensionality",
+                    rf" GEOMETRY FOR WAVE FUNCTION - DIMENSIONALITY OF THE SYSTEM\s+(\d)",
+                    repeats=False,
+                ),
+                Quantity(
+                    "lattice_parameters",
+                    rf" (?:PRIMITIVE CELL - CENTRING CODE\s*[\s\S]*?\s*VOLUME=\s*{flt} - DENSITY\s*{flt} g/cm\^3{br}|PRIMITIVE CELL{br})"
+                    + rf"\s+A\s+B\s+C\s+ALPHA\s+BETA\s+GAMMA.*\s+"
+                    + rf"{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}",
                     shape=(6),
                     dtype=np.float64,
                     repeats=False,
                 ),
                 Quantity(
                     "labels_positions",
-                    fr' ATOMS IN THE ASYMMETRIC UNIT\s+{integer} - ATOMS IN THE UNIT CELL:\s+{integer}{br}' +\
-                    fr'\s+ATOM\s+X(?:/A|\(ANGSTROM\))\s+Y(?:/B|\(ANGSTROM\))\s+Z(?:/C|\(ANGSTROM\))\s*{br}' +\
-                    re.escape(' *******************************************************************************') +\
-                    fr'((?:\s+{integer}\s+(?:T|F)\s+{integer}\s+[\s\S]*?\s+{flt}\s+{flt}\s+{flt}{br})+)',
+                    rf" ATOMS IN THE ASYMMETRIC UNIT\s+{integer} - ATOMS IN THE UNIT CELL:\s+{integer}{br}"
+                    + rf"\s+ATOM\s+X(?:/A|\(ANGSTROM\))\s+Y(?:/B|\(ANGSTROM\))\s+Z(?:/C|\(ANGSTROM\))\s*{br}"
+                    + re.escape(
+                        " *******************************************************************************"
+                    )
+                    + rf"((?:\s+{integer}\s+(?:T|F)\s+{integer}\s+[\s\S]*?\s+{flt}\s+{flt}\s+{flt}{br})+)",
                     shape=(-1, 7),
                     dtype=str,
                     repeats=False,
                 ),
                 Quantity(
                     "labels_positions_raw",
-                    fr'AT\.IRR\.\s+AT\s+AT\.N\.\s+X\s+Y\s+Z\s*{br}' +\
-                    fr'((?:\s+{integer}\s+{integer}\s+{integer}\s+{flt}\s+{flt}\s+{flt}{br})+)',
+                    rf"AT\.IRR\.\s+AT\s+AT\.N\.\s+X\s+Y\s+Z\s*{br}"
+                    + rf"((?:\s+{integer}\s+{integer}\s+{integer}\s+{flt}\s+{flt}\s+{flt}{br})+)",
                     shape=(-1, 6),
                     dtype=str,
                 ),
-
                 # Used to capture an edited geometry. Can contain
                 # substitutions, supercells, deformations etc. in any order.
                 Quantity(
-                    'system_edited',
-                    fr' \*\s+GEOMETRY EDITING([\s\S]+?)T = ATOM BELONGING TO THE ASYMMETRIC UNIT',
-                    sub_parser=TextParser(quantities=[
-                        Quantity(
-                            "lattice_parameters",
-                            fr'A\s+B\s+C\s+ALPHA\s+BETA\s+GAMMA.+'
-                            fr'\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}',
-                            shape=(6),
-                            dtype=np.float64,
-                            repeats=False,
-                        ),
-                        Quantity(
-                            "labels_positions",
-                            fr'\s+ATOM\s+X(?:/A|\(ANGSTROM\))\s+Y(?:/B|\(ANGSTROM\))\s+Z(?:/C|\(ANGSTROM\))\s*{br}' +\
-                            re.escape(' *******************************************************************************') +\
-                            fr'((?:\s+{integer}\s+(?:T|F)\s+{integer}\s+[\s\S]*?\s+{flt}\s+{flt}\s+{flt}{br})+)',
-                            shape=(-1, 7),
-                            dtype=str,
-                            repeats=False,
-                        ),
-                        Quantity(
-                            "labels_positions_nanotube",
-                            fr'\s+ATOM\s+X/A\s+Y\(ANGSTROM\)\s+Z\(ANGSTROM\)\s+R\(ANGS\)\s*{br}' +\
-                            re.escape(' *******************************************************************************') +\
-                            fr'((?:\s+{integer}\s+(?:T|F)\s+{integer}\s+[\s\S]*?\s+{flt}\s+{flt}\s+{flt}\s+{flt}{br})+)',
-                            shape=(-1, 8),
-                            dtype=str,
-                            repeats=False,
-                        ),
-                    ]),
+                    "system_edited",
+                    rf" \*\s+GEOMETRY EDITING([\s\S]+?)T = ATOM BELONGING TO THE ASYMMETRIC UNIT",
+                    sub_parser=TextParser(
+                        quantities=[
+                            Quantity(
+                                "lattice_parameters",
+                                rf"A\s+B\s+C\s+ALPHA\s+BETA\s+GAMMA.+"
+                                rf"\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}",
+                                shape=(6),
+                                dtype=np.float64,
+                                repeats=False,
+                            ),
+                            Quantity(
+                                "labels_positions",
+                                rf"\s+ATOM\s+X(?:/A|\(ANGSTROM\))\s+Y(?:/B|\(ANGSTROM\))\s+Z(?:/C|\(ANGSTROM\))\s*{br}"
+                                + re.escape(
+                                    " *******************************************************************************"
+                                )
+                                + rf"((?:\s+{integer}\s+(?:T|F)\s+{integer}\s+[\s\S]*?\s+{flt}\s+{flt}\s+{flt}{br})+)",
+                                shape=(-1, 7),
+                                dtype=str,
+                                repeats=False,
+                            ),
+                            Quantity(
+                                "labels_positions_nanotube",
+                                rf"\s+ATOM\s+X/A\s+Y\(ANGSTROM\)\s+Z\(ANGSTROM\)\s+R\(ANGS\)\s*{br}"
+                                + re.escape(
+                                    " *******************************************************************************"
+                                )
+                                + rf"((?:\s+{integer}\s+(?:T|F)\s+{integer}\s+[\s\S]*?\s+{flt}\s+{flt}\s+{flt}\s+{flt}{br})+)",
+                                shape=(-1, 8),
+                                dtype=str,
+                                repeats=False,
+                            ),
+                        ]
+                    ),
                     repeats=False,
                 ),
-
                 Quantity(
-                    'lattice_vectors_restart',
-                    fr' DIRECT LATTICE VECTOR COMPONENTS \(ANGSTROM\){br}' +\
-                    fr'\s+{flt_c}\s+{flt_c}\s+{flt_c}{br}' +\
-                    fr'\s+{flt_c}\s+{flt_c}\s+{flt_c}{br}' +\
-                    fr'\s+{flt_c}\s+{flt_c}\s+{flt_c}{br}',
+                    "lattice_vectors_restart",
+                    rf" DIRECT LATTICE VECTOR COMPONENTS \(ANGSTROM\){br}"
+                    + rf"\s+{flt_c}\s+{flt_c}\s+{flt_c}{br}"
+                    + rf"\s+{flt_c}\s+{flt_c}\s+{flt_c}{br}"
+                    + rf"\s+{flt_c}\s+{flt_c}\s+{flt_c}{br}",
                     shape=(3, 3),
                     dtype=np.float64,
                     repeats=False,
                 ),
                 Quantity(
                     "labels_positions_restart",
-                    fr'   ATOM N\.AT\.  SHELL    X\(A\)      Y\(A\)      Z\(A\)      EXAD       N\.ELECT\.{br}' +\
-                    re.escape(' *******************************************************************************') +\
-                    fr'((?:\s+{integer}\s+{integer}\s+{word}\s+{integer}\s+{flt}\s+{flt}\s+{flt}\s+{flt}\s+{flt}{br})+)',
+                    rf"   ATOM N\.AT\.  SHELL    X\(A\)      Y\(A\)      Z\(A\)      EXAD       N\.ELECT\.{br}"
+                    + re.escape(
+                        " *******************************************************************************"
+                    )
+                    + rf"((?:\s+{integer}\s+{integer}\s+{word}\s+{integer}\s+{flt}\s+{flt}\s+{flt}\s+{flt}\s+{flt}{br})+)",
                     shape=(-1, 9),
                     dtype=str,
                     repeats=False,
                 ),
-                Quantity("symmops", fr' NUMBER OF SYMMETRY OPERATORS\s*:\s*(\d){br}', repeats=False),
-
-                # Method
                 Quantity(
-                    'basis_set',
-                    re.escape(r' *******************************************************************************') +\
-                    fr'{br} LOCAL ATOMIC FUNCTIONS BASIS SET{br}' +\
-                    re.escape(r' *******************************************************************************') +\
-                    fr'{br}   ATOM   X\(AU\)   Y\(AU\)   Z\(AU\)  N. TYPE  EXPONENT  S COEF   P COEF   D/F/G COEF{br}' +\
-                    fr'([\s\S]*?){br} INFORMATION',
-                    sub_parser=TextParser(quantities=[
-                        Quantity(
-                            "basis_sets",
-                            fr'({br}{ws}{integer}{ws}{word}{ws}{flt}{ws}{flt}{ws}{flt}{br}(?:(?:\s+(?:\d+-\s+)?\d+\s+(?:S|P|SP|D|F|G)\s*{br}[\s\S]*?(?:{ws}{flt}(?:{ws})?{flt}(?:{ws})?{flt}(?:{ws})?{flt}{br})+)+)?)',
-                            sub_parser=TextParser(quantities=[
-                                Quantity(
-                                    "species",
-                                    fr'{br}({ws}{integer}{ws}{word}{ws}{flt}{ws}{flt}{ws}{flt}{br})',
-                                    repeats=False,
-                                ),
-                                Quantity(
-                                    "shells",
-                                    fr'(\s+(?:\d+-\s+)?\d+\s+(?:S|P|SP|D|F|G)\s*{br}[\s\S]*?(?:{ws}{flt}(?:{ws})?{flt}(?:{ws})?{flt}(?:{ws})?{flt}{br})+)',
-                                    sub_parser=TextParser(quantities=[
-                                        Quantity(
-                                            "shell_range",
-                                            r'(\s+(?:\d+-\s+)?\d+)',
-                                            str_operation=lambda x: "".join(x.split()),
-                                            repeats=False,
-                                        ),
-                                        Quantity(
-                                            "shell_type",
-                                            fr'((?:S|P|SP|D|F|G))\s*{br}',
-                                            str_operation=lambda x: x.strip(),
-                                            repeats=False,
-                                        ),
-                                        Quantity(
-                                            "shell_coefficients",
-                                            fr'{ws}({flt})(?:{ws})?({flt})(?:{ws})?({flt})(?:{ws})?({flt}){br}',
-                                            repeats=True,
-                                            dtype=np.float64,
-                                            shape=(4)
-                                        ),
-                                    ]),
-                                    repeats=True,
-                                ),
-                            ]),
-                            repeats=True,
-                        ),
-                    ]),
+                    "symmops",
+                    rf" NUMBER OF SYMMETRY OPERATORS\s*:\s*(\d){br}",
                     repeats=False,
                 ),
-                Quantity("fock_ks_matrix_mixing", fr' INFORMATION \*+.*?\*+.*?\:\s+FOCK/KS MATRIX MIXING SET TO\s+{integer_c}\s+\%{br}', repeats=False),
-                Quantity("coulomb_bipolar_buffer", fr' INFORMATION \*+.*?\*+.*?\:\s+COULOMB BIPOLAR BUFFER SET TO\s+{flt_c} Mb{br}', repeats=False),
-                Quantity("exchange_bipolar_buffer", fr' INFORMATION \*+.*?\*+.*?\:\s+EXCHANGE BIPOLAR BUFFER SET TO\s+{flt_c} Mb{br}', repeats=False),
-                Quantity("toldee", fr' INFORMATION \*+ TOLDEE \*+\s*\*+ SCF TOL ON TOTAL ENERGY SET TO\s+{flt_c}{br}', repeats=False),
-                Quantity("n_atoms_per_cell", r' N\. OF ATOMS PER CELL\s+' + integer_c, repeats=False),
-                Quantity("n_shells", r' NUMBER OF SHELLS\s+' + integer_c, repeats=False),
-                Quantity("n_ao", r' NUMBER OF AO\s+' + integer_c, repeats=False),
-                Quantity("n_electrons", r' N\. OF ELECTRONS PER CELL\s+' + integer_c, repeats=False),
-                Quantity("n_core_electrons", r' CORE ELECTRONS PER CELL\s+' + integer_c, repeats=False),
-                Quantity("n_symmops", r' N\. OF SYMMETRY OPERATORS\s+' + integer_c, repeats=False),
-                Quantity("tol_coulomb_overlap", r' COULOMB OVERLAP TOL\s+\(T1\) ' + flt_crystal_c, str_operation=to_float, repeats=False),
-                Quantity("tol_coulomb_penetration", r' COULOMB PENETRATION TOL\s+\(T2\) ' + flt_crystal_c, str_operation=to_float, repeats=False),
-                Quantity("tol_exchange_overlap", r' EXCHANGE OVERLAP TOL\s+\(T3\) ' + flt_crystal_c, str_operation=to_float, repeats=False),
-                Quantity("tol_pseudo_overlap_f", r' EXCHANGE PSEUDO OVP \(F\(G\)\)\s+\(T4\) ' + flt_crystal_c, str_operation=to_float, repeats=False),
-                Quantity("tol_pseudo_overlap_p", r' EXCHANGE PSEUDO OVP \(P\(G\)\)\s+\(T5\) ' + flt_crystal_c, str_operation=to_float, repeats=False),
-                Quantity("pole_order", r' POLE ORDER IN MONO ZONE\s+' + integer_c, repeats=False),
-                Quantity("calculation_type", fr' TYPE OF CALCULATION \:\s+(.*?{br}\s+.*?){br}', str_operation=lambda x: " ".join(x.split()), repeats=False),
-                Quantity('xc_functional', fr' \(EXCHANGE\)\[CORRELATION\] FUNCTIONAL:(\(.+\)\[.+\]){br}', str_operation=lambda x: x, repeats=False,),
-                Quantity("cappa", fr'CAPPA:IS1\s+{integer_c};IS2\s+{integer_c};IS3\s+{integer_c}; K PTS MONK NET\s+{integer_c}; SYMMOPS:\s*K SPACE\s+{integer_c};G SPACE\s+{integer_c}', repeats=False),
-                Quantity('scf_max_iteration', r' MAX NUMBER OF SCF CYCLES\s+' + integer_c, repeats=False),
-                Quantity('convergenge_deltap', r'CONVERGENCE ON DELTAP\s+' + flt_crystal_c, str_operation=to_float, repeats=False), Quantity('weight_f', r'WEIGHT OF F\(I\) IN F\(I\+1\)\s+' + integer_c, repeats=False),
-                Quantity('scf_threshold_energy_change', r'CONVERGENCE ON ENERGY\s+' + flt_crystal_c, str_operation=to_float, repeats=False, unit=ureg.hartree),
-                Quantity('shrink', r'SHRINK\. FACT\.\(MONKH\.\)\s+(' + integer + ws + integer + ws + integer + r')', repeats=False),
-                Quantity('n_k_points_ibz', r'NUMBER OF K POINTS IN THE IBZ\s+' + integer_c, repeats=False),
-                Quantity('shrink_gilat', r'SHRINKING FACTOR\(GILAT NET\)\s+' + integer_c, repeats=False),
-                Quantity('n_k_points_gilat', r'NUMBER OF K POINTS\(GILAT NET\)\s+' + integer_c, repeats=False),
-
+                # Method
+                Quantity(
+                    "basis_set",
+                    re.escape(
+                        r" *******************************************************************************"
+                    )
+                    + rf"{br} LOCAL ATOMIC FUNCTIONS BASIS SET{br}"
+                    + re.escape(
+                        r" *******************************************************************************"
+                    )
+                    + rf"{br}   ATOM   X\(AU\)   Y\(AU\)   Z\(AU\)  N. TYPE  EXPONENT  S COEF   P COEF   D/F/G COEF{br}"
+                    + rf"([\s\S]*?){br} INFORMATION",
+                    sub_parser=TextParser(
+                        quantities=[
+                            Quantity(
+                                "basis_sets",
+                                rf"({br}{ws}{integer}{ws}{word}{ws}{flt}{ws}{flt}{ws}{flt}{br}(?:(?:\s+(?:\d+-\s+)?\d+\s+(?:S|P|SP|D|F|G)\s*{br}[\s\S]*?(?:{ws}{flt}(?:{ws})?{flt}(?:{ws})?{flt}(?:{ws})?{flt}{br})+)+)?)",
+                                sub_parser=TextParser(
+                                    quantities=[
+                                        Quantity(
+                                            "species",
+                                            rf"{br}({ws}{integer}{ws}{word}{ws}{flt}{ws}{flt}{ws}{flt}{br})",
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "shells",
+                                            rf"(\s+(?:\d+-\s+)?\d+\s+(?:S|P|SP|D|F|G)\s*{br}[\s\S]*?(?:{ws}{flt}(?:{ws})?{flt}(?:{ws})?{flt}(?:{ws})?{flt}{br})+)",
+                                            sub_parser=TextParser(
+                                                quantities=[
+                                                    Quantity(
+                                                        "shell_range",
+                                                        r"(\s+(?:\d+-\s+)?\d+)",
+                                                        str_operation=lambda x: "".join(
+                                                            x.split()
+                                                        ),
+                                                        repeats=False,
+                                                    ),
+                                                    Quantity(
+                                                        "shell_type",
+                                                        rf"((?:S|P|SP|D|F|G))\s*{br}",
+                                                        str_operation=lambda x: x.strip(),
+                                                        repeats=False,
+                                                    ),
+                                                    Quantity(
+                                                        "shell_coefficients",
+                                                        rf"{ws}({flt})(?:{ws})?({flt})(?:{ws})?({flt})(?:{ws})?({flt}){br}",
+                                                        repeats=True,
+                                                        dtype=np.float64,
+                                                        shape=(4),
+                                                    ),
+                                                ]
+                                            ),
+                                            repeats=True,
+                                        ),
+                                    ]
+                                ),
+                                repeats=True,
+                            ),
+                        ]
+                    ),
+                    repeats=False,
+                ),
+                Quantity(
+                    "fock_ks_matrix_mixing",
+                    rf" INFORMATION \*+.*?\*+.*?\:\s+FOCK/KS MATRIX MIXING SET TO\s+{integer_c}\s+\%{br}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "coulomb_bipolar_buffer",
+                    rf" INFORMATION \*+.*?\*+.*?\:\s+COULOMB BIPOLAR BUFFER SET TO\s+{flt_c} Mb{br}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "exchange_bipolar_buffer",
+                    rf" INFORMATION \*+.*?\*+.*?\:\s+EXCHANGE BIPOLAR BUFFER SET TO\s+{flt_c} Mb{br}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "toldee",
+                    rf" INFORMATION \*+ TOLDEE \*+\s*\*+ SCF TOL ON TOTAL ENERGY SET TO\s+{flt_c}{br}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "n_atoms_per_cell",
+                    r" N\. OF ATOMS PER CELL\s+" + integer_c,
+                    repeats=False,
+                ),
+                Quantity(
+                    "n_shells", r" NUMBER OF SHELLS\s+" + integer_c, repeats=False
+                ),
+                Quantity("n_ao", r" NUMBER OF AO\s+" + integer_c, repeats=False),
+                Quantity(
+                    "n_electrons",
+                    r" N\. OF ELECTRONS PER CELL\s+" + integer_c,
+                    repeats=False,
+                ),
+                Quantity(
+                    "n_core_electrons",
+                    r" CORE ELECTRONS PER CELL\s+" + integer_c,
+                    repeats=False,
+                ),
+                Quantity(
+                    "n_symmops",
+                    r" N\. OF SYMMETRY OPERATORS\s+" + integer_c,
+                    repeats=False,
+                ),
+                Quantity(
+                    "tol_coulomb_overlap",
+                    r" COULOMB OVERLAP TOL\s+\(T1\) " + flt_crystal_c,
+                    str_operation=to_float,
+                    repeats=False,
+                ),
+                Quantity(
+                    "tol_coulomb_penetration",
+                    r" COULOMB PENETRATION TOL\s+\(T2\) " + flt_crystal_c,
+                    str_operation=to_float,
+                    repeats=False,
+                ),
+                Quantity(
+                    "tol_exchange_overlap",
+                    r" EXCHANGE OVERLAP TOL\s+\(T3\) " + flt_crystal_c,
+                    str_operation=to_float,
+                    repeats=False,
+                ),
+                Quantity(
+                    "tol_pseudo_overlap_f",
+                    r" EXCHANGE PSEUDO OVP \(F\(G\)\)\s+\(T4\) " + flt_crystal_c,
+                    str_operation=to_float,
+                    repeats=False,
+                ),
+                Quantity(
+                    "tol_pseudo_overlap_p",
+                    r" EXCHANGE PSEUDO OVP \(P\(G\)\)\s+\(T5\) " + flt_crystal_c,
+                    str_operation=to_float,
+                    repeats=False,
+                ),
+                Quantity(
+                    "pole_order",
+                    r" POLE ORDER IN MONO ZONE\s+" + integer_c,
+                    repeats=False,
+                ),
+                Quantity(
+                    "calculation_type",
+                    rf" TYPE OF CALCULATION \:\s+(.*?{br}\s+.*?){br}",
+                    str_operation=lambda x: " ".join(x.split()),
+                    repeats=False,
+                ),
+                Quantity(
+                    "xc_functional",
+                    rf" \(EXCHANGE\)\[CORRELATION\] FUNCTIONAL:(\(.+\)\[.+\]){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "cappa",
+                    rf"CAPPA:IS1\s+{integer_c};IS2\s+{integer_c};IS3\s+{integer_c}; K PTS MONK NET\s+{integer_c}; SYMMOPS:\s*K SPACE\s+{integer_c};G SPACE\s+{integer_c}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "scf_max_iteration",
+                    r" MAX NUMBER OF SCF CYCLES\s+" + integer_c,
+                    repeats=False,
+                ),
+                Quantity(
+                    "convergenge_deltap",
+                    r"CONVERGENCE ON DELTAP\s+" + flt_crystal_c,
+                    str_operation=to_float,
+                    repeats=False,
+                ),
+                Quantity(
+                    "weight_f",
+                    r"WEIGHT OF F\(I\) IN F\(I\+1\)\s+" + integer_c,
+                    repeats=False,
+                ),
+                Quantity(
+                    "scf_threshold_energy_change",
+                    r"CONVERGENCE ON ENERGY\s+" + flt_crystal_c,
+                    str_operation=to_float,
+                    repeats=False,
+                    unit=ureg.hartree,
+                ),
+                Quantity(
+                    "shrink",
+                    r"SHRINK\. FACT\.\(MONKH\.\)\s+("
+                    + integer
+                    + ws
+                    + integer
+                    + ws
+                    + integer
+                    + r")",
+                    repeats=False,
+                ),
+                Quantity(
+                    "n_k_points_ibz",
+                    r"NUMBER OF K POINTS IN THE IBZ\s+" + integer_c,
+                    repeats=False,
+                ),
+                Quantity(
+                    "shrink_gilat",
+                    r"SHRINKING FACTOR\(GILAT NET\)\s+" + integer_c,
+                    repeats=False,
+                ),
+                Quantity(
+                    "n_k_points_gilat",
+                    r"NUMBER OF K POINTS\(GILAT NET\)\s+" + integer_c,
+                    repeats=False,
+                ),
                 # SCF
                 Quantity(
                     "scf_block",
-                    r' CHARGE NORMALIZATION FACTOR([\s\S]*?) == SCF ENDED',
-                    sub_parser=TextParser(quantities=[
-                        Quantity(
-                            'scf_iterations',
-                            r'( CHARGE NORMALIZATION FACTOR[\s\S]*? (?:TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT PDIG|TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT MPP_KSPA|== SCF ENDED))',
-                            sub_parser=TextParser(quantities=[
-                                Quantity('charge_normalization_factor', fr' CHARGE NORMALIZATION FACTOR{ws}{flt}{br}', repeats=False),
-                                Quantity('total_atomic_charges', fr' TOTAL ATOMIC CHARGES:{br}(?:{ws}{flt})+{br}', repeats=False),
-                                Quantity('QGAM', fr' TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT QGAM        TELAPSE{ws}{flt}{ws}TCPU{ws}{flt}{br}', repeats=False),
-                                Quantity('BIEL2', fr' TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT BIEL2        TELAPSE{ws}{flt}{ws}TCPU{ws}{flt}{br}', repeats=False),
-                                Quantity('energy_kinetic', fr' ::: KINETIC ENERGY\s+{flt_c}{br}', unit=ureg.hartree, repeats=False),
-                                Quantity('energy_ee', fr' ::: TOTAL E-E\s+{flt_c}{br}', unit=ureg.hartree, repeats=False),
-                                Quantity('energy_en_ne', fr' ::: TOTAL E-N \+ N-E\s+{flt_c}{br}', unit=ureg.hartree, repeats=False),
-                                Quantity('energy_nn', fr' ::: TOTAL N-N\s+{flt_c}{br}', unit=ureg.hartree, repeats=False),
-                                Quantity('virial_coefficient', fr' ::: VIRIAL COEFFICIENT\s+{flt_c}{br}', repeats=False),
-                                Quantity('TOTENY', fr' TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT TOTENY        TELAPSE{ws}{flt}{ws}TCPU{ws}{flt}{br}', repeats=False),
-                                Quantity('integrated_density', fr' NUMERICALLY INTEGRATED DENSITY{ws}{flt}{br}', repeats=False),
-                                Quantity('NUMDFT', fr' TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT NUMDFT        TELAPSE{ws}{flt}{ws}TCPU{ws}{flt}{br}', repeats=False),
-                                Quantity('energies', fr' CYC{ws}{integer}{ws}ETOT\(AU\){ws}{flt_c}{ws}DETOT{ws}{flt_c}{ws}tst{ws}{flt}{ws}PX{ws}{flt}{br}', repeats=False, dtype=np.float64, unit=ureg.hartree),
-                                Quantity('FDIK', fr' TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT FDIK        TELAPSE{ws}{flt}{ws}TCPU{ws}{flt}{br}', repeats=False),
-                            ]),
-                            repeats=True,
-                        ),
-                    ]),
+                    r" CHARGE NORMALIZATION FACTOR([\s\S]*?) == SCF ENDED",
+                    sub_parser=TextParser(
+                        quantities=[
+                            Quantity(
+                                "scf_iterations",
+                                r"( CHARGE NORMALIZATION FACTOR[\s\S]*? (?:TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT PDIG|TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT MPP_KSPA|== SCF ENDED))",
+                                sub_parser=TextParser(
+                                    quantities=[
+                                        Quantity(
+                                            "charge_normalization_factor",
+                                            rf" CHARGE NORMALIZATION FACTOR{ws}{flt}{br}",
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "total_atomic_charges",
+                                            rf" TOTAL ATOMIC CHARGES:{br}(?:{ws}{flt})+{br}",
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "QGAM",
+                                            rf" TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT QGAM        TELAPSE{ws}{flt}{ws}TCPU{ws}{flt}{br}",
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "BIEL2",
+                                            rf" TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT BIEL2        TELAPSE{ws}{flt}{ws}TCPU{ws}{flt}{br}",
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "energy_kinetic",
+                                            rf" ::: KINETIC ENERGY\s+{flt_c}{br}",
+                                            unit=ureg.hartree,
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "energy_ee",
+                                            rf" ::: TOTAL E-E\s+{flt_c}{br}",
+                                            unit=ureg.hartree,
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "energy_en_ne",
+                                            rf" ::: TOTAL E-N \+ N-E\s+{flt_c}{br}",
+                                            unit=ureg.hartree,
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "energy_nn",
+                                            rf" ::: TOTAL N-N\s+{flt_c}{br}",
+                                            unit=ureg.hartree,
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "virial_coefficient",
+                                            rf" ::: VIRIAL COEFFICIENT\s+{flt_c}{br}",
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "TOTENY",
+                                            rf" TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT TOTENY        TELAPSE{ws}{flt}{ws}TCPU{ws}{flt}{br}",
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "integrated_density",
+                                            rf" NUMERICALLY INTEGRATED DENSITY{ws}{flt}{br}",
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "NUMDFT",
+                                            rf" TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT NUMDFT        TELAPSE{ws}{flt}{ws}TCPU{ws}{flt}{br}",
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "energies",
+                                            rf" CYC{ws}{integer}{ws}ETOT\(AU\){ws}{flt_c}{ws}DETOT{ws}{flt_c}{ws}tst{ws}{flt}{ws}PX{ws}{flt}{br}",
+                                            repeats=False,
+                                            dtype=np.float64,
+                                            unit=ureg.hartree,
+                                        ),
+                                        Quantity(
+                                            "FDIK",
+                                            rf" TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT FDIK        TELAPSE{ws}{flt}{ws}TCPU{ws}{flt}{br}",
+                                            repeats=False,
+                                        ),
+                                    ]
+                                ),
+                                repeats=True,
+                            ),
+                        ]
+                    ),
                     repeats=False,
                 ),
-                Quantity('number_of_scf_iterations', fr' == SCF ENDED - CONVERGENCE ON (?:ENERGY|TESTER)\s+E\(AU\)\s*{flt}\s*CYCLES\s+{integer_c}', repeats=False),
                 Quantity(
-                    'energy_total',
-                    fr' TOTAL ENERGY\((?:DFT|HF)\)\(AU\)\(\s*{integer}\)\s*{flt_c} DE\s*{flt} (?:tester|tst)\s*{flt}',
+                    "number_of_scf_iterations",
+                    rf" == SCF ENDED - CONVERGENCE ON (?:ENERGY|TESTER)\s+E\(AU\)\s*{flt}\s*CYCLES\s+{integer_c}",
+                    repeats=False,
+                ),
+                Quantity(
+                    "energy_total",
+                    rf" TOTAL ENERGY\((?:DFT|HF)\)\(AU\)\(\s*{integer}\)\s*{flt_c} DE\s*{flt} (?:tester|tst)\s*{flt}",
                     unit=ureg.hartree,
                     repeats=False,
                 ),
-
                 # Geometry optimization steps
                 Quantity(
                     "geo_opt",
-                    fr'( (?:COORDINATE AND CELL OPTIMIZATION|COORDINATE OPTIMIZATION) - POINT\s+1{br}' +\
-                    r'[\s\S]*?' +\
-                    re.escape(r' ******************************************************************') + fr'{br}' +\
-                    fr'\s*\* OPT END - CONVERGED \* E\(AU\)\:\s+{flt}\s+POINTS\s+{integer})\s+\*{br}',
-                    sub_parser=TextParser(quantities=[
-                        Quantity(
-                            'geo_opt_step',
-                            fr' (?:COORDINATE AND CELL OPTIMIZATION|COORDINATE OPTIMIZATION) - POINT\s+{integer}{br}' +\
-                            fr'([\s\S]*?)' +\
-                            fr' ((?:TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT OPTI|\* OPT END).+)',
-                            sub_parser=TextParser(quantities=[
-                                Quantity(
-                                    'lattice_parameters',
-                                    fr' (?:PRIMITIVE CELL - CENTRING CODE [\s\S]*?VOLUME=\s*{flt} - DENSITY\s*{flt} g/cm\^3{br}|PRIMITIVE CELL{br})' +\
-                                    fr'         A              B              C           ALPHA      BETA       GAMMA\s*' +\
-                                    fr'{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}{br}',
-                                    shape=(6),
-                                    dtype=np.float64,
-                                    repeats=False,
+                    rf"( (?:COORDINATE AND CELL OPTIMIZATION|COORDINATE OPTIMIZATION) - POINT\s+1{br}"
+                    + r"[\s\S]*?"
+                    + re.escape(
+                        r" ******************************************************************"
+                    )
+                    + rf"{br}"
+                    + rf"\s*\* OPT END - CONVERGED \* E\(AU\)\:\s+{flt}\s+POINTS\s+{integer})\s+\*{br}",
+                    sub_parser=TextParser(
+                        quantities=[
+                            Quantity(
+                                "geo_opt_step",
+                                rf" (?:COORDINATE AND CELL OPTIMIZATION|COORDINATE OPTIMIZATION) - POINT\s+{integer}{br}"
+                                + rf"([\s\S]*?)"
+                                + rf" ((?:TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT OPTI|\* OPT END).+)",
+                                sub_parser=TextParser(
+                                    quantities=[
+                                        Quantity(
+                                            "lattice_parameters",
+                                            rf" (?:PRIMITIVE CELL - CENTRING CODE [\s\S]*?VOLUME=\s*{flt} - DENSITY\s*{flt} g/cm\^3{br}|PRIMITIVE CELL{br})"
+                                            + rf"         A              B              C           ALPHA      BETA       GAMMA\s*"
+                                            + rf"{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}\s+{flt_c}{br}",
+                                            shape=(6),
+                                            dtype=np.float64,
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "labels_positions",
+                                            rf"\s+ATOM\s+X(?:/A|\(ANGSTROM\))\s+Y(?:/B|\(ANGSTROM\))\s+Z(?:/C|\(ANGSTROM\))\s*{br}"
+                                            + re.escape(
+                                                " *******************************************************************************"
+                                            )
+                                            + rf"((?:\s+{integer}\s+(?:T|F)\s+{integer}\s+[\s\S]*?\s+{flt}\s+{flt}\s+{flt}{br})+)",
+                                            shape=(-1, 7),
+                                            dtype=str,
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "labels_positions_nanotube",
+                                            rf"\s+ATOM\s+X/A\s+Y\(ANGSTROM\)\s+Z\(ANGSTROM\)\s+R\(ANGS\)\s*{br}"
+                                            + re.escape(
+                                                " *******************************************************************************"
+                                            )
+                                            + rf"((?:\s+{integer}\s+(?:T|F)\s+{integer}\s+[\s\S]*?\s+{flt}\s+{flt}\s+{flt}\s+{flt}{br})+)",
+                                            shape=(-1, 8),
+                                            dtype=str,
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "energy",
+                                            rf" TOTAL ENERGY\({word}\)\(AU\)\(\s*{integer}\)\s*{flt_c}",
+                                            unit=ureg.hartree,
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "time_physical",
+                                            rf"OPT.+? TELAPSE\s+({flt})",
+                                        ),
+                                    ]
                                 ),
-                                Quantity(
-                                    "labels_positions",
-                                    fr'\s+ATOM\s+X(?:/A|\(ANGSTROM\))\s+Y(?:/B|\(ANGSTROM\))\s+Z(?:/C|\(ANGSTROM\))\s*{br}' +\
-                                    re.escape(' *******************************************************************************') +\
-                                    fr'((?:\s+{integer}\s+(?:T|F)\s+{integer}\s+[\s\S]*?\s+{flt}\s+{flt}\s+{flt}{br})+)',
-                                    shape=(-1, 7),
-                                    dtype=str,
-                                    repeats=False,
-                                ),
-                                Quantity(
-                                    "labels_positions_nanotube",
-                                    fr'\s+ATOM\s+X/A\s+Y\(ANGSTROM\)\s+Z\(ANGSTROM\)\s+R\(ANGS\)\s*{br}' +\
-                                    re.escape(' *******************************************************************************') +\
-                                    fr'((?:\s+{integer}\s+(?:T|F)\s+{integer}\s+[\s\S]*?\s+{flt}\s+{flt}\s+{flt}\s+{flt}{br})+)',
-                                    shape=(-1, 8),
-                                    dtype=str,
-                                    repeats=False,
-                                ),
-                                Quantity('energy', fr' TOTAL ENERGY\({word}\)\(AU\)\(\s*{integer}\)\s*{flt_c}', unit=ureg.hartree, repeats=False),
-                                Quantity('time_physical', fr'OPT.+? TELAPSE\s+({flt})')
-                            ]),
-                            repeats=True,
-                        ),
-                        Quantity('converged', fr' \* OPT END - ([\s\S]*?) \* E\(AU\)\:\s+{flt}\s+POINTS\s+{integer}', repeats=False),
-                    ]),
+                                repeats=True,
+                            ),
+                            Quantity(
+                                "converged",
+                                rf" \* OPT END - ([\s\S]*?) \* E\(AU\)\:\s+{flt}\s+POINTS\s+{integer}",
+                                repeats=False,
+                            ),
+                        ]
+                    ),
                     repeats=False,
                 ),
-
                 # Band structure
                 Quantity(
                     "band_structure",
-                    re.escape(fr' *******************************************************************************') + fr'{br}' +\
-                    fr' \*                                                                             \*{br}' +\
-                    fr' \*  BAND STRUCTURE                                                             \*{br}' +\
-                    fr'[\s\S]*?' +\
-                    fr' \*  FROM BAND\s+{integer} TO BAND\s+{integer}\s+\*{br}' +\
-                    fr' \*  TOTAL OF\s+{integer} K-POINTS ALONG THE PATH\s+\*{br}' +\
-                    fr' \*                                                                             \*{br}' +\
-                    re.escape(r' *******************************************************************************') + fr'{br}' +\
-                    fr'([\s\S]*?' +\
-                    fr' ENERGY RANGE \(A\.U\.\)\s*{flt} - \s*{flt} EFERMI\s*{flt_c}{br})',
-                    sub_parser=TextParser(quantities=[
-                        Quantity(
-                            'segments',
-                            fr' (LINE\s+{integer} \( {flt} {flt} {flt}: {flt} {flt} {flt}\) IN TERMS OF PRIMITIVE LATTICE VECTORS{br}' +\
-                            fr'\s+{integer} POINTS - SHRINKING_FACTOR\s*{integer}{br}' +\
-                            fr' CARTESIAN COORD\.\s+\( {flt} {flt} {flt}\):\( {flt} {flt} {flt}\) STEP\s+{flt}{br}{br}{br})',
-                            sub_parser=TextParser(quantities=[
-                                Quantity(
-                                    'start_end',
-                                    fr'LINE\s+{integer} \( {flt_c} {flt_c} {flt_c}: {flt_c} {flt_c} {flt_c}\) IN TERMS OF PRIMITIVE LATTICE VECTORS{br}',
-                                    type=np.float64,
-                                    shape=(2, 3),
-                                    repeats=False,
+                    re.escape(
+                        rf" *******************************************************************************"
+                    )
+                    + rf"{br}"
+                    + rf" \*                                                                             \*{br}"
+                    + rf" \*  BAND STRUCTURE                                                             \*{br}"
+                    + rf"[\s\S]*?"
+                    + rf" \*  FROM BAND\s+{integer} TO BAND\s+{integer}\s+\*{br}"
+                    + rf" \*  TOTAL OF\s+{integer} K-POINTS ALONG THE PATH\s+\*{br}"
+                    + rf" \*                                                                             \*{br}"
+                    + re.escape(
+                        r" *******************************************************************************"
+                    )
+                    + rf"{br}"
+                    + rf"([\s\S]*?"
+                    + rf" ENERGY RANGE \(A\.U\.\)\s*{flt} - \s*{flt} EFERMI\s*{flt_c}{br})",
+                    sub_parser=TextParser(
+                        quantities=[
+                            Quantity(
+                                "segments",
+                                rf" (LINE\s+{integer} \( {flt} {flt} {flt}: {flt} {flt} {flt}\) IN TERMS OF PRIMITIVE LATTICE VECTORS{br}"
+                                + rf"\s+{integer} POINTS - SHRINKING_FACTOR\s*{integer}{br}"
+                                + rf" CARTESIAN COORD\.\s+\( {flt} {flt} {flt}\):\( {flt} {flt} {flt}\) STEP\s+{flt}{br}{br}{br})",
+                                sub_parser=TextParser(
+                                    quantities=[
+                                        Quantity(
+                                            "start_end",
+                                            rf"LINE\s+{integer} \( {flt_c} {flt_c} {flt_c}: {flt_c} {flt_c} {flt_c}\) IN TERMS OF PRIMITIVE LATTICE VECTORS{br}",
+                                            type=np.float64,
+                                            shape=(2, 3),
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "n_steps",
+                                            rf"\s+{integer_c} POINTS - ",
+                                            repeats=False,
+                                        ),
+                                        Quantity(
+                                            "shrinking_factor",
+                                            rf"SHRINKING_FACTOR\s*{integer_c}{br}",
+                                            repeats=False,
+                                        ),
+                                    ]
                                 ),
-                                Quantity(
-                                    'n_steps',
-                                    fr'\s+{integer_c} POINTS - ',
-                                    repeats=False,
-                                ),
-                                Quantity(
-                                    'shrinking_factor',
-                                    fr'SHRINKING_FACTOR\s*{integer_c}{br}',
-                                    repeats=False,
-                                ),
-                            ]),
-                            repeats=True,
-                        ),
-                        Quantity("fermi_energy", fr' ENERGY RANGE \(A\.U\.\)\s*{flt} - \s*{flt} EFERMI\s*{flt_c}', repeats=False),
-                    ]),
+                                repeats=True,
+                            ),
+                            Quantity(
+                                "fermi_energy",
+                                rf" ENERGY RANGE \(A\.U\.\)\s*{flt} - \s*{flt} EFERMI\s*{flt_c}",
+                                repeats=False,
+                            ),
+                        ]
+                    ),
                     repeats=False,
                 ),
-
                 # DOS
                 Quantity(
-                    'dos',
-                    fr' RESTART WITH NEW K POINTS NET{br}' +\
-                    fr'([\s\S]+?' +\
-                    fr' TOTAL AND PROJECTED DENSITY OF STATES - FOURIER LEGENDRE METHOD{br}' +\
-                    fr'[\s\S]+?)' +\
-                    fr' TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT DOSS        TELAPSE',
-                    sub_parser=TextParser(quantities=[
-                        Quantity(
-                            'k_points',
-                            fr' \*\*\* K POINTS COORDINATES (OBLIQUE COORDINATES IN UNITS OF IS = {int}){br}',
-                            repeats=False,
-                        ),
-                        Quantity(
-                            'highest_occupied',
-                            fr' TOP OF VALENCE BANDS -    BAND\s*{integer}; K\s*{integer}; EIG {flt_c}\s*AU',
-                            unit=ureg.hartree,
-                            repeats=False,
-                        ),
-                        Quantity(
-                            'lowest_unoccupied',
-                            fr' BOTTOM OF VIRTUAL BANDS - BAND\s*{integer}; K\s*{integer}; EIG\s*{flt_c}\s*AU',
-                            unit=ureg.hartree,
-                            repeats=False,
-                        ),
-                    ]),
+                    "dos",
+                    rf" RESTART WITH NEW K POINTS NET{br}"
+                    + rf"([\s\S]+?"
+                    + rf" TOTAL AND PROJECTED DENSITY OF STATES - FOURIER LEGENDRE METHOD{br}"
+                    + rf"[\s\S]+?)"
+                    + rf" TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT DOSS        TELAPSE",
+                    sub_parser=TextParser(
+                        quantities=[
+                            Quantity(
+                                "k_points",
+                                rf" \*\*\* K POINTS COORDINATES (OBLIQUE COORDINATES IN UNITS OF IS = {int}){br}",
+                                repeats=False,
+                            ),
+                            Quantity(
+                                "highest_occupied",
+                                rf" TOP OF VALENCE BANDS -    BAND\s*{integer}; K\s*{integer}; EIG {flt_c}\s*AU",
+                                unit=ureg.hartree,
+                                repeats=False,
+                            ),
+                            Quantity(
+                                "lowest_unoccupied",
+                                rf" BOTTOM OF VIRTUAL BANDS - BAND\s*{integer}; K\s*{integer}; EIG\s*{flt_c}\s*AU",
+                                unit=ureg.hartree,
+                                repeats=False,
+                            ),
+                        ]
+                    ),
                     repeats=False,
                 ),
-                Quantity("end_timestamp", fr' EEEEEEEEEE TERMINATION  DATE\s+(.*? TIME .*?){br}', str_operation=lambda x: x, repeats=False),
-
+                Quantity(
+                    "end_timestamp",
+                    rf" EEEEEEEEEE TERMINATION  DATE\s+(.*? TIME .*?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
                 # Forces
                 Quantity(
-                    'forces',
-                    fr' CARTESIAN FORCES IN HARTREE/BOHR \(ANALYTICAL\){br}'
-                    fr'   ATOM                     X                   Y                   Z{br}' +\
-                    fr'((?:' + ws + integer + ws + integer + ws + flt + ws + flt + ws + flt + fr'{br})*)',
+                    "forces",
+                    rf" CARTESIAN FORCES IN HARTREE/BOHR \(ANALYTICAL\){br}"
+                    rf"   ATOM                     X                   Y                   Z{br}"
+                    + rf"((?:"
+                    + ws
+                    + integer
+                    + ws
+                    + integer
+                    + ws
+                    + flt
+                    + ws
+                    + flt
+                    + ws
+                    + flt
+                    + rf"{br})*)",
                     shape=(-1, 5),
                     dtype=str,
                     repeats=False,
                 ),
-                Quantity("end_timestamp", fr' EEEEEEEEEE TERMINATION  DATE\s+(.*? TIME .*?){br}', str_operation=lambda x: x, repeats=False),
-                Quantity("time_end", fr'END +TELAPSE +({flt_c})', dtype=np.float64),
-
+                Quantity(
+                    "end_timestamp",
+                    rf" EEEEEEEEEE TERMINATION  DATE\s+(.*? TIME .*?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity("time_end", rf"END +TELAPSE +({flt_c})", dtype=np.float64),
                 # Filepaths
-                Quantity("f25_filepath1", fr'file fort\.25 saved as ([\s\S]+?){br}', str_operation=lambda x: x, repeats=False),
-                Quantity("f25_filepath2", fr'BAND/MAPS/DOSS data for plotting fort.25 saved as ([\s\S]+?){br}', str_operation=lambda x: x, repeats=False),
-            ]
+                Quantity(
+                    "f25_filepath1",
+                    rf"file fort\.25 saved as ([\s\S]+?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+                Quantity(
+                    "f25_filepath2",
+                    rf"BAND/MAPS/DOSS data for plotting fort.25 saved as ([\s\S]+?){br}",
+                    str_operation=lambda x: x,
+                    repeats=False,
+                ),
+            ],
         )
 
         return outputparser
 
     def parse_f25(self, filepath):
-        """Parses the f25 file containing e.g. the band structure energies."
-        """
+        """Parses the f25 file containing e.g. the band structure energies." """
         f25parser = TextParser(
             filepath,
             quantities=[
                 # Band structure energies
                 Quantity(
-                    'segments',
-                    fr'(-\%-0BAND\s*{integer}\s*{integer}\s?{flt}\s?{flt}\s?{flt}{br}' +\
-                    fr'\s*{flt}\s*{flt}{br}' +\
-                    fr'\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}{br}' +\
-                    fr'(?:\s*{flt})+)',
-                    sub_parser=TextParser(quantities=[
-                        Quantity(
-                            'first_row',
-                            fr'-\%-0BAND\s*{integer_c}\s*{integer_c}\s?{flt_c}\s?{flt_c}\s?{flt_c}{br}',
-                            repeats=False,
-                        ),
-                        Quantity(
-                            'second_row',
-                            fr'\s?{flt_c}\s?{flt_c}{br}',
-                            repeats=False,
-                        ),
-                        Quantity(
-                            'energies',
-                            fr'\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}{br}' +\
-                            fr'((?:{flt}\s?)+)',
-                            str_operation=lambda x: x,
-                            repeats=False,
-                        ),
-                    ]),
+                    "segments",
+                    rf"(-\%-0BAND\s*{integer}\s*{integer}\s?{flt}\s?{flt}\s?{flt}{br}"
+                    + rf"\s*{flt}\s*{flt}{br}"
+                    + rf"\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}{br}"
+                    + rf"(?:\s*{flt})+)",
+                    sub_parser=TextParser(
+                        quantities=[
+                            Quantity(
+                                "first_row",
+                                rf"-\%-0BAND\s*{integer_c}\s*{integer_c}\s?{flt_c}\s?{flt_c}\s?{flt_c}{br}",
+                                repeats=False,
+                            ),
+                            Quantity(
+                                "second_row",
+                                rf"\s?{flt_c}\s?{flt_c}{br}",
+                                repeats=False,
+                            ),
+                            Quantity(
+                                "energies",
+                                rf"\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}{br}"
+                                + rf"((?:{flt}\s?)+)",
+                                str_operation=lambda x: x,
+                                repeats=False,
+                            ),
+                        ]
+                    ),
                     repeats=True,
                 ),
                 # DOS values
                 Quantity(
                     "dos",
-                    fr'(-\%-0DOSS\s*{integer}\s*{integer}\s?{flt}\s?{flt}\s?{flt}{br}' +\
-                    fr'\s*{flt}\s?{flt}{br}' +\
-                    fr'\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}{br}' +\
-                    fr'(?:\s*{flt})+)',
-                    sub_parser=TextParser(quantities=[
-                        Quantity(
-                            'first_row',
-                            fr'-\%-0DOSS\s*{integer_c}\s*{integer_c}\s?{flt_c}\s?{flt_c}\s?{flt_c}{br}',
-                            repeats=False,
-                        ),
-                        Quantity(
-                            'second_row',
-                            fr'\s?{flt_c}\s?{flt_c}{br}',
-                            repeats=False,
-                        ),
-                        Quantity(
-                            'values',
-                            fr'\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}{br}' +\
-                            fr'((?:\s*{flt})+)',
-                            str_operation=lambda x: x,
-                            repeats=False,
-                        ),
-                    ]),
+                    rf"(-\%-0DOSS\s*{integer}\s*{integer}\s?{flt}\s?{flt}\s?{flt}{br}"
+                    + rf"\s*{flt}\s?{flt}{br}"
+                    + rf"\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}{br}"
+                    + rf"(?:\s*{flt})+)",
+                    sub_parser=TextParser(
+                        quantities=[
+                            Quantity(
+                                "first_row",
+                                rf"-\%-0DOSS\s*{integer_c}\s*{integer_c}\s?{flt_c}\s?{flt_c}\s?{flt_c}{br}",
+                                repeats=False,
+                            ),
+                            Quantity(
+                                "second_row",
+                                rf"\s?{flt_c}\s?{flt_c}{br}",
+                                repeats=False,
+                            ),
+                            Quantity(
+                                "values",
+                                rf"\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}\s*{integer}{br}"
+                                + rf"((?:\s*{flt})+)",
+                                str_operation=lambda x: x,
+                                repeats=False,
+                            ),
+                        ]
+                    ),
                     repeats=False,
                 ),
-            ]
+            ],
         )
 
         return f25parser
@@ -579,7 +1021,7 @@ class CrystalParser:
         # Run
         run = Run()
         archive.run.append(run)
-        run.program = Program(name='Crystal', version=out["program_version"])
+        run.program = Program(name="Crystal", version=out["program_version"])
         run.x_crystal_datetime = out["datetime"]
         run.x_crystal_hostname = out["hostname"]
         run.x_crystal_user = out["user"]
@@ -598,7 +1040,8 @@ class CrystalParser:
             run.x_crystal_run_title = title.strip()
         run.time_run = TimeRun(
             date_start=to_unix_time(out["start_timestamp"]),
-            date_end=to_unix_time(out["end_timestamp"]))
+            date_end=to_unix_time(out["end_timestamp"]),
+        )
 
         # System. There are several alternative sources for this information
         # depending on the run type.
@@ -646,7 +1089,7 @@ class CrystalParser:
 
         if atomic_numbers is None:
             # TODO define regex pattern for labels_positions to capture other versions
-            logger.error('Error parsing system.')
+            logger.error("Error parsing system.")
             return
 
         cart_pos, atomic_numbers, atom_labels, lattice_vectors = to_system(
@@ -658,8 +1101,12 @@ class CrystalParser:
         )
 
         system.atoms = Atoms(
-            lattice_vectors=lattice_vectors, periodic=pbc, positions=cart_pos,
-            species=atomic_numbers, labels=atom_labels)
+            lattice_vectors=lattice_vectors,
+            periodic=pbc,
+            positions=cart_pos,
+            species=atomic_numbers,
+            labels=atom_labels,
+        )
         system.x_crystal_dimensionality = dimensionality
         crystal_family = out["crystal_family"]
         system.x_crystal_family = crystal_family
@@ -684,34 +1131,41 @@ class CrystalParser:
                 shells = bs["shells"]
                 if atomic_number != covered_species and shells is not None:
                     section_basis_sets.append(
-                        BasisSetAtomCentered(atom_number=atomic_number,)
+                        BasisSetAtomCentered(
+                            atom_number=atomic_number,
+                        )
                     )
                     covered_species.add(atomic_number)
                     for shell in shells:
                         section_shell = x_crystal_section_shell(
                             x_crystal_shell_range=str(shell["shell_range"]),
                             x_crystal_shell_type=shell["shell_type"],
-                            x_crystal_shell_coefficients=np.array(shell["shell_coefficients"]),
+                            x_crystal_shell_coefficients=np.array(
+                                shell["shell_coefficients"]
+                            ),
                         )
-                        section_basis_sets[-1].x_crystal_section_shell.append(section_shell)
+                        section_basis_sets[-1].x_crystal_section_shell.append(
+                            section_shell
+                        )
 
         method.electrons_representation = [
             BasisSetContainer(
-                type='atom-centered orbitals',
-                scope=['wavefunction'],
+                type="atom-centered orbitals",
+                scope=["wavefunction"],
                 basis_set=[
                     BasisSet(
-                        type='gaussians',  # the scope can fluctuate depending on the use of ECPs
+                        type="gaussians",  # the scope can fluctuate depending on the use of ECPs
                         atom_centered=section_basis_sets,
                     )
-                ]
+                ],
             )
         ]
 
-        method.electronic = Electronic(method='DFT')
+        method.electronic = Electronic(method="DFT")
         method.scf = Scf(
             n_max_iteration=out["scf_max_iteration"],
-            threshold_energy_change=out["scf_threshold_energy_change"])
+            threshold_energy_change=out["scf_threshold_energy_change"],
+        )
         dftd3 = out["dftd3"]
         if dftd3:
             if dftd3["version"] == "VERSION 2":  # pylint: disable=E1136
@@ -807,7 +1261,9 @@ class CrystalParser:
                     section_scf.energy.total = EnergyEntry(value=energies[0])
                     section_scf.energy.change = energies[1]
                 energy_kinetic = scf["energy_kinetic"]
-                section_scf.energy.electronic_kinetic = EnergyEntry(value=energy_kinetic)
+                section_scf.energy.electronic_kinetic = EnergyEntry(
+                    value=energy_kinetic
+                )
                 energy_ee = scf["energy_ee"]
                 section_scf.x_crystal_scf_energy_ee = energy_ee
                 energy_en_ne = scf["energy_en_ne"]
@@ -822,11 +1278,17 @@ class CrystalParser:
             # If the final energy is found, replace the final SCF step energy
             # with it, as it is more accurate.
             if scc.scf_iteration:
-                scc.scf_iteration[-1].energy.total = EnergyEntry(value=out["energy_total"])
+                scc.scf_iteration[-1].energy.total = EnergyEntry(
+                    value=out["energy_total"]
+                )
             scc.energy = Energy(total=EnergyEntry(value=out["energy_total"]))
         forces = out["forces"]
         if forces is not None:
-            scc.forces = Forces(total=ForcesEntry(value=forces[:, 2:].astype(float) * ureg.hartree / ureg.bohr))  # pylint: disable=E1136
+            scc.forces = Forces(
+                total=ForcesEntry(
+                    value=forces[:, 2:].astype(float) * ureg.hartree / ureg.bohr
+                )
+            )  # pylint: disable=E1136
         scc.system_ref = system
         scc.method_ref = method
 
@@ -835,7 +1297,11 @@ class CrystalParser:
         if band_structure is not None:
             section_band = BandStructure()
             scc.band_structure_electronic.append(section_band)
-            section_band.reciprocal_cell = atomutils.reciprocal_cell(system.atoms.lattice_vectors.magnitude) * 1 / ureg.meter
+            section_band.reciprocal_cell = (
+                atomutils.reciprocal_cell(system.atoms.lattice_vectors.magnitude)
+                * 1
+                / ureg.meter
+            )
             segments = band_structure["segments"]  # pylint: disable=E1136
             k_points = to_k_points(segments)
             for i_seg, segment in enumerate(segments):
@@ -870,9 +1336,13 @@ class CrystalParser:
                     # or not.
                     start_k_point = section_band.segment[i_seg].kpoints[0]
                     end_k_point = section_band.segment[i_seg].kpoints[-1]
-                    if prev_k_point is not None and np.allclose(prev_k_point, start_k_point):
+                    if prev_k_point is not None and np.allclose(
+                        prev_k_point, start_k_point
+                    ):
                         energies = np.concatenate(([prev_energy], energies), axis=0)
-                    section_band.segment[i_seg].energies = energies[None, :] * ureg.hartree
+                    section_band.segment[i_seg].energies = (
+                        energies[None, :] * ureg.hartree
+                    )
                     prev_energy = energies[-1]
                     prev_k_point = end_k_point
 
@@ -906,7 +1376,9 @@ class CrystalParser:
                         sec_dos = Dos()
                         scc_dos.dos_electronic.append(sec_dos)
                         sec_dos.spin_channel = spin if n_spin_channels == 2 else None
-                        sec_dos.energies = (start_energy + np.arange(rows) * de) * ureg.hartree
+                        sec_dos.energies = (
+                            start_energy + np.arange(rows) * de
+                        ) * ureg.hartree
                         sec_dos_total = DosValues()
                         sec_dos.total.append(sec_dos_total)
                         sec_dos_total.value = dos_values[spin]
@@ -917,9 +1389,15 @@ class CrystalParser:
             steps = geo_opt["geo_opt_step"]  # pylint: disable=E1136
             if steps is not None:
                 archive.workflow2 = GeometryOptimization(
-                    method=GeometryOptimizationMethod(), results=GeometryOptimizationResults())
-                archive.workflow2.method.convergence_tolerance_energy_difference = out["energy_change"]
-                archive.workflow2.method.convergence_tolerance_displacement_maximum = out["geometry_change"]
+                    method=GeometryOptimizationMethod(),
+                    results=GeometryOptimizationResults(),
+                )
+                archive.workflow2.method.convergence_tolerance_energy_difference = out[
+                    "energy_change"
+                ]
+                archive.workflow2.method.convergence_tolerance_displacement_maximum = (
+                    out["geometry_change"]
+                )
 
                 # First step is special: it refers to the initial system which
                 # was printed before entering the geometry optimization loop.
@@ -944,7 +1422,12 @@ class CrystalParser:
                     i_atom_labels = i_labels_positions[:, 3]
                     i_atom_pos = i_labels_positions[:, 4:7]
                     i_lattice_parameters = step["lattice_parameters"]
-                    i_cart_pos, i_atomic_numbers, i_atom_labels, i_lattice_vectors = to_system(
+                    (
+                        i_cart_pos,
+                        i_atomic_numbers,
+                        i_atom_labels,
+                        i_lattice_vectors,
+                    ) = to_system(
                         i_atomic_numbers,
                         i_atom_labels,
                         i_atom_pos,
@@ -952,22 +1435,32 @@ class CrystalParser:
                         dimensionality,
                     )
                     i_system.atoms = Atoms(
-                        species=i_atomic_numbers, labels=i_atom_labels, positions=i_cart_pos,
-                        lattice_vectors=i_lattice_vectors, periodic=pbc)
+                        species=i_atomic_numbers,
+                        labels=i_atom_labels,
+                        positions=i_cart_pos,
+                        lattice_vectors=i_lattice_vectors,
+                        periodic=pbc,
+                    )
                     i_scc.energy = Energy(total=EnergyEntry(value=i_energy))
 
                     i_scc.system_ref = i_system
                     i_scc.method_ref = method
                     i_scc.time_physical = step["time_physical"]
                     if i_scc.time_physical:
-                        i_scc.time_calculation = i_scc.time_physical - run.calculation[-2].time_physical
+                        i_scc.time_calculation = (
+                            i_scc.time_physical - run.calculation[-2].time_physical
+                        )
 
                     frames.append(i_scc)
                 if frames:
                     i_scc.time_physical = out["time_end"]
-                    i_scc.time_calculation = i_scc.time_physical - run.calculation[-2].time_physical
+                    i_scc.time_calculation = (
+                        i_scc.time_physical - run.calculation[-2].time_physical
+                    )
 
-                archive.workflow2.results.is_converged_geometry = geo_opt["converged"] == "CONVERGED"  # pylint: disable=E1136
+                archive.workflow2.results.is_converged_geometry = (
+                    geo_opt["converged"] == "CONVERGED"
+                )  # pylint: disable=E1136
 
         # Remove ghost atom information. The metainfo does not provide a very
         # good way to deal with them currently so they are simply removed.
@@ -999,7 +1492,7 @@ def to_k_points(segments):
         delta = end - start
         start_step = (shrinking_factor * start).astype(np.int32)
         step_size = (shrinking_factor * delta / n_steps).astype(np.int32)
-        steps = (start_step + step_size * np.arange(0, end_idx)[:, None])
+        steps = start_step + step_size * np.arange(0, end_idx)[:, None]
         k_points = steps / shrinking_factor
         all_k_points.append(k_points)
         prev_point = end
@@ -1051,8 +1544,7 @@ def to_float(value):
 
 
 def to_array(cols, rows, values):
-    """Transforms the Crystal-specific f25 array syntax into a numpy array.
-    """
+    """Transforms the Crystal-specific f25 array syntax into a numpy array."""
     values.replace("\n", "")
     values = textwrap.wrap(values, 12)
     values = np.array(values, dtype=np.float64)
@@ -1077,7 +1569,9 @@ def remove_ghosts(run):
         if np.any(ghosts_mask):
             system.atoms.species = np.delete(system.atoms.species, ghosts_mask)
             system.atoms.labels = np.delete(system.atoms.labels, ghosts_mask)
-            system.atoms.positions = np.delete(system.atoms.positions.magnitude, ghosts_mask, axis=0)
+            system.atoms.positions = np.delete(
+                system.atoms.positions.magnitude, ghosts_mask, axis=0
+            )
 
 
 def label_to_atomic_number(value):
@@ -1116,7 +1610,7 @@ def to_unix_time(value):
         return None
 
     value = value.strip()
-    date_time_obj = datetime.datetime.strptime(value, '%d %m %Y TIME %H:%M:%S.%f')
+    date_time_obj = datetime.datetime.strptime(value, "%d %m %Y TIME %H:%M:%S.%f")
     return date_time_obj.timestamp()
 
 
@@ -1243,4 +1737,7 @@ def to_libxc_name(functionals):
     """Given a list of section_XC_functionals, returns the single string that
     represents them all.
     """
-    return "+".join("{}*{}".format(x.weight, x.name) for x in sorted(functionals, key=lambda x: x.name))
+    return "+".join(
+        "{}*{}".format(x.weight, x.name)
+        for x in sorted(functionals, key=lambda x: x.name)
+    )

@@ -27,30 +27,34 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def parser():
     return TBStudioParser()
 
 
 def test_parser(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/tbstudio/graphenePz.tbm', archive, None)
+    parser.parse("tests/data/tbstudio/graphenePz.tbm", archive, None)
 
     sec_run = archive.run[-1]
     sec_program = sec_run.program
-    assert sec_program.name == 'TBStudio'
-    assert sec_program.version == '2.0'
+    assert sec_program.name == "TBStudio"
+    assert sec_program.version == "2.0"
 
     assert len(sec_run.system) == 1
     sec_system = sec_run.system[-1]
-    assert sec_system.atoms.labels == ['C', 'C']
+    assert sec_system.atoms.labels == ["C", "C"]
 
     a = [1.23435, 2.14452, 0.0]
     b = [1.23435, -2.14452, 0.0]
     c = [0.0, 0.0, 20.0]
     positions = [[0.00414, -0.004863, 10.0], [1.238611, -0.72006, 10.0]]
-    assert sec_system.atoms.lattice_vectors.to('angstrom').magnitude == approx(np.array([a, b, c]))
-    assert sec_system.atoms.positions.to('angstrom').magnitude == approx(np.array(positions))
+    assert sec_system.atoms.lattice_vectors.to("angstrom").magnitude == approx(
+        np.array([a, b, c])
+    )
+    assert sec_system.atoms.positions.to("angstrom").magnitude == approx(
+        np.array(positions)
+    )
     assert sec_system.atoms.periodic == [True, True, False]
 
     assert len(sec_run.method) == 1
@@ -61,8 +65,8 @@ def test_parser(parser):
     assert len(sk.orbitals) == 2
     assert len(sk.bonds) == 3
 
-    assert sk.orbitals[0].orbital_name == 'p_z'
-    assert sk.orbitals[1].orbital_name == 'p_z'
+    assert sk.orbitals[0].orbital_name == "p_z"
+    assert sk.orbitals[1].orbital_name == "p_z"
     assert sk.orbitals[0].shell == 0
     assert sk.orbitals[1].shell == 0
     assert sk.orbitals[0].onsite_energy == -0.15789243
@@ -71,7 +75,7 @@ def test_parser(parser):
     assert sk.orbitals[1].atom_index == 1
 
     for i in [0, 1, 2]:
-        assert sk.bonds[i].bond_label == 'Bond 1'
+        assert sk.bonds[i].bond_label == "Bond 1"
         assert sk.bonds[i].center1.shell == 1
         assert sk.bonds[i].pps == 0.0
         assert sk.bonds[i].ppp == -2.34157934
@@ -92,7 +96,10 @@ def test_parser(parser):
     sec_scc = sec_run.calculation[-1]
     assert len(sec_scc.band_structure_electronic[0].segment) == 3
     assert len(sec_scc.band_structure_electronic[0].segment[0].kpoints) == 100
-    assert len(sec_scc.band_structure_electronic[0].segment[0].kpoints) == \
-        len(sec_scc.band_structure_electronic[0].segment[0].energies[0])
+    assert len(sec_scc.band_structure_electronic[0].segment[0].kpoints) == len(
+        sec_scc.band_structure_electronic[0].segment[0].energies[0]
+    )
     assert sec_scc.energy.fermi == sec_scc.band_structure_electronic[0].energy_fermi
-    assert sec_scc.band_structure_electronic[0].energy_fermi.to('eV').magnitude == approx(-4.25178)
+    assert sec_scc.band_structure_electronic[0].energy_fermi.to(
+        "eV"
+    ).magnitude == approx(-4.25178)

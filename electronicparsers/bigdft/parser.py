@@ -22,6 +22,7 @@ import logging
 import numpy as np
 from ase.data import chemical_symbols
 import yaml
+
 try:
     from yaml import CLoader
 except Exception:
@@ -30,13 +31,23 @@ except Exception:
 from nomad.units import ureg
 from runschema.run import Run, Program
 from runschema.method import (
-    Method, DFT, XCFunctional, Functional, Electronic, Scf, BasisSet, BasisSetContainer
+    Method,
+    DFT,
+    XCFunctional,
+    Functional,
+    Electronic,
+    Scf,
+    BasisSet,
+    BasisSetContainer,
 )
-from runschema.system import (
-    System, Atoms
-)
+from runschema.system import System, Atoms
 from runschema.calculation import (
-    Calculation, Energy, EnergyEntry, Forces, ForcesEntry, ScfIteration
+    Calculation,
+    Energy,
+    EnergyEntry,
+    Forces,
+    ForcesEntry,
+    ScfIteration,
 )
 
 
@@ -46,15 +57,15 @@ class BigDFTParser:
 
         # TODO complete mapping
         self.xc_mapping = {
-            1: ['LDA_XC_TETER93'],
+            1: ["LDA_XC_TETER93"],
             11: ['GGA_C_PBE", "GGA_X_PBE'],
-            12: ['GGA_X_PBE'],
+            12: ["GGA_X_PBE"],
             15: ['GGA_C_PBE", "GGA_X_RPBE'],
-            16: ['GGA_XC_HCTH_93'],
-            17: ['GGA_XC_HCTH_120'],
-            26: ['GGA_XC_HCTH_147'],
-            27: ['GGA_XC_HCTH_407'],
-            100: ['HF_X'],
+            16: ["GGA_XC_HCTH_93"],
+            17: ["GGA_XC_HCTH_120"],
+            26: ["GGA_XC_HCTH_147"],
+            27: ["GGA_XC_HCTH_407"],
+            100: ["HF_X"],
             # libxc
             "001": "LDA_X",
             "002": "LDA_C_WIGNER",
@@ -190,30 +201,35 @@ class BigDFTParser:
         self.archive.run[-1].method.append(sec_method)
         sec_method.electrons_representation = [
             BasisSetContainer(
-                type='real-space grid',
-                scope=['wavefunction'],
+                type="real-space grid",
+                scope=["wavefunction"],
                 basis_set=[
-                    BasisSet(type='real-space grid',)
-                ]
+                    BasisSet(
+                        type="real-space grid",
+                    )
+                ],
             )
         ]
         sec_dft = DFT()
         sec_method.dft = sec_dft
 
-        data = self._extract('dft', self.yaml_dict, {})
+        data = self._extract("dft", self.yaml_dict, {})
         sec_electronic = Electronic()
         sec_method.electronic = sec_electronic
-        sec_electronic.charge = self._extract('qcharge', data, 0)
-        sec_electronic.n_spin_channels = self._extract('nspin', data, 1)
-        sec_method.scf = Scf(n_max_iteration=self._extract('itermax', data, 0))
+        sec_electronic.charge = self._extract("qcharge", data, 0)
+        sec_electronic.n_spin_channels = self._extract("nspin", data, 1)
+        sec_method.scf = Scf(n_max_iteration=self._extract("itermax", data, 0))
 
-        xc_id = self._extract('xc id', data)
+        xc_id = self._extract("xc id", data)
         if xc_id is None:
-            xc_id = self._extract('ixc', data, 0)
+            xc_id = self._extract("ixc", data, 0)
         if xc_id < 0:
             # libxc
-            xc_id = '%06d' % abs(xc_id)
-            xc_functionals = [self.xc_mapping.get(xc_id[:3]), self.xc_mapping.get(xc_id[3:])]
+            xc_id = "%06d" % abs(xc_id)
+            xc_functionals = [
+                self.xc_mapping.get(xc_id[:3]),
+                self.xc_mapping.get(xc_id[3:]),
+            ]
         else:
             xc_functionals = self.xc_mapping.get(xc_id, [])
 
@@ -221,22 +237,22 @@ class BigDFTParser:
         sec_xc_functional = XCFunctional()
         sec_dft.xc_functional = sec_xc_functional
         for functional in xc_functionals:
-            if '_X_' in functional:
+            if "_X_" in functional:
                 sec_xc_functional.exchange.append(Functional(name=functional))
-            elif '_C_' in functional:
+            elif "_C_" in functional:
                 sec_xc_functional.correlation.append(Functional(name=functional))
             else:
                 sec_xc_functional.contributions.append(Functional(name=functional))
-        sec_xc_functional.name = '_'.join(xc_functionals)
+        sec_xc_functional.name = "_".join(xc_functionals)
 
     def parse_system(self):
         sec_system = System()
         self.archive.run[-1].system.append(sec_system)
 
-        data = self._extract('Atomic structure', self.yaml_dict, {})
+        data = self._extract("Atomic structure", self.yaml_dict, {})
         labels = []
         positions = []
-        for atom in self._extract('positions', data, []):
+        for atom in self._extract("positions", data, []):
             for label, position in atom.items():
                 if label in chemical_symbols:
                     # some entries may not be symbols
@@ -249,71 +265,77 @@ class BigDFTParser:
             sec_atoms.positions = positions * ureg.angstrom
             sec_atoms.labels = labels
 
-        cell = self._extract('cell', data)
+        cell = self._extract("cell", data)
         if cell is None:
-            data = self._extract('Sizes of the simulation domain', self.yaml_dict, {})
-            cell = self._extract('angstroem', data)
+            data = self._extract("Sizes of the simulation domain", self.yaml_dict, {})
+            cell = self._extract("angstroem", data)
         if cell is not None:
             sec_atoms.lattice_vectors = np.diag(cell) * ureg.angstrom
             sec_atoms.periodic = [True, True, True]
 
-        data = self._extract('Atomic System Properties', self.yaml_dict, {})
-        sec_atoms.n_atoms = self._extract('number of atoms', data, 0)
+        data = self._extract("Atomic System Properties", self.yaml_dict, {})
+        sec_atoms.n_atoms = self._extract("number of atoms", data, 0)
 
-        pbc = self._extract('boundary conditions', data, 'Periodic').lower()
-        if pbc == 'free':
+        pbc = self._extract("boundary conditions", data, "Periodic").lower()
+        if pbc == "free":
             sec_atoms.periodic = [False, False, False]
-        elif pbc == 'periodic':
+        elif pbc == "periodic":
             sec_atoms.periodic = [True, True, True]
-        elif pbc == 'surface':
+        elif pbc == "surface":
             sec_atoms.periodic = [True, False, True]
 
     def parse_scc(self):
         sec_scc = Calculation()
         self.archive.run[-1].calculation.append(sec_scc)
 
-        energy = self._extract('Energy (Hartree)', self.yaml_dict)
+        energy = self._extract("Energy (Hartree)", self.yaml_dict)
         sec_energy = Energy()
         sec_scc.energy = sec_energy
         if energy is not None:
             sec_energy.total = EnergyEntry(value=energy * ureg.hartree)
 
-        forces = self._extract('Atomic Forces (Ha/Bohr)', self.yaml_dict)
+        forces = self._extract("Atomic Forces (Ha/Bohr)", self.yaml_dict)
         sec_forces = Forces()
         sec_scc.forces = sec_forces
         if forces is not None:
             sec_forces.total = ForcesEntry(
-                value=[list(f.values())[0] for f in forces] * (ureg.hartree / ureg.bohr))
+                value=[list(f.values())[0] for f in forces] * (ureg.hartree / ureg.bohr)
+            )
 
-        data = self._extract('Ground State Optimization', self.yaml_dict, [{}])
-        hamiltonian = self._extract('hamiltonian optimization', data[0])
+        data = self._extract("Ground State Optimization", self.yaml_dict, [{}])
+        hamiltonian = self._extract("hamiltonian optimization", data[0])
         if hamiltonian is None:
             return
 
         energy_mapping = {
-            'exc': 'energy_xc', 'evxc': 'energy_xc_potential',
-            'eh': 'energy_correction_hartree', 'ekin': 'energy_kinetic_electronic',
-            'eks': 'energy_total', 'd': 'energy_change'}
+            "exc": "energy_xc",
+            "evxc": "energy_xc_potential",
+            "eh": "energy_correction_hartree",
+            "ekin": "energy_kinetic_electronic",
+            "eks": "energy_total",
+            "d": "energy_change",
+        }
 
-        subspace = self._extract('subspace optimization', hamiltonian[0], {})
-        wavefunction = self._extract('wavefunctions iterations', subspace, [])
+        subspace = self._extract("subspace optimization", hamiltonian[0], {})
+        wavefunction = self._extract("wavefunctions iterations", subspace, [])
         sec_scc.n_scf_iterations = len(wavefunction)
         for iteration in wavefunction:
             sec_scf = ScfIteration()
             sec_scc.scf_iteration.append(sec_scf)
-            energies = self._extract('energies', iteration, {})
+            energies = self._extract("energies", iteration, {})
             energies.update(iteration.items())
             sec_scf_energy = Energy()
             sec_scf.energy = sec_scf_energy
             for key, val in energies.items():
                 key = energy_mapping.get(key.lower())
                 if key is not None:
-                    key = key.replace('energy_', '')
-                    if key == 'change':
+                    key = key.replace("energy_", "")
+                    if key == "change":
                         sec_scf_energy.change = val * ureg.hartree
                     else:
-                        sec_scf_energy.m_add_sub_section(getattr(
-                            Energy, key), EnergyEntry(value=val * ureg.hartree))
+                        sec_scf_energy.m_add_sub_section(
+                            getattr(Energy, key), EnergyEntry(value=val * ureg.hartree)
+                        )
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
@@ -329,7 +351,7 @@ class BigDFTParser:
                 try:
                     yaml_dicts = yaml.safe_load_all(f)
                 except Exception:
-                    self.logger.error('Error loading yaml file.')
+                    self.logger.error("Error loading yaml file.")
                     return
 
             for yaml_dict in yaml_dicts:
@@ -338,8 +360,8 @@ class BigDFTParser:
                 sec_run = Run()
                 self.archive.run.append(sec_run)
                 sec_run.program = Program(
-                    name='BigDFT',
-                    version=str(self.yaml_dict.pop('Version Number', '')))
+                    name="BigDFT", version=str(self.yaml_dict.pop("Version Number", ""))
+                )
 
                 self.parse_method()
                 self.parse_system()

@@ -16,11 +16,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import numpy as np            # pylint: disable=unused-import
+import numpy as np  # pylint: disable=unused-import
 
 from nomad.metainfo import (  # pylint: disable=unused-import
-    MSection, MCategory, Category, Package, Quantity, Section, SubSection, SectionProxy,
-    Reference, JSON, MEnum
+    MSection,
+    MCategory,
+    Category,
+    Package,
+    Quantity,
+    Section,
+    SubSection,
+    SectionProxy,
+    Reference,
+    JSON,
+    MEnum,
 )
 import runschema.run  # pylint: disable=unused-import
 import runschema.calculation  # pylint: disable=unused-import
@@ -32,527 +41,583 @@ m_package = Package()
 
 
 class x_fleur_header(MSection):
-    '''
+    """
     header (labels) of fleur.
-    '''
+    """
 
     m_def = Section(validate=False)
 
     x_fleur_version = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         Version of Fleur
-        ''')
+        """,
+    )
 
     x_fleur_precision = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_fleur_with_inversion = Quantity(
         type=bool,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_fleur_with_soc = Quantity(
         type=bool,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_fleur_additional_flags = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
 
 class x_fleur_section_equiv_atoms(MSection):
-    '''
+    """
     section containing a class of equivalent atoms
-    '''
+    """
 
     m_def = Section(validate=False)
 
     x_fleur_atom_name = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         name of atom, labelling non-equvalent atoms
-        ''')
+        """,
+    )
 
     x_fleur_atom_pos_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         position of atom x
-        ''')
+        """,
+    )
 
     x_fleur_atom_pos_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         position of atom y
-        ''')
+        """,
+    )
 
     x_fleur_atom_pos_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         position of atom z
-        ''')
+        """,
+    )
 
     x_fleur_atom_coord_scale = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         scales coordinates by 1/scale. If film=T, scales only x&y coordinates, if film=F
         also z
-        ''')
+        """,
+    )
 
     x_fleur_atomic_number_Z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         atomic number Z
-        ''')
+        """,
+    )
 
     x_fleur_nr_equiv_atoms_in_this_atom_type = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         number_equiv_atoms_in_this_atom_type
-        ''')
+        """,
+    )
 
 
 class x_fleur_section_XC(MSection):
-    '''
+    """
     exchange-correlation potential
-    '''
+    """
 
     m_def = Section(validate=False)
 
     x_fleur_exch_pot = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         exchange-correlation potential, in out
-        ''')
+        """,
+    )
 
     x_fleur_xc_correction = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         informaion on relativistic correction for the exchange-correlation potential, in
         out
-        ''')
+        """,
+    )
 
 
 class Run(runschema.run.Run):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fleur_header = SubSection(
-        sub_section=SectionProxy('x_fleur_header'),
-        repeats=True)
+        sub_section=SectionProxy("x_fleur_header"), repeats=True
+    )
 
 
 class System(runschema.system.System):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fleur_lattice_vector_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='meter',
-        description='''
+        unit="meter",
+        description="""
         x component of vector of unit cell
-        ''')
+        """,
+    )
 
     x_fleur_lattice_vector_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='meter',
-        description='''
+        unit="meter",
+        description="""
         y component of vector of unit cell
-        ''')
+        """,
+    )
 
     x_fleur_lattice_vector_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='meter',
-        description='''
+        unit="meter",
+        description="""
         z component of vector of unit cell
-        ''')
+        """,
+    )
 
     x_fleur_rec_lattice_vector_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='meter',
-        description='''
+        unit="meter",
+        description="""
         x component of reciprocal lattice vector
-        ''')
+        """,
+    )
 
     x_fleur_rec_lattice_vector_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='meter',
-        description='''
+        unit="meter",
+        description="""
         y component of reciprocal lattice vector
-        ''')
+        """,
+    )
 
     x_fleur_rec_lattice_vector_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='meter',
-        description='''
+        unit="meter",
+        description="""
         z component of reciprocal lattice vector
-        ''')
+        """,
+    )
 
     x_fleur_space_group = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         space group
-        ''')
+        """,
+    )
 
     x_fleur_name_of_atom_type = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         name of atom type
-        ''')
+        """,
+    )
 
     x_fleur_system_nameIn = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         user given name for this system given in the inp file
-        ''')
+        """,
+    )
 
     x_fleur_system_name = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         user given name for this system
-        ''')
+        """,
+    )
 
     x_fleur_total_atoms = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
+        description="""
         total number of atoms
-        ''')
+        """,
+    )
 
     x_fleur_nr_of_atom_types = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
+        description="""
         number of atom types
-        ''')
+        """,
+    )
 
     x_fleur_nuclear_number = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
+        description="""
         nuclear number
-        ''')
+        """,
+    )
 
     x_fleur_number_of_core_levels = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
+        description="""
         x_fleur_number_of_core_levels
-        ''')
+        """,
+    )
 
     x_fleur_k_max = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Kmax is the plane wave cut-off
-        ''')
+        """,
+    )
 
     x_fleur_G_max = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         Gmax
-        ''')
+        """,
+    )
 
     x_fleur_tot_nucl_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         total nuclear charge
-        ''')
+        """,
+    )
 
     x_fleur_tot_elec_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         total electronic charge
-        ''')
+        """,
+    )
 
     x_fleur_unit_cell_volume = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='bohr ** 3',
-        description='''
+        unit="bohr ** 3",
+        description="""
         unit cell volume
-        ''')
+        """,
+    )
 
     x_fleur_unit_cell_volume_omega = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         unit cell volume omega tilda
-        ''')
+        """,
+    )
 
     x_fleur_vol_interstitial = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         volume of interstitial region
-        ''')
+        """,
+    )
 
     x_fleur_parameters = Quantity(
         type=JSON,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_fleur_section_equiv_atoms = SubSection(
-        sub_section=SectionProxy('x_fleur_section_equiv_atoms'),
-        repeats=True)
+        sub_section=SectionProxy("x_fleur_section_equiv_atoms"), repeats=True
+    )
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fleur_tot_for_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         TOTAL FORCE FOR ATOM TYPE, X
-        ''')
+        """,
+    )
 
     x_fleur_tot_for_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         TOTAL FORCE FOR ATOM TYPE, Y
-        ''')
+        """,
+    )
 
     x_fleur_tot_for_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         TOTAL FORCE FOR ATOM TYPE, Z
-        ''')
+        """,
+    )
 
     x_fleur_tot_for_fx = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         TOTAL FORCE FOR ATOM TYPE, FX_TOT
-        ''')
+        """,
+    )
 
     x_fleur_tot_for_fy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         TOTAL FORCE FOR ATOM TYPE, FY_TOT
-        ''')
+        """,
+    )
 
     x_fleur_tot_for_fz = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         TOTAL FORCE FOR ATOM TYPE, FZ_TOT
-        ''')
+        """,
+    )
 
     x_fleur_iteration_number = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
+        description="""
         scf iteration number
-        ''')
+        """,
+    )
 
     x_fleur_energy_total = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='joule',
-        description='''
+        unit="joule",
+        description="""
         energy total
-        ''')
+        """,
+    )
 
     x_fleur_free_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='joule',
-        description='''
+        unit="joule",
+        description="""
         free energy
-        ''')
+        """,
+    )
 
     x_fleur_entropy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='joule',
-        description='''
+        unit="joule",
+        description="""
         (tkb*entropy) TS
-        ''')
+        """,
+    )
 
 
 class Method(runschema.method.Method):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fleur_nkptd = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
+        description="""
         number of all the k-points
-        ''')
+        """,
+    )
 
     x_fleur_k_point_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         x component of vector of k point
-        ''')
+        """,
+    )
 
     x_fleur_k_point_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         y component of vector of k point
-        ''')
+        """,
+    )
 
     x_fleur_k_point_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         z component of vector of k point
-        ''')
+        """,
+    )
 
     x_fleur_k_point_weight = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         weights of k point
-        ''')
+        """,
+    )
 
     x_fleur_smearing_kind = Quantity(
         type=str,
         shape=[],
-        description='''
+        description="""
         The Brillouin zone integration mode. It can be one of hist - Use the histogram
         mode, this is the default; gauss - Use Gaussian smearing, tria - Use the
         tetrahedron method
-        ''')
+        """,
+    )
 
     x_fleur_smearing_width = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='joule',
-        description='''
+        unit="joule",
+        description="""
         specifies the width of the broadening, smearing for calculation of fermi-energy &
         weights. The Fermi smearing can be parametrized by this energy
-        ''')
+        """,
+    )
 
     x_fleur_nr_of_valence_electrons = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
+        description="""
         The number of electrons to be represented within the valence electron framework
-        ''')
+        """,
+    )
 
     x_fleur_smearing_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit='kelvin',
-        description='''
+        unit="kelvin",
+        description="""
         Fermi smearing temperature set in Kelvin
-        ''')
+        """,
+    )
 
     x_fleur_input_parameters = Quantity(
         type=JSON,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_fleur_parameters = Quantity(
         type=JSON,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_fleur_eigenvalues_parameters = Quantity(
         type=JSON,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_fleur_section_XC = SubSection(
-        sub_section=SectionProxy('x_fleur_section_XC'),
-        repeats=True)
+        sub_section=SectionProxy("x_fleur_section_XC"), repeats=True
+    )
 
 
 class OrbitalAPW(runschema.method.OrbitalAPW):
     x_fleur_lo_type = Quantity(
-        type=MEnum('SCLO', 'HELO'),
+        type=MEnum("SCLO", "HELO"),
         shape=[],
-        description='''
+        description="""
         Fleur demarcation of the LO type used.
         https://www.flapw.de/MaX-6.0/documentation/localOrbitalSetup/
-        ''')
+        """,
+    )
 
 
 class BasisSet(runschema.method.BasisSet):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fleur_coretail = Quantity(
         type=bool,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_fleur_coretail_cutoff = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
-        '''
+        description="""
+        """,
     )
 
     x_fleur_relativistic_core = Quantity(
         type=bool,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
 
 class XCFunctional(runschema.method.XCFunctional):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fleur_xc_correction = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
 
 class BaseCalculation(runschema.calculation.BaseCalculation):
-
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fleur_n_occupied_states = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )

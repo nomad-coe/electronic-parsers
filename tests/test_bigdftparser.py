@@ -26,22 +26,22 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def parser():
     return BigDFTParser()
 
 
 def test_basic(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/bigdft/n2_output.out', archive, None)
+    parser.parse("tests/data/bigdft/n2_output.out", archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == '1.8'
+    assert sec_run.program.version == "1.8"
 
     sec_method = sec_run.method[0]
     assert sec_method.scf.n_max_iteration == 50
     assert sec_method.electronic.n_spin_channels == 1
-    assert sec_method.dft.xc_functional.contributions[0].name == 'LDA_XC_TETER93'
+    assert sec_method.dft.xc_functional.contributions[0].name == "LDA_XC_TETER93"
 
     sec_system = sec_run.system[0]
     assert sec_system.atoms.positions[0][2].magnitude == approx(3.60977554e-10)
@@ -55,24 +55,26 @@ def test_basic(parser):
     assert len(sec_scfs) == 11
     assert sec_scfs[3].energy.total.value.magnitude == approx(-8.66861188e-17)
     assert sec_scfs[6].energy.xc_potential.value.magnitude == approx(-2.7272656e-17)
-    assert sec_scfs[7].energy.kinetic_electronic.value.magnitude == approx(6.34717211e-17)
+    assert sec_scfs[7].energy.kinetic_electronic.value.magnitude == approx(
+        6.34717211e-17
+    )
 
 
 def test_1(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/bigdft/periodic.out', archive, None)
+    parser.parse("tests/data/bigdft/periodic.out", archive, None)
 
 
 def test_2(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/bigdft/abinit_1.out', archive, None)
+    parser.parse("tests/data/bigdft/abinit_1.out", archive, None)
 
 
 def test_3(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/bigdft/libxc_101130.out', archive, None)
+    parser.parse("tests/data/bigdft/libxc_101130.out", archive, None)
 
 
 def test_4(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/bigdft/output.out', archive, None)
+    parser.parse("tests/data/bigdft/output.out", archive, None)

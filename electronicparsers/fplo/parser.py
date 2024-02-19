@@ -23,16 +23,19 @@ from simulationparsers.utils import BasicParser
 
 class FploParser:
     def __init__(self):
-        re_f = r'\-*\d+\.\d+E*\-*\+*\d*'
+        re_f = r"\-*\d+\.\d+E*\-*\+*\d*"
 
         self._parser = BasicParser(
-            'fplo',
+            "fplo",
             units_mapping=dict(length=ureg.bohr, energy=ureg.eV),
-            program_version=r'main version\:\s*(\S+)[\|\s]+sub  version\:\s*(\S+)[\|\s]+release\s*\:\s*(\S+)',
-            lattice_vectors=r'lattice vectors\s*(a1\s*\:\s*[\s\S]+?)rec',
-            atom_labels_atom_positions=rf'No\. *Element WPS CPA\-Block *X *Y *Z([\s\S]+?)\n *\n',
-            energy_reference_fermi=(rf'Fermi energy\:\s*({re_f}).+electrons', lambda x: [x]),
-            energy_total=rf'total energy.+\s*EE\:\s*({re_f})'
+            program_version=r"main version\:\s*(\S+)[\|\s]+sub  version\:\s*(\S+)[\|\s]+release\s*\:\s*(\S+)",
+            lattice_vectors=r"lattice vectors\s*(a1\s*\:\s*[\s\S]+?)rec",
+            atom_labels_atom_positions=rf"No\. *Element WPS CPA\-Block *X *Y *Z([\s\S]+?)\n *\n",
+            energy_reference_fermi=(
+                rf"Fermi energy\:\s*({re_f}).+electrons",
+                lambda x: [x],
+            ),
+            energy_total=rf"total energy.+\s*EE\:\s*({re_f})",
         )
 
     def parse(self, mainfile, archive, logger=None):

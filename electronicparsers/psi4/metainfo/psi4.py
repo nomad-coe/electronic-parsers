@@ -16,10 +16,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import numpy as np            # pylint: disable=unused-import
-import typing                 # pylint: disable=unused-import
+import numpy as np  # pylint: disable=unused-import
+import typing  # pylint: disable=unused-import
 from nomad.metainfo import (  # pylint: disable=unused-import
-    MSection, MCategory, Category, Package, Quantity, Section, SubSection, Reference
+    MSection,
+    MCategory,
+    Category,
+    Package,
+    Quantity,
+    Section,
+    SubSection,
+    Reference,
 )
 import runschema.run  # pylint: disable=unused-import
 import runschema.calculation  # pylint: disable=unused-import
@@ -37,39 +44,45 @@ class Run(runschema.run.Run):
     x_psi4_git_rev = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_process_id = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_psidatadir = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_memory = Quantity(
         type=np.dtype(np.float64),
         shape=[],
         # unit='MiB',
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_threads = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_input_file = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
 
 class System(runschema.system.System):
@@ -78,63 +91,73 @@ class System(runschema.system.System):
     x_psi4_molecular_point_group = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_full_point_group = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_molecular_symmetry = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_rotational_constants = Quantity(
         type=np.dtype(np.float64),
         shape=[3],
         # unit='1/cm',
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_nuclear_repulsion = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_multiplicity = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_electrons = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_nalpha = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_nbeta = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
 
 class Scf(runschema.method.Scf):
@@ -143,32 +166,37 @@ class Scf(runschema.method.Scf):
     x_psi4_diis = Quantity(
         type=bool,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_mom = Quantity(
         type=bool,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_fractional_occupation = Quantity(
         type=bool,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_guess_type = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_integral_threshold = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
 
 class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
@@ -177,46 +205,53 @@ class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
     x_psi4_blend = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_n_shells = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
+        description="""
         Gives the number of shell types used.
-        ''')
+        """,
+    )
 
     x_psi4_max_angular_momentum = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
+        description="""
         Maximum angular momentum quantum number corresponding to the shells used.
-        ''')
+        """,
+    )
 
     x_psi4_n_cartesian_functions = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_spherical_harmonics = Quantity(
         type=bool,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_n_ecp_primitives = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_n_ecp_core_electrons = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
 
 class Method(runschema.method.Method):
@@ -225,50 +260,58 @@ class Method(runschema.method.Method):
     x_psi4_scf_algorithm_type = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_diis = Quantity(
         type=bool,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_mom = Quantity(
         type=bool,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_fractional_occupation = Quantity(
         type=bool,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_guess_type = Quantity(
         type=str,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_options = Quantity(
         type=JSON,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_jk_matrices_parameters = Quantity(
         type=JSON,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_parameters = Quantity(
         type=JSON,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
 
 class DFT(runschema.method.DFT):
@@ -277,8 +320,9 @@ class DFT(runschema.method.DFT):
     x_psi4_molecular_quadrature = Quantity(
         type=typing.Any,
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
 
 class x_psi4_root_information(MSection):
@@ -287,8 +331,9 @@ class x_psi4_root_information(MSection):
     x_psi4_root_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
 
 class Calculation(runschema.calculation.Calculation):
@@ -297,25 +342,31 @@ class Calculation(runschema.calculation.Calculation):
     x_psi4_s2_expected = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_s2_observed = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_s_expected = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
     x_psi4_s_observed = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        description='''
-        ''')
+        description="""
+        """,
+    )
 
-    x_psi4_root_information = SubSection(sub_section=x_psi4_root_information.m_def, repeats=True)
+    x_psi4_root_information = SubSection(
+        sub_section=x_psi4_root_information.m_def, repeats=True
+    )

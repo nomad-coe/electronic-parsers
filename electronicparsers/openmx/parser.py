@@ -660,10 +660,10 @@ class OpenmxParser:
             sec_scf.threshold_energy_change = scf_criterion * units.hartree
 
         # vdw correction
-        scf_dftd = mainfile_parser.get('scf.dftD')
+        scf_dftd = mainfile_parser.get("scf.dftD")
         if scf_dftd == "on":
-            dftf_ver = mainfile_parser.get('version.dftD')
-            #TODO: review the G06/G10 nomenclature after schema migration
+            dftf_ver = mainfile_parser.get("version.dftD")
+            # TODO: review the G06/G10 nomenclature after schema migration
             if dftf_ver is None or dftf_ver == 2:
                 sec_electronic.van_der_waals_method = "G06"
             elif dftf_ver == 3:
@@ -672,7 +672,6 @@ class OpenmxParser:
                 self.logger.warning("Unexpected version.dftD value.")
         else:
             sec_electronic.van_der_waals_method = ""
-
 
     def parse_eigenvalues(self):
         eigenvalues = BandEnergies()

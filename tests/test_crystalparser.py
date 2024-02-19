@@ -80,8 +80,7 @@ def test_misc():
 
 
 def test_xc_functionals():
-    """Tests that different kinds of XC functionals are correctly identified.
-    """
+    """Tests that different kinds of XC functionals are correctly identified."""
     # PBE
     filepath = "tests/data/crystal/xc_functionals/pbe_1/supercell-00138.o"
     archive = parse(filepath)
@@ -116,8 +115,7 @@ def test_xc_functionals():
 
 
 def test_molecule():
-    """Tests that molecular calculations are parsed correctly.
-    """
+    """Tests that molecular calculations are parsed correctly."""
     filepath = "tests/data/crystal/molecule/w.out"
     archive = parse(filepath)
     asserts_basic(archive, system_type="0D")
@@ -127,8 +125,7 @@ def test_molecule():
 
 
 def test_surface():
-    """Tests that surface calculations are parsed correctly.
-    """
+    """Tests that surface calculations are parsed correctly."""
     filepath = "tests/data/crystal/surface/w221_sr_pbe0.cryst.out"
     archive = parse(filepath)
     asserts_basic(archive, system_type="2D")
@@ -136,8 +133,7 @@ def test_surface():
 
 
 def test_nanotube():
-    """Tests that nanotube calculations are parsed correctly.
-    """
+    """Tests that nanotube calculations are parsed correctly."""
     # Nanotube SCF
     filepath = "tests/data/crystal/nanotube/scf/test_nano07_3.out"
     archive = parse(filepath)
@@ -152,8 +148,7 @@ def test_nanotube():
 
 
 def test_single_point_dft():
-    """Tests that single point DFT calculations are parsed succesfully.
-    """
+    """Tests that single point DFT calculations are parsed succesfully."""
     filepath = "tests/data/crystal/single_point/dft/output.out"
     archive = parse(filepath)
     asserts_basic(archive)
@@ -161,8 +156,7 @@ def test_single_point_dft():
 
 
 def test_single_point_hf():
-    """Tests that single point HF calculations are parsed succesfully.
-    """
+    """Tests that single point HF calculations are parsed succesfully."""
     filepath = "tests/data/crystal/single_point/hf/output.out"
     archive = parse(filepath)
     asserts_basic(archive, method_type="HF")
@@ -170,17 +164,17 @@ def test_single_point_hf():
 
 
 def test_single_point_forces():
-    """Tests that forces are correctly parsed.
-    """
-    filepath = "tests/data/crystal/single_point/forces/HfS2_PBE0D3_ZD_fc3_supercell-00001.o"
+    """Tests that forces are correctly parsed."""
+    filepath = (
+        "tests/data/crystal/single_point/forces/HfS2_PBE0D3_ZD_fc3_supercell-00001.o"
+    )
     archive = parse(filepath)
     asserts_basic(archive, vdw="DFT-D3", forces=True)
     asserts_basic_code_specific(archive)
 
 
 def test_geo_opt():
-    """Tests that geometry optimization is parsed correctly.
-    """
+    """Tests that geometry optimization is parsed correctly."""
     filepath = "tests/data/crystal/geo_opt/nio_tzvp_pbe0_opt.o"
     archive = parse(filepath)
     asserts_basic(archive)
@@ -193,8 +187,7 @@ def test_geo_opt():
 
 
 def test_band_structure():
-    """Tests that band structure calculation is parsed correctly.
-    """
+    """Tests that band structure calculation is parsed correctly."""
     # Regular band structure with .f25 file
     filepath = "tests/data/crystal/band_structure/nacl_hf/NaCl.out"
     archive = parse(filepath)
@@ -228,8 +221,7 @@ def test_band_structure():
 
 
 def test_dos():
-    """Tests that DOS is parsed successfully.
-    """
+    """Tests that DOS is parsed successfully."""
     filepath = "tests/data/crystal/dos/nacl_hf/NaCl.out"
     archive = parse(filepath)
     asserts_basic(archive)
@@ -293,7 +285,9 @@ def asserts_basic(archive, method_type="DFT", system_type="3D", vdw=None, forces
             assert scc.forces.total.value.shape[0] == n_atoms
 
 
-def asserts_basic_code_specific(archive, method_type="DFT", system_type="3D", run_type="scf", vdw=None, forces=False):
+def asserts_basic_code_specific(
+    archive, method_type="DFT", system_type="3D", run_type="scf", vdw=None, forces=False
+):
     run = archive.run[0]
     method = run.method[0]
 
@@ -334,14 +328,18 @@ def asserts_basic_code_specific(archive, method_type="DFT", system_type="3D", ru
             assert shell.x_crystal_shell_coefficients.shape[1] == 4
 
 
-def asserts_geo_opt(archive, method_type="DFT", system_type="3D", vdw=None, forces=False):
+def asserts_geo_opt(
+    archive, method_type="DFT", system_type="3D", vdw=None, forces=False
+):
     workflow = archive.workflow2
     assert workflow.method.convergence_tolerance_energy_difference is not None
     assert workflow.method.convergence_tolerance_displacement_maximum is not None
     assert workflow.results.is_converged_geometry is True
 
 
-def asserts_band_structure(archive, method_type="DFT", system_type="3D", vdw=None, forces=False):
+def asserts_band_structure(
+    archive, method_type="DFT", system_type="3D", vdw=None, forces=False
+):
     run = archive.run[0]
     scc = run.calculation[0]
     bands = scc.band_structure_electronic[0]
@@ -362,6 +360,8 @@ def asserts_dos(archive, method_type="DFT", system_type="3D", vdw=None, forces=F
         if dos:
             dos = dos[0]
             dos_found = True
-            assert scc.energy.fermi is not None or scc.energy.highest_occupied is not None
+            assert (
+                scc.energy.fermi is not None or scc.energy.highest_occupied is not None
+            )
             assert dos.energies.shape == dos.total[0].value.shape
     assert dos_found

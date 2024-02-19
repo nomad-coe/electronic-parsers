@@ -26,16 +26,18 @@ def integrate_dos(dos, e_fermi=None):
     The explicit integral serves to check energy and value units."""
     # Restrain integral to the occupied states
     if e_fermi:
-        occ_energy = [[e.magnitude for e in dos_spin.energies if e <= e_fermi] for dos_spin in dos]
+        occ_energy = [
+            [e.magnitude for e in dos_spin.energies if e <= e_fermi] for dos_spin in dos
+        ]
     else:
         occ_energy = [[e.magnitude for e in dos_spin.energies] for dos_spin in dos]
     # Perofrm the integration
-    dos_integrated = 0.
+    dos_integrated = 0.0
     for ispin, dos_spin in enumerate(dos):
         try:
-            spin_channel = dos_spin.total[0].value[:len(occ_energy[ispin])]
+            spin_channel = dos_spin.total[0].value[: len(occ_energy[ispin])]
         except IndexError:
-            raise IndexError('Check the no. spin-channels')
+            raise IndexError("Check the no. spin-channels")
         occ_value = [v.magnitude for v in spin_channel]
         dos_integrated += np.trapz(x=occ_energy[ispin], y=occ_value)
     return dos_integrated
