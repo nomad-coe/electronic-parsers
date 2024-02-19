@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 import os
+from typing import Optional
 import numpy as np
 import logging
 import re
@@ -79,6 +80,7 @@ from .metainfo.cp2k_general import (
 )
 
 from ..utils import get_files
+import ase
 
 
 units_map = {
@@ -1147,13 +1149,25 @@ class CP2KParser:
                 filename = project_name
         return filename
 
-    def get_atomic_number(self, element):
-        atomic_numbers = (
-            self.out_parser.get(self._calculation_type, {})
-            .get("atomic_coordinates")
-            .atomic_numbers
-        )
-        return atomic_numbers.get(element, 0)
+    def get_atomic_number(self, element: str) -> Optional[int]:
+        """Convert the element symbol to its corresponding atomic number.
+        It will first try to use the submitted element symbol, and else resort to the extracted number.
+
+        Dependencies:
+        - ase.data.atomic_numbers
+        """  # TODO: migrate responsilbity to section normalizer
+
+        if match := re.match(r"([A-Z][a-z]?)", element):
+            return ase.data.atomic_numbers.get(match.group(1), None)
+        else:
+            try:
+                return (
+                    self.out_parser.get(self._calculation_type, {})
+                    .get("atomic_coordinates")
+                    .atomic_numbers.get(element, None)
+                )  # TODO: useful?
+            except AttributeError:
+                return None
 
     def get_ensemble_type(self, frame):
         if self.sampling_method != "molecular_dynamics":
