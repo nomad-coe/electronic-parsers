@@ -457,11 +457,11 @@ class CP2KOutParser(TextParser):
 
         def str_to_atomic_coordinates(val_in):
             val = [v.split() for v in val_in.split("\n")]
-            lengthunit = val[0][0].lower()
+            length_unit = val[0][0].lower()
             val = np.transpose(np.array([v for v in val if len(v) == 9]))
             labels = val[2]
             positions = np.transpose(np.array(val[4:7], dtype=float)) * resolve_unit(
-                lengthunit
+                length_unit
             )
             atomic_numbers = {
                 element: int(val[3][n]) for n, element in enumerate(val[2])
@@ -815,10 +815,10 @@ class CP2KOutParser(TextParser):
             ),
             Quantity(
                 "atomic_coordinates",
-                r" ATOMIC COORDINATES IN (angstrom[\s\S]+?)\n\n\n",
+                r"(?i) atomic coordinates(?: in) (angstrom[\s\S]+?)\n\n\n",
                 convert=False,
                 str_operation=str_to_atomic_coordinates,
-            ),
+            ),  # TODO: if we always capture angstrom, then no need to extract the units...
             Quantity(
                 "scf_parameters",
                 r" SCF PARAMETERS([\s\S]+?)\*{79}",
