@@ -20,6 +20,7 @@ import pytest
 import numpy as np
 
 from nomad.datamodel import EntryArchive
+from nomad.units import ureg
 from electronicparsers.quantumespresso import QuantumEspressoParser
 
 
@@ -30,6 +31,10 @@ def approx(value, abs=0, rel=1e-6):
 @pytest.fixture(scope="module")
 def parser():
     return QuantumEspressoParser()
+
+
+def RyB_to_N(value):
+    return (value * ureg.rydberg / ureg.bohr).to_base_units().magnitude
 
 
 def test_scf(parser):
@@ -187,3 +192,30 @@ def test_dos(parser):
     assert sec_dos.energies[269].magnitude == approx(1.23207383e-18)
     assert sec_dos.total[0].value[150].magnitude == approx(2.8991809650870246e17)
     assert sec_dos.total[0].value_integrated[1316] == 8.582
+
+
+def test_vcrelax(parser):
+    archive = EntryArchive()
+    parser.parse("tests/data/quantumespresso/TiO2_opt/pw.out", archive, None)
+
+    sec_run = archive.run[0]
+    sec_sccs = sec_run.calculation
+    assert len(sec_sccs) == 6
+    assert sec_sccs[0].forces.total.value_raw[3][1].magnitude == approx(
+        RyB_to_N(-0.00389184)
+    )
+    assert sec_sccs[-1].forces.total.value_raw[5][0].magnitude == approx(
+        RyB_to_N(0.00001090)
+    )
+
+
+def test_noncolmag(parser):
+    archive = EntryArchive()
+    parser.parse("tests/data/quantumespresso/Pt_noncol/pw.out", archive, None)
+
+    sec_run = archive.run[0]
+    sec_sccs = sec_run.calculation
+    assert len(sec_sccs) == 1
+    assert sec_sccs[0].forces.total.value_raw[0][2].magnitude == approx(
+        RyB_to_N(0.0)
+    )
