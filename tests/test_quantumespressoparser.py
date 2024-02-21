@@ -125,6 +125,7 @@ def test_multirun(parser):
     assert len(sec_runs) == 3
     assert len(sec_method.k_mesh.points) == 40
     assert sec_method.electronic.smearing.width == approx(2.3978595972139434e-20)
+    assert sec_method.electronic.smearing.kind == "fermi"
     assert len(sec_runs[1].calculation[0].scf_iteration) == 111
     assert (
         sec_runs[2].calculation[0].scf_iteration[45].x_qe_iter_mpersite_magn[6]
@@ -185,6 +186,7 @@ def test_dos(parser):
     sec_method = sec_run.method[0]
     assert sec_method.k_mesh.n_points == 413
     assert sec_method.k_mesh.points is None
+    assert sec_method.electronic.smearing.kind == "tetrahedra"
     assert len(sec_run.calculation[0].dos_electronic) == 1
     sec_dos = sec_run.calculation[0].dos_electronic[0]
     assert np.shape(sec_dos.total[0].value) == (1801,)
@@ -207,6 +209,9 @@ def test_vcrelax(parser):
     assert sec_sccs[-1].forces.total.value_raw[5][0].magnitude == approx(
         RyB_to_N(0.00001090)
     )
+    sec_method = sec_run.method[0]
+    assert sec_method.electronic.smearing.kind == "tetrahedra"
+    assert sec_method.electronic.smearing.width is None
 
 
 def test_noncolmag(parser):
@@ -216,6 +221,11 @@ def test_noncolmag(parser):
     sec_run = archive.run[0]
     sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 1
-    assert sec_sccs[0].forces.total.value_raw[0][2].magnitude == approx(
-        RyB_to_N(0.0)
+    assert sec_sccs[0].forces.total.value_raw[0][2].magnitude == approx(RyB_to_N(0.0))
+
+    sec_method = sec_run.method[0]
+    assert sec_method.electronic.smearing.kind == "gaussian"
+    assert (
+        sec_method.electronic.smearing.width
+        == (0.01 * ureg.rydberg).to_base_units().magnitude
     )

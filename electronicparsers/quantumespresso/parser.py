@@ -2254,7 +2254,7 @@ class QuantumEspressoOutParser(TextParser):
                         Quantity("nk", r"number of k points=\s*(\d+)", dtype=int),
                         Quantity(
                             "smearing",
-                            r"(\S+)\s*(?:broad|smearing|method)*,",
+                            r"([\w\-]+)\s*(?:broad|smearing|method),?",
                             dtype=str,
                             flatten=False,
                         ),
@@ -2784,6 +2784,7 @@ class QuantumEspressoParser:
             "Marzari-Vanderbilt": "marzari-vanderbilt",
             "Methfessel-Paxton": "methfessel-paxton",
             "gaussian": "gaussian",
+            "Gaussian": "gaussian",
             "Fermi-Dirac": "fermi",
             "tetrahedron": "tetrahedra",
         }
