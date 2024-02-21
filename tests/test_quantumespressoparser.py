@@ -72,6 +72,7 @@ def test_scf(parser):
     assert sec_method.x_qe_xc_igcc_name == "pbc"
     assert sec_method.dft.xc_functional.exchange[0].name == "GGA_X_PBE"
     assert sec_method.electronic.n_electrons[0] == 8
+    assert sec_method.electronic.n_spin_channels == 1
     sec_atoms = sec_method.atom_parameters
     assert len(sec_atoms) == 2
     assert sec_atoms[1].label == "H"
@@ -126,6 +127,7 @@ def test_multirun(parser):
     assert len(sec_method.k_mesh.points) == 40
     assert sec_method.electronic.smearing.width == approx(2.3978595972139434e-20)
     assert sec_method.electronic.smearing.kind == "fermi"
+    assert sec_method.electronic.n_spin_channels == 2
     assert len(sec_runs[1].calculation[0].scf_iteration) == 111
     assert (
         sec_runs[2].calculation[0].scf_iteration[45].x_qe_iter_mpersite_magn[6]
@@ -165,6 +167,7 @@ def test_md(parser):
     sec_run = archive.run[0]
     sec_method = sec_run.method[0]
     assert len(sec_method.k_mesh.points) == 1
+    assert sec_method.electronic.n_spin_channels == 1
     sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 50
     assert archive.run[0].system[6].atoms.positions[1][2].magnitude == approx(
@@ -187,6 +190,7 @@ def test_dos(parser):
     assert sec_method.k_mesh.n_points == 413
     assert sec_method.k_mesh.points is None
     assert sec_method.electronic.smearing.kind == "tetrahedra"
+    assert sec_method.electronic.n_spin_channels == 1
     assert len(sec_run.calculation[0].dos_electronic) == 1
     sec_dos = sec_run.calculation[0].dos_electronic[0]
     assert np.shape(sec_dos.total[0].value) == (1801,)
@@ -212,6 +216,7 @@ def test_vcrelax(parser):
     sec_method = sec_run.method[0]
     assert sec_method.electronic.smearing.kind == "tetrahedra"
     assert sec_method.electronic.smearing.width is None
+    assert sec_method.electronic.n_spin_channels == 1
 
 
 def test_noncolmag(parser):
@@ -229,3 +234,4 @@ def test_noncolmag(parser):
         sec_method.electronic.smearing.width
         == (0.01 * ureg.rydberg).to_base_units().magnitude
     )
+    assert sec_method.electronic.n_spin_channels is None
