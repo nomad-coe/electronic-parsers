@@ -31,6 +31,30 @@ def parser():
     return CP2KParser()
 
 
+def test_versioning(parser):
+    """
+    Test for breaking changes between versions.
+    Known breaks:
+    - v2023.1:
+    -- Change of geometry section header from `MODULE QUICKSTEP: ATOMIC COORDINATES angstrom`
+    to `MODULE QUICKSTEP: ATOMIC COORDINATES IN ANGSTROM`
+    """
+
+    # v2023.1: try elements and positions
+    archive = EntryArchive()
+    parser.parse(
+        "tests/data/cp2k/version_2023_1/Defect_level_D_mode.548022.out", archive, None
+    )
+
+    sec_run = archive.run[0]
+    assert sec_run.system[0].atoms.labels == 287 * ["Se"] + 144 * ["W"]
+    assert list(sec_run.system[0].atoms.positions[0].to("angstrom").magnitude) == [
+        11.616523,
+        1.916229,
+        18.320724,
+    ]
+
+
 def test_single_point(parser):
     archive = EntryArchive()
     parser.parse("tests/data/cp2k/single_point/si_bulk8.out", archive, None)

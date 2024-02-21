@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 import os
+from typing import Optional
 import numpy as np
 import logging
 import re
@@ -456,11 +457,11 @@ class CP2KOutParser(TextParser):
 
         def str_to_atomic_coordinates(val_in):
             val = [v.split() for v in val_in.split("\n")]
-            lengthunit = val[0][0].lower()
+            length_unit = val[0][0].lower()
             val = np.transpose(np.array([v for v in val if len(v) == 9]))
             labels = val[2]
             positions = np.transpose(np.array(val[4:7], dtype=float)) * resolve_unit(
-                lengthunit
+                length_unit
             )
             atomic_numbers = {
                 element: int(val[3][n]) for n, element in enumerate(val[2])
@@ -814,10 +815,10 @@ class CP2KOutParser(TextParser):
             ),
             Quantity(
                 "atomic_coordinates",
-                r" ATOMIC COORDINATES IN (angstrom[\s\S]+?)\n\n\n",
+                r"(?i) atomic coordinates(?: in) (angstrom[\s\S]+?)\n\n\n",
                 convert=False,
                 str_operation=str_to_atomic_coordinates,
-            ),
+            ),  # TODO: if we always capture angstrom, then no need to extract the units...
             Quantity(
                 "scf_parameters",
                 r" SCF PARAMETERS([\s\S]+?)\*{79}",
@@ -1147,13 +1148,16 @@ class CP2KParser:
                 filename = project_name
         return filename
 
-    def get_atomic_number(self, element):
-        atomic_numbers = (
-            self.out_parser.get(self._calculation_type, {})
-            .get("atomic_coordinates")
-            .atomic_numbers
-        )
-        return atomic_numbers.get(element, 0)
+    def get_atomic_number(self, element: str) -> Optional[int]:
+        """Convert the element symbol to its corresponding atomic number.
+
+        Dependencies:
+        - ase.data.atomic_numbers
+        """  # TODO: migrate responsilbity to section normalizer
+
+        if match := re.match(r"([A-Z][a-z]?)", element):
+            return ase.data.atomic_numbers.get(match.group(1), None)
+        return None
 
     def get_ensemble_type(self, frame):
         if self.sampling_method != "molecular_dynamics":
