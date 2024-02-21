@@ -1,0 +1,40 @@
+&CONTROL
+   calculation      = 'scf'
+   verbosity        = 'high'
+   nstep            = 300
+   tstress          = .true.
+   tprnfor          = .true.
+   outdir           = '.'
+   prefix           = 'Pt'
+   forc_conv_thr    = 0.0005
+   disk_io          = 'nowf'
+   pseudo_dir       = '.'
+/
+&SYSTEM
+   ecutwfc          = 75
+   ecutrho          = 600
+   occupations      = 'smearing'
+   ntyp             = 1
+   nat              = 1
+   space_group      = 225
+   degauss          = 0.01
+   a                = 3.925
+   noncolin         = .true.
+   lspinorb         = .true.
+   starting_magnetization(1) = 0.1
+/
+&ELECTRONS
+   electron_maxstep = 30
+   conv_thr         = 1e-08
+/
+&IONS
+/
+
+ATOMIC_SPECIES
+Pt 195.084 Pt.upf
+
+K_POINTS automatic
+15 15 15  0 0 0
+
+ATOMIC_POSITIONS crystal_sg
+Pt 0.0 0.0 0.0 

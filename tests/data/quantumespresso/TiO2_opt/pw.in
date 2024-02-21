@@ -1,0 +1,43 @@
+&CONTROL
+   calculation      = 'vc-relax'
+   verbosity        = 'low'
+   nstep            = 300
+   tstress          = .true.
+   tprnfor          = .true.
+   outdir           = '.'
+   prefix           = 'TiO2'
+   forc_conv_thr    = 0.0005
+   disk_io          = 'nowf'
+   pseudo_dir       = '/home/ondracka/pseudo/SSSP_1.3.0_PBE_precision/'
+/
+&SYSTEM
+   ecutwfc          = 75
+   ecutrho          = 600
+   occupations      = 'tetrahedra_opt'
+   ntyp             = 2
+   nat              = 2
+   space_group       = 136
+   a                = 4.59373
+   c                = 2.95812
+   vdw_corr         = 'DFT-D3'
+/
+&ELECTRONS
+   electron_maxstep = 30
+   conv_thr         = 1e-08
+/
+&IONS
+/
+&CELL
+   press_conv_thr = 0.5
+/
+
+ATOMIC_SPECIES
+Ti 47.867 ti_pbe_v1.4.uspp.F.UPF
+O 15.999 O.pbe-n-kjpaw_psl.0.1.UPF
+
+K_POINTS automatic
+7 7 12  0 0 0
+
+ATOMIC_POSITIONS crystal_sg
+Ti 0.0 0.0 0.0 
+O 0.305300 0.305300 0.0 

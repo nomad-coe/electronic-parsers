@@ -1,0 +1,7 @@
+&DOS
+   outdir          = '.'
+   prefix          = 'Pt'
+   DeltaE          = 0.05
+   emin            = 10
+   emax            = 35
+/
