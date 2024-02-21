@@ -2465,7 +2465,7 @@ class QuantumEspressoOutParser(TextParser):
             ),
             Quantity(
                 "forces",
-                r"Forces acting on atoms \(Ry\/au\):\s*([\s\S]+?)(?:The|\n\s*\n)",
+                r"Forces acting on atoms \((?:cartesian axes, )?Ry\/au\):\s*([\s\S]+?)(?:The|\n\s*\n)",
                 str_operation=str_to_forces,
                 convert=False,
             ),
