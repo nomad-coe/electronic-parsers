@@ -3249,6 +3249,14 @@ class QuantumEspressoParser:
         sec_electronic = Electronic()
         sec_method.electronic = sec_electronic
 
+        starting_magnetization = run.get_header("starting_magnetization")
+        spin_orbit_mode = run.get_header("spin_orbit_mode")
+        if starting_magnetization is not None:
+            sec_electronic.n_spin_channels = 2
+        elif spin_orbit_mode is None:
+            sec_electronic.n_spin_channels = 1
+        # TODO: It is unclear what should be the value if noncollinear magnetism is OK
+
         sec_kmesh.n_points = run.get_header("k_points", {}).get("nk", 1)
         sec_kmesh.points = run.get_header("k_points", {}).get("points", None)
 
