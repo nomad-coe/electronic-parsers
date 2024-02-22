@@ -1,6 +1,7 @@
 name: test
 on: [push]
 jobs:
+
   install-test:
     runs-on: ubuntu-latest
     steps:
@@ -22,8 +23,18 @@ jobs:
       run: |
         python -m pytest -sv tests
 
-  ruff:
+  ruff-linting:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: chartboost/ruff-action@v1
+        with:
+          args: "check ."
+
+  ruff-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: chartboost/ruff-action@v1
+        with:
+          args: "format ."
