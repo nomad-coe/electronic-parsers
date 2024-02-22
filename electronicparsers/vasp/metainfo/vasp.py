@@ -88,7 +88,7 @@ class Method(runschema.method.Method):
 
     x_vasp_atom_kind_refs = Quantity(
         type=runschema.method.AtomParameters,
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         reference to the atom kinds of each atom
         """,
@@ -117,7 +117,7 @@ class KMesh(runschema.method.KMesh):
 
     x_vasp_tetrahedrons_list = Quantity(
         type=np.dtype(np.int32),
-        shape=["N", 5],
+        shape=['N', 5],
         description="""
         Rows of 5 data points. First the weight (symmetry degeneration), then the four corner
         points of each tetrahedron.
@@ -138,7 +138,7 @@ class System(runschema.system.System):
 
     x_vasp_selective_dynamics = Quantity(
         type=np.dtype(bool),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         Boolean array to eiter allow or forbid coordinate modifications during relaxation
         """,

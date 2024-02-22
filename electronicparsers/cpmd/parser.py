@@ -50,78 +50,78 @@ from .metainfo.cpmd_general import (
 )
 
 
-re_f = r"[-+]?\d*\.\d*(?:[Ee][-+]\d+)?"
-re_n = r"[\n\r]"
+re_f = r'[-+]?\d*\.\d*(?:[Ee][-+]\d+)?'
+re_n = r'[\n\r]'
 
 
 class MainfileParser(TextParser):
     def init_quantities(self):
         def to_parameters(val_in):
-            separator = ":" if ":" in val_in else "  "
+            separator = ':' if ':' in val_in else '  '
             return [v.strip() for v in val_in.strip().split(separator) if v]
 
         step_quantities = [
             Quantity(
-                "atom_coordinates_forces",
-                rf"ATOM +COORDINATES.+\s+((?:\d+ +[A-Z][a-z]*.+{re_f}\s+)+)",
+                'atom_coordinates_forces',
+                rf'ATOM +COORDINATES.+\s+((?:\d+ +[A-Z][a-z]*.+{re_f}\s+)+)',
                 str_operation=lambda x: [v.split() for v in x.strip().splitlines()],
             ),
             Quantity(
-                "scf",
-                rf"((?:\s+\d+ +{re_f} +{re_f} +{re_f} +{re_f} +{re_f})+)",
+                'scf',
+                rf'((?:\s+\d+ +{re_f} +{re_f} +{re_f} +{re_f} +{re_f})+)',
                 dtype=np.dtype(np.float64),
                 str_operation=lambda x: [v.split() for v in x.strip().splitlines()],
             ),
             Quantity(
-                "energies",
-                rf"(.+TOTAL ENERGY =.+\s(?:.+= +{re_f} A\.U\.\s)+)",
+                'energies',
+                rf'(.+TOTAL ENERGY =.+\s(?:.+= +{re_f} A\.U\.\s)+)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "total",
-                            rf"TOTAL ENERGY += +({re_f})",
+                            'total',
+                            rf'TOTAL ENERGY += +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "kinetic",
-                            rf"KINETIC ENERGY += +({re_f})",
+                            'kinetic',
+                            rf'KINETIC ENERGY += +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "electrostatic",
-                            rf"ELECTROSTATIC ENERGY += +({re_f})",
+                            'electrostatic',
+                            rf'ELECTROSTATIC ENERGY += +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "x_cpmd_eself",
-                            rf"ESELF += +({re_f})",
+                            'x_cpmd_eself',
+                            rf'ESELF += +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "x_cpmd_esr",
-                            rf"ESR += +({re_f})",
+                            'x_cpmd_esr',
+                            rf'ESR += +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "x_cpmd_local_pseudopotential",
-                            rf"LOCAL PSEUDOPOTENTIAL ENERGY += +({re_f})",
+                            'x_cpmd_local_pseudopotential',
+                            rf'LOCAL PSEUDOPOTENTIAL ENERGY += +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "x_cpmd_nl_pseudopotential",
-                            rf"N-L PSEUDOPOTENTIAL ENERGY += +({re_f})",
+                            'x_cpmd_nl_pseudopotential',
+                            rf'N-L PSEUDOPOTENTIAL ENERGY += +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "xc",
-                            rf"EXCHANGE-CORRELATION ENERGY += +({re_f})",
+                            'xc',
+                            rf'EXCHANGE-CORRELATION ENERGY += +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
@@ -129,168 +129,168 @@ class MainfileParser(TextParser):
                 ),
             ),
             Quantity(
-                "x_cpmd_restart_file",
-                r"RESTART INFORMATION WRITTEN ON FILE +(\S+)",
+                'x_cpmd_restart_file',
+                r'RESTART INFORMATION WRITTEN ON FILE +(\S+)',
                 dtype=str,
             ),
             Quantity(
-                "x_cpmd_total_number_of_scf_steps",
-                r"TOTAL STEP NR\. +(\d+)",
+                'x_cpmd_total_number_of_scf_steps',
+                r'TOTAL STEP NR\. +(\d+)',
                 dtype=np.int32,
             ),
-            Quantity("x_cpmd_gnmax", rf"GNMAX= +({re_f})", dtype=np.float64),
-            Quantity("x_cpmd_gnorm", rf"GNORM= +({re_f})", dtype=np.float64),
-            Quantity("x_cpmd_cnstr", rf"CNSTR= +({re_f})", dtype=np.float64),
-            Quantity("time_calculation", rf"TCPU= +({re_f})", dtype=np.float64),
+            Quantity('x_cpmd_gnmax', rf'GNMAX= +({re_f})', dtype=np.float64),
+            Quantity('x_cpmd_gnorm', rf'GNORM= +({re_f})', dtype=np.float64),
+            Quantity('x_cpmd_cnstr', rf'CNSTR= +({re_f})', dtype=np.float64),
+            Quantity('time_calculation', rf'TCPU= +({re_f})', dtype=np.float64),
         ]
 
         self._quantities = [
             Quantity(
-                "header",
-                r"(PROGRAM CPMD STARTED[\s\S]+?JOB WAS SUBMITTED BY.+)",
+                'header',
+                r'(PROGRAM CPMD STARTED[\s\S]+?JOB WAS SUBMITTED BY.+)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "date_start",
-                            r"PROGRAM CPMD STARTED AT\: (\d+\-\d+\-\d+ \d+\:\d+\:\d+\.\d+)",
+                            'date_start',
+                            r'PROGRAM CPMD STARTED AT\: (\d+\-\d+\-\d+ \d+\:\d+\:\d+\.\d+)',
                             dtype=str,
                             flatten=False,
                         ),
                         Quantity(
-                            "program_version", r"VERSION (.+)", dtype=str, flatten=False
+                            'program_version', r'VERSION (.+)', dtype=str, flatten=False
                         ),
                         Quantity(
-                            "x_cpmd_compilation_date",
-                            r"\*\*\* +(\w+ \d+ \d+ \-\- \d+\:\d+\:\d+)",
+                            'x_cpmd_compilation_date',
+                            r'\*\*\* +(\w+ \d+ \d+ \-\- \d+\:\d+\:\d+)',
                             dtype=str,
                             flatten=False,
                         ),
                         Quantity(
-                            "x_cpmd_input_filename",
-                            r"THE INPUT FILE IS: +(\S+)",
+                            'x_cpmd_input_filename',
+                            r'THE INPUT FILE IS: +(\S+)',
                             dtype=str,
                         ),
                         Quantity(
-                            "x_cpmd_run_host_name",
-                            r"THIS JOB RUNS ON: +(\S+)",
+                            'x_cpmd_run_host_name',
+                            r'THIS JOB RUNS ON: +(\S+)',
                             dtype=str,
                         ),
                         Quantity(
-                            "x_cpmd_process_id", r"THE PROCESS ID IS: +(\S+)", dtype=str
+                            'x_cpmd_process_id', r'THE PROCESS ID IS: +(\S+)', dtype=str
                         ),
                         Quantity(
-                            "x_cpmd_run_user_name",
-                            r"THE JOB WAS SUBMITTED BY: +(\S+)",
+                            'x_cpmd_run_user_name',
+                            r'THE JOB WAS SUBMITTED BY: +(\S+)',
                             dtype=str,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "info",
-                r"(INFO[\s\S]+?USING SEED[\s\S]+?)\*\*\*\*\*",
+                'info',
+                r'(INFO[\s\S]+?USING SEED[\s\S]+?)\*\*\*\*\*',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "simulation_type",
-                            r"((?:SINGLE POINT DENSITY OPTIMIZATION)|(?:OPTIMIZATION OF IONIC POSITIONS)"
-                            r"|(?:CAR\-PARRINELLO MOLECULAR DYNAMICS)|(?:BORN-OPPENHEIMER MOLECULAR DYNAMICS))",
+                            'simulation_type',
+                            r'((?:SINGLE POINT DENSITY OPTIMIZATION)|(?:OPTIMIZATION OF IONIC POSITIONS)'
+                            r'|(?:CAR\-PARRINELLO MOLECULAR DYNAMICS)|(?:BORN-OPPENHEIMER MOLECULAR DYNAMICS))',
                             dtype=str,
                             flatten=False,
                         ),
                         Quantity(
-                            "simulation_parameters",
-                            rf"([A-Z][ A-Z\-]+?)((?:  |:)) *((?:{re_f}|\d+|[A-Z][ A-Z]+)).*",
+                            'simulation_parameters',
+                            rf'([A-Z][ A-Z\-]+?)((?:  |:)) *((?:{re_f}|\d+|[A-Z][ A-Z]+)).*',
                             str_operation=to_parameters,
                             repeats=True,
                         ),
                         Quantity(
-                            "geometry_optimization_method",
-                            r"GEOMETRY OPTIMIZATION BY (\S+)",
+                            'geometry_optimization_method',
+                            r'GEOMETRY OPTIMIZATION BY (\S+)',
                             dtype=str,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "atoms",
-                rf"ATOMS \*+\s+NR.+\s+((?:\d+ +[A-Z][a-z]* +{re_f} +{re_f} +{re_f} +\d+\s+)+)",
+                'atoms',
+                rf'ATOMS \*+\s+NR.+\s+((?:\d+ +[A-Z][a-z]* +{re_f} +{re_f} +{re_f} +\d+\s+)+)',
                 str_operation=lambda x: [v.split() for v in x.strip().splitlines()],
             ),
             Quantity(
-                "supercell",
-                r"SUPERCELL \*+([\s\S]+?)\*{10}",
+                'supercell',
+                r'SUPERCELL \*+([\s\S]+?)\*{10}',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "lattice_vectors",
-                            rf"LATTICE VECTOR A\d\(BOHR\): +({re_f} +{re_f} +{re_f})",
+                            'lattice_vectors',
+                            rf'LATTICE VECTOR A\d\(BOHR\): +({re_f} +{re_f} +{re_f})',
                             dtype=np.dtype(np.float64),
                             repeats=True,
                         ),
                         Quantity(
-                            "lattice_vectors_reciprocal",
-                            rf"RECIP\. LAT\. VEC\. B\d\(2Pi/BOHR\): +({re_f} +{re_f} +{re_f})",
+                            'lattice_vectors_reciprocal',
+                            rf'RECIP\. LAT\. VEC\. B\d\(2Pi/BOHR\): +({re_f} +{re_f} +{re_f})',
                             dtype=np.dtype(np.float64),
                             repeats=True,
                         ),
                         Quantity(
-                            "x_cpmd_cell_symmetry",
-                            r"SYMMETRY:\s+(.+)",
+                            'x_cpmd_cell_symmetry',
+                            r'SYMMETRY:\s+(.+)',
                             dtype=str,
                             flatten=False,
                         ),
                         Quantity(
-                            "x_cpmd_cell_lattice_constant",
-                            rf"LATTICE CONSTANT\(a\.u\.\):\s+({re_f})",
+                            'x_cpmd_cell_lattice_constant',
+                            rf'LATTICE CONSTANT\(a\.u\.\):\s+({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "x_cpmd_cell_dimension",
-                            rf"CELL DIMENSION:\s+(.+)",
+                            'x_cpmd_cell_dimension',
+                            rf'CELL DIMENSION:\s+(.+)',
                             dtype=np.dtype(np.float64),
                         ),
                         Quantity(
-                            "x_cpmd_cell_volume",
-                            rf"VOLUME\(OMEGA IN BOHR\^3\):\s+({re_f})",
+                            'x_cpmd_cell_volume',
+                            rf'VOLUME\(OMEGA IN BOHR\^3\):\s+({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "x_cpmd_cell_real_space_mesh",
-                            rf"REAL SPACE MESH:\s+(\d+ +\d+ +\d+)",
+                            'x_cpmd_cell_real_space_mesh',
+                            rf'REAL SPACE MESH:\s+(\d+ +\d+ +\d+)',
                             dtype=np.dtype(np.int32),
                         ),
                         Quantity(
-                            "x_cpmd_wave_function_cutoff",
-                            rf"WAVEFUNCTION CUTOFF\(RYDBERG\):\s+({re_f})",
+                            'x_cpmd_wave_function_cutoff',
+                            rf'WAVEFUNCTION CUTOFF\(RYDBERG\):\s+({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "x_cpmd_density_cutoff",
-                            rf"DENSITY CUTOFF\(RYDBERG\):({re_f})",
+                            'x_cpmd_density_cutoff',
+                            rf'DENSITY CUTOFF\(RYDBERG\):({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "x_cpmd_number_of_planewaves_wave_function",
-                            rf"NUMBER OF PLANE WAVES FOR WAVEFUNCTION CUTOFF:\s+(\d+)",
+                            'x_cpmd_number_of_planewaves_wave_function',
+                            rf'NUMBER OF PLANE WAVES FOR WAVEFUNCTION CUTOFF:\s+(\d+)',
                             dtype=np.int32,
                         ),
                         Quantity(
-                            "x_cpmd_number_of_planewaves_density",
-                            rf"NUMBER OF PLANE WAVES FOR DENSITY CUTOFF:\s+(\d+)",
+                            'x_cpmd_number_of_planewaves_density',
+                            rf'NUMBER OF PLANE WAVES FOR DENSITY CUTOFF:\s+(\d+)',
                             dtype=np.int32,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "geometry_optimization",
-                r"GEOMETRY OPTIMIZATION +\=([\s\S]+?)(?:END OF GEOMETRY OPTIMIZATION|\Z)",
+                'geometry_optimization',
+                r'GEOMETRY OPTIMIZATION +\=([\s\S]+?)(?:END OF GEOMETRY OPTIMIZATION|\Z)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "step",
-                            rf"((?:NFI|\*\*\*\*\*)[\s\S]+?TCPU=.+)",
+                            'step',
+                            rf'((?:NFI|\*\*\*\*\*)[\s\S]+?TCPU=.+)',
                             repeats=True,
                             sub_parser=TextParser(quantities=step_quantities),
                         ),
@@ -298,25 +298,25 @@ class MainfileParser(TextParser):
                 ),
             ),
             Quantity(
-                "single_point",
-                r"(ATOM +COORDINATES[\s\S]+?(?:RESTART .+|\Z))",
+                'single_point',
+                r'(ATOM +COORDINATES[\s\S]+?(?:RESTART .+|\Z))',
                 sub_parser=TextParser(quantities=step_quantities),
             ),
             Quantity(
-                "molecular_dynamics",
-                r"(NFI +EKINC +TEMPP[\s\S]+?(?:CPU TIME|\Z))",
+                'molecular_dynamics',
+                r'(NFI +EKINC +TEMPP[\s\S]+?(?:CPU TIME|\Z))',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "frame",
-                            rf"((?:\d+ +{re_f} +{re_f} +{re_f} +{re_f} +{re_f} +{re_f} +{re_f}\s+)+)",
+                            'frame',
+                            rf'((?:\d+ +{re_f} +{re_f} +{re_f} +{re_f} +{re_f} +{re_f} +{re_f}\s+)+)',
                             dtype=np.dtype(np.float64),
                             repeats=True,
                         ),
                         Quantity(
-                            "averaged",
-                            r"AVERAGED QUANTITIES +\*+\s+\*+\s+MEAN VALUE.+\s+\<x\>.+\s+"
-                            rf"((?:[ A-Z]+ +{re_f} +{re_f}\s+)+)",
+                            'averaged',
+                            r'AVERAGED QUANTITIES +\*+\s+\*+\s+MEAN VALUE.+\s+\<x\>.+\s+'
+                            rf'((?:[ A-Z]+ +{re_f} +{re_f}\s+)+)',
                             str_operation=lambda x: [
                                 v.split() for v in x.strip().splitlines()
                             ],
@@ -329,7 +329,7 @@ class MainfileParser(TextParser):
     def get_simulation_parameters(self):
         return {
             val[0]: val[1]
-            for val in self.get("info", {}).get("simulation_parameters", [])
+            for val in self.get('info', {}).get('simulation_parameters', [])
         }
 
 
@@ -341,16 +341,16 @@ class XYZParser(TextParser):
     def init_quantities(self):
         self._quantities = [
             Quantity(
-                "step",
-                rf"(STEP\: +\d+[\s\S]+?)(\s+\d+\s+|\Z)",
+                'step',
+                rf'(STEP\: +\d+[\s\S]+?)(\s+\d+\s+|\Z)',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
-                        Quantity("step", r"STEP\: +(\d+)", dtpye=np.int32),
-                        Quantity("labels", r"([A-Z][a-z]*)\S*", repeats=True),
+                        Quantity('step', r'STEP\: +(\d+)', dtpye=np.int32),
+                        Quantity('labels', r'([A-Z][a-z]*)\S*', repeats=True),
                         Quantity(
-                            "positions",
-                            rf"({re_f} +{re_f} +{re_f})",
+                            'positions',
+                            rf'({re_f} +{re_f} +{re_f})',
                             dtype=np.dtype(np.float64),
                             repeats=True,
                         ),
@@ -367,10 +367,10 @@ class CPMDParser:
         self.xyz_parser = XYZParser()
         self.energies_parser = DataTextParser()
         self._method_map = {
-            "GDIIS/BFGS": "bfgs",
-            "LOW-MEMORY BFGS": "bfgs",
-            "CONJUGATE GRADIENT": "conjugate_gradient",
-            "STEEPEST DESCENT": "steepest_descent",
+            'GDIIS/BFGS': 'bfgs',
+            'LOW-MEMORY BFGS': 'bfgs',
+            'CONJUGATE GRADIENT': 'conjugate_gradient',
+            'STEEPEST DESCENT': 'steepest_descent',
         }
         self._metainfo_map = {}
 
@@ -389,19 +389,19 @@ class CPMDParser:
 
         sec_run = Run()
         archive.run.append(sec_run)
-        header = self.mainfile_parser.get("header", {})
-        sec_run.program = Program(version=header.get("program_version"))
-        if header.get("date_start") is not None:
+        header = self.mainfile_parser.get('header', {})
+        sec_run.program = Program(version=header.get('program_version'))
+        if header.get('date_start') is not None:
             sec_run.time_run = TimeRun(
                 date_start=datetime.strptime(
-                    header.get("date_start"), "%Y-%m-%d %H:%M:%S.%f"
+                    header.get('date_start'), '%Y-%m-%d %H:%M:%S.%f'
                 ).timestamp()
             )
 
         sec_start_info = x_cpmd_section_start_information()
         sec_run.x_cpmd_section_start_information.append(sec_start_info)
         for key, val in header.items():
-            if key.startswith("x_cpmd"):
+            if key.startswith('x_cpmd'):
                 setattr(sec_start_info, key, val)
 
         def parse_system(source):
@@ -417,10 +417,10 @@ class CPMDParser:
             )
             sec_supercell = x_cpmd_section_supercell()
             sec_system.x_cpmd_section_supercell.append(sec_supercell)
-            for key, val in self.mainfile_parser.get("supercell", {}).items():
-                if key == "lattice_vectors":
+            for key, val in self.mainfile_parser.get('supercell', {}).items():
+                if key == 'lattice_vectors':
                     sec_system.atoms.lattice_vectors = val * ureg.bohr
-                elif key.startswith("x_cpmd"):
+                elif key.startswith('x_cpmd'):
                     setattr(sec_supercell, key, val)
 
             return sec_system
@@ -438,11 +438,11 @@ class CPMDParser:
                 sec_energy = Energy()
                 sec_calc.energy = sec_energy
                 for key, val in source.energies.items():
-                    if key == "kinetic":
+                    if key == 'kinetic':
                         sec_energy.total.kinetic = val
                     setattr(sec_energy, key, EnergyEntry(value=val))
 
-            for n, scf in enumerate(source.get("scf", [])):
+            for n, scf in enumerate(source.get('scf', [])):
                 sec_scf = ScfIteration()
                 sec_calc.scf_iteration.append(sec_scf)
                 sec_scf.time_calculation = scf[-1] * ureg.s
@@ -470,7 +470,7 @@ class CPMDParser:
                 sec_calc.energy = sec_scf.energy
 
             for key, val in source.items():
-                if key.startswith("x_cpmd_"):
+                if key.startswith('x_cpmd_'):
                     setattr(sec_calc, key, val)
 
             return sec_calc
@@ -478,16 +478,16 @@ class CPMDParser:
         def resolve_ensemble_type():
             # TODO consider other cases
             ion_dyn = self.mainfile_parser.get_simulation_parameters().get(
-                "ION DYNAMICS"
+                'ION DYNAMICS'
             )
             ensemble_type = (
-                "NVE" if ion_dyn == "THE TEMPERATURE IS NOT CONTROLLED" else None
+                'NVE' if ion_dyn == 'THE TEMPERATURE IS NOT CONTROLLED' else None
             )
             return ensemble_type
 
         workflow = None
-        simulation_type = self.mainfile_parser.get("info", {}).get("simulation_type")
-        if simulation_type == "SINGLE POINT DENSITY OPTIMIZATION":
+        simulation_type = self.mainfile_parser.get('info', {}).get('simulation_type')
+        if simulation_type == 'SINGLE POINT DENSITY OPTIMIZATION':
             workflow = SinglePoint()
             sec_system = parse_system(self.mainfile_parser.single_point)
             sec_calc = parse_calculation(self.mainfile_parser.single_point)
@@ -495,11 +495,11 @@ class CPMDParser:
 
         elif self.mainfile_parser.geometry_optimization is not None:
             workflow = GeometryOptimization(method=GeometryOptimizationMethod())
-            method = self.mainfile_parser.get("info", {}).get(
-                "geometry_optimization_method"
+            method = self.mainfile_parser.get('info', {}).get(
+                'geometry_optimization_method'
             )
             workflow.method.method = self._method_map.get(method, method)
-            for step in self.mainfile_parser.geometry_optimization.get("step", []):
+            for step in self.mainfile_parser.geometry_optimization.get('step', []):
                 sec_system = parse_system(step)
                 sec_calc = parse_calculation(step)
                 sec_calc.system_ref = sec_system
@@ -509,14 +509,14 @@ class CPMDParser:
             workflow.method.thermodynamic_ensemble = resolve_ensemble_type()
             sec_averaged = x_cpmd_section_md_averaged_quantities()
             workflow.x_cpmd_section_md_averaged_quantities.append(sec_averaged)
-            for value in self.mainfile_parser.molecular_dynamics.get("averaged", []):
-                name = "_".join(value[:-2]).lower()
+            for value in self.mainfile_parser.molecular_dynamics.get('averaged', []):
+                name = '_'.join(value[:-2]).lower()
                 sec_averaged.m_set(
-                    sec_averaged.m_get_quantity_definition(f"x_cpmd_{name}_mean"),
+                    sec_averaged.m_get_quantity_definition(f'x_cpmd_{name}_mean'),
                     value[-2],
                 )
                 sec_averaged.m_set(
-                    sec_averaged.m_get_quantity_definition(f"x_cpmd_{name}_std"),
+                    sec_averaged.m_get_quantity_definition(f'x_cpmd_{name}_std'),
                     value[-1],
                 )
 
@@ -526,7 +526,7 @@ class CPMDParser:
             def read_xyz_trajectory(filename):
                 self.xyz_parser.mainfile = os.path.join(self.maindir, filename)
                 trajectory = [
-                    step.get("positions") for step in self.xyz_parser.get("step", [])
+                    step.get('positions') for step in self.xyz_parser.get('step', [])
                 ]
                 if trajectory:
                     # reshape to conform with trajectory parser
@@ -539,7 +539,7 @@ class CPMDParser:
             trajectory_files = [
                 f
                 for f in os.listdir(self.maindir)
-                if re.search(r".*TRAJECTORY", f, re.IGNORECASE)
+                if re.search(r'.*TRAJECTORY', f, re.IGNORECASE)
             ]
             if trajectory_files:
                 self.trajectory_parser.mainfile = os.path.join(
@@ -553,7 +553,7 @@ class CPMDParser:
                 trajectory_files = [
                     f
                     for f in os.listdir(self.maindir)
-                    if re.search(r".*\.xyz", f, re.IGNORECASE)
+                    if re.search(r'.*\.xyz', f, re.IGNORECASE)
                 ]
                 if self.trajectory_parser.data is None and trajectory_files:
                     # read from xyz file
@@ -580,7 +580,7 @@ class CPMDParser:
             energy_files = [
                 f
                 for f in os.listdir(self.maindir)
-                if re.search(r".*ENERGIES", f, re.IGNORECASE)
+                if re.search(r'.*ENERGIES', f, re.IGNORECASE)
             ]
             if energy_files:
                 self.energies_parser.mainfile = os.path.join(
@@ -588,7 +588,7 @@ class CPMDParser:
                 )
             if self.energies_parser.mainfile is None:
                 # get energies from mainfile
-                energies = self.mainfile_parser.molecular_dynamics.get("frame", [])
+                energies = self.mainfile_parser.molecular_dynamics.get('frame', [])
             else:
                 energies = self.energies_parser.data
                 energies = [] if energies is None else energies
@@ -597,7 +597,7 @@ class CPMDParser:
             match = True
             start = 0
             if len(energies) != len(trajectory):
-                self.logger.warning("Trajectory and energies files do not match.")
+                self.logger.warning('Trajectory and energies files do not match.')
                 match = False
 
             def write_energies(source, target):
@@ -611,8 +611,8 @@ class CPMDParser:
                 target.time_calculation = source[7] * ureg.s
                 target.temperature = source[2] * ureg.kelvin
 
-            lattice_vectors = self.mainfile_parser.get("supercell", {}).get(
-                "lattice_vectors"
+            lattice_vectors = self.mainfile_parser.get('supercell', {}).get(
+                'lattice_vectors'
             )
             lattice_vectors = (
                 lattice_vectors * ureg.bohr if lattice_vectors else lattice_vectors
@@ -621,7 +621,7 @@ class CPMDParser:
                 sec_system = System()
                 sec_run.system.append(sec_system)
                 sec_system.atoms = Atoms(
-                    labels=[atom[1] for atom in self.mainfile_parser.get("atoms", [])],
+                    labels=[atom[1] for atom in self.mainfile_parser.get('atoms', [])],
                     positions=trajectory[n_frame, :, 0, :] * ureg.bohr,
                     lattice_vectors=lattice_vectors,
                     periodic=None if lattice_vectors is None else [True, True, True],
@@ -655,18 +655,18 @@ class CPMDParser:
 
         sec_method = Method()
         sec_run.method.append(sec_method)
-        cutoff = self.mainfile_parser.get("supercell", {}).get(
-            "x_cpmd_wave_function_cutoff"
+        cutoff = self.mainfile_parser.get('supercell', {}).get(
+            'x_cpmd_wave_function_cutoff'
         )
         if cutoff is not None:
             sec_method.electrons_representation.append(
                 BasisSetContainer(
-                    scope=["wavefunction"],
-                    type="plane waves",
+                    scope=['wavefunction'],
+                    type='plane waves',
                     basis_set=[
                         BasisSet(
-                            scope=["valence"],
-                            type="plane waves",
+                            scope=['valence'],
+                            type='plane waves',
                             cutoff=cutoff * ureg.rydberg,
                         )
                     ],

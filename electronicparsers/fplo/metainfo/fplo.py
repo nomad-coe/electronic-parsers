@@ -64,7 +64,7 @@ class System(runschema.system.System):
     x_fplo_reciprocal_cell = Quantity(
         type=np.dtype(np.float64),
         shape=[3, 3],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         Reciprocal Lattice vectors (in Cartesian coordinates). The first index runs over
         the $x,y,z$ Cartesian coordinates, and the second index runs over the 3 lattice
@@ -74,7 +74,7 @@ class System(runschema.system.System):
 
     x_fplo_atom_idx = Quantity(
         type=np.dtype(np.int32),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         FPLO-internal index for each atom
         """,
@@ -82,7 +82,7 @@ class System(runschema.system.System):
 
     x_fplo_atom_wyckoff_idx = Quantity(
         type=np.dtype(np.int32),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Wyckoff position index of each atom
         """,
@@ -90,7 +90,7 @@ class System(runschema.system.System):
 
     x_fplo_atom_cpa_block = Quantity(
         type=np.dtype(np.int32),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         CPA block of each atom
         """,

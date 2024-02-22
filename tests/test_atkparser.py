@@ -26,26 +26,26 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return ATKParser()
 
 
 def test_scf(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/atk/Si2.nc", archive, None)
+    parser.parse('tests/data/atk/Si2.nc', archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == "ATK 2016.0.3"
+    assert sec_run.program.version == 'ATK 2016.0.3'
 
     sec_method = sec_run.method[0]
     assert sec_method.electronic.smearing.width == 300
-    assert sec_method.dft.xc_functional.correlation[0].name == "LDA_C_PZ"
+    assert sec_method.dft.xc_functional.correlation[0].name == 'LDA_C_PZ'
 
     sec_system = sec_run.system[0]
     assert sec_system.atoms.lattice_vectors[1][0].magnitude == approx(2.7153e-10)
     assert sec_system.atoms.positions[1][0].magnitude == approx(1.35765e-10)
-    assert sec_system.atoms.labels == ["Si", "Si"]
+    assert sec_system.atoms.labels == ['Si', 'Si']
 
     sec_scc = sec_run.calculation[0]
     assert sec_scc.energy.total.value.magnitude == approx(-5.73249938e-17)

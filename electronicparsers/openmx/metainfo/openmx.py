@@ -19,6 +19,6 @@
 from nomad.metainfo import Section, Quantity, Package
 
 
-m_package = Package(name="openmx_nomadmetainfo_json", description="None")
+m_package = Package(name='openmx_nomadmetainfo_json', description='None')
 
 m_package.__init_metainfo__()

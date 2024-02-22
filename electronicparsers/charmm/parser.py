@@ -26,16 +26,16 @@ from nomad.units import ureg
 
 class CharmmParser:
     def __init__(self):
-        re_f = r"\-*\d+\.\d+E*e*\-*\+*\d*"
+        re_f = r'\-*\d+\.\d+E*e*\-*\+*\d*'
 
         def get_positions(val):
             res = dict(atom_labels=[], atom_positions=[])
             try:
                 labels, positions = zip(
-                    *re.findall(rf"([A-Z])\w* +({re_f} +{re_f} +{re_f}) +\w", val)
+                    *re.findall(rf'([A-Z])\w* +({re_f} +{re_f} +{re_f}) +\w', val)
                 )
-                res["atom_labels"] = labels
-                res["atom_positions"] = (
+                res['atom_labels'] = labels
+                res['atom_positions'] = (
                     np.array([v.split() for v in positions], dtype=np.dtype(np.float64))
                     * ureg.angstrom
                 )
@@ -44,17 +44,17 @@ class CharmmParser:
             return res
 
         self._parser = BasicParser(
-            "Charmm",
+            'Charmm',
             units_mapping=dict(
                 length=ureg.angstrom, energy=ureg.J * 4184.0 / 6.02214076e23
             ),
-            auxilliary_files=r"\/*([a-z][\w\-]+.crd)",
-            program_version=r"\(CHARMM\) \- (.+Version[\w \,]+?\d\d\d\d)",
+            auxilliary_files=r'\/*([a-z][\w\-]+.crd)',
+            program_version=r'\(CHARMM\) \- (.+Version[\w \,]+?\d\d\d\d)',
             atom_labels_atom_positions=(
-                rf"(\*.*\s*\*.*\s*\*.*\s*\d+\n +\d+ +\d+ +\w+ +[A-Z]\w* +{re_f} +{re_f} +{re_f}[\s\S]+)(?:\>|\Z|\n *\n)",
+                rf'(\*.*\s*\*.*\s*\*.*\s*\d+\n +\d+ +\d+ +\w+ +[A-Z]\w* +{re_f} +{re_f} +{re_f}[\s\S]+)(?:\>|\Z|\n *\n)',
                 get_positions,
             ),
-            energy_total=rf"\n *[A-Z]+\> +\d* +({re_f})",
+            energy_total=rf'\n *[A-Z]+\> +\d* +({re_f})',
         )
 
     def parse(self, mainfile, archive, logger=None):

@@ -150,7 +150,7 @@ class x_abacus_section_specie_basis_set(MSection):
 
     x_abacus_specie_basis_set_ln = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abacus_specie_basis_set_number_of_orbitals", 2],
+        shape=['x_abacus_specie_basis_set_number_of_orbitals', 2],
         description="""
         -
         """,
@@ -166,7 +166,7 @@ class x_abacus_section_specie_basis_set(MSection):
 
     x_abacus_specie_basis_set_rcutoff = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr",
+        unit='bohr',
         shape=[],
         description="""
         -
@@ -191,7 +191,7 @@ class BasisSet(runschema.method.BasisSet):
 
     x_abacus_basis_sets_delta_k = Quantity(
         type=np.dtype(np.float64),
-        unit="1/bohr",
+        unit='1/bohr',
         shape=[],
         description="""
         -
@@ -200,7 +200,7 @@ class BasisSet(runschema.method.BasisSet):
 
     x_abacus_basis_sets_delta_r = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr",
+        unit='bohr',
         shape=[],
         description="""
         -
@@ -209,7 +209,7 @@ class BasisSet(runschema.method.BasisSet):
 
     x_abacus_basis_sets_dr_uniform = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr",
+        unit='bohr',
         shape=[],
         description="""
         -
@@ -218,7 +218,7 @@ class BasisSet(runschema.method.BasisSet):
 
     x_abacus_basis_sets_rmax = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr",
+        unit='bohr',
         shape=[],
         description="""
         -
@@ -226,7 +226,7 @@ class BasisSet(runschema.method.BasisSet):
     )
 
     x_abacus_section_specie_basis_set = SubSection(
-        sub_section=SectionProxy("x_abacus_section_specie_basis_set"),
+        sub_section=SectionProxy('x_abacus_section_specie_basis_set'),
         repeats=True,
     )
 
@@ -245,7 +245,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_abacus_longest_orb_rcut = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr",
+        unit='bohr',
         shape=[],
         description="""
         -
@@ -254,7 +254,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_abacus_longest_nonlocal_projector_rcut = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr",
+        unit='bohr',
         shape=[],
         description="""
         -
@@ -263,7 +263,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_abacus_searching_radius = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr",
+        unit='bohr',
         shape=[],
         description="""
         -
@@ -272,7 +272,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_abacus_searching_radius_unit = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr",
+        unit='bohr',
         shape=[],
         description="""
         -
@@ -333,7 +333,7 @@ class Run(runschema.run.Run):
 
     x_abacus_program_execution_time = Quantity(
         type=np.dtype(np.float64),
-        unit="seconds",
+        unit='seconds',
         shape=[],
         description="""
         The duration of the program execution
@@ -373,7 +373,7 @@ class Run(runschema.run.Run):
     )
 
     x_abacus_section_parallel = SubSection(
-        sub_section=SectionProxy("x_abacus_section_parallel"),
+        sub_section=SectionProxy('x_abacus_section_parallel'),
         repeats=True,
     )
 
@@ -400,7 +400,7 @@ class Method(runschema.method.Method):
 
     x_abacus_initial_magnetization_total = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr_magneton",
+        unit='bohr_magneton',
         shape=[],
         description="""
         Initial total magnetization of the system set in INPUT.
@@ -490,7 +490,7 @@ class Method(runschema.method.Method):
 
     x_abacus_pao_radial_cutoff = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr",
+        unit='bohr',
         shape=[],
         description="""
         Radial cut-off of pseudo atomic orbital
@@ -499,7 +499,7 @@ class Method(runschema.method.Method):
 
     x_abacus_hse_omega = Quantity(
         type=np.dtype(np.float64),
-        unit="1 / meter",
+        unit='1 / meter',
         shape=[],
         description="""
         HSE omega
@@ -617,7 +617,7 @@ class System(runschema.system.System):
 
     x_abacus_alat = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr",
+        unit='bohr',
         shape=[],
         description="""
         Lattice Parameter 'a', constant during a run and used as unit in other quantities
@@ -627,7 +627,7 @@ class System(runschema.system.System):
     x_abacus_reciprocal_vectors = Quantity(
         type=np.dtype(np.float64),
         shape=[3, 3],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         The reciprocal cell
         """,
@@ -651,7 +651,7 @@ class System(runschema.system.System):
 
     x_abacus_number_of_electrons_out = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abacus_number_of_species"],
+        shape=['x_abacus_number_of_species'],
         description="""
         This denotes number of electrons of each element in the system calculated by ABACUS
         """,
@@ -675,7 +675,7 @@ class System(runschema.system.System):
 
     x_abacus_cell_volume = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr**3",
+        unit='bohr**3',
         shape=[],
         description="""
         Volume of unit cell
@@ -684,8 +684,8 @@ class System(runschema.system.System):
 
     x_abacus_atom_magnetic_moments = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr_magneton",
-        shape=["number_of_atoms", 3],
+        unit='bohr_magneton',
+        shape=['number_of_atoms', 3],
         description="""
         The start magnetization for each atom
         """,
@@ -794,7 +794,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
     x_abacus_energy_total_harris_foulkes_estimate = Quantity(
         type=np.dtype(np.float64),
-        unit="joule",
+        unit='joule',
         shape=[],
         description="""
         Stores the change of charge density with respect to the previous self-consistent
@@ -804,7 +804,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
     x_abacus_magnetization_total = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr_magneton",
+        unit='bohr_magneton',
         shape=[3],
         description="""
         Total per-cell magnetization
@@ -813,7 +813,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
     x_abacus_magnetization_absolute = Quantity(
         type=np.dtype(np.float64),
-        unit="bohr_magneton",
+        unit='bohr_magneton',
         shape=[],
         description="""
         Absolute per-cell magnetization
@@ -826,7 +826,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
 
     x_abacus_eigenvalues_number_of_planewaves = Quantity(
         type=np.dtype(np.int32),
-        shape=["number_of_eigenvalues_kpoints"],
+        shape=['number_of_eigenvalues_kpoints'],
         description="""
         Number of plane waves for each k-point
         """,

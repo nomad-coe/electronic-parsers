@@ -63,24 +63,24 @@ class BandEnergies(runschema.calculation.BandEnergies):
 
     x_ams_energy_min = Quantity(
         type=np.dtype(np.float64),
-        shape=["n_spin_channels", "n_bands"],
-        unit="joule",
+        shape=['n_spin_channels', 'n_bands'],
+        unit='joule',
         description="""
         """,
     )
 
     x_ams_energy_max = Quantity(
         type=np.dtype(np.float64),
-        shape=["n_spin_channels", "n_bands"],
-        unit="joule",
+        shape=['n_spin_channels', 'n_bands'],
+        unit='joule',
         description="""
         """,
     )
 
     x_ams_occupations = Quantity(
         type=np.dtype(np.float64),
-        shape=["n_spin_channels", "n_bands"],
-        unit="joule",
+        shape=['n_spin_channels', 'n_bands'],
+        unit='joule',
         description="""
         """,
     )
@@ -249,7 +249,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     x_ams_trust_radius = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="bohr",
+        unit='bohr',
         description="""
         """,
     )
@@ -372,7 +372,7 @@ class Method(runschema.method.Method):
 
     x_ams_fermi_temperature = Quantity(
         type=np.dtype(np.float64),
-        unit="kelvin",
+        unit='kelvin',
         shape=[],
         description="""
         """,
@@ -493,15 +493,15 @@ class AtomParameters(runschema.method.AtomParameters):
 
     x_ams_orbital_energies = Quantity(
         type=np.dtype(np.float64),
-        shape=["n_orbitals"],
-        unit="joule",
+        shape=['n_orbitals'],
+        unit='joule',
         description="""
         """,
     )
 
     x_ams_orbital_radii = Quantity(
         type=np.dtype(np.float64),
-        shape=["n_orbitals"],
+        shape=['n_orbitals'],
         description="""
         """,
     )
@@ -509,7 +509,7 @@ class AtomParameters(runschema.method.AtomParameters):
     x_ams_energy_sum_eigenvalues = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         """,
     )
@@ -517,7 +517,7 @@ class AtomParameters(runschema.method.AtomParameters):
     x_ams_energy_total_lda = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         """,
     )
@@ -525,7 +525,7 @@ class AtomParameters(runschema.method.AtomParameters):
     x_ams_energy_kinetic = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         """,
     )
@@ -533,7 +533,7 @@ class AtomParameters(runschema.method.AtomParameters):
     x_ams_energy_classical_electron_electron_repulsion = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         """,
     )
@@ -541,7 +541,7 @@ class AtomParameters(runschema.method.AtomParameters):
     x_ams_energy_electron_nucleus_repulsion = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         """,
     )

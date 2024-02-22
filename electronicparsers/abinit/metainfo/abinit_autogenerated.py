@@ -56,7 +56,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_accuracy = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable ACCURACY
         """,
@@ -66,7 +66,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_acell = Quantity(
         type=np.dtype(np.float64),
         shape=[3],
-        unit="bohr",
+        unit='bohr',
         description="""
         ABINIT variable CELL lattice vector scaling
         """,
@@ -93,7 +93,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_algalch = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_ntypalch"],
+        shape=['x_abinit_var_ntypalch'],
         description="""
         ABINIT variable ALGorithm for generating ALCHemical pseudopotentials
         """,
@@ -102,7 +102,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_amu = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_ntypat"],
+        shape=['x_abinit_var_ntypat'],
         description="""
         ABINIT variable Atomic Mass Units
         """,
@@ -129,7 +129,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_atvshift = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_natom", "x_abinit_var_nsppol", "x_abinit_var_natvshift"],
+        shape=['x_abinit_var_natom', 'x_abinit_var_nsppol', 'x_abinit_var_natvshift'],
         description="""
         ABINIT variable ATomic potential (V) energy SHIFTs
         """,
@@ -184,7 +184,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_bdgw = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_nsppol", "x_abinit_var_nkptgw", 2],
+        shape=['x_abinit_var_nsppol', 'x_abinit_var_nkptgw', 2],
         description="""
         ABINIT variable BanDs for GW calculation
         """,
@@ -320,7 +320,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_bs_freq_mesh = Quantity(
         type=np.dtype(np.float64),
         shape=[3],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Bethe-Salpeter FREQuency MESH
         """,
@@ -410,7 +410,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_bs_loband = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_nsppol"],
+        shape=['x_abinit_var_nsppol'],
         description="""
         ABINIT variable Bethe-Salpeter Lowest Occupied BAND
         """,
@@ -474,7 +474,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_cd_halfway_freq = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Contour Deformation tangent grid Halfway Frequency
         """,
@@ -483,7 +483,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_cd_imfrqs = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_cd_customnimfrqs"],
+        shape=['x_abinit_var_cd_customnimfrqs'],
         description="""
         ABINIT variable Contour Deformation Imaginary Frequencies
         """,
@@ -493,7 +493,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_cd_max_freq = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Contour Deformation grid Maximum Frequency
         """,
@@ -748,7 +748,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_densty = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_ntypat"],
+        shape=['x_abinit_var_ntypat'],
         description="""
         ABINIT variable initial DENSity for each TYpe of atom
         """,
@@ -767,7 +767,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_dfpt_sciss = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable DFPT SCISSor operator
         """,
@@ -777,7 +777,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_diecut = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable DIElectric matrix Energy CUToff
         """,
@@ -787,7 +787,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_diegap = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable DIElectric matrix GAP
         """,
@@ -869,10 +869,10 @@ class x_abinit_section_input(MSection):
     x_abinit_var_dmatpawu = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_abinit_var_natpawu",
-            "max(x_abinit_var_nsppol, x_abinit_var_nspinor)",
-            "2*max(x_abinit_var_lpawu)+1",
-            "2*max(x_abinit_var_lpawu)+1",
+            'x_abinit_var_natpawu',
+            'max(x_abinit_var_nsppol, x_abinit_var_nspinor)',
+            '2*max(x_abinit_var_lpawu)+1',
+            '2*max(x_abinit_var_lpawu)+1',
         ],
         description="""
         ABINIT variable initial Density MATrix for PAW+U
@@ -1165,7 +1165,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_dosdeltae = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable DOS Delta in Energy
         """,
@@ -1183,7 +1183,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_dynimage = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_nimage"],
+        shape=['x_abinit_var_nimage'],
         description="""
         ABINIT variable DYNamics of the IMAGE
         """,
@@ -1193,7 +1193,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_ecut = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Energy CUToff
         """,
@@ -1203,7 +1203,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_ecuteps = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Energy CUT-off for EPSilon (the dielectric matrix)
         """,
@@ -1213,7 +1213,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_ecutsigx = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Energy CUT-off for SIGma eXchange
         """,
@@ -1223,7 +1223,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_ecutsm = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Energy CUToff SMearing
         """,
@@ -1233,7 +1233,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_ecutwfn = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Energy CUT-off for WaveFunctions
         """,
@@ -1269,7 +1269,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_efmas_bands = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_nkpt", 2],
+        shape=['x_abinit_var_nkpt', 2],
         description="""
         ABINIT variable EFfective MASs, BANDS to be treated.
         """,
@@ -1314,7 +1314,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_efmas_dirs = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_efmas_n_dirs", "3 or 2"],
+        shape=['x_abinit_var_efmas_n_dirs', '3 or 2'],
         description="""
         ABINIT variable EFfective MASs, DIRectionS to be calculated
         """,
@@ -1342,7 +1342,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_elph2_imagden = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable ELectron-PHonon interaction at 2nd order : IMAGina y shoft of the
         DENominator
@@ -1371,7 +1371,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_eph_fermie = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Electron-PHonon: Fermi Energy
         """,
@@ -1381,7 +1381,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_eph_fsewin = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Electron-Phonon: Fermi Surface Energy WINdow
         """,
@@ -1391,7 +1391,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_eph_fsmear = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Electron-PHonon: Fermi surface SMEARing
         """,
@@ -1428,7 +1428,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_eshift = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Energy SHIFT
         """,
@@ -1438,7 +1438,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_esmear = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Eigenvalue SMEARing
         """,
@@ -1547,7 +1547,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_freqremax = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable FREQuencies along the Real axis MAXimum
         """,
@@ -1557,7 +1557,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_freqremin = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable FREQuencies along the Real axis MINimum
         """,
@@ -1567,7 +1567,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_freqspmax = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable FREQuencies for the SPectral function MAXimum
         """,
@@ -1577,7 +1577,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_freqspmin = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable FREQuencies for the SPectral function MINimum
         """,
@@ -1910,7 +1910,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_gw_freqsp = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_gw_customnfreqsp"],
+        shape=['x_abinit_var_gw_customnfreqsp'],
         description="""
         ABINIT variable GW SPectral FREQuencies
         """,
@@ -1982,7 +1982,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_gw_qlwl = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_gw_nqlwl", 3],
+        shape=['x_abinit_var_gw_nqlwl', 3],
         description="""
         ABINIT variable GW, Q-points for the Long Wave-Length Limit
         """,
@@ -2019,7 +2019,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_gw_toldfeig = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable GW TOLerance on the DiFference of the EIGenvalues
         """,
@@ -2172,7 +2172,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_gwls_list_proj_freq = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_gwls_n_proj_freq"],
+        shape=['x_abinit_var_gwls_n_proj_freq'],
         description="""
         ABINIT variable GWLS LIST of the PROJection FREQuencies
         """,
@@ -2182,7 +2182,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_gwls_model_parameter = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable GWLS model parameter
         """,
@@ -2237,7 +2237,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_gwls_second_model_parameter = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable GWLS second model parameter
         """,
@@ -2291,7 +2291,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_iatcon = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_nconeq", "x_abinit_var_natcon"],
+        shape=['x_abinit_var_nconeq', 'x_abinit_var_natcon'],
         description="""
         ABINIT variable Indices of AToms in CONstraint equations
         """,
@@ -2300,7 +2300,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_iatfix = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_natfix"],
+        shape=['x_abinit_var_natfix'],
         description="""
         ABINIT variable Indices of AToms that are FIXed
         """,
@@ -2309,7 +2309,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_iatfixx = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_natfixx"],
+        shape=['x_abinit_var_natfixx'],
         description="""
         ABINIT variable Indices of AToms that are FIXed along the X direction
         """,
@@ -2318,7 +2318,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_iatfixy = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_natfixy"],
+        shape=['x_abinit_var_natfixy'],
         description="""
         ABINIT variable Indices of AToms that are FIXed along the Y direction
         """,
@@ -2327,7 +2327,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_iatfixz = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_natfixz"],
+        shape=['x_abinit_var_natfixz'],
         description="""
         ABINIT variable Indices of AToms that are FIXed along the Z direction
         """,
@@ -2336,7 +2336,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_iatsph = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_natsph"],
+        shape=['x_abinit_var_natsph'],
         description="""
         ABINIT variable Index for the ATomic SPHeres of the atom-projected density-of-
         states
@@ -2645,7 +2645,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_istwfk = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_nkpt"],
+        shape=['x_abinit_var_nkpt'],
         description="""
         ABINIT variable Integer for choice of STorage of WaveFunction at each k point
         """,
@@ -2682,7 +2682,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_jdtset = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_ndtset"],
+        shape=['x_abinit_var_ndtset'],
         description="""
         ABINIT variable index -J- for DaTaSETs
         """,
@@ -2709,8 +2709,8 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_jpawu = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_ntypat"],
-        unit="hartree",
+        shape=['x_abinit_var_ntypat'],
+        unit='hartree',
         description="""
         ABINIT variable value of J for PAW+U
         """,
@@ -2719,7 +2719,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_kberry = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_nberry", 3],
+        shape=['x_abinit_var_nberry', 3],
         description="""
         ABINIT variable K wavevectors for BERRY phase computation
         """,
@@ -2728,7 +2728,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_kpt = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_nkpt", 3],
+        shape=['x_abinit_var_nkpt', 3],
         description="""
         ABINIT variable K - PoinTs
         """,
@@ -2737,7 +2737,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_kptbounds = Quantity(
         type=np.dtype(np.float64),
-        shape=["abs(x_abinit_var_kptopt)+1)", 3],
+        shape=['abs(x_abinit_var_kptopt)+1)', 3],
         description="""
         ABINIT variable K PoinTs BOUNDarieS
         """,
@@ -2746,7 +2746,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_kptgw = Quantity(
         type=np.dtype(np.float64),
-        shape=[3, "x_abinit_var_nkptgw"],
+        shape=[3, 'x_abinit_var_nkptgw'],
         description="""
         ABINIT variable K-PoinTs for GW calculations
         """,
@@ -2764,7 +2764,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_kptns = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_nkpt", 3],
+        shape=['x_abinit_var_nkpt', 3],
         description="""
         ABINIT variable K-PoinTs re-Normalized and Shifted
         """,
@@ -2809,7 +2809,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_lexexch = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_ntypat"],
+        shape=['x_abinit_var_ntypat'],
         description="""
         ABINIT variable value of angular momentum L for EXact EXCHange
         """,
@@ -2863,7 +2863,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_lpawu = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_ntypat"],
+        shape=['x_abinit_var_ntypat'],
         description="""
         ABINIT variable value of angular momentum L for PAW+U
         """,
@@ -2937,7 +2937,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_mbpt_sciss = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Many Body Perturbation Theory SCISSor operator
         """,
@@ -2983,7 +2983,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_mep_mxstep = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="bohr",
+        unit='bohr',
         description="""
         ABINIT variable Minimal Energy Path search: MaXimum allowed STEP size
         """,
@@ -3019,7 +3019,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_mixalch = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_ntypalch", "x_abinit_var_npspalch"],
+        shape=['x_abinit_var_ntypalch', 'x_abinit_var_npspalch'],
         description="""
         ABINIT variable MIXing coefficients for ALCHemical potentials
         """,
@@ -3056,7 +3056,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_natcon = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_nconeq"],
+        shape=['x_abinit_var_nconeq'],
         description="""
         ABINIT variable Number of AToms in CONstraint equations
         """,
@@ -3156,7 +3156,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_nband = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_nkpt", "x_abinit_var_nsppol"],
+        shape=['x_abinit_var_nkpt', 'x_abinit_var_nsppol'],
         description="""
         ABINIT variable Number of BANDs
         """,
@@ -3237,7 +3237,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_ndivk = Quantity(
         type=np.dtype(np.int32),
-        shape=["abs(x_abinit_var_kptopt)"],
+        shape=['abs(x_abinit_var_kptopt)'],
         description="""
         ABINIT variable Number of DIVisions of K lines
         """,
@@ -3491,7 +3491,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_nomegasf = Quantity(
         type=np.dtype(np.int32),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Number of OMEGA to evaluate the Spectral Function
         """,
@@ -3518,7 +3518,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_normpawu = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_ntypat"],
+        shape=['x_abinit_var_ntypat'],
         description="""
         ABINIT variable NORMalize atomic PAW+U projector
         """,
@@ -3815,7 +3815,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_nucdipmom = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_natom", 3],
+        shape=['x_abinit_var_natom', 3],
         description="""
         ABINIT variable NUClear DIPole MOMents
         """,
@@ -3833,7 +3833,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_objaat = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_objan"],
+        shape=['x_abinit_var_objan'],
         description="""
         ABINIT variable OBJect A : list of AToms, OBJect B : list of AToms
         """,
@@ -3843,7 +3843,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_objaax = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="bohr",
+        unit='bohr',
         description="""
         ABINIT variable OBJect A : AXis, OBJect B : AXis
         """,
@@ -3880,7 +3880,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_objatr = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="bohr",
+        unit='bohr',
         description="""
         ABINIT variable OBJect A : TRanslations, OBJect B : TRanslations
         """,
@@ -3899,7 +3899,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_objbax = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="bohr",
+        unit='bohr',
         description="""
         ABINIT variable OBJect A : AXis, OBJect B : AXis
         """,
@@ -3936,7 +3936,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_objbtr = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="bohr",
+        unit='bohr',
         description="""
         ABINIT variable OBJect A : TRanslations, OBJect B : TRanslations
         """,
@@ -3945,7 +3945,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_occ = Quantity(
         type=np.dtype(np.float64),
-        shape=["sum(x_abinit_var_nband)"],
+        shape=['sum(x_abinit_var_nband)'],
         description="""
         ABINIT variable OCCupation numbers
         """,
@@ -3964,7 +3964,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_omegasimax = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable OMEGA to evaluate Sigma along the Imaginary axis D: MAXimal value
         """,
@@ -3974,7 +3974,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_omegasrdmax = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable OMEGA to evaluate the Sigma Real axis Derivative : MAXimal value
         """,
@@ -4093,7 +4093,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_pawecutdg = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable PAW - Energy CUToff for the Double Grid
         """,
@@ -4379,7 +4379,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_ph_qpath = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_ph_nqpath", 3],
+        shape=['x_abinit_var_ph_nqpath', 3],
         description="""
         ABINIT variable Phonon: Q-PATH
         """,
@@ -4388,7 +4388,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_ph_qshift = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_ph_nqshift", 3],
+        shape=['x_abinit_var_ph_nqshift', 3],
         description="""
         ABINIT variable PHONONS: Q-SHIFTs for mesh.
         """,
@@ -4398,7 +4398,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_ph_smear = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable PHonon: SMEARing factor
         """,
@@ -4408,7 +4408,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_ph_wstep = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable PHonons: frequency STEP.
         """,
@@ -4417,7 +4417,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_pimass = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_ntypat"],
+        shape=['x_abinit_var_ntypat'],
         description="""
         ABINIT variable Path Integral fictitious MASSes
         """,
@@ -4471,7 +4471,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_plowan_it = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_plowan_nt", 3],
+        shape=['x_abinit_var_plowan_nt', 3],
         description="""
         ABINIT variable Projected Local Orbital WANnier functions,  Index of Translation.
         """,
@@ -4480,7 +4480,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_plowan_lcalc = Quantity(
         type=np.dtype(np.int32),
-        shape=["sum(x_abinit_var_plowan_nbl)"],
+        shape=['sum(x_abinit_var_plowan_nbl)'],
         description="""
         ABINIT variable Projected Local Orbital WANnier functions,  L values to use for
         CALCulation
@@ -4499,7 +4499,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_plowan_nbl = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_plowan_natom"],
+        shape=['x_abinit_var_plowan_natom'],
         description="""
         ABINIT variable Projected Local Orbital WANnier functions,  NumBer of L values
         """,
@@ -4518,7 +4518,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_plowan_projcalc = Quantity(
         type=np.dtype(np.int32),
-        shape=["sum(x_abinit_var_plowan_nbl)"],
+        shape=['sum(x_abinit_var_plowan_nbl)'],
         description="""
         ABINIT variable Projected Local Orbital WANnier functions,  PROJectors values to
         use for CALCulation
@@ -4585,7 +4585,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_postoldfe = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable POSITRON calculation: TOLerance on the DiFference of total Energy
         """,
@@ -4604,7 +4604,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_ppmfrq = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Plasmon Pole Model FReQuency
         """,
@@ -5027,7 +5027,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_ptcharge = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_ntypat"],
+        shape=['x_abinit_var_ntypat'],
         description="""
         ABINIT variable PoinT CHARGEs
         """,
@@ -5054,7 +5054,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_qmass = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_nnos"],
+        shape=['x_abinit_var_nnos'],
         description="""
         ABINIT variable Q thermostat mass
         """,
@@ -5081,7 +5081,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_qptdm = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_nqptdm", 3],
+        shape=['x_abinit_var_nqptdm', 3],
         description="""
         ABINIT variable Q-PoinTs for the Dielectric Matrix
         """,
@@ -5126,7 +5126,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_quadmom = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_ntypat"],
+        shape=['x_abinit_var_ntypat'],
         description="""
         ABINIT variable QUADrupole MOMents
         """,
@@ -5144,7 +5144,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_ratsph = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_ntypat"],
+        shape=['x_abinit_var_ntypat'],
         description="""
         ABINIT variable Radii of the ATomic SPHere(s)
         """,
@@ -5154,7 +5154,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_ratsph_extra = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="bohr",
+        unit='bohr',
         description="""
         ABINIT variable Radii of the ATomic SPHere(s) in the EXTRA set
         """,
@@ -5407,7 +5407,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_sigma_shiftk = Quantity(
         type=np.dtype(np.int32),
-        shape=[3, "x_abinit_var_sigma_nshiftk"],
+        shape=[3, 'x_abinit_var_sigma_nshiftk'],
         description="""
         ABINIT variable SHIFT for K points
         """,
@@ -5453,7 +5453,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_scphon_temp = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Self Consistent PHONon TEMPerature
         """,
@@ -5462,7 +5462,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_shiftk = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_nshiftk", 3],
+        shape=['x_abinit_var_nshiftk', 3],
         description="""
         ABINIT variable SHIFT for K points
         """,
@@ -5471,7 +5471,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_shiftq = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_nshiftq", 3],
+        shape=['x_abinit_var_nshiftq', 3],
         description="""
         ABINIT variable SHIFT for Q points
         """,
@@ -5490,7 +5490,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_slabwsrad = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="bohr",
+        unit='bohr',
         description="""
         ABINIT variable jellium SLAB Wigner-Seitz RADius
         """,
@@ -5526,7 +5526,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_so_psp = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_npsp"],
+        shape=['x_abinit_var_npsp'],
         description="""
         ABINIT variable Spin-Orbit treatment for each PSeudoPotential
         """,
@@ -5536,7 +5536,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_spbroad = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable SPectral BROADening
         """,
@@ -5581,7 +5581,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_spinat = Quantity(
         type=np.dtype(np.float64),
-        shape=["min(x_abinit_var_natom,x_abinit_var_natrd)", 3],
+        shape=['min(x_abinit_var_natom,x_abinit_var_natrd)', 3],
         description="""
         ABINIT variable SPIN for AToms
         """,
@@ -5618,7 +5618,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_stmbias = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Scanning Tunneling Microscopy BIAS voltage
         """,
@@ -5663,7 +5663,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_symafm = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_nsym"],
+        shape=['x_abinit_var_nsym'],
         description="""
         ABINIT variable SYMmetries, Anti-FerroMagnetic characteristics
         """,
@@ -5699,7 +5699,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_symrel = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_nsym", 3, 3],
+        shape=['x_abinit_var_nsym', 3, 3],
         description="""
         ABINIT variable SYMmetry in REaL space
         """,
@@ -5745,7 +5745,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_tfw_toldfe = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Thomas-Fermi-Weizsacker: TOLerance on the DiFference of total
         Energy, for initialization steps
@@ -5775,7 +5775,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_tl_radius = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="bohr",
+        unit='bohr',
         description="""
         ABINIT variable TaiL expansion RADIUS
         """,
@@ -5784,7 +5784,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_tnons = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_nsym", 3],
+        shape=['x_abinit_var_nsym', 3],
         description="""
         ABINIT variable Translation NON-Symmorphic vectors
         """,
@@ -5794,7 +5794,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_toldfe = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable TOLerance on the DiFference of total Energy
         """,
@@ -5813,7 +5813,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_tolimg = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable TOLerance on the mean total energy for IMaGes
         """,
@@ -5823,7 +5823,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_tolmxde = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable TOLerance on the MaXimal Difference in Energy
         """,
@@ -5887,7 +5887,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_tphysel = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Temperature (PHYSical) of the ELectrons
         """,
@@ -5897,7 +5897,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_tsmear = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Temperature of SMEARing
         """,
@@ -5906,7 +5906,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_typat = Quantity(
         type=np.dtype(np.int32),
-        shape=["min(x_abinit_var_natom,x_abinit_var_natrd)"],
+        shape=['min(x_abinit_var_natom,x_abinit_var_natrd)'],
         description="""
         ABINIT variable TYPE of atoms
         """,
@@ -5954,8 +5954,8 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_upawu = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_ntypat"],
-        unit="hartree",
+        shape=['x_abinit_var_ntypat'],
+        unit='hartree',
         description="""
         ABINIT variable value of U for PAW+U
         """,
@@ -6208,7 +6208,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_vaclst = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_vacnum"],
+        shape=['x_abinit_var_vacnum'],
         description="""
         ABINIT variable VACancies LiST
         """,
@@ -6236,7 +6236,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_vacwidth = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="bohr",
+        unit='bohr',
         description="""
         ABINIT variable VACuum WIDTH
         """,
@@ -6488,7 +6488,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_vdw_typfrag = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_abinit_var_natom"],
+        shape=['x_abinit_var_natom'],
         description="""
         ABINIT variable van der Waals TYPe of FRAGment
         """,
@@ -6506,7 +6506,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_vel = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_natom", 3],
+        shape=['x_abinit_var_natom', 3],
         description="""
         ABINIT variable VELocity
         """,
@@ -6534,7 +6534,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_vprtrb = Quantity(
         type=np.dtype(np.float64),
         shape=[2],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable potential -V- for the PeRTuRBation
         """,
@@ -6570,7 +6570,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_wtatcon = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_nconeq", "x_abinit_var_natcon", 3],
+        shape=['x_abinit_var_nconeq', 'x_abinit_var_natcon', 3],
         description="""
         ABINIT variable WeighTs for AToms in CONstraint equations
         """,
@@ -6579,7 +6579,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_wtk = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_nkpt"],
+        shape=['x_abinit_var_nkpt'],
         description="""
         ABINIT variable WeighTs for K points
         """,
@@ -6625,7 +6625,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_wvl_hgrid = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="bohr",
+        unit='bohr',
         description="""
         ABINIT variable WaVeLet H step GRID
         """,
@@ -6662,7 +6662,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_xangst = Quantity(
         type=np.dtype(np.float64),
-        shape=["min(x_abinit_var_natom,x_abinit_var_natrd)", 3],
+        shape=['min(x_abinit_var_natom,x_abinit_var_natrd)', 3],
         description="""
         ABINIT variable vectors (X) of atom positions in cartesian coordinates -length in
         ANGSTrom-
@@ -6691,8 +6691,8 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_xcart = Quantity(
         type=np.dtype(np.float64),
-        shape=["min(x_abinit_var_natom,x_abinit_var_natrd)", 3],
-        unit="bohr",
+        shape=['min(x_abinit_var_natom,x_abinit_var_natrd)', 3],
+        unit='bohr',
         description="""
         ABINIT variable vectors (X) of atom positions in CARTesian coordinates
         """,
@@ -6710,7 +6710,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_xred = Quantity(
         type=np.dtype(np.float64),
-        shape=["min(x_abinit_var_natom,x_abinit_var_natrd)", 3],
+        shape=['min(x_abinit_var_natom,x_abinit_var_natrd)', 3],
         description="""
         ABINIT variable vectors (X) of atom positions in REDuced coordinates
         """,
@@ -6719,7 +6719,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_xredsph_extra = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_natsph_extra", 3],
+        shape=['x_abinit_var_natsph_extra', 3],
         description="""
         ABINIT variable X(position) in REDuced coordinates of the SPHeres for dos
         projection in the EXTRA set
@@ -6739,7 +6739,7 @@ class x_abinit_section_input(MSection):
     x_abinit_var_zcut = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="hartree",
+        unit='hartree',
         description="""
         ABINIT variable Z-CUT
         """,
@@ -6757,7 +6757,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_ziontypat = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_ntypat"],
+        shape=['x_abinit_var_ntypat'],
         description="""
         ABINIT variable Z (charge) of the IONs for the different TYPes of AToms
         """,
@@ -6766,7 +6766,7 @@ class x_abinit_section_input(MSection):
 
     x_abinit_var_znucl = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_abinit_var_npsp"],
+        shape=['x_abinit_var_npsp'],
         description="""
         ABINIT variable charge -Z- of the NUCLeus
         """,

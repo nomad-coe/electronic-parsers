@@ -662,7 +662,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_qe_energy_decomposition_name = Quantity(
         type=str,
-        shape=["x_qe_number_of_energy_components"],
+        shape=['x_qe_number_of_energy_components'],
         description="""
         Total energy decomposition: contribution name
         """,
@@ -670,7 +670,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_qe_energy_decomposition_value = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_qe_number_of_energy_components"],
+        shape=['x_qe_number_of_energy_components'],
         description="""
         Total energy decomposition: contribution value
         """,
@@ -766,7 +766,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_qe_atom_dispersion_force = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         -
         """,
@@ -1437,7 +1437,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_section_bands_diagonalization = SubSection(
-        sub_section=SectionProxy("x_qe_section_bands_diagonalization"), repeats=True
+        sub_section=SectionProxy('x_qe_section_bands_diagonalization'), repeats=True
     )
 
 
@@ -1478,7 +1478,7 @@ class Run(runschema.run.Run):
 
     x_qe_profile_caller = Quantity(
         type=str,
-        shape=["x_qe_number_of_profiling_entries"],
+        shape=['x_qe_number_of_profiling_entries'],
         description="""
         QE profiling: caller name
         """,
@@ -1486,7 +1486,7 @@ class Run(runschema.run.Run):
 
     x_qe_profile_category = Quantity(
         type=str,
-        shape=["x_qe_number_of_profiling_entries"],
+        shape=['x_qe_number_of_profiling_entries'],
         description="""
         QE profiling: category
         """,
@@ -1494,7 +1494,7 @@ class Run(runschema.run.Run):
 
     x_qe_profile_function = Quantity(
         type=str,
-        shape=["x_qe_number_of_profiling_entries"],
+        shape=['x_qe_number_of_profiling_entries'],
         description="""
         QE profiling: function name
         """,
@@ -1502,7 +1502,7 @@ class Run(runschema.run.Run):
 
     x_qe_profile_cputime = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_qe_number_of_profiling_entries"],
+        shape=['x_qe_number_of_profiling_entries'],
         description="""
         QE profiling: cputime spent in function
         """,
@@ -1510,7 +1510,7 @@ class Run(runschema.run.Run):
 
     x_qe_profile_walltime = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_qe_number_of_profiling_entries"],
+        shape=['x_qe_number_of_profiling_entries'],
         description="""
         QE profiling: wallclock time spent in function
         """,
@@ -1518,7 +1518,7 @@ class Run(runschema.run.Run):
 
     x_qe_profile_ncalls = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_qe_number_of_profiling_entries"],
+        shape=['x_qe_number_of_profiling_entries'],
         description="""
         QE profiling: how often was function called
         """,
@@ -1605,11 +1605,11 @@ class Run(runschema.run.Run):
     )
 
     x_qe_section_parallel = SubSection(
-        sub_section=SectionProxy("x_qe_section_parallel"), repeats=True
+        sub_section=SectionProxy('x_qe_section_parallel'), repeats=True
     )
 
     x_qe_section_compile_options = SubSection(
-        sub_section=SectionProxy("x_qe_section_compile_options"), repeats=True
+        sub_section=SectionProxy('x_qe_section_compile_options'), repeats=True
     )
 
 
@@ -2132,7 +2132,7 @@ class Method(runschema.method.Method):
 
     x_qe_allocated_array_name = Quantity(
         type=str,
-        shape=["x_qe_allocated_arrays"],
+        shape=['x_qe_allocated_arrays'],
         description="""
         Allocated arrays, name
         """,
@@ -2140,7 +2140,7 @@ class Method(runschema.method.Method):
 
     x_qe_allocated_array_size = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_qe_allocated_arrays"],
+        shape=['x_qe_allocated_arrays'],
         description="""
         Allocated arrays, size
         """,
@@ -2148,7 +2148,7 @@ class Method(runschema.method.Method):
 
     x_qe_allocated_array_dimensions = Quantity(
         type=str,
-        shape=["x_qe_allocated_arrays"],
+        shape=['x_qe_allocated_arrays'],
         description="""
         Allocated arrays, dimensions
         """,
@@ -2180,7 +2180,7 @@ class Method(runschema.method.Method):
 
     x_qe_temporary_array_name = Quantity(
         type=str,
-        shape=["x_qe_temporary_arrays"],
+        shape=['x_qe_temporary_arrays'],
         description="""
         Temporary arrays, name
         """,
@@ -2188,7 +2188,7 @@ class Method(runschema.method.Method):
 
     x_qe_temporary_array_size = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_qe_temporary_arrays"],
+        shape=['x_qe_temporary_arrays'],
         description="""
         Temporary arrays, size
         """,
@@ -2196,7 +2196,7 @@ class Method(runschema.method.Method):
 
     x_qe_temporary_array_dimensions = Quantity(
         type=str,
-        shape=["x_qe_temporary_arrays"],
+        shape=['x_qe_temporary_arrays'],
         description="""
         Temporary arrays, dimensions
         """,
@@ -2333,9 +2333,9 @@ class Method(runschema.method.Method):
     x_qe_input_occupations = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "number_of_spin_channels",
-            "number_of_k_points",
-            "number_of_eigen_values",
+            'number_of_spin_channels',
+            'number_of_k_points',
+            'number_of_eigen_values',
         ],
         description="""
         User-specified band occupations
@@ -2351,19 +2351,19 @@ class Method(runschema.method.Method):
     )
 
     x_qe_t_section_pp_report = SubSection(
-        sub_section=SectionProxy("x_qe_t_section_pp_report"), repeats=True
+        sub_section=SectionProxy('x_qe_t_section_pp_report'), repeats=True
     )
 
     x_qe_t_section_pp_warning = SubSection(
-        sub_section=SectionProxy("x_qe_t_section_pp_warning"), repeats=True
+        sub_section=SectionProxy('x_qe_t_section_pp_warning'), repeats=True
     )
 
     x_qe_t_section_pseudopotential = SubSection(
-        sub_section=SectionProxy("x_qe_t_section_pseudopotential"), repeats=True
+        sub_section=SectionProxy('x_qe_t_section_pseudopotential'), repeats=True
     )
 
     x_qe_t_section_input_occupations = SubSection(
-        sub_section=SectionProxy("x_qe_t_section_input_occupations"), repeats=True
+        sub_section=SectionProxy('x_qe_t_section_input_occupations'), repeats=True
     )
 
 
@@ -2685,7 +2685,7 @@ class System(runschema.system.System):
 
     x_qe_vec_supercell = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_qe_number_of_supercell_translations", 3],
+        shape=['x_qe_number_of_supercell_translations', 3],
         description="""
         Supercell translation vector(s) in fractional coordinates
         """,
@@ -2758,7 +2758,7 @@ class System(runschema.system.System):
     x_qe_reciprocal_cell = Quantity(
         type=np.dtype(np.float64),
         shape=[3, 3],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         Reciprocal Lattice vectors (in Cartesian coordinates). The first index runs over
         the $x,y,z$ Cartesian coordinates, and the second index runs over the 3 lattice
@@ -2784,7 +2784,7 @@ class System(runschema.system.System):
 
     x_qe_atom_starting_magnetization = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Starting magnetic configuration: Atom magnetization
         """,
@@ -2833,7 +2833,7 @@ class System(runschema.system.System):
 
     x_qe_atom_idx = Quantity(
         type=np.dtype(np.int32),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Index of atom on Espresso side
         """,
@@ -2953,7 +2953,7 @@ class System(runschema.system.System):
 
     x_qe_k_info_ik = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_qe_nk"],
+        shape=['x_qe_nk'],
         description="""
         K-point info, k-index
         """,
@@ -2961,7 +2961,7 @@ class System(runschema.system.System):
 
     x_qe_k_info_vec = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_qe_nk", 3],
+        shape=['x_qe_nk', 3],
         description="""
         K-point info, cartesian coordinate
         """,
@@ -2969,7 +2969,7 @@ class System(runschema.system.System):
 
     x_qe_k_info_wk = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_qe_nk"],
+        shape=['x_qe_nk'],
         description="""
         K-point info, weight
         """,
@@ -3145,7 +3145,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
     x_qe_iter_mpersite_idx = Quantity(
         type=np.dtype(np.int32),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         iteration per-site magnetization data, atom index
         """,
@@ -3153,7 +3153,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
     x_qe_iter_mpersite_charge = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         iteration per-site magnetization data, atom charge
         """,
@@ -3161,7 +3161,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
     x_qe_iter_mpersite_magn = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         iteration per-site magnetization data, atom magnetization
         """,
@@ -3169,7 +3169,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
     x_qe_iter_mpersite_constr = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         iteration per-site magnetization data, constraints
         """,
@@ -3280,7 +3280,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_section_scf_diagonalization = SubSection(
-        sub_section=SectionProxy("x_qe_section_scf_diagonalization"), repeats=True
+        sub_section=SectionProxy('x_qe_section_scf_diagonalization'), repeats=True
     )
 
 
@@ -3289,7 +3289,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
 
     x_qe_eigenvalues_number_of_planewaves = Quantity(
         type=np.dtype(np.int32),
-        shape=["number_of_eigenvalues_kpoints"],
+        shape=['number_of_eigenvalues_kpoints'],
         description="""
         Number of plane waves for each k-point
         """,

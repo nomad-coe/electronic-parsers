@@ -63,12 +63,12 @@ class OutParser(TextParser):
         super().__init__(None)
 
     def init_quantities(self):
-        re_f = r"-*\d+\.\d+[Ee]*[-+]*\d*"
+        re_f = r'-*\d+\.\d+[Ee]*[-+]*\d*'
 
         def str_to_basis(val_in):
             data = dict()
-            for line in val_in.strip().split("\n"):
-                line = line.split(":")
+            for line in val_in.strip().split('\n'):
+                line = line.split(':')
                 if len(line) == 2:
                     data[line[0].strip()] = line[1].strip()
             return data
@@ -81,10 +81,10 @@ class OutParser(TextParser):
 
         def str_to_eigenvalues(val_in):
             orbital_energies = []
-            for val in val_in.strip().split("\n"):
-                if "occupied orbitals" in val:
+            for val in val_in.strip().split('\n'):
+                if 'occupied orbitals' in val:
                     orbital_energies.append([[], []])
-                elif "Active orbitals" in val:
+                elif 'Active orbitals' in val:
                     pass
                 else:
                     val = val.strip().split()
@@ -99,73 +99,73 @@ class OutParser(TextParser):
             return orbital_energies
 
         def str_to_parameters(val_in):
-            val_in = val_in.strip().split("\n")
+            val_in = val_in.strip().split('\n')
             name = val_in[0].split()[0]
             parameters = dict()
-            separator = "="
-            if "=>" in val_in[-1]:
-                separator = "=>"
-            elif ":" in val_in[-1]:
-                separator = ":"
+            separator = '='
+            if '=>' in val_in[-1]:
+                separator = '=>'
+            elif ':' in val_in[-1]:
+                separator = ':'
             for val in val_in:
-                val = [v.rstrip("!").strip() for v in val.split(separator)]
+                val = [v.rstrip('!').strip() for v in val.split(separator)]
                 if len(val) == 2:
                     try:
                         val[1] = float(val[1])
                     except Exception:
                         pass
-                    if val[1] in ["TRUE", "FALSE"]:
-                        val[1] = val[1] == "TRUE"
+                    if val[1] in ['TRUE', 'FALSE']:
+                        val[1] = val[1] == 'TRUE'
                     parameters[val[0]] = val[1]
             return name, parameters
 
         charges_quantities = [
             Quantity(
-                "atom",
-                rf"\d+ +[A-Z][a-z]* +({re_f}) +({re_f}) +({re_f}) +({re_f})",
+                'atom',
+                rf'\d+ +[A-Z][a-z]* +({re_f}) +({re_f}) +({re_f}) +({re_f})',
                 repeats=True,
                 dtype=np.dtype(np.float64),
             ),
             Quantity(
-                "total",
-                rf"Total alpha = +({re_f}), Total beta = +({re_f}), Total charge = +({re_f})",
+                'total',
+                rf'Total alpha = +({re_f}), Total beta = +({re_f}), Total charge = +({re_f})',
                 dtype=np.dtype(np.float64),
             ),
         ]
 
         properties_quantities = [
             Quantity(
-                "multipole_moments",
-                r"Multipole +Electric \(a\.u\.\) .+\s+\-+([\s\S]+?)\-{10}",
+                'multipole_moments',
+                r'Multipole +Electric \(a\.u\.\) .+\s+\-+([\s\S]+?)\-{10}',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "dipole",
-                            r"Dipole [XYZ] +: +(.+)",
+                            'dipole',
+                            r'Dipole [XYZ] +: +(.+)',
                             repeats=True,
                             dtype=np.dtype(np.float64),
                         ),
                         Quantity(
-                            "quadrupole",
-                            r"Quadrupole [XYZ]{2} +: +(.+)",
+                            'quadrupole',
+                            r'Quadrupole [XYZ]{2} +: +(.+)',
                             repeats=True,
                             dtype=np.dtype(np.float64),
                         ),
                         Quantity(
-                            "octupole",
-                            r"Octupole [XYZ]{3} +: +(.+)",
+                            'octupole',
+                            r'Octupole [XYZ]{3} +: +(.+)',
                             repeats=True,
                             dtype=np.dtype(np.float64),
                         ),
                         Quantity(
-                            "hexadecapole",
-                            r"Hexadecapole [XYZ]{4} +: +(.+)",
+                            'hexadecapole',
+                            r'Hexadecapole [XYZ]{4} +: +(.+)',
                             repeats=True,
                             dtype=np.dtype(np.float64),
                         ),
                         Quantity(
-                            "npole",
-                            r"32-pole [XYZ]{5} +: +(.+)",
+                            'npole',
+                            r'32-pole [XYZ]{5} +: +(.+)',
                             repeats=True,
                             dtype=np.dtype(np.float64),
                         ),
@@ -173,127 +173,127 @@ class OutParser(TextParser):
                 ),
             ),
             Quantity(
-                "nuclear_dipole_moment",
-                rf"Nuclear Dipole Moment: \(a\.u\.\)\s+X: +({re_f}) +Y: +({re_f}) +Z: +({re_f})",
+                'nuclear_dipole_moment',
+                rf'Nuclear Dipole Moment: \(a\.u\.\)\s+X: +({re_f}) +Y: +({re_f}) +Z: +({re_f})',
                 dtype=np.dtype(np.float64),
             ),
             Quantity(
-                "electronic_dipole_moment",
-                rf"Electronic Dipole Moment: \(a\.u\.\)\s+X: +({re_f}) +Y: +({re_f}) +Z: +({re_f})",
+                'electronic_dipole_moment',
+                rf'Electronic Dipole Moment: \(a\.u\.\)\s+X: +({re_f}) +Y: +({re_f}) +Z: +({re_f})',
                 dtype=np.dtype(np.float64),
             ),
             Quantity(
-                "total_dipole_moment",
-                rf"Dipole Moment: \(a\.u\.\)\s+X: +({re_f}) +Y: +({re_f}) +Z: +({re_f})",
+                'total_dipole_moment',
+                rf'Dipole Moment: \(a\.u\.\)\s+X: +({re_f}) +Y: +({re_f}) +Z: +({re_f})',
                 dtype=np.dtype(np.float64),
             ),
             Quantity(
-                "mulliken_charges",
-                r"Mulliken Charges: \(a\.u\.\)\s+.+([\s\S]+?Total charge.+)",
+                'mulliken_charges',
+                r'Mulliken Charges: \(a\.u\.\)\s+.+([\s\S]+?Total charge.+)',
                 sub_parser=TextParser(quantities=charges_quantities),
             ),
             Quantity(
-                "lowdin_charges",
-                r"Lowdin Charges: \(a\.u\.\)\s+.+([\s\S]+?Total charge.+)",
+                'lowdin_charges',
+                r'Lowdin Charges: \(a\.u\.\)\s+.+([\s\S]+?Total charge.+)',
                 sub_parser=TextParser(quantities=charges_quantities),
             ),
         ]
 
         scf_quantities = [
             Quantity(
-                "geometry",
-                r"Geometry <==([\s\S]+?)==>",
+                'geometry',
+                r'Geometry <==([\s\S]+?)==>',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "atoms",
-                            rf"([A-Z][a-z]* +{re_f} +{re_f} +{re_f} +{re_f}\n)",
+                            'atoms',
+                            rf'([A-Z][a-z]* +{re_f} +{re_f} +{re_f} +{re_f}\n)',
                             repeats=True,
                         ),
                         Quantity(
-                            "molecular_point_group",
-                            r"Molecular point group: *(\w+)",
+                            'molecular_point_group',
+                            r'Molecular point group: *(\w+)',
                             dtype=str,
                         ),
                         Quantity(
-                            "full_point_group", r"Full point group: *(\w+)", dtype=str
+                            'full_point_group', r'Full point group: *(\w+)', dtype=str
                         ),
-                        Quantity("symmetry", r"Running in (\w+) symmetry\.", dtype=str),
+                        Quantity('symmetry', r'Running in (\w+) symmetry\.', dtype=str),
                         Quantity(
-                            "rotational_constants",
-                            rf"Rotational constants: *A = *({re_f}) *B = *({re_f}) *C = *({re_f}) \[cm\^-1\]",
+                            'rotational_constants',
+                            rf'Rotational constants: *A = *({re_f}) *B = *({re_f}) *C = *({re_f}) \[cm\^-1\]',
                             dtype=np.dtype(np.float64),
                         ),
                         Quantity(
-                            "nuclear_repulsion",
-                            rf"Nuclear repulsion = *({re_f})",
+                            'nuclear_repulsion',
+                            rf'Nuclear repulsion = *({re_f})',
                             dtype=np.float64,
                         ),
-                        Quantity("charge", r"Charge *= (\d+)", dtype=np.float64),
+                        Quantity('charge', r'Charge *= (\d+)', dtype=np.float64),
                         Quantity(
-                            "multiplicity", r"Multiplicity *= (\d+)", dtype=np.float64
+                            'multiplicity', r'Multiplicity *= (\d+)', dtype=np.float64
                         ),
-                        Quantity("electrons", r"Electrons *= (\d+)", dtype=np.float64),
-                        Quantity("nalpha", r"Nalpha *= (\d+)", dtype=np.float64),
-                        Quantity("nbeta", r"Nbeta *= (\d+)", dtype=np.float64),
+                        Quantity('electrons', r'Electrons *= (\d+)', dtype=np.float64),
+                        Quantity('nalpha', r'Nalpha *= (\d+)', dtype=np.float64),
+                        Quantity('nbeta', r'Nbeta *= (\d+)', dtype=np.float64),
                     ]
                 ),
             ),
             Quantity(
-                "algorithm",
-                r"Algorithm <==([\s\S]+?)==>",
+                'algorithm',
+                r'Algorithm <==([\s\S]+?)==>',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "minimization_algorithm",
-                            r"SCF Algorithm Type is (.+)\.",
+                            'minimization_algorithm',
+                            r'SCF Algorithm Type is (.+)\.',
                             dtype=str,
                         ),
                         Quantity(
-                            "x_psi4_diis",
-                            r"DIIS (.+)\.",
-                            str_operation=lambda x: x == "enabled",
+                            'x_psi4_diis',
+                            r'DIIS (.+)\.',
+                            str_operation=lambda x: x == 'enabled',
                         ),
                         Quantity(
-                            "x_psi4_mom",
-                            r"MOM (.+)\.",
-                            str_operation=lambda x: x == "enabled",
+                            'x_psi4_mom',
+                            r'MOM (.+)\.',
+                            str_operation=lambda x: x == 'enabled',
                         ),
                         Quantity(
-                            "x_psi4_fractional_occupation",
-                            r"Fractional occupation (.+)\.",
-                            str_operation=lambda x: x == "enabled",
+                            'x_psi4_fractional_occupation',
+                            r'Fractional occupation (.+)\.',
+                            str_operation=lambda x: x == 'enabled',
                         ),
                         Quantity(
-                            "x_psi4_guess_type", r"Guess Type is (.+)\.", dtype=str
+                            'x_psi4_guess_type', r'Guess Type is (.+)\.', dtype=str
                         ),
                         Quantity(
-                            "threshold_energy_change",
-                            rf"Energy threshold += +({re_f})",
+                            'threshold_energy_change',
+                            rf'Energy threshold += +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "threshold_densDFT Potential <==ty_change",
-                            rf"Density threDFT Potential <==hold += +({re_f})",
+                            'threshold_densDFT Potential <==ty_change',
+                            rf'Density threDFT Potential <==hold += +({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "x_psi4_integral_threshold",
-                            rf"Integral threshold += +({re_f})",
+                            'x_psi4_integral_threshold',
+                            rf'Integral threshold += +({re_f})',
                             dtype=np.float64,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "basis",
-                r"(?:Primary )*Basis (?:Set )*<==([\s\S]+?)==>",
+                'basis',
+                r'(?:Primary )*Basis (?:Set )*<==([\s\S]+?)==>',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "basis_set",
-                            r"((?:Basis Set|Core potential|AO BASIS SET INFORMATION):[\s\S]+?\n\n)",
+                            'basis_set',
+                            r'((?:Basis Set|Core potential|AO BASIS SET INFORMATION):[\s\S]+?\n\n)',
                             repeats=True,
                             str_operation=str_to_basis,
                         )
@@ -301,13 +301,13 @@ class OutParser(TextParser):
                 ),
             ),
             Quantity(
-                "jk_matrices",
-                r"(J/K Matrices <==[\s\S]+?==>)",
+                'jk_matrices',
+                r'(J/K Matrices <==[\s\S]+?==>)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "parameters",
-                            r"J/K Matrices <==\s+([\s\S]+?\n *\n)",
+                            'parameters',
+                            r'J/K Matrices <==\s+([\s\S]+?\n *\n)',
                             str_operation=str_to_parameters,
                         ),
                     ]
@@ -315,14 +315,14 @@ class OutParser(TextParser):
             ),
             # Move auxiliary out of the parent section because I cannot cover all
             Quantity(
-                "auxiliary_basis",
-                r" Auxiliary Basis (?:Set )*<=([\s\S]+?)==>",
+                'auxiliary_basis',
+                r' Auxiliary Basis (?:Set )*<=([\s\S]+?)==>',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "basis_set",
-                            r"((?:Basis Set|Core potential|AO BASIS SET INFORMATION):[\s\S]+?\n\n)",
+                            'basis_set',
+                            r'((?:Basis Set|Core potential|AO BASIS SET INFORMATION):[\s\S]+?\n\n)',
                             repeats=True,
                             str_operation=str_to_basis,
                         )
@@ -330,60 +330,60 @@ class OutParser(TextParser):
                 ),
             ),
             Quantity(
-                "dft_potential",
-                r"DFT Potential <==([\s\S]+?==>)",
+                'dft_potential',
+                r'DFT Potential <==([\s\S]+?==>)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "composite",
-                            r"Composite Functional.+([\s\S]+?)=>",
+                            'composite',
+                            r'Composite Functional.+([\s\S]+?)=>',
                             str_operation=str_to_parameters,
                         ),
                         Quantity(
-                            "exact_exchange",
-                            r"Exact \(HF\) Exchange <=([\s\S]+?)=>",
+                            'exact_exchange',
+                            r'Exact \(HF\) Exchange <=([\s\S]+?)=>',
                             str_operation=lambda x: [
-                                v.split()[:2] for v in x.strip().split("\n")
+                                v.split()[:2] for v in x.strip().split('\n')
                             ],
                         ),
                         Quantity(
-                            "exchange",
-                            r"Exchange Functionals <=([\s\S]+?)=>",
+                            'exchange',
+                            r'Exchange Functionals <=([\s\S]+?)=>',
                             str_operation=lambda x: [
-                                v.split()[:2] for v in x.strip().split("\n")
+                                v.split()[:2] for v in x.strip().split('\n')
                             ],
                         ),
                         Quantity(
-                            "correlation",
-                            r" Correlation Functionals <=([\s\S]+?)=>",
+                            'correlation',
+                            r' Correlation Functionals <=([\s\S]+?)=>',
                             str_operation=lambda x: [
-                                v.split()[:2] for v in x.strip().split("\n")
+                                v.split()[:2] for v in x.strip().split('\n')
                             ],
                         ),
                         Quantity(
-                            "hybrid",
-                            r"Exchange-Correlation Functionals <=([\s\S]+?)=>",
+                            'hybrid',
+                            r'Exchange-Correlation Functionals <=([\s\S]+?)=>',
                             str_operation=lambda x: [
-                                v.split()[:2] for v in x.strip().split("\n")
+                                v.split()[:2] for v in x.strip().split('\n')
                             ],
                         ),
                         Quantity(
-                            "molecular_quadrature",
-                            r"Molecular Quadrature <=([\s\S]+?)=>",
+                            'molecular_quadrature',
+                            r'Molecular Quadrature <=([\s\S]+?)=>',
                             str_operation=str_to_parameters,
                         ),
                     ]
                 ),
             ),
-            Quantity("method", r"(?:\n +(.+) Reference *\n|@(.+) Final Energy:)"),
+            Quantity('method', r'(?:\n +(.+) Reference *\n|@(.+) Final Energy:)'),
             Quantity(
-                "iterations",
-                r"Iterations <==(\s+Total Energy[\s\S]+?)==>",
+                'iterations',
+                r'Iterations <==(\s+Total Energy[\s\S]+?)==>',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "iteration",
-                            rf"iter +\d+\: +({re_f}) +({re_f}) +({re_f})",
+                            'iteration',
+                            rf'iter +\d+\: +({re_f}) +({re_f}) +({re_f})',
                             repeats=True,
                             dtype=np.float64,
                         )
@@ -391,67 +391,67 @@ class OutParser(TextParser):
                 ),
             ),
             Quantity(
-                "spin_contamination_metric",
-                rf"@Spin Contamination Metric: +({re_f})",
+                'spin_contamination_metric',
+                rf'@Spin Contamination Metric: +({re_f})',
                 dtype=np.float64,
             ),
-            Quantity("s2_expected", rf"@S\^2 Expected: +({re_f})", dtype=np.float64),
-            Quantity("s2_observed", rf"@S\^2 Observed: +({re_f})", dtype=np.float64),
-            Quantity("s_expected", rf"@S   Expected: +({re_f})", dtype=np.float64),
-            Quantity("s_observed", rf"@S   Observed: +({re_f})", dtype=np.float64),
+            Quantity('s2_expected', rf'@S\^2 Expected: +({re_f})', dtype=np.float64),
+            Quantity('s2_observed', rf'@S\^2 Observed: +({re_f})', dtype=np.float64),
+            Quantity('s_expected', rf'@S   Expected: +({re_f})', dtype=np.float64),
+            Quantity('s_observed', rf'@S   Observed: +({re_f})', dtype=np.float64),
             Quantity(
-                "orbital_energies",
-                r"(?:Occupied:|Virtual:).+([\s\S]+?\n *\n)",
+                'orbital_energies',
+                r'(?:Occupied:|Virtual:).+([\s\S]+?\n *\n)',
                 repeats=True,
                 str_operation=str_to_orbital_energies,
             ),
             Quantity(
-                "energy",
-                r"Energetics <=([\s\S]+?Total Energy =.+)",
+                'energy',
+                r'Energetics <=([\s\S]+?Total Energy =.+)',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            rf"(.+) Energy = *({re_f})",
+                            'key_value',
+                            rf'(.+) Energy = *({re_f})',
                             repeats=True,
                             str_operation=lambda x: [
-                                v.strip() for v in x.rsplit(" ", 1)
+                                v.strip() for v in x.rsplit(' ', 1)
                             ],
                         )
                     ]
                 ),
             ),
             Quantity(
-                "properties",
-                r"(Properties will be evaluated at[\s\S]+?)(?:==>|tstop|\Z)",
+                'properties',
+                r'(Properties will be evaluated at[\s\S]+?)(?:==>|tstop|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=properties_quantities),
             ),
             Quantity(
-                "total_gradient",
-                r"Total Gradient.+\s+Atom.+\s+\-.+\s+([\s\S]+?)\n *\n",
+                'total_gradient',
+                r'Total Gradient.+\s+Atom.+\s+\-.+\s+([\s\S]+?)\n *\n',
                 str_operation=lambda x: np.array(
-                    [v.split()[1:] for v in x.strip().split("\n")]
+                    [v.split()[1:] for v in x.strip().split('\n')]
                 ),
                 dtype=np.dtype(np.float64),
             ),
         ]
 
         mp_quantities = [
-            Quantity("method", r"(MP[\d\.]+)\s+Program"),
+            Quantity('method', r'(MP[\d\.]+)\s+Program'),
             Quantity(
-                "energy",
-                r"Computing MP[\d\.]+ energy using SCF MOs([\s\S]+?)\n *\n",
+                'energy',
+                r'Computing MP[\d\.]+ energy using SCF MOs([\s\S]+?)\n *\n',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            rf"\s+(.+?) (?:Energy|Contribution) (Correction )*\(a\.u\.\) *: +({re_f})",
+                            'key_value',
+                            rf'\s+(.+?) (?:Energy|Contribution) (Correction )*\(a\.u\.\) *: +({re_f})',
                             repeats=True,
                             str_operation=lambda x: [
-                                v.strip() for v in x.rsplit(" ", 1)
+                                v.strip() for v in x.rsplit(' ', 1)
                             ],
                         )
                     ]
@@ -461,27 +461,27 @@ class OutParser(TextParser):
 
         method_quantities = [
             Quantity(
-                "parameters",
-                r"Parameters <==([\s\S]+?)==>",
+                'parameters',
+                r'Parameters <==([\s\S]+?)==>',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            r"([\w ]+= +\S+)",
+                            'key_value',
+                            r'([\w ]+= +\S+)',
                             repeats=True,
-                            str_operation=lambda x: [v.strip() for v in x.split("=")],
+                            str_operation=lambda x: [v.strip() for v in x.split('=')],
                         )
                     ]
                 ),
             ),
             Quantity(
-                "iterations",
-                r"Starting .+? iterations([\s\S]+?)==>",
+                'iterations',
+                r'Starting .+? iterations([\s\S]+?)==>',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "iteration",
-                            rf"@.+\d+: +\d+ +({re_f}) +({re_f}) +({re_f})(.+)",
+                            'iteration',
+                            rf'@.+\d+: +\d+ +({re_f}) +({re_f}) +({re_f})(.+)',
                             repeats=True,
                             dtype=np.dtype(np.float64),
                         )
@@ -489,30 +489,30 @@ class OutParser(TextParser):
                 ),
             ),
             Quantity(
-                "energy",
-                r"Energetics <==([\s\S]+?Total.+)",
+                'energy',
+                r'Energetics <==([\s\S]+?Total.+)',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            rf"(.+) [Ee]nergy += *({re_f})",
+                            'key_value',
+                            rf'(.+) [Ee]nergy += *({re_f})',
                             repeats=True,
                             str_operation=lambda x: [
-                                v.strip() for v in x.rsplit(" ", 1)
+                                v.strip() for v in x.rsplit(' ', 1)
                             ],
                         )
                     ]
                 ),
             ),
             Quantity(
-                "root_info",
-                r"(root \d+ information[\s\S]+?==>)",
+                'root_info',
+                r'(root \d+ information[\s\S]+?==>)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "root_energy",
-                            rf"Root \d+ energy += +({re_f})",
+                            'root_energy',
+                            rf'Root \d+ energy += +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         )
@@ -521,8 +521,8 @@ class OutParser(TextParser):
             ),
             # TODO parse other properties e.g. orbital extents, mayer bond indices
             Quantity(
-                "properties",
-                r"(erties computed using the[\s\S]+?)(?:==>|\n *Prop|tstop|\Z)",
+                'properties',
+                r'(erties computed using the[\s\S]+?)(?:==>|\n *Prop|tstop|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=properties_quantities),
             ),
@@ -530,13 +530,13 @@ class OutParser(TextParser):
 
         mcscf_quantities = [
             Quantity(
-                "iterations",
-                r"(Cycle +Energy.+\s+\=+[\s\S]+?)\={5}",
+                'iterations',
+                r'(Cycle +Energy.+\s+\=+[\s\S]+?)\={5}',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "iteration",
-                            rf"@SCF +\d+ +({re_f}) +({re_f}) +({re_f})",
+                            'iteration',
+                            rf'@SCF +\d+ +({re_f}) +({re_f}) +({re_f})',
                             repeats=True,
                             dtype=np.dtype(np.float64),
                         )
@@ -544,56 +544,56 @@ class OutParser(TextParser):
                 ),
             ),
             Quantity(
-                "energy",
-                r"\* (SCF total energy.+)",
+                'energy',
+                r'\* (SCF total energy.+)',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            rf"(.+) energy += +({re_f})",
+                            'key_value',
+                            rf'(.+) energy += +({re_f})',
                             repeats=True,
                             str_operation=lambda x: [
-                                v.strip() for v in x.rsplit(" ", 1)
+                                v.strip() for v in x.rsplit(' ', 1)
                             ],
                         )
                     ]
                 ),
             ),
             Quantity(
-                "orbital_energies",
-                r"Eigenvalues \(Eh\)([\s\S]+?)={5}",
+                'orbital_energies',
+                r'Eigenvalues \(Eh\)([\s\S]+?)={5}',
                 str_operation=str_to_eigenvalues,
             ),
         ]
 
         cc_quantities = [
             Quantity(
-                "parameters",
-                r"Wfn Parameters:\s+\-+\s+([\s\S]+?)\n *\n",
+                'parameters',
+                r'Wfn Parameters:\s+\-+\s+([\s\S]+?)\n *\n',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            r"(.+ += +\S+)",
+                            'key_value',
+                            r'(.+ += +\S+)',
                             repeats=True,
-                            str_operation=lambda x: [v.strip() for v in x.split("=")],
+                            str_operation=lambda x: [v.strip() for v in x.split('=')],
                         )
                     ]
                 ),
             ),
             Quantity(
-                "energy",
-                r"(Nuclear Rep[\s\S]+?)\n *\n",
+                'energy',
+                r'(Nuclear Rep[\s\S]+?)\n *\n',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            rf"([\w\. \-]+) energy += +({re_f})",
+                            'key_value',
+                            rf'([\w\. \-]+) energy += +({re_f})',
                             repeats=True,
                             str_operation=lambda x: [
-                                v.strip() for v in x.rsplit(" ", 1)
+                                v.strip() for v in x.rsplit(' ', 1)
                             ],
                         )
                     ]
@@ -603,27 +603,27 @@ class OutParser(TextParser):
 
         cc_energy_quantities = [
             Quantity(
-                "parameters",
-                r"Input parameters:\s+\-+([\s\S]+?)",
+                'parameters',
+                r'Input parameters:\s+\-+([\s\S]+?)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            r"(.+ += +\S+)",
+                            'key_value',
+                            r'(.+ += +\S+)',
                             repeats=True,
-                            str_operation=lambda x: [v.strip() for v in x.split("=")],
+                            str_operation=lambda x: [v.strip() for v in x.split('=')],
                         )
                     ]
                 ),
             ),
             Quantity(
-                "iterations",
-                r"(Iter +Energy[\s\S]+?)\n *\n",
+                'iterations',
+                r'(Iter +Energy[\s\S]+?)\n *\n',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "iteration",
-                            rf"\d+ +({re_f}) +({re_f}) +({re_f})",
+                            'iteration',
+                            rf'\d+ +({re_f}) +({re_f}) +({re_f})',
                             repeats=True,
                             dtype=np.dtype(np.float64),
                         )
@@ -631,17 +631,17 @@ class OutParser(TextParser):
                 ),
             ),
             Quantity(
-                "energy",
-                r"\n *\n +(SCF energy[\s\S]+?CCSD total energy.+)",
+                'energy',
+                r'\n *\n +(SCF energy[\s\S]+?CCSD total energy.+)',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            rf"([\w\. \-]+) energy.* += +({re_f})",
+                            'key_value',
+                            rf'([\w\. \-]+) energy.* += +({re_f})',
                             repeats=True,
                             str_operation=lambda x: [
-                                v.strip() for v in x.rsplit(" ", 1)
+                                v.strip() for v in x.rsplit(' ', 1)
                             ],
                         )
                     ]
@@ -651,27 +651,27 @@ class OutParser(TextParser):
 
         cc_lambda_quantities = [
             Quantity(
-                "parameters",
-                r"Input parameters:\s+\-+([\s\S]+?)\n *\n",
+                'parameters',
+                r'Input parameters:\s+\-+([\s\S]+?)\n *\n',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            r"(.+ += +\S+)",
+                            'key_value',
+                            r'(.+ += +\S+)',
                             repeats=True,
-                            str_operation=lambda x: [v.strip() for v in x.split("=")],
+                            str_operation=lambda x: [v.strip() for v in x.split('=')],
                         )
                     ]
                 ),
             ),
             Quantity(
-                "iterations",
-                r"(Iter +PseudoEnergy[\s\S]+?)\n *\n",
+                'iterations',
+                r'(Iter +PseudoEnergy[\s\S]+?)\n *\n',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "iteration",
-                            rf"\d+ +({re_f}) +({re_f})",
+                            'iteration',
+                            rf'\d+ +({re_f}) +({re_f})',
                             repeats=True,
                             dtype=np.dtype(np.float64),
                         )
@@ -679,17 +679,17 @@ class OutParser(TextParser):
                 ),
             ),
             Quantity(
-                "energy",
-                r"(Nuclear Rep\. energy[\s\S]+?Total CCSD energy.+)",
+                'energy',
+                r'(Nuclear Rep\. energy[\s\S]+?Total CCSD energy.+)',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            rf"([\w\. \-]+) energy.* += +({re_f})",
+                            'key_value',
+                            rf'([\w\. \-]+) energy.* += +({re_f})',
                             repeats=True,
                             str_operation=lambda x: [
-                                v.strip() for v in x.rsplit(" ", 1)
+                                v.strip() for v in x.rsplit(' ', 1)
                             ],
                         )
                     ]
@@ -699,39 +699,39 @@ class OutParser(TextParser):
 
         cc_density_quantities = [
             Quantity(
-                "parameters",
-                r"Input parameters:\s+\-+([\s\S]+?)\n *\n",
+                'parameters',
+                r'Input parameters:\s+\-+([\s\S]+?)\n *\n',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            r"(.+ += +\S+)",
+                            'key_value',
+                            r'(.+ += +\S+)',
                             repeats=True,
-                            str_operation=lambda x: [v.strip() for v in x.split("=")],
+                            str_operation=lambda x: [v.strip() for v in x.split('=')],
                         )
                     ]
                 ),
             ),
             Quantity(
-                "energy",
-                r"((?:Nuclear Rep\. energy|Energies re-computed from|Virial Theorem Data)[\s\S]+?)\n *\n",
+                'energy',
+                r'((?:Nuclear Rep\. energy|Energies re-computed from|Virial Theorem Data)[\s\S]+?)\n *\n',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            rf"([\w\. \-]+) energy(?: +\(.+\))* += +({re_f})",
+                            'key_value',
+                            rf'([\w\. \-]+) energy(?: +\(.+\))* += +({re_f})',
                             repeats=True,
                             str_operation=lambda x: [
-                                v.strip() for v in x.rsplit(" ", 1)
+                                v.strip() for v in x.rsplit(' ', 1)
                             ],
                         )
                     ]
                 ),
             ),
             Quantity(
-                "properties",
-                r"(Properties will be evaluated at[\s\S]+?)(?:==>|tstop|\Z)",
+                'properties',
+                r'(Properties will be evaluated at[\s\S]+?)(?:==>|tstop|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=properties_quantities),
             ),
@@ -739,18 +739,18 @@ class OutParser(TextParser):
 
         optking_quantities = [
             Quantity(
-                "geometry",
-                r"Geometry and Gradient-+\s+([\s\S]+?)\n *\n",
+                'geometry',
+                r'Geometry and Gradient-+\s+([\s\S]+?)\n *\n',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "atoms",
-                            rf"([A-Z][a-z]*) +({re_f}) +({re_f}) +({re_f})",
+                            'atoms',
+                            rf'([A-Z][a-z]*) +({re_f}) +({re_f}) +({re_f})',
                             repeats=True,
                         ),
                         Quantity(
-                            "forces",
-                            rf"({re_f}) +({re_f}) +({re_f})",
+                            'forces',
+                            rf'({re_f}) +({re_f}) +({re_f})',
                             repeats=True,
                             dtype=np.dtype(np.float64),
                         ),
@@ -758,112 +758,112 @@ class OutParser(TextParser):
                 ),
             ),
             Quantity(
-                "convergence_criteria",
-                rf"Convergence Criteria +({re_f}) +\* +({re_f}) +\* +\S+ +({re_f})",
+                'convergence_criteria',
+                rf'Convergence Criteria +({re_f}) +\* +({re_f}) +\* +\S+ +({re_f})',
                 dtype=np.dtype(np.float64),
             ),
-            Quantity("energy", rf"~\s+\d+ +({re_f}) +({re_f})", dtype=np.float64),
+            Quantity('energy', rf'~\s+\d+ +({re_f}) +({re_f})', dtype=np.float64),
         ]
 
         module_quantities = [
             Quantity(
-                "scf",
-                rf"(SCF\s+by[\s\S]+?(Computation Completed|tstop|\Z))",
+                'scf',
+                rf'(SCF\s+by[\s\S]+?(Computation Completed|tstop|\Z))',
                 repeats=True,
                 sub_parser=TextParser(quantities=scf_quantities),
             ),
             Quantity(
-                "scf_grad",
-                r"(SCF GRAD\s+[\s\S]+?(?:tstop|\Z))",
+                'scf_grad',
+                r'(SCF GRAD\s+[\s\S]+?(?:tstop|\Z))',
                 repeats=True,
                 sub_parser=TextParser(quantities=scf_quantities),
             ),
             Quantity(
-                "mp",
-                r"(MP[\d\.]+\s+Program[\s\S]+?(?:tstop|\Z))",
+                'mp',
+                r'(MP[\d\.]+\s+Program[\s\S]+?(?:tstop|\Z))',
                 repeats=True,
                 sub_parser=TextParser(quantities=mp_quantities),
             ),
             Quantity(
-                "ci",
-                r"(Configuration Interaction\s+\(a [\s\S]+?)(?:PASSED|tstart|\Z)",
+                'ci',
+                r'(Configuration Interaction\s+\(a [\s\S]+?)(?:PASSED|tstart|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=method_quantities),
             ),
             Quantity(
-                "mcscf_detci",
-                r"(Multi-Configurational Self-Consistent Field[\s\S]+?)(?:PASSED|tstart|\Z)",
+                'mcscf_detci',
+                r'(Multi-Configurational Self-Consistent Field[\s\S]+?)(?:PASSED|tstart|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=method_quantities),
             ),
             Quantity(
-                "mcscf",
-                r"(MCSCF: a self-consistent field program[\s\S]+?)(?:tstop|\Z)",
+                'mcscf',
+                r'(MCSCF: a self-consistent field program[\s\S]+?)(?:tstop|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=mcscf_quantities),
             ),
             Quantity(
-                "cc",
-                r"(Wfn Parameters:\s+\-+[\s\S]+?)(?:tstop|\Z)",
+                'cc',
+                r'(Wfn Parameters:\s+\-+[\s\S]+?)(?:tstop|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=cc_quantities),
             ),
             Quantity(
-                "cc_energy",
-                r"(CCENERGY +\*[\s\S]+?)(?:tstop|\Z)",
+                'cc_energy',
+                r'(CCENERGY +\*[\s\S]+?)(?:tstop|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=cc_energy_quantities),
             ),
             Quantity(
-                "cc_lambda",
-                r"(CCLAMBDA +\*[\s\S]+?)(?:tstop|\Z)",
+                'cc_lambda',
+                r'(CCLAMBDA +\*[\s\S]+?)(?:tstop|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=cc_lambda_quantities),
             ),
             Quantity(
-                "cc_density",
-                r"(CCDENSITY +\*[\s\S]+?)(?:tstop|\Z)",
+                'cc_density',
+                r'(CCDENSITY +\*[\s\S]+?)(?:tstop|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=cc_density_quantities),
             ),
             Quantity(
-                "optking",
-                r"OPTKING .+?: for geometry optimizations([\s\S]+?)OPTKING Finished Execution",
+                'optking',
+                r'OPTKING .+?: for geometry optimizations([\s\S]+?)OPTKING Finished Execution',
                 sub_parser=TextParser(quantities=optking_quantities),
             ),
             Quantity(
-                "options",
-                r"Options:\s+\-+([\s\S]+?)\n *\n",
+                'options',
+                r'Options:\s+\-+([\s\S]+?)\n *\n',
                 str_operation=str_to_parameters,
             ),
             Quantity(
-                "salc",
-                r"(Cartesian Displacement SALCs[\s\S]+?)(?:tstart|\Z)",
+                'salc',
+                r'(Cartesian Displacement SALCs[\s\S]+?)(?:tstart|\Z)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "total_gradient",
-                            r"Total gradient:\s+Atom.+\s+.+\s+([\s\S]+?)\n *\n",
+                            'total_gradient',
+                            r'Total gradient:\s+Atom.+\s+.+\s+([\s\S]+?)\n *\n',
                             str_operation=lambda x: [
-                                v.split()[1:] for v in x.strip().split("\n")
+                                v.split()[1:] for v in x.strip().split('\n')
                             ],
                             dtype=np.dtype(np.float64),
                         ),
                         Quantity(
-                            "contributions_gradient",
-                            r"\-(.+ (?:Energy 1st Derivatives|contribution to gradient)):"
-                            r"\s+Atom.+\s+.+([\s\S]+?)\n *\n",
+                            'contributions_gradient',
+                            r'\-(.+ (?:Energy 1st Derivatives|contribution to gradient)):'
+                            r'\s+Atom.+\s+.+([\s\S]+?)\n *\n',
                             repeats=True,
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "name",
-                                        r"(.+) (?:Energy|contribution)",
+                                        'name',
+                                        r'(.+) (?:Energy|contribution)',
                                         flatten=False,
                                     ),
                                     Quantity(
-                                        "value",
-                                        rf"\d+ +({re_f}) +({re_f}) +({re_f})",
+                                        'value',
+                                        rf'\d+ +({re_f}) +({re_f}) +({re_f})',
                                         repeats=True,
                                         dtype=np.dtype(np.float64),
                                     ),
@@ -875,37 +875,37 @@ class OutParser(TextParser):
             ),
             # read user time since total time seems to be imprecise
             Quantity(
-                "module_time",
-                rf"Module time\:\s+user time += +({re_f}) seconds",
+                'module_time',
+                rf'Module time\:\s+user time += +({re_f}) seconds',
                 dtype=np.float64,
             ),
             Quantity(
-                "total_time",
-                rf"Total time\:\s+user time += +({re_f}) seconds",
+                'total_time',
+                rf'Total time\:\s+user time += +({re_f}) seconds',
                 dtype=np.float64,
             ),
         ]
 
         self._quantities = [
             Quantity(
-                "version",
-                r"Psi4: An Open-Source Ab Initio Electronic Structure Package\s*"
-                r"Psi4 ([\w\.]+)",
+                'version',
+                r'Psi4: An Open-Source Ab Initio Electronic Structure Package\s*'
+                r'Psi4 ([\w\.]+)',
                 dtype=str,
             ),
             Quantity(
-                "start_time", r"Psi4 started on: \w+, (.+)", flatten=False, dtype=str
+                'start_time', r'Psi4 started on: \w+, (.+)', flatten=False, dtype=str
             ),
-            Quantity("process_id", r"Process ID:\s*(\d+)", dtype=np.int32),
-            Quantity("psidatadir", r"PSIDATADIR:\s*(.+)", dtype=str),
-            Quantity("memory", r"Memory:\s*(\S+) MiB", dtype=np.float64),
-            Quantity("threads", r"Threads:\s*(\d+)", dtype=np.int32),
+            Quantity('process_id', r'Process ID:\s*(\d+)', dtype=np.int32),
+            Quantity('psidatadir', r'PSIDATADIR:\s*(.+)', dtype=str),
+            Quantity('memory', r'Memory:\s*(\S+) MiB', dtype=np.float64),
+            Quantity('threads', r'Threads:\s*(\d+)', dtype=np.int32),
             Quantity(
-                "input_file", r"Input File <==\s+\-+\s*([\s\S]+?)\-{5}", flatten=False
+                'input_file', r'Input File <==\s+\-+\s*([\s\S]+?)\-{5}', flatten=False
             ),
             Quantity(
-                "module",
-                r"(\*\*\* at [A-Z][a-z]{2} [\s\S]+?(?:\*\*\* tstart|\Z))",
+                'module',
+                r'(\*\*\* at [A-Z][a-z]{2} [\s\S]+?(?:\*\*\* tstart|\Z))',
                 repeats=True,
                 sub_parser=TextParser(quantities=module_quantities),
             ),
@@ -917,17 +917,17 @@ class Psi4Parser:
         self.m_env = m_env
         self.out_parser = OutParser()
         self._xc_map = {
-            "HF": "LDA_X",
-            "PW6B95": "HYB_MGGA_XC_PW6B95",
-            "B3LYP": "HYB_GGA_XC_B3LYP",
-            "B3LYP5": "HYB_GGA_XC_B3LYP5",
-            "wB97X-D": "HYB_GGA_XC_WB97X_D",
+            'HF': 'LDA_X',
+            'PW6B95': 'HYB_MGGA_XC_PW6B95',
+            'B3LYP': 'HYB_GGA_XC_B3LYP',
+            'B3LYP5': 'HYB_GGA_XC_B3LYP5',
+            'wB97X-D': 'HYB_GGA_XC_WB97X_D',
         }
         self._metainfo_map = {
-            "Nuclear Repulsion": "nuclear_repulsion",
-            "Total": "total",
-            "DFT Exchange-Correlation": "xc",
-            "Nuclear Rep.": "nuclear_repulsion",
+            'Nuclear Repulsion': 'nuclear_repulsion',
+            'Total': 'total',
+            'DFT Exchange-Correlation': 'xc',
+            'Nuclear Rep.': 'nuclear_repulsion',
         }
 
     def init_parser(self):
@@ -940,7 +940,7 @@ class Psi4Parser:
 
         system = System()
         self.archive.run[-1].system.append(system)
-        atoms = source.geometry.get("atoms", [])
+        atoms = source.geometry.get('atoms', [])
         # TODO determine lattice vectors
         system.atoms = Atoms(
             positions=np.array([a[1:4] for a in atoms]) * ureg.bohr,
@@ -949,7 +949,7 @@ class Psi4Parser:
         )
         for key, val in source.geometry.items():
             try:
-                setattr(system, "x_psi4_%s" % key, val)
+                setattr(system, 'x_psi4_%s' % key, val)
             except Exception:
                 pass
 
@@ -958,25 +958,25 @@ class Psi4Parser:
         if source is None:
             return []
         atoms: list[BasisSetAtomCentered] = []
-        for entry in source.get("basis_set", []):
+        for entry in source.get('basis_set', []):
             atom = BasisSetAtomCentered()
-            atom.name = entry.get("Basis Set", "").strip("(").strip(")")
-            atom.n_basis_functions = int(entry.get("Number of basis function", 0))
-            atom.x_psi4_n_shells = int(entry.get("Number of shells", 0))
-            atom.x_psi4_max_angular_momentum = int(entry.get("Max angular momentum", 0))
+            atom.name = entry.get('Basis Set', '').strip('(').strip(')')
+            atom.n_basis_functions = int(entry.get('Number of basis function', 0))
+            atom.x_psi4_n_shells = int(entry.get('Number of shells', 0))
+            atom.x_psi4_max_angular_momentum = int(entry.get('Max angular momentum', 0))
             atom.x_psi4_n_cartesian_functions = int(
-                entry.get("Number of Cartesian functions", 0)
+                entry.get('Number of Cartesian functions', 0)
             )
-            atom.x_psi4_blend = entry.get("Blend")
+            atom.x_psi4_blend = entry.get('Blend')
             atom.x_psi4_spherical_harmonics = (
-                entry.get("Spherical Harmonics?") == "false"
+                entry.get('Spherical Harmonics?') == 'false'
             )
             atoms.append(atom)
 
         return [
             BasisSet(
-                type="gaussians",
-                scope=["full-electron"],
+                type='gaussians',
+                scope=['full-electron'],
                 atom_centered=atoms,
             ),
         ]
@@ -986,30 +986,30 @@ class Psi4Parser:
         self.archive.run[-1].method.append(method)
         if self._method is not None:
             method.electronic = Electronic(method=self._method)
-            if self._method[:2] in ["MP", "CI", "MC", "CC"]:
+            if self._method[:2] in ['MP', 'CI', 'MC', 'CC']:
                 method.core_method_ref = self.archive.run[-1].method[0]
                 method.methods_ref = [self.archive.run[-1].method[0]]
                 if source.parameters is not None:
                     method.x_psi4_parameters = {
-                        key: val for key, val in source.parameters.get("key_value", [])
+                        key: val for key, val in source.parameters.get('key_value', [])
                     }
 
         # Basis set
         basis_sets = self._parse_basis(source.basis)
-        for basis in source.get("auxiliary_basis", []):
+        for basis in source.get('auxiliary_basis', []):
             basis_sets += self._parse_basis(basis)
         if len(basis_sets) > 0:
             method.electrons_representation = [
                 BasisSetContainer(
-                    type="atom-centered orbitals",
-                    scope=["wavefunction"],
+                    type='atom-centered orbitals',
+                    scope=['wavefunction'],
                     basis_set=basis_sets,
                 ),
             ]
 
         if source.jk_matrices is not None:
             method.x_psi4_jk_matrices_parameters = source.jk_matrices.get(
-                "parameters", (None, None)
+                'parameters', (None, None)
             )[1]
 
         if source.algorithm is not None:
@@ -1028,7 +1028,7 @@ class Psi4Parser:
             dft.xc_functional = xc_functional
             # get xc functional from composite first
             if len(xc_functional.exchange) == 0 and len(xc_functional.correlation) == 0:
-                name, parameters = source.dft_potential.get("composite", (None, None))
+                name, parameters = source.dft_potential.get('composite', (None, None))
                 if name is not None:
                     name = self._xc_map.get(name)
                     if name is not None:
@@ -1037,10 +1037,10 @@ class Psi4Parser:
                         )
             if len(xc_functional.contributions) == 0:
                 # get contributions for exchange and correlation
-                for xc_type in ["exact_exchange", "exchange", "correlation", "hybrid"]:
-                    if "exchange" in xc_type:
+                for xc_type in ['exact_exchange', 'exchange', 'correlation', 'hybrid']:
+                    if 'exchange' in xc_type:
                         section = xc_functional.exchange
-                    elif xc_type == "correlation":
+                    elif xc_type == 'correlation':
                         section = xc_functional.correlation
                     else:
                         section = xc_functional.hybrid
@@ -1048,7 +1048,7 @@ class Psi4Parser:
                         # it seems that other psi4 version print out xc functionals in libxc
                         # notation prefixed with XC_
                         # TODO complete mapping of XC functionals
-                        name = self._xc_map.get(name, name).lstrip("XC_")
+                        name = self._xc_map.get(name, name).lstrip('XC_')
                         section.append(Functional(name=name, weight=weight))
 
             if source.dft_potential.molecular_quadrature is not None:
@@ -1077,24 +1077,24 @@ class Psi4Parser:
             elif len(data) == 15:
                 section = MultipolesEntry()
                 multipoles.higher_order.append(section)
-                section.kind = "hexadecapole"
+                section.kind = 'hexadecapole'
                 exponent = 4
             else:
                 section = MultipolesEntry()
                 multipoles.higher_order.append(section)
-                section.kind = "32-pole"
+                section.kind = '32-pole'
                 exponent = 5
             value = data * ureg.elementary_charge * ureg.bohr**exponent
-            section.total = value.to("coulomb * m ** %d" % exponent).magnitude
+            section.total = value.to('coulomb * m ** %d' % exponent).magnitude
 
         def parse_properties(source, calc):
             if source is None:
                 return
 
             # multipoles
-            multipole_kinds = ["electronic", "nuclear", "total"]
+            multipole_kinds = ['electronic', 'nuclear', 'total']
             for n, multipole in enumerate(multipole_kinds):
-                data = source.get("%s_dipole_moment" % multipole)
+                data = source.get('%s_dipole_moment' % multipole)
                 if data is None:
                     continue
                 multipoles = Multipoles()
@@ -1104,13 +1104,13 @@ class Psi4Parser:
                 multipoles.kind = multipole_kinds[n]
                 parse_multipole(data, multipoles)
 
-            multipole_moments = source.get("multipole_moments", {})
+            multipole_moments = source.get('multipole_moments', {})
             for multipole in [
-                "dipole",
-                "quadrupole",
-                "octupole",
-                "hexadecapole",
-                "npole",
+                'dipole',
+                'quadrupole',
+                'octupole',
+                'hexadecapole',
+                'npole',
             ]:
                 data = multipole_moments.get(multipole)
                 if data is None:
@@ -1126,8 +1126,8 @@ class Psi4Parser:
 
             # TODO verify for non spin polarized
             # charges
-            for method in ["mulliken", "lowdin"]:
-                data = source.get("%s_charges" % method)
+            for method in ['mulliken', 'lowdin']:
+                data = source.get('%s_charges' % method)
                 if data is not None:
                     charges = Charges()
                     calc.charges.append(charges)
@@ -1149,7 +1149,7 @@ class Psi4Parser:
 
         # scf iterations
         if source.iterations is not None:
-            for iteration in source.iterations.get("iteration", []):
+            for iteration in source.iterations.get('iteration', []):
                 scf = ScfIteration()
                 calc.scf_iteration.append(scf)
                 scf.energy = Energy(
@@ -1160,18 +1160,18 @@ class Psi4Parser:
         # energies
         # mp/ci energy, the last entry belongs to the method
         # create additional calc section for references e.g. mp3 have mp2 reference
-        for n in range(len(source.get("energy", []))):
+        for n in range(len(source.get('energy', []))):
             if source.energy[n] is None:
                 continue
             ref_calc = calc
             # for MP calc, the last energy block corresponds to calc
-            n_ref = len(source.energy) - 1 if self._method[:2] == "MP" else 0
+            n_ref = len(source.energy) - 1 if self._method[:2] == 'MP' else 0
             if n != n_ref:
                 ref_calc = Calculation()
                 self.archive.run[-1].calculation.append(ref_calc)
                 ref_calcs.append(ref_calc)
             ref_calc.energy = Energy()
-            for key, val in source.energy[n].get("key_value"):
+            for key, val in source.energy[n].get('key_value'):
                 key = self._metainfo_map.get(key, key)
                 if hasattr(ref_calc.energy, key):
                     setattr(ref_calc.energy, key, EnergyEntry(value=val * ureg.hartree))
@@ -1180,7 +1180,7 @@ class Psi4Parser:
                         EnergyEntry(kind=key, value=val * ureg.hartree)
                     )
                 # assign total energy to corresponding to method
-                if "total" in key.lower():
+                if 'total' in key.lower():
                     ref_calc.energy.total = EnergyEntry(value=val * ureg.hartree)
 
         # forces
@@ -1222,7 +1222,7 @@ class Psi4Parser:
 
         # properties can be calculated using multiple density matrices e.g. for ci/mcscf
         # create additional calculation section
-        for n, properties in enumerate(source.get("properties", [])):
+        for n, properties in enumerate(source.get('properties', [])):
             if n == 0:
                 ref_calc = calc
             else:
@@ -1259,38 +1259,38 @@ class Psi4Parser:
 
         run = Run()
         archive.run.append(run)
-        run.program = Program(name="Psi4", version=self.out_parser.get("version", ""))
+        run.program = Program(name='Psi4', version=self.out_parser.get('version', ''))
         if self.out_parser.start_time is not None:
             start_time = datetime.strptime(
-                self.out_parser.start_time, "%d %B %Y %H:%M%p"
+                self.out_parser.start_time, '%d %B %Y %H:%M%p'
             )
             run.time_run = TimeRun(
                 date_start=(start_time - datetime(1970, 1, 1)).total_seconds()
             )
 
-        for key in ["process_id", "psidatadir", "memory", "threads", "input_file"]:
+        for key in ['process_id', 'psidatadir', 'memory', 'threads', 'input_file']:
             val = self.out_parser.get(key)
             if val is not None:
-                setattr(run, "x_psi4_%s" % key, val)
+                setattr(run, 'x_psi4_%s' % key, val)
 
         opt_calculations_ref = []
         module_names = [
-            "scf",
-            "scf_grad",
-            "mp",
-            "ci",
-            "mcscf",
-            "mcscf_detci",
-            "cc",
-            "cc_energy",
-            "cc_lambda",
-            "cc_density",
+            'scf',
+            'scf_grad',
+            'mp',
+            'ci',
+            'mcscf',
+            'mcscf_detci',
+            'cc',
+            'cc_energy',
+            'cc_lambda',
+            'cc_density',
         ]
-        for module in self.out_parser.get("module", []):
+        for module in self.out_parser.get('module', []):
             for name in module_names:
                 for submodule in module.get(name, []):
                     self._method = submodule.get(
-                        "method", name.split("_", maxsplit=1)[0].upper()
+                        'method', name.split('_', maxsplit=1)[0].upper()
                     )
                     self.parse_system(submodule)
                     self.parse_method(submodule)
@@ -1316,7 +1316,7 @@ class Psi4Parser:
                         * ureg.hartree
                         / ureg.bohr
                     )
-                for contribution in module.salc.get("contributions_gradient", []):
+                for contribution in module.salc.get('contributions_gradient', []):
                     forces.contributions.append(
                         ForcesEntry(
                             kind=contribution.name,
@@ -1332,7 +1332,7 @@ class Psi4Parser:
                 self.parse_system(module.optking)
                 calc = Calculation()
                 self.archive.run[-1].calculation.append(calc)
-                forces = module.optking.get("geometry", {}).get("forces")
+                forces = module.optking.get('geometry', {}).get('forces')
                 if forces is not None:
                     calc.forces = Forces(
                         total=ForcesEntry(value=forces * ureg.hartree / ureg.bohr)

@@ -49,145 +49,145 @@ class MainfileParser(TextParser):
         super().__init__()
 
     def init_quantities(self):
-        re_f = r"[-+]*\d*\.\d+[Ee]*[-+]*\d*"
+        re_f = r'[-+]*\d*\.\d+[Ee]*[-+]*\d*'
 
         io_quantities = [
             Quantity(
-                "key_value",
-                r"([A-Z\d].+?)(?:\(.+\)|\[.+\]| |)(:.+?)(?:\[|\n)",
-                str_operation=lambda x: [v.strip() for v in x.split(":")],
+                'key_value',
+                r'([A-Z\d].+?)(?:\(.+\)|\[.+\]| |)(:.+?)(?:\[|\n)',
+                str_operation=lambda x: [v.strip() for v in x.split(':')],
                 repeats=True,
             ),
-            Quantity("file", r"\[(?:RD|WR)(.+?)\]", dtype=str),
-            Quantity("sn", r"- S/N *(\d+)", dtype=str),
+            Quantity('file', r'\[(?:RD|WR)(.+?)\]', dtype=str),
+            Quantity('sn', r'- S/N *(\d+)', dtype=str),
         ]
 
         energies_quantities = [
             Quantity(
-                "fermi", rf"Fermi Level.+?: +({re_f})", dtype=np.float64, unit=ureg.eV
+                'fermi', rf'Fermi Level.+?: +({re_f})', dtype=np.float64, unit=ureg.eV
             ),
             Quantity(
-                "conduction",
-                rf"Conduction Band Min +: +({re_f})",
+                'conduction',
+                rf'Conduction Band Min +: +({re_f})',
                 dtpye=np.float64,
                 unit=ureg.eV,
             ),
             Quantity(
-                "valence",
-                rf"Valence Band Max +: +({re_f})",
+                'valence',
+                rf'Valence Band Max +: +({re_f})',
                 dtpye=np.float64,
                 unit=ureg.eV,
             ),
             Quantity(
-                "valence_conduction",
-                rf"VBM / CBm +\[ev\]: +({re_f}) +({re_f})",
+                'valence_conduction',
+                rf'VBM / CBm +\[ev\]: +({re_f}) +({re_f})',
                 dtpye=np.dtype(np.float64),
                 unit=ureg.eV,
             ),
             Quantity(
-                "x_yambo_filled_bands",
-                r"Filled Bands +: +(\d+)",
+                'x_yambo_filled_bands',
+                r'Filled Bands +: +(\d+)',
                 dtype=np.int32,
                 str_operation=lambda x: [1, int(x)],
             ),
             Quantity(
-                "x_yambo_empty_bands",
-                r"Empty Bands +: +([\d ]+)",
+                'x_yambo_empty_bands',
+                r'Empty Bands +: +([\d ]+)',
                 dtype=np.dtype(np.int32),
             ),
             Quantity(
-                "x_yambo_electronic_temperature",
-                rf"Electronic Temp.+?: +{re_f} +({re_f})",
+                'x_yambo_electronic_temperature',
+                rf'Electronic Temp.+?: +{re_f} +({re_f})',
                 dtype=np.float64,
                 unit=ureg.kelvin,
             ),
             Quantity(
-                "x_yambo_bosonic_temperature",
-                rf"Bosonic +Temp.+?: +{re_f} +({re_f})",
+                'x_yambo_bosonic_temperature',
+                rf'Bosonic +Temp.+?: +{re_f} +({re_f})',
                 dtype=np.float64,
                 unit=ureg.kelvin,
             ),
             Quantity(
-                "x_yambo_finite_temperature_mode",
-                r"Finite Temperature mode: +(\S+)",
-                str_operation=lambda x: x == "yes",
+                'x_yambo_finite_temperature_mode',
+                r'Finite Temperature mode: +(\S+)',
+                str_operation=lambda x: x == 'yes',
             ),
             Quantity(
-                "x_yambo_electronic_density",
-                rf"El\. density.+?: +(.+?)(?:\[|\n)",
+                'x_yambo_electronic_density',
+                rf'El\. density.+?: +(.+?)(?:\[|\n)',
                 str_operation=lambda x: x.strip().split()[-1],
                 dtype=np.float64,
             ),
             Quantity(
-                "states_summary",
-                r"States summary +: Full +Metallic +Empty\s+(.+)",
-                str_operation=lambda x: [v.split("-") for v in x.strip().split()],
+                'states_summary',
+                r'States summary +: Full +Metallic +Empty\s+(.+)',
+                str_operation=lambda x: [v.split('-') for v in x.strip().split()],
             ),
             Quantity(
-                "x_yambo_indirect_gaps",
-                rf"Indirect Gaps.+?: +({re_f}) +({re_f})",
+                'x_yambo_indirect_gaps',
+                rf'Indirect Gaps.+?: +({re_f}) +({re_f})',
                 dtype=np.dtype(np.float64),
                 unit=ureg.eV,
             ),
             Quantity(
-                "x_yambo_direct_gaps",
-                rf"Direct Gaps.+?: +({re_f}) +({re_f})",
+                'x_yambo_direct_gaps',
+                rf'Direct Gaps.+?: +({re_f}) +({re_f})',
                 dtype=np.dtype(np.float64),
                 unit=ureg.eV,
             ),
             Quantity(
-                "x_yambo_indirect_gap",
-                rf"Indirect Gap.+?: +({re_f})",
+                'x_yambo_indirect_gap',
+                rf'Indirect Gap.+?: +({re_f})',
                 dtype=np.float64,
                 unit=ureg.eV,
             ),
             Quantity(
-                "x_yambo_direct_gap",
-                rf"Direct Gap.+?: +({re_f})",
+                'x_yambo_direct_gap',
+                rf'Direct Gap.+?: +({re_f})',
                 dtype=np.float64,
                 unit=ureg.eV,
             ),
             Quantity(
-                "x_yambo_direct_gap_kpoint",
-                r"Direct Gap localized at k-point.+?: +(\d+)",
+                'x_yambo_direct_gap_kpoint',
+                r'Direct Gap localized at k-point.+?: +(\d+)',
                 dtype=np.int32,
             ),
             Quantity(
-                "x_yambo_indirect_gap_kpoints",
-                r"Indirect Gap between k-points.+?: +(\d+) +(\d+)",
+                'x_yambo_indirect_gap_kpoints',
+                r'Indirect Gap between k-points.+?: +(\d+) +(\d+)',
                 dtype=np.int32,
             ),
         ]
 
         qp_properties_quantity = Quantity(
-            "qp_properties",
-            r"QP properties and I/O([\s\S]+? S/N \d+.+)",
+            'qp_properties',
+            r'QP properties and I/O([\s\S]+? S/N \d+.+)',
             sub_parser=TextParser(
                 quantities=[
                     Quantity(
-                        "qp_energy",
-                        r"(QP \[eV\] @ K[\s\S]+?)\n *\n",
+                        'qp_energy',
+                        r'(QP \[eV\] @ K[\s\S]+?)\n *\n',
                         repeats=True,
                         sub_parser=TextParser(
                             quantities=[
                                 Quantity(
-                                    "band",
-                                    rf"B= *(\d+) Eo= *({re_f}) E= *({re_f}) E-Eo= *({re_f}) "
-                                    rf"Re\(Z\)= *({re_f}) Im\(Z\)= *({re_f}) nlXC= *({re_f}) lXC= *({re_f}) So= *({re_f})",
+                                    'band',
+                                    rf'B= *(\d+) Eo= *({re_f}) E= *({re_f}) E-Eo= *({re_f}) '
+                                    rf'Re\(Z\)= *({re_f}) Im\(Z\)= *({re_f}) nlXC= *({re_f}) lXC= *({re_f}) So= *({re_f})',
                                     repeats=True,
                                     dtype=np.dtype(np.float64),
                                 ),
                                 Quantity(
-                                    "kpoint",
-                                    r"K *\[\d+\].+?\: *(.+)",
+                                    'kpoint',
+                                    r'K *\[\d+\].+?\: *(.+)',
                                     dtype=np.dtype(np.float64),
                                 ),
                             ]
                         ),
                     ),
                     Quantity(
-                        "output",
-                        r"(\[WR.+?\.QP\][\s\S]+?- S/N \d+.+)",
+                        'output',
+                        r'(\[WR.+?\.QP\][\s\S]+?- S/N \d+.+)',
                         repeats=True,
                         sub_parser=TextParser(quantities=io_quantities),
                     ),
@@ -197,19 +197,19 @@ class MainfileParser(TextParser):
 
         module_quantities = [
             Quantity(
-                "dipoles",
-                r"Dipoles *\n([\s\S]+?)\n *\[\d+\]",
+                'dipoles',
+                r'Dipoles *\n([\s\S]+?)\n *\[\d+\]',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "input",
-                            r"(\[RD.+?\][\s\S]+?- S/N \d+.+)",
+                            'input',
+                            r'(\[RD.+?\][\s\S]+?- S/N \d+.+)',
                             repeats=True,
                             sub_parser=TextParser(quantities=io_quantities),
                         ),
                         Quantity(
-                            "output",
-                            r"(\[WR.+?\.dipoles\][\s\S]+?- S/N \d+.+)",
+                            'output',
+                            r'(\[WR.+?\.dipoles\][\s\S]+?- S/N \d+.+)',
                             repeats=True,
                             sub_parser=TextParser(quantities=io_quantities),
                         ),
@@ -217,46 +217,46 @@ class MainfileParser(TextParser):
                 ),
             ),
             Quantity(
-                "local_xc_nonlocal_fock",
-                r"Local Exchange-Correlation \+ Non-Local Fock([\s\S]+?(?:\n *\[\d+\]|\Z))",
+                'local_xc_nonlocal_fock',
+                r'Local Exchange-Correlation \+ Non-Local Fock([\s\S]+?(?:\n *\[\d+\]|\Z))',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "output",
-                            r"(\[WR.+?\.HF_and_locXC\][\s\S]+?- S/N \d+.+)",
+                            'output',
+                            r'(\[WR.+?\.HF_and_locXC\][\s\S]+?- S/N \d+.+)',
                             repeats=True,
                             sub_parser=TextParser(quantities=io_quantities),
                         ),
                         Quantity(
-                            "x_yambo_plane_waves_vxc",
-                            r"\[VXC\] Plane waves : *(\d+)",
+                            'x_yambo_plane_waves_vxc',
+                            r'\[VXC\] Plane waves : *(\d+)',
                             dtype=np.int32,
                         ),
                         Quantity(
-                            "x_yambo_plane_waves_exs",
-                            r"\[EXS\] Plane waves : *(\d+)",
+                            'x_yambo_plane_waves_exs',
+                            r'\[EXS\] Plane waves : *(\d+)',
                             dtype=np.int32,
                         ),
                         Quantity(
-                            "x_yambo_mesh_size",
-                            r"Mesh size: *(\d+) *(\d+) *(\d+)",
+                            'x_yambo_mesh_size',
+                            r'Mesh size: *(\d+) *(\d+) *(\d+)',
                             dtype=np.dtype(np.int32),
                         ),
                         Quantity(
-                            "energy_xc",
-                            rf"E_xc *: *({re_f}) \[Ha\]",
+                            'energy_xc',
+                            rf'E_xc *: *({re_f}) \[Ha\]',
                             dtype=np.float64,
-                            unit="hartree",
+                            unit='hartree',
                         ),
                         Quantity(
-                            "corrections",
-                            r"Corrections @ K \[\d+\] *: *\[eV\]([\s\S]+?)\n *\n",
+                            'corrections',
+                            r'Corrections @ K \[\d+\] *: *\[eV\]([\s\S]+?)\n *\n',
                             repeats=True,
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "band",
-                                        rf"\<\d+\|nlXC\|\d+\> *= *({re_f}) *{re_f} \<\d+\|lXC\|\d+\> *= *({re_f}) *{re_f}",
+                                        'band',
+                                        rf'\<\d+\|nlXC\|\d+\> *= *({re_f}) *{re_f} \<\d+\|lXC\|\d+\> *= *({re_f}) *{re_f}',
                                         repeats=True,
                                         dtype=np.dtype(np.float64),
                                     )
@@ -264,8 +264,8 @@ class MainfileParser(TextParser):
                             ),
                         ),
                         Quantity(
-                            "hf_occupations",
-                            r"Hartree-Fock occupations report([\s\S]+?)(?:\n *\[\d+|\Z)",
+                            'hf_occupations',
+                            r'Hartree-Fock occupations report([\s\S]+?)(?:\n *\[\d+|\Z)',
                             sub_parser=TextParser(quantities=energies_quantities),
                         ),
                     ]
@@ -273,44 +273,44 @@ class MainfileParser(TextParser):
             ),
             # TODO add support for em1d
             Quantity(
-                "dynamic_dielectric_matrix",
-                r"Dynamic.+?Dielectric Matrix([\s\S]+?(?:\n *\[\d+\]|\Z))",
+                'dynamic_dielectric_matrix',
+                r'Dynamic.+?Dielectric Matrix([\s\S]+?(?:\n *\[\d+\]|\Z))',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "output",
-                            r"(\[WR.+?(?:pp|em1d|dip_iR_and_P)\][\s\S]+?- S/N \d+.+)",
+                            'output',
+                            r'(\[WR.+?(?:pp|em1d|dip_iR_and_P)\][\s\S]+?- S/N \d+.+)',
                             repeats=True,
                             sub_parser=TextParser(quantities=io_quantities),
                         ),
                         Quantity(
-                            "x_yambo_mesh_size",
-                            r"Mesh size: *(\d+) *(\d+) *(\d+)",
+                            'x_yambo_mesh_size',
+                            r'Mesh size: *(\d+) *(\d+) *(\d+)',
                             dtype=np.dtype(np.int32),
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "bare_xc",
-                r"Bare local and non-local Exchange-Correlation([\s\S]+?(?:\n *\[\d+\]|\Z))",
+                'bare_xc',
+                r'Bare local and non-local Exchange-Correlation([\s\S]+?(?:\n *\[\d+\]|\Z))',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "output",
-                            r"(\[WR.+?\.HF_and_locXC\][\s\S]+?- S/N \d+.+)",
+                            'output',
+                            r'(\[WR.+?\.HF_and_locXC\][\s\S]+?- S/N \d+.+)',
                             repeats=True,
                             sub_parser=TextParser(quantities=io_quantities),
                         ),
                         Quantity(
-                            "xc_hf_dft",
-                            r"XC HF and DFT \[eV\]([\s\S]+?)\n *\n",
+                            'xc_hf_dft',
+                            r'XC HF and DFT \[eV\]([\s\S]+?)\n *\n',
                             repeats=True,
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "band",
-                                        rf"\<\d+\|HF\|\d+\> *= *({re_f}) *{re_f} *\<\d+\|DFT\|\d+\> *= *({re_f}) *{re_f}",
+                                        'band',
+                                        rf'\<\d+\|HF\|\d+\> *= *({re_f}) *{re_f} *\<\d+\|DFT\|\d+\> *= *({re_f}) *{re_f}',
                                         repeats=True,
                                         dtype=np.dtype(np.float64),
                                     )
@@ -318,42 +318,42 @@ class MainfileParser(TextParser):
                             ),
                         ),
                         Quantity(
-                            "hf_occupations",
-                            r"HF occupations report([\s\S]+?Direct Gaps.+)",
+                            'hf_occupations',
+                            r'HF occupations report([\s\S]+?Direct Gaps.+)',
                             sub_parser=TextParser(quantities=energies_quantities),
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "dyson",
-                r"Dyson equation: Newton solver([\s\S]+?(?:\n *\[\d+\]|\Z))",
+                'dyson',
+                r'Dyson equation: Newton solver([\s\S]+?(?:\n *\[\d+\]|\Z))',
                 sub_parser=TextParser(
                     quantities=[
                         qp_properties_quantity,
                         Quantity(
-                            "g0w0",
-                            r"G0W0([\s\S]+?\n *\[\d+\.\d+\])",
+                            'g0w0',
+                            r'G0W0([\s\S]+?\n *\[\d+\.\d+\])',
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "x_yambo_bands_range",
-                                        r"Bands range *: *(\d+) *(\d+)",
+                                        'x_yambo_bands_range',
+                                        r'Bands range *: *(\d+) *(\d+)',
                                         dtype=np.dtype(np.int32),
                                     ),
                                     Quantity(
-                                        "x_yambo_g_damping",
-                                        rf"G damping.+?: *({re_f})",
+                                        'x_yambo_g_damping',
+                                        rf'G damping.+?: *({re_f})',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_yambo_mesh_size",
-                                        r"Mesh size: *(\d+) *(\d+) *(\d+)",
+                                        'x_yambo_mesh_size',
+                                        r'Mesh size: *(\d+) *(\d+) *(\d+)',
                                         dtype=np.dtype(np.int32),
                                     ),
                                     Quantity(
-                                        "input",
-                                        r"(\[RD.+?\.pp\][\s\S]+?- S/N \d+.+)",
+                                        'input',
+                                        r'(\[RD.+?\.pp\][\s\S]+?- S/N \d+.+)',
                                         repeats=True,
                                         sub_parser=TextParser(quantities=io_quantities),
                                     ),
@@ -367,32 +367,32 @@ class MainfileParser(TextParser):
 
         self._quantities = [
             Quantity(
-                "version", r"Version ([\d.]+ Revision \d+)", flatten=False, dtype=str
+                'version', r'Version ([\d.]+ Revision \d+)', flatten=False, dtype=str
             ),
-            Quantity("hash", r"Hash (\S+)", dtype=str),
-            Quantity("build", r"(\S+) Build", dtype=str),
+            Quantity('hash', r'Hash (\S+)', dtype=str),
+            Quantity('build', r'(\S+) Build', dtype=str),
             Quantity(
-                "date_start",
-                r" (\d\d/\d\d/\d\d\d\d) at (\d\d:\d\d) YAMBO @ .+",
+                'date_start',
+                r' (\d\d/\d\d/\d\d\d\d) at (\d\d:\d\d) YAMBO @ .+',
                 flatten=False,
                 dtype=str,
             ),
             Quantity(
-                "cpu_files_io",
-                r"((?:Cores |CPU structure)[\s\S]+?)\n *\[\d+\]",
+                'cpu_files_io',
+                r'((?:Cores |CPU structure)[\s\S]+?)\n *\[\d+\]',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "parameters",
-                            r"([A-Z][\w/ ]+).*?(?: is | in |: ) *(\S+)",
+                            'parameters',
+                            r'([A-Z][\w/ ]+).*?(?: is | in |: ) *(\S+)',
                             repeats=True,
                             str_operation=lambda x: [
-                                v.strip() for v in x.rsplit(" ", 1)
+                                v.strip() for v in x.rsplit(' ', 1)
                             ],
                         ),
                         Quantity(
-                            "input",
-                            r"( \[RD.+[\s\S]+?- S/N \d+.+)",
+                            'input',
+                            r'( \[RD.+[\s\S]+?- S/N \d+.+)',
                             repeats=False,
                             sub_parser=TextParser(quantities=io_quantities),
                         ),
@@ -400,36 +400,36 @@ class MainfileParser(TextParser):
                 ),
             ),
             Quantity(
-                "core_variables_setup",
-                r"(CORE Variables Setup[\s\S]+?)\n *\[\d+\]",
+                'core_variables_setup',
+                r'(CORE Variables Setup[\s\S]+?)\n *\[\d+\]',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "energies_occupations",
-                            r"Energies.+?& Occupations([\s\S]+?)(?:\[0|\Z)",
+                            'energies_occupations',
+                            r'Energies.+?& Occupations([\s\S]+?)(?:\[0|\Z)',
                             sub_parser=TextParser(
                                 quantities=energies_quantities
                                 + [
                                     Quantity(
-                                        "eigenenergies",
-                                        rf"Energy unit is electronVolt \[eV\]([\s\S]+E *{re_f} *{re_f} *{re_f}.+)",
+                                        'eigenenergies',
+                                        rf'Energy unit is electronVolt \[eV\]([\s\S]+E *{re_f} *{re_f} *{re_f}.+)',
                                         sub_parser=TextParser(
                                             quantities=[
                                                 Quantity(
-                                                    "energies",
-                                                    rf"\n *E *({re_f} .+)",
+                                                    'energies',
+                                                    rf'\n *E *({re_f} .+)',
                                                     repeats=True,
                                                     dtype=np.dtype(np.float64),
                                                 ),
                                                 Quantity(
-                                                    "kpoints",
-                                                    rf"({re_f} *{re_f} *{re_f}) \(rlu\)",
+                                                    'kpoints',
+                                                    rf'({re_f} *{re_f} *{re_f}) \(rlu\)',
                                                     repeats=True,
                                                     dtype=np.dtype(np.float64),
                                                 ),
                                                 Quantity(
-                                                    "kpoints_weights",
-                                                    rf"weight +({re_f})",
+                                                    'kpoints_weights',
+                                                    rf'weight +({re_f})',
                                                     repeats=True,
                                                     dtype=np.float64,
                                                 ),
@@ -443,25 +443,25 @@ class MainfileParser(TextParser):
                 ),
             ),
             Quantity(
-                "transferred_momenta",
-                r"Transferred momenta grid([\s\S]+?)\n *\[\d+\]",
+                'transferred_momenta',
+                r'Transferred momenta grid([\s\S]+?)\n *\[\d+\]',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "input",
-                            r"( \[RD.+[\s\S]+?- S/N \d+.+)",
+                            'input',
+                            r'( \[RD.+[\s\S]+?- S/N \d+.+)',
                             repeats=True,
                             sub_parser=TextParser(quantities=io_quantities),
                         ),
                         Quantity(
-                            "qpoints",
-                            rf"Q \[\d+\] *: *({re_f}) *({re_f}) *({re_f}) *\(iku\) \* weight *({re_f})",
+                            'qpoints',
+                            rf'Q \[\d+\] *: *({re_f}) *({re_f}) *({re_f}) *\(iku\) \* weight *({re_f})',
                             repeats=True,
                             dtype=np.dtype(np.float64),
                         ),
                         Quantity(
-                            "module",
-                            r"((?:Dipoles *\n|Dynamic Dielectric|Dyson|Bare local|Local Exchange)[\s\S]+?\n *\[\d+\.\d+\])",
+                            'module',
+                            r'((?:Dipoles *\n|Dynamic Dielectric|Dyson|Bare local|Local Exchange)[\s\S]+?\n *\[\d+\.\d+\])',
                             repeats=True,
                             sub_parser=TextParser(quantities=module_quantities),
                         ),
@@ -470,8 +470,8 @@ class MainfileParser(TextParser):
                 ),
             ),
             Quantity(
-                "module",
-                r"((?:Dipoles *\n|Dynamic.+?Dielectric|Dyson|Bare local|Local Exchange)[\s\S]+?\n *\[\d+\])",
+                'module',
+                r'((?:Dipoles *\n|Dynamic.+?Dielectric|Dyson|Bare local|Local Exchange)[\s\S]+?\n *\[\d+\])',
                 repeats=True,
                 sub_parser=TextParser(quantities=module_quantities),
             ),
@@ -491,7 +491,7 @@ class NetCDFParser(FileParser):
             try:
                 self._file_handler = Dataset(self.mainfile)
             except Exception:
-                self.logger.warning("Error loading file.")
+                self.logger.warning('Error loading file.')
 
         return self._file_handler
 
@@ -511,17 +511,17 @@ class InputParser(TextParser):
 
     def init_quantities(self):
         def str_to_key_block(val_in):
-            val = val_in.strip().split("\n")
+            val = val_in.strip().split('\n')
             return val[0].strip(), [
-                np.array(v.split("#")[0].split("|")[:-1], dtype=np.float64)
+                np.array(v.split('#')[0].split('|')[:-1], dtype=np.float64)
                 for v in val[1:]
             ]
 
         self._quantities = [
-            Quantity("key_value", r"\n *(\w+) *= *(.+) *#*", repeats=True),
+            Quantity('key_value', r'\n *(\w+) *= *(.+) *#*', repeats=True),
             Quantity(
-                "key_block",
-                r"\n *\% *(\w+)([\s\S]+?)\%",
+                'key_block',
+                r'\n *\% *(\w+)([\s\S]+?)\%',
                 repeats=True,
                 str_operation=str_to_key_block,
             ),
@@ -534,10 +534,10 @@ class YamboParser:
         self.input_parser = InputParser()
         self.netcdf_parser = NetCDFParser()
         self.metainfo_map = {
-            "cpu": "cores",
-            "threads": "threads_per_core",
-            "threads_tot": "threads_total",
-            "io_nodes": "nodes_io",
+            'cpu': 'cores',
+            'threads': 'threads_per_core',
+            'threads_tot': 'threads_total',
+            'io_nodes': 'nodes_io',
         }
         self._module = None
 
@@ -561,16 +561,16 @@ class YamboParser:
         ]
         method.m_add_sub_section(section_def, section)
 
-        for input in source.get("input", []):
-            parameters = {key.strip(): val for key, val in input.get("key_value", [])}
+        for input in source.get('input', []):
+            parameters = {key.strip(): val for key, val in input.get('key_value', [])}
             x_yambo_input = x_yambo_io()
             section.x_yambo_input.append(x_yambo_input)
             x_yambo_input.x_yambo_file = input.file
             x_yambo_input.x_yambo_sn = input.sn
             x_yambo_input.x_yambo_parameters = parameters
 
-        for output in source.get("output", []):
-            parameters = {key.strip(): val for key, val in output.get("key_value", [])}
+        for output in source.get('output', []):
+            parameters = {key.strip(): val for key, val in output.get('key_value', [])}
             x_yambo_output = x_yambo_io()
             section.x_yambo_output.append(x_yambo_output)
             x_yambo_output.x_yambo_file = output.file
@@ -578,7 +578,7 @@ class YamboParser:
             x_yambo_output.x_yambo_parameters = parameters
 
         for key, val in source.items():
-            if key.startswith("x_yambo"):
+            if key.startswith('x_yambo'):
                 setattr(section, key, val)
 
     def parse_calculation(self, source, target=None):
@@ -591,11 +591,11 @@ class YamboParser:
         else:
             calc = target
         valence_conduction = source.get(
-            "valence_conduction",
-            [source.get("valence", 0.0), source.get("conduction", 0.0)],
+            'valence_conduction',
+            [source.get('valence', 0.0), source.get('conduction', 0.0)],
         )
         calc.energy = Energy(
-            fermi=source.get("fermi", 0.0),
+            fermi=source.get('fermi', 0.0),
             highest_occupied=valence_conduction[0],
             lowest_unoccupied=valence_conduction[1],
         )
@@ -608,7 +608,7 @@ class YamboParser:
         if self.netcdf_parser.EIGENVALUES is not None:
             eigenvalues = BandEnergies()
             calc.eigenvalues.append(eigenvalues)
-            eigenvalues.kpoints = np.transpose(self.netcdf_parser.get("K-POINTS"))
+            eigenvalues.kpoints = np.transpose(self.netcdf_parser.get('K-POINTS'))
             eigenvalues.energies = self.netcdf_parser.EIGENVALUES * ureg.eV
 
         elif source.eigenenergies is not None:
@@ -689,7 +689,7 @@ class YamboParser:
             gw_band_energies.value_xc_potential = np.reshape(vxc, shape)
 
         for key, val in source.items():
-            if key.startswith("x_yambo") and val is not None:
+            if key.startswith('x_yambo') and val is not None:
                 setattr(calc, key, val)
 
         return calc
@@ -707,7 +707,7 @@ class YamboParser:
         if self.netcdf_parser.mainfile is not None:
             system = System()
             run.system.append(system)
-            positions = self.netcdf_parser.get("ATOM_POS", [])
+            positions = self.netcdf_parser.get('ATOM_POS', [])
             n_atoms = self.netcdf_parser.N_ATOMS
             atom_numbers = np.hstack(
                 [
@@ -726,8 +726,8 @@ class YamboParser:
                 )
 
         # reference calculation
-        energies_occupations = self.mainfile_parser.get("core_variables_setup", {}).get(
-            "energies_occupations"
+        energies_occupations = self.mainfile_parser.get('core_variables_setup', {}).get(
+            'energies_occupations'
         )
         self.parse_calculation(energies_occupations)
 
@@ -738,7 +738,7 @@ class YamboParser:
         input.x_yambo_sn = self.mainfile_parser.cpu_files_io.input.sn
         parameters = {
             key.strip(): val
-            for key, val in self.mainfile_parser.cpu_files_io.input.get("key_value", [])
+            for key, val in self.mainfile_parser.cpu_files_io.input.get('key_value', [])
         }
         input.x_yambo_parameters = parameters
 
@@ -750,13 +750,13 @@ class YamboParser:
         self._module = x_yambo_dynamic_dielectric_matrix
         self.parse_method(source)
 
-        for output in source.get("output", []):
-            path = os.path.join(self.maindir, os.path.dirname(output.get("file", "")))
+        for output in source.get('output', []):
+            path = os.path.join(self.maindir, os.path.dirname(output.get('file', '')))
             if not os.path.isdir(path):
                 continue
             ddm = self.archive.run[-1].method[-1].x_yambo_dynamic_dielectric_matrix[-1]
             for filename in os.listdir(path):
-                if "pp_fragment_" not in filename:
+                if 'pp_fragment_' not in filename:
                     continue
                 self.netcdf_parser.mainfile = os.path.join(path, filename)
                 if self.netcdf_parser.mainfile is None:
@@ -766,11 +766,11 @@ class YamboParser:
                 self.netcdf_parser.parse()
                 for key in self.netcdf_parser._keys:
                     val = self.netcdf_parser.get(key)
-                    if key.startswith("FREQ_PARS_sec_iq"):
+                    if key.startswith('FREQ_PARS_sec_iq'):
                         fragment.x_yambo_FREQ_PARS_sec_iq = val
-                    elif key.startswith("FREQ_sec_iq"):
+                    elif key.startswith('FREQ_sec_iq'):
                         fragment.x_yambo_FREQ_sec_iq = val
-                    elif key.startswith("X_Q"):
+                    elif key.startswith('X_Q'):
                         fragment.x_yambo_X_Q = val
 
     def parse_local_xc_nonlocal_fock(self, module):
@@ -837,9 +837,9 @@ class YamboParser:
 
         if source.qp_properties is not None:
             self.parse_method(source.qp_properties, self.archive.run[-1].method[-1])
-            for output in source.qp_properties.get("output", []):
+            for output in source.qp_properties.get('output', []):
                 self.netcdf_parser.mainfile = os.path.join(
-                    self.maindir, output.get("file", "")
+                    self.maindir, output.get('file', '')
                 )
                 self.netcdf_parser.parse()
                 self.parse_calculation(source.qp_properties)
@@ -855,22 +855,22 @@ class YamboParser:
         run = Run()
         self.archive.run.append(run)
         run.program = Program(
-            name="YAMBO",
-            version=self.mainfile_parser.get("version", ""),
-            x_yambo_build=self.mainfile_parser.get("build", ""),
-            x_yambo_hash=self.mainfile_parser.get("hash", ""),
+            name='YAMBO',
+            version=self.mainfile_parser.get('version', ''),
+            x_yambo_build=self.mainfile_parser.get('build', ''),
+            x_yambo_hash=self.mainfile_parser.get('hash', ''),
         )
         date = datetime.strptime(
-            self.mainfile_parser.get("date_start", "01/01/1970 00:00"), "%d/%m/%Y %H:%M"
+            self.mainfile_parser.get('date_start', '01/01/1970 00:00'), '%d/%m/%Y %H:%M'
         ) - datetime(1970, 1, 1)
         run.time_run = TimeRun(date_start=date.total_seconds())
 
         if self.mainfile_parser.cpu_files_io is not None:
             self.parse_input()
             for key, val in self.mainfile_parser.cpu_files_io.parameters:
-                key = key.strip().replace("/", "").replace(" ", "_").lower()
-                val = val == "yes" if val in ["yes", "no"] else val
-                setattr(run, "x_yambo_%s" % key, val)
+                key = key.strip().replace('/', '').replace(' ', '_').lower()
+                val = val == 'yes' if val in ['yes', 'no'] else val
+                setattr(run, 'x_yambo_%s' % key, val)
 
         def parse_module(module):
             self.parse_dipoles(module)
@@ -885,8 +885,8 @@ class YamboParser:
             self.parse_calculation(
                 self.mainfile_parser.transferred_momenta.qp_properties
             )
-            for module in self.mainfile_parser.transferred_momenta.get("module", []):
+            for module in self.mainfile_parser.transferred_momenta.get('module', []):
                 parse_module(module)
 
-        for module in self.mainfile_parser.get("module", []):
+        for module in self.mainfile_parser.get('module', []):
             parse_module(module)

@@ -49,7 +49,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     x_turbomole_eigenvalue_correlation_perturbativeGW = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Correlation energy at a given eigenstate from perturbative GW
         """,
@@ -58,7 +58,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     x_turbomole_eigenvalue_ExactExchange_perturbativeGW = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Exact exchange energy at given eigenstate from perturbative GW
         """,
@@ -67,7 +67,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     x_turbomole_eigenvalue_ExchangeCorrelation_perturbativeGW = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Self-energy at a given eigenstate from perturbative GW
         """,
@@ -76,7 +76,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     x_turbomole_eigenvalue_ks_ExchangeCorrelation = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         KS exchange correlation energy at a given eigenstate needed to calculate the
         quasi-particle energy in perturbative GW
@@ -86,7 +86,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     x_turbomole_eigenvalue_ks_GroundState = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         KS ground state energy at a given eigenstate needed in perturbative GW
         """,
@@ -95,7 +95,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     x_turbomole_eigenvalue_quasiParticle_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Quasiparticle energy at a given eigenstate from perturbative GW
         """,
@@ -415,7 +415,7 @@ class Method(runschema.method.Method):
     x_turbomole_gw_eta_factor = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         [TO BE VERIFIED]Infinitesimal complex energy shift. Negative value switches to
         calculating at that value but extrapolating to 0 in linear approximation.
@@ -440,7 +440,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_section_functionals = SubSection(
-        sub_section=SectionProxy("x_turbomole_section_functionals"), repeats=True
+        sub_section=SectionProxy('x_turbomole_section_functionals'), repeats=True
     )
 
 
@@ -459,7 +459,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_turbomole_delta_eigenvalues = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         change of the eigenvalues in the current SCF iteration
         """,
@@ -468,7 +468,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_turbomole_energy_1electron_scf_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Total energy contribution from one-electron integrals
         """,
@@ -477,7 +477,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_turbomole_energy_2electron_scf_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Total energy contribution from two-electron integrals
         """,
@@ -530,9 +530,9 @@ class BandEnergies(runschema.calculation.BandEnergies):
     x_turbomole_eigenvalues_irreducible_representation = Quantity(
         type=np.dtype(np.int32),
         shape=[
-            "number_of_spin_channels",
-            "number_of_eigenvalues_kpoints",
-            "number_of_eigenvalues",
+            'number_of_spin_channels',
+            'number_of_eigenvalues_kpoints',
+            'number_of_eigenvalues',
         ],
         description="""
         Irreducible representation the eigenstates belong to.
@@ -540,7 +540,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     )
 
     x_turbomole_section_eigenvalues_GW = SubSection(
-        sub_section=SectionProxy("x_turbomole_section_eigenvalues_GW"), repeats=True
+        sub_section=SectionProxy('x_turbomole_section_eigenvalues_GW'), repeats=True
     )
 
 
@@ -550,7 +550,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     x_turbomole_geometry_optimization_geometry_change_rms = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         geometry optimization convergence criterion - Root Mean Square of displacements
         """,
@@ -559,7 +559,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     x_turbomole_geometry_optimization_threshold_force_rms = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         geometry optimization convergence criterion - Root Mean Square of forces
         """,
@@ -568,7 +568,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     x_turbomole_geometry_optimization_trustregion_initial = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         geometry optimization trust region - initial radius
         """,
@@ -577,7 +577,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     x_turbomole_geometry_optimization_trustregion_max = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         geometry optimization trust region - maximum radius
         """,
@@ -586,7 +586,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     x_turbomole_geometry_optimization_trustregion_min = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         geometry optimization trust region - minimum radius
         """,
@@ -607,7 +607,7 @@ class Calculation(runschema.calculation.Calculation):
     x_turbomole_potential_energy_final = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Final potential energy
         """,
@@ -615,7 +615,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_turbomole_vibrations_infrared_activity = Quantity(
         type=bool,
-        shape=["x_turbomole_vibrations_num_modes"],
+        shape=['x_turbomole_vibrations_num_modes'],
         description="""
         IR activicity for vibration modes
         """,
@@ -623,7 +623,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_turbomole_vibrations_raman_activity = Quantity(
         type=bool,
-        shape=["x_turbomole_vibrations_num_modes"],
+        shape=['x_turbomole_vibrations_num_modes'],
         description="""
         Raman activicity for vibration modes
         """,
@@ -631,7 +631,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_turbomole_vibrations_intensities = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_turbomole_vibrations_num_modes"],
+        shape=['x_turbomole_vibrations_num_modes'],
         description="""
         IR Intensity for each vibrational normal mode
         """,
@@ -639,7 +639,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_turbomole_vibrations_mode_energies = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_turbomole_vibrations_num_modes"],
+        shape=['x_turbomole_vibrations_num_modes'],
         description="""
         Excitation energy associated with the vibrational normal modes.
         """,
@@ -647,7 +647,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_turbomole_vibrations_normal_modes = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_turbomole_vibrations_num_modes", "number_of_atoms", 3],
+        shape=['x_turbomole_vibrations_num_modes', 'number_of_atoms', 3],
         description="""
         Nuclear displacements for each vibrational normal mode
         """,
@@ -695,7 +695,7 @@ class System(runschema.system.System):
 
     x_turbomole_pceem_charges = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Charges of the point charges in the unit cell used by the PCEEM embedding model
         """,

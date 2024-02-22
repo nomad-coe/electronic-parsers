@@ -50,7 +50,7 @@ from .magres_workflow import (
 )
 
 
-def get_files(pattern: str, filepath: str, stripname: str = "", deep: bool = True):
+def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = True):
     """Get files following the `pattern` with respect to the file `stripname` (usually this
     being the mainfile of the given parser) up to / down from the `filepath` (`deep=True` going
     down, `deep=False` up)
@@ -65,8 +65,8 @@ def get_files(pattern: str, filepath: str, stripname: str = "", deep: bool = Tru
         list: List of found files.
     """
     for _ in range(10):
-        filenames = glob(f"{os.path.dirname(filepath)}/{pattern}")
-        pattern = os.path.join("**" if deep else "..", pattern)
+        filenames = glob(f'{os.path.dirname(filepath)}/{pattern}')
+        pattern = os.path.join('**' if deep else '..', pattern)
         if filenames:
             break
 
@@ -148,55 +148,55 @@ class BeyondDFTWorkflowsParser:
         workflow = DFTPlusGW(method=DFTPlusGWMethod())
 
         # Method
-        method_gw = extract_section(gw_archive, ["run", "method", "gw"])
+        method_gw = extract_section(gw_archive, ['run', 'method', 'gw'])
         method_xcfunctional = extract_section(
-            self.archive, ["run", "method", "dft", "xc_functional"]
+            self.archive, ['run', 'method', 'dft', 'xc_functional']
         )
         method_basisset = extract_section(
-            self.archive, ["run", "method", "electrons_representation"]
+            self.archive, ['run', 'method', 'electrons_representation']
         )
         workflow.method.gw_method_ref = method_gw
         workflow.method.starting_point = method_xcfunctional
         workflow.method.electrons_representation = method_basisset
 
         # Inputs and Outputs
-        input_structure = extract_section(self.archive, ["run", "system"])
-        dft_calculation = extract_section(self.archive, ["run", "calculation"])
-        gw_calculation = extract_section(gw_archive, ["run", "calculation"])
+        input_structure = extract_section(self.archive, ['run', 'system'])
+        dft_calculation = extract_section(self.archive, ['run', 'calculation'])
+        gw_calculation = extract_section(gw_archive, ['run', 'calculation'])
         if input_structure:
             workflow.m_add_sub_section(
-                DFTPlusGW.inputs, Link(name="Input structure", section=input_structure)
+                DFTPlusGW.inputs, Link(name='Input structure', section=input_structure)
             )
         if gw_calculation:
             workflow.m_add_sub_section(
                 DFTPlusGW.outputs,
-                Link(name="Output GW calculation", section=gw_calculation),
+                Link(name='Output GW calculation', section=gw_calculation),
             )
 
         # DFT task
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
-            task.name = "DFT"
+            task.name = 'DFT'
             # TODO check why this re-writting is necessary to not repeat sections inside tasks
             if input_structure:
-                task.inputs = [Link(name="Input structure", section=input_structure)]
+                task.inputs = [Link(name='Input structure', section=input_structure)]
             if dft_calculation:
                 task.outputs = [
-                    Link(name="Output DFT calculation", section=dft_calculation)
+                    Link(name='Output DFT calculation', section=dft_calculation)
                 ]
             workflow.m_add_sub_section(DFTPlusGW.tasks, task)
 
         # GW task
         if gw_archive.workflow2:
             task = TaskReference(task=gw_archive.workflow2)
-            task.name = "GW"
+            task.name = 'GW'
             if dft_calculation:
                 task.inputs = [
-                    Link(name="Output DFT calculation", section=dft_calculation)
+                    Link(name='Output DFT calculation', section=dft_calculation)
                 ]
             if gw_calculation:
                 task.outputs = [
-                    Link(name="Output GW calculation", section=gw_calculation)
+                    Link(name='Output GW calculation', section=gw_calculation)
                 ]
             workflow.m_add_sub_section(DFTPlusGW.tasks, task)
 
@@ -223,29 +223,29 @@ class BeyondDFTWorkflowsParser:
 
         # Method
         method_first_principles = extract_section(
-            first_principles_calculation_archive, ["run", "method"]
+            first_principles_calculation_archive, ['run', 'method']
         )
-        method_tb = extract_section(tb_archive, ["run", "method", "tb"])
+        method_tb = extract_section(tb_archive, ['run', 'method', 'tb'])
         workflow.method.first_principles_method_ref = method_first_principles
         workflow.method.tb_method_ref = method_tb
 
         # Inputs and Outputs
         input_structure = extract_section(
-            first_principles_calculation_archive, ["run", "system"]
+            first_principles_calculation_archive, ['run', 'system']
         )
         first_principles_calculation = extract_section(
-            first_principles_calculation_archive, ["run", "calculation"]
+            first_principles_calculation_archive, ['run', 'calculation']
         )
-        tb_calculation = extract_section(tb_archive, ["run", "calculation"])
+        tb_calculation = extract_section(tb_archive, ['run', 'calculation'])
         if input_structure:
             workflow.m_add_sub_section(
                 FirstPrinciplesPlusTB.inputs,
-                Link(name="Input Structure", section=input_structure),
+                Link(name='Input Structure', section=input_structure),
             )
         if tb_calculation:
             workflow.m_add_sub_section(
                 FirstPrinciplesPlusTB.outputs,
-                Link(name="Output TB Model", section=tb_calculation),
+                Link(name='Output TB Model', section=tb_calculation),
             )
 
         # First Principles Calculation task
@@ -253,15 +253,15 @@ class BeyondDFTWorkflowsParser:
             first_principles_task = TaskReference(
                 task=first_principles_calculation_archive.workflow2
             )
-            first_principles_task.name = "FirstPrinciples"
+            first_principles_task.name = 'FirstPrinciples'
             if input_structure:
                 first_principles_task.inputs = [
-                    Link(name="Input Structure", section=input_structure)
+                    Link(name='Input Structure', section=input_structure)
                 ]
             if first_principles_calculation:
                 first_principles_task.outputs = [
                     Link(
-                        name="Output FirstPrinciples Calculation",
+                        name='Output FirstPrinciples Calculation',
                         section=first_principles_calculation,
                     )
                 ]
@@ -272,16 +272,16 @@ class BeyondDFTWorkflowsParser:
         # TB task
         if tb_archive.workflow2:
             tb_task = TaskReference(task=tb_archive.workflow2)
-            tb_task.name = "TB"
+            tb_task.name = 'TB'
             if first_principles_calculation:
                 tb_task.inputs = [
                     Link(
-                        name="Input FirstPrinciples Calculation",
+                        name='Input FirstPrinciples Calculation',
                         section=first_principles_calculation,
                     )
                 ]
             if tb_calculation:
-                tb_task.outputs = [Link(name="Output TB Model", section=tb_calculation)]
+                tb_task.outputs = [Link(name='Output TB Model', section=tb_calculation)]
             workflow.m_add_sub_section(FirstPrinciplesPlusTB.tasks, tb_task)
 
         tb_workflow_archive.workflow2 = workflow
@@ -294,22 +294,22 @@ class BeyondDFTWorkflowsParser:
         workflow = PhotonPolarization(
             method=PhotonPolarizationMethod(), results=PhotonPolarizationResults()
         )
-        workflow.name = "BSE"  # this entry contains the full BSE calculation for all photon polarizations
+        workflow.name = 'BSE'  # this entry contains the full BSE calculation for all photon polarizations
 
         # Method
-        method_bse = extract_section(self.archive, ["run", "method", "bse"])
+        method_bse = extract_section(self.archive, ['run', 'method', 'bse'])
         workflow.method.bse_method_ref = method_bse
 
         # Inputs
-        input_structure = extract_section(self.archive, ["run", "system"])
+        input_structure = extract_section(self.archive, ['run', 'system'])
         workflow.m_add_sub_section(
             PhotonPolarization.inputs,
-            Link(name="Input structure", section=input_structure),
+            Link(name='Input structure', section=input_structure),
         )
-        input_method = extract_section(self.archive, ["run", "method"])
+        input_method = extract_section(self.archive, ['run', 'method'])
         workflow.m_add_sub_section(
             PhotonPolarization.inputs,
-            Link(name="Input BSE methodology", section=input_method),
+            Link(name='Input BSE methodology', section=input_method),
         )
 
         # Outputs
@@ -317,12 +317,12 @@ class BeyondDFTWorkflowsParser:
         for index, path in enumerate(self._child_archives.keys()):
             archive = self._child_archives.get(path)
 
-            output_polarization = extract_section(archive, ["run", "calculation"])
+            output_polarization = extract_section(archive, ['run', 'calculation'])
             if output_polarization:
                 workflow.m_add_sub_section(
                     PhotonPolarization.outputs,
                     Link(
-                        name=f"Output polarization {index + 1}",
+                        name=f'Output polarization {index + 1}',
                         section=output_polarization,
                     ),
                 )
@@ -331,19 +331,19 @@ class BeyondDFTWorkflowsParser:
             # Tasks
             if archive.workflow2:
                 task = TaskReference(task=archive.workflow2)
-                task.name = f"Photon {index + 1}"
+                task.name = f'Photon {index + 1}'
                 input_photon_method = archive.run[-1].method[0]
                 if input_photon_method and input_structure:
                     task.inputs = [
-                        Link(name="Input structure", section=input_structure),
+                        Link(name='Input structure', section=input_structure),
                         Link(
-                            name="Input photon parameters", section=input_photon_method
+                            name='Input photon parameters', section=input_photon_method
                         ),
                     ]
                 if output_polarization:
                     task.outputs = [
                         Link(
-                            name=f"Output polarization {index + 1}",
+                            name=f'Output polarization {index + 1}',
                             section=output_polarization,
                         )
                     ]
@@ -373,11 +373,11 @@ class BeyondDFTWorkflowsParser:
             output = []
             index = 0
             for path, archive in self._child_archives.items():
-                if os.path.basename(path).split("_")[0] in self._xs_spectra_types:
+                if os.path.basename(path).split('_')[0] in self._xs_spectra_types:
                     output_polarization = archive.run[-1].calculation[-1]
                     output.append(
                         Link(
-                            name=f"Output polarization {index + 1}",
+                            name=f'Output polarization {index + 1}',
                             section=output_polarization,
                         )
                     )
@@ -385,31 +385,31 @@ class BeyondDFTWorkflowsParser:
             return output
 
         workflow = XS(method=XSMethod())
-        workflow.name = "XS"
+        workflow.name = 'XS'
 
         # Inputs and Outputs
-        input_structure = extract_section(self.archive, ["run", "system"])
-        dft_calculation = extract_section(self.archive, ["run", "calculation"])
+        input_structure = extract_section(self.archive, ['run', 'system'])
+        dft_calculation = extract_section(self.archive, ['run', 'calculation'])
         polarization_calculations = extract_polarization_outputs()
         if input_structure:
             workflow.m_add_sub_section(
-                XS.inputs, Link(name="Input structure", section=input_structure)
+                XS.inputs, Link(name='Input structure', section=input_structure)
             )
         for index, polarizations in enumerate(polarization_calculations):
             workflow.m_add_sub_section(
                 XS.outputs,
-                Link(name=f"Polarization {index + 1}", section=polarizations),
+                Link(name=f'Polarization {index + 1}', section=polarizations),
             )
 
         # DFT task
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
-            task.name = "DFT"
+            task.name = 'DFT'
             if input_structure:
-                task.inputs = [Link(name="Input structure", section=input_structure)]
+                task.inputs = [Link(name='Input structure', section=input_structure)]
             if dft_calculation:
                 task.outputs = [
-                    Link(name="Output DFT calculation", section=dft_calculation)
+                    Link(name='Output DFT calculation', section=dft_calculation)
                 ]
             workflow.m_add_sub_section(XS.tasks, task)
 
@@ -418,25 +418,25 @@ class BeyondDFTWorkflowsParser:
             if not xs_archive.workflow2:
                 continue
             task = TaskReference(task=xs_archive.workflow2)
-            task.name = f"BSE {index + 1}"
+            task.name = f'BSE {index + 1}'
             if dft_calculation:
                 xs_archive.workflow2.m_add_sub_section(
                     PhotonPolarization.inputs,
-                    Link(name="Output DFT calculation", section=dft_calculation),
+                    Link(name='Output DFT calculation', section=dft_calculation),
                 )
                 task.inputs = [
-                    Link(name="Output DFT calculation", section=dft_calculation)
+                    Link(name='Output DFT calculation', section=dft_calculation)
                 ]
                 for i_photon, photon_task in enumerate(xs_archive.workflow2.tasks):
                     photon_task.m_add_sub_section(
                         TaskReference.inputs,
-                        Link(name="Output DFT calculation", section=dft_calculation),
+                        Link(name='Output DFT calculation', section=dft_calculation),
                     )
-                    if photon_task.m_xpath("outputs[-1].section"):
+                    if photon_task.m_xpath('outputs[-1].section'):
                         task.m_add_sub_section(
                             TaskReference.outputs,
                             Link(
-                                name=f"Polarization {i_photon + 1}",
+                                name=f'Polarization {i_photon + 1}',
                                 section=photon_task.outputs[-1].section,
                             ),
                         )
@@ -457,30 +457,30 @@ class BeyondDFTWorkflowsParser:
         workflow = DMFTPlusMaxEnt(method=DMFTPlusMaxEntMethod())
 
         # Method
-        method_dmft = extract_section(self.archive, ["run", "method", "dmft"])
-        method_maxent = extract_section(maxent_archive, ["run", "method"])
+        method_dmft = extract_section(self.archive, ['run', 'method', 'dmft'])
+        method_maxent = extract_section(maxent_archive, ['run', 'method'])
         workflow.method.dmft_method_ref = method_dmft
         workflow.method.maxent_method_ref = method_maxent
 
         # Inputs and Outputs
-        input_structure = extract_section(self.archive, ["run", "system"])
-        dmft_calculation = extract_section(self.archive, ["run", "calculation"])
-        maxent_calculation = extract_section(maxent_archive, ["run", "calculation"])
+        input_structure = extract_section(self.archive, ['run', 'system'])
+        dmft_calculation = extract_section(self.archive, ['run', 'calculation'])
+        maxent_calculation = extract_section(maxent_archive, ['run', 'calculation'])
         workflow_maxent_calculation = extract_section(
-            workflow_archive, ["run", "calculation"]
+            workflow_archive, ['run', 'calculation']
         )
         if input_structure:
             workflow.m_add_sub_section(
                 DMFTPlusMaxEnt.inputs,
-                Link(name="Input structure", section=input_structure),
+                Link(name='Input structure', section=input_structure),
             )
         if maxent_calculation and workflow_maxent_calculation:
             outputs = [
                 Link(
-                    name="Output MaxEnt Sigma calculation", section=maxent_calculation
+                    name='Output MaxEnt Sigma calculation', section=maxent_calculation
                 ),
                 Link(
-                    name="Output MaxEnt GF and DOS calculation",
+                    name='Output MaxEnt GF and DOS calculation',
                     section=workflow_maxent_calculation,
                 ),
             ]
@@ -489,27 +489,27 @@ class BeyondDFTWorkflowsParser:
         # DMFT task
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
-            task.name = "DMFT"
+            task.name = 'DMFT'
             if input_structure:
-                task.inputs = [Link(name="Input structure", section=input_structure)]
+                task.inputs = [Link(name='Input structure', section=input_structure)]
             if dmft_calculation:
                 task.outputs = [
-                    Link(name="Output DMFT calculation", section=dmft_calculation)
+                    Link(name='Output DMFT calculation', section=dmft_calculation)
                 ]
             workflow.m_add_sub_section(DMFTPlusMaxEnt.tasks, task)
 
         # MaxEnt task
         if maxent_archive.workflow2:
             task = TaskReference(task=maxent_archive.workflow2)
-            task.name = "MaxEnt"
+            task.name = 'MaxEnt'
             if dmft_calculation:
                 task.inputs = [
-                    Link(name="Output DMFT calculation", section=dmft_calculation)
+                    Link(name='Output DMFT calculation', section=dmft_calculation)
                 ]
             if maxent_calculation:
                 task.outputs = [
                     Link(
-                        name="Output MaxEnt Sigma calculation",
+                        name='Output MaxEnt Sigma calculation',
                         section=maxent_calculation,
                     )
                 ]
@@ -536,50 +536,50 @@ class BeyondDFTWorkflowsParser:
         workflow = DFTPlusTBPlusDMFT(method=DFTPlusTBPlusDMFTMethod())
 
         # Method
-        method_proj = extract_section(wannier_archive, ["run", "method", "tb"])
-        method_dmft = extract_section(self.archive, ["run", "method", "dmft"])
+        method_proj = extract_section(wannier_archive, ['run', 'method', 'tb'])
+        method_dmft = extract_section(self.archive, ['run', 'method', 'dmft'])
         workflow.method.tb_method_ref = method_proj
         workflow.method.dmft_method_ref = method_dmft
 
         # Inputs and Outputs
-        input_structure = extract_section(wannier_archive, ["run", "system"])
-        wannier_calculation = extract_section(wannier_archive, ["run", "calculation"])
-        dmft_calculation = extract_section(self.archive, ["run", "calculation"])
+        input_structure = extract_section(wannier_archive, ['run', 'system'])
+        wannier_calculation = extract_section(wannier_archive, ['run', 'calculation'])
+        dmft_calculation = extract_section(self.archive, ['run', 'calculation'])
         if input_structure:
             workflow.m_add_sub_section(
                 DFTPlusTBPlusDMFT.inputs,
-                Link(name="Input structure", section=input_structure),
+                Link(name='Input structure', section=input_structure),
             )
         if dmft_calculation:
             workflow.m_add_sub_section(
                 DFTPlusTBPlusDMFT.outputs,
-                Link(name="Output DMFT calculation", section=dmft_calculation),
+                Link(name='Output DMFT calculation', section=dmft_calculation),
             )
 
         # Wannier90 task
         if wannier_archive.workflow2:
             task = TaskReference(task=wannier_archive.workflow2)
-            task.name = "TB"
+            task.name = 'TB'
             # TODO check why this re-writting is necessary to not repeat sections inside tasks
             if input_structure:
-                task.inputs = [Link(name="Input structure", section=input_structure)]
+                task.inputs = [Link(name='Input structure', section=input_structure)]
             if wannier_calculation:
                 task.outputs = [
-                    Link(name="Output TB calculation", section=wannier_calculation)
+                    Link(name='Output TB calculation', section=wannier_calculation)
                 ]
             workflow.m_add_sub_section(DFTPlusTBPlusDMFT.tasks, task)
 
         # DMFT task
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
-            task.name = "DMFT"
+            task.name = 'DMFT'
             if wannier_calculation:
                 task.inputs = [
-                    Link(name="Output TB calculation", section=wannier_calculation)
+                    Link(name='Output TB calculation', section=wannier_calculation)
                 ]
             if dmft_calculation:
                 task.outputs = [
-                    Link(name="Output DMFT calculation", section=dmft_calculation)
+                    Link(name='Output DMFT calculation', section=dmft_calculation)
                 ]
             workflow.m_add_sub_section(DFTPlusTBPlusDMFT.tasks, task)
 
@@ -596,37 +596,37 @@ class BeyondDFTWorkflowsParser:
             SinglePoint archive
         """
         workflow = NMRMagRes(method=NMRMagResMethod(), results=NMRMagResResults())
-        workflow.name = "NMR MagRes"
+        workflow.name = 'NMR MagRes'
 
         # Method
-        method_nmr = extract_section(nmr_first_principles_archive, ["run", "method"])
+        method_nmr = extract_section(nmr_first_principles_archive, ['run', 'method'])
         workflow.method.nmr_method_ref = method_nmr
 
         # Inputs and Outputs
         input_structure = extract_section(
-            nmr_first_principles_archive, ["run", "system"]
+            nmr_first_principles_archive, ['run', 'system']
         )
-        nmr_magres_calculation = extract_section(self.archive, ["run", "calculation"])
+        nmr_magres_calculation = extract_section(self.archive, ['run', 'calculation'])
         if input_structure:
             workflow.m_add_sub_section(
-                NMRMagRes.inputs, Link(name="Input structure", section=input_structure)
+                NMRMagRes.inputs, Link(name='Input structure', section=input_structure)
             )
         if nmr_magres_calculation:
             workflow.m_add_sub_section(
                 NMRMagRes.outputs,
-                Link(name="Output NMR calculation", section=nmr_magres_calculation),
+                Link(name='Output NMR calculation', section=nmr_magres_calculation),
             )
 
         # NMR (first principles) task
         if nmr_first_principles_archive.workflow2:
             task = TaskReference(task=nmr_first_principles_archive.workflow2)
-            task.name = "NMR FirstPrinciples"
+            task.name = 'NMR FirstPrinciples'
             if input_structure:
-                task.inputs = [Link(name="Input structure", section=input_structure)]
+                task.inputs = [Link(name='Input structure', section=input_structure)]
             if nmr_magres_calculation:
                 task.outputs = [
                     Link(
-                        name="Output NMR calculation",
+                        name='Output NMR calculation',
                         section=nmr_magres_calculation,
                     )
                 ]

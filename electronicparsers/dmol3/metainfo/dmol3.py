@@ -392,7 +392,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_dmol3_binding_energy_scf_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         dmol3 binding energy at every SCF
         """,
@@ -429,7 +429,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     x_dmol3_eigenvalue_eigenvalue = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Single eigenvalue
         """,
@@ -458,7 +458,7 @@ class System(runschema.system.System):
     x_dmol3_geometry_atom_positions_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         x component of atomic position
         """,
@@ -467,7 +467,7 @@ class System(runschema.system.System):
     x_dmol3_geometry_atom_positions_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         y component of atomic position
         """,
@@ -476,7 +476,7 @@ class System(runschema.system.System):
     x_dmol3_geometry_atom_positions_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         z component of atomic position
         """,
@@ -638,11 +638,11 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_section_hirshfeld_population = SubSection(
-        sub_section=SectionProxy("x_dmol3_section_hirshfeld_population"), repeats=True
+        sub_section=SectionProxy('x_dmol3_section_hirshfeld_population'), repeats=True
     )
 
     x_dmol3_section_mulliken_population = SubSection(
-        sub_section=SectionProxy("x_dmol3_section_mulliken_population"), repeats=True
+        sub_section=SectionProxy('x_dmol3_section_mulliken_population'), repeats=True
     )
 
 
@@ -658,7 +658,7 @@ class VibrationalFrequencies(runschema.calculation.VibrationalFrequencies):
 
     x_dmol3_normal_modes = Quantity(
         type=np.dtype(np.float64),
-        shape=["n_frequencies", "n_atoms", 3],
+        shape=['n_frequencies', 'n_atoms', 3],
         description="""
         """,
     )

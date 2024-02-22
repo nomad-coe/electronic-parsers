@@ -81,434 +81,434 @@ from ..utils import BeyondDFTWorkflowsParser
 
 ABINIT_NATIVE_IXC = {
     0: [{}],
-    1: [{"XC_functional_name": "LDA_XC_TETER93"}],
-    2: [{"XC_functional_name": "LDA_X"}, {"XC_functional_name": "LDA_C_PZ"}],
+    1: [{'XC_functional_name': 'LDA_XC_TETER93'}],
+    2: [{'XC_functional_name': 'LDA_X'}, {'XC_functional_name': 'LDA_C_PZ'}],
     # 3 - LDA, old Teter rational polynomial parametrization (4/91)
-    4: [{"XC_functional_name": "LDA_X"}, {"XC_functional_name": "LDA_C_WIGNER"}],
-    5: [{"XC_functional_name": "LDA_X"}, {"XC_functional_name": "LDA_C_HL"}],
-    6: [{"XC_functional_name": "LDA_X"}, {"XC_functional_name": "LDA_C_XALPHA"}],
-    7: [{"XC_functional_name": "LDA_X"}, {"XC_functional_name": "LDA_C_PW"}],
+    4: [{'XC_functional_name': 'LDA_X'}, {'XC_functional_name': 'LDA_C_WIGNER'}],
+    5: [{'XC_functional_name': 'LDA_X'}, {'XC_functional_name': 'LDA_C_HL'}],
+    6: [{'XC_functional_name': 'LDA_X'}, {'XC_functional_name': 'LDA_C_XALPHA'}],
+    7: [{'XC_functional_name': 'LDA_X'}, {'XC_functional_name': 'LDA_C_PW'}],
     # 8 - x-only part of the Perdew-Wang 92 functional
     # 9 - x- and RPA correlation part of the Perdew-Wang 92 functional
     # 10 - non-existent
-    11: [{"XC_functional_name": "GGA_X_PBE"}, {"XC_functional_name": "GGA_C_PBE"}],
-    12: [{"XC_functional_name": "GGA_X_PBE"}],
-    13: [{"XC_functional_name": "GGA_X_LB"}, {"XC_functional_name": "LDA_C_PW"}],
-    14: [{"XC_functional_name": "GGA_X_PBE_R"}, {"XC_functional_name": "?"}],
-    15: [{"XC_functional_name": "GGA_X_RPBE"}, {"XC_functional_name": "?"}],
-    16: [{"XC_functional_name": "GGA_XC_HCTH_93"}],
-    17: [{"XC_functional_name": "GGA_XC_HCTH_120"}],
-    18: [{"XC_functional_name": "GGA_X_B88"}, {"XC_functional_name": "GGA_C_LYP"}],
-    19: [{"XC_functional_name": "GGA_X_B88"}, {"XC_functional_name": "GGA_C_P86"}],
+    11: [{'XC_functional_name': 'GGA_X_PBE'}, {'XC_functional_name': 'GGA_C_PBE'}],
+    12: [{'XC_functional_name': 'GGA_X_PBE'}],
+    13: [{'XC_functional_name': 'GGA_X_LB'}, {'XC_functional_name': 'LDA_C_PW'}],
+    14: [{'XC_functional_name': 'GGA_X_PBE_R'}, {'XC_functional_name': '?'}],
+    15: [{'XC_functional_name': 'GGA_X_RPBE'}, {'XC_functional_name': '?'}],
+    16: [{'XC_functional_name': 'GGA_XC_HCTH_93'}],
+    17: [{'XC_functional_name': 'GGA_XC_HCTH_120'}],
+    18: [{'XC_functional_name': 'GGA_X_B88'}, {'XC_functional_name': 'GGA_C_LYP'}],
+    19: [{'XC_functional_name': 'GGA_X_B88'}, {'XC_functional_name': 'GGA_C_P86'}],
     # 20 - Fermi-Amaldi xc ( -1/N Hartree energy, where N is the number of electrons per cell;
     #      G=0 is not taken into account however), for TDDFT tests.
     # 21 - same as 20, except that the xc-kernel is the LDA (ixc=1) one, for TDDFT tests.
     # 22 - same as 20, except that the xc-kernel is the Burke-Petersilka-Gross hybrid, for
     #      TDDFT tests.
-    23: [{"XC_functional_name": "GGA_X_WC"}, {"XC_functional_name": "?"}],
-    24: [{"XC_functional_name": "GGA_X_C09X"}, {"XC_functional_name": "?"}],
+    23: [{'XC_functional_name': 'GGA_X_WC'}, {'XC_functional_name': '?'}],
+    24: [{'XC_functional_name': 'GGA_X_C09X'}, {'XC_functional_name': '?'}],
     # 25 - non-existent
-    26: [{"XC_functional_name": "GGA_XC_HCTH_147"}],
-    27: [{"XC_functional_name": "GGA_XC_HCTH_407"}],
-    28: [{"XC_functional_name": "GGA_X_OPTX"}, {"XC_functional_name": "GGA_C_LYP"}],
-    40: [{"XC_functional_name": "HF_X"}],
-    41: [{"XC_functional_name": "HYB_GGA_XC_PBEH"}],
-    42: [{"XC_functional_name": "HYB_GGA_XC_PBE0_13"}],
+    26: [{'XC_functional_name': 'GGA_XC_HCTH_147'}],
+    27: [{'XC_functional_name': 'GGA_XC_HCTH_407'}],
+    28: [{'XC_functional_name': 'GGA_X_OPTX'}, {'XC_functional_name': 'GGA_C_LYP'}],
+    40: [{'XC_functional_name': 'HF_X'}],
+    41: [{'XC_functional_name': 'HYB_GGA_XC_PBEH'}],
+    42: [{'XC_functional_name': 'HYB_GGA_XC_PBE0_13'}],
 }
 
 ABINIT_LIBXC_IXC = {
-    1: {"XC_functional_name": "LDA_X"},
-    2: {"XC_functional_name": "LDA_C_WIGNER"},
-    3: {"XC_functional_name": "LDA_C_RPA"},
-    4: {"XC_functional_name": "LDA_C_HL"},
-    5: {"XC_functional_name": "LDA_C_GL"},
-    6: {"XC_functional_name": "LDA_C_XALPHA"},
-    7: {"XC_functional_name": "LDA_C_VWN"},
-    8: {"XC_functional_name": "LDA_C_VWN_RPA"},
-    9: {"XC_functional_name": "LDA_C_PZ"},
-    10: {"XC_functional_name": "LDA_C_PZ_MOD"},
-    11: {"XC_functional_name": "LDA_C_OB_PZ"},
-    12: {"XC_functional_name": "LDA_C_PW"},
-    13: {"XC_functional_name": "LDA_C_PW_MOD"},
-    14: {"XC_functional_name": "LDA_C_OB_PW"},
-    15: {"XC_functional_name": "LDA_C_2D_AMGB"},
-    16: {"XC_functional_name": "LDA_C_2D_PRM"},
-    17: {"XC_functional_name": "LDA_C_vBH"},
-    18: {"XC_functional_name": "LDA_C_1D_CSC"},
-    19: {"XC_functional_name": "LDA_X_2D"},
-    20: {"XC_functional_name": "LDA_XC_TETER93"},
-    21: {"XC_functional_name": "LDA_X_1D"},
-    22: {"XC_functional_name": "LDA_C_ML1"},
-    23: {"XC_functional_name": "LDA_C_ML2"},
-    24: {"XC_functional_name": "LDA_C_GOMBAS"},
-    25: {"XC_functional_name": "LDA_C_PW_RPA"},
-    26: {"XC_functional_name": "LDA_C_1D_LOOS"},
-    27: {"XC_functional_name": "LDA_C_RC04"},
-    28: {"XC_functional_name": "LDA_C_VWN_1"},
-    29: {"XC_functional_name": "LDA_C_VWN_2"},
-    30: {"XC_functional_name": "LDA_C_VWN_3"},
-    31: {"XC_functional_name": "LDA_C_VWN_4"},
-    32: {"XC_functional_name": "GGA_X_GAM"},
-    33: {"XC_functional_name": "GGA_C_GAM"},
-    34: {"XC_functional_name": "GGA_X_HCTH_A"},
-    35: {"XC_functional_name": "GGA_X_EV93"},
-    36: {"XC_functional_name": "HYB_MGGA_X_DLDF"},
-    37: {"XC_functional_name": "MGGA_C_DLDF"},
-    38: {"XC_functional_name": "GGA_X_BCGP"},
-    39: {"XC_functional_name": "GGA_C_BCGP"},
-    40: {"XC_functional_name": "GGA_X_LAMBDA_OC2_N"},
-    41: {"XC_functional_name": "GGA_X_B86_R"},
-    42: {"XC_functional_name": "MGGA_XC_ZLP"},
-    43: {"XC_functional_name": "LDA_XC_ZLP"},
-    44: {"XC_functional_name": "GGA_X_LAMBDA_CH_N"},
-    45: {"XC_functional_name": "GGA_X_LAMBDA_LO_N"},
-    46: {"XC_functional_name": "GGA_X_HJS_B88_V2"},
-    47: {"XC_functional_name": "GGA_C_Q2D"},
-    48: {"XC_functional_name": "GGA_X_Q2D"},
-    49: {"XC_functional_name": "GGA_X_PBE_MOL"},
-    50: {"XC_functional_name": "LDA_K_TF"},
-    51: {"XC_functional_name": "LDA_K_LP"},
-    52: {"XC_functional_name": "GGA_K_TFVW"},
-    53: {"XC_functional_name": "GGA_K_REVAPBEINT"},
-    54: {"XC_functional_name": "GGA_K_APBEINT"},
-    55: {"XC_functional_name": "GGA_K_REVAPBE"},
-    56: {"XC_functional_name": "GGA_X_AK13"},
-    57: {"XC_functional_name": "GGA_K_MEYER"},
-    58: {"XC_functional_name": "GGA_X_LV_RPW86"},
-    59: {"XC_functional_name": "GGA_X_PBE_TCA"},
-    60: {"XC_functional_name": "GGA_X_PBEINT"},
-    61: {"XC_functional_name": "GGA_C_ZPBEINT"},
-    62: {"XC_functional_name": "GGA_C_PBEINT"},
-    63: {"XC_functional_name": "GGA_C_ZPBESOL"},
-    64: {"XC_functional_name": "MGGA_XC_OTPSS_D"},
-    65: {"XC_functional_name": "GGA_XC_OPBE_D"},
-    66: {"XC_functional_name": "GGA_XC_OPWLYP_D"},
-    67: {"XC_functional_name": "GGA_XC_OBLYP_D"},
-    68: {"XC_functional_name": "GGA_X_VMT84_GE"},
-    69: {"XC_functional_name": "GGA_X_VMT84_PBE"},
-    70: {"XC_functional_name": "GGA_X_VMT_GE"},
-    71: {"XC_functional_name": "GGA_X_VMT_PBE"},
-    72: {"XC_functional_name": "MGGA_C_CS"},
-    73: {"XC_functional_name": "MGGA_C_MN12_SX"},
-    74: {"XC_functional_name": "MGGA_C_MN12_L"},
-    75: {"XC_functional_name": "MGGA_C_M11_L"},
-    76: {"XC_functional_name": "MGGA_C_M11"},
-    77: {"XC_functional_name": "MGGA_C_M08_SO"},
-    78: {"XC_functional_name": "MGGA_C_M08_HX"},
-    79: {"XC_functional_name": "GGA_C_N12_SX"},
-    80: {"XC_functional_name": "GGA_C_N12"},
-    81: {"XC_functional_name": "HYB_GGA_X_N12_SX"},
-    82: {"XC_functional_name": "GGA_X_N12"},
-    83: {"XC_functional_name": "GGA_C_REGTPSS"},
-    84: {"XC_functional_name": "GGA_C_OP_XALPHA"},
-    85: {"XC_functional_name": "GGA_C_OP_G96"},
-    86: {"XC_functional_name": "GGA_C_OP_PBE"},
-    87: {"XC_functional_name": "GGA_C_OP_B88"},
-    88: {"XC_functional_name": "GGA_C_FT97"},
-    89: {"XC_functional_name": "GGA_C_SPBE"},
-    90: {"XC_functional_name": "GGA_X_SSB_SW"},
-    91: {"XC_functional_name": "GGA_X_SSB"},
-    92: {"XC_functional_name": "GGA_X_SSB_D"},
-    93: {"XC_functional_name": "GGA_XC_HCTH_407P"},
-    94: {"XC_functional_name": "GGA_XC_HCTH_P76"},
-    95: {"XC_functional_name": "GGA_XC_HCTH_P14"},
-    96: {"XC_functional_name": "GGA_XC_B97_GGA1"},
-    97: {"XC_functional_name": "GGA_C_HCTH_A"},
-    98: {"XC_functional_name": "GGA_X_BPCCAC"},
-    99: {"XC_functional_name": "GGA_C_REVTCA"},
-    100: {"XC_functional_name": "GGA_C_TCA"},
-    101: {"XC_functional_name": "GGA_X_PBE"},
-    102: {"XC_functional_name": "GGA_X_PBE_R"},
-    103: {"XC_functional_name": "GGA_X_B86"},
-    104: {"XC_functional_name": "GGA_X_HERMAN"},
-    105: {"XC_functional_name": "GGA_X_B86_MGC"},
-    106: {"XC_functional_name": "GGA_X_B88"},
-    107: {"XC_functional_name": "GGA_X_G96"},
-    108: {"XC_functional_name": "GGA_X_PW86"},
-    109: {"XC_functional_name": "GGA_X_PW91"},
-    110: {"XC_functional_name": "GGA_X_OPTX"},
-    111: {"XC_functional_name": "GGA_X_DK87_R1"},
-    112: {"XC_functional_name": "GGA_X_DK87_R2"},
-    113: {"XC_functional_name": "GGA_X_LG93"},
-    114: {"XC_functional_name": "GGA_X_FT97_A"},
-    115: {"XC_functional_name": "GGA_X_FT97_B"},
-    116: {"XC_functional_name": "GGA_X_PBE_SOL"},
-    117: {"XC_functional_name": "GGA_X_RPBE"},
-    118: {"XC_functional_name": "GGA_X_WC"},
-    119: {"XC_functional_name": "GGA_X_MPW91"},
-    120: {"XC_functional_name": "GGA_X_AM05"},
-    121: {"XC_functional_name": "GGA_X_PBEA"},
-    122: {"XC_functional_name": "GGA_X_MPBE"},
-    123: {"XC_functional_name": "GGA_X_XPBE"},
-    124: {"XC_functional_name": "GGA_X_2D_B86_MGC"},
-    125: {"XC_functional_name": "GGA_X_BAYESIAN"},
-    126: {"XC_functional_name": "GGA_X_PBE_JSJR"},
-    127: {"XC_functional_name": "GGA_X_2D_B88"},
-    128: {"XC_functional_name": "GGA_X_2D_B86"},
-    129: {"XC_functional_name": "GGA_X_2D_PBE"},
-    130: {"XC_functional_name": "GGA_C_PBE"},
-    131: {"XC_functional_name": "GGA_C_LYP"},
-    132: {"XC_functional_name": "GGA_C_P86"},
-    133: {"XC_functional_name": "GGA_C_PBE_SOL"},
-    134: {"XC_functional_name": "GGA_C_PW91"},
-    135: {"XC_functional_name": "GGA_C_AM05"},
-    136: {"XC_functional_name": "GGA_C_XPBE"},
-    137: {"XC_functional_name": "GGA_C_LM"},
-    138: {"XC_functional_name": "GGA_C_PBE_JRGX"},
-    139: {"XC_functional_name": "GGA_X_OPTB88_VDW"},
-    140: {"XC_functional_name": "GGA_X_PBEK1_VDW"},
-    141: {"XC_functional_name": "GGA_X_OPTPBE_VDW"},
-    142: {"XC_functional_name": "GGA_X_RGE2"},
-    143: {"XC_functional_name": "GGA_C_RGE2"},
-    144: {"XC_functional_name": "GGA_X_RPW86"},
-    145: {"XC_functional_name": "GGA_X_KT1"},
-    146: {"XC_functional_name": "GGA_XC_KT2"},
-    147: {"XC_functional_name": "GGA_C_WL"},
-    148: {"XC_functional_name": "GGA_C_WI"},
-    149: {"XC_functional_name": "GGA_X_MB88"},
-    150: {"XC_functional_name": "GGA_X_SOGGA"},
-    151: {"XC_functional_name": "GGA_X_SOGGA11"},
-    152: {"XC_functional_name": "GGA_C_SOGGA11"},
-    153: {"XC_functional_name": "GGA_C_WI0"},
-    154: {"XC_functional_name": "GGA_XC_TH1"},
-    155: {"XC_functional_name": "GGA_XC_TH2"},
-    156: {"XC_functional_name": "GGA_XC_TH3"},
-    157: {"XC_functional_name": "GGA_XC_TH4"},
-    158: {"XC_functional_name": "GGA_X_C09X"},
-    159: {"XC_functional_name": "GGA_C_SOGGA11_X"},
-    160: {"XC_functional_name": "GGA_X_LB"},
-    161: {"XC_functional_name": "GGA_XC_HCTH_93"},
-    162: {"XC_functional_name": "GGA_XC_HCTH_120"},
-    163: {"XC_functional_name": "GGA_XC_HCTH_147"},
-    164: {"XC_functional_name": "GGA_XC_HCTH_407"},
-    165: {"XC_functional_name": "GGA_XC_EDF1"},
-    166: {"XC_functional_name": "GGA_XC_XLYP"},
-    167: {"XC_functional_name": "GGA_X_EB88"},
-    168: {"XC_functional_name": "GGA_C_PBE_MOL"},
-    169: {"XC_functional_name": "HYB_GGA_XC_PBE_MOL0"},
-    170: {"XC_functional_name": "GGA_XC_B97_D"},
-    171: {"XC_functional_name": "HYB_GGA_XC_PBE_SOL0"},
-    172: {"XC_functional_name": "HYB_GGA_XC_PBEB0"},
-    173: {"XC_functional_name": "GGA_XC_PBE1W"},
-    174: {"XC_functional_name": "GGA_XC_MPWLYP1W"},
-    175: {"XC_functional_name": "GGA_XC_PBELYP1W"},
-    176: {"XC_functional_name": "HYB_GGA_XC_PBE_MOLB0"},
-    177: {"XC_functional_name": "GGA_K_ABSP3"},
-    178: {"XC_functional_name": "GGA_K_ABSP4"},
-    182: {"XC_functional_name": "GGA_X_LBM"},
-    183: {"XC_functional_name": "GGA_X_OL2"},
-    184: {"XC_functional_name": "GGA_X_APBE"},
-    185: {"XC_functional_name": "GGA_K_APBE"},
-    186: {"XC_functional_name": "GGA_C_APBE"},
-    187: {"XC_functional_name": "GGA_K_TW1"},
-    188: {"XC_functional_name": "GGA_K_TW2"},
-    189: {"XC_functional_name": "GGA_K_TW3"},
-    190: {"XC_functional_name": "GGA_K_TW4"},
-    191: {"XC_functional_name": "GGA_X_HTBS"},
-    192: {"XC_functional_name": "GGA_X_AIRY"},
-    193: {"XC_functional_name": "GGA_X_LAG"},
-    194: {"XC_functional_name": "GGA_XC_MOHLYP"},
-    195: {"XC_functional_name": "GGA_XC_MOHLYP2"},
-    196: {"XC_functional_name": "GGA_XC_TH_FL"},
-    197: {"XC_functional_name": "GGA_XC_TH_FC"},
-    198: {"XC_functional_name": "GGA_XC_TH_FCFO"},
-    199: {"XC_functional_name": "GGA_XC_TH_FCO"},
-    200: {"XC_functional_name": "GGA_C_OPTC"},
-    201: {"XC_functional_name": "MGGA_X_LTA"},
-    202: {"XC_functional_name": "MGGA_X_TPSS"},
-    203: {"XC_functional_name": "MGGA_X_M06_L"},
-    204: {"XC_functional_name": "MGGA_X_GVT4"},
-    205: {"XC_functional_name": "MGGA_X_TAU_HCTH"},
-    206: {"XC_functional_name": "MGGA_X_BR89"},
-    207: {"XC_functional_name": "MGGA_X_BJ06"},
-    208: {"XC_functional_name": "MGGA_X_TB09"},
-    209: {"XC_functional_name": "MGGA_X_RPP09"},
-    210: {"XC_functional_name": "MGGA_X_2D_PRHG07"},
-    211: {"XC_functional_name": "MGGA_X_2D_PRHG07_PRP10"},
-    212: {"XC_functional_name": "MGGA_X_REVTPSS"},
-    213: {"XC_functional_name": "MGGA_X_PKZB"},
-    214: {"XC_functional_name": "MGGA_X_M05"},
-    215: {"XC_functional_name": "MGGA_X_M05_2X"},
-    216: {"XC_functional_name": "MGGA_X_M06_HF"},
-    217: {"XC_functional_name": "MGGA_X_M06"},
-    218: {"XC_functional_name": "MGGA_X_M06_2X"},
-    219: {"XC_functional_name": "MGGA_X_M08_HX"},
-    220: {"XC_functional_name": "MGGA_X_M08_SO"},
-    221: {"XC_functional_name": "MGGA_X_MS0"},
-    222: {"XC_functional_name": "MGGA_X_MS1"},
-    223: {"XC_functional_name": "MGGA_X_MS2"},
-    224: {"XC_functional_name": "HYB_MGGA_X_MS2H"},
-    225: {"XC_functional_name": "MGGA_X_M11"},
-    226: {"XC_functional_name": "MGGA_X_M11_L"},
-    227: {"XC_functional_name": "MGGA_X_MN12_L"},
-    229: {"XC_functional_name": "MGGA_C_CC06"},
-    230: {"XC_functional_name": "MGGA_X_MK00"},
-    231: {"XC_functional_name": "MGGA_C_TPSS"},
-    232: {"XC_functional_name": "MGGA_C_VSXC"},
-    233: {"XC_functional_name": "MGGA_C_M06_L"},
-    234: {"XC_functional_name": "MGGA_C_M06_HF"},
-    235: {"XC_functional_name": "MGGA_C_M06"},
-    236: {"XC_functional_name": "MGGA_C_M06_2X"},
-    237: {"XC_functional_name": "MGGA_C_M05"},
-    238: {"XC_functional_name": "MGGA_C_M05_2X"},
-    239: {"XC_functional_name": "MGGA_C_PKZB"},
-    240: {"XC_functional_name": "MGGA_C_BC95"},
-    241: {"XC_functional_name": "MGGA_C_REVTPSS"},
-    242: {"XC_functional_name": "MGGA_XC_TPSSLYP1W"},
-    243: {"XC_functional_name": "MGGA_X_MK00B"},
-    244: {"XC_functional_name": "MGGA_X_BLOC"},
-    245: {"XC_functional_name": "MGGA_X_MODTPSS"},
-    246: {"XC_functional_name": "GGA_C_PBELOC"},
-    247: {"XC_functional_name": "MGGA_C_TPSSLOC"},
-    248: {"XC_functional_name": "HYB_MGGA_X_MN12_SX"},
-    249: {"XC_functional_name": "MGGA_X_MBEEF"},
-    250: {"XC_functional_name": "MGGA_X_MBEEFVDW"},
-    254: {"XC_functional_name": "MGGA_XC_B97M_V"},
-    255: {"XC_functional_name": "GGA_XC_VV10"},
-    257: {"XC_functional_name": "MGGA_X_MVS"},
-    258: {"XC_functional_name": "GGA_C_PBEFE"},
-    259: {"XC_functional_name": "LDA_XC_KSDT"},
-    260: {"XC_functional_name": "MGGA_X_MN15_L"},
-    261: {"XC_functional_name": "MGGA_C_MN15_L"},
-    262: {"XC_functional_name": "GGA_C_OP_PW91"},
-    263: {"XC_functional_name": "MGGA_X_SCAN"},
-    264: {"XC_functional_name": "HYB_MGGA_X_SCAN0"},
-    265: {"XC_functional_name": "GGA_X_PBEFE"},
-    266: {"XC_functional_name": "HYB_GGA_XC_B97_1p"},
-    267: {"XC_functional_name": "MGGA_C_SCAN"},
-    268: {"XC_functional_name": "HYB_MGGA_X_MN15"},
-    269: {"XC_functional_name": "MGGA_C_MN15"},
-    270: {"XC_functional_name": "GGA_X_CAP"},
-    401: {"XC_functional_name": "HYB_GGA_XC_B3PW91"},
-    402: {"XC_functional_name": "HYB_GGA_XC_B3LYP"},
-    403: {"XC_functional_name": "HYB_GGA_XC_B3P86"},
-    404: {"XC_functional_name": "HYB_GGA_XC_O3LYP"},
-    405: {"XC_functional_name": "HYB_GGA_XC_mPW1K"},
-    406: {"XC_functional_name": "HYB_GGA_XC_PBEH"},
-    407: {"XC_functional_name": "HYB_GGA_XC_B97"},
-    408: {"XC_functional_name": "HYB_GGA_XC_B97_1"},
-    410: {"XC_functional_name": "HYB_GGA_XC_B97_2"},
-    411: {"XC_functional_name": "HYB_GGA_XC_X3LYP"},
-    412: {"XC_functional_name": "HYB_GGA_XC_B1WC"},
-    413: {"XC_functional_name": "HYB_GGA_XC_B97_K"},
-    414: {"XC_functional_name": "HYB_GGA_XC_B97_3"},
-    415: {"XC_functional_name": "HYB_GGA_XC_MPW3PW"},
-    416: {"XC_functional_name": "HYB_GGA_XC_B1LYP"},
-    417: {"XC_functional_name": "HYB_GGA_XC_B1PW91"},
-    418: {"XC_functional_name": "HYB_GGA_XC_mPW1PW"},
-    419: {"XC_functional_name": "HYB_GGA_XC_MPW3LYP"},
-    420: {"XC_functional_name": "HYB_GGA_XC_SB98_1a"},
-    421: {"XC_functional_name": "HYB_GGA_XC_SB98_1b"},
-    422: {"XC_functional_name": "HYB_GGA_XC_SB98_1c"},
-    423: {"XC_functional_name": "HYB_GGA_XC_SB98_2a"},
-    424: {"XC_functional_name": "HYB_GGA_XC_SB98_2b"},
-    425: {"XC_functional_name": "HYB_GGA_XC_SB98_2c"},
-    426: {"XC_functional_name": "HYB_GGA_X_SOGGA11_X"},
-    427: {"XC_functional_name": "HYB_GGA_XC_HSE03"},
-    428: {"XC_functional_name": "HYB_GGA_XC_HSE06"},
-    429: {"XC_functional_name": "HYB_GGA_XC_HJS_PBE"},
-    430: {"XC_functional_name": "HYB_GGA_XC_HJS_PBE_SOL"},
-    431: {"XC_functional_name": "HYB_GGA_XC_HJS_B88"},
-    432: {"XC_functional_name": "HYB_GGA_XC_HJS_B97X"},
-    433: {"XC_functional_name": "HYB_GGA_XC_CAM_B3LYP"},
-    434: {"XC_functional_name": "HYB_GGA_XC_TUNED_CAM_B3LYP"},
-    435: {"XC_functional_name": "HYB_GGA_XC_BHANDH"},
-    436: {"XC_functional_name": "HYB_GGA_XC_BHANDHLYP"},
-    437: {"XC_functional_name": "HYB_GGA_XC_MB3LYP_RC04"},
-    438: {"XC_functional_name": "HYB_MGGA_XC_M05"},
-    439: {"XC_functional_name": "HYB_MGGA_XC_M05_2X"},
-    440: {"XC_functional_name": "HYB_MGGA_XC_B88B95"},
-    441: {"XC_functional_name": "HYB_MGGA_XC_B86B95"},
-    442: {"XC_functional_name": "HYB_MGGA_XC_PW86B95"},
-    443: {"XC_functional_name": "HYB_MGGA_XC_BB1K"},
-    444: {"XC_functional_name": "HYB_MGGA_XC_M06_HF"},
-    445: {"XC_functional_name": "HYB_MGGA_XC_MPW1B95"},
-    446: {"XC_functional_name": "HYB_MGGA_XC_MPWB1K"},
-    447: {"XC_functional_name": "HYB_MGGA_XC_X1B95"},
-    448: {"XC_functional_name": "HYB_MGGA_XC_XB1K"},
-    449: {"XC_functional_name": "HYB_MGGA_XC_M06"},
-    450: {"XC_functional_name": "HYB_MGGA_XC_M06_2X"},
-    451: {"XC_functional_name": "HYB_MGGA_XC_PW6B95"},
-    452: {"XC_functional_name": "HYB_MGGA_XC_PWB6K"},
-    453: {"XC_functional_name": "HYB_GGA_XC_MPWLYP1M"},
-    454: {"XC_functional_name": "HYB_GGA_XC_REVB3LYP"},
-    455: {"XC_functional_name": "HYB_GGA_XC_CAMY_BLYP"},
-    456: {"XC_functional_name": "HYB_GGA_XC_PBE0_13"},
-    457: {"XC_functional_name": "HYB_MGGA_XC_TPSSH"},
-    458: {"XC_functional_name": "HYB_MGGA_XC_REVTPSSH"},
-    459: {"XC_functional_name": "HYB_GGA_XC_B3LYPs"},
-    460: {"XC_functional_name": "HYB_MGGA_XC_M08_HX"},
-    461: {"XC_functional_name": "HYB_MGGA_XC_M08_SO"},
-    462: {"XC_functional_name": "HYB_MGGA_XC_M11"},
-    463: {"XC_functional_name": "HYB_GGA_XC_WB97"},
-    464: {"XC_functional_name": "HYB_GGA_XC_WB97X"},
-    465: {"XC_functional_name": "HYB_GGA_XC_LRC_WPBEH"},
-    466: {"XC_functional_name": "HYB_GGA_XC_WB97X_V"},
-    467: {"XC_functional_name": "HYB_GGA_XC_LCY_PBE"},
-    468: {"XC_functional_name": "HYB_GGA_XC_LCY_BLYP"},
-    469: {"XC_functional_name": "HYB_GGA_XC_LC_VV10"},
-    470: {"XC_functional_name": "HYB_GGA_XC_CAMY_B3LYP"},
-    471: {"XC_functional_name": "HYB_GGA_XC_WB97X_D"},
-    472: {"XC_functional_name": "HYB_GGA_XC_HPBEINT"},
-    473: {"XC_functional_name": "HYB_GGA_XC_LRC_WPBE"},
-    474: {"XC_functional_name": "HYB_MGGA_X_MVSH"},
-    475: {"XC_functional_name": "HYB_GGA_XC_B3LYP5"},
-    476: {"XC_functional_name": "HYB_GGA_XC_EDF2"},
-    477: {"XC_functional_name": "HYB_GGA_XC_CAP0"},
-    478: {"XC_functional_name": "HYB_GGA_XC_LC_WPBE"},
-    500: {"XC_functional_name": "GGA_K_VW"},
-    501: {"XC_functional_name": "GGA_K_GE2"},
-    502: {"XC_functional_name": "GGA_K_GOLDEN"},
-    503: {"XC_functional_name": "GGA_K_YT65"},
-    504: {"XC_functional_name": "GGA_K_BALTIN"},
-    505: {"XC_functional_name": "GGA_K_LIEB"},
-    506: {"XC_functional_name": "GGA_K_ABSP1"},
-    507: {"XC_functional_name": "GGA_K_ABSP2"},
-    508: {"XC_functional_name": "GGA_K_GR"},
-    509: {"XC_functional_name": "GGA_K_LUDENA"},
-    510: {"XC_functional_name": "GGA_K_GP85"},
-    511: {"XC_functional_name": "GGA_K_PEARSON"},
-    512: {"XC_functional_name": "GGA_K_OL1"},
-    513: {"XC_functional_name": "GGA_K_OL2"},
-    514: {"XC_functional_name": "GGA_K_FR_B88"},
-    515: {"XC_functional_name": "GGA_K_FR_PW86"},
-    516: {"XC_functional_name": "GGA_K_DK"},
-    517: {"XC_functional_name": "GGA_K_PERDEW"},
-    518: {"XC_functional_name": "GGA_K_VSK"},
-    519: {"XC_functional_name": "GGA_K_VJKS"},
-    520: {"XC_functional_name": "GGA_K_ERNZERHOF"},
-    521: {"XC_functional_name": "GGA_K_LC94"},
-    522: {"XC_functional_name": "GGA_K_LLP"},
-    523: {"XC_functional_name": "GGA_K_THAKKAR"},
-    524: {"XC_functional_name": "GGA_X_WPBEH"},
-    525: {"XC_functional_name": "GGA_X_HJS_PBE"},
-    526: {"XC_functional_name": "GGA_X_HJS_PBE_SOL"},
-    527: {"XC_functional_name": "GGA_X_HJS_B88"},
-    528: {"XC_functional_name": "GGA_X_HJS_B97X"},
-    529: {"XC_functional_name": "GGA_X_ITYH"},
-    530: {"XC_functional_name": "GGA_X_SFAT"},
-    531: {"XC_functional_name": "HYB_MGGA_XC_WB97M_V"},
+    1: {'XC_functional_name': 'LDA_X'},
+    2: {'XC_functional_name': 'LDA_C_WIGNER'},
+    3: {'XC_functional_name': 'LDA_C_RPA'},
+    4: {'XC_functional_name': 'LDA_C_HL'},
+    5: {'XC_functional_name': 'LDA_C_GL'},
+    6: {'XC_functional_name': 'LDA_C_XALPHA'},
+    7: {'XC_functional_name': 'LDA_C_VWN'},
+    8: {'XC_functional_name': 'LDA_C_VWN_RPA'},
+    9: {'XC_functional_name': 'LDA_C_PZ'},
+    10: {'XC_functional_name': 'LDA_C_PZ_MOD'},
+    11: {'XC_functional_name': 'LDA_C_OB_PZ'},
+    12: {'XC_functional_name': 'LDA_C_PW'},
+    13: {'XC_functional_name': 'LDA_C_PW_MOD'},
+    14: {'XC_functional_name': 'LDA_C_OB_PW'},
+    15: {'XC_functional_name': 'LDA_C_2D_AMGB'},
+    16: {'XC_functional_name': 'LDA_C_2D_PRM'},
+    17: {'XC_functional_name': 'LDA_C_vBH'},
+    18: {'XC_functional_name': 'LDA_C_1D_CSC'},
+    19: {'XC_functional_name': 'LDA_X_2D'},
+    20: {'XC_functional_name': 'LDA_XC_TETER93'},
+    21: {'XC_functional_name': 'LDA_X_1D'},
+    22: {'XC_functional_name': 'LDA_C_ML1'},
+    23: {'XC_functional_name': 'LDA_C_ML2'},
+    24: {'XC_functional_name': 'LDA_C_GOMBAS'},
+    25: {'XC_functional_name': 'LDA_C_PW_RPA'},
+    26: {'XC_functional_name': 'LDA_C_1D_LOOS'},
+    27: {'XC_functional_name': 'LDA_C_RC04'},
+    28: {'XC_functional_name': 'LDA_C_VWN_1'},
+    29: {'XC_functional_name': 'LDA_C_VWN_2'},
+    30: {'XC_functional_name': 'LDA_C_VWN_3'},
+    31: {'XC_functional_name': 'LDA_C_VWN_4'},
+    32: {'XC_functional_name': 'GGA_X_GAM'},
+    33: {'XC_functional_name': 'GGA_C_GAM'},
+    34: {'XC_functional_name': 'GGA_X_HCTH_A'},
+    35: {'XC_functional_name': 'GGA_X_EV93'},
+    36: {'XC_functional_name': 'HYB_MGGA_X_DLDF'},
+    37: {'XC_functional_name': 'MGGA_C_DLDF'},
+    38: {'XC_functional_name': 'GGA_X_BCGP'},
+    39: {'XC_functional_name': 'GGA_C_BCGP'},
+    40: {'XC_functional_name': 'GGA_X_LAMBDA_OC2_N'},
+    41: {'XC_functional_name': 'GGA_X_B86_R'},
+    42: {'XC_functional_name': 'MGGA_XC_ZLP'},
+    43: {'XC_functional_name': 'LDA_XC_ZLP'},
+    44: {'XC_functional_name': 'GGA_X_LAMBDA_CH_N'},
+    45: {'XC_functional_name': 'GGA_X_LAMBDA_LO_N'},
+    46: {'XC_functional_name': 'GGA_X_HJS_B88_V2'},
+    47: {'XC_functional_name': 'GGA_C_Q2D'},
+    48: {'XC_functional_name': 'GGA_X_Q2D'},
+    49: {'XC_functional_name': 'GGA_X_PBE_MOL'},
+    50: {'XC_functional_name': 'LDA_K_TF'},
+    51: {'XC_functional_name': 'LDA_K_LP'},
+    52: {'XC_functional_name': 'GGA_K_TFVW'},
+    53: {'XC_functional_name': 'GGA_K_REVAPBEINT'},
+    54: {'XC_functional_name': 'GGA_K_APBEINT'},
+    55: {'XC_functional_name': 'GGA_K_REVAPBE'},
+    56: {'XC_functional_name': 'GGA_X_AK13'},
+    57: {'XC_functional_name': 'GGA_K_MEYER'},
+    58: {'XC_functional_name': 'GGA_X_LV_RPW86'},
+    59: {'XC_functional_name': 'GGA_X_PBE_TCA'},
+    60: {'XC_functional_name': 'GGA_X_PBEINT'},
+    61: {'XC_functional_name': 'GGA_C_ZPBEINT'},
+    62: {'XC_functional_name': 'GGA_C_PBEINT'},
+    63: {'XC_functional_name': 'GGA_C_ZPBESOL'},
+    64: {'XC_functional_name': 'MGGA_XC_OTPSS_D'},
+    65: {'XC_functional_name': 'GGA_XC_OPBE_D'},
+    66: {'XC_functional_name': 'GGA_XC_OPWLYP_D'},
+    67: {'XC_functional_name': 'GGA_XC_OBLYP_D'},
+    68: {'XC_functional_name': 'GGA_X_VMT84_GE'},
+    69: {'XC_functional_name': 'GGA_X_VMT84_PBE'},
+    70: {'XC_functional_name': 'GGA_X_VMT_GE'},
+    71: {'XC_functional_name': 'GGA_X_VMT_PBE'},
+    72: {'XC_functional_name': 'MGGA_C_CS'},
+    73: {'XC_functional_name': 'MGGA_C_MN12_SX'},
+    74: {'XC_functional_name': 'MGGA_C_MN12_L'},
+    75: {'XC_functional_name': 'MGGA_C_M11_L'},
+    76: {'XC_functional_name': 'MGGA_C_M11'},
+    77: {'XC_functional_name': 'MGGA_C_M08_SO'},
+    78: {'XC_functional_name': 'MGGA_C_M08_HX'},
+    79: {'XC_functional_name': 'GGA_C_N12_SX'},
+    80: {'XC_functional_name': 'GGA_C_N12'},
+    81: {'XC_functional_name': 'HYB_GGA_X_N12_SX'},
+    82: {'XC_functional_name': 'GGA_X_N12'},
+    83: {'XC_functional_name': 'GGA_C_REGTPSS'},
+    84: {'XC_functional_name': 'GGA_C_OP_XALPHA'},
+    85: {'XC_functional_name': 'GGA_C_OP_G96'},
+    86: {'XC_functional_name': 'GGA_C_OP_PBE'},
+    87: {'XC_functional_name': 'GGA_C_OP_B88'},
+    88: {'XC_functional_name': 'GGA_C_FT97'},
+    89: {'XC_functional_name': 'GGA_C_SPBE'},
+    90: {'XC_functional_name': 'GGA_X_SSB_SW'},
+    91: {'XC_functional_name': 'GGA_X_SSB'},
+    92: {'XC_functional_name': 'GGA_X_SSB_D'},
+    93: {'XC_functional_name': 'GGA_XC_HCTH_407P'},
+    94: {'XC_functional_name': 'GGA_XC_HCTH_P76'},
+    95: {'XC_functional_name': 'GGA_XC_HCTH_P14'},
+    96: {'XC_functional_name': 'GGA_XC_B97_GGA1'},
+    97: {'XC_functional_name': 'GGA_C_HCTH_A'},
+    98: {'XC_functional_name': 'GGA_X_BPCCAC'},
+    99: {'XC_functional_name': 'GGA_C_REVTCA'},
+    100: {'XC_functional_name': 'GGA_C_TCA'},
+    101: {'XC_functional_name': 'GGA_X_PBE'},
+    102: {'XC_functional_name': 'GGA_X_PBE_R'},
+    103: {'XC_functional_name': 'GGA_X_B86'},
+    104: {'XC_functional_name': 'GGA_X_HERMAN'},
+    105: {'XC_functional_name': 'GGA_X_B86_MGC'},
+    106: {'XC_functional_name': 'GGA_X_B88'},
+    107: {'XC_functional_name': 'GGA_X_G96'},
+    108: {'XC_functional_name': 'GGA_X_PW86'},
+    109: {'XC_functional_name': 'GGA_X_PW91'},
+    110: {'XC_functional_name': 'GGA_X_OPTX'},
+    111: {'XC_functional_name': 'GGA_X_DK87_R1'},
+    112: {'XC_functional_name': 'GGA_X_DK87_R2'},
+    113: {'XC_functional_name': 'GGA_X_LG93'},
+    114: {'XC_functional_name': 'GGA_X_FT97_A'},
+    115: {'XC_functional_name': 'GGA_X_FT97_B'},
+    116: {'XC_functional_name': 'GGA_X_PBE_SOL'},
+    117: {'XC_functional_name': 'GGA_X_RPBE'},
+    118: {'XC_functional_name': 'GGA_X_WC'},
+    119: {'XC_functional_name': 'GGA_X_MPW91'},
+    120: {'XC_functional_name': 'GGA_X_AM05'},
+    121: {'XC_functional_name': 'GGA_X_PBEA'},
+    122: {'XC_functional_name': 'GGA_X_MPBE'},
+    123: {'XC_functional_name': 'GGA_X_XPBE'},
+    124: {'XC_functional_name': 'GGA_X_2D_B86_MGC'},
+    125: {'XC_functional_name': 'GGA_X_BAYESIAN'},
+    126: {'XC_functional_name': 'GGA_X_PBE_JSJR'},
+    127: {'XC_functional_name': 'GGA_X_2D_B88'},
+    128: {'XC_functional_name': 'GGA_X_2D_B86'},
+    129: {'XC_functional_name': 'GGA_X_2D_PBE'},
+    130: {'XC_functional_name': 'GGA_C_PBE'},
+    131: {'XC_functional_name': 'GGA_C_LYP'},
+    132: {'XC_functional_name': 'GGA_C_P86'},
+    133: {'XC_functional_name': 'GGA_C_PBE_SOL'},
+    134: {'XC_functional_name': 'GGA_C_PW91'},
+    135: {'XC_functional_name': 'GGA_C_AM05'},
+    136: {'XC_functional_name': 'GGA_C_XPBE'},
+    137: {'XC_functional_name': 'GGA_C_LM'},
+    138: {'XC_functional_name': 'GGA_C_PBE_JRGX'},
+    139: {'XC_functional_name': 'GGA_X_OPTB88_VDW'},
+    140: {'XC_functional_name': 'GGA_X_PBEK1_VDW'},
+    141: {'XC_functional_name': 'GGA_X_OPTPBE_VDW'},
+    142: {'XC_functional_name': 'GGA_X_RGE2'},
+    143: {'XC_functional_name': 'GGA_C_RGE2'},
+    144: {'XC_functional_name': 'GGA_X_RPW86'},
+    145: {'XC_functional_name': 'GGA_X_KT1'},
+    146: {'XC_functional_name': 'GGA_XC_KT2'},
+    147: {'XC_functional_name': 'GGA_C_WL'},
+    148: {'XC_functional_name': 'GGA_C_WI'},
+    149: {'XC_functional_name': 'GGA_X_MB88'},
+    150: {'XC_functional_name': 'GGA_X_SOGGA'},
+    151: {'XC_functional_name': 'GGA_X_SOGGA11'},
+    152: {'XC_functional_name': 'GGA_C_SOGGA11'},
+    153: {'XC_functional_name': 'GGA_C_WI0'},
+    154: {'XC_functional_name': 'GGA_XC_TH1'},
+    155: {'XC_functional_name': 'GGA_XC_TH2'},
+    156: {'XC_functional_name': 'GGA_XC_TH3'},
+    157: {'XC_functional_name': 'GGA_XC_TH4'},
+    158: {'XC_functional_name': 'GGA_X_C09X'},
+    159: {'XC_functional_name': 'GGA_C_SOGGA11_X'},
+    160: {'XC_functional_name': 'GGA_X_LB'},
+    161: {'XC_functional_name': 'GGA_XC_HCTH_93'},
+    162: {'XC_functional_name': 'GGA_XC_HCTH_120'},
+    163: {'XC_functional_name': 'GGA_XC_HCTH_147'},
+    164: {'XC_functional_name': 'GGA_XC_HCTH_407'},
+    165: {'XC_functional_name': 'GGA_XC_EDF1'},
+    166: {'XC_functional_name': 'GGA_XC_XLYP'},
+    167: {'XC_functional_name': 'GGA_X_EB88'},
+    168: {'XC_functional_name': 'GGA_C_PBE_MOL'},
+    169: {'XC_functional_name': 'HYB_GGA_XC_PBE_MOL0'},
+    170: {'XC_functional_name': 'GGA_XC_B97_D'},
+    171: {'XC_functional_name': 'HYB_GGA_XC_PBE_SOL0'},
+    172: {'XC_functional_name': 'HYB_GGA_XC_PBEB0'},
+    173: {'XC_functional_name': 'GGA_XC_PBE1W'},
+    174: {'XC_functional_name': 'GGA_XC_MPWLYP1W'},
+    175: {'XC_functional_name': 'GGA_XC_PBELYP1W'},
+    176: {'XC_functional_name': 'HYB_GGA_XC_PBE_MOLB0'},
+    177: {'XC_functional_name': 'GGA_K_ABSP3'},
+    178: {'XC_functional_name': 'GGA_K_ABSP4'},
+    182: {'XC_functional_name': 'GGA_X_LBM'},
+    183: {'XC_functional_name': 'GGA_X_OL2'},
+    184: {'XC_functional_name': 'GGA_X_APBE'},
+    185: {'XC_functional_name': 'GGA_K_APBE'},
+    186: {'XC_functional_name': 'GGA_C_APBE'},
+    187: {'XC_functional_name': 'GGA_K_TW1'},
+    188: {'XC_functional_name': 'GGA_K_TW2'},
+    189: {'XC_functional_name': 'GGA_K_TW3'},
+    190: {'XC_functional_name': 'GGA_K_TW4'},
+    191: {'XC_functional_name': 'GGA_X_HTBS'},
+    192: {'XC_functional_name': 'GGA_X_AIRY'},
+    193: {'XC_functional_name': 'GGA_X_LAG'},
+    194: {'XC_functional_name': 'GGA_XC_MOHLYP'},
+    195: {'XC_functional_name': 'GGA_XC_MOHLYP2'},
+    196: {'XC_functional_name': 'GGA_XC_TH_FL'},
+    197: {'XC_functional_name': 'GGA_XC_TH_FC'},
+    198: {'XC_functional_name': 'GGA_XC_TH_FCFO'},
+    199: {'XC_functional_name': 'GGA_XC_TH_FCO'},
+    200: {'XC_functional_name': 'GGA_C_OPTC'},
+    201: {'XC_functional_name': 'MGGA_X_LTA'},
+    202: {'XC_functional_name': 'MGGA_X_TPSS'},
+    203: {'XC_functional_name': 'MGGA_X_M06_L'},
+    204: {'XC_functional_name': 'MGGA_X_GVT4'},
+    205: {'XC_functional_name': 'MGGA_X_TAU_HCTH'},
+    206: {'XC_functional_name': 'MGGA_X_BR89'},
+    207: {'XC_functional_name': 'MGGA_X_BJ06'},
+    208: {'XC_functional_name': 'MGGA_X_TB09'},
+    209: {'XC_functional_name': 'MGGA_X_RPP09'},
+    210: {'XC_functional_name': 'MGGA_X_2D_PRHG07'},
+    211: {'XC_functional_name': 'MGGA_X_2D_PRHG07_PRP10'},
+    212: {'XC_functional_name': 'MGGA_X_REVTPSS'},
+    213: {'XC_functional_name': 'MGGA_X_PKZB'},
+    214: {'XC_functional_name': 'MGGA_X_M05'},
+    215: {'XC_functional_name': 'MGGA_X_M05_2X'},
+    216: {'XC_functional_name': 'MGGA_X_M06_HF'},
+    217: {'XC_functional_name': 'MGGA_X_M06'},
+    218: {'XC_functional_name': 'MGGA_X_M06_2X'},
+    219: {'XC_functional_name': 'MGGA_X_M08_HX'},
+    220: {'XC_functional_name': 'MGGA_X_M08_SO'},
+    221: {'XC_functional_name': 'MGGA_X_MS0'},
+    222: {'XC_functional_name': 'MGGA_X_MS1'},
+    223: {'XC_functional_name': 'MGGA_X_MS2'},
+    224: {'XC_functional_name': 'HYB_MGGA_X_MS2H'},
+    225: {'XC_functional_name': 'MGGA_X_M11'},
+    226: {'XC_functional_name': 'MGGA_X_M11_L'},
+    227: {'XC_functional_name': 'MGGA_X_MN12_L'},
+    229: {'XC_functional_name': 'MGGA_C_CC06'},
+    230: {'XC_functional_name': 'MGGA_X_MK00'},
+    231: {'XC_functional_name': 'MGGA_C_TPSS'},
+    232: {'XC_functional_name': 'MGGA_C_VSXC'},
+    233: {'XC_functional_name': 'MGGA_C_M06_L'},
+    234: {'XC_functional_name': 'MGGA_C_M06_HF'},
+    235: {'XC_functional_name': 'MGGA_C_M06'},
+    236: {'XC_functional_name': 'MGGA_C_M06_2X'},
+    237: {'XC_functional_name': 'MGGA_C_M05'},
+    238: {'XC_functional_name': 'MGGA_C_M05_2X'},
+    239: {'XC_functional_name': 'MGGA_C_PKZB'},
+    240: {'XC_functional_name': 'MGGA_C_BC95'},
+    241: {'XC_functional_name': 'MGGA_C_REVTPSS'},
+    242: {'XC_functional_name': 'MGGA_XC_TPSSLYP1W'},
+    243: {'XC_functional_name': 'MGGA_X_MK00B'},
+    244: {'XC_functional_name': 'MGGA_X_BLOC'},
+    245: {'XC_functional_name': 'MGGA_X_MODTPSS'},
+    246: {'XC_functional_name': 'GGA_C_PBELOC'},
+    247: {'XC_functional_name': 'MGGA_C_TPSSLOC'},
+    248: {'XC_functional_name': 'HYB_MGGA_X_MN12_SX'},
+    249: {'XC_functional_name': 'MGGA_X_MBEEF'},
+    250: {'XC_functional_name': 'MGGA_X_MBEEFVDW'},
+    254: {'XC_functional_name': 'MGGA_XC_B97M_V'},
+    255: {'XC_functional_name': 'GGA_XC_VV10'},
+    257: {'XC_functional_name': 'MGGA_X_MVS'},
+    258: {'XC_functional_name': 'GGA_C_PBEFE'},
+    259: {'XC_functional_name': 'LDA_XC_KSDT'},
+    260: {'XC_functional_name': 'MGGA_X_MN15_L'},
+    261: {'XC_functional_name': 'MGGA_C_MN15_L'},
+    262: {'XC_functional_name': 'GGA_C_OP_PW91'},
+    263: {'XC_functional_name': 'MGGA_X_SCAN'},
+    264: {'XC_functional_name': 'HYB_MGGA_X_SCAN0'},
+    265: {'XC_functional_name': 'GGA_X_PBEFE'},
+    266: {'XC_functional_name': 'HYB_GGA_XC_B97_1p'},
+    267: {'XC_functional_name': 'MGGA_C_SCAN'},
+    268: {'XC_functional_name': 'HYB_MGGA_X_MN15'},
+    269: {'XC_functional_name': 'MGGA_C_MN15'},
+    270: {'XC_functional_name': 'GGA_X_CAP'},
+    401: {'XC_functional_name': 'HYB_GGA_XC_B3PW91'},
+    402: {'XC_functional_name': 'HYB_GGA_XC_B3LYP'},
+    403: {'XC_functional_name': 'HYB_GGA_XC_B3P86'},
+    404: {'XC_functional_name': 'HYB_GGA_XC_O3LYP'},
+    405: {'XC_functional_name': 'HYB_GGA_XC_mPW1K'},
+    406: {'XC_functional_name': 'HYB_GGA_XC_PBEH'},
+    407: {'XC_functional_name': 'HYB_GGA_XC_B97'},
+    408: {'XC_functional_name': 'HYB_GGA_XC_B97_1'},
+    410: {'XC_functional_name': 'HYB_GGA_XC_B97_2'},
+    411: {'XC_functional_name': 'HYB_GGA_XC_X3LYP'},
+    412: {'XC_functional_name': 'HYB_GGA_XC_B1WC'},
+    413: {'XC_functional_name': 'HYB_GGA_XC_B97_K'},
+    414: {'XC_functional_name': 'HYB_GGA_XC_B97_3'},
+    415: {'XC_functional_name': 'HYB_GGA_XC_MPW3PW'},
+    416: {'XC_functional_name': 'HYB_GGA_XC_B1LYP'},
+    417: {'XC_functional_name': 'HYB_GGA_XC_B1PW91'},
+    418: {'XC_functional_name': 'HYB_GGA_XC_mPW1PW'},
+    419: {'XC_functional_name': 'HYB_GGA_XC_MPW3LYP'},
+    420: {'XC_functional_name': 'HYB_GGA_XC_SB98_1a'},
+    421: {'XC_functional_name': 'HYB_GGA_XC_SB98_1b'},
+    422: {'XC_functional_name': 'HYB_GGA_XC_SB98_1c'},
+    423: {'XC_functional_name': 'HYB_GGA_XC_SB98_2a'},
+    424: {'XC_functional_name': 'HYB_GGA_XC_SB98_2b'},
+    425: {'XC_functional_name': 'HYB_GGA_XC_SB98_2c'},
+    426: {'XC_functional_name': 'HYB_GGA_X_SOGGA11_X'},
+    427: {'XC_functional_name': 'HYB_GGA_XC_HSE03'},
+    428: {'XC_functional_name': 'HYB_GGA_XC_HSE06'},
+    429: {'XC_functional_name': 'HYB_GGA_XC_HJS_PBE'},
+    430: {'XC_functional_name': 'HYB_GGA_XC_HJS_PBE_SOL'},
+    431: {'XC_functional_name': 'HYB_GGA_XC_HJS_B88'},
+    432: {'XC_functional_name': 'HYB_GGA_XC_HJS_B97X'},
+    433: {'XC_functional_name': 'HYB_GGA_XC_CAM_B3LYP'},
+    434: {'XC_functional_name': 'HYB_GGA_XC_TUNED_CAM_B3LYP'},
+    435: {'XC_functional_name': 'HYB_GGA_XC_BHANDH'},
+    436: {'XC_functional_name': 'HYB_GGA_XC_BHANDHLYP'},
+    437: {'XC_functional_name': 'HYB_GGA_XC_MB3LYP_RC04'},
+    438: {'XC_functional_name': 'HYB_MGGA_XC_M05'},
+    439: {'XC_functional_name': 'HYB_MGGA_XC_M05_2X'},
+    440: {'XC_functional_name': 'HYB_MGGA_XC_B88B95'},
+    441: {'XC_functional_name': 'HYB_MGGA_XC_B86B95'},
+    442: {'XC_functional_name': 'HYB_MGGA_XC_PW86B95'},
+    443: {'XC_functional_name': 'HYB_MGGA_XC_BB1K'},
+    444: {'XC_functional_name': 'HYB_MGGA_XC_M06_HF'},
+    445: {'XC_functional_name': 'HYB_MGGA_XC_MPW1B95'},
+    446: {'XC_functional_name': 'HYB_MGGA_XC_MPWB1K'},
+    447: {'XC_functional_name': 'HYB_MGGA_XC_X1B95'},
+    448: {'XC_functional_name': 'HYB_MGGA_XC_XB1K'},
+    449: {'XC_functional_name': 'HYB_MGGA_XC_M06'},
+    450: {'XC_functional_name': 'HYB_MGGA_XC_M06_2X'},
+    451: {'XC_functional_name': 'HYB_MGGA_XC_PW6B95'},
+    452: {'XC_functional_name': 'HYB_MGGA_XC_PWB6K'},
+    453: {'XC_functional_name': 'HYB_GGA_XC_MPWLYP1M'},
+    454: {'XC_functional_name': 'HYB_GGA_XC_REVB3LYP'},
+    455: {'XC_functional_name': 'HYB_GGA_XC_CAMY_BLYP'},
+    456: {'XC_functional_name': 'HYB_GGA_XC_PBE0_13'},
+    457: {'XC_functional_name': 'HYB_MGGA_XC_TPSSH'},
+    458: {'XC_functional_name': 'HYB_MGGA_XC_REVTPSSH'},
+    459: {'XC_functional_name': 'HYB_GGA_XC_B3LYPs'},
+    460: {'XC_functional_name': 'HYB_MGGA_XC_M08_HX'},
+    461: {'XC_functional_name': 'HYB_MGGA_XC_M08_SO'},
+    462: {'XC_functional_name': 'HYB_MGGA_XC_M11'},
+    463: {'XC_functional_name': 'HYB_GGA_XC_WB97'},
+    464: {'XC_functional_name': 'HYB_GGA_XC_WB97X'},
+    465: {'XC_functional_name': 'HYB_GGA_XC_LRC_WPBEH'},
+    466: {'XC_functional_name': 'HYB_GGA_XC_WB97X_V'},
+    467: {'XC_functional_name': 'HYB_GGA_XC_LCY_PBE'},
+    468: {'XC_functional_name': 'HYB_GGA_XC_LCY_BLYP'},
+    469: {'XC_functional_name': 'HYB_GGA_XC_LC_VV10'},
+    470: {'XC_functional_name': 'HYB_GGA_XC_CAMY_B3LYP'},
+    471: {'XC_functional_name': 'HYB_GGA_XC_WB97X_D'},
+    472: {'XC_functional_name': 'HYB_GGA_XC_HPBEINT'},
+    473: {'XC_functional_name': 'HYB_GGA_XC_LRC_WPBE'},
+    474: {'XC_functional_name': 'HYB_MGGA_X_MVSH'},
+    475: {'XC_functional_name': 'HYB_GGA_XC_B3LYP5'},
+    476: {'XC_functional_name': 'HYB_GGA_XC_EDF2'},
+    477: {'XC_functional_name': 'HYB_GGA_XC_CAP0'},
+    478: {'XC_functional_name': 'HYB_GGA_XC_LC_WPBE'},
+    500: {'XC_functional_name': 'GGA_K_VW'},
+    501: {'XC_functional_name': 'GGA_K_GE2'},
+    502: {'XC_functional_name': 'GGA_K_GOLDEN'},
+    503: {'XC_functional_name': 'GGA_K_YT65'},
+    504: {'XC_functional_name': 'GGA_K_BALTIN'},
+    505: {'XC_functional_name': 'GGA_K_LIEB'},
+    506: {'XC_functional_name': 'GGA_K_ABSP1'},
+    507: {'XC_functional_name': 'GGA_K_ABSP2'},
+    508: {'XC_functional_name': 'GGA_K_GR'},
+    509: {'XC_functional_name': 'GGA_K_LUDENA'},
+    510: {'XC_functional_name': 'GGA_K_GP85'},
+    511: {'XC_functional_name': 'GGA_K_PEARSON'},
+    512: {'XC_functional_name': 'GGA_K_OL1'},
+    513: {'XC_functional_name': 'GGA_K_OL2'},
+    514: {'XC_functional_name': 'GGA_K_FR_B88'},
+    515: {'XC_functional_name': 'GGA_K_FR_PW86'},
+    516: {'XC_functional_name': 'GGA_K_DK'},
+    517: {'XC_functional_name': 'GGA_K_PERDEW'},
+    518: {'XC_functional_name': 'GGA_K_VSK'},
+    519: {'XC_functional_name': 'GGA_K_VJKS'},
+    520: {'XC_functional_name': 'GGA_K_ERNZERHOF'},
+    521: {'XC_functional_name': 'GGA_K_LC94'},
+    522: {'XC_functional_name': 'GGA_K_LLP'},
+    523: {'XC_functional_name': 'GGA_K_THAKKAR'},
+    524: {'XC_functional_name': 'GGA_X_WPBEH'},
+    525: {'XC_functional_name': 'GGA_X_HJS_PBE'},
+    526: {'XC_functional_name': 'GGA_X_HJS_PBE_SOL'},
+    527: {'XC_functional_name': 'GGA_X_HJS_B88'},
+    528: {'XC_functional_name': 'GGA_X_HJS_B97X'},
+    529: {'XC_functional_name': 'GGA_X_ITYH'},
+    530: {'XC_functional_name': 'GGA_X_SFAT'},
+    531: {'XC_functional_name': 'HYB_MGGA_XC_WB97M_V'},
 }
 
 
-re_float = r"([\d\.E\+\-]+)"
-re_n = r"[\n\r]"
+re_float = r'([\d\.E\+\-]+)'
+re_n = r'[\n\r]'
 
 
 class AbinitOutParser(TextParser):
     def __init__(self):
         self.energy_components = {
-            "energy_kinetic_electronic": "Kinetic energy",
-            "energy_electronstatic": "Hartree energy",
-            "energy_XC": "XC energy",
-            "ewald": "Ewald energy",
-            "psp_core": "PspCore energy",
-            "psp_local": "Loc. psp. energy",
-            "psp_nonlocal": "NL   psp  energy",
-            "internal": ">>>>> Internal E",
-            "energy_correction_entropy": r"\-kT*entropy",
-            "energy_total": " >>>>>>>>> Etotal",
-            "energy_sum_eigenvalues": r"Band energy \(Ha\)",
+            'energy_kinetic_electronic': 'Kinetic energy',
+            'energy_electronstatic': 'Hartree energy',
+            'energy_XC': 'XC energy',
+            'ewald': 'Ewald energy',
+            'psp_core': 'PspCore energy',
+            'psp_local': 'Loc. psp. energy',
+            'psp_nonlocal': 'NL   psp  energy',
+            'internal': '>>>>> Internal E',
+            'energy_correction_entropy': r'\-kT*entropy',
+            'energy_total': ' >>>>>>>>> Etotal',
+            'energy_sum_eigenvalues': r'Band energy \(Ha\)',
         }
         self._input_vars = None
         self._dataset_numbers = None
@@ -518,81 +518,81 @@ class AbinitOutParser(TextParser):
     def init_quantities(self):
         self._quantities = [
             Quantity(
-                "program_version",
-                r"\.Version ([\w\.]+) of ABINIT",
+                'program_version',
+                r'\.Version ([\w\.]+) of ABINIT',
                 repeats=False,
                 convert=False,
                 flatten=False,
             ),
             Quantity(
-                "x_abinit_parallel_compilation",
-                r"\.\((\w+) version,",
+                'x_abinit_parallel_compilation',
+                r'\.\((\w+) version,',
                 repeats=False,
                 convert=False,
                 flatten=False,
             ),
             Quantity(
-                "program_compilation_host",
-                r"prepared for a ([\w\.]+) computer",
+                'program_compilation_host',
+                r'prepared for a ([\w\.]+) computer',
                 repeats=False,
                 convert=False,
                 flatten=False,
             ),
             Quantity(
-                "x_abinit_start_date",
-                r"\.Starting date : ([\w ]+)\.",
+                'x_abinit_start_date',
+                r'\.Starting date : ([\w ]+)\.',
                 repeats=False,
                 convert=False,
                 flatten=False,
             ),
             Quantity(
-                "x_abinit_start_time",
-                r"\- \( at (\w+) \)",
+                'x_abinit_start_time',
+                r'\- \( at (\w+) \)',
                 repeats=False,
                 convert=False,
                 flatten=False,
             ),
             Quantity(
-                "x_abinit_input_file",
-                r"\- input\s*file\s*\-\> ([\w\.]+)",
+                'x_abinit_input_file',
+                r'\- input\s*file\s*\-\> ([\w\.]+)',
                 repeats=False,
                 convert=False,
                 flatten=False,
             ),
             Quantity(
-                "x_abinit_output_file",
-                r"\- output\s*file\s*\-\> ([\w\.]+)",
+                'x_abinit_output_file',
+                r'\- output\s*file\s*\-\> ([\w\.]+)',
                 repeats=False,
                 convert=False,
                 flatten=False,
             ),
             Quantity(
-                "x_abinit_input_files_root",
-                r"\- root for input\s*files \-\> (\w+)",
+                'x_abinit_input_files_root',
+                r'\- root for input\s*files \-\> (\w+)',
                 repeats=False,
                 convert=False,
                 flatten=False,
             ),
             Quantity(
-                "x_abinit_output_files_root",
-                r"\- root for output\s*files \-\> (\w+)",
+                'x_abinit_output_files_root',
+                r'\- root for output\s*files \-\> (\w+)',
                 repeats=False,
                 convert=False,
                 flatten=False,
             ),
             Quantity(
-                "x_abinit_total_cpu_time",
-                r"\-\s*Total cpu\s*time\s*\(s,m,h\):\s*([\d\.]+)",
+                'x_abinit_total_cpu_time',
+                r'\-\s*Total cpu\s*time\s*\(s,m,h\):\s*([\d\.]+)',
                 dtype=float,
             ),
             Quantity(
-                "x_abinit_total_wallclock_time",
-                r"\-\s*Total wall clock time\s*\(s,m,h\):\s*([\d\.]+)",
+                'x_abinit_total_wallclock_time',
+                r'\-\s*Total wall clock time\s*\(s,m,h\):\s*([\d\.]+)',
                 dtype=float,
             ),
             Quantity(
-                "run_clean_end",
-                r"(Calculation completed)",
+                'run_clean_end',
+                r'(Calculation completed)',
                 repeats=False,
                 convert=False,
                 flatten=False,
@@ -601,14 +601,14 @@ class AbinitOutParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "input_vars",
-                r"\-outvars: echo values of preprocessed input variables \-+([\s\S]+?)\={10}",
+                'input_vars',
+                r'\-outvars: echo values of preprocessed input variables \-+([\s\S]+?)\={10}',
                 repeats=False,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "key_value",
-                            r"([a-zA-Z\d]+)\s*([\d\.\+\-E\s]+)",
+                            'key_value',
+                            r'([a-zA-Z\d]+)\s*([\d\.\+\-E\s]+)',
                             repeats=True,
                         )
                     ]
@@ -617,7 +617,7 @@ class AbinitOutParser(TextParser):
         )
 
         def str_to_array(val_in):
-            val = val_in.strip().split("\n")
+            val = val_in.strip().split('\n')
             val = [v.split()[-3:] for v in val]
             return np.array(val, dtype=float)
 
@@ -637,59 +637,59 @@ class AbinitOutParser(TextParser):
 
         self_consistent = [
             Quantity(
-                "energy_total_scf_iteration",
-                r"ETOT\s*\d+\s*([\+\-\d\.Ee ]+)\n",
+                'energy_total_scf_iteration',
+                r'ETOT\s*\d+\s*([\+\-\d\.Ee ]+)\n',
                 repeats=True,
                 dtype=float,
             ),
             Quantity(
-                "convergence",
-                r"At SCF step\s*([0-9]+)\s*"
-                r", etot|, forces|vres2\s*=\s*[\-\+\d\.Ee]+?\s*<\s*tolvrs=\s*[\-\+\d\.Ee]+?\s*=>\s*"
-                r"([\w ]+)",
+                'convergence',
+                r'At SCF step\s*([0-9]+)\s*'
+                r', etot|, forces|vres2\s*=\s*[\-\+\d\.Ee]+?\s*<\s*tolvrs=\s*[\-\+\d\.Ee]+?\s*=>\s*'
+                r'([\w ]+)',
                 repeats=False,
             ),
         ]
 
         relaxation = [
             Quantity(
-                "stress_tensor",
-                r"Cartesian components of stress tensor \(hartree/bohr\^3\)\s*"
-                r"sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*"
-                r"sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*"
-                r"sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*"
-                r"sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*"
-                r"sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*"
-                r"sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*",
+                'stress_tensor',
+                r'Cartesian components of stress tensor \(hartree/bohr\^3\)\s*'
+                r'sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*'
+                r'sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*'
+                r'sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*'
+                r'sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*'
+                r'sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*'
+                r'sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*',
                 repeats=False,
                 str_operation=str_to_stress_tensor,
                 convert=False,
             ),
             Quantity(
-                "self_consistent",
-                r"SELF\-CONSISTENT\-FIELD CONVERGENCE\-*\s*(iter\s*Etot[\s\S]+?)\-*OUTPUT",
+                'self_consistent',
+                r'SELF\-CONSISTENT\-FIELD CONVERGENCE\-*\s*(iter\s*Etot[\s\S]+?)\-*OUTPUT',
                 sub_parser=TextParser(quantities=self_consistent),
                 repeats=False,
             ),
             Quantity(
-                "cartesian_coordinates",
-                r"Cartesian coordinates \(xcart\) \[bohr\]\s*([\s\d\.Ee\+\-]+)",
+                'cartesian_coordinates',
+                r'Cartesian coordinates \(xcart\) \[bohr\]\s*([\s\d\.Ee\+\-]+)',
                 repeats=False,
                 str_operation=str_to_array,
                 convert=False,
                 unit=ureg.bohr,
             ),
             Quantity(
-                "cartesian_forces",
-                r"Cartesian forces \(fcart\)[\s\S]+?\(free atoms\)\s*([\s\d\.Ee\+\-]+)",
+                'cartesian_forces',
+                r'Cartesian forces \(fcart\)[\s\S]+?\(free atoms\)\s*([\s\d\.Ee\+\-]+)',
                 repeats=False,
                 str_operation=str_to_array,
                 convert=False,
                 unit=ureg.hartree / ureg.bohr,
             ),
             Quantity(
-                "energy_total",
-                r"Total energy \(etotal\) \[Ha\]=\s*([\-\+\d\.Ee]+)",
+                'energy_total',
+                r'Total energy \(etotal\) \[Ha\]=\s*([\-\+\d\.Ee]+)',
                 repeats=False,
                 dtype=float,
                 unit=ureg.hartree,
@@ -699,7 +699,7 @@ class AbinitOutParser(TextParser):
         energy_components = [
             Quantity(
                 key,
-                rf"\s*{val}\s*=\s*([\d\.E\-\+]+)",
+                rf'\s*{val}\s*=\s*([\d\.E\-\+]+)',
                 repeats=False,
                 dtype=float,
                 unit=ureg.hartree,
@@ -709,71 +709,71 @@ class AbinitOutParser(TextParser):
 
         results = [
             Quantity(
-                "cartesian_coordinates",
-                r"\s*cartesian coordinates \(angstrom\) at end:\s*([\s\d\.Ee\+\-]+)",
+                'cartesian_coordinates',
+                r'\s*cartesian coordinates \(angstrom\) at end:\s*([\s\d\.Ee\+\-]+)',
                 repeats=False,
                 str_operation=str_to_array,
                 convert=False,
                 unit=ureg.angstrom,
             ),
             Quantity(
-                "cartesian_forces",
-                r"\s*cartesian forces \(hartree/bohr\) at end\:\s*([\s\d\.Ee\+\-]+)",
+                'cartesian_forces',
+                r'\s*cartesian forces \(hartree/bohr\) at end\:\s*([\s\d\.Ee\+\-]+)',
                 repeats=False,
                 str_operation=str_to_array,
                 convert=False,
                 unit=ureg.hartree / ureg.bohr,
             ),
             Quantity(
-                "x_abinit_eig_filename",
-                r"\s*prteigrs : about to open file\s*(\S+)",
+                'x_abinit_eig_filename',
+                r'\s*prteigrs : about to open file\s*(\S+)',
                 repeats=False,
                 convert=False,
             ),
             Quantity(
-                "fermi_energy",
-                r"\s*Fermi \(or HOMO\) energy \(hartree\) =\s*([-+0-9.]+)",
+                'fermi_energy',
+                r'\s*Fermi \(or HOMO\) energy \(hartree\) =\s*([-+0-9.]+)',
                 repeats=False,
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "x_abinit_magnetisation",
-                r"\s*Magnetisation \(Bohr magneton\)=\s*([-+0-9.eEdD]*)\s*",
+                'x_abinit_magnetisation',
+                r'\s*Magnetisation \(Bohr magneton\)=\s*([-+0-9.eEdD]*)\s*',
                 repeats=False,
                 dtype=float,
                 unit=ureg.bohr_magneton,
             ),
             Quantity(
-                "eigenvalues",
-                r"\s*kpt#\s*(\d+), nband=\s*(\d+), wtk=\s*([\d\.]+)\s*, "
-                r"kpt=([\d\.\-\+Ee ]+)\s*\(reduced coord\)\s*([\d\.\-\+Ee\s]+)",
+                'eigenvalues',
+                r'\s*kpt#\s*(\d+), nband=\s*(\d+), wtk=\s*([\d\.]+)\s*, '
+                r'kpt=([\d\.\-\+Ee ]+)\s*\(reduced coord\)\s*([\d\.\-\+Ee\s]+)',
                 repeats=True,
                 str_operation=str_to_eigenvalues,
                 convert=False,
             ),
             Quantity(
-                "occupation_numbers",
-                r"\s*occupation numbers for kpt#\s*\d+\s*([\d\.\-\+Ee ]+)",
+                'occupation_numbers',
+                r'\s*occupation numbers for kpt#\s*\d+\s*([\d\.\-\+Ee ]+)',
                 repeats=True,
                 dtype=float,
             ),
             Quantity(
-                "energy_total",
-                r"Total energy\(eV\)=\s*([\d\.\-\+Ee]+)\s*;",
+                'energy_total',
+                r'Total energy\(eV\)=\s*([\d\.\-\+Ee]+)\s*;',
                 repeats=False,
                 dtype=float,
                 unit=ureg.eV,
             ),
             Quantity(
-                "stress_tensor",
-                r"Cartesian components of stress tensor \(hartree/bohr\^3\)\s*"
-                r"sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*"
-                r"sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*"
-                r"sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*"
-                r"sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*"
-                r"sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*"
-                r"sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*",
+                'stress_tensor',
+                r'Cartesian components of stress tensor \(hartree/bohr\^3\)\s*'
+                r'sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*'
+                r'sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*'
+                r'sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*'
+                r'sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*'
+                r'sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*'
+                r'sigma\(\d \d\)\s*=\s*([\-\+\d\.Ee]+)\s*',
                 repeats=False,
                 str_operation=str_to_stress_tensor,
                 convert=False,
@@ -782,51 +782,51 @@ class AbinitOutParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "dataset",
-                r"==\s*(DATASET\s*\d+\s*==[\s\S]+?)(?:\-Cartesian components of stress tensor \(GPa\)|\s*prteigrs\s*\:\s*prtvol\=[\w\s\,\-\.\n]*===|\s*Average fulfillment[\s\w\[\]\-\:\.\%]*===|== END DATASET)",
+                'dataset',
+                r'==\s*(DATASET\s*\d+\s*==[\s\S]+?)(?:\-Cartesian components of stress tensor \(GPa\)|\s*prteigrs\s*\:\s*prtvol\=[\w\s\,\-\.\n]*===|\s*Average fulfillment[\s\w\[\]\-\:\.\%]*===|== END DATASET)',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "x_abinit_dataset_number",
-                            r"DATASET\s*(\d+)",
+                            'x_abinit_dataset_number',
+                            r'DATASET\s*(\d+)',
                             dtype=int,
                             repeats=False,
                         ),
                         Quantity(
-                            "x_abinit_var_ixc",
-                            r"\-\s*ixc\s*=\s*([\d\-]+)",
+                            'x_abinit_var_ixc',
+                            r'\-\s*ixc\s*=\s*([\d\-]+)',
                             dtype=int,
                             repeats=False,
                         ),
                         Quantity(
-                            "x_abinit_vprim",
-                            r"R\(\d\)=\s*(\-*[\d\.]+)\s*(\-*[\d\.]+)\s*(\-*[\d\.]+)\s*G\(\d\)=",
+                            'x_abinit_vprim',
+                            r'R\(\d\)=\s*(\-*[\d\.]+)\s*(\-*[\d\.]+)\s*(\-*[\d\.]+)\s*G\(\d\)=',
                             repeats=True,
                             dtype=float,
                         ),
                         Quantity(
-                            "x_abinit_unit_cell_volume",
-                            r"Unit cell volume ucvol\s*=\s*([\d\.\+Ee]+)",
+                            'x_abinit_unit_cell_volume',
+                            r'Unit cell volume ucvol\s*=\s*([\d\.\+Ee]+)',
                             dtype=float,
                             unit=ureg.bohr**3,
                         ),
                         Quantity(
-                            "self_consistent",
-                            r"\={10}\s*(iter\s*Etot[\s\S]+?)\={10}",
+                            'self_consistent',
+                            r'\={10}\s*(iter\s*Etot[\s\S]+?)\={10}',
                             repeats=False,
                             sub_parser=TextParser(quantities=self_consistent),
                         ),
                         Quantity(
-                            "relaxation",
-                            r"\-\-\- Iteration: \( \d+\/\d+\)([\s\S]+?Total energy \(etotal\) \[Ha\]=\s*[\-\+\d\.Ee]+)",
+                            'relaxation',
+                            r'\-\-\- Iteration: \( \d+\/\d+\)([\s\S]+?Total energy \(etotal\) \[Ha\]=\s*[\-\+\d\.Ee]+)',
                             repeats=True,
                             sub_parser=TextParser(quantities=relaxation),
                         ),
                         Quantity(
-                            "results",
-                            r"\-+iterations are completed or convergence reached\-+([\s\S]+)"
-                            r"(?:(sigma\(\d \d\)\s*=\s*[\+\-\d\.E]+)|={80})",
+                            'results',
+                            r'\-+iterations are completed or convergence reached\-+([\s\S]+)'
+                            r'(?:(sigma\(\d \d\)\s*=\s*[\+\-\d\.E]+)|={80})',
                             repeats=False,
                             sub_parser=TextParser(quantities=results),
                         ),
@@ -837,129 +837,129 @@ class AbinitOutParser(TextParser):
 
         rpa_quantities = [
             Quantity(
-                "precision_algorithm",
-                rf"{re_n}\.Using[a-zA-Z\s\;]+\=\s*(\d+)",
+                'precision_algorithm',
+                rf'{re_n}\.Using[a-zA-Z\s\;]+\=\s*(\d+)',
                 repeats=False,
             ),
             Quantity(
-                "kmesh",
-                rf"{re_n}(\s*====\s*K-mesh[a-zA-Z\s]*wavefunctions[\s\S]+?)(?:\s*====\s*Q-mesh)",
+                'kmesh',
+                rf'{re_n}(\s*====\s*K-mesh[a-zA-Z\s]*wavefunctions[\s\S]+?)(?:\s*====\s*Q-mesh)',
                 repeats=False,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "n_mesh",
-                            rf"{re_n}\s*Number of points in the irreducible wedge\s*\:\s*(\d+)",
+                            'n_mesh',
+                            rf'{re_n}\s*Number of points in the irreducible wedge\s*\:\s*(\d+)',
                             repeats=False,
                         ),
                         Quantity(
-                            "mesh",
-                            rf"{re_n}[\d\)\s]+{re_float}\s*{re_float}\s*{re_float}\s*{re_float}",
+                            'mesh',
+                            rf'{re_n}[\d\)\s]+{re_float}\s*{re_float}\s*{re_float}\s*{re_float}',
                             repeats=True,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "qmesh",
-                rf"{re_n}(\s*====\s*Q-mesh[a-zA-Z\s]*screening function[\s\S]+?)(?:\s*setmesh\:)",
+                'qmesh',
+                rf'{re_n}(\s*====\s*Q-mesh[a-zA-Z\s]*screening function[\s\S]+?)(?:\s*setmesh\:)',
                 repeats=False,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "n_mesh",
-                            rf"{re_n}\s*Number of points in the irreducible wedge\s*\:\s*(\d+)",
+                            'n_mesh',
+                            rf'{re_n}\s*Number of points in the irreducible wedge\s*\:\s*(\d+)',
                             repeats=False,
                         ),
                         Quantity(
-                            "mesh",
-                            rf"{re_n}[\d\)\s]+{re_float}\s*{re_float}\s*{re_float}\s*{re_float}",
+                            'mesh',
+                            rf'{re_n}[\d\)\s]+{re_float}\s*{re_float}\s*{re_float}\s*{re_float}',
                             repeats=True,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "fftmesh",
-                r"FFT mesh size selected[\s\=]*(\d+)x\s*(\d+)x\s*(\d+)",
+                'fftmesh',
+                r'FFT mesh size selected[\s\=]*(\d+)x\s*(\d+)x\s*(\d+)',
                 repeats=False,
             ),
-            Quantity("n_fftmesh", r"total number of points[\s\=]*(\d+)", repeats=False),
+            Quantity('n_fftmesh', r'total number of points[\s\=]*(\d+)', repeats=False),
             Quantity(
-                "symm_screening",
-                rf"{re_n}\- screening\:([a-zA-Z\-\s]+){re_n}",
-                repeats=False,
-            ),
-            Quantity(
-                "max_band_occ",
-                rf"{re_n}\- Maximum band index for partially occupied states[a-zA-Z\s]+\=\s*(\d+)",
+                'symm_screening',
+                rf'{re_n}\- screening\:([a-zA-Z\-\s]+){re_n}',
                 repeats=False,
             ),
             Quantity(
-                "n_bands_per_proc",
-                rf"{re_n}\- Remaining bands to be divided among processors[a-zA-Z\s]+\=\s*(\d+)",
+                'max_band_occ',
+                rf'{re_n}\- Maximum band index for partially occupied states[a-zA-Z\s]+\=\s*(\d+)',
                 repeats=False,
             ),
             Quantity(
-                "n_bands_per_node",
-                rf"{re_n}\- Number of bands treated by each node[a-zA-Z\s]+\~(\d+)",
+                'n_bands_per_proc',
+                rf'{re_n}\- Remaining bands to be divided among processors[a-zA-Z\s]+\=\s*(\d+)',
                 repeats=False,
             ),
             Quantity(
-                "n_electrons",
-                rf"{re_n}\s*Number of electrons calculated from density\s*\=\s*{re_float}"
-                rf"\;\s*Expected\s*\=\s*{re_float}"
-                rf"{re_n}\s*average of density\,\s*n\s*\=\s*{re_float}",
+                'n_bands_per_node',
+                rf'{re_n}\- Number of bands treated by each node[a-zA-Z\s]+\~(\d+)',
                 repeats=False,
             ),
             Quantity(
-                "wigner_seitz_radius", rf"{re_n}\s*r_s\s*\=\s*{re_float}", repeats=False
+                'n_electrons',
+                rf'{re_n}\s*Number of electrons calculated from density\s*\=\s*{re_float}'
+                rf'\;\s*Expected\s*\=\s*{re_float}'
+                rf'{re_n}\s*average of density\,\s*n\s*\=\s*{re_float}',
+                repeats=False,
             ),
             Quantity(
-                "omega_plasma",
-                rf"{re_n}\s*omega_plasma\s*\=\s*{re_float}\s*\[(?P<__unit>\w+)\]",
+                'wigner_seitz_radius', rf'{re_n}\s*r_s\s*\=\s*{re_float}', repeats=False
+            ),
+            Quantity(
+                'omega_plasma',
+                rf'{re_n}\s*omega_plasma\s*\=\s*{re_float}\s*\[(?P<__unit>\w+)\]',
                 repeats=False,
             ),
         ]
 
         screening_quantities = rpa_quantities + [
             Quantity(
-                "frequencies",
-                rf"{re_n}\s*(calculating chi0 at frequencies \[[a-zA-Z]+\]\s*\:[\s\S]+?)(?:\-*{re_n}\s*q-point number\s*1)",
+                'frequencies',
+                rf'{re_n}\s*(calculating chi0 at frequencies \[[a-zA-Z]+\]\s*\:[\s\S]+?)(?:\-*{re_n}\s*q-point number\s*1)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "values",
-                            rf"{re_n}\s*\d*\s*{re_float}\s*{re_float}",
+                            'values',
+                            rf'{re_n}\s*\d*\s*{re_float}\s*{re_float}',
                             repeats=True,
                         )
                     ]
                 ),
             ),
             Quantity(
-                "static_diel_const",
-                rf"{re_n}\s*dielectric constant\s*\=\s*{re_float}",
+                'static_diel_const',
+                rf'{re_n}\s*dielectric constant\s*\=\s*{re_float}',
                 repeats=False,
             ),
             Quantity(
-                "static_diel_const_nofields",
-                rf"{re_n}\s*dielectric constant without local fields\s*\=\s*{re_float}",
+                'static_diel_const_nofields',
+                rf'{re_n}\s*dielectric constant without local fields\s*\=\s*{re_float}',
                 repeats=False,
             ),
             Quantity(
-                "chi_q",
-                rf"{re_n}(\s*q-point number\s*1[\s\S]+?)(?:\s*Average fulfillment[\s\w\[\]\-\:\.\%]*===)",
+                'chi_q',
+                rf'{re_n}(\s*q-point number\s*1[\s\S]+?)(?:\s*Average fulfillment[\s\w\[\]\-\:\.\%]*===)',
                 repeats=False,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "q_point",
-                            rf"\s*q-point number\s*(\d+)\s*q =\s*\(\s*{re_float}\,\s*{re_float}\,\s*{re_float}\)\s*\[r\.l\.u\.\]",
+                            'q_point',
+                            rf'\s*q-point number\s*(\d+)\s*q =\s*\(\s*{re_float}\,\s*{re_float}\,\s*{re_float}\)\s*\[r\.l\.u\.\]',
                             repeats=True,
                         ),
                         Quantity(
-                            "av_fulfillment",
-                            rf"{re_n}\s*Average fulfillment[a-zA-Z\s\[\]\-\d]*\:\s*([\d\.]+)",
+                            'av_fulfillment',
+                            rf'{re_n}\s*Average fulfillment[a-zA-Z\s\[\]\-\d]*\:\s*([\d\.]+)',
                             repeats=True,
                         ),
                         # TODO regex chi0(G, G') for each qpoint and frequency
@@ -970,97 +970,97 @@ class AbinitOutParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "screening_dataset",
-                rf"{re_n}(==\s*DATASET\s*3[\s\S]+?)(?:==\s*DATASET\s*4|== END DATASET)",
+                'screening_dataset',
+                rf'{re_n}(==\s*DATASET\s*3[\s\S]+?)(?:==\s*DATASET\s*4|== END DATASET)',
                 repeats=False,
                 sub_parser=TextParser(quantities=screening_quantities),
             )
         )
 
         def params_to_pairs(val_in):
-            key = "_".join(val_in.split()[:-1]).replace("-", "_")
+            key = '_'.join(val_in.split()[:-1]).replace('-', '_')
             value = np.int(val_in.split()[-1])
             return [key, value]
 
         gw_quantities = rpa_quantities + [
             Quantity(
-                "ks_band_gaps",
-                rf"{re_n}\s*(\>\>\>\>\s*For spin\s*1[\s\S]+?)(?:\s*SIGMA fundamental parameters)",
+                'ks_band_gaps',
+                rf'{re_n}\s*(\>\>\>\>\s*For spin\s*1[\s\S]+?)(?:\s*SIGMA fundamental parameters)',
                 repeats=False,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "min_direct_gap",
-                            rf"\s*Minimum direct gap\s*=\s*{re_float}\s*\[\w*\]\,\s*"
-                            rf"located at k-point\s*\:\s*{re_float}\s*{re_float}\s*{re_float}",
+                            'min_direct_gap',
+                            rf'\s*Minimum direct gap\s*=\s*{re_float}\s*\[\w*\]\,\s*'
+                            rf'located at k-point\s*\:\s*{re_float}\s*{re_float}\s*{re_float}',
                             repeats=False,
                         ),
                         Quantity(
-                            "fundamental_gap",
-                            rf"\s*Fundamental gap\s*=\s*{re_float}\s*\[(?P<__unit>\w+)\]",
+                            'fundamental_gap',
+                            rf'\s*Fundamental gap\s*=\s*{re_float}\s*\[(?P<__unit>\w+)\]',
                             repeats=False,
                         ),
                         Quantity(
-                            "k_top_valence_band",
-                            rf"\s*Top of valence bands at\s*\:\s*{re_float}\s*{re_float}\s*{re_float}",
+                            'k_top_valence_band',
+                            rf'\s*Top of valence bands at\s*\:\s*{re_float}\s*{re_float}\s*{re_float}',
                             repeats=False,
                         ),
                         Quantity(
-                            "k_bottom_conduction_band",
-                            rf"\s*Bottom of conduction at\s*\:\s*{re_float}\s*{re_float}\s*{re_float}",
+                            'k_bottom_conduction_band',
+                            rf'\s*Bottom of conduction at\s*\:\s*{re_float}\s*{re_float}\s*{re_float}',
                             repeats=False,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "sigma_parameters",
-                rf"{re_n}(\s*SIGMA fundamental parameters[\s\S]+?)(?:\s*EPSILON\^\-1)",
+                'sigma_parameters',
+                rf'{re_n}(\s*SIGMA fundamental parameters[\s\S]+?)(?:\s*EPSILON\^\-1)',
                 repeats=False,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "model", rf"([a-zA-Z\s]+) MODEL\s*(\d+)", repeats=False
+                            'model', rf'([a-zA-Z\s]+) MODEL\s*(\d+)', repeats=False
                         ),
                         Quantity(
-                            "params",
-                            rf"\s*number of ([a-zA-Z\s\-\/]+)(\d+)",
+                            'params',
+                            rf'\s*number of ([a-zA-Z\s\-\/]+)(\d+)',
                             repeats=True,
                             str_operation=params_to_pairs,
                         ),
                         Quantity(
-                            "freq_step",
-                            rf"{re_n}\s*frequency step[a-zA-Z\s\/]*\[eV\]\s*{re_float}",
+                            'freq_step',
+                            rf'{re_n}\s*frequency step[a-zA-Z\s\/]*\[eV\]\s*{re_float}',
                             repeats=False,
                         ),
                         Quantity(
-                            "max_omega_sigma",
-                            rf"{re_n}\s*max omega for Sigma[a-zA-Z\s]*\[eV\]\s*{re_float}",
+                            'max_omega_sigma',
+                            rf'{re_n}\s*max omega for Sigma[a-zA-Z\s]*\[eV\]\s*{re_float}',
                             repeats=False,
                         ),
                         Quantity(
-                            "zcut_avoid",
-                            rf"{re_n}\s*zcut for avoiding poles\s*\[eV\]\s*{re_float}",
+                            'zcut_avoid',
+                            rf'{re_n}\s*zcut for avoiding poles\s*\[eV\]\s*{re_float}',
                             repeats=False,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "epsilon_inv",
-                rf"{re_n}(\s*EPSILON\^\-1[\s\S]+?)(?:\s*Perturbative Calculation)",
+                'epsilon_inv',
+                rf'{re_n}(\s*EPSILON\^\-1[\s\S]+?)(?:\s*Perturbative Calculation)',
                 repeats=False,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "dimensions",
-                            rf"\s*dimension of the eps\^\-1 matrix([a-zA-Z\s]+)(\d+)",
+                            'dimensions',
+                            rf'\s*dimension of the eps\^\-1 matrix([a-zA-Z\s]+)(\d+)',
                             repeats=True,
                             str_operation=params_to_pairs,
                         ),
                         Quantity(
-                            "params",
-                            rf"\s*number of ([a-zA-Z\s\-\/]+)(\d+)",
+                            'params',
+                            rf'\s*number of ([a-zA-Z\s\-\/]+)(\d+)',
                             repeats=True,
                             str_operation=params_to_pairs,
                         ),
@@ -1068,24 +1068,24 @@ class AbinitOutParser(TextParser):
                 ),
             ),
             Quantity(
-                "self_energy_ee",
-                rf"{re_n}(\-\-\-\s*\!SelfEnergy\_ee[\s\S]+?)(?:\.\.\.)",
+                'self_energy_ee',
+                rf'{re_n}(\-\-\-\s*\!SelfEnergy\_ee[\s\S]+?)(?:\.\.\.)',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "kpoint",
-                            rf"{re_n}kpoint\s*\:[\s\[]*{re_float}\, *{re_float}\, *{re_float}",
+                            'kpoint',
+                            rf'{re_n}kpoint\s*\:[\s\[]*{re_float}\, *{re_float}\, *{re_float}',
                             repeats=False,
                         ),
                         Quantity(
-                            "params",
-                            rf"{re_n}([a-zA-Z\_\s]+)\:\s*([\d\.\-\+]+)",
+                            'params',
+                            rf'{re_n}([a-zA-Z\_\s]+)\:\s*([\d\.\-\+]+)',
                             repeats=True,
                         ),
                         Quantity(
-                            "data",
-                            rf"{re_n} *(\d+) *{re_float} *{re_float} *{re_float} *{re_float} *{re_float} *{re_float} *{re_float} *{re_float} *{re_float}",
+                            'data',
+                            rf'{re_n} *(\d+) *{re_float} *{re_float} *{re_float} *{re_float} *{re_float} *{re_float} *{re_float} *{re_float} *{re_float}',
                             repeats=True,
                         ),
                     ]
@@ -1095,8 +1095,8 @@ class AbinitOutParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "gw_dataset",
-                rf"{re_n}(==\s*DATASET\s*4[\s\S]+?)(?:==\s*DATASET\s*5|==\s*END DATASET\s*\(S\))",
+                'gw_dataset',
+                rf'{re_n}(==\s*DATASET\s*4[\s\S]+?)(?:==\s*DATASET\s*5|==\s*END DATASET\s*\(S\))',
                 repeats=False,
                 sub_parser=TextParser(quantities=gw_quantities),
             )
@@ -1106,7 +1106,7 @@ class AbinitOutParser(TextParser):
     def dataset_numbers(self):
         if self._dataset_numbers is None:
             self._dataset_numbers = [
-                d.get("x_abinit_dataset_number", 1) for d in self.get("dataset", [])
+                d.get('x_abinit_dataset_number', 1) for d in self.get('dataset', [])
             ]
         return self._dataset_numbers
 
@@ -1123,29 +1123,29 @@ class AbinitOutParser(TextParser):
             self._input_vars = {
                 key: [1] + [None] * (self.n_datasets - 1)
                 for key in [
-                    "ntypat",
-                    "npsp",
-                    "nshiftk",
-                    "natrd",
-                    "nsppol",
-                    "nspden",
-                    "nkpt",
-                    "occopt",
-                    "ixc",
+                    'ntypat',
+                    'npsp',
+                    'nshiftk',
+                    'natrd',
+                    'nsppol',
+                    'nspden',
+                    'nkpt',
+                    'occopt',
+                    'ixc',
                 ]
             }
 
-            key_val = self.get("input_vars", {}).get("key_value", [])
+            key_val = self.get('input_vars', {}).get('key_value', [])
             for i in range(len(key_val)):
-                key, n_dataset = re.search(r"(\D+)?(\d*)", key_val[i][0]).groups()
+                key, n_dataset = re.search(r'(\D+)?(\d*)', key_val[i][0]).groups()
                 self._input_vars.setdefault(key, [None] * self.n_datasets)
 
                 try:
-                    m_quantity = getattr(x_abinit_section_input, f"x_abinit_var_{key}")
+                    m_quantity = getattr(x_abinit_section_input, f'x_abinit_var_{key}')
                 except Exception:
                     continue
 
-                if "-" in key_val[i]:  # exception when the next line starts with -
+                if '-' in key_val[i]:  # exception when the next line starts with -
                     key_val[i] = key_val[i][:-1]
 
                 val = np.array(key_val[i][1:], dtype=m_quantity.type)
@@ -1164,8 +1164,8 @@ class AbinitOutParser(TextParser):
         return val[n_dataset - 1]
 
     def get_atom_labels(self):
-        znucl = self.get_input_var("znucl", 1)
-        typat = self.get_input_var("typat", 1)
+        znucl = self.get_input_var('znucl', 1)
+        typat = self.get_input_var('typat', 1)
         if znucl is None or typat is None:
             return
         return [chemical_symbols[int(znucl[n_at - 1])] for n_at in typat]
@@ -1177,15 +1177,15 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         self.dos_parser = DataTextParser()
         self.dataset = []
         self._child_archives = {}
-        self._calculation_type = "dft"
+        self._calculation_type = 'dft'
 
         self._selfenergy_data_map = {
-            1: "value_ks",
-            2: "value_ks_xc",
-            3: "value_exchange",
-            4: "value_correlation",
-            7: "value_xc",
-            9: "value_qp",
+            1: 'value_ks',
+            2: 'value_ks_xc',
+            3: 'value_exchange',
+            4: 'value_correlation',
+            7: 'value_xc',
+            9: 'value_qp',
         }
 
     def parse_var(self):
@@ -1199,7 +1199,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             for key, val in self.out_parser.input_vars.items():
                 if val[i] is None:
                     continue
-                setattr(sec_input, f"x_abinit_var_{key}", val[i])
+                setattr(sec_input, f'x_abinit_var_{key}', val[i])
 
     def parse_system(self):
         sec_run = self.archive.run[-1]
@@ -1208,7 +1208,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         atom_labels = self.out_parser.get_atom_labels()
         if atom_labels is None:
             return
-        lattice_vectors = self.dataset[0].get("x_abinit_vprim") * ureg.bohr
+        lattice_vectors = self.dataset[0].get('x_abinit_vprim') * ureg.bohr
         pbc = [v is not None for v in lattice_vectors]
 
         # Always extracted from DATASET 1
@@ -1227,7 +1227,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             if natom == 1:  # handling exception
                 atom_positions = np.array([[0.0, 0.0, 0.0]])
             else:
-                self.logger.warning("Could not resolve atom positions.")
+                self.logger.warning('Could not resolve atom positions.')
                 return
 
         sec_system = System()
@@ -1243,15 +1243,15 @@ class AbinitParser(BeyondDFTWorkflowsParser):
     def parse_method(self):
         sec_run = self.archive.run[-1]
         smearing_kinds = [
-            "",
-            "",
-            "",
-            "fermi",
-            "marzari-vanderbilt",
-            "marzari-vanderbilt",
-            "methfessel-paxton",
-            "gaussian",
-            "",
+            '',
+            '',
+            '',
+            'fermi',
+            'marzari-vanderbilt',
+            'marzari-vanderbilt',
+            'methfessel-paxton',
+            'gaussian',
+            '',
         ]
 
         sec_method = Method()
@@ -1260,42 +1260,42 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         sec_method.dft = sec_dft
         sec_electronic = Electronic()
         sec_method.electronic = sec_electronic
-        sec_electronic.method = "DFT"
+        sec_electronic.method = 'DFT'
         # defined in DATASET 2
         if len(self.dataset) == 1:
-            nsppol = int(self.out_parser.get_input_var("nsppol", 1, 1))
+            nsppol = int(self.out_parser.get_input_var('nsppol', 1, 1))
         else:
-            nsppol = int(self.out_parser.get_input_var("nsppol", 2, 1))
+            nsppol = int(self.out_parser.get_input_var('nsppol', 2, 1))
         sec_electronic.n_spin_channels = nsppol
 
         sec_scf = Scf()
         sec_method.scf = sec_scf
-        sec_scf.n_max_iteration = int(self.out_parser.get_input_var("nstep", 1, 1))
-        toldfe = self.out_parser.get_input_var("toldfe", 1, 0.0)
+        sec_scf.n_max_iteration = int(self.out_parser.get_input_var('nstep', 1, 1))
+        toldfe = self.out_parser.get_input_var('toldfe', 1, 0.0)
         if toldfe is not None:
             sec_scf.threshold_energy_change = toldfe * ureg.hartree
 
-        occopt = self.out_parser.get_input_var("occopt", 1, 1)
-        smearing = smearing_kinds[occopt] if occopt < len(smearing_kinds) else ""
+        occopt = self.out_parser.get_input_var('occopt', 1, 1)
+        smearing = smearing_kinds[occopt] if occopt < len(smearing_kinds) else ''
         sec_smearing = Smearing()
         sec_electronic.smearing = sec_smearing
         sec_smearing.kind = smearing
-        tsmear = self.out_parser.get_input_var("tsmear", 1, 0.01)
+        tsmear = self.out_parser.get_input_var('tsmear', 1, 0.01)
         if tsmear is not None:
-            sec_smearing.width = (tsmear * ureg.hartree).to("joule").magnitude
+            sec_smearing.width = (tsmear * ureg.hartree).to('joule').magnitude
 
         # basis set
-        ecut = self.out_parser.get_input_var("ecut", 1)
+        ecut = self.out_parser.get_input_var('ecut', 1)
         if ecut is not None:
             ecut = ecut * ureg.hartree
         sec_method.electrons_representation.append(
             BasisSetContainer(
-                type="plane waves",
-                scope=["wavefunction"],
+                type='plane waves',
+                scope=['wavefunction'],
                 basis_set=[
                     BasisSet(
-                        scope=["valence"],
-                        type="plane waves",
+                        scope=['valence'],
+                        type='plane waves',
                         cutoff=ecut,
                     )
                 ],
@@ -1303,7 +1303,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         )
 
         # DFT
-        ixc = self.out_parser.get_input_var("ixc", 1, 1)
+        ixc = self.out_parser.get_input_var('ixc', 1, 1)
         if ixc >= 0:
             xc_functionals = ABINIT_NATIVE_IXC.get(ixc, [])
         else:
@@ -1319,32 +1319,32 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         sec_dft.xc_functional = sec_xc_functional
         for xc_functional in xc_functionals:
             for value in sorted(xc_functional.values()):
-                if "_X_" in value:
+                if '_X_' in value:
                     sec_xc_functional.exchange.append(Functional(name=value))
-                elif "_C_" in value:
+                elif '_C_' in value:
                     sec_xc_functional.correlation.append(Functional(name=value))
-                elif "_HYB_" in value:
+                elif '_HYB_' in value:
                     sec_xc_functional.hybrid.append(Functional(name=value))
                 else:
                     sec_xc_functional.contributions.append(Functional(name=value))
 
         # Parsing KMesh
         if (
-            self.out_parser.get_input_var("kptopt", 1, 4) < 0
+            self.out_parser.get_input_var('kptopt', 1, 4) < 0
         ):  # negative kptopt sets band structure
             return
         sec_k_mesh = KMesh()
         sec_method.k_mesh = sec_k_mesh
         # Two exclusive input vars: ngkpt and kptrlatt
-        for key_var in ["ngkpt", "kptrlatt"]:
+        for key_var in ['ngkpt', 'kptrlatt']:
             value = self.out_parser.get_input_var(key_var, 1)
             if value is not None:
-                if key_var == "ngkpt":
-                    sec_k_mesh.generation_method = "Monkhorst-Pack"
+                if key_var == 'ngkpt':
+                    sec_k_mesh.generation_method = 'Monkhorst-Pack'
                     sec_k_mesh.grid = value
                     sec_k_mesh.n_points = np.prod(value)
                 elif (
-                    key_var == "kptrlatt"
+                    key_var == 'kptrlatt'
                 ):  # TODO cover kptrlatt and nshift=1, 2, 4, 8 situations
                     pass
 
@@ -1357,10 +1357,10 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         sec_gw = GW()
         sec_method.gw = sec_gw
         # KMesh
-        nkptgw = self.out_parser.get_input_var("nkptgw", 4, 0)
+        nkptgw = self.out_parser.get_input_var('nkptgw', 4, 0)
         if nkptgw > 0:
             kptgw = np.reshape(
-                self.out_parser.get_input_var("kptgw", 4, []), (nkptgw, 3)
+                self.out_parser.get_input_var('kptgw', 4, []), (nkptgw, 3)
             )
             sec_k_mesh = KMesh()
             sec_method.k_mesh = sec_k_mesh
@@ -1369,39 +1369,39 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             # QMesh same as KMesh
             sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
         # Type
-        gwcalctype = self.out_parser.get_input_var("gwcalctype", 4, 0)
+        gwcalctype = self.out_parser.get_input_var('gwcalctype', 4, 0)
         if 0 <= gwcalctype <= 9:
-            sec_gw.type = "G0W0"
+            sec_gw.type = 'G0W0'
         elif 10 <= gwcalctype <= 19:
-            sec_gw.type = "ev-scGW"
+            sec_gw.type = 'ev-scGW'
         elif 20 <= gwcalctype <= 29:
-            sec_gw.type = "qp-scGW"
+            sec_gw.type = 'qp-scGW'
         else:
             self.logger.warning(
-                "GW type not supported (currently only for 0 <= gwcalctype <= 29)."
+                'GW type not supported (currently only for 0 <= gwcalctype <= 29).'
             )
         # Analytical continuation
-        ppmodel = self.out_parser.get_input_var("ppmodel", 4, 0)
+        ppmodel = self.out_parser.get_input_var('ppmodel', 4, 0)
         if gwcalctype == 1:
-            sec_gw.analytical_continuation = "pade"
+            sec_gw.analytical_continuation = 'pade'
         elif gwcalctype == 2:
-            sec_gw.analytical_continuation = "contour_deformation"
+            sec_gw.analytical_continuation = 'contour_deformation'
         else:
             if ppmodel == 1:
-                sec_gw.analytical_continuation = "ppm_GodbyNeeds"
+                sec_gw.analytical_continuation = 'ppm_GodbyNeeds'
             elif ppmodel == 2:
-                sec_gw.analytical_continuation = "ppm_HybertsenLouie"
+                sec_gw.analytical_continuation = 'ppm_HybertsenLouie'
             elif ppmodel == 3:
-                sec_gw.analytical_continuation = "ppm_vonderLindenHorsh"
+                sec_gw.analytical_continuation = 'ppm_vonderLindenHorsh'
             elif ppmodel == 4:
-                sec_gw.analytical_continuation = "ppm_FaridEngel"
+                sec_gw.analytical_continuation = 'ppm_FaridEngel'
             else:
-                sec_gw.analytical_continuation = "contour_deformation"
+                sec_gw.analytical_continuation = 'contour_deformation'
         # FrequencyMesh
         frequency_values = (
-            self.out_parser.get("screening_dataset", {})
-            .get("frequencies", {})
-            .get("values")
+            self.out_parser.get('screening_dataset', {})
+            .get('frequencies', {})
+            .get('values')
         )
         if frequency_values is not None:
             values = [freq[0] + freq[1] * 1j for freq in frequency_values] * ureg.eV
@@ -1409,24 +1409,24 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 dimensionality=1, n_points=len(frequency_values), points=values
             )
         else:
-            freq_plasma = self.out_parser.get("gw_dataset", {}).get("omega_plasma", 0.0)
+            freq_plasma = self.out_parser.get('gw_dataset', {}).get('omega_plasma', 0.0)
             values = [0.0, freq_plasma * 1j]
             sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=2, points=values)
         sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # Screening
-        occ_scr = self.out_parser.get_input_var("occ", 3, [])
+        occ_scr = self.out_parser.get_input_var('occ', 3, [])
         n_scr = len(occ_scr)
         n_occ_scr = len([occ for occ in occ_scr if occ > 0.0])
         n_empty_scr = n_scr - n_occ_scr
         sec_screening = Screening(n_states=n_scr, n_empty_states=n_empty_scr)
         sec_gw.m_add_sub_section(GW.screening, sec_screening)
         # Other paramters
-        if self.out_parser.get_input_var("bdgw", 4, np.array(None)).all():
+        if self.out_parser.get_input_var('bdgw', 4, np.array(None)).all():
             sec_gw.interval_qp_corrections = [
-                self.out_parser.get_input_var("bdgw", 4, []).min(),
-                self.out_parser.get_input_var("bdgw", 4, []).max(),
+                self.out_parser.get_input_var('bdgw', 4, []).min(),
+                self.out_parser.get_input_var('bdgw', 4, []).max(),
             ]
-        occ_gw = self.out_parser.get_input_var("occ", 4, [])
+        occ_gw = self.out_parser.get_input_var('occ', 4, [])
         n_gw = len(occ_gw)
         sec_gw.n_states = n_gw
         n_occ_gw = len([occ_gw[i] for i in range(n_gw) if occ_gw[i] > 0.0])
@@ -1436,29 +1436,29 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         workflow = None
 
         geometry_optimizations = {
-            1: "viscous_damped_md",
-            2: "bfgs",
-            3: "bfgs",
-            4: "conjugate_gradient",
-            5: "steepest_descent",
-            7: "quenched_md",
-            10: "dic_bfgs",
-            11: "dic_bfgs",
-            20: "diis",
+            1: 'viscous_damped_md',
+            2: 'bfgs',
+            3: 'bfgs',
+            4: 'conjugate_gradient',
+            5: 'steepest_descent',
+            7: 'quenched_md',
+            10: 'dic_bfgs',
+            11: 'dic_bfgs',
+            20: 'diis',
         }
 
-        ionmov = self.out_parser.get_input_var("ionmov", 1, 0)
-        vis = self.out_parser.get_input_var("vis", 1, 100.0)
+        ionmov = self.out_parser.get_input_var('ionmov', 1, 0)
+        vis = self.out_parser.get_input_var('vis', 1, 100.0)
         if ionmov in [2, 3, 4, 5, 7, 10, 11, 20] or (ionmov == 1 and vis > 0.0):
             workflow = GeometryOptimization(method=GeometryOptimizationMethod())
             workflow.method.method = geometry_optimizations[ionmov]
-            tolmxf = self.out_parser.get_input_var("tolmxf", 1, 5e-5)
+            tolmxf = self.out_parser.get_input_var('tolmxf', 1, 5e-5)
             if tolmxf is not None:
                 workflow.method.convergence_tolerance_force_maximum = tolmxf * (
                     ureg.hartree / ureg.bohr
                 )
 
-            tolmxde = self.out_parser.get_input_var("tolmxde", 1, 0.0)
+            tolmxde = self.out_parser.get_input_var('tolmxde', 1, 0.0)
             if tolmxde is not None:
                 workflow.method.convergence_tolerance_energy_difference = (
                     tolmxde * ureg.hartree
@@ -1474,7 +1474,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
     def parse_bandstructure(self, results, energy_fermi):
         if (
-            self.out_parser.get_input_var("kptopt", 1, 4) > 0
+            self.out_parser.get_input_var('kptopt', 1, 4) > 0
         ):  # negative kptopt sets band structure
             return
         # saving band structure after the dataset 2
@@ -1483,10 +1483,10 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         sec_run = self.archive.run[-1]
         sec_scc = sec_run.calculation[-1]
 
-        data = results.get("eigenvalues", None)
+        data = results.get('eigenvalues', None)
         if data is None:
             return
-        nsppol = self.out_parser.get_input_var("nsppol", 2, 1)
+        nsppol = self.out_parser.get_input_var('nsppol', 2, 1)
         data = np.reshape(
             data, (nsppol, len(data) // nsppol, np.size(data) // len(data))
         )
@@ -1496,7 +1496,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         if len(kpts) == 1:  # returning if only one kpoint (atoms or molecules)
             return
         eigs = data.T[6 : 6 + nband].T
-        occs = results.get("occupation_numbers")
+        occs = results.get('occupation_numbers')
         if occs is not None:
             occs = np.reshape(
                 occs, (nsppol, len(occs) // nsppol, np.size(occs) // len(occs))
@@ -1521,10 +1521,10 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         sec_run = self.archive.run[-1]
 
         # Identifying the DS2_DOS files
-        file_root = self.out_parser.get("x_abinit_output_files_root")
+        file_root = self.out_parser.get('x_abinit_output_files_root')
         if file_root is None:
             file_root = f'{os.path.basename(self.filepath).rstrip(".out")}_o'
-        dos_file = os.path.join(self.maindir, f"{file_root}_DS2_DOS")
+        dos_file = os.path.join(self.maindir, f'{file_root}_DS2_DOS')
         if not os.path.isfile(dos_file):
             return
 
@@ -1536,7 +1536,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
         self.dos_parser.mainfile = dos_file
         dos = self.dos_parser.data
-        nsppol = self.out_parser.get_input_var("nsppol", 2, 1)
+        nsppol = self.out_parser.get_input_var('nsppol', 2, 1)
         dos = np.reshape(dos, (nsppol, len(dos) // nsppol, np.size(dos) // len(dos)))
 
         for spin in range(nsppol):
@@ -1572,8 +1572,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 energy = section.get(key)
                 if energy is None:
                     continue
-                key = key.lstrip("energy_")
-                if key == "internal":
+                key = key.lstrip('energy_')
+                if key == 'internal':
                     sec_energy.internal = energy
                 elif hasattr(Energy, key):
                     sec_energy.m_add_sub_section(
@@ -1583,35 +1583,35 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 else:
                     sec_energy.contributions.append(EnergyEntry(kind=key, value=energy))
 
-            forces = section.get("cartesian_forces")
+            forces = section.get('cartesian_forces')
             if forces is not None:
                 sec_forces = Forces()
                 sec_scc.forces = sec_forces
                 sec_forces.total = ForcesEntry(value_raw=forces)
 
-            stress_tensor = section.get("stress_tensor")
+            stress_tensor = section.get('stress_tensor')
             if stress_tensor is not None:
                 sec_stress = Stress()
                 sec_scc.stress = sec_stress
                 sec_stress.total = StressEntry(value=stress_tensor)
 
-            fermi_energy = section.get("fermi_energy")
+            fermi_energy = section.get('fermi_energy')
             if fermi_energy is not None:
                 sec_energy.fermi = fermi_energy
 
         def parse_scf(section):
             sec_scc = sec_run.calculation[-1]
 
-            self_consistent = section.get("self_consistent", {})
-            if self_consistent.get("convergence", None) in [
-                "converged",
-                "is converged",
-                "are converged",
+            self_consistent = section.get('self_consistent', {})
+            if self_consistent.get('convergence', None) in [
+                'converged',
+                'is converged',
+                'are converged',
             ]:
                 sec_scc.calculation_converged = True
 
             energy_total_scf_iteration = self_consistent.get(
-                "energy_total_scf_iteration", []
+                'energy_total_scf_iteration', []
             )
             for energy in energy_total_scf_iteration:
                 sec_scf_iteration = ScfIteration()
@@ -1621,21 +1621,21 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 sec_energy.total = EnergyEntry(value=energy[0] * ureg.hartree)
 
         for nd in range(self.out_parser.n_datasets):
-            results = self.dataset[nd].get("results")
+            results = self.dataset[nd].get('results')
             if results is None:
                 continue
             parse_configurations(results)
             parse_scf(self.dataset[nd])
 
             # Relaxation of the structure
-            relaxation = self.dataset[nd].get("relaxation", [])
+            relaxation = self.dataset[nd].get('relaxation', [])
             for step in relaxation:
                 if relaxation.index(step) > 0:  # not parsing system for step 1
                     sec_system = System()
                     sec_run.system.append(sec_system)
                     sec_atoms = Atoms()
                     sec_system.atoms = sec_atoms
-                    atom_positions = step.get("cartesian_coordinates")
+                    atom_positions = step.get('cartesian_coordinates')
                     sec_atoms.positions = atom_positions
                     sec_atoms.labels = sec_run.system[0].atoms.labels
                     sec_atoms.periodic = sec_run.system[0].atoms.periodic
@@ -1666,19 +1666,19 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             return sec_scc
 
         def parse_quantities(section, keys, value):
-            if keys == "symm_screening" and value:
-                value = " ".join(value)
-            setattr(section, f"x_abinit_{keys}", value)
+            if keys == 'symm_screening' and value:
+                value = ' '.join(value)
+            setattr(section, f'x_abinit_{keys}', value)
 
         def parse_meshes(section, keys, value):
             sec_mesh = x_abinit_mesh()
             section.x_abinit_kqmesh.append(sec_mesh)
             sec_mesh.x_abinit_type = keys
             for subkeys in value.keys():
-                setattr(sec_mesh, f"x_abinit_{subkeys}", value[subkeys])
+                setattr(sec_mesh, f'x_abinit_{subkeys}', value[subkeys])
 
         # Screening dataset code-specific
-        scr_dataset = self.out_parser.get("screening_dataset")
+        scr_dataset = self.out_parser.get('screening_dataset')
         if scr_dataset:
             sec_scc = initialize_calculation_section()
             sec_scr = x_abinit_screening_dataset()
@@ -1686,21 +1686,21 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
             for keys in scr_dataset.keys():
                 value = scr_dataset.get(keys)
-                if not hasattr(value, "quantities"):
+                if not hasattr(value, 'quantities'):
                     parse_quantities(sec_scr, keys, value)
                 else:
-                    if keys == "frequencies":
-                        sec_scr.x_abinit_frequencies = value["values"]
-                    elif keys == "chi_q":
+                    if keys == 'frequencies':
+                        sec_scr.x_abinit_frequencies = value['values']
+                    elif keys == 'chi_q':
                         sec_chi_q = x_abinit_chi_q_data()
                         sec_scr.x_abinit_chi_q = sec_chi_q
                         for subkeys in value.keys():
-                            setattr(sec_chi_q, f"x_abinit_{subkeys}", value[subkeys])
+                            setattr(sec_chi_q, f'x_abinit_{subkeys}', value[subkeys])
                     else:
                         parse_meshes(sec_scr, keys, value)
 
         # GW dataset code-specific
-        gw_dataset = self.out_parser.get("gw_dataset")
+        gw_dataset = self.out_parser.get('gw_dataset')
         if gw_dataset:
             sec_scc = initialize_calculation_section()
             sec_gw_abinit = x_abinit_gw_dataset()
@@ -1708,54 +1708,54 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
             for keys in gw_dataset.keys():
                 value = gw_dataset.get(keys)
-                if not hasattr(value, "quantities"):
+                if not hasattr(value, 'quantities'):
                     parse_quantities(sec_gw_abinit, keys, value)
                 else:
-                    if keys == "ks_band_gaps":
+                    if keys == 'ks_band_gaps':
                         sec_ks_gaps = x_abinit_ks_band_gaps_params()
                         sec_gw_abinit.x_abinit_ks_band_gaps.append(sec_ks_gaps)
                         for subkeys in value.keys():
-                            setattr(sec_ks_gaps, f"x_abinit_{subkeys}", value[subkeys])
-                    elif keys == "sigma_parameters":
+                            setattr(sec_ks_gaps, f'x_abinit_{subkeys}', value[subkeys])
+                    elif keys == 'sigma_parameters':
                         sec_sigma = x_abinit_sigma_params()
                         sec_gw_abinit.x_abinit_sigma.append(sec_sigma)
                         for subkeys in value.keys():
-                            if subkeys == "model" and value[subkeys]:
-                                val = " ".join([str(v) for v in value[subkeys]])
-                            elif subkeys == "params" and value[subkeys]:
+                            if subkeys == 'model' and value[subkeys]:
+                                val = ' '.join([str(v) for v in value[subkeys]])
+                            elif subkeys == 'params' and value[subkeys]:
                                 val = dict(value[subkeys])
                             else:
                                 val = value[subkeys]
-                            setattr(sec_sigma, f"x_abinit_{subkeys}", val)
-                    elif keys == "epsilon_inv":
+                            setattr(sec_sigma, f'x_abinit_{subkeys}', val)
+                    elif keys == 'epsilon_inv':
                         sec_epsiloninv = x_abinit_epsilon_inv_params()
                         sec_gw_abinit.x_abinit_epsilon_inv.append(sec_epsiloninv)
                         for subkeys in value.keys():
                             val = dict(value[subkeys])
-                            setattr(sec_epsiloninv, f"x_abinit_{subkeys}", val)
+                            setattr(sec_epsiloninv, f'x_abinit_{subkeys}', val)
                     else:
                         parse_meshes(sec_gw_abinit, keys, value)
 
         # GW specific outputs
-        for selfenergy in gw_dataset.get("self_energy_ee", []):
+        for selfenergy in gw_dataset.get('self_energy_ee', []):
             sec_k_eigen = BandEnergies()
             sec_scc.eigenvalues.append(sec_k_eigen)
             sec_k_eigen.n_kpoints = 1
             kpoints = [
-                selfenergy.get("kpoint", []) for k in range(sec_k_eigen.n_kpoints)
+                selfenergy.get('kpoint', []) for k in range(sec_k_eigen.n_kpoints)
             ]
             sec_k_eigen.kpoints = kpoints
-            sec_k_eigen.n_bands = len(selfenergy.get("data", []))
-            selfenergy_data = np.array(selfenergy.get("data", []))
-            if selfenergy.get("params"):
-                sec_k_eigen.n_spin_channels = selfenergy.get("params")[0][-1]
+            sec_k_eigen.n_bands = len(selfenergy.get('data', []))
+            selfenergy_data = np.array(selfenergy.get('data', []))
+            if selfenergy.get('params'):
+                sec_k_eigen.n_spin_channels = selfenergy.get('params')[0][-1]
                 sec_gap = x_abinit_qp_band_gaps_params()
                 sec_k_eigen.x_abinit_qp_band_gaps_params = sec_gap
                 sec_gap.x_abinit_value = (
-                    selfenergy.get("params")[1][-1] * ureg.eV
+                    selfenergy.get('params')[1][-1] * ureg.eV
                 )  # KS gap
                 sec_gap.x_abinit_value_fundamental = (
-                    selfenergy.get("params")[2][-1] * ureg.eV
+                    selfenergy.get('params')[2][-1] * ureg.eV
                 )  # QP gap
                 for i in self._selfenergy_data_map.keys():
                     value = np.array(
@@ -1792,14 +1792,14 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
     def get_mainfile_keys(self, **kwargs):
         self.out_parser.findall = False
-        self.out_parser.mainfile = kwargs.get("filename")
-        ds_numbers = self.out_parser.get("dataset_numbers")
-        optdriver = self.out_parser.input_vars.get("optdriver", [])
+        self.out_parser.mainfile = kwargs.get('filename')
+        ds_numbers = self.out_parser.get('dataset_numbers')
+        optdriver = self.out_parser.input_vars.get('optdriver', [])
         self.out_parser.findall = True
         if 4 in ds_numbers and (1 and 2 and 3) not in ds_numbers:
             return True
         if len(optdriver) == 4 and (optdriver[-1] == 4 or optdriver[-1] == 66):
-            return ["GW", "GW_workflow"]
+            return ['GW', 'GW_workflow']
         return True
 
     def parse(self, filepath, archive, logger):
@@ -1811,34 +1811,34 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         self.init_parser()
 
         # Initial check for the presence of correctly parsed datasets
-        self.dataset = self.out_parser.get("dataset", [])
+        self.dataset = self.out_parser.get('dataset', [])
         if len(self.dataset) < 1:
-            self.logger.error("No datasets detected.")
+            self.logger.error('No datasets detected.')
             return
         if (
             4 in self.out_parser.dataset_numbers
             and (1 and 2 and 3) not in self.out_parser.dataset_numbers
         ):
-            self._calculation_type = "gw"
+            self._calculation_type = 'gw'
 
         sec_run = Run()
         self.archive.run.append(sec_run)
         sec_run.program = Program(
-            name="ABINIT",
-            version=self.out_parser.get("program_version", ""),
-            compilation_host=self.out_parser.get("program_compilation_host", ""),
+            name='ABINIT',
+            version=self.out_parser.get('program_version', ''),
+            compilation_host=self.out_parser.get('program_compilation_host', ''),
         )
 
         section_run_keys = [
-            "x_abinit_parallel_compilation",
-            "x_abinit_start_date",
-            "x_abinit_start_time",
-            "x_abinit_input_file",
-            "x_abinit_output_file",
-            "x_abinit_input_files_root",
-            "x_abinit_output_files_root",
-            "x_abinit_total_cpu_time",
-            "x_abinit_total_wallclock_time",
+            'x_abinit_parallel_compilation',
+            'x_abinit_start_date',
+            'x_abinit_start_time',
+            'x_abinit_input_file',
+            'x_abinit_output_file',
+            'x_abinit_input_files_root',
+            'x_abinit_output_files_root',
+            'x_abinit_total_cpu_time',
+            'x_abinit_total_wallclock_time',
         ]
 
         for key in section_run_keys:
@@ -1847,16 +1847,16 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                 continue
             setattr(sec_run, key, val)
 
-        if self.out_parser.get("run_clean_end") is not None:
+        if self.out_parser.get('run_clean_end') is not None:
             sec_run.clean_end = True
 
         abi_time = datetime.strptime(
-            str("%s %s")
+            str('%s %s')
             % (
-                self.out_parser.get("x_abinit_start_date"),
-                self.out_parser.get("x_abinit_start_time"),
+                self.out_parser.get('x_abinit_start_date'),
+                self.out_parser.get('x_abinit_start_time'),
             ),
-            "%a %d %b %Y %Hh%M",
+            '%a %d %b %Y %Hh%M',
         )
         sec_run.time_run = TimeRun(
             date_start=(abi_time - datetime(1970, 1, 1)).total_seconds()
@@ -1868,7 +1868,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         # Parse initial system from dataset 1
         self.parse_system()
 
-        if self._calculation_type == "gw":
+        if self._calculation_type == 'gw':
             self.parse_gw()
             self.parse_gw_datasets()
         else:
@@ -1877,8 +1877,8 @@ class AbinitParser(BeyondDFTWorkflowsParser):
 
         self.parse_workflow()
 
-        gw_archive = self._child_archives.get("GW")
-        optdriver = self.out_parser.input_vars.get("optdriver", [])
+        gw_archive = self._child_archives.get('GW')
+        optdriver = self.out_parser.input_vars.get('optdriver', [])
         if (
             gw_archive is not None
             and len(optdriver) == 4
@@ -1886,12 +1886,12 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         ):
             # GW single point
             p = AbinitParser()
-            p._calculation_type = "gw"
+            p._calculation_type = 'gw'
             p.parse(filepath, gw_archive, logger)
 
             # GW workflow
-            gw_workflow_archive = self._child_archives.get("GW_workflow")
+            gw_workflow_archive = self._child_archives.get('GW_workflow')
             try:
                 self.parse_gw_workflow(gw_archive, gw_workflow_archive)
             except Exception:
-                self.logger.error("Error parsing the automatic GW workflow")
+                self.logger.error('Error parsing the automatic GW workflow')

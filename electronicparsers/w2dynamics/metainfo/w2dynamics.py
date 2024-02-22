@@ -45,7 +45,7 @@ class x_w2dynamics_axes(MSection):
 
     x_w2dynamics_iwb_g4 = Quantity(
         type=np.float64,
-        shape=["N4iwb"],
+        shape=['N4iwb'],
         description="""
         Number of bosonic Matsubaras for 4-point GF.
         """,
@@ -60,84 +60,84 @@ class x_w2dynamics_axes(MSection):
 
     x_w2dynamics_iwb_p3 = Quantity(
         type=np.float64,
-        shape=["0..*"],
+        shape=['0..*'],
         description="""
         """,
     )
 
     x_w2dynamics_iwf_g2 = Quantity(
         type=np.float64,
-        shape=["0..*"],
+        shape=['0..*'],
         description="""
         """,
     )
 
     x_w2dynamics_iwf_g4 = Quantity(
         type=np.float64,
-        shape=["0..*"],
+        shape=['0..*'],
         description="""
         """,
     )
 
     x_w2dynamics_iwf_p3 = Quantity(
         type=np.float64,
-        shape=["0..*"],
+        shape=['0..*'],
         description="""
         """,
     )
 
     x_w2dynamics_iwb_g4 = Quantity(
         type=np.float64,
-        shape=["0..*"],
+        shape=['0..*'],
         description="""
         """,
     )
 
     x_w2dynamics_iwb_p3 = Quantity(
         type=np.float64,
-        shape=["0..*"],
+        shape=['0..*'],
         description="""
         """,
     )
 
     x_w2dynamics_pos_iw = Quantity(
         type=np.float64,
-        shape=["0..*"],
+        shape=['0..*'],
         description="""
         """,
     )
 
     x_w2dynamics_tau_g4 = Quantity(
         type=np.float64,
-        shape=["0..*"],
+        shape=['0..*'],
         description="""
         """,
     )
 
     x_w2dynamics_taubin = Quantity(
         type=np.float64,
-        shape=["0..*"],
+        shape=['0..*'],
         description="""
         """,
     )
 
     x_w2dynamics_tauf = Quantity(
         type=np.float64,
-        shape=["Nftau"],
+        shape=['Nftau'],
         description="""
         """,
     )
 
     x_w2dynamics_tausus = Quantity(
         type=np.float64,
-        shape=["0..*"],
+        shape=['0..*'],
         description="""
         """,
     )
 
     x_w2dynamics_w_dos = Quantity(
         type=np.float64,
-        shape=["0..*"],
+        shape=['0..*'],
         description="""
         Energies for the DOS.
         """,
@@ -1012,7 +1012,7 @@ class x_w2dynamics_config_atoms_parameters(MSection):
 
     x_w2dynamics_jdd = Quantity(
         type=np.float64,
-        units="electron_volt",
+        units='electron_volt',
         description="""
         Hunds coupling.
         """,
@@ -1020,7 +1020,7 @@ class x_w2dynamics_config_atoms_parameters(MSection):
 
     x_w2dynamics_jdp = Quantity(
         type=np.float64,
-        units="electron_volt",
+        units='electron_volt',
         description="""
         J interaction between d-p orbitals.
         """,
@@ -1028,7 +1028,7 @@ class x_w2dynamics_config_atoms_parameters(MSection):
 
     x_w2dynamics_jpp = Quantity(
         type=np.float64,
-        units="electron_volt",
+        units='electron_volt',
         description="""
         J interaction between p-p orbitals.
         """,
@@ -1036,7 +1036,7 @@ class x_w2dynamics_config_atoms_parameters(MSection):
 
     x_w2dynamics_jppod = Quantity(
         type=np.float64,
-        units="electron_volt",
+        units='electron_volt',
         description="""
         """,
     )
@@ -1101,7 +1101,7 @@ class x_w2dynamics_config_atoms_parameters(MSection):
 
     x_w2dynamics_udd = Quantity(
         type=np.float64,
-        units="electron_volt",
+        units='electron_volt',
         description="""
         Hubbard intra-orbital interaction.
         """,
@@ -1109,7 +1109,7 @@ class x_w2dynamics_config_atoms_parameters(MSection):
 
     x_w2dynamics_udp = Quantity(
         type=np.float64,
-        units="electron_volt",
+        units='electron_volt',
         description="""
         U\' interaction between d-p orbitals.
         """,
@@ -1124,7 +1124,7 @@ class x_w2dynamics_config_atoms_parameters(MSection):
 
     x_w2dynamics_upp = Quantity(
         type=np.float64,
-        units="electron_volt",
+        units='electron_volt',
         description="""
         U interaction between p-p orbitals.
         """,
@@ -1132,14 +1132,14 @@ class x_w2dynamics_config_atoms_parameters(MSection):
 
     x_w2dynamics_uppod = Quantity(
         type=np.float64,
-        units="electron_volt",
+        units='electron_volt',
         description="""
         """,
     )
 
     x_w2dynamics_vdd = Quantity(
         type=np.float64,
-        units="electron_volt",
+        units='electron_volt',
         description="""
         Hubbard inter-orbital interaction.
         """,
@@ -1147,7 +1147,7 @@ class x_w2dynamics_config_atoms_parameters(MSection):
 
     x_w2dynamics_vpp = Quantity(
         type=np.float64,
-        units="electron_volt",
+        units='electron_volt',
         description="""
         U\' interaction between p-p orbitals.
         """,

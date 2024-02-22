@@ -26,25 +26,25 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return CPMDParser()
 
 
 def test_single_point(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/cpmd/single_point/output.out", archive, None)
+    parser.parse('tests/data/cpmd/single_point/output.out', archive, None)
 
     run = archive.run[0]
-    assert run.program.version == "4.1-rUnversioned directory"
+    assert run.program.version == '4.1-rUnversioned directory'
     assert run.time_run.date_start > 0.0
     sec_info = run.x_cpmd_section_start_information[0]
-    assert sec_info.x_cpmd_compilation_date == "Jun 22 2016 -- 12:41:05"
+    assert sec_info.x_cpmd_compilation_date == 'Jun 22 2016 -- 12:41:05'
     assert sec_info.x_cpmd_process_id == 32589
-    assert sec_info.x_cpmd_input_filename == "input.inp"
+    assert sec_info.x_cpmd_input_filename == 'input.inp'
 
     sec_system = run.system
-    assert sec_system[0].atoms.labels == ["H", "H"]
+    assert sec_system[0].atoms.labels == ['H', 'H']
     assert sec_system[0].atoms.positions[1][2].magnitude == approx(3.99999974e-10)
     assert sec_system[0].atoms.lattice_vectors[2][2].magnitude == approx(7.99999524e-10)
 
@@ -54,12 +54,12 @@ def test_single_point(parser):
 
     sec_method = run.method
     assert sec_method[0].electrons_representation[0].basis_set[0].cutoff.to(
-        "Ry"
+        'Ry'
     ).magnitude == approx(70.0)
-    assert sec_method[0].x_cpmd_simulation_parameters["TIME STEP FOR ELECTRONS"] == 5.0
+    assert sec_method[0].x_cpmd_simulation_parameters['TIME STEP FOR ELECTRONS'] == 5.0
     assert (
         sec_method[0].x_cpmd_simulation_parameters[
-            "MAXIMUM NUMBER OF ITERATIONS FOR SC"
+            'MAXIMUM NUMBER OF ITERATIONS FOR SC'
         ]
         == 10000
     )
@@ -67,7 +67,7 @@ def test_single_point(parser):
 
 def test_geometry_optimization(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/cpmd/geo_opt/output.out", archive, None)
+    parser.parse('tests/data/cpmd/geo_opt/output.out', archive, None)
 
     sec_system = archive.run[0].system
     assert len(sec_system) == 5
@@ -91,14 +91,14 @@ def test_geometry_optimization(parser):
 
 def test_molecular_dynamics(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/cpmd/md/output.out", archive, None)
+    parser.parse('tests/data/cpmd/md/output.out', archive, None)
 
     system = archive.run[0].system
     assert len(system) == 50
     assert system[1].atoms.positions[1][0].magnitude == approx(-3.72683727e-11)
     assert system[28].atoms.positions[1][1].magnitude == approx(-1.42764129e-12)
     assert system[34].atoms.velocities[1][2].magnitude == approx(-549.239774)
-    assert system[5].atoms.labels == ["H", "H"]
+    assert system[5].atoms.labels == ['H', 'H']
     assert system[40].atoms.lattice_vectors[2][2].magnitude == approx(7.99999524e-10)
 
     calc = archive.run[0].calculation
@@ -111,7 +111,7 @@ def test_molecular_dynamics(parser):
     assert calc[13].time_physical.magnitude == approx(3.32)
 
     md = archive.workflow2
-    assert md.method.thermodynamic_ensemble == "NVE"
+    assert md.method.thermodynamic_ensemble == 'NVE'
     assert md.x_cpmd_section_md_averaged_quantities[
         0
     ].x_cpmd_density_functional_energy_mean == approx(-1.115075)

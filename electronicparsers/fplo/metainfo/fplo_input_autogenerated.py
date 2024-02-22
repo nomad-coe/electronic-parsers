@@ -46,55 +46,55 @@ class x_fplo_in(MSection):
     m_def = Section(validate=False)
 
     x_fplo_in_header = SubSection(
-        sub_section=SectionProxy("x_fplo_in_header"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_header'), repeats=True
     )
 
     x_fplo_in_structure_information = SubSection(
-        sub_section=SectionProxy("x_fplo_in_structure_information"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_structure_information'), repeats=True
     )
 
     x_fplo_in_structure_dependend = SubSection(
-        sub_section=SectionProxy("x_fplo_in_structure_dependend"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_structure_dependend'), repeats=True
     )
 
     x_fplo_in_mesh = SubSection(
-        sub_section=SectionProxy("x_fplo_in_mesh"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_mesh'), repeats=True
     )
 
     x_fplo_in_brillouin = SubSection(
-        sub_section=SectionProxy("x_fplo_in_brillouin"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_brillouin'), repeats=True
     )
 
     x_fplo_in_bandstructure_plot = SubSection(
-        sub_section=SectionProxy("x_fplo_in_bandstructure_plot"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_bandstructure_plot'), repeats=True
     )
 
     x_fplo_in_iteration_control = SubSection(
-        sub_section=SectionProxy("x_fplo_in_iteration_control"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_iteration_control'), repeats=True
     )
 
     x_fplo_in_forces = SubSection(
-        sub_section=SectionProxy("x_fplo_in_forces"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_forces'), repeats=True
     )
 
     x_fplo_in_options = SubSection(
-        sub_section=SectionProxy("x_fplo_in_options"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_options'), repeats=True
     )
 
-    x_fplo_in_cpa = SubSection(sub_section=SectionProxy("x_fplo_in_cpa"), repeats=True)
+    x_fplo_in_cpa = SubSection(sub_section=SectionProxy('x_fplo_in_cpa'), repeats=True)
 
     x_fplo_in_numerics = SubSection(
-        sub_section=SectionProxy("x_fplo_in_numerics"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_numerics'), repeats=True
     )
 
     x_fplo_in_LSDA_U = SubSection(
-        sub_section=SectionProxy("x_fplo_in_LSDA_U"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_LSDA_U'), repeats=True
     )
 
-    x_fplo_in_OPC = SubSection(sub_section=SectionProxy("x_fplo_in_OPC"), repeats=True)
+    x_fplo_in_OPC = SubSection(sub_section=SectionProxy('x_fplo_in_OPC'), repeats=True)
 
     x_fplo_in_Advanced_output = SubSection(
-        sub_section=SectionProxy("x_fplo_in_Advanced_output"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_Advanced_output'), repeats=True
     )
 
 
@@ -114,11 +114,11 @@ class x_fplo_in_header(MSection):
     )
 
     x_fplo_in_header_version = SubSection(
-        sub_section=SectionProxy("x_fplo_in_header_version"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_header_version'), repeats=True
     )
 
     x_fplo_in_header_last_changes = SubSection(
-        sub_section=SectionProxy("x_fplo_in_header_last_changes"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_header_last_changes'), repeats=True
     )
 
 
@@ -226,22 +226,22 @@ class x_fplo_in_structure_information(MSection):
     )
 
     x_fplo_in_structure_information_structure_type = SubSection(
-        sub_section=SectionProxy("x_fplo_in_structure_information_structure_type"),
+        sub_section=SectionProxy('x_fplo_in_structure_information_structure_type'),
         repeats=True,
     )
 
     x_fplo_in_structure_information_spacegroup = SubSection(
-        sub_section=SectionProxy("x_fplo_in_structure_information_spacegroup"),
+        sub_section=SectionProxy('x_fplo_in_structure_information_spacegroup'),
         repeats=True,
     )
 
     x_fplo_in_structure_information_lengthunit = SubSection(
-        sub_section=SectionProxy("x_fplo_in_structure_information_lengthunit"),
+        sub_section=SectionProxy('x_fplo_in_structure_information_lengthunit'),
         repeats=True,
     )
 
     x_fplo_in_structure_information_wyckoff_positions = SubSection(
-        sub_section=SectionProxy("x_fplo_in_structure_information_wyckoff_positions"),
+        sub_section=SectionProxy('x_fplo_in_structure_information_wyckoff_positions'),
         repeats=True,
     )
 
@@ -350,22 +350,22 @@ class x_fplo_in_structure_dependend(MSection):
     m_def = Section(validate=False)
 
     x_fplo_in_structure_dependend_concentrations = SubSection(
-        sub_section=SectionProxy("x_fplo_in_structure_dependend_concentrations"),
+        sub_section=SectionProxy('x_fplo_in_structure_dependend_concentrations'),
         repeats=True,
     )
 
     x_fplo_in_structure_dependend_initial_spin_split = SubSection(
-        sub_section=SectionProxy("x_fplo_in_structure_dependend_initial_spin_split"),
+        sub_section=SectionProxy('x_fplo_in_structure_dependend_initial_spin_split'),
         repeats=True,
     )
 
     x_fplo_in_structure_dependend_core_occupation = SubSection(
-        sub_section=SectionProxy("x_fplo_in_structure_dependend_core_occupation"),
+        sub_section=SectionProxy('x_fplo_in_structure_dependend_core_occupation'),
         repeats=True,
     )
 
     x_fplo_in_structure_dependend_special_sympoints = SubSection(
-        sub_section=SectionProxy("x_fplo_in_structure_dependend_special_sympoints"),
+        sub_section=SectionProxy('x_fplo_in_structure_dependend_special_sympoints'),
         repeats=True,
     )
 
@@ -490,11 +490,11 @@ class x_fplo_in_mesh(MSection):
     m_def = Section(validate=False)
 
     x_fplo_in_mesh_radial_mesh = SubSection(
-        sub_section=SectionProxy("x_fplo_in_mesh_radial_mesh"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_mesh_radial_mesh'), repeats=True
     )
 
     x_fplo_in_mesh_atom_radial_mesh = SubSection(
-        sub_section=SectionProxy("x_fplo_in_mesh_atom_radial_mesh"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_mesh_atom_radial_mesh'), repeats=True
     )
 
 
@@ -594,16 +594,16 @@ class x_fplo_in_brillouin(MSection):
     )
 
     x_fplo_in_brillouin_bzone_integration = SubSection(
-        sub_section=SectionProxy("x_fplo_in_brillouin_bzone_integration"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_brillouin_bzone_integration'), repeats=True
     )
 
     x_fplo_in_brillouin_mp_bzone_integration = SubSection(
-        sub_section=SectionProxy("x_fplo_in_brillouin_mp_bzone_integration"),
+        sub_section=SectionProxy('x_fplo_in_brillouin_mp_bzone_integration'),
         repeats=True,
     )
 
     x_fplo_in_brillouin_bzone_method = SubSection(
-        sub_section=SectionProxy("x_fplo_in_brillouin_bzone_method"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_brillouin_bzone_method'), repeats=True
     )
 
 
@@ -703,12 +703,12 @@ class x_fplo_in_bandstructure_plot(MSection):
     m_def = Section(validate=False)
 
     x_fplo_in_bandstructure_plot_bandplot_control = SubSection(
-        sub_section=SectionProxy("x_fplo_in_bandstructure_plot_bandplot_control"),
+        sub_section=SectionProxy('x_fplo_in_bandstructure_plot_bandplot_control'),
         repeats=True,
     )
 
     x_fplo_in_bandstructure_plot_bandweight_control = SubSection(
-        sub_section=SectionProxy("x_fplo_in_bandstructure_plot_bandweight_control"),
+        sub_section=SectionProxy('x_fplo_in_bandstructure_plot_bandweight_control'),
         repeats=True,
     )
 
@@ -850,7 +850,7 @@ class x_fplo_in_bandstructure_plot_bandweight_control(MSection):
 
     x_fplo_in_bandstructure_plot_bandweight_control_frelprojection = SubSection(
         sub_section=SectionProxy(
-            "x_fplo_in_bandstructure_plot_bandweight_control_frelprojection"
+            'x_fplo_in_bandstructure_plot_bandweight_control_frelprojection'
         ),
         repeats=True,
     )
@@ -899,24 +899,24 @@ class x_fplo_in_iteration_control(MSection):
     )
 
     x_fplo_in_iteration_control_iteration_control = SubSection(
-        sub_section=SectionProxy("x_fplo_in_iteration_control_iteration_control"),
+        sub_section=SectionProxy('x_fplo_in_iteration_control_iteration_control'),
         repeats=True,
     )
 
     x_fplo_in_iteration_control_iteration_version = SubSection(
-        sub_section=SectionProxy("x_fplo_in_iteration_control_iteration_version"),
+        sub_section=SectionProxy('x_fplo_in_iteration_control_iteration_version'),
         repeats=True,
     )
 
     x_fplo_in_iteration_control_iteration_convergence_condition = SubSection(
         sub_section=SectionProxy(
-            "x_fplo_in_iteration_control_iteration_convergence_condition"
+            'x_fplo_in_iteration_control_iteration_convergence_condition'
         ),
         repeats=True,
     )
 
     x_fplo_in_iteration_control_iterationvector_ratio = SubSection(
-        sub_section=SectionProxy("x_fplo_in_iteration_control_iterationvector_ratio"),
+        sub_section=SectionProxy('x_fplo_in_iteration_control_iterationvector_ratio'),
         repeats=True,
     )
 
@@ -1065,17 +1065,17 @@ class x_fplo_in_forces(MSection):
     )
 
     x_fplo_in_forces_force_iteration_control = SubSection(
-        sub_section=SectionProxy("x_fplo_in_forces_force_iteration_control"),
+        sub_section=SectionProxy('x_fplo_in_forces_force_iteration_control'),
         repeats=True,
     )
 
     x_fplo_in_forces_force_iteration_version = SubSection(
-        sub_section=SectionProxy("x_fplo_in_forces_force_iteration_version"),
+        sub_section=SectionProxy('x_fplo_in_forces_force_iteration_version'),
         repeats=True,
     )
 
     x_fplo_in_forces_force_mode = SubSection(
-        sub_section=SectionProxy("x_fplo_in_forces_force_mode"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_forces_force_mode'), repeats=True
     )
 
 
@@ -1191,39 +1191,39 @@ class x_fplo_in_options(MSection):
     )
 
     x_fplo_in_options_spin = SubSection(
-        sub_section=SectionProxy("x_fplo_in_options_spin"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_options_spin'), repeats=True
     )
 
     x_fplo_in_options_xc_potential = SubSection(
-        sub_section=SectionProxy("x_fplo_in_options_xc_potential"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_options_xc_potential'), repeats=True
     )
 
     x_fplo_in_options_relativistic = SubSection(
-        sub_section=SectionProxy("x_fplo_in_options_relativistic"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_options_relativistic'), repeats=True
     )
 
     x_fplo_in_options_nuclear_model = SubSection(
-        sub_section=SectionProxy("x_fplo_in_options_nuclear_model"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_options_nuclear_model'), repeats=True
     )
 
     x_fplo_in_options_charges = SubSection(
-        sub_section=SectionProxy("x_fplo_in_options_charges"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_options_charges'), repeats=True
     )
 
     x_fplo_in_options_spin_pop_type = SubSection(
-        sub_section=SectionProxy("x_fplo_in_options_spin_pop_type"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_options_spin_pop_type'), repeats=True
     )
 
     x_fplo_in_options_options = SubSection(
-        sub_section=SectionProxy("x_fplo_in_options_options"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_options_options'), repeats=True
     )
 
     x_fplo_in_options_verbosity_level = SubSection(
-        sub_section=SectionProxy("x_fplo_in_options_verbosity_level"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_options_verbosity_level'), repeats=True
     )
 
     x_fplo_in_options_fsmoment = SubSection(
-        sub_section=SectionProxy("x_fplo_in_options_fsmoment"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_options_fsmoment'), repeats=True
     )
 
 
@@ -1347,11 +1347,11 @@ class x_fplo_in_options_charges(MSection):
     )
 
     x_fplo_in_options_charges_chargemode = SubSection(
-        sub_section=SectionProxy("x_fplo_in_options_charges_chargemode"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_options_charges_chargemode'), repeats=True
     )
 
     x_fplo_in_options_charges_vca = SubSection(
-        sub_section=SectionProxy("x_fplo_in_options_charges_vca"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_options_charges_vca'), repeats=True
     )
 
 
@@ -1667,23 +1667,23 @@ class x_fplo_in_cpa(MSection):
     m_def = Section(validate=False)
 
     x_fplo_in_cpa_cpa_control = SubSection(
-        sub_section=SectionProxy("x_fplo_in_cpa_cpa_control"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_cpa_cpa_control'), repeats=True
     )
 
     x_fplo_in_cpa_cpa_fermi_control = SubSection(
-        sub_section=SectionProxy("x_fplo_in_cpa_cpa_fermi_control"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_cpa_cpa_fermi_control'), repeats=True
     )
 
     x_fplo_in_cpa_cpa_fermi_method = SubSection(
-        sub_section=SectionProxy("x_fplo_in_cpa_cpa_fermi_method"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_cpa_cpa_fermi_method'), repeats=True
     )
 
     x_fplo_in_cpa_cpa_dos = SubSection(
-        sub_section=SectionProxy("x_fplo_in_cpa_cpa_dos"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_cpa_cpa_dos'), repeats=True
     )
 
     x_fplo_in_cpa_cpa_bloch_spectral_density = SubSection(
-        sub_section=SectionProxy("x_fplo_in_cpa_cpa_bloch_spectral_density"),
+        sub_section=SectionProxy('x_fplo_in_cpa_cpa_bloch_spectral_density'),
         repeats=True,
     )
 
@@ -1864,33 +1864,33 @@ class x_fplo_in_numerics(MSection):
     )
 
     x_fplo_in_numerics_interpolation = SubSection(
-        sub_section=SectionProxy("x_fplo_in_numerics_interpolation"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_numerics_interpolation'), repeats=True
     )
 
     x_fplo_in_numerics_one_center_integrals = SubSection(
-        sub_section=SectionProxy("x_fplo_in_numerics_one_center_integrals"),
+        sub_section=SectionProxy('x_fplo_in_numerics_one_center_integrals'),
         repeats=True,
     )
 
     x_fplo_in_numerics_coulomb_energy_calc = SubSection(
-        sub_section=SectionProxy("x_fplo_in_numerics_coulomb_energy_calc"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_numerics_coulomb_energy_calc'), repeats=True
     )
 
     x_fplo_in_numerics_overlap_density_calc = SubSection(
-        sub_section=SectionProxy("x_fplo_in_numerics_overlap_density_calc"),
+        sub_section=SectionProxy('x_fplo_in_numerics_overlap_density_calc'),
         repeats=True,
     )
 
     x_fplo_in_numerics_cutoff_tolerances = SubSection(
-        sub_section=SectionProxy("x_fplo_in_numerics_cutoff_tolerances"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_numerics_cutoff_tolerances'), repeats=True
     )
 
     x_fplo_in_numerics_ewald_parameter = SubSection(
-        sub_section=SectionProxy("x_fplo_in_numerics_ewald_parameter"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_numerics_ewald_parameter'), repeats=True
     )
 
     x_fplo_in_numerics_symtest = SubSection(
-        sub_section=SectionProxy("x_fplo_in_numerics_symtest"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_numerics_symtest'), repeats=True
     )
 
 
@@ -2078,19 +2078,19 @@ class x_fplo_in_LSDA_U(MSection):
     )
 
     x_fplo_in_LSDA_U_lsdau_projection = SubSection(
-        sub_section=SectionProxy("x_fplo_in_LSDA_U_lsdau_projection"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_LSDA_U_lsdau_projection'), repeats=True
     )
 
     x_fplo_in_LSDA_U_lsdau_functional = SubSection(
-        sub_section=SectionProxy("x_fplo_in_LSDA_U_lsdau_functional"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_LSDA_U_lsdau_functional'), repeats=True
     )
 
     x_fplo_in_LSDA_U_lsdau_dmat_mode = SubSection(
-        sub_section=SectionProxy("x_fplo_in_LSDA_U_lsdau_dmat_mode"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_LSDA_U_lsdau_dmat_mode'), repeats=True
     )
 
     x_fplo_in_LSDA_U_lsdau_defs = SubSection(
-        sub_section=SectionProxy("x_fplo_in_LSDA_U_lsdau_defs"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_LSDA_U_lsdau_defs'), repeats=True
     )
 
 
@@ -2214,15 +2214,15 @@ class x_fplo_in_OPC(MSection):
     )
 
     x_fplo_in_OPC_opc_projection = SubSection(
-        sub_section=SectionProxy("x_fplo_in_OPC_opc_projection"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_OPC_opc_projection'), repeats=True
     )
 
     x_fplo_in_OPC_opc_functional = SubSection(
-        sub_section=SectionProxy("x_fplo_in_OPC_opc_functional"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_OPC_opc_functional'), repeats=True
     )
 
     x_fplo_in_OPC_opc_defs = SubSection(
-        sub_section=SectionProxy("x_fplo_in_OPC_opc_defs"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_OPC_opc_defs'), repeats=True
     )
 
 
@@ -2330,16 +2330,16 @@ class x_fplo_in_Advanced_output(MSection):
     )
 
     x_fplo_in_Advanced_output_grids = SubSection(
-        sub_section=SectionProxy("x_fplo_in_Advanced_output_grids"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_Advanced_output_grids'), repeats=True
     )
 
     x_fplo_in_Advanced_output_topological_insulator = SubSection(
-        sub_section=SectionProxy("x_fplo_in_Advanced_output_topological_insulator"),
+        sub_section=SectionProxy('x_fplo_in_Advanced_output_topological_insulator'),
         repeats=True,
     )
 
     x_fplo_in_Advanced_output_optics = SubSection(
-        sub_section=SectionProxy("x_fplo_in_Advanced_output_optics"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_Advanced_output_optics'), repeats=True
     )
 
 
@@ -2423,26 +2423,26 @@ class x_fplo_in_Advanced_output_grids(MSection):
     )
 
     x_fplo_in_Advanced_output_grids_basis = SubSection(
-        sub_section=SectionProxy("x_fplo_in_Advanced_output_grids_basis"), repeats=True
+        sub_section=SectionProxy('x_fplo_in_Advanced_output_grids_basis'), repeats=True
     )
 
     x_fplo_in_Advanced_output_grids_quantities = SubSection(
-        sub_section=SectionProxy("x_fplo_in_Advanced_output_grids_quantities"),
+        sub_section=SectionProxy('x_fplo_in_Advanced_output_grids_quantities'),
         repeats=True,
     )
 
     x_fplo_in_Advanced_output_grids_outputdata = SubSection(
-        sub_section=SectionProxy("x_fplo_in_Advanced_output_grids_outputdata"),
+        sub_section=SectionProxy('x_fplo_in_Advanced_output_grids_outputdata'),
         repeats=True,
     )
 
     x_fplo_in_Advanced_output_grids_energywindows = SubSection(
-        sub_section=SectionProxy("x_fplo_in_Advanced_output_grids_energywindows"),
+        sub_section=SectionProxy('x_fplo_in_Advanced_output_grids_energywindows'),
         repeats=True,
     )
 
     x_fplo_in_Advanced_output_grids_kresolved = SubSection(
-        sub_section=SectionProxy("x_fplo_in_Advanced_output_grids_kresolved"),
+        sub_section=SectionProxy('x_fplo_in_Advanced_output_grids_kresolved'),
         repeats=True,
     )
 
@@ -2536,7 +2536,7 @@ class x_fplo_in_Advanced_output_grids_energywindows(MSection):
 
     x_fplo_in_Advanced_output_grids_energywindows_sections = SubSection(
         sub_section=SectionProxy(
-            "x_fplo_in_Advanced_output_grids_energywindows_sections"
+            'x_fplo_in_Advanced_output_grids_energywindows_sections'
         ),
         repeats=True,
     )
@@ -2575,7 +2575,7 @@ class x_fplo_in_Advanced_output_grids_energywindows_sections(MSection):
 
     x_fplo_in_Advanced_output_grids_energywindows_sections_spin = SubSection(
         sub_section=SectionProxy(
-            "x_fplo_in_Advanced_output_grids_energywindows_sections_spin"
+            'x_fplo_in_Advanced_output_grids_energywindows_sections_spin'
         ),
         repeats=True,
     )
@@ -2701,7 +2701,7 @@ class x_fplo_in_Advanced_output_optics(MSection):
     )
 
     x_fplo_in_Advanced_output_optics_energy = SubSection(
-        sub_section=SectionProxy("x_fplo_in_Advanced_output_optics_energy"),
+        sub_section=SectionProxy('x_fplo_in_Advanced_output_optics_energy'),
         repeats=True,
     )
 
@@ -2741,4 +2741,4 @@ class x_fplo_in_Advanced_output_optics_energy(MSection):
 class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
-    x_fplo_in = SubSection(sub_section=SectionProxy("x_fplo_in"), repeats=True)
+    x_fplo_in = SubSection(sub_section=SectionProxy('x_fplo_in'), repeats=True)

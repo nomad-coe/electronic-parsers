@@ -44,7 +44,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
     level = 1
 
     def __init__(self):
-        self._calculation_type = "tight binding"
+        self._calculation_type = 'tight binding'
 
     def parse_system(self):
         """Populates run.system with the input structural parameters."""
@@ -55,21 +55,21 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         sec_system.atoms = sec_atoms
 
         # Load lattice vectors
-        if self.tbm.get("vars") is None:
-            self.logger.warning("Could not find the .tbm file vars parameters.")
+        if self.tbm.get('vars') is None:
+            self.logger.warning('Could not find the .tbm file vars parameters.')
             return
 
-        self.a = [np.float64(self.tbm["vars"].get(f"a[{i}]", "0")) for i in range(3)]
-        self.b = [np.float64(self.tbm["vars"].get(f"b[{i}]", "0")) for i in range(3)]
-        self.c = [np.float64(self.tbm["vars"].get(f"c[{i}]", "0")) for i in range(3)]
+        self.a = [np.float64(self.tbm['vars'].get(f'a[{i}]', '0')) for i in range(3)]
+        self.b = [np.float64(self.tbm['vars'].get(f'b[{i}]', '0')) for i in range(3)]
+        self.c = [np.float64(self.tbm['vars'].get(f'c[{i}]', '0')) for i in range(3)]
 
         sec_atoms.lattice_vectors = [self.a, self.b, self.c] * ureg.angstrom
 
         xyz_coords = []
         atomic_labels = []
         for r, atomic_number in zip(
-            self.tbm["grids"]["XYZ_Coords"].get("value", []),
-            self.tbm["grids"]["KABC_Coords"].get("value", []),
+            self.tbm['grids']['XYZ_Coords'].get('value', []),
+            self.tbm['grids']['KABC_Coords'].get('value', []),
         ):
             # Check if x, y, and z are provided then accept it otherwise it is taken as the end of table
             # This is the same behaviour that tbstudio does to accept or ignore a row
@@ -86,9 +86,9 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         sec_atoms.positions = xyz_coords * ureg.angstrom
         sec_atoms.labels = atomic_labels
 
-        tb_l = np.int64(self.tbm["vars"].get("TBl[0]", "0"))
-        tb_m = np.int64(self.tbm["vars"].get("TBm[0]", "0"))
-        tb_n = np.int64(self.tbm["vars"].get("TBn[0]", "0"))
+        tb_l = np.int64(self.tbm['vars'].get('TBl[0]', '0'))
+        tb_m = np.int64(self.tbm['vars'].get('TBm[0]', '0'))
+        tb_n = np.int64(self.tbm['vars'].get('TBn[0]', '0'))
 
         pbc = [bool(dim != 0) for dim in [tb_l, tb_m, tb_n]]
         sec_atoms.periodic = pbc
@@ -107,32 +107,32 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         orbitals = []
         lastInd = 0
         for i in range(1, 100):
-            varName = "AtomInd{}".format(i)
-            orbital = self.tbm["combos"][varName]
-            if orbital["selected"] != 0:
+            varName = 'AtomInd{}'.format(i)
+            orbital = self.tbm['combos'][varName]
+            if orbital['selected'] != 0:
                 lastInd = i
         for i in range(1, lastInd + 1):
-            varName = "AtomInd{}".format(i)
-            orbital = self.tbm["combos"][varName]
-            items = orbital["items"]
-            selected = orbital["selected"]
+            varName = 'AtomInd{}'.format(i)
+            orbital = self.tbm['combos'][varName]
+            items = orbital['items']
+            selected = orbital['selected']
             if selected == 0:
                 orbitals.append(None)
             else:
                 orbitals.append(items[selected])
 
         final_os = {}
-        tbAtom = ""
-        shell = ""
+        tbAtom = ''
+        shell = ''
         for state, row in zip(
-            self.tbm["grids"]["OS"]["isReadOnly"], self.tbm["grids"]["OS"]["value"]
+            self.tbm['grids']['OS']['isReadOnly'], self.tbm['grids']['OS']['value']
         ):
             if state[0] and state[1] and state[2]:
-                if row[0] == "" and row[1] == "" and row[2] == "":
+                if row[0] == '' and row[1] == '' and row[2] == '':
                     break
                 else:
                     os_name = row[0]
-                    orbital_info = re.search(r"^(.*) \((.*)\)$", os_name)
+                    orbital_info = re.search(r'^(.*) \((.*)\)$', os_name)
                     tbAtom = orbital_info[1]
                     shell = orbital_info[2]
                     if tbAtom not in final_os:
@@ -162,12 +162,12 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                     sec_orbitals.onsite_energy = onSite
 
         final_sk = {}
-        tb_bond = ""
+        tb_bond = ''
         for state, row in zip(
-            self.tbm["grids"]["SK"]["isReadOnly"], self.tbm["grids"]["SK"]["value"]
+            self.tbm['grids']['SK']['isReadOnly'], self.tbm['grids']['SK']['value']
         ):
             if state[0] and state[1] and state[2]:
-                if row[0] == "" and row[1] == "" and row[2] == "":
+                if row[0] == '' and row[1] == '' and row[2] == '':
                     break
                 else:
                     tb_bond = row[0]
@@ -180,12 +180,12 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                     final_sk[tb_bond][sk_integral] = 0
 
         final_overlap = {}
-        tb_bond = ""
+        tb_bond = ''
         for state, row in zip(
-            self.tbm["grids"]["OL"]["isReadOnly"], self.tbm["grids"]["OL"]["value"]
+            self.tbm['grids']['OL']['isReadOnly'], self.tbm['grids']['OL']['value']
         ):
             if state[0] and state[1] and state[2]:
-                if row[0] == "" and row[1] == "" and row[2] == "":
+                if row[0] == '' and row[1] == '' and row[2] == '':
                     break
                 else:
                     tb_bond = row[0]
@@ -198,23 +198,23 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                     final_overlap[tb_bond][sk_integral] = 0
 
         bonds = []
-        if "TB Model" in self.tbm["trees"]["Bonds"]:
-            if "children" in self.tbm["trees"]["Bonds"]["TB Model"]:
-                allBonds = self.tbm["trees"]["Bonds"]["TB Model"]["children"]
+        if 'TB Model' in self.tbm['trees']['Bonds']:
+            if 'children' in self.tbm['trees']['Bonds']['TB Model']:
+                allBonds = self.tbm['trees']['Bonds']['TB Model']['children']
                 allCells = allBonds.keys()
                 for cells in allCells:
                     cellBonds = allBonds[cells]
-                    cells_info = re.search(r"^(\(.*\))-(\(.*\))$", cells)
+                    cells_info = re.search(r'^(\(.*\))-(\(.*\))$', cells)
                     cell1 = cells_info[1]
                     cell2 = cells_info[2]
-                    is_active = cellBonds["state"] == 4
+                    is_active = cellBonds['state'] == 4
                     if is_active:
-                        allAtoms = cellBonds["children"]
+                        allAtoms = cellBonds['children']
                         for atoms in allAtoms.keys():
-                            is_bond_active = allAtoms[atoms]["state"] == 4
+                            is_bond_active = allAtoms[atoms]['state'] == 4
                             if is_bond_active:
                                 atoms_info = re.search(
-                                    r"^\[ \(i,n\)=\((\d+),(\d+)\) , \(j,m\)=\((\d+),(\d+)\) , (.*) ]$",
+                                    r'^\[ \(i,n\)=\((\d+),(\d+)\) , \(j,m\)=\((\d+),(\d+)\) , (.*) ]$',
                                     atoms,
                                 )
                                 index1 = atoms_info[1]
@@ -223,24 +223,24 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                                 shell2 = atoms_info[4]
                                 bond_type = atoms_info[5]
                                 bond = {
-                                    "atom1": {
-                                        "index": index1,
-                                        "shell": shell1,
-                                        "cell": cell1,
+                                    'atom1': {
+                                        'index': index1,
+                                        'shell': shell1,
+                                        'cell': cell1,
                                     },
-                                    "atom2": {
-                                        "index": index2,
-                                        "shell": shell2,
-                                        "cell": cell2,
+                                    'atom2': {
+                                        'index': index2,
+                                        'shell': shell2,
+                                        'cell': cell2,
                                     },
-                                    "type": bond_type,
+                                    'type': bond_type,
                                 }
                                 bonds.append(bond)
 
         for bond in bonds:
-            atom1 = bond["atom1"]
-            atom2 = bond["atom2"]
-            bond_type = bond["type"]
+            atom1 = bond['atom1']
+            atom2 = bond['atom2']
+            bond_type = bond['type']
             h_sk = None
             s_sk = None
             if final_sk:
@@ -255,16 +255,16 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
 
                 center1 = TightBindingOrbital()
                 sec_bonds.center1 = center1
-                center1.atom_index = atom1["index"]
-                center1.shell = atom1["shell"]
-                indices = re.findall(r"-?\d+", atom1["cell"])
+                center1.atom_index = atom1['index']
+                center1.shell = atom1['shell']
+                indices = re.findall(r'-?\d+', atom1['cell'])
                 center1.cell_index = [int(index) for index in indices]
 
                 center2 = TightBindingOrbital()
                 sec_bonds.center2 = center2
-                center2.atom_index = atom2["index"]
-                center2.shell = atom2["shell"]
-                indices = re.findall(r"-?\d+", atom2["cell"])
+                center2.atom_index = atom2['index']
+                center2.shell = atom2['shell']
+                indices = re.findall(r'-?\d+', atom2['cell'])
                 center2.cell_index = [int(index) for index in indices]
                 for sk_label, sk_integral in h_sk.items():
                     setattr(sec_bonds, sk_label, sk_integral)
@@ -276,16 +276,16 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
 
                 center1 = TightBindingOrbital()
                 sec_overlaps.center1 = center1
-                center1.atom_index = atom1["index"]
-                center1.shell = atom1["shell"]
-                indices = re.findall(r"-?\d+", atom1["cell"])
+                center1.atom_index = atom1['index']
+                center1.shell = atom1['shell']
+                indices = re.findall(r'-?\d+', atom1['cell'])
                 center1.cell_index = [int(index) for index in indices]
 
                 center2 = TightBindingOrbital()
                 sec_overlaps.center2 = center2
-                center2.atom_index = atom2["index"]
-                center2.shell = atom2["shell"]
-                indices = re.findall(r"-?\d+", atom2["cell"])
+                center2.atom_index = atom2['index']
+                center2.shell = atom2['shell']
+                indices = re.findall(r'-?\d+', atom2['cell'])
                 center2.cell_index = [int(index) for index in indices]
                 for sk_label, sk_integral in s_sk.items():
                     setattr(sec_overlaps, sk_label, sk_integral)
@@ -296,7 +296,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         sec_scc = Calculation()
         sec_run.calculation.append(sec_scc)
 
-        _k_points = self.tbm["variables"]["KPoints"]
+        _k_points = self.tbm['variables']['KPoints']
         frac_k_points = []
         k_points = []
         k_length = []
@@ -305,15 +305,15 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
             k_points.append([row[3], row[4], row[5]])
             k_length.append(row[6])
 
-        tb_bands = self.tbm["variables"]["fTBEigVal"]
-        band_segments_points = self.tbm["variables"]["bandSections"]["index"]
+        tb_bands = self.tbm['variables']['fTBEigVal']
+        band_segments_points = self.tbm['variables']['bandSections']['index']
         if band_segments_points is None or len(tb_bands) < 1 or len(frac_k_points) < 1:
             return
 
-        fermi_level = self.tbm["variables"].get("ChemP")
+        fermi_level = self.tbm['variables'].get('ChemP')
         if not fermi_level:
             self.logger.warning(
-                "Could not extract the Fermi level, so that the BandStructure is not resolved"
+                'Could not extract the Fermi level, so that the BandStructure is not resolved'
             )
             return
 
@@ -334,7 +334,7 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
         sec_scc.band_structure_electronic.append(sec_k_band)
 
     def get_mainfile_keys(self, **kwargs):
-        filepath = kwargs.get("filename")
+        filepath = kwargs.get('filename')
 
         f = open(filepath)
         tbm = json.load(f)
@@ -342,17 +342,17 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
 
         dft_nomad_entry_id = None
         dft_nomad_upload_id = None
-        if "type" in tbm["DFTSource"] and tbm["DFTSource"]["type"].lower() == "nomad":
-            dft_nomad_entry_id = tbm["DFTSource"]["source"]["entry_id"]
-            dft_nomad_upload_id = tbm["DFTSource"]["source"]["upload_id"]
+        if 'type' in tbm['DFTSource'] and tbm['DFTSource']['type'].lower() == 'nomad':
+            dft_nomad_entry_id = tbm['DFTSource']['source']['entry_id']
+            dft_nomad_upload_id = tbm['DFTSource']['source']['upload_id']
 
         if (
             dft_nomad_entry_id is not None
-            and dft_nomad_entry_id != ""
+            and dft_nomad_entry_id != ''
             and dft_nomad_upload_id is not None
-            and dft_nomad_upload_id != ""
+            and dft_nomad_upload_id != ''
         ):
-            return ["TB_workflow"]
+            return ['TB_workflow']
         else:
             return True
 
@@ -370,22 +370,22 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
             tbm = json.load(f)
             f.close()
         except Exception:
-            self.logger.error("Error opening json output file.")
+            self.logger.error('Error opening json output file.')
             return
 
         self.tbm = tbm
         sec_run.program = Program(
-            name="TBStudio", version=self.tbm.get("ReleaseVersion", "")
+            name='TBStudio', version=self.tbm.get('ReleaseVersion', '')
         )
 
         dft_nomad_entry_id = None
         dft_nomad_upload_id = None
         if (
-            "type" in self.tbm["DFTSource"]
-            and self.tbm["DFTSource"]["type"].lower() == "nomad"
+            'type' in self.tbm['DFTSource']
+            and self.tbm['DFTSource']['type'].lower() == 'nomad'
         ):
-            dft_nomad_entry_id = self.tbm["DFTSource"]["source"]["entry_id"]
-            dft_nomad_upload_id = self.tbm["DFTSource"]["source"]["upload_id"]
+            dft_nomad_entry_id = self.tbm['DFTSource']['source']['entry_id']
+            dft_nomad_upload_id = self.tbm['DFTSource']['source']['upload_id']
 
         self.parse_system()
         self.parse_method()
@@ -396,9 +396,9 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
 
         if (
             dft_nomad_entry_id is not None
-            and dft_nomad_entry_id != ""
+            and dft_nomad_entry_id != ''
             and dft_nomad_upload_id is not None
-            and dft_nomad_upload_id != ""
+            and dft_nomad_upload_id != ''
         ):
             first_principles_calculation_archive = None
             try:
@@ -406,9 +406,9 @@ class TBStudioParser(BeyondDFTWorkflowsParser):
                     dft_nomad_entry_id, dft_nomad_upload_id, None
                 )
             except Exception:
-                self.logger.warning("TBStudio Workflow was not found.")
+                self.logger.warning('TBStudio Workflow was not found.')
             if first_principles_calculation_archive and self._child_archives:
-                tb_workflow_archive = self._child_archives.get("TB_workflow")
+                tb_workflow_archive = self._child_archives.get('TB_workflow')
                 self.parse_tb_workflow(
                     archive, first_principles_calculation_archive, tb_workflow_archive
                 )

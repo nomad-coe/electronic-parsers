@@ -37,7 +37,7 @@ from runschema.calculation import Calculation, Energy, EnergyEntry, Forces, Forc
 class NCParser(FileParser):
     def __init__(self):
         super().__init__()
-        self._configuration_types = ["MoleculeConfiguration", "BulkConfiguration"]
+        self._configuration_types = ['MoleculeConfiguration', 'BulkConfiguration']
         self._units = dict(angstrom=ureg.angstrom, bohr=ureg.bohr, kelvin=ureg.kelvin)
         self._fingerprints = dict()
 
@@ -49,10 +49,10 @@ class NCParser(FileParser):
             except Exception:
                 return
             # prepare fingerprints required for variables
-            if hasattr(self._file_handler, "fingerprint_table"):
+            if hasattr(self._file_handler, 'fingerprint_table'):
                 fprints = [
-                    p.split(":")
-                    for p in self._file_handler.fingerprint_table.decode().split("#")
+                    p.split(':')
+                    for p in self._file_handler.fingerprint_table.decode().split('#')
                     if p
                 ]  # pylint: disable=maybe-no-member
                 self._fingerprints = {p[1]: p[0] for p in fprints}
@@ -60,11 +60,11 @@ class NCParser(FileParser):
         return self._file_handler
 
     def resolve_unit(self, val):
-        val = val.split("*")
+        val = val.split('*')
         if len(val) == 2:
             return (
                 (float(val[0]) * self._units.get(val[1].lower(), ureg.angstrom))
-                .to("angstrom")
+                .to('angstrom')
                 .magnitude
             )
         return float(val[0])
@@ -78,29 +78,29 @@ class NCParser(FileParser):
             Triclinic=aselattice.TRI,
         )
 
-        re_f = r"[\d\.\-\+Ee]+"
+        re_f = r'[\d\.\-\+Ee]+'
 
         data = data.data[:].copy().tobytes().decode()
 
-        elements = re.search(r"elements = \[(.+)\]", data)
+        elements = re.search(r'elements = \[(.+)\]', data)
         if not elements:
             return
 
-        coordinates = re.search(r"coordinates *\= *(\[\s*\[[\s\S]+?\]\s*\])", data)
+        coordinates = re.search(r'coordinates *\= *(\[\s*\[[\s\S]+?\]\s*\])', data)
         if not coordinates:
             return
 
         try:
             numbers = [
                 atomic_names.index(e.strip().title())
-                for e in elements.group(1).split(",")
+                for e in elements.group(1).split(',')
             ]
 
             positions = np.array(
                 [
-                    v.split(",")
+                    v.split(',')
                     for v in re.findall(
-                        rf"\[( *{re_f} *\, *{re_f} *\, *{re_f} *)\]",
+                        rf'\[( *{re_f} *\, *{re_f} *\, *{re_f} *)\]',
                         coordinates.group(1),
                     )
                 ],
@@ -112,14 +112,14 @@ class NCParser(FileParser):
         except Exception:
             return
 
-        velocities = re.search(r"velocities *\= *(\[\s*\[[\s\S]+?\]\s*\])", data)
+        velocities = re.search(r'velocities *\= *(\[\s*\[[\s\S]+?\]\s*\])', data)
         if velocities:
             atoms.set_velocities(
                 np.array(
                     [
-                        v.split(",")
+                        v.split(',')
                         for v in re.findall(
-                            rf"\[( *{re_f} *\, *{re_f} *\, *{re_f} *)\]",
+                            rf'\[( *{re_f} *\, *{re_f} *\, *{re_f} *)\]',
                             velocities.group(1),
                         )
                     ],
@@ -127,15 +127,15 @@ class NCParser(FileParser):
                 )
             )
 
-        if "MoleculeConfiguration" in data:
+        if 'MoleculeConfiguration' in data:
             return atoms
 
         atoms.set_pbc(True)
 
-        lattice = re.search(r"\nlattice = (\w+) *\((.+)\)", data)
-        lattice, parameters = lattice.groups() if lattice else ("", "")
+        lattice = re.search(r'\nlattice = (\w+) *\((.+)\)', data)
+        lattice, parameters = lattice.groups() if lattice else ('', '')
         parameters = [
-            self.resolve_unit(p) for p in re.findall(rf"({re_f} *\* *\w+)", parameters)
+            self.resolve_unit(p) for p in re.findall(rf'({re_f} *\* *\w+)', parameters)
         ]
         lattice = lattices.get(lattice)
         if lattice is None:
@@ -152,7 +152,7 @@ class NCParser(FileParser):
         except Exception:
             pass
         else:
-            atoms.set_cell(cell, scale_atoms="fractional" in data)
+            atoms.set_cell(cell, scale_atoms='fractional' in data)
 
         return atoms
 
@@ -162,37 +162,37 @@ class NCParser(FileParser):
             val = getattr(self.netcdf, key)
             if isinstance(val, bytes):
                 val = val.decode()
-        elif key == "configuration_names":
+        elif key == 'configuration_names':
             val = []
-            re_name = re.compile(r"(\w+Configuration\_gID\d+)$")
+            re_name = re.compile(r'(\w+Configuration\_gID\d+)$')
             for name in self.netcdf.variables.keys():
                 name = re.match(re_name, name)
                 if name:
                     val.append(name.group(1))
-        elif key == "atoms":
+        elif key == 'atoms':
             val = dict()
-            for name in self.get("configuration_names", []):
+            for name in self.get('configuration_names', []):
                 data = self.netcdf.variables.get(name)
                 if data is None:
                     continue
                 val[name] = self._resolve_configuration(data)
-        elif key == "parameters":
+        elif key == 'parameters':
             val = dict()
-            for name in self.get("configuration_names", []):
-                data = self.netcdf.variables.get("%s_calculator" % name)
+            for name in self.get('configuration_names', []):
+                data = self.netcdf.variables.get('%s_calculator' % name)
                 if data is None:
                     continue
                 val[name] = data.data.tobytes()
-        elif key == "energies":
+        elif key == 'energies':
             val = dict()
             # energy_keys = [k for k in self.netcdf.variables.keys() if k.startswith('TotalEnergy')]
-            energy_re = r"TotalEnergy\_(gID\d+)\_component\_(\S+)"
+            energy_re = r'TotalEnergy\_(gID\d+)\_component\_(\S+)'
             for key_n in self.netcdf.variables.keys():
                 energy_key = re.match(energy_re, key_n)
                 if energy_key:
                     fp = (
                         self.netcdf.variables[
-                            "TotalEnergy_%s_finger_print" % energy_key.group(1)
+                            'TotalEnergy_%s_finger_print' % energy_key.group(1)
                         ]
                         .data.tobytes()
                         .decode()
@@ -201,15 +201,15 @@ class NCParser(FileParser):
                     val[fp][energy_key.group(2)] = (
                         self.netcdf.variables[key_n].data[0] * ureg.eV
                     )
-        elif key == "forces":
+        elif key == 'forces':
             val = dict()
-            forces_re = r"Forces\_(gID\d+)\_atom\_resolved\_forces"
+            forces_re = r'Forces\_(gID\d+)\_atom\_resolved\_forces'
             for key_n in self.netcdf.variables.keys():
                 forces_key = re.match(forces_re, key_n)
                 if forces_key:
                     fp = (
                         self.netcdf.variables[
-                            "TotalEnergy_%s_finger_print" % forces_key.group(1)
+                            'TotalEnergy_%s_finger_print' % forces_key.group(1)
                         ]
                         .data.tobytes()
                         .decode()
@@ -229,10 +229,10 @@ class CalculatorParser(TextParser):
     def init_quantities(self):
         self._quantities = [
             Quantity(
-                "smearing_width", r"electron_temperature *\= *([\d\.]+)", dtype=float
+                'smearing_width', r'electron_temperature *\= *([\d\.]+)', dtype=float
             ),
-            Quantity("charge", r"charge *\= *([\d\.]+)", dtype=float),
-            Quantity("xc_functional", r"exchange_correlation *\= *(\S+)"),
+            Quantity('charge', r'charge *\= *([\d\.]+)', dtype=float),
+            Quantity('xc_functional', r'exchange_correlation *\= *(\S+)'),
         ]
 
 
@@ -242,25 +242,25 @@ class ATKParser:
         self.calculator_parser = CalculatorParser()
 
         self._metainfo_map = {
-            "Exchange-Correlation": "energy_xc",
-            "Kinetic": "energy_kinetic_electronic",
-            "Entropy-Term": "energy_correction_entropy",
-            "Electrostatic": "energy_electrostatic",
+            'Exchange-Correlation': 'energy_xc',
+            'Kinetic': 'energy_kinetic_electronic',
+            'Entropy-Term': 'energy_correction_entropy',
+            'Electrostatic': 'energy_electrostatic',
         }
 
         self._xc_functional_map = {
-            "LDA.RPA": ["LDA_X", "LDA_C_RPA"],
-            "LDA.PZ": ["LDA_X", "LDA_C_PZ"],
-            "LDA.PW": ["LDA_X", "LDA_C_PW"],
-            "GGA.PW91": ["GGA_X_PW91", "GGA_C_PW91"],
-            "GGA.PBE": ["GGA_X_PBE", "GGA_C_PBE"],
-            "GGA.PBES": ["GGA_X_PBE_SOL", "GGA_C_PBE_SOL"],
-            "GGA.RPBE": ["GGA_X_RPBE", "GGA_C_PBE"],
-            "BLYP": ["GGA_X_B88", "GGA_C_LYP"],
-            "HCTH407": ["GGA_XC_HCTH_407"],
-            "WC": ["GGA_X_WC", "GGA_C_PBE"],
-            "AM05": ["GGA_X_AM05", "GGA_C_AM05"],
-            "mBEEF": ["MGGA_X_MBEEF", "GGA_C_PBE_SOL"],
+            'LDA.RPA': ['LDA_X', 'LDA_C_RPA'],
+            'LDA.PZ': ['LDA_X', 'LDA_C_PZ'],
+            'LDA.PW': ['LDA_X', 'LDA_C_PW'],
+            'GGA.PW91': ['GGA_X_PW91', 'GGA_C_PW91'],
+            'GGA.PBE': ['GGA_X_PBE', 'GGA_C_PBE'],
+            'GGA.PBES': ['GGA_X_PBE_SOL', 'GGA_C_PBE_SOL'],
+            'GGA.RPBE': ['GGA_X_RPBE', 'GGA_C_PBE'],
+            'BLYP': ['GGA_X_B88', 'GGA_C_LYP'],
+            'HCTH407': ['GGA_XC_HCTH_407'],
+            'WC': ['GGA_X_WC', 'GGA_C_PBE'],
+            'AM05': ['GGA_X_AM05', 'GGA_C_AM05'],
+            'mBEEF': ['MGGA_X_MBEEF', 'GGA_C_PBE_SOL'],
         }
 
     def init_parser(self):
@@ -274,7 +274,7 @@ class ATKParser:
             sec_method = Method()
             sec_run.method.append(sec_method)
 
-            parameters = self.nc_parser.get("parameters").get(name)
+            parameters = self.nc_parser.get('parameters').get(name)
             if parameters is None:
                 return sec_method
 
@@ -283,11 +283,11 @@ class ATKParser:
             self.calculator_parser._file_handler = parameters
 
             sec_method.electronic = Electronic(
-                relativity_method="pseudo_scalar_relativistic",
-                charge=self.calculator_parser.get("charge", 0.0),
+                relativity_method='pseudo_scalar_relativistic',
+                charge=self.calculator_parser.get('charge', 0.0),
                 smearing=Smearing(
-                    kind="fermi",
-                    width=self.calculator_parser.get("smearing_width", 0.0),
+                    kind='fermi',
+                    width=self.calculator_parser.get('smearing_width', 0.0),
                 ),
             )
 
@@ -296,15 +296,15 @@ class ATKParser:
             sec_xc_functional = XCFunctional()
             sec_dft.xc_functional = sec_xc_functional
             for xc_functional in self._xc_functional_map.get(
-                self.calculator_parser.get("xc_functional"), []
+                self.calculator_parser.get('xc_functional'), []
             ):
-                if "_XC" in xc_functional:
+                if '_XC' in xc_functional:
                     sec_xc_functional.contributions.append(
                         Functional(name=xc_functional)
                     )
-                elif "_X" in xc_functional:
+                elif '_X' in xc_functional:
                     sec_xc_functional.exchange.append(Functional(name=xc_functional))
-                elif "_C" in xc_functional:
+                elif '_C' in xc_functional:
                     sec_xc_functional.correlation.append(Functional(name=xc_functional))
 
             # Basis set
@@ -339,18 +339,18 @@ class ATKParser:
             sec_energy = Energy()
             sec_scc.energy = sec_energy
             energy_total = 0.0
-            for key, val in self.nc_parser.get("energies").get(fingerprint, {}).items():
+            for key, val in self.nc_parser.get('energies').get(fingerprint, {}).items():
                 key = self._metainfo_map.get(key)
                 energy_total += val
                 if key is not None:
-                    key = key.replace("energy_", "")
+                    key = key.replace('energy_', '')
                     sec_energy.m_add_sub_section(
                         getattr(Energy, key), EnergyEntry(value=val)
                     )
             sec_energy.total = EnergyEntry(value=energy_total)
 
             # forces
-            forces = self.nc_parser.get("forces").get(fingerprint)
+            forces = self.nc_parser.get('forces').get(fingerprint)
             if forces is not None:
                 sec_forces = Forces()
                 sec_scc.forces = sec_forces
@@ -358,11 +358,11 @@ class ATKParser:
 
             return sec_scc
 
-        for name, atoms in self.nc_parser.get("atoms", {}).items():
+        for name, atoms in self.nc_parser.get('atoms', {}).items():
             sec_system = parse_system(atoms)
             sec_method = parse_method(name)
             fingerprint = self.nc_parser._fingerprints.get(
-                "gID%s" % name.split("gID")[-1]
+                'gID%s' % name.split('gID')[-1]
             )
             sec_scc = parse_scc(fingerprint)
             if sec_system is not None:
@@ -379,8 +379,8 @@ class ATKParser:
 
         sec_run = Run()
         self.archive.run.append(sec_run)
-        sec_run.program_name = "ATK"
-        version = self.nc_parser.get("version", "unavailable")
-        sec_run.program = Program(name="ATK", version=version)
+        sec_run.program_name = 'ATK'
+        version = self.nc_parser.get('version', 'unavailable')
+        sec_run.program = Program(name='ATK', version=version)
 
         self.parse_configurations()

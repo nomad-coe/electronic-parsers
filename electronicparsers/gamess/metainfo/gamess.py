@@ -49,7 +49,7 @@ class x_gamess_section_atom_forces(MSection):
     x_gamess_atom_x_force = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         -
         """,
@@ -58,7 +58,7 @@ class x_gamess_section_atom_forces(MSection):
     x_gamess_atom_y_force = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         -
         """,
@@ -67,7 +67,7 @@ class x_gamess_section_atom_forces(MSection):
     x_gamess_atom_z_force = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         -
         """,
@@ -84,7 +84,7 @@ class x_gamess_section_cis(MSection):
     x_gamess_cis_excitation_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Value of the excitation energies for configuration interaction singles excited
         states.
@@ -141,11 +141,11 @@ class x_gamess_section_excited_states(MSection):
     m_def = Section(validate=False)
 
     x_gamess_section_cis = SubSection(
-        sub_section=SectionProxy("x_gamess_section_cis"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_cis'), repeats=True
     )
 
     x_gamess_section_tddft = SubSection(
-        sub_section=SectionProxy("x_gamess_section_tddft"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_tddft'), repeats=True
     )
 
 
@@ -158,7 +158,7 @@ class x_gamess_section_frequencies(MSection):
 
     x_gamess_frequencies = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_frequencies"],
+        shape=['number_of_frequencies'],
         description="""
         values of frequencies, in cm-1
         """,
@@ -174,7 +174,7 @@ class x_gamess_section_frequencies(MSection):
 
     x_gamess_red_masses = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_frequencies"],
+        shape=['number_of_frequencies'],
         description="""
         values of normal mode reduced masses
         """,
@@ -182,7 +182,7 @@ class x_gamess_section_frequencies(MSection):
 
     x_gamess_reduced_masses = Quantity(
         type=str,
-        shape=["number_of_reduced_masses_rows"],
+        shape=['number_of_reduced_masses_rows'],
         description="""
         values of normal mode reduced masses
         """,
@@ -214,8 +214,8 @@ class x_gamess_section_geometry(MSection):
 
     x_gamess_atom_positions = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
-        unit="meter",
+        shape=['number_of_atoms', 3],
+        unit='meter',
         description="""
         Initial positions of all the atoms, in Cartesian coordinates.
         """,
@@ -224,7 +224,7 @@ class x_gamess_section_geometry(MSection):
     x_gamess_atom_x_coord = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         x coordinate for the atoms
         """,
@@ -233,7 +233,7 @@ class x_gamess_section_geometry(MSection):
     x_gamess_atom_y_coord = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         y coordinate for the atoms
         """,
@@ -242,7 +242,7 @@ class x_gamess_section_geometry(MSection):
     x_gamess_atom_z_coord = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         z coordinate for the atoms
         """,
@@ -259,7 +259,7 @@ class x_gamess_section_mcscf(MSection):
     x_gamess_energy_mcscf_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Value of the MCSCF total energy, normally CASSCF, during the iterations.
         """,
@@ -389,7 +389,7 @@ class x_gamess_section_tddft(MSection):
     x_gamess_tddft_excitation_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Value of the excitation energies for time-dependent DFT excited states.
         """,
@@ -429,8 +429,8 @@ class System(runschema.system.System):
 
     x_gamess_atom_positions_initial = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
-        unit="meter",
+        shape=['number_of_atoms', 3],
+        unit='meter',
         description="""
         Initial positions of all the atoms, in Cartesian coordinates.
         """,
@@ -439,7 +439,7 @@ class System(runschema.system.System):
     x_gamess_atom_x_coord_initial = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         x coordinate for the atoms of the initial geometry
         """,
@@ -448,7 +448,7 @@ class System(runschema.system.System):
     x_gamess_atom_y_coord_initial = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         y coordinate for the atoms of the initial geometry
         """,
@@ -457,7 +457,7 @@ class System(runschema.system.System):
     x_gamess_atom_z_coord_initial = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         z coordinate for the atoms of the initial geometry
         """,
@@ -711,11 +711,11 @@ class Method(runschema.method.Method):
     )
 
     x_gamess_section_elstruc_method = SubSection(
-        sub_section=SectionProxy("x_gamess_section_elstruc_method"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_elstruc_method'), repeats=True
     )
 
     x_gamess_section_scf_hf_method = SubSection(
-        sub_section=SectionProxy("x_gamess_section_scf_hf_method"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_scf_hf_method'), repeats=True
     )
 
 
@@ -739,7 +739,7 @@ class Run(runschema.run.Run):
     )
 
     x_gamess_section_geometry_optimization_info = SubSection(
-        sub_section=SectionProxy("x_gamess_section_geometry_optimization_info"),
+        sub_section=SectionProxy('x_gamess_section_geometry_optimization_info'),
         repeats=True,
     )
 
@@ -750,7 +750,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_gamess_energy_scf = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Final value of the total electronic energy calculated with the method described in
         XC_method.
@@ -760,7 +760,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_gamess_energy_total_scf_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Value of the total electronic energy calculated with the method described in
         XC_method during each self-consistent field (SCF) iteration.
@@ -772,39 +772,39 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_gamess_section_atom_forces = SubSection(
-        sub_section=SectionProxy("x_gamess_section_atom_forces"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_atom_forces'), repeats=True
     )
 
     x_gamess_section_ci = SubSection(
-        sub_section=SectionProxy("x_gamess_section_ci"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_ci'), repeats=True
     )
 
     x_gamess_section_coupled_cluster = SubSection(
-        sub_section=SectionProxy("x_gamess_section_coupled_cluster"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_coupled_cluster'), repeats=True
     )
 
     x_gamess_section_excited_states = SubSection(
-        sub_section=SectionProxy("x_gamess_section_excited_states"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_excited_states'), repeats=True
     )
 
     x_gamess_section_frequencies = SubSection(
-        sub_section=SectionProxy("x_gamess_section_frequencies"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_frequencies'), repeats=True
     )
 
     x_gamess_section_geometry = SubSection(
-        sub_section=SectionProxy("x_gamess_section_geometry"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_geometry'), repeats=True
     )
 
     x_gamess_section_mcscf = SubSection(
-        sub_section=SectionProxy("x_gamess_section_mcscf"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_mcscf'), repeats=True
     )
 
     x_gamess_section_moller_plesset = SubSection(
-        sub_section=SectionProxy("x_gamess_section_moller_plesset"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_moller_plesset'), repeats=True
     )
 
     x_gamess_section_mrpt2 = SubSection(
-        sub_section=SectionProxy("x_gamess_section_mrpt2"), repeats=True
+        sub_section=SectionProxy('x_gamess_section_mrpt2'), repeats=True
     )
 
 

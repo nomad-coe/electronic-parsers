@@ -49,7 +49,7 @@ class x_onetep_section_vibrational_frequencies(MSection):
 
     x_onetep_vibrationl_frequencies = Quantity(
         type=np.dtype(np.float64),
-        shape=["len(self.nr_iter)"],
+        shape=['len(self.nr_iter)'],
         description="""
         Vibration Frequenices (cm-1)
         """,
@@ -73,7 +73,7 @@ class x_onetep_section_vibrational_frequencies(MSection):
 
     x_onetep_ir = Quantity(
         type=str,
-        shape=["len(self.nr_iter)"],
+        shape=['len(self.nr_iter)'],
         description="""
         Irreducible representation in the Point Group
         """,
@@ -81,7 +81,7 @@ class x_onetep_section_vibrational_frequencies(MSection):
 
     x_onetep_raman_activity = Quantity(
         type=np.dtype(np.float64),
-        shape=["len(self.nr_iter)"],
+        shape=['len(self.nr_iter)'],
         description="""
         Raman activity (A**4/amu)
         """,
@@ -113,7 +113,7 @@ class x_onetep_section_vibrational_frequencies(MSection):
 
     x_onetep_ir_intensity = Quantity(
         type=np.dtype(np.float64),
-        shape=["len(self.nr_iter)"],
+        shape=['len(self.nr_iter)'],
         description="""
         IR intensities (D/A)**2/amu
         """,
@@ -208,11 +208,11 @@ class x_onetep_section_tddft(MSection):
     )
 
     x_onetep_section_tddft_excitations = SubSection(
-        sub_section=SectionProxy("x_onetep_section_tddft_excitations"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_tddft_excitations'), repeats=True
     )
 
     x_onetep_section_tddft_iterations = SubSection(
-        sub_section=SectionProxy("x_onetep_section_tddft_iterations"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_tddft_iterations'), repeats=True
     )
 
 
@@ -226,7 +226,7 @@ class x_onetep_section_tddft_excitations(MSection):
     x_onetep_tddft_excit_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         exciations
         """,
@@ -243,7 +243,7 @@ class x_onetep_section_tddft_excitations(MSection):
     x_onetep_tddft_excit_lifetime = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="s",
+        unit='s',
         description="""
         excit_lifetime
         """,
@@ -611,7 +611,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
 
     x_onetep_mulliken_atom_index = Quantity(
         type=str,
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_atom_index
         """,
@@ -619,7 +619,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
 
     x_onetep_mulliken_atom = Quantity(
         type=str,
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_atom kind
         """,
@@ -627,7 +627,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
 
     x_onetep_total_orbital = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_total_contribution
         """,
@@ -635,7 +635,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
 
     x_onetep_total_orbital_store = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_total_contribution
         """,
@@ -643,7 +643,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
 
     x_onetep_spin = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_spin
         """,
@@ -659,7 +659,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
 
     x_onetep_mulliken_charge_store = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_charges
         """,
@@ -667,7 +667,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
 
     x_onetep_mulliken_charge = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_charges
         """,
@@ -683,7 +683,7 @@ class x_onetep_section_nbo_population_analysis(MSection):
 
     x_onetep_nbo_atom_label_store = Quantity(
         type=str,
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         nbo_atom kind
         """,
@@ -691,7 +691,7 @@ class x_onetep_section_nbo_population_analysis(MSection):
 
     x_onetep_nbo_atom_labels = Quantity(
         type=str,
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         nbo_atom kind
         """,
@@ -699,7 +699,7 @@ class x_onetep_section_nbo_population_analysis(MSection):
 
     x_onetep_total_nbo_population_store = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         nbo_population
         """,
@@ -707,7 +707,7 @@ class x_onetep_section_nbo_population_analysis(MSection):
 
     x_onetep_total_nbo_population = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         nbo_population
         """,
@@ -715,7 +715,7 @@ class x_onetep_section_nbo_population_analysis(MSection):
 
     x_onetep_nbo_partial_charge_store = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         nbo_charges
         """,
@@ -723,7 +723,7 @@ class x_onetep_section_nbo_population_analysis(MSection):
 
     x_onetep_nbo_partial_charge = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         nbo_charges
         """,
@@ -1203,7 +1203,7 @@ class x_onetep_section_scf_k_points(MSection):
     )
 
     x_onetep_section_scf_eigenvalues = SubSection(
-        sub_section=SectionProxy("x_onetep_section_scf_eigenvalues"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_scf_eigenvalues'), repeats=True
     )
 
 
@@ -1265,7 +1265,7 @@ class x_onetep_section_raman_tensor(MSection):
     x_onetep_ramen_tensor = Quantity(
         type=np.dtype(np.float64),
         shape=[3, 3],
-        unit="ampere / unified_atomic_mass_unit",
+        unit='ampere / unified_atomic_mass_unit',
         description="""
         Ramen tensor, unit scaled by 0.5
         """,
@@ -1633,7 +1633,7 @@ class x_onetep_section_ts(MSection):
 
     x_onetep_ts_positions = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         ts_positions
         """,
@@ -1641,7 +1641,7 @@ class x_onetep_section_ts(MSection):
 
     x_onetep_ts_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         ts_forces
         """,
@@ -1761,7 +1761,7 @@ class x_onetep_section_ts_final(MSection):
 
     x_onetep_ts_positions_final = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         ts_positions_final
         """,
@@ -1769,7 +1769,7 @@ class x_onetep_section_ts_final(MSection):
 
     x_onetep_ts_forces_final = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         ts_force_finals
         """,
@@ -1793,7 +1793,7 @@ class x_onetep_section_ts_product(MSection):
 
     x_onetep_ts_forces_product = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         ts_energy_forces_pro
         """,
@@ -1801,7 +1801,7 @@ class x_onetep_section_ts_product(MSection):
 
     x_onetep_ts_positions_product = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         ts_energy_positions_pro
         """,
@@ -2056,7 +2056,7 @@ class x_onetep_section_edft(MSection):
     m_def = Section(validate=False)
 
     x_onetep_section_edft_iterations = SubSection(
-        sub_section=SectionProxy("x_onetep_section_edft_iterations"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_edft_iterations'), repeats=True
     )
 
 
@@ -2100,7 +2100,7 @@ class x_onetep_section_edft_spin(MSection):
     )
 
     x_onetep_section_edft_spin_iterations = SubSection(
-        sub_section=SectionProxy("x_onetep_section_edft_spin_iterations"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_edft_spin_iterations'), repeats=True
     )
 
 
@@ -2224,7 +2224,7 @@ class x_onetep_section_edft_iterations(MSection):
     )
 
     x_onetep_section_edft_spin = SubSection(
-        sub_section=SectionProxy("x_onetep_section_edft_spin"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_edft_spin'), repeats=True
     )
 
 
@@ -2277,7 +2277,7 @@ class x_onetep_section_orbital_information(MSection):
 
     x_onetep_orbital_number = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_onetep_total_number_occ_orbitals"],
+        shape=['x_onetep_total_number_occ_orbitals'],
         description="""
         -
         """,
@@ -2285,7 +2285,7 @@ class x_onetep_section_orbital_information(MSection):
 
     x_onetep_orbital_energy = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_onetep_total_number_occ_orbitals"],
+        shape=['x_onetep_total_number_occ_orbitals'],
         description="""
         -
         """,
@@ -2317,7 +2317,7 @@ class x_onetep_section_orbital_information(MSection):
 
     x_onetep_orbital_occupancy = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_onetep_total_number_occ_orbitals"],
+        shape=['x_onetep_total_number_occ_orbitals'],
         description="""
         -
         """,
@@ -2329,7 +2329,7 @@ class Run(runschema.run.Run):
 
     x_onetep_atom_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         Forces on the atoms as minus gradient of energy_total, including forces' unitary-
         transformation (rigid body) filtering and including constraints, if present. The
@@ -2345,7 +2345,7 @@ class Run(runschema.run.Run):
 
     x_onetep_atom_ionforces = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         forces
         """,
@@ -2353,7 +2353,7 @@ class Run(runschema.run.Run):
 
     x_onetep_atom_local_potentialforces = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         forces
         """,
@@ -2361,7 +2361,7 @@ class Run(runschema.run.Run):
 
     x_onetep_atom_nonlocal_potentialforces = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         forces
         """,
@@ -2369,7 +2369,7 @@ class Run(runschema.run.Run):
 
     x_onetep_atom_nonself_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         forces
         """,
@@ -2377,7 +2377,7 @@ class Run(runschema.run.Run):
 
     x_onetep_atom_correction_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         forces
         """,
@@ -2568,144 +2568,144 @@ class Run(runschema.run.Run):
     )
 
     x_onetep_section_vibrational_frequencies = SubSection(
-        sub_section=SectionProxy("x_onetep_section_vibrational_frequencies"),
+        sub_section=SectionProxy('x_onetep_section_vibrational_frequencies'),
         repeats=True,
     )
 
     x_onetep_section_tddft = SubSection(
-        sub_section=SectionProxy("x_onetep_section_tddft"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_tddft'), repeats=True
     )
 
     x_onetep_section_dipole = SubSection(
-        sub_section=SectionProxy("x_onetep_section_dipole"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_dipole'), repeats=True
     )
 
     x_onetep_section_collect_scf_eigenvalues = SubSection(
-        sub_section=SectionProxy("x_onetep_section_collect_scf_eigenvalues"),
+        sub_section=SectionProxy('x_onetep_section_collect_scf_eigenvalues'),
         repeats=True,
     )
 
     x_onetep_section_mulliken_population_analysis = SubSection(
-        sub_section=SectionProxy("x_onetep_section_mulliken_population_analysis"),
+        sub_section=SectionProxy('x_onetep_section_mulliken_population_analysis'),
         repeats=True,
     )
 
     x_onetep_section_nbo_population_analysis = SubSection(
-        sub_section=SectionProxy("x_onetep_section_nbo_population_analysis"),
+        sub_section=SectionProxy('x_onetep_section_nbo_population_analysis'),
         repeats=True,
     )
 
     x_onetep_section_geom_optimisation_method = SubSection(
-        sub_section=SectionProxy("x_onetep_section_geom_optimisation_method"),
+        sub_section=SectionProxy('x_onetep_section_geom_optimisation_method'),
         repeats=True,
     )
 
     x_onetep_section_optics_parameters = SubSection(
-        sub_section=SectionProxy("x_onetep_section_optics_parameters"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_optics_parameters'), repeats=True
     )
 
     x_onetep_section_ngwf_parameters = SubSection(
-        sub_section=SectionProxy("x_onetep_section_ngwf_parameters"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_ngwf_parameters'), repeats=True
     )
 
     x_onetep_section_kernel_parameters = SubSection(
-        sub_section=SectionProxy("x_onetep_section_kernel_parameters"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_kernel_parameters'), repeats=True
     )
 
     x_onetep_section_phonons = SubSection(
-        sub_section=SectionProxy("x_onetep_section_phonons"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_phonons'), repeats=True
     )
 
     x_onetep_section_density_mixing_parameters = SubSection(
-        sub_section=SectionProxy("x_onetep_section_density_mixing_parameters"),
+        sub_section=SectionProxy('x_onetep_section_density_mixing_parameters'),
         repeats=True,
     )
 
     x_onetep_section_population_analysis_parameters = SubSection(
-        sub_section=SectionProxy("x_onetep_section_population_analysis_parameters"),
+        sub_section=SectionProxy('x_onetep_section_population_analysis_parameters'),
         repeats=True,
     )
 
     x_onetep_section_kernel_optimisation = SubSection(
-        sub_section=SectionProxy("x_onetep_section_kernel_optimisation"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_kernel_optimisation'), repeats=True
     )
 
     x_onetep_section_SCF_iteration_frame = SubSection(
-        sub_section=SectionProxy("x_onetep_section_SCF_iteration_frame"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_SCF_iteration_frame'), repeats=True
     )
 
     x_onetep_section_time = SubSection(
-        sub_section=SectionProxy("x_onetep_section_time"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_time'), repeats=True
     )
 
     x_onetep_section_raman_tensor = SubSection(
-        sub_section=SectionProxy("x_onetep_section_raman_tensor"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_raman_tensor'), repeats=True
     )
 
     x_onetep_section_tddft_parameters = SubSection(
-        sub_section=SectionProxy("x_onetep_section_tddft_parameters"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_tddft_parameters'), repeats=True
     )
 
     x_onetep_section_scf_parameters = SubSection(
-        sub_section=SectionProxy("x_onetep_section_scf_parameters"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_scf_parameters'), repeats=True
     )
 
     x_onetep_section_electronic_spectroscpy_parameters = SubSection(
-        sub_section=SectionProxy("x_onetep_section_electronic_spectroscpy_parameters"),
+        sub_section=SectionProxy('x_onetep_section_electronic_spectroscpy_parameters'),
         repeats=True,
     )
 
     x_onetep_section_md = SubSection(
-        sub_section=SectionProxy("x_onetep_section_md"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_md'), repeats=True
     )
 
     x_onetep_section_edft_parameters = SubSection(
-        sub_section=SectionProxy("x_onetep_section_edft_parameters"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_edft_parameters'), repeats=True
     )
 
     x_onetep_section_ts = SubSection(
-        sub_section=SectionProxy("x_onetep_section_ts"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_ts'), repeats=True
     )
 
     x_onetep_section_ts_store = SubSection(
-        sub_section=SectionProxy("x_onetep_section_ts_store"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_ts_store'), repeats=True
     )
 
     x_onetep_section_ts_final_store = SubSection(
-        sub_section=SectionProxy("x_onetep_section_ts_final_store"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_ts_final_store'), repeats=True
     )
 
     x_onetep_section_ts_final = SubSection(
-        sub_section=SectionProxy("x_onetep_section_ts_final"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_ts_final'), repeats=True
     )
 
     x_onetep_section_ts_product = SubSection(
-        sub_section=SectionProxy("x_onetep_section_ts_product"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_ts_product'), repeats=True
     )
 
     x_onetep_section_ts_product_store = SubSection(
-        sub_section=SectionProxy("x_onetep_section_ts_product_store"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_ts_product_store'), repeats=True
     )
 
     x_onetep_section_ts_parameters = SubSection(
-        sub_section=SectionProxy("x_onetep_section_ts_parameters"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_ts_parameters'), repeats=True
     )
 
     x_onetep_section_van_der_Waals_parameters = SubSection(
-        sub_section=SectionProxy("x_onetep_section_van_der_Waals_parameters"),
+        sub_section=SectionProxy('x_onetep_section_van_der_Waals_parameters'),
         repeats=True,
     )
 
     x_onetep_section_energy_components = SubSection(
-        sub_section=SectionProxy("x_onetep_section_energy_components"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_energy_components'), repeats=True
     )
 
     x_onetep_section_edft = SubSection(
-        sub_section=SectionProxy("x_onetep_section_edft"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_edft'), repeats=True
     )
 
     x_onetep_section_orbital_information = SubSection(
-        sub_section=SectionProxy("x_onetep_section_orbital_information"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_orbital_information'), repeats=True
     )
 
 
@@ -2746,7 +2746,7 @@ class System(runschema.system.System):
 
     x_onetep_atom_positions = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         Storing atomic positions in fractional coordinates
         """,
@@ -2762,7 +2762,7 @@ class System(runschema.system.System):
 
     x_onetep_optimised_atom_labels = Quantity(
         type=str,
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Temporary storing atomic positions
         """,
@@ -2770,7 +2770,7 @@ class System(runschema.system.System):
 
     x_onetep_optimised_atom_positions = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         Storing atomic optimised positions in fractional coordinates
         """,
@@ -2834,7 +2834,7 @@ class System(runschema.system.System):
 
     x_onetep_atom_ionic_velocities = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         Temporary storing atomic positions
         """,
@@ -2857,23 +2857,23 @@ class System(runschema.system.System):
     )
 
     x_onetep_section_atom_ionic_velocities = SubSection(
-        sub_section=SectionProxy("x_onetep_section_atom_ionic_velocities"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_atom_ionic_velocities'), repeats=True
     )
 
     x_onetep_section_atom_positions_optim = SubSection(
-        sub_section=SectionProxy("x_onetep_section_atom_positions_optim"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_atom_positions_optim'), repeats=True
     )
 
     x_onetep_section_atom_positions = SubSection(
-        sub_section=SectionProxy("x_onetep_section_atom_positions"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_atom_positions'), repeats=True
     )
 
     x_onetep_section_cell_optim = SubSection(
-        sub_section=SectionProxy("x_onetep_section_cell_optim"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_cell_optim'), repeats=True
     )
 
     x_onetep_section_cell = SubSection(
-        sub_section=SectionProxy("x_onetep_section_cell"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_cell'), repeats=True
     )
 
 
@@ -3167,15 +3167,15 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_section_scf_k_points = SubSection(
-        sub_section=SectionProxy("x_onetep_section_scf_k_points"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_scf_k_points'), repeats=True
     )
 
     x_onetep_section_spin_number = SubSection(
-        sub_section=SectionProxy("x_onetep_section_spin_number"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_spin_number'), repeats=True
     )
 
     x_onetep_section_stress_tensor = SubSection(
-        sub_section=SectionProxy("x_onetep_section_stress_tensor"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_stress_tensor'), repeats=True
     )
 
     x_onetep_section_tddft = SubSection(
@@ -3207,15 +3207,15 @@ class Method(runschema.method.Method):
     )
 
     x_onetep_section_functional_definition = SubSection(
-        sub_section=SectionProxy("x_onetep_section_functional_definition"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_functional_definition'), repeats=True
     )
 
     x_onetep_section_functionals = SubSection(
-        sub_section=SectionProxy("x_onetep_section_functionals"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_functionals'), repeats=True
     )
 
     x_onetep_section_relativity_treatment = SubSection(
-        sub_section=SectionProxy("x_onetep_section_relativity_treatment"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_relativity_treatment'), repeats=True
     )
 
     x_onetep_input_parameters = Quantity(
@@ -3359,23 +3359,23 @@ class BandStructure(runschema.calculation.BandStructure):
     )
 
     x_onetep_section_eigenvalues_1 = SubSection(
-        sub_section=SectionProxy("x_onetep_section_eigenvalues_1"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_eigenvalues_1'), repeats=True
     )
 
     x_onetep_section_eigenvalues = SubSection(
-        sub_section=SectionProxy("x_onetep_section_eigenvalues"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_eigenvalues'), repeats=True
     )
 
     x_onetep_section_k_band = SubSection(
-        sub_section=SectionProxy("x_onetep_section_k_band"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_k_band'), repeats=True
     )
 
     x_onetep_section_k_points_1 = SubSection(
-        sub_section=SectionProxy("x_onetep_section_k_points_1"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_k_points_1'), repeats=True
     )
 
     x_onetep_section_k_points = SubSection(
-        sub_section=SectionProxy("x_onetep_section_k_points"), repeats=True
+        sub_section=SectionProxy('x_onetep_section_k_points'), repeats=True
     )
 
 

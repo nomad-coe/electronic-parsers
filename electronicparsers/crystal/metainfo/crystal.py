@@ -580,7 +580,7 @@ class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_crystal_section_shell = SubSection(
-        sub_section=SectionProxy("x_crystal_section_shell"), repeats=True
+        sub_section=SectionProxy('x_crystal_section_shell'), repeats=True
     )
 
 
@@ -609,7 +609,7 @@ class x_crystal_section_shell(MSection):
 
     x_crystal_shell_coefficients = Quantity(
         type=np.dtype(np.float64),
-        shape=["n_orbitals", 4],
+        shape=['n_orbitals', 4],
         description="""
         Contraction coefficients in this order: exponent, S, P, D/F/G.
         """,

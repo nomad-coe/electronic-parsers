@@ -178,7 +178,7 @@ class x_cpmd_section_atom_kinds(MSection):
     m_def = Section(validate=False)
 
     x_cpmd_section_atom_kind = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_atom_kind"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_atom_kind'), repeats=True
     )
 
 
@@ -382,7 +382,7 @@ class x_cpmd_section_scf(MSection):
     m_def = Section(validate=False)
 
     x_cpmd_section_scf_iteration = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_scf_iteration"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_scf_iteration'), repeats=True
     )
 
 
@@ -468,7 +468,7 @@ class x_cpmd_section_geo_opt_initialization(MSection):
 
     x_cpmd_initialized_positions = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         The initialized positions for geometry optimization. The ith row corresponds to
         the position for atom number i.
@@ -477,7 +477,7 @@ class x_cpmd_section_geo_opt_initialization(MSection):
 
     x_cpmd_initialized_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         The initialized forces for geometry optimization. The ith row corresponds to the
         force for atom number i.
@@ -502,7 +502,7 @@ class x_cpmd_section_geo_opt_step(MSection):
 
     x_cpmd_geo_opt_step_positions = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         The positions from a geometry optimization step. The ith row corresponds to the
         position for atom number i.
@@ -511,7 +511,7 @@ class x_cpmd_section_geo_opt_step(MSection):
 
     x_cpmd_geo_opt_step_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         The forces from a geometry optimization step. The ith row corresponds to the force
         for atom number i.
@@ -583,7 +583,7 @@ class x_cpmd_section_geo_opt_step(MSection):
     )
 
     x_cpmd_section_geo_opt_scf_iteration = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_geo_opt_scf_iteration"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_geo_opt_scf_iteration'), repeats=True
     )
 
 
@@ -851,36 +851,36 @@ class Run(runschema.run.Run):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cpmd_section_start_information = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_start_information"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_start_information'), repeats=True
     )
 
     x_cpmd_section_run_type_information = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_run_type_information"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_run_type_information'), repeats=True
     )
 
     x_cpmd_section_system_information = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_system_information"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_system_information'), repeats=True
     )
 
     x_cpmd_section_wave_function_initialization = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_wave_function_initialization"),
+        sub_section=SectionProxy('x_cpmd_section_wave_function_initialization'),
         repeats=True,
     )
 
     x_cpmd_section_md_initialization = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_md_initialization"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_md_initialization'), repeats=True
     )
 
     x_cpmd_section_md_averaged_quantities = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_md_averaged_quantities"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_md_averaged_quantities'), repeats=True
     )
 
     x_cpmd_section_timing = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_timing"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_timing'), repeats=True
     )
 
     x_cpmd_section_end_information = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_end_information"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_end_information'), repeats=True
     )
 
 
@@ -895,16 +895,16 @@ class Method(runschema.method.Method):
     )
 
     x_cpmd_section_xc_information = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_xc_information"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_xc_information'), repeats=True
     )
 
     x_cpmd_section_pseudopotential_information = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_pseudopotential_information"),
+        sub_section=SectionProxy('x_cpmd_section_pseudopotential_information'),
         repeats=True,
     )
 
     x_cpmd_section_atom_kinds = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_atom_kinds"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_atom_kinds'), repeats=True
     )
 
 
@@ -912,7 +912,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cpmd_section_supercell = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_supercell"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_supercell'), repeats=True
     )
 
 
@@ -960,11 +960,11 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_cpmd_section_scf = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_scf"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_scf'), repeats=True
     )
 
     x_cpmd_section_final_results = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_final_results"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_final_results'), repeats=True
     )
 
 
@@ -972,11 +972,11 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cpmd_section_geo_opt_initialization = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_geo_opt_initialization"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_geo_opt_initialization'), repeats=True
     )
 
     x_cpmd_section_geo_opt_step = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_geo_opt_step"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_geo_opt_step'), repeats=True
     )
 
 
@@ -984,5 +984,5 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cpmd_section_md_averaged_quantities = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_md_averaged_quantities"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_md_averaged_quantities'), repeats=True
     )

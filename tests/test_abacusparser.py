@@ -27,34 +27,34 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return ABACUSParser()
 
 
 def test_band(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/abacus/Si_band/running_nscf.log", archive, None)
+    parser.parse('tests/data/abacus/Si_band/running_nscf.log', archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == "Parallel, in development"
+    assert sec_run.program.version == 'Parallel, in development'
     assert sec_run.time_run.date_start.magnitude == approx(1657036247.0)
     sec_parallel = sec_run.x_abacus_section_parallel[0]
     assert sec_parallel.x_abacus_nproc == 8
-    assert sec_parallel.x_abacus_allocation_method == "2D block"
+    assert sec_parallel.x_abacus_allocation_method == '2D block'
     assert sec_parallel.x_abacus_allocation_nb2d == 1
     assert sec_parallel.x_abacus_allocation_trace_loc_row == 26
     assert sec_parallel.x_abacus_allocation_trace_loc_col == 26
     assert sec_parallel.x_abacus_allocation_nloc == 91
-    assert sec_run.x_abacus_input_filename == "INPUT"
-    assert sec_run.x_abacus_kpt_filename == "KLINES"
+    assert sec_run.x_abacus_input_filename == 'INPUT'
+    assert sec_run.x_abacus_kpt_filename == 'KLINES'
     assert sec_run.time_run.date_end.magnitude == approx(1657036249.0)
     assert sec_run.clean_end
 
     sec_method = sec_run.method[0]
     sec_basis_set = sec_method.electrons_representation[0].basis_set[0]
-    assert sec_basis_set.type == "numeric AOs"
-    assert sec_basis_set.cutoff.to("Ry").magnitude == approx(50)
+    assert sec_basis_set.type == 'numeric AOs'
+    assert sec_basis_set.cutoff.to('Ry').magnitude == approx(50)
     sec_basis_set = sec_method.electrons_representation[1].basis_set[0]
     assert sec_basis_set.x_abacus_basis_sets_delta_k.magnitude == approx(0.01)
     assert sec_basis_set.x_abacus_basis_sets_delta_r.magnitude == approx(0.01)
@@ -64,7 +64,7 @@ def test_band(parser):
     sec_specie_basis_set = sec_basis_set.x_abacus_section_specie_basis_set
     assert (
         sec_specie_basis_set[0].x_abacus_specie_basis_set_filename
-        == "Si_lda_8.0au_50Ry_2s2p1d"
+        == 'Si_lda_8.0au_50Ry_2s2p1d'
     )
     assert (
         sec_specie_basis_set[0].x_abacus_specie_basis_set_ln
@@ -74,23 +74,23 @@ def test_band(parser):
     assert sec_specie_basis_set[0].x_abacus_specie_basis_set_rmesh == 801
     assert sec_method.electronic.n_spin_channels == 1
     assert not sec_method.x_abacus_spin_orbit
-    assert sec_method.electronic.relativity_method == "scalar_relativistic"
+    assert sec_method.electronic.relativity_method == 'scalar_relativistic'
     sec_atom_parameters = sec_method.atom_parameters
     assert len(sec_atom_parameters) == 1
-    assert sec_atom_parameters[0].label == "Si"
+    assert sec_atom_parameters[0].label == 'Si'
     assert sec_atom_parameters[0].n_valence_electrons == 4
-    assert sec_atom_parameters[0].pseudopotential_name == "Si.pz-vbc.UPF"
-    assert sec_atom_parameters[0].x_abacus_pp_type == "NC"
-    assert sec_atom_parameters[0].x_abacus_pp_xc == "PZ"
+    assert sec_atom_parameters[0].pseudopotential_name == 'Si.pz-vbc.UPF'
+    assert sec_atom_parameters[0].x_abacus_pp_type == 'NC'
+    assert sec_atom_parameters[0].x_abacus_pp_xc == 'PZ'
     assert sec_atom_parameters[0].x_abacus_pp_lmax == 1
     assert sec_atom_parameters[0].x_abacus_pp_nzeta == 2
     assert sec_atom_parameters[0].x_abacus_pp_nprojectors == 2
-    assert sec_method.dft.xc_functional.correlation[0].name == "LDA_C_PZ"
+    assert sec_method.dft.xc_functional.correlation[0].name == 'LDA_C_PZ'
 
     sec_system = sec_run.system[0]
     assert sec_system.x_abacus_alat.magnitude == approx(10.2)
     assert sec_system.atoms.lattice_vectors[0][1].magnitude == approx(2.69880378e-10)
-    assert sec_system.atoms.labels == ["Si", "Si"]
+    assert sec_system.atoms.labels == ['Si', 'Si']
     assert sec_system.atoms.positions[1][0].magnitude == approx(1.34940189e-10)
     assert sec_system.x_abacus_cell_volume.magnitude == approx(265.302)
     assert sec_system.x_abacus_reciprocal_vectors[2][0].magnitude == approx(
@@ -120,20 +120,20 @@ def test_band(parser):
     assert sec_k_band_segment.energies.shape == (1, 101, 8)
     assert sec_k_band_segment.energies[0][4][4].magnitude == approx(1.14715847e-18)
 
-    assert archive.workflow2.method.method == "DFT"
+    assert archive.workflow2.method.method == 'DFT'
 
 
 # TODO iteration is None in sub_section
 def test_dos(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/abacus/Si_dos/running_nscf.log", archive, None)
+    parser.parse('tests/data/abacus/Si_dos/running_nscf.log', archive, None)
 
     sec_run = archive.run[0]
     assert len(sec_run.calculation) == 1
     sec_scc = sec_run.calculation[0]
     sec_k_band = sec_scc.band_structure_electronic[0]
     assert sec_k_band.energy_fermi.magnitude == approx(1.055136698179135e-18)
-    energy_reference = sec_k_band.energy_fermi.to("eV").magnitude
+    energy_reference = sec_k_band.energy_fermi.to('eV').magnitude
 
     assert len(sec_scc.dos_electronic) == 1
     sec_dos = sec_scc.dos_electronic[0]
@@ -144,12 +144,12 @@ def test_dos(parser):
     assert len(sec_dos.total) == 1
     assert sec_dos.total[0].value.shape == (n_energies,)
 
-    energies = sec_dos.energies.to("eV").magnitude
-    values = sec_dos.total[0].value.to("1/eV").magnitude
+    energies = sec_dos.energies.to('eV').magnitude
+    values = sec_dos.total[0].value.to('1/eV').magnitude
     nonzero = np.unique(values.nonzero())
     energies = energies[nonzero]
     energies.sort()
-    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")[0]
+    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, 'right')[0]
     highest_occupied_index = lowest_unoccupied_index - 1
     gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
     assert gap == approx(0.01)
@@ -157,21 +157,21 @@ def test_dos(parser):
 
 def test_scf(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/abacus/Si_scf/running_scf.log", archive, None)
+    parser.parse('tests/data/abacus/Si_scf/running_scf.log', archive, None)
 
     sec_run = archive.run[0]
     assert sec_run.x_abacus_program_execution_time.magnitude == approx(1.0)
 
     sec_method = sec_run.method[0]
     assert sec_method.scf.n_max_iteration == 20
-    assert sec_method.x_abacus_basis_type == "pw"
+    assert sec_method.x_abacus_basis_type == 'pw'
 
     sec_system = sec_run.system[0]
     sec_system_sym = sec_system.symmetry[0]
-    assert sec_system_sym.crystal_system == "cubic"
+    assert sec_system_sym.crystal_system == 'cubic'
     assert sec_system.x_abacus_ibrav == 3
-    assert sec_system_sym.bravais_lattice == "cF"
-    assert sec_system_sym.x_abacus_point_group_schoenflies_name == "T_d"
+    assert sec_system_sym.bravais_lattice == 'cF'
+    assert sec_system_sym.x_abacus_point_group_schoenflies_name == 'T_d'
     assert sec_system.x_abacus_celldm[0] == approx(3.8166849)
     assert sec_system.x_abacus_celldm[-1] == 60
     assert sec_system_sym.x_abacus_number_of_rotation_matrices == 48
@@ -208,16 +208,16 @@ def test_scf(parser):
 
 def test_geomopt(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/abacus/Si_geomopt/running_cell-relax.log", archive, None)
+    parser.parse('tests/data/abacus/Si_geomopt/running_cell-relax.log', archive, None)
 
     sec_run = archive.run[0]
 
     sec_method = sec_run.method[0]
     # TODO smearing is None
-    assert sec_method.electronic.smearing.kind == "gaussian"
+    assert sec_method.electronic.smearing.kind == 'gaussian'
     assert sec_method.electronic.smearing.width == approx(2.179872361103585e-20)
     assert sec_method.x_abacus_gamma_algorithms
-    assert sec_method.electrons_representation[0].basis_set[0].type == "numeric AOs"
+    assert sec_method.electrons_representation[0].basis_set[0].type == 'numeric AOs'
 
     sec_workflow = archive.workflow2
     assert sec_workflow.method.convergence_tolerance_force_maximum.magnitude == approx(
@@ -242,7 +242,7 @@ def test_geomopt(parser):
 
 def test_md(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/abacus/Sn_md/running_md.log", archive, None)
+    parser.parse('tests/data/abacus/Sn_md/running_md.log', archive, None)
 
     sec_run = archive.run[0]
     assert sec_run.x_abacus_md_nstep_in == 10
@@ -251,7 +251,7 @@ def test_md(parser):
     sec_method = sec_run.method[0]
     assert sec_method.x_abacus_scf_threshold_density == approx(1e-5)
     assert sec_method.x_abacus_mixing_beta == approx(0.4)
-    assert archive.workflow2.method.thermodynamic_ensemble == "NVT"
+    assert archive.workflow2.method.thermodynamic_ensemble == 'NVT'
 
     sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 11
@@ -265,25 +265,25 @@ def test_md(parser):
 # TODO no test data
 def test_hse(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/abacus/GaSb_hse/running_scf.log", archive, None)
+    parser.parse('tests/data/abacus/GaSb_hse/running_scf.log', archive, None)
 
     sec_run = archive.run[0]
     assert sec_run.x_abacus_program_execution_time.magnitude == 8837
 
     sec_method = sec_run.method[0]
-    assert sec_method.dft.xc_functional.hybrid[0].name == "HYB_GGA_XC_HSE06"
+    assert sec_method.dft.xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE06'
     assert sec_method.dft.xc_functional.hybrid[0].parameters[
-        "$\\omega$ in m^-1"
+        '$\\omega$ in m^-1'
     ] == approx(2078698737.084507)
     assert (
         sec_method.dft.xc_functional.hybrid[0].parameters[
-            "hybrid coefficient $\\alpha$"
+            'hybrid coefficient $\\alpha$'
         ]
         == 0.25
     )
     assert sec_method.x_abacus_hse_omega.magnitude == approx(2078698737.084507)
     assert sec_method.x_abacus_hybrid_xc_coeff == approx(0.25)
-    assert sec_method.x_abacus_mixing_method == "pulay"
+    assert sec_method.x_abacus_mixing_method == 'pulay'
     assert sec_method.x_abacus_exx_ccp_rmesh_times == approx(1.5)
     assert sec_method.x_abacus_exx_dm_threshold == approx(0.0005)
     assert sec_method.x_abacus_exx_cauchy_threshold == approx(1e-08)
@@ -292,7 +292,7 @@ def test_hse(parser):
     assert sec_method.x_abacus_exx_pca_threshold == approx(0.0001)
 
     sec_system = sec_run.system[0]
-    assert sec_system.atoms.labels == ["Sb", "Ga"]
+    assert sec_system.atoms.labels == ['Sb', 'Ga']
     assert sec_system.atoms.positions[1][2].magnitude == approx(4.571926147831032e-10)
 
     sec_scc = sec_run.calculation[0]
@@ -304,7 +304,7 @@ def test_hse(parser):
 
 def test_spin2(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/abacus/Si_spin2/running_nscf.log", archive, None)
+    parser.parse('tests/data/abacus/Si_spin2/running_nscf.log', archive, None)
     sec_run = archive.run[0]
 
     sec_method = sec_run.method[0]
@@ -332,7 +332,7 @@ def test_spin2(parser):
 
 def test_dftu(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/abacus/MnBiTe_dftu/running_scf.log", archive, None)
+    parser.parse('tests/data/abacus/MnBiTe_dftu/running_scf.log', archive, None)
 
     sec_run = archive.run[0]
 
@@ -342,25 +342,25 @@ def test_dftu(parser):
     # TODO include  full relativistic
     # assert sec_method.electronic.relativity_method == 'full relativistic'
     assert sec_method.x_abacus_initial_magnetization_total == 0.0
-    assert sec_method.x_abacus_diagonalization_algorithm == "genelpa"
-    assert sec_method.electronic.method == "DFT+U"
+    assert sec_method.x_abacus_diagonalization_algorithm == 'genelpa'
+    assert sec_method.electronic.method == 'DFT+U'
 
     sec_system = sec_run.system[0]
     assert sec_system.atoms.labels == [
-        "Mn",
-        "Mn",
-        "Bi",
-        "Bi",
-        "Bi",
-        "Bi",
-        "Te",
-        "Te",
-        "Te",
-        "Te",
-        "Te",
-        "Te",
-        "Te",
-        "Te",
+        'Mn',
+        'Mn',
+        'Bi',
+        'Bi',
+        'Bi',
+        'Bi',
+        'Te',
+        'Te',
+        'Te',
+        'Te',
+        'Te',
+        'Te',
+        'Te',
+        'Te',
     ]
     assert sec_system.x_abacus_number_of_species == 4
 

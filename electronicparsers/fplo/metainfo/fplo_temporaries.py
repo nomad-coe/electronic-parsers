@@ -312,7 +312,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_fplo_t_energy_reference_fermi_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Temporary storage for FPLO Fermi energy in iteration
         """,

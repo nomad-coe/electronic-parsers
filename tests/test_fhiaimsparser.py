@@ -24,8 +24,8 @@ from electronicparsers.fhiaims import FHIAimsParser
 from tests.dos_integrator import integrate_dos
 
 
-_root_dir = "tests/data/fhiaims/"
-silicon_versions = ("v071914_7", "v171221_1")
+_root_dir = 'tests/data/fhiaims/'
+silicon_versions = ('v071914_7', 'v171221_1')
 silicon_normalization_map = list(zip(silicon_versions, (0.5, 1)))
 
 
@@ -33,18 +33,18 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return FHIAimsParser()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def silicon(parser):
     silicon = {}
     for version in silicon_versions:
         archive = EntryArchive()
         parser.parse(
-            _root_dir + "Si_band_dos_" + version + "/aims_CC.out", archive, None
+            _root_dir + 'Si_band_dos_' + version + '/aims_CC.out', archive, None
         )
         silicon[version] = archive
     return silicon
@@ -52,23 +52,23 @@ def silicon(parser):
 
 def test_scf_spinpol(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/fhiaims/Fe_scf_spinpol/out.out", archive, None)
+    parser.parse('tests/data/fhiaims/Fe_scf_spinpol/out.out', archive, None)
 
-    assert archive.run[0].program.version == "151211"
+    assert archive.run[0].program.version == '151211'
     assert archive.run[0].time_run.wall_start.magnitude == approx(2.23485023e08)
 
     assert len(archive.run[0].method) == 1
     sec_method = archive.run[0].method[0]
     assert list(sec_method.k_mesh.grid) == [16] * 3
     assert sec_method.electronic.n_spin_channels == 2
-    assert sec_method.electronic.relativity_method == "scalar_relativistic_atomic_ZORA"
-    assert sec_method.dft.xc_functional.correlation[0].name == "LDA_C_PW"
+    assert sec_method.electronic.relativity_method == 'scalar_relativistic_atomic_ZORA'
+    assert sec_method.dft.xc_functional.correlation[0].name == 'LDA_C_PW'
     sec_basis_func = sec_method.x_fhi_aims_section_controlIn_basis_set[
         0
     ].x_fhi_aims_section_controlIn_basis_func
     assert len(sec_basis_func) == 10
     assert sec_basis_func[2].x_fhi_aims_controlIn_basis_func_radius == 6.0
-    assert sec_basis_func[6].x_fhi_aims_controlIn_basis_func_type == "hydro"
+    assert sec_basis_func[6].x_fhi_aims_controlIn_basis_func_type == 'hydro'
     sec_atom_type = archive.run[0].method[0].atom_parameters[0]
     assert sec_atom_type.mass.magnitude == approx(9.27328042e-26)
     assert sec_atom_type.x_fhi_aims_section_controlInOut_atom_species[
@@ -79,7 +79,7 @@ def test_scf_spinpol(parser):
     sec_system = archive.run[0].system[0]
     assert sec_system.atoms.lattice_vectors[1][1].magnitude == approx(-1.4e-10)
     assert sec_system.atoms.periodic == [True, True, True]
-    assert sec_system.atoms.labels == ["Fe"]
+    assert sec_system.atoms.labels == ['Fe']
 
     assert len(archive.run[0].calculation) == 1
     sec_scc = archive.run[0].calculation[0]
@@ -99,7 +99,7 @@ def test_scf_spinpol(parser):
 
 def test_geomopt(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/fhiaims/Si_geomopt/out.out", archive, None)
+    parser.parse('tests/data/fhiaims/Si_geomopt/out.out', archive, None)
 
     sec_methods = archive.run[0].method
     assert len(sec_methods) == 1
@@ -123,7 +123,7 @@ def test_geomopt(parser):
 def test_band_spinpol(parser):
     archive = EntryArchive()
     parser.parse(
-        "tests/data/fhiaims/Fe_band_spinpol/Fe_band_structure_dos_spin.out",
+        'tests/data/fhiaims/Fe_band_spinpol/Fe_band_structure_dos_spin.out',
         archive,
         None,
     )
@@ -152,47 +152,47 @@ def test_band_spinpol(parser):
     assert np.shape(sec_dos_up.energies) == (50,)
     assert np.shape(sec_dos_up.total[0].value) == (50,)
     assert sec_dos_up.energies[46].magnitude == approx(-1.1999976e-18)
-    assert sec_dos_up.total[0].value[46].to("1 / eV").magnitude == approx(0.18127036)
-    assert sec_dos_down.total[0].value[15].to("1 / eV").magnitude == approx(0.57150097)
+    assert sec_dos_up.total[0].value[46].to('1 / eV').magnitude == approx(0.18127036)
+    assert sec_dos_down.total[0].value[15].to('1 / eV').magnitude == approx(0.57150097)
     dos_integrated = integrate_dos(sec_dos, sec_scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 8.0
 
     # v151211 test for the Fermi level
-    assert sec_scc.energy.fermi.to("eV").magnitude == approx(-9.3842209)
+    assert sec_scc.energy.fermi.to('eV').magnitude == approx(-9.3842209)
     assert sec_k_band.energy_fermi == sec_scc.energy.fermi
 
 
-@pytest.mark.parametrize("version", silicon_versions)
+@pytest.mark.parametrize('version', silicon_versions)
 def test_band_silicon(silicon, version):
     """Tests that the band structure of silicon is parsed correctly."""
     scc = silicon[version].run[-1].calculation[0]
     band = scc.band_structure_electronic[0]
     segments = band.segment
-    energies = np.array([s.energies.to("eV").magnitude for s in segments])
+    energies = np.array([s.energies.to('eV').magnitude for s in segments])
 
     # Check that an energy reference is reported
-    energy_reference = scc.energy.fermi.to("eV").magnitude
+    energy_reference = scc.energy.fermi.to('eV').magnitude
     assert energy_reference == approx(-5.7308573, abs=1e-5)
-    assert band.energy_fermi.to("eV").magnitude == energy_reference
+    assert band.energy_fermi.to('eV').magnitude == energy_reference
 
     # Check that an appropriately sized band gap is found at the given
     # reference energy
     energies = energies.flatten()
     energies.sort()
-    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")
+    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, 'right')
     highest_occupied_index = lowest_unoccupied_index - 1
     gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
     assert gap == approx(0.60684)
 
 
-@pytest.mark.parametrize("version, normalization_factor", silicon_normalization_map)
+@pytest.mark.parametrize('version, normalization_factor', silicon_normalization_map)
 def test_dos_silicon(silicon, version, normalization_factor):
     """Tests that the DOS of silicon is parsed correctly."""
     scc = silicon[version].run[-1].calculation[0]
-    energy_reference = scc.energy.fermi.to("eV").magnitude
+    energy_reference = scc.energy.fermi.to('eV').magnitude
     dos = scc.dos_electronic
     assert len(dos) == 1
-    energies = dos[0].energies.to("eV").magnitude
+    energies = dos[0].energies.to('eV').magnitude
     values = np.array([d.value.magnitude for d in dos[0].total])
     dos_integrated = integrate_dos(dos, scc.energy.fermi)
 
@@ -206,7 +206,7 @@ def test_dos_silicon(silicon, version, normalization_factor):
     nonzero = np.unique(values.nonzero())
     energies = energies[nonzero]
     energies.sort()
-    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")
+    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, 'right')
     highest_occupied_index = lowest_unoccupied_index - 1
     gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
     assert gap == approx(0.54054054, abs=0.04)  # TODO increase accuracy
@@ -214,7 +214,7 @@ def test_dos_silicon(silicon, version, normalization_factor):
 
 def test_dos(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/fhiaims/ClNa_dos/ClNa_dos.out", archive, None)
+    parser.parse('tests/data/fhiaims/ClNa_dos/ClNa_dos.out', archive, None)
 
     sec_method = archive.run[0].method[0]
     assert list(sec_method.k_mesh.grid) == [10] * 3
@@ -224,44 +224,44 @@ def test_dos(parser):
     assert len(sec_dos) == 1
     assert np.shape(sec_dos[0].energies) == (50,)
     assert np.shape(sec_dos[0].total[0].value) == (50,)
-    assert sec_dos[0].total[0].value[0].to("1 / eV").magnitude == approx(0.00233484)
-    assert sec_dos[0].total[0].value[-1].to("1 / eV").magnitude == approx(0.49471595)
+    assert sec_dos[0].total[0].value[0].to('1 / eV').magnitude == approx(0.00233484)
+    assert sec_dos[0].total[0].value[-1].to('1 / eV').magnitude == approx(0.49471595)
 
     dos_integrated = integrate_dos(sec_dos, sec_scc.energy.fermi)
     assert pytest.approx(dos_integrated, abs=1) == 3.0  # 3rd valence shell
 
     # PDOS
-    assert sec_dos[0].m_xpath("species_projected") and sec_dos[0].m_xpath(
-        "orbital_projected"
+    assert sec_dos[0].m_xpath('species_projected') and sec_dos[0].m_xpath(
+        'orbital_projected'
     )
     sec_dos_species = sec_dos[0].species_projected
     assert len(sec_dos_species) == 2
     assert (
-        sec_dos_species[0].atom_label == "Na" and sec_dos_species[1].atom_label == "Cl"
+        sec_dos_species[0].atom_label == 'Na' and sec_dos_species[1].atom_label == 'Cl'
     )
     assert sec_dos_species[0].value[3].magnitude == approx(8.316466310418057e17)
     assert sec_dos_species[1].value[3].magnitude == approx(7.471934333552389e18)
     sec_dos_orbital = sec_dos[0].orbital_projected
     assert len(sec_dos_orbital) == 7
-    atom_labels = ["Na"] * 3 + ["Cl"] * 4
-    orbital_labels = ["s", "p", "d"] + ["s", "p", "d", "f"]
+    atom_labels = ['Na'] * 3 + ['Cl'] * 4
+    orbital_labels = ['s', 'p', 'd'] + ['s', 'p', 'd', 'f']
     sec_atom_labels = [orbital_dos.atom_label for orbital_dos in sec_dos_orbital]
     sec_orbital_labels = [orbital_dos.orbital for orbital_dos in sec_dos_orbital]
     assert sec_atom_labels == atom_labels and sec_orbital_labels == orbital_labels
 
 
-@pytest.mark.parametrize("tier", ["tight", "intermediate", "light_spd"])
+@pytest.mark.parametrize('tier', ['tight', 'intermediate', 'light_spd'])
 def test_native_tiers(tier):
     archive = EntryArchive()
-    FHIAimsParser().parse(f"{_root_dir}/native_tiers/{tier}/aims.out", archive, None)
+    FHIAimsParser().parse(f'{_root_dir}/native_tiers/{tier}/aims.out', archive, None)
 
     sec_er = archive.run[0].method[0].electrons_representation[0]
-    assert sec_er.native_tier == f"{tier}_defaults_2020"
+    assert sec_er.native_tier == f'{tier}_defaults_2020'
 
 
 def test_md(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/fhiaims/HO_md/H2O_periodic_MD.out", archive, None)
+    parser.parse('tests/data/fhiaims/HO_md/H2O_periodic_MD.out', archive, None)
 
     sec_method = archive.run[0].method[0]
     assert list(sec_method.k_mesh.grid) == [2] * 3
@@ -291,11 +291,11 @@ def test_md(parser):
     assert sec_calculation[2].time_physical.magnitude == approx(70.35599994659424)
 
     sec_workflow = archive.workflow2
-    assert sec_workflow.method.thermodynamic_ensemble == "NVT"
+    assert sec_workflow.method.thermodynamic_ensemble == 'NVT'
     assert sec_workflow.method.integration_timestep.magnitude == approx(1e-15)
     assert sec_workflow.method.n_steps == 5
     sec_thermostat = sec_workflow.method.thermostat_parameters[0]
-    assert sec_thermostat.thermostat_type == "nose_hoover"
+    assert sec_thermostat.thermostat_type == 'nose_hoover'
     assert sec_thermostat.reference_temperature.magnitude == approx(300.0)
     assert sec_thermostat.coupling_constant.magnitude == approx(3.706267724423911e-14)
 
@@ -303,115 +303,115 @@ def test_md(parser):
 def test_hybrid(parser):
     """ "Taken from the official test files in FHI-aims v210716_3"""
     archive = EntryArchive()
-    parser.parse("tests/data/fhiaims/GaAs_HSE06+SOC/aims.out", archive, None)
+    parser.parse('tests/data/fhiaims/GaAs_HSE06+SOC/aims.out', archive, None)
 
     sec_method = archive.run[0].method[0]
     assert list(sec_method.k_mesh.grid) == [12] * 3
 
     sec_xc_functional = sec_method.dft.xc_functional
     assert (
-        sec_xc_functional.hybrid[0].parameters["exact_exchange_mixing_factor"] == 0.25
+        sec_xc_functional.hybrid[0].parameters['exact_exchange_mixing_factor'] == 0.25
     )
-    assert sec_xc_functional.hybrid[0].name == "HYB_GGA_XC_HSE06"
+    assert sec_xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE06'
 
 
 def test_dftu(parser):
     """Test generated by Nathan Daelman on DUNE3 cluster"""
 
     archive = EntryArchive()
-    parser.parse("tests/data/fhiaims/CeO2_dftu/aims_CC.out", archive, None)
+    parser.parse('tests/data/fhiaims/CeO2_dftu/aims_CC.out', archive, None)
 
     sec_method = archive.run[0].method[0]
     assert list(sec_method.k_mesh.grid) == [1] * 3
 
     sec_hubb = sec_method.atom_parameters[0].hubbard_kanamori_model
-    assert sec_hubb.orbital == "4f"
-    assert approx(sec_hubb.u_effective.to("eV").magnitude) == 4.5
-    assert sec_hubb.double_counting_correction == "Dudarev"
+    assert sec_hubb.orbital == '4f'
+    assert approx(sec_hubb.u_effective.to('eV').magnitude) == 4.5
+    assert sec_hubb.double_counting_correction == 'Dudarev'
 
 
 def test_gw(parser):
     """Tests for GW calculations in an atom, He"""
     archive = EntryArchive()
-    parser._calculation_type = "gw"
-    parser.parse("tests/data/fhiaims/He_gw/He_scGW_ontop_PBE.out", archive, None)
+    parser._calculation_type = 'gw'
+    parser.parse('tests/data/fhiaims/He_gw/He_scGW_ontop_PBE.out', archive, None)
 
     sec_run = archive.run[-1]
 
     # System
     sec_system = sec_run.system
     assert len(sec_system) == 1
-    assert sec_system[-1].atoms.labels == ["He"]
+    assert sec_system[-1].atoms.labels == ['He']
     assert sec_system[-1].atoms.periodic == [False, False, False]
 
     # Method
     sec_method = archive.run[-1].method
     assert len(sec_method) == 1
-    assert sec_method[-1].gw.type == "scGW"
-    assert sec_method[-1].gw.analytical_continuation == "pade"
+    assert sec_method[-1].gw.type == 'scGW'
+    assert sec_method[-1].gw.analytical_continuation == 'pade'
     assert sec_method[-1].gw.n_states == 5
     assert len(sec_method[-1].frequency_mesh) == 1
     assert sec_method[-1].frequency_mesh[0].n_points == len(
         sec_method[-1].frequency_mesh[0].points
     )
     assert sec_method[-1].frequency_mesh[0].points[-1].to(
-        "hartree"
+        'hartree'
     ).magnitude == approx(3571.4288641158605 + 0j)
 
     # GW energies
     sec_scf = sec_run.calculation[-1].scf_iteration
     assert len(sec_scf) == 5
     assert sec_scf[0].x_fhi_aims_energy_scgw_correlation_energy.to(
-        "eV"
+        'eV'
     ).magnitude == approx(-2.392295)
     assert sec_scf[-1].x_fhi_aims_energy_scgw_correlation_energy.to(
-        "eV"
+        'eV'
     ).magnitude == approx(-1.73791)
 
 
 def test_gw_eigs(parser):
     """Tests for GW calculations in a molecule, CHN"""
     archive = EntryArchive()
-    parser.parse("tests/data/fhiaims/CHN_gw/output.out", archive, None)
+    parser.parse('tests/data/fhiaims/CHN_gw/output.out', archive, None)
 
     sec_run = archive.run[-1]
 
     # System and Method
     sec_system = sec_run.system
     assert len(sec_system) == 1
-    assert sec_system[-1].atoms.labels[0] == "O"
+    assert sec_system[-1].atoms.labels[0] == 'O'
     sec_method = sec_run.method
     assert len(sec_method) == 1
-    assert sec_method[-1].m_xpath("gw")
-    assert sec_method[-1].gw.type == "G0W0"
+    assert sec_method[-1].m_xpath('gw')
+    assert sec_method[-1].gw.type == 'G0W0'
     assert sec_method[-1].gw.n_states == 1590
-    assert sec_method[-1].gw.analytical_continuation == "pade"
+    assert sec_method[-1].gw.analytical_continuation == 'pade'
 
     # GW eigenvalues
     sec_eigs_gw = sec_run.calculation[-1].eigenvalues[0]
     assert sec_eigs_gw.value_qp.shape == (1, 1, 81)
-    assert sec_eigs_gw.value_correlation[-1][0][0].to("eV").magnitude == approx(10.4622)
-    assert sec_eigs_gw.value_exchange[-1][0][0].to("eV").magnitude == approx(-99.6569)
-    assert sec_eigs_gw.value_qp[-1][0][0].to("eV").magnitude == approx(-550.2817)
-    assert sec_eigs_gw.value_ks[-1][0][0].to("eV").magnitude == approx(-524.2553)
-    assert sec_eigs_gw.value_ks_xc[-1][0][0].to("eV").magnitude == approx(-63.1682)
+    assert sec_eigs_gw.value_correlation[-1][0][0].to('eV').magnitude == approx(10.4622)
+    assert sec_eigs_gw.value_exchange[-1][0][0].to('eV').magnitude == approx(-99.6569)
+    assert sec_eigs_gw.value_qp[-1][0][0].to('eV').magnitude == approx(-550.2817)
+    assert sec_eigs_gw.value_ks[-1][0][0].to('eV').magnitude == approx(-524.2553)
+    assert sec_eigs_gw.value_ks_xc[-1][0][0].to('eV').magnitude == approx(-63.1682)
 
 
 def test_gw_bands(parser):
     """Tests for GW calculations in a solid, Si2"""
     archive = EntryArchive()
-    parser.parse("tests/data/fhiaims/Si_pbe_vs_gw_bands/aims.out", archive, None)
+    parser.parse('tests/data/fhiaims/Si_pbe_vs_gw_bands/aims.out', archive, None)
 
     sec_run = archive.run[-1]
 
     # System and Method
-    assert sec_run.system[-1].atoms.labels == ["Si", "Si"]
+    assert sec_run.system[-1].atoms.labels == ['Si', 'Si']
     sec_method = sec_run.method[-1]
     assert list(sec_method.k_mesh.grid) == [8] * 3
-    assert sec_method.gw.type == "G0W0"
+    assert sec_method.gw.type == 'G0W0'
 
     sec_scc = sec_run.calculation[-1]
-    assert sec_scc.energy.fermi.to("eV").magnitude == approx(-5.73695796)
+    assert sec_scc.energy.fermi.to('eV').magnitude == approx(-5.73695796)
     assert len(sec_scc.band_structure_electronic[0].segment) == 10
     assert sec_scc.band_structure_electronic[0].segment[0].kpoints.shape == (17, 3)
     assert sec_scc.band_structure_electronic[0].segment[-1].occupations.shape == (

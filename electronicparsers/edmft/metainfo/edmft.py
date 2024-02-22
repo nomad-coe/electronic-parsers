@@ -86,7 +86,7 @@ class GreensFunctions(runschema.calculation.GreensFunctions):
 
     x_edmft_self_energy_infinity = Quantity(
         type=np.float64,
-        shape=["n_correlated_orbitals"],
+        shape=['n_correlated_orbitals'],
         description="""
         Self-energy function used to calculate the analytically continuated auxiliary
         function via the formula:

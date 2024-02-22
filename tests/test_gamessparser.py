@@ -26,7 +26,7 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return GamessParser()
 
@@ -34,18 +34,18 @@ def parser():
 def test_dft(parser):
     archive = EntryArchive()
 
-    parser.parse("tests/data/gamess/dft/exam12.out", archive, None)
+    parser.parse('tests/data/gamess/dft/exam12.out', archive, None)
 
     sec_method = archive.run[0].method
-    assert sec_method[0].dft.xc_functional.correlation[0].name == "LDA_C_VWN_5"
+    assert sec_method[0].dft.xc_functional.correlation[0].name == 'LDA_C_VWN_5'
     sec_basis_ac = (
         sec_method[0].electrons_representation[0].basis_set[0].atom_centered[0]
     )
-    assert sec_basis_ac.formula == "6-31G(d)"
-    assert sec_basis_ac.name == "N31"
+    assert sec_basis_ac.formula == '6-31G(d)'
+    assert sec_basis_ac.name == 'N31'
 
     sec_system = archive.run[0].system
-    assert sec_system[2].atoms.labels == ["C", "C", "H", "H"]
+    assert sec_system[2].atoms.labels == ['C', 'C', 'H', 'H']
     assert sec_system[-1].atoms.positions[2][2].magnitude == approx(-1.68393902e-10)
 
     sec_calc = archive.run[0].calculation
@@ -53,7 +53,7 @@ def test_dft(parser):
     assert sec_calc[0].eigenvalues[0].energies[0][0][16].magnitude == approx(
         2.4780789e-18
     )
-    assert sec_calc[5].charges[0].analysis_method == "Mulliken"
+    assert sec_calc[5].charges[0].analysis_method == 'Mulliken'
     assert sec_calc[5].charges[1].value[1].magnitude == approx(-3.41098599e-20)
     assert sec_calc[5].energy.total.value.magnitude == approx(-3.33887277e-16)
     assert sec_calc[5].energy.total.potential.magnitude == approx(-6.65370978e-16)
@@ -63,7 +63,7 @@ def test_dft(parser):
     )
     assert sec_calc[5].energy.x_gamess_virial_ratio == approx(2.0072509638)
     assert len(sec_calc[5].energy.contributions) == 5
-    assert sec_calc[5].energy.contributions[1].kind == "nucleus-electron_potential"
+    assert sec_calc[5].energy.contributions[1].kind == 'nucleus-electron_potential'
     # assert sec_calc[5].multipoles[0].dipole.origin[1].magnitude == 0
     assert sec_calc[5].multipoles[0].dipole.value[2] == 0
 
@@ -71,15 +71,15 @@ def test_dft(parser):
 def test_gamess_geometry_opt(parser):
     archive = EntryArchive()
 
-    parser.parse("tests/data/gamess/gamessus/exam01.out", archive, None)
+    parser.parse('tests/data/gamess/gamessus/exam01.out', archive, None)
 
     sec_run = archive.run
-    assert sec_run[0].program.version == "1 MAY 2013 (R1)"
-    assert sec_run[0].x_gamess_program_implementation == "64 BIT INTEL VERSION"
+    assert sec_run[0].program.version == '1 MAY 2013 (R1)'
+    assert sec_run[0].x_gamess_program_implementation == '64 BIT INTEL VERSION'
 
     sec_method = sec_run[0].method
     assert len(sec_method) == 1
-    assert sec_method[0].x_gamess_basis_set_polar == "NONE"
+    assert sec_method[0].x_gamess_basis_set_polar == 'NONE'
     assert sec_method[0].atom_parameters[0].charge.magnitude == approx(9.6130598e-19)
 
     sec_calc = sec_run[0].calculation
@@ -99,20 +99,20 @@ def test_gamess_geometry_opt(parser):
 
     sec_system = sec_run[0].system
     assert len(sec_system) == 7
-    assert sec_system[0].atoms.labels[1] == "H"
+    assert sec_system[0].atoms.labels[1] == 'H'
     assert sec_system[0].atoms.positions[0][2].magnitude == approx(-8.99124183e-12)
 
 
 def test_firefly(parser):
     archive = EntryArchive()
 
-    parser.parse("tests/data/gamess/firefly/bench01.out", archive, None)
+    parser.parse('tests/data/gamess/firefly/bench01.out', archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == "Firefly version 8.2.0"
+    assert sec_run.program.version == 'Firefly version 8.2.0'
 
     sec_system = archive.run[0].system
-    assert sec_system[0].atoms.labels[5] == "H"
+    assert sec_system[0].atoms.labels[5] == 'H'
     assert sec_system[0].atoms.positions[7][2].magnitude == approx(-1.219788e-10)
 
     sec_scc = sec_run.calculation

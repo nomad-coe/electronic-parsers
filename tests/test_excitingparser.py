@@ -29,33 +29,33 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return ExcitingParser()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def silicon_gw(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/exciting/Si_gw/GW_INFO.OUT", archive, None)
+    parser.parse('tests/data/exciting/Si_gw/GW_INFO.OUT', archive, None)
     return archive
 
 
 def test_gs(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/exciting/C_gs/INFO.OUT", archive, None)
+    parser.parse('tests/data/exciting/C_gs/INFO.OUT', archive, None)
 
     assert len(archive.run) == 1
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == "CARBON"
+    assert sec_run.program.version == 'CARBON'
 
     sec_method = sec_run.method[0]
     assert list(sec_method.k_mesh.grid) == [6] * 3
     assert list(sec_method.k_mesh.offset) == [0.0] * 3
     assert sec_method.electronic.n_spin_channels == 1
     assert sec_method.electronic.smearing.width == approx(4.35974472e-22)
-    assert sec_method.dft.xc_functional.exchange[0].name == "GGA_X_PBE_SOL"
+    assert sec_method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE_SOL'
     assert sec_method.x_exciting_scf_threshold_force_change.magnitude == approx(
         4.11936175e-12
     )
@@ -66,7 +66,7 @@ def test_gs(parser):
     assert len(sec_system.atoms.labels) == 2
     assert (
         sec_system.x_exciting_section_spin[0].x_exciting_spin_treatment
-        == "spin-unpolarised"
+        == 'spin-unpolarised'
     )
     assert sec_system.x_exciting_section_atoms_group[
         0
@@ -94,26 +94,26 @@ def test_gs(parser):
 
 def test_strucopt(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/exciting/GaO_strucopt/INFO.OUT", archive, None)
+    parser.parse('tests/data/exciting/GaO_strucopt/INFO.OUT', archive, None)
 
     assert (
         archive.run[0].program.version_internal
-        == "1e47a4bd61d2aa73ef68a31c2f3385676bee2c3a"
+        == '1e47a4bd61d2aa73ef68a31c2f3385676bee2c3a'
     )
 
     sec_systems = archive.run[0].system
     assert len(sec_systems) == 15
     assert sec_systems[0].atoms.labels == [
-        "Ga",
-        "Ga",
-        "Ga",
-        "Ga",
-        "O",
-        "O",
-        "O",
-        "O",
-        "O",
-        "O",
+        'Ga',
+        'Ga',
+        'Ga',
+        'Ga',
+        'O',
+        'O',
+        'O',
+        'O',
+        'O',
+        'O',
     ]
     assert sec_systems[0].x_exciting_gkmax.magnitude == approx(1.13383567e11)
     assert sec_systems[3].atoms.positions[1][1].magnitude == approx(3.07695918e-10)
@@ -148,7 +148,7 @@ def test_strucopt(parser):
 
 def test_dos_spinpol(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/exciting/CeO_dos/INFO.OUT", archive, None)
+    parser.parse('tests/data/exciting/CeO_dos/INFO.OUT', archive, None)
 
     sec_run = archive.run[0]
     sec_method = sec_run.method[0]
@@ -162,35 +162,35 @@ def test_dos_spinpol(parser):
     assert sec_dos_up.spin_channel == 0 and sec_dos_down.spin_channel == 1
     assert np.shape(sec_dos_up.total[0].value) == (500,)
     assert (
-        sec_dos_up.energies[79].to("Ha") - sec_scc.energy.fermi.to("Ha")
+        sec_dos_up.energies[79].to('Ha') - sec_scc.energy.fermi.to('Ha')
     ).magnitude == approx(-0.684)
     assert (
-        sec_dos_up.energies[240].to("Ha") - sec_scc.energy.fermi.to("Ha")
+        sec_dos_up.energies[240].to('Ha') - sec_scc.energy.fermi.to('Ha')
     ).magnitude == approx(-0.4e-01)
-    assert sec_dos_up.total[0].value[126].to("1/Ha").magnitude == approx(20.83182629)
-    assert sec_dos_down.total[0].value[136].to("1/Ha").magnitude == approx(2.109103733)
-    assert sec_dos_up.total[0].value[220].to("1/Ha").magnitude == approx(62.06860954)
-    assert sec_dos_down.total[0].value[78].to("1/Ha").magnitude == approx(47.70198869)
+    assert sec_dos_up.total[0].value[126].to('1/Ha').magnitude == approx(20.83182629)
+    assert sec_dos_down.total[0].value[136].to('1/Ha').magnitude == approx(2.109103733)
+    assert sec_dos_up.total[0].value[220].to('1/Ha').magnitude == approx(62.06860954)
+    assert sec_dos_down.total[0].value[78].to('1/Ha').magnitude == approx(47.70198869)
 
     assert (
         len(sec_dos_up.atom_projected) == 75 and len(sec_dos_down.atom_projected) == 75
     )
     assert np.shape(sec_dos_up.atom_projected[73].value) == (500,)
     assert sec_dos_up.atom_projected[11].atom_index == 2
-    assert sec_dos_up.atom_projected[11].m_kind == "spherical"
+    assert sec_dos_up.atom_projected[11].m_kind == 'spherical'
     assert np.all(sec_dos_up.atom_projected[11].lm == np.array([3, 0]))
-    assert sec_dos_up.atom_projected[11].value[85].to("1/Ha").magnitude == approx(
+    assert sec_dos_up.atom_projected[11].value[85].to('1/Ha').magnitude == approx(
         0.027132587730000005
     )
-    assert sec_dos_down.atom_projected[11].value[85].to("1/Ha").magnitude == approx(
+    assert sec_dos_down.atom_projected[11].value[85].to('1/Ha').magnitude == approx(
         0.0001147139711
     )
 
 
-@pytest.mark.skip("To be updated: TDDFT currently not supported by FAIRmat")
+@pytest.mark.skip('To be updated: TDDFT currently not supported by FAIRmat')
 def test_xs_tddft(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/exciting/CSi_tddft/INFO_QMT001.OUT", archive, None)
+    parser.parse('tests/data/exciting/CSi_tddft/INFO_QMT001.OUT', archive, None)
 
     sec_run = archive.run[0]
     sec_method = sec_run.method[0]
@@ -238,19 +238,19 @@ def test_xs_tddft(parser):
 
 def test_xs_mainfile_keys(parser):
     # This test will not show the BSE archive. We use it instead to test the mainfile_keys
-    filepath = "tests/data/exciting/CHN_bse/INFO.OUT"
+    filepath = 'tests/data/exciting/CHN_bse/INFO.OUT'
     dirname = os.path.dirname(filepath)
     mainfile_keys = parser.get_mainfile_keys(filename=filepath)
-    assert mainfile_keys[0] == "XS_workflow"
-    assert mainfile_keys[1] == f"{dirname}/INFOXS.OUT"
+    assert mainfile_keys[0] == 'XS_workflow'
+    assert mainfile_keys[1] == f'{dirname}/INFOXS.OUT'
     for i in range(2):
-        assert f"{dirname}/EPSILON_BSEIP_SCRfull_OC{i + 1}{i + 1}.OUT" in mainfile_keys
+        assert f'{dirname}/EPSILON_BSEIP_SCRfull_OC{i + 1}{i + 1}.OUT' in mainfile_keys
         assert (
-            f"{dirname}/EPSILON_BSEsinglet_SCRfull_OC{i + 1}{i + 1}.OUT"
+            f'{dirname}/EPSILON_BSEsinglet_SCRfull_OC{i + 1}{i + 1}.OUT'
             in mainfile_keys
         )
         assert (
-            f"{dirname}/EPSILON_BSEtriplet_SCRfull_OC{i + 1}{i + 1}.OUT"
+            f'{dirname}/EPSILON_BSEtriplet_SCRfull_OC{i + 1}{i + 1}.OUT'
             in mainfile_keys
         )
 
@@ -260,20 +260,20 @@ def test_gw(silicon_gw):
     sec_methods = silicon_gw.run[0].method
     assert len(sec_methods) == 1
     sec_gw = sec_methods[-1].gw
-    assert sec_gw.x_exciting_coreflag == "all"
+    assert sec_gw.x_exciting_coreflag == 'all'
     assert sec_gw.x_exciting_barecoul.x_exciting_barcevtol == approx(0.1)
-    assert sec_gw.type == "G0W0"
-    assert sec_gw.analytical_continuation == "pade"
+    assert sec_gw.type == 'G0W0'
+    assert sec_gw.analytical_continuation == 'pade'
     assert sec_gw.n_empty_states == 100
-    assert sec_gw.screening.type == "rpa"
+    assert sec_gw.screening.type == 'rpa'
     assert sec_gw.screening.n_empty_states == sec_gw.n_empty_states
     assert (sec_gw.screening.k_mesh.grid == np.array([2, 2, 2])).all()
     assert (sec_gw.q_mesh.grid == np.array([2, 2, 2])).all()
     assert len(sec_methods[-1].frequency_mesh) == 1
     sec_freq_mesh = sec_methods[-1].frequency_mesh[0]
-    assert sec_freq_mesh.sampling_method == "Gauss-Legendre"
+    assert sec_freq_mesh.sampling_method == 'Gauss-Legendre'
     assert sec_freq_mesh.n_points == 32
-    assert sec_freq_mesh.points[4].to("hartree").magnitude == approx(0.125 + 0j)
+    assert sec_freq_mesh.points[4].to('hartree').magnitude == approx(0.125 + 0j)
 
     sec_sccs = silicon_gw.run[0].calculation
     assert len(sec_sccs) == 1
@@ -281,7 +281,7 @@ def test_gw(silicon_gw):
     # Check GW properties
     assert approx(sec_sccs[0].energy.fermi.magnitude, 1.09865567e-19)
     assert approx(sec_sccs[0].band_gap[0].value.magnitude, 3.42913865e-19)
-    assert sec_sccs[0].band_gap[0].provenance.label == "parser"
+    assert sec_sccs[0].band_gap[0].provenance.label == 'parser'
     assert np.shape(sec_sccs[0].eigenvalues[0].energies[0][2]) == (20,)
     assert sec_sccs[0].eigenvalues[0].kpoints[-3][1] == 0.0
     assert sec_sccs[0].eigenvalues[0].energies[0][2][9].magnitude == approx(
@@ -325,7 +325,7 @@ def test_gw_band_silicon(silicon_gw):
         # reference energy
         energies = energies.flatten()
         energies.sort()
-        lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")
+        lowest_unoccupied_index = np.searchsorted(energies, energy_reference, 'right')
         highest_occupied_index = lowest_unoccupied_index - 1
         gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
         assert gap == approx(gap_assumed)
@@ -353,7 +353,7 @@ def test_gw_dos_silicon(silicon_gw):
         nonzero = np.unique(values.nonzero())
         energies = energies[nonzero]
         energies.sort()
-        lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")
+        lowest_unoccupied_index = np.searchsorted(energies, energy_reference, 'right')
         highest_occupied_index = lowest_unoccupied_index - 1
         gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
         assert gap == approx(gap_assumed)
@@ -361,12 +361,12 @@ def test_gw_dos_silicon(silicon_gw):
 
 def test_hybrids(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/exciting/PbI_hybrids/INFO.OUT", archive, None)
+    parser.parse('tests/data/exciting/PbI_hybrids/INFO.OUT', archive, None)
 
     sec_method = archive.run[-1].method[0]
     assert list(sec_method.k_mesh.grid) == [6, 6, 4]
     assert list(sec_method.k_mesh.offset) == [0.0] * 3
-    assert sec_method.dft.xc_functional.hybrid[0].name == "HYB_GGA_XC_HSE03"
+    assert sec_method.dft.xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE03'
 
     calc = archive.run[-1].calculation[0]
     assert len(calc.scf_iteration) == 4

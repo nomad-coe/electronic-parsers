@@ -29,36 +29,36 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return VASPParser()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def silicon_dos(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/vasp/Si_dos_band/dos_si.xml", archive, None)
+    parser.parse('tests/data/vasp/Si_dos_band/dos_si.xml', archive, None)
     return archive
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def silicon_band(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/vasp/Si_dos_band/band_si.xml", archive, None)
+    parser.parse('tests/data/vasp/Si_dos_band/band_si.xml', archive, None)
     return archive
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def silicon_gw(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/vasp/Si_GW/vasprun.xml", archive, None)
+    parser.parse('tests/data/vasp/Si_GW/vasprun.xml', archive, None)
     return archive
 
 
 def test_vasprunxml_static(parser):
     """Test Mg1 system, computed in VASP 4.6.35"""
     archive = EntryArchive()
-    parser.parse("tests/data/vasp/Mg_bands/vasprun.xml.static", archive, None)
+    parser.parse('tests/data/vasp/Mg_bands/vasprun.xml.static', archive, None)
 
     assert len(archive.run) == 1
 
@@ -69,19 +69,19 @@ def test_vasprunxml_static(parser):
     sec_method = sec_run.method[0]
     assert len(sec_method.x_vasp_incar_in) == 27
     assert len(sec_method.x_vasp_incar_out) == 112
-    assert sec_method.x_vasp_incar_in["LCHARG"]
+    assert sec_method.x_vasp_incar_in['LCHARG']
     assert len(sec_method.dft.xc_functional.exchange) == 1
 
     # basis set
     sec_representation = sec_method.electrons_representation[0]
     sec_basis_set = sec_representation.basis_set
-    assert sec_representation.native_tier == "high"
-    assert sec_basis_set[0].type == "plane waves"
-    assert sec_basis_set[0].scope == ["valence"]
-    assert sec_basis_set[0].cutoff.to("eV").magnitude == approx(512.2418)
-    assert sec_basis_set[1].type == "plane waves"
-    assert sec_basis_set[1].scope == ["augmentation"]
-    assert sec_basis_set[1].cutoff.to("eV").magnitude == approx(429)
+    assert sec_representation.native_tier == 'high'
+    assert sec_basis_set[0].type == 'plane waves'
+    assert sec_basis_set[0].scope == ['valence']
+    assert sec_basis_set[0].cutoff.to('eV').magnitude == approx(512.2418)
+    assert sec_basis_set[1].type == 'plane waves'
+    assert sec_basis_set[1].scope == ['augmentation']
+    assert sec_basis_set[1].cutoff.to('eV').magnitude == approx(429)
 
     sec_system = sec_run.system[-1]
     assert len(sec_system.atoms.labels) == 1
@@ -99,7 +99,7 @@ def test_vasprunxml_static(parser):
     # Check the k-point sampling
     k_mesh = sec_method.k_mesh
     assert list(k_mesh.grid) == [32] * 3
-    assert k_mesh.sampling_method == "Monkhorst-Pack"
+    assert k_mesh.sampling_method == 'Monkhorst-Pack'
     assert len(k_mesh.points) == 888
     assert k_mesh.points[-1][2] == approx(0.48437500)
     assert k_mesh.weights[100] == approx(0.00073242)
@@ -139,7 +139,7 @@ def test_vasprunxml_static(parser):
 def test_vasprunxml_relax(parser):
     """Test Ac1Ag1 system, computed by VASP 5.3.2"""
     archive = EntryArchive()
-    parser.parse("tests/data/vasp/AgAc_relax/vasprun.xml.relax", archive, None)
+    parser.parse('tests/data/vasp/AgAc_relax/vasprun.xml.relax', archive, None)
 
     assert len(archive.run[0].method) == 1
 
@@ -151,19 +151,19 @@ def test_vasprunxml_relax(parser):
     # Check the k-point sampling
     k_mesh = sec_run.method[-1].k_mesh
     assert list(k_mesh.grid) == [16] * 3
-    assert k_mesh.sampling_method == "Gamma-centered"
+    assert k_mesh.sampling_method == 'Gamma-centered'
 
     # Check the basis set
     sec_method = sec_run.method[0]
     sec_representation = sec_method.electrons_representation[0]
     sec_basis_set = sec_representation.basis_set
-    assert sec_representation.native_tier == "accurate"
-    assert sec_basis_set[0].type == "plane waves"
-    assert sec_basis_set[0].scope == ["valence"]
-    assert sec_basis_set[0].cutoff.to("eV").magnitude == approx(249.8)
-    assert sec_basis_set[1].type == "plane waves"
-    assert sec_basis_set[1].scope == ["augmentation"]
-    assert sec_basis_set[1].cutoff.to("eV").magnitude == approx(543.281)
+    assert sec_representation.native_tier == 'accurate'
+    assert sec_basis_set[0].type == 'plane waves'
+    assert sec_basis_set[0].scope == ['valence']
+    assert sec_basis_set[0].cutoff.to('eV').magnitude == approx(249.8)
+    assert sec_basis_set[1].type == 'plane waves'
+    assert sec_basis_set[1].scope == ['augmentation']
+    assert sec_basis_set[1].cutoff.to('eV').magnitude == approx(543.281)
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 3
@@ -187,12 +187,12 @@ def test_vasprunxml_relax(parser):
 
 def test_vasprunxml_bands(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/vasp/Mg_bands/vasprun.xml.bands", archive, None)
+    parser.parse('tests/data/vasp/Mg_bands/vasprun.xml.bands', archive, None)
 
     sec_run = archive.run[0]
     k_mesh = sec_run.method[0].k_mesh
     assert len(k_mesh.points) == 128 * 6
-    assert k_mesh.sampling_method == "Line-path"
+    assert k_mesh.sampling_method == 'Line-path'
 
     sec_k_band = sec_run.calculation[0].band_structure_electronic[0]
     assert len(sec_k_band.segment) == 6
@@ -219,7 +219,7 @@ def test_band_silicon(silicon_band):
     # reference energy
     energies = energies.flatten()
     energies.sort()
-    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")
+    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, 'right')
     highest_occupied_index = lowest_unoccupied_index - 1
     gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
     assert gap == approx(0.5091)
@@ -239,7 +239,7 @@ def test_dos_silicon(silicon_dos):
 
     # Check the k-point sampling
     assert list(k_mesh.grid) == [15] * 3
-    assert k_mesh.sampling_method == "Monkhorst-Pack"
+    assert k_mesh.sampling_method == 'Monkhorst-Pack'
 
     # Check that an energy reference is reported
     energy_reference = scc.energy.fermi
@@ -253,7 +253,7 @@ def test_dos_silicon(silicon_dos):
     nonzero = np.unique(values.nonzero())
     energies = energies[nonzero]
     energies.sort()
-    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, "right")
+    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, 'right')
     highest_occupied_index = lowest_unoccupied_index - 1
     gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
     assert gap == approx(0.83140)
@@ -265,24 +265,24 @@ def test_dos_silicon(silicon_dos):
 
 def test_outcar(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/vasp/AgAc_relax/OUTCAR", archive, None)
+    parser.parse('tests/data/vasp/AgAc_relax/OUTCAR', archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == "5.3.2 13Sep12 complex serial LinuxIFC"
+    assert sec_run.program.version == '5.3.2 13Sep12 complex serial LinuxIFC'
 
     sec_method = sec_run.method[0]
     # basis set
     sec_representation = sec_method.electrons_representation[0]
     sec_basis_set = sec_representation.basis_set
-    assert sec_representation.native_tier == "medium"
-    assert sec_basis_set[0].type == "plane waves"
-    assert sec_basis_set[0].scope == ["valence"]
-    assert sec_basis_set[0].cutoff.to("eV").magnitude == approx(520)
-    assert sec_basis_set[1].type == "plane waves"
-    assert sec_basis_set[1].scope == ["augmentation"]
-    assert sec_basis_set[1].cutoff.to("eV").magnitude == approx(543.3)
+    assert sec_representation.native_tier == 'medium'
+    assert sec_basis_set[0].type == 'plane waves'
+    assert sec_basis_set[0].scope == ['valence']
+    assert sec_basis_set[0].cutoff.to('eV').magnitude == approx(520)
+    assert sec_basis_set[1].type == 'plane waves'
+    assert sec_basis_set[1].scope == ['augmentation']
+    assert sec_basis_set[1].cutoff.to('eV').magnitude == approx(543.3)
     # DFT
-    assert sec_method.dft.xc_functional.exchange[0].name == "GGA_X_PBE"
+    assert sec_method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
     assert len(sec_method.atom_parameters) == 2
 
     k_mesh = sec_method.k_mesh
@@ -290,12 +290,12 @@ def test_outcar(parser):
 
     sec_atom_param = sec_method.atom_parameters[0]
     assert sec_atom_param.n_valence_electrons == approx(11.0)
-    assert sec_atom_param.mass.to("amu").magnitude == approx(227.028)
+    assert sec_atom_param.mass.to('amu').magnitude == approx(227.028)
 
     sec_pseudo = sec_atom_param.pseudopotential
-    assert sec_pseudo.name == "PAW_PBE Ac 06Sep2000"
-    assert sec_pseudo.xc_functional_name == ["GGA_X_PBE", "GGA_C_PBE"]
-    assert sec_pseudo.cutoff.to("eV").magnitude == approx(172.237)
+    assert sec_pseudo.name == 'PAW_PBE Ac 06Sep2000'
+    assert sec_pseudo.xc_functional_name == ['GGA_X_PBE', 'GGA_C_PBE']
+    assert sec_pseudo.cutoff.to('eV').magnitude == approx(172.237)
 
     sec_system = sec_run.system[0]
     assert sec_system.atoms.lattice_vectors[1][0].magnitude == approx(3.141538e-10)
@@ -344,16 +344,16 @@ def test_outcar(parser):
 
 
 @pytest.mark.parametrize(
-    "filename, name, cutoff",
+    'filename, name, cutoff',
     [
         (
-            "tests/data/vasp/alternative_pseudopotentials/AlN/vasprun.xml",
-            "PAW_PBE Al 04Jan2001",
+            'tests/data/vasp/alternative_pseudopotentials/AlN/vasprun.xml',
+            'PAW_PBE Al 04Jan2001',
             240.3,
         ),
         (
-            "tests/data/vasp/alternative_pseudopotentials/F_GW/OUTCAR",
-            "^PAW_PBE F_h_GW 20May2014",
+            'tests/data/vasp/alternative_pseudopotentials/F_GW/OUTCAR',
+            '^PAW_PBE F_h_GW 20May2014',
             848.358,
         ),
     ],
@@ -365,19 +365,19 @@ def test_potcar(parser, filename, name, cutoff):
     sec_method = archive.run[0].method[0]
     sec_pseudo = sec_method.atom_parameters[-1].pseudopotential
     assert sec_pseudo.name == name
-    assert sec_pseudo.type == "PAW"
-    assert sec_pseudo.xc_functional_name == ["GGA_X_PBE", "GGA_C_PBE"]
-    assert sec_pseudo.cutoff.to("eV").magnitude == approx(cutoff)
+    assert sec_pseudo.type == 'PAW'
+    assert sec_pseudo.xc_functional_name == ['GGA_X_PBE', 'GGA_C_PBE']
+    assert sec_pseudo.cutoff.to('eV').magnitude == approx(cutoff)
 
 
 def test_broken_xml(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/vasp/vasprun.xml.broken", archive, None)
+    parser.parse('tests/data/vasp/vasprun.xml.broken', archive, None)
 
 
 def test_hybrid(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/vasp/hybrid_vasprun.xml.gz", archive, None)
+    parser.parse('tests/data/vasp/hybrid_vasprun.xml.gz', archive, None)
 
     sec_run = archive.run[-1]
     sec_method = sec_run.method[-1]
@@ -385,18 +385,18 @@ def test_hybrid(parser):
 
     # Check the k-point sampling
     assert list(k_mesh.grid) == [1] * 3
-    assert k_mesh.sampling_method == "Gamma-centered"
+    assert k_mesh.sampling_method == 'Gamma-centered'
 
     sec_xc_functional = sec_method.dft.xc_functional
     assert (
-        sec_xc_functional.hybrid[0].parameters["exact_exchange_mixing_factor"] == 0.25
+        sec_xc_functional.hybrid[0].parameters['exact_exchange_mixing_factor'] == 0.25
     )
-    assert sec_xc_functional.hybrid[0].name == "HYB_GGA_XC_HSE06"
+    assert sec_xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE06'
 
 
 def test_metagga(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/vasp/hle17_vasprun.xml.gz", archive, None)
+    parser.parse('tests/data/vasp/hle17_vasprun.xml.gz', archive, None)
 
     sec_run = archive.run[-1]
     sec_method = sec_run.method[-1]
@@ -404,19 +404,19 @@ def test_metagga(parser):
 
     # Check the k-point sampling
     assert list(k_mesh.grid) == [1] * 3
-    assert k_mesh.sampling_method == "Gamma-centered"
+    assert k_mesh.sampling_method == 'Gamma-centered'
 
     sec_xc_functional = sec_method.dft.xc_functional
-    assert sec_xc_functional.contributions[0].name == "MGGA_XC_HLE17"
+    assert sec_xc_functional.contributions[0].name == 'MGGA_XC_HLE17'
 
 
 @pytest.mark.parametrize(
-    "dir, slice, uref, jref",
+    'dir, slice, uref, jref',
     [
-        ("multi_parameter/", 1, 3.25, 0.0),
-        ("multi_parameter_no_incar/", 1, 3.2, 0.0),
-        ("multi_parameter/", 2, 2.0, 1.0),
-        ("single_parameter/", 0, 7.5, 0.0),
+        ('multi_parameter/', 1, 3.25, 0.0),
+        ('multi_parameter_no_incar/', 1, 3.2, 0.0),
+        ('multi_parameter/', 2, 2.0, 1.0),
+        ('single_parameter/', 0, 7.5, 0.0),
     ],
 )
 def test_dftu_static(parser, dir, slice, uref, jref):
@@ -428,38 +428,38 @@ def test_dftu_static(parser, dir, slice, uref, jref):
 
     archive = EntryArchive()
     # test the values in vasprun.xml and INCAR (selected in place of OUTCAR)
-    prefix = "tests/data/vasp/dftu/"
-    for mainfile in ["vasprun.xml", "OUTCAR"]:
+    prefix = 'tests/data/vasp/dftu/'
+    for mainfile in ['vasprun.xml', 'OUTCAR']:
         try:
-            parser.parse(f"{prefix}/{dir}/{mainfile}", archive, None)
+            parser.parse(f'{prefix}/{dir}/{mainfile}', archive, None)
         except (TypeError, FileNotFoundError):
             return
         param = archive.run[-1].method[-1].atom_parameters[slice]
         if hubb := param.hubbard_kanamori_model:
-            assert hubb.double_counting_correction == "Dudarev"
-            assert hubb.orbital == "d"
-            assert approx(hubb.u.to("eV").magnitude) == uref
-            assert approx(hubb.j.to("eV").magnitude) == jref
+            assert hubb.double_counting_correction == 'Dudarev'
+            assert hubb.orbital == 'd'
+            assert approx(hubb.u.to('eV').magnitude) == uref
+            assert approx(hubb.j.to('eV').magnitude) == jref
 
 
 def test_gw(silicon_gw):
     """Tests that the GW metainfo has been parsed correctly."""
     sec_run = silicon_gw.run[-1]
     sec_method = sec_run.method[-1]
-    assert sec_method.m_xpath("gw") and sec_method.m_xpath("k_mesh")
-    assert not sec_method.m_xpath("dft")
+    assert sec_method.m_xpath('gw') and sec_method.m_xpath('k_mesh')
+    assert not sec_method.m_xpath('dft')
     assert (sec_method.k_mesh.grid == np.array([6, 6, 6])).all()
-    assert sec_method.gw.type == "G0W0"
-    assert sec_method.gw.analytical_continuation == "pade"
+    assert sec_method.gw.type == 'G0W0'
+    assert sec_method.gw.analytical_continuation == 'pade'
     assert sec_method.gw.n_states == 72
     assert (sec_method.gw.q_mesh.grid == np.array([6, 6, 6])).all()
-    assert sec_method.gw.q_mesh.sampling_method == "Gamma-centered"
+    assert sec_method.gw.q_mesh.sampling_method == 'Gamma-centered'
     assert len(sec_method.frequency_mesh) == 1
     assert sec_method.frequency_mesh[0].n_points == 50
     sec_scc = sec_run.calculation
     assert len(sec_scc) == 1
-    homo = sec_scc[-1].energy.highest_occupied.to("eV").magnitude
-    lumo = sec_scc[-1].energy.lowest_unoccupied.to("eV").magnitude
+    homo = sec_scc[-1].energy.highest_occupied.to('eV').magnitude
+    lumo = sec_scc[-1].energy.lowest_unoccupied.to('eV').magnitude
     assert homo == approx(2.132)
     assert lumo == approx(3.8526)
     bandgap = lumo - homo
@@ -467,17 +467,17 @@ def test_gw(silicon_gw):
 
 
 @pytest.mark.parametrize(
-    "filename",
+    'filename',
     [
-        "dotted",
-        "single_char",
-        "mixed_case",
-        "lowercase",
+        'dotted',
+        'single_char',
+        'mixed_case',
+        'lowercase',
     ],
 )
 def test_booleans(filename, parser):
     """Tests that booleans are parse correctly no matter which format is used."""
     archive = EntryArchive()
-    parser.parse(f"tests/data/vasp/booleans/{filename}/OUTCAR", archive, None)
-    lnbo = parser._outcar_parser._incar["incar"]["LNBO"]
+    parser.parse(f'tests/data/vasp/booleans/{filename}/OUTCAR', archive, None)
+    lnbo = parser._outcar_parser._incar['incar']['LNBO']
     assert lnbo is True

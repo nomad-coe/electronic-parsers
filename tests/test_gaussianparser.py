@@ -27,19 +27,19 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return GaussianParser()
 
 
 def test_scf_spinpol(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/gaussian/Al_scf/Al.out", archive, None)
+    parser.parse('tests/data/gaussian/Al_scf/Al.out', archive, None)
 
     sec_runs = archive.run
     assert len(sec_runs) == 1
-    assert sec_runs[0].x_gaussian_program_implementation == "EM64L-G09RevB.01"
-    assert sec_runs[0].x_gaussian_number_of_processors == "8"
+    assert sec_runs[0].x_gaussian_program_implementation == 'EM64L-G09RevB.01'
+    assert sec_runs[0].x_gaussian_number_of_processors == '8'
     assert (
         len(
             sec_runs[0]
@@ -52,16 +52,16 @@ def test_scf_spinpol(parser):
     sec_methods = sec_runs[0].method
     assert (
         sec_methods[0].electrons_representation[0].basis_set[0].atom_centered[0].name
-        == "AUG-CC-PVTZ"
+        == 'AUG-CC-PVTZ'
     )
     assert len(sec_methods) == 1
-    assert sec_methods[0].dft.xc_functional.hybrid[0].name == "HYB_GGA_XC_B3LYP"
+    assert sec_methods[0].dft.xc_functional.hybrid[0].name == 'HYB_GGA_XC_B3LYP'
     assert sec_methods[0].electronic.charge.magnitude == -1
 
     sec_systems = sec_runs[0].system
     assert len(sec_systems) == 1
     assert sec_systems[0].atoms.periodic == [False, False, False]
-    assert sec_systems[0].atoms.labels == ["Al"]
+    assert sec_systems[0].atoms.labels == ['Al']
 
     sec_sccs = sec_runs[0].calculation
     assert len(sec_sccs) == 1
@@ -85,7 +85,7 @@ def test_scf_spinpol(parser):
 
 def test_scf_multirun(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/gaussian/Al_multistep/m61b5.out", archive, None)
+    parser.parse('tests/data/gaussian/Al_multistep/m61b5.out', archive, None)
 
     sec_runs = archive.run
     assert len(sec_runs) == 2
@@ -113,7 +113,7 @@ def test_scf_multirun(parser):
 
 def test_mp(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/gaussian/NO_mp/onno.out", archive, None)
+    parser.parse('tests/data/gaussian/NO_mp/onno.out', archive, None)
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 17
@@ -134,7 +134,7 @@ def test_mp(parser):
 
 def test_freq(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/gaussian/CHO_freq/prono.out", archive, None)
+    parser.parse('tests/data/gaussian/CHO_freq/prono.out', archive, None)
 
     sec_runs = archive.run
     assert len(sec_runs) == 2

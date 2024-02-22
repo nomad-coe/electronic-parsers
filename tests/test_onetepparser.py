@@ -26,7 +26,7 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return OnetepParser()
 
@@ -34,10 +34,10 @@ def parser():
 def test_scf(parser):
     archive = EntryArchive()
 
-    parser.parse("tests/data/onetep/fluor/12-difluoroethane.out", archive, None)
+    parser.parse('tests/data/onetep/fluor/12-difluoroethane.out', archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == "4.5.3.32"
+    assert sec_run.program.version == '4.5.3.32'
     assert sec_run.time_run.date_end.magnitude == approx(1474976160.0)
 
     sec_system = sec_run.system
@@ -45,7 +45,7 @@ def test_scf(parser):
         1.29648417e-09,
     )
     assert sec_system[0].atoms.positions[3][2].magnitude == approx(5.7072299e-10)
-    assert sec_system[0].atoms.labels[7] == "H"
+    assert sec_system[0].atoms.labels[7] == 'H'
 
     sec_scc = sec_run.calculation
     assert len(sec_scc) == 1
@@ -64,27 +64,27 @@ def test_scf(parser):
 
     sec_method = sec_run.method[0]
     assert sec_method.electrons_representation[0].basis_set[0].cutoff.to(
-        "Ha"
+        'Ha'
     ).magnitude == approx(30.38533)
 
 
 def test_relax(parser):
     archive = EntryArchive()
 
-    parser.parse("tests/data/onetep/test08/ethene_relax.out", archive, None)
+    parser.parse('tests/data/onetep/test08/ethene_relax.out', archive, None)
 
     sec_method = archive.run[0].method
-    assert sec_method[0].dft.xc_functional.exchange[0].name == "LDA_X_PZ"
-    assert sec_method[0].x_onetep_input_parameters["ngwf_threshold_orig"] == approx(
+    assert sec_method[0].dft.xc_functional.exchange[0].name == 'LDA_X_PZ'
+    assert sec_method[0].x_onetep_input_parameters['ngwf_threshold_orig'] == approx(
         1e-5
     )
     assert sec_method[0].electrons_representation[0].basis_set[0].cutoff.to(
-        "Ha"
+        'Ha'
     ).magnitude == approx(20.05907)
 
     sec_system = archive.run[0].system
     assert len(sec_system) == 3
-    assert sec_system[0].atoms.labels == ["C", "H", "H", "C", "H", "H"]
+    assert sec_system[0].atoms.labels == ['C', 'H', 'H', 'C', 'H', 'H']
     assert sec_system[0].atoms.positions[3][1].magnitude == approx(1.06563278e-09)
     assert sec_system[1].atoms.positions[5][0].magnitude == approx(9.36407121e-10)
     assert sec_system[2].atoms.lattice_vectors[1][1].magnitude == approx(2.11670884e-09)
@@ -105,11 +105,11 @@ def test_relax(parser):
 def test_tddft(parser):
     archive = EntryArchive()
 
-    parser.parse("tests/data/onetep/ethene/ethene_tddft.out", archive, None)
+    parser.parse('tests/data/onetep/ethene/ethene_tddft.out', archive, None)
 
     sec_method = archive.run[0].method
     assert sec_method[0].electrons_representation[0].basis_set[0].cutoff.to(
-        "Ha"
+        'Ha'
     ).magnitude == approx(14.88881)
 
     sec_scc = archive.run[0].calculation
@@ -133,11 +133,11 @@ def test_tddft(parser):
 def test_charges(parser):
     archive = EntryArchive()
 
-    parser.parse("tests/data/onetep/test20/test20.out", archive, None)
+    parser.parse('tests/data/onetep/test20/test20.out', archive, None)
 
     sec_method = archive.run[0].method
     assert sec_method[0].electrons_representation[0].basis_set[0].cutoff.to(
-        "Ha"
+        'Ha'
     ).magnitude == approx(31.36667)
 
     sec_scc = archive.run[0].calculation

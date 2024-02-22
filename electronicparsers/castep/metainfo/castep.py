@@ -56,7 +56,7 @@ class x_castep_section_vibrational_frequencies(MSection):
 
     x_castep_vibrational_frequencies = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_castep_number_vibrational_frequencies"],
+        shape=['x_castep_number_vibrational_frequencies'],
         description="""
         Vibration Frequenices (cm-1)
         """,
@@ -80,7 +80,7 @@ class x_castep_section_vibrational_frequencies(MSection):
 
     x_castep_ir = Quantity(
         type=str,
-        shape=["x_castep_number_vibrational_frequencies"],
+        shape=['x_castep_number_vibrational_frequencies'],
         description="""
         Irreducible representation in the Point Group
         """,
@@ -88,7 +88,7 @@ class x_castep_section_vibrational_frequencies(MSection):
 
     x_castep_raman_activity = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_castep_number_vibrational_frequencies"],
+        shape=['x_castep_number_vibrational_frequencies'],
         description="""
         Raman activity (A**4/amu)
         """,
@@ -96,7 +96,7 @@ class x_castep_section_vibrational_frequencies(MSection):
 
     x_castep_raman_active = Quantity(
         type=str,
-        shape=["x_castep_number_vibrational_frequencies"],
+        shape=['x_castep_number_vibrational_frequencies'],
         description="""
         Raman activity (A**4/amu)
         """,
@@ -120,7 +120,7 @@ class x_castep_section_vibrational_frequencies(MSection):
 
     x_castep_ir_intensity = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_castep_number_vibrational_frequencies"],
+        shape=['x_castep_number_vibrational_frequencies'],
         description="""
         IR intensities (D/A)**2/amu
         """,
@@ -552,7 +552,7 @@ class x_castep_section_population_analysis(MSection):
 
     x_castep_orbital_s = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_contribution_orbital s
         """,
@@ -560,7 +560,7 @@ class x_castep_section_population_analysis(MSection):
 
     x_castep_orbital_p = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_contribution_orbital p
         """,
@@ -568,7 +568,7 @@ class x_castep_section_population_analysis(MSection):
 
     x_castep_orbital_d = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_contribution_orbital d
         """,
@@ -576,7 +576,7 @@ class x_castep_section_population_analysis(MSection):
 
     x_castep_orbital_f = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_contribution_orbital f
         """,
@@ -584,7 +584,7 @@ class x_castep_section_population_analysis(MSection):
 
     x_castep_total_orbital = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_total_contribution
         """,
@@ -600,7 +600,7 @@ class x_castep_section_population_analysis(MSection):
 
     x_castep_mulliken_charge = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Mulliken_charges
         """,
@@ -879,7 +879,7 @@ class x_castep_section_ts_scf(MSection):
     )
 
     x_castep_section_ts_scf_iteration = SubSection(
-        sub_section=SectionProxy("x_castep_section_ts_scf_iteration"), repeats=True
+        sub_section=SectionProxy('x_castep_section_ts_scf_iteration'), repeats=True
     )
 
 
@@ -1027,7 +1027,7 @@ class x_castep_section_scf_k_points(MSection):
     )
 
     x_castep_section_scf_eigenvalues = SubSection(
-        sub_section=SectionProxy("x_castep_section_scf_eigenvalues"), repeats=True
+        sub_section=SectionProxy('x_castep_section_scf_eigenvalues'), repeats=True
     )
 
 
@@ -1114,7 +1114,7 @@ class x_castep_section_raman_tensor(MSection):
         type=np.dtype(np.float64),
         shape=[3, 3],
         # TODO verify unit, original parser was ampere / amu
-        unit="angstrom / unified_atomic_mass_unit",
+        unit='angstrom / unified_atomic_mass_unit',
         description="""
         Ramen tensor
         """,
@@ -1330,7 +1330,7 @@ class x_castep_section_ts(MSection):
 
     x_castep_ts_positions = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         ts_positions
         """,
@@ -1338,7 +1338,7 @@ class x_castep_section_ts(MSection):
 
     x_castep_ts_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         ts_forces
         """,
@@ -1458,7 +1458,7 @@ class x_castep_section_ts_final(MSection):
 
     x_castep_ts_positions_final = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         ts_positions_final
         """,
@@ -1466,7 +1466,7 @@ class x_castep_section_ts_final(MSection):
 
     x_castep_ts_forces_final = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         ts_force_finals
         """,
@@ -1490,7 +1490,7 @@ class x_castep_section_ts_product(MSection):
 
     x_castep_ts_forces_product = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         ts_energy_forces_pro
         """,
@@ -1498,7 +1498,7 @@ class x_castep_section_ts_product(MSection):
 
     x_castep_ts_positions_product = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         ts_energy_positions_pro
         """,
@@ -1758,7 +1758,7 @@ class Run(runschema.run.Run):
 
     x_castep_atom_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         Forces on the atoms as minus gradient of energy_total, including forces' unitary-
         transformation (rigid body) filtering and including constraints, if present. The
@@ -1909,109 +1909,109 @@ class Run(runschema.run.Run):
     )
 
     x_castep_section_vibrational_frequencies = SubSection(
-        sub_section=SectionProxy("x_castep_section_vibrational_frequencies"),
+        sub_section=SectionProxy('x_castep_section_vibrational_frequencies'),
         repeats=True,
     )
 
     x_castep_section_band_parameters = SubSection(
-        sub_section=SectionProxy("x_castep_section_band_parameters"), repeats=True
+        sub_section=SectionProxy('x_castep_section_band_parameters'), repeats=True
     )
 
     x_castep_section_core_parameters = SubSection(
-        sub_section=SectionProxy("x_castep_section_core_parameters"), repeats=True
+        sub_section=SectionProxy('x_castep_section_core_parameters'), repeats=True
     )
 
     x_castep_section_collect_scf_eigenvalues = SubSection(
-        sub_section=SectionProxy("x_castep_section_collect_scf_eigenvalues"),
+        sub_section=SectionProxy('x_castep_section_collect_scf_eigenvalues'),
         repeats=True,
     )
 
     x_castep_section_population_analysis = SubSection(
-        sub_section=SectionProxy("x_castep_section_population_analysis"), repeats=True
+        sub_section=SectionProxy('x_castep_section_population_analysis'), repeats=True
     )
 
     x_castep_section_geom_optimisation_method = SubSection(
-        sub_section=SectionProxy("x_castep_section_geom_optimisation_method"),
+        sub_section=SectionProxy('x_castep_section_geom_optimisation_method'),
         repeats=True,
     )
 
     x_castep_section_optics_parameters = SubSection(
-        sub_section=SectionProxy("x_castep_section_optics_parameters"), repeats=True
+        sub_section=SectionProxy('x_castep_section_optics_parameters'), repeats=True
     )
 
     x_castep_section_tddft_parameters = SubSection(
-        sub_section=SectionProxy("x_castep_section_tddft_parameters"), repeats=True
+        sub_section=SectionProxy('x_castep_section_tddft_parameters'), repeats=True
     )
 
     x_castep_section_phonons = SubSection(
-        sub_section=SectionProxy("x_castep_section_phonons"), repeats=True
+        sub_section=SectionProxy('x_castep_section_phonons'), repeats=True
     )
 
     x_castep_section_density_mixing_parameters = SubSection(
-        sub_section=SectionProxy("x_castep_section_density_mixing_parameters"),
+        sub_section=SectionProxy('x_castep_section_density_mixing_parameters'),
         repeats=True,
     )
 
     x_castep_section_population_analysis_parameters = SubSection(
-        sub_section=SectionProxy("x_castep_section_population_analysis_parameters"),
+        sub_section=SectionProxy('x_castep_section_population_analysis_parameters'),
         repeats=True,
     )
 
     x_castep_section_SCF_iteration_frame = SubSection(
-        sub_section=SectionProxy("x_castep_section_SCF_iteration_frame"), repeats=True
+        sub_section=SectionProxy('x_castep_section_SCF_iteration_frame'), repeats=True
     )
 
     x_castep_section_time = SubSection(
-        sub_section=SectionProxy("x_castep_section_time"), repeats=True
+        sub_section=SectionProxy('x_castep_section_time'), repeats=True
     )
 
     x_castep_section_raman_tensor = SubSection(
-        sub_section=SectionProxy("x_castep_section_raman_tensor"), repeats=True
+        sub_section=SectionProxy('x_castep_section_raman_tensor'), repeats=True
     )
 
     x_castep_section_scf_parameters = SubSection(
-        sub_section=SectionProxy("x_castep_section_scf_parameters"), repeats=True
+        sub_section=SectionProxy('x_castep_section_scf_parameters'), repeats=True
     )
 
     x_castep_section_electronic_spectroscpy_parameters = SubSection(
-        sub_section=SectionProxy("x_castep_section_electronic_spectroscpy_parameters"),
+        sub_section=SectionProxy('x_castep_section_electronic_spectroscpy_parameters'),
         repeats=True,
     )
 
     x_castep_section_md = SubSection(
-        sub_section=SectionProxy("x_castep_section_md"), repeats=True
+        sub_section=SectionProxy('x_castep_section_md'), repeats=True
     )
 
     x_castep_section_ts = SubSection(
-        sub_section=SectionProxy("x_castep_section_ts"), repeats=True
+        sub_section=SectionProxy('x_castep_section_ts'), repeats=True
     )
 
     x_castep_section_ts_store = SubSection(
-        sub_section=SectionProxy("x_castep_section_ts_store"), repeats=True
+        sub_section=SectionProxy('x_castep_section_ts_store'), repeats=True
     )
 
     x_castep_section_ts_final_store = SubSection(
-        sub_section=SectionProxy("x_castep_section_ts_final_store"), repeats=True
+        sub_section=SectionProxy('x_castep_section_ts_final_store'), repeats=True
     )
 
     x_castep_section_ts_final = SubSection(
-        sub_section=SectionProxy("x_castep_section_ts_final"), repeats=True
+        sub_section=SectionProxy('x_castep_section_ts_final'), repeats=True
     )
 
     x_castep_section_ts_product = SubSection(
-        sub_section=SectionProxy("x_castep_section_ts_product"), repeats=True
+        sub_section=SectionProxy('x_castep_section_ts_product'), repeats=True
     )
 
     x_castep_section_ts_product_store = SubSection(
-        sub_section=SectionProxy("x_castep_section_ts_product_store"), repeats=True
+        sub_section=SectionProxy('x_castep_section_ts_product_store'), repeats=True
     )
 
     x_castep_section_ts_parameters = SubSection(
-        sub_section=SectionProxy("x_castep_section_ts_parameters"), repeats=True
+        sub_section=SectionProxy('x_castep_section_ts_parameters'), repeats=True
     )
 
     x_castep_section_van_der_Waals_parameters = SubSection(
-        sub_section=SectionProxy("x_castep_section_van_der_Waals_parameters"),
+        sub_section=SectionProxy('x_castep_section_van_der_Waals_parameters'),
         repeats=True,
     )
 
@@ -2045,7 +2045,7 @@ class System(runschema.system.System):
 
     x_castep_atom_positions = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         Storing atomic positions in fractional coordinates
         """,
@@ -2061,7 +2061,7 @@ class System(runschema.system.System):
 
     x_castep_optimised_atom_labels = Quantity(
         type=str,
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Temporary storing atomic positions
         """,
@@ -2069,7 +2069,7 @@ class System(runschema.system.System):
 
     x_castep_optimised_atom_positions = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         Storing atomic optimised positions in fractional coordinates
         """,
@@ -2117,7 +2117,7 @@ class System(runschema.system.System):
 
     x_castep_atom_ionic_velocities = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         Temporary storing atomic positions
         """,
@@ -2140,27 +2140,27 @@ class System(runschema.system.System):
     )
 
     x_castep_section_tddft = SubSection(
-        sub_section=SectionProxy("x_castep_section_tddft"), repeats=True
+        sub_section=SectionProxy('x_castep_section_tddft'), repeats=True
     )
 
     x_castep_section_atom_ionic_velocities = SubSection(
-        sub_section=SectionProxy("x_castep_section_atom_ionic_velocities"), repeats=True
+        sub_section=SectionProxy('x_castep_section_atom_ionic_velocities'), repeats=True
     )
 
     x_castep_section_atom_positions_optim = SubSection(
-        sub_section=SectionProxy("x_castep_section_atom_positions_optim"), repeats=True
+        sub_section=SectionProxy('x_castep_section_atom_positions_optim'), repeats=True
     )
 
     x_castep_section_atom_positions = SubSection(
-        sub_section=SectionProxy("x_castep_section_atom_positions"), repeats=True
+        sub_section=SectionProxy('x_castep_section_atom_positions'), repeats=True
     )
 
     x_castep_section_cell_optim = SubSection(
-        sub_section=SectionProxy("x_castep_section_cell_optim"), repeats=True
+        sub_section=SectionProxy('x_castep_section_cell_optim'), repeats=True
     )
 
     x_castep_section_cell = SubSection(
-        sub_section=SectionProxy("x_castep_section_cell"), repeats=True
+        sub_section=SectionProxy('x_castep_section_cell'), repeats=True
     )
 
 
@@ -2278,23 +2278,23 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_castep_section_ts_scf = SubSection(
-        sub_section=SectionProxy("x_castep_section_ts_scf"), repeats=True
+        sub_section=SectionProxy('x_castep_section_ts_scf'), repeats=True
     )
 
     x_castep_section_scf_k_points = SubSection(
-        sub_section=SectionProxy("x_castep_section_scf_k_points"), repeats=True
+        sub_section=SectionProxy('x_castep_section_scf_k_points'), repeats=True
     )
 
     x_castep_section_spin_number = SubSection(
-        sub_section=SectionProxy("x_castep_section_spin_number"), repeats=True
+        sub_section=SectionProxy('x_castep_section_spin_number'), repeats=True
     )
 
     x_castep_section_stress_tensor = SubSection(
-        sub_section=SectionProxy("x_castep_section_stress_tensor"), repeats=True
+        sub_section=SectionProxy('x_castep_section_stress_tensor'), repeats=True
     )
 
     x_castep_section_DFT_SEDC = SubSection(
-        sub_section=SectionProxy("x_castep_section_DFT_SEDC"), repeats=True
+        sub_section=SectionProxy('x_castep_section_DFT_SEDC'), repeats=True
     )
 
 
@@ -2310,15 +2310,15 @@ class Method(runschema.method.Method):
     )
 
     x_castep_section_functional_definition = SubSection(
-        sub_section=SectionProxy("x_castep_section_functional_definition"), repeats=True
+        sub_section=SectionProxy('x_castep_section_functional_definition'), repeats=True
     )
 
     x_castep_section_functionals = SubSection(
-        sub_section=SectionProxy("x_castep_section_functionals"), repeats=True
+        sub_section=SectionProxy('x_castep_section_functionals'), repeats=True
     )
 
     x_castep_section_relativity_treatment = SubSection(
-        sub_section=SectionProxy("x_castep_section_relativity_treatment"), repeats=True
+        sub_section=SectionProxy('x_castep_section_relativity_treatment'), repeats=True
     )
 
 
@@ -2328,7 +2328,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     x_castep_thermostat_target_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="kelvin",
+        unit='kelvin',
         description="""
         thermostat_target_temperature(K)
         """,
@@ -2353,7 +2353,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     x_castep_thermostat_tau = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="second",
+        unit='second',
         description="""
         thermostat_type
         """,
@@ -2362,7 +2362,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     x_castep_barostat_tau = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="second",
+        unit='second',
         description="""
         barostat_tau
         """,
@@ -2371,7 +2371,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     x_castep_integrator_dt = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="second",
+        unit='second',
         description="""
         MD_time_step (ps)
         """,
@@ -2396,7 +2396,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     x_castep_frame_energy_tolerance = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         MD_scf_energy tolerance (eV)
         """,
@@ -2405,7 +2405,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     x_castep_frame_eigen_tolerance = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         MD_scf_eigen tolerance (eV)
         """,
@@ -2418,7 +2418,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     x_castep_geometry_stress_com_tolerance = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="pascal",
+        unit='pascal',
         description="""
         tolerance for stress components in geometry optimisation (GPa)
         """,
@@ -2461,21 +2461,21 @@ class BandStructure(runschema.calculation.BandStructure):
     )
 
     x_castep_section_eigenvalues_1 = SubSection(
-        sub_section=SectionProxy("x_castep_section_eigenvalues_1"), repeats=True
+        sub_section=SectionProxy('x_castep_section_eigenvalues_1'), repeats=True
     )
 
     x_castep_section_eigenvalues = SubSection(
-        sub_section=SectionProxy("x_castep_section_eigenvalues"), repeats=True
+        sub_section=SectionProxy('x_castep_section_eigenvalues'), repeats=True
     )
 
     x_castep_section_k_band = SubSection(
-        sub_section=SectionProxy("x_castep_section_k_band"), repeats=True
+        sub_section=SectionProxy('x_castep_section_k_band'), repeats=True
     )
 
     x_castep_section_k_points_1 = SubSection(
-        sub_section=SectionProxy("x_castep_section_k_points_1"), repeats=True
+        sub_section=SectionProxy('x_castep_section_k_points_1'), repeats=True
     )
 
     x_castep_section_k_points = SubSection(
-        sub_section=SectionProxy("x_castep_section_k_points"), repeats=True
+        sub_section=SectionProxy('x_castep_section_k_points'), repeats=True
     )

@@ -352,7 +352,7 @@ class x_abinit_mesh(MSection):
 
     x_abinit_mesh = Quantity(
         type=np.float64,
-        shape=["x_abinit_n_mesh", 3],
+        shape=['x_abinit_n_mesh', 3],
         description="""
         """,
     )
@@ -367,14 +367,14 @@ class x_abinit_chi_q_data(MSection):
 
     x_abinit_q_point = Quantity(
         type=np.float64,
-        shape=["x_abinit_n_mesh", 3],
+        shape=['x_abinit_n_mesh', 3],
         description="""
         """,
     )
 
     x_abinit_av_fulfillment = Quantity(
         type=np.float64,
-        shape=["x_abinit_n_mesh"],
+        shape=['x_abinit_n_mesh'],
         description="""
         """,
     )
@@ -448,7 +448,7 @@ class x_abinit_screening_dataset(MSection):
     x_abinit_omega_plasma = Quantity(
         type=np.float64,
         shape=[],
-        unit="electron_volt",
+        unit='electron_volt',
         description="""
         """,
     )
@@ -478,7 +478,7 @@ class x_abinit_screening_dataset(MSection):
 
     x_abinit_frequencies = Quantity(
         type=np.float64,
-        shape=["*", 2],
+        shape=['*', 2],
         description="""
         """,
     )
@@ -501,7 +501,7 @@ class x_abinit_ks_band_gaps_params(MSection):
     x_abinit_fundamental_gap = Quantity(
         type=np.float64,
         shape=[],
-        unit="electron_volt",
+        unit='electron_volt',
         description="""
         """,
     )
@@ -531,7 +531,7 @@ class x_abinit_qp_band_gaps_params(MSection):
     x_abinit_value = Quantity(
         type=np.float64,
         shape=[],
-        unit="electron_volt",
+        unit='electron_volt',
         description="""
         The Kohn-Sham gap
         """,
@@ -540,7 +540,7 @@ class x_abinit_qp_band_gaps_params(MSection):
     x_abinit_value_fundamental = Quantity(
         type=np.float64,
         shape=[],
-        unit="electron_volt",
+        unit='electron_volt',
         description="""
         The Quasi-Particle gap
         """,
@@ -690,7 +690,7 @@ class x_abinit_gw_dataset(MSection):
     x_abinit_omega_plasma = Quantity(
         type=np.float64,
         shape=[],
-        unit="electron_volt",
+        unit='electron_volt',
         description="""
         """,
     )
@@ -764,7 +764,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_abinit_atom_force_final = Quantity(
         type=np.dtype(np.float64),
-        unit="newton",
+        unit='newton',
         shape=[],
         description="""
         Force acting on an atom at the end of the dataset
@@ -833,7 +833,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_abinit_unit_cell_volume = Quantity(
         type=np.dtype(np.float64),
-        unit="meter**3",
+        unit='meter**3',
         shape=[],
         description="""
         Unit cell volume

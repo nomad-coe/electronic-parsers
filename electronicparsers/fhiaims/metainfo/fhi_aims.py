@@ -146,7 +146,7 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
 
     x_fhi_aims_controlIn_division = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_fhi_aims_controlIn_number_of_basis_func", 2],
+        shape=['x_fhi_aims_controlIn_number_of_basis_func', 2],
         description="""
         division parameters: position and number of points, respectively
         """,
@@ -217,7 +217,7 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
     )
 
     x_fhi_aims_section_controlIn_basis_func = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_controlIn_basis_func"),
+        sub_section=SectionProxy('x_fhi_aims_section_controlIn_basis_func'),
         repeats=True,
     )
 
@@ -240,7 +240,7 @@ class x_fhi_aims_section_controlInOut_atom_species(MSection):
     x_fhi_aims_controlInOut_species_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         -
         """,
@@ -257,7 +257,7 @@ class x_fhi_aims_section_controlInOut_atom_species(MSection):
     x_fhi_aims_controlInOut_species_cut_pot_width = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         -
         """,
@@ -266,7 +266,7 @@ class x_fhi_aims_section_controlInOut_atom_species(MSection):
     x_fhi_aims_controlInOut_species_cut_pot = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         -
         """,
@@ -275,7 +275,7 @@ class x_fhi_aims_section_controlInOut_atom_species(MSection):
     x_fhi_aims_controlInOut_species_mass = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="kilogram",
+        unit='kilogram',
         description="""
         -
         """,
@@ -290,12 +290,12 @@ class x_fhi_aims_section_controlInOut_atom_species(MSection):
     )
 
     x_fhi_aims_section_controlInOut_basis_func = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_controlInOut_basis_func"),
+        sub_section=SectionProxy('x_fhi_aims_section_controlInOut_basis_func'),
         repeats=True,
     )
 
     x_fhi_aims_section_vdW_TS = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_vdW_TS"), repeats=True
+        sub_section=SectionProxy('x_fhi_aims_section_vdW_TS'), repeats=True
     )
 
 
@@ -317,7 +317,7 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
     x_fhi_aims_controlInOut_basis_func_gauss_alpha = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter ** 2",
+        unit='1 / meter ** 2',
         description="""
         -
         """,
@@ -374,7 +374,7 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
     x_fhi_aims_controlInOut_basis_func_primitive_gauss_alpha = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter ** 2",
+        unit='1 / meter ** 2',
         description="""
         -
         """,
@@ -405,7 +405,7 @@ class x_fhi_aims_section_eigenvalues_group_ZORA(MSection):
     m_def = Section(validate=False)
 
     x_fhi_aims_section_eigenvalues_spin_ZORA = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_eigenvalues_spin_ZORA"),
+        sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_spin_ZORA'),
         repeats=True,
     )
 
@@ -418,7 +418,7 @@ class x_fhi_aims_section_eigenvalues_group(MSection):
     m_def = Section(validate=False)
 
     x_fhi_aims_section_eigenvalues_spin = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_eigenvalues_spin"), repeats=True
+        sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_spin'), repeats=True
     )
 
 
@@ -432,7 +432,7 @@ class x_fhi_aims_section_eigenvalues_list_ZORA(MSection):
     x_fhi_aims_eigenvalue_eigenvalue_ZORA = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Single eigenvalue of scaled ZORA
         """,
@@ -457,7 +457,7 @@ class x_fhi_aims_section_eigenvalues_list(MSection):
     x_fhi_aims_eigenvalue_eigenvalue = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Single eigenvalue
         """,
@@ -504,7 +504,7 @@ class x_fhi_aims_section_eigenvalues_spin_ZORA(MSection):
     )
 
     x_fhi_aims_section_eigenvalues_list_ZORA = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_eigenvalues_list_ZORA"),
+        sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_list_ZORA'),
         repeats=True,
     )
 
@@ -541,12 +541,12 @@ class x_fhi_aims_section_eigenvalues_spin(MSection):
     )
 
     x_fhi_aims_section_eigenvalues_list_perturbativeGW = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_eigenvalues_list_perturbativeGW"),
+        sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_list_perturbativeGW'),
         repeats=True,
     )
 
     x_fhi_aims_section_eigenvalues_list = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_eigenvalues_list"), repeats=True
+        sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_list'), repeats=True
     )
 
 
@@ -558,7 +558,7 @@ class x_fhi_aims_section_eigenvalues_ZORA(MSection):
     m_def = Section(validate=False)
 
     x_fhi_aims_section_eigenvalues_group_ZORA = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_eigenvalues_group_ZORA"),
+        sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_group_ZORA'),
         repeats=False,
     )
 
@@ -603,7 +603,7 @@ class x_fhi_aims_section_parallel_tasks(MSection):
     m_def = Section(validate=False)
 
     x_fhi_aims_section_parallel_task_assignement = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_parallel_task_assignement"),
+        sub_section=SectionProxy('x_fhi_aims_section_parallel_task_assignement'),
         repeats=True,
     )
 
@@ -650,7 +650,7 @@ class x_fhi_aims_section_vdW_TS(MSection):
     x_fhi_aims_vdW_energy_corr_TS = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         -
         """,
@@ -666,7 +666,7 @@ class x_fhi_aims_section_eigenvalues_group_perturbativeGW(MSection):
     m_def = Section(validate=False)
 
     x_fhi_aims_section_eigenvalues_spin_perturbativeGW = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_eigenvalues_spin_perturbativeGW"),
+        sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_spin_perturbativeGW'),
         repeats=True,
     )
 
@@ -681,7 +681,7 @@ class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
     x_fhi_aims_eigenvalue_correlation_perturbativeGW = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Correlation energy at a given eigenstate from perturbative GW
         """,
@@ -690,7 +690,7 @@ class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
     x_fhi_aims_eigenvalue_ExactExchange_perturbativeGW = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Exact exchange energy at given eigenstate from perturbative GW
         """,
@@ -699,7 +699,7 @@ class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
     x_fhi_aims_eigenvalue_ks_ExchangeCorrelation = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         KS exchange correlation energy at a given eigenstate needed to calculate the
         quasi-particle energy in perturbative GW
@@ -709,7 +709,7 @@ class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
     x_fhi_aims_eigenvalue_ks_GroundState = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         KS ground state energy at a given eigenstate needed in perturbative GW
         """,
@@ -726,7 +726,7 @@ class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
     x_fhi_aims_eigenvalue_quasiParticle_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Quasiparticle energy at a given eigenstate from perturbative GW
         """,
@@ -747,7 +747,7 @@ class Calculation(runschema.calculation.Calculation):
     x_fhi_aims_atom_forces_free_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         -
         """,
@@ -756,7 +756,7 @@ class Calculation(runschema.calculation.Calculation):
     x_fhi_aims_atom_forces_free_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         -
         """,
@@ -765,7 +765,7 @@ class Calculation(runschema.calculation.Calculation):
     x_fhi_aims_atom_forces_free_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         -
         """,
@@ -774,7 +774,7 @@ class Calculation(runschema.calculation.Calculation):
     x_fhi_aims_energy_C_LDA = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Component of the correlation (C) energy at the LDA level calculated with the self
         consistent density of the target functional.
@@ -784,7 +784,7 @@ class Calculation(runschema.calculation.Calculation):
     x_fhi_aims_energy_X_LDA = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Component of the exchange (X) energy at the LDA level calculated with the self
         consistent density of the target functional.
@@ -814,7 +814,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     x_fhi_aims_atom_forces_raw_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         -
         """,
@@ -823,7 +823,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     x_fhi_aims_atom_forces_raw_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         -
         """,
@@ -832,7 +832,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     x_fhi_aims_atom_forces_raw_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         -
         """,
@@ -841,7 +841,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     x_fhi_aims_energy_electrostatic_free_atom_scf_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Electrostatic energy contributions from superposition of free atom densities
         during the scf iterations
@@ -851,7 +851,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     x_fhi_aims_energy_scgw_correlation_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         scGW correlation energy at each iteration
         """,
@@ -867,7 +867,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
 
     x_fhi_aims_scf_time_start = Quantity(
         type=np.dtype(np.float64),
-        unit="s",
+        unit='s',
         shape=[],
         description="""
         -
@@ -877,7 +877,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     x_fhi_aims_scgw_galitskii_migdal_total_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         scGW total energy at each iteration calculated using the Galitskii-Migdal formula
         """,
@@ -886,7 +886,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     x_fhi_aims_scgw_hartree_energy_sum_eigenvalues_scf_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         scGW sum of eigenvalues calculated from the trace over the Hamiltonian times the
         Greens function matrices
@@ -896,7 +896,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     x_fhi_aims_scgw_kinetic_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         scGW kinetic energy at each iteration
         """,
@@ -905,7 +905,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     x_fhi_aims_scgw_rpa_correlation_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         The RPA correlation energy calculated from the Green's functions of the scGW at
         each iteration
@@ -923,17 +923,17 @@ class ScfIeration(runschema.calculation.ScfIteration):
     x_fhi_aims_single_particle_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         scGW single particle energy at each iteration
         """,
     )
 
     x_fhi_aims_section_eigenvalues_group = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_eigenvalues_group"), repeats=False
+        sub_section=SectionProxy('x_fhi_aims_section_eigenvalues_group'), repeats=False
     )
 
-    x_fhi_aims_energy_reference_fermi = Quantity(type=float, unit="eV")
+    x_fhi_aims_energy_reference_fermi = Quantity(type=float, unit='eV')
 
 
 class DosValues(runschema.calculation.DosValues):
@@ -1008,7 +1008,7 @@ class Method(runschema.method.Method):
     x_fhi_aims_controlIn_hse_omega = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         -
         """,
@@ -1255,7 +1255,7 @@ class Method(runschema.method.Method):
     x_fhi_aims_controlInOut_hse_omega = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         -
         """,
@@ -1356,11 +1356,11 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_section_controlIn_basis_set = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_controlIn_basis_set"), repeats=True
+        sub_section=SectionProxy('x_fhi_aims_section_controlIn_basis_set'), repeats=True
     )
 
     x_fhi_aims_section_MD_detect = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_MD_detect"), repeats=True
+        sub_section=SectionProxy('x_fhi_aims_section_MD_detect'), repeats=True
     )
 
 
@@ -1370,7 +1370,7 @@ class Run(runschema.run.Run):
     x_fhi_aims_controlIn_MD_time_step = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="second",
+        unit='second',
         description="""
         -
         """,
@@ -1379,7 +1379,7 @@ class Run(runschema.run.Run):
     x_fhi_aims_controlInOut_MD_time_step = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="second",
+        unit='second',
         description="""
         -
         """,
@@ -1419,7 +1419,7 @@ class Run(runschema.run.Run):
 
     x_fhi_aims_program_execution_time = Quantity(
         type=np.float64,
-        unit="s",
+        unit='s',
         shape=[],
         description="""
         -
@@ -1427,7 +1427,7 @@ class Run(runschema.run.Run):
     )
 
     x_fhi_aims_section_parallel_tasks = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_parallel_tasks"), repeats=False
+        sub_section=SectionProxy('x_fhi_aims_section_parallel_tasks'), repeats=False
     )
 
 
@@ -1445,7 +1445,7 @@ class System(runschema.system.System):
     x_fhi_aims_geometry_atom_positions_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         x component of atomic position
         """,
@@ -1454,7 +1454,7 @@ class System(runschema.system.System):
     x_fhi_aims_geometry_atom_positions_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         y component of atomic position
         """,
@@ -1463,7 +1463,7 @@ class System(runschema.system.System):
     x_fhi_aims_geometry_atom_positions_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         z component of atomic position
         """,
@@ -1472,7 +1472,7 @@ class System(runschema.system.System):
     x_fhi_aims_geometry_atom_velocity_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter / second",
+        unit='meter / second',
         description="""
         x component of atomic velocity
         """,
@@ -1481,7 +1481,7 @@ class System(runschema.system.System):
     x_fhi_aims_geometry_atom_velocity_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter / second",
+        unit='meter / second',
         description="""
         y component of atomic velocity
         """,
@@ -1490,7 +1490,7 @@ class System(runschema.system.System):
     x_fhi_aims_geometry_atom_velocity_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter / second",
+        unit='meter / second',
         description="""
         z component of atomic velocity
         """,
@@ -1499,7 +1499,7 @@ class System(runschema.system.System):
     x_fhi_aims_geometry_lattice_vector_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         x component of lattice vector
         """,
@@ -1508,7 +1508,7 @@ class System(runschema.system.System):
     x_fhi_aims_geometry_lattice_vector_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         y component of lattice vector
         """,
@@ -1517,7 +1517,7 @@ class System(runschema.system.System):
     x_fhi_aims_geometry_lattice_vector_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         z component of lattice vector
         """,
@@ -1528,7 +1528,7 @@ class AtomParameters(runschema.method.AtomParameters):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fhi_aims_section_controlInOut_atom_species = SubSection(
-        sub_section=SectionProxy("x_fhi_aims_section_controlInOut_atom_species"),
+        sub_section=SectionProxy('x_fhi_aims_section_controlInOut_atom_species'),
         repeats=True,
     )
 
