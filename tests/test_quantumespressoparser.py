@@ -224,9 +224,17 @@ def test_noncolmag(parser):
     parser.parse("tests/data/quantumespresso/Pt_noncol/pw.out", archive, None)
 
     sec_run = archive.run[0]
-    sec_sccs = sec_run.calculation
-    assert len(sec_sccs) == 1
-    assert sec_sccs[0].forces.total.value_raw[0][2].magnitude == approx(RyB_to_N(0.0))
+    assert len(sec_run.calculation) == 1
+    sec_scc = sec_run.calculation[0]
+    assert sec_scc.forces.total.value_raw[0][2].magnitude == approx(RyB_to_N(0.0))
+    assert np.shape(sec_scc.eigenvalues[0].kpoints) == (288, 3)
+    assert np.shape(sec_scc.eigenvalues[0].energies) == (1, 288, 26)
+    assert len(sec_scc.dos_electronic) == 1
+    assert len(sec_scc.dos_electronic[0].total[0].value) == 501
+    assert (
+        sec_scc.dos_electronic[0].total[0].value[500].magnitude
+        == (0.4188 / ureg.eV).to_base_units().magnitude
+    )
 
     sec_method = sec_run.method[0]
     assert sec_method.electronic.smearing.kind == "gaussian"
