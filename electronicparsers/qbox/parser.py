@@ -42,147 +42,147 @@ from runschema.calculation import (
 from .metainfo.qbox import x_qbox_section_MLWF
 
 
-re_n = r"[\n\r]"
-re_f = r"[-+]?\d+\.\d*(?:[DdEe][-+]\d+)?"
+re_n = r'[\n\r]'
+re_f = r'[-+]?\d+\.\d*(?:[DdEe][-+]\d+)?'
 
 
 class QboxXMLParser(TextParser):
     def init_quantities(self):
         run_quantities = [
             Quantity(
-                "parameter",
-                r"\[qbox\] \<cmd\>set +(.+?)\<\/cmd\>",
-                str_operation=lambda x: x.split(" ", 1),
+                'parameter',
+                r'\[qbox\] \<cmd\>set +(.+?)\<\/cmd\>',
+                str_operation=lambda x: x.split(' ', 1),
                 repeats=True,
             ),
             Quantity(
-                "species",
-                r"(\<species name=[\s\S]=?)</species>",
+                'species',
+                r'(\<species name=[\s\S]=?)</species>',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
-                        Quantity("symbol", r"\<symbol\>([A-Z][a-z]*)", dtype=str),
+                        Quantity('symbol', r'\<symbol\>([A-Z][a-z]*)', dtype=str),
                         Quantity(
-                            "atomic_numer", r"\<atomic_number\>(\d+)", dtype=np.int32
+                            'atomic_numer', r'\<atomic_number\>(\d+)', dtype=np.int32
                         ),
-                        Quantity("mass", r"\<mass\>(\d+)", dtype=np.float64),
+                        Quantity('mass', r'\<mass\>(\d+)', dtype=np.float64),
                     ]
                 ),
             ),
             Quantity(
-                "iteration",
-                r"(\<iteration[\s\S]+?)</iteration>",
+                'iteration',
+                r'(\<iteration[\s\S]+?)</iteration>',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "charge",
-                            rf"total_electronic_charge: +({re_f})",
+                            'charge',
+                            rf'total_electronic_charge: +({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "energy_kinetic_electronic",
-                            rf"\<ekin\> +({re_f})",
-                            dtype=np.float64,
-                            unit=ureg.hartree,
-                        ),
-                        Quantity(
-                            "energy_x_qbox_conf",
-                            rf"\<econf\> +({re_f})",
+                            'energy_kinetic_electronic',
+                            rf'\<ekin\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "energy_x_qbox_ps",
-                            rf"\<eps\> +({re_f})",
+                            'energy_x_qbox_conf',
+                            rf'\<econf\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "energy_x_qbox_nl",
-                            rf"\<enl\> +({re_f})",
+                            'energy_x_qbox_ps',
+                            rf'\<eps\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "energy_coulomb",
-                            rf"\<ecoul\> +({re_f})",
+                            'energy_x_qbox_nl',
+                            rf'\<enl\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "energy_xc",
-                            rf"\<exc\> +({re_f})",
+                            'energy_coulomb',
+                            rf'\<ecoul\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "energy_x_qbox_sr",
-                            rf"\<esr\> +({re_f})",
+                            'energy_xc',
+                            rf'\<exc\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "energy_x_qbox_self",
-                            rf"\<eself\> +({re_f})",
+                            'energy_x_qbox_sr',
+                            rf'\<esr\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "energy_x_qbox_ts",
-                            rf"\<ets\> +({re_f})",
+                            'energy_x_qbox_self',
+                            rf'\<eself\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "energy_x_qbox_exf",
-                            rf"\<eexf\> +({re_f})",
+                            'energy_x_qbox_ts',
+                            rf'\<ets\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "energy_total",
-                            rf"\<etotal\> +({re_f})",
+                            'energy_x_qbox_exf',
+                            rf'\<eexf\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "energy_x_qbox_pv",
-                            rf"\<epv\> +({re_f})",
+                            'energy_total',
+                            rf'\<etotal\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "energy_x_qbox_efield",
-                            rf"\<eefield\> +({re_f})",
+                            'energy_x_qbox_pv',
+                            rf'\<epv\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "energy_x_qbox_enthalpy",
-                            rf"\<enthalpy\> +({re_f})",
+                            'energy_x_qbox_efield',
+                            rf'\<eefield\> +({re_f})',
                             dtype=np.float64,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "stress_tensor",
-                            r"(\<stress_tensor[\s\S]+?)\<\/stress_tensor\>",
+                            'energy_x_qbox_enthalpy',
+                            rf'\<enthalpy\> +({re_f})',
+                            dtype=np.float64,
+                            unit=ureg.hartree,
+                        ),
+                        Quantity(
+                            'stress_tensor',
+                            r'(\<stress_tensor[\s\S]+?)\<\/stress_tensor\>',
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "contribution",
-                                        r"(\<sigma_.*\_*xx\>[\s\S]+?)\<\/sigma_.*\_*xz\>",
+                                        'contribution',
+                                        r'(\<sigma_.*\_*xx\>[\s\S]+?)\<\/sigma_.*\_*xz\>',
                                         repeats=True,
                                         sub_parser=TextParser(
                                             quantities=[
                                                 Quantity(
-                                                    "kind",
-                                                    r"\<sigma_e(.+?)\_",
+                                                    'kind',
+                                                    r'\<sigma_e(.+?)\_',
                                                     dtype=str,
                                                 ),
                                                 Quantity(
-                                                    "value",
-                                                    rf"\> +({re_f})",
+                                                    'value',
+                                                    rf'\> +({re_f})',
                                                     dtype=np.float64,
                                                     repeats=True,
                                                 ),
@@ -193,35 +193,35 @@ class QboxXMLParser(TextParser):
                             ),
                         ),
                         Quantity(
-                            "multipole",
-                            r"(\<[a-z]+pole\>[\s\S]+?)\<\/[a-z]+pole\>",
+                            'multipole',
+                            r'(\<[a-z]+pole\>[\s\S]+?)\<\/[a-z]+pole\>',
                             repeats=True,
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "dipole",
-                                        rf"\<dipole_([a-z]+)\> +({re_f} +{re_f} +{re_f})",
+                                        'dipole',
+                                        rf'\<dipole_([a-z]+)\> +({re_f} +{re_f} +{re_f})',
                                         repeats=True,
                                     ),
                                     Quantity(
-                                        "quadrupole",
-                                        rf"\<quadrupole_([a-z]+)\>\s+"
-                                        rf"({re_f} +{re_f} +{re_f})\s+"
-                                        rf"({re_f} +{re_f} +{re_f})\s+"
-                                        rf"({re_f} +{re_f} +{re_f})\s+",
+                                        'quadrupole',
+                                        rf'\<quadrupole_([a-z]+)\>\s+'
+                                        rf'({re_f} +{re_f} +{re_f})\s+'
+                                        rf'({re_f} +{re_f} +{re_f})\s+'
+                                        rf'({re_f} +{re_f} +{re_f})\s+',
                                         repeats=True,
                                     ),
                                 ]
                             ),
                         ),
                         Quantity(
-                            "mlwf",
-                            r"(\<mlwf_set[\s\S]+?)\<\/mlwf_set\>",
+                            'mlwf',
+                            r'(\<mlwf_set[\s\S]+?)\<\/mlwf_set\>',
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "center",
-                                        rf"mlwf center=\" +({re_f} +{re_f} +{re_f}) +\"\s+spread=\" +({re_f})",
+                                        'center',
+                                        rf'mlwf center=\" +({re_f} +{re_f} +{re_f}) +\"\s+spread=\" +({re_f})',
                                         repeats=True,
                                         dtype=np.dtype(np.float64),
                                     )
@@ -229,25 +229,25 @@ class QboxXMLParser(TextParser):
                             ),
                         ),
                         Quantity(
-                            "scf",
-                            r"(total_electronic_charge:.+\s+\<eigenvalue_sum[\s\S]+?)\<\/etotal_int\>",
+                            'scf',
+                            r'(total_electronic_charge:.+\s+\<eigenvalue_sum[\s\S]+?)\<\/etotal_int\>',
                             repeats=True,
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "charge",
-                                        rf"total_electronic_charge: +({re_f})",
+                                        'charge',
+                                        rf'total_electronic_charge: +({re_f})',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "energy_sum_eigenvalues",
-                                        rf"\<eigenvalue_sum\> +({re_f})",
+                                        'energy_sum_eigenvalues',
+                                        rf'\<eigenvalue_sum\> +({re_f})',
                                         unit=ureg.hartree,
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "energy_total",
-                                        rf"\<etotal_int\> +({re_f})",
+                                        'energy_total',
+                                        rf'\<etotal_int\> +({re_f})',
                                         unit=ureg.hartree,
                                         dtype=np.float64,
                                     ),
@@ -255,44 +255,44 @@ class QboxXMLParser(TextParser):
                             ),
                         ),
                         Quantity(
-                            "atomset",
-                            r"(\<atomset\>[\s\S]+?)</atomset>",
+                            'atomset',
+                            r'(\<atomset\>[\s\S]+?)</atomset>',
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "lattice_vectors",
-                                        rf"\<unit_cell\s+"
-                                        rf"a=\" +({re_f}) +({re_f}) +({re_f})\"\s+"
-                                        rf"b=\" +({re_f}) +({re_f}) +({re_f})\"\s+"
-                                        rf"c=\" +({re_f}) +({re_f}) +({re_f})\"\s+",
+                                        'lattice_vectors',
+                                        rf'\<unit_cell\s+'
+                                        rf'a=\" +({re_f}) +({re_f}) +({re_f})\"\s+'
+                                        rf'b=\" +({re_f}) +({re_f}) +({re_f})\"\s+'
+                                        rf'c=\" +({re_f}) +({re_f}) +({re_f})\"\s+',
                                         dtype=np.dtype(np.float64),
                                         shape=(3, 3),
                                         unit=ureg.bohr,
                                     ),
                                     Quantity(
-                                        "atom",
-                                        r"(\<atom[\s\S]+?)\<\/atom\>",
+                                        'atom',
+                                        r'(\<atom[\s\S]+?)\<\/atom\>',
                                         repeats=True,
                                         sub_parser=TextParser(
                                             quantities=[
                                                 Quantity(
-                                                    "label",
-                                                    r"\<atom name=\"([A-Z][a-z]*)",
+                                                    'label',
+                                                    r'\<atom name=\"([A-Z][a-z]*)',
                                                     dtype=str,
                                                 ),
                                                 Quantity(
-                                                    "position",
-                                                    rf"\<position\> +({re_f} +{re_f} +{re_f})",
+                                                    'position',
+                                                    rf'\<position\> +({re_f} +{re_f} +{re_f})',
                                                     dtype=np.dtype(np.float64),
                                                 ),
                                                 Quantity(
-                                                    "velocity",
-                                                    rf"\<velocity\> +({re_f} +{re_f} +{re_f})",
+                                                    'velocity',
+                                                    rf'\<velocity\> +({re_f} +{re_f} +{re_f})',
                                                     dtype=np.dtype(np.float64),
                                                 ),
                                                 Quantity(
-                                                    "force",
-                                                    rf"\<force\> +({re_f} +{re_f} +{re_f})",
+                                                    'force',
+                                                    rf'\<force\> +({re_f} +{re_f} +{re_f})',
                                                     dtype=np.dtype(np.float64),
                                                 ),
                                             ]
@@ -302,8 +302,8 @@ class QboxXMLParser(TextParser):
                             ),
                         ),
                         Quantity(
-                            "time_calculation",
-                            rf"\<timing name=.+?({re_f}).+?{re_f}",
+                            'time_calculation',
+                            rf'\<timing name=.+?({re_f}).+?{re_f}',
                             str_operation=lambda x: np.sum(
                                 np.array(x.split(), dtype=np.float64)
                             ),
@@ -314,29 +314,29 @@ class QboxXMLParser(TextParser):
         ]
 
         self._quantities = [
-            Quantity("program_version", r"I qbox (\S+)", dtype=str),
+            Quantity('program_version', r'I qbox (\S+)', dtype=str),
             Quantity(
-                "start_time",
-                r"\<start_time\> (\d\d\d\d\-\d\d\-\d\dT\d\d:\d\d:\d\dZ)",
+                'start_time',
+                r'\<start_time\> (\d\d\d\d\-\d\d\-\d\dT\d\d:\d\d:\d\dZ)',
                 dtype=str,
             ),
             Quantity(
-                "end_time",
-                r"\<end_time\> (\d\d\d\d\-\d\d\-\d\dT\d\d:\d\d:\d\dZ)",
+                'end_time',
+                r'\<end_time\> (\d\d\d\d\-\d\d\-\d\dT\d\d:\d\d:\d\dZ)',
                 dtype=str,
             ),
             Quantity(
-                "x_qbox_nodename",
-                r"\<nodename\> (.+) \<\/nodename\>",
+                'x_qbox_nodename',
+                r'\<nodename\> (.+) \<\/nodename\>',
                 dtype=str,
                 flatten=False,
             ),
             Quantity(
-                "x_qbox_loading_xml_file", r"LoadCmd: loading from (\S+)", dtype=str
+                'x_qbox_loading_xml_file', r'LoadCmd: loading from (\S+)', dtype=str
             ),
             Quantity(
-                "run",
-                r"(\[qbox\] \<cmd\>[\s\S]+?\<timing name=\" +charge_vft.+)",
+                'run',
+                r'(\[qbox\] \<cmd\>[\s\S]+?\<timing name=\" +charge_vft.+)',
                 repeats=True,
                 sub_parser=TextParser(quantities=run_quantities),
             ),
@@ -347,11 +347,11 @@ class QboxParser:
     def __init__(self):
         self.out_parser = QboxXMLParser()
         self._xc_map = {
-            "LDA": ["LDA_X", "LDA_C_PZ"],
-            "VMN": ["LDA_X", "LDA_C_VWN"],
-            "PBE": ["GGA_X_PBE", "GGA_C_PBE"],
-            "PBE0": ["GGA_X_PBE", "GGA_C_PBE"],
-            "B3LYP": ["HYB_GGA_XC_B3LYP5"],
+            'LDA': ['LDA_X', 'LDA_C_PZ'],
+            'VMN': ['LDA_X', 'LDA_C_VWN'],
+            'PBE': ['GGA_X_PBE', 'GGA_C_PBE'],
+            'PBE0': ['GGA_X_PBE', 'GGA_C_PBE'],
+            'B3LYP': ['HYB_GGA_XC_B3LYP5'],
         }
 
     def init_parser(self):
@@ -362,12 +362,12 @@ class QboxParser:
         sec_run = Run()
         self.archive.run.append(sec_run)
         sec_run.program = Program(
-            name="qbox", version=self.out_parser.get("program_version")
+            name='qbox', version=self.out_parser.get('program_version')
         )
 
         def format_time(time):
             if time is not None:
-                return datetime.strptime(time, "%Y-%m-%dT%H:%M:%S%z").timestamp()
+                return datetime.strptime(time, '%Y-%m-%dT%H:%M:%S%z').timestamp()
 
         sec_run.time_run = TimeRun(
             date_start=format_time(self.out_parser.start_time),
@@ -377,21 +377,21 @@ class QboxParser:
         sec_method = Method()
         sec_run.method.append(sec_method)
         parameters = {
-            key: val for key, val in self.out_parser.run[index].get("parameter", [])
+            key: val for key, val in self.out_parser.run[index].get('parameter', [])
         }
         sec_method.x_qbox_input_parameters = parameters
-        if parameters.get("xc") is not None:
+        if parameters.get('xc') is not None:
             sec_method.dft = DFT(xc_functional=XCFunctional())
-            for xc_functional in self._xc_map.get(parameters["xc"], []):
-                if "_X_" in xc_functional or xc_functional.endswith("_X"):
+            for xc_functional in self._xc_map.get(parameters['xc'], []):
+                if '_X_' in xc_functional or xc_functional.endswith('_X'):
                     sec_method.dft.xc_functional.exchange.append(
                         Functional(name=xc_functional)
                     )
-                elif "_C_" in xc_functional or xc_functional.endswith("_C"):
+                elif '_C_' in xc_functional or xc_functional.endswith('_C'):
                     sec_method.dft.xc_functional.correlation.append(
                         Functional(name=xc_functional)
                     )
-                elif "HYB" in xc_functional:
+                elif 'HYB' in xc_functional:
                     sec_method.dft.xc_functional.hybrid.append(
                         Functional(name=xc_functional)
                     )
@@ -412,7 +412,7 @@ class QboxParser:
             symmetrized[0][2] = symmetrized[2][0] = stress[5]
             return symmetrized * ureg.GPa
 
-        for iteration in self.out_parser.run[index].get("iteration", []):
+        for iteration in self.out_parser.run[index].get('iteration', []):
             time_initial = (
                 sec_run.calculation[-1].time_physical
                 if sec_run.calculation
@@ -426,19 +426,19 @@ class QboxParser:
             sec_scc.system_ref = sec_system
 
             for key, val in iteration.items():
-                if key.startswith("energy_") and val is not None:
+                if key.startswith('energy_') and val is not None:
                     setattr(
                         sec_scc.energy,
-                        key.replace("energy_", ""),
+                        key.replace('energy_', ''),
                         EnergyEntry(value=val),
                     )
 
             if iteration.stress_tensor is not None:
                 sec_stress = Stress()
                 sec_scc.stress = sec_stress
-                for contribution in iteration.stress_tensor.get("contribution", []):
-                    value = symmetrize_stress(contribution.get("value", []))
-                    if contribution.kind is None or contribution.kind == "ks":
+                for contribution in iteration.stress_tensor.get('contribution', []):
+                    value = symmetrize_stress(contribution.get('value', []))
+                    if contribution.kind is None or contribution.kind == 'ks':
                         sec_stress.total = StressEntry(value=value)
                     else:
                         sec_stress.contributions.append(
@@ -450,19 +450,19 @@ class QboxParser:
                 sec_scc.multipoles.append(sec_multipoles)
                 for multipole in iteration.multipole:
                     # TODO add contributions
-                    for dipole in multipole.get("dipole", []):
-                        if dipole[0] == "total":
+                    for dipole in multipole.get('dipole', []):
+                        if dipole[0] == 'total':
                             sec_multipoles.dipole = MultipolesEntry(
                                 total=np.array(dipole[1:], dtype=np.float64)
                             )
-                    for quadrupole in multipole.get("quadrupole", []):
-                        if quadrupole[0] == "total":
+                    for quadrupole in multipole.get('quadrupole', []):
+                        if quadrupole[0] == 'total':
                             sec_multipoles.quadrupole = MultipolesEntry(
                                 total=np.array(quadrupole[1:], dtype=np.float64)
                             )
 
             if iteration.mlwf is not None:
-                for center in iteration.mlwf.get("center", []):
+                for center in iteration.mlwf.get('center', []):
                     sec_mlwf = x_qbox_section_MLWF()
                     sec_scc.x_qbox_section_MLWF.append(sec_mlwf)
                     sec_mlwf.x_qbox_geometry_MLWF_atom_positions = (
@@ -470,7 +470,7 @@ class QboxParser:
                     )
                     sec_mlwf.x_qbox_geometry_MLWF_atom_spread = center[3] * ureg.bohr
 
-            for scf in iteration.get("scf", []):
+            for scf in iteration.get('scf', []):
                 sec_scf = ScfIteration()
                 sec_scc.scf_iteration.append(sec_scf)
                 sec_scf.energy = Energy(
@@ -479,7 +479,7 @@ class QboxParser:
                 )
 
             if iteration.atomset is not None:
-                atoms = iteration.atomset.get("atom", [])
+                atoms = iteration.atomset.get('atom', [])
                 sec_system.atoms = Atoms(
                     lattice_vectors=iteration.atomset.lattice_vectors,
                     positions=[atom.position for atom in atoms] * ureg.bohr,
@@ -504,5 +504,5 @@ class QboxParser:
         self.maindir = os.path.dirname(self.filepath)
         self.init_parser()
 
-        for n in range(len(self.out_parser.get("run", []))):
+        for n in range(len(self.out_parser.get('run', []))):
             self.parse_run(n)

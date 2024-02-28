@@ -42,30 +42,30 @@ from runschema.calculation import (
 from .metainfo import m_env  # pylint: disable=unused-import
 
 
-re_f = r"[-+]?\d*\.\d*(?:[Ee][-+]\d+)?"
-re_n = r"[\n\r]"
+re_f = r'[-+]?\d*\.\d*(?:[Ee][-+]\d+)?'
+re_n = r'[\n\r]'
 MOL = 6.02214076e23
 
 
 class MainfileParser(TextParser):
     def init_quantities(self):
         self._quantities = [
-            Quantity("program_version", r"Version (\S+)", dtype=str),
-            Quantity("program_version", r"MOPAC v([\d\.]+)", dtype=str),
+            Quantity('program_version', r'Version (\S+)', dtype=str),
+            Quantity('program_version', r'MOPAC v([\d\.]+)', dtype=str),
             Quantity(
-                "calculation",
-                r"(CALCULATION DONE:[\s\S]+?)\*\*\*\*\*",
+                'calculation',
+                r'(CALCULATION DONE:[\s\S]+?)\*\*\*\*\*',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "parameters",
-                            r"([\w=]+) +\- +(.+)",
-                            str_operation=lambda x: x.split(" ", 1),
+                            'parameters',
+                            r'([\w=]+) +\- +(.+)',
+                            str_operation=lambda x: x.split(' ', 1),
                             repeats=True,
                         ),
                         Quantity(
-                            "date_start",
-                            r"CALCULATION DONE\: +\w+ (\w+) +(\d+ +\d+\:\d+\:\d+ \d+)",
+                            'date_start',
+                            r'CALCULATION DONE\: +\w+ (\w+) +(\d+ +\d+\:\d+\:\d+ \d+)',
                             flatten=False,
                             dtype=str,
                         ),
@@ -73,85 +73,85 @@ class MainfileParser(TextParser):
                 ),
             ),
             Quantity(
-                "coordinates",
-                rf"CARTESIAN COORDINATES\s+NO\. +ATOM +X +Y +Z\s+"
-                rf"((?:\d+ +[A-Z]\w* +{re_f} +{re_f} +{re_f}\s+)+)",
+                'coordinates',
+                rf'CARTESIAN COORDINATES\s+NO\. +ATOM +X +Y +Z\s+'
+                rf'((?:\d+ +[A-Z]\w* +{re_f} +{re_f} +{re_f}\s+)+)',
                 str_operation=lambda x: [v.split() for v in x.strip().splitlines()],
             ),
             Quantity(
-                "x_mopac_fhof",
-                rf"FINAL HEAT OF FORMATION += +({re_f}) KCAL/MOL",
+                'x_mopac_fhof',
+                rf'FINAL HEAT OF FORMATION += +({re_f}) KCAL/MOL',
                 dtype=np.float64,
                 unit=ureg.J * 4184.0 / MOL,
             ),
             Quantity(
-                "energy_total",
-                rf"TOTAL ENERGY += +({re_f}) EV",
+                'energy_total',
+                rf'TOTAL ENERGY += +({re_f}) EV',
                 dtype=np.float64,
                 unit=ureg.eV,
             ),
             Quantity(
-                "energy_electronic",
-                rf"ELECTRONIC ENERGY += +({re_f}) EV",
+                'energy_electronic',
+                rf'ELECTRONIC ENERGY += +({re_f}) EV',
                 dtype=np.float64,
                 unit=ureg.eV,
             ),
             Quantity(
-                "energy_nuclear_repulsion",
-                rf"CORE\-CORE REPULSION += +({re_f}) EV",
+                'energy_nuclear_repulsion',
+                rf'CORE\-CORE REPULSION += +({re_f}) EV',
                 dtype=np.float64,
                 unit=ureg.eV,
             ),
             Quantity(
-                "n_filled_levels", r"NO\. OF FILLED LEVELS += +(\d+)", dtype=np.int32
+                'n_filled_levels', r'NO\. OF FILLED LEVELS += +(\d+)', dtype=np.int32
             ),
             Quantity(
-                "n_alpha_electrons",
-                r"NO\. OF ALPHA +ELECTRONS += +(\d+)",
+                'n_alpha_electrons',
+                r'NO\. OF ALPHA +ELECTRONS += +(\d+)',
                 dtype=np.int32,
             ),
             Quantity(
-                "n_beta_electrons", r"NO\. OF BETA +ELECTRONS += +(\d+)", dtype=np.int32
+                'n_beta_electrons', r'NO\. OF BETA +ELECTRONS += +(\d+)', dtype=np.int32
             ),
             Quantity(
-                "eigenvalues",
-                rf"EIGENVALUES\s+((?:{re_f}\s+)+)",
+                'eigenvalues',
+                rf'EIGENVALUES\s+((?:{re_f}\s+)+)',
                 repeats=True,
                 dtype=np.dtype(np.float64),
             ),
             Quantity(
-                "forces",
-                r"FINAL +POINT +AND +DERIVATIVES\s+PARAMETER +ATOM.+\s+"
-                rf"((?:\d+ +\d+ +[A-Z]\S* +CARTESIAN.+\s+)+)",
+                'forces',
+                r'FINAL +POINT +AND +DERIVATIVES\s+PARAMETER +ATOM.+\s+'
+                rf'((?:\d+ +\d+ +[A-Z]\S* +CARTESIAN.+\s+)+)',
                 str_operation=lambda x: np.array(
                     [v.split()[6] for v in x.strip().splitlines()], np.dtype(np.float64)
                 ),
             ),
             Quantity(
-                "dipole",
-                rf"DIPOLE +X +Y +Z +TOTAL\s+((?:\S+ +{re_f} +{re_f} +{re_f} +{re_f}\s+)+)",
+                'dipole',
+                rf'DIPOLE +X +Y +Z +TOTAL\s+((?:\S+ +{re_f} +{re_f} +{re_f} +{re_f}\s+)+)',
                 str_operation=lambda x: [v.split() for v in x.strip().splitlines()],
             ),
             Quantity(
-                "atomic_population",
-                rf"ATOM NO\. +TYPE +CHARGE.+\s+((?:\d+ +[A-Z]\S* +{re_f}.+\s+)+)",
+                'atomic_population',
+                rf'ATOM NO\. +TYPE +CHARGE.+\s+((?:\d+ +[A-Z]\S* +{re_f}.+\s+)+)',
                 str_operation=lambda x: [v.split() for v in x.strip().splitlines()],
             ),
             Quantity(
-                "orbital_population",
-                rf"ATOMIC ORBITAL ELECTRON POPULATIONS\s+(Atom.+\s+)((?:\d+ +[A-Z]\S* +{re_f}.+\s+)+)",
+                'orbital_population',
+                rf'ATOMIC ORBITAL ELECTRON POPULATIONS\s+(Atom.+\s+)((?:\d+ +[A-Z]\S* +{re_f}.+\s+)+)',
                 str_operation=lambda x: [v.split() for v in x.strip().splitlines()],
             ),
-            Quantity("spin_S2", rf"\(S\*\*2\) += +({re_f})", dtype=np.float64),
+            Quantity('spin_S2', rf'\(S\*\*2\) += +({re_f})', dtype=np.float64),
             Quantity(
-                "time_physical",
-                rf"WALL\-CLOCK TIME += +({re_f}) SECONDS",
+                'time_physical',
+                rf'WALL\-CLOCK TIME += +({re_f}) SECONDS',
                 dtype=np.float64,
                 unit=ureg.s,
             ),
             Quantity(
-                "time_calculation",
-                rf"COMPUTATION TIME += +({re_f}) SECONDS",
+                'time_calculation',
+                rf'COMPUTATION TIME += +({re_f}) SECONDS',
                 dtype=np.float64,
                 unit=ureg.s,
             ),
@@ -162,21 +162,21 @@ class MopacParser:
     def __init__(self):
         self.mainfile_parser = MainfileParser()
         self._methods = [
-            "AM1",
-            "MNDO",
-            "MNDOD",
-            "PM3",
-            "PM6",
-            "PM6-D3",
-            "PM6-DH+",
-            "PM6-DH2",
-            "PM6-DH2X",
-            "PM6-D3H4",
-            "PM6-D3H4X",
-            "PMEP",
-            "PM7",
-            "PM7-TS",
-            "RM1",
+            'AM1',
+            'MNDO',
+            'MNDOD',
+            'PM3',
+            'PM6',
+            'PM6-D3',
+            'PM6-DH+',
+            'PM6-DH2',
+            'PM6-DH2X',
+            'PM6-D3H4',
+            'PM6-D3H4X',
+            'PMEP',
+            'PM7',
+            'PM7-TS',
+            'RM1',
         ]
 
     def parse(self, filepath, archive, logger):
@@ -191,14 +191,14 @@ class MopacParser:
         sec_run = Run()
         archive.run.append(sec_run)
         sec_run.program = Program(
-            name="mopac", version=self.mainfile_parser.get("program_version")
+            name='mopac', version=self.mainfile_parser.get('program_version')
         )
 
-        date_start = self.mainfile_parser.get("calculation", {}).get("date_start")
+        date_start = self.mainfile_parser.get('calculation', {}).get('date_start')
         if date_start is not None:
             sec_run.time_run = TimeRun(
                 date_start=datetime.strptime(
-                    date_start, "%b %d %H:%M:%S %Y"
+                    date_start, '%b %d %H:%M:%S %Y'
                 ).timestamp()
             )
 
@@ -206,7 +206,7 @@ class MopacParser:
         sec_run.method.append(sec_method)
         sec_method.x_mopac_calculation_parameters = {
             v[0]: v[1]
-            for v in self.mainfile_parser.get("calculation", {}).get("parameters", [])
+            for v in self.mainfile_parser.get('calculation', {}).get('parameters', [])
         }
 
         for method in self._methods:
@@ -217,8 +217,8 @@ class MopacParser:
         sec_system = System()
         sec_run.system.append(sec_system)
         sec_system.atoms = Atoms(
-            labels=[v[1] for v in self.mainfile_parser.get("coordinates", [])],
-            positions=[v[2:5] for v in self.mainfile_parser.get("coordinates", [])]
+            labels=[v[1] for v in self.mainfile_parser.get('coordinates', [])],
+            positions=[v[2:5] for v in self.mainfile_parser.get('coordinates', [])]
             * ureg.angstrom,
         )
 
@@ -281,7 +281,7 @@ class MopacParser:
             sec_charges.value = [
                 c[3] for c in atomic_population
             ] * ureg.elementary_charge
-            orbital_population = self.mainfile_parser.get("orbital_population")
+            orbital_population = self.mainfile_parser.get('orbital_population')
             if orbital_population is not None:
                 # orbital labels
                 orbitals = orbital_population[0][1:]

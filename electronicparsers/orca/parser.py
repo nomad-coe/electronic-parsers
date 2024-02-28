@@ -47,7 +47,7 @@ from runschema.calculation import (
 )
 from simulationworkflowschema import GeometryOptimization, GeometryOptimizationMethod
 
-re_n = r"\r*\n"
+re_n = r'\r*\n'
 
 
 class OutParser(TextParser):
@@ -55,89 +55,89 @@ class OutParser(TextParser):
         super().__init__()
 
     def init_quantities(self):
-        re_float = r"[-+]?\d+\.?\d*(?:[Ee][-+]\d+)?"
+        re_float = r'[-+]?\d+\.?\d*(?:[Ee][-+]\d+)?'
 
         self._energy_mapping = {
-            "Total Energy": "energy_total",
-            "Nuclear Repulsion": "energy_nuclear_repulsion",
-            "Electronic Energy": "elec_energy",
-            "One Electron Energy": "one_elec_energy",
-            "Two Electron Energy": "two_elec_energy",
-            "Potential Energy": "potential_energy",
-            "Kinetic Energy": "energy_kinetic_electronic",
-            r"E\(X\)": "energy_exchange",
-            r"E\(C\)": "energy_correlation",
-            r"E\(XC\)": "energy_XC",
+            'Total Energy': 'energy_total',
+            'Nuclear Repulsion': 'energy_nuclear_repulsion',
+            'Electronic Energy': 'elec_energy',
+            'One Electron Energy': 'one_elec_energy',
+            'Two Electron Energy': 'two_elec_energy',
+            'Potential Energy': 'potential_energy',
+            'Kinetic Energy': 'energy_kinetic_electronic',
+            r'E\(X\)': 'energy_exchange',
+            r'E\(C\)': 'energy_correlation',
+            r'E\(XC\)': 'energy_XC',
         }
 
         self._timing_mapping = {
-            "Total time": "final_time",
-            "Sum of individual times": "sum_individual_times",
-            "Fock matrix formation": "fock_matrix_formation",
-            "Coulomb formation": "coulomb_formation",
-            r"Split\-RI-J": "split_rj",
-            "XC integration": "xc_integration",
-            r"Basis function eval\.": "basis_fn_evaluation",
-            r"Density eval\.": "density_evaluation",
-            r"XC\-Functional eval\.": "xc_functional_evaluation",
-            r"XC\-Potential eval\.": "potential_evaluation",
-            "Diagonalization": "diagonalization",
-            "Density matrix formation": "density_matrix_formation",
-            "Population analysis": "population_analysis",
-            "Initial guess": "initial_guess",
-            "Orbital Transformation": "orbital_transformation",
-            "Orbital Orthonormalization": "orbital_orthonormalization",
-            "DIIS solution": "diis_solution",
-            "Grid generation": "grid_generation",
-            "Total SCF gradient time": "scf_gradient",
+            'Total time': 'final_time',
+            'Sum of individual times': 'sum_individual_times',
+            'Fock matrix formation': 'fock_matrix_formation',
+            'Coulomb formation': 'coulomb_formation',
+            r'Split\-RI-J': 'split_rj',
+            'XC integration': 'xc_integration',
+            r'Basis function eval\.': 'basis_fn_evaluation',
+            r'Density eval\.': 'density_evaluation',
+            r'XC\-Functional eval\.': 'xc_functional_evaluation',
+            r'XC\-Potential eval\.': 'potential_evaluation',
+            'Diagonalization': 'diagonalization',
+            'Density matrix formation': 'density_matrix_formation',
+            'Population analysis': 'population_analysis',
+            'Initial guess': 'initial_guess',
+            'Orbital Transformation': 'orbital_transformation',
+            'Orbital Orthonormalization': 'orbital_orthonormalization',
+            'DIIS solution': 'diis_solution',
+            'Grid generation': 'grid_generation',
+            'Total SCF gradient time': 'scf_gradient',
         }
 
         def str_to_cartesian_coordinates(val_in):
-            val = [v.split() for v in val_in.strip().split("\n")]
+            val = [v.split() for v in val_in.strip().split('\n')]
             symbols = [v[0][:2] for v in val]
             coordinates = np.array([v[1:4] for v in val], dtype=float)
             return symbols, coordinates * ureg.angstrom
 
         basis_set_quantities = [
-            Quantity("basis_set_atom_labels", r"Type\s*(\w+)", repeats=True),
-            Quantity("basis_set", r":\s*(\w+)\s*contracted\s*to", repeats=True),
-            Quantity("basis_set_contracted", r"(\w+)\s*pattern", repeats=True),
+            Quantity('basis_set_atom_labels', r'Type\s*(\w+)', repeats=True),
+            Quantity('basis_set', r':\s*(\w+)\s*contracted\s*to', repeats=True),
+            Quantity('basis_set_contracted', r'(\w+)\s*pattern', repeats=True),
         ]
 
         basis_set_statistics_quantities = [
             Quantity(
-                "nb_of_primitive_gaussian_shells",
-                r"# of primitive gaussian shells\s*\.+\s*(\d+)",
+                'nb_of_primitive_gaussian_shells',
+                r'# of primitive gaussian shells\s*\.+\s*(\d+)',
                 repeats=True,
                 dtype=int,
             ),
             Quantity(
-                "nb_of_primitive_gaussian_functions",
-                r"# of primitive gaussian functions\s*\.+\s*(\d+)",
+                'nb_of_primitive_gaussian_functions',
+                r'# of primitive gaussian functions\s*\.+\s*(\d+)',
                 repeats=True,
                 dtype=int,
             ),
             Quantity(
-                "nb_of_contracted_shells",
-                r"# of contracted shells\s*\.+\s*(\d+)",
+                'nb_of_contracted_shells',
+                r'# of contracted shells\s*\.+\s*(\d+)',
                 repeats=True,
                 dtype=int,
             ),
             Quantity(
-                "nb_of_contracted_basis_functions",
-                r"# of contracted (?:aux-)?basis functions\s*\.+\s*(\d+)",
+                'nb_of_contracted_basis_functions',
+                r'# of contracted (?:aux-)?basis functions\s*\.+\s*(\d+)',
                 repeats=True,
                 dtype=int,
             ),
             Quantity(
-                "highest_angular_moment",
-                r"Highest angular momentum\s*\.+\s*(\d+)",
+                'highest_angular_moment',
+                r'Highest angular momentum\s*\.+\s*(\d+)',
                 repeats=True,
                 dtype=int,
             ),
             Quantity(
-                "maximum_contraction_depth",
-                r"Maximum contraction depth\s*\.+\s*(\d+)",
+                'maximum_contraction_depth',
+                r'Maximum contraction depth\s*\.+\s*(\d+)',
                 repeats=True,
                 dtype=int,
             ),
@@ -145,119 +145,119 @@ class OutParser(TextParser):
 
         grid_quantities = [
             Quantity(
-                "gral_integ_accuracy",
-                rf"General Integration Accuracy\s*IntAcc\s*\.+\s*({re_float})",
+                'gral_integ_accuracy',
+                rf'General Integration Accuracy\s*IntAcc\s*\.+\s*({re_float})',
                 dtype=float,
             ),
             Quantity(
-                "radial_grid_type",
-                r"Radial Grid Type\s*RadialGrid\s*\.+\s*(\S+)",
+                'radial_grid_type',
+                r'Radial Grid Type\s*RadialGrid\s*\.+\s*(\S+)',
                 convert=False,
             ),
             Quantity(
-                "angular_grid",
-                r"Angular Grid \(max\. acc\.\)\s*AngularGrid\s*\.+\s*(\S+)",
+                'angular_grid',
+                r'Angular Grid \(max\. acc\.\)\s*AngularGrid\s*\.+\s*(\S+)',
                 convert=False,
             ),
             Quantity(
-                "grid_pruning_method",
-                r"Angular grid pruning method\s*GridPruning\s*\.+\s*(.+)",
+                'grid_pruning_method',
+                r'Angular grid pruning method\s*GridPruning\s*\.+\s*(.+)',
                 flatten=False,
                 convert=False,
             ),
             Quantity(
-                "weight_gener_scheme",
-                r"Weight generation scheme\s*WeightScheme\s*\.+\s*(\w+)",
+                'weight_gener_scheme',
+                r'Weight generation scheme\s*WeightScheme\s*\.+\s*(\w+)',
                 convert=False,
             ),
             Quantity(
-                "basis_fn_cutoff",
-                rf"Basis function cutoff\s*BFCut\s*\.+\s*({re_float})",
+                'basis_fn_cutoff',
+                rf'Basis function cutoff\s*BFCut\s*\.+\s*({re_float})',
                 dtype=float,
             ),
             Quantity(
-                "integr_weight_cutoff",
-                rf"Integration weight cutoff\s*WCut\s*\.+\s*({re_float})",
+                'integr_weight_cutoff',
+                rf'Integration weight cutoff\s*WCut\s*\.+\s*({re_float})',
                 dtype=float,
             ),
             Quantity(
-                "nb_grid_pts_after_initial_pruning",
-                r"# of grid points \(after initial pruning\)\s*\.+\s*(\d+)",
+                'nb_grid_pts_after_initial_pruning',
+                r'# of grid points \(after initial pruning\)\s*\.+\s*(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "nb_grid_pts_after_weights_screening",
-                r"# of grid points \(after weights\+screening\)\s*\.+\s*(\d+)",
+                'nb_grid_pts_after_weights_screening',
+                r'# of grid points \(after weights\+screening\)\s*\.+\s*(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "total_nb_grid_pts",
-                r"Total number of grid points\s*\.+\s*(\d+)",
+                'total_nb_grid_pts',
+                r'Total number of grid points\s*\.+\s*(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "total_nb_batches", r"Total number of batches\s*\.+\s*(\d+)", dtype=int
+                'total_nb_batches', r'Total number of batches\s*\.+\s*(\d+)', dtype=int
             ),
             Quantity(
-                "avg_nb_points_per_batch",
-                r"Average number of points per batch\s*\.+\s*(\d+)",
+                'avg_nb_points_per_batch',
+                r'Average number of points per batch\s*\.+\s*(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "avg_nb_grid_pts_per_atom",
-                r"Average number of grid points per atom\s*\.+\s*(\d+)",
+                'avg_nb_grid_pts_per_atom',
+                r'Average number of grid points per atom\s*\.+\s*(\d+)',
                 dtype=int,
             ),
         ]
 
         scf_convergence_quantities = [
             Quantity(
-                name.lower().replace(" ", "_").replace("-", "_"),
-                rf"%s\s*\.+\s*({re_float})\s* Tolerance :\s*({re_float})" % name,
+                name.lower().replace(' ', '_').replace('-', '_'),
+                rf'%s\s*\.+\s*({re_float})\s* Tolerance :\s*({re_float})' % name,
                 dtype=float,
             )
             for name in [
-                "Last Energy change",
-                "Last MAX-Density change",
-                "Last RMS-Density change",
+                'Last Energy change',
+                'Last MAX-Density change',
+                'Last RMS-Density change',
             ]
         ]
 
         population_quantities = [
             Quantity(
-                "atomic_charges",
-                r"[A-Z]+ ATOMIC CHARGES.*\n\-+([\s\S]+?)\-{10}",
+                'atomic_charges',
+                r'[A-Z]+ ATOMIC CHARGES.*\n\-+([\s\S]+?)\-{10}',
                 sub_parser=TextParser(
                     quantities=[
-                        Quantity("species", r"\n *\d+\s*(\w+)", repeats=True),
+                        Quantity('species', r'\n *\d+\s*(\w+)', repeats=True),
                         Quantity(
-                            "charge", rf":\s*({re_float})", repeats=True, dtype=float
+                            'charge', rf':\s*({re_float})', repeats=True, dtype=float
                         ),
                         Quantity(
-                            "total_charge",
-                            rf"Sum of atomic charges\s*:\s*({re_float})",
+                            'total_charge',
+                            rf'Sum of atomic charges\s*:\s*({re_float})',
                             dtype=float,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "orbital_charges",
-                rf"[A-Z]+ REDUCED ORBITAL CHARGES.*\s*\-+([\s\S]+?{re_n}{re_n})",
+                'orbital_charges',
+                rf'[A-Z]+ REDUCED ORBITAL CHARGES.*\s*\-+([\s\S]+?{re_n}{re_n})',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "atom",
-                            r"([A-Z][a-z]?\s*[spdf][\s\S]+?)\n *(?:\d|\Z)",
+                            'atom',
+                            r'([A-Z][a-z]?\s*[spdf][\s\S]+?)\n *(?:\d|\Z)',
                             repeats=True,
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "species", r"([A-Z][a-z]?)", convert=False
+                                        'species', r'([A-Z][a-z]?)', convert=False
                                     ),
                                     Quantity(
-                                        "charge",
-                                        rf"([spdf]\S*)\s*:\s*({re_float})",
+                                        'charge',
+                                        rf'([spdf]\S*)\s*:\s*({re_float})',
                                         repeats=True,
                                     ),
                                 ]
@@ -270,113 +270,113 @@ class OutParser(TextParser):
 
         self_consistent_quantities = [
             Quantity(
-                "scf_settings",
-                r"SCF SETTINGS\s*\-+([\s\S]+?)\-{10}",
+                'scf_settings',
+                r'SCF SETTINGS\s*\-+([\s\S]+?)\-{10}',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "XC_functional_type",
-                            r"Ab initio Hamiltonian\s*Method\s*\.+\s*(\S+)",
+                            'XC_functional_type',
+                            r'Ab initio Hamiltonian\s*Method\s*\.+\s*(\S+)',
                             convert=False,
                         ),
                         Quantity(
-                            "XC_functional_type",
-                            r"Density Functional\s*Method\s*\.+\s*(\S+)",
+                            'XC_functional_type',
+                            r'Density Functional\s*Method\s*\.+\s*(\S+)',
                             convert=False,
                         ),
                         Quantity(
-                            "exchange_functional",
-                            r"Exchange Functional\s*Exchange\s*\.+\s*(\S+)",
+                            'exchange_functional',
+                            r'Exchange Functional\s*Exchange\s*\.+\s*(\S+)',
                             convert=False,
                         ),
                         Quantity(
-                            "xalpha_param",
-                            rf"X-Alpha parameter\s*XAlpha\s*\.+\s*({re_float})",
+                            'xalpha_param',
+                            rf'X-Alpha parameter\s*XAlpha\s*\.+\s*({re_float})',
                             dtype=float,
                         ),
                         Quantity(
-                            "beckes_beta_param",
-                            rf"Becke\'s b parameter\s*XBeta\s*\.+\s*({re_float})",
+                            'beckes_beta_param',
+                            rf'Becke\'s b parameter\s*XBeta\s*\.+\s*({re_float})',
                             dtype=float,
                         ),
                         Quantity(
-                            "correl_functional",
-                            r"Correlation Functional Correlation\s*\.+\s*(\S+)",
+                            'correl_functional',
+                            r'Correlation Functional Correlation\s*\.+\s*(\S+)',
                             convert=False,
                         ),
                         Quantity(
-                            "lda_part_of_gga_corr",
-                            r"LDA part of GGA corr\.\s*LDAOpt\s*\.+\s*(\S+)",
+                            'lda_part_of_gga_corr',
+                            r'LDA part of GGA corr\.\s*LDAOpt\s*\.+\s*(\S+)',
                             convert=False,
                         ),
                         Quantity(
-                            "scalar_relativistic_method",
-                            r"Scalar relativistic method\s*\.+\s*(\w+)",
+                            'scalar_relativistic_method',
+                            r'Scalar relativistic method\s*\.+\s*(\w+)',
                             convert=False,
                         ),
                         Quantity(
-                            "speed_of_light_used",
-                            rf"Speed of light used\s*Velit\s*\.+\s*({re_float})",
+                            'speed_of_light_used',
+                            rf'Speed of light used\s*Velit\s*\.+\s*({re_float})',
                             dtype=float,
                         ),
                         Quantity(
-                            "hf_type",
-                            r"Hartree-Fock type\s*HFTyp\s*\.+\s*(\w+)",
+                            'hf_type',
+                            r'Hartree-Fock type\s*HFTyp\s*\.+\s*(\w+)',
                             convert=False,
                         ),
                         Quantity(
-                            "total_charge",
-                            rf"Total Charge\s*Charge\s*\.+\s*({re_float})",
+                            'total_charge',
+                            rf'Total Charge\s*Charge\s*\.+\s*({re_float})',
                             dtype=float,
                         ),
                         Quantity(
-                            "multiplicity",
-                            rf"Multiplicity\s*Mult\s*\.+\s*({re_float})",
+                            'multiplicity',
+                            rf'Multiplicity\s*Mult\s*\.+\s*({re_float})',
                             dtype=float,
                         ),
                         Quantity(
-                            "nelectrons",
-                            rf"Number of Electrons\s*NEL\s*\.+\s*({re_float})",
+                            'nelectrons',
+                            rf'Number of Electrons\s*NEL\s*\.+\s*({re_float})',
                             dtype=float,
                         ),
                         Quantity(
-                            "nuclear_repulsion",
-                            rf"Nuclear Repulsion\s*ENuc\s*\.+\s*({re_float})",
-                            dtype=float,
-                            unit=ureg.hartree,
-                        ),
-                        Quantity(
-                            "convergence_check_mode",
-                            r"Convergence Check Mode ConvCheckMode\s*\.+\s*(\S+)",
-                            convert=False,
-                        ),
-                        Quantity(
-                            "energy_change_tolerance",
-                            rf"Energy Change\s*TolE\s*\.+\s*({re_float})",
+                            'nuclear_repulsion',
+                            rf'Nuclear Repulsion\s*ENuc\s*\.+\s*({re_float})',
                             dtype=float,
                             unit=ureg.hartree,
                         ),
                         Quantity(
-                            "1_elect_energy_change",
-                            rf"1\-El\. energy change\s*\.+\s*({re_float})",
+                            'convergence_check_mode',
+                            r'Convergence Check Mode ConvCheckMode\s*\.+\s*(\S+)',
+                            convert=False,
+                        ),
+                        Quantity(
+                            'energy_change_tolerance',
+                            rf'Energy Change\s*TolE\s*\.+\s*({re_float})',
+                            dtype=float,
+                            unit=ureg.hartree,
+                        ),
+                        Quantity(
+                            '1_elect_energy_change',
+                            rf'1\-El\. energy change\s*\.+\s*({re_float})',
                             dtype=float,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "dft_grid_generation",
-                r"DFT GRID GENERATION\s*\-+([\s\S]+?\-{10})",
+                'dft_grid_generation',
+                r'DFT GRID GENERATION\s*\-+([\s\S]+?\-{10})',
                 sub_parser=TextParser(quantities=grid_quantities),
             ),
             Quantity(
-                "scf_iterations",
-                r"SCF ITERATIONS\s*\-+([\s\S]+?)\*{10}",
+                'scf_iterations',
+                r'SCF ITERATIONS\s*\-+([\s\S]+?)\*{10}',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "energy",
-                            rf"\n *\d+\s*({re_float})\s*{re_float}",
+                            'energy',
+                            rf'\n *\d+\s*({re_float})\s*{re_float}',
                             repeats=True,
                             dtype=float,
                             unit=ureg.hartree,
@@ -385,18 +385,18 @@ class OutParser(TextParser):
                 ),
             ),
             Quantity(
-                "final_grid",
-                r"Setting up the final grid:([\s\S]+?)\-{10}",
+                'final_grid',
+                r'Setting up the final grid:([\s\S]+?)\-{10}',
                 sub_parser=TextParser(quantities=grid_quantities),
             ),
             Quantity(
-                "total_scf_energy",
-                r"TOTAL SCF ENERGY\s*\-+([\s\S]+?)\-{10}",
+                'total_scf_energy',
+                r'TOTAL SCF ENERGY\s*\-+([\s\S]+?)\-{10}',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
                             name,
-                            rf"%s\s*:\s*({re_float})" % key,
+                            rf'%s\s*:\s*({re_float})' % key,
                             dtype=float,
                             unit=ureg.hartree,
                         )
@@ -404,54 +404,54 @@ class OutParser(TextParser):
                     ]
                     + [
                         Quantity(
-                            "virial_ratio",
-                            rf"Virial Ratio\s*:\s*({re_float})",
+                            'virial_ratio',
+                            rf'Virial Ratio\s*:\s*({re_float})',
                             dtype=float,
                         ),
                         Quantity(
-                            "nb_elect_alpha_channel",
-                            rf"N\(Alpha\)\s*:\s*({re_float})",
+                            'nb_elect_alpha_channel',
+                            rf'N\(Alpha\)\s*:\s*({re_float})',
                             dtype=float,
                         ),
                         Quantity(
-                            "nb_elect_beta_channel",
-                            rf"N\(Beta\)\s*:\s*({re_float})",
+                            'nb_elect_beta_channel',
+                            rf'N\(Beta\)\s*:\s*({re_float})',
                             dtype=float,
                         ),
                         Quantity(
-                            "nb_elect_total",
-                            rf"N\(Total\)\s*:\s*({re_float})",
+                            'nb_elect_total',
+                            rf'N\(Total\)\s*:\s*({re_float})',
                             dtype=float,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "scf_convergence",
-                r"SCF CONVERGENCE\s*\-+([\s\S]+?)\-{10}",
+                'scf_convergence',
+                r'SCF CONVERGENCE\s*\-+([\s\S]+?)\-{10}',
                 sub_parser=TextParser(quantities=scf_convergence_quantities),
             ),
             Quantity(
-                "orbital_energies",
-                rf"NO\s*OCC\s*E\(Eh\)\s*E\(eV\)\s*([\s\S]+?){re_n}{re_n}",
+                'orbital_energies',
+                rf'NO\s*OCC\s*E\(Eh\)\s*E\(eV\)\s*([\s\S]+?){re_n}{re_n}',
                 str_operation=lambda x: np.array(
-                    [v.split()[:4] for v in x.split("\n")], dtype=float
+                    [v.split()[:4] for v in x.split('\n')], dtype=float
                 ),
                 repeats=True,
             ),
             Quantity(
-                "mulliken",
-                r"MULLIKEN POPULATION ANALYSIS \*\s*\*+([\s\S]+?)\*{10}",
+                'mulliken',
+                r'MULLIKEN POPULATION ANALYSIS \*\s*\*+([\s\S]+?)\*{10}',
                 sub_parser=TextParser(quantities=population_quantities),
             ),
             Quantity(
-                "timings",
-                r"\n *TIMINGS\s*\-+\s*([\s\S]+?)\-{10}",
+                'timings',
+                r'\n *TIMINGS\s*\-+\s*([\s\S]+?)\-{10}',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
                             name,
-                            rf"%s\s*\.+\s*({re_float})" % key,
+                            rf'%s\s*\.+\s*({re_float})' % key,
                             dtype=float,
                             unit=ureg.s,
                         )
@@ -460,8 +460,8 @@ class OutParser(TextParser):
                 ),
             ),
             Quantity(
-                "time_calculation",
-                r"Total SCF time\: (\d+) days (\d+) hours (\d+) min (\d+) sec ",
+                'time_calculation',
+                r'Total SCF time\: (\d+) days (\d+) hours (\d+) min (\d+) sec ',
                 dytpe=np.dtype(np.float64),
             ),
         ]
@@ -469,46 +469,46 @@ class OutParser(TextParser):
         # TODO parse more properties, add to metainfo
         tddft_quantities = [
             Quantity(
-                "absorption_spectrum_electric",
-                r"ABSORPTION SPECTRUM VIA TRANSITION ELECTRIC DIPOLE MOMENTS\s*"
-                r"\-+[\s\S]+?\-+\n([\s\S]+?)\-{10}",
-                str_operation=lambda x: [v.split() for v in x.strip().split("\n")],
+                'absorption_spectrum_electric',
+                r'ABSORPTION SPECTRUM VIA TRANSITION ELECTRIC DIPOLE MOMENTS\s*'
+                r'\-+[\s\S]+?\-+\n([\s\S]+?)\-{10}',
+                str_operation=lambda x: [v.split() for v in x.strip().split('\n')],
             )
         ]
 
         # TODO parse more properties, add to metainfo
         mp2_quantities = [
             Quantity(
-                "mp2_basis_dimension",
-                r"Dimension of the basis\s*\.+\s*(\d+)",
+                'mp2_basis_dimension',
+                r'Dimension of the basis\s*\.+\s*(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "scaling_mp2_energy",
-                rf"Overall scaling of the MP2 energy\s*\.+\s*({re_float})",
+                'scaling_mp2_energy',
+                rf'Overall scaling of the MP2 energy\s*\.+\s*({re_float})',
                 dtype=float,
             ),
             Quantity(
-                "mp2_aux_basis_dimension",
-                r"Dimension of the aux\-basis\s*\.+\s*(\d+)",
+                'mp2_aux_basis_dimension',
+                r'Dimension of the aux\-basis\s*\.+\s*(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "energy_method_current",
-                rf"RI\-MP2 CORRELATION ENERGY:\s*({re_float})",
+                'energy_method_current',
+                rf'RI\-MP2 CORRELATION ENERGY:\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "energy_total",
-                rf"MP2 TOTAL ENERGY:\s*({re_float})",
+                'energy_total',
+                rf'MP2 TOTAL ENERGY:\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
         ]
 
         def str_to_iteration_energy(val_in):
-            val = [v.split() for v in val_in.strip().split("\n")]
+            val = [v.split() for v in val_in.strip().split('\n')]
             keys = val[0]
             val = np.transpose(
                 np.array([v for v in val[1:] if len(v) == len(keys)], dtype=float)
@@ -517,241 +517,241 @@ class OutParser(TextParser):
 
         ci_quantities = [
             Quantity(
-                "electronic_structure_method",
-                r"Correlation treatment\s*\.+\s*(\S+)",
+                'electronic_structure_method',
+                r'Correlation treatment\s*\.+\s*(\S+)',
                 convert=False,
             ),
             Quantity(
-                "single_excitations_on_off",
-                r"Single excitations\s*\.+\s*(\S+)",
+                'single_excitations_on_off',
+                r'Single excitations\s*\.+\s*(\S+)',
                 convert=False,
             ),
             Quantity(
-                "orbital_opt_on_off",
-                r"Orbital optimization\s*\.+\s*(\S+)",
+                'orbital_opt_on_off',
+                r'Orbital optimization\s*\.+\s*(\S+)',
                 convert=False,
             ),
             Quantity(
-                "z_vector_calc_on_off",
-                r"Calculation of Z vector\s*\.+\s*(\S+)",
+                'z_vector_calc_on_off',
+                r'Calculation of Z vector\s*\.+\s*(\S+)',
                 convert=False,
             ),
             Quantity(
-                "Brueckner_orbitals_calc_on_off",
-                r"Calculation of Brueckner orbitals\s*\.+\s*(\S+)",
+                'Brueckner_orbitals_calc_on_off',
+                r'Calculation of Brueckner orbitals\s*\.+\s*(\S+)',
                 convert=False,
             ),
             Quantity(
-                "perturbative_triple_excitations_on_off",
-                r"Perturbative triple excitations\s*\.+\s*(\S+)",
+                'perturbative_triple_excitations_on_off',
+                r'Perturbative triple excitations\s*\.+\s*(\S+)',
                 convert=False,
             ),
             Quantity(
-                "f12_correction_on_off",
-                r"Calculation of F12 correction\s*\.+\s*(\S+)",
+                'f12_correction_on_off',
+                r'Calculation of F12 correction\s*\.+\s*(\S+)',
                 convert=False,
             ),
             Quantity(
-                "frozen_core_treatment",
-                r"Frozen core treatment\s*\.+\s*(.+)",
+                'frozen_core_treatment',
+                r'Frozen core treatment\s*\.+\s*(.+)',
                 flatten=False,
                 convert=False,
             ),
             Quantity(
-                "reference_wave_function",
-                r"Reference Wavefunction\s*\.+\s*(.+)",
+                'reference_wave_function',
+                r'Reference Wavefunction\s*\.+\s*(.+)',
                 flatten=False,
                 convert=False,
             ),
             Quantity(
-                "nb_of_atomic_orbitals", r"Number of AO\'s\s*\.+\s*(\d+)", dtype=int
+                'nb_of_atomic_orbitals', r'Number of AO\'s\s*\.+\s*(\d+)', dtype=int
             ),
             Quantity(
-                "nb_of_electrons", r"Number of electrons\s*\.+\s*(\d+)", dtype=int
+                'nb_of_electrons', r'Number of electrons\s*\.+\s*(\d+)', dtype=int
             ),
             Quantity(
-                "nb_of_correlated_electrons",
-                r"Number of correlated electrons\s*\.+\s*(\d+)",
+                'nb_of_correlated_electrons',
+                r'Number of correlated electrons\s*\.+\s*(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "integral_transformation",
-                r"Integral transformation\s*\.+\s*(.+)",
+                'integral_transformation',
+                r'Integral transformation\s*\.+\s*(.+)',
                 flatten=False,
                 convert=False,
             ),
             Quantity(
-                "level_shift_amplitude_update",
-                rf"Level shift for amplitude update\s*\.+\s*({re_float})",
+                'level_shift_amplitude_update',
+                rf'Level shift for amplitude update\s*\.+\s*({re_float})',
                 dtype=float,
             ),
             Quantity(
-                "coulomb_transformation_type",
-                r"Transformation type\s*\.+\s*(.+)",
+                'coulomb_transformation_type',
+                r'Transformation type\s*\.+\s*(.+)',
                 flatten=False,
                 convert=False,
             ),
             Quantity(
-                "coulomb_transformation_dimension_basis",
-                r"Dimension of the basis\s*\.+\s*(\d+)",
+                'coulomb_transformation_dimension_basis',
+                r'Dimension of the basis\s*\.+\s*(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "nb_internal_alpha_mol_orbitals",
-                r"Number of internal alpha\-MOs\s*\.+\s*(\d+)",
+                'nb_internal_alpha_mol_orbitals',
+                r'Number of internal alpha\-MOs\s*\.+\s*(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "nb_internal_beta_mol_orbitals",
-                r"Number of internal beta\-MOs\s*\.+\s*(\d+)",
+                'nb_internal_beta_mol_orbitals',
+                r'Number of internal beta\-MOs\s*\.+\s*(\d+)',
                 dtype=int,
             ),
-            Quantity("pair_cutoff", rf"Pair cutoff\s*\.+\s*({re_float})", dtype=float),
+            Quantity('pair_cutoff', rf'Pair cutoff\s*\.+\s*({re_float})', dtype=float),
             Quantity(
-                "atomic_orbital_integral_source",
-                r"AO\-integral source\s*\.+\s*(.+)",
+                'atomic_orbital_integral_source',
+                r'AO\-integral source\s*\.+\s*(.+)',
                 flatten=False,
                 convert=False,
             ),
             Quantity(
-                "integral_package_used",
-                r"Integral package used\s*\.+\s*(.+)",
+                'integral_package_used',
+                r'Integral package used\s*\.+\s*(.+)',
                 flatten=False,
                 convert=False,
             ),
             Quantity(
-                "nb_alpha_pairs_included",
-                r"Number of Alpha\-MO pairs included\s*\.+\s*(\d+)",
+                'nb_alpha_pairs_included',
+                r'Number of Alpha\-MO pairs included\s*\.+\s*(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "nb_beta_pairs_included",
-                r"Number of Beta\-MO pairs included\s*\.+\s*(\d+)",
+                'nb_beta_pairs_included',
+                r'Number of Beta\-MO pairs included\s*\.+\s*(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "mp2_energy_spin_aa",
-                rf"EMP2\(aa\)=\s*({re_float})",
+                'mp2_energy_spin_aa',
+                rf'EMP2\(aa\)=\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "mp2_energy_spin_bb",
-                rf"EMP2\(bb\)=\s*({re_float})",
+                'mp2_energy_spin_bb',
+                rf'EMP2\(bb\)=\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "mp2_energy_spin_ab",
-                rf"EMP2\(ab\)=\s*({re_float})",
+                'mp2_energy_spin_ab',
+                rf'EMP2\(ab\)=\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "mp2_initial_guess",
-                rf"E\(0\)\s*\.+\s*({re_float})",
+                'mp2_initial_guess',
+                rf'E\(0\)\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "mp2_energy",
-                rf"E\(MP2\)\s*\.+\s*({re_float})",
+                'mp2_energy',
+                rf'E\(MP2\)\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "mp2_total_energy",
-                rf"Initial E\(tot\)\s*\.+\s*({re_float})",
+                'mp2_total_energy',
+                rf'Initial E\(tot\)\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "T_and_T_energy",
-                rf"<T\|T>\s*\.+\s*({re_float})",
+                'T_and_T_energy',
+                rf'<T\|T>\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "total_nb_pairs_included",
-                r"Number of pairs included\s*\.+\s*(\d+)",
+                'total_nb_pairs_included',
+                r'Number of pairs included\s*\.+\s*(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "iteration_energy",
-                r"(Iter\s*E\(tot\)[\s\S]+?)\-{3}",
+                'iteration_energy',
+                r'(Iter\s*E\(tot\)[\s\S]+?)\-{3}',
                 str_operation=str_to_iteration_energy,
                 convert=False,
             ),
             Quantity(
-                "ccsd_correlation_energy",
-                rf"E\(CORR\)\s*\.+\s*({re_float})",
+                'ccsd_correlation_energy',
+                rf'E\(CORR\)\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "ccsd_total_energy",
-                rf"E\(TOT\)\s*\.+\s*({re_float})",
+                'ccsd_total_energy',
+                rf'E\(TOT\)\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "single_norm_half_ss",
-                rf"Singles Norm <S\|S>\*\*1/2\s*\.+\s*({re_float})",
+                'single_norm_half_ss',
+                rf'Singles Norm <S\|S>\*\*1/2\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "t1_diagnostic",
-                rf"T1 diagnostic\s*\.+\s*({re_float})",
+                't1_diagnostic',
+                rf'T1 diagnostic\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "ccsdt_total_triples_correction",
-                rf"Triples Correction \(T\)\s*\.+\s*({re_float})",
+                'ccsdt_total_triples_correction',
+                rf'Triples Correction \(T\)\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "ccsdt_aaa_triples_contribution",
-                rf"alpha\-alpha\-alpha\s*\.+\s*({re_float})",
+                'ccsdt_aaa_triples_contribution',
+                rf'alpha\-alpha\-alpha\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "ccsdt_aab_triples_contribution",
-                rf"alpha\-alpha\-beta\s*\.+\s*({re_float})",
+                'ccsdt_aab_triples_contribution',
+                rf'alpha\-alpha\-beta\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             # typo in metainfo?
             Quantity(
-                "ccsdt_aba_triples_contribution",
-                rf"alpha\-beta\-beta\s*\.+\s*({re_float})",
+                'ccsdt_aba_triples_contribution',
+                rf'alpha\-beta\-beta\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "ccsdt_bbb_triples_contribution",
-                rf"beta\-beta\-beta\s*\.+\s*({re_float})",
+                'ccsdt_bbb_triples_contribution',
+                rf'beta\-beta\-beta\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "ccsdt_final_corr_energy",
-                rf"Final correlation energy\s*\.+\s*({re_float})",
+                'ccsdt_final_corr_energy',
+                rf'Final correlation energy\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "ccsd_final_energy",
-                rf"E\(CCSD\)\s*\.+\s*({re_float})",
+                'ccsd_final_energy',
+                rf'E\(CCSD\)\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "energy_total",
-                rf"E\(CCSD\(T\)\)\s*\.+\s*({re_float})",
+                'energy_total',
+                rf'E\(CCSD\(T\)\)\s*\.+\s*({re_float})',
                 dtype=float,
                 unit=ureg.hartree,
             ),
@@ -759,116 +759,116 @@ class OutParser(TextParser):
 
         calculation_quantities = [
             Quantity(
-                "cartesian_coordinates",
-                rf"CARTESIAN COORDINATES \(ANGSTROEM\)\s*\-+\s*([\s\S]+?){re_n}{re_n}",
+                'cartesian_coordinates',
+                rf'CARTESIAN COORDINATES \(ANGSTROEM\)\s*\-+\s*([\s\S]+?){re_n}{re_n}',
                 str_operation=str_to_cartesian_coordinates,
             ),
             Quantity(
-                "basis_set",
-                r"\n *BASIS SET INFORMATION\s*\-+([\s\S]+?)\-{10}",
+                'basis_set',
+                r'\n *BASIS SET INFORMATION\s*\-+([\s\S]+?)\-{10}',
                 sub_parser=TextParser(quantities=basis_set_quantities),
             ),
             Quantity(
-                "auxiliary_basis_set",
-                r"\n *AUXILIARY BASIS SET INFORMATION\s*\-+([\s\S]+?)\-{10}",
+                'auxiliary_basis_set',
+                r'\n *AUXILIARY BASIS SET INFORMATION\s*\-+([\s\S]+?)\-{10}',
                 sub_parser=TextParser(quantities=basis_set_quantities),
             ),
             Quantity(
-                "basis_set_statistics",
-                r"BASIS SET STATISTICS AND STARTUP INFO([\s\S]+?)\-{10}",
+                'basis_set_statistics',
+                r'BASIS SET STATISTICS AND STARTUP INFO([\s\S]+?)\-{10}',
                 sub_parser=TextParser(quantities=basis_set_statistics_quantities),
             ),
             Quantity(
-                "self_consistent",
-                r"((?:ORCA SCF|DFT GRID GENERATION)\s*\-+[\s\S]+?(?:\-{70}|\Z))",
+                'self_consistent',
+                r'((?:ORCA SCF|DFT GRID GENERATION)\s*\-+[\s\S]+?(?:\-{70}|\Z))',
                 sub_parser=TextParser(quantities=self_consistent_quantities),
             ),
             Quantity(
-                "tddft",
-                r"ORCA TD\-DFT(?:/TDA)* CALCULATION\s*\-+\s*([\s\S]+?E\(tot\).*)",
+                'tddft',
+                r'ORCA TD\-DFT(?:/TDA)* CALCULATION\s*\-+\s*([\s\S]+?E\(tot\).*)',
                 sub_parser=TextParser(quantities=tddft_quantities),
             ),
             Quantity(
-                "mp2",
-                r"ORCA MP2 CALCULATION([\s\S]+?MP2 TOTAL ENERGY:.+)",
+                'mp2',
+                r'ORCA MP2 CALCULATION([\s\S]+?MP2 TOTAL ENERGY:.+)',
                 sub_parser=TextParser(quantities=mp2_quantities),
             ),
             Quantity(
-                "ci",
-                r"ORCA\-MATRIX DRIVEN CI([\s\S]+?E\(CCSD\(T\)\).*)",
+                'ci',
+                r'ORCA\-MATRIX DRIVEN CI([\s\S]+?E\(CCSD\(T\)\).*)',
                 sub_parser=TextParser(quantities=ci_quantities),
             ),
         ]
 
         geometry_optimization_quantities = [
             Quantity(
-                "%s_tol" % key.lower().replace(" ", "_").replace(".", ""),
-                rf"%s\s*(\w+)\s*\.+\s*({re_float})" % key,
+                '%s_tol' % key.lower().replace(' ', '_').replace('.', ''),
+                rf'%s\s*(\w+)\s*\.+\s*({re_float})' % key,
                 dtype=float,
             )
             for key in [
-                "Energy Change",
-                "Max. Gradient",
-                "RMS Gradient",
-                "Max. Displacement",
-                "RMS Displacement",
+                'Energy Change',
+                'Max. Gradient',
+                'RMS Gradient',
+                'Max. Displacement',
+                'RMS Displacement',
             ]
         ]
 
         geometry_optimization_quantities += [
-            Quantity("update_method", r"Update method\s*(\w+)\s*\.+\s*(.+)"),
-            Quantity("coords_choice", r"Choice of coordinates\s*(\w+)\s*\.+\s*(.+)"),
-            Quantity("initial_hessian", r"Initial Hessian\s*(\w+)\s*\.+\s*(.+)"),
+            Quantity('update_method', r'Update method\s*(\w+)\s*\.+\s*(.+)'),
+            Quantity('coords_choice', r'Choice of coordinates\s*(\w+)\s*\.+\s*(.+)'),
+            Quantity('initial_hessian', r'Initial Hessian\s*(\w+)\s*\.+\s*(.+)'),
         ]
 
         geometry_optimization_quantities += [
             Quantity(
-                "cycle",
-                r"OPTIMIZATION CYCLE\s*\d+\s*\*\s*\*+([\s\S]+?)(?:\*\s*GEOMETRY|OPTIMIZATION RUN DONE|\Z)",
+                'cycle',
+                r'OPTIMIZATION CYCLE\s*\d+\s*\*\s*\*+([\s\S]+?)(?:\*\s*GEOMETRY|OPTIMIZATION RUN DONE|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=calculation_quantities),
             ),
             Quantity(
-                "final_energy_evaluation",
-                r"FINAL ENERGY EVALUATION AT THE STATIONARY POINT([\s\S]+?FINAL SINGLE POINT ENERGY.*)",
+                'final_energy_evaluation',
+                r'FINAL ENERGY EVALUATION AT THE STATIONARY POINT([\s\S]+?FINAL SINGLE POINT ENERGY.*)',
                 sub_parser=TextParser(quantities=calculation_quantities),
             ),
         ]
 
         self._quantities = [
             Quantity(
-                "program_version",
-                r"Program Version\s*([\w_.].*)",
+                'program_version',
+                r'Program Version\s*([\w_.].*)',
                 convert=False,
                 flatten=False,
             ),
             Quantity(
-                "program_svn", r"\(SVN:\s*\$([^$]+)\$\)\s", convert=False, flatten=False
+                'program_svn', r'\(SVN:\s*\$([^$]+)\$\)\s', convert=False, flatten=False
             ),
             Quantity(
-                "program_compilation_date",
-                r"\(\$Date\:\s*(\w.+?)\s*\$\)",
+                'program_compilation_date',
+                r'\(\$Date\:\s*(\w.+?)\s*\$\)',
                 convert=False,
                 flatten=False,
             ),
             Quantity(
-                "input_file",
-                r"INPUT FILE\s*\=+([\s\S]+?)END OF INPUT",
+                'input_file',
+                r'INPUT FILE\s*\=+([\s\S]+?)END OF INPUT',
                 sub_parser=TextParser(
                     quantities=[
-                        Quantity("xc_functional", r"\d+>\s*!\s*(\S+)"),
-                        Quantity("tier", r"(\w+SCF)"),
+                        Quantity('xc_functional', r'\d+>\s*!\s*(\S+)'),
+                        Quantity('tier', r'(\w+SCF)'),
                     ]
                 ),
             ),
             Quantity(
-                "single_point",
-                r"\* Single Point Calculation \*\s*\*+([\s\S]+?(?:FINAL SINGLE POINT ENERGY.*|\Z))",
+                'single_point',
+                r'\* Single Point Calculation \*\s*\*+([\s\S]+?(?:FINAL SINGLE POINT ENERGY.*|\Z))',
                 sub_parser=TextParser(quantities=calculation_quantities),
             ),
             Quantity(
-                "geometry_optimization",
-                r"\* Geometry Optimization Run \*\s*\*+([\s\S]+?(?:OPTIMIZATION RUN DONE|\Z))",
+                'geometry_optimization',
+                r'\* Geometry Optimization Run \*\s*\*+([\s\S]+?(?:OPTIMIZATION RUN DONE|\Z))',
                 sub_parser=TextParser(quantities=geometry_optimization_quantities),
             ),
         ]
@@ -880,80 +880,80 @@ class OrcaParser:
 
         # TODO list adapted from old parser, is incomplete and entries may be incorrect
         self._xc_functional_map = {
-            "HF": ["HS_X"],
-            "HFS": ["HF_X"],
-            "XALPHA": ["HF_X", "LDA_C_XALPHA"],
-            "LSD": ["LDA_X", "LDA_C_VWN_RPA", "VWN5_RPA"],
-            "LDA": ["LDA_X", "LDA_C_VWN_RPA", "VWN5_RPA"],
-            "VWN": ["LDA_X", "LDA_C_VWN_RPA", "VWN5_RPA"],
-            "VWN5": ["LDA_X", "LDA_C_VWN_RPA", "VWN5_RPA"],
-            "VWN3": ["LDA_X", "LDA_C_VWN_3"],
-            "PWLDA": ["LDA_X", "LDA_C_PW"],
-            "BNULL": ["GGA_X_B88"],
-            "BVWN": ["GGA_X_B88", "LDA_C_VWN_RPA", "VWN5_RPA"],
-            "BP": ["LDA_X", "GGA_X_B88", "LDA_C_VWN", "GGA_C_P86"],
-            "BP86": ["LDA_X", "GGA_X_B88", "LDA_C_VWN", "GGA_C_P86"],
-            "PW91": ["GGA_X_PW91", "GGA_C_PW91"],
-            "PWP": ["GGA_X_PW91", "GGA_C_P86"],
-            "MPWPW": ["GGA_X_MPW91", "GGA_C_PW91"],
-            "MPWLYP": ["GGA_X_MPW91", "GGA_C_LYP"],
-            "BLYP": ["GGA_X_B88", "GGA_C_LYP"],
-            "GP": ["GGA_X_G96", "GGA_C_P86"],
-            "GLYP": ["GGA_X_G96", "GGA_C_LYP"],
-            "PBE": ["GGA_X_PBE", "GGA_C_PBE"],
-            "REVPBE": ["GGA_X_PBE_R", "GGA_C_PBE"],
-            "RPBE": ["GGA_X_RPBE", "GGA_C_PBE"],
-            "OLYP": ["GGA_X_OPTX", "GGA_C_LYP", "GGA_XC_OPWLYP_D"],
-            "OPBE": ["GGA_XC_OPBE_D"],
-            "XLYP": ["GGA_XC_XLYP"],
-            "B97-D": ["GGA_XC_B97_D"],
-            "B97-D3": ["GGA_XC_B97_D"],
-            "TPSS": ["LDA_X", "MGGA_X_TPSS", "LDA_C_PW", "MGGA_C_TPSS"],
-            "TPSSh": ["HYB_MGGA_XC_TPSSH"],
-            "M06L": ["MGGA_X_M06_L", "MGGA_C_M06_L"],
-            "M06": ["MGGA_X_M06", "MGGA_C_M06"],
-            "M062X": ["MGGA_X_M06_2X", "MGGA_C_M06_2X"],
-            "B1LYP": ["HYB_GGA_XC_B1LYP"],
-            "B3LYP": ["HYB_GGA_XC_B3LYP"],
-            "B1P": ["HYB_GGA_XC_B1PW91"],
-            "B3P": ["HYB_GGA_XC_B3P86"],
-            "B3PW": ["HYB_GGA_XC_B3PW91"],
-            "G1LYP": ["GGA_X_G96", "GGA_C_OP_G96"],
-            "PBE0": ["HYB_GGA_XC_PBEH"],
-            "PW1PW": ["HYB_GGA_XC_B1PW91"],
-            "PWP91_1": ["HYB_GGA_XC_B1PW91"],
-            "PWP1": ["HYB_GGA_XC_B1PW91"],
-            "mPW1PW": ["HYB_GGA_XC_MPW1PW"],
-            "mPW1LYP": ["HYB_GGA_XC_MPWLYP1M"],
-            "O3LYP": ["HYB_GGA_XC_O3LYP"],
-            "X3LYP": ["HYB_GGA_XC_X3LYP"],
-            "PW6B95": ["HYB_MGGA_XC_PW6B95"],
-            "B97": ["HYB_GGA_XC_B97"],
-            "BHANDHLYP": ["HYB_GGA_XC_BHANDHLYP"],
-            "B2PLYP": ["HYB_GGA_XC_B2PLYP"],
-            "MB2PLYP": ["HYB_GGA_XC_MB2PLYP"],
-            "PWPB95": ["HYB_MGGA_XC_MPW1B95"],
+            'HF': ['HS_X'],
+            'HFS': ['HF_X'],
+            'XALPHA': ['HF_X', 'LDA_C_XALPHA'],
+            'LSD': ['LDA_X', 'LDA_C_VWN_RPA', 'VWN5_RPA'],
+            'LDA': ['LDA_X', 'LDA_C_VWN_RPA', 'VWN5_RPA'],
+            'VWN': ['LDA_X', 'LDA_C_VWN_RPA', 'VWN5_RPA'],
+            'VWN5': ['LDA_X', 'LDA_C_VWN_RPA', 'VWN5_RPA'],
+            'VWN3': ['LDA_X', 'LDA_C_VWN_3'],
+            'PWLDA': ['LDA_X', 'LDA_C_PW'],
+            'BNULL': ['GGA_X_B88'],
+            'BVWN': ['GGA_X_B88', 'LDA_C_VWN_RPA', 'VWN5_RPA'],
+            'BP': ['LDA_X', 'GGA_X_B88', 'LDA_C_VWN', 'GGA_C_P86'],
+            'BP86': ['LDA_X', 'GGA_X_B88', 'LDA_C_VWN', 'GGA_C_P86'],
+            'PW91': ['GGA_X_PW91', 'GGA_C_PW91'],
+            'PWP': ['GGA_X_PW91', 'GGA_C_P86'],
+            'MPWPW': ['GGA_X_MPW91', 'GGA_C_PW91'],
+            'MPWLYP': ['GGA_X_MPW91', 'GGA_C_LYP'],
+            'BLYP': ['GGA_X_B88', 'GGA_C_LYP'],
+            'GP': ['GGA_X_G96', 'GGA_C_P86'],
+            'GLYP': ['GGA_X_G96', 'GGA_C_LYP'],
+            'PBE': ['GGA_X_PBE', 'GGA_C_PBE'],
+            'REVPBE': ['GGA_X_PBE_R', 'GGA_C_PBE'],
+            'RPBE': ['GGA_X_RPBE', 'GGA_C_PBE'],
+            'OLYP': ['GGA_X_OPTX', 'GGA_C_LYP', 'GGA_XC_OPWLYP_D'],
+            'OPBE': ['GGA_XC_OPBE_D'],
+            'XLYP': ['GGA_XC_XLYP'],
+            'B97-D': ['GGA_XC_B97_D'],
+            'B97-D3': ['GGA_XC_B97_D'],
+            'TPSS': ['LDA_X', 'MGGA_X_TPSS', 'LDA_C_PW', 'MGGA_C_TPSS'],
+            'TPSSh': ['HYB_MGGA_XC_TPSSH'],
+            'M06L': ['MGGA_X_M06_L', 'MGGA_C_M06_L'],
+            'M06': ['MGGA_X_M06', 'MGGA_C_M06'],
+            'M062X': ['MGGA_X_M06_2X', 'MGGA_C_M06_2X'],
+            'B1LYP': ['HYB_GGA_XC_B1LYP'],
+            'B3LYP': ['HYB_GGA_XC_B3LYP'],
+            'B1P': ['HYB_GGA_XC_B1PW91'],
+            'B3P': ['HYB_GGA_XC_B3P86'],
+            'B3PW': ['HYB_GGA_XC_B3PW91'],
+            'G1LYP': ['GGA_X_G96', 'GGA_C_OP_G96'],
+            'PBE0': ['HYB_GGA_XC_PBEH'],
+            'PW1PW': ['HYB_GGA_XC_B1PW91'],
+            'PWP91_1': ['HYB_GGA_XC_B1PW91'],
+            'PWP1': ['HYB_GGA_XC_B1PW91'],
+            'mPW1PW': ['HYB_GGA_XC_MPW1PW'],
+            'mPW1LYP': ['HYB_GGA_XC_MPWLYP1M'],
+            'O3LYP': ['HYB_GGA_XC_O3LYP'],
+            'X3LYP': ['HYB_GGA_XC_X3LYP'],
+            'PW6B95': ['HYB_MGGA_XC_PW6B95'],
+            'B97': ['HYB_GGA_XC_B97'],
+            'BHANDHLYP': ['HYB_GGA_XC_BHANDHLYP'],
+            'B2PLYP': ['HYB_GGA_XC_B2PLYP'],
+            'MB2PLYP': ['HYB_GGA_XC_MB2PLYP'],
+            'PWPB95': ['HYB_MGGA_XC_MPW1B95'],
         }
 
         self._functional_type = {
-            "SLATER": "LDA",
-            "B88": "GGA",
-            "G96": "GGA",
-            "PW91": "GGA",
-            "MPW": "GGA",
-            "PBE": "GGA",
-            "RPBE": "GGA",
-            "OPTX": "GGA",
-            "X": "GGA",
-            "TPSS": "MGGA",
-            "B97D": "GGA",
-            "B97BECKE": "GGA",
-            "SCAN": "MGGA",
-            "VWN5": "LDA",
-            "VWN3": "LDA",
-            "PWLDA": "LDA",
-            "P86": "GGA",
-            "LYP": "GGA",
+            'SLATER': 'LDA',
+            'B88': 'GGA',
+            'G96': 'GGA',
+            'PW91': 'GGA',
+            'MPW': 'GGA',
+            'PBE': 'GGA',
+            'RPBE': 'GGA',
+            'OPTX': 'GGA',
+            'X': 'GGA',
+            'TPSS': 'MGGA',
+            'B97D': 'GGA',
+            'B97BECKE': 'GGA',
+            'SCAN': 'MGGA',
+            'VWN5': 'LDA',
+            'VWN3': 'LDA',
+            'PWLDA': 'LDA',
+            'P86': 'GGA',
+            'LYP': 'GGA',
         }
 
     def parse_method(self, section):
@@ -962,34 +962,34 @@ class OrcaParser:
 
         trivial = [None] * 2
         _native_tier_map = {
-            "SloppySCF": 3.0e-05,
-            "LooseSCF": 1.0e-05,
-            "NormalSCF": 1.0e-06,
-            "StrongSCF": 3.0e-07,
-            "TightSCF": 1.0e-08,
-            "VeryTightSCF": 1.0e-09,
-            "ExtremeSCF": 1.0e-14,
+            'SloppySCF': 3.0e-05,
+            'LooseSCF': 1.0e-05,
+            'NormalSCF': 1.0e-06,
+            'StrongSCF': 3.0e-07,
+            'TightSCF': 1.0e-08,
+            'VeryTightSCF': 1.0e-09,
+            'ExtremeSCF': 1.0e-14,
         }  # https://sites.google.com/site/orcainputlibrary/numerical-precision
         _native_tier_map = {k.lower(): v for k, v in _native_tier_map.items()}
         sec_scf = Scf(
-            native_tier=self.out_parser.get("input_file", {}).get("tier"),
+            native_tier=self.out_parser.get('input_file', {}).get('tier'),
         )
         scf_convergence = (
-            self.out_parser.get("single_point", {})
-            .get("self_consistent", {})
-            .get("scf_convergence", {})
+            self.out_parser.get('single_point', {})
+            .get('self_consistent', {})
+            .get('scf_convergence', {})
         )
         if threshold_energy_change := scf_convergence.get(
-            "last_energy_change", trivial
+            'last_energy_change', trivial
         )[-1]:
             sec_scf.threshold_energy_change = (
                 threshold_energy_change * ureg.hartree
             )  # TODO: extract this from the setup, so it is present even whan a calcultion does not finish properly
         sec_scf.threshold_density_change = scf_convergence.get(
-            "last_rms_density_change", trivial
+            'last_rms_density_change', trivial
         )[-1]
         sec_scf.x_orca_last_max_density_change = scf_convergence.get(
-            "last_max_density_change", trivial
+            'last_max_density_change', trivial
         )[-1]
         if sec_scf.native_tier and not sec_scf.threshold_energy_change:
             sec_scf.threshold_energy_change = (
@@ -1002,37 +1002,37 @@ class OrcaParser:
         # TODO fix metainfo so variables take lists
         sec_basis_sets = []
         for kind, kind_map in [
-            ("basis_set", "wavefunction"),
-            ("auxiliary_basis_set", "auxiliary"),
+            ('basis_set', 'wavefunction'),
+            ('auxiliary_basis_set', 'auxiliary'),
         ]:
             basis_set = section.get(kind)
             if basis_set is None:
                 continue
             exctraction_keys = [
-                "basis_set",
-                "basis_set_atom_labels",
-                "basis_set_contracted",
+                'basis_set',
+                'basis_set_atom_labels',
+                'basis_set_contracted',
             ]
             for key in exctraction_keys:
                 vals = basis_set.get(key, [])
                 for bs_index, val in enumerate(vals):
                     prefix = (
-                        ""
-                        if key == "basis_set_atom_labels"
-                        else kind.split("basis_set", maxsplit=1)[0]
+                        ''
+                        if key == 'basis_set_atom_labels'
+                        else kind.split('basis_set', maxsplit=1)[0]
                     )
-                    metainfo_name = "x_orca_%s%s" % (prefix, key)
+                    metainfo_name = 'x_orca_%s%s' % (prefix, key)
                     # Note: this assumes that each `extraction_key` follows the same order. Not my assumption
                     if bs_index >= len(sec_basis_sets):
                         sec_basis_sets.append(
                             BasisSet(
-                                type="gaussians",
+                                type='gaussians',
                             )
                         )
                     setattr(sec_basis_sets[bs_index], metainfo_name, val)
             sec_method.electrons_representation = [
                 BasisSetContainer(
-                    type="atom-centered orbitals",
+                    type='atom-centered orbitals',
                     scope=[kind_map],
                     basis_set=sec_basis_sets,
                 )
@@ -1040,17 +1040,17 @@ class OrcaParser:
 
         # gaussian basis sets
         for em in sec_method.electrons_representation:
-            if "wavefunction" in em.scope:
-                if basis_set := section.get("basis_set_statistics"):
+            if 'wavefunction' in em.scope:
+                if basis_set := section.get('basis_set_statistics'):
                     sec_basis_set = BasisSet(
-                        type="gaussians",
+                        type='gaussians',
                     )
                     for key, val in basis_set.items():
                         if val is None:
                             continue
                         for n in range(len(val)):
-                            ext = "" if n == 0 else "_aux"
-                            setattr(sec_basis_set, "x_orca_%s%s" % (key, ext), val[n])
+                            ext = '' if n == 0 else '_aux'
+                            setattr(sec_basis_set, 'x_orca_%s%s' % (key, ext), val[n])
                     em.basis_set.append(sec_basis_set)
 
         sec_dft = DFT()
@@ -1058,90 +1058,90 @@ class OrcaParser:
         sec_electronic = Electronic()
         sec_method.electronic = sec_electronic
         # TODO identify DFT+U
-        sec_electronic.method = "DFT"
+        sec_electronic.method = 'DFT'
 
-        scf_settings = section.get("self_consistent", {}).get("scf_settings", {})
+        scf_settings = section.get('self_consistent', {}).get('scf_settings', {})
         for key, val in scf_settings.items():
             if val is not None:
-                if hasattr(val, "units"):
-                    if val.units == "hartree":
-                        val = val.to("joule").magnitude
-                setattr(sec_method, "x_orca_%s" % key, val)
+                if hasattr(val, 'units'):
+                    if val.units == 'hartree':
+                        val = val.to('joule').magnitude
+                setattr(sec_method, 'x_orca_%s' % key, val)
 
-        dft_grid_generation = section.get("self_consistent", {}).get(
-            "dft_grid_generation", {}
+        dft_grid_generation = section.get('self_consistent', {}).get(
+            'dft_grid_generation', {}
         )
         for key, val in dft_grid_generation.items():
             if val is not None:
-                setattr(sec_method, "x_orca_%s" % key, val)
+                setattr(sec_method, 'x_orca_%s' % key, val)
 
-        final_grid = section.get("self_consistent", {}).get("final_grid", {})
+        final_grid = section.get('self_consistent', {}).get('final_grid', {})
         for key, val in final_grid.items():
             if val is not None:
-                setattr(sec_method, "x_orca_%s" % key, val)
+                setattr(sec_method, 'x_orca_%s' % key, val)
 
         # xc functional
         # get type from input card
         xc_functional = (
-            self.out_parser.get("input_file", {}).get("xc_functional", "").upper()
+            self.out_parser.get('input_file', {}).get('xc_functional', '').upper()
         )
         xc_functionals = self._xc_functional_map.get(xc_functional, [])
         # if not in map, get it from explicit exchange and correlation settings
         if len(xc_functionals) == 0:
-            xc_functional_type = scf_settings.get("XC_functional_type", "")
-            if xc_functional_type.startswith("Hartree-Fock"):
-                xc_functionals = self._xc_functional_map.get("HF", [])
+            xc_functional_type = scf_settings.get('XC_functional_type', '')
+            if xc_functional_type.startswith('Hartree-Fock'):
+                xc_functionals = self._xc_functional_map.get('HF', [])
 
-            elif xc_functional_type.startswith("DFT"):
+            elif xc_functional_type.startswith('DFT'):
                 exchange = (
-                    scf_settings.get("exchange_functional")
+                    scf_settings.get('exchange_functional')
                     .upper()
-                    .replace("-", "")
-                    .split("_")[0]
+                    .replace('-', '')
+                    .split('_')[0]
                 )
                 exchange_type = self._functional_type.get(exchange, None)
                 if exchange_type is not None:
-                    xc_functionals.append("%s_X_%s" % (exchange_type, exchange))
+                    xc_functionals.append('%s_X_%s' % (exchange_type, exchange))
 
-                if scf_settings.get("xalpha_param") is not None:
-                    xc_functionals.append("LDA_X")
+                if scf_settings.get('xalpha_param') is not None:
+                    xc_functionals.append('LDA_X')
 
                 correlation = (
-                    scf_settings.get("correl_functional")
+                    scf_settings.get('correl_functional')
                     .upper()
-                    .replace("-", "")
-                    .split("_")[0]
+                    .replace('-', '')
+                    .split('_')[0]
                 )
                 correlation_type = self._functional_type.get(correlation, None)
                 if correlation_type is not None:
-                    xc_functionals.append("%s_C_%s" % (correlation_type, correlation))
+                    xc_functionals.append('%s_C_%s' % (correlation_type, correlation))
 
-                lda_correlation = scf_settings.get("lda_part_of_gga_corr")
+                lda_correlation = scf_settings.get('lda_part_of_gga_corr')
                 if lda_correlation is not None:
-                    xc_functionals.append("LDA_C_%s" % (lda_correlation))
+                    xc_functionals.append('LDA_C_%s' % (lda_correlation))
 
                 if len(xc_functionals) == 0:
                     self.logger.warning(
-                        "Cannot resolve xc functional", data=dict(name=xc_functional)
+                        'Cannot resolve xc functional', data=dict(name=xc_functional)
                     )
 
         sec_xc_functional = XCFunctional()
         sec_dft.xc_functional = sec_xc_functional
         for functional in xc_functionals:
-            if "_X_" in functional or functional.endswith("_X"):
+            if '_X_' in functional or functional.endswith('_X'):
                 sec_xc_functional.exchange.append(Functional(name=functional))
-            elif "_C_" in functional or functional.endswith("_C"):
+            elif '_C_' in functional or functional.endswith('_C'):
                 sec_xc_functional.correlation.append(Functional(name=functional))
-            elif "HYB" in functional:
+            elif 'HYB' in functional:
                 sec_xc_functional.hybrid.append(Functional(name=functional))
             else:
                 sec_xc_functional.contributions.append(Functional(name=functional))
 
-        for calculation_type in ["tddft", "mp2", "ci"]:
+        for calculation_type in ['tddft', 'mp2', 'ci']:
             calculation = section.get(calculation_type)
             if calculation is None:
                 continue
-            method = calculation.get("electronic_structure_method")
+            method = calculation.get('electronic_structure_method')
             method = calculation_type.upper() if method is None else method
             sec_method = Method()
             self.archive.run[-1].method.append(sec_method)
@@ -1149,10 +1149,10 @@ class OrcaParser:
 
             for key, val in calculation.items():
                 if val is not None:
-                    if hasattr(val, "units"):
-                        if val.units == "hartree":
-                            val = val.to("joule").magnitude
-                    setattr(sec_method, "x_orca_%s" % key, val)
+                    if hasattr(val, 'units'):
+                        if val.units == 'hartree':
+                            val = val.to('joule').magnitude
+                    setattr(sec_method, 'x_orca_%s' % key, val)
 
             sec_method.starting_method_ref = self.archive.run[-1].method[0]
             sec_method.methods_ref = [self.archive.run[-1].method[0]]
@@ -1164,8 +1164,8 @@ class OrcaParser:
         self.archive.run[-1].system.append(sec_system)
         sec_atoms = Atoms()
         sec_system.atoms = sec_atoms
-        if section.get("cartesian_coordinates") is not None:
-            symbols, coordinates = section.get("cartesian_coordinates")
+        if section.get('cartesian_coordinates') is not None:
+            symbols, coordinates = section.get('cartesian_coordinates')
             sec_atoms.labels = symbols
             sec_atoms.positions = coordinates
         sec_atoms.periodic = [False] * 3
@@ -1179,48 +1179,48 @@ class OrcaParser:
         sec_scc = Calculation()
         sec_run.calculation.append(sec_scc)
 
-        self_consistent = section.get("self_consistent")
+        self_consistent = section.get('self_consistent')
         if self_consistent is None:
             return sec_scc
 
         sec_energy = Energy()
         sec_scc.energy = sec_energy
-        scf_energy = self_consistent.get("total_scf_energy", None)
+        scf_energy = self_consistent.get('total_scf_energy', None)
         if scf_energy is not None:
-            sec_energy.total = EnergyEntry(value=scf_energy.get("energy_total"))
+            sec_energy.total = EnergyEntry(value=scf_energy.get('energy_total'))
             energy_keys = list(self.out_parser._energy_mapping.values())
             for key, val in scf_energy.items():
                 if val is not None:
-                    if key.startswith("energy_"):
+                    if key.startswith('energy_'):
                         sec_energy.m_add_sub_section(
-                            getattr(Energy, key.replace("energy_", "").lower()),
+                            getattr(Energy, key.replace('energy_', '').lower()),
                             EnergyEntry(value=val),
                         )
                     else:
                         if key in energy_keys:
-                            val = val.to("joule").magnitude
-                        setattr(sec_scc, "x_orca_%s" % key, val)
+                            val = val.to('joule').magnitude
+                        setattr(sec_scc, 'x_orca_%s' % key, val)
 
-        scf_iterations = self_consistent.get("scf_iterations", None)
+        scf_iterations = self_consistent.get('scf_iterations', None)
         if scf_iterations is not None:
-            for energy in scf_iterations.get("energy", []):
+            for energy in scf_iterations.get('energy', []):
                 sec_scf_iteration = ScfIteration()
                 sec_scc.scf_iteration.append(sec_scf_iteration)
                 sec_scf_iteration.energy = Energy(total=EnergyEntry(value=energy))
 
         # method-specific quantities
-        for calculation_type in ["tddft", "mp2", "ci"]:
+        for calculation_type in ['tddft', 'mp2', 'ci']:
             calculation = section.get(calculation_type)
             if calculation is None:
                 continue
             for key, val in calculation.items():
-                if hasattr(val, "units"):
-                    if val.units == "hartree":
-                        val = val.to("joule").magnitude
-                setattr(sec_scc, "x_orca_%s" % key, val)
+                if hasattr(val, 'units'):
+                    if val.units == 'hartree':
+                        val = val.to('joule').magnitude
+                setattr(sec_scc, 'x_orca_%s' % key, val)
 
         # eigenvalues
-        orbital_energies = self_consistent.get("orbital_energies")
+        orbital_energies = self_consistent.get('orbital_energies')
         if orbital_energies is not None:
             sec_eigenvalues = BandEnergies()
             sec_scc.eigenvalues.append(sec_eigenvalues)
@@ -1235,19 +1235,19 @@ class OrcaParser:
             sec_eigenvalues.occupations = occupation
 
         # mulliken
-        mulliken = self_consistent.get("mulliken")
+        mulliken = self_consistent.get('mulliken')
         if mulliken is not None:
-            atomic_charges = mulliken.get("atomic_charges")
-            orbital_charges = mulliken.get("orbital_charges")
+            atomic_charges = mulliken.get('atomic_charges')
+            orbital_charges = mulliken.get('orbital_charges')
 
             sec_charges = Charges()
             sec_scc.charges.append(sec_charges)
-            sec_charges.analysis_method = "mulliken"
-            sec_charges.n_charges_atoms = len(atomic_charges.get("species", []))
+            sec_charges.analysis_method = 'mulliken'
+            sec_charges.n_charges_atoms = len(atomic_charges.get('species', []))
             sec_charges.value = atomic_charges.charge
-            for atom in range(len(atomic_charges.get("species", []))):
+            for atom in range(len(atomic_charges.get('species', []))):
                 for orbital, orbital_charge in orbital_charges.atom[atom].get(
-                    "charge", []
+                    'charge', []
                 ):
                     sec_charges_value = ChargesValue()
                     sec_charges.orbital_projected.append(sec_charges_value)
@@ -1259,7 +1259,7 @@ class OrcaParser:
             sec_charges.total = atomic_charges.total_charge
 
         # excitations
-        spectrum = section.get("tddft", {}).get("absorption_spectrum_electric")
+        spectrum = section.get('tddft', {}).get('absorption_spectrum_electric')
         if spectrum is not None:
             sec_spectra = Spectra()
             sec_scc.spectra.append(sec_spectra)
@@ -1272,20 +1272,20 @@ class OrcaParser:
             )
 
         # timings
-        time = self_consistent.get("time_calculation")
+        time = self_consistent.get('time_calculation')
         if time is not None:
             sec_scc.time_calculation = (
                 time[0] * 24 * 3600 + time[1] * 3600 + time[2] * 60 + time[3]
             )
             sec_scc.time_physical = initial_time + sec_scc.time_calculation
-        timings = self_consistent.get("timings", {})
+        timings = self_consistent.get('timings', {})
         for key, val in timings.items():
             if val is not None:
-                if key == "final_time" or key == "scf_gradient":
+                if key == 'final_time' or key == 'scf_gradient':
                     sec_scc.time_calculation = val
                     sec_scc.time_physical = initial_time + sec_scc.time_calculation
                 else:
-                    setattr(sec_scc, "x_orca_%s" % key, val.magnitude)
+                    setattr(sec_scc, 'x_orca_%s' % key, val.magnitude)
 
         return sec_scc
 
@@ -1299,48 +1299,48 @@ class OrcaParser:
             sec_scc.method_ref = sec_method
             sec_scc.system_ref = sec_system
 
-        parse_configuration(self.out_parser.get("single_point"))
+        parse_configuration(self.out_parser.get('single_point'))
 
         workflow = None
 
-        geometry_optimization = self.out_parser.get("geometry_optimization")
+        geometry_optimization = self.out_parser.get('geometry_optimization')
         if geometry_optimization is not None:
-            for cycle in geometry_optimization.get("cycle", []):
+            for cycle in geometry_optimization.get('cycle', []):
                 parse_configuration(cycle)
 
-            parse_configuration(geometry_optimization.get("final_energy_evaluation"))
+            parse_configuration(geometry_optimization.get('final_energy_evaluation'))
 
             workflow = GeometryOptimization(method=GeometryOptimizationMethod())
             for key, val in geometry_optimization.items():
-                if key in ["cycle", "final_energy_evaluation"] or val is None:
+                if key in ['cycle', 'final_energy_evaluation'] or val is None:
                     continue
-                if key.endswith("tol"):
-                    if "gradient" in key:
+                if key.endswith('tol'):
+                    if 'gradient' in key:
                         val[1] = (
                             (val[1] * ureg.hartree / ureg.bohr)
-                            .to("joule/meter")
+                            .to('joule/meter')
                             .magnitude
                         )
-                        if "max" in key:
+                        if 'max' in key:
                             workflow.method.convergence_tolerance_force_maximum = val[1]
-                    elif "displacement" in key:
-                        val[1] = (val[1] * ureg.bohr).to("meter").magnitude
-                        if "max" in key:
+                    elif 'displacement' in key:
+                        val[1] = (val[1] * ureg.bohr).to('meter').magnitude
+                        if 'max' in key:
                             workflow.method.convergence_tolerance_displacement_maximum = val[
                                 1
                             ]
                     else:
-                        val[1] = (val[1] * ureg.hartree).to("joule").magnitude
-                        if "energy" in key:
+                        val[1] = (val[1] * ureg.hartree).to('joule').magnitude
+                        if 'energy' in key:
                             workflow.method.convergence_tolerance_energy_difference = (
                                 val[1]
                             )
-                    setattr(workflow, "x_orca_%s_value" % key, val[1])
+                    setattr(workflow, 'x_orca_%s_value' % key, val[1])
                     val = val[0]
-                elif key in ["update_method", "coords_choice", "initial_hessian"]:
-                    setattr(workflow, "x_orca_%s_name" % key, " ".join(val[1:]))
+                elif key in ['update_method', 'coords_choice', 'initial_hessian']:
+                    setattr(workflow, 'x_orca_%s_name' % key, ' '.join(val[1:]))
                     val = val[0]
-                setattr(workflow, "x_orca_%s" % key, val)
+                setattr(workflow, 'x_orca_%s' % key, val)
 
         self.archive.workflow2 = workflow
 
@@ -1356,16 +1356,16 @@ class OrcaParser:
 
         sec_run = Run()
         self.archive.run.append(sec_run)
-        sec_run.program = Program(name="ORCA")
+        sec_run.program = Program(name='ORCA')
         version = []
-        for key in ["program_version", "program_svn", "program_compilation_date"]:
+        for key in ['program_version', 'program_svn', 'program_compilation_date']:
             val = self.out_parser.get(key)
             if val is not None:
-                setattr(sec_run, "x_orca_%s" % key, val)
+                setattr(sec_run, 'x_orca_%s' % key, val)
                 version.append(val)
-        sec_run.program.version = " ".join(version)
+        sec_run.program.version = ' '.join(version)
         sec_run.program.compilation_date = self.out_parser.get(
-            "program_compilation_date"
+            'program_compilation_date'
         )
 
         self.parse_configurations()

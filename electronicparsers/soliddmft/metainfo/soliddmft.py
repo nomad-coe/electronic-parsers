@@ -89,7 +89,7 @@ class Method(runschema.run.Method):
     #   KMesh.n_points x n_atoms_per_unit_cell x n_orbitals? x n_bands?
     x_soliddmft_projection_matrix = Quantity(
         type=np.complex128,
-        shape=["*", "*", "*", "*"],
+        shape=['*', '*', '*', '*'],
         description="""
         Projection matrices from Bloch bands to virtual projected orbitals.
         """,
@@ -148,7 +148,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_Delta_time = Quantity(
         type=HDF5Reference,
-        shape=["*"],
+        shape=['*'],
         description="""
         Imaginary or real frequency hybridization function.
             dim n_inequiv_shells x corr_shells.dim x n_tau x 2 (real+imag)
@@ -157,7 +157,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_Delta_freq = Quantity(
         type=HDF5Reference,
-        shape=["*"],
+        shape=['*'],
         description="""
         Imaginary time hybridization function.
             dim n_inequiv_shells x corr_shells.dim x n_tau x 2 (real+imag)
@@ -254,7 +254,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
     x_soliddmft_convergence_orb_occ = Quantity(
         type=np.float64,
-        shape=["n_orbitals"],
+        shape=['n_orbitals'],
         description="""
         Convergence of the orbital occupations in the impurity.
         """,

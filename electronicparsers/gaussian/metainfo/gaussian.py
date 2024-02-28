@@ -83,7 +83,7 @@ class x_gaussian_section_geometry(MSection):
     x_gaussian_atom_x_coord = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         x coordinate for the atoms
         """,
@@ -92,7 +92,7 @@ class x_gaussian_section_geometry(MSection):
     x_gaussian_atom_y_coord = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         y coordinate for the atoms
         """,
@@ -101,7 +101,7 @@ class x_gaussian_section_geometry(MSection):
     x_gaussian_atom_z_coord = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         z coordinate for the atoms
         """,
@@ -223,7 +223,7 @@ class x_gaussian_section_atom_forces(MSection):
     x_gaussian_atom_x_force = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         -
         """,
@@ -232,7 +232,7 @@ class x_gaussian_section_atom_forces(MSection):
     x_gaussian_atom_y_force = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         -
         """,
@@ -241,7 +241,7 @@ class x_gaussian_section_atom_forces(MSection):
     x_gaussian_atom_z_force = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         -
         """,
@@ -539,7 +539,7 @@ class x_gaussian_section_molecular_multipoles(MSection):
 
     x_gaussian_molecular_multipole_lm = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_gaussian_number_of_lm_molecular_multipoles", 2],
+        shape=['x_gaussian_number_of_lm_molecular_multipoles', 2],
         description="""
         Tuples of $l$ and $m$ values for which the molecular multipoles (including the
         electric charge, dipole, etc.) are given. The meaning of the integer number $l$ is
@@ -560,7 +560,7 @@ class x_gaussian_section_molecular_multipoles(MSection):
 
     x_gaussian_molecular_multipole_values = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_gaussian_number_of_lm_molecular_multipoles"],
+        shape=['x_gaussian_number_of_lm_molecular_multipoles'],
         description="""
         Value of the multipoles (including the monopole/charge for $l$ = 0, the dipole for
         $l$ = 1, etc.).
@@ -605,7 +605,7 @@ class x_gaussian_section_frequencies(MSection):
 
     x_gaussian_frequency_values = Quantity(
         type=str,
-        shape=["number_of_frequency_rows"],
+        shape=['number_of_frequency_rows'],
         description="""
         values of frequencies, in cm-1
         """,
@@ -613,7 +613,7 @@ class x_gaussian_section_frequencies(MSection):
 
     x_gaussian_frequencies = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_frequencies"],
+        shape=['number_of_frequencies'],
         description="""
         values of frequencies, in cm-1
         """,
@@ -621,7 +621,7 @@ class x_gaussian_section_frequencies(MSection):
 
     x_gaussian_reduced_masses = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_reduced_masses_rows"],
+        shape=['number_of_reduced_masses_rows'],
         description="""
         values of normal mode reduced masses
         """,
@@ -629,7 +629,7 @@ class x_gaussian_section_frequencies(MSection):
 
     x_gaussian_red_masses = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_frequencies"],
+        shape=['number_of_frequencies'],
         description="""
         values of normal mode reduced masses
         """,
@@ -637,7 +637,7 @@ class x_gaussian_section_frequencies(MSection):
 
     x_gaussian_normal_modes = Quantity(
         type=str,
-        shape=["number_of_normal_modes_rows"],
+        shape=['number_of_normal_modes_rows'],
         description="""
         normal mode vectors
         """,
@@ -645,7 +645,7 @@ class x_gaussian_section_frequencies(MSection):
 
     x_gaussian_normal_mode_values = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_frequencies", "number_of_atoms", 3],
+        shape=['number_of_frequencies', 'number_of_atoms', 3],
         description="""
         normal mode vectors
         """,
@@ -761,7 +761,7 @@ class x_gaussian_section_force_constant_matrix(MSection):
 
     x_gaussian_force_constant_values = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_degrees_of_freedom", "number_of_degrees_of_freedom"],
+        shape=['number_of_degrees_of_freedom', 'number_of_degrees_of_freedom'],
         description="""
         Force constant matrix element values
         """,
@@ -779,7 +779,7 @@ class x_gaussian_section_orbital_symmetries(MSection):
 
     x_gaussian_alpha_occ_symmetry_values = Quantity(
         type=str,
-        shape=["number_of_alpha_occ_rows"],
+        shape=['number_of_alpha_occ_rows'],
         description="""
         symmetry of the alpha occupied MOs
         """,
@@ -787,7 +787,7 @@ class x_gaussian_section_orbital_symmetries(MSection):
 
     x_gaussian_alpha_vir_symmetry_values = Quantity(
         type=str,
-        shape=["number_of_alpha_vir_rows"],
+        shape=['number_of_alpha_vir_rows'],
         description="""
         symmetry of the alpha virtual MOs
         """,
@@ -795,7 +795,7 @@ class x_gaussian_section_orbital_symmetries(MSection):
 
     x_gaussian_beta_occ_symmetry_values = Quantity(
         type=str,
-        shape=["number_of_beta_occ_rows"],
+        shape=['number_of_beta_occ_rows'],
         description="""
         symmetry of the beta occupied MOs
         """,
@@ -803,7 +803,7 @@ class x_gaussian_section_orbital_symmetries(MSection):
 
     x_gaussian_beta_vir_symmetry_values = Quantity(
         type=str,
-        shape=["number_of_beta_vir_rows"],
+        shape=['number_of_beta_vir_rows'],
         description="""
         symmetry of the beta virtual MOs
         """,
@@ -811,7 +811,7 @@ class x_gaussian_section_orbital_symmetries(MSection):
 
     x_gaussian_alpha_symmetries = Quantity(
         type=str,
-        shape=["number_of_alpha_mos"],
+        shape=['number_of_alpha_mos'],
         description="""
         symmetry of the alpha MOs
         """,
@@ -819,7 +819,7 @@ class x_gaussian_section_orbital_symmetries(MSection):
 
     x_gaussian_beta_symmetries = Quantity(
         type=str,
-        shape=["number_of_beta_mos"],
+        shape=['number_of_beta_mos'],
         description="""
         symmetry of the beta MOs
         """,
@@ -884,7 +884,7 @@ class x_gaussian_section_moller_plesset(MSection):
     x_gaussian_mp2_correction_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Difference between SCF and MP2 energies.
         """,
@@ -893,7 +893,7 @@ class x_gaussian_section_moller_plesset(MSection):
     x_gaussian_mp3_correction_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Difference between SCF and MP3 energies.
         """,
@@ -902,7 +902,7 @@ class x_gaussian_section_moller_plesset(MSection):
     x_gaussian_mp4dq_correction_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Difference between SCF and MP4(DQ) energies.
         """,
@@ -911,7 +911,7 @@ class x_gaussian_section_moller_plesset(MSection):
     x_gaussian_mp4sdq_correction_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Difference between SCF and MP4(SDQ) energies.
         """,
@@ -920,7 +920,7 @@ class x_gaussian_section_moller_plesset(MSection):
     x_gaussian_mp4sdtq_correction_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Difference between SCF and MP4(SDTQ) energies.
         """,
@@ -929,7 +929,7 @@ class x_gaussian_section_moller_plesset(MSection):
     x_gaussian_mp5_correction_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Difference between SCF and MP5 energies.
         """,
@@ -948,7 +948,7 @@ class x_gaussian_section_coupled_cluster(MSection):
     x_gaussian_ccsd_correction_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Difference between SCF and CCSD energies.
         """,
@@ -967,7 +967,7 @@ class x_gaussian_section_quadratic_ci(MSection):
     x_gaussian_qcisd_correction_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Difference between SCF and QCISD energies.
         """,
@@ -976,7 +976,7 @@ class x_gaussian_section_quadratic_ci(MSection):
     x_gaussian_qcisdtq_correction_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Difference between SCF and QCISD(TQ) energies.
         """,
@@ -995,7 +995,7 @@ class x_gaussian_section_ci(MSection):
     x_gaussian_ci_correction_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Difference between SCF and CI energies.
         """,
@@ -1014,7 +1014,7 @@ class x_gaussian_section_semiempirical(MSection):
     x_gaussian_semiempirical_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         semiempirical energies.
         """,
@@ -1087,7 +1087,7 @@ class x_gaussian_section_excited(MSection):
     x_gaussian_excited_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         CIS, TDDFT/TDHF, ZINDO or EOMCCSD excited state energy
         """,
@@ -1131,7 +1131,7 @@ class x_gaussian_section_casscf(MSection):
     x_gaussian_casscf_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         CASSCF energy
         """,
@@ -1221,7 +1221,7 @@ class System(runschema.system.System):
 
     x_gaussian_masses = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         values of atomic masses
         """,
@@ -1236,8 +1236,8 @@ class Calculation(runschema.calculation.Calculation):
 
     x_gaussian_atom_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
-        unit="newton",
+        shape=['number_of_atoms', 3],
+        unit='newton',
         description="""
         Forces acting on the atoms, calculated as minus gradient of energy_total.
         """,
@@ -1247,7 +1247,7 @@ class Calculation(runschema.calculation.Calculation):
     x_gaussian_energy_total_scf_converged = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         SCF total energy converged for a given geometry.
         """,
@@ -1263,77 +1263,77 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_gaussian_section_hybrid_coeffs = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_hybrid_coeffs"),
+        sub_section=SectionProxy('x_gaussian_section_hybrid_coeffs'),
         repeats=True,
     )
 
     x_gaussian_section_total_scf_one_geometry = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_total_scf_one_geometry"),
+        sub_section=SectionProxy('x_gaussian_section_total_scf_one_geometry'),
         repeats=True,
     )
 
     x_gaussian_section_atom_forces = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_atom_forces"),
+        sub_section=SectionProxy('x_gaussian_section_atom_forces'),
         repeats=True,
     )
 
     x_gaussian_section_molecular_multipoles = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_molecular_multipoles"),
+        sub_section=SectionProxy('x_gaussian_section_molecular_multipoles'),
         repeats=True,
     )
 
     x_gaussian_section_energy_components = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_energy_components"),
+        sub_section=SectionProxy('x_gaussian_section_energy_components'),
         repeats=True,
     )
 
     x_gaussian_section_moller_plesset = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_moller_plesset"),
+        sub_section=SectionProxy('x_gaussian_section_moller_plesset'),
         repeats=True,
     )
 
     x_gaussian_section_coupled_cluster = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_coupled_cluster"),
+        sub_section=SectionProxy('x_gaussian_section_coupled_cluster'),
         repeats=True,
     )
 
     x_gaussian_section_quadratic_ci = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_quadratic_ci"),
+        sub_section=SectionProxy('x_gaussian_section_quadratic_ci'),
         repeats=True,
     )
 
     x_gaussian_section_ci = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_ci"),
+        sub_section=SectionProxy('x_gaussian_section_ci'),
         repeats=True,
     )
 
     x_gaussian_section_semiempirical = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_semiempirical"),
+        sub_section=SectionProxy('x_gaussian_section_semiempirical'),
         repeats=True,
     )
 
     x_gaussian_section_molmech = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_molmech"),
+        sub_section=SectionProxy('x_gaussian_section_molmech'),
         repeats=True,
     )
 
     x_gaussian_section_models = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_models"),
+        sub_section=SectionProxy('x_gaussian_section_models'),
         repeats=True,
     )
 
     x_gaussian_section_excited_initial = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_excited_initial"),
+        sub_section=SectionProxy('x_gaussian_section_excited_initial'),
         repeats=True,
     )
 
     x_gaussian_section_excited = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_excited"),
+        sub_section=SectionProxy('x_gaussian_section_excited'),
         repeats=True,
     )
 
     x_gaussian_section_casscf = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_casscf"),
+        sub_section=SectionProxy('x_gaussian_section_casscf'),
         repeats=True,
     )
 
@@ -1394,8 +1394,8 @@ class Run(runschema.run.Run):
 
     x_gaussian_atom_positions = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
-        unit="meter",
+        shape=['number_of_atoms', 3],
+        unit='meter',
         description="""
         Positions of all the atoms, in Cartesian coordinates. This metadata defines a
         configuration and is therefore required.
@@ -1421,42 +1421,42 @@ class Run(runschema.run.Run):
     )
 
     x_gaussian_section_geometry = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_geometry"),
+        sub_section=SectionProxy('x_gaussian_section_geometry'),
         repeats=True,
     )
 
     x_gaussian_section_times = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_times"),
+        sub_section=SectionProxy('x_gaussian_section_times'),
         repeats=True,
     )
 
     x_gaussian_section_geometry_optimization_info = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_geometry_optimization_info"),
+        sub_section=SectionProxy('x_gaussian_section_geometry_optimization_info'),
         repeats=True,
     )
 
     x_gaussian_section_frequencies = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_frequencies"),
+        sub_section=SectionProxy('x_gaussian_section_frequencies'),
         repeats=True,
     )
 
     x_gaussian_section_thermochem = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_thermochem"),
+        sub_section=SectionProxy('x_gaussian_section_thermochem'),
         repeats=True,
     )
 
     x_gaussian_section_force_constant_matrix = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_force_constant_matrix"),
+        sub_section=SectionProxy('x_gaussian_section_force_constant_matrix'),
         repeats=True,
     )
 
     x_gaussian_section_orbital_symmetries = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_orbital_symmetries"),
+        sub_section=SectionProxy('x_gaussian_section_orbital_symmetries'),
         repeats=True,
     )
 
     x_gaussian_section_symmetry = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_symmetry"),
+        sub_section=SectionProxy('x_gaussian_section_symmetry'),
         repeats=True,
     )
 
@@ -1470,7 +1470,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_gaussian_energy_total_scf_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Total energy calculated with a given method during the self-consistent field (SCF)
         iterations.
@@ -1480,7 +1480,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_gaussian_delta_energy_total_scf_iteration = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Total energy increment calculated with a given method during the self-consistent
         field (SCF) iterations.
@@ -1515,7 +1515,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_gaussian_energy_scf = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Value of the SCF total energy, either HF or DFT.
         """,
@@ -1524,7 +1524,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_gaussian_perturbation_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Value of the perturbation energy for double hybrids
         """,
@@ -1541,7 +1541,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_gaussian_energy_electrostatic = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Total electrostatic energy (nuclei + electrons), defined consistently with
         calculation_method.
@@ -1551,7 +1551,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_gaussian_energy_error = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Error in the total energy. Defined consistently with XC_method.
         """,
@@ -1560,7 +1560,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_gaussian_electronic_kinetic_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Self-consistent electronic kinetic energy as defined in XC_method.
         """,
@@ -1607,7 +1607,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
 
     x_gaussian_alpha_eigenvalues = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_alpha_mos"],
+        shape=['number_of_alpha_mos'],
         description="""
         values of eigenenergies, alpha occ
         """,
@@ -1615,7 +1615,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
 
     x_gaussian_beta_eigenvalues = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_beta_mos"],
+        shape=['number_of_beta_mos'],
         description="""
         values of eigenenergies, beta occ
         """,
@@ -1623,7 +1623,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
 
     x_gaussian_alpha_occupations = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_alpha_mos"],
+        shape=['number_of_alpha_mos'],
         description="""
         values of eigenenergies, alpha occ
         """,
@@ -1631,7 +1631,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
 
     x_gaussian_beta_occupations = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_beta_mos"],
+        shape=['number_of_beta_mos'],
         description="""
         values of eigenenergies, beta occ
         """,
@@ -1640,9 +1640,9 @@ class BandEnergies(runschema.calculation.BandEnergies):
     x_gaussian_eigenvalues_occupation = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "number_of_spin_channels",
-            "number_of_eigenvalues_kpoints",
-            "number_of_eigenvalues",
+            'number_of_spin_channels',
+            'number_of_eigenvalues_kpoints',
+            'number_of_eigenvalues',
         ],
         description="""
         Occupation of the eigenstates whose (energy) eigenvalues are given in
@@ -1653,11 +1653,11 @@ class BandEnergies(runschema.calculation.BandEnergies):
     x_gaussian_eigenvalues_values = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "number_of_spin_channels",
-            "number_of_eigenvalues_kpoints",
-            "number_of_eigenvalues",
+            'number_of_spin_channels',
+            'number_of_eigenvalues_kpoints',
+            'number_of_eigenvalues',
         ],
-        unit="joule",
+        unit='joule',
         description="""
         Values of the (electronic-energy) eigenvalues. Their occupations are given in
         eigenvalues_occupation.
@@ -1706,6 +1706,6 @@ class Method(runschema.method.Method):
     )
 
     x_gaussian_section_elstruc_method = SubSection(
-        sub_section=SectionProxy("x_gaussian_section_elstruc_method"),
+        sub_section=SectionProxy('x_gaussian_section_elstruc_method'),
         repeats=True,
     )

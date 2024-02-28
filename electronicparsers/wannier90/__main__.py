@@ -24,7 +24,7 @@ from nomad.utils import configure_logging
 from nomad.datamodel import EntryArchive
 from electronicparsers.wannier90 import Wannier90Parser
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     configure_logging(console_log_level=logging.DEBUG)
     archive = EntryArchive()
     Wannier90Parser().parse(sys.argv[1], archive, logging)

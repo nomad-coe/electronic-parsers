@@ -56,7 +56,7 @@ class x_orca_atom_positions(MSection):
     x_orca_atom_positions_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         """,
     )
@@ -64,7 +64,7 @@ class x_orca_atom_positions(MSection):
     x_orca_atom_positions_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         """,
     )
@@ -72,7 +72,7 @@ class x_orca_atom_positions(MSection):
     x_orca_atom_positions_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         """,
     )
@@ -95,7 +95,7 @@ class x_orca_final_geometry(MSection):
     x_orca_atom_positions_x_geo_opt = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         """,
     )
@@ -103,7 +103,7 @@ class x_orca_final_geometry(MSection):
     x_orca_atom_positions_y_geo_opt = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         """,
     )
@@ -111,7 +111,7 @@ class x_orca_final_geometry(MSection):
     x_orca_atom_positions_z_geo_opt = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         """,
     )
@@ -577,7 +577,7 @@ class Method(runschema.method.Method):
     )
 
     x_orca_section_functionals = SubSection(
-        sub_section=SectionProxy("x_orca_section_functionals"), repeats=True
+        sub_section=SectionProxy('x_orca_section_functionals'), repeats=True
     )
 
 
@@ -712,7 +712,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_orca_atom_positions = SubSection(
-        sub_section=SectionProxy("x_orca_atom_positions"), repeats=True
+        sub_section=SectionProxy('x_orca_atom_positions'), repeats=True
     )
 
 
@@ -1372,7 +1372,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     )
 
     x_orca_final_geometry = SubSection(
-        sub_section=SectionProxy("x_orca_final_geometry"), repeats=True
+        sub_section=SectionProxy('x_orca_final_geometry'), repeats=True
     )
 
 

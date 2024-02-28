@@ -27,29 +27,29 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return OctopusParser()
 
 
 def test_scf(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/octopus/Si_scf/stdout.txt", archive, None)
+    parser.parse('tests/data/octopus/Si_scf/stdout.txt', archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == "wolfi"
+    assert sec_run.program.version == 'wolfi'
     assert sec_run.x_octopus_input_Spacing == approx(0.28345892)
     assert sec_run.x_octopus_parserlog_SpeciesProjectorSphereThreshold == 0.001
 
     sec_method = sec_run.method[0]
     assert list(sec_method.k_mesh.grid) == [4] * 3
-    assert sec_method.electronic.smearing.kind == "empty"
-    assert sec_method.electronic.method == "DFT"
-    assert sec_method.dft.xc_functional.correlation[0].name == "LDA_C_PZ_MOD"
+    assert sec_method.electronic.smearing.kind == 'empty'
+    assert sec_method.electronic.method == 'DFT'
+    assert sec_method.dft.xc_functional.correlation[0].name == 'LDA_C_PZ_MOD'
 
     sec_system = sec_run.system[0]
     assert False not in sec_system.atoms.periodic
-    assert sec_system.atoms.labels == ["Si", "Si", "Si", "Si"]
+    assert sec_system.atoms.labels == ['Si', 'Si', 'Si', 'Si']
     assert sec_system.atoms.positions[1][0].magnitude == approx(1.91979671e-10)
 
     sec_scc = sec_run.calculation[0]
@@ -72,11 +72,11 @@ def test_scf(parser):
 
 def test_spinpol(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/octopus/Fe_spinpol/stdout.txt", archive, None)
+    parser.parse('tests/data/octopus/Fe_spinpol/stdout.txt', archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.x_octopus_parserlog_SpinComponents == "2"
-    assert sec_run.x_octopus_input_Units == "ev_angstrom"
+    assert sec_run.x_octopus_parserlog_SpinComponents == '2'
+    assert sec_run.x_octopus_input_Units == 'ev_angstrom'
     assert sec_run.x_octopus_parserlog_PreconditionerFilterFactor == 0.6
 
     sec_method = sec_run.method[0]

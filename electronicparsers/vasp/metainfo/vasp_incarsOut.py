@@ -505,7 +505,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_FERDO = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_vasp_incar_NBANDS * x_vasp_number_of_k_points"],
+        shape=['x_vasp_incar_NBANDS * x_vasp_number_of_k_points'],
         description="""
         FERDO sets the occupancies of the states in the down-spin channel for ISMEAR=-2
         and ISPIN=2.
@@ -515,7 +515,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_FERWE = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_vasp_incar_NBANDS  *  x_vasp_number_of_k_points"],
+        shape=['x_vasp_incar_NBANDS  *  x_vasp_number_of_k_points'],
         description="""
         FERWE sets the occupancies of the states for  ISMEAR=-2.
         """,
@@ -642,7 +642,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_IBAND = Quantity(
         type=np.dtype(np.uint32),
-        shape=["1..x_vasp_incar_NBANDS"],
+        shape=['1..x_vasp_incar_NBANDS'],
         description="""
         Controls which bands are used in the calculation of Band decomposed charge
         densities. Check also NBMOD and EINT.
@@ -737,7 +737,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_INCREM = Quantity(
         type=np.dtype(np.float64),
-        shape=["x"],
+        shape=['x'],
         description="""
         INCREM controls the transformation velocity in the slow-growth approach (in case
         VASP was compiled with -Dtbdyn).
@@ -889,7 +889,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_KPUSE = Quantity(
         type=np.dtype(np.int32),
-        shape=["1..x_vasp_number_of_k_points"],
+        shape=['1..x_vasp_number_of_k_points'],
         description="""
         Specifies which k-points are used in the evaluation of the partial dos (Band
         decomposed charge densities).
@@ -938,7 +938,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_LANGEVIN_GAMMA = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atomic_species"],
+        shape=['number_of_atomic_species'],
         description="""
         LANGEVIN_GAMMA specifies the friction coefficients (in ps$^{-1}$) for atomic
         degrees-of-freedom when using a Langevin thermostat (in case VASP was compiled
@@ -1076,7 +1076,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_LDAUJ = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atomic_species"],
+        shape=['number_of_atomic_species'],
         description="""
         LDAUJ specifies the strength of the effective on-site exchange interactions.
         """,
@@ -1085,7 +1085,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_LDAUL = Quantity(
         type=np.dtype(np.int32),
-        shape=["number_of_atomic_species"],
+        shape=['number_of_atomic_species'],
         description="""
         LDAUL specifies the _l_-quantum number for which the on-site interaction is added.
         """,
@@ -1112,7 +1112,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_LDAUU = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atomic_species"],
+        shape=['number_of_atomic_species'],
         description="""
         LDAUU specifies the strength of the effective on-site Coulomb interactions.
         """,
@@ -1675,7 +1675,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_M_CONSTR = Quantity(
         type=np.dtype(np.float64),
-        shape=["3*number_of_atoms"],
+        shape=['3*number_of_atoms'],
         description="""
         M_CONSTR specifies the desired local magnetic moment (size and/or direction) for
         the constrained local moments approach.
@@ -1813,7 +1813,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_ML_FF_EATOM = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Reference total energies of isolated atoms used in the machine learning force
         field method.
@@ -1853,7 +1853,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_ML_FF_ICOUPLE_MB = Quantity(
         type=np.dtype(np.int32),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         This tag specifies the atoms where the coupling parameter is introduced to
         calculate the chemical potential within the machine learning force field method.
@@ -2454,7 +2454,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_NCRPA_BANDS = Quantity(
         type=np.dtype(np.int32),
-        shape=["1..x_vasp_incar_NBANDS"],
+        shape=['1..x_vasp_incar_NBANDS'],
         description="""
         Controls which bands are excluded in CRPA. Check also NTARGET_STATES.
         """,
@@ -2569,7 +2569,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_NGYROMAG = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atomic_species"],
+        shape=['number_of_atomic_species'],
         description="""
         NGYROMAG specifies the nuclear gyromagnetic ratios (in MHz, for H<sub>0</sub> = 1
         T) for the atomic types on the POTCAR file.
@@ -2746,7 +2746,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_NTARGET_STATES = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_vasp_incar_NBANDS"],
+        shape=['x_vasp_incar_NBANDS'],
         description="""
         Controls which Wannier states are excluded in CRPA. Check also NCRPA_BANDS.
         """,
@@ -2946,7 +2946,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_PHON_TLIST = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_vasp_incarOut_PHON_NTLIST"],
+        shape=['x_vasp_incarOut_PHON_NTLIST'],
         description="""
         This flag provides the list of temperatures for that the electron-phonon
         interactions using the ZG configuration is evaluated.
@@ -3032,7 +3032,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_PSUBSYS = Quantity(
         type=np.dtype(np.float64),
-        shape=["1..3"],
+        shape=['1..3'],
         description="""
         PSUBSYS sets the collision probabilities for the atoms in each atomic subsystem in
         calculations with multiple Anderson thermostats (in case VASP was compiled with
@@ -3052,7 +3052,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_QMAXFOCKAE = Quantity(
         type=np.dtype(np.float64),
-        shape=["1..x_vasp_number_of_k_points"],
+        shape=['1..x_vasp_number_of_k_points'],
         description="""
         The parameter QMAXFOCKAE controls at which wave vectors the local augmentation
         charges are fitted to obtain an accurate charge augmentation on the plane wave
@@ -3072,7 +3072,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_QUAD_EFG = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atomic_species"],
+        shape=['number_of_atomic_species'],
         description="""
         nuclear quadrupole moment (in millbarn) for the atomic types on the POTCAR file.
         """,
@@ -3081,7 +3081,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_RANDOM_SEED = Quantity(
         type=np.dtype(np.int32),
-        shape=["x"],
+        shape=['x'],
         description="""
         RANDOM_SEED specifies the seed of the random-number-generator (in case VASP was
         compiled with -Dtbdyn).
@@ -3091,7 +3091,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_ROPT = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atomic_species"],
+        shape=['number_of_atomic_species'],
         description="""
         ROPT determines how precise the projectors are represented in real space.
         """,
@@ -3100,7 +3100,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_RWIGS = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atomic_species"],
+        shape=['number_of_atomic_species'],
         description="""
         RWIGS specifies the Wigner-Seitz radius for each atom type.
         """,
@@ -3167,7 +3167,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_SMEARINGS = Quantity(
         type=np.dtype(np.int32),
-        shape=["x_vasp_incarOut_NSW"],
+        shape=['x_vasp_incarOut_NSW'],
         description="""
         SMEARINGS defines the smearing parameters for ISMEAR=-3 in the calculation of the
         partial occupancies.
@@ -3268,7 +3268,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_VALUE_MAX = Quantity(
         type=np.dtype(np.float64),
-        shape=["x"],
+        shape=['x'],
         description="""
         VALUE_MAX sets the upper limits for the monitoring of geometric parameters (in
         case VASP was compiled with -Dtbdyn).
@@ -3278,7 +3278,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_VALUE_MIN = Quantity(
         type=np.dtype(np.float64),
-        shape=["x"],
+        shape=['x'],
         description="""
         VALUE_MIN sets the lower limits for the monitoring of geometric parameters (in
         case VASP was compiled with -Dtbdyn).
@@ -3316,7 +3316,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_VDW_C6 = Quantity(
         type=np.dtype(np.float64),
-        shape=["x"],
+        shape=['x'],
         description="""
         VDW_C6 defines the  $C_6$ parameters (units: J.nm$^6$mol$^{-1}$ ) for each species
         defined in the POSCAR file within the DFT-D2 method.
@@ -3345,7 +3345,7 @@ class Method(runschema.method.Method):
 
     x_vasp_incarOut_VDW_R0 = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atomic_species"],
+        shape=['number_of_atomic_species'],
         description="""
         VDW_R0 defines the $R_0$ parameters (units: Angs ) for each species defined in the
         POSCAR file within the DFT-D2 method.

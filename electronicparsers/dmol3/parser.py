@@ -49,8 +49,8 @@ from simulationworkflowschema import (
 from .metainfo import dmol3  # pylint: disable=unused-import
 
 
-re_f = r"[-+]?\d*\.\d*(?:[Ee][-+]\d+)?"
-re_n = r"[\n\r]"
+re_f = r'[-+]?\d*\.\d*(?:[Ee][-+]\d+)?'
+re_n = r'[\n\r]'
 MOL = 6.02214076e23
 
 
@@ -58,52 +58,52 @@ class MainfileParser(TextParser):
     def init_quantities(self):
         coordinates_quantities = [
             Quantity(
-                "labels_positions",
-                rf"([A-Z][a-z]* +{re_f} +{re_f} +{re_f})",
+                'labels_positions',
+                rf'([A-Z][a-z]* +{re_f} +{re_f} +{re_f})',
                 repeats=True,
             )
         ]
 
         scf_quantity = Quantity(
-            "scf",
-            r"Start Computing SCF Energy/Gradient([\s\S]+?)End Computing SCF Energy/Gradient",
+            'scf',
+            r'Start Computing SCF Energy/Gradient([\s\S]+?)End Computing SCF Energy/Gradient',
             repeats=True,
             sub_parser=TextParser(
                 quantities=[
                     Quantity(
-                        "iteration",
-                        rf"Ef +({re_f} +{re_f} +{re_f} +{re_f} +\d+)",
+                        'iteration',
+                        rf'Ef +({re_f} +{re_f} +{re_f} +{re_f} +\d+)',
                         repeats=True,
                         dtype=np.dtype(np.float64),
                     ),
                     Quantity(
-                        "eigenvalues",
-                        rf"state +eigenvalue +occupation\s+\(au\) +\(ev\)\s+"
-                        rf"((?:\d+ +\S+ +\d+ +\S+ +{re_f} +{re_f} +{re_f}\s+)+)",
+                        'eigenvalues',
+                        rf'state +eigenvalue +occupation\s+\(au\) +\(ev\)\s+'
+                        rf'((?:\d+ +\S+ +\d+ +\S+ +{re_f} +{re_f} +{re_f}\s+)+)',
                         repeats=True,
                         str_operation=lambda x: np.transpose(
                             [v.split()[4:] for v in x.strip().splitlines()]
                         ),
                     ),
                     Quantity(
-                        "n_electrons",
-                        rf"Total number electrons\: +({re_f})",
+                        'n_electrons',
+                        rf'Total number electrons\: +({re_f})',
                         dtype=np.float64,
                     ),
                     Quantity(
-                        "coordinates",
-                        r"ATOMIC  COORDINATES \(au\).+\s*df +x +y +z +.+\s*\-+\s+"
-                        rf"((?:df +[A-Z][a-z]* +{re_f} +{re_f} +{re_f}.+\s+)+)",
+                        'coordinates',
+                        r'ATOMIC  COORDINATES \(au\).+\s*df +x +y +z +.+\s*\-+\s+'
+                        rf'((?:df +[A-Z][a-z]* +{re_f} +{re_f} +{re_f}.+\s+)+)',
                         sub_parser=TextParser(quantities=coordinates_quantities),
                     ),
                     Quantity(
-                        "final",
-                        rf"\-+\s+Total E.+\s+\-+\s+Ef +({re_f}.+)",
+                        'final',
+                        rf'\-+\s+Total E.+\s+\-+\s+Ef +({re_f}.+)',
                         dtype=np.float64,
                     ),
                     Quantity(
-                        "energy_binding",
-                        rf"binding energy +({re_f})Ha",
+                        'energy_binding',
+                        rf'binding energy +({re_f})Ha',
                         dtype=np.float64,
                         unit=ureg.hartree,
                     ),
@@ -113,202 +113,202 @@ class MainfileParser(TextParser):
 
         self._quantities = [
             Quantity(
-                "program_version",
-                r"Materials Studio DMol\^3 version (\S+)",
+                'program_version',
+                r'Materials Studio DMol\^3 version (\S+)',
                 dtype=str,
                 flatten=False,
             ),
             Quantity(
-                "x_dmol3_program_compilation_date",
-                r"compiled on (\w+ \d+ \d+ \d+\:\d+:\d+)",
+                'x_dmol3_program_compilation_date',
+                r'compiled on (\w+ \d+ \d+ \d+\:\d+:\d+)',
                 dtype=str,
                 flatten=False,
             ),
             Quantity(
-                "date_start",
-                r"DATE\: +(\w+ \d+ \d+\:\d+\:\d+ \d+)",
+                'date_start',
+                r'DATE\: +(\w+ \d+ \d+\:\d+\:\d+ \d+)',
                 dtype=str,
                 flatten=False,
             ),
             Quantity(
-                "coordinates",
-                rf"\$coordinates\s+([\s\S]+?)\$end",
+                'coordinates',
+                rf'\$coordinates\s+([\s\S]+?)\$end',
                 flatten=False,
                 sub_parser=TextParser(quantities=coordinates_quantities),
             ),
             Quantity(
-                "simulation_parameters",
-                r"INPUT_DMOL keywords.+\s+.+([\s\S]+?)\>8",
+                'simulation_parameters',
+                r'INPUT_DMOL keywords.+\s+.+([\s\S]+?)\>8',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "calculation_type", rf"{re_n}Calculate +(\S+)", dtype=str
+                            'calculation_type', rf'{re_n}Calculate +(\S+)', dtype=str
                         ),
                         Quantity(
-                            "functional_name", rf"{re_n}Functional +(\S+)", dtype=str
+                            'functional_name', rf'{re_n}Functional +(\S+)', dtype=str
                         ),
                         Quantity(
-                            "pseudopotential_name",
-                            rf"{re_n}Pseudopotential +(\S+)",
+                            'pseudopotential_name',
+                            rf'{re_n}Pseudopotential +(\S+)',
                             dtype=str,
                         ),
-                        Quantity("basis_name", rf"{re_n}Basis +(\S+)", dtype=str),
+                        Quantity('basis_name', rf'{re_n}Basis +(\S+)', dtype=str),
                         Quantity(
-                            "spin_polarization",
-                            rf"{re_n}Spin_Polarization +(\S+)",
+                            'spin_polarization',
+                            rf'{re_n}Spin_Polarization +(\S+)',
                             dtype=str,
                         ),
-                        Quantity("spin", rf"{re_n}Spin +(\d+)", dtype=np.int32),
+                        Quantity('spin', rf'{re_n}Spin +(\d+)', dtype=np.int32),
                         Quantity(
-                            "rcut", rf"{re_n}Atom_Rcut +({re_f})", dtype=np.float64
+                            'rcut', rf'{re_n}Atom_Rcut +({re_f})', dtype=np.float64
                         ),
                         Quantity(
-                            "integration_grid",
-                            rf"{re_n}Integration_Grid +(\S+)",
+                            'integration_grid',
+                            rf'{re_n}Integration_Grid +(\S+)',
                             dtype=str,
                         ),
-                        Quantity("aux_partition", rf"{re_n} +(\d+)", dtype=np.int32),
+                        Quantity('aux_partition', rf'{re_n} +(\d+)', dtype=np.int32),
                         Quantity(
-                            "aux_density", rf"{re_n}Aux_Density +(\d+)", dtype=str
+                            'aux_density', rf'{re_n}Aux_Density +(\d+)', dtype=str
                         ),
                         Quantity(
-                            "charge", rf"{re_n}Charge +({re_f})", dtype=np.float64
+                            'charge', rf'{re_n}Charge +({re_f})', dtype=np.float64
                         ),
-                        Quantity("symmetry", rf"{re_n}Symmetry +(\S+)", dtype=str),
+                        Quantity('symmetry', rf'{re_n}Symmetry +(\S+)', dtype=str),
                         Quantity(
-                            "mulliken_analysis",
-                            rf"{re_n}Mulliken_Analysis +(\S+)",
-                            dtype=str,
-                        ),
-                        Quantity(
-                            "hirshfeld_analysis",
-                            rf"{re_n}Hirshfeld_Analysis +(\S+)",
+                            'mulliken_analysis',
+                            rf'{re_n}Mulliken_Analysis +(\S+)',
                             dtype=str,
                         ),
                         Quantity(
-                            "partial_dos", rf"{re_n}Partial_Dos +(\S+)", dtype=str
-                        ),
-                        Quantity(
-                            "electrostatic_moments",
-                            rf"{re_n}Electrostatic_Moments +(\S+)",
+                            'hirshfeld_analysis',
+                            rf'{re_n}Hirshfeld_Analysis +(\S+)',
                             dtype=str,
                         ),
                         Quantity(
-                            "nuclear_efg", rf"{re_n}Nuclear_EFG +(\S+)", dtype=str
+                            'partial_dos', rf'{re_n}Partial_Dos +(\S+)', dtype=str
                         ),
                         Quantity(
-                            "optical_absorption",
-                            rf"{re_n}Optical_Absorption +(\S+)",
+                            'electrostatic_moments',
+                            rf'{re_n}Electrostatic_Moments +(\S+)',
                             dtype=str,
                         ),
-                        Quantity("kpoints", rf"{re_n}Kpoints +(\S+)", dtype=str),
                         Quantity(
-                            "scf_density_convergence",
-                            rf"{re_n}SCF_Density_Convergence +({re_f})",
+                            'nuclear_efg', rf'{re_n}Nuclear_EFG +(\S+)', dtype=str
+                        ),
+                        Quantity(
+                            'optical_absorption',
+                            rf'{re_n}Optical_Absorption +(\S+)',
+                            dtype=str,
+                        ),
+                        Quantity('kpoints', rf'{re_n}Kpoints +(\S+)', dtype=str),
+                        Quantity(
+                            'scf_density_convergence',
+                            rf'{re_n}SCF_Density_Convergence +({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "scf_spin_mixing",
-                            rf"{re_n}SCF_Spin_Mixing +({re_f})",
+                            'scf_spin_mixing',
+                            rf'{re_n}SCF_Spin_Mixing +({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "scf_charge_mixing",
-                            rf"{re_n}SCF_Charge_Mixing +({re_f})",
+                            'scf_charge_mixing',
+                            rf'{re_n}SCF_Charge_Mixing +({re_f})',
                             dtype=np.float64,
                         ),
-                        Quantity("scf_diis", rf"{re_n}SCF_DIIS +(\d+) +(\S+)"),
+                        Quantity('scf_diis', rf'{re_n}SCF_DIIS +(\d+) +(\S+)'),
                         Quantity(
-                            "scf_iterations",
-                            rf"{re_n}SCF_Iterations +(\d+)",
+                            'scf_iterations',
+                            rf'{re_n}SCF_Iterations +(\d+)',
                             dtype=np.int32,
                         ),
                         Quantity(
-                            "scf_number_bad_steps",
-                            rf"{re_n}SCF_Number_Bad_Steps +(\d+)",
+                            'scf_number_bad_steps',
+                            rf'{re_n}SCF_Number_Bad_Steps +(\d+)',
                             dtype=np.int32,
                         ),
-                        Quantity("scf_direct", rf"{re_n}SCF_Direct +(\S+)", dtype=str),
+                        Quantity('scf_direct', rf'{re_n}SCF_Direct +(\S+)', dtype=str),
                         Quantity(
-                            "scf_restart", rf"{re_n}SCF_Restart +(\S+)", dtype=str
+                            'scf_restart', rf'{re_n}SCF_Restart +(\S+)', dtype=str
                         ),
                         Quantity(
-                            "occupation",
-                            rf"{re_n}Occupation +(.+?) +<\-\-",
+                            'occupation',
+                            rf'{re_n}Occupation +(.+?) +<\-\-',
                             str_operation=lambda x: x.strip().split(),
                         ),
                         Quantity(
-                            "opt_energy_convergence",
-                            rf"{re_n}OPT_Energy_Convergence +({re_f})",
+                            'opt_energy_convergence',
+                            rf'{re_n}OPT_Energy_Convergence +({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "opt_gradient_convergence",
-                            rf"{re_n}OPT_Gradient_Convergence +({re_f})",
+                            'opt_gradient_convergence',
+                            rf'{re_n}OPT_Gradient_Convergence +({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "opt_displacement_convergence",
-                            rf"{re_n}OPT_Displacement_Convergence +({re_f})",
+                            'opt_displacement_convergence',
+                            rf'{re_n}OPT_Displacement_Convergence +({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "opt_iterations",
-                            rf"{re_n}OPT_Iterations +(\d+)",
+                            'opt_iterations',
+                            rf'{re_n}OPT_Iterations +(\d+)',
                             dtype=np.int32,
                         ),
                         Quantity(
-                            "opt_coordinate_system",
-                            rf"{re_n}OPT_Coordinate_System +(\S+)",
+                            'opt_coordinate_system',
+                            rf'{re_n}OPT_Coordinate_System +(\S+)',
                             dtype=str,
                         ),
-                        Quantity("opt_gdiis", rf"{re_n}OPT_Gdiis +(\S+)", dtype=str),
+                        Quantity('opt_gdiis', rf'{re_n}OPT_Gdiis +(\S+)', dtype=str),
                         Quantity(
-                            "opt_max_displacement",
-                            rf"{re_n}OPT_Max_Displacement +({re_f})",
+                            'opt_max_displacement',
+                            rf'{re_n}OPT_Max_Displacement +({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "opt_steep_tol",
-                            rf"{re_n}OPT_Steep_Tol +({re_f})",
+                            'opt_steep_tol',
+                            rf'{re_n}OPT_Steep_Tol +({re_f})',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "opt_hessian_project",
-                            rf"{re_n}OPT_Hessian_Project +(\S+)",
+                            'opt_hessian_project',
+                            rf'{re_n}OPT_Hessian_Project +(\S+)',
                             dtype=str,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "optimization",
-                r"Entering Optimization Section \+\+\+([\s\S]+?)(?:\+\+\+|\Z)",
+                'optimization',
+                r'Entering Optimization Section \+\+\+([\s\S]+?)(?:\+\+\+|\Z)',
                 sub_parser=TextParser(
                     quantities=[
                         scf_quantity,
                         Quantity(
-                            "geometry",
-                            r"Start Getting New Geometry([\s\S]+?)End Getting New Geometry",
+                            'geometry',
+                            r'Start Getting New Geometry([\s\S]+?)End Getting New Geometry',
                             repeats=True,
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "coordinates",
-                                        r"Input Coordinates \(Angstroms\)\s+\-+\s+ATOM +X +Y +Z\s+"
-                                        rf"((?:\d+ +[A-Z][a-z]* +{re_f} +{re_f} +{re_f}\s+)+)",
+                                        'coordinates',
+                                        r'Input Coordinates \(Angstroms\)\s+\-+\s+ATOM +X +Y +Z\s+'
+                                        rf'((?:\d+ +[A-Z][a-z]* +{re_f} +{re_f} +{re_f}\s+)+)',
                                         sub_parser=TextParser(
                                             quantities=coordinates_quantities
                                         ),
                                     ),
                                     Quantity(
-                                        "tolerance",
-                                        rf"tolerance:\S+ +({re_f} +{re_f} +{re_f})",
+                                        'tolerance',
+                                        rf'tolerance:\S+ +({re_f} +{re_f} +{re_f})',
                                         dtype=np.dtype(np.float64),
                                     ),
                                     Quantity(
-                                        "energy_gradient",
-                                        rf"opt\=\= +(\d+ +{re_f} +{re_f} +{re_f} +{re_f})",
+                                        'energy_gradient',
+                                        rf'opt\=\= +(\d+ +{re_f} +{re_f} +{re_f} +{re_f})',
                                         dtype=np.dtype(np.float64),
                                     ),
                                 ]
@@ -318,24 +318,24 @@ class MainfileParser(TextParser):
                 ),
             ),
             Quantity(
-                "properties",
-                r"Entering Properties Section \+\+\+([\s\S]+?)(?:\+\+\+|\Z)",
+                'properties',
+                r'Entering Properties Section \+\+\+([\s\S]+?)(?:\+\+\+|\Z)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "hirschfeld",
-                            rf"Charge partitioning by Hirshfeld method\:\s+((?:[A-Z][a-z]* +\d+ +charge +{re_f}\s+)+)",
+                            'hirschfeld',
+                            rf'Charge partitioning by Hirshfeld method\:\s+((?:[A-Z][a-z]* +\d+ +charge +{re_f}\s+)+)',
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "label",
-                                        r"([A-Z][a-z]*)",
+                                        'label',
+                                        r'([A-Z][a-z]*)',
                                         repeats=True,
                                         dtype=str,
                                     ),
                                     Quantity(
-                                        "charge",
-                                        rf"({re_f})",
+                                        'charge',
+                                        rf'({re_f})',
                                         repeats=True,
                                         dtype=np.float64,
                                     ),
@@ -343,24 +343,24 @@ class MainfileParser(TextParser):
                             ),
                         ),
                         Quantity(
-                            "dipole_moment",
-                            rf"dipole magnitude\:.+?({re_f}) debye",
+                            'dipole_moment',
+                            rf'dipole magnitude\:.+?({re_f}) debye',
                             dtype=np.float64,
                         ),
                         Quantity(
-                            "mulliken",
-                            rf"Mulliken atomic charges\:\s*charge +spin\s+((?:[A-Z][a-z]*\([ \d]+\) +{re_f} +{re_f}\s+)+)",
+                            'mulliken',
+                            rf'Mulliken atomic charges\:\s*charge +spin\s+((?:[A-Z][a-z]*\([ \d]+\) +{re_f} +{re_f}\s+)+)',
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "charge",
-                                        rf"\) +({re_f})",
+                                        'charge',
+                                        rf'\) +({re_f})',
                                         dtype=np.float64,
                                         repeats=True,
                                     ),
                                     Quantity(
-                                        "spin",
-                                        rf"({re_f}) *{re_n}",
+                                        'spin',
+                                        rf'({re_f}) *{re_n}',
                                         dtype=np.float64,
                                         repeats=True,
                                     ),
@@ -371,21 +371,21 @@ class MainfileParser(TextParser):
                 ),
             ),
             Quantity(
-                "vibrations",
-                r"Entering Vibrations Section \+\+\+([\s\S]+?)(?:\+\+\+|\Z)",
+                'vibrations',
+                r'Entering Vibrations Section \+\+\+([\s\S]+?)(?:\+\+\+|\Z)',
                 sub_parser=TextParser(
                     quantities=[
                         scf_quantity,
                         # TODO map it to scf
                         Quantity(
-                            "dipole_moment",
-                            rf"dipole magnitude\:.+?({re_f}) debye",
+                            'dipole_moment',
+                            rf'dipole magnitude\:.+?({re_f}) debye',
                             dtype=np.float64,
                             repeats=True,
                         ),
                         Quantity(
-                            "vibrational_frequencies",
-                            rf"vibrational frequencies, intensities\s+mode.+\s+((?:\d+ +{re_f} +{re_f} +{re_f}\s+)+)",
+                            'vibrational_frequencies',
+                            rf'vibrational frequencies, intensities\s+mode.+\s+((?:\d+ +{re_f} +{re_f} +{re_f}\s+)+)',
                             dtype=np.dtype(np.float64),
                             flatten=False,
                             str_operation=lambda x: [
@@ -394,15 +394,15 @@ class MainfileParser(TextParser):
                             unit=1 / ureg.cm,
                         ),
                         Quantity(
-                            "normal_modes",
-                            r"Frequencies \(cm\-1\) and normal modes\s+.+\s+"
-                            r"((?:[A-Z][a-z]* +x.+\s+y.+\s+z.+\s+)+)",
+                            'normal_modes',
+                            r'Frequencies \(cm\-1\) and normal modes\s+.+\s+'
+                            r'((?:[A-Z][a-z]* +x.+\s+y.+\s+z.+\s+)+)',
                             sub_parser=TextParser(
                                 quantities=[
-                                    Quantity("label", r"([A-Z][a-z]*)", repeats=True),
+                                    Quantity('label', r'([A-Z][a-z]*)', repeats=True),
                                     Quantity(
-                                        "value",
-                                        rf"(?:x|y|z) +({re_f}.+)",
+                                        'value',
+                                        rf'(?:x|y|z) +({re_f}.+)',
                                         repeats=True,
                                         dtype=np.dtype(np.float64),
                                     ),
@@ -410,104 +410,104 @@ class MainfileParser(TextParser):
                             ),
                         ),
                         Quantity(
-                            "thermodynamic_quantities",
-                            r"(STANDARD THERMODYNAMIC QUANTITIES AT[\s\S]+?G,Total\:.+)",
+                            'thermodynamic_quantities',
+                            r'(STANDARD THERMODYNAMIC QUANTITIES AT[\s\S]+?G,Total\:.+)',
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "temperature",
-                                        rf"AT +({re_f}) K",
+                                        'temperature',
+                                        rf'AT +({re_f}) K',
                                         dtype=np.float64,
                                         unit=ureg.kelvin,
                                     ),
                                     Quantity(
-                                        "pressure",
-                                        rf"AND +({re_f}) ATM",
+                                        'pressure',
+                                        rf'AND +({re_f}) ATM',
                                         dtype=np.float64,
                                         unit=ureg.atm,
                                     ),
                                     Quantity(
-                                        "energy_zero_point",
-                                        rf"Zero point vibrational energy\: +({re_f}) kcal/mol",
+                                        'energy_zero_point',
+                                        rf'Zero point vibrational energy\: +({re_f}) kcal/mol',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_h_trans",
-                                        rf"H,Trans *\: +({re_f}) kcal/mol",
+                                        'x_dmol3_h_trans',
+                                        rf'H,Trans *\: +({re_f}) kcal/mol',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_h_rot",
-                                        rf"H,Rot *\: +({re_f}) kcal/mol",
+                                        'x_dmol3_h_rot',
+                                        rf'H,Rot *\: +({re_f}) kcal/mol',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_h_pv",
-                                        rf"H,pV *\: +({re_f}) kcal/mol",
+                                        'x_dmol3_h_pv',
+                                        rf'H,pV *\: +({re_f}) kcal/mol',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_h_vib_minus_zpve",
-                                        rf"H,Vib \- ZPVE *\: +({re_f}) kcal/mol",
+                                        'x_dmol3_h_vib_minus_zpve',
+                                        rf'H,Vib \- ZPVE *\: +({re_f}) kcal/mol',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_s_trans",
-                                        rf"S,Trans *\: +({re_f}) +cal/mol\.K",
+                                        'x_dmol3_s_trans',
+                                        rf'S,Trans *\: +({re_f}) +cal/mol\.K',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_s_rot",
-                                        rf"S,Rot *\: +({re_f}) +cal/mol\.K",
+                                        'x_dmol3_s_rot',
+                                        rf'S,Rot *\: +({re_f}) +cal/mol\.K',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_s_vib",
-                                        rf"S,Vib *\: +({re_f}) +cal/mol\.K",
+                                        'x_dmol3_s_vib',
+                                        rf'S,Vib *\: +({re_f}) +cal/mol\.K',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_c_trans",
-                                        rf"C,Trans *\: +({re_f}) +cal/mol\.K",
+                                        'x_dmol3_c_trans',
+                                        rf'C,Trans *\: +({re_f}) +cal/mol\.K',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_c_rot",
-                                        rf"C,Rot *\: +({re_f}) +cal/mol\.K",
+                                        'x_dmol3_c_rot',
+                                        rf'C,Rot *\: +({re_f}) +cal/mol\.K',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_c_vib",
-                                        rf"C,Vib *\: +({re_f}) +cal/mol\.K",
+                                        'x_dmol3_c_vib',
+                                        rf'C,Vib *\: +({re_f}) +cal/mol\.K',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_h_total_minus_zpve",
-                                        rf"H,Total \- ZPVE *\: +({re_f}) kcal/mol",
+                                        'x_dmol3_h_total_minus_zpve',
+                                        rf'H,Total \- ZPVE *\: +({re_f}) kcal/mol',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_s_total",
-                                        rf"S,Total *\: +({re_f}) +cal/mol\.K",
+                                        'x_dmol3_s_total',
+                                        rf'S,Total *\: +({re_f}) +cal/mol\.K',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_c_total",
-                                        rf"C,Total \(p\) *\: +({re_f}) +cal/mol\.K",
+                                        'x_dmol3_c_total',
+                                        rf'C,Total \(p\) *\: +({re_f}) +cal/mol\.K',
                                         dtype=np.float64,
                                     ),
                                     Quantity(
-                                        "x_dmol3_g_total",
-                                        rf"G,Total *\: +({re_f}) +kcal/mol",
+                                        'x_dmol3_g_total',
+                                        rf'G,Total *\: +({re_f}) +kcal/mol',
                                         dtype=np.float64,
                                     ),
                                 ]
                             ),
                         ),
                         Quantity(
-                            "thermodynamic_quantities_steps",
-                            r"T +Entropy +Heat_Capacity +Enthalpy +Free_Energy\s+"
-                            rf"\(K\).+\s+.+\s+\_+\s+((?:\d+ +{re_f} +{re_f} +{re_f} +{re_f} +{re_f}\s+)+)",
+                            'thermodynamic_quantities_steps',
+                            r'T +Entropy +Heat_Capacity +Enthalpy +Free_Energy\s+'
+                            rf'\(K\).+\s+.+\s+\_+\s+((?:\d+ +{re_f} +{re_f} +{re_f} +{re_f} +{re_f}\s+)+)',
                             flatten=False,
                             str_operation=lambda x: [
                                 v.split() for v in x.strip().splitlines()
@@ -523,7 +523,7 @@ class MainfileParser(TextParser):
     def parameters(self):
         return {
             key: val
-            for key, val in self.get("simulation_parameters", {}).get("key_value", [])
+            for key, val in self.get('simulation_parameters', {}).get('key_value', [])
         }
 
 
@@ -543,15 +543,15 @@ class Dmol3Parser:
         sec_run = Run()
         archive.run.append(sec_run)
         sec_run.program = Program(
-            version=self.mainfile_parser.get("program_version"),
+            version=self.mainfile_parser.get('program_version'),
             x_dmol3_compilation_date=self.mainfile_parser.get(
-                "x_dmol3_program_compilation_date"
+                'x_dmol3_program_compilation_date'
             ),
         )
 
         if self.mainfile_parser.date_start is not None:
             date = datetime.strptime(
-                self.mainfile_parser.date_start, "%b %d %H:%M:%S %Y"
+                self.mainfile_parser.date_start, '%b %d %H:%M:%S %Y'
             )
             sec_run.time_run = TimeRun(date_start=date.timestamp())
 
@@ -561,27 +561,27 @@ class Dmol3Parser:
         # basis set
         sec_method.electrons_representation = [
             BasisSetContainer(
-                type="atom-centered orbitals",
-                scope=["wavefunction"],
+                type='atom-centered orbitals',
+                scope=['wavefunction'],
                 basis_set=[
                     BasisSet(
-                        type="numeric AOs",
-                        scope=["full-electron"],
+                        type='numeric AOs',
+                        scope=['full-electron'],
                     )
                 ],
             )
         ]
         # simulation parameters
         for key, val in self.mainfile_parser.simulation_parameters.items():
-            if key == "scf_diis":
+            if key == 'scf_diis':
                 sec_method.x_dmol3_diis_number = val[0]
                 sec_method.x_dmol3_diis_name = val[1]
-            elif key == "occupation":
+            elif key == 'occupation':
                 sec_method.x_dmol3_occupation_name = val[0]
                 if len(val) > 1:
                     sec_method.x_dmol3_occupation_width = val[1]
             else:
-                setattr(sec_method, f"x_dmol3_{key}", val)
+                setattr(sec_method, f'x_dmol3_{key}', val)
 
         def parse_system(source):
             if source.coordinates is None:
@@ -590,9 +590,9 @@ class Dmol3Parser:
             sec_system = System()
             sec_run.system.append(sec_system)
             sec_system.atoms = Atoms(
-                labels=[v[0] for v in source.coordinates.get("labels_positions", [])],
+                labels=[v[0] for v in source.coordinates.get('labels_positions', [])],
                 positions=[
-                    v[1:4] for v in source.coordinates.get("labels_positions", [])
+                    v[1:4] for v in source.coordinates.get('labels_positions', [])
                 ]
                 * ureg.bohr,
             )
@@ -618,7 +618,7 @@ class Dmol3Parser:
                 target.time_calculation = target.time_physical - time_initial
 
             # scf iteration
-            for iteration in source.get("iteration", []):
+            for iteration in source.get('iteration', []):
                 time_initial = (
                     target.scf_iteration[-1].time_physical
                     if target.scf_iteration
@@ -650,7 +650,7 @@ class Dmol3Parser:
                 sec_eigenvalues.occupations = np.reshape(occupations, shape)
 
             # population analysis
-            for method in ["hirschfeld", "mulliken"]:
+            for method in ['hirschfeld', 'mulliken']:
                 population = source.get(method)
                 if population is None:
                     continue
@@ -684,7 +684,7 @@ class Dmol3Parser:
             # thermodynamics quantities
             if source.thermodynamic_quantities is not None:
                 for key, val in source.thermodynamic_quantities.items():
-                    if key == "energy_zero_point":
+                    if key == 'energy_zero_point':
                         target.energy.zero_point = EnergyEntry(
                             value=source.thermodynamic_quantities.energy_zero_point
                             * ureg.J
@@ -699,13 +699,13 @@ class Dmol3Parser:
         # TODO put workflows into separate archives
         workflow = None
         if self.mainfile_parser.optimization is not None:
-            for scf in self.mainfile_parser.optimization.get("scf", []):
+            for scf in self.mainfile_parser.optimization.get('scf', []):
                 sec_system = parse_system(scf)
                 sec_calc = parse_calculation(scf)
                 sec_calc.system_ref = sec_system
             workflow = GeometryOptimization(method=GeometryOptimizationMethod())
-            tolerance = self.mainfile_parser.optimization.get("geometry", [{}])[0].get(
-                "tolerance", [0, 0, 0]
+            tolerance = self.mainfile_parser.optimization.get('geometry', [{}])[0].get(
+                'tolerance', [0, 0, 0]
             )
             workflow.method.convergence_tolerance_energy_difference = (
                 tolerance[0] * ureg.hartree
@@ -722,7 +722,7 @@ class Dmol3Parser:
 
         if self.mainfile_parser.vibrations is not None:
             workflow = Thermodynamics(results=ThermodynamicsResults())
-            for scf in self.mainfile_parser.vibrations.get("scf", []):
+            for scf in self.mainfile_parser.vibrations.get('scf', []):
                 sec_system = parse_system(scf)
                 sec_calc = parse_calculation(scf)
                 sec_calc.system_ref = sec_system

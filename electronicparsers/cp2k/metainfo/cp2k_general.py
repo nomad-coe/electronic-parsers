@@ -213,13 +213,13 @@ class x_cp2k_section_geometry_optimization(MSection):
 
     x_cp2k_section_geometry_optimization_energy_reevaluation = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_geometry_optimization_energy_reevaluation"
+            'x_cp2k_section_geometry_optimization_energy_reevaluation'
         ),
         repeats=True,
     )
 
     x_cp2k_section_geometry_optimization_step = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_geometry_optimization_step"),
+        sub_section=SectionProxy('x_cp2k_section_geometry_optimization_step'),
         repeats=True,
     )
 
@@ -426,7 +426,7 @@ class x_cp2k_section_md_settings(MSection):
     x_cp2k_md_target_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="kelvin",
+        unit='kelvin',
         description="""
         Thermostat target temperature.
         """,
@@ -435,7 +435,7 @@ class x_cp2k_section_md_settings(MSection):
     x_cp2k_md_target_temperature_tolerance = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="kelvin",
+        unit='kelvin',
         description="""
         Target temperature tolerance.
         """,
@@ -586,16 +586,16 @@ class x_cp2k_section_quickstep_settings(MSection):
     )
 
     x_cp2k_section_maximum_angular_momentum = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_maximum_angular_momentum"),
+        sub_section=SectionProxy('x_cp2k_section_maximum_angular_momentum'),
         repeats=True,
     )
 
     x_cp2k_section_total_numbers = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_total_numbers"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_total_numbers'), repeats=True
     )
 
     x_cp2k_section_atomic_kinds = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_atomic_kinds"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_atomic_kinds'), repeats=True
     )
 
 
@@ -607,7 +607,7 @@ class x_cp2k_section_atomic_kinds(MSection):
     m_def = Section(validate=False)
 
     x_cp2k_section_atomic_kind = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_atomic_kind"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_atomic_kind'), repeats=True
     )
 
 
@@ -651,11 +651,11 @@ class x_cp2k_section_vdw_settings(MSection):
     )
 
     x_cp2k_section_vdw_d2_settings = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_vdw_d2_settings"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_vdw_d2_settings'), repeats=True
     )
 
     x_cp2k_section_vdw_d3_settings = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_vdw_d3_settings"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_vdw_d3_settings'), repeats=True
     )
 
 
@@ -683,7 +683,7 @@ class x_cp2k_section_vdw_d2_settings(MSection):
     )
 
     x_cp2k_section_vdw_element_settings = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_vdw_element_settings"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_vdw_element_settings'), repeats=True
     )
 
 
@@ -792,7 +792,7 @@ class x_cp2k_section_atomic_kind(MSection):
     )
 
     x_cp2k_section_kind_basis_set = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_kind_basis_set"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_kind_basis_set'), repeats=True
     )
 
 
@@ -864,7 +864,7 @@ class Run(runschema.run.Run):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cp2k_section_restart_information = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_restart_information"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_restart_information'), repeats=True
     )
 
     x_cp2k_program_information = Quantity(
@@ -892,11 +892,11 @@ class Run(runschema.run.Run):
     )
 
     x_cp2k_section_startinformation = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_startinformation"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_startinformation'), repeats=True
     )
 
     x_cp2k_section_end_information = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_end_information"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_end_information'), repeats=True
     )
 
 
@@ -904,7 +904,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cp2k_section_geometry_optimization = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_geometry_optimization"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_geometry_optimization'), repeats=True
     )
 
 
@@ -912,7 +912,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cp2k_section_geometry_optimization = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_geometry_optimization"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_geometry_optimization'), repeats=True
     )
 
 
@@ -920,7 +920,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cp2k_section_md_settings = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_md_settings"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_md_settings'), repeats=True
     )
 
 
@@ -928,7 +928,7 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cp2k_section_quickstep_settings = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_quickstep_settings"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_quickstep_settings'), repeats=True
     )
 
     x_cp2k_quickstep_settings = Quantity(
@@ -940,7 +940,7 @@ class Method(runschema.method.Method):
     )
 
     x_cp2k_section_vdw_settings = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_vdw_settings"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_vdw_settings'), repeats=True
     )
 
 
@@ -953,8 +953,8 @@ class x_cp2k_pdos_histogram(MSection):
 
     x_cp2k_pdos_histogram_energies = Quantity(
         type=np.float64,
-        shape=["n_energies"],
-        unit="joule",
+        shape=['n_energies'],
+        unit='joule',
         description="""
         Values of the histogram energies.
         """,
@@ -962,7 +962,7 @@ class x_cp2k_pdos_histogram(MSection):
 
     x_cp2k_pdos_histogram_values = Quantity(
         type=np.float64,
-        shape=["n_orbitals", "n_energies"],
+        shape=['n_orbitals', 'n_energies'],
         description="""
         Values of the projected orbital / atomic / species histogram. This is then convoluted
         with a Gaussian distribution function and stored in the corresponding projected DOS value.
@@ -985,7 +985,7 @@ class x_cp2k_pdos_histogram(MSection):
 
     x_cp2k_pdos_histogram_orbital = Quantity(
         type=str,
-        shape=["n_orbitals"],
+        shape=['n_orbitals'],
         description="""
         Orbital label for the projected DOS histogram.
         """,
@@ -993,7 +993,7 @@ class x_cp2k_pdos_histogram(MSection):
 
     x_cp2k_gaussian_width = Quantity(
         type=np.float64,
-        unit="joule",
+        unit='joule',
         description="""
         Width of the Gaussian distribution function.
         """,
@@ -1001,7 +1001,7 @@ class x_cp2k_pdos_histogram(MSection):
 
     x_cp2k_gaussian_delta_energy = Quantity(
         type=np.float64,
-        unit="joule",
+        unit='joule',
         description="""
         New energies mesh separation.
         """,

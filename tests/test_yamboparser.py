@@ -27,24 +27,24 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return YamboParser()
 
 
 def test_0(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/yambo/hBN/r_setup", archive, None)
+    parser.parse('tests/data/yambo/hBN/r_setup', archive, None)
 
     run = archive.run[-1]
-    assert run.program.version == "5.0.4 Revision 19598"
-    assert run.program.x_yambo_hash == "20b2ffa04"
+    assert run.program.version == '5.0.4 Revision 19598'
+    assert run.program.x_yambo_hash == '20b2ffa04'
     assert run.x_yambo_threads_per_core == 1
     assert run.x_yambo_fragmented_wfs
 
     system = run.system[0]
     assert system.atoms.positions[2][1].magnitude == approx(-7.20417507e-11)
-    assert system.atoms.labels[3] == "N"
+    assert system.atoms.labels[3] == 'N'
     assert system.atoms.lattice_vectors[0][1].magnitude == approx(-1.24779986e-10)
 
     calc = run.calculation[0]
@@ -62,7 +62,7 @@ def test_0(parser):
 def test_1(parser):
     archive = EntryArchive()
     parser.parse(
-        "tests/data/yambo/hBN/r-10b_1Ry_HF_and_locXC_gw0_em1d_ppa", archive, None
+        'tests/data/yambo/hBN/r-10b_1Ry_HF_and_locXC_gw0_em1d_ppa', archive, None
     )
 
     run = archive.run[-1]
@@ -72,40 +72,40 @@ def test_1(parser):
         method[0]
         .x_yambo_transferred_momenta[0]
         .x_yambo_input[0]
-        .x_yambo_parameters["Sigma scattering"]
-        == "yes"
+        .x_yambo_parameters['Sigma scattering']
+        == 'yes'
     )
     assert (
         method[1].x_yambo_dipoles[0].x_yambo_input[0].x_yambo_file
-        == "./SAVE//ns.kb_pp_pwscf"
+        == './SAVE//ns.kb_pp_pwscf'
     )
-    assert method[1].x_yambo_dipoles[0].x_yambo_input[0].x_yambo_sn == "009327"
+    assert method[1].x_yambo_dipoles[0].x_yambo_input[0].x_yambo_sn == '009327'
     assert (
         method[1]
         .x_yambo_dipoles[0]
         .x_yambo_output[0]
-        .x_yambo_parameters["Fragmentation"]
-        == "yes"
+        .x_yambo_parameters['Fragmentation']
+        == 'yes'
     )
     assert method[2].x_yambo_dynamic_dielectric_matrix[0].x_yambo_output[
         0
-    ].x_yambo_parameters["BZ Q point size factor"] == approx(1.0)
+    ].x_yambo_parameters['BZ Q point size factor'] == approx(1.0)
     assert (
         method[3]
         .x_yambo_local_xc_nonlocal_fock[0]
         .x_yambo_output[0]
-        .x_yambo_parameters["RL vectors"]
+        .x_yambo_parameters['RL vectors']
         == 1491
     )
     assert method[4].x_yambo_dyson[0].x_yambo_input[0].x_yambo_parameters[
-        "X poles"
+        'X poles'
     ] == approx(100.0)
     assert (
-        method[4].x_yambo_dyson[1].x_yambo_output[0].x_yambo_parameters["GW solver"]
-        == "Newton"
+        method[4].x_yambo_dyson[1].x_yambo_output[0].x_yambo_parameters['GW solver']
+        == 'Newton'
     )
     ddm = method[2].x_yambo_dynamic_dielectric_matrix[0]
-    assert ddm.x_yambo_output[0].x_yambo_file == "./10b_1Ry//ndb.pp"
+    assert ddm.x_yambo_output[0].x_yambo_file == './10b_1Ry//ndb.pp'
     assert ddm.x_yambo_mesh_size[2] == 27
     assert len(ddm.x_yambo_fragment) == 14
     assert np.shape(ddm.x_yambo_fragment[2].x_yambo_X_Q) == (2, 5, 5, 2)
@@ -136,18 +136,18 @@ def test_1(parser):
 
 def test_2(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/yambo/Aluminum/r-01_Lifetimes_em1d_life", archive, None)
+    parser.parse('tests/data/yambo/Aluminum/r-01_Lifetimes_em1d_life', archive, None)
 
     run = archive.run[-1]
-    assert run.program.version == "4.4.0 Revision 148"
-    assert run.program.x_yambo_build == "MPI+SLK+OpenMP"
+    assert run.program.version == '4.4.0 Revision 148'
+    assert run.program.x_yambo_build == 'MPI+SLK+OpenMP'
     assert run.x_yambo_threads_tot == 1
     assert run.x_yambo_io_nodes == 1
-    assert run.x_yambo_additional_io == "."
-    assert run.x_yambo_job_string == "01_Lifetimes"
-    assert run.x_yambo_input.x_yambo_file == "./SAVE//ns.db1"
-    assert run.x_yambo_input.x_yambo_parameters["Electrons"] == approx(3.0)
-    assert run.x_yambo_input.x_yambo_sn == "009108"
+    assert run.x_yambo_additional_io == '.'
+    assert run.x_yambo_job_string == '01_Lifetimes'
+    assert run.x_yambo_input.x_yambo_file == './SAVE//ns.db1'
+    assert run.x_yambo_input.x_yambo_parameters['Electrons'] == approx(3.0)
+    assert run.x_yambo_input.x_yambo_sn == '009108'
 
     calc = run.calculation
     assert len(calc) == 1
@@ -166,7 +166,7 @@ def test_2(parser):
 def test_3(parser):
     archive = EntryArchive()
     parser.parse(
-        "tests/data/yambo/GaSb/r-02_GW_em1d_ppa_HF_and_locXC_gw0", archive, None
+        'tests/data/yambo/GaSb/r-02_GW_em1d_ppa_HF_and_locXC_gw0', archive, None
     )
 
     method = archive.run[-1].method
@@ -175,11 +175,11 @@ def test_3(parser):
         method[0]
         .x_yambo_transferred_momenta[0]
         .x_yambo_input[0]
-        .x_yambo_parameters["QP states"]
-        == "1  29"
+        .x_yambo_parameters['QP states']
+        == '1  29'
     )
     assert method[2].x_yambo_bare_xc[0].x_yambo_output[0].x_yambo_parameters[
-        "Bosonic    Temperature"
+        'Bosonic    Temperature'
     ] == approx(0.0)
 
     calc = archive.run[-1].calculation
@@ -202,7 +202,7 @@ def test_3(parser):
 def test_4(parser):
     archive = EntryArchive()
     parser.parse(
-        "tests/data/yambo/LiF/r-02_QP_PPA_em1d_ppa_HF_and_locXC_gw0", archive, None
+        'tests/data/yambo/LiF/r-02_QP_PPA_em1d_ppa_HF_and_locXC_gw0', archive, None
     )
 
     calc = archive.run[-1].calculation

@@ -27,7 +27,7 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return OceanParser()
 
@@ -36,7 +36,7 @@ def test_tio2(parser):
     # Testing the photon_workflow_archive, from empty photon_archives, hence no sections program nor system.
     archive = EntryArchive()
     parser.parse(
-        "tests/data/ocean/ms-10734/Spectra-1-1-1/postDefaultsOceanDatafile",
+        'tests/data/ocean/ms-10734/Spectra-1-1-1/postDefaultsOceanDatafile',
         archive,
         None,
     )
@@ -46,21 +46,21 @@ def test_tio2(parser):
     # Method
     sec_method = sec_run.method
     assert len(sec_method) == 1
-    assert sec_method[-1].m_xpath("bse")
+    assert sec_method[-1].m_xpath('bse')
     sec_bse = sec_method[-1].bse
-    assert sec_bse.type == "Singlet"
-    assert sec_bse.solver == "Lanczos-Haydock"
+    assert sec_bse.type == 'Singlet'
+    assert sec_bse.solver == 'Lanczos-Haydock'
     assert sec_bse.n_states == 119
-    assert sec_bse.broadening.to("eV").magnitude == approx(0.1)
+    assert sec_bse.broadening.to('eV').magnitude == approx(0.1)
     assert (sec_bse.q_mesh.grid == np.array([1, 1, 1])).all()
-    assert sec_bse.screening.type == "core"
+    assert sec_bse.screening.type == 'core'
     assert sec_bse.screening.n_states == 472
     assert sec_bse.screening.dielectric_infinity == 1000000
     assert (sec_bse.screening.k_mesh.grid == np.array([3, 3, 2])).all()
     assert (sec_method[-1].x_ocean_edges[0] == np.array([1, 1, 0])).all()
-    assert sec_bse.core_hole.solver == "Lanczos-Haydock"
-    assert sec_bse.core_hole.mode == "absorption"
-    assert sec_bse.core_hole.broadening.to("eV").magnitude == approx(0.89)
+    assert sec_bse.core_hole.solver == 'Lanczos-Haydock'
+    assert sec_bse.core_hole.mode == 'absorption'
+    assert sec_bse.core_hole.broadening.to('eV').magnitude == approx(0.89)
     sec_ocean_screen = sec_method[-1].x_ocean_screen
     assert sec_ocean_screen.m_mod_count == 22
     assert sec_ocean_screen.x_ocean_dft_energy_range == approx(150.0)

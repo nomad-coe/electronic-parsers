@@ -27,30 +27,30 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return CastepParser()
 
 
 def test_single_point(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/castep/Si8.castep", archive, None)
+    parser.parse('tests/data/castep/Si8.castep', archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == "16.1"
-    assert sec_run.x_castep_constants_reference == "CODATA 2010"
+    assert sec_run.program.version == '16.1'
+    assert sec_run.x_castep_constants_reference == 'CODATA 2010'
     assert sec_run.time_run.date_start.magnitude == 1455286325.0
 
     sec_method = sec_run.method[0]
     assert sec_method.electrons_representation[0].basis_set[0].cutoff.to(
-        "eV"
+        'eV'
     ).magnitude == approx(100)
-    assert sec_method.electrons_representation[0].native_tier == "FINE"
+    assert sec_method.electrons_representation[0].native_tier == 'FINE'
     assert sec_method.electronic.n_spin_channels == 1
-    assert sec_method.dft.xc_functional.correlation[0].name == "GGA_C_PBE"
-    assert sec_method.electronic.smearing.kind == "gaussian"
+    assert sec_method.dft.xc_functional.correlation[0].name == 'GGA_C_PBE'
+    assert sec_method.electronic.smearing.kind == 'gaussian'
 
-    assert archive.workflow2.m_def.name == "SinglePoint"
+    assert archive.workflow2.m_def.name == 'SinglePoint'
 
     sec_scc = sec_run.calculation[0]
     assert np.shape(sec_scc.forces.total.value) == (8, 3)
@@ -86,10 +86,10 @@ def test_single_point(parser):
 
 def test_dmd(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/castep/TiO2-geom.castep", archive, None)
+    parser.parse('tests/data/castep/TiO2-geom.castep', archive, None)
 
     sec_workflow = archive.workflow2
-    assert sec_workflow.method.method == "damped MD"
+    assert sec_workflow.method.method == 'damped MD'
     assert sec_workflow.method.convergence_tolerance_force_maximum.magnitude == approx(
         8.01088317e-11
     )
@@ -113,12 +113,12 @@ def test_dmd(parser):
 
 def test_md(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/castep/Si8-md-NPT.castep", archive, None)
+    parser.parse('tests/data/castep/Si8-md-NPT.castep', archive, None)
 
     sec_workflow = archive.workflow2
-    assert sec_workflow.method.thermodynamic_ensemble == "NPT"
+    assert sec_workflow.method.thermodynamic_ensemble == 'NPT'
     assert (
-        sec_workflow.method.x_castep_thermostat_type == "Nose-Hoover chain thermostat"
+        sec_workflow.method.x_castep_thermostat_type == 'Nose-Hoover chain thermostat'
     )
     assert sec_workflow.method.x_castep_frame_energy_tolerance.magnitude == approx(
         1.60217663e-24
@@ -151,7 +151,7 @@ def test_md(parser):
 
 def test_eigenvalues(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/castep/Fe.castep", archive, None)
+    parser.parse('tests/data/castep/Fe.castep', archive, None)
 
     sec_eigenvalues = archive.run[0].calculation[0].eigenvalues[0]
     assert np.shape(sec_eigenvalues.energies[1][117]) == (6,)
@@ -161,30 +161,30 @@ def test_eigenvalues(parser):
 
 def test_bandstructure(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/castep/Dispersions/Si2.castep", archive, None)
+    parser.parse('tests/data/castep/Dispersions/Si2.castep', archive, None)
 
     sec_band_segment = (
         archive.run[0].calculation[0].band_structure_electronic[0].segment
     )
     assert len(sec_band_segment) == 5
-    assert sec_band_segment[3].endpoints_labels == ["X", "W"]
+    assert sec_band_segment[3].endpoints_labels == ['X', 'W']
     assert sec_band_segment[1].energies[0][-1][12].magnitude == approx(2.17418526e-18)
     assert sec_band_segment[4].kpoints[2][1] == 0.300000
 
     sec_method = archive.run[0].method[0]
-    assert sec_method.electrons_representation[0].native_tier == "MEDIUM"
+    assert sec_method.electrons_representation[0].native_tier == 'MEDIUM'
 
 
 def test_vibration(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/castep/BC2N-Pmm2-Raman.castep", archive, None)
+    parser.parse('tests/data/castep/BC2N-Pmm2-Raman.castep', archive, None)
 
     sec_vibration = archive.run[0].calculation[0].vibrational_frequencies
     assert len(sec_vibration) == 2
-    assert sec_vibration[1].value[2].to("1/cm").magnitude == approx(0.461821)
+    assert sec_vibration[1].value[2].to('1/cm').magnitude == approx(0.461821)
     assert sec_vibration[0].raman.intensity[3] == approx(21.0162567)
     assert sec_vibration[1].infrared.intensity[6] == approx(2.7078705)
-    assert sec_vibration[0].raman.activity[10] == "Y"
+    assert sec_vibration[0].raman.activity[10] == 'Y'
 
     sec_raman = archive.run[0].x_castep_section_raman_tensor
     assert len(sec_raman) == 12
@@ -193,9 +193,9 @@ def test_vibration(parser):
 
 def test_tss(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/castep/h2-lst.castep", archive, None)
+    parser.parse('tests/data/castep/h2-lst.castep', archive, None)
 
-    assert archive.workflow2.m_def.name == "GeometryOptimization"
+    assert archive.workflow2.m_def.name == 'GeometryOptimization'
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 27
@@ -204,9 +204,9 @@ def test_tss(parser):
 
 def test_bfgs(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/castep/Si2_opt.castep", archive, None)
+    parser.parse('tests/data/castep/Si2_opt.castep', archive, None)
 
-    assert archive.workflow2.m_def.name == "GeometryOptimization"
+    assert archive.workflow2.m_def.name == 'GeometryOptimization'
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 9

@@ -68,45 +68,45 @@ class IndmflParser(TextParser):
 
     def init_quantities(self):
         def str_to_orbitals_list(val_in):
-            return val_in.replace("'", "").split(" ")[:-1]
+            return val_in.replace("'", '').split(' ')[:-1]
 
         self._quantities = [
             Quantity(
-                "hybridization_window",
-                r"(\d+) *(\d+) *(\d+) *(\d+) *\# hybridization band index nemin and nemax\, renormalize for interstitials\, projection type",
+                'hybridization_window',
+                r'(\d+) *(\d+) *(\d+) *(\d+) *\# hybridization band index nemin and nemax\, renormalize for interstitials\, projection type',
             ),
             Quantity(
-                "real_or_imaginary_axis",
-                r"(\d+) *([\d\.]+) *([\d\.]+) *(\d+) *([\d\-\.]+) *([\d\-\.]+) *\# matsubara\, broadening\-corr\, broadening\-noncorr\, nomega\, omega\_min\, omega\_max \(in eV\)",
+                'real_or_imaginary_axis',
+                r'(\d+) *([\d\.]+) *([\d\.]+) *(\d+) *([\d\-\.]+) *([\d\-\.]+) *\# matsubara\, broadening\-corr\, broadening\-noncorr\, nomega\, omega\_min\, omega\_max \(in eV\)',
             ),
-            Quantity("n_corr_atoms", r"(\d+)\s*\# number of correlated atoms"),
+            Quantity('n_corr_atoms', r'(\d+)\s*\# number of correlated atoms'),
             Quantity(
-                "i_atom_corr",
-                r"(\d+)\s*(\d+)\s*(\d+)\s*\# iatom\, nL\, locrot",
+                'i_atom_corr',
+                r'(\d+)\s*(\d+)\s*(\d+)\s*\# iatom\, nL\, locrot',
                 repeats=True,
             ),
             Quantity(
-                "l_atom_corr",
-                r"\s*(\d+)\s*(\d+)\s*(\d+)\s*\# L\, qsplit\, cix",
+                'l_atom_corr',
+                r'\s*(\d+)\s*(\d+)\s*(\d+)\s*\# L\, qsplit\, cix',
                 repeats=True,
             ),
             Quantity(
-                "siginds_corr",
-                r"(\# Siginds and crystal\-field transformations for correlated orbitals \=*[\s\S]+)(?:\# Sigind follows)",
+                'siginds_corr',
+                r'(\# Siginds and crystal\-field transformations for correlated orbitals \=*[\s\S]+)(?:\# Sigind follows)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "indep_cix_blocks",
-                            r"(\d+) *(\d+) *(\d+) *\# Number of independent kcix blocks\, max dimension\, max num\-independent-components",
+                            'indep_cix_blocks',
+                            r'(\d+) *(\d+) *(\d+) *\# Number of independent kcix blocks\, max dimension\, max num\-independent-components',
                         ),
                         Quantity(
-                            "cix",
-                            r"(\d+) *(\d+) *(\d+) *\# cix\-num\, dimension\, num\-independent\-components",
+                            'cix',
+                            r'(\d+) *(\d+) *(\d+) *\# cix\-num\, dimension\, num\-independent\-components',
                             repeats=True,
                         ),
                         Quantity(
-                            "orbitals",
-                            r"\# Independent components are \-*[\s\S]([\'\^\-\+a-zA-Z\s\d]+)",
+                            'orbitals',
+                            r'\# Independent components are \-*[\s\S]([\'\^\-\+a-zA-Z\s\d]+)',
                             str_operation=str_to_orbitals_list,
                         ),
                     ]
@@ -122,26 +122,26 @@ class ParamsParser(TextParser):
     def init_quantities(self):
         self._quantities = [
             Quantity(
-                "general_parameters",
-                r"([\s\S]+)(?:\# Impurity problem number 0)",
+                'general_parameters',
+                r'([\s\S]+)(?:\# Impurity problem number 0)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "params",
-                            r"([a-zA-Z\_]+)\s*\=\s*\'*([a-zA-Z\d\.\-]+)\'*",
+                            'params',
+                            r'([a-zA-Z\_]+)\s*\=\s*\'*([a-zA-Z\d\.\-]+)\'*',
                             repeats=True,
                         )
                     ]
                 ),
             ),
             Quantity(
-                "impurity_parameters",
-                r"iparams0\=([\s\S]+)(?:\s*\})",
+                'impurity_parameters',
+                r'iparams0\=([\s\S]+)(?:\s*\})',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "params",
-                            r"\s*\"(.+)\"\s*\:\s*\[[\"\'\s]*([a-zA-Z\d\.\-]+)[\"\'\s]*\,",
+                            'params',
+                            r'\s*\"(.+)\"\s*\:\s*\[[\"\'\s]*([a-zA-Z\d\.\-]+)[\"\'\s]*\,',
                             repeats=True,
                         )
                     ]
@@ -157,8 +157,8 @@ class ImpurityGfOutParser(DataTextParser):
     def init_quantities(self):
         self._quantities = [
             Quantity(
-                "parameters",
-                r"\# *nf\=([\d\.]+) *mu\=([\d\.\-]+) *T\=([\d\.]+) *TrSigmaG\=([\d\.\-]+) *Epot\=([\d\.\-]+) *Ekin\=([\d\.\-]+) *mom\=([\[\]\,\d\.\-]+)",
+                'parameters',
+                r'\# *nf\=([\d\.]+) *mu\=([\d\.\-]+) *T\=([\d\.]+) *TrSigmaG\=([\d\.\-]+) *Epot\=([\d\.\-]+) *Ekin\=([\d\.\-]+) *mom\=([\[\]\,\d\.\-]+)',
                 repeats=False,
             )
         ]
@@ -170,18 +170,18 @@ class MaxentParamsParser(TextParser):
 
     def init_quantities(self):
         def str_multiply_to_float(val_in):
-            val = val_in.split("*")
+            val = val_in.split('*')
             return float(val[0]) * float(val[1])
 
         self._quantities = [
             Quantity(
-                "parameters",
-                r"\'([a-zA-Z\d\_]+)\' *\: *\ ([\d\.\*a-zA-Z]+)\'*\, *\#",
+                'parameters',
+                r'\'([a-zA-Z\d\_]+)\' *\: *\ ([\d\.\*a-zA-Z]+)\'*\, *\#',
                 repeats=True,
             ),
             Quantity(
-                "smearing",
-                r"\'gwidth\' *\: *([\d\*\.]+)\, *\#",
+                'smearing',
+                r'\'gwidth\' *\: *([\d\*\.]+)\, *\#',
                 str_operation=str_multiply_to_float,
             ),
         ]
@@ -193,13 +193,13 @@ class MaxEntSigOutParser(DataTextParser):
 
     def init_quantities(self):
         def str_to_array(val_in):
-            val = [float(v) for v in val_in.split(", ")]
+            val = [float(v) for v in val_in.split(', ')]
             return val
 
         self._quantities = [
             Quantity(
-                "aux_sigma",
-                r"\# *s\_oo\= *\[([\d\.\,\-\s]+)\]",
+                'aux_sigma',
+                r'\# *s\_oo\= *\[([\d\.\,\-\s]+)\]',
                 repeats=False,
                 str_operation=str_to_array,
             )
@@ -222,8 +222,8 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
     level = 2
 
     def __init__(self):
-        self._re_namesafe = re.compile(r"[^\w]")
-        self._calculation_type = "dmft"
+        self._re_namesafe = re.compile(r'[^\w]')
+        self._calculation_type = 'dmft'
         self._child_archives = {}
 
         self.out_parser = OutParser()
@@ -234,21 +234,21 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         self.imp_gf_parser = ImpurityGfOutParser()
         self.lattice_parser = DataTextParser()
 
-        self._solver_map = {"CTQMC": "CT-HYB", "OCA": "OCA", "NCA": "NCA"}
+        self._solver_map = {'CTQMC': 'CT-HYB', 'OCA': 'OCA', 'NCA': 'NCA'}
 
-        self._angular_momentum = ["s", "p", "d", "f"]
+        self._angular_momentum = ['s', 'p', 'd', 'f']
 
         self._gf_files_map = {
-            "imp.0/Gf.out.*": "greens_function_iw",
-            "imp.0/Sig.out.*": "self_energy_iw",
-            "imp.0/Delta.inp.*": "hybridization_function_iw",
+            'imp.0/Gf.out.*': 'greens_function_iw',
+            'imp.0/Sig.out.*': 'self_energy_iw',
+            'imp.0/Delta.inp.*': 'hybridization_function_iw',
         }
 
-        self._gf_lattice = ["greens_function_iw", "self_energy_iw"]
+        self._gf_lattice = ['greens_function_iw', 'self_energy_iw']
 
         self._gf_lattice_maxent = [
-            "greens_function_freq",
-            "hybridization_function_freq",
+            'greens_function_freq',
+            'hybridization_function_freq',
         ]
 
         self.maxent_params_parser = MaxentParamsParser()
@@ -260,13 +260,13 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         Args:
             sec_run (Run): Specific Run section to be populated with System.
         """
-        struct_files = get_files("*.struct", self.filepath, self.mainfile)
+        struct_files = get_files('*.struct', self.filepath, self.mainfile)
         if not struct_files:
             return
         if len(struct_files) > 1:
             self.logger.warning(
-                "Multiple *struct files found; we will parse the last one.",
-                data={"files": struct_files},
+                'Multiple *struct files found; we will parse the last one.',
+                data={'files': struct_files},
             )
         self.struct_parser.mainfile = struct_files[-1]
         atoms = self.struct_parser.get_atoms()
@@ -293,42 +293,42 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         # TODO ask @LucianPascut what projectorw.dat means to parse as initial model.
 
         # HubbardKanamori part
-        for n in range(self.indmfl_parser.get("n_corr_atoms", 1)):
+        for n in range(self.indmfl_parser.get('n_corr_atoms', 1)):
             sec_atom_params = AtomParameters()
             sec_method.atom_parameters.append(sec_atom_params)
-            if sec_run.m_xpath("system[-1].atoms.labels"):
+            if sec_run.m_xpath('system[-1].atoms.labels'):
                 labels = sec_run.system[-1].atoms.labels
-                if self.indmfl_parser.get("i_atom_corr") is not None:
-                    atom_corr = self.indmfl_parser.get("i_atom_corr")[n]
+                if self.indmfl_parser.get('i_atom_corr') is not None:
+                    atom_corr = self.indmfl_parser.get('i_atom_corr')[n]
                     label = labels[atom_corr[0] - 1]
                     sec_atom_params.label = label
-                if self.indmfl_parser.get("l_atom_corr") is not None:
+                if self.indmfl_parser.get('l_atom_corr') is not None:
                     angular_momentum = self._angular_momentum[
-                        self.indmfl_parser.get("l_atom_corr")[n][0]
+                        self.indmfl_parser.get('l_atom_corr')[n][0]
                     ]
-                if self.indmfl_parser.get("siginds_corr", {}).get("cix") is not None:
-                    n_orbitals = self.indmfl_parser.get("siginds_corr", {}).get("cix")[
+                if self.indmfl_parser.get('siginds_corr', {}).get('cix') is not None:
+                    n_orbitals = self.indmfl_parser.get('siginds_corr', {}).get('cix')[
                         n
                     ][-1]
                     sec_atom_params.n_orbitals = n_orbitals
                 if (
-                    self.indmfl_parser.get("siginds_corr", {}).get("orbitals")
+                    self.indmfl_parser.get('siginds_corr', {}).get('orbitals')
                     is not None
                 ):
                     sec_atom_params.orbitals = [
-                        f"{angular_momentum}{orb}"
-                        for orb in self.indmfl_parser.get("siginds_corr", {}).get(
-                            "orbitals"
+                        f'{angular_momentum}{orb}'
+                        for orb in self.indmfl_parser.get('siginds_corr', {}).get(
+                            'orbitals'
                         )
                     ]
             sec_hubbard_kanamori = HubbardKanamoriModel()
             sec_atom_params.hubbard_kanamori_model = sec_hubbard_kanamori
             sec_hubbard_kanamori.double_counting_correction = (
-                self.general_parameters.get("DCs", "")
+                self.general_parameters.get('DCs', '')
             )
-            sec_hubbard_kanamori.u = self.impurity_parameters.get("U", 0.0) * ureg.eV
-            sec_hubbard_kanamori.jh = self.impurity_parameters.get("J", 0.0) * ureg.eV
-            if self.impurity_parameters.get("CoulombF", "Full") == "Ising":
+            sec_hubbard_kanamori.u = self.impurity_parameters.get('U', 0.0) * ureg.eV
+            sec_hubbard_kanamori.jh = self.impurity_parameters.get('J', 0.0) * ureg.eV
+            if self.impurity_parameters.get('CoulombF', 'Full') == 'Ising':
                 sec_hubbard_kanamori.j = 0.0
             else:
                 sec_hubbard_kanamori.up = (
@@ -355,25 +355,25 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         # DMFT method
         sec_dmft = DMFT()
         sec_method.dmft = sec_dmft
-        n_corr_atoms = self.indmfl_parser.get("n_corr_atoms", 1)
+        n_corr_atoms = self.indmfl_parser.get('n_corr_atoms', 1)
         sec_dmft.n_impurities = n_corr_atoms
-        if self.indmfl_parser.get("siginds_corr", {}).get("cix"):
+        if self.indmfl_parser.get('siginds_corr', {}).get('cix'):
             n_orbitals = [
-                orb[-1] for orb in self.indmfl_parser.get("siginds_corr", {}).get("cix")
+                orb[-1] for orb in self.indmfl_parser.get('siginds_corr', {}).get('cix')
             ]
             sec_dmft.n_correlated_orbitals = n_orbitals
-        if self.impurity_parameters.get("nf0"):
-            n_corr_elect = self.impurity_parameters.get("nf0", 1.0) / n_corr_atoms
+        if self.impurity_parameters.get('nf0'):
+            n_corr_elect = self.impurity_parameters.get('nf0', 1.0) / n_corr_atoms
             corr_elect = [
                 n_corr_elect
             ] * n_corr_atoms  # TODO ask Lucian if this makes sense
             sec_dmft.n_electrons = corr_elect
         sec_dmft.inverse_temperature = (
-            self.impurity_parameters.get("beta", 0.0) / ureg.eV
+            self.impurity_parameters.get('beta', 0.0) / ureg.eV
         )
-        sec_dmft.magnetic_state = "paramagnetic"  # TODO ask Lucian if this is correct
+        sec_dmft.magnetic_state = 'paramagnetic'  # TODO ask Lucian if this is correct
         sec_dmft.impurity_solver = self._solver_map.get(
-            self.general_parameters.get("solver", "")
+            self.general_parameters.get('solver', '')
         )
 
     def extract_greens_functions_data(
@@ -401,10 +401,10 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         if gf_data is None:
             return
         freq = gf_data[:, 0]
-        if mesh_type == "imaginary":
+        if mesh_type == 'imaginary':
             sec_gfs.matsubara_freq = freq
             freq = freq * 1j
-        elif mesh_type == "real":
+        elif mesh_type == 'real':
             sec_gfs.frequencies = freq
 
         if create_freq_mesh:
@@ -454,22 +454,22 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                 sec_scc.method_ref = sec_run.method[-1]  # ref DMFT
             return sec_scc
 
-        if sec_run.m_xpath("method[-1].dmft.n_correlated_orbitals") is not None:
+        if sec_run.m_xpath('method[-1].dmft.n_correlated_orbitals') is not None:
             n_orbitals = sec_run.method[-1].dmft.n_correlated_orbitals[0]
         else:
             self.logger.warning(
-                "Number of orbitals could not be extracted. We cannot parse "
-                "the output calculation information."
+                'Number of orbitals could not be extracted. We cannot parse '
+                'the output calculation information.'
             )
             return
 
         # Parsing iteration steps for each of the calculation steps
-        iterate_files = get_files("info.iterate", self.filepath, self.mainfile)
+        iterate_files = get_files('info.iterate', self.filepath, self.mainfile)
         if iterate_files:
             if len(iterate_files) > 1:
                 self.logger.warning(
-                    "Multiple info.iterate files found; we will parse the last one.",
-                    data={"files": iterate_files},
+                    'Multiple info.iterate files found; we will parse the last one.',
+                    data={'files': iterate_files},
                 )
             self.iterate_parser.mainfile = iterate_files[-1]
             data_scf = (
@@ -498,13 +498,13 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                 # Lattice and impurity occupations
                 sec_charges_latt = Charges()
                 sec_scf_iteration.charges.append(sec_charges_latt)
-                sec_charges_latt.kind = "lattice"
+                sec_charges_latt.kind = 'lattice'
                 sec_charges_latt.n_atoms = sec_scc.method_ref.dmft.n_impurities
                 sec_charges_latt.n_orbitals = n_orbitals
                 sec_charges_latt.n_electrons = [data_scf[i_dmft][8]]
                 sec_charges_imp = Charges()
                 sec_scf_iteration.charges.append(sec_charges_imp)
-                sec_charges_imp.kind = "impurity"
+                sec_charges_imp.kind = 'impurity'
                 sec_charges_imp.n_atoms = sec_scc.method_ref.dmft.n_impurities
                 sec_charges_imp.n_orbitals = n_orbitals
                 sec_charges_imp.n_electrons = [data_scf[i_dmft][9]]
@@ -526,13 +526,13 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                     else:
                         sec_gfs = GreensFunctions()
                         sec_scc.greens_functions.append(sec_gfs)
-                        sec_gfs.type = "impurity"
+                        sec_gfs.type = 'impurity'
                     # Parsing data
                     self.imp_gf_parser.mainfile = f
                     imp_gf_data = self.imp_gf_parser.data
                     impurity_data = (
                         self.extract_greens_functions_data(
-                            sec_scc, sec_gfs, n_orbitals, imp_gf_data, "imaginary"
+                            sec_scc, sec_gfs, n_orbitals, imp_gf_data, 'imaginary'
                         )
                         if imp_gf_data is not None
                         else None
@@ -544,29 +544,29 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                             ),
                             impurity_data,
                         )
-                    if self.imp_gf_parser.get("parameters"):
+                    if self.imp_gf_parser.get('parameters'):
                         sec_gfs.chemical_potential = (
-                            self.imp_gf_parser.get("parameters")[1] * ureg.eV
+                            self.imp_gf_parser.get('parameters')[1] * ureg.eV
                         )
 
         # Parse lattice GFs quantities in the last calculation
         if sec_run.calculation is not None:
             sec_scc = sec_run.calculation[-1]
-            lattice_gf_files = get_files("*.gc1", self.filepath, self.mainfile)
-            lattice_sigma_files = get_files("sig.inp1", self.filepath, self.mainfile)
+            lattice_gf_files = get_files('*.gc1', self.filepath, self.mainfile)
+            lattice_sigma_files = get_files('sig.inp1', self.filepath, self.mainfile)
             for i_files, lattice_files in enumerate(
                 [lattice_gf_files, lattice_sigma_files]
             ):
                 if lattice_files:
                     if len(lattice_files) > 1:
                         self.logger.warning(
-                            "Multiple lattice files (*.gc* or sig.inp1) found; we will parse the last one.",
-                            data={"files": lattice_files},
+                            'Multiple lattice files (*.gc* or sig.inp1) found; we will parse the last one.',
+                            data={'files': lattice_files},
                         )
                     self.lattice_parser.mainfile = lattice_files[-1]
                     sec_gfs = GreensFunctions()
                     sec_scc.greens_functions.append(sec_gfs)
-                    sec_gfs.type = "lattice"
+                    sec_gfs.type = 'lattice'
                     lattice_data = self.lattice_parser.data
                     # Extracting Matsubara freqs and GF data without storing FrequencyMesh -> this
                     # is because impurity and lattice GFs can have different size in Matsubara frequencies.
@@ -576,7 +576,7 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                             sec_gfs,
                             n_orbitals,
                             lattice_data,
-                            "imaginary",
+                            'imaginary',
                             False,
                         )
                         if lattice_data is not None
@@ -608,11 +608,11 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         self.maxent_sigout_parser.logger = self.logger
 
     def get_mainfile_keys(self, **kwargs):
-        filepath = kwargs.get("filename")
+        filepath = kwargs.get('filename')
         mainfile = os.path.basename(filepath)
-        maxent_files = get_files("maxent_params.dat", filepath, mainfile)
+        maxent_files = get_files('maxent_params.dat', filepath, mainfile)
         if maxent_files is not None:
-            return ["MaxEnt", "MaxEnt_workflow"]
+            return ['MaxEnt', 'MaxEnt_workflow']
         return True
 
     def parse_maxent_archive(self, archive: EntryArchive):
@@ -623,7 +623,7 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         self.init_parser()
         sec_run = Run()
         archive.run.append(sec_run)
-        sec_run.program = Program(name="eDMFT")
+        sec_run.program = Program(name='eDMFT')
 
         def _freq_tan_points(x0: float, l0: float, n_w: int):
             """Defines the frequency mesh points in a 'Tan' mesh. Following script by @LucianPascut."""
@@ -656,21 +656,21 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
             """Populates method section with MaxEnt parameters and the real space FrequencyMesh."""
             sec_method = Method()
             sec_run.method.append(sec_method)
-            params = dict(self.maxent_params_parser.get("parameters"))
+            params = dict(self.maxent_params_parser.get('parameters'))
             sec_maxent_params = x_edmft_method_parameters()
             sec_method.x_edmft_method = sec_maxent_params
             sec_maxent_params.x_edmft_maxent = params
             sec_freq_mesh = FrequencyMesh(
-                dimensionality=1, sampling_method="Tan", n_points=params.get("Nw", 1)
+                dimensionality=1, sampling_method='Tan', n_points=params.get('Nw', 1)
             )
             try:
                 freqs = _freq_tan_points(
-                    params.get("x0"), params.get("L"), params.get("Nw")
+                    params.get('x0'), params.get('L'), params.get('Nw')
                 )
                 freqs = freqs.reshape((len(freqs), 1))
                 sec_freq_mesh.points = freqs * ureg.eV
             except Exception:
-                self.logger.warning("Real frequency mesh could not be extracted.")
+                self.logger.warning('Real frequency mesh could not be extracted.')
             sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
         def parse_maxent_scc():
@@ -703,9 +703,9 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                 )
             except Exception:
                 self.logger.warning(
-                    "Could not extract self-energy in real frequencies data."
+                    'Could not extract self-energy in real frequencies data.'
                 )
-            aux_sigma = self.maxent_sigout_parser.get("aux_sigma", [])
+            aux_sigma = self.maxent_sigout_parser.get('aux_sigma', [])
             if aux_sigma is not None:
                 sec_gfs.x_edmft_self_energy_infinity = aux_sigma
 
@@ -714,32 +714,32 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
 
         # Method and MaxEnt calculation
         maxent_params_files = get_files(
-            "maxent_params.dat", self.filepath, self.mainfile
+            'maxent_params.dat', self.filepath, self.mainfile
         )
         if maxent_params_files:
             if len(maxent_params_files) > 1:
                 self.logger.warning(
-                    "Multiple maxent_params.dat files found; we will parse the last one.",
-                    data={"files": maxent_params_files},
+                    'Multiple maxent_params.dat files found; we will parse the last one.',
+                    data={'files': maxent_params_files},
                 )
             maxent_file = maxent_params_files[-1]
             self.maxent_params_parser.mainfile = maxent_file
             parse_maxent_method()
             sigout_files = get_files(
-                "Sig.out", maxent_file, os.path.basename(maxent_file)
+                'Sig.out', maxent_file, os.path.basename(maxent_file)
             )
             if sigout_files:
                 if len(sigout_files) > 1:
                     self.logger.warning(
-                        "Multiple Sig.out files found; we will parse the last one.",
-                        data={"files": sigout_files},
+                        'Multiple Sig.out files found; we will parse the last one.',
+                        data={'files': sigout_files},
                     )
                 self.maxent_sigout_parser.mainfile = sigout_files[-1]
                 parse_maxent_scc()
 
         # Workflow
         workflow = SinglePoint()
-        workflow.name = "MaxEnt Sigma"
+        workflow.name = 'MaxEnt Sigma'
         archive.workflow2 = workflow
 
     def parse_maxent_workflow(
@@ -752,35 +752,35 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         self.init_parser()
         sec_run = Run()
         workflow_archive.run.append(sec_run)
-        sec_run.program = Program(name="eDMFT")
+        sec_run.program = Program(name='eDMFT')
 
         def parse_gfs_real_freqs():
             sec_scc = Calculation()
             sec_run.calculation.append(sec_scc)
             if sec_run.system is not None:
                 sec_scc.system_ref = sec_run.system[-1]
-            maxent_indmfl_files = get_files("**/*.indmfl", self.filepath, self.mainfile)
+            maxent_indmfl_files = get_files('**/*.indmfl', self.filepath, self.mainfile)
             if not maxent_indmfl_files:
                 return
             for file in maxent_indmfl_files:
                 self.indmfl_parser.mainfile = file
-                if self.indmfl_parser.get("real_or_imaginary_axis") is not None:
-                    axis_flag = int(self.indmfl_parser.get("real_or_imaginary_axis")[0])
+                if self.indmfl_parser.get('real_or_imaginary_axis') is not None:
+                    axis_flag = int(self.indmfl_parser.get('real_or_imaginary_axis')[0])
                     if axis_flag == 0:  # real frequencies flaghybridization_function
-                        if not self.indmfl_parser.get("siginds_corr", {}).get("cix"):
+                        if not self.indmfl_parser.get('siginds_corr', {}).get('cix'):
                             self.logger.warning(
-                                "Could not locate the number of correlated orbital in the impurity."
+                                'Could not locate the number of correlated orbital in the impurity.'
                             )
                             return
-                        n_orbitals = self.indmfl_parser.get("siginds_corr", {}).get(
-                            "cix"
+                        n_orbitals = self.indmfl_parser.get('siginds_corr', {}).get(
+                            'cix'
                         )[0][-1]
                         # Parsing Green's function and hybridization function
                         lattice_gf_files = get_files(
-                            "*.gc1", file, os.path.basename(file)
+                            '*.gc1', file, os.path.basename(file)
                         )
                         lattice_delta_files = get_files(
-                            "*.dlt1", file, os.path.basename(file)
+                            '*.dlt1', file, os.path.basename(file)
                         )
                         for i_files, lattice_files in enumerate(
                             [lattice_gf_files, lattice_delta_files]
@@ -788,13 +788,13 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                             if lattice_files:
                                 if len(lattice_files) > 1:
                                     self.logger.warning(
-                                        "Multiple lattice files (*.gc1 or *.dlt1) found; we will parse the last one.",
-                                        data={"files": lattice_files},
+                                        'Multiple lattice files (*.gc1 or *.dlt1) found; we will parse the last one.',
+                                        data={'files': lattice_files},
                                     )
                                 self.lattice_parser.mainfile = lattice_files[-1]
                                 sec_gfs = GreensFunctions()
                                 sec_scc.greens_functions.append(sec_gfs)
-                                sec_gfs.type = "lattice"
+                                sec_gfs.type = 'lattice'
                                 lattice_data = self.lattice_parser.data
                                 extracted_lattice_data = (
                                     self.extract_greens_functions_data(
@@ -802,7 +802,7 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                                         sec_gfs,
                                         n_orbitals,
                                         lattice_data,
-                                        "real",
+                                        'real',
                                         False,
                                     )
                                     if lattice_data is not None
@@ -818,7 +818,7 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                                 if lattice_files == lattice_gf_files:
                                     sec_dos = Dos()
                                     sec_scc.dos_electronic.append(sec_dos)
-                                    sec_dos.kind = "spectral"
+                                    sec_dos.kind = 'spectral'
                                     sec_dos.energy_fermi = 0.0 * ureg.eV
                                     sec_dos.n_energies = len(lattice_data[:, 0])
                                     sec_dos.energies = lattice_data[:, 0] * ureg.eV
@@ -848,39 +848,39 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
 
         self.init_parser()
 
-        params_files = get_files("*params.dat", self.filepath, self.mainfile)
+        params_files = get_files('*params.dat', self.filepath, self.mainfile)
         if params_files:
             if len(params_files) > 1:
                 self.logger.warning(
-                    "Multiple *params.dat files found; we will parse the last one.",
-                    data={"files": params_files},
+                    'Multiple *params.dat files found; we will parse the last one.',
+                    data={'files': params_files},
                 )
             self.params_parser.mainfile = params_files[-1]
 
-            if self.params_parser.get("general_parameters"):
+            if self.params_parser.get('general_parameters'):
                 self.general_parameters = dict(
-                    self.params_parser.get("general_parameters").get("params", [])
+                    self.params_parser.get('general_parameters').get('params', [])
                 )
-            if self.params_parser.get("impurity_parameters"):
+            if self.params_parser.get('impurity_parameters'):
                 self.impurity_parameters = dict(
-                    self.params_parser.get("impurity_parameters").get("params", [])
+                    self.params_parser.get('impurity_parameters').get('params', [])
                 )
 
         # Program section
         sec_run = Run()
         self.archive.run.append(sec_run)
-        sec_run.program = Program(name="eDMFT")
+        sec_run.program = Program(name='eDMFT')
 
         # System section
         self.parse_system(sec_run)
 
         # Method.DMFT section
-        indmfl_files = get_files("*.indmfl", self.filepath, self.mainfile)
+        indmfl_files = get_files('*.indmfl', self.filepath, self.mainfile)
         if indmfl_files:
             if len(indmfl_files) > 1:
                 self.logger.warning(
-                    "Multiple *.indmfl files found; we will parse the last one.",
-                    data={"files": indmfl_files},
+                    'Multiple *.indmfl files found; we will parse the last one.',
+                    data={'files': indmfl_files},
                 )
             self.indmfl_parser.mainfile = indmfl_files[-1]
             if self.general_parameters and self.impurity_parameters:
@@ -895,7 +895,7 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         self.archive.workflow2 = workflow
 
         # DMFT+MaxEnt workflow
-        maxent_archive = self._child_archives.get("MaxEnt")
+        maxent_archive = self._child_archives.get('MaxEnt')
         if maxent_archive:
             # Parse first the MaxEnt SinglePoint archive.
             # MaxEnt contains the analytical continuation of the imaginary axis Self-energy
@@ -905,10 +905,10 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
             # Then parse the DMFT with MaxEnt continuation workflow archive.
             # DMFT+MaxEnt contains the DMFT SinglePoint, the MaxEnt point, as well as the
             # calculation of the Green's function and DOS in the real frequency axis.
-            dmft_maxent_archive = self._child_archives.get("MaxEnt_workflow")
+            dmft_maxent_archive = self._child_archives.get('MaxEnt_workflow')
             try:
                 self.parse_maxent_workflow(maxent_archive, dmft_maxent_archive)
             except Exception:
                 self.logger.error(
-                    "Error parsing the automatic DMFT with MaxEnt continuation workflow."
+                    'Error parsing the automatic DMFT with MaxEnt continuation workflow.'
                 )

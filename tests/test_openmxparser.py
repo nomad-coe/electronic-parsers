@@ -58,10 +58,10 @@ def test_HfO2(parser):
     Simple single point calculation monoclinic HfO2 test case.
     """
     archive = EntryArchive()
-    parser.parse("tests/data/openmx/HfO2_single_point/m-HfO2.out", archive, logging)
+    parser.parse('tests/data/openmx/HfO2_single_point/m-HfO2.out', archive, logging)
 
     run = archive.run[0]
-    assert run.program.version == "3.9.2"
+    assert run.program.version == '3.9.2'
     assert run.clean_end
     scc = run.calculation
     assert len(scc) == 1
@@ -71,12 +71,12 @@ def test_HfO2(parser):
     scf[3].energy.sum_eigenvalues.value.magnitude == approx(-3.916702417016777e-16)
 
     method = run.method[0]
-    assert method.electrons_representation[0].basis_set[0].type == "numeric AOs"
+    assert method.electrons_representation[0].basis_set[0].type == 'numeric AOs'
     assert method.electronic.n_spin_channels == 1
-    assert method.electronic.method == "DFT"
+    assert method.electronic.method == 'DFT'
     assert method.electronic.smearing.width == approx(K_to_J(300))
-    assert method.dft.xc_functional.correlation[0].name == "GGA_C_PBE"
-    assert method.dft.xc_functional.exchange[0].name == "GGA_X_PBE"
+    assert method.dft.xc_functional.correlation[0].name == 'GGA_C_PBE'
+    assert method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
 
     system = run.system[0]
     assert system.atoms.periodic == [True, True, True]
@@ -86,7 +86,7 @@ def test_HfO2(parser):
     assert system.atoms.positions[5][0].magnitude == approx(A_to_m(-0.3293636))
     assert system.atoms.positions[11][2].magnitude == approx(A_to_m(2.6762159))
     assert len(system.atoms.labels) == 12
-    assert system.atoms.labels[9] == "O"
+    assert system.atoms.labels[9] == 'O'
 
 
 def test_AlN(parser):
@@ -94,10 +94,10 @@ def test_AlN(parser):
     Geometry optimization (atomic positions only) AlN test case.
     """
     archive = EntryArchive()
-    parser.parse("tests/data/openmx/AlN_ionic_optimization/AlN.out", archive, logging)
+    parser.parse('tests/data/openmx/AlN_ionic_optimization/AlN.out', archive, logging)
 
     run = archive.run[0]
-    assert run.program.version == "3.9.2"
+    assert run.program.version == '3.9.2'
     assert run.clean_end
     scc = run.calculation
     assert len(scc) == 5
@@ -115,16 +115,16 @@ def test_AlN(parser):
 
     method = run.method[0]
     assert method.electronic.n_spin_channels == 1
-    assert method.electronic.method == "DFT"
+    assert method.electronic.method == 'DFT'
     assert method.electronic.smearing.width == approx(K_to_J(300))
-    assert method.electronic.van_der_waals_method == ""
-    assert method.dft.xc_functional.correlation[0].name == "GGA_C_PBE"
-    assert method.dft.xc_functional.exchange[0].name == "GGA_X_PBE"
+    assert method.electronic.van_der_waals_method == ''
+    assert method.dft.xc_functional.correlation[0].name == 'GGA_C_PBE'
+    assert method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
     assert method.scf.n_max_iteration == 100
     assert method.scf.threshold_energy_change.magnitude == approx(Ha_to_J(1e-7))
 
     workflow = archive.workflow2
-    assert workflow.method.method == "steepest_descent"
+    assert workflow.method.method == 'steepest_descent'
     assert workflow.method.optimization_steps_maximum == 50
     assert workflow.method.convergence_tolerance_force_maximum.magnitude == approx(
         (0.0003 * units.hartree / units.bohr).to_base_units().magnitude
@@ -139,7 +139,7 @@ def test_AlN(parser):
     assert system.atoms.positions[0][0].magnitude == approx(A_to_m(1.55499))
     assert system.atoms.positions[3][2].magnitude == approx(A_to_m(4.39210))
     assert len(system.atoms.labels) == 4
-    assert system.atoms.labels[3] == "N"
+    assert system.atoms.labels[3] == 'N'
     system = run.system[0]
     assert np.shape(system.atoms.velocities) == (4, 3)
     assert system.atoms.velocities[0][0].magnitude == pytest.approx(0.0)
@@ -151,7 +151,7 @@ def test_AlN(parser):
     assert system.atoms.positions[0][1].magnitude == approx(A_to_m(0.89807))
     assert system.atoms.positions[2][2].magnitude == approx(A_to_m(1.90030))
     assert len(system.atoms.labels) == 4
-    assert system.atoms.labels[0] == "Al"
+    assert system.atoms.labels[0] == 'Al'
     system = run.system[4]
     assert system.atoms.lattice_vectors[0][0].magnitude == approx(A_to_m(3.10997))
     assert system.atoms.lattice_vectors[2][2].magnitude == approx(A_to_m(4.98010))
@@ -159,7 +159,7 @@ def test_AlN(parser):
     assert system.atoms.positions[0][2].magnitude == approx(A_to_m(0.00253))
     assert system.atoms.positions[3][2].magnitude == approx(A_to_m(4.39015))
     assert len(system.atoms.labels) == 4
-    assert system.atoms.labels[1] == "Al"
+    assert system.atoms.labels[1] == 'Al'
 
     eigenvalues = run.calculation[-1].eigenvalues[0]
     assert eigenvalues.n_kpoints == 74
@@ -179,10 +179,10 @@ def test_C2N2(parser):
     Molecular dynamics using the Nose-Hover thermostat for simple N2H2 molecule
     """
     archive = EntryArchive()
-    parser.parse("tests/data/openmx/C2H2_molecular_dynamics/C2H2.out", archive, logging)
+    parser.parse('tests/data/openmx/C2H2_molecular_dynamics/C2H2.out', archive, logging)
 
     run = archive.run[0]
-    assert run.program.version == "3.9.2"
+    assert run.program.version == '3.9.2'
     assert run.clean_end
     scc = run.calculation
     assert len(scc) == 100
@@ -198,24 +198,24 @@ def test_C2N2(parser):
 
     method = run.method[0]
     assert method.electronic.n_spin_channels == 1
-    assert method.electronic.method == "DFT"
+    assert method.electronic.method == 'DFT'
     assert method.electronic.smearing.width == approx(K_to_J(500))
-    assert method.dft.xc_functional.exchange[0].name == "LDA_X"
-    assert method.dft.xc_functional.correlation[0].name == "LDA_C_PZ"
+    assert method.dft.xc_functional.exchange[0].name == 'LDA_X'
+    assert method.dft.xc_functional.correlation[0].name == 'LDA_C_PZ'
 
     workflow = archive.workflow2
-    assert workflow.method.thermodynamic_ensemble == "NVT"
+    assert workflow.method.thermodynamic_ensemble == 'NVT'
     assert len(workflow.method.thermostat_parameters) == 2
     thermostat = workflow.method.thermostat_parameters[0]
-    assert thermostat.thermostat_type == "nose_hoover"
-    assert thermostat.temperature_profile == "constant"
+    assert thermostat.thermostat_type == 'nose_hoover'
+    assert thermostat.temperature_profile == 'constant'
     assert thermostat.temperature_update_frame_start == 1
     assert thermostat.temperature_update_frame_end == 50
     assert thermostat.reference_temperature_start.magnitude == approx(300.0)
     assert thermostat.reference_temperature_end.magnitude == approx(300.0)
     thermostat = workflow.method.thermostat_parameters[1]
-    assert thermostat.thermostat_type == "nose_hoover"
-    assert thermostat.temperature_profile == "linear"
+    assert thermostat.thermostat_type == 'nose_hoover'
+    assert thermostat.temperature_profile == 'linear'
     assert thermostat.temperature_update_frame_start == 50
     assert thermostat.temperature_update_frame_end == 100
     assert thermostat.reference_temperature_start.magnitude == approx(300.0)
@@ -249,17 +249,17 @@ def test_CrO2(parser):
     Single run of feromagnetic CrO2 using LDA+U
     """
     archive = EntryArchive()
-    parser.parse("tests/data/openmx/CrO2_single_point/CrO2.out", archive, logging)
+    parser.parse('tests/data/openmx/CrO2_single_point/CrO2.out', archive, logging)
 
     run = archive.run[0]
 
     method = run.method[0]
     assert method.electronic.n_spin_channels == 2
-    assert method.electronic.method == "DFT+U"
+    assert method.electronic.method == 'DFT+U'
     assert method.electronic.smearing.width == approx(K_to_J(500))
-    assert method.electronic.van_der_waals_method == ""
-    assert method.dft.xc_functional.exchange[0].name == "LDA_X"
-    assert method.dft.xc_functional.correlation[0].name == "LDA_C_PW"
+    assert method.electronic.van_der_waals_method == ''
+    assert method.dft.xc_functional.exchange[0].name == 'LDA_X'
+    assert method.dft.xc_functional.correlation[0].name == 'LDA_C_PW'
     assert method.scf.n_max_iteration == 40
     assert method.scf.threshold_energy_change.magnitude == approx(Ha_to_J(1e-7))
 
@@ -282,15 +282,15 @@ def test_graphite(parser):
     """
     archive = EntryArchive()
     parser.parse(
-        "tests/data/openmx/graphite_cell_optimization/graphite.out", archive, logging
+        'tests/data/openmx/graphite_cell_optimization/graphite.out', archive, logging
     )
 
     run = archive.run[0]
 
     method = run.method[0]
     assert method.electronic.n_spin_channels == 1
-    assert method.electronic.method == "DFT"
+    assert method.electronic.method == 'DFT'
     assert method.electronic.smearing.width == approx(K_to_J(1000))
-    assert method.electronic.van_der_waals_method == "G10"
+    assert method.electronic.van_der_waals_method == 'G10'
     assert method.scf.n_max_iteration == 100
     assert method.scf.threshold_energy_change.magnitude == approx(Ha_to_J(1e-8))

@@ -67,7 +67,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_gpaw_atomic_density_matrices = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_spin_channels", "x_gpaw_number_of_packed_ap_elements"],
+        shape=['number_of_spin_channels', 'x_gpaw_number_of_packed_ap_elements'],
         description="""
         atomic density matrices in the PAW formalism
         """,
@@ -84,7 +84,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_gpaw_magnetic_moments = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Magnetic moments projected onto atoms. The sum gives the total magnetic moment
         """,
@@ -93,10 +93,10 @@ class Calculation(runschema.calculation.Calculation):
     x_gpaw_projections_imag = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "number_of_spin_channels",
-            "number_of_eigenvalues_kpoints",
-            "number_of_eigenvalues",
-            "x_gpaw_number_of_projectors",
+            'number_of_spin_channels',
+            'number_of_eigenvalues_kpoints',
+            'number_of_eigenvalues',
+            'x_gpaw_number_of_projectors',
         ],
         description="""
         projections in the PAW formalism (imaginary part)
@@ -106,10 +106,10 @@ class Calculation(runschema.calculation.Calculation):
     x_gpaw_projections_real = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "number_of_spin_channels",
-            "number_of_eigenvalues_kpoints",
-            "number_of_eigenvalues",
-            "x_gpaw_number_of_projectors",
+            'number_of_spin_channels',
+            'number_of_eigenvalues_kpoints',
+            'number_of_eigenvalues',
+            'x_gpaw_number_of_projectors',
         ],
         description="""
         projections in the PAW formalism (real part)
@@ -210,5 +210,5 @@ class Method(runschema.method.Method):
     )
 
     x_gpaw_section_paw_method = SubSection(
-        sub_section=SectionProxy("x_gpaw_section_paw_method"), repeats=True
+        sub_section=SectionProxy('x_gpaw_section_paw_method'), repeats=True
     )

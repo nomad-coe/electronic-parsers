@@ -35,25 +35,25 @@ from xml.etree import ElementTree
 
 
 def str_to_timestamp(s: str):
-    return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ").timestamp()
+    return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%SZ').timestamp()
 
 
 class QBallParser:
     mainfile_parser = TextParser(
         quantities=[
             Quantity(
-                "atoms",
-                r"symbol_ = (\w+)",
+                'atoms',
+                r'symbol_ = (\w+)',
                 repeats=True,
             ),
             Quantity(
-                "start_time",
-                r"<start_time>\s*(.*?)\s*</start_time>",
+                'start_time',
+                r'<start_time>\s*(.*?)\s*</start_time>',
                 repeats=False,
             ),
             Quantity(
-                "end_time",
-                r"<end_time>\s*(.*?)\s*</end_time>",
+                'end_time',
+                r'<end_time>\s*(.*?)\s*</end_time>',
                 repeats=False,
             ),
         ]
@@ -63,16 +63,16 @@ class QBallParser:
         pass
 
     def parse(self, mainfile, archive, logger=None):
-        logger = logger if logger is not None else logging.getLogger("__name__")
+        logger = logger if logger is not None else logging.getLogger('__name__')
 
-        if mainfile.endswith(".gz"):
+        if mainfile.endswith('.gz'):
             open_file = gzip.open
-        elif mainfile.endswith(".bz2"):
+        elif mainfile.endswith('.bz2'):
             open_file = bz2.open
-        elif mainfile.endswith(".xz"):
+        elif mainfile.endswith('.xz'):
             open_file = lzma.open
 
-        with open_file(mainfile, "rt") as file:
+        with open_file(mainfile, 'rt') as file:
             contents = file.read()
 
         self.mainfile_parser.mainfile = mainfile
@@ -80,31 +80,31 @@ class QBallParser:
 
         run = Run()
         archive.run.append(run)
-        run.program = Program(name="qball")
+        run.program = Program(name='qball')
         run.time_run = TimeRun(
-            date_start=str_to_timestamp(self.mainfile_parser.get("start_time")),
-            date_end=str_to_timestamp(self.mainfile_parser.get("end_time")),
+            date_start=str_to_timestamp(self.mainfile_parser.get('start_time')),
+            date_end=str_to_timestamp(self.mainfile_parser.get('end_time')),
         )
 
         # method
         method = Method()
         run.method.append(method)
         # TODO add dft functionals
-        if "plane waves" in contents:
+        if 'plane waves' in contents:
             method.electrons_representation = [
                 BasisSetContainer(
-                    type="plane waves",
-                    scope=["wavefunction"],
+                    type='plane waves',
+                    scope=['wavefunction'],
                     basis_set=[
                         BasisSet(
-                            type="plane waves",
-                            scope=["valence"],
+                            type='plane waves',
+                            scope=['valence'],
                         )
                     ],
                 )
             ]
         else:
-            logger.error("Qball Error: Not a plane wave dft")
+            logger.error('Qball Error: Not a plane wave dft')
 
         element_tree = ElementTree.fromstring(contents)
 
@@ -113,19 +113,19 @@ class QBallParser:
         run.system.append(system)
         system.atoms = Atoms(
             labels=[
-                atom.attrib["name"]
-                for atom in element_tree.find("run")
-                .find("iteration")
-                .find("atomset")
-                .iter("atom")
+                atom.attrib['name']
+                for atom in element_tree.find('run')
+                .find('iteration')
+                .find('atomset')
+                .iter('atom')
             ],
             positions=np.array(
                 [
-                    [float(pos) for pos in atom.find("position").text.split()]
-                    for atom in element_tree.find("run")
-                    .find("iteration")
-                    .find("atomset")
-                    .iter("atom")
+                    [float(pos) for pos in atom.find('position').text.split()]
+                    for atom in element_tree.find('run')
+                    .find('iteration')
+                    .find('atomset')
+                    .iter('atom')
                 ]
             )
             * ureg.bohr,
@@ -138,11 +138,11 @@ class QBallParser:
             total=ForcesEntry(
                 value=np.array(
                     [
-                        [float(force) for force in atom.find("force").text.split()]
-                        for atom in element_tree.find("run")
-                        .find("iteration")
-                        .find("atomset")
-                        .iter("atom")
+                        [float(force) for force in atom.find('force').text.split()]
+                        for atom in element_tree.find('run')
+                        .find('iteration')
+                        .find('atomset')
+                        .iter('atom')
                     ]
                 )
                 * ureg.hartree

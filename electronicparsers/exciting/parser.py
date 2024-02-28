@@ -87,7 +87,7 @@ from ..utils import get_files, BeyondDFTWorkflowsParser
 from typing import Any, Iterable
 
 
-re_float = r"[-+]?\d+\.\d*(?:[Ee][-+]\d+)?"
+re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
 
 
 class LinengyParser(TextParser):
@@ -98,29 +98,29 @@ class LinengyParser(TextParser):
 
     def init_quantities(self):
         line_quantities = [
-            Quantity("lo_index", r"l\.o\.\s=\s+(\d+)"),
-            Quantity("l", r"l\s=\s+(\d+)"),
-            Quantity("order", r"order\s=\s+(\d+)"),
-            Quantity("e_param", r":\s+([\d\.\-])"),
+            Quantity('lo_index', r'l\.o\.\s=\s+(\d+)'),
+            Quantity('l', r'l\s=\s+(\d+)'),
+            Quantity('order', r'order\s=\s+(\d+)'),
+            Quantity('e_param', r':\s+([\d\.\-])'),
         ]
-        elem = Quantity("element", r"\(([A-Z][a-z]?)\)")
+        elem = Quantity('element', r'\(([A-Z][a-z]?)\)')
 
         apw_line = Quantity(
-            "apw_line",
-            r"\s+(l\s=.+)\n",
+            'apw_line',
+            r'\s+(l\s=.+)\n',
             repeats=True,
             sub_parser=TextParser(quantities=line_quantities),
         )
         lo_line = Quantity(
-            "lo_line",
-            r"\s+(l\.o\.\s=.+)\n",
+            'lo_line',
+            r'\s+(l\.o\.\s=.+)\n',
             repeats=True,
             sub_parser=TextParser(quantities=line_quantities),
         )
         self._quantities = [
             Quantity(
-                "species_block",
-                r"(Species[\s\S]+)",
+                'species_block',
+                r'(Species[\s\S]+)',
                 repeats=True,
                 sub_parser=TextParser(quantities=[elem, apw_line, lo_line]),
             )
@@ -131,51 +131,51 @@ class SpeciesParser(TextParser):
     """Parse all muffin-tin parameters for each species."""
 
     def __init__(self):
-        self.flag = "key_val"
+        self.flag = 'key_val'
         super().__init__(None)
 
     def init_quantities(self):
-        re_tags = r"([\w\s\.\-\"\=]+)"
+        re_tags = r'([\w\s\.\-\"\=]+)'
         q_key_val = Quantity(self.flag, r'([a-zA-Z]+)\="([\w\.\-\+]+)"', repeats=True)
-        q_wf_l = Quantity("l", r'l="(\d)"')
+        q_wf_l = Quantity('l', r'l="(\d)"')
         q_wf = Quantity(
-            "wf",
-            r"<wf\s([\s\w\=\.\-\"]+)/>",
+            'wf',
+            r'<wf\s([\s\w\=\.\-\"]+)/>',
             sub_parser=TextParser(quantities=[q_key_val]),
             repeats=True,
         )
 
         self._quantities = [
             Quantity(
-                "sp",
-                r"<sp\s([\s\S]+)</sp>",  # TODO: check if a species file can contain multiple species
+                'sp',
+                r'<sp\s([\s\S]+)</sp>',  # TODO: check if a species file can contain multiple species
                 sub_parser=TextParser(quantities=[q_key_val]),
             ),
             Quantity(
-                "muffinTin",
-                rf"<muffinTin{re_tags}/?>",
+                'muffinTin',
+                rf'<muffinTin{re_tags}/?>',
                 sub_parser=TextParser(quantities=[q_key_val]),
             ),
             Quantity(
-                "atomicState",
-                rf"<atomicState{re_tags}/?>",
+                'atomicState',
+                rf'<atomicState{re_tags}/?>',
                 sub_parser=TextParser(quantities=[q_key_val]),
                 repeats=True,
             ),
             Quantity(
-                "default",
-                r"(<default[\s\S]+?(</default>|/>))",
+                'default',
+                r'(<default[\s\S]+?(</default>|/>))',
                 sub_parser=TextParser(quantities=[q_wf, q_key_val]),
             ),
             Quantity(
-                "custom",
-                r"(<custom[\s\S]+?(</custom>|/>))",
+                'custom',
+                r'(<custom[\s\S]+?(</custom>|/>))',
                 sub_parser=TextParser(quantities=[q_wf, q_key_val]),
                 repeats=True,
             ),
             Quantity(
-                "lo",
-                r"(<lo[\s\S]+?</lo>)",
+                'lo',
+                r'(<lo[\s\S]+?</lo>)',
                 sub_parser=TextParser(quantities=[q_wf, q_wf_l]),
                 repeats=True,
             ),
@@ -188,7 +188,7 @@ class SpeciesParser(TextParser):
             except IndexError:
                 return key_vals
 
-        def _supplant(val_map: dict[str, Any], flag: str = "key_val") -> dict[str, Any]:
+        def _supplant(val_map: dict[str, Any], flag: str = 'key_val') -> dict[str, Any]:
             supplanted: dict[str, Any] = {}
             for k, v in val_map.items():
                 if k == flag:
@@ -219,7 +219,7 @@ class GWInfoParser(TextParser):
         self._quantities = []
 
         def str_to_frequency(val_in):
-            val = [v.split() for v in val_in.split("\n")]
+            val = [v.split() for v in val_in.split('\n')]
             val = np.transpose(np.array([v for v in val if len(v) == 3], float))
             return dict(
                 number=np.array(val[0], dtype=int), values=val[1], weights=val[2]
@@ -229,8 +229,8 @@ class GWInfoParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "frequency_data",
-                r"frequency list:\s*\<\s*#\s*freqs\s*weight\s*>\s*([\d\.Ee\s\-]+)",
+                'frequency_data',
+                r'frequency list:\s*\<\s*#\s*freqs\s*weight\s*>\s*([\d\.Ee\s\-]+)',
                 str_operation=str_to_frequency,
                 repeats=False,
             )
@@ -238,8 +238,8 @@ class GWInfoParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "fermi_energy",
-                r"\-\s*G0W0.+\-\s*\-+\s*[\s\S]*?Fermi [Ee]nergy\s*[:=](\s*-?[\d\.]+)\s",
+                'fermi_energy',
+                r'\-\s*G0W0.+\-\s*\-+\s*[\s\S]*?Fermi [Ee]nergy\s*[:=](\s*-?[\d\.]+)\s',
                 unit=ureg.hartree,
                 repeats=False,
             )
@@ -247,24 +247,24 @@ class GWInfoParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "direct_band_gap",
-                r"\-\s*G0W0\s*\-\s*\-+\s*[\s\S]*?Direct BandGap\s*\((?P<__unit>\w+)\)\s*\:(\s*[\d\.]+)\s",
+                'direct_band_gap',
+                r'\-\s*G0W0\s*\-\s*\-+\s*[\s\S]*?Direct BandGap\s*\((?P<__unit>\w+)\)\s*\:(\s*[\d\.]+)\s',
                 repeats=False,
             )
         )
 
         self._quantities.append(
             Quantity(
-                "fundamental_band_gap",
-                r"\-\s*G0W0\s*\-\s*\-+\s*[\s\S]*?Fundamental BandGap\s*\((?P<__unit>\w+)\)\s*\:(\s*[\d\.]+)\s",
+                'fundamental_band_gap',
+                r'\-\s*G0W0\s*\-\s*\-+\s*[\s\S]*?Fundamental BandGap\s*\((?P<__unit>\w+)\)\s*\:(\s*[\d\.]+)\s',
                 repeats=False,
             )
         )
 
         self._quantities.append(
             Quantity(
-                "optical_band_gap",
-                r"\-\s*G0W0\s*\-\s*\-+\s*[\s\S]*?Optical BandGap\s*\((?P<__unit>\w+)\)\s*\:(\s*[\d\.]+)\s",
+                'optical_band_gap',
+                r'\-\s*G0W0\s*\-\s*\-+\s*[\s\S]*?Optical BandGap\s*\((?P<__unit>\w+)\)\s*\:(\s*[\d\.]+)\s',
                 repeats=False,
             )
         )
@@ -278,7 +278,7 @@ class ExcitingEvalqpParser(TextParser):
         self._quantities = []
 
         def str_to_eigenvalue(val_in):
-            val = val_in.strip().split("\n")
+            val = val_in.strip().split('\n')
             kpts = np.array(val[0].split(), dtype=float)
             keys = val[1].split()
             eigs = np.transpose(np.array([v.split() for v in val[2:]], dtype=float))
@@ -287,8 +287,8 @@ class ExcitingEvalqpParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "kpoints_eigenvalues",
-                r"\s*k\-point \#\s*\d+:\s*([\d\s\.\-]+)([ \w\(\)]+\n)([\s\d\.\-Ee]+)",
+                'kpoints_eigenvalues',
+                r'\s*k\-point \#\s*\d+:\s*([\d\s\.\-]+)([ \w\(\)]+\n)([\s\d\.\-Ee]+)',
                 str_operation=str_to_eigenvalue,
                 repeats=True,
             )
@@ -298,8 +298,8 @@ class ExcitingEvalqpParser(TextParser):
 class BandstructureDatParser(DataTextParser):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._nspin = kwargs.get("nspin", None)
-        self._energy_unit = kwargs.get("energy_unit", None)
+        self._nspin = kwargs.get('nspin', None)
+        self._energy_unit = kwargs.get('energy_unit', None)
 
     def reset(self):
         super().reset()
@@ -397,8 +397,8 @@ class BandstructureDatParser(DataTextParser):
 class BandOutParser(DataTextParser):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._nspin = kwargs.get("nspin", None)
-        self._energy_unit = kwargs.get("energy_unit", None)
+        self._nspin = kwargs.get('nspin', None)
+        self._energy_unit = kwargs.get('energy_unit', None)
 
     def reset(self):
         super().reset()
@@ -479,14 +479,14 @@ class BandstructureXMLParser(XMLParser):
     def __init__(self, **kwargs):
         # TODO make a parent class for dos and bandstructure
         super().__init__(None)
-        self._distance_key = "distance"
-        self._coord_key = "coord"
-        self._energy_key = "eval"
-        self._vertex_key = "vertex"
-        self._band_key = "band"
-        self._atom_key = "atom"
-        self._nspin = kwargs.get("nspin", None)
-        self._energy_unit = kwargs.get("energy_unit", None)
+        self._distance_key = 'distance'
+        self._coord_key = 'coord'
+        self._energy_key = 'eval'
+        self._vertex_key = 'vertex'
+        self._band_key = 'band'
+        self._atom_key = 'atom'
+        self._nspin = kwargs.get('nspin', None)
+        self._energy_unit = kwargs.get('energy_unit', None)
 
     def init_parameters(self):
         self._nspin = None
@@ -513,20 +513,20 @@ class BandstructureXMLParser(XMLParser):
     @property
     def bands(self):
         if self._bands is None:
-            bands = self.root.findall("./%s" % self._band_key)
+            bands = self.root.findall('./%s' % self._band_key)
             self._bands = []
             if bands:
                 self._bands.append(bands)
             # add atom-resolved
-            bands_atom = self.root.findall("./*/%s" % self._atom_key)
+            bands_atom = self.root.findall('./*/%s' % self._atom_key)
             for band in bands_atom:
-                self._bands.append(band.findall("./%s" % self._band_key))
+                self._bands.append(band.findall('./%s' % self._band_key))
         return self._bands
 
     @property
     def vertices(self):
         if self._vertices is None:
-            self._vertices = self.root.findall("./%s" % self._vertex_key)
+            self._vertices = self.root.findall('./%s' % self._vertex_key)
         return self._vertices
 
     @property
@@ -563,7 +563,7 @@ class BandstructureXMLParser(XMLParser):
         if not self.bands:
             return
 
-        if key == "band_energies":
+        if key == 'band_energies':
             # TODO I am not certain about the format for the spin polarized case
             # I cannot find an example bandstructure file
             # atom-resolved bandstructure are added as separate section_k_band
@@ -596,7 +596,7 @@ class BandstructureXMLParser(XMLParser):
                     start = end
                 res.append(res_n)
 
-        elif key == "band_k_points":
+        elif key == 'band_k_points':
             res = []
             for i in range(len(self.number_of_k_points_per_segment)):
                 start = np.array(
@@ -611,19 +611,19 @@ class BandstructureXMLParser(XMLParser):
                     np.linspace(start, end, self.number_of_k_points_per_segment[i])
                 )
 
-        elif key == "band_segm_labels":
+        elif key == 'band_segm_labels':
             res = []
             for i in range(len(self.vertices) - 1):
-                start = self.vertices[i].attrib.get("label")
-                end = self.vertices[i + 1].attrib.get("label")
+                start = self.vertices[i].attrib.get('label')
+                end = self.vertices[i + 1].attrib.get('label')
                 res.append(
                     [
-                        "\u0393" if start.lower() == "gamma" else start,
-                        "\u0393" if end.lower() == "gamma" else end,
+                        '\u0393' if start.lower() == 'gamma' else start,
+                        '\u0393' if end.lower() == 'gamma' else end,
                     ]
                 )
 
-        elif key == "band_segm_start_end":
+        elif key == 'band_segm_start_end':
             res = []
             for i in range(len(self.number_of_k_points_per_segment)):
                 start = self.vertices[i].attrib.get(self._coord_key).split()
@@ -639,16 +639,16 @@ class BandstructureXMLParser(XMLParser):
 class DOSXMLParser(XMLParser):
     def __init__(self, **kwargs):
         super().__init__(None)
-        self._nspin_key = "nspin"
-        self._totaldos_key = "totaldos"
-        self._partialdos_key = "partialdos"
-        self._diagram_key = "diagram"
-        self._l_key = "l"
-        self._m_key = "m"
-        self._energy_key = "e"
-        self._dos_key = "dos"
-        self._unit_key = "unit"
-        self._energy_unit = kwargs.get("energy_unit", None)
+        self._nspin_key = 'nspin'
+        self._totaldos_key = 'totaldos'
+        self._partialdos_key = 'partialdos'
+        self._diagram_key = 'diagram'
+        self._l_key = 'l'
+        self._m_key = 'm'
+        self._energy_key = 'e'
+        self._dos_key = 'dos'
+        self._unit_key = 'unit'
+        self._energy_unit = kwargs.get('energy_unit', None)
         self._units_mapping = dict(hartree=ureg.hartree)
 
     def init_parameters(self):
@@ -663,7 +663,7 @@ class DOSXMLParser(XMLParser):
     @property
     def energy_unit(self):
         if self._energy_unit is None:
-            axis = self.root.find("./axis")
+            axis = self.root.find('./axis')
             if axis is None:
                 return
 
@@ -685,7 +685,7 @@ class DOSXMLParser(XMLParser):
     @property
     def number_of_atoms(self):
         if self._natoms is None:
-            partial_dos = self.root.findall("./%s" % self._partialdos_key)
+            partial_dos = self.root.findall('./%s' % self._partialdos_key)
             self._natoms = len(partial_dos)
 
         return self._natoms
@@ -694,7 +694,7 @@ class DOSXMLParser(XMLParser):
     def number_of_dos(self):
         if self._ndos is None:
             total_dos = self.root.find(
-                "./%s/%s" % (self._totaldos_key, self._diagram_key)
+                './%s/%s' % (self._totaldos_key, self._diagram_key)
             )
             self._ndos = len(total_dos)
 
@@ -717,7 +717,7 @@ class DOSXMLParser(XMLParser):
     def total_dos(self):
         if self._total_dos is None:
             self._total_dos = self.root.findall(
-                "./%s/%s" % (self._totaldos_key, self._diagram_key)
+                './%s/%s' % (self._totaldos_key, self._diagram_key)
             )
         return self._total_dos
 
@@ -725,7 +725,7 @@ class DOSXMLParser(XMLParser):
     def partial_dos(self):
         if self._partial_dos is None:
             self._partial_dos = self.root.findall(
-                "./%s/%s" % (self._partialdos_key, self._diagram_key)
+                './%s/%s' % (self._partialdos_key, self._diagram_key)
             )
         return self._partial_dos
 
@@ -758,7 +758,7 @@ class DOSXMLParser(XMLParser):
         if self._results is None:
             self._results = dict()
 
-        if "total" in key:
+        if 'total' in key:
             if not self.total_dos:
                 return
 
@@ -771,7 +771,7 @@ class DOSXMLParser(XMLParser):
             if self.energy_unit is not None:
                 res = res * (1 / self.energy_unit)
 
-        elif "partial" in key:
+        elif 'partial' in key:
             if not self.partial_dos:
                 return
 
@@ -807,7 +807,7 @@ class DOSXMLParser(XMLParser):
             if self.energy_unit is not None:
                 res = res * (1 / self.energy_unit)
 
-        elif key == "energies":
+        elif key == 'energies':
             return self.energies
 
         else:
@@ -825,15 +825,15 @@ class ExcitingFermiSurfaceBxsfParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "fermi_energy",
-                r"Fermi Energy:\s*([\d\.]+)\s*",
+                'fermi_energy',
+                r'Fermi Energy:\s*([\d\.]+)\s*',
                 unit=ureg.hartree,
                 repeats=False,
             )
         )
 
         def str_to_band_parameters(val_in):
-            val = val_in.strip().split("\n")
+            val = val_in.strip().split('\n')
 
             nbands = int(val[0])
             mesh = np.array(val[1].split(), dtype=int)
@@ -844,8 +844,8 @@ class ExcitingFermiSurfaceBxsfParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "band_parameters",
-                r"BANDGRID_3D_BANDS\s*([\d\.\-Ee\s]+)",
+                'band_parameters',
+                r'BANDGRID_3D_BANDS\s*([\d\.\-Ee\s]+)',
                 str_operation=str_to_band_parameters,
                 repeats=False,
             )
@@ -853,8 +853,8 @@ class ExcitingFermiSurfaceBxsfParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "fermi_surface",
-                r"BAND:\s*\d+\s*([\d\-\+\.Ee\s]+)\n *E*",
+                'fermi_surface',
+                r'BAND:\s*\d+\s*([\d\-\+\.Ee\s]+)\n *E*',
                 unit=ureg.hartree,
                 repeats=True,
             )
@@ -868,26 +868,26 @@ class ExcitingEigenvalueParser(TextParser):
     def init_quantities(self):
         self._quantities = []
         self._quantities.append(
-            Quantity("k_points", r"\s*\d+\s*([\d\.Ee\- ]+):\s*k\-point", repeats=True)
+            Quantity('k_points', r'\s*\d+\s*([\d\.Ee\- ]+):\s*k\-point', repeats=True)
         )
 
         def str_to_eigenvalues(val_in):
-            val = val_in[: val_in.rfind("\n \n")].strip()
-            val = np.array([v.split() for v in val.split("\n")], dtype=float)
+            val = val_in[: val_in.rfind('\n \n')].strip()
+            val = np.array([v.split() for v in val.split('\n')], dtype=float)
             val = np.transpose(val)
             occs = val[-1]
             eigs = val[-2]
 
             nspin = 2 if occs[0] == 1.0 else 1
             data = dict()
-            data["occupancies"] = np.reshape(occs, (nspin, len(occs) // nspin))
-            data["eigenvalues"] = np.reshape(eigs, (nspin, len(eigs) // nspin))
+            data['occupancies'] = np.reshape(occs, (nspin, len(occs) // nspin))
+            data['eigenvalues'] = np.reshape(eigs, (nspin, len(eigs) // nspin))
             return data
 
         self._quantities.append(
             Quantity(
-                "eigenvalues_occupancies",
-                r"\(state\, eigenvalue and occupancy below\)\s*([\d\.Ee\-\s]+?(?:\n *\n))",
+                'eigenvalues_occupancies',
+                r'\(state\, eigenvalue and occupancy below\)\s*([\d\.Ee\-\s]+?(?:\n *\n))',
                 str_operation=str_to_eigenvalues,
                 repeats=True,
             )
@@ -907,34 +907,34 @@ class ExcitingInfoParser(TextParser):
         super().__init__(None)
 
     def init_quantities(self):
-        re_symbol = re.compile(r"([A-Z][a-z]?)")
+        re_symbol = re.compile(r'([A-Z][a-z]?)')
 
         def str_to_array(val_in):
-            val = [v.split(":")[-1].split() for v in val_in.strip().split("\n")]
+            val = [v.split(':')[-1].split() for v in val_in.strip().split('\n')]
             val = val[0] if len(val) == 1 else val
             return np.array(val, dtype=float)
 
         def str_to_atom_properties_dict(val_in):
             unit = None
-            if "charge" in val_in:
+            if 'charge' in val_in:
                 unit = ureg.elementary_charge
-            elif "moment" in val_in:
+            elif 'moment' in val_in:
                 unit = ureg.elementary_charge * ureg.bohr
 
-            val = val_in.strip().split("\n")
+            val = val_in.strip().split('\n')
 
             properties = dict()
             atom_resolved = []
             species = None
             for v in val:
-                v = v.strip().split(":")
+                v = v.strip().split(':')
                 if len(v) < 2:
                     continue
 
-                elif v[0].startswith("species"):
+                elif v[0].startswith('species'):
                     species = re.search(re_symbol, v[-1]).group(1)
 
-                elif v[0].startswith("atom"):
+                elif v[0].startswith('atom'):
                     v[0] = v[0].split()
                     v[1] = [float(vi) for vi in v[1].split()]
                     v[1] = v[1][0] if len(v[1]) == 1 else v[1]
@@ -947,17 +947,17 @@ class ExcitingInfoParser(TextParser):
                     vi = vi[0] if len(vi) == 1 else vi
                     properties[v[0].strip()] = vi * unit
 
-            properties["atom_resolved"] = atom_resolved
+            properties['atom_resolved'] = atom_resolved
             return properties
 
         def str_to_quantity_tolerances(val_in):
-            return val_in.strip().replace("(", "").replace(")", "").split()
+            return val_in.strip().replace('(', '').replace(')', '').split()
 
         def str_to_energy_dict(val_in):
-            val = val_in.strip().split("\n")
+            val = val_in.strip().split('\n')
             energies = dict()
             for v in val:
-                v = v.split(":")
+                v = v.split(':')
                 if len(v) < 2:
                     continue
                 energies[v[0].strip()] = float(v[1]) * ureg.hartree
@@ -965,27 +965,27 @@ class ExcitingInfoParser(TextParser):
 
         self._quantities = [
             Quantity(
-                "program_version",
-                r"\s*EXCITING\s*([\w\-\(\)\. ]+)\s*started",
+                'program_version',
+                r'\s*EXCITING\s*([\w\-\(\)\. ]+)\s*started',
                 repeats=False,
                 dtype=str,
                 flatten=False,
             ),
-            Quantity("hash_id", r"version hash id: +(\S+)", dtype=str),
+            Quantity('hash_id', r'version hash id: +(\S+)', dtype=str),
         ]
 
         initialization_quantities = [
             Quantity(
-                "lattice_vectors",
-                r"Lattice vectors\s*[\(cartesian\)]*\s*:\s*([\-0-9\.\s]+)\n",
+                'lattice_vectors',
+                r'Lattice vectors\s*[\(cartesian\)]*\s*:\s*([\-0-9\.\s]+)\n',
                 str_operation=str_to_array,
                 unit=ureg.bohr,
                 repeats=False,
                 convert=False,
             ),
             Quantity(
-                "lattice_vectors_reciprocal",
-                r"Reciprocal lattice vectors\s*[\(cartesian\)]*\s*:\s*([\-0-9\.\s]+)\n",
+                'lattice_vectors_reciprocal',
+                r'Reciprocal lattice vectors\s*[\(cartesian\)]*\s*:\s*([\-0-9\.\s]+)\n',
                 str_operation=str_to_array,
                 unit=1 / ureg.bohr,
                 repeats=False,
@@ -994,68 +994,68 @@ class ExcitingInfoParser(TextParser):
         ]
 
         self._system_keys_mapping = {
-            "x_exciting_unit_cell_volume": ("Unit cell volume", ureg.bohr**3),
-            "x_exciting_brillouin_zone_volume": (
-                "Brillouin zone volume",
+            'x_exciting_unit_cell_volume': ('Unit cell volume', ureg.bohr**3),
+            'x_exciting_brillouin_zone_volume': (
+                'Brillouin zone volume',
                 1 / ureg.bohr**3,
             ),
-            "x_exciting_number_of_atoms": ("Total number of atoms per unit cell", None),
-            "x_exciting_spin_treatment": ("Spin treatment", None),
-            "x_exciting_number_of_bravais_lattice_symmetries": (
-                "Number of Bravais lattice symmetries",
+            'x_exciting_number_of_atoms': ('Total number of atoms per unit cell', None),
+            'x_exciting_spin_treatment': ('Spin treatment', None),
+            'x_exciting_number_of_bravais_lattice_symmetries': (
+                'Number of Bravais lattice symmetries',
                 None,
             ),
-            "x_exciting_number_of_crystal_symmetries": (
-                "Number of crystal symmetries",
+            'x_exciting_number_of_crystal_symmetries': (
+                'Number of crystal symmetries',
                 None,
             ),
-            "kpoint_grid": (r"k\-point grid", None),
-            "kpoint_offset": (r"k\-point offset", None),
-            "x_exciting_number_kpoints": (r"Total number of k\-points", None),
-            "x_exciting_rgkmax": (r"R\^MT\_min \* \|G\+k\|\_max \(rgkmax\)", None),
-            "x_exciting_species_rtmin": (r"Species with R\^MT\_min", None),
-            "x_exciting_gkmax": (r"Maximum \|G\+k\| for APW functions", 1 / ureg.bohr),
-            "x_exciting_gmaxvr": (
-                r"Maximum \|G\| for potential and density",
+            'kpoint_grid': (r'k\-point grid', None),
+            'kpoint_offset': (r'k\-point offset', None),
+            'x_exciting_number_kpoints': (r'Total number of k\-points', None),
+            'x_exciting_rgkmax': (r'R\^MT\_min \* \|G\+k\|\_max \(rgkmax\)', None),
+            'x_exciting_species_rtmin': (r'Species with R\^MT\_min', None),
+            'x_exciting_gkmax': (r'Maximum \|G\+k\| for APW functions', 1 / ureg.bohr),
+            'x_exciting_gmaxvr': (
+                r'Maximum \|G\| for potential and density',
                 1 / ureg.bohr,
             ),
-            "x_exciting_gvector_size": (r"G\-vector grid sizes", None),
-            "x_exciting_gvector_total": (r"Total number of G\-vectors", None),
-            "x_exciting_lmaxapw": (r"   APW functions", None),
-            "x_exciting_nuclear_charge": (
-                "Total nuclear charge",
+            'x_exciting_gvector_size': (r'G\-vector grid sizes', None),
+            'x_exciting_gvector_total': (r'Total number of G\-vectors', None),
+            'x_exciting_lmaxapw': (r'   APW functions', None),
+            'x_exciting_nuclear_charge': (
+                'Total nuclear charge',
                 ureg.elementary_charge,
             ),
-            "x_exciting_electronic_charge": (
-                "Total electronic charge",
+            'x_exciting_electronic_charge': (
+                'Total electronic charge',
                 ureg.elementary_charge,
             ),
-            "x_exciting_core_charge_initial": (
-                "Total core charge",
+            'x_exciting_core_charge_initial': (
+                'Total core charge',
                 ureg.elementary_charge,
             ),
-            "x_exciting_valence_charge_initial": (
-                "Total valence charge",
+            'x_exciting_valence_charge_initial': (
+                'Total valence charge',
                 ureg.elementary_charge,
             ),
-            "x_exciting_wigner_radius": (r"Effective Wigner radius, r\_s", ureg.bohr),
-            "x_exciting_empty_states": ("Number of empty states", None),
-            "x_exciting_valence_states": ("Total number of valence states", None),
-            "x_exciting_hamiltonian_size": ("Maximum Hamiltonian size", None),
-            "x_exciting_pw": (r"Maximum number of plane\-waves", None),
-            "x_exciting_lo": (r"Total number of local\-orbitals", None),
+            'x_exciting_wigner_radius': (r'Effective Wigner radius, r\_s', ureg.bohr),
+            'x_exciting_empty_states': ('Number of empty states', None),
+            'x_exciting_valence_states': ('Total number of valence states', None),
+            'x_exciting_hamiltonian_size': ('Maximum Hamiltonian size', None),
+            'x_exciting_pw': (r'Maximum number of plane\-waves', None),
+            'x_exciting_lo': (r'Total number of local\-orbitals', None),
         }
 
         self._method_keys_mapping = {
-            "smearing_kind": ("Smearing scheme", None),
-            "smearing_width": ("Smearing width", None),
+            'smearing_kind': ('Smearing scheme', None),
+            'smearing_width': ('Smearing width', None),
         }
 
         for name, key_unit in self._system_keys_mapping.items():
             initialization_quantities.append(
                 Quantity(
                     name,
-                    r"%s\s*:\s*([\s\S]*?)\n" % key_unit[0],
+                    r'%s\s*:\s*([\s\S]*?)\n' % key_unit[0],
                     unit=key_unit[1],
                     repeats=False,
                 )
@@ -1065,7 +1065,7 @@ class ExcitingInfoParser(TextParser):
             initialization_quantities.append(
                 Quantity(
                     name,
-                    r"%s\s*:\s*([\s\S]*?)\n" % key_unit[0],
+                    r'%s\s*:\s*([\s\S]*?)\n' % key_unit[0],
                     unit=key_unit[1],
                     repeats=False,
                 )
@@ -1073,52 +1073,52 @@ class ExcitingInfoParser(TextParser):
 
         initialization_quantities.append(
             Quantity(
-                "species",
-                rf"(Species : *\d+ *\(\w+\)[\s\S]+?{re_float} *{re_float} *{re_float}\n\s*\n)",
+                'species',
+                rf'(Species : *\d+ *\(\w+\)[\s\S]+?{re_float} *{re_float} *{re_float}\n\s*\n)',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
-                        Quantity("number", r"Species : *(\d+)", dtype=np.int32),
-                        Quantity("symbol", r"\((\w+)\)"),
-                        Quantity("file", r"parameters loaded from *: *(.+)"),
-                        Quantity("name", r"name *: *(.+)"),
+                        Quantity('number', r'Species : *(\d+)', dtype=np.int32),
+                        Quantity('symbol', r'\((\w+)\)'),
+                        Quantity('file', r'parameters loaded from *: *(.+)'),
+                        Quantity('name', r'name *: *(.+)'),
                         Quantity(
-                            "nuclear_charge",
-                            rf"nuclear charge *: *({re_float})",
+                            'nuclear_charge',
+                            rf'nuclear charge *: *({re_float})',
                             dtype=np.float64,
                             unit=ureg.elementary_charge,
                         ),
                         Quantity(
-                            "electronic_charge",
-                            rf"electronic charge *: *({re_float})",
+                            'electronic_charge',
+                            rf'electronic charge *: *({re_float})',
                             dtype=np.float64,
                             unit=ureg.elementary_charge,
                         ),
                         Quantity(
-                            "atomic_mass",
-                            rf"atomic mass *: *({re_float})",
+                            'atomic_mass',
+                            rf'atomic mass *: *({re_float})',
                             dtype=np.float64,
                             unit=ureg.electron_mass,
                         ),
                         Quantity(
-                            "muffin_tin_radius",
-                            rf"muffin-tin radius *: *({re_float})",
+                            'muffin_tin_radius',
+                            rf'muffin-tin radius *: *({re_float})',
                             dtype=np.float64,
                             unit=ureg.bohr,
                         ),
                         Quantity(
-                            "radial_points",
-                            rf"radial points in muffin-tin *: *({re_float})",
+                            'radial_points',
+                            rf'radial points in muffin-tin *: *({re_float})',
                             dtype=np.int32,
                         ),
                         Quantity(
-                            "positions_format",
-                            r"atomic positions \((.+?)\)",
+                            'positions_format',
+                            r'atomic positions \((.+?)\)',
                             flatten=False,
                         ),
                         Quantity(
-                            "positions",
-                            rf"\d+ : *({re_float}) *({re_float}) *({re_float})",
+                            'positions',
+                            rf'\d+ : *({re_float}) *({re_float}) *({re_float})',
                             repeats=True,
                             dtype=np.dtype(np.float64),
                         ),
@@ -1129,8 +1129,8 @@ class ExcitingInfoParser(TextParser):
 
         initialization_quantities.append(
             Quantity(
-                "potential_mixing",
-                r"Using ([\w ]+) potential mixing",
+                'potential_mixing',
+                r'Using ([\w ]+) potential mixing',
                 repeats=False,
                 flatten=False,
             )
@@ -1138,21 +1138,21 @@ class ExcitingInfoParser(TextParser):
 
         initialization_quantities.append(
             Quantity(
-                "xc_functional",
-                r"(Exchange-correlation type[\s\S]+?\n *\n)",
+                'xc_functional',
+                r'(Exchange-correlation type[\s\S]+?\n *\n)',
                 sub_parser=TextParser(
                     quantities=[
-                        Quantity("type", r"Exchange-correlation type +: +(\S+)"),
+                        Quantity('type', r'Exchange-correlation type +: +(\S+)'),
                         Quantity(
-                            "name_reference",
-                            r"\n *(.+?,.+)",
-                            str_operation=lambda x: [v.strip() for v in x.split(":")],
+                            'name_reference',
+                            r'\n *(.+?,.+)',
+                            str_operation=lambda x: [v.strip() for v in x.split(':')],
                         ),
                         Quantity(
-                            "parameters",
-                            r"\n *(.+?:.+)",
+                            'parameters',
+                            r'\n *(.+?:.+)',
                             repeats=True,
-                            str_operation=lambda x: [v.strip() for v in x.split(":")],
+                            str_operation=lambda x: [v.strip() for v in x.split(':')],
                         ),
                     ]
                 ),
@@ -1161,8 +1161,8 @@ class ExcitingInfoParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "initialization",
-                r"(?:All units are atomic|Starting initialization)([\s\S]+?)(?:Using|Ending initialization)",
+                'initialization',
+                r'(?:All units are atomic|Starting initialization)([\s\S]+?)(?:Using|Ending initialization)',
                 repeats=False,
                 sub_parser=TextParser(quantities=initialization_quantities),
             )
@@ -1170,36 +1170,36 @@ class ExcitingInfoParser(TextParser):
 
         scf_quantities = [
             Quantity(
-                "energy_total",
-                r"[Tt]*otal energy\s*:\s*([\-\d\.Ee]+)",
+                'energy_total',
+                r'[Tt]*otal energy\s*:\s*([\-\d\.Ee]+)',
                 repeats=False,
                 dtype=float,
                 unit=ureg.hartree,
             ),
             Quantity(
-                "energy_contributions",
-                r"(?:Energies|_)([\+\-\s\w\.\:]+?)\n *(?:DOS|Density)",
+                'energy_contributions',
+                r'(?:Energies|_)([\+\-\s\w\.\:]+?)\n *(?:DOS|Density)',
                 str_operation=str_to_energy_dict,
                 repeats=False,
                 convert=False,
             ),
             Quantity(
-                "x_exciting_dos_fermi",
-                r"DOS at Fermi energy \(states\/Ha\/cell\)\s*:\s*([\-\d\.Ee]+)",
+                'x_exciting_dos_fermi',
+                r'DOS at Fermi energy \(states\/Ha\/cell\)\s*:\s*([\-\d\.Ee]+)',
                 repeats=False,
                 dtype=float,
                 unit=1 / ureg.hartree,
             ),
             Quantity(
-                "charge_contributions",
-                r"(?:Charges|Electron charges\s*\:*\s*)([\-\s\w\.\:\(\)]+?)\n *[A-Z\+]",
+                'charge_contributions',
+                r'(?:Charges|Electron charges\s*\:*\s*)([\-\s\w\.\:\(\)]+?)\n *[A-Z\+]',
                 str_operation=str_to_atom_properties_dict,
                 repeats=False,
                 convert=False,
             ),
             Quantity(
-                "moment_contributions",
-                r"(?:Moments\s*\:*\s*)([\-\s\w\.\:\(\)]+?)\n *[A-Z\+]",
+                'moment_contributions',
+                r'(?:Moments\s*\:*\s*)([\-\s\w\.\:\(\)]+?)\n *[A-Z\+]',
                 str_operation=str_to_atom_properties_dict,
                 repeats=False,
                 convert=False,
@@ -1207,35 +1207,35 @@ class ExcitingInfoParser(TextParser):
         ]
 
         self._miscellaneous_keys_mapping = {
-            "x_exciting_gap": (r"Estimated fundamental gap", ureg.hartree),
-            "time_physical": (r"Wall time \(seconds\)", ureg.s),
+            'x_exciting_gap': (r'Estimated fundamental gap', ureg.hartree),
+            'time_physical': (r'Wall time \(seconds\)', ureg.s),
         }
 
         for name, key_unit in self._miscellaneous_keys_mapping.items():
             scf_quantities.append(
                 Quantity(
                     name,
-                    r"%s\s*\:*\s*([\-\d\.Ee]+)" % key_unit[0],
+                    r'%s\s*\:*\s*([\-\d\.Ee]+)' % key_unit[0],
                     repeats=False,
                     unit=key_unit[1],
                 )
             )
 
         self._convergence_keys_mapping = {
-            "x_exciting_effective_potential_convergence": (
-                r"RMS change in effective potential \(target\)",
+            'x_exciting_effective_potential_convergence': (
+                r'RMS change in effective potential \(target\)',
                 ureg.hartree,
             ),
-            "x_exciting_energy_convergence": (
-                r"Absolute change in total energy\s*\(target\)",
+            'x_exciting_energy_convergence': (
+                r'Absolute change in total energy\s*\(target\)',
                 ureg.hartree,
             ),
-            "x_exciting_charge_convergence": (
-                r"Charge distance\s*\(target\)",
+            'x_exciting_charge_convergence': (
+                r'Charge distance\s*\(target\)',
                 ureg.elementary_charge,
             ),
-            "x_exciting_IBS_force_convergence": (
-                r"Abs\. change in max\-nonIBS\-force\s*\(target\)",
+            'x_exciting_IBS_force_convergence': (
+                r'Abs\. change in max\-nonIBS\-force\s*\(target\)',
                 ureg.hartree / ureg.bohr,
             ),
         }
@@ -1244,7 +1244,7 @@ class ExcitingInfoParser(TextParser):
             scf_quantities.append(
                 Quantity(
                     name,
-                    r"%s\s*\:*\s*([\(\)\d\.\-\+Ee ]+)" % key_unit[0],
+                    r'%s\s*\:*\s*([\(\)\d\.\-\+Ee ]+)' % key_unit[0],
                     str_operation=str_to_quantity_tolerances,
                     unit=key_unit[1],
                     repeats=False,
@@ -1253,31 +1253,31 @@ class ExcitingInfoParser(TextParser):
 
         module_quantities = [
             Quantity(
-                "scf_iteration",
-                r"(?:I| i)teration number :([\s\S]+?)(?:\n *\n\+{10}|\+\-{10})",
+                'scf_iteration',
+                r'(?:I| i)teration number :([\s\S]+?)(?:\n *\n\+{10}|\+\-{10})',
                 sub_parser=TextParser(quantities=scf_quantities),
                 repeats=True,
             ),
             Quantity(
-                "final",
-                r"(?:Convergence targets achieved\. Performing final SCF iteration|Reached self-consistent loops maximum)([\s\S]+?)(\n *\n\+{10})",
+                'final',
+                r'(?:Convergence targets achieved\. Performing final SCF iteration|Reached self-consistent loops maximum)([\s\S]+?)(\n *\n\+{10})',
                 sub_parser=TextParser(quantities=scf_quantities),
                 repeats=False,
             ),
             Quantity(
-                "atomic_positions",
-                r"(Atomic positions\s*\([\s\S]+?)\n\n",
+                'atomic_positions',
+                r'(Atomic positions\s*\([\s\S]+?)\n\n',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "positions_format", r"Atomic positions\s*\(([a-z]+)\)"
+                            'positions_format', r'Atomic positions\s*\(([a-z]+)\)'
                         ),
                         Quantity(
-                            "symbols", r"atom\s*\d+\s*(\w+)", repeats=True, dtype=str
+                            'symbols', r'atom\s*\d+\s*(\w+)', repeats=True, dtype=str
                         ),
                         Quantity(
-                            "positions",
-                            r"\s*:\s*([\d\.\-]+\s*[\d\.\-]+\s*[\d\.\-]+)",
+                            'positions',
+                            r'\s*:\s*([\d\.\-]+\s*[\d\.\-]+\s*[\d\.\-]+)',
                             repeats=True,
                             dtype=float,
                         ),
@@ -1285,8 +1285,8 @@ class ExcitingInfoParser(TextParser):
                 ),
             ),
             Quantity(
-                "forces",
-                r"Total atomic forces including IBS \(\w+\)\s*\:(\s*atom[\-\s\w\.\:]*?)\n *Atomic",
+                'forces',
+                r'Total atomic forces including IBS \(\w+\)\s*\:(\s*atom[\-\s\w\.\:]*?)\n *Atomic',
                 repeats=False,
                 str_operation=str_to_array,
                 dtype=float,
@@ -1296,8 +1296,8 @@ class ExcitingInfoParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "groundstate",
-                r"(?:Self\-consistent loop started|Groundstate module started)([\s\S]+?)Groundstate module stopped",
+                'groundstate',
+                r'(?:Self\-consistent loop started|Groundstate module started)([\s\S]+?)Groundstate module stopped',
                 sub_parser=TextParser(quantities=module_quantities),
                 repeats=False,
             )
@@ -1305,20 +1305,20 @@ class ExcitingInfoParser(TextParser):
 
         optimization_quantities = [
             Quantity(
-                "atomic_positions",
-                r"(Atomic positions at this step\s*\([\s\S]+?)\n\n",
+                'atomic_positions',
+                r'(Atomic positions at this step\s*\([\s\S]+?)\n\n',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "positions_format",
-                            r"Atomic positions at this step\s*\(([a-z]+)\)",
+                            'positions_format',
+                            r'Atomic positions at this step\s*\(([a-z]+)\)',
                         ),
                         Quantity(
-                            "symbols", r"atom\s*\d+\s*(\w+)", repeats=True, dtype=str
+                            'symbols', r'atom\s*\d+\s*(\w+)', repeats=True, dtype=str
                         ),
                         Quantity(
-                            "positions",
-                            r"\s*:\s*([\d\.\-]+\s*[\d\.\-]+\s*[\d\.\-]+)",
+                            'positions',
+                            r'\s*:\s*([\d\.\-]+\s*[\d\.\-]+\s*[\d\.\-]+)',
                             repeats=True,
                             dtype=float,
                         ),
@@ -1326,39 +1326,39 @@ class ExcitingInfoParser(TextParser):
                 ),
             ),
             Quantity(
-                "forces",
-                r"Total atomic forces including IBS \(\w+\)\s*\:(\s*atom[\-\s\w\.\:]*?)\n *Time",
+                'forces',
+                r'Total atomic forces including IBS \(\w+\)\s*\:(\s*atom[\-\s\w\.\:]*?)\n *Time',
                 repeats=False,
                 str_operation=str_to_array,
                 convert=False,
                 unit=ureg.hartree / ureg.bohr,
             ),
-            Quantity("step", r"Optimization step\s*(\d+)", repeats=False, dtype=int),
-            Quantity("method", r"method\s*=\s*(\w+)", repeats=False, dtype=str),
+            Quantity('step', r'Optimization step\s*(\d+)', repeats=False, dtype=int),
+            Quantity('method', r'method\s*=\s*(\w+)', repeats=False, dtype=str),
             Quantity(
-                "n_scf_iterations",
-                r"Number of (?:total)* scf iterations\s*\:\s*(\d+)",
+                'n_scf_iterations',
+                r'Number of (?:total)* scf iterations\s*\:\s*(\d+)',
                 repeats=False,
                 dtype=int,
             ),
             Quantity(
-                "force_convergence",
-                r"Maximum force magnitude\s*\(target\)\s*\:(\s*[\(\)\d\.\-\+Ee ]+)",
+                'force_convergence',
+                r'Maximum force magnitude\s*\(target\)\s*\:(\s*[\(\)\d\.\-\+Ee ]+)',
                 str_operation=str_to_quantity_tolerances,
                 unit=ureg.hartree / ureg.bohr,
                 repeats=False,
                 dtype=float,
             ),
             Quantity(
-                "energy_total",
-                r"Total energy at this optimization step\s*\:\s*([\-\d\.Ee]+)",
+                'energy_total',
+                r'Total energy at this optimization step\s*\:\s*([\-\d\.Ee]+)',
                 unit=ureg.hartree,
                 repeats=False,
                 dtype=float,
             ),
             Quantity(
-                "time_calculation",
-                r"Time spent in this optimization step\s*\:\s*([\-\d\.Ee]+)\s*seconds",
+                'time_calculation',
+                r'Time spent in this optimization step\s*\:\s*([\-\d\.Ee]+)\s*seconds',
                 unit=ureg.s,
                 repeats=False,
                 dtype=float,
@@ -1367,40 +1367,40 @@ class ExcitingInfoParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "structure_optimization",
-                r"Structure\-optimization module started([\s\S]+?)Structure\-optimization module stopped",
+                'structure_optimization',
+                r'Structure\-optimization module started([\s\S]+?)Structure\-optimization module stopped',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "optimization_step",
-                            r"(Optimization step\s*\d+[\s\S]+?(?:\n *\n\-{10}|Time spent in this optimization step\s*:\s*[\d\.]+ seconds))",
+                            'optimization_step',
+                            r'(Optimization step\s*\d+[\s\S]+?(?:\n *\n\-{10}|Time spent in this optimization step\s*:\s*[\d\.]+ seconds))',
                             sub_parser=TextParser(quantities=optimization_quantities),
                             repeats=True,
                         ),
                         Quantity(
-                            "final",
-                            r"Force convergence target achieved([\s\S]+?Opt)",
+                            'final',
+                            r'Force convergence target achieved([\s\S]+?Opt)',
                             sub_parser=TextParser(quantities=scf_quantities),
                             repeats=False,
                         ),
                         Quantity(
-                            "atomic_positions",
-                            r"(imized atomic positions\s*\([\s\S]+?)\n\n",
+                            'atomic_positions',
+                            r'(imized atomic positions\s*\([\s\S]+?)\n\n',
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
-                                        "positions_format",
-                                        r"imized atomic positions\s*\(([a-z]+)\)",
+                                        'positions_format',
+                                        r'imized atomic positions\s*\(([a-z]+)\)',
                                     ),
                                     Quantity(
-                                        "symbols",
-                                        r"atom\s*\d+\s*(\w+)",
+                                        'symbols',
+                                        r'atom\s*\d+\s*(\w+)',
                                         repeats=True,
                                         dtype=str,
                                     ),
                                     Quantity(
-                                        "positions",
-                                        r"\s*:\s*([\d\.\-]+\s*[\d\.\-]+\s*[\d\.\-]+)",
+                                        'positions',
+                                        r'\s*:\s*([\d\.\-]+\s*[\d\.\-]+\s*[\d\.\-]+)',
                                         repeats=True,
                                         dtype=float,
                                     ),
@@ -1408,8 +1408,8 @@ class ExcitingInfoParser(TextParser):
                             ),
                         ),
                         Quantity(
-                            "forces",
-                            r"Total atomic forces including IBS \(\w+\)\s*\:(\s*atom[\-\s\w\.\:]*?)\n *Atomic",
+                            'forces',
+                            r'Total atomic forces including IBS \(\w+\)\s*\:(\s*atom[\-\s\w\.\:]*?)\n *Atomic',
                             repeats=False,
                             str_operation=str_to_array,
                             dtype=float,
@@ -1423,16 +1423,16 @@ class ExcitingInfoParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                "hybrids",
-                r"Hybrids module started([\s\S]+?)Hybrids module stopped",
+                'hybrids',
+                r'Hybrids module started([\s\S]+?)Hybrids module stopped',
                 sub_parser=TextParser(quantities=module_quantities),
             )
         )
 
         self._quantities.append(
             Quantity(
-                "total_time",
-                r" Total time spent \(seconds\) +: +([\d\.]+)",
+                'total_time',
+                r' Total time spent \(seconds\) +: +([\d\.]+)',
                 unit=ureg.s,
                 repeats=False,
                 dtype=float,
@@ -1440,35 +1440,35 @@ class ExcitingInfoParser(TextParser):
         )
 
     def get_atom_labels(self, section):
-        labels = section.get("symbols")
+        labels = section.get('symbols')
 
         if labels is None:
             # we get it by concatenating species symbols
-            species = self.get("initialization", {}).get("species", [])
+            species = self.get('initialization', {}).get('species', [])
             labels = []
             for specie in species:
-                labels += [specie.get("symbol")] * len(specie.get("positions"))
+                labels += [specie.get('symbol')] * len(specie.get('positions'))
         return labels
 
     def get_positions_format(self, section):
-        positions_format = section.get("positions_format")
+        positions_format = section.get('positions_format')
 
         if positions_format is None:
-            species = self.get_initialization_parameter("species", [])
+            species = self.get_initialization_parameter('species', [])
             for specie in species:
-                positions_format = specie.get("positions_format", None)
+                positions_format = specie.get('positions_format', None)
                 if positions_format is not None:
                     break
 
         return positions_format
 
     def get_atom_positions(self, section={}, positions=None, positions_format=None):
-        positions = positions if positions is not None else section.get("positions")
+        positions = positions if positions is not None else section.get('positions')
 
         if positions is None:
-            species = self.get_initialization_parameter("species", [])
+            species = self.get_initialization_parameter('species', [])
             if species:
-                positions = np.vstack([s.get("positions") for s in species])
+                positions = np.vstack([s.get('positions') for s in species])
 
         if positions is None:
             return
@@ -1480,8 +1480,8 @@ class ExcitingInfoParser(TextParser):
             else self.get_positions_format(section)
         )
 
-        if positions_format == "lattice":
-            cell = self.get_initialization_parameter("lattice_vectors")
+        if positions_format == 'lattice':
+            cell = self.get_initialization_parameter('lattice_vectors')
             if cell is None:
                 return
             positions = np.dot(positions, cell.magnitude)
@@ -1489,12 +1489,12 @@ class ExcitingInfoParser(TextParser):
         return positions * ureg.bohr
 
     def get_scf_threshold(self, name):
-        reference = self.get("groundstate", self.get("hybrids", {}))
-        return reference.get("scf_iteration", [{}])[-1].get(name, [None, None])[-1]
+        reference = self.get('groundstate', self.get('hybrids', {}))
+        return reference.get('scf_iteration', [{}])[-1].get(name, [None, None])[-1]
 
     def get_scf_quantity(self, name):
-        n_scf = len(self.get("energy_total_scf_iteration", []))
-        quantity = self.get("%s_scf_iteration" % name)
+        n_scf = len(self.get('energy_total_scf_iteration', []))
+        quantity = self.get('%s_scf_iteration' % name)
         if quantity is None:
             return
 
@@ -1509,21 +1509,21 @@ class ExcitingInfoParser(TextParser):
     def get_xc_functional_name(self):
         # TODO expand list to include other xcf
         xc_functional_map = {
-            2: ["LDA_C_PZ", "LDA_X_PZ"],
-            3: ["LDA_C_PW", "LDA_X_PZ"],
-            4: ["LDA_C_XALPHA"],
-            5: ["LDA_C_VBH"],
-            20: ["GGA_C_PBE", "GGA_X_PBE"],
-            21: ["GGA_C_PBE", "GGA_X_PBE_R"],
-            22: ["GGA_C_PBE_SOL", "GGA_X_PBE_SOL"],
-            26: ["GGA_C_PBE", "GGA_X_WC"],
-            30: ["GGA_C_AM05", "GGA_C_AM05"],
-            300: ["GGA_C_BGCP", "GGA_X_PBE"],
-            406: ["HYB_GGA_XC_PBEH"],
-            408: ["HYB_GGA_XC_HSE03"],
+            2: ['LDA_C_PZ', 'LDA_X_PZ'],
+            3: ['LDA_C_PW', 'LDA_X_PZ'],
+            4: ['LDA_C_XALPHA'],
+            5: ['LDA_C_VBH'],
+            20: ['GGA_C_PBE', 'GGA_X_PBE'],
+            21: ['GGA_C_PBE', 'GGA_X_PBE_R'],
+            22: ['GGA_C_PBE_SOL', 'GGA_X_PBE_SOL'],
+            26: ['GGA_C_PBE', 'GGA_X_WC'],
+            30: ['GGA_C_AM05', 'GGA_C_AM05'],
+            300: ['GGA_C_BGCP', 'GGA_X_PBE'],
+            406: ['HYB_GGA_XC_PBEH'],
+            408: ['HYB_GGA_XC_HSE03'],
         }
 
-        xc_functional = self.get("initialization", {}).get("xc_functional", None)
+        xc_functional = self.get('initialization', {}).get('xc_functional', None)
         if xc_functional is None:
             return []
 
@@ -1533,22 +1533,22 @@ class ExcitingInfoParser(TextParser):
 
     @property
     def n_optimization_steps(self):
-        return len(self.get("structure_optimization", {}).get("optimization_step", []))
+        return len(self.get('structure_optimization', {}).get('optimization_step', []))
 
     def get_number_of_spin_channels(self):
-        spin_treatment = self.get("initialization", {}).get(
-            "x_exciting_spin_treatment", "spin-unpolarised"
+        spin_treatment = self.get('initialization', {}).get(
+            'x_exciting_spin_treatment', 'spin-unpolarised'
         )
-        n_spin = 1 if spin_treatment.lower() == "spin-unpolarised" else 2
+        n_spin = 1 if spin_treatment.lower() == 'spin-unpolarised' else 2
         return n_spin
 
     def get_unit_cell_volume(self):
-        return self.get("initialization", {}).get(
-            "x_exciting_unit_cell_volume", 1.0 * ureg.bohr**3
+        return self.get('initialization', {}).get(
+            'x_exciting_unit_cell_volume', 1.0 * ureg.bohr**3
         )
 
     def get_initialization_parameter(self, key, default=None):
-        return self.get("initialization", {}).get(key, default)
+        return self.get('initialization', {}).get(key, default)
 
 
 class ExcitingParser(BeyondDFTWorkflowsParser):
@@ -1572,130 +1572,130 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         # different names for different versions of exciting
         self._energy_keys_mapping = {
-            "energy_total": ["Total energy", "total energy"],
-            "x_exciting_fermi_energy": ["Fermi energy", "Fermi"],
-            "energy_kinetic_electronic": ["Kinetic energy", "electronic kinetic"],
-            "energy_coulomb": ["Coulomb energy", "Coulomb"],
-            "x_exciting_coulomb_energy": ["Coulomb energy", "Coulomb"],
-            "energy_exchange": ["Exchange energy", "exchange"],
-            "x_exciting_exchange_energy": ["Exchange energy", "exchange"],
-            "energy_correlation": ["Correlation energy", "correlation"],
-            "x_exciting_correlation_energy": ["Correlation energy", "correlation"],
-            "energy_sum_eigenvalues": ["Sum of eigenvalues", "sum of eigenvalues"],
-            "x_exciting_effective_potential_energy": ["Effective potential energy"],
-            "x_exciting_coulomb_potential_energy": [
-                "Coulomb potential energy",
-                "Coulomb potential",
+            'energy_total': ['Total energy', 'total energy'],
+            'x_exciting_fermi_energy': ['Fermi energy', 'Fermi'],
+            'energy_kinetic_electronic': ['Kinetic energy', 'electronic kinetic'],
+            'energy_coulomb': ['Coulomb energy', 'Coulomb'],
+            'x_exciting_coulomb_energy': ['Coulomb energy', 'Coulomb'],
+            'energy_exchange': ['Exchange energy', 'exchange'],
+            'x_exciting_exchange_energy': ['Exchange energy', 'exchange'],
+            'energy_correlation': ['Correlation energy', 'correlation'],
+            'x_exciting_correlation_energy': ['Correlation energy', 'correlation'],
+            'energy_sum_eigenvalues': ['Sum of eigenvalues', 'sum of eigenvalues'],
+            'x_exciting_effective_potential_energy': ['Effective potential energy'],
+            'x_exciting_coulomb_potential_energy': [
+                'Coulomb potential energy',
+                'Coulomb potential',
             ],
-            "energy_xc_potential": ["xc potential energy", "xc potential"],
-            "energy_electrostatic": ["Hartree energy", "Hartree"],
-            "x_exciting_hartree_energy": ["Hartree energy", "Hartree"],
-            "x_exciting_electron_nuclear_energy": [
-                "Electron-nuclear energy",
-                "electron-nuclear ",
+            'energy_xc_potential': ['xc potential energy', 'xc potential'],
+            'energy_electrostatic': ['Hartree energy', 'Hartree'],
+            'x_exciting_hartree_energy': ['Hartree energy', 'Hartree'],
+            'x_exciting_electron_nuclear_energy': [
+                'Electron-nuclear energy',
+                'electron-nuclear ',
             ],
-            "x_exciting_nuclear_nuclear_energy": [
-                "Nuclear-nuclear energy",
-                "nuclear-nuclear",
+            'x_exciting_nuclear_nuclear_energy': [
+                'Nuclear-nuclear energy',
+                'nuclear-nuclear',
             ],
-            "x_exciting_madelung_energy": ["Madelung energy", "Madelung"],
-            "x_exciting_core_electron_kinetic_energy": [
-                "Core-electron kinetic energy",
-                "core electron kinetic",
+            'x_exciting_madelung_energy': ['Madelung energy', 'Madelung'],
+            'x_exciting_core_electron_kinetic_energy': [
+                'Core-electron kinetic energy',
+                'core electron kinetic',
             ],
-            "x_exciting_dft_d2_dispersion_correction": ["DFT-D2 dispersion correction"],
+            'x_exciting_dft_d2_dispersion_correction': ['DFT-D2 dispersion correction'],
         }
 
         self._electron_charge_keys_mapping = {
-            "x_exciting_core_charge": ["core"],
-            "x_exciting_core_leakage": ["core leakage"],
-            "x_exciting_valence_charge": ["valence"],
-            "x_exciting_interstitial_charge": ["interstitial"],
-            "x_exciting_total_MT_charge": [
-                "total charge in muffin-tins",
-                "total in muffin-tins",
+            'x_exciting_core_charge': ['core'],
+            'x_exciting_core_leakage': ['core leakage'],
+            'x_exciting_valence_charge': ['valence'],
+            'x_exciting_interstitial_charge': ['interstitial'],
+            'x_exciting_total_MT_charge': [
+                'total charge in muffin-tins',
+                'total in muffin-tins',
             ],
-            "charge_total": ["total charge"],
-            "x_exciting_section_MT_charge_atom": ["atom_resolved"],
+            'charge_total': ['total charge'],
+            'x_exciting_section_MT_charge_atom': ['atom_resolved'],
         }
 
         self._moment_keys_mapping = {
-            "x_exciting_interstitial_moment": ["interstitial"],
-            "x_exciting_total_MT_moment": ["total moment in muffin-tins"],
-            "x_exciting_total_moment": ["total moment"],
-            "x_exciting_section_MT_moment_atom": ["atom_resolved"],
+            'x_exciting_interstitial_moment': ['interstitial'],
+            'x_exciting_total_MT_moment': ['total moment in muffin-tins'],
+            'x_exciting_total_moment': ['total moment'],
+            'x_exciting_section_MT_moment_atom': ['atom_resolved'],
         }
 
-        self._xs_spectra_types = ["EPSILON", "EXCITON", "SIGMA", "LOSS"]
+        self._xs_spectra_types = ['EPSILON', 'EXCITON', 'SIGMA', 'LOSS']
 
         self._gw_input_default = {
-            "coreflag": "all",
-            "ibgw": 1,
-            "mblksiz": 0,
-            "nbgw": 0,
-            "nempty": 0,
-            "ngridq": [0, 0, 0],
-            "printSelfC": False,
-            "printSpectralFunction": False,
-            "qdepw": "tet",
-            "rpmat": False,
-            "skipgnd": False,
-            "taskname": "g0w0",
-            "vqloff": [0.0, 0.0, 0.0],
+            'coreflag': 'all',
+            'ibgw': 1,
+            'mblksiz': 0,
+            'nbgw': 0,
+            'nempty': 0,
+            'ngridq': [0, 0, 0],
+            'printSelfC': False,
+            'printSpectralFunction': False,
+            'qdepw': 'tet',
+            'rpmat': False,
+            'skipgnd': False,
+            'taskname': 'g0w0',
+            'vqloff': [0.0, 0.0, 0.0],
         }
 
         self._freqgrid_input_default = {
-            "eta": 1.0e-3,
-            "fconv": "imfreq",
-            "fgrid": "gauleg2",
-            "freqmax": 1.0,
-            "freqmin": 0.0,
-            "nomeg": 16,
+            'eta': 1.0e-3,
+            'fconv': 'imfreq',
+            'fgrid': 'gauleg2',
+            'freqmax': 1.0,
+            'freqmin': 0.0,
+            'nomeg': 16,
         }
 
         self._freq_grid_map = {
-            "eqdist": "Equidistant",
-            "gaulag": "Gauss-Laguerre",
-            "gauleg": "Gauss-Legendre",
-            "gauleg2": "Gauss-Legendre",
-            "clencurt2": "Clenshaw-Curtis",
+            'eqdist': 'Equidistant',
+            'gaulag': 'Gauss-Laguerre',
+            'gauleg': 'Gauss-Legendre',
+            'gauleg2': 'Gauss-Legendre',
+            'clencurt2': 'Clenshaw-Curtis',
         }
 
         self._selfenergy_input_default = {
-            "actype": "pade",
-            "eqpsolver": 0,
-            "eshift": 0,
-            "method": "ac",
-            "nempty": 0,
-            "singularity": "mbp",
-            "swidth": 1.0e-4,
-            "tol": 1.0e-12,
+            'actype': 'pade',
+            'eqpsolver': 0,
+            'eshift': 0,
+            'method': 'ac',
+            'nempty': 0,
+            'singularity': 'mbp',
+            'swidth': 1.0e-4,
+            'tol': 1.0e-12,
         }
 
         self._wgrid_input_default = {
-            "size": 1000,
-            "type": "eqdist",
-            "wmax": 1.0,
-            "wmin": -1.0,
+            'size': 1000,
+            'type': 'eqdist',
+            'wmax': 1.0,
+            'wmin': -1.0,
         }
 
-        self._mixbasis_input_default = {"epsmb": 1.0e-4, "gmb": 1.0, "lmaxmb": 3}
+        self._mixbasis_input_default = {'epsmb': 1.0e-4, 'gmb': 1.0, 'lmaxmb': 3}
 
         self._barecoul_input_default = {
-            "barcevtol": 0.1,
-            "basis": "mb",
-            "cutofftype": None,
-            "pwm": 2.0,
-            "stctol": 1.0e-15,
+            'barcevtol': 0.1,
+            'basis': 'mb',
+            'cutofftype': None,
+            'pwm': 2.0,
+            'stctol': 1.0e-15,
         }
 
-        self._scrcoul_input_default = {"omegap": 1.0, "scrtype": "rpa"}
+        self._scrcoul_input_default = {'omegap': 1.0, 'scrtype': 'rpa'}
 
         self._bse_type_map = {
-            "singlet": "Singlet",
-            "triplet": "Triplet",
-            "IP": "IP",
-            "RPA": "RPA",
+            'singlet': 'Singlet',
+            'triplet': 'Triplet',
+            'IP': 'IP',
+            'RPA': 'RPA',
         }
 
     def file_exists(self, filename: str, fuzzy: bool = False) -> list[str]:
@@ -1703,11 +1703,11 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         folder where the mainfile is stored. `fuzzy` toggles regex matching.
         """
         mainfile = os.path.basename(self.info_parser.mainfile)
-        suffix = mainfile.strip("INFO.OUT")
-        target = filename.rsplit(".", 1)
-        filepath = "%s%s" % (target[0], suffix)
+        suffix = mainfile.strip('INFO.OUT')
+        target = filename.rsplit('.', 1)
+        filepath = '%s%s' % (target[0], suffix)
         if target[1:]:
-            filepath = "%s.%s" % (filepath, target[1])
+            filepath = '%s.%s' % (filepath, target[1])
         if fuzzy:
             filepaths = [
                 file
@@ -1722,7 +1722,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         return []
 
     def _parse_dos(self, sec_scc):
-        if self.dos_parser.get("totaldos", None) is None:
+        if self.dos_parser.get('totaldos', None) is None:
             return
 
         # Get fermi energy: it is used to un-shift the DOS to
@@ -1730,9 +1730,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         energy_fermi = sec_scc.energy.fermi
         if energy_fermi is None:
             return
-        energy_fermi = (energy_fermi.magnitude * ureg.joule).to("hartree")
+        energy_fermi = (energy_fermi.magnitude * ureg.joule).to('hartree')
 
-        totaldos = self.dos_parser.get("totaldos")
+        totaldos = self.dos_parser.get('totaldos')
         n_spin_channels = len(totaldos)
         for spin in range(len(totaldos)):
             sec_dos = Dos()
@@ -1745,11 +1745,11 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_dos_total.value = totaldos[spin]
 
         # TODO fix this partial DOS parsing --> it is wrong, probably it is the orbital_projected.
-        partialdos = self.dos_parser.get("partialdos")
+        partialdos = self.dos_parser.get('partialdos')
         if partialdos is None:
             return
 
-        partialdos = partialdos.to("1/joule").magnitude
+        partialdos = partialdos.to('1/joule').magnitude
         n_energies = self.dos_parser.number_of_dos
         n_lm = len(partialdos)
         n_atoms = partialdos.shape[2]
@@ -1768,7 +1768,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 for atom in range(n_atoms):
                     sec_dos_atom = DosValues()
                     sec_dos.atom_projected.append(sec_dos_atom)
-                    sec_dos_atom.m_kind = "spherical"
+                    sec_dos_atom.m_kind = 'spherical'
                     sec_dos_atom.lm = lm_values[lm]
                     sec_dos_atom.atom_index = atom
                     sec_dos_atom.value = partialdos[spin][lm][atom]
@@ -1779,7 +1779,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             self.info_parser.get_number_of_spin_channels()
         )
 
-        band_energies = self.bandstructure_parser.get("band_energies", [])
+        band_energies = self.bandstructure_parser.get('band_energies', [])
 
         for n in range(len(band_energies)):
             # Get fermi energy: it is used to un-shift the band structure to
@@ -1787,15 +1787,15 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             energy_fermi = sec_scc.energy.fermi
             if energy_fermi is None:
                 continue
-            energy_fermi = energy_fermi.to("hartree")
+            energy_fermi = energy_fermi.to('hartree')
 
             sec_k_band = BandStructure()
             sec_scc.band_structure_electronic.append(sec_k_band)
             sec_k_band.energy_fermi = energy_fermi
 
-            band_k_points = self.bandstructure_parser.get("band_k_points")
+            band_k_points = self.bandstructure_parser.get('band_k_points')
             nkpts_segment = self.bandstructure_parser.number_of_k_points_per_segment
-            band_seg_labels = self.bandstructure_parser.get("band_segm_labels")
+            band_seg_labels = self.bandstructure_parser.get('band_segm_labels')
             for nb in range(len(band_energies[n])):
                 sec_k_band_segment = BandEnergies()
                 sec_k_band.segment.append(sec_k_band_segment)
@@ -1805,13 +1805,13 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 sec_k_band_segment.energies = band_energies[n][nb] + energy_fermi
 
     def _parse_eigenvalues(self, sec_scc):
-        if self.eigval_parser.get("eigenvalues_occupancies", None) is None:
+        if self.eigval_parser.get('eigenvalues_occupancies', None) is None:
             return
 
         nspin = self.info_parser.get_number_of_spin_channels()
 
         def get_data(key):
-            data = self.eigval_parser.get("eigenvalues_occupancies")
+            data = self.eigval_parser.get('eigenvalues_occupancies')
             # reshaping is not necessary as this is done in parser, however nspin is
             # determined from occupancies which is problematic sometimes
             res = np.hstack(
@@ -1819,25 +1819,25 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             )
             res = res.reshape((len(res), len(data), len(res[0]) // len(data)))
 
-            if key == "eigenvalues":
+            if key == 'eigenvalues':
                 res = res * ureg.hartree
             return res
 
         sec_eigenvalues = BandEnergies()
         sec_scc.eigenvalues.append(sec_eigenvalues)
-        sec_eigenvalues.kpoints = self.eigval_parser.get("k_points")
-        sec_eigenvalues.occupations = get_data("occupancies")
-        sec_eigenvalues.energies = get_data("eigenvalues")
+        sec_eigenvalues.kpoints = self.eigval_parser.get('k_points')
+        sec_eigenvalues.occupations = get_data('occupancies')
+        sec_eigenvalues.energies = get_data('eigenvalues')
 
     def _parse_fermisurface(self, sec_scc):
-        fermi_surface = self.fermisurf_parser.get("fermi_surface", [None])[0]
+        fermi_surface = self.fermisurf_parser.get('fermi_surface', [None])[0]
         if fermi_surface is None:
             return
 
         sec_fermisurface = x_exciting_section_fermi_surface()
         sec_scc.x_exciting_section_fermi_surface.append(sec_fermisurface)
 
-        band_parameters = self.fermisurf_parser.get("band_parameters", None)
+        band_parameters = self.fermisurf_parser.get('band_parameters', None)
         if band_parameters is not None:
             sec_fermisurface.x_exciting_number_of_bands_fermi_surface = band_parameters[
                 0
@@ -1849,21 +1849,21 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_fermisurface.x_exciting_origin_fermi_surface = band_parameters[2]
             sec_fermisurface.x_exciting_vectors_fermi_surface = band_parameters[3]
 
-        fermi_energy = self.fermisurf_parser.get("fermi_energy", None)
+        fermi_energy = self.fermisurf_parser.get('fermi_energy', None)
         if fermi_energy is not None:
             sec_fermisurface.x_exciting_fermi_energy_fermi_surface = fermi_energy
 
         sec_fermisurface.x_exciting_values_fermi_surface = fermi_surface
 
     def _parse_evalqp(self, sec_scc):
-        data = self.evalqp_parser.get("kpoints_eigenvalues")
+        data = self.evalqp_parser.get('kpoints_eigenvalues')
         if data is None:
             return
 
         def get_data(key):
-            if key == "k_points":
+            if key == 'k_points':
                 return np.array([d[0][:3] for d in data])
-            elif key == "Znk":
+            elif key == 'Znk':
                 return np.array([d[1].get(key, None) for d in data])
             else:
                 energy = np.array([d[1].get(key, None) for d in data])
@@ -1871,7 +1871,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     return energy
                 return np.array([d[1].get(key) for d in data]) * ureg.hartree
 
-        eigs_gw = get_data("E_GW")
+        eigs_gw = get_data('E_GW')
         if eigs_gw[0] is None:
             return
 
@@ -1884,18 +1884,18 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         sec_gw_eigenvalues = BandEnergies()
         sec_scc.eigenvalues.append(sec_gw_eigenvalues)
-        sec_gw_eigenvalues.qp_linearization_prefactor = reshape(get_data("Znk"))
+        sec_gw_eigenvalues.qp_linearization_prefactor = reshape(get_data('Znk'))
         sec_gw_eigenvalues.n_bands = len(eigs_gw[0])
         sec_gw_eigenvalues.n_kpoints = len(eigs_gw)
-        sec_gw_eigenvalues.kpoints = get_data("k_points")
+        sec_gw_eigenvalues.kpoints = get_data('k_points')
 
         sec_gw_eigenvalues.energies = reshape(eigs_gw)
-        sec_gw_eigenvalues.value_exchange = reshape(get_data("Sx"))
-        eigs_gw_C = reshape(get_data("Sc"))
+        sec_gw_eigenvalues.value_exchange = reshape(get_data('Sx'))
+        eigs_gw_C = reshape(get_data('Sc'))
         if eigs_gw_C is None:
-            eigs_gw_C = reshape(get_data("Re(Sc)"))
+            eigs_gw_C = reshape(get_data('Re(Sc)'))
         sec_gw_eigenvalues.value_correlation = eigs_gw_C
-        sec_gw_eigenvalues.value_xc_potential = reshape(get_data("Vxc"))
+        sec_gw_eigenvalues.value_xc_potential = reshape(get_data('Vxc'))
 
     def _parse_dos_out(self, sec_scc):
         data = self.dos_out_parser.data
@@ -1907,7 +1907,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         energy_fermi = sec_scc.energy.fermi
         if energy_fermi is None:
             return
-        energy_fermi = (energy_fermi.magnitude * ureg.joule).to("hartree")
+        energy_fermi = (energy_fermi.magnitude * ureg.joule).to('hartree')
 
         # TODO I am not sure about format for spin-polarized case! I assume it is
         # energy dos_up dos_down
@@ -1942,7 +1942,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         energy_fermi = sec_scc.energy.fermi
         if energy_fermi is None:
             return
-        energy_fermi = (energy_fermi.magnitude * ureg.joule).to("hartree")
+        energy_fermi = (energy_fermi.magnitude * ureg.joule).to('hartree')
 
         sec_k_band = BandStructure()
         sec_scc.band_structure_electronic.append(sec_k_band)
@@ -1969,7 +1969,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         energy_fermi = 0.0 * ureg.hartree
         if sec_scc.energy is not None:
             energy_fermi = sec_scc.energy.fermi
-        energy_fermi = (energy_fermi.magnitude * ureg.joule).to("hartree")
+        energy_fermi = (energy_fermi.magnitude * ureg.joule).to('hartree')
         sec_k_band = BandStructure()
         sec_scc.band_structure_electronic.append(sec_k_band)
         sec_k_band.energy_fermi = energy_fermi
@@ -1983,59 +1983,59 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
     def _parse_species(self, sec_method):
         def _set_orbital(
-            source: TextParser, l_quantum_number: int, order: int, type: str = ""
+            source: TextParser, l_quantum_number: int, order: int, type: str = ''
         ) -> OrbitalAPW:
             if not type:
-                type = re.sub(r"\+lo", "", source.get("type", "lapw")).upper()
+                type = re.sub(r'\+lo', '', source.get('type', 'lapw')).upper()
             return OrbitalAPW(
                 l_quantum_number=l_quantum_number,
                 type=type,
                 order=order,
-                energy_parameter=source["trialEnergy"] * ureg.hartree,
-                update=source["searchE"],
+                energy_parameter=source['trialEnergy'] * ureg.hartree,
+                update=source['searchE'],
             )
 
-        type_order_mapping = {"   ": 0, "apw": 1, "lap": 2}
+        type_order_mapping = {'   ': 0, 'apw': 1, 'lap': 2}
         self.species_parser.parse()
         species_data = self.species_parser.to_dict()
 
         # muffin-tin valence
-        radius = float(species_data["muffinTin"]["radius"])
-        radialmeshPoints = int(species_data["muffinTin"]["radialmeshPoints"])
+        radius = float(species_data['muffinTin']['radius'])
+        radialmeshPoints = int(species_data['muffinTin']['radialmeshPoints'])
         radial_spacing = radius / radialmeshPoints
         bs_val = BasisSet(
-            scope=["muffin-tin"],
+            scope=['muffin-tin'],
             radius=radius * ureg.bohr,
             radius_lin_spacing=radial_spacing * ureg.bohr,
         )
-        lo_samplings = {lo["l"]: lo.get("wf", []) for lo in species_data.get("lo", [])}
-        lmax = self.input_xml_parser.get("xs/lmaxapw", 10)
+        lo_samplings = {lo['l']: lo.get('wf', []) for lo in species_data.get('lo', [])}
+        lmax = self.input_xml_parser.get('xs/lmaxapw', 10)
 
         for l_n in range(lmax + 1):
-            source = species_data.get("default", {})
-            for custom_settings in species_data.get("custom", []):
-                if custom_settings["l"] == l_n:
+            source = species_data.get('default', {})
+            for custom_settings in species_data.get('custom', []):
+                if custom_settings['l'] == l_n:
                     source = custom_settings
                     break
-            for order in range(type_order_mapping[source.get("type", 3 * " ")[:3]]):
+            for order in range(type_order_mapping[source.get('type', 3 * ' ')[:3]]):
                 bs_val.orbital.append(_set_orbital(source, l_n, order))
 
             # Add lo's
-            if source.get("type", 2 * " ")[-2:] == "lo":
+            if source.get('type', 2 * ' ')[-2:] == 'lo':
                 wfs = lo_samplings[l_n] if l_n in lo_samplings else [source]
                 for wf in wfs:
-                    for order in range(wf.get("matchingOrder", 0), 2):
-                        bs_val.orbital.append(_set_orbital(wf, l_n, order, type="LO"))
+                    for order in range(wf.get('matchingOrder', 0), 2):
+                        bs_val.orbital.append(_set_orbital(wf, l_n, order, type='LO'))
 
         # manage atom parameters
         if not sec_method.atom_parameters:
             sec_method.atom_parameters = []
-        sp = species_data.get("sp", {})
+        sp = species_data.get('sp', {})
         sec_method.atom_parameters.append(
             AtomParameters(
-                atom_number=abs(sp.get("z")),
-                label=sp.get("chemicalSymbol"),
-                mass=sp.get("mass") * ureg.amu if sp.get("mass") else None,
+                atom_number=abs(sp.get('z')),
+                label=sp.get('chemicalSymbol'),
+                mass=sp.get('mass') * ureg.amu if sp.get('mass') else None,
             )
         )
         bs_val.atom_parameters = sec_method.atom_parameters[-1]
@@ -2043,13 +2043,13 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         if not sec_method.electrons_representation:
             sec_method.electrons_representation = [
                 BasisSetContainer(
-                    scope=["wavefunction"],
+                    scope=['wavefunction'],
                     basis_set=[
                         BasisSet(
-                            type="plane waves",
-                            scope=["valence"],
+                            type='plane waves',
+                            scope=['valence'],
                             cutoff_fractional=self.input_xml_parser.get(
-                                "xs/cutoffapw", 7.0
+                                'xs/cutoffapw', 7.0
                             ),
                         ),
                     ],
@@ -2059,42 +2059,42 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
     def parse_file(self, name, section, filepath=None):
         # TODO add support for info.xml, wannier.out
-        if name.startswith("dos") and name.endswith("xml"):
+        if name.startswith('dos') and name.endswith('xml'):
             parser = self.dos_parser
             parser_function = self._parse_dos
-        elif name.startswith("bandstructure") and name.endswith("xml"):
+        elif name.startswith('bandstructure') and name.endswith('xml'):
             parser = self.bandstructure_parser
             parser_function = self._parse_bandstructure
-        elif name.startswith("EIGVAL") and name.endswith("OUT"):
+        elif name.startswith('EIGVAL') and name.endswith('OUT'):
             parser = self.eigval_parser
             parser_function = self._parse_eigenvalues
-        elif (name.startswith("FERMISURF") or name.startswith("FS")) and name.endswith(
-            "bxsf"
+        elif (name.startswith('FERMISURF') or name.startswith('FS')) and name.endswith(
+            'bxsf'
         ):
             parser = self.fermisurf_parser
             parser_function = self._parse_fermisurface
-        elif name.startswith("EVALQP") and (
-            name.endswith("DAT") or name.endswith("TXT")
+        elif name.startswith('EVALQP') and (
+            name.endswith('DAT') or name.endswith('TXT')
         ):
             parser = self.evalqp_parser
             parser_function = self._parse_evalqp
-        elif name.startswith("TDOS") and name.endswith("OUT"):
+        elif name.startswith('TDOS') and name.endswith('OUT'):
             parser = self.dos_out_parser
             parser_function = self._parse_dos_out
-        elif name.startswith("bandstructure") and name.endswith("dat"):
+        elif name.startswith('bandstructure') and name.endswith('dat'):
             parser = self.bandstructure_dat_parser
             parser_function = self._parse_bandstructure_dat
-        elif name.startswith("BAND") and name.endswith("OUT"):
+        elif name.startswith('BAND') and name.endswith('OUT'):
             parser = self.band_out_parser
             parser_function = self._parse_band_out
-        elif re.match(r"[A-Z][a-z]?\.xml", name):
+        elif re.match(r'[A-Z][a-z]?\.xml', name):
             parser = self.species_parser
             parser_function = self._parse_species
-        elif name.startswith("input") and name.endswith("xml"):
+        elif name.startswith('input') and name.endswith('xml'):
             parser = self.input_xml_parser
-            if self._calculation_type == "gw":
+            if self._calculation_type == 'gw':
                 parser_function = self._parse_input_gw
-            elif self._calculation_type == "xs":
+            elif self._calculation_type == 'xs':
                 parser_function = self._parse_input_xs
             else:
                 # TODO implement reading of parameters from input.xml for normal calculations
@@ -2104,10 +2104,10 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             return
 
         filepath = filepath if filepath is not None else self.filepath
-        files = get_files(name, filepath, "INFO.OUT")
+        files = get_files(name, filepath, 'INFO.OUT')
         if len(files) > 1:
             self.logger.warning(
-                "Found multiple files. Will read all!", data=dict(file=name)
+                'Found multiple files. Will read all!', data=dict(file=name)
             )
 
         for n in range(len(files)):
@@ -2118,159 +2118,159 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         parser.mainfile = None
 
     def _parse_input_xs(self, sec_method):
-        xstype = self.input_xml_parser.get("xs/xstype", None)
+        xstype = self.input_xml_parser.get('xs/xstype', None)
         if xstype is not None:
             sec_method.x_exciting_xs_xstype = xstype
             sec_method.x_exciting_electronic_structure_method = xstype
 
         sec_method.x_exciting_xs_broadening = self.input_xml_parser.get(
-            "xs/broad", 0.01, "hartree"
+            'xs/broad', 0.01, 'hartree'
         )
         sec_method.x_exciting_xs_gqmax = self.input_xml_parser.get(
-            "xs/gqmax", 0.0, "1/bohr"
+            'xs/gqmax', 0.0, '1/bohr'
         )
-        sec_method.x_exciting_xs_lmaxapw = self.input_xml_parser.get("xs/lmaxapw", 10)
+        sec_method.x_exciting_xs_lmaxapw = self.input_xml_parser.get('xs/lmaxapw', 10)
         sec_method.x_exciting_xs_number_of_empty_states = self.input_xml_parser.get(
-            "xs/nempty", 5
+            'xs/nempty', 5
         )
         sec_method.x_exciting_xs_ngridq = self.input_xml_parser.get(
-            "xs/ngridq", [1, 1, 1]
+            'xs/ngridq', [1, 1, 1]
         )
         sec_method.x_exciting_xs_ngridk = self.input_xml_parser.get(
-            "xs/ngridk", [1, 1, 1]
+            'xs/ngridk', [1, 1, 1]
         )
-        rgkmax = self.input_xml_parser.get("xs/rgkmax", None)
+        rgkmax = self.input_xml_parser.get('xs/rgkmax', None)
         if rgkmax is None:
             rgkmax = self.info_parser.get_initialization_parameter(
-                "x_exciting_rgkmax", 0.0
+                'x_exciting_rgkmax', 0.0
             )
         sec_method.x_exciting_xs_rgkmax = rgkmax
-        sec_method.x_exciting_xs_scissor = self.input_xml_parser.get("xs/scissor", 0.0)
+        sec_method.x_exciting_xs_scissor = self.input_xml_parser.get('xs/scissor', 0.0)
         sec_method.x_exciting_xs_vkloff = self.input_xml_parser.get(
-            "xs/vkloff", [0.0, 0.0, 0.0]
+            'xs/vkloff', [0.0, 0.0, 0.0]
         )
 
-        if self.input_xml_parser.get("xs/energywindow") is not None:
+        if self.input_xml_parser.get('xs/energywindow') is not None:
             sec_method.x_exciting_xs_energywindow_values = self.input_xml_parser.get(
-                "xs/energywindow/intv", np.array([-0.5, 0.5]), "hartree"
+                'xs/energywindow/intv', np.array([-0.5, 0.5]), 'hartree'
             )
             sec_method.x_exciting_xs_energywindow_points = self.input_xml_parser.get(
-                "xs/energywindow/points", 500
+                'xs/energywindow/points', 500
             )
 
-        if self.input_xml_parser.get("xs/screening") is not None:
+        if self.input_xml_parser.get('xs/screening') is not None:
             sec_method.x_exciting_xs_screening_number_of_empty_states = (
-                self.input_xml_parser.get("xs/screening/nempty", 0)
+                self.input_xml_parser.get('xs/screening/nempty', 0)
             )
             sec_method.x_exciting_xs_screening_ngridk = self.input_xml_parser.get(
-                "xs/screening/ngridk", [0, 0, 0]
+                'xs/screening/ngridk', [0, 0, 0]
             )
-            rgkmax = self.input_xml_parser.get("xs/screening/rgkmax", None)
+            rgkmax = self.input_xml_parser.get('xs/screening/rgkmax', None)
             if rgkmax is None:
                 rgkmax = self.info_parser.get_initialization_parameter(
-                    "x_exciting_rgkmax", 0.0
+                    'x_exciting_rgkmax', 0.0
                 )
             sec_method.x_exciting_xs_screening_rgkmax = rgkmax
             sec_method.x_exciting_xs_screening_type = self.input_xml_parser.get(
-                "xs/screening/screentype", "full"
+                'xs/screening/screentype', 'full'
             )
 
-        if self.input_xml_parser.get("xs/BSE") is not None:
+        if self.input_xml_parser.get('xs/BSE') is not None:
             sec_method.x_exciting_xs_bse_type = self.input_xml_parser.get(
-                "xs/BSE/bsetype", "singlet"
+                'xs/BSE/bsetype', 'singlet'
             )
             sec_method.x_exciting_xs_bse_antiresonant = self.input_xml_parser.get(
-                "xs/BSE/aresbse", True
+                'xs/BSE/aresbse', True
             )
             sec_method.x_exciting_xs_bse_angular_momentum_cutoff = (
-                self.input_xml_parser.get("xs/BSE/lmaxdielt", 14)
+                self.input_xml_parser.get('xs/BSE/lmaxdielt', 14)
             )
-            rgkmax = self.input_xml_parser.get("xs/BSE/rgkmax", None)
+            rgkmax = self.input_xml_parser.get('xs/BSE/rgkmax', None)
             if rgkmax is None:
                 rgkmax = self.info_parser.get_initialization_parameter(
-                    "x_exciting_rgkmax", 0
+                    'x_exciting_rgkmax', 0
                 )
 
             sec_method.x_exciting_xs_bse_rgkmax = rgkmax
             sec_method.x_exciting_xs_bse_sciavbd = self.input_xml_parser.get(
-                "xs/BSE/sciavbd", True
+                'xs/BSE/sciavbd', True
             )
             sec_method.x_exciting_xs_bse_sciavqbd = self.input_xml_parser.get(
-                "xs/BSE/sciavqbd", False
+                'xs/BSE/sciavqbd', False
             )
             sec_method.x_exciting_xs_bse_sciavqhd = self.input_xml_parser.get(
-                "xs/BSE/sciavqhd", False
+                'xs/BSE/sciavqhd', False
             )
             sec_method.x_exciting_xs_bse_sciavqwg = self.input_xml_parser.get(
-                "xs/BSE/sciavqwg", False
+                'xs/BSE/sciavqwg', False
             )
             sec_method.x_exciting_xs_bse_sciavtype = self.input_xml_parser.get(
-                "xs/BSE/sciavtype", "spherical"
+                'xs/BSE/sciavtype', 'spherical'
             )
             sec_method.x_exciting_xs_bse_xas = self.input_xml_parser.get(
-                "xs/BSE/xas", False
+                'xs/BSE/xas', False
             )
             sec_method.x_exciting_xs_bse_number_of_bands = self.input_xml_parser.get(
-                "xs/BSE/nstlbse", [0, 0, 0, 0]
+                'xs/BSE/nstlbse', [0, 0, 0, 0]
             )
             if sec_method.x_exciting_xs_bse_xas:
                 sec_method.x_exciting_xs_bse_xasatom = self.input_xml_parser.get(
-                    "xs/BSE/xasatom", 0
+                    'xs/BSE/xasatom', 0
                 )
                 sec_method.x_exciting_xs_bse_xasedge = self.input_xml_parser.get(
-                    "xs/BSE/xasedge", "K"
+                    'xs/BSE/xasedge', 'K'
                 )
                 sec_method.x_exciting_xs_bse_xasspecies = self.input_xml_parser.get(
-                    "xs/BSE/xasspecies", 0
+                    'xs/BSE/xasspecies', 0
                 )
                 sec_method.x_exciting_xs_bse_xas_number_of_bands = (
-                    self.input_xml_parser.get("xs/BSE/nstlxas", [0, 0])
+                    self.input_xml_parser.get('xs/BSE/nstlxas', [0, 0])
                 )
 
-        if self.input_xml_parser.get("xs/tddft") is not None:
+        if self.input_xml_parser.get('xs/tddft') is not None:
             sec_method.x_exciting_xs_tddft_analytic_continuation = (
-                self.input_xml_parser.get("xs/tddft/acont", False)
+                self.input_xml_parser.get('xs/tddft/acont', False)
             )
             sec_method.x_exciting_xs_tddft_anomalous_Hall_conductivity = (
-                self.input_xml_parser.get("xs/tddft/ahc", False)
+                self.input_xml_parser.get('xs/tddft/ahc', False)
             )
             sec_method.x_exciting_xs_tddft_anti_resonant_dielectric = (
-                self.input_xml_parser.get("xs/tddft/aresdf", False)
+                self.input_xml_parser.get('xs/tddft/aresdf', False)
             )
             sec_method.x_exciting_xs_tddft_anti_resonant_xc_kernel = (
-                self.input_xml_parser.get("xs/tddft/aresfxc", True)
+                self.input_xml_parser.get('xs/tddft/aresfxc', True)
             )
             sec_method.x_exciting_xs_tddft_drude = self.input_xml_parser.get(
-                "xs/tddft/drude", [0.0, 0.0]
+                'xs/tddft/drude', [0.0, 0.0]
             )
             sec_method.x_exciting_xs_tddft_split_parameter = self.input_xml_parser.get(
-                "xs/tddft/fxcbsesplit", 0.00001, "hartree"
+                'xs/tddft/fxcbsesplit', 0.00001, 'hartree'
             )
             sec_method.x_exciting_xs_tddft_xc_kernel = self.input_xml_parser.get(
-                "xs/tddft/fxctype", "RPA"
+                'xs/tddft/fxctype', 'RPA'
             )
             sec_method.x_exciting_xs_tddft_finite_q_intraband_contribution = (
-                self.input_xml_parser.get("xs/tddft/intraband", False)
+                self.input_xml_parser.get('xs/tddft/intraband', False)
             )
             sec_method.x_exciting_xs_tddft_diagonal_xc_kernel = (
-                self.input_xml_parser.get("xs/tddft/kerndiag", False)
+                self.input_xml_parser.get('xs/tddft/kerndiag', False)
             )
             sec_method.x_exciting_xs_tddft_lmax_alda = self.input_xml_parser.get(
-                "xs/tddft/lmaxalda", 3
+                'xs/tddft/lmaxalda', 3
             )
             sec_method.x_exciting_xs_tddft_macroscopic_dielectric_function_q_treatment = self.input_xml_parser.get(
-                "xs/tddft/mdfqtype", 0
+                'xs/tddft/mdfqtype', 0
             )
             sec_method.x_exciting_xs_tddft_analytic_continuation_number_of_intervals = (
-                self.input_xml_parser.get("xs/tddft/nwacont", 0)
+                self.input_xml_parser.get('xs/tddft/nwacont', 0)
             )
             sec_method.x_exciting_xs_tetra = self.input_xml_parser.get(
-                "xs/tetra/tetradf", False
+                'xs/tetra/tetradf', False
             )
 
-        if self.input_xml_parser.get("xs/qpointset") is not None:
+        if self.input_xml_parser.get('xs/qpointset') is not None:
             sec_method.x_exciting_xs_qpointset_qpoint = self.input_xml_parser.get(
-                "xs/qpointset/qpoint"
+                'xs/qpointset/qpoint'
             )
 
     def _parse_xs_bse(self, path):
@@ -2325,7 +2325,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_spectra.n_energies = n_epsilon
             sec_spectra.excitation_energies = data[0] * ureg.hartree
             sec_spectra.intensities = data[2]
-            sec_spectra.intensities_units = "F/m"
+            sec_spectra.intensities_units = 'F/m'
 
         def parse_sigma(data, sec_scc):
             n_components = len(data)
@@ -2358,16 +2358,16 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 data[1], (n_components, n_loss)
             )
 
-        file_ending = path.split("EPSILON")[
+        file_ending = path.split('EPSILON')[
             -1
         ]  # Identifying files with the same ending but different type of calculation
         polarization_files = [
             f
-            for f in get_files("*BSE*.OUT", self._xs_info_file, "INFO.OUT")
+            for f in get_files('*BSE*.OUT', self._xs_info_file, 'INFO.OUT')
             if f.endswith(file_ending)
         ]
         for file in polarization_files:
-            if sec_run.m_xpath("calculation"):
+            if sec_run.m_xpath('calculation'):
                 sec_scc = sec_run.calculation[-1]
             else:
                 sec_scc = Calculation()
@@ -2376,26 +2376,26 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             if self.data_xs_parser.data is None:
                 continue
 
-            quantity = os.path.basename(file).split("_")[0]
-            if quantity.startswith("EXCITON"):
+            quantity = os.path.basename(file).split('_')[0]
+            if quantity.startswith('EXCITON'):
                 parse_function = parse_exciton
-            elif quantity.startswith("EPSILON"):
+            elif quantity.startswith('EPSILON'):
                 parse_function = parse_epsilon
-            elif quantity.startswith("SIGMA"):
+            elif quantity.startswith('SIGMA'):
                 parse_function = parse_sigma
-            elif quantity.startswith("LOSS"):
+            elif quantity.startswith('LOSS'):
                 parse_function = parse_loss
 
             try:
                 parse_function([self.data_xs_parser.data], sec_scc)
                 # Specific tag for the spectra from EPSILON
-                if quantity.startswith("EPSILON"):
-                    if self.input_xml_parser.get("xs/BSE/xas"):
-                        sec_scc.spectra[0].type = "XAS"
-                    elif self.input_xml_parser.get("xs/BSE/xes"):
-                        sec_scc.spectra[0].type = "XES"
+                if quantity.startswith('EPSILON'):
+                    if self.input_xml_parser.get('xs/BSE/xas'):
+                        sec_scc.spectra[0].type = 'XAS'
+                    elif self.input_xml_parser.get('xs/BSE/xes'):
+                        sec_scc.spectra[0].type = 'XES'
             except Exception:
-                self.logger.error("Error setting BSE data.")
+                self.logger.error('Error setting BSE data.')
 
             # refs
             sec_scc.system_ref = sec_run.system[-1]
@@ -2407,9 +2407,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         def get_data(path):
             # all files related to quantity at all qpoints
             files = get_files(
-                os.path.basename(path).replace("001", "*"),
+                os.path.basename(path).replace('001', '*'),
                 self._xs_info_file,
-                "INFO.OUT",
+                'INFO.OUT',
             )
             data = [[], [], []]
             data_q = []
@@ -2426,7 +2426,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             return data
 
         def get_xs_calculation(path):
-            segments = os.path.basename(path).split("_", 1)
+            segments = os.path.basename(path).split('_', 1)
             if segments[0] not in self._xs_spectra_types:
                 return
 
@@ -2450,7 +2450,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 sec_scc = Calculation()
             return sec_scc
 
-        for path in get_files("*_OC*001.OUT", self.filepath, "INFO.OUT"):
+        for path in get_files('*_OC*001.OUT', self.filepath, 'INFO.OUT'):
             sec_scc = get_xs_calculation(path)
             if not sec_scc:
                 continue
@@ -2461,9 +2461,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 continue
 
             basename = os.path.basename(path)
-            quantity = basename.split("_")[0]
+            quantity = basename.split('_')[0]
 
-            if quantity == "EPSILON" and "_FXC" in basename:
+            if quantity == 'EPSILON' and '_FXC' in basename:
                 sec_scc = Calculation()
                 sec_run.calculation.append(sec_scc)
                 sec_scc.x_exciting_xs_tddft_number_of_epsilon_values = len(
@@ -2474,21 +2474,21 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 )
                 sec_scc.x_exciting_xs_tddft_dielectric_function_local_field = data[1:]
 
-            elif quantity == "EPSILON" and "_NLF_FXC" in basename:
+            elif quantity == 'EPSILON' and '_NLF_FXC' in basename:
                 sec_scc.x_exciting_xs_tddft_dielectric_function_no_local_field = data[
                     1:3
                 ]
 
-            elif quantity == "LOSS" and "_FXC" in basename:
+            elif quantity == 'LOSS' and '_FXC' in basename:
                 sec_scc.x_exciting_xs_tddft_loss_function_local_field = data[1]
 
-            elif quantity == "LOSS" and "_NLF_FXC" in basename:
+            elif quantity == 'LOSS' and '_NLF_FXC' in basename:
                 sec_scc.x_exciting_xs_tddft_loss_function_no_local_field = data[1]
 
-            elif quantity == "SIGMA" and "_FXC" in basename:
+            elif quantity == 'SIGMA' and '_FXC' in basename:
                 sec_scc.x_exciting_xs_tddft_sigma_local_field = data[1:3]
 
-            elif quantity == "SIGMA" and "_NLF_FXC" in basename:
+            elif quantity == 'SIGMA' and '_NLF_FXC' in basename:
                 sec_scc.x_exciting_xs_tddft_sigma_no_local_field = data[1:3]
 
     def parse_polarization(self, path):
@@ -2497,24 +2497,24 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_run.method.append(Method(photon=[sec_photon]))
         # TODO check with developers if this is correct
         sec_photon.momentum_transfer = sec_run.method[0].get(
-            "x_exciting_xs_qpointset_qpoint"
+            'x_exciting_xs_qpointset_qpoint'
         )
 
     def parse_xs(self):
         sec_run = self.archive.run[-1]
         sec_method = Method()
         sec_run.method.append(sec_method)
-        if sec_run.m_xpath("method[0]"):
+        if sec_run.m_xpath('method[0]'):
             sec_method.starting_method_ref = sec_run.method[0]
 
         # Code-specific
-        self.parse_file("input.xml", sec_method, self._xs_info_file)
+        self.parse_file('input.xml', sec_method, self._xs_info_file)
 
         # BSE
         sec_bse = BSE()
         sec_method.bse = sec_bse
         sec_bse.type = self._bse_type_map[sec_run.method[-1].x_exciting_xs_bse_type]
-        sec_bse.solver = "Full-diagonalization"
+        sec_bse.solver = 'Full-diagonalization'
         sec_bse.n_empty_states = sec_run.method[-1].x_exciting_xs_number_of_empty_states
         sec_bse.broadening = sec_run.method[-1].x_exciting_xs_broadening
         # KMesh
@@ -2549,7 +2549,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # CoreHole
         if sec_run.method[-1].x_exciting_xs_bse_xas:
             sec_core_hole = CoreHoleSpectra(
-                mode="absorption",
+                mode='absorption',
                 broadening=sec_run.method[-1].x_exciting_xs_broadening,
             )
             sec_bse.m_add_sub_section(BSE.core_hole, sec_core_hole)
@@ -2557,14 +2557,14 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             # sec_core.edge = sec_run.method[0].get('x_exciting_xs_bse_xasedge')
 
     def parse_spectra(self, path):
-        input_file = get_files("input.xml", self._xs_info_file, "INFO.OUT")
+        input_file = get_files('input.xml', self._xs_info_file, 'INFO.OUT')
         if not input_file:
             return
         self.input_xml_parser.mainfile = input_file[0]
-        xstype = self.input_xml_parser.get("xs/xstype", "")
-        if xstype.lower() == "bse":
+        xstype = self.input_xml_parser.get('xs/xstype', '')
+        if xstype.lower() == 'bse':
             self._parse_xs_bse(path)
-        elif xstype.lower() == "tddft":
+        elif xstype.lower() == 'tddft':
             self._parse_xs_tddft()
 
     def parse_photons(self, path):
@@ -2573,7 +2573,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         # Program
         sec_run.program = Program(
-            name="exciting", version=self.info_parser.get("program_version", "").strip()
+            name='exciting', version=self.info_parser.get('program_version', '').strip()
         )
 
         # System
@@ -2587,7 +2587,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         # Workflow
         workflow = SinglePoint()
-        workflow.name = "SinglePoint"
+        workflow.name = 'SinglePoint'
         self._child_archives.get(path).workflow2 = workflow
 
     def _parse_input_gw(self, sec_gw):
@@ -2595,42 +2595,42 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             for keys in source.keys():
                 setattr(
                     target,
-                    f"x_exciting_{keys}",
-                    self.input_xml_parser.get(f"{path}/{keys}", source[keys]),
+                    f'x_exciting_{keys}',
+                    self.input_xml_parser.get(f'{path}/{keys}', source[keys]),
                 )
 
-        parse_exciting_gw_inputs(self._gw_input_default, "gw", sec_gw)
+        parse_exciting_gw_inputs(self._gw_input_default, 'gw', sec_gw)
         sec_freqgrid = x_exciting_freqgrid_parameters()
         sec_gw.x_exciting_freqgrid = sec_freqgrid
         parse_exciting_gw_inputs(
-            self._freqgrid_input_default, "gw/freqgrid", sec_freqgrid
+            self._freqgrid_input_default, 'gw/freqgrid', sec_freqgrid
         )
         sec_selfenergy = x_exciting_selfenergy_parameters()
         sec_gw.x_exciting_selfenergy = sec_selfenergy
         parse_exciting_gw_inputs(
-            self._selfenergy_input_default, "gw/selfenergy", sec_selfenergy
+            self._selfenergy_input_default, 'gw/selfenergy', sec_selfenergy
         )
         sec_wgrid = x_exciting_wgrid_parameters()
         sec_gw.x_exciting_wgrid = sec_wgrid
-        parse_exciting_gw_inputs(self._wgrid_input_default, "gw/wgrid", sec_wgrid)
+        parse_exciting_gw_inputs(self._wgrid_input_default, 'gw/wgrid', sec_wgrid)
         sec_mixbasis = x_exciting_mixbasis_parameters()
         sec_gw.x_exciting_mixbasis = sec_mixbasis
         parse_exciting_gw_inputs(
-            self._barecoul_input_default, "gw/mixbasis", sec_mixbasis
+            self._barecoul_input_default, 'gw/mixbasis', sec_mixbasis
         )
         sec_barecoul = x_exciting_barecoul_parameters()
         sec_gw.x_exciting_barecoul = sec_barecoul
         parse_exciting_gw_inputs(
-            self._barecoul_input_default, "gw/barecoul", sec_barecoul
+            self._barecoul_input_default, 'gw/barecoul', sec_barecoul
         )
         sec_scrcoul = x_exciting_scrcoul_parameters()
         sec_gw.x_exciting_scrcoul = sec_scrcoul
-        parse_exciting_gw_inputs(self._scrcoul_input_default, "gw/scrcoul", sec_scrcoul)
+        parse_exciting_gw_inputs(self._scrcoul_input_default, 'gw/scrcoul', sec_scrcoul)
 
-        gmaxvr = self.info_parser.get_initialization_parameter("x_exciting_gmaxvr", 0)
-        gmb = self.input_xml_parser.get("gw/mixbasis/gmb", 1.0)
+        gmaxvr = self.info_parser.get_initialization_parameter('x_exciting_gmaxvr', 0)
+        gmb = self.input_xml_parser.get('gw/mixbasis/gmb', 1.0)
         sec_gw.x_exciting_mixed_basis_gmax = gmb * gmaxvr
-        pwm = self.input_xml_parser.get("gw/barecoul/pwm", 2.0)
+        pwm = self.input_xml_parser.get('gw/barecoul/pwm', 2.0)
         sec_gw.x_exciting_bare_coulomb_gmax = pwm * gmb * gmaxvr
 
     def parse_gw(self):
@@ -2643,11 +2643,11 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_method.gw = sec_gw
 
         # parse input xml files: code-specific metainfo
-        for f in ["input_gw.xml", "input-gw.xml", "input.xml"]:
+        for f in ['input_gw.xml', 'input-gw.xml', 'input.xml']:
             self.parse_file(f, sec_gw)
 
         # GW
-        sec_gw.type = "G0W0"
+        sec_gw.type = 'G0W0'
         # KMesh
         sec_k_mesh = KMesh()
         sec_method.k_mesh = sec_k_mesh
@@ -2655,19 +2655,19 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # QMesh same as KMesh
         sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
         # Analytical continuation
-        if sec_gw.x_exciting_selfenergy.x_exciting_actype == "pade":
+        if sec_gw.x_exciting_selfenergy.x_exciting_actype == 'pade':
             sec_gw.analytical_continuation = (
                 sec_gw.x_exciting_selfenergy.x_exciting_actype
             )
         else:
-            if sec_gw.x_exciting_selfenergy.x_exciting_method == "cd":
-                sec_gw.analytical_continuation = "contour_deformation"
+            if sec_gw.x_exciting_selfenergy.x_exciting_method == 'cd':
+                sec_gw.analytical_continuation = 'contour_deformation'
             else:
-                if sec_gw.x_exciting_scrcoul.x_exciting_scrtype == "ppm":
-                    sec_gw.analytical_continuation = "ppm_GodbyNeeds"
+                if sec_gw.x_exciting_scrcoul.x_exciting_scrtype == 'ppm':
+                    sec_gw.analytical_continuation = 'ppm_GodbyNeeds'
                 else:
                     self.logger.warning(
-                        "Could not find the analytical continuation method."
+                        'Could not find the analytical continuation method.'
                     )
         # FrequencyMesh
         n_freqs = sec_gw.x_exciting_freqgrid.x_exciting_nomeg
@@ -2678,7 +2678,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         ] * ureg.hartree
         smearing = (
             sec_gw.x_exciting_freqgrid.x_exciting_eta
-            if sec_gw.x_exciting_qdepw == "sum"
+            if sec_gw.x_exciting_qdepw == 'sum'
             else None
         )
         sec_freq_mesh = FrequencyMesh(
@@ -2716,14 +2716,14 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # parse properties
         self.info_gw_parser.mainfile = self._gw_info_file
 
-        fermi_energy = self.info_gw_parser.get("fermi_energy", None)
+        fermi_energy = self.info_gw_parser.get('fermi_energy', None)
         if fermi_energy is not None:
             sec_scc.energy = Energy(fermi=fermi_energy)
 
-        gw_files = ["EVALQP.DAT", "EVALQP.TXT", "TDOS-QP.OUT"]
+        gw_files = ['EVALQP.DAT', 'EVALQP.TXT', 'TDOS-QP.OUT']
 
         # Parse GW band structure from one of the files:
-        bs_files = ["bandstructure-qp.dat", "BAND-QP.OUT"]
+        bs_files = ['bandstructure-qp.dat', 'BAND-QP.OUT']
         for fname in bs_files:
             if self.file_exists(fname):
                 gw_files.append(fname)
@@ -2734,7 +2734,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         # example band gap setup
         gw_band_gap = self.info_gw_parser.get(
-            "direct_band_gap", self.info_gw_parser.get("fundamental_band_gap")
+            'direct_band_gap', self.info_gw_parser.get('fundamental_band_gap')
         )
         if gw_band_gap is not None:
             sec_gap = BandGap()
@@ -2742,22 +2742,22 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_gap.value = gw_band_gap
             sec_gap_provenance = ElectronicStructureProvenance()
             sec_gap.provenance = sec_gap_provenance
-            sec_gap_provenance.label = "parser"
+            sec_gap_provenance.label = 'parser'
 
         sec_scc.method_ref = sec_method
-        self.parse_system(self.info_parser.get("groundstate"))
+        self.parse_system(self.info_parser.get('groundstate'))
         sec_scc.system_ref = sec_run.system[-1]
 
     def parse_workflow(self):
         workflow = SinglePoint()
-        workflow.name = "SinglePoint"
-        structure_optimization = self.info_parser.get("structure_optimization")
+        workflow.name = 'SinglePoint'
+        structure_optimization = self.info_parser.get('structure_optimization')
         if structure_optimization is not None:
             workflow = GeometryOptimization(method=GeometryOptimizationMethod())
-            workflow.name = "GeometryOptimization"
-            threshold_force = structure_optimization.get("optimization_step", [{}])[
+            workflow.name = 'GeometryOptimization'
+            threshold_force = structure_optimization.get('optimization_step', [{}])[
                 0
-            ].get("force_convergence", [0.0, 0.0])[-1]
+            ].get('force_convergence', [0.0, 0.0])[-1]
             workflow.method.convergence_tolerance_force_maximum = threshold_force
         self.archive.workflow2 = workflow
 
@@ -2770,14 +2770,14 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             k_mesh = KMesh()
             sec_method.k_mesh = k_mesh
             k_mesh.grid = self.info_parser.get_initialization_parameter(
-                "kpoint_grid", default=[1] * 3
+                'kpoint_grid', default=[1] * 3
             )
             k_mesh.offset = self.info_parser.get_initialization_parameter(
-                "kpoint_offset", default=[0.0] * 3
+                'kpoint_offset', default=[0.0] * 3
             )
 
         # Atom parameters
-        species_files = self.file_exists(r"[A-Z][a-z]?\.xml", fuzzy=True)
+        species_files = self.file_exists(r'[A-Z][a-z]?\.xml', fuzzy=True)
         for species_file in species_files:
             self.parse_file(species_file, sec_method)
 
@@ -2786,26 +2786,26 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_method.dft = sec_dft
         sec_electronic = Electronic()
         sec_method.electronic = sec_electronic
-        sec_electronic.method = "DFT"
+        sec_electronic.method = 'DFT'
 
         smearing_kind_map = {
-            "Gaussian": "gaussian",
-            "Methfessel-Paxton": "methfessel-paxton",
-            "Fermi-Dirac": "fermi",
-            "Extended": "tetrahedra",
+            'Gaussian': 'gaussian',
+            'Methfessel-Paxton': 'methfessel-paxton',
+            'Fermi-Dirac': 'fermi',
+            'Extended': 'tetrahedra',
         }
 
         sec_smearing = Smearing()
         sec_electronic.smearing = sec_smearing
-        smearing_kind = self.info_parser.get_initialization_parameter("smearing_kind")
+        smearing_kind = self.info_parser.get_initialization_parameter('smearing_kind')
         if smearing_kind is not None:
             if not isinstance(smearing_kind, str):
                 smearing_kind = smearing_kind[0]
             smearing_kind = smearing_kind_map[smearing_kind]
             sec_smearing.kind = smearing_kind
-        smearing_width = self.info_parser.get_initialization_parameter("smearing_width")
+        smearing_width = self.info_parser.get_initialization_parameter('smearing_width')
         if smearing_width is not None:
-            smearing_width = (smearing_width * ureg.hartree).to("joule")
+            smearing_width = (smearing_width * ureg.hartree).to('joule')
             # TODO smearing with should have units of energy
             sec_smearing.width = smearing_width.magnitude
 
@@ -2814,10 +2814,10 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             if threshold is None:
                 continue
 
-            metainfo_name = "x_exciting_scf_threshold_%s_change" % name.split("_")[-2]
+            metainfo_name = 'x_exciting_scf_threshold_%s_change' % name.split('_')[-2]
             setattr(sec_method, metainfo_name, threshold)
             # additionally, set threshold to global metainfo. This is killing me!
-            if metainfo_name == "x_exciting_scf_threshold_energy_change":
+            if metainfo_name == 'x_exciting_scf_threshold_energy_change':
                 sec_method.scf = Scf(threshold_energy_change=threshold)
 
         sec_xc_functional = XCFunctional()
@@ -2826,53 +2826,53 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         sec_electronic.n_spin_channels = self.info_parser.get_number_of_spin_channels()
 
-        if self._calculation_type == "volume_optimization":
+        if self._calculation_type == 'volume_optimization':
             sec_method.x_exciting_volume_optimization = True
 
     def parse_xc_functional(self, section):
         xc_functional_names = self.info_parser.get_xc_functional_name()
         if not xc_functional_names:
             # get it from input.xml
-            input_file = get_files("input.xml", self.filepath, "INFO.OUT")
+            input_file = get_files('input.xml', self.filepath, 'INFO.OUT')
             for f in input_file:
                 self.input_xml_parser.mainfile = f
-                correlation = self.input_xml_parser.get("libxc/correlation", None)
+                correlation = self.input_xml_parser.get('libxc/correlation', None)
                 xc_functional_names.append(correlation)
-                exchange = self.input_xml_parser.get("libxc/exchange", None)
+                exchange = self.input_xml_parser.get('libxc/exchange', None)
                 xc_functional_names.append(exchange)
 
         for name in xc_functional_names:
             if name is None:
                 continue
-            if "_X_" in name:
+            if '_X_' in name:
                 section.exchange.append(Functional(name=name))
-            elif "_C_" in name:
+            elif '_C_' in name:
                 section.correlation.append(Functional(name=name))
-            elif "HYB" in name:
+            elif 'HYB' in name:
                 section.hybrid.append(Functional(name=name))
             else:
                 section.contributions.append(Functional(name=name))
 
         if not xc_functional_names:
             # simply write parameters
-            xc_functional = self.info_parser.get("initialization", {}).get(
-                "xc_functional"
+            xc_functional = self.info_parser.get('initialization', {}).get(
+                'xc_functional'
             )
             if xc_functional is not None:
-                section.name = xc_functional.get("name_reference", [None, None])[0]
-                section.reference = xc_functional.get("name_reference", [None, None])[1]
+                section.name = xc_functional.get('name_reference', [None, None])[0]
+                section.reference = xc_functional.get('name_reference', [None, None])[1]
 
     def parse_scc(self, section):
         sec_run = self.archive.run[-1]
 
         final = (
-            section if section.get("energy_total") is not None else section.get("final")
+            section if section.get('energy_total') is not None else section.get('final')
         )
         if final is None:
             # get it from last scf_iteration or optimization_step
-            final = section.get("scf_iteration", [None])[-1]
+            final = section.get('scf_iteration', [None])[-1]
             final = (
-                section.get("optimization_step", [None])[-1] if final is None else final
+                section.get('optimization_step', [None])[-1] if final is None else final
             )
         if final is None:
             return
@@ -2883,26 +2883,26 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         sec_scc = Calculation()
         sec_run.calculation.append(sec_scc)
-        k_grid = self.info_parser.get("k_grid")
+        k_grid = self.info_parser.get('k_grid')
         if k_grid is not None:
             sec_kmesh = KMesh()
             sec_scc.k_mesh = sec_kmesh
             sec_kmesh.grid = k_grid
-            sec_kmesh.offset = self.info_parser.get("k_offset", [0.0] * 3)
+            sec_kmesh.offset = self.info_parser.get('k_offset', [0.0] * 3)
 
         def parse_scf(iteration, msection):
-            energy_total = iteration.get("energy_total")
+            energy_total = iteration.get('energy_total')
             sec_energy = Energy()
             msection.energy = sec_energy
             if energy_total is not None:
                 sec_energy.total = EnergyEntry(value=energy_total)
 
-            x_exciting_dos_fermi = iteration.get("x_exciting_dos_fermi")
+            x_exciting_dos_fermi = iteration.get('x_exciting_dos_fermi')
             if x_exciting_dos_fermi is not None:
-                setattr(msection, "x_exciting_dos_fermi", x_exciting_dos_fermi)
+                setattr(msection, 'x_exciting_dos_fermi', x_exciting_dos_fermi)
 
             # energy contributions
-            energy_contributions = iteration.get("energy_contributions", {})
+            energy_contributions = iteration.get('energy_contributions', {})
             for key, names in self._energy_keys_mapping.items():
                 val = None
                 for name in names:
@@ -2911,19 +2911,19 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                         break
                 if val is None:
                     continue
-                if key.startswith("energy_"):
+                if key.startswith('energy_'):
                     sec_energy.m_add_sub_section(
-                        getattr(Energy, key.replace("energy_", "")),
+                        getattr(Energy, key.replace('energy_', '')),
                         EnergyEntry(value=val),
                     )
                 else:
                     setattr(msection, key, val)
 
-                if key == "x_exciting_fermi_energy":
+                if key == 'x_exciting_fermi_energy':
                     sec_energy.fermi = val
 
             # charge contributions
-            charge_contributions = iteration.get("charge_contributions", {})
+            charge_contributions = iteration.get('charge_contributions', {})
             for key, names in self._electron_charge_keys_mapping.items():
                 val = None
                 for name in names:
@@ -2932,7 +2932,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                         break
                 if val is None:
                     continue
-                if key == "x_exciting_section_MT_charge_atom":
+                if key == 'x_exciting_section_MT_charge_atom':
                     for n in range(len(val)):
                         sec_mt_charge_atom = x_exciting_section_MT_charge_atom()
                         section_def = msection.m_def.all_sub_sections_by_section.get(
@@ -2947,14 +2947,14 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                         sec_charges.value = [
                             val[n][1].magnitude for n in range(len(val))
                         ] * val[0][1].units
-                        sec_charges.total = charge_contributions.get("total charge")
-                elif key == "charge_total":
+                        sec_charges.total = charge_contributions.get('total charge')
+                elif key == 'charge_total':
                     pass
                 else:
                     setattr(msection, key, val)
 
             # moment contributions
-            moment_contributions = iteration.get("moment_contributions", {})
+            moment_contributions = iteration.get('moment_contributions', {})
             for key, names in self._moment_keys_mapping.items():
                 val = None
                 for name in names:
@@ -2963,7 +2963,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                         break
                 if val is None:
                     continue
-                if key == "x_exciting_section_MT_moment_atom":
+                if key == 'x_exciting_section_MT_moment_atom':
                     for n in range(len(val)):
                         sec_mt_moment_atom = x_exciting_section_MT_moment_atom()
                         section_def = msection.m_def.all_sub_sections_by_section.get(
@@ -2995,7 +2995,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         parse_scf(final, sec_scc)
 
         # forces
-        forces = section.get("forces")
+        forces = section.get('forces')
         if forces is not None:
             sec_forces = Forces()
             sec_scc.forces = sec_forces
@@ -3004,7 +3004,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             )
 
         # scf iterations
-        scf_iterations = section.get("scf_iteration", [])
+        scf_iterations = section.get('scf_iteration', [])
         for scf_iteration in scf_iterations:
             time_initial_scf = (
                 sec_scc.scf_iteration[-1].time_physical
@@ -3019,7 +3019,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     sec_scf_iteration.time_physical - time_initial_scf
                 )
 
-        sec_scc.time_calculation = section.get("time_calculation", 0)
+        sec_scc.time_calculation = section.get('time_calculation', 0)
         sec_scc.time_physical = time_initial + sec_scc.time_calculation
 
         if not sec_scc.time_calculation and sec_scc.scf_iteration:
@@ -3037,39 +3037,39 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_run = self.archive.run[-1]
 
         positions = self.info_parser.get_atom_positions(
-            section.get("atomic_positions", {})
+            section.get('atomic_positions', {})
         )
         lattice_vectors = self.info_parser.get_initialization_parameter(
-            "lattice_vectors"
+            'lattice_vectors'
         )
         atom_labels = self.info_parser.get_atom_labels(
-            section.get("atomic_positions", {})
+            section.get('atomic_positions', {})
         )
-        input_file = get_files("input.xml", self.filepath, "INFO.OUT")
+        input_file = get_files('input.xml', self.filepath, 'INFO.OUT')
 
         if positions is None:
             # get it from input.xml
             for f in input_file:
                 self.input_xml_parser.mainfile = f
-                positions = self.input_xml_parser.get("structure/species/atom/coord")
+                positions = self.input_xml_parser.get('structure/species/atom/coord')
                 lattice_vectors = self.input_xml_parser.get(
-                    "structure/crystal/basevect", np.eye(3)
+                    'structure/crystal/basevect', np.eye(3)
                 )
-                species = self.input_xml_parser.get("structure/species/speciesfile")
+                species = self.input_xml_parser.get('structure/species/speciesfile')
 
                 if positions is None or lattice_vectors is None or species is None:
                     continue
                 lattice_vectors = np.array(lattice_vectors, dtype=float)
                 lattice_vectors *= self.input_xml_parser.get(
-                    "structure/crystal/scale", 1.0
+                    'structure/crystal/scale', 1.0
                 )
                 positions = np.dot(positions, lattice_vectors) * ureg.bohr
                 lattice_vectors = lattice_vectors * ureg.bohr
 
-                atoms = self.input_xml_parser.get("structure/species/atom")
+                atoms = self.input_xml_parser.get('structure/species/atom')
                 atom_labels = []
                 for n in range(len(atoms)):
-                    atom_labels.extend([species[n].split(".")[0]] * len(atoms[n]))
+                    atom_labels.extend([species[n].split('.')[0]] * len(atoms[n]))
 
         if positions is None or atom_labels is None:
             return
@@ -3086,7 +3086,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         sec_atoms.lattice_vectors = lattice_vectors
 
         lattice_vectors_reciprocal = self.info_parser.get_initialization_parameter(
-            "lattice_vectors_reciprocal"
+            'lattice_vectors_reciprocal'
         )
         sec_atoms.lattice_vectors_reciprocal = lattice_vectors_reciprocal
 
@@ -3098,39 +3098,39 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             if val is None:
                 continue
 
-            if name == "x_exciting_spin_treatment":
+            if name == 'x_exciting_spin_treatment':
                 sub_sec = x_exciting_section_spin()
                 sec_system.x_exciting_section_spin.append(sub_sec)
                 sub_sec.x_exciting_spin_treatment = val
-            elif name == "x_exciting_species_rtmin":
-                setattr(sec_system, name, " ".join([str(v) for v in val]))
+            elif name == 'x_exciting_species_rtmin':
+                setattr(sec_system, name, ' '.join([str(v) for v in val]))
             else:
                 try:
                     setattr(sec_system, name, val)
                 except Exception:
-                    self.logger.warning("Error setting metainfo.")
+                    self.logger.warning('Error setting metainfo.')
 
         # species
-        species = self.info_parser.get_initialization_parameter("species", [])
+        species = self.info_parser.get_initialization_parameter('species', [])
         for specie in species:
             sec_atoms_group = x_exciting_section_atoms_group()
             sec_system.x_exciting_section_atoms_group.append(sec_atoms_group)
-            sec_atoms_group.x_exciting_geometry_atom_labels = specie.get("symbol")
-            sec_atoms_group.x_exciting_geometry_atom_number = str(specie.get("number"))
-            sec_atoms_group.x_exciting_muffin_tin_points = specie.get("radial_points")
+            sec_atoms_group.x_exciting_geometry_atom_labels = specie.get('symbol')
+            sec_atoms_group.x_exciting_geometry_atom_number = str(specie.get('number'))
+            sec_atoms_group.x_exciting_muffin_tin_points = specie.get('radial_points')
             sec_atoms_group.x_exciting_muffin_tin_radius = specie.get(
-                "muffin_tin_radius"
+                'muffin_tin_radius'
             )
-            positions_format = specie.get("positions_format")
+            positions_format = specie.get('positions_format')
             sec_atoms_group.x_exciting_atom_position_format = positions_format
-            positions = specie.get("positions")
+            positions = specie.get('positions')
             positions = self.info_parser.get_atom_positions(
                 positions=positions, positions_format=positions_format
-            ).to("m")
+            ).to('m')
             sec_atoms_group.x_exciting_geometry_atom_positions = positions.magnitude
 
         # clathrate info
-        clathrate_file = get_files("str.out", self.filepath, "INFO.OUT")
+        clathrate_file = get_files('str.out', self.filepath, 'INFO.OUT')
         if clathrate_file:
             sec_system.x_exciting_clathrates = True
             self.data_clathrate_parser.mainfile = clathrate_file[0]
@@ -3144,7 +3144,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_system.x_exciting_clathrates = False
 
         potential_mixing = self.info_parser.get_initialization_parameter(
-            "potential_mixing"
+            'potential_mixing'
         )
         if potential_mixing is not None:
             sec_system.x_exciting_potential_mixing = potential_mixing
@@ -3171,23 +3171,23 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             return sec_scc
 
         # groundstate and hybrids calculation
-        for module in ["groundstate", "hybrids"]:
+        for module in ['groundstate', 'hybrids']:
             sec_scc = parse_configuration(self.info_parser.get(module))
             if sec_scc is None:
                 continue
             # add data to scc
             # TODO add support for more output files and properties
-            exciting_files = ["EIGVAL.OUT", "FERMISURF.bxsf", "FS.bxsf"]
+            exciting_files = ['EIGVAL.OUT', 'FERMISURF.bxsf', 'FS.bxsf']
 
             # Parse DFT DOS from one of the files
-            dos_files = ["dos.xml", "TDOS.OUT"]
+            dos_files = ['dos.xml', 'TDOS.OUT']
             for fname in dos_files:
                 if self.file_exists(fname):
                     exciting_files.append(fname)
                     break
 
             # Parse DFT band structure from one of the files
-            bs_files = ["bandstructure.xml", "BAND.OUT", "bandstructure.dat"]
+            bs_files = ['bandstructure.xml', 'BAND.OUT', 'bandstructure.dat']
             for fname in bs_files:
                 if self.file_exists(fname):
                     exciting_files.append(fname)
@@ -3197,21 +3197,21 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 self.parse_file(f, sec_scc)
 
         # structure optimization
-        structure_optimization = self.info_parser.get("structure_optimization", {})
-        for optimization_step in structure_optimization.get("optimization_step", []):
+        structure_optimization = self.info_parser.get('structure_optimization', {})
+        for optimization_step in structure_optimization.get('optimization_step', []):
             sec_scc = parse_configuration(optimization_step)
 
-            if optimization_step.get("method") is not None:
+            if optimization_step.get('method') is not None:
                 sec_scc.x_exciting_geometry_optimization_method = optimization_step.get(
-                    "method"
+                    'method'
                 )
 
-            if optimization_step.get("step") is not None:
+            if optimization_step.get('step') is not None:
                 sec_scc.x_exciting_geometry_optimization_step = optimization_step.get(
-                    "step"
+                    'step'
                 )
 
-            force_convergence = optimization_step.get("force_convergence")
+            force_convergence = optimization_step.get('force_convergence')
             if force_convergence is not None:
                 sec_scc.x_exciting_maximum_force_magnitude = force_convergence[0]
                 sec_scc.x_exciting_geometry_optimization_threshold_force = (
@@ -3236,7 +3236,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             info_volume = get_files(
                 f"run_dir{str(volume_index).rjust(2, '0')}/INFO.OUT",
                 self.filepath,
-                "INFO.OUT",
+                'INFO.OUT',
             )
             if not info_volume:
                 break
@@ -3260,25 +3260,25 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         self._archives_ref = []
 
     def get_mainfile_keys(self, **kwargs):
-        filepath = kwargs.get("filename")
+        filepath = kwargs.get('filename')
         basename = os.path.basename(filepath)
         dirname = os.path.dirname(filepath)
-        if os.path.isfile(os.path.join(dirname, f"GW_{basename}")):
-            return ["GW", "GW_workflow"]
+        if os.path.isfile(os.path.join(dirname, f'GW_{basename}')):
+            return ['GW', 'GW_workflow']
         xs_files = get_files(
-            basename.replace("INFO.OUT", "INFOXS.OUT"), filepath, "INFO.OUT"
+            basename.replace('INFO.OUT', 'INFOXS.OUT'), filepath, 'INFO.OUT'
         )
         if xs_files:
-            re_xs_mainfile = re.compile(r".+\d\d\d\.OUT")
+            re_xs_mainfile = re.compile(r'.+\d\d\d\.OUT')
             spectra_files = []
             for prefix in self._xs_spectra_types:
-                spectra_files = get_files(f"{prefix}_*.OUT", filepath, "INFO.OUT")
+                spectra_files = get_files(f'{prefix}_*.OUT', filepath, 'INFO.OUT')
                 if spectra_files:
                     # remove files for qpoints other than first
-                    files = ["XS_workflow"] + xs_files
+                    files = ['XS_workflow'] + xs_files
                     for f in spectra_files:
                         if re_xs_mainfile.match(f):
-                            if "001" in f:
+                            if '001' in f:
                                 files.append(f)
                         else:
                             files.append(f)
@@ -3293,15 +3293,15 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         self._calculation_type = None
         basename = os.path.basename(filepath)
         dirname = os.path.dirname(filepath)
-        if basename.startswith("GW"):
-            self._calculation_type = "gw"
+        if basename.startswith('GW'):
+            self._calculation_type = 'gw'
             # read method params from INFO.OUT
             self._gw_info_file = filepath
-            self.filepath = os.path.join(dirname, basename.lstrip("GW_"))
-        elif basename.startswith("INFOXS"):
-            self._calculation_type = "xs"
+            self.filepath = os.path.join(dirname, basename.lstrip('GW_'))
+        elif basename.startswith('INFOXS'):
+            self._calculation_type = 'xs'
             self._xs_info_file = filepath
-            info_file = get_files("INFO.OUT", self.filepath, "INFO.OUT", deep=False)
+            info_file = get_files('INFO.OUT', self.filepath, 'INFO.OUT', deep=False)
             if info_file:
                 self.filepath = os.path.join(info_file[0])
             # self.filepath = os.path.join(dirname, basename.replace('INFOXS', 'INFO'))
@@ -3315,17 +3315,17 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         self.archive.run.append(sec_run)
 
         sec_run.program = Program(
-            name="exciting",
-            version=self.info_parser.get("program_version", "").strip(),
+            name='exciting',
+            version=self.info_parser.get('program_version', '').strip(),
             version_internal=self.info_parser.hash_id,
         )
 
         # method goes first since reference needed for sec_scc
-        if self._calculation_type == "gw":
+        if self._calculation_type == 'gw':
             self.parse_gw()
             self.parse_workflow()
-        elif self._calculation_type == "xs":
-            self.parse_system(self.info_parser.get("groundstate"))
+        elif self._calculation_type == 'xs':
+            self.parse_system(self.info_parser.get('groundstate'))
             self.parse_xs()
 
             for child in self._child_archives:
@@ -3338,23 +3338,23 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             self.parse_workflow()
 
         # GW archives
-        gw_archive = self._child_archives.get("GW")
+        gw_archive = self._child_archives.get('GW')
         if gw_archive is not None:
             # parse gw single point
             p = ExcitingParser()
-            p.parse(os.path.join(dirname, f"GW_{basename}"), gw_archive, logger)
+            p.parse(os.path.join(dirname, f'GW_{basename}'), gw_archive, logger)
 
             # parse gw workflow
-            gw_workflow_archive = self._child_archives.get("GW_workflow")
+            gw_workflow_archive = self._child_archives.get('GW_workflow')
             try:
                 self.parse_gw_workflow(gw_archive, gw_workflow_archive)
             except Exception:
-                self.logger.error("Error parsing the automatic GW workflow")
+                self.logger.error('Error parsing the automatic GW workflow')
 
         # XS archives
         xs_archives = []
         for xs_info_file, xs_archive in self._child_archives.items():
-            if "INFOXS.OUT" in xs_info_file:
+            if 'INFOXS.OUT' in xs_info_file:
                 # parse xs single point
                 xs_dirname = os.path.dirname(xs_info_file)
                 p = ExcitingParser()
@@ -3362,7 +3362,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                     key: archive
                     for key, archive in self._child_archives.items()
                     if key.startswith(xs_dirname)
-                    and os.path.basename(key).split("_")[0] in self._xs_spectra_types
+                    and os.path.basename(key).split('_')[0] in self._xs_spectra_types
                 }
 
                 p.parse(xs_info_file, xs_archive, logger)
@@ -3370,9 +3370,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         # parse xs workflow (DFT + all photons)
         # TODO generalize to include GW step
-        xs_workflow_archive = self._child_archives.get("XS_workflow")
+        xs_workflow_archive = self._child_archives.get('XS_workflow')
         if xs_workflow_archive:
             try:
                 self.parse_xs_workflow(xs_archives, xs_workflow_archive)
             except Exception:
-                self.logger.error("Error parsing the automatic XS workflow")
+                self.logger.error('Error parsing the automatic XS workflow')

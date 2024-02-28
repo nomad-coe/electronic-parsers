@@ -3361,5 +3361,5 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_siesta_section_input = SubSection(
-        sub_section=SectionProxy("x_siesta_section_input"), repeats=True
+        sub_section=SectionProxy('x_siesta_section_input'), repeats=True
     )

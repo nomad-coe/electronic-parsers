@@ -26,7 +26,7 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return ElkParser()
 
@@ -34,21 +34,21 @@ def parser():
 def test_1(parser):
     archive = EntryArchive()
 
-    parser.parse("tests/data/elk/Al/INFO.OUT", archive, None)
+    parser.parse('tests/data/elk/Al/INFO.OUT', archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == "4.0.15"
+    assert sec_run.program.version == '4.0.15'
 
     sec_method = sec_run.method[0]
-    assert sec_method.dft.xc_functional.exchange[0].name == "LDA_X_PZ"
-    assert sec_method.electronic.smearing.kind == "fermi"
+    assert sec_method.dft.xc_functional.exchange[0].name == 'LDA_X_PZ'
+    assert sec_method.electronic.smearing.kind == 'fermi'
     assert sec_method.electronic.smearing.width == approx(0.001)
     assert sec_method.x_elk_kpoints_grid[2] == 4
     assert sec_method.x_elk_gkmax.magnitude == approx(6.01276494e10)
 
     sec_system = archive.run[0].system[0]
     assert sec_system.atoms.lattice_vectors[1][0].magnitude == approx(2.02500243e-10)
-    assert sec_system.atoms.labels == ["Al"]
+    assert sec_system.atoms.labels == ['Al']
     assert sec_system.atoms.positions[0][1].magnitude == 0.0
 
     sec_calc = sec_run.calculation[0]
@@ -95,10 +95,10 @@ def test_1(parser):
 def test_2(parser):
     archive = EntryArchive()
 
-    parser.parse("tests/data/elk/GaAs/INFO.OUT", archive, None)
+    parser.parse('tests/data/elk/GaAs/INFO.OUT', archive, None)
 
     sec_system = archive.run[0].system[0]
-    assert sec_system.atoms.labels == ["Ga", "As"]
+    assert sec_system.atoms.labels == ['Ga', 'As']
     assert sec_system.atoms.positions[1][2].magnitude == approx(1.41382921e-10)
 
     sec_calc = archive.run[0].calculation[0]

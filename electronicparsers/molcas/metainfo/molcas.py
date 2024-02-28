@@ -123,7 +123,7 @@ class Method(runschema.method.Method):
     )
 
     x_molcas_section_basis = SubSection(
-        sub_section=SectionProxy("x_molcas_section_basis"), repeats=True
+        sub_section=SectionProxy('x_molcas_section_basis'), repeats=True
     )
 
 
@@ -147,5 +147,5 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_molcas_section_frequency = SubSection(
-        sub_section=SectionProxy("x_molcas_section_frequency"), repeats=True
+        sub_section=SectionProxy('x_molcas_section_frequency'), repeats=True
     )

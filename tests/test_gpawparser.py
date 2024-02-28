@@ -27,28 +27,28 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return GPAWParser()
 
 
 def test_gpw(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/gpaw/H2.gpw", archive, None)
+    parser.parse('tests/data/gpaw/H2.gpw', archive, None)
 
-    assert archive.run[0].program.version == "1.1.0"
+    assert archive.run[0].program.version == '1.1.0'
 
     sec_method = archive.run[0].method[0]
     sec_basis = sec_method.electrons_representation[0].basis_set[0]
-    assert sec_basis.type == "real-space grid"
+    assert sec_basis.type == 'real-space grid'
     assert sec_method.scf.threshold_energy_change.magnitude == approx(1.42196374e-24)
     assert sec_method.electronic.smearing.width == 0.0
     assert sec_method.electronic.charge == 0.0
-    assert sec_method.dft.xc_functional.correlation[0].name == "LDA_C_PW"
+    assert sec_method.dft.xc_functional.correlation[0].name == 'LDA_C_PW'
     assert sec_method.x_gpaw_symmetry_time_reversal_switch
 
     sec_system = archive.run[0].system[0]
-    assert sec_system.atoms.labels == ["H", "H"]
+    assert sec_system.atoms.labels == ['H', 'H']
     assert sec_system.atoms.lattice_vectors[2][2].magnitude == approx(4.73716558e-10)
     assert True not in sec_system.atoms.periodic
     assert sec_system.atoms.positions[0][2].magnitude == approx(2.73716576e-10)
@@ -67,21 +67,21 @@ def test_gpw(parser):
 
 def test_gpw2(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/gpaw/Si_pw.gpw2", archive, None)
+    parser.parse('tests/data/gpaw/Si_pw.gpw2', archive, None)
 
-    assert archive.run[0].program.version == "1.1.1b1"
+    assert archive.run[0].program.version == '1.1.1b1'
 
     sec_method = archive.run[0].method[0]
     sec_basis = sec_method.electrons_representation[0].basis_set[0]
-    assert sec_basis.type == "plane waves"
+    assert sec_basis.type == 'plane waves'
     assert sec_basis.cutoff.magnitude == approx(4.8065299e-17)
     assert sec_method.scf.threshold_energy_change.magnitude == approx(8.01088317e-23)
     assert sec_method.electronic.smearing.width == approx(1.60217663e-20)
     assert not sec_method.x_gpaw_fix_density
-    assert sec_method.dft.xc_functional.exchange[0].name == "LDA_X"
+    assert sec_method.dft.xc_functional.exchange[0].name == 'LDA_X'
 
     sec_system = archive.run[0].system[0]
-    assert sec_system.atoms.labels == ["Si", "Si"]
+    assert sec_system.atoms.labels == ['Si', 'Si']
     assert sec_system.atoms.lattice_vectors[0][1].magnitude == approx(2.715e-10)
     assert False not in sec_system.atoms.periodic
     assert sec_system.atoms.positions[1][0].magnitude == approx(1.3575e-10)
@@ -97,7 +97,7 @@ def test_gpw2(parser):
 
 def test_spinpol(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/gpaw/Hspinpol.gpw", archive, None)
+    parser.parse('tests/data/gpaw/Hspinpol.gpw', archive, None)
 
     sec_eig = archive.run[0].calculation[0].eigenvalues[0]
     assert np.shape(sec_eig.kpoints) == (1, 3)
@@ -109,13 +109,13 @@ def test_spinpol(parser):
 
 def test_lcao(parser):
     archive = EntryArchive()
-    parser.parse("tests/data/gpaw/Si_lcao.gpw2", archive, None)
+    parser.parse('tests/data/gpaw/Si_lcao.gpw2', archive, None)
 
-    assert archive.run[0].program.version == "1.1.1b1"
+    assert archive.run[0].program.version == '1.1.1b1'
 
     sec_method = archive.run[0].method[0]
     sec_basis = sec_method.electrons_representation[0].basis_set[0]
-    assert sec_basis.type == "numeric AOs"
+    assert sec_basis.type == 'numeric AOs'
 
     sec_density = archive.run[0].calculation[0].density_charge[0]
     sec_potential = archive.run[0].calculation[0].potential[0].effective[0]

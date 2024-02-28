@@ -209,7 +209,7 @@ class x_nwchem_section_geo_opt_module(MSection):
     m_def = Section(validate=False)
 
     x_nwchem_section_geo_opt_step = SubSection(
-        sub_section=SectionProxy("x_nwchem_section_geo_opt_step"), repeats=True
+        sub_section=SectionProxy('x_nwchem_section_geo_opt_step'), repeats=True
     )
 
 
@@ -247,7 +247,7 @@ class x_nwchem_section_qmd_step(MSection):
     x_nwchem_qmd_step_time = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="second",
+        unit='second',
         description="""
         Elapsed simulation time.
         """,
@@ -256,7 +256,7 @@ class x_nwchem_section_qmd_step(MSection):
     x_nwchem_qmd_step_kinetic_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Kinetic energy.
         """,
@@ -265,7 +265,7 @@ class x_nwchem_section_qmd_step(MSection):
     x_nwchem_qmd_step_potential_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Potential energy.
         """,
@@ -274,7 +274,7 @@ class x_nwchem_section_qmd_step(MSection):
     x_nwchem_qmd_step_total_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Total energy.
         """,
@@ -283,7 +283,7 @@ class x_nwchem_section_qmd_step(MSection):
     x_nwchem_qmd_step_target_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="kelvin",
+        unit='kelvin',
         description="""
         Target temperature.
         """,
@@ -292,7 +292,7 @@ class x_nwchem_section_qmd_step(MSection):
     x_nwchem_qmd_step_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="kelvin",
+        unit='kelvin',
         description="""
         Temperature.
         """,
@@ -311,19 +311,19 @@ class Run(runschema.run.Run):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_nwchem_section_start_information = SubSection(
-        sub_section=SectionProxy("x_nwchem_section_start_information"), repeats=True
+        sub_section=SectionProxy('x_nwchem_section_start_information'), repeats=True
     )
 
     x_nwchem_section_geometry = SubSection(
-        sub_section=SectionProxy("x_nwchem_section_geometry"), repeats=True
+        sub_section=SectionProxy('x_nwchem_section_geometry'), repeats=True
     )
 
     x_nwchem_section_geo_opt_module = SubSection(
-        sub_section=SectionProxy("x_nwchem_section_geo_opt_module"), repeats=True
+        sub_section=SectionProxy('x_nwchem_section_geo_opt_module'), repeats=True
     )
 
     x_nwchem_section_qmd_module = SubSection(
-        sub_section=SectionProxy("x_nwchem_section_qmd_module"), repeats=True
+        sub_section=SectionProxy('x_nwchem_section_qmd_module'), repeats=True
     )
 
 
@@ -347,7 +347,7 @@ class Method(runschema.method.Method):
     )
 
     x_nwchem_section_xc_part = SubSection(
-        sub_section=SectionProxy("x_nwchem_section_xc_part"), repeats=True
+        sub_section=SectionProxy('x_nwchem_section_xc_part'), repeats=True
     )
 
 
@@ -379,7 +379,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_nwchem_section_qmd_step = SubSection(
-        sub_section=SectionProxy("x_nwchem_section_qmd_step"), repeats=True
+        sub_section=SectionProxy('x_nwchem_section_qmd_step'), repeats=True
     )
 
 

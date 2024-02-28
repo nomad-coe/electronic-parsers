@@ -160,7 +160,7 @@ class x_exciting_section_atoms_group(MSection):
     x_exciting_muffin_tin_radius = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         muffin-tin radius
         """,
@@ -208,7 +208,7 @@ class x_exciting_section_bandstructure(MSection):
 
     x_exciting_band_vertex_labels = Quantity(
         type=str,
-        shape=["x_exciting_band_number_of_vertices"],
+        shape=['x_exciting_band_number_of_vertices'],
         description="""
         labels of the vertices along the kpoint path used for the bandstructure plot
         """,
@@ -216,7 +216,7 @@ class x_exciting_section_bandstructure(MSection):
 
     x_exciting_band_vertex_coordinates = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_exciting_band_number_of_vertices", 3],
+        shape=['x_exciting_band_number_of_vertices', 3],
         description="""
         coordinates of the vertices along the kpoint path used for the bandstructure plot
         """,
@@ -240,7 +240,7 @@ class x_exciting_section_bandstructure(MSection):
 
     x_exciting_band_k_points = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_exciting_band_number_of_kpoints"],
+        shape=['x_exciting_band_number_of_kpoints'],
         description="""
         Fractional coordinates of the k points (in the basis of the reciprocal-lattice
         vectors) for which the electronic energy are given.
@@ -250,11 +250,11 @@ class x_exciting_section_bandstructure(MSection):
     x_exciting_band_energies = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "number_of_spin_channels",
-            "x_exciting_band_number_of_kpoints",
-            "x_exciting_band_number_of_eigenvalues",
+            'number_of_spin_channels',
+            'x_exciting_band_number_of_kpoints',
+            'x_exciting_band_number_of_eigenvalues',
         ],
-        unit="joule",
+        unit='joule',
         description="""
         $k$-dependent energies of the electronic band structure.
         """,
@@ -263,7 +263,7 @@ class x_exciting_section_bandstructure(MSection):
     x_exciting_band_value = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Bandstructure energy values
         """,
@@ -280,7 +280,7 @@ class x_exciting_section_dos(MSection):
     x_exciting_dos_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         energy value for a dos point
         """,
@@ -289,7 +289,7 @@ class x_exciting_section_dos(MSection):
     x_exciting_dos_value = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / joule",
+        unit='1 / joule',
         description="""
         Density of states values
         """,
@@ -306,7 +306,7 @@ class x_exciting_section_fermi_surface(MSection):
     x_exciting_fermi_energy_fermi_surface = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Fermi energy for Fermi surface
         """,
@@ -347,10 +347,10 @@ class x_exciting_section_fermi_surface(MSection):
     x_exciting_values_fermi_surface = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_number_of_bands_fermi_surface",
-            "x_exciting_number_of_mesh_points_fermi_surface",
+            'x_exciting_number_of_bands_fermi_surface',
+            'x_exciting_number_of_mesh_points_fermi_surface',
         ],
-        unit="joule",
+        unit='joule',
         description="""
         Fermi surface values
         """,
@@ -376,7 +376,7 @@ class x_exciting_section_lattice_vectors(MSection):
     x_exciting_geometry_lattice_vector_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         x component of lattice vector
         """,
@@ -385,7 +385,7 @@ class x_exciting_section_lattice_vectors(MSection):
     x_exciting_geometry_lattice_vector_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         y component of lattice vector
         """,
@@ -394,7 +394,7 @@ class x_exciting_section_lattice_vectors(MSection):
     x_exciting_geometry_lattice_vector_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         z component of lattice vector
         """,
@@ -411,7 +411,7 @@ class x_exciting_section_reciprocal_lattice_vectors(MSection):
     x_exciting_geometry_reciprocal_lattice_vector_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         x component of reciprocal lattice vector
         """,
@@ -420,7 +420,7 @@ class x_exciting_section_reciprocal_lattice_vectors(MSection):
     x_exciting_geometry_reciprocal_lattice_vector_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         y component of reciprocal lattice vector
         """,
@@ -429,7 +429,7 @@ class x_exciting_section_reciprocal_lattice_vectors(MSection):
     x_exciting_geometry_reciprocal_lattice_vector_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         z component of reciprocal lattice vector
         """,
@@ -947,7 +947,7 @@ class GW(runschema.method.GW):
     x_exciting_bare_coulomb_gmax = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         Maximum G for the pw basis for the Coulomb potential.
         """,
@@ -956,7 +956,7 @@ class GW(runschema.method.GW):
     x_exciting_mixed_basis_gmax = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         Cut-off parameter for the truncation of the expansion of the plane waves in the
         interstitial region.
@@ -982,8 +982,8 @@ class x_exciting_exciton_calculation(MSection):
     x_exciting_xs_bse_exciton_amplitude_im = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_excitons",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_excitons',
         ],
         description="""
         Imaginary part of the transition amplitude
@@ -993,8 +993,8 @@ class x_exciting_exciton_calculation(MSection):
     x_exciting_xs_bse_exciton_amplitude_re = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_excitons",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_excitons',
         ],
         description="""
         Real part of the transition amplitude
@@ -1004,10 +1004,10 @@ class x_exciting_exciton_calculation(MSection):
     x_exciting_xs_bse_exciton_binding_energies = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_excitons",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_excitons',
         ],
-        unit="joule",
+        unit='joule',
         description="""
         Exciton binding energies
         """,
@@ -1016,10 +1016,10 @@ class x_exciting_exciton_calculation(MSection):
     x_exciting_xs_bse_exciton_energies = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_excitons",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_excitons',
         ],
-        unit="joule",
+        unit='joule',
         description="""
         Exciton energies
         """,
@@ -1028,8 +1028,8 @@ class x_exciting_exciton_calculation(MSection):
     x_exciting_xs_bse_exciton_oscillator_strength = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_excitons",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_excitons',
         ],
         description="""
         Exciton oscillator strength
@@ -1047,10 +1047,10 @@ class x_exciting_epsilon_calculation(MSection):
     x_exciting_xs_bse_epsilon_energies = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_energy_points",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_energy_points',
         ],
-        unit="joule",
+        unit='joule',
         description="""
         Energies of the dielectric function epsilon
         """,
@@ -1059,8 +1059,8 @@ class x_exciting_epsilon_calculation(MSection):
     x_exciting_xs_bse_epsilon_im = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_energy_points",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_energy_points',
         ],
         description="""
         Imaginary part of the dielectric function epsilon
@@ -1070,8 +1070,8 @@ class x_exciting_epsilon_calculation(MSection):
     x_exciting_xs_bse_epsilon_re = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_energy_points",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_energy_points',
         ],
         description="""
         Real part of the dielectric function epsilon
@@ -1089,10 +1089,10 @@ class x_exciting_sigma_calculation(MSection):
     x_exciting_xs_bse_sigma_energies = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_energy_points",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_energy_points',
         ],
-        unit="joule",
+        unit='joule',
         description="""
         Energies of the conductivity function sigma
         """,
@@ -1101,8 +1101,8 @@ class x_exciting_sigma_calculation(MSection):
     x_exciting_xs_bse_sigma_im = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_energy_points",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_energy_points',
         ],
         description="""
         Imaginary part of the conductivity function sigma
@@ -1112,8 +1112,8 @@ class x_exciting_sigma_calculation(MSection):
     x_exciting_xs_bse_sigma_re = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_energy_points",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_energy_points',
         ],
         description="""
         Real part of the conductivity function sigma
@@ -1131,8 +1131,8 @@ class x_exciting_loss_calculation(MSection):
     x_exciting_xs_bse_loss = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_energy_points",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_energy_points',
         ],
         description="""
         Loss function
@@ -1142,10 +1142,10 @@ class x_exciting_loss_calculation(MSection):
     x_exciting_xs_bse_loss_energies = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_bse_number_of_components",
-            "x_exciting_xs_bse_number_of_energy_points",
+            'x_exciting_xs_bse_number_of_components',
+            'x_exciting_xs_bse_number_of_energy_points',
         ],
-        unit="joule",
+        unit='joule',
         description="""
         Energies of the loss function
         """,
@@ -1157,8 +1157,8 @@ class Calculation(runschema.calculation.Calculation):
 
     x_exciting_atom_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_exciting_number_of_atoms", 3],
-        unit="newton",
+        shape=['x_exciting_number_of_atoms', 3],
+        unit='newton',
         description="""
         Forces acting on the atoms.
         """,
@@ -1166,8 +1166,8 @@ class Calculation(runschema.calculation.Calculation):
 
     x_exciting_atom_IBS_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_exciting_number_of_atoms", 3],
-        unit="newton",
+        shape=['x_exciting_number_of_atoms', 3],
+        unit='newton',
         description="""
         IBS correction to the Force acting on the atoms.
         """,
@@ -1191,8 +1191,8 @@ class Calculation(runschema.calculation.Calculation):
 
     x_exciting_atom_core_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_exciting_number_of_atoms", 3],
-        unit="newton",
+        shape=['x_exciting_number_of_atoms', 3],
+        unit='newton',
         description="""
         core correction to the Force acting on the atoms.
         """,
@@ -1200,8 +1200,8 @@ class Calculation(runschema.calculation.Calculation):
 
     x_exciting_atom_HF_forces = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_exciting_number_of_atoms", 3],
-        unit="newton",
+        shape=['x_exciting_number_of_atoms', 3],
+        unit='newton',
         description="""
         HF correction to the Force acting on the atoms.
         """,
@@ -1306,7 +1306,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_core_electron_kinetic_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Core-electron kinetic energy final
         """,
@@ -1315,7 +1315,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_core_leakage = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Core leakage
         """,
@@ -1324,7 +1324,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_correlation_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Correlation energy final
         """,
@@ -1333,7 +1333,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_coulomb_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Coulomb energy final
         """,
@@ -1342,7 +1342,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_coulomb_potential_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Coulomb potential energy final
         """,
@@ -1351,7 +1351,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_dos_fermi = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / joule",
+        unit='1 / joule',
         description="""
         DOS at Fermi energy
         """,
@@ -1360,7 +1360,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_effective_potential_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Effective potential energy final
         """,
@@ -1369,7 +1369,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_electron_nuclear_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Electron-nuclear energy final
         """,
@@ -1378,7 +1378,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_exchange_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Exchange energy final
         """,
@@ -1387,7 +1387,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_fermi_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Fermi energy final
         """,
@@ -1396,7 +1396,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_gap = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Estimated fundamental gap
         """,
@@ -1405,7 +1405,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_geometry_atom_forces_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         x component of the force acting on the atom
         """,
@@ -1414,7 +1414,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_geometry_atom_forces_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         y component of the force acting on the atom
         """,
@@ -1423,7 +1423,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_geometry_atom_forces_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         z component of the force acting on the atom
         """,
@@ -1440,7 +1440,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_maximum_force_magnitude = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         Maximum force magnitude in geometry optimization
         """,
@@ -1449,7 +1449,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_geometry_optimization_threshold_force = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         Value of threshold for the force modulus as convergence criterion of the
         geometry_optimization_method used in exciting
@@ -1459,7 +1459,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_hartree_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Hartree energy final
         """,
@@ -1468,7 +1468,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_interstitial_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Interstitial charge
         """,
@@ -1477,7 +1477,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_madelung_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Madelung energy final
         """,
@@ -1486,7 +1486,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_nuclear_nuclear_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Nuclear-nuclear energy final
         """,
@@ -1503,7 +1503,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_total_MT_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Total charge in muffin-tins
         """,
@@ -1512,7 +1512,7 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_XC_potential = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         XC potential final
         """,
@@ -1538,9 +1538,9 @@ class Calculation(runschema.calculation.Calculation):
         type=np.dtype(np.float64),
         shape=[
             2,
-            "x_exciting_xs_tddft_number_of_q_points",
-            "x_exciting_xs_tddft_number_of_components",
-            "x_exciting_xs_tddft_number_of_epsilon_values",
+            'x_exciting_xs_tddft_number_of_q_points',
+            'x_exciting_xs_tddft_number_of_components',
+            'x_exciting_xs_tddft_number_of_epsilon_values',
         ],
         description="""
         Dielectric function epsilon including local-field effects
@@ -1551,9 +1551,9 @@ class Calculation(runschema.calculation.Calculation):
         type=np.dtype(np.float64),
         shape=[
             2,
-            "x_exciting_xs_tddft_number_of_q_points",
-            "x_exciting_xs_tddft_number_of_components",
-            "x_exciting_xs_tddft_number_of_epsilon_values",
+            'x_exciting_xs_tddft_number_of_q_points',
+            'x_exciting_xs_tddft_number_of_components',
+            'x_exciting_xs_tddft_number_of_epsilon_values',
         ],
         description="""
         Dielectric function epsilon without local-field effects
@@ -1562,7 +1562,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_exciting_xs_tddft_dielectric_tensor_no_sym = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_exciting_xs_tddft_number_of_q_points", 2, 3, 3],
+        shape=['x_exciting_xs_tddft_number_of_q_points', 2, 3, 3],
         description="""
         No-symmetrized static dielectric tensor
         """,
@@ -1570,7 +1570,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_exciting_xs_tddft_dielectric_tensor_sym = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_exciting_xs_tddft_number_of_q_points", 2, 3, 3],
+        shape=['x_exciting_xs_tddft_number_of_q_points', 2, 3, 3],
         description="""
         Symmetrized static dielectric tensor
         """,
@@ -1578,8 +1578,8 @@ class Calculation(runschema.calculation.Calculation):
 
     x_exciting_xs_tddft_epsilon_energies = Quantity(
         type=np.dtype(np.float64),
-        shape=["x_exciting_xs_tddft_number_of_epsilon_values"],
-        unit="joule",
+        shape=['x_exciting_xs_tddft_number_of_epsilon_values'],
+        unit='joule',
         description="""
         Array containing the set of discrete energy values for the dielectric function
         epsilon.
@@ -1589,9 +1589,9 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_xs_tddft_loss_function_local_field = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_tddft_number_of_q_points",
-            "x_exciting_xs_tddft_number_of_components",
-            "x_exciting_xs_tddft_number_of_epsilon_values",
+            'x_exciting_xs_tddft_number_of_q_points',
+            'x_exciting_xs_tddft_number_of_components',
+            'x_exciting_xs_tddft_number_of_epsilon_values',
         ],
         description="""
         Loss function including local-field effects
@@ -1601,9 +1601,9 @@ class Calculation(runschema.calculation.Calculation):
     x_exciting_xs_tddft_loss_function_no_local_field = Quantity(
         type=np.dtype(np.float64),
         shape=[
-            "x_exciting_xs_tddft_number_of_q_points",
-            "x_exciting_xs_tddft_number_of_components",
-            "x_exciting_xs_tddft_number_of_epsilon_values",
+            'x_exciting_xs_tddft_number_of_q_points',
+            'x_exciting_xs_tddft_number_of_components',
+            'x_exciting_xs_tddft_number_of_epsilon_values',
         ],
         description="""
         Loss function without local-field effects
@@ -1636,7 +1636,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_exciting_xs_tddft_optical_component = Quantity(
         type=str,
-        shape=["x_exciting_xs_tddft_number_of_optical_components"],
+        shape=['x_exciting_xs_tddft_number_of_optical_components'],
         description="""
         Value of the independent optical components in the dielectric function epsilon
         """,
@@ -1646,9 +1646,9 @@ class Calculation(runschema.calculation.Calculation):
         type=np.dtype(np.float64),
         shape=[
             2,
-            "x_exciting_xs_tddft_number_of_q_points",
-            "x_exciting_xs_tddft_number_of_components",
-            "x_exciting_xs_tddft_number_of_epsilon_values",
+            'x_exciting_xs_tddft_number_of_q_points',
+            'x_exciting_xs_tddft_number_of_components',
+            'x_exciting_xs_tddft_number_of_epsilon_values',
         ],
         description="""
         Sigma including local-field effects
@@ -1659,9 +1659,9 @@ class Calculation(runschema.calculation.Calculation):
         type=np.dtype(np.float64),
         shape=[
             2,
-            "x_exciting_xs_tddft_number_of_q_points",
-            "x_exciting_xs_tddft_number_of_components",
-            "x_exciting_xs_tddft_number_of_epsilon_values",
+            'x_exciting_xs_tddft_number_of_q_points',
+            'x_exciting_xs_tddft_number_of_components',
+            'x_exciting_xs_tddft_number_of_epsilon_values',
         ],
         description="""
         Sigma without local-field effects
@@ -1677,23 +1677,23 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_exciting_section_bandstructure = SubSection(
-        sub_section=SectionProxy("x_exciting_section_bandstructure"), repeats=True
+        sub_section=SectionProxy('x_exciting_section_bandstructure'), repeats=True
     )
 
     x_exciting_section_dos = SubSection(
-        sub_section=SectionProxy("x_exciting_section_dos"), repeats=True
+        sub_section=SectionProxy('x_exciting_section_dos'), repeats=True
     )
 
     x_exciting_section_fermi_surface = SubSection(
-        sub_section=SectionProxy("x_exciting_section_fermi_surface"), repeats=True
+        sub_section=SectionProxy('x_exciting_section_fermi_surface'), repeats=True
     )
 
     x_exciting_section_MT_charge_atom = SubSection(
-        sub_section=SectionProxy("x_exciting_section_MT_charge_atom"), repeats=True
+        sub_section=SectionProxy('x_exciting_section_MT_charge_atom'), repeats=True
     )
 
     x_exciting_section_MT_moment_atom = SubSection(
-        sub_section=SectionProxy("x_exciting_section_MT_moment_atom"), repeats=True
+        sub_section=SectionProxy('x_exciting_section_MT_moment_atom'), repeats=True
     )
 
     x_exciting_exciton = SubSection(
@@ -1719,7 +1719,7 @@ class System(runschema.system.System):
     x_exciting_brillouin_zone_volume = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter ** 3",
+        unit='1 / meter ** 3',
         description="""
         Brillouin zone volume
         """,
@@ -1736,7 +1736,7 @@ class System(runschema.system.System):
     x_exciting_core_charge_initial = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Core charge
         """,
@@ -1745,7 +1745,7 @@ class System(runschema.system.System):
     x_exciting_electronic_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Electronic charge
         """,
@@ -1761,7 +1761,7 @@ class System(runschema.system.System):
 
     x_exciting_clathrates_atom_labels = Quantity(
         type=str,
-        shape=["number_of_atoms"],
+        shape=['number_of_atoms'],
         description="""
         Labels of the atoms in the clathrates.
         """,
@@ -1769,7 +1769,7 @@ class System(runschema.system.System):
 
     x_exciting_clathrates_atom_coordinates = Quantity(
         type=np.dtype(np.float64),
-        shape=["number_of_atoms", 3],
+        shape=['number_of_atoms', 3],
         description="""
         Ordered list of the atoms coordinates in the clathrates.
         """,
@@ -1786,7 +1786,7 @@ class System(runschema.system.System):
     x_exciting_gkmax = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         Maximum length of |G+k| for APW functions
         """,
@@ -1795,7 +1795,7 @@ class System(runschema.system.System):
     x_exciting_gmaxvr = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         Maximum length of |G|
         """,
@@ -1892,7 +1892,7 @@ class System(runschema.system.System):
     x_exciting_nuclear_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Nuclear charge
         """,
@@ -1957,7 +1957,7 @@ class System(runschema.system.System):
     x_exciting_rgkmax = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         Radius MT * Gmax
         """,
@@ -1974,7 +1974,7 @@ class System(runschema.system.System):
     x_exciting_simulation_reciprocal_cell = Quantity(
         type=np.dtype(np.float64),
         shape=[3, 3],
-        unit="meter",
+        unit='meter',
         description="""
         Reciprocal lattice vectors (in Cartesian coordinates) of the simulation cell. The
         first index runs over the $x,y,z$ Cartesian coordinates, and the second index runs
@@ -2001,7 +2001,7 @@ class System(runschema.system.System):
     x_exciting_unit_cell_volume = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter ** 3",
+        unit='meter ** 3',
         description="""
         unit cell volume
         """,
@@ -2018,7 +2018,7 @@ class System(runschema.system.System):
     x_exciting_valence_charge_initial = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Valence charge
         """,
@@ -2035,7 +2035,7 @@ class System(runschema.system.System):
     x_exciting_wigner_radius = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         Effective Wigner radius
         """,
@@ -2058,24 +2058,24 @@ class System(runschema.system.System):
     )
 
     x_exciting_section_atoms_group = SubSection(
-        sub_section=SectionProxy("x_exciting_section_atoms_group"), repeats=True
+        sub_section=SectionProxy('x_exciting_section_atoms_group'), repeats=True
     )
 
     x_exciting_section_lattice_vectors = SubSection(
-        sub_section=SectionProxy("x_exciting_section_lattice_vectors"), repeats=True
+        sub_section=SectionProxy('x_exciting_section_lattice_vectors'), repeats=True
     )
 
     x_exciting_section_reciprocal_lattice_vectors = SubSection(
-        sub_section=SectionProxy("x_exciting_section_reciprocal_lattice_vectors"),
+        sub_section=SectionProxy('x_exciting_section_reciprocal_lattice_vectors'),
         repeats=True,
     )
 
     x_exciting_section_spin = SubSection(
-        sub_section=SectionProxy("x_exciting_section_spin"), repeats=True
+        sub_section=SectionProxy('x_exciting_section_spin'), repeats=True
     )
 
     x_exciting_section_xc = SubSection(
-        sub_section=SectionProxy("x_exciting_section_xc"), repeats=True
+        sub_section=SectionProxy('x_exciting_section_xc'), repeats=True
     )
 
 
@@ -2105,7 +2105,7 @@ class x_exciting_section_MT_charge_atom(MSection):
     x_exciting_MT_charge_atom_value = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         value of the muffin-tin charge on atom
         """,
@@ -2138,7 +2138,7 @@ class x_exciting_section_MT_moment_atom(MSection):
     x_exciting_MT_moment_atom_value = Quantity(
         type=np.dtype(np.float64),
         shape=[3],
-        unit="coulomb * meter",
+        unit='coulomb * meter',
         description="""
         value of the muffin-tin moment on atom
         """,
@@ -2151,7 +2151,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_charge_convergence = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         exciting charge convergence
         """,
@@ -2160,7 +2160,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_core_electron_kinetic_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Core-electron kinetic energy
         """,
@@ -2169,7 +2169,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_core_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Core charge
         """,
@@ -2178,7 +2178,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_valence_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Valence charge
         """,
@@ -2187,7 +2187,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_core_leakage = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Core leakage
         """,
@@ -2196,7 +2196,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_correlation_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Correlation energy
         """,
@@ -2205,7 +2205,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_coulomb_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Coulomb energy
         """,
@@ -2214,7 +2214,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_coulomb_potential_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Coulomb potential energy
         """,
@@ -2223,7 +2223,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_dos_fermi = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / joule",
+        unit='1 / joule',
         description="""
         DOS at Fermi energy
         """,
@@ -2232,7 +2232,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_effective_potential_convergence = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         exciting effective potential convergence
         """,
@@ -2241,7 +2241,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_force_convergence = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         exciting force convergence
         """,
@@ -2250,7 +2250,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_effective_potential_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Effective potential energy
         """,
@@ -2259,7 +2259,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_electron_nuclear_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Electron-nuclear energy
         """,
@@ -2268,7 +2268,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_energy_convergence = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         exciting energy convergence
         """,
@@ -2277,7 +2277,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_exchange_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Exchange energy
         """,
@@ -2286,7 +2286,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_fermi_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Fermi energy
         """,
@@ -2295,7 +2295,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_gap = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Estimated fundamental gap
         """,
@@ -2304,7 +2304,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_hartree_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Hartree energy
         """,
@@ -2313,7 +2313,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_IBS_force_convergence = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         exciting IBS force convergence
         """,
@@ -2322,7 +2322,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_interstitial_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Interstitial charge
         """,
@@ -2331,7 +2331,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_madelung_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Madelung energy
         """,
@@ -2340,7 +2340,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_nuclear_nuclear_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Nuclear-nuclear energy
         """,
@@ -2349,7 +2349,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_time = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="s",
+        unit='s',
         description="""
         scf iteration time
         """,
@@ -2358,7 +2358,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_total_MT_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Total charge in muffin-tins
         """,
@@ -2367,7 +2367,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_total_charge = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Total charge
         """,
@@ -2376,7 +2376,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_XC_potential = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         XC potential
         """,
@@ -2385,7 +2385,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_interstitial_moment = Quantity(
         type=np.dtype(np.float64),
         shape=[3],
-        unit="coulomb * meter",
+        unit='coulomb * meter',
         description="""
         Interstitial moment
         """,
@@ -2394,7 +2394,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_total_MT_moment = Quantity(
         type=np.dtype(np.float64),
         shape=[3],
-        unit="coulomb * meter",
+        unit='coulomb * meter',
         description="""
         Total moment in muffin-tins
         """,
@@ -2403,18 +2403,18 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_exciting_total_moment = Quantity(
         type=np.dtype(np.float64),
         shape=[3],
-        unit="coulomb * meter",
+        unit='coulomb * meter',
         description="""
         Total moment
         """,
     )
 
     x_exciting_section_MT_charge_atom_scf_iteration = SubSection(
-        sub_section=SectionProxy("x_exciting_section_MT_charge_atom"), repeats=True
+        sub_section=SectionProxy('x_exciting_section_MT_charge_atom'), repeats=True
     )
 
     x_exciting_section_MT_moment_atom_scf_iteration = SubSection(
-        sub_section=SectionProxy("x_exciting_section_MT_moment_atom"), repeats=True
+        sub_section=SectionProxy('x_exciting_section_MT_moment_atom'), repeats=True
     )
 
 
@@ -2440,7 +2440,7 @@ class Method(runschema.method.Method):
     x_exciting_scf_threshold_energy_change = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Specifies the threshold for the x_exciting_energy_total_scf_iteration change
         between two subsequent self-consistent field (SCF) iterations.
@@ -2450,7 +2450,7 @@ class Method(runschema.method.Method):
     x_exciting_scf_threshold_potential_change_list = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Specifies the threshold for the x_exciting_effective_potential_convergence between
         two subsequent self-consistent field (SCF) iterations.
@@ -2460,7 +2460,7 @@ class Method(runschema.method.Method):
     x_exciting_scf_threshold_potential_change = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Specifies the threshold for the x_exciting_effective_potential_convergence between
         two subsequent self-consistent field (SCF) iterations.
@@ -2479,7 +2479,7 @@ class Method(runschema.method.Method):
     x_exciting_scf_threshold_charge_change = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="coulomb",
+        unit='coulomb',
         description="""
         Specifies the threshold for the x_exciting_effective_potential_convergence between
         two subsequent self-consistent field (SCF) iterations.
@@ -2498,7 +2498,7 @@ class Method(runschema.method.Method):
     x_exciting_scf_threshold_force_change = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="newton",
+        unit='newton',
         description="""
         Convergence tolerance for forces (not including IBS contribution) during the SCF
         run
@@ -2518,7 +2518,7 @@ class Method(runschema.method.Method):
     x_exciting_xs_broadening = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Lorentzian broadening applied to the spectra.
         """,
@@ -2653,7 +2653,7 @@ class Method(runschema.method.Method):
     x_exciting_xs_gqmax = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="1 / meter",
+        unit='1 / meter',
         description="""
         G vector cutoff for the plane-waves matrix elements.
         """,
@@ -2702,7 +2702,7 @@ class Method(runschema.method.Method):
     x_exciting_xs_scissor = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Scissor operator
         """,
@@ -2813,7 +2813,7 @@ class Method(runschema.method.Method):
     x_exciting_xs_tddft_drude = Quantity(
         type=np.dtype(np.float64),
         shape=[2],
-        unit="1 / second",
+        unit='1 / second',
         description="""
         Parameters defining the semiclassical Drude approximation to intraband term. The
         first value determines the plasma frequency ωp and the second the inverse
@@ -2853,7 +2853,7 @@ class Method(runschema.method.Method):
     x_exciting_xs_tddft_split_parameter = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Split parameter for degeneracy in energy differences of MBPT derived xc kernels.
         See A. Marini, Phys. Rev. Lett., 91, (2003) 256402.
@@ -2909,7 +2909,7 @@ class Method(runschema.method.Method):
     x_exciting_xs_energywindow_values = Quantity(
         type=np.float64,
         shape=[2],
-        unit="joule",
+        unit='joule',
         description="""
         Energy interval lower and upper limits. Default is [-0.5d0, 0.5d0] in Hartree.
         """,
@@ -2937,6 +2937,6 @@ class Run(runschema.run.Run):
     )
 
     x_exciting_section_geometry_optimization = SubSection(
-        sub_section=SectionProxy("x_exciting_section_geometry_optimization"),
+        sub_section=SectionProxy('x_exciting_section_geometry_optimization'),
         repeats=True,
     )

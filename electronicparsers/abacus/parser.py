@@ -72,7 +72,7 @@ from .metainfo.abacus import (
 
 
 # TODO determine if we can update regex to the following
-re_float = r"[-+]?\d+\.*\d*(?:[Ee][-+]\d+)?"
+re_float = r'[-+]?\d+\.*\d*(?:[Ee][-+]\d+)?'
 
 
 class ABACUSInputParser(TextParser):
@@ -82,135 +82,135 @@ class ABACUSInputParser(TextParser):
     def init_quantities(self):
         self._quantities = [
             Quantity(
-                "stru_filename",
-                r"\n *stru_file\s*(\S+)",
+                'stru_filename',
+                r'\n *stru_file\s*(\S+)',
                 repeats=False,
             ),
             Quantity(
-                "kpt_filename",
-                r"\n *kpoint_file\s*(\S+)",
+                'kpt_filename',
+                r'\n *kpoint_file\s*(\S+)',
                 repeats=False,
             ),
             Quantity(
-                "basis_type",
-                r"\n *basis_type\s*(\w+)",
+                'basis_type',
+                r'\n *basis_type\s*(\w+)',
                 repeats=False,
             ),
             Quantity(
-                "x_abacus_init_velocities",
-                r"\n *init_vel\s*(\d+)",
+                'x_abacus_init_velocities',
+                r'\n *init_vel\s*(\d+)',
                 repeats=False,
                 dtype=bool,
             ),
             Quantity(
-                "xc",
-                r"\n *dft_functional\s*(\w+)",
+                'xc',
+                r'\n *dft_functional\s*(\w+)',
                 repeats=False,
             ),
-            Quantity("kpar", r"\n *kpar\s*(\d+)", repeats=False),
-            Quantity("bndpar", r"\n *bndpar\s*(\d+)", repeats=False),
-            Quantity("diago_proc", r"\n *diago_proc\s*(\d+)", repeats=False),
-            Quantity("scf_max_iteration", r"\n *scf_nmax\s*(\d+)", repeats=False),
-            Quantity("nelec", r"\n *nelec\s*(\d+)", repeats=False),
-            Quantity("md_type", r"\n *md_type\s*(\d+)", repeats=False),
-            Quantity("md_nstep", r"\n *md_nstep\s*(\d+)", repeats=False),
+            Quantity('kpar', r'\n *kpar\s*(\d+)', repeats=False),
+            Quantity('bndpar', r'\n *bndpar\s*(\d+)', repeats=False),
+            Quantity('diago_proc', r'\n *diago_proc\s*(\d+)', repeats=False),
+            Quantity('scf_max_iteration', r'\n *scf_nmax\s*(\d+)', repeats=False),
+            Quantity('nelec', r'\n *nelec\s*(\d+)', repeats=False),
+            Quantity('md_type', r'\n *md_type\s*(\d+)', repeats=False),
+            Quantity('md_nstep', r'\n *md_nstep\s*(\d+)', repeats=False),
             Quantity(
-                "occupations",
-                r"\n *occupations\s*(\w+)",
-                repeats=False,
-            ),
-            Quantity(
-                "smearing_method",
-                r"\n *smearing_method\s*(\w+)",
+                'occupations',
+                r'\n *occupations\s*(\w+)',
                 repeats=False,
             ),
             Quantity(
-                "smearing_width",
-                rf"\n *smearing_sigma\s*({re_float})",
+                'smearing_method',
+                r'\n *smearing_method\s*(\w+)',
                 repeats=False,
-                unit="rydberg",
             ),
-            Quantity("dft_plus_u", r"\n *dft_plus_u\s*(\d)", repeats=False, dtype=bool),
+            Quantity(
+                'smearing_width',
+                rf'\n *smearing_sigma\s*({re_float})',
+                repeats=False,
+                unit='rydberg',
+            ),
+            Quantity('dft_plus_u', r'\n *dft_plus_u\s*(\d)', repeats=False, dtype=bool),
             Quantity(
                 xsection_method.x_abacus_mixing_method,
-                rf"\n *mixing_type\s*(\S+)",
+                rf'\n *mixing_type\s*(\S+)',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_mixing_beta,
-                rf"\n *mixing_beta\s*({re_float})",
+                rf'\n *mixing_beta\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_diagonalization_algorithm,
-                rf"\n *ks_solver\s*(\w+)",
+                rf'\n *ks_solver\s*(\w+)',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_dispersion_correction_method,
-                r"\n *vdw_method\s*(\S+)",
+                r'\n *vdw_method\s*(\S+)',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_gamma_algorithms,
-                rf"\n *gamma_only\s*(\d)",
+                rf'\n *gamma_only\s*(\d)',
                 repeats=False,
                 dtype=bool,
             ),
             Quantity(
                 xsection_method.x_abacus_scf_threshold_density,
-                rf"\n *scf_thr\s*({re_float})",
+                rf'\n *scf_thr\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_initial_magnetization_total,
-                rf"\n *tot_magnetization\s*({re_float})",
+                rf'\n *tot_magnetization\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_hse_omega,
-                rf"\n *exx_hse_omega\s*({re_float})",
+                rf'\n *exx_hse_omega\s*({re_float})',
                 repeats=False,
-                unit="1/bohr",
+                unit='1/bohr',
             ),
             Quantity(
                 xsection_method.x_abacus_hybrid_xc_coeff,
-                rf"\n *exx_hybrid_alpha\s*({re_float})",
+                rf'\n *exx_hybrid_alpha\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_exx_ccp_rmesh_times,
-                rf"\n *exx_ccp_rmesh_times\s*({re_float})",
+                rf'\n *exx_ccp_rmesh_times\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_exx_dm_threshold,
-                rf"\n *exx_dm_threshold\s*({re_float})",
+                rf'\n *exx_dm_threshold\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_exx_cauchy_threshold,
-                rf"\n *exx_cauchy_threshold\s*({re_float})",
+                rf'\n *exx_cauchy_threshold\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_exx_schwarz_threshold,
-                rf"\n *exx_schwarz_threshold\s*({re_float})",
+                rf'\n *exx_schwarz_threshold\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_exx_c_threshold,
-                rf"\n *exx_c_threshold\s*({re_float})",
+                rf'\n *exx_c_threshold\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_exx_v_threshold,
-                rf"\n *exx_v_threshold\s*({re_float})",
+                rf'\n *exx_v_threshold\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
                 xsection_method.x_abacus_exx_pca_threshold,
-                rf"\n *exx_pca_threshold\s*({re_float})",
+                rf'\n *exx_pca_threshold\s*({re_float})',
                 repeats=False,
             ),
         ]
@@ -223,26 +223,26 @@ class ABACUSOutParser(TextParser):
     def init_quantities(self):
         def str_to_sites(val_in):
             data = dict()
-            val = [v.strip().split() for v in val_in.split("\n")][0]
+            val = [v.strip().split() for v in val_in.split('\n')][0]
             if len(val) == 5:
                 labels, x, y, z, mag = val
             elif len(val) == 8:
                 labels, x, y, z, mag, vx, vy, vz = val
-                data["velocities"] = np.array([vx, vy, vz], dtype=float)
-            data["labels"] = labels
-            data["positions"] = np.array([x, y, z], dtype=float)
-            data["magnetic_moments"] = float(mag)
+                data['velocities'] = np.array([vx, vy, vz], dtype=float)
+            data['labels'] = labels
+            data['positions'] = np.array([x, y, z], dtype=float)
+            data['magnetic_moments'] = float(mag)
             return data
 
         def str_to_coordclass(val_in):
-            if val_in == "DIRECT":
-                name = "direct"
-            elif val_in == "CARTESIAN":
-                name = "cartesian"
+            if val_in == 'DIRECT':
+                name = 'direct'
+            elif val_in == 'CARTESIAN':
+                name = 'cartesian'
             return name
 
         def str_to_matrix(val_in):
-            val = [v.strip().split() for v in val_in.split("\n")]
+            val = [v.strip().split() for v in val_in.split('\n')]
             return np.reshape(val, (3, 3)).astype(float)
 
         def str_to_dict(val_in):
@@ -254,12 +254,12 @@ class ABACUSOutParser(TextParser):
         def str_to_kpoints(val_in):
             lines = (
                 re.search(
-                    rf"KPOINTS\s*DIRECT_X\s*DIRECT_Y\s*DIRECT_Z\s*WEIGHT([\s\S]+?)DONE",
+                    rf'KPOINTS\s*DIRECT_X\s*DIRECT_Y\s*DIRECT_Z\s*WEIGHT([\s\S]+?)DONE',
                     val_in,
                 )
                 .group(1)
                 .strip()
-                .split("\n")
+                .split('\n')
             )
             data = []
             for line in lines:
@@ -271,9 +271,9 @@ class ABACUSOutParser(TextParser):
             return kpoints, weights
 
         def str_to_sticks(val_in):
-            Data = namedtuple("PW", ["proc", "columns", "pw"])
+            Data = namedtuple('PW', ['proc', 'columns', 'pw'])
             val = re.findall(
-                rf"\s+({re_float})\s+({re_float})\s+({re_float})\n", val_in
+                rf'\s+({re_float})\s+({re_float})\s+({re_float})\n', val_in
             )
             data = []
             for v in val:
@@ -282,11 +282,11 @@ class ABACUSOutParser(TextParser):
 
         def str_to_orbital(val_in):
             Data = namedtuple(
-                "Orbital",
-                ["index", "l", "n", "nr", "dr", "rcut", "check_unit", "new_unit"],
+                'Orbital',
+                ['index', 'l', 'n', 'nr', 'dr', 'rcut', 'check_unit', 'new_unit'],
             )
             val = re.findall(
-                rf"\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+({re_float})\s+({re_float})\s+({re_float})\s+({re_float})\n",
+                rf'\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+({re_float})\s+({re_float})\s+({re_float})\s+({re_float})\n',
                 val_in,
             )
             data = []
@@ -308,12 +308,12 @@ class ABACUSOutParser(TextParser):
         def str_to_energy_occupation(val_in):
             def extract_data(val_in, nks):
                 State = namedtuple(
-                    "State", ["kpoint", "energies", "occupations", "npws"]
+                    'State', ['kpoint', 'energies', 'occupations', 'npws']
                 )
                 data = []
                 for i in range(nks):
                     kx, ky, kz, npws = re.search(
-                        rf"{i+1}/{nks} kpoint \(Cartesian\)\s*=\s*({re_float})\s*({re_float})\s*({re_float})\s*\((\d+)\s*pws\)",
+                        rf'{i+1}/{nks} kpoint \(Cartesian\)\s*=\s*({re_float})\s*({re_float})\s*({re_float})\s*\((\d+)\s*pws\)',
                         val_in,
                     ).groups()
                     # TODO pylinit error, unbalanced-tuple-unpacking
@@ -322,11 +322,11 @@ class ABACUSOutParser(TextParser):
                             map(
                                 lambda x: x.strip().split(),
                                 re.search(
-                                    rf"{i+1}/{nks} kpoint \(Cartesian\)\s*=.*\n([\s\S]+?)\n\n",
+                                    rf'{i+1}/{nks} kpoint \(Cartesian\)\s*=.*\n([\s\S]+?)\n\n',
                                     val_in,
                                 )
                                 .group(1)
-                                .split("\n"),
+                                .split('\n'),
                             )
                         ),
                         dtype=float,
@@ -344,29 +344,29 @@ class ABACUSOutParser(TextParser):
 
             nspin = int(
                 re.search(
-                    r"STATE ENERGY\(eV\) AND OCCUPATIONS\s*NSPIN\s*==\s*(\d+)", val_in
+                    r'STATE ENERGY\(eV\) AND OCCUPATIONS\s*NSPIN\s*==\s*(\d+)', val_in
                 ).group(1)
             )
-            nks = int(re.search(r"\d+/(\d+) kpoint \(Cartesian\)", val_in).group(1))
+            nks = int(re.search(r'\d+/(\d+) kpoint \(Cartesian\)', val_in).group(1))
             data = dict()
             if nspin in [1, 4]:
-                data["up"] = extract_data(val_in, nks)
+                data['up'] = extract_data(val_in, nks)
             elif nspin == 2:
-                val_up = re.search(r"SPIN UP :([\s\S]+?)\n\nSPIN", val_in).group()
-                data["up"] = extract_data(val_up, nks)
+                val_up = re.search(r'SPIN UP :([\s\S]+?)\n\nSPIN', val_in).group()
+                data['up'] = extract_data(val_up, nks)
                 val_dw = re.search(
-                    r"SPIN DOWN :([\s\S]+?)(?:\n\n\s*EFERMI|\n\n\n)", val_in
+                    r'SPIN DOWN :([\s\S]+?)(?:\n\n\s*EFERMI|\n\n\n)', val_in
                 ).group()
-                data["down"] = extract_data(val_dw, nks)
+                data['down'] = extract_data(val_dw, nks)
             return data
 
         def str_to_bandstructure(val_in):
             def extract_data(val_in, nks):
-                State = namedtuple("State", ["kpoint", "energies"])
+                State = namedtuple('State', ['kpoint', 'energies'])
                 data = []
                 for i in range(nks):
                     kx, ky, kz = re.search(
-                        rf"k\-points{i+1}\(\d+\):\s*({re_float})\s*({re_float})\s*({re_float})",
+                        rf'k\-points{i+1}\(\d+\):\s*({re_float})\s*({re_float})\s*({re_float})',
                         val_in,
                     ).groups()
                     res = np.array(
@@ -374,10 +374,10 @@ class ABACUSOutParser(TextParser):
                             map(
                                 lambda x: x.strip().split(),
                                 re.search(
-                                    rf"k\-points{i+1}\(\d+\):.*\n([\s\S]+?)\n\n", val_in
+                                    rf'k\-points{i+1}\(\d+\):.*\n([\s\S]+?)\n\n', val_in
                                 )
                                 .group(1)
-                                .split("\n"),
+                                .split('\n'),
                             )
                         )
                     )
@@ -390,73 +390,73 @@ class ABACUSOutParser(TextParser):
                     data.append(state)
                 return data
 
-            nks = int(re.search(r"k\-points\d+\((\d+)\)", val_in).group(1))
+            nks = int(re.search(r'k\-points\d+\((\d+)\)', val_in).group(1))
             data = dict()
-            if re.search("spin up", val_in) and re.search("spin down", val_in):
-                val = re.search(r"spin up :\n([\s\S]+?)\n\n\n", val_in).group()
+            if re.search('spin up', val_in) and re.search('spin down', val_in):
+                val = re.search(r'spin up :\n([\s\S]+?)\n\n\n', val_in).group()
                 val_new = extract_data(val, nks)
-                data["up"] = val_new[: int(nks / 2)]
-                data["down"] = val_new[int(nks / 2) :]
+                data['up'] = val_new[: int(nks / 2)]
+                data['down'] = val_new[int(nks / 2) :]
             else:
-                data["up"] = extract_data(val_in, nks)
+                data['up'] = extract_data(val_in, nks)
             return data
 
         def str_to_force(val_in):
             data = []
-            val = [v.strip().split() for v in val_in.split("\n")]
+            val = [v.strip().split() for v in val_in.split('\n')]
             for v in val:
                 data.append(np.array(v[1:], dtype=float))
             return np.array(data) * ureg.eV / ureg.angstrom
 
         def str_to_polarization(val_in):
-            P = namedtuple("P", ["value", "mod", "vector"])
+            P = namedtuple('P', ['value', 'mod', 'vector'])
             data = np.array(val_in.split(), dtype=float)
             unit = ureg.C / ureg.meter**2
             return P(value=data[0] * unit, mod=data[1], vector=data[2:] * unit)
 
         atom_quantities = [
-            Quantity("label", r"atom label\s*=\s*(\w+)"),
-            Quantity("orbital", r"L=\d+, number of zeta\s*=\s*(\d+)", repeats=True),
+            Quantity('label', r'atom label\s*=\s*(\w+)'),
+            Quantity('orbital', r'L=\d+, number of zeta\s*=\s*(\d+)', repeats=True),
             Quantity(
-                "natoms",
-                r"number of atom for this type\s*=\s*(\d+)",
+                'natoms',
+                r'number of atom for this type\s*=\s*(\d+)',
             ),
             Quantity(
-                "start_magnetization",
-                r"start magnetization\s*=\s*(\w+)",
+                'start_magnetization',
+                r'start magnetization\s*=\s*(\w+)',
                 repeats=True,
-                str_operation=lambda x: x == "TRUE",
+                str_operation=lambda x: x == 'TRUE',
             ),
             Quantity(
-                "noncollinear_magnetization",
-                rf"noncollinear magnetization_x\s*=\s*({re_float})\n\s*noncollinear magnetization_y\s*=\s*({re_float})\n\s*noncollinear magnetization_z\s*=\s*({re_float})\n\s*",
+                'noncollinear_magnetization',
+                rf'noncollinear magnetization_x\s*=\s*({re_float})\n\s*noncollinear magnetization_y\s*=\s*({re_float})\n\s*noncollinear magnetization_z\s*=\s*({re_float})\n\s*',
                 dtype=float,
             ),
         ]
 
         structure_quantities = [
             Quantity(
-                "sites",
-                rf"tau[cd]_([a-zA-Z]+)\d+\s+({re_float})\s+({re_float})\s+({re_float})\s+({re_float})\s+({re_float})\s+({re_float})\s+({re_float})",
+                'sites',
+                rf'tau[cd]_([a-zA-Z]+)\d+\s+({re_float})\s+({re_float})\s+({re_float})\s+({re_float})\s+({re_float})\s+({re_float})\s+({re_float})',
                 repeats=True,
                 str_operation=str_to_sites,
             ),
             Quantity(
-                "sites",
-                rf"tau[cd]_([a-zA-Z]+)\d+\s+({re_float})\s+({re_float})\s+({re_float})\s+({re_float})",
+                'sites',
+                rf'tau[cd]_([a-zA-Z]+)\d+\s+({re_float})\s+({re_float})\s+({re_float})\s+({re_float})',
                 repeats=True,
                 str_operation=str_to_sites,
             ),
             Quantity(
-                "units",
-                rf"UNIT = ({re_float}) Bohr",
+                'units',
+                rf'UNIT = ({re_float}) Bohr',
                 dtype=float,
                 repeats=False,
-                unit="bohr",
+                unit='bohr',
             ),
             Quantity(
-                "coord_class",
-                r"(DIRECT) COORDINATES|(CARTESIAN) COORDINATES",
+                'coord_class',
+                r'(DIRECT) COORDINATES|(CARTESIAN) COORDINATES',
                 repeat=False,
                 str_operation=str_to_coordclass,
             ),
@@ -464,68 +464,68 @@ class ABACUSOutParser(TextParser):
 
         symmetry_quantities = [
             Quantity(
-                "lattice_vectors",
-                rf"LATTICE VECTORS: \(CARTESIAN COORDINATE: IN UNIT OF A0\)\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n",
+                'lattice_vectors',
+                rf'LATTICE VECTORS: \(CARTESIAN COORDINATE: IN UNIT OF A0\)\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n',
                 str_operation=str_to_matrix,
                 convert=False,
                 repeats=False,
             ),
-            Quantity("right_hand_lattice", r"right hand lattice\s*=\s*(\d+)"),
+            Quantity('right_hand_lattice', r'right hand lattice\s*=\s*(\d+)'),
             Quantity(
-                "norm_a",
-                rf"NORM_A\s*=\s*({re_float})",
+                'norm_a',
+                rf'NORM_A\s*=\s*({re_float})',
             ),
             Quantity(
-                "norm_b",
-                rf"NORM_B\s*=\s*({re_float})",
+                'norm_b',
+                rf'NORM_B\s*=\s*({re_float})',
             ),
             Quantity(
-                "norm_c",
-                rf"NORM_C\s*=\s*({re_float})",
+                'norm_c',
+                rf'NORM_C\s*=\s*({re_float})',
             ),
-            Quantity("alpha", rf"ALPHA\s*\(DEGREE\)\s*=\s*({re_float})"),
-            Quantity("beta", rf"BETA\s*\(DEGREE\)\s*=\s*({re_float})"),
-            Quantity("gamma", rf"GAMMA\s*\(DEGREE\)\s*=\s*({re_float})"),
-            Quantity("bravais_name", r"BRAVAIS LATTICE NAME\s*=\s*([.\w\(\)\- ]+)"),
-            Quantity("ibrav", r"IBRAV\s*=\s*([\w ]+)", dtype=int),
-            Quantity("number_of_rotation_matrices", r"ROTATION MATRICES\s*=\s*(\d+)"),
+            Quantity('alpha', rf'ALPHA\s*\(DEGREE\)\s*=\s*({re_float})'),
+            Quantity('beta', rf'BETA\s*\(DEGREE\)\s*=\s*({re_float})'),
+            Quantity('gamma', rf'GAMMA\s*\(DEGREE\)\s*=\s*({re_float})'),
+            Quantity('bravais_name', r'BRAVAIS LATTICE NAME\s*=\s*([.\w\(\)\- ]+)'),
+            Quantity('ibrav', r'IBRAV\s*=\s*([\w ]+)', dtype=int),
+            Quantity('number_of_rotation_matrices', r'ROTATION MATRICES\s*=\s*(\d+)'),
             Quantity(
-                "number_of_point_group_operations",
-                r"PURE POINT GROUP OPERATIONS\s*=\s*(\d+)",
+                'number_of_point_group_operations',
+                r'PURE POINT GROUP OPERATIONS\s*=\s*(\d+)',
             ),
             Quantity(
-                "number_of_space_group_operations",
-                r"SPACE GROUP OPERATIONS\s*=\s*(\d+)",
+                'number_of_space_group_operations',
+                r'SPACE GROUP OPERATIONS\s*=\s*(\d+)',
             ),
-            Quantity("point_group", r"POINT GROUP\s*=\s*([\w\_]+)", convert=False),
+            Quantity('point_group', r'POINT GROUP\s*=\s*([\w\_]+)', convert=False),
         ]
 
         orbital_quantities = [
             Quantity(
-                "delta_k",
-                rf"delta k\s*\(1/Bohr\)\s*=\s*({re_float})",
-                unit="1/bohr",
+                'delta_k',
+                rf'delta k\s*\(1/Bohr\)\s*=\s*({re_float})',
+                unit='1/bohr',
                 dtype=float,
             ),
             Quantity(
-                "delta_r",
-                rf"delta r\s*\(Bohr\)\s*=\s*({re_float})",
-                unit="bohr",
+                'delta_r',
+                rf'delta r\s*\(Bohr\)\s*=\s*({re_float})',
+                unit='bohr',
                 dtype=float,
             ),
             Quantity(
-                "dr_uniform",
-                rf"dr_uniform\s*\(Bohr\)\s*=\s*({re_float})",
-                unit="bohr",
+                'dr_uniform',
+                rf'dr_uniform\s*\(Bohr\)\s*=\s*({re_float})',
+                unit='bohr',
                 dtype=float,
             ),
             Quantity(
-                "rmax", rf"rmax\s*\(Bohr\)\s*=\s*({re_float})", unit="bohr", dtype=float
+                'rmax', rf'rmax\s*\(Bohr\)\s*=\s*({re_float})', unit='bohr', dtype=float
             ),
-            Quantity("kmesh", rf"kmesh\s*=\s*(\d+)", dtype=int),
+            Quantity('kmesh', rf'kmesh\s*=\s*(\d+)', dtype=int),
             Quantity(
-                "orbital_information",
-                r"ORBITAL\s*L\s*N\s*nr\s*dr\s*RCUT\s*CHECK_UNIT\s*NEW_UNIT\n([\s\S]+)SET NONLOCAL PSEUDOPOTENTIAL PROJECTORS",
+                'orbital_information',
+                r'ORBITAL\s*L\s*N\s*nr\s*dr\s*RCUT\s*CHECK_UNIT\s*NEW_UNIT\n([\s\S]+)SET NONLOCAL PSEUDOPOTENTIAL PROJECTORS',
                 convert=False,
                 str_operation=str_to_orbital,
                 repeats=True,
@@ -533,242 +533,242 @@ class ABACUSOutParser(TextParser):
         ]
 
         header_quantities = [
-            Quantity("number_of_species", r"ntype\s*=\s*(\d+)", dtype=int),
+            Quantity('number_of_species', r'ntype\s*=\s*(\d+)', dtype=int),
             Quantity(
-                "alat",
-                rf"lattice constant \(Bohr\)\s*=\s*({re_float})",
-                unit="bohr",
+                'alat',
+                rf'lattice constant \(Bohr\)\s*=\s*({re_float})',
+                unit='bohr',
                 dtype=float,
             ),
-            Quantity("atom_labels", r"atom label\s*=\s*(\w+)", repeats=True),
+            Quantity('atom_labels', r'atom label\s*=\s*(\w+)', repeats=True),
             Quantity(
-                "number_of_atoms_for_labels",
-                r"number of atom for this type\s*=\s*(\d+)",
+                'number_of_atoms_for_labels',
+                r'number of atom for this type\s*=\s*(\d+)',
                 repeats=True,
             ),
             Quantity(
-                "atom_data",
-                r"READING ATOM TYPE\s*\d+([\s\S]+?)\n\n",
+                'atom_data',
+                r'READING ATOM TYPE\s*\d+([\s\S]+?)\n\n',
                 repeats=True,
                 sub_parser=TextParser(quantities=atom_quantities),
                 convert=False,
             ),
-            Quantity("number_of_atoms", r"TOTAL ATOM NUMBER\s*=\s*(\d+)", dtype=int),
+            Quantity('number_of_atoms', r'TOTAL ATOM NUMBER\s*=\s*(\d+)', dtype=int),
             Quantity(
-                "positions",
-                rf"(CARTESIAN COORDINATES \( UNIT = {re_float} Bohr \)\.+\n\s*atom\s*x\s*y\s*z\s*mag(\s*vx\s*vy\s*vz\s*|\s*)\n[\s\S]+?)\n\n|(DIRECT COORDINATES\n\s*atom\s*x\s*y\s*z\s*mag(\s*vx\s*vy\s*vz\s*|\s*)\n[\s\S]+?)\n\n",
+                'positions',
+                rf'(CARTESIAN COORDINATES \( UNIT = {re_float} Bohr \)\.+\n\s*atom\s*x\s*y\s*z\s*mag(\s*vx\s*vy\s*vz\s*|\s*)\n[\s\S]+?)\n\n|(DIRECT COORDINATES\n\s*atom\s*x\s*y\s*z\s*mag(\s*vx\s*vy\s*vz\s*|\s*)\n[\s\S]+?)\n\n',
                 sub_parser=TextParser(quantities=structure_quantities),
                 convert=False,
                 repeats=False,
             ),
-            Quantity("orbital_files", r"orbital file:\s*(\S+)", repeats=True),
+            Quantity('orbital_files', r'orbital file:\s*(\S+)', repeats=True),
             Quantity(
-                "cell_volume",
-                rf"Volume \(Bohr\^3\)\s*=\s*({re_float})",
-                unit="bohr**3",
+                'cell_volume',
+                rf'Volume \(Bohr\^3\)\s*=\s*({re_float})',
+                unit='bohr**3',
                 dtype=float,
             ),
             Quantity(
-                "units", r"Lattice vectors: \(Cartesian coordinate: in unit of (\w+)\)"
+                'units', r'Lattice vectors: \(Cartesian coordinate: in unit of (\w+)\)'
             ),
             Quantity(
-                "lattice_vectors",
-                rf"Lattice vectors: \(Cartesian coordinate: in unit of a_0\)\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n",
+                'lattice_vectors',
+                rf'Lattice vectors: \(Cartesian coordinate: in unit of a_0\)\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n',
                 str_operation=str_to_matrix,
                 convert=False,
                 repeats=False,
             ),
             Quantity(
-                "reciprocal_units",
-                r"Reciprocal vectors: \(Cartesian coordinate: in unit of ([\w\/ ]+)\)",
+                'reciprocal_units',
+                r'Reciprocal vectors: \(Cartesian coordinate: in unit of ([\w\/ ]+)\)',
                 flatten=False,
             ),
             Quantity(
-                "reciprocal_vectors",
-                rf"Reciprocal vectors: \(Cartesian coordinate: in unit of 2 pi/a_0\)\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n",
+                'reciprocal_vectors',
+                rf'Reciprocal vectors: \(Cartesian coordinate: in unit of 2 pi/a_0\)\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n',
                 str_operation=str_to_matrix,
                 convert=False,
                 repeats=False,
             ),
             Quantity(
-                "pseudopotential",
-                r"(Read in pseudopotential file is [\s\S]+?\n\n)",
+                'pseudopotential',
+                r'(Read in pseudopotential file is [\s\S]+?\n\n)',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
-                        Quantity("filename", r"file is\s*(\S+)"),
+                        Quantity('filename', r'file is\s*(\S+)'),
                         Quantity(
-                            "type", r"pseudopotential type\s*=\s*(\w+)", flatten=False
+                            'type', r'pseudopotential type\s*=\s*(\w+)', flatten=False
                         ),
                         Quantity(
-                            "xc",
-                            r"exchange-correlation functional\s*=\s*(\w+)",
+                            'xc',
+                            r'exchange-correlation functional\s*=\s*(\w+)',
                             flatten=False,
                         ),
-                        Quantity("valence", rf"valence electrons\s*=\s*({re_float})"),
-                        Quantity("lmax", rf"lmax\s*=\s*({re_float})"),
+                        Quantity('valence', rf'valence electrons\s*=\s*({re_float})'),
+                        Quantity('lmax', rf'lmax\s*=\s*({re_float})'),
                         Quantity(
-                            "nzeta", rf"number of zeta\s*=\s*({re_float})", dtype=int
+                            'nzeta', rf'number of zeta\s*=\s*({re_float})', dtype=int
                         ),
                         Quantity(
-                            "nprojectors",
-                            rf"number of projectors\s*=\s*({re_float})",
+                            'nprojectors',
+                            rf'number of projectors\s*=\s*({re_float})',
                             dtype=int,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "fermi_energy_in",
-                rf"read in fermi energy\s*=\s*({re_float})",
+                'fermi_energy_in',
+                rf'read in fermi energy\s*=\s*({re_float})',
                 dtype=float,
                 repeats=True,
             ),
             Quantity(
                 xsection_method.x_abacus_pao_radial_cutoff,
-                rf"PAO radial cut off \(Bohr\)\s*=\s*({re_float})",
-                unit="bohr",
+                rf'PAO radial cut off \(Bohr\)\s*=\s*({re_float})',
+                unit='bohr',
                 dtype=float,
                 repeats=False,
             ),
             Quantity(
-                "number_of_electrons_out",
-                rf"total electron number of element \w+\s*=\s*(\d+)",
+                'number_of_electrons_out',
+                rf'total electron number of element \w+\s*=\s*(\d+)',
                 repeats=True,
             ),
-            Quantity("occupied_bands", rf"occupied bands\s*=\s*({re_float})"),
-            Quantity("nlocal", rf"NLOCAL\s*=\s*({re_float})", repeats=False),
-            Quantity("nbands", rf"NBANDS\s*=\s*({re_float})", repeats=False),
+            Quantity('occupied_bands', rf'occupied bands\s*=\s*({re_float})'),
+            Quantity('nlocal', rf'NLOCAL\s*=\s*({re_float})', repeats=False),
+            Quantity('nbands', rf'NBANDS\s*=\s*({re_float})', repeats=False),
             Quantity(
-                "symmetry",
-                r"(LATTICE VECTORS: \(CARTESIAN COORDINATE: IN UNIT OF A0\)\s*[\s\S]+?)\n\n",
+                'symmetry',
+                r'(LATTICE VECTORS: \(CARTESIAN COORDINATE: IN UNIT OF A0\)\s*[\s\S]+?)\n\n',
                 repeats=False,
                 sub_parser=TextParser(quantities=symmetry_quantities),
             ),
             Quantity(
-                "number_of_spin_channels",
-                r"nspin\s*=\s*(\d+)",
+                'number_of_spin_channels',
+                r'nspin\s*=\s*(\d+)',
                 dtype=int,
                 repeats=False,
             ),
             Quantity(
-                "ksampling_method",
-                r"Input type of k points\s*=\s*([\w\-\(\) ]+)",
+                'ksampling_method',
+                r'Input type of k points\s*=\s*([\w\-\(\) ]+)',
                 str_operation=lambda x: x,
             ),
-            Quantity("nkstot", r"nkstot\s*=\s*(\d+)", dtype=int),
-            Quantity("nkstot_ibz", r"nkstot_ibz\s*=\s*(\d+)", dtype=int),
+            Quantity('nkstot', r'nkstot\s*=\s*(\d+)', dtype=int),
+            Quantity('nkstot_ibz', r'nkstot_ibz\s*=\s*(\d+)', dtype=int),
             Quantity(
-                "k_points",
-                r"minimum distributed K point number\s*=\s*\d+([\s\S]+?DONE : INIT K-POINTS Time)",
+                'k_points',
+                r'minimum distributed K point number\s*=\s*\d+([\s\S]+?DONE : INIT K-POINTS Time)',
                 str_operation=str_to_kpoints,
             ),
             Quantity(
-                "density_cutoff",
-                rf"energy cutoff for charge/potential \(unit:Ry\)\s*=\s*({re_float})",
-                unit="rydberg",
+                'density_cutoff',
+                rf'energy cutoff for charge/potential \(unit:Ry\)\s*=\s*({re_float})',
+                unit='rydberg',
                 dtype=float,
             ),
             Quantity(
-                "density_fft_grid",
-                r"\[fft grid for charge/potential\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*",
+                'density_fft_grid',
+                r'\[fft grid for charge/potential\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*',
             ),
             Quantity(
-                "fft_grid_division",
-                r"\[fft grid division\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*",
+                'fft_grid_division',
+                r'\[fft grid division\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*',
             ),
-            Quantity("nbxx", r"nbxx\s*=\s*(\d+)"),
-            Quantity("nrxx", r"nrxx\s*=\s*(\d+)"),
+            Quantity('nbxx', r'nbxx\s*=\s*(\d+)'),
+            Quantity('nrxx', r'nrxx\s*=\s*(\d+)'),
             Quantity(
-                "number_of_pw_for_density",
-                r"SETUP PLANE WAVES FOR CHARGE/POTENTIAL\n\s*number of plane waves\s*=\s*(\d+)",
-            ),
-            Quantity(
-                "number_of_sticks_for_density",
-                r"SETUP PLANE WAVES FOR CHARGE/POTENTIAL\n.*\n\s*number of sticks\s*=\s*(\d+)\n",
+                'number_of_pw_for_density',
+                r'SETUP PLANE WAVES FOR CHARGE/POTENTIAL\n\s*number of plane waves\s*=\s*(\d+)',
             ),
             Quantity(
-                "parallel_pw_for_density",
-                r"PARALLEL PW FOR CHARGE/POTENTIAL\n\s*PROC\s*COLUMNS\(POT\)\s*PW\n([\s\S]+?)\-+",
+                'number_of_sticks_for_density',
+                r'SETUP PLANE WAVES FOR CHARGE/POTENTIAL\n.*\n\s*number of sticks\s*=\s*(\d+)\n',
+            ),
+            Quantity(
+                'parallel_pw_for_density',
+                r'PARALLEL PW FOR CHARGE/POTENTIAL\n\s*PROC\s*COLUMNS\(POT\)\s*PW\n([\s\S]+?)\-+',
                 str_operation=str_to_sticks,
                 convert=False,
             ),
-            Quantity("number_of_g", r"number of \|g\|\s*=\s*(\d+)"),
-            Quantity("max_g", rf"max \|g\|\s*=\s*({re_float})"),
-            Quantity("min_g", rf"min \|g\|\s*=\s*({re_float})"),
+            Quantity('number_of_g', r'number of \|g\|\s*=\s*(\d+)'),
+            Quantity('max_g', rf'max \|g\|\s*=\s*({re_float})'),
+            Quantity('min_g', rf'min \|g\|\s*=\s*({re_float})'),
             Quantity(
-                "wavefunction_cutoff",
-                rf"energy cutoff for wavefunc \(unit:Ry\)\s*=\s*({re_float})",
-                unit="rydberg",
+                'wavefunction_cutoff',
+                rf'energy cutoff for wavefunc \(unit:Ry\)\s*=\s*({re_float})',
+                unit='rydberg',
                 dtype=float,
             ),
             Quantity(
-                "wavefunction_fft_grid",
-                r"\[fft grid for wave functions\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*",
+                'wavefunction_fft_grid',
+                r'\[fft grid for wave functions\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*',
             ),
             Quantity(
-                "number_of_pw_for_wavefunction",
-                r"SETUP PLANE WAVES FOR WAVE FUNCTIONS\n[\s\S]+\s*number of plane waves\s*=\s*(\d+)",
+                'number_of_pw_for_wavefunction',
+                r'SETUP PLANE WAVES FOR WAVE FUNCTIONS\n[\s\S]+\s*number of plane waves\s*=\s*(\d+)',
             ),
             Quantity(
-                "number_of_sticks_for_wavefunction",
-                r"SETUP PLANE WAVES FOR WAVE FUNCTIONS\n[\s\S]+\s*number of sticks\s*=\s*(\d+)\n",
+                'number_of_sticks_for_wavefunction',
+                r'SETUP PLANE WAVES FOR WAVE FUNCTIONS\n[\s\S]+\s*number of sticks\s*=\s*(\d+)\n',
             ),
             Quantity(
-                "parallel_pw_for_wavefunction",
-                r"PARALLEL PW FOR WAVE FUNCTIONS\n\s*PROC\s*COLUMNS\(W\)\s*PW\n([\s\S]+?)\-+",
+                'parallel_pw_for_wavefunction',
+                r'PARALLEL PW FOR WAVE FUNCTIONS\n\s*PROC\s*COLUMNS\(W\)\s*PW\n([\s\S]+?)\-+',
                 str_operation=str_to_sticks,
                 convert=False,
             ),
-            Quantity("number_of_total_pw", r"number of total plane waves\s*=\s*(\d+)"),
+            Quantity('number_of_total_pw', r'number of total plane waves\s*=\s*(\d+)'),
             Quantity(
-                "total_number_of_nlocal_projectors",
-                r"TOTAL NUMBER OF NONLOCAL PROJECTORS\s*=\s*(\d+)",
+                'total_number_of_nlocal_projectors',
+                r'TOTAL NUMBER OF NONLOCAL PROJECTORS\s*=\s*(\d+)',
             ),
-            Quantity("init_chg", rf"init_chg\s*=\s*(\w+)"),
+            Quantity('init_chg', rf'init_chg\s*=\s*(\w+)'),
             Quantity(
-                "max_mesh_in_pp", rf"max mesh points in Pseudopotential\s*=\s*(\d+)"
+                'max_mesh_in_pp', rf'max mesh points in Pseudopotential\s*=\s*(\d+)'
             ),
             Quantity(
-                "dq", rf"dq\(describe PAO in reciprocal space\)\s*=\s*({re_float})"
+                'dq', rf'dq\(describe PAO in reciprocal space\)\s*=\s*({re_float})'
             ),
-            Quantity("max_q", rf"max q\s*=\s*({re_float})"),
+            Quantity('max_q', rf'max q\s*=\s*({re_float})'),
             Quantity(
-                "number_of_pseudo_ao",
-                r"number of pseudo atomic orbitals for (\w+) is (\d+)",
+                'number_of_pseudo_ao',
+                r'number of pseudo atomic orbitals for (\w+) is (\d+)',
                 repeats=True,
                 str_operation=str_to_dict,
                 convert=False,
             ),
             Quantity(
-                "orbital_settings",
-                r"SETUP ONE DIMENSIONAL ORBITALS/POTENTIAL\s*([\s\S]+?)SETUP THE TWO-CENTER INTEGRATION TABLES",
+                'orbital_settings',
+                r'SETUP ONE DIMENSIONAL ORBITALS/POTENTIAL\s*([\s\S]+?)SETUP THE TWO-CENTER INTEGRATION TABLES',
                 sub_parser=TextParser(quantities=orbital_quantities),
                 convert=False,
             ),
             Quantity(
-                "allocation_method",
-                r"divide the H&S matrix using ([\w ]+ algorithms\.\n[\s\S]+?)\n\n",
+                'allocation_method',
+                r'divide the H&S matrix using ([\w ]+ algorithms\.\n[\s\S]+?)\n\n',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "method",
-                            r"([\w ]+) algorithms",
+                            'method',
+                            r'([\w ]+) algorithms',
                             dtype=str,
                             str_operation=lambda x: x,
                         ),
-                        Quantity("nb2d", r"nb2d\s*=\s*(\d+)", dtype=int),
+                        Quantity('nb2d', r'nb2d\s*=\s*(\d+)', dtype=int),
                         Quantity(
-                            "trace_loc_row",
-                            r"trace_loc_row dimension\s*=\s*(\d+)",
+                            'trace_loc_row',
+                            r'trace_loc_row dimension\s*=\s*(\d+)',
                             dtype=int,
                         ),
                         Quantity(
-                            "trace_loc_col",
-                            r"trace_loc_row dimension\s*=\s*(\d+)",
+                            'trace_loc_col',
+                            r'trace_loc_row dimension\s*=\s*(\d+)',
                             dtype=int,
                         ),
-                        Quantity("nloc", r"nloc\s*=\s*(\d+)", dtype=int),
+                        Quantity('nloc', r'nloc\s*=\s*(\d+)', dtype=int),
                     ]
                 ),
             ),
@@ -776,78 +776,78 @@ class ABACUSOutParser(TextParser):
 
         search_quantities = [
             Quantity(
-                "search_adjacent_atoms",
-                r"SETUP SEARCHING RADIUS FOR PROGRAM TO SEARCH ADJACENT ATOMS\s*([\s\S]+?)\n\n",
+                'search_adjacent_atoms',
+                r'SETUP SEARCHING RADIUS FOR PROGRAM TO SEARCH ADJACENT ATOMS\s*([\s\S]+?)\n\n',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "longest_orb_rcut",
-                            rf"longest orb rcut \(Bohr\)\s*=\s*({re_float})",
-                            unit="bohr",
+                            'longest_orb_rcut',
+                            rf'longest orb rcut \(Bohr\)\s*=\s*({re_float})',
+                            unit='bohr',
                             dtype=float,
                         ),
                         Quantity(
-                            "longest_nonlocal_projector_rcut",
-                            rf"longest nonlocal projector rcut \(Bohr\)\s*=\s*({re_float})",
-                            unit="bohr",
+                            'longest_nonlocal_projector_rcut',
+                            rf'longest nonlocal projector rcut \(Bohr\)\s*=\s*({re_float})',
+                            unit='bohr',
                             dtype=float,
                         ),
                         Quantity(
-                            "searching_radius",
-                            rf"searching radius is \(Bohr\)\)\s*=\s*({re_float})",
-                            unit="bohr",
+                            'searching_radius',
+                            rf'searching radius is \(Bohr\)\)\s*=\s*({re_float})',
+                            unit='bohr',
                             dtype=float,
                         ),
                         Quantity(
-                            "searching_radius_unit",
-                            rf"searching radius unit is \(Bohr\)\)\s*=\s*({re_float})",
-                            unit="bohr",
+                            'searching_radius_unit',
+                            rf'searching radius unit is \(Bohr\)\)\s*=\s*({re_float})',
+                            unit='bohr',
                             dtype=float,
                         ),
                     ]
                 ),
             ),
             Quantity(
-                "grid_integration",
-                r"SETUP EXTENDED REAL SPACE GRID FOR GRID INTEGRATION\s*([\s\S]+?)\n\n",
+                'grid_integration',
+                r'SETUP EXTENDED REAL SPACE GRID FOR GRID INTEGRATION\s*([\s\S]+?)\n\n',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "read_space_grid",
-                            r"\[real space grid\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*",
+                            'read_space_grid',
+                            r'\[real space grid\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*',
                         ),
                         Quantity(
-                            "big_cell_numbers_in_grid",
-                            r"\[big cell numbers in grid\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*",
+                            'big_cell_numbers_in_grid',
+                            r'\[big cell numbers in grid\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*',
                         ),
                         Quantity(
-                            "meshcell_numbers_in_big_cell",
-                            r"\[meshcell numbers in big cell\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*",
+                            'meshcell_numbers_in_big_cell',
+                            r'\[meshcell numbers in big cell\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*',
                         ),
                         Quantity(
-                            "extended_fft_grid",
-                            r"\[extended fft grid\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*",
+                            'extended_fft_grid',
+                            r'\[extended fft grid\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*',
                         ),
                         Quantity(
-                            "extended_fft_grid_dim",
-                            r"\[dimension of extened grid\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*",
+                            'extended_fft_grid_dim',
+                            r'\[dimension of extened grid\]\s*=\s*(\d+)[,\s]*(\d+)[,\s]*(\d+)[,\s]*',
                         ),
                         Quantity(
-                            "atom_number",
-                            r"Atom number in sub-FFT-grid\s*=\s*(\d+)",
+                            'atom_number',
+                            r'Atom number in sub-FFT-grid\s*=\s*(\d+)',
                             dtype=int,
                         ),
                         Quantity(
-                            "local_orbitals_number",
-                            r"Local orbitals number in sub-FFT-grid\s*=\s*(\d+)",
+                            'local_orbitals_number',
+                            r'Local orbitals number in sub-FFT-grid\s*=\s*(\d+)',
                             dtype=int,
                         ),
-                        Quantity("nnr", r"ParaV\.nnr\s*=\s*(\d+)", dtype=int),
-                        Quantity("nnrg", r"nnrg\s*=\s*(\d+)", dtype=int),
-                        Quantity("nnrg_last", r"nnrg_last\s*=\s*(\d+)", dtype=int),
-                        Quantity("nnrg_now", r"nnrg_now\s*=\s*(\d+)", dtype=int),
-                        Quantity("lgd_last", r"nnrg_now\s*=\s*(\d+)", dtype=int),
-                        Quantity("lgd_now", r"nnrg_now\s*=\s*(\d+)", dtype=int),
+                        Quantity('nnr', r'ParaV\.nnr\s*=\s*(\d+)', dtype=int),
+                        Quantity('nnrg', r'nnrg\s*=\s*(\d+)', dtype=int),
+                        Quantity('nnrg_last', r'nnrg_last\s*=\s*(\d+)', dtype=int),
+                        Quantity('nnrg_now', r'nnrg_now\s*=\s*(\d+)', dtype=int),
+                        Quantity('lgd_last', r'nnrg_now\s*=\s*(\d+)', dtype=int),
+                        Quantity('lgd_now', r'nnrg_now\s*=\s*(\d+)', dtype=int),
                     ]
                 ),
             ),
@@ -855,186 +855,186 @@ class ABACUSOutParser(TextParser):
 
         calculation_quantities = [
             Quantity(
-                "energy_occupation",
-                r"(STATE ENERGY\(eV\) AND OCCUPATIONS\s*NSPIN\s*==\s*\d+[\s\S]+?(?:\n\n\s*EFERMI|\n\n\n))",
+                'energy_occupation',
+                r'(STATE ENERGY\(eV\) AND OCCUPATIONS\s*NSPIN\s*==\s*\d+[\s\S]+?(?:\n\n\s*EFERMI|\n\n\n))',
                 repeats=False,
                 str_operation=str_to_energy_occupation,
                 convert=False,
             ),
             Quantity(
-                "reference_fermi",
-                rf"EFERMI\s*=\s*({re_float})\s*eV",
-                unit="eV",
+                'reference_fermi',
+                rf'EFERMI\s*=\s*({re_float})\s*eV',
+                unit='eV',
                 dtype=float,
             ),
             Quantity(
-                "total",
-                rf"\s*final etot is\s*({re_float})\s*eV",
-                unit="eV",
+                'total',
+                rf'\s*final etot is\s*({re_float})\s*eV',
+                unit='eV',
                 dtype=float,
             ),
             Quantity(
-                "forces",
-                r"TOTAL\-FORCE\s*\(eV/Angstrom\)\n\n.*\s*atom\s*x\s*y\s*z\n([\s\S]+?)\n\n",
+                'forces',
+                r'TOTAL\-FORCE\s*\(eV/Angstrom\)\n\n.*\s*atom\s*x\s*y\s*z\n([\s\S]+?)\n\n',
                 str_operation=str_to_force,
                 convert=False,
             ),
             Quantity(
-                "stress",
-                rf"(?:TOTAL\-|MD\s*)STRESS\s*\(KBAR\)\n\n.*\n\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n",
+                'stress',
+                rf'(?:TOTAL\-|MD\s*)STRESS\s*\(KBAR\)\n\n.*\n\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n',
                 str_operation=str_to_matrix,
-                unit="kilobar",
+                unit='kilobar',
                 convert=False,
             ),
             Quantity(
-                "pressure",
-                rf"TOTAL\-PRESSURE:\s*({re_float})\s*KBAR",
-                unit="kilobar",
+                'pressure',
+                rf'TOTAL\-PRESSURE:\s*({re_float})\s*KBAR',
+                unit='kilobar',
                 dtype=float,
             ),
             Quantity(
-                "positions",
-                rf"(CARTESIAN COORDINATES \( UNIT = {re_float} Bohr \)\.+\n\s*atom\s*x\s*y\s*z\s*mag\s*vx\s*vy\s*vz\s*\n[\s\S]+?)\n\n|(DIRECT COORDINATES\n\s*atom\s*x\s*y\s*z\s*mag\s*vx\s*vy\s*vz\s*\n[\s\S]+?)\n\n",
+                'positions',
+                rf'(CARTESIAN COORDINATES \( UNIT = {re_float} Bohr \)\.+\n\s*atom\s*x\s*y\s*z\s*mag\s*vx\s*vy\s*vz\s*\n[\s\S]+?)\n\n|(DIRECT COORDINATES\n\s*atom\s*x\s*y\s*z\s*mag\s*vx\s*vy\s*vz\s*\n[\s\S]+?)\n\n',
                 sub_parser=TextParser(quantities=structure_quantities),
                 convert=False,
             ),
             Quantity(
-                "cell_volume",
-                rf"Volume \(Bohr\^3\)\s*=\s*({re_float})",
-                unit="bohr**3",
+                'cell_volume',
+                rf'Volume \(Bohr\^3\)\s*=\s*({re_float})',
+                unit='bohr**3',
                 dtype=float,
             ),
             Quantity(
-                "units", r"Lattice vectors: \(Cartesian coordinate: in unit of (\w+)\)"
+                'units', r'Lattice vectors: \(Cartesian coordinate: in unit of (\w+)\)'
             ),
             Quantity(
-                "lattice_vectors",
-                rf"Lattice vectors: \(Cartesian coordinate: in unit of a_0\)\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n",
+                'lattice_vectors',
+                rf'Lattice vectors: \(Cartesian coordinate: in unit of a_0\)\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n',
                 str_operation=str_to_matrix,
                 convert=False,
                 repeats=False,
             ),
             Quantity(
-                "reciprocal_units",
-                r"Reciprocal vectors: \(Cartesian coordinate: in unit of ([\w\/ ]+)\)",
+                'reciprocal_units',
+                r'Reciprocal vectors: \(Cartesian coordinate: in unit of ([\w\/ ]+)\)',
                 flatten=False,
             ),
             Quantity(
-                "reciprocal_vectors",
-                rf"Reciprocal vectors: \(Cartesian coordinate: in unit of 2 pi/a_0\)\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n",
+                'reciprocal_vectors',
+                rf'Reciprocal vectors: \(Cartesian coordinate: in unit of 2 pi/a_0\)\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n\s*({re_float})\s*({re_float})\s*({re_float})\n',
                 str_operation=str_to_matrix,
                 convert=False,
                 repeats=False,
             ),
             Quantity(
-                "k_points",
-                r"minimum distributed K point number\s*=\s*\d+([\s\S]+?DONE : INIT K-POINTS Time)",
+                'k_points',
+                r'minimum distributed K point number\s*=\s*\d+([\s\S]+?DONE : INIT K-POINTS Time)',
                 str_operation=str_to_kpoints,
             ),
         ] + search_quantities
 
         scf_quantities = [
             Quantity(
-                "iteration",
-                rf"(ELEC\s*=\s*[+\d]+\s*\-+[\s\S]+?\s*E_Fermi\s*{re_float}\s*{re_float})\n",
+                'iteration',
+                rf'(ELEC\s*=\s*[+\d]+\s*\-+[\s\S]+?\s*E_Fermi\s*{re_float}\s*{re_float})\n',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
-                        Quantity("elec_step", r"ELEC\s*=\s*[+]?(\d+)", dtype=int),
+                        Quantity('elec_step', r'ELEC\s*=\s*[+]?(\d+)', dtype=int),
                         Quantity(
-                            "density_error",
-                            rf"Density error is\s*({re_float})",
+                            'density_error',
+                            rf'Density error is\s*({re_float})',
                             dtype=float,
                         ),
                         Quantity(
-                            "energy_total_scf_iteration",
-                            rf"E_KohnSham\s*{re_float}\s*({re_float})",
+                            'energy_total_scf_iteration',
+                            rf'E_KohnSham\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "x_abacus_energy_total_harris_foulkes_estimate",
-                            rf"E_Harris\s*{re_float}\s*({re_float})",
+                            'x_abacus_energy_total_harris_foulkes_estimate',
+                            rf'E_Harris\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "e_fermi",
-                            rf"E_Fermi\s*{re_float}\s*({re_float})",
+                            'e_fermi',
+                            rf'E_Fermi\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "e_band",
-                            rf"E_band\s*{re_float}\s*({re_float})",
+                            'e_band',
+                            rf'E_band\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "e_one_elec",
-                            rf"E_one_elec\s*{re_float}\s*({re_float})",
+                            'e_one_elec',
+                            rf'E_one_elec\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "correction_hartree",
-                            rf"E_Hartree\s*{re_float}\s*({re_float})",
+                            'correction_hartree',
+                            rf'E_Hartree\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "XC_functional",
-                            rf"E_xc\s*{re_float}\s*({re_float})",
+                            'XC_functional',
+                            rf'E_xc\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "e_ewald",
-                            rf"E_ewald\s*{re_float}\s*({re_float})",
+                            'e_ewald',
+                            rf'E_ewald\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "e_demet",
-                            rf"E_demet\s*{re_float}\s*({re_float})",
+                            'e_demet',
+                            rf'E_demet\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "e_descf",
-                            rf"E_descf\s*{re_float}\s*({re_float})",
+                            'e_descf',
+                            rf'E_descf\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "e_efield",
-                            rf"E_efield\s*{re_float}\s*({re_float})",
+                            'e_efield',
+                            rf'E_efield\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "hartree_fock_X_scaled",
-                            rf"E_exx\s*{re_float}\s*({re_float})",
+                            'hartree_fock_X_scaled',
+                            rf'E_exx\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "e_vdw",
-                            rf"E_vdwD\d+\s*{re_float}\s*({re_float})",
+                            'e_vdw',
+                            rf'E_vdwD\d+\s*{re_float}\s*({re_float})',
                             dtype=float,
-                            unit="eV",
+                            unit='eV',
                         ),
                         Quantity(
-                            "magnetization_total",
-                            rf"total magnetism \(Bohr mag/cell\)\s*({re_float})\s*({re_float})\s*({re_float})",
+                            'magnetization_total',
+                            rf'total magnetism \(Bohr mag/cell\)\s*({re_float})\s*({re_float})\s*({re_float})',
                             dtype=float,
-                            unit="bohr_magneton",
+                            unit='bohr_magneton',
                         ),
                         Quantity(
-                            "magnetization_absolute",
-                            rf"absolute magnetism \(Bohr mag/cell\)\s*=\s*({re_float})",
+                            'magnetization_absolute',
+                            rf'absolute magnetism \(Bohr mag/cell\)\s*=\s*({re_float})',
                             dtype=float,
-                            unit="bohr_magneton",
+                            unit='bohr_magneton',
                         ),
                     ]
                 ),
@@ -1043,60 +1043,60 @@ class ABACUSOutParser(TextParser):
 
         nscf_quantities = [
             Quantity(
-                "band_structure",
-                r"(band eigenvalue in this processor \(eV\)\s*:\n[\s\S]+?\n\n\n)",
+                'band_structure',
+                r'(band eigenvalue in this processor \(eV\)\s*:\n[\s\S]+?\n\n\n)',
                 str_operation=str_to_bandstructure,
                 convert=False,
             ),
             Quantity(
-                "min_state_energy",
-                rf"min state energy (eV)\s*=\s*({re_float})",
-                unit="eV",
+                'min_state_energy',
+                rf'min state energy (eV)\s*=\s*({re_float})',
+                unit='eV',
                 dtype=float,
                 repeats=True,
             ),
             Quantity(
-                "max_state_energy",
-                rf"max state energy (eV)\s*=\s*({re_float})",
-                unit="eV",
+                'max_state_energy',
+                rf'max state energy (eV)\s*=\s*({re_float})',
+                unit='eV',
                 dtype=float,
                 repeats=True,
             ),
             Quantity(
-                "delta_energy",
-                rf"delta energy interval (eV)\s*=\s*({re_float})",
-                unit="eV",
+                'delta_energy',
+                rf'delta energy interval (eV)\s*=\s*({re_float})',
+                unit='eV',
                 dtype=float,
                 repeats=True,
             ),
             Quantity(
-                "nbands", rf"number of bands\s*=\s*(\d+)", dtype=int, repeats=True
+                'nbands', rf'number of bands\s*=\s*(\d+)', dtype=int, repeats=True
             ),
             Quantity(
-                "sum_bands", rf"sum up the states\s*=\s*(\d+)", dtype=int, repeats=True
+                'sum_bands', rf'sum up the states\s*=\s*(\d+)', dtype=int, repeats=True
             ),
             Quantity(
-                "fermi_energy_dos",
-                rf"Fermi energy (?:\(spin = \d+\)\s*|\s*)is\s*({re_float})\s*Rydberg",
+                'fermi_energy_dos',
+                rf'Fermi energy (?:\(spin = \d+\)\s*|\s*)is\s*({re_float})\s*Rydberg',
                 dtype=float,
                 repeats=False,
             ),
-            Quantity("ionic_phase", rf"The Ionic Phase:\s*({re_float})", dtype=float),
+            Quantity('ionic_phase', rf'The Ionic Phase:\s*({re_float})', dtype=float),
             Quantity(
-                "electronic_phase", rf"Electronic Phase:\s*({re_float})", dtype=float
+                'electronic_phase', rf'Electronic Phase:\s*({re_float})', dtype=float
             ),
             Quantity(
-                "polarization",
-                r"(The calculated polarization direction is in \w+ direction[\s\S]+?C/m\^2)",
+                'polarization',
+                r'(The calculated polarization direction is in \w+ direction[\s\S]+?C/m\^2)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "direction",
-                            r"The calculated polarization direction is in (\w+) direction",
+                            'direction',
+                            r'The calculated polarization direction is in (\w+) direction',
                         ),
                         Quantity(
-                            "P",
-                            rf"P\s*=\s*({re_float})\s*\(mod\s*({re_float})\)\s*\(\s*({re_float}),\s*({re_float}),\s*({re_float})\)\s*C/m\^2",
+                            'P',
+                            rf'P\s*=\s*({re_float})\s*\(mod\s*({re_float})\)\s*\(\s*({re_float}),\s*({re_float}),\s*({re_float})\)\s*C/m\^2',
                             str_operation=str_to_polarization,
                             convert=False,
                         ),
@@ -1107,13 +1107,13 @@ class ABACUSOutParser(TextParser):
 
         relax_quantities = [
             Quantity(
-                "ion_step",
-                r"(?:STEP OF ION RELAXATION\s*:\s*|RELAX IONS\s*:\s*\d+\s*\(in total:\s*)(\d+)",
+                'ion_step',
+                r'(?:STEP OF ION RELAXATION\s*:\s*|RELAX IONS\s*:\s*\d+\s*\(in total:\s*)(\d+)',
                 dtype=int,
             ),
             Quantity(
-                "self_consistent",
-                r"((?:STEP OF ION RELAXATION|RELAX IONS)\s*:\s*\d+[\s\S]+?(?:Setup the|\!FINAL_ETOT_IS))",
+                'self_consistent',
+                r'((?:STEP OF ION RELAXATION|RELAX IONS)\s*:\s*\d+[\s\S]+?(?:Setup the|\!FINAL_ETOT_IS))',
                 repeats=False,
                 sub_parser=TextParser(quantities=scf_quantities),
             ),
@@ -1121,8 +1121,8 @@ class ABACUSOutParser(TextParser):
 
         fullscf_quantities = [
             Quantity(
-                "self_consistent",
-                r"([^NON]SELF-CONSISTENT[\s\S]+?\!FINAL_ETOT_IS)",
+                'self_consistent',
+                r'([^NON]SELF-CONSISTENT[\s\S]+?\!FINAL_ETOT_IS)',
                 repeats=False,
                 sub_parser=TextParser(quantities=scf_quantities),
             )
@@ -1130,151 +1130,151 @@ class ABACUSOutParser(TextParser):
 
         nonscf_quantities = [
             Quantity(
-                "nonself_consistent",
-                r"(NONSELF\-CONSISTENT[\s\S]+?\|CLASS_NAME)",
+                'nonself_consistent',
+                r'(NONSELF\-CONSISTENT[\s\S]+?\|CLASS_NAME)',
                 repeats=False,
                 sub_parser=TextParser(quantities=nscf_quantities),
             )
         ]
 
         md_quantities = [
-            Quantity("md_step", r"STEP OF MOLECULAR DYNAMICS\s*:\s*(\d+)", dtype=int),
+            Quantity('md_step', r'STEP OF MOLECULAR DYNAMICS\s*:\s*(\d+)', dtype=int),
             Quantity(
-                "self_consistent",
-                r"(STEP OF MOLECULAR DYNAMICS\s*:\s*\d+[\s\S]+?Energy\s*Potential\s*Kinetic)",
+                'self_consistent',
+                r'(STEP OF MOLECULAR DYNAMICS\s*:\s*\d+[\s\S]+?Energy\s*Potential\s*Kinetic)',
                 repeats=False,
                 sub_parser=TextParser(quantities=scf_quantities),
             ),
             Quantity(
-                "energy",
-                rf"Energy\s*Potential\s*Kinetic\s*Temperature\s*(?:Pressure \(KBAR\)\s*\n|\n)\s*({re_float})",
+                'energy',
+                rf'Energy\s*Potential\s*Kinetic\s*Temperature\s*(?:Pressure \(KBAR\)\s*\n|\n)\s*({re_float})',
                 dtype=float,
-                unit="hartree",
+                unit='hartree',
             ),
             Quantity(
-                "potential",
-                rf"Energy\s*Potential\s*Kinetic\s*Temperature\s*(?:Pressure \(KBAR\)\s*\n|\n)\s*{re_float}\s*({re_float})",
+                'potential',
+                rf'Energy\s*Potential\s*Kinetic\s*Temperature\s*(?:Pressure \(KBAR\)\s*\n|\n)\s*{re_float}\s*({re_float})',
                 dtype=float,
-                unit="hartree",
+                unit='hartree',
             ),
             Quantity(
-                "electronic_kinetic_energy",
-                rf"Energy\s*Potential\s*Kinetic\s*Temperature\s*(?:Pressure \(KBAR\)\s*\n|\n)\s*{re_float}\s*{re_float}\s*({re_float})",
+                'electronic_kinetic_energy',
+                rf'Energy\s*Potential\s*Kinetic\s*Temperature\s*(?:Pressure \(KBAR\)\s*\n|\n)\s*{re_float}\s*{re_float}\s*({re_float})',
                 dtype=float,
-                unit="hartree",
+                unit='hartree',
             ),
             Quantity(
-                "temperature",
-                rf"Energy\s*Potential\s*Kinetic\s*Temperature\s*(?:Pressure \(KBAR\)\s*\n|\n)\s*{re_float}\s*{re_float}\s*{re_float}\s*({re_float})",
+                'temperature',
+                rf'Energy\s*Potential\s*Kinetic\s*Temperature\s*(?:Pressure \(KBAR\)\s*\n|\n)\s*{re_float}\s*{re_float}\s*{re_float}\s*({re_float})',
                 dtype=float,
-                unit="kelvin",
+                unit='kelvin',
             ),
             Quantity(
-                "pressure",
-                rf"Energy\s*Potential\s*Kinetic\s*Temperature\s*Pressure \(KBAR\)\s*\n\s*{re_float}\s*{re_float}\s*{re_float}\s*{re_float}\s*({re_float})",
+                'pressure',
+                rf'Energy\s*Potential\s*Kinetic\s*Temperature\s*Pressure \(KBAR\)\s*\n\s*{re_float}\s*{re_float}\s*{re_float}\s*{re_float}\s*({re_float})',
                 dtype=float,
-                unit="kilobar",
+                unit='kilobar',
             ),
         ]
 
         self._quantities = [
             Quantity(
-                "program_version",
-                r"Version:\s*(.*)\n",
-                str_operation=lambda x: "".join(x),
+                'program_version',
+                r'Version:\s*(.*)\n',
+                str_operation=lambda x: ''.join(x),
             ),
-            Quantity("nproc", r"Processor Number is\s*(\d+)\n", dtype=int),
+            Quantity('nproc', r'Processor Number is\s*(\d+)\n', dtype=int),
             Quantity(
-                "start_date_time",
-                r"Start Time is\s*(.*)\n",
-                str_operation=lambda x: "".join(x),
-            ),
-            Quantity(
-                "input_filename",
-                r"global_in_card\s*=\s*(.*)\n",
+                'start_date_time',
+                r'Start Time is\s*(.*)\n',
+                str_operation=lambda x: ''.join(x),
             ),
             Quantity(
-                "pseudopotential_dirname",
-                r"pseudo_dir\s*=\s*([.\w\-\\ ]*?)",
+                'input_filename',
+                r'global_in_card\s*=\s*(.*)\n',
             ),
             Quantity(
-                "basis_set_dirname",
-                r"orbital_dir\s*=\s*([.\w\-\\ ]*?)",
+                'pseudopotential_dirname',
+                r'pseudo_dir\s*=\s*([.\w\-\\ ]*?)',
             ),
-            Quantity("drank", r"DRANK\s*=\s*(\d+)\n", dtype=int),
-            Quantity("dsize", r"DSIZE\s*=\s*(\d+)\n", dtype=int),
-            Quantity("dcolor", r"DCOLOR\s*=\s*(\d+)\n", dtype=int),
-            Quantity("grank", r"GRANK\s*=\s*(\d+)\n", dtype=int),
-            Quantity("gsize", r"GSIZE\s*=\s*(\d+)\n", dtype=int),
             Quantity(
-                "header",
-                r"READING GENERAL INFORMATION([\s\S]+?)(?:[NON]*SELF-|STEP OF|RELAX CELL)",
+                'basis_set_dirname',
+                r'orbital_dir\s*=\s*([.\w\-\\ ]*?)',
+            ),
+            Quantity('drank', r'DRANK\s*=\s*(\d+)\n', dtype=int),
+            Quantity('dsize', r'DSIZE\s*=\s*(\d+)\n', dtype=int),
+            Quantity('dcolor', r'DCOLOR\s*=\s*(\d+)\n', dtype=int),
+            Quantity('grank', r'GRANK\s*=\s*(\d+)\n', dtype=int),
+            Quantity('gsize', r'GSIZE\s*=\s*(\d+)\n', dtype=int),
+            Quantity(
+                'header',
+                r'READING GENERAL INFORMATION([\s\S]+?)(?:[NON]*SELF-|STEP OF|RELAX CELL)',
                 sub_parser=TextParser(quantities=header_quantities),
             ),
             Quantity(
-                "full_scf",
-                r"([^NON]SELF-CONSISTENT[\s\S]+?)Total\s*Time",
+                'full_scf',
+                r'([^NON]SELF-CONSISTENT[\s\S]+?)Total\s*Time',
                 sub_parser=TextParser(quantities=fullscf_quantities),
                 repeats=True,
             ),
             Quantity(
-                "non_scf",
-                r"(NONSELF-CONSISTENT[\s\S]+?)Total\s*Time",
+                'non_scf',
+                r'(NONSELF-CONSISTENT[\s\S]+?)Total\s*Time',
                 sub_parser=TextParser(quantities=nonscf_quantities),
                 repeats=True,
             ),
             Quantity(
-                "geometry_optimization",
-                r"((STEP OF ION RELAXATION|RELAX IONS)\s*:\s*\d+[\s\S]+?(Setup the|\!FINAL_ETOT_IS))",
+                'geometry_optimization',
+                r'((STEP OF ION RELAXATION|RELAX IONS)\s*:\s*\d+[\s\S]+?(Setup the|\!FINAL_ETOT_IS))',
                 sub_parser=TextParser(quantities=relax_quantities),
                 repeats=True,
             ),
             Quantity(
-                "ion_converged",
-                r"Ion relaxation \(is converged!\)",
+                'ion_converged',
+                r'Ion relaxation \(is converged!\)',
                 str_operation=lambda x: True,
             ),
             Quantity(
-                "force_threshold",
-                rf"Ion relaxation is not converged yet \(threshold is\s*({re_float})\)",
-                unit="eV/angstrom",
+                'force_threshold',
+                rf'Ion relaxation is not converged yet \(threshold is\s*({re_float})\)',
+                unit='eV/angstrom',
                 repeats=False,
             ),
             Quantity(
-                "lattice_converged",
-                r"Lattice relaxation \(is converged!\)",
+                'lattice_converged',
+                r'Lattice relaxation \(is converged!\)',
                 str_operation=lambda x: True,
             ),
             Quantity(
-                "stress_threshold",
-                rf"Lattice relaxation is not converged yet \(threshold is\s*({re_float})\)",
-                unit="kilobar",
+                'stress_threshold',
+                rf'Lattice relaxation is not converged yet \(threshold is\s*({re_float})\)',
+                unit='kilobar',
                 repeats=False,
             ),
             Quantity(
-                "molecular_dynamics",
-                r"(STEP OF MOLECULAR DYNAMICS\s*:\s*\d+[\s\S]+?(?:\n{4,5}))",
+                'molecular_dynamics',
+                r'(STEP OF MOLECULAR DYNAMICS\s*:\s*\d+[\s\S]+?(?:\n{4,5}))',
                 sub_parser=TextParser(quantities=md_quantities),
                 repeats=True,
             ),
             Quantity(
-                "final_energy",
-                rf"\!FINAL_ETOT_IS\s*({re_float})",
+                'final_energy',
+                rf'\!FINAL_ETOT_IS\s*({re_float})',
                 dtype=float,
-                unit="eV",
+                unit='eV',
             ),
             Quantity(
-                "finish_date_time",
-                r"Finish\s*Time\s*:\s*(.*)\n",
-                str_operation=lambda x: "".join(x),
+                'finish_date_time',
+                r'Finish\s*Time\s*:\s*(.*)\n',
+                str_operation=lambda x: ''.join(x),
             ),
             Quantity(
-                "total_time",
-                rf"Total\s*Time\s*:\s*(\d+)\s*h\s*(\d+)\s*mins\s*(\d+)\s*secs",
+                'total_time',
+                rf'Total\s*Time\s*:\s*(\d+)\s*h\s*(\d+)\s*mins\s*(\d+)\s*secs',
                 str_operation=lambda x: int(x.strip().split()[0]) * 3600
                 + int(x.strip().split()[1]) * 60
                 + int(x.strip().split()[2]),
-                unit="seconds",
+                unit='seconds',
             ),
         ]
 
@@ -1291,96 +1291,96 @@ class ABACUSParser:
         self.sampling_method = None
 
         self._xc_map = {
-            "PWLDA": [{"name": "LDA_C_PW"}, {"name": "LDA_X"}],
-            "PZ": [{"name": "LDA_C_PZ"}, {"name": "LDA_X"}],
-            "LDA": [{"name": "LDA_C_PZ"}, {"name": "LDA_X"}],
-            "BLYP": [{"name": "GGA_C_LYP"}, {"name": "GGA_X_B88"}],
-            "BP": [{"name": "GGA_C_P86"}, {"name": "GGA_X_B88"}],
-            "PBE": [{"name": "GGA_C_PBE"}, {"name": "GGA_X_PBE"}],
-            "RPBE": [{"name": "GGA_C_PBE"}, {"name": "GGA_X_RPBE"}],
-            "WC": [{"name": "GGA_C_PBE"}, {"name": "GGA_X_WC"}],
-            "PW91": [{"name": "GGA_C_PW91"}, {"name": "GGA_X_PW91"}],
-            "HCTH": [{"name": "GGA_C_HCTH_A"}, {"name": "GGA_X_HCTH_A"}],
-            "OLYP": [{"name": "GGA_C_LYP"}, {"name": "GGA_X_OPTX"}],
-            "REVPBE": [{"name": "GGA_C_PBE"}, {"name": "GGA_X_PBE_R"}],
-            "SCAN": [{"name": "MGGA_C_SCAN"}, {"name": "MGGA_X_SCAN"}],
-            "HF": [{"name": "HF_X"}],
-            "HSE": [{"name": "HYB_GGA_XC_HSE06"}],
-            "PBE0": [
-                {"name": "GGA_C_PBE"},
+            'PWLDA': [{'name': 'LDA_C_PW'}, {'name': 'LDA_X'}],
+            'PZ': [{'name': 'LDA_C_PZ'}, {'name': 'LDA_X'}],
+            'LDA': [{'name': 'LDA_C_PZ'}, {'name': 'LDA_X'}],
+            'BLYP': [{'name': 'GGA_C_LYP'}, {'name': 'GGA_X_B88'}],
+            'BP': [{'name': 'GGA_C_P86'}, {'name': 'GGA_X_B88'}],
+            'PBE': [{'name': 'GGA_C_PBE'}, {'name': 'GGA_X_PBE'}],
+            'RPBE': [{'name': 'GGA_C_PBE'}, {'name': 'GGA_X_RPBE'}],
+            'WC': [{'name': 'GGA_C_PBE'}, {'name': 'GGA_X_WC'}],
+            'PW91': [{'name': 'GGA_C_PW91'}, {'name': 'GGA_X_PW91'}],
+            'HCTH': [{'name': 'GGA_C_HCTH_A'}, {'name': 'GGA_X_HCTH_A'}],
+            'OLYP': [{'name': 'GGA_C_LYP'}, {'name': 'GGA_X_OPTX'}],
+            'REVPBE': [{'name': 'GGA_C_PBE'}, {'name': 'GGA_X_PBE_R'}],
+            'SCAN': [{'name': 'MGGA_C_SCAN'}, {'name': 'MGGA_X_SCAN'}],
+            'HF': [{'name': 'HF_X'}],
+            'HSE': [{'name': 'HYB_GGA_XC_HSE06'}],
+            'PBE0': [
+                {'name': 'GGA_C_PBE'},
                 {
-                    "name": "GGA_X_PBE",
-                    "weight": lambda x: 0.75 if x is None else 1.0 - x,
+                    'name': 'GGA_X_PBE',
+                    'weight': lambda x: 0.75 if x is None else 1.0 - x,
                 },
-                {"name": "HF_X", "weight": lambda x: 0.25 if x is None else x},
+                {'name': 'HF_X', 'weight': lambda x: 0.25 if x is None else x},
             ],
         }
 
     def parse_configurations(self):
         sec_run = self.archive.run[-1]
-        header = self.out_parser.get("header", {})
-        nspin_ori = header.get("number_of_spin_channels")
+        header = self.out_parser.get('header', {})
+        nspin_ori = header.get('number_of_spin_channels')
         nspin = 1 if nspin_ori == 4 else nspin_ori
-        nbands = header.get("nbands")
+        nbands = header.get('nbands')
 
         def parse_bandstructure(section):
             sec_scc = Calculation()
             sec_run.calculation.append(sec_scc)
-            sec_nscf = section.get("nonself_consistent")
+            sec_nscf = section.get('nonself_consistent')
 
             # atom data
             parse_system()
 
             # search adjacent atoms
-            searching_sec = sec_nscf.get("search_adjacent_atoms")
+            searching_sec = sec_nscf.get('search_adjacent_atoms')
             if searching_sec is not None:
                 for key in [
-                    "longest_orb_rcut",
-                    "longest_nonlocal_projector_rcut",
-                    "searching_radius",
-                    "searching_radius_unit",
+                    'longest_orb_rcut',
+                    'longest_nonlocal_projector_rcut',
+                    'searching_radius',
+                    'searching_radius_unit',
                 ]:
                     val = searching_sec.get(key)
                     if val:
-                        setattr(sec_scc, f"x_abacus_{key}", val)
+                        setattr(sec_scc, f'x_abacus_{key}', val)
 
             # grid_integration
-            grid_sec = sec_nscf.get("grid_integration")
+            grid_sec = sec_nscf.get('grid_integration')
             if grid_sec is not None:
                 for key in [
-                    "read_space_grid",
-                    "big_cell_numbers_in_grid",
-                    "meshcell_numbers_in_big_cell",
-                    "extended_fft_grid",
-                    "extended_fft_grid_dim",
+                    'read_space_grid',
+                    'big_cell_numbers_in_grid',
+                    'meshcell_numbers_in_big_cell',
+                    'extended_fft_grid',
+                    'extended_fft_grid_dim',
                 ]:
                     val = grid_sec.get(key)
                     if val is not None:
-                        setattr(sec_scc, f"x_abacus_{key}", val)
+                        setattr(sec_scc, f'x_abacus_{key}', val)
 
             sec_k_band = BandStructure()
             sec_scc.band_structure_electronic.append(sec_k_band)
             sec_k_band.reciprocal_cell = sec_run.system[-1].x_abacus_reciprocal_vectors
 
             # get efermi
-            efermi = header.get("fermi_energy_in")
+            efermi = header.get('fermi_energy_in')
             if efermi is None:
-                efermi = sec_nscf.get("fermi_energy_dos")
+                efermi = sec_nscf.get('fermi_energy_dos')
             if efermi is not None:
                 # fermi energy is not spin-dependent
                 sec_k_band.energy_fermi = efermi * ureg.rydberg
 
             band_k_points = []
             band_energies = []
-            for slabel, data in sec_nscf.get("band_structure").items():
+            for slabel, data in sec_nscf.get('band_structure').items():
                 for state in data:
-                    if slabel == "up":
+                    if slabel == 'up':
                         band_k_points.append(state.kpoint.tolist())
                     band_energies.append(state.energies.tolist())
             sec_k_band_segment = BandEnergies()
             sec_k_band.segment.append(sec_k_band_segment)
             sec_k_band_segment.kpoints = np.dot(
-                np.linalg.inv(header.get("reciprocal_vectors")),
+                np.linalg.inv(header.get('reciprocal_vectors')),
                 np.array(band_k_points).T,
             ).T
             sec_k_band_segment.energies = (
@@ -1391,7 +1391,7 @@ class ABACUSParser:
             sec_scc = sec_run.calculation[-1]
 
             # parse TDOS file
-            tdos_file = "TDOS"
+            tdos_file = 'TDOS'
             if tdos_file not in os.listdir(self.out_parser.maindir):
                 return
             self.tdos_parser.mainfile = os.path.join(self.out_parser.maindir, tdos_file)
@@ -1416,7 +1416,7 @@ class ABACUSParser:
             sec_scf = ScfIteration()
             sec_scc.scf_iteration.append(sec_scf)
 
-            density_errors = iteration.get("density_error")
+            density_errors = iteration.get('density_error')
             sec_scf.x_abacus_density_change_scf_iteration = density_errors
 
             # energies
@@ -1430,67 +1430,67 @@ class ABACUSParser:
                 sec_scf.energy.fermi = iteration.e_fermi
 
             # magnetization
-            for key in ["magnetization_total", "magnetization_absolute"]:
+            for key in ['magnetization_total', 'magnetization_absolute']:
                 val = iteration.get(key)
                 if val is None:
                     continue
-                setattr(sec_scf, f"x_abacus_{key}", val)
+                setattr(sec_scf, f'x_abacus_{key}', val)
 
         def parse_system():
             sec_system = System()
             sec_run.system.append(sec_system)
-            structure = header.get("positions")
+            structure = header.get('positions')
 
             # structure
-            alat = header.get("alat")
+            alat = header.get('alat')
             sec_system.x_abacus_alat = alat  # bohr
             sec_atoms = Atoms()
             sec_system.atoms = sec_atoms
-            lattice_vectors = header.get("lattice_vectors") * alat
+            lattice_vectors = header.get('lattice_vectors') * alat
             sec_atoms.lattice_vectors = lattice_vectors
 
             labels, positions, mags, velocities = [], [], [], []
             sec_run.x_abacus_init_velocities = self.input_parser.get(
-                "x_abacus_init_velocities", 0
+                'x_abacus_init_velocities', 0
             )
-            for site in structure.get("sites", []):
-                labels.append(site["labels"])
-                positions.append(site["positions"])
-                mags.append(site["magnetic_moments"])
+            for site in structure.get('sites', []):
+                labels.append(site['labels'])
+                positions.append(site['positions'])
+                mags.append(site['magnetic_moments'])
                 if sec_run.x_abacus_init_velocities:
-                    velocities.append(site["velocities"])
+                    velocities.append(site['velocities'])
 
-            coord_class = structure.get("coord_class")
-            if coord_class == "cartesian":
-                units = structure.get("units")
+            coord_class = structure.get('coord_class')
+            if coord_class == 'cartesian':
+                units = structure.get('units')
                 sec_atoms.positions = np.array(positions) * units
-            elif coord_class == "direct":
+            elif coord_class == 'direct':
                 sec_atoms.positions = np.array(positions) @ lattice_vectors
             sec_atoms.labels = labels
             if velocities:
                 sec_atoms.velocities = velocities * ureg.angstrom / ureg.fs
             sec_system.x_abacus_atom_magnetic_moments = mags
-            sec_system.x_abacus_cell_volume = header.get("cell_volume")
+            sec_system.x_abacus_cell_volume = header.get('cell_volume')
             sec_system.x_abacus_reciprocal_vectors = (
-                header.get("reciprocal_vectors") * 2 * np.pi / alat
+                header.get('reciprocal_vectors') * 2 * np.pi / alat
             )
 
             # symmetry
-            symmetry = header.get("symmetry")
+            symmetry = header.get('symmetry')
             if symmetry:
                 sec_system_sym = Symmetry()
                 sec_system.symmetry.append(sec_system_sym)
-                sec_system_sym.crystal_system = symmetry.get("bravais_name")[1].lower()
+                sec_system_sym.crystal_system = symmetry.get('bravais_name')[1].lower()
                 brav_dict = {
-                    "triclinic": "a",
-                    "monoclinic": "b",
-                    "orthorhombic": "o",
-                    "tetragonal": "t",
-                    "hexagonal": "h",
-                    "cubic": "c",
-                    "rhombohedral": "R",
+                    'triclinic': 'a',
+                    'monoclinic': 'b',
+                    'orthorhombic': 'o',
+                    'tetragonal': 't',
+                    'hexagonal': 'h',
+                    'cubic': 'c',
+                    'rhombohedral': 'R',
                 }
-                ibrav = symmetry.get("ibrav")
+                ibrav = symmetry.get('ibrav')
                 if ibrav:
                     sec_system.x_abacus_ibrav = ibrav
                     if ibrav in [4, 14]:
@@ -1500,30 +1500,30 @@ class ABACUSParser:
                     else:
                         sec_system_sym.bravais_lattice = (
                             brav_dict[sec_system_sym.crystal_system]
-                            + symmetry.get("bravais_name")[2][0]
+                            + symmetry.get('bravais_name')[2][0]
                         )
                 sec_system_sym.x_abacus_point_group_schoenflies_name = symmetry.get(
-                    "point_group"
+                    'point_group'
                 )
                 celldm = [
-                    symmetry.get(f"norm_{key}") * alat.to("angstrom").magnitude
-                    for key in ["a", "b", "c"]
+                    symmetry.get(f'norm_{key}') * alat.to('angstrom').magnitude
+                    for key in ['a', 'b', 'c']
                 ]
-                celldm.extend([symmetry.get(key) for key in ["alpha", "beta", "gamma"]])
+                celldm.extend([symmetry.get(key) for key in ['alpha', 'beta', 'gamma']])
                 sec_system.x_abacus_celldm = celldm
                 for name in [
-                    "rotation_matrices",
-                    "point_group_operations",
-                    "space_group_operations",
+                    'rotation_matrices',
+                    'point_group_operations',
+                    'space_group_operations',
                 ]:
-                    val = symmetry.get(f"number_of_{name}")
-                    setattr(sec_system_sym, f"x_abacus_number_of_{name}", val)
+                    val = symmetry.get(f'number_of_{name}')
+                    setattr(sec_system_sym, f'x_abacus_number_of_{name}', val)
 
             # numbers
-            sec_atoms.n_atoms = header.get("number_of_atoms")
+            sec_atoms.n_atoms = header.get('number_of_atoms')
             sec_system.x_abacus_number_of_species = header.number_of_species
             sec_system.x_abacus_number_of_electrons_out = header.number_of_electrons_out
-            sec_system.number_of_electrons_out = self.input_parser.get("nelec")
+            sec_system.number_of_electrons_out = self.input_parser.get('nelec')
 
         def parse_section(section):
             sec_scc = Calculation()
@@ -1532,83 +1532,83 @@ class ABACUSParser:
             # atom data
             parse_system()
 
-            sub_section = section.get("self_consistent")
+            sub_section = section.get('self_consistent')
             if sub_section is None:
                 return
 
             # search adjacent atoms
-            searching_sec = sub_section.get("search_adjacent_atoms")
+            searching_sec = sub_section.get('search_adjacent_atoms')
             if searching_sec is not None:
                 for key in [
-                    "longest_orb_rcut",
-                    "longest_nonlocal_projector_rcut",
-                    "searching_radius",
-                    "searching_radius_unit",
+                    'longest_orb_rcut',
+                    'longest_nonlocal_projector_rcut',
+                    'searching_radius',
+                    'searching_radius_unit',
                 ]:
                     val = searching_sec.get(key)
                     if val:
-                        setattr(sec_scc, f"x_abacus_{key}", val)
+                        setattr(sec_scc, f'x_abacus_{key}', val)
 
             # grid_integration
-            grid_sec = sub_section.get("grid_integration")
+            grid_sec = sub_section.get('grid_integration')
             if grid_sec is not None:
                 for key in [
-                    "read_space_grid",
-                    "big_cell_numbers_in_grid",
-                    "meshcell_numbers_in_big_cell",
-                    "extended_fft_grid",
-                    "extended_fft_grid_dim",
+                    'read_space_grid',
+                    'big_cell_numbers_in_grid',
+                    'meshcell_numbers_in_big_cell',
+                    'extended_fft_grid',
+                    'extended_fft_grid_dim',
                 ]:
                     val = grid_sec.get(key)
                     if val is not None:
-                        setattr(sec_scc, f"x_abacus_{key}", val)
+                        setattr(sec_scc, f'x_abacus_{key}', val)
 
             # energies
             sec_energy = Energy()
             sec_scc.energy = sec_energy
-            vdw_m_dict = {"d2": "DFT-D2", "d3_0": "DFT-D3(0)", "d3_bj": "DFT-D3(BJ)"}
+            vdw_m_dict = {'d2': 'DFT-D2', 'd3_0': 'DFT-D3(0)', 'd3_bj': 'DFT-D3(BJ)'}
             # TODO AN: I do not quite understand this loop over scf_iterations
             # and the loop over iteration
-            scf_iteration = sub_section.get("iteration")
+            scf_iteration = sub_section.get('iteration')
             if scf_iteration is not None:
                 sec_scc.n_scf_iterations = len(scf_iteration)
                 for iteration in scf_iteration:
                     parse_scf(iteration)
-                e_vdw = iteration.get("e_vdw", None)
+                e_vdw = iteration.get('e_vdw', None)
                 if e_vdw is not None:
                     sec_energy.van_der_walls = EnergyEntry(value=e_vdw)
                     vdw_method = self.input_parser.get(
-                        "x_abacus_dispersion_correction_method"
+                        'x_abacus_dispersion_correction_method'
                     )
                     # TODO AN these methods are not in the enumerated list
-                    if vdw_method in ["d2", "d3_0", "d3_bj"]:
-                        kind = "G06"
+                    if vdw_method in ['d2', 'd3_0', 'd3_bj']:
+                        kind = 'G06'
                         sec_run.method[
                             -1
                         ].x_abacus_dispersion_correction_method = vdw_m_dict[vdw_method]
                     else:
-                        kind = ""
+                        kind = ''
                     sec_run.method[-1].electronic.van_der_waals_method = kind
-                sec_energy.xc = EnergyEntry(value=iteration.get("XC_functional"))
+                sec_energy.xc = EnergyEntry(value=iteration.get('XC_functional'))
                 sec_energy.electrostatic = EnergyEntry(
-                    correction=iteration.get("correction_hartree")
+                    correction=iteration.get('correction_hartree')
                 )
                 sec_energy.hartree_fock_x_scaled = EnergyEntry(
-                    value=iteration.get("hartree_fock_X_scaled")
+                    value=iteration.get('hartree_fock_X_scaled')
                 )
 
-                sec_energy.total = EnergyEntry(value=sub_section.get("total"))
-                sec_energy.fermi = sub_section.get("reference_fermi")
+                sec_energy.total = EnergyEntry(value=sub_section.get('total'))
+                sec_energy.fermi = sub_section.get('reference_fermi')
 
             # eigenvalues
-            eigenvalues = sub_section.get("energy_occupation")
+            eigenvalues = sub_section.get('energy_occupation')
             if eigenvalues is not None:
                 kpoints, npws, eigs, eig, occs, occ = [], [], [], [], [], []
                 sec_eigenvalues = BandEnergies()
                 sec_scc.eigenvalues.append(sec_eigenvalues)
                 for s_label, data in eigenvalues.items():
                     for state in data:
-                        if s_label == "up":
+                        if s_label == 'up':
                             kpoints.append(state.kpoint)
                             npws.append(state.npws)
                         eig.append(state.energies)
@@ -1622,65 +1622,65 @@ class ABACUSParser:
                 )
                 # kpoints in direct coordinates
                 sec_eigenvalues.kpoints = np.dot(
-                    np.linalg.inv(header.get("reciprocal_vectors")), np.array(kpoints).T
+                    np.linalg.inv(header.get('reciprocal_vectors')), np.array(kpoints).T
                 ).T
 
             # force
-            forces = sub_section.get("forces")
+            forces = sub_section.get('forces')
             if forces is not None:
                 sec_scc.forces = Forces(total=ForcesEntry(value=forces))
 
             # stress and pressure
-            stress = sub_section.get("stress")
-            pressure = sub_section.get("pressure")
+            stress = sub_section.get('stress')
+            pressure = sub_section.get('pressure')
             if stress is not None:
                 sec_scc.stress = Stress(total=StressEntry(value=stress))
             if pressure is not None:
                 sec_scc.pressure = pressure
 
             # md settings
-            electronic_kinetic_energy = section.get("electronic_kinetic_energy")
+            electronic_kinetic_energy = section.get('electronic_kinetic_energy')
             if electronic_kinetic_energy is not None:
                 sec_energy.electronic = EnergyEntry(kinetic=electronic_kinetic_energy)
-            temperature = section.get("temperature")
+            temperature = section.get('temperature')
             if temperature is not None:
                 sec_scc.temperature = temperature
-            pressure = section.get("pressure")
+            pressure = section.get('pressure')
             if pressure is not None:
                 sec_scc.pressure = pressure
-            total_energy = section.get("energy")
+            total_energy = section.get('energy')
             if total_energy is not None:
                 sec_energy.total = EnergyEntry(value=total_energy)
 
         # scf
-        for section in self.out_parser.get("full_scf", []):
+        for section in self.out_parser.get('full_scf', []):
             parse_section(section)
 
         # relax/cell-relax/md
-        for method in ["geometry_optimization", "molecular_dynamics"]:
+        for method in ['geometry_optimization', 'molecular_dynamics']:
             sections = self.out_parser.get(method)
             if sections is not None:
                 self.sampling_method = method
                 for section in sections:
                     parse_section(section)
-                md_nstep_in = self.input_parser.get("md_nstep")
+                md_nstep_in = self.input_parser.get('md_nstep')
                 if md_nstep_in is not None:
                     sec_run.x_abacus_md_nstep_in = md_nstep_in
-                md_nstep_out = sections[-1].get("md_step")
+                md_nstep_out = sections[-1].get('md_step')
                 if md_nstep_out is not None:
                     sec_run.x_abacus_md_nstep_out = md_nstep_out + 1
 
         # nscf
-        for section in self.out_parser.get("non_scf", []):
+        for section in self.out_parser.get('non_scf', []):
             parse_bandstructure(section)
 
         if self.sampling_method is None:
-            self.sampling_method = "single_point"
+            self.sampling_method = 'single_point'
 
         parse_dos()
 
         # total time
-        sec_run.x_abacus_program_execution_time = self.out_parser.get("total_time")
+        sec_run.x_abacus_program_execution_time = self.out_parser.get('total_time')
 
     def parse_method(self):
         sec_run = self.archive.run[-1]
@@ -1688,91 +1688,91 @@ class ABACUSParser:
         sec_run.method.append(sec_method)
         sec_electronic = Electronic()
         sec_method.electronic = sec_electronic
-        header = self.out_parser.get("header", {})
+        header = self.out_parser.get('header', {})
 
         # input parameters from INPUT file
-        input_file = "INPUT"
+        input_file = 'INPUT'
         if input_file in os.listdir(self.out_parser.maindir):
             self.input_parser.mainfile = os.path.join(
                 self.out_parser.maindir, input_file
             )
-        sec_method.scf = Scf(n_max_iteration=self.input_parser.get("scf_max_iteration"))
+        sec_method.scf = Scf(n_max_iteration=self.input_parser.get('scf_max_iteration'))
         input_names = [
-            "scf_threshold_density",
-            "mixing_method",
-            "mixing_beta",
-            "gamma_algorithms",
-            "diagonalization_algorithm",
-            "initial_magnetization_total",
-            "dispersion_correction_method",
-            "exx_ccp_rmesh_times",
-            "exx_dm_threshold",
-            "exx_cauchy_threshold",
-            "exx_schwarz_threshold",
-            "exx_c_threshold",
-            "exx_v_threshold",
-            "exx_pca_threshold",
+            'scf_threshold_density',
+            'mixing_method',
+            'mixing_beta',
+            'gamma_algorithms',
+            'diagonalization_algorithm',
+            'initial_magnetization_total',
+            'dispersion_correction_method',
+            'exx_ccp_rmesh_times',
+            'exx_dm_threshold',
+            'exx_cauchy_threshold',
+            'exx_schwarz_threshold',
+            'exx_c_threshold',
+            'exx_v_threshold',
+            'exx_pca_threshold',
         ]
         for key in input_names:
-            val = self.input_parser.get(f"x_abacus_{key}")
+            val = self.input_parser.get(f'x_abacus_{key}')
             if val is None:
                 continue
-            setattr(sec_method, f"x_abacus_{key}", val)
+            setattr(sec_method, f'x_abacus_{key}', val)
 
         # kmesh
         sec_kmesh = KMesh()
         sec_method.k_mesh = sec_kmesh
-        nkstot = header.get("nkstot")
-        nkstot_ibz = header.get("nkstot_ibz")
+        nkstot = header.get('nkstot')
+        nkstot_ibz = header.get('nkstot_ibz')
         sec_kmesh.n_points = nkstot_ibz if nkstot_ibz is not None else nkstot
-        sec_kmesh.generation_method = header.get("ksampling_method")
-        sec_kmesh.points, sec_kmesh.weights = header.get("k_points")
+        sec_kmesh.generation_method = header.get('ksampling_method')
+        sec_kmesh.points, sec_kmesh.weights = header.get('k_points')
 
         # smearing
-        occupations = self.input_parser.get("occupations", "smearing")
+        occupations = self.input_parser.get('occupations', 'smearing')
         smearing_kind = None
-        if occupations == "tetrahedra":
+        if occupations == 'tetrahedra':
             smearing_kind = occupations
-        elif occupations == "fixed":
-            smearing_kind = "empty"
+        elif occupations == 'fixed':
+            smearing_kind = 'empty'
         else:
-            smearing_method = self.input_parser.get("smearing_method", "fixed")
-            if smearing_method == "mp":
-                smearing_kind = "methfessel-paxton"
-            elif smearing_method in ["gauss", "gaussian"]:
-                smearing_kind = "gaussian"
+            smearing_method = self.input_parser.get('smearing_method', 'fixed')
+            if smearing_method == 'mp':
+                smearing_kind = 'methfessel-paxton'
+            elif smearing_method in ['gauss', 'gaussian']:
+                smearing_kind = 'gaussian'
             else:
-                smearing_kind = "empty"
-        smearing_width = self.input_parser.get("smearing_width")
+                smearing_kind = 'empty'
+        smearing_width = self.input_parser.get('smearing_width')
         if smearing_width is not None:
-            smearing_width = smearing_width.to("joule").magnitude
+            smearing_width = smearing_width.to('joule').magnitude
         sec_electronic.smearing = Smearing(kind=smearing_kind, width=smearing_width)
 
-        sec_method.x_abacus_basis_type = self.input_parser.get("basis_type", "pw")
+        sec_method.x_abacus_basis_type = self.input_parser.get('basis_type', 'pw')
 
         # basis set settings
         ems = []
-        for name in ["wavefunction", "density"]:
-            orbital_settings = header.get("orbital_settings")
+        for name in ['wavefunction', 'density']:
+            orbital_settings = header.get('orbital_settings')
             bs = BasisSet(
-                type="plane waves",
-                scope=["valence"],
+                type='plane waves',
+                scope=['valence'],
                 cutoff=header.get(
-                    f"{name}_cutoff"
+                    f'{name}_cutoff'
                 ),  # http://abacus.deepmodeling.com/en/latest/advanced/input_files/input-main.html#ecutwfc
             )
             if orbital_settings:
-                bs.type = "numeric AOs"
-                for key in ["delta_k", "delta_r", "dr_uniform", "rmax", "kmesh"]:
+                bs.type = 'numeric AOs'
+                for key in ['delta_k', 'delta_r', 'dr_uniform', 'rmax', 'kmesh']:
                     val = orbital_settings.get(key)
-                    setattr(bs, f"x_abacus_basis_sets_{key}", val)
+                    setattr(bs, f'x_abacus_basis_sets_{key}', val)
                 for i, orb in enumerate(
-                    orbital_settings.get("orbital_information", [])
+                    orbital_settings.get('orbital_information', [])
                 ):
                     sec_specie_basis_set = x_abacus_section_specie_basis_set()
                     bs.x_abacus_section_specie_basis_set.append(sec_specie_basis_set)
                     sec_specie_basis_set.x_abacus_specie_basis_set_filename = (
-                        os.path.basename(header.get("orbital_files")[i])
+                        os.path.basename(header.get('orbital_files')[i])
                     )
                     ln_list = []
                     for data in orb:
@@ -1786,48 +1786,48 @@ class ABACUSParser:
             ems.append(BasisSetContainer(scope=[name], basis_set=[bs]))
         sec_method.electrons_representation = ems
 
-        if self.input_parser.get("dft_plus_u"):
-            sec_electronic.method = "DFT+U"
+        if self.input_parser.get('dft_plus_u'):
+            sec_electronic.method = 'DFT+U'
         else:
-            sec_electronic.method = "DFT"
+            sec_electronic.method = 'DFT'
 
         # spin mode
-        nspin_ori = header.get("number_of_spin_channels")
+        nspin_ori = header.get('number_of_spin_channels')
         nspin = 1 if nspin_ori == 4 else nspin_ori
         sec_electronic.n_spin_channels = nspin
         sec_method.x_abacus_spin_orbit = nspin_ori == 4
         sec_method.x_abacus_noncollinear = bool(
-            header.get("atom_data")[-1]
-            .get("noncollinear_magnetization", np.array([]))
+            header.get('atom_data')[-1]
+            .get('noncollinear_magnetization', np.array([]))
             .any()
         )
         # TODO NOMAD metainfo does not include full
         sec_electronic.relativity_method = (
-            None if nspin_ori == 4 else "scalar_relativistic"
+            None if nspin_ori == 4 else 'scalar_relativistic'
         )
 
         # atom_kind and pseudopotential settings
-        pp_xc = ""
-        for i, pp in enumerate(header.get("pseudopotential", [])):
+        pp_xc = ''
+        for i, pp in enumerate(header.get('pseudopotential', [])):
             sec_atom_parameters = AtomParameters()
             sec_method.atom_parameters.append(sec_atom_parameters)
-            sec_atom_parameters.label = header.get("atom_data")[i].get("label")
-            sec_atom_parameters.n_valence_electrons = pp.get("valence")
+            sec_atom_parameters.label = header.get('atom_data')[i].get('label')
+            sec_atom_parameters.n_valence_electrons = pp.get('valence')
             sec_atom_parameters.pseudopotential_name = os.path.basename(
-                pp.get("filename", "")
+                pp.get('filename', '')
             )
             sec_method.x_abacus_pao_radial_cutoff = header.get(
-                "x_abacus_pao_radial_cutoff"
+                'x_abacus_pao_radial_cutoff'
             )
             for key, val in pp.items():
-                if key in ["filename", "valence"] or val is None:
+                if key in ['filename', 'valence'] or val is None:
                     continue
-                if key == "xc":
-                    pp_xc = pp.get("xc", None)
-                setattr(sec_atom_parameters, f"x_abacus_pp_{key}", val)
+                if key == 'xc':
+                    pp_xc = pp.get('xc', None)
+                setattr(sec_atom_parameters, f'x_abacus_pp_{key}', val)
 
         # xc functional from output
-        xc_in = self.input_parser.get("xc", None)
+        xc_in = self.input_parser.get('xc', None)
         xc = xc_in.upper() if xc_in is not None else pp_xc
         if xc is not None:
             sec_dft = DFT()
@@ -1838,45 +1838,45 @@ class ABACUSParser:
 
             # hybrid func
             hse_omega, hybrid_coeff = None, None
-            if xc in ["HYB_GGA_XC_HSE06", "HSE"]:
+            if xc in ['HYB_GGA_XC_HSE06', 'HSE']:
                 hse_omega = self.input_parser.get(
-                    "x_abacus_hse_omega", (0.11 / ureg.bohr).to("1/m")
+                    'x_abacus_hse_omega', (0.11 / ureg.bohr).to('1/m')
                 )
                 if hse_omega is not None:
                     sec_method.x_abacus_hse_omega = hse_omega.magnitude
-            if xc in ["HYB_GGA_XC_HSE06", "HSE", "PBE0"]:
-                hybrid_coeff = self.input_parser.get("x_abacus_hybrid_xc_coeff", 0.25)
+            if xc in ['HYB_GGA_XC_HSE06', 'HSE', 'PBE0']:
+                hybrid_coeff = self.input_parser.get('x_abacus_hybrid_xc_coeff', 0.25)
                 if hybrid_coeff is not None:
                     sec_method.x_abacus_hybrid_xc_coeff = hybrid_coeff
 
-            if "LDA_" in xc or "GGA_" in xc or "HF_" in xc or "HYB_" in xc:
+            if 'LDA_' in xc or 'GGA_' in xc or 'HF_' in xc or 'HYB_' in xc:
                 xc_meta_list = []
-                for xc_i in xc.split("+"):
-                    xc_meta_list.append({"name": xc_i})
+                for xc_i in xc.split('+'):
+                    xc_meta_list.append({'name': xc_i})
             else:
                 xc_meta_list = self._xc_map.get(xc, [])
             for xc_meta in xc_meta_list:
-                xc_func = Functional(name=xc_meta.get("name"))
-                if "_X_" in xc_func.name or xc_func.name.endswith("_X"):
+                xc_func = Functional(name=xc_meta.get('name'))
+                if '_X_' in xc_func.name or xc_func.name.endswith('_X'):
                     sec_xc_func.exchange.append(xc_func)
-                elif "_C_" in xc_func.name or xc_func.name.endswith("_C"):
+                elif '_C_' in xc_func.name or xc_func.name.endswith('_C'):
                     sec_xc_func.correlation.append(xc_func)
-                elif "HYB" in xc_func.name:
+                elif 'HYB' in xc_func.name:
                     sec_xc_func.hybrid.append(xc_func)
                 else:
                     sec_xc_func.contributions.append(xc_func)
-                weight = xc_meta.get("weight", None)
+                weight = xc_meta.get('weight', None)
                 if weight is not None and hybrid_coeff is not None:
                     xc_func.weight = weight(float(hybrid_coeff))
                 xc_parameters = dict()
                 if hse_omega is not None:
                     hybrid_coeff = 0.25 if hybrid_coeff is None else hybrid_coeff
                     xc_parameters.setdefault(
-                        "$\\omega$ in m^-1", hse_omega.to("1/m").magnitude
+                        '$\\omega$ in m^-1', hse_omega.to('1/m').magnitude
                     )
                 if hybrid_coeff is not None:
                     xc_parameters.setdefault(
-                        "hybrid coefficient $\\alpha$", hybrid_coeff
+                        'hybrid coefficient $\\alpha$', hybrid_coeff
                     )
                 if xc_parameters:
                     xc_func.parameters = xc_parameters
@@ -1897,78 +1897,78 @@ class ABACUSParser:
         sec_run = Run()
         archive.run.append(sec_run)
         sec_run.program = Program(
-            name="ABACUS", version=self.out_parser.get("program_version")
+            name='ABACUS', version=self.out_parser.get('program_version')
         )
-        header = self.out_parser.get("header", {})
+        header = self.out_parser.get('header', {})
 
         # parallel
         sec_parallel = x_abacus_section_parallel()
         sec_run.x_abacus_section_parallel.append(sec_parallel)
-        sec_parallel.x_abacus_nproc = self.out_parser.get("nproc")
-        for key in ["kpar", "bndpar", "diago_proc"]:
+        sec_parallel.x_abacus_nproc = self.out_parser.get('nproc')
+        for key in ['kpar', 'bndpar', 'diago_proc']:
             val = self.input_parser.get(key)
             if val is not None:
-                setattr(sec_parallel, f"x_abacus_{key}", val)
-        for key in ["method", "nb2d", "trace_loc_row", "trace_loc_col", "nloc"]:
-            allocation_method = header.get("allocation_method")
+                setattr(sec_parallel, f'x_abacus_{key}', val)
+        for key in ['method', 'nb2d', 'trace_loc_row', 'trace_loc_col', 'nloc']:
+            allocation_method = header.get('allocation_method')
             if allocation_method is not None:
                 val = allocation_method.get(key)
                 if val is not None:
-                    setattr(sec_parallel, f"x_abacus_allocation_{key}", val)
+                    setattr(sec_parallel, f'x_abacus_allocation_{key}', val)
 
         # input files
         self.parse_method()
         self.parse_configurations()
-        sec_run.x_abacus_stru_filename = self.input_parser.get("stru_filename", "STRU")
-        sec_run.x_abacus_kpt_filename = self.input_parser.get("kpt_filename", "KPT")
-        sec_run.x_abacus_input_filename = self.out_parser.get("input_filename")
-        for key in ["basis_set_dirname", "pseudopotential_dirname"]:
+        sec_run.x_abacus_stru_filename = self.input_parser.get('stru_filename', 'STRU')
+        sec_run.x_abacus_kpt_filename = self.input_parser.get('kpt_filename', 'KPT')
+        sec_run.x_abacus_input_filename = self.out_parser.get('input_filename')
+        for key in ['basis_set_dirname', 'pseudopotential_dirname']:
             val = self.out_parser.get(key)
             if val is not None:
-                setattr(sec_run, f"x_abacus_{key}", val)
+                setattr(sec_run, f'x_abacus_{key}', val)
 
         # sampling method
         if self.sampling_method is not None:
             workflow = None
-            if self.sampling_method == "molecular_dynamics":
+            if self.sampling_method == 'molecular_dynamics':
                 workflow = MolecularDynamics(method=MolecularDynamicsMethod())
-                md_type = self.input_parser.get("md_type")
+                md_type = self.input_parser.get('md_type')
                 if md_type == 0:
-                    workflow.method.thermodynamic_ensemble = "NVE"
+                    workflow.method.thermodynamic_ensemble = 'NVE'
                 elif md_type in [1, 2, 3]:
-                    workflow.method.thermodynamic_ensemble = "NVT"
-            elif self.sampling_method == "geometry_optimization":
+                    workflow.method.thermodynamic_ensemble = 'NVT'
+            elif self.sampling_method == 'geometry_optimization':
                 workflow = GeometryOptimization(method=GeometryOptimizationMethod())
-                force_threshold = self.out_parser.get("force_threshold")
-                stress_threshold = self.out_parser.get("stress_threshold")
+                force_threshold = self.out_parser.get('force_threshold')
+                stress_threshold = self.out_parser.get('stress_threshold')
                 if force_threshold:
                     workflow.method.convergence_tolerance_force_maximum = (
-                        force_threshold.to("newton").magnitude
+                        force_threshold.to('newton').magnitude
                     )
                 if stress_threshold:
                     workflow.method.convergence_tolerance_stress_maximum = (
-                        stress_threshold.to("pascal").magnitude
+                        stress_threshold.to('pascal').magnitude
                     )
-            elif self.sampling_method == "single_point":
+            elif self.sampling_method == 'single_point':
                 workflow = SinglePoint(method=SinglePointMethod())
                 workflow.method.method = archive.run[-1].method[-1].electronic.method
             archive.workflow2 = workflow
 
         # start date
-        date_time = self.out_parser.get("start_date_time")
+        date_time = self.out_parser.get('start_date_time')
         sec_time = TimeRun()
         sec_run.time_run = sec_time
         if date_time is not None:
             date_time = datetime.strptime(
-                date_time.replace(" ", ""), "%a%b%d%H:%M:%S%Y"
+                date_time.replace(' ', ''), '%a%b%d%H:%M:%S%Y'
             )
             sec_time.date_start = (date_time - datetime(1970, 1, 1)).total_seconds()
 
         # end date
-        date_time = self.out_parser.get("finish_date_time")
+        date_time = self.out_parser.get('finish_date_time')
         if date_time is not None:
             date_time = datetime.strptime(
-                date_time.replace(" ", ""), "%a%b%d%H:%M:%S%Y"
+                date_time.replace(' ', ''), '%a%b%d%H:%M:%S%Y'
             )
             sec_time.date_end = (date_time - datetime(1970, 1, 1)).total_seconds()
             sec_run.clean_end = True

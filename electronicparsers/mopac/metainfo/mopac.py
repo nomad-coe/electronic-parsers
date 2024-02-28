@@ -45,7 +45,7 @@ class Calculation(runschema.calculation.Calculation):
     x_mopac_fhof = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         Final heat of formation
         """,

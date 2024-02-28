@@ -76,7 +76,7 @@ class x_ocean_core_gmres_parameters(MSection):
 
     x_ocean_elist = Quantity(
         type=np.float64,
-        shape=["*"],
+        shape=['*'],
         description="""
         A list of energies (of arbitrary length) for the code to run the GMRES algorithm.
         """,
@@ -218,14 +218,14 @@ class x_ocean_screen_parameters(MSection):
 
     x_ocean_grid_ang = Quantity(
         type=np.float64,
-        shape=["*"],
+        shape=['*'],
         description="""
         """,
     )
 
     x_ocean_grid_deltar = Quantity(
         type=np.float64,
-        shape=["*"],
+        shape=['*'],
         description="""
         """,
     )
@@ -244,7 +244,7 @@ class x_ocean_screen_parameters(MSection):
 
     x_ocean_grid_rmode = Quantity(
         type=str,
-        shape=["*"],
+        shape=['*'],
         description="""
         """,
     )
@@ -257,7 +257,7 @@ class x_ocean_screen_parameters(MSection):
 
     x_ocean_grid_shells = Quantity(
         type=np.int32,
-        shape=["*"],
+        shape=['*'],
         description="""
         """,
     )
@@ -289,7 +289,7 @@ class x_ocean_screen_parameters(MSection):
 
     x_ocean_shells = Quantity(
         type=np.float64,
-        shape=["*"],
+        shape=['*'],
         description="""
         """,
     )
@@ -311,7 +311,7 @@ class Method(runschema.run.Method):
 
     x_ocean_edges = Quantity(
         type=np.int32,
-        shape=["*"],
+        shape=['*'],
         description="""
         Each edge entry consists of 3 integers. When the first is greater than 0 it denotes the index
         of the atom (in the order set by XRED), and when it is less than zero it sets the (negative) Z,
@@ -346,7 +346,7 @@ class x_ocean_lanczos_results(MSection):
 
     x_ocean_tridiagonal_matrix = Quantity(
         type=np.float64,
-        shape=["x_ocean_n_tridiagonal_matrix", 2],
+        shape=['x_ocean_n_tridiagonal_matrix', 2],
         description="""
         a's and b's values of the tri-diagonal matrix. Order is:
         [
@@ -363,7 +363,7 @@ class x_ocean_lanczos_results(MSection):
 
     x_ocean_eigenvalues = Quantity(
         type=np.float64,
-        shape=["x_ocean_n_tridiagonal_matrix", 3],
+        shape=['x_ocean_n_tridiagonal_matrix', 3],
         description="""
         (i, j, E_n) eigenvalues of the tri-diagonal matrix.
         """,

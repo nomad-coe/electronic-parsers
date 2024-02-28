@@ -8,7 +8,7 @@ from nomad.utils import get_logger
 
 logger = get_logger(__name__)
 
-__all__ = ["KFFile", "KFReader", "KFHistory"]
+__all__ = ['KFFile', 'KFReader', 'KFHistory']
 
 
 def rkf_to_dict(rkffile):
@@ -47,17 +47,17 @@ class KFReader:
 
     """
 
-    _sizes = {"s": 1, "i": 4, "d": 8, "q": 8}
+    _sizes = {'s': 1, 'i': 4, 'd': 8, 'q': 8}
 
     def __init__(self, path, blocksize=4096, autodetect=True):
         if os.path.isfile(path):
             self.path = os.path.abspath(path)
         else:
-            logger.warning("File {} not present".format(path))
+            logger.warning('File {} not present'.format(path))
 
         self._blocksize = blocksize
-        self.endian = "<"  # endian: '<' = little, '>' = big
-        self.word = "i"  # length of int: 'i' = 4 bits, 'q' = 8 bits
+        self.endian = '<'  # endian: '<' = little, '>' = big
+        self.word = 'i'  # length of int: 'i' = 4 bits, 'q' = 8 bits
         self._sections = None
         if autodetect:
             self._autodetect()
@@ -76,19 +76,19 @@ class KFReader:
         try:
             tmp = self._sections[section]
         except KeyError:
-            raise KeyError("Section {} not present in {}".format(section, self.path))
+            raise KeyError('Section {} not present in {}'.format(section, self.path))
         try:
             vtype, vlb, vstart, vlen = tmp[variable]
         except KeyError:
             raise KeyError(
-                "Variable {} not present in section {} of {}".format(
+                'Variable {} not present in section {} of {}'.format(
                     variable, section, self.path
                 )
             )
 
         ret = []
         first = True
-        with open(self.path, "rb") as f:
+        with open(self.path, 'rb') as f:
             for i in KFReader._datablocks(self._data[section], vlb):
                 if first:
                     ret = self._get_data(self._read_block(f, i), vtype)[vstart - 1 :]
@@ -101,7 +101,7 @@ class KFReader:
                         try:
                             return ret.decode()
                         except UnicodeDecodeError:
-                            return ret.decode("Latin-1")
+                            return ret.decode('Latin-1')
                     elif len(ret) == 1:
                         return ret[0]
                     else:
@@ -120,24 +120,24 @@ class KFReader:
         Try to automatically detect the format (int size and endian) of
         this KF file.
         """
-        with open(self.path, "rb") as f:
+        with open(self.path, 'rb') as f:
             b = f.read(128)
 
-        blocksize = struct.unpack(b"i", b[28:32])[0]
+        blocksize = struct.unpack(b'i', b[28:32])[0]
         self._blocksize = 4096 if blocksize == 538976288 else blocksize
 
         one = b[80:84]
 
-        if struct.unpack(b"32s", b[48:80])[0] == b"SUPERINDEX                      ":
-            self.word = "i"
-        elif struct.unpack(b"32s", b[64:96])[0] == b"SUPERINDEX                      ":
-            self.word = "q"
+        if struct.unpack(b'32s', b[48:80])[0] == b'SUPERINDEX                      ':
+            self.word = 'i'
+        elif struct.unpack(b'32s', b[64:96])[0] == b'SUPERINDEX                      ':
+            self.word = 'q'
             one = b[96:104]
         else:
             pass
             return
 
-        for e in ["<", ">"]:
+        for e in ['<', '>']:
             if struct.unpack(str(e + self.word), one)[0] == 1:
                 self.endian = e
                 # d = {'q': '8 bytes', 'i': '4 bytes', '<': 'little endian', '>': 'big endian'}
@@ -179,7 +179,7 @@ class KFReader:
         hlen = 4 * self._sizes[self.word]
         i, d, s, b = self._parse(datablock[:hlen], [(4, self.word)])[0]
         contents = self._parse(
-            datablock[hlen:], zip((i, d, s, b), (self.word, "d", "s", self.word))
+            datablock[hlen:], zip((i, d, s, b), (self.word, 'd', 's', self.word))
         )
         if contents:
             contents = contents[
@@ -194,7 +194,7 @@ class KFReader:
             elif vtype == 4:
                 return list(map(bool, contents[i + d + 1 :]))
             else:
-                raise KeyError("Unknown vtype")
+                raise KeyError('Unknown vtype')
         else:
             return []
 
@@ -220,12 +220,12 @@ class KFReader:
 
         hlen = 32 + 7 * self._sizes[self.word]  # length of index block header
 
-        with open(self.path, "rb") as f:
-            superlist = self._parse(self._read_block(f, 1), [(32, "s"), (4, self.word)])
+        with open(self.path, 'rb') as f:
+            superlist = self._parse(self._read_block(f, 1), [(32, 's'), (4, self.word)])
             nextsuper = superlist[0][4]
             while nextsuper != 1:
                 nsl = self._parse(
-                    self._read_block(f, nextsuper), [(32, "s"), (4, self.word)]
+                    self._read_block(f, nextsuper), [(32, 's'), (4, self.word)]
                 )
                 nextsuper = nsl[0][4]
                 superlist += nsl
@@ -242,9 +242,9 @@ class KFReader:
                 try:
                     key = key.decode()
                 except UnicodeDecodeError:
-                    key = key.decode("Latin-1")
-                key = key.rstrip(" ")
-                if key in ["SUPERINDEX", "EMPTY"]:
+                    key = key.decode('Latin-1')
+                key = key.rstrip(' ')
+                if key in ['SUPERINDEX', 'EMPTY']:
                     continue
                 if ty == 4:  # data block
                     if key not in self._data:
@@ -256,15 +256,15 @@ class KFReader:
                     for i in range(le):
                         indexblock = self._read_block(f, pb + i)
                         body = self._parse(
-                            indexblock[hlen:], [(32, "s"), (6, self.word)]
+                            indexblock[hlen:], [(32, 's'), (6, self.word)]
                         )
                         for var, vlb, vstart, _, _, vused, vtype in body:
                             try:
                                 var = var.decode()
                             except UnicodeDecodeError:
-                                var = var.decode("Latin-1")
-                            var = var.rstrip(" ")
-                            if var == "EMPTY":
+                                var = var.decode('Latin-1')
+                            var = var.rstrip(' ')
+                            if var == 'EMPTY':
                                 continue
                             self._sections[key][var] = (vtype, vlb, vstart, vused)
 
@@ -335,10 +335,10 @@ class KFFile:
     """
 
     _types = {
-        int: (1, 8, lambda x: "%10i" % x),
-        float: (2, 3, lambda x: "%26.16e" % x),
+        int: (1, 8, lambda x: '%10i' % x),
+        float: (2, 3, lambda x: '%26.16e' % x),
         str: (3, 80, lambda x: x),
-        bool: (4, 80, lambda x: "T" if x else "F"),
+        bool: (4, 80, lambda x: 'T' if x else 'F'),
     }
 
     def __init__(self, path, autosave=True):
@@ -368,17 +368,17 @@ class KFFile:
         """Write a *variable* with a *value* in a *section* . If such a variable already
         exists in this section, the old value is overwritten."""
         if not isinstance(value, (int, bool, float, str, list)):
-            raise ValueError("Trying to store improper value in KFFile")
+            raise ValueError('Trying to store improper value in KFFile')
         if isinstance(value, list):
             if len(value) == 0:
-                raise ValueError("Cannot store empty lists in KFFile")
+                raise ValueError('Cannot store empty lists in KFFile')
             if any(not isinstance(i, type(value[0])) for i in value):
                 raise ValueError(
-                    "Lists stored in KFFile must have all elements of the same type"
+                    'Lists stored in KFFile must have all elements of the same type'
                 )
             if not isinstance(value[0], (int, bool, float, str)):
                 raise ValueError(
-                    "Only lists of int, float, str or bool can be stored in KFFile"
+                    'Only lists of int, float, str or bool can be stored in KFFile'
                 )
 
         if section not in self.tmpdata:
@@ -488,10 +488,10 @@ class KFFile:
         if isinstance(name, tuple) and len(name) == 2:
             return name[0], name[1]
         if isinstance(name, str):
-            s = name.split("%")
+            s = name.split('%')
             if len(s) == 2:
                 return s[0], s[1]
-        raise ValueError("Improper key used in KFFile dictionary-like notation")
+        raise ValueError('Improper key used in KFFile dictionary-like notation')
 
     @staticmethod
     def _str(val):
@@ -508,10 +508,10 @@ class KFFile:
             splitstrings = [[s[0:80], s[80:160]] for s in val]
             val = [item for sublist in splitstrings for item in sublist]
 
-        ret = "%10i%10i%10i" % (nl, nl, t)
+        ret = '%10i%10i%10i' % (nl, nl, t)
         for i, el in enumerate(val):
             if i % step == 0:
-                ret += "\n"
+                ret += '\n'
             ret += f(el)
         return ret
 
@@ -546,12 +546,12 @@ class KFHistory:
     def __init__(self, kf, section):
         self.kf = kf
         self.section = section
-        self.nsteps = kf.read(section, "nEntries")
+        self.nsteps = kf.read(section, 'nEntries')
         self.shapes = {}
         self.blocked = set()
 
-        if (section, "nBlocks") in kf:
-            self.nblocks = kf.read(section, "nBlocks")
+        if (section, 'nBlocks') in kf:
+            self.nblocks = kf.read(section, 'nBlocks')
         else:
             self.nblocks = 0
 
@@ -563,7 +563,7 @@ class KFHistory:
             return numpy.concatenate(
                 [
                     numpy.atleast_1d(
-                        self.kf.read(self.section, "{}({})".format(name, i))
+                        self.kf.read(self.section, '{}({})'.format(name, i))
                     )
                     for i in range(1, self.nblocks + 1)
                 ]
@@ -571,7 +571,7 @@ class KFHistory:
         else:
             return numpy.asarray(
                 [
-                    self.kf.read(self.section, "{}({})".format(name, i))
+                    self.kf.read(self.section, '{}({})'.format(name, i))
                     for i in range(1, self.nsteps + 1)
                 ]
             )
@@ -582,7 +582,7 @@ class KFHistory:
             self._init_shape(name)
         if name in self.blocked:
             for i in range(1, self.nblocks + 1):
-                block = self.kf.read(self.section, "{}({})".format(name, i))
+                block = self.kf.read(self.section, '{}({})'.format(name, i))
                 try:
                     yield from block
                 except TypeError:
@@ -590,18 +590,18 @@ class KFHistory:
                     yield block
         else:
             for i in range(1, self.nsteps + 1):
-                yield self.kf.read(self.section, "{}({})".format(name, i))
+                yield self.kf.read(self.section, '{}({})'.format(name, i))
 
     def iter_optional(self, name, default=None):
         """Iterate over the values of history item *name*, returning *default* if the item is not present."""
-        if (self.section, name + "(1)") in self.kf:
+        if (self.section, name + '(1)') in self.kf:
             yield from self.iter(name)
         else:
             while True:
                 yield default
 
     def _init_shape(self, name):
-        shapevar = name + "(dim)"
+        shapevar = name + '(dim)'
         if (self.section, shapevar) in self.kf:
             shape = self.kf.read(self.section, shapevar)
             try:
@@ -610,7 +610,7 @@ class KFHistory:
             except TypeError:
                 # shape is a scalar (variable "name" is a scalar or rank-1)
                 self.shapes[name] = (shape,)
-            perAtomVar = name + "(perAtom)"
+            perAtomVar = name + '(perAtom)'
             if self.nblocks and (self.section, perAtomVar) in self.kf:
                 perAtom = self.kf.read(self.section, perAtomVar)
                 if not perAtom and self.shapes[name] == (1,):

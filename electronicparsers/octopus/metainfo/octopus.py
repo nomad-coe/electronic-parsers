@@ -44,7 +44,7 @@ class Calculation(runschema.calculation.Calculation):
     x_octopus_info_energy_ion_ion = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         ion-ion interaction energy
         """,

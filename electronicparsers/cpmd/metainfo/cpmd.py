@@ -263,35 +263,35 @@ class x_cpmd_section_input_ATOMS(MSection):
     )
 
     x_cpmd_section_input_ATOMS_ATOMIC_CHARGES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_ATOMS_ATOMIC_CHARGES"),
+        sub_section=SectionProxy('x_cpmd_section_input_ATOMS_ATOMIC_CHARGES'),
         repeats=True,
     )
 
     x_cpmd_section_input_ATOMS_CHANGE_BONDS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_ATOMS_CHANGE_BONDS"),
+        sub_section=SectionProxy('x_cpmd_section_input_ATOMS_CHANGE_BONDS'),
         repeats=True,
     )
 
     x_cpmd_section_input_ATOMS_CONFINEMENT_POTENTIAL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_ATOMS_CONFINEMENT_POTENTIAL"),
+        sub_section=SectionProxy('x_cpmd_section_input_ATOMS_CONFINEMENT_POTENTIAL'),
         repeats=True,
     )
 
     x_cpmd_section_input_ATOMS_DUMMY_ATOMS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_ATOMS_DUMMY_ATOMS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_ATOMS_DUMMY_ATOMS'), repeats=True
     )
 
     x_cpmd_section_input_ATOMS_GENERATE_COORDINATES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_ATOMS_GENERATE_COORDINATES"),
+        sub_section=SectionProxy('x_cpmd_section_input_ATOMS_GENERATE_COORDINATES'),
         repeats=True,
     )
 
     x_cpmd_section_input_ATOMS_ISOTOPE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_ATOMS_ISOTOPE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_ATOMS_ISOTOPE'), repeats=True
     )
 
     x_cpmd_section_input_ATOMS_MOVIE_TYPE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_ATOMS_MOVIE_TYPE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_ATOMS_MOVIE_TYPE'), repeats=True
     )
 
 
@@ -424,22 +424,22 @@ class x_cpmd_section_input_CLASSIC(MSection):
     )
 
     x_cpmd_section_input_CLASSIC_FREEZE_QUANTUM = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CLASSIC_FREEZE_QUANTUM"),
+        sub_section=SectionProxy('x_cpmd_section_input_CLASSIC_FREEZE_QUANTUM'),
         repeats=True,
     )
 
     x_cpmd_section_input_CLASSIC_FULL_TRAJECTORY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CLASSIC_FULL_TRAJECTORY"),
+        sub_section=SectionProxy('x_cpmd_section_input_CLASSIC_FULL_TRAJECTORY'),
         repeats=True,
     )
 
     x_cpmd_section_input_CLASSIC_PRINT_COORDINATES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CLASSIC_PRINT_COORDINATES"),
+        sub_section=SectionProxy('x_cpmd_section_input_CLASSIC_PRINT_COORDINATES'),
         repeats=True,
     )
 
     x_cpmd_section_input_CLASSIC_PRINT_FF = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CLASSIC_PRINT_FF"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CLASSIC_PRINT_FF'), repeats=True
     )
 
 
@@ -4662,637 +4662,637 @@ class x_cpmd_section_input_CPMD(MSection):
     )
 
     x_cpmd_section_input_CPMD_ALEXANDER_MIXING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ALEXANDER_MIXING"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ALEXANDER_MIXING'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_ALLTOALL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ALLTOALL"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ALLTOALL'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_ANDERSON_MIXING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ANDERSON_MIXING"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ANDERSON_MIXING'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_ANNEALING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ANNEALING"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ANNEALING'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_BENCHMARK = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_BENCHMARK"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_BENCHMARK'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_BERENDSEN = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_BERENDSEN"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_BERENDSEN'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_BFGS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_BFGS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_BFGS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_BLOCKSIZE_STATES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_BLOCKSIZE_STATES"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_BLOCKSIZE_STATES'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_BOGOLIUBOV_CORRECTION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_BOGOLIUBOV_CORRECTION"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_BOGOLIUBOV_CORRECTION'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_BOX_WALLS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_BOX_WALLS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_BOX_WALLS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_BROYDEN_MIXING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_BROYDEN_MIXING"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_BROYDEN_MIXING'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_CAYLEY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_CAYLEY"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_CAYLEY'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_CDFT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_CDFT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_CDFT'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_CENTER_MOLECULE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_CENTER_MOLECULE"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_CENTER_MOLECULE'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_CHECK_MEMORY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_CHECK_MEMORY"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_CHECK_MEMORY'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_CLASSTRESS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_CLASSTRESS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_CLASSTRESS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_CMASS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_CMASS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_CMASS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_COMBINE_SYSTEMS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_COMBINE_SYSTEMS"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_COMBINE_SYSTEMS'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_COMPRESS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_COMPRESS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_COMPRESS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_CONJUGATE_GRADIENTS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_CONJUGATE_GRADIENTS"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_CONJUGATE_GRADIENTS'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_CONVERGENCE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_CONVERGENCE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_CONVERGENCE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_CZONES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_CZONES"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_CZONES'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_DAMPING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_DAMPING"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_DAMPING'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_DAVIDSON_DIAGONALIZATION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_DAVIDSON_DIAGONALIZATION"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_DAVIDSON_DIAGONALIZATION'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_DAVIDSON_PARAMETER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_DAVIDSON_PARAMETER"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_DAVIDSON_PARAMETER'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_DEBUG_CODE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_DEBUG_CODE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_DEBUG_CODE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_DEBUG_FILEOPEN = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_DEBUG_FILEOPEN"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_DEBUG_FILEOPEN'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_DEBUG_FORCES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_DEBUG_FORCES"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_DEBUG_FORCES'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_DEBUG_MEMORY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_DEBUG_MEMORY"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_DEBUG_MEMORY'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_DEBUG_NOACC = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_DEBUG_NOACC"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_DEBUG_NOACC'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_DIIS_MIXING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_DIIS_MIXING"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_DIIS_MIXING'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_DIPOLE_DYNAMICS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_DIPOLE_DYNAMICS"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_DIPOLE_DYNAMICS'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_DISTRIBUTE_FNL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_DISTRIBUTE_FNL"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_DISTRIBUTE_FNL'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_DISTRIBUTED_LINALG = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_DISTRIBUTED_LINALG"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_DISTRIBUTED_LINALG'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_ELECTRONIC_SPECTRA = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ELECTRONIC_SPECTRA"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ELECTRONIC_SPECTRA'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_ELECTROSTATIC_POTENTIAL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ELECTROSTATIC_POTENTIAL"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ELECTROSTATIC_POTENTIAL'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_ELF = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ELF"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ELF'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_EMASS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_EMASS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_EMASS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_ENERGYBANDS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ENERGYBANDS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ENERGYBANDS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_EXTERNAL_POTENTIAL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_EXTERNAL_POTENTIAL"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_EXTERNAL_POTENTIAL'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_EXTRAPOLATE_CONSTRAINT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_EXTRAPOLATE_CONSTRAINT"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_EXTRAPOLATE_CONSTRAINT'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_EXTRAPOLATE_WFN = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_EXTRAPOLATE_WFN"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_EXTRAPOLATE_WFN'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_FFTW_WISDOM = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_FFTW_WISDOM"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_FFTW_WISDOM'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_FILE_FUSION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_FILE_FUSION"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_FILE_FUSION'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_FILEPATH = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_FILEPATH"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_FILEPATH'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_FINITE_DIFFERENCES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_FINITE_DIFFERENCES"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_FINITE_DIFFERENCES'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_FIXRHO_UPWFN = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_FIXRHO_UPWFN"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_FIXRHO_UPWFN'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_FORCEMATCH = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_FORCEMATCH"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_FORCEMATCH'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_FREE_ENERGY_FUNCTIONAL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_FREE_ENERGY_FUNCTIONAL"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_FREE_ENERGY_FUNCTIONAL'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_GDIIS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_GDIIS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_GDIIS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_GSHELL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_GSHELL"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_GSHELL'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_HAMILTONIAN_CUTOFF = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_HAMILTONIAN_CUTOFF"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_HAMILTONIAN_CUTOFF'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_HARMONIC_REFERENCE_SYSTEM = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_HARMONIC_REFERENCE_SYSTEM"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_HARMONIC_REFERENCE_SYSTEM'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_HESSCORE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_HESSCORE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_HESSCORE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_HESSIAN = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_HESSIAN"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_HESSIAN'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_INITIALIZE_WAVEFUNCTION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_INITIALIZE_WAVEFUNCTION"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_INITIALIZE_WAVEFUNCTION'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_INTERFACE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_INTERFACE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_INTERFACE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_INTFILE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_INTFILE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_INTFILE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_ISOLATED_MOLECULE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ISOLATED_MOLECULE"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ISOLATED_MOLECULE'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_KSHAM = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_KSHAM"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_KSHAM'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_LANCZOS_DIAGONALIZATION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_LANCZOS_DIAGONALIZATION"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_LANCZOS_DIAGONALIZATION'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_LANCZOS_PARAMETER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_LANCZOS_PARAMETER"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_LANCZOS_PARAMETER'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_LANGEVIN = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_LANGEVIN"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_LANGEVIN'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_LBFGS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_LBFGS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_LBFGS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_LINEAR_RESPONSE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_LINEAR_RESPONSE"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_LINEAR_RESPONSE'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_LOCAL_SPIN_DENSITY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_LOCAL_SPIN_DENSITY"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_LOCAL_SPIN_DENSITY'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_LSD = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_LSD"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_LSD'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_MAXITER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_MAXITER"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_MAXITER'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_MAXRUNTIME = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_MAXRUNTIME"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_MAXRUNTIME'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_MAXSTEP = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_MAXSTEP"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_MAXSTEP'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_MEMORY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_MEMORY"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_MEMORY'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_MIRROR = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_MIRROR"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_MIRROR'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_MIXDIIS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_MIXDIIS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_MIXDIIS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_MIXSD = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_MIXSD"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_MIXSD'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_MODIFIED_GOEDECKER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_MODIFIED_GOEDECKER"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_MODIFIED_GOEDECKER'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_MOLECULAR_DYNAMICS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_MOLECULAR_DYNAMICS"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_MOLECULAR_DYNAMICS'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_MOVERHO = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_MOVERHO"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_MOVERHO'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_MOVIE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_MOVIE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_MOVIE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_NOGEOCHECK = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_NOGEOCHECK"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_NOGEOCHECK'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_NONORTHOGONAL_ORBITALS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_NONORTHOGONAL_ORBITALS"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_NONORTHOGONAL_ORBITALS'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_NOSE_PARAMETERS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_NOSE_PARAMETERS"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_NOSE_PARAMETERS'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_NOSE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_NOSE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_NOSE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_ODIIS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ODIIS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ODIIS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_OPTIMIZE_GEOMETRY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_OPTIMIZE_GEOMETRY"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_OPTIMIZE_GEOMETRY'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_OPTIMIZE_WAVEFUNCTION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_OPTIMIZE_WAVEFUNCTION"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_OPTIMIZE_WAVEFUNCTION'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_ORBITAL_HARDNESS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ORBITAL_HARDNESS"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ORBITAL_HARDNESS'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_ORTHOGONALIZATION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ORTHOGONALIZATION"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ORTHOGONALIZATION'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_PATH_INTEGRAL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_PATH_INTEGRAL"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_PATH_INTEGRAL'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_PATH_MINIMIZATION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_PATH_MINIMIZATION"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_PATH_MINIMIZATION'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_PATH_SAMPLING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_PATH_SAMPLING"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_PATH_SAMPLING'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_PCG = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_PCG"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_PCG'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_PRFO_NSVIB = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_PRFO_NSVIB"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_PRFO_NSVIB'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_PRFO = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_PRFO"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_PRFO'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_PRINT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_PRINT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_PRINT'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_PRNGSEED = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_PRNGSEED"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_PRNGSEED'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_PROJECT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_PROJECT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_PROJECT'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_PROPAGATION_SPECTRA = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_PROPAGATION_SPECTRA"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_PROPAGATION_SPECTRA'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_PROPERTIES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_PROPERTIES"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_PROPERTIES'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_QMMM = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_QMMM"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_QMMM'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_QUENCH = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_QUENCH"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_QUENCH'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_RANDOMIZE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_RANDOMIZE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_RANDOMIZE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_RATTLE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_RATTLE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_RATTLE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_REAL_SPACE_WFN_KEEP = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_REAL_SPACE_WFN_KEEP"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_REAL_SPACE_WFN_KEEP'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_RESCALE_OLD_VELOCITIES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_RESCALE_OLD_VELOCITIES"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_RESCALE_OLD_VELOCITIES'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_RESTART = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_RESTART"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_RESTART'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_RESTFILE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_RESTFILE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_RESTFILE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_REVERSE_VELOCITIES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_REVERSE_VELOCITIES"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_REVERSE_VELOCITIES'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_RHOOUT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_RHOOUT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_RHOOUT'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_ROKS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_ROKS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_ROKS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_SCALED_MASSES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_SCALED_MASSES"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_SCALED_MASSES'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_SHIFT_POTENTIAL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_SHIFT_POTENTIAL"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_SHIFT_POTENTIAL'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_SPLINE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_SPLINE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_SPLINE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_SSIC = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_SSIC"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_SSIC'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_STEEPEST_DESCENT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_STEEPEST_DESCENT"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_STEEPEST_DESCENT'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_STRUCTURE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_STRUCTURE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_STRUCTURE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_SUBTRACT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_SUBTRACT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_SUBTRACT'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_SURFACE_HOPPING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_SURFACE_HOPPING"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_SURFACE_HOPPING'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_TDDFT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_TDDFT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_TDDFT'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_TEMPCONTROL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_TEMPCONTROL"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_TEMPCONTROL'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_TEMPERATURE_ELECTRON = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_TEMPERATURE_ELECTRON"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_TEMPERATURE_ELECTRON'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_TEMPERATURE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_TEMPERATURE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_TEMPERATURE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_TIMESTEP_ELECTRONS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_TIMESTEP_ELECTRONS"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_TIMESTEP_ELECTRONS'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_TIMESTEP_IONS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_TIMESTEP_IONS"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_TIMESTEP_IONS'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_TIMESTEP = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_TIMESTEP"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_TIMESTEP'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_TRACE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_TRACE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_TRACE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_TRAJECTORY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_TRAJECTORY"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_TRAJECTORY'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_TROTTER_FACTORIZATION_OFF = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_TROTTER_FACTORIZATION_OFF"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_TROTTER_FACTORIZATION_OFF'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_TROTTER_FACTOR = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_TROTTER_FACTOR"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_TROTTER_FACTOR'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_VDW_CORRECTION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_VDW_CORRECTION"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_VDW_CORRECTION'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_VDW_WANNIER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_VDW_WANNIER"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_VDW_WANNIER'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_VGFACTOR = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_VGFACTOR"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_VGFACTOR'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_VIBRATIONAL_ANALYSIS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_VIBRATIONAL_ANALYSIS"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_VIBRATIONAL_ANALYSIS'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_VMIRROR = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_VMIRROR"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_VMIRROR'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_WANNIER_DOS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_WANNIER_DOS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_WANNIER_DOS'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_WANNIER_MOLECULAR = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_WANNIER_MOLECULAR"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_WANNIER_MOLECULAR'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_WANNIER_NPROC = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_WANNIER_NPROC"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_WANNIER_NPROC'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_WANNIER_OPTIMIZATION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_WANNIER_OPTIMIZATION"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_WANNIER_OPTIMIZATION'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_WANNIER_PARAMETER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_WANNIER_PARAMETER"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_WANNIER_PARAMETER'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_WANNIER_REFERENCE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_WANNIER_REFERENCE"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_WANNIER_REFERENCE'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_WANNIER_SERIAL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_WANNIER_SERIAL"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_WANNIER_SERIAL'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_WANNIER_TYPE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_WANNIER_TYPE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_WANNIER_TYPE'), repeats=True
     )
 
     x_cpmd_section_input_CPMD_WANNIER_WFNOUT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_WANNIER_WFNOUT"),
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_WANNIER_WFNOUT'),
         repeats=True,
     )
 
     x_cpmd_section_input_CPMD_WOUT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD_WOUT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD_WOUT'), repeats=True
     )
 
 
@@ -5741,70 +5741,70 @@ class x_cpmd_section_input_DFT(MSection):
     )
 
     x_cpmd_section_input_DFT_ACM0 = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_ACM0"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_ACM0'), repeats=True
     )
 
     x_cpmd_section_input_DFT_ACM1 = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_ACM1"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_ACM1'), repeats=True
     )
 
     x_cpmd_section_input_DFT_ACM3 = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_ACM3"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_ACM3'), repeats=True
     )
 
     x_cpmd_section_input_DFT_BECKE_BETA = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_BECKE_BETA"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_BECKE_BETA'), repeats=True
     )
 
     x_cpmd_section_input_DFT_EXCHANGE_CORRELATION_TABLE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_EXCHANGE_CORRELATION_TABLE"),
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_EXCHANGE_CORRELATION_TABLE'),
         repeats=True,
     )
 
     x_cpmd_section_input_DFT_FUNCTIONAL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_FUNCTIONAL"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_FUNCTIONAL'), repeats=True
     )
 
     x_cpmd_section_input_DFT_GRADIENT_CORRECTION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_GRADIENT_CORRECTION"),
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_GRADIENT_CORRECTION'),
         repeats=True,
     )
 
     x_cpmd_section_input_DFT_HARTREE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_HARTREE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_HARTREE'), repeats=True
     )
 
     x_cpmd_section_input_DFT_HFX_SCREENING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_HFX_SCREENING"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_HFX_SCREENING'), repeats=True
     )
 
     x_cpmd_section_input_DFT_LDA_CORRELATION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_LDA_CORRELATION"),
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_LDA_CORRELATION'),
         repeats=True,
     )
 
     x_cpmd_section_input_DFT_LR_KERNEL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_LR_KERNEL"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_LR_KERNEL'), repeats=True
     )
 
     x_cpmd_section_input_DFT_NEWCODE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_NEWCODE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_NEWCODE'), repeats=True
     )
 
     x_cpmd_section_input_DFT_OLDCODE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_OLDCODE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_OLDCODE'), repeats=True
     )
 
     x_cpmd_section_input_DFT_REFUNCT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_REFUNCT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_REFUNCT'), repeats=True
     )
 
     x_cpmd_section_input_DFT_SLATER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_SLATER"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_SLATER'), repeats=True
     )
 
     x_cpmd_section_input_DFT_SMOOTH = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT_SMOOTH"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT_SMOOTH'), repeats=True
     )
 
 
@@ -5914,15 +5914,15 @@ class x_cpmd_section_input_HARDNESS(MSection):
     )
 
     x_cpmd_section_input_HARDNESS_DIAGONAL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_HARDNESS_DIAGONAL"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_HARDNESS_DIAGONAL'), repeats=True
     )
 
     x_cpmd_section_input_HARDNESS_ORBITALS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_HARDNESS_ORBITALS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_HARDNESS_ORBITALS'), repeats=True
     )
 
     x_cpmd_section_input_HARDNESS_REFATOM = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_HARDNESS_REFATOM"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_HARDNESS_REFATOM'), repeats=True
     )
 
 
@@ -6141,32 +6141,32 @@ class x_cpmd_section_input_LINRES(MSection):
     )
 
     x_cpmd_section_input_LINRES_DIFF_FORMULA = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_LINRES_DIFF_FORMULA"),
+        sub_section=SectionProxy('x_cpmd_section_input_LINRES_DIFF_FORMULA'),
         repeats=True,
     )
 
     x_cpmd_section_input_LINRES_GAUGE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_LINRES_GAUGE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_LINRES_GAUGE'), repeats=True
     )
 
     x_cpmd_section_input_LINRES_HTHRS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_LINRES_HTHRS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_LINRES_HTHRS'), repeats=True
     )
 
     x_cpmd_section_input_LINRES_OPTIMIZER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_LINRES_OPTIMIZER"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_LINRES_OPTIMIZER'), repeats=True
     )
 
     x_cpmd_section_input_LINRES_STEPLENGTH = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_LINRES_STEPLENGTH"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_LINRES_STEPLENGTH'), repeats=True
     )
 
     x_cpmd_section_input_LINRES_THAUTO = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_LINRES_THAUTO"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_LINRES_THAUTO'), repeats=True
     )
 
     x_cpmd_section_input_LINRES_ZDIIS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_LINRES_ZDIIS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_LINRES_ZDIIS'), repeats=True
     )
 
 
@@ -6333,27 +6333,27 @@ class x_cpmd_section_input_PATH(MSection):
     )
 
     x_cpmd_section_input_PATH_ALPHA = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PATH_ALPHA"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PATH_ALPHA'), repeats=True
     )
 
     x_cpmd_section_input_PATH_FACTOR = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PATH_FACTOR"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PATH_FACTOR'), repeats=True
     )
 
     x_cpmd_section_input_PATH_NEQUI = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PATH_NEQUI"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PATH_NEQUI'), repeats=True
     )
 
     x_cpmd_section_input_PATH_NLOOP = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PATH_NLOOP"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PATH_NLOOP'), repeats=True
     )
 
     x_cpmd_section_input_PATH_NPREVIOUS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PATH_NPREVIOUS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PATH_NPREVIOUS'), repeats=True
     )
 
     x_cpmd_section_input_PATH_REPLICA_NUMBER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PATH_REPLICA_NUMBER"),
+        sub_section=SectionProxy('x_cpmd_section_input_PATH_REPLICA_NUMBER'),
         repeats=True,
     )
 
@@ -6770,61 +6770,61 @@ class x_cpmd_section_input_PIMD(MSection):
     )
 
     x_cpmd_section_input_PIMD_CENTROID_DYNAMICS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_CENTROID_DYNAMICS"),
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_CENTROID_DYNAMICS'),
         repeats=True,
     )
 
     x_cpmd_section_input_PIMD_CLASSICAL_TEST = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_CLASSICAL_TEST"),
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_CLASSICAL_TEST'),
         repeats=True,
     )
 
     x_cpmd_section_input_PIMD_DEBROGLIE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_DEBROGLIE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_DEBROGLIE'), repeats=True
     )
 
     x_cpmd_section_input_PIMD_FACMASS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_FACMASS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_FACMASS'), repeats=True
     )
 
     x_cpmd_section_input_PIMD_GENERATE_REPLICAS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_GENERATE_REPLICAS"),
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_GENERATE_REPLICAS'),
         repeats=True,
     )
 
     x_cpmd_section_input_PIMD_INITIALIZATION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_INITIALIZATION"),
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_INITIALIZATION'),
         repeats=True,
     )
 
     x_cpmd_section_input_PIMD_NORMAL_MODES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_NORMAL_MODES"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_NORMAL_MODES'), repeats=True
     )
 
     x_cpmd_section_input_PIMD_OUTPUT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_OUTPUT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_OUTPUT'), repeats=True
     )
 
     x_cpmd_section_input_PIMD_PRINT_LEVEL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_PRINT_LEVEL"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_PRINT_LEVEL'), repeats=True
     )
 
     x_cpmd_section_input_PIMD_PROCESSOR_GROUPS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_PROCESSOR_GROUPS"),
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_PROCESSOR_GROUPS'),
         repeats=True,
     )
 
     x_cpmd_section_input_PIMD_READ_REPLICAS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_READ_REPLICAS"),
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_READ_REPLICAS'),
         repeats=True,
     )
 
     x_cpmd_section_input_PIMD_STAGING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_STAGING"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_STAGING'), repeats=True
     )
 
     x_cpmd_section_input_PIMD_TROTTER_DIMENSION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD_TROTTER_DIMENSION"),
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD_TROTTER_DIMENSION'),
         repeats=True,
     )
 
@@ -7336,79 +7336,79 @@ class x_cpmd_section_input_PROP(MSection):
     )
 
     x_cpmd_section_input_PROP_AVERAGED_POTENTIAL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_AVERAGED_POTENTIAL"),
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_AVERAGED_POTENTIAL'),
         repeats=True,
     )
 
     x_cpmd_section_input_PROP_CHARGES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_CHARGES"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_CHARGES'), repeats=True
     )
 
     x_cpmd_section_input_PROP_CONDUCTIVITY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_CONDUCTIVITY"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_CONDUCTIVITY'), repeats=True
     )
 
     x_cpmd_section_input_PROP_CORE_SPECTRA = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_CORE_SPECTRA"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_CORE_SPECTRA'), repeats=True
     )
 
     x_cpmd_section_input_PROP_CUBECENTER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_CUBECENTER"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_CUBECENTER'), repeats=True
     )
 
     x_cpmd_section_input_PROP_CUBEFILE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_CUBEFILE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_CUBEFILE'), repeats=True
     )
 
     x_cpmd_section_input_PROP_DIPOLE_MOMENT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_DIPOLE_MOMENT"),
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_DIPOLE_MOMENT'),
         repeats=True,
     )
 
     x_cpmd_section_input_PROP_EXCITED_DIPOLE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_EXCITED_DIPOLE"),
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_EXCITED_DIPOLE'),
         repeats=True,
     )
 
     x_cpmd_section_input_PROP_LDOS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_LDOS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_LDOS'), repeats=True
     )
 
     x_cpmd_section_input_PROP_LOCAL_DIPOLE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_LOCAL_DIPOLE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_LOCAL_DIPOLE'), repeats=True
     )
 
     x_cpmd_section_input_PROP_LOCALIZE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_LOCALIZE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_LOCALIZE'), repeats=True
     )
 
     x_cpmd_section_input_PROP_NOPRINT_ORBITALS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_NOPRINT_ORBITALS"),
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_NOPRINT_ORBITALS'),
         repeats=True,
     )
 
     x_cpmd_section_input_PROP_OPTIMIZE_SLATER_EXPONENTS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_OPTIMIZE_SLATER_EXPONENTS"),
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_OPTIMIZE_SLATER_EXPONENTS'),
         repeats=True,
     )
 
     x_cpmd_section_input_PROP_POLARISABILITY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_POLARISABILITY"),
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_POLARISABILITY'),
         repeats=True,
     )
 
     x_cpmd_section_input_PROP_POPULATION_ANALYSIS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_POPULATION_ANALYSIS"),
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_POPULATION_ANALYSIS'),
         repeats=True,
     )
 
     x_cpmd_section_input_PROP_PROJECT_WAVEFUNCTION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_PROJECT_WAVEFUNCTION"),
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_PROJECT_WAVEFUNCTION'),
         repeats=True,
     )
 
     x_cpmd_section_input_PROP_TRANSITION_MOMENT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP_TRANSITION_MOMENT"),
+        sub_section=SectionProxy('x_cpmd_section_input_PROP_TRANSITION_MOMENT'),
         repeats=True,
     )
 
@@ -7512,15 +7512,15 @@ class x_cpmd_section_input_PTDDFT(MSection):
     )
 
     x_cpmd_section_input_PTDDFT_ACCURACY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PTDDFT_ACCURACY"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PTDDFT_ACCURACY'), repeats=True
     )
 
     x_cpmd_section_input_PTDDFT_PIPULSE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PTDDFT_PIPULSE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PTDDFT_PIPULSE'), repeats=True
     )
 
     x_cpmd_section_input_PTDDFT_RESTFILE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PTDDFT_RESTFILE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PTDDFT_RESTFILE'), repeats=True
     )
 
 
@@ -8181,96 +8181,96 @@ class x_cpmd_section_input_QMMM(MSection):
     )
 
     x_cpmd_section_input_QMMM_AMBER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_AMBER"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_AMBER'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_BOX_TOLERANCE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_BOX_TOLERANCE"),
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_BOX_TOLERANCE'),
         repeats=True,
     )
 
     x_cpmd_section_input_QMMM_BOX_WALLS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_BOX_WALLS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_BOX_WALLS'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_CAPPING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_CAPPING"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_CAPPING'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_COORDINATES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_COORDINATES"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_COORDINATES'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_ELECTROSTATIC_COUPLING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_ELECTROSTATIC_COUPLING"),
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_ELECTROSTATIC_COUPLING'),
         repeats=True,
     )
 
     x_cpmd_section_input_QMMM_ESPWEIGHT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_ESPWEIGHT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_ESPWEIGHT'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_EXCLUSION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_EXCLUSION"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_EXCLUSION'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_FLEXIBLE_WATER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_FLEXIBLE_WATER"),
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_FLEXIBLE_WATER'),
         repeats=True,
     )
 
     x_cpmd_section_input_QMMM_GROMOS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_GROMOS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_GROMOS'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_HIRSHFELD = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_HIRSHFELD"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_HIRSHFELD'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_INPUT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_INPUT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_INPUT'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_MAXNN = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_MAXNN"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_MAXNN'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_NOSPLIT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_NOSPLIT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_NOSPLIT'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_RESTART_TRAJECTORY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_RESTART_TRAJECTORY"),
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_RESTART_TRAJECTORY'),
         repeats=True,
     )
 
     x_cpmd_section_input_QMMM_SAMPLE_INTERACTING = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_SAMPLE_INTERACTING"),
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_SAMPLE_INTERACTING'),
         repeats=True,
     )
 
     x_cpmd_section_input_QMMM_SPLIT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_SPLIT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_SPLIT'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_TIMINGS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_TIMINGS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_TIMINGS'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_TOPOLOGY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_TOPOLOGY"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_TOPOLOGY'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_UPDATE_LIST = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_UPDATE_LIST"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_UPDATE_LIST'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_VERBOSE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_VERBOSE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_VERBOSE'), repeats=True
     )
 
     x_cpmd_section_input_QMMM_WRITE_LOCALTEMP = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM_WRITE_LOCALTEMP"),
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM_WRITE_LOCALTEMP'),
         repeats=True,
     )
 
@@ -8720,68 +8720,68 @@ class x_cpmd_section_input_RESP(MSection):
     )
 
     x_cpmd_section_input_RESP_DISCARD = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_DISCARD"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_DISCARD'), repeats=True
     )
 
     x_cpmd_section_input_RESP_EIGENSYSTEM = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_EIGENSYSTEM"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_EIGENSYSTEM'), repeats=True
     )
 
     x_cpmd_section_input_RESP_EPR = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_EPR"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_EPR'), repeats=True
     )
 
     x_cpmd_section_input_RESP_FUKUI = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_FUKUI"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_FUKUI'), repeats=True
     )
 
     x_cpmd_section_input_RESP_HARDNESS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_HARDNESS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_HARDNESS'), repeats=True
     )
 
     x_cpmd_section_input_RESP_INTERACTION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_INTERACTION"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_INTERACTION'), repeats=True
     )
 
     x_cpmd_section_input_RESP_KEEPREALSPACE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_KEEPREALSPACE"),
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_KEEPREALSPACE'),
         repeats=True,
     )
 
     x_cpmd_section_input_RESP_KPERT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_KPERT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_KPERT'), repeats=True
     )
 
     x_cpmd_section_input_RESP_LANCZOS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_LANCZOS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_LANCZOS'), repeats=True
     )
 
     x_cpmd_section_input_RESP_NMR = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_NMR"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_NMR'), repeats=True
     )
 
     x_cpmd_section_input_RESP_NOOPT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_NOOPT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_NOOPT'), repeats=True
     )
 
     x_cpmd_section_input_RESP_OACP = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_OACP"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_OACP'), repeats=True
     )
 
     x_cpmd_section_input_RESP_PHONON = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_PHONON"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_PHONON'), repeats=True
     )
 
     x_cpmd_section_input_RESP_POLAK = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_POLAK"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_POLAK'), repeats=True
     )
 
     x_cpmd_section_input_RESP_RAMAN = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_RAMAN"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_RAMAN'), repeats=True
     )
 
     x_cpmd_section_input_RESP_TIGHTPREC = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP_TIGHTPREC"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP_TIGHTPREC'), repeats=True
     )
 
 
@@ -9939,186 +9939,186 @@ class x_cpmd_section_input_SYSTEM(MSection):
     )
 
     x_cpmd_section_input_SYSTEM_ACCEPTOR = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_ACCEPTOR"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_ACCEPTOR'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_ANGSTROM = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_ANGSTROM"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_ANGSTROM'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_CELL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_CELL"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_CELL'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_CHARGE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_CHARGE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_CHARGE'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_CHECK_SYMMETRY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_CHECK_SYMMETRY"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_CHECK_SYMMETRY'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_CLASSICAL_CELL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_CLASSICAL_CELL"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_CLASSICAL_CELL'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_CLUSTER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_CLUSTER"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_CLUSTER'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_CONSTANT_CUTOFF = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_CONSTANT_CUTOFF"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_CONSTANT_CUTOFF'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_COUPLINGS_LINRES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_COUPLINGS_LINRES"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_COUPLINGS_LINRES'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_COUPLINGS_NSURF = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_COUPLINGS_NSURF"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_COUPLINGS_NSURF'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_COUPLINGS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_COUPLINGS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_COUPLINGS'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_CUTOFF = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_CUTOFF"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_CUTOFF'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_DENSITY_CUTOFF = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_DENSITY_CUTOFF"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_DENSITY_CUTOFF'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_DONOR = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_DONOR"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_DONOR'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_DUAL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_DUAL"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_DUAL'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_ENERGY_PROFILE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_ENERGY_PROFILE"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_ENERGY_PROFILE'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_EXTERNAL_FIELD = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_EXTERNAL_FIELD"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_EXTERNAL_FIELD'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_HFX_CUTOFF = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_HFX_CUTOFF"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_HFX_CUTOFF'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_ISOTROPIC_CELL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_ISOTROPIC_CELL"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_ISOTROPIC_CELL'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_KPOINTS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_KPOINTS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_KPOINTS'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_LOW_SPIN_EXCITATION_LSETS = SubSection(
         sub_section=SectionProxy(
-            "x_cpmd_section_input_SYSTEM_LOW_SPIN_EXCITATION_LSETS"
+            'x_cpmd_section_input_SYSTEM_LOW_SPIN_EXCITATION_LSETS'
         ),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_LOW_SPIN_EXCITATION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_LOW_SPIN_EXCITATION"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_LOW_SPIN_EXCITATION'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_LSE_PARAMETERS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_LSE_PARAMETERS"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_LSE_PARAMETERS'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_MESH = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_MESH"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_MESH'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_MULTIPLICITY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_MULTIPLICITY"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_MULTIPLICITY'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_NSUP = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_NSUP"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_NSUP'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_OCCUPATION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_OCCUPATION"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_OCCUPATION'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_POINT_GROUP = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_POINT_GROUP"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_POINT_GROUP'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_POISSON_SOLVER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_POISSON_SOLVER"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_POISSON_SOLVER'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_POLYMER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_POLYMER"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_POLYMER'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_PRESSURE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_PRESSURE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_PRESSURE'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_REFERENCE_CELL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_REFERENCE_CELL"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_REFERENCE_CELL'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_SCALE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_SCALE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_SCALE'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_STATES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_STATES"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_STATES'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_SURFACE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_SURFACE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_SURFACE'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_SYMMETRIZE_COORDINATES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_SYMMETRIZE_COORDINATES"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_SYMMETRIZE_COORDINATES'),
         repeats=True,
     )
 
     x_cpmd_section_input_SYSTEM_SYMMETRY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_SYMMETRY"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_SYMMETRY'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_TESR = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_TESR"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_TESR'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_WCUT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_WCUT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_WCUT'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_WGAUSS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_WGAUSS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_WGAUSS'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM_ZFLEXIBLE_CELL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM_ZFLEXIBLE_CELL"),
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM_ZFLEXIBLE_CELL'),
         repeats=True,
     )
 
@@ -10463,53 +10463,53 @@ class x_cpmd_section_input_TDDFT(MSection):
     )
 
     x_cpmd_section_input_TDDFT_DAVIDSON_RDIIS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_TDDFT_DAVIDSON_RDIIS"),
+        sub_section=SectionProxy('x_cpmd_section_input_TDDFT_DAVIDSON_RDIIS'),
         repeats=True,
     )
 
     x_cpmd_section_input_TDDFT_DIAGONALIZER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_TDDFT_DIAGONALIZER"),
+        sub_section=SectionProxy('x_cpmd_section_input_TDDFT_DIAGONALIZER'),
         repeats=True,
     )
 
     x_cpmd_section_input_TDDFT_EXTPOT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_TDDFT_EXTPOT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_TDDFT_EXTPOT'), repeats=True
     )
 
     x_cpmd_section_input_TDDFT_FORCE_STATE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_TDDFT_FORCE_STATE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_TDDFT_FORCE_STATE'), repeats=True
     )
 
     x_cpmd_section_input_TDDFT_LOCALIZATION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_TDDFT_LOCALIZATION"),
+        sub_section=SectionProxy('x_cpmd_section_input_TDDFT_LOCALIZATION'),
         repeats=True,
     )
 
     x_cpmd_section_input_TDDFT_MOLECULAR_STATES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_TDDFT_MOLECULAR_STATES"),
+        sub_section=SectionProxy('x_cpmd_section_input_TDDFT_MOLECULAR_STATES'),
         repeats=True,
     )
 
     x_cpmd_section_input_TDDFT_PCG_PARAMETER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_TDDFT_PCG_PARAMETER"),
+        sub_section=SectionProxy('x_cpmd_section_input_TDDFT_PCG_PARAMETER'),
         repeats=True,
     )
 
     x_cpmd_section_input_TDDFT_PROPERTY = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_TDDFT_PROPERTY"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_TDDFT_PROPERTY'), repeats=True
     )
 
     x_cpmd_section_input_TDDFT_REORDER_LOCAL = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_TDDFT_REORDER_LOCAL"),
+        sub_section=SectionProxy('x_cpmd_section_input_TDDFT_REORDER_LOCAL'),
         repeats=True,
     )
 
     x_cpmd_section_input_TDDFT_REORDER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_TDDFT_REORDER"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_TDDFT_REORDER'), repeats=True
     )
 
     x_cpmd_section_input_TDDFT_ROTATION_PARAMETER = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_TDDFT_ROTATION_PARAMETER"),
+        sub_section=SectionProxy('x_cpmd_section_input_TDDFT_ROTATION_PARAMETER'),
         repeats=True,
     )
 
@@ -10635,12 +10635,12 @@ class x_cpmd_section_input_VDW(MSection):
     )
 
     x_cpmd_section_input_VDW_VDW_PARAMETERS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_VDW_VDW_PARAMETERS"),
+        sub_section=SectionProxy('x_cpmd_section_input_VDW_VDW_PARAMETERS'),
         repeats=True,
     )
 
     x_cpmd_section_input_VDW_WANNIER_CORRECTION = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_VDW_WANNIER_CORRECTION"),
+        sub_section=SectionProxy('x_cpmd_section_input_VDW_WANNIER_CORRECTION'),
         repeats=True,
     )
 
@@ -10653,75 +10653,75 @@ class x_cpmd_section_input(MSection):
     m_def = Section(validate=False)
 
     x_cpmd_section_input_ATOMS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_ATOMS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_ATOMS'), repeats=True
     )
 
     x_cpmd_section_input_BASIS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_BASIS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_BASIS'), repeats=True
     )
 
     x_cpmd_section_input_CLASSIC = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CLASSIC"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CLASSIC'), repeats=True
     )
 
     x_cpmd_section_input_CPMD = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_CPMD"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_CPMD'), repeats=True
     )
 
     x_cpmd_section_input_DFT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_DFT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_DFT'), repeats=True
     )
 
     x_cpmd_section_input_EXTE = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_EXTE"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_EXTE'), repeats=True
     )
 
     x_cpmd_section_input_HARDNESS = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_HARDNESS"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_HARDNESS'), repeats=True
     )
 
     x_cpmd_section_input_INFO = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_INFO"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_INFO'), repeats=True
     )
 
     x_cpmd_section_input_LINRES = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_LINRES"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_LINRES'), repeats=True
     )
 
     x_cpmd_section_input_PATH = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PATH"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PATH'), repeats=True
     )
 
     x_cpmd_section_input_PIMD = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PIMD"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PIMD'), repeats=True
     )
 
     x_cpmd_section_input_PROP = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PROP"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PROP'), repeats=True
     )
 
     x_cpmd_section_input_PTDDFT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_PTDDFT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_PTDDFT'), repeats=True
     )
 
     x_cpmd_section_input_QMMM = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_QMMM"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_QMMM'), repeats=True
     )
 
     x_cpmd_section_input_RESP = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_RESP"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_RESP'), repeats=True
     )
 
     x_cpmd_section_input_SYSTEM = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_SYSTEM"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_SYSTEM'), repeats=True
     )
 
     x_cpmd_section_input_TDDFT = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_TDDFT"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_TDDFT'), repeats=True
     )
 
     x_cpmd_section_input_VDW = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input_VDW"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input_VDW'), repeats=True
     )
 
 
@@ -10729,5 +10729,5 @@ class Run(runschema.run.Run):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cpmd_section_input = SubSection(
-        sub_section=SectionProxy("x_cpmd_section_input"), repeats=True
+        sub_section=SectionProxy('x_cpmd_section_input'), repeats=True
     )

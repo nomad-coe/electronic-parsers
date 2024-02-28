@@ -89,20 +89,20 @@ from simulationworkflowschema import (
 from .metainfo import m_env  # pylint: disable=unused-import
 
 
-re_n = r"[\n\r]"
+re_n = r'[\n\r]'
 
 
 def get_key_values(val_in):
-    val = [v for v in val_in.split("\n") if "=" in v]
+    val = [v for v in val_in.split('\n') if '=' in v]
     data = {}
-    pattern = re.compile(r"([A-Z_]+)\s*=\s*(\.?[a-zA-Z]*[\d\-\.\+\sE]*\.?)")
+    pattern = re.compile(r'([A-Z_]+)\s*=\s*(\.?[a-zA-Z]*[\d\-\.\+\sE]*\.?)')
 
     def convert(v):
         if isinstance(v, list):
             v = [convert(vi) for vi in v]
         elif isinstance(v, str):
             try:
-                v = float(v) if "." in v else int(v)
+                v = float(v) if '.' in v else int(v)
             except Exception:
                 pass
         else:
@@ -117,9 +117,9 @@ def get_key_values(val_in):
             if isinstance(vi, str):
                 vi = vi.strip()
                 vi_upper = vi.upper()
-                if vi_upper in ["T", ".TRUE.", "TRUE"]:
+                if vi_upper in ['T', '.TRUE.', 'TRUE']:
                     vi = True
-                elif vi_upper in ["F", ".FALSE.", "FALSE"]:
+                elif vi_upper in ['F', '.FALSE.', 'FALSE']:
                     vi = False
             data[resi[0]] = convert(vi)
     return data
@@ -142,19 +142,19 @@ class PotParser(TextParser):
     def init_quantities(self):
         """Extract pseudopotential headers both from POTCAR or OUTCAR."""
         _pseudopotential = [
-            Quantity("title", r"TITEL\s+=\s*(.*)"),  # extract the VASP native title
+            Quantity('title', r'TITEL\s+=\s*(.*)'),  # extract the VASP native title
             Quantity(
-                "flag", r"(L[A-Z]+)\s+=\s+(T|F)", repeats=True
+                'flag', r'(L[A-Z]+)\s+=\s+(T|F)', repeats=True
             ),  # extract booleans keywords
             Quantity(
-                "number", r"([A-Z]+)\s+=\s+([-\.0-9]+)", repeats=True
+                'number', r'([A-Z]+)\s+=\s+([-\.0-9]+)', repeats=True
             ),  # extract floats or integers
         ]
 
         self._quantities = [
             Quantity(
-                "pseudopotential",
-                r"(VRHFIN\s+=[\s\S]+?(LMMAX\s=\s+\d|END of))",
+                'pseudopotential',
+                r'(VRHFIN\s+=[\s\S]+?(LMMAX\s=\s+\d|END of))',
                 repeats=True,  # recognize where a header starts
                 sub_parser=TextParser(quantities=_pseudopotential),
             )
@@ -172,64 +172,64 @@ class ContentParser:
         self._n_bands = None
         self._n_dos = None
         self.metainfo_mapping = {
-            "e_fr_energy": "energy_free",
-            "e_wo_entrp": "energy_total",
-            "e_0_energy": "energy_total_T0",
-            "hartreedc": "energy_correction_hartree",
-            "XCdc": "energy_XC",
-            "forces": "atom_forces",
-            "stress": "stress_tensor",
-            "energy_total": "energy_free",
-            "energy_T0": "energy_total_T0",
-            "energy_entropy0": "energy_total",
-            "DENC": "energy_correction_hartree",
-            "EXHF": "energy_exchange",
-            "EBANDS": "energy_sum_eigenvalues",
-            "efermi": "fermi",
+            'e_fr_energy': 'energy_free',
+            'e_wo_entrp': 'energy_total',
+            'e_0_energy': 'energy_total_T0',
+            'hartreedc': 'energy_correction_hartree',
+            'XCdc': 'energy_XC',
+            'forces': 'atom_forces',
+            'stress': 'stress_tensor',
+            'energy_total': 'energy_free',
+            'energy_T0': 'energy_total_T0',
+            'energy_entropy0': 'energy_total',
+            'DENC': 'energy_correction_hartree',
+            'EXHF': 'energy_exchange',
+            'EBANDS': 'energy_sum_eigenvalues',
+            'efermi': 'fermi',
         }
 
         # TODO 2. it appears that there is no
         # single parameter for hybrid functionals so it is difficult to determine, 3. not
         # sure about --, I thought it is lda exchange only.
         self.xc_functional_mapping = {
-            "--": ["GGA_X_PBE", "GGA_C_PBE"],
-            "HL": ["LDA_C_HL"],
-            "WI": ["LDA_C_WIGNER"],
-            "PZ": ["LDA_C_PZ"],
-            "91": ["GGA_X_PW91", "GGA_C_PW91"],
-            "PE": ["GGA_X_PBE", "GGA_C_PBE"],
-            "PBE": ["GGA_X_PBE", "GGA_C_PBE"],
-            "RE": ["GGA_X_PBE_R"],
-            "VW": ["LDA_C_VWN"],
-            "RP": ["GGA_X_RPBE", "GGA_C_PBE"],
-            "PS": ["GGA_C_PBE_SOL", "GGA_X_PBE_SOL"],
-            "AM": ["GGA_X_AM05", "GGA_C_AM05"],
-            "B3": ["HYB_GGA_XC_B3LYP3"],
-            "B5": ["HYB_GGA_XC_B3LYP5"],
-            "BF": ["GGA_X_BEEFVDW", "GGA_XC_BEEFVDW"],
-            "CO": [],  # TODO check if this is ever used
-            "OR": ["GGA_X_OPTPBE_VDW"],
-            "BO": ["GGA_X_OPTB88_VDW"],
-            "MK": ["GGA_X_OPTB86B_VDW"],
-            "ML": ["VDW_XC_DF2"],
-            "CX": ["VDW_XC_DF_CX"],
-            "TPSS": ["MGGA_X_TPSS", "MGGA_C_TPSS"],
-            "RTPSS": ["MGGA_X_RTPSS"],
-            "M06L": ["MGGA_C_M06_L"],
-            "MS0": ["MGGA_X_MS0"],
-            "MS1": ["MGGA_X_MS1"],
-            "MS2": ["MGGA_X_MS2"],
-            "SCAN": ["MGGA_X_SCAN"],
-            "RSCAN": ["MGGA_X_RSCAN", "MGGA_C_RSCAN"],
-            "R2SCAN": ["MGGA_X_R2SCAN", "MGGA_C_R2SCAN"],
-            "SCANL": ["MGGA_X_SCANL", "MGGA_C_SCANL"],
-            "RSCANL": [],  # not in LibXC, nor any paper, just deorbitalized SCANL
-            "R2SCANL": ["MGGA_X_R2SCANL", "MGGA_C_R2SCANL"],
-            "OFR2": [],
-            "MBJ": ["MGGA_X_BJ06"],
-            "LBMJ": [],  # TODO ask Miguel Marquez
-            "HLE17": ["MGGA_XC_HLE17"],  # TODO check if this is ever used
-            "RA": ["LDA_C_PW_RPA"],  # TODO check if this is ever used
+            '--': ['GGA_X_PBE', 'GGA_C_PBE'],
+            'HL': ['LDA_C_HL'],
+            'WI': ['LDA_C_WIGNER'],
+            'PZ': ['LDA_C_PZ'],
+            '91': ['GGA_X_PW91', 'GGA_C_PW91'],
+            'PE': ['GGA_X_PBE', 'GGA_C_PBE'],
+            'PBE': ['GGA_X_PBE', 'GGA_C_PBE'],
+            'RE': ['GGA_X_PBE_R'],
+            'VW': ['LDA_C_VWN'],
+            'RP': ['GGA_X_RPBE', 'GGA_C_PBE'],
+            'PS': ['GGA_C_PBE_SOL', 'GGA_X_PBE_SOL'],
+            'AM': ['GGA_X_AM05', 'GGA_C_AM05'],
+            'B3': ['HYB_GGA_XC_B3LYP3'],
+            'B5': ['HYB_GGA_XC_B3LYP5'],
+            'BF': ['GGA_X_BEEFVDW', 'GGA_XC_BEEFVDW'],
+            'CO': [],  # TODO check if this is ever used
+            'OR': ['GGA_X_OPTPBE_VDW'],
+            'BO': ['GGA_X_OPTB88_VDW'],
+            'MK': ['GGA_X_OPTB86B_VDW'],
+            'ML': ['VDW_XC_DF2'],
+            'CX': ['VDW_XC_DF_CX'],
+            'TPSS': ['MGGA_X_TPSS', 'MGGA_C_TPSS'],
+            'RTPSS': ['MGGA_X_RTPSS'],
+            'M06L': ['MGGA_C_M06_L'],
+            'MS0': ['MGGA_X_MS0'],
+            'MS1': ['MGGA_X_MS1'],
+            'MS2': ['MGGA_X_MS2'],
+            'SCAN': ['MGGA_X_SCAN'],
+            'RSCAN': ['MGGA_X_RSCAN', 'MGGA_C_RSCAN'],
+            'R2SCAN': ['MGGA_X_R2SCAN', 'MGGA_C_R2SCAN'],
+            'SCANL': ['MGGA_X_SCANL', 'MGGA_C_SCANL'],
+            'RSCANL': [],  # not in LibXC, nor any paper, just deorbitalized SCANL
+            'R2SCANL': ['MGGA_X_R2SCANL', 'MGGA_C_R2SCANL'],
+            'OFR2': [],
+            'MBJ': ['MGGA_X_BJ06'],
+            'LBMJ': [],  # TODO ask Miguel Marquez
+            'HLE17': ['MGGA_XC_HLE17'],  # TODO check if this is ever used
+            'RA': ['LDA_C_PW_RPA'],  # TODO check if this is ever used
         }
 
     def init_parser(self, filepath, logger):
@@ -248,11 +248,11 @@ class ContentParser:
 
     def _fix_incar(self, incar):
         # fix for LORBIT, list is read
-        lorbit = incar.get("LORBIT", None)
+        lorbit = incar.get('LORBIT', None)
         if isinstance(lorbit, list):
-            incar["LORBIT"] = lorbit[0]
+            incar['LORBIT'] = lorbit[0]
         # fix for LDAU parameters, int / float is read
-        for key in ["LDAUU", "LDAUJ", "LDAUL"]:
+        for key in ['LDAUU', 'LDAUJ', 'LDAUL']:
             val = incar.get(key, None)
             if isinstance(val, (int, float)):
                 incar[key] = [val]
@@ -268,26 +268,26 @@ class ContentParser:
     def incar(self):
         if self._incar is None:
             self._incar = dict(incar=None, incar_out=None)
-        if self._incar["incar"] is None:
+        if self._incar['incar'] is None:
             self.get_incar()
-        if self._incar["incar_out"] is None:
+        if self._incar['incar_out'] is None:
             self.get_incar_out()
 
         incar = dict()
-        incar.update(self._incar["incar"])
-        incar.update(self._incar["incar_out"])
+        incar.update(self._incar['incar'])
+        incar.update(self._incar['incar_out'])
 
         return incar
 
     @property
     def ispin(self):
-        return self.incar.get("ISPIN", 1)
+        return self.incar.get('ISPIN', 1)
 
     @property
     def ibrion(self):
-        val = self.incar.get("IBRION,", None)
+        val = self.incar.get('IBRION,', None)
         if val is None:
-            val = -1 if self.incar.get("NSW", 0) in [0, 1] else 0
+            val = -1 if self.incar.get('NSW', 0) in [0, 1] else 0
         return val
 
     def is_converged(self, n_calc):
@@ -307,26 +307,26 @@ class ContentParser:
             """
             return {x[0]: transform(x[1]) for x in key_val}
 
-        bool_mapping = {"T": True, "F": False}
-        pps = PotParser(filepath).parse().get("pseudopotential", [])
+        bool_mapping = {'T': True, 'F': False}
+        pps = PotParser(filepath).parse().get('pseudopotential', [])
         pps_out = []
         for pp in pps:
-            pps_out.append({"title": pp["title"]})
-            pps_out[-1]["flag"] = _to_dict(
-                pp["flag"], transform=lambda x: bool_mapping[x]
+            pps_out.append({'title': pp['title']})
+            pps_out[-1]['flag'] = _to_dict(
+                pp['flag'], transform=lambda x: bool_mapping[x]
             )
-            pps_out[-1]["number"] = _to_dict(pp["number"], transform=lambda x: float(x))
+            pps_out[-1]['number'] = _to_dict(pp['number'], transform=lambda x: float(x))
         return pps_out
 
-    def _get_tier(self, raw_data: Union[str, None], type="native") -> Union[str, None]:
+    def _get_tier(self, raw_data: Union[str, None], type='native') -> Union[str, None]:
         """Extract the tier from a string, and return it in a standardized format.
         - `raw_data`: the string to extract the tier from
         - `type`: the standardized output format, either `native` to VASP,
                 or `standard` NOMAD
         """
-        _map = ["low", "medium", "high", "normal", "single", "accurate"]
+        _map = ['low', 'medium', 'high', 'normal', 'single', 'accurate']
         if tier_name := raw_data:
-            if type == "native":
+            if type == 'native':
                 for tier in _map:
                     if tier.startswith(tier_name.lower()):
                         return tier
@@ -342,9 +342,9 @@ class OutcarTextParser(TextParser):
     def init_quantities(self):
         def str_to_array(val_in):
             val = [
-                re.findall(r"(\-?\d+\.[\dEe]+)", v)
-                for v in val_in.strip().split("\n")
-                if "--" not in v
+                re.findall(r'(\-?\d+\.[\dEe]+)', v)
+                for v in val_in.strip().split('\n')
+                if '--' not in v
             ]
             return np.array([v[0:3] for v in val], float), np.array(
                 [v[3:6] for v in val], float
@@ -371,9 +371,9 @@ class OutcarTextParser(TextParser):
                 time,
                 parallel,
             ) = val_in.split()
-            parallel = "parallel" if parallel == "running" else parallel
-            subversion = "%s %s %s" % (build_date, build_type, parallel)
-            date = date.replace(".", " ")
+            parallel = 'parallel' if parallel == 'running' else parallel
+            subversion = '%s %s %s' % (build_date, build_type, parallel)
+            date = date.replace('.', ' ')
             return dict(
                 version=version,
                 subversion=subversion,
@@ -384,10 +384,10 @@ class OutcarTextParser(TextParser):
 
         def str_to_positions(val_in):
             re_position = re.compile(
-                r"\d*\s*(\-*\d+\.\d+)\s*(\-*\d+\.\d+)\s*(\-*\d+\.\d+)"
+                r'\d*\s*(\-*\d+\.\d+)\s*(\-*\d+\.\d+)\s*(\-*\d+\.\d+)'
             )
             positions = []
-            for val in val_in.strip().split("\n"):
+            for val in val_in.strip().split('\n'):
                 position = re_position.search(val)
                 if position:
                     positions.append(position.groups())
@@ -396,68 +396,68 @@ class OutcarTextParser(TextParser):
         def str_to_eigenvalues(val_in):
             val = []
             for line in val_in.strip().splitlines():
-                val.extend(["nan" if "*" in v else v for v in line.split()])
+                val.extend(['nan' if '*' in v else v for v in line.split()])
             return np.array(val, np.float64)
 
         scf_iteration = [
             Quantity(
-                "energy_total",
-                r"free energy\s*TOTEN\s*=\s*([\d\.\-]+)\s*eV",
+                'energy_total',
+                r'free energy\s*TOTEN\s*=\s*([\d\.\-]+)\s*eV',
                 repeats=False,
                 dtype=float,
             ),
             Quantity(
-                "energy_entropy0",
-                r"energy without entropy\s*=\s*([\d\.\-]+)",
+                'energy_entropy0',
+                r'energy without entropy\s*=\s*([\d\.\-]+)',
                 repeats=False,
                 dtype=float,
             ),
             Quantity(
-                "energy_T0",
-                r"energy\(sigma\->0\)\s*=\s*([\d\.\-]+)",
+                'energy_T0',
+                r'energy\(sigma\->0\)\s*=\s*([\d\.\-]+)',
                 repeats=False,
                 dtype=float,
             ),
             Quantity(
-                "energy_components",
-                r"Free energy of the ion-electron system \(eV\)\s*\-+([\s\S]+?)\-{10}",
+                'energy_components',
+                r'Free energy of the ion-electron system \(eV\)\s*\-+([\s\S]+?)\-{10}',
                 str_operation=get_key_values,
                 convert=False,
             ),
             Quantity(
-                "time",
-                r"LOOP\: +cpu time +([\d\.]+)\: +real time +([\d\.]+)",
+                'time',
+                r'LOOP\: +cpu time +([\d\.]+)\: +real time +([\d\.]+)',
                 dtype=np.dtype(np.float64),
             ),
         ]
 
         calculation_quantities = [
             Quantity(
-                "scf_iteration",
-                r"Iteration\s*\d+\(\s*\d+\s*\)([\s\S]+?energy\(sigma\->0\)\s*=\s*.+)",
+                'scf_iteration',
+                r'Iteration\s*\d+\(\s*\d+\s*\)([\s\S]+?energy\(sigma\->0\)\s*=\s*.+)',
                 repeats=True,
                 sub_parser=TextParser(quantities=scf_iteration),
             ),
             Quantity(
-                "energies",
-                r"FREE ENERGIE OF THE ION-ELECTRON SYSTEM \(eV\)\s*\-+\s*([\s\S]+?)\-{10}",
+                'energies',
+                r'FREE ENERGIE OF THE ION-ELECTRON SYSTEM \(eV\)\s*\-+\s*([\s\S]+?)\-{10}',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "energy_total",
-                            r"free\s*energy\s*TOTEN\s*=\s*([\-\d\.]+)",
+                            'energy_total',
+                            r'free\s*energy\s*TOTEN\s*=\s*([\-\d\.]+)',
                             repeats=False,
                             dtype=float,
                         ),
                         Quantity(
-                            "energy_entropy0",
-                            r"energy\s*without\s*entropy\s*=\s*([\-\d\.]+)",
+                            'energy_entropy0',
+                            r'energy\s*without\s*entropy\s*=\s*([\-\d\.]+)',
                             repeats=False,
                             dtype=float,
                         ),
                         Quantity(
-                            "energy_T0",
-                            r"energy\(sigma\->0\)\s*=\s*([\-\d\.]+)",
+                            'energy_T0',
+                            r'energy\(sigma\->0\)\s*=\s*([\-\d\.]+)',
                             repeats=False,
                             dtype=float,
                         ),
@@ -465,122 +465,122 @@ class OutcarTextParser(TextParser):
                 ),
             ),
             Quantity(
-                "stress",
-                r"in kB\s*(\-?\d+\.\d+)\s*(\-?\d+\.\d+)\s*(\-?\d+\.\d+)\s*"
-                r"(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)",
+                'stress',
+                r'in kB\s*(\-?\d+\.\d+)\s*(\-?\d+\.\d+)\s*(\-?\d+\.\d+)\s*'
+                r'(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)',
                 str_operation=str_to_stress,
                 convert=False,
             ),
             Quantity(
-                "positions_forces",
-                r"POSITION\s*TOTAL\-FORCE \(eV/Angst\)\s*\-+\s*([\d\.\s\-E]+)",
+                'positions_forces',
+                r'POSITION\s*TOTAL\-FORCE \(eV/Angst\)\s*\-+\s*([\d\.\s\-E]+)',
                 str_operation=str_to_array,
                 convert=False,
             ),
             Quantity(
-                "lattice_vectors",
-                r"direct lattice vectors\s*reciprocal lattice vectors\s*"
-                r"(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)"
-                r"(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)"
-                r"(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)",
+                'lattice_vectors',
+                r'direct lattice vectors\s*reciprocal lattice vectors\s*'
+                r'(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)'
+                r'(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)'
+                r'(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)',
                 str_operation=str_to_array,
                 convert=False,
             ),
             Quantity(
-                "converged",
-                r"aborting loop because (EDIFF is reached)",
+                'converged',
+                r'aborting loop because (EDIFF is reached)',
                 repeats=False,
                 dtype=str,
                 convert=False,
             ),
             Quantity(
-                "fermi_energy", r"E\-fermi :\s*([\d\.]+)", dtype=str, repeats=False
+                'fermi_energy', r'E\-fermi :\s*([\d\.]+)', dtype=str, repeats=False
             ),
             Quantity(
-                "eigenvalues",
-                r"band No\.\s*band energies\s*occupation\s*([\d\.\s\-\*]+?)(?:k\-point|spin|\-{10})",
+                'eigenvalues',
+                r'band No\.\s*band energies\s*occupation\s*([\d\.\s\-\*]+?)(?:k\-point|spin|\-{10})',
                 repeats=True,
                 dtype=float,
                 str_operation=str_to_eigenvalues,
             ),
-            Quantity("convergence", r"(aborting loop because EDIFF is reached)"),
+            Quantity('convergence', r'(aborting loop because EDIFF is reached)'),
             Quantity(
-                "time",
-                r"LOOP\+\: +cpu time +([\d\.]+)\: +real time +([\d\.]+)",
+                'time',
+                r'LOOP\+\: +cpu time +([\d\.]+)\: +real time +([\d\.]+)',
                 dtype=np.dtype(np.float64),
             ),
         ]
 
         self._quantities = [
             Quantity(
-                "calculation",
-                r"(\-\-\s*Iteration\s*\d+\(\s*1\s*\)\s*[\s\S]+?)"
-                r"((?:FREE ENERGIE OF THE ION\-ELECTRON SYSTEM \(eV\)[\s\S]+?LOOP\+.+)|\Z)",
+                'calculation',
+                r'(\-\-\s*Iteration\s*\d+\(\s*1\s*\)\s*[\s\S]+?)'
+                r'((?:FREE ENERGIE OF THE ION\-ELECTRON SYSTEM \(eV\)[\s\S]+?LOOP\+.+)|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=calculation_quantities),
             ),
             Quantity(
-                "header",
-                r"vasp\.([\d\.]+)\s*(\w+)\s*[\s\S]+?\)\s*(\w+)\s*"
-                r"executed on\s*(\w+)\s*date\s*([\d\.]+)\s*([\d\:]+)\s*(\w+)",
+                'header',
+                r'vasp\.([\d\.]+)\s*(\w+)\s*[\s\S]+?\)\s*(\w+)\s*'
+                r'executed on\s*(\w+)\s*date\s*([\d\.]+)\s*([\d\:]+)\s*(\w+)',
                 repeats=False,
                 str_operation=str_to_header,
                 convert=False,
             ),
             Quantity(
-                "parameters",
-                r"Startparameter for this run:([\s\S]+?)\-{100}",
+                'parameters',
+                r'Startparameter for this run:([\s\S]+?)\-{100}',
                 str_operation=get_key_values,
                 repeats=False,
                 convert=False,
             ),
             Quantity(
-                "ions_per_type", r"ions per type =\s*([ \d]+)", dtype=int, repeats=False
+                'ions_per_type', r'ions per type =\s*([ \d]+)', dtype=int, repeats=False
             ),
             Quantity(
-                "species",
-                r"(\w+) +([A-Z][a-z]*).+?:\s*energy of atom +\d+",
+                'species',
+                r'(\w+) +([A-Z][a-z]*).+?:\s*energy of atom +\d+',
                 dtype=str,
                 repeats=True,
             ),  # TODO: deprecate
             Quantity(
-                "kpoints",
-                r"Following reciprocal coordinates:[\s\S]+?\n([\d\.\s\-]+)",
+                'kpoints',
+                r'Following reciprocal coordinates:[\s\S]+?\n([\d\.\s\-]+)',
                 repeats=False,
                 dtype=float,
             ),
-            Quantity("nbands", r"NBANDS\s*=\s*(\d+)", dtype=int, repeats=False),
+            Quantity('nbands', r'NBANDS\s*=\s*(\d+)', dtype=int, repeats=False),
             Quantity(
-                "lattice_vectors",
-                r"direct lattice vectors\s*reciprocal lattice vectors\s*"
-                r"(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)"
-                r"(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)"
-                r"(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)",
+                'lattice_vectors',
+                r'direct lattice vectors\s*reciprocal lattice vectors\s*'
+                r'(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)'
+                r'(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)'
+                r'(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)(\-?\d+\.\d+\s*)',
                 str_operation=str_to_array,
                 convert=False,
             ),
             Quantity(
-                "positions",
-                r"ion\s*position\s*nearest neighbor table([\s\S]+?)LATTYP",
+                'positions',
+                r'ion\s*position\s*nearest neighbor table([\s\S]+?)LATTYP',
                 str_operation=str_to_positions,
                 convert=False,
             ),
             # alternative format
             Quantity(
-                "positions",
-                r"position of ions in cartesian coordinates\s*\(Angst\):([\s\S]+?)\n *\n",
+                'positions',
+                r'position of ions in cartesian coordinates\s*\(Angst\):([\s\S]+?)\n *\n',
                 str_operation=str_to_positions,
                 convert=False,
             ),
             Quantity(
-                "response_functions",
-                r"\s*Response functions by sum over occupied states\:([\s\S]+?)(?:\-\-\-\-\-\-)",
+                'response_functions',
+                r'\s*Response functions by sum over occupied states\:([\s\S]+?)(?:\-\-\-\-\-\-)',
                 repeats=False,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            "input_parameters",
-                            rf"{re_n}* *(\w+) *\= *([\w\.\-]+) *.*",
+                            'input_parameters',
+                            rf'{re_n}* *(\w+) *\= *([\w\.\-]+) *.*',
                             repeats=True,
                         )
                     ]
@@ -606,16 +606,16 @@ class OutcarContentParser(ContentParser):
     @property
     def header(self):
         if self._header is None:
-            self._header = self.parser.get("header", {})
-            self._header["program"] = "vasp"
+            self._header = self.parser.get('header', {})
+            self._header['program'] = 'vasp'
             for key, val in self._header.items():
                 if not isinstance(val, str):
-                    self._header[key] = " ".join(val)
+                    self._header[key] = ' '.join(val)
         return self._header
 
     def get_incar(self):
-        if self._incar is not None and self._incar.get("incar", None) is not None:
-            return self._incar.get("incar")
+        if self._incar is not None and self._incar.get('incar', None) is not None:
+            return self._incar.get('incar')
 
         incar = dict()
         if self._incar is None:
@@ -623,33 +623,33 @@ class OutcarContentParser(ContentParser):
 
         path = os.path.join(
             self.parser.maindir,
-            "INCAR%s" % os.path.basename(self.parser.mainfile).strip("OUTCAR"),
+            'INCAR%s' % os.path.basename(self.parser.mainfile).strip('OUTCAR'),
         )
         path = (
-            path if os.path.isfile(path) else os.path.join(self.parser.maindir, "INCAR")
+            path if os.path.isfile(path) else os.path.join(self.parser.maindir, 'INCAR')
         )
         incar = self._get_key_values(path)
         self._fix_incar(incar)
-        self._incar["incar"] = incar
+        self._incar['incar'] = incar
         return incar
 
     def get_incar_out(self):
-        if self._incar is not None and self._incar.get("incar_out", None) is not None:
-            return self._incar.get("incar_out")
+        if self._incar is not None and self._incar.get('incar_out', None) is not None:
+            return self._incar.get('incar_out')
 
         incar = dict()
         if self._incar is None:
             self._incar = dict(incar=None, incar_out=None)
 
-        incar = self.parser.get("parameters", {})
-        self._incar["incar_out"] = incar
+        incar = self.parser.get('parameters', {})
+        self._incar['incar_out'] = incar
         self._fix_incar(incar)
         return incar
 
     @property
     def calculations(self):
         if self._calculations is None:
-            self._calculations = self.parser.get("calculation")
+            self._calculations = self.parser.get('calculation')
         return self._calculations
 
     @property
@@ -665,28 +665,28 @@ class OutcarContentParser(ContentParser):
     def kpoints_info(self):
         if self._kpoints_info is None:
             self._kpoints_info = dict()
-            kpts_occs = self.parser.get("kpoints")
+            kpts_occs = self.parser.get('kpoints')
             if kpts_occs is not None:
                 kpts_occs = np.reshape(kpts_occs, (len(kpts_occs) // 4, 4)).T
-                self._kpoints_info["points"] = kpts_occs[0:3].T
+                self._kpoints_info['points'] = kpts_occs[0:3].T
                 k_mults = kpts_occs[3].T
-                self._kpoints_info["multiplicities"] = k_mults
-                self._kpoints_info["weights"] = k_mults / np.sum(k_mults)
+                self._kpoints_info['multiplicities'] = k_mults
+                self._kpoints_info['weights'] = k_mults / np.sum(k_mults)
         return self._kpoints_info
 
     @property
     def n_bands(self):
         if self._n_bands is None:
             for n in range(self.n_calculations):
-                val = self.parser.get("calculation", [{}] * (n + 1))[n].get(
-                    "eigenvalues", [None]
+                val = self.parser.get('calculation', [{}] * (n + 1))[n].get(
+                    'eigenvalues', [None]
                 )[0]
                 if val is not None:
                     self._n_bands = len(val) // 3
                     break
             if self._n_bands is None:
                 # check consistency with eigenvalues
-                self._n_bands = self.incar.get("NBANDS", 0)
+                self._n_bands = self.incar.get('NBANDS', 0)
         return self._n_bands
 
     @property
@@ -694,19 +694,19 @@ class OutcarContentParser(ContentParser):
         if self._n_dos is None:
             path = os.path.join(
                 self.parser.maindir,
-                "DOSCAR%s" % os.path.basename(self.parser.mainfile).strip("OUTCAR"),
+                'DOSCAR%s' % os.path.basename(self.parser.mainfile).strip('OUTCAR'),
             )
             path = (
                 path
                 if os.path.isfile(path)
-                else os.path.join(self.parser.maindir, "DOSCAR")
+                else os.path.join(self.parser.maindir, 'DOSCAR')
             )
             with open(path) as f:
                 for _ in range(6):
                     line = f.readline()
                 self._n_dos = int(line.split()[2])
             if self._n_dos is None:
-                self._n_dos = self._incar.get("NEDOS", 0)
+                self._n_dos = self._incar.get('NEDOS', 0)
         return self._n_dos
 
     @property
@@ -714,20 +714,20 @@ class OutcarContentParser(ContentParser):
         if self._atom_info is None:
             self._atom_info = {}
 
-            ions = self.parser.get("ions_per_type", [])
-            species = self.parser.get("species", [])
+            ions = self.parser.get('ions_per_type', [])
+            species = self.parser.get('species', [])
             ions = [ions] if isinstance(ions, int) else ions
             ions = [int(i) for i in ions]
             if len(ions) != len(species):
                 # get it from POSCAR
                 path = os.path.join(
                     self.parser.maindir,
-                    "POSCAR%s" % os.path.basename(self.parser.mainfile).strip("OUTCAR"),
+                    'POSCAR%s' % os.path.basename(self.parser.mainfile).strip('OUTCAR'),
                 )
                 path = (
                     path
                     if os.path.isfile(path)
-                    else os.path.join(self.parser.maindir, "POSCAR")
+                    else os.path.join(self.parser.maindir, 'POSCAR')
                 )
                 if os.path.isfile(path):
                     with open(path) as f:
@@ -739,19 +739,19 @@ class OutcarContentParser(ContentParser):
                                 pass
             ions = [i for i in ions if not isinstance(i, str)]
             if len(ions) != len(species):
-                self.parser.logger.error("Inconsistent number of ions and species.")
+                self.parser.logger.error('Inconsistent number of ions and species.')
                 return self._atom_info
 
-            self._atom_info["n_atoms"] = sum(ions)
-            self._atom_info["n_types"] = len(species)
+            self._atom_info['n_atoms'] = sum(ions)
+            self._atom_info['n_types'] = len(species)
 
             element = []
             atomtype = []
             for n in range(len(ions)):
                 element.extend([str(species[n][1])] * ions[n])
                 atomtype.extend([(n + 1)] * ions[n])
-            self._atom_info["atoms"] = dict(element=element, atomtype=atomtype)
-            self._atom_info["atomtypes"] = dict(
+            self._atom_info['atoms'] = dict(element=element, atomtype=atomtype)
+            self._atom_info['atomtypes'] = dict(
                 atomspertype=ions, element=[s[1] for s in species]
             )
 
@@ -765,40 +765,40 @@ class OutcarContentParser(ContentParser):
         return super().get_pseudopotential(self.parser.mainfile)
 
     def get_time_calc(self, n_calc):
-        return self.parser.get("calculation", [{}] * (n_calc + 1))[n_calc].get(
-            "time", [None, None]
+        return self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
+            'time', [None, None]
         )
 
     def get_time_scf(self, n_calc):
         return [
             scf.time
-            for scf in self.parser.get("calculation", [{}] * (n_calc + 1))[n_calc].get(
-                "scf_iteration", []
+            for scf in self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
+                'scf_iteration', []
             )
         ]
 
     def get_n_scf(self, n_calc):
         return len(
-            self.parser.get("calculation", [{}] * (n_calc + 1))[n_calc].get(
-                "scf_iteration", []
+            self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
+                'scf_iteration', []
             )
         )
 
     def get_structure(self, n_calc):
-        cell = self.parser.get("calculation", [{}] * (n_calc + 1))[n_calc].get(
-            "lattice_vectors", [None]
+        cell = self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
+            'lattice_vectors', [None]
         )[0]
-        positions = self.parser.get("calculation", [{}] * (n_calc + 1))[n_calc].get(
-            "positions_forces", [None]
+        positions = self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
+            'positions_forces', [None]
         )[0]
         selective = None
         nose = None
 
         if cell is None:
             # get it from initialization
-            cell = self.parser.get("lattice_vectors", [None])[0]
+            cell = self.parser.get('lattice_vectors', [None])[0]
         if positions is None:
-            positions = self.parser.get("positions", None)
+            positions = self.parser.get('positions', None)
 
         if positions is not None:
             positions = positions * ureg.angstrom
@@ -809,66 +809,66 @@ class OutcarContentParser(ContentParser):
 
     def get_basis_set(self) -> list[BasisSet]:
         sec_bases: list[BasisSet] = []
-        for tag in ("ENCUT", "ENAUG"):
-            cutoff_value = self.parser.get("parameters", {}).get(tag)
+        for tag in ('ENCUT', 'ENAUG'):
+            cutoff_value = self.parser.get('parameters', {}).get(tag)
             sec_basis = BasisSet(
-                type="plane waves",
+                type='plane waves',
                 frozen_core=False
-                if self.parser.results.get("parameters", {}).get("ICORELEVEL", 0) == 1
+                if self.parser.results.get('parameters', {}).get('ICORELEVEL', 0) == 1
                 else True,
             )  # TODO: write the core eigenvalues to calculation + display them?
             if cutoff_value:
                 sec_basis.cutoff = cutoff_value * ureg.eV  # based on examples
-            if tag == "ENCUT":
-                sec_basis.scope = ["valence"]
-            elif tag == "ENAUG":
-                sec_basis.scope = ["augmentation"]
+            if tag == 'ENCUT':
+                sec_basis.scope = ['valence']
+            elif tag == 'ENAUG':
+                sec_basis.scope = ['augmentation']
             # TODO: add grid spacing (NGX, NGY, NGZ)?
             sec_bases.append(sec_basis)
         return sec_bases
 
-    def get_tier(self, type="native") -> Union[str, None]:
+    def get_tier(self, type='native') -> Union[str, None]:
         return super()._get_tier(
-            self.parser.get("parameters", {}).get("PREC"), type=type
+            self.parser.get('parameters', {}).get('PREC'), type=type
         )
 
     def get_energies(self, n_calc, n_scf):
         energies = dict()
         multiplier = 1.0
         if n_scf is None:
-            section = self.parser.get("calculation", [{}] * (n_calc + 1))[n_calc].get(
-                "energies", {}
+            section = self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
+                'energies', {}
             )
             # final energies are per-atom (this is not the case)
             # TODO survey all vasp versions to know if energy per atom is printed
             # multiplier = self.atom_info.get(
             #     'n_atoms', len(self.get_structure(n_calc).get('positions')))
         else:
-            section = self.parser.get("calculation", [{}] * (n_calc + 1))[n_calc].get(
-                "scf_iteration", [{}] * (n_scf + 1)
+            section = self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
+                'scf_iteration', [{}] * (n_scf + 1)
             )[n_scf]
-        for key in ["energy_total", "energy_T0", "energy_entropy0"]:
+        for key in ['energy_total', 'energy_T0', 'energy_entropy0']:
             val = section.get(key)
             if val is not None:
                 energies[key] = val * multiplier
 
-        energies.update(section.get("energy_components", {}))
+        energies.update(section.get('energy_components', {}))
         return energies
 
     def get_forces_stress(self, n_calc):
-        forces = self.parser.get("calculation", [{}] * (n_calc + 1))[n_calc].get(
-            "positions_forces", [None, None]
+        forces = self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
+            'positions_forces', [None, None]
         )[1]
-        stress = self.parser.get("calculation", [{}] * (n_calc + 1))[n_calc].get(
-            "stress", None
+        stress = self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
+            'stress', None
         )
 
         return forces, stress
 
     def get_eigenvalues(self, n_calc):
-        n_kpts = len(self.kpoints_info.get("points", []))
-        eigenvalues = self.parser.get("calculation", [{}] * (n_calc + 1))[n_calc].get(
-            "eigenvalues"
+        n_kpts = len(self.kpoints_info.get('points', []))
+        eigenvalues = self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
+            'eigenvalues'
         )
 
         if eigenvalues is None:
@@ -879,7 +879,7 @@ class OutcarContentParser(ContentParser):
                 eigenvalues, (n_eigs, self.ispin, n_kpts, self.n_bands, 3)
             )
         except Exception:
-            self.parser.logger.error("Error reading eigenvalues")
+            self.parser.logger.error('Error reading eigenvalues')
             return
         # eigenvalues can also be printed every scf iteration but we only save the
         # last one, which corresponds to the calculation
@@ -893,12 +893,12 @@ class OutcarContentParser(ContentParser):
             return dos_energies, dos_values, dos_integrated, e_fermi
         path = os.path.join(
             self.parser.maindir,
-            "DOSCAR%s" % os.path.basename(self.parser.mainfile).strip("OUTCAR"),
+            'DOSCAR%s' % os.path.basename(self.parser.mainfile).strip('OUTCAR'),
         )
         path = (
             path
             if os.path.isfile(path)
-            else os.path.join(self.parser.maindir, "DOSCAR")
+            else os.path.join(self.parser.maindir, 'DOSCAR')
         )
         if not os.path.isfile(path):
             return dos_energies, dos_values, dos_integrated, e_fermi
@@ -918,7 +918,7 @@ class OutcarContentParser(ContentParser):
                     if i >= n_dos + 5:
                         break
             except Exception:
-                self.parser.logger.error("Error reading DOSCAR")
+                self.parser.logger.error('Error reading DOSCAR')
 
         if not dos:
             return dos_energies, dos_values, dos_integrated, e_fermi
@@ -932,18 +932,18 @@ class OutcarContentParser(ContentParser):
         return dos_energies, dos_values, dos_integrated, e_fermi
 
     def get_partial_dos(self, n_calc):
-        n_atoms = self.atom_info["n_atoms"]
+        n_atoms = self.atom_info['n_atoms']
         dos = fields = None
         if n_calc != (self.n_calculations - 1):
             return dos, fields
         path = os.path.join(
             self.parser.maindir,
-            "DOSCAR%s" % os.path.basename(self.parser.mainfile).strip("OUTCAR"),
+            'DOSCAR%s' % os.path.basename(self.parser.mainfile).strip('OUTCAR'),
         )
         path = (
             path
             if os.path.isfile(path)
-            else os.path.join(self.parser.maindir, "DOSCAR")
+            else os.path.join(self.parser.maindir, 'DOSCAR')
         )
         if not os.path.isfile(path):
             return dos, fields
@@ -975,36 +975,36 @@ class OutcarContentParser(ContentParser):
         try:
             dos = np.reshape(dos, (n_lm, self.ispin, n_atoms, n_dos))
         except Exception:
-            self.parser.logger.error("Error reading partial dos.")
+            self.parser.logger.error('Error reading partial dos.')
             return None, None
 
         if n_lm == 3:
-            fields = ["s", "p", "d"]
+            fields = ['s', 'p', 'd']
         elif n_lm == 9:
-            fields = ["s", "py", "pz", "px", "dxy", "dyz", "dz2", "dxz", "dx2"]
+            fields = ['s', 'py', 'pz', 'px', 'dxy', 'dyz', 'dz2', 'dxz', 'dx2']
         elif n_lm == 16:
             fields = [
-                "s",
-                "py",
-                "pz",
-                "px",
-                "dxy",
-                "dyz",
-                "dz2",
-                "dxz",
-                "dx2",
-                "f-3",
-                "f-2",
-                "f-1",
-                "f0",
-                "f1",
-                "f2",
-                "f3",
+                's',
+                'py',
+                'pz',
+                'px',
+                'dxy',
+                'dyz',
+                'dz2',
+                'dxz',
+                'dx2',
+                'f-3',
+                'f-2',
+                'f-1',
+                'f0',
+                'f1',
+                'f2',
+                'f3',
             ]
         else:
             fields = [None] * n_lm
             self.parser.logger.warning(
-                "Cannot determine lm fields for n_lm", data=dict(n_lm=n_lm)
+                'Cannot determine lm fields for n_lm', data=dict(n_lm=n_lm)
             )
 
         return dos, fields
@@ -1012,24 +1012,24 @@ class OutcarContentParser(ContentParser):
     def get_response_functions(self):
         parameters_dict = {}
         try:
-            for param in self.parser.get("response_functions", {}).get(
-                "input_parameters", {}
+            for param in self.parser.get('response_functions', {}).get(
+                'input_parameters', {}
             ):
-                if param[1] == "T" or param[1] == "F":
-                    param[1] = param[1] == "T"
-                if param[0] == "KPOINT":  # problem when serializing array in json
+                if param[1] == 'T' or param[1] == 'F':
+                    param[1] = param[1] == 'T'
+                if param[0] == 'KPOINT':  # problem when serializing array in json
                     continue
                 parameters_dict[param[0]] = param[1]
         except Exception:
             self.parser.logger.warning(
-                "Could not resolve response functions input parameters."
+                'Could not resolve response functions input parameters.'
             )
         return parameters_dict
 
     def is_converged(self, n_calc):
         return (
-            self.parser.get("calculation", [{}] * (n_calc + 1))[n_calc].get(
-                "convergence"
+            self.parser.get('calculation', [{}] * (n_calc + 1))[n_calc].get(
+                'convergence'
             )
             is not None
         )
@@ -1037,7 +1037,7 @@ class OutcarContentParser(ContentParser):
 
 class RunXmlContentHandler(ContentHandler):
     def __init__(self):
-        self._text = ""
+        self._text = ''
         self._path = []
 
         self._data = {}
@@ -1049,8 +1049,8 @@ class RunXmlContentHandler(ContentHandler):
     def startElement(self, tag, attrs):
         data, last_attrs, last_sibling, last_sibling_index = self._stack[-1]
 
-        name = attrs.get("name")
-        if not name and tag in ("i", "v", "r", "c"):
+        name = attrs.get('name')
+        if not name and tag in ('i', 'v', 'r', 'c'):
             self._stack.append(
                 (
                     data,
@@ -1071,7 +1071,7 @@ class RunXmlContentHandler(ContentHandler):
             if name:
                 segment = f'{tag}[@name="{name}"]'
             else:
-                segment = f"{tag}[{index}]"
+                segment = f'{tag}[{index}]'
 
             self._stack.append(
                 (
@@ -1084,14 +1084,14 @@ class RunXmlContentHandler(ContentHandler):
 
     def endElement(self, tag):
         text = self._text
-        self._text = ""
+        self._text = ''
 
         data, attrs, _, _ = self._stack.pop()
 
-        if tag == "calculation":
+        if tag == 'calculation':
             self.n_calculations += 1
 
-        data.setdefault("_data", []).append({tag: text, **attrs})
+        data.setdefault('_data', []).append({tag: text, **attrs})
 
     def clear_stack(self):
         while len(self._stack) > 0:
@@ -1102,7 +1102,7 @@ class RunXmlContentHandler(ContentHandler):
 
     def _combine_sub_tree(self, data, results):
         for key, value in data.items():
-            if key == "_data":
+            if key == '_data':
                 results.extend(value)
             else:
                 self._combine_sub_tree(value, results)
@@ -1112,7 +1112,7 @@ class RunXmlContentHandler(ContentHandler):
     def __getitem__(self, key):
         try:
             data = self._data
-            segments = key.strip("/").split("/")
+            segments = key.strip('/').split('/')
             for segment in segments:
                 data = data[segment]
 
@@ -1131,7 +1131,7 @@ class RunFileParser(FileParser):
         except Exception as e:
             # support broken XML structure
             if self.logger:
-                self.logger.warning("could not parse all xml", exc_info=e)
+                self.logger.warning('could not parse all xml', exc_info=e)
             content_handler.clear_stack()
 
         self._results = content_handler
@@ -1151,11 +1151,11 @@ class RunContentParser(ContentParser):
         self.parser = None
         self._re_attrib = re.compile(r'\[@name="(\w+)"\]')
         self._dtypes = {
-            "string": str,
-            "int": int,
-            "logical": bool,
-            "": float,
-            "float": float,
+            'string': str,
+            'int': int,
+            'logical': bool,
+            '': float,
+            'float': float,
         }
 
     def init_parser(self, filepath, logger):
@@ -1170,29 +1170,29 @@ class RunContentParser(ContentParser):
 
     def _get_key_values(self, path, repeats=False, array=False):
         def parse_float_str_vector(str_vector: List[str]):
-            return ["nan" if "*" in x else x for x in str_vector]
+            return ['nan' if '*' in x else x for x in str_vector]
 
-        root, base_name = path.strip("/").rsplit("/", 1)
+        root, base_name = path.strip('/').rsplit('/', 1)
 
         attrib = re.search(self._re_attrib, base_name)
         if attrib:
             attrib = attrib.group(1)
-            base_name = re.sub(self._re_attrib, "", base_name)
+            base_name = re.sub(self._re_attrib, '', base_name)
 
         # removes all non indexed segments from the path to collect data from the
         # whole remaining sub-tree.
         sections = []
-        for section in root.split("/"):
-            if not section.endswith("]"):
+        for section in root.split('/'):
+            if not section.endswith(']'):
                 break
             sections.append(section)
-        root = "/".join(sections) if sections else root
+        root = '/'.join(sections) if sections else root
 
         data = [
             (
                 d.get(base_name),
-                d.get("name", ""),
-                d.get("type", ""),
+                d.get('name', ''),
+                d.get('type', ''),
             )
             for d in self.parser.results[root]
         ]
@@ -1212,7 +1212,7 @@ class RunContentParser(ContentParser):
                     value, dtype=self._dtypes.get(dtype, float)
                 )
             except Exception:
-                self.parser.logger.error("Error parsing array.")
+                self.parser.logger.error('Error parsing array.')
 
         else:
             for value, name, dtype in data:
@@ -1224,7 +1224,7 @@ class RunContentParser(ContentParser):
                 dtype = self._dtypes.get(dtype, str)
                 value = value.split()
                 if dtype == bool:
-                    value = [v == "T" for v in value]
+                    value = [v == 'T' for v in value]
                 if dtype == float:
                     # prevent nan printouts
                     value = parse_float_str_vector(value)
@@ -1242,36 +1242,36 @@ class RunContentParser(ContentParser):
     @property
     def header(self):
         if self._header is None:
-            self._header = self._get_key_values("/modeling[0]/generator[0]/i")
+            self._header = self._get_key_values('/modeling[0]/generator[0]/i')
             for key, val in self._header.items():
                 if not isinstance(val, str):
-                    self._header[key] = " ".join(val)
+                    self._header[key] = ' '.join(val)
         return self._header
 
     def get_incar(self):
-        if self._incar is not None and self._incar.get("incar", None) is not None:
-            return self._incar.get("incar")
+        if self._incar is not None and self._incar.get('incar', None) is not None:
+            return self._incar.get('incar')
 
         if self._incar is None:
             self._incar = dict(incar=None, incar_out=None)
-        incar = self._get_key_values("/modeling[0]/incar[0]/i")
-        incar.update(self._get_key_values("/modeling[0]/incar[0]/v"))
+        incar = self._get_key_values('/modeling[0]/incar[0]/i')
+        incar.update(self._get_key_values('/modeling[0]/incar[0]/v'))
         self._fix_incar(incar)
-        self._incar["incar"] = incar
+        self._incar['incar'] = incar
         return incar
 
     def get_incar_out(self):
-        if self._incar is not None and self._incar.get("incar_out", None) is not None:
-            return self._incar.get("incar_out")
+        if self._incar is not None and self._incar.get('incar_out', None) is not None:
+            return self._incar.get('incar_out')
 
         incar = dict()
         if self._incar is None:
             self._incar = dict(incar=None, incar_out=None)
-        incar.update(self._get_key_values("/modeling[0]/parameters[0]/i"))
-        incar.update(self._get_key_values("/modeling[0]/parameters[0]/v"))
-        incar.update(self._get_key_values("/modeling[0]/incar[0]/v"))
+        incar.update(self._get_key_values('/modeling[0]/parameters[0]/i'))
+        incar.update(self._get_key_values('/modeling[0]/parameters[0]/v'))
+        incar.update(self._get_key_values('/modeling[0]/incar[0]/v'))
 
-        self._incar["incar_out"] = incar
+        self._incar['incar_out'] = incar
         self._fix_incar(incar)
         return incar
 
@@ -1280,10 +1280,10 @@ class RunContentParser(ContentParser):
         return self.parser.n_calculations
 
     sampling_method_mapping = {
-        "Automatic": "Gamma-centered",
-        "Gamma": "Gamma-centered",
-        "Monkhorst-Pack": "Monkhorst-Pack",
-        "listgenerated": "Line-path",
+        'Automatic': 'Gamma-centered',
+        'Gamma': 'Gamma-centered',
+        'Monkhorst-Pack': 'Monkhorst-Pack',
+        'listgenerated': 'Line-path',
     }
 
     @property
@@ -1291,11 +1291,11 @@ class RunContentParser(ContentParser):
         if self._kpoints_info is None:
             self._kpoints_info = dict()
             # initialize parsing of k_points
-            method = self._get_key_values("/modeling[0]/kpoints[0]/generation[0]/param")
+            method = self._get_key_values('/modeling[0]/kpoints[0]/generation[0]/param')
             if method:
                 self._kpoints_info[
-                    "sampling_method"
-                ] = RunContentParser.sampling_method_mapping[method["param"]]
+                    'sampling_method'
+                ] = RunContentParser.sampling_method_mapping[method['param']]
             divisions = self._get_key_values(
                 '/modeling[0]/kpoints[0]/generation[0]/v[@name="divisions"]'
             )
@@ -1304,31 +1304,31 @@ class RunContentParser(ContentParser):
                     '/modeling[0]/kpoints[0]/generation[0]/i[@name="divisions"]'
                 )
             if divisions:
-                self._kpoints_info["grid"] = divisions["divisions"]
+                self._kpoints_info['grid'] = divisions['divisions']
             volumeweight = self._get_key_values(
                 '/modeling[0]/kpoints[0]/generation[0]/i[@name="volumeweight"]'
             )
             if volumeweight:
-                volumeweight = (volumeweight["volumeweight"] * ureg.angstrom**3).to(
-                    "m**3"
+                volumeweight = (volumeweight['volumeweight'] * ureg.angstrom**3).to(
+                    'm**3'
                 )
                 # TODO set propert unit in metainfo
-                self._kpoints_info["x_vasp_tetrahedron_volume"] = volumeweight.magnitude
+                self._kpoints_info['x_vasp_tetrahedron_volume'] = volumeweight.magnitude
             points = self._get_key_values(
                 '/modeling[0]/kpoints[0]/varray[@name="kpointlist"]/v', array=True
             )
             if points:
-                self._kpoints_info["points"] = points["v"]
+                self._kpoints_info['points'] = points['v']
             weights = self._get_key_values(
                 '/modeling[0]/kpoints[0]/varray[@name="weights"]/v', array=True
             )
             if weights:
-                self._kpoints_info["weights"] = weights["v"]
+                self._kpoints_info['weights'] = weights['v']
             tetrahedrons = self._get_key_values(
                 '/modeling[0]/kpoints[0]/varray[@name="tetrahedronlist"]/v', array=True
             )
             if tetrahedrons:
-                self._kpoints_info["x_vasp_tetrahedrons_list"] = tetrahedrons["v"]
+                self._kpoints_info['x_vasp_tetrahedrons_list'] = tetrahedrons['v']
         return self._kpoints_info
 
     @property
@@ -1336,14 +1336,14 @@ class RunContentParser(ContentParser):
         if self._n_bands is None:
             for n in range(self.n_calculations - 1, -1, -1):
                 val = self._get_key_values(
-                    "/modeling[0]/calculation[%d]/eigenvalues[0]/array[0]/set[0]/set[0]/set[0]/r"
+                    '/modeling[0]/calculation[%d]/eigenvalues[0]/array[0]/set[0]/set[0]/set[0]/r'
                     % n
                 )
                 if val:
-                    self._n_bands = len(val["r"])
+                    self._n_bands = len(val['r'])
                     break
             if self._n_bands is None:
-                self._n_bands = self.incar.get("NBANDS", 0)
+                self._n_bands = self.incar.get('NBANDS', 0)
         return self._n_bands
 
     @property
@@ -1351,38 +1351,38 @@ class RunContentParser(ContentParser):
         if self._n_dos is None:
             for n in range(self.n_calculations - 1, -1, -1):
                 val = self._get_key_values(
-                    "/modeling[0]/calculation[%d]/dos[0]/total[0]/array[0]/set[0]/set[0]/r"
+                    '/modeling[0]/calculation[%d]/dos[0]/total[0]/array[0]/set[0]/set[0]/r'
                     % n
                 )
                 if val:
-                    self._n_dos = len(val["r"])
+                    self._n_dos = len(val['r'])
                     break
             if self._n_dos is None:
-                self._n_dos = self._incar.get("NEDOS", 0)
+                self._n_dos = self._incar.get('NEDOS', 0)
         return self._n_dos
 
     @property
     def atom_info(self):
         if self._atom_info is None:
             self._atom_info = {}
-            root = "/modeling[0]/atominfo[0]"
-            self._atom_info["n_atoms"] = int(
-                self._get_key_values(f"{root}/atoms[0]/atoms").get("atoms", 0)
+            root = '/modeling[0]/atominfo[0]'
+            self._atom_info['n_atoms'] = int(
+                self._get_key_values(f'{root}/atoms[0]/atoms').get('atoms', 0)
             )
-            self._atom_info["n_types"] = int(
-                self._get_key_values(f"{root}/types[0]/types").get("types", 0)
+            self._atom_info['n_types'] = int(
+                self._get_key_values(f'{root}/types[0]/types').get('types', 0)
             )
 
             number = dict(
-                atoms=self._atom_info["n_atoms"], atomtypes=self._atom_info["n_types"]
+                atoms=self._atom_info['n_atoms'], atomtypes=self._atom_info['n_types']
             )
-            for key in ["atoms", "atomtypes"]:
+            for key in ['atoms', 'atomtypes']:
                 rcs = self._get_key_values(
                     f'{root}/array[@name="%s"]/set[0]/c' % key, repeats=True
-                ).get("c", [])
+                ).get('c', [])
                 fields = self._get_key_values(
                     f'{root}/array[@name="%s"]/field' % key, repeats=True
-                ).get("field", [])
+                ).get('field', [])
                 array_info = {}
                 if len(rcs) != len(fields) * number[key]:
                     self._atom_info = array_info
@@ -1398,48 +1398,48 @@ class RunContentParser(ContentParser):
         """Extract the pseudo-potential headers from the POTCAR,
         and return them as a list of keyword mappings.
         Each element of the list corresponds to a pseudo-potential."""
-        potcar_file = os.path.join(self.parser.maindir, "POTCAR.stripped")
+        potcar_file = os.path.join(self.parser.maindir, 'POTCAR.stripped')
         return super().get_pseudopotential(potcar_file)
 
     def get_basis_set(self) -> list[BasisSet]:
         path = '/modeling[0]/parameters/separator[@name="electronic"]'
         sec_bases: list[BasisSet] = []
-        for tag in ("ENMAX", "ENAUG"):
+        for tag in ('ENMAX', 'ENAUG'):
             cutoff_path = f'{path}/i[@name="{tag}"]'
             cutoff_value = self._get_key_values(cutoff_path).get(tag)
             if cutoff_value is not None:
                 sec_basis = BasisSet(
-                    type="plane waves",
+                    type='plane waves',
                     cutoff=cutoff_value * ureg.eV,  # based on examples
                     frozen_core=False
-                    if self.get_incar_out().get("ICORELEVEL", 0) == 1
+                    if self.get_incar_out().get('ICORELEVEL', 0) == 1
                     else True,
                 )  # TODO: write the core eigenvalues to calculation + display them?
-                if tag == "ENMAX":
-                    sec_basis.scope = ["valence"]
-                elif tag == "ENAUG":
-                    sec_basis.scope = ["augmentation"]
+                if tag == 'ENMAX':
+                    sec_basis.scope = ['valence']
+                elif tag == 'ENAUG':
+                    sec_basis.scope = ['augmentation']
                 # TODO: add grid spacing (NGX, NGY, NGZ)?
                 sec_bases.append(sec_basis)
         return sec_bases
 
-    def get_tier(self, type="native") -> Union[str, None]:
+    def get_tier(self, type='native') -> Union[str, None]:
         return super()._get_tier(
             self._get_key_values(
                 '/modeling[0]/parameters/separator[@name="electronic"]/i[@name="PREC"]'
-            )["PREC"][0],
+            )['PREC'][0],
             type=type,
         )
 
     def get_time_calc(self, n_calc):
         return self._get_key_values(
             f'/modeling[0]/calculation[{n_calc}]/time[@name="totalsc"]'
-        ).get("totalsc", [None, None])
+        ).get('totalsc', [None, None])
 
     def get_time_scf(self, n_calc):
         return self._get_key_values(
             f'/modeling[0]/calculation[{n_calc}]/scstep/time[@name="total"]'
-        ).get("total", [])
+        ).get('total', [])
 
     def get_n_scf(self, n_calc):
         if self._n_scf is None:
@@ -1449,22 +1449,22 @@ class RunContentParser(ContentParser):
         return self._n_scf[n_calc]
 
     def get_structure(self, n_calc):
-        structure = "/modeling[0]/calculation[%d]/structure[0]" % n_calc
+        structure = '/modeling[0]/calculation[%d]/structure[0]' % n_calc
         cell = self._get_key_values(
             f'{structure}/crystal[0]/varray[@name="basis"]/v', array=True
-        ).get("v", None)
+        ).get('v', None)
         if cell is None:
             structure = '/modeling[0]/structure[@name="finalpos"]'
             cell = self._get_key_values(
                 f'{structure}/crystal[0]/varray[@name="basis"]/v', array=True
-            ).get("v", None)
+            ).get('v', None)
 
         positions = self._get_key_values(
             f'{structure}/varray[@name="positions"]/v', array=True
-        ).get("v", None)
+        ).get('v', None)
         selective = self._get_key_values(
             f'{structure}/varray[@name="selective"]/v', array=True
-        ).get("v", None)
+        ).get('v', None)
         # COMMENTED OUT: there is a problem with the versioning: sometimes is nose
         # others nose[0]; when trying ifs, _get_key_values gives error trying to set
         # the array.
@@ -1484,13 +1484,13 @@ class RunContentParser(ContentParser):
         return dict(cell=cell, positions=positions, selective=selective, nose=nose)
 
     def get_energies(self, n_calc, n_scf):
-        calculation = "/modeling[0]/calculation[%d]" % n_calc
+        calculation = '/modeling[0]/calculation[%d]' % n_calc
         if n_scf is None:
             # we need to cache this separately for faster access
             self._scf_energies = self._get_key_values(
-                f"{calculation}/scstep/i", repeats=True
+                f'{calculation}/scstep/i', repeats=True
             )
-            return self._get_key_values(f"{calculation}/energy[0]/i")
+            return self._get_key_values(f'{calculation}/energy[0]/i')
         else:
             scf_energies = dict()
             for key, val in self._scf_energies.items():
@@ -1505,23 +1505,23 @@ class RunContentParser(ContentParser):
     def get_forces_stress(self, n_calc):
         forces = self._get_key_values(
             '/modeling[0]/calculation[%d]/varray[@name="forces"]/v' % n_calc, array=True
-        ).get("v", None)
+        ).get('v', None)
         stress = self._get_key_values(
             '/modeling[0]/calculation[%d]/varray[@name="stress"]/v' % n_calc, array=True
-        ).get("v", None)
+        ).get('v', None)
         return forces, stress
 
     def get_eigenvalues(self, n_calc):
-        n_kpts = len(self.kpoints_info.get("points", []))
-        root = "/modeling[0]/calculation[%s]/eigenvalues[0]/array[0]/set[0]" % n_calc
-        eigenvalues = self._get_key_values(f"{root}/r", array=True).get("r", None)
+        n_kpts = len(self.kpoints_info.get('points', []))
+        root = '/modeling[0]/calculation[%s]/eigenvalues[0]/array[0]/set[0]' % n_calc
+        eigenvalues = self._get_key_values(f'{root}/r', array=True).get('r', None)
         if eigenvalues is None:
             return
 
         try:
             eigenvalues = np.reshape(eigenvalues, (self.ispin, n_kpts, self.n_bands, 2))
         except Exception:
-            self.parser.logger.error("Error reading eigenvalues")
+            self.parser.logger.error('Error reading eigenvalues')
             return
 
         return eigenvalues
@@ -1529,26 +1529,26 @@ class RunContentParser(ContentParser):
     def get_total_dos(self, n_calc):
         dos_energies = dos_values = dos_integrated = e_fermi = None
 
-        root = "/modeling[0]/calculation[%d]/dos[0]" % n_calc
+        root = '/modeling[0]/calculation[%d]/dos[0]' % n_calc
         dos = self._get_key_values(
-            rf"{root}/total[0]/array[0]/set[0]/set/r", array=True
-        ).get("r", None)
+            rf'{root}/total[0]/array[0]/set[0]/set/r', array=True
+        ).get('r', None)
 
         if dos is None:
             return dos_energies, dos_values, dos_integrated, e_fermi
 
-        e_fermi = self._get_key_values(f'{root}/i[@name="efermi"]').get("efermi", 0.0)
+        e_fermi = self._get_key_values(f'{root}/i[@name="efermi"]').get('efermi', 0.0)
         n_dos = 1 if isinstance(e_fermi, float) else len(e_fermi)
         if n_dos > 1:
             e_fermi = e_fermi[-1]
-            self.parser.logger.warning("Multiple dos found, will read only last.")
+            self.parser.logger.warning('Multiple dos found, will read only last.')
 
         try:
             dos = np.reshape(
                 dos, (n_dos, self.ispin, len(dos) // self.ispin // n_dos, 3)
             )[-1]
         except Exception:
-            self.parser.logger.error("Error reading total dos.")
+            self.parser.logger.error('Error reading total dos.')
             return dos_energies, dos_values, dos_integrated, e_fermi
 
         dos = np.transpose(dos)
@@ -1559,26 +1559,26 @@ class RunContentParser(ContentParser):
         return dos_energies, dos_values, dos_integrated, e_fermi
 
     def get_partial_dos(self, n_calc):
-        n_atoms = self.atom_info["n_atoms"]
-        root = "/modeling[0]/calculation[%d]/dos[0]/partial[0]/array[0]" % n_calc
+        n_atoms = self.atom_info['n_atoms']
+        root = '/modeling[0]/calculation[%d]/dos[0]/partial[0]/array[0]' % n_calc
 
-        dos = self._get_key_values(f"{root}/r").get("r", None)
+        dos = self._get_key_values(f'{root}/r').get('r', None)
 
         if dos is None:
             return None, None
 
         # TODO use atomprojecteddos section
-        fields = self._get_key_values(f"{root}/field").get("field", [])
+        fields = self._get_key_values(f'{root}/field').get('field', [])
         try:
             dos = np.reshape(
                 dos,
                 (n_atoms, self.ispin, len(dos) // (n_atoms * self.ispin), len(fields)),
             )
         except Exception:
-            self.parser.logger.error("Error reading partial dos.")
+            self.parser.logger.error('Error reading partial dos.')
             return None, None
 
-        fields = [field for field in fields if field != "energy"]
+        fields = [field for field in fields if field != 'energy']
         dos = np.transpose(dos)[1:]
         dos = np.transpose(dos, axes=(0, 2, 3, 1))
 
@@ -1593,27 +1593,27 @@ class VASPParser:
     def __init__(self):
         self._vasprun_parser = RunContentParser()
         self._outcar_parser = OutcarContentParser()
-        self._calculation_type = "dft"
+        self._calculation_type = 'dft'
         self.hubbard_dc_corrections = {
-            1: "Liechtenstein",
-            2: "Dudarev",
-            4: "Liechtenstein without exchange splitting",
+            1: 'Liechtenstein',
+            2: 'Dudarev',
+            4: 'Liechtenstein without exchange splitting',
         }
-        self.hubbard_orbital_types = {-1: None, 0: "s", 1: "p", 2: "d", 3: "f"}
-        self.gw_algo = ""
+        self.hubbard_orbital_types = {-1: None, 0: 's', 1: 'p', 2: 'd', 3: 'f'}
+        self.gw_algo = ''
         self._gw_algo_map = {
-            "EVGW0": "ev-scGW0",
-            "EVGW0R": "ev-scGW0",
-            "EVGW": "ev-scGW",
-            "QPGW0": "qp-scGW0",
-            "QPGW": "qp-scGW",
-            "GW0R": "scGW0",
-            "GWR": "scGW",
+            'EVGW0': 'ev-scGW0',
+            'EVGW0R': 'ev-scGW0',
+            'EVGW': 'ev-scGW',
+            'QPGW0': 'qp-scGW0',
+            'QPGW': 'qp-scGW',
+            'GW0R': 'scGW0',
+            'GWR': 'scGW',
         }
 
     def init_parser(self, filepath, logger):
         self.parser = (
-            self._vasprun_parser if ".xml" in filepath else self._outcar_parser
+            self._vasprun_parser if '.xml' in filepath else self._outcar_parser
         )
         self.parser.init_parser(filepath, logger)
         self.maindir = os.path.dirname(os.path.abspath(filepath))
@@ -1630,12 +1630,12 @@ class VASPParser:
                 setattr(sec_method, target, parameters)
             except Exception:
                 self.logger.warning(
-                    "Error setting metainfo defintion x_vasp_incar_in",
+                    'Error setting metainfo defintion x_vasp_incar_in',
                     data=dict(incar=parameters),
                 )
 
-        parse_incar(self.parser.get_incar(), "x_vasp_incar_in")
-        parse_incar(self.parser.get_incar_out(), "x_vasp_incar_out")
+        parse_incar(self.parser.get_incar(), 'x_vasp_incar_in')
+        parse_incar(self.parser.get_incar_out(), 'x_vasp_incar_out')
 
     def parse_kpoints(self, section):
         sec_k_mesh = KMesh()
@@ -1645,7 +1645,7 @@ class VASPParser:
                 try:
                     setattr(sec_k_mesh, key, val)
                 except Exception:
-                    self.logger.warning("Error setting metainfo", data=dict(key=key))
+                    self.logger.warning('Error setting metainfo', data=dict(key=key))
         if sec_k_mesh.points is None:
             sec_k_mesh.points = [[0.0] * 3]
 
@@ -1657,20 +1657,20 @@ class VASPParser:
 
         source = self.parser.incar
         # setup `AtomsGroup` parameters
-        elem_id = source.get("CLNT", 1) - 1
-        elem_ids = [int(x) for x in self.parser.atom_info["atomtypes"]["atomspertype"]]
+        elem_id = source.get('CLNT', 1) - 1
+        elem_ids = [int(x) for x in self.parser.atom_info['atomtypes']['atomspertype']]
         lower_range = elem_ids[elem_id - 1] if elem_id > 1 else 0
         atom_ids = list(range(lower_range, elem_ids[elem_id]))
         return (
             CoreHole(
-                n_quantum_number=source.get("CLN", 1),
-                l_quantum_number=source.get("CLL", 0),
-                n_electrons_excited=source.get("CLZ", 0.0),  # tested with VASP 6.4.1
-                dscf_state="final",
+                n_quantum_number=source.get('CLN', 1),
+                l_quantum_number=source.get('CLL', 0),
+                n_electrons_excited=source.get('CLZ', 0.0),  # tested with VASP 6.4.1
+                dscf_state='final',
             ),
             AtomsGroup(
-                label="core-hole",
-                type="active_orbitals",
+                label='core-hole',
+                type='active_orbitals',
                 atom_indices=atom_ids,
                 n_atoms=len(atom_ids),
             ),
@@ -1683,7 +1683,7 @@ class VASPParser:
         sec_dft = DFT()
         sec_method.dft = sec_dft
         sec_method.electronic = Electronic(
-            method="DFT+U" if self.parser.incar.get("LDAU", False) else "DFT"
+            method='DFT+U' if self.parser.incar.get('LDAU', False) else 'DFT'
         )
 
         # input/output incar
@@ -1696,7 +1696,7 @@ class VASPParser:
         hubbard_present = False
         # try parsing vasprun.xml, incar, outcar (abbreviated settings)
         for file_type, parser_type in zip(
-            ["incar_out", "incar", "incar", "incar_out"],
+            ['incar_out', 'incar', 'incar', 'incar_out'],
             [
                 RunContentParser,
                 RunContentParser,
@@ -1709,15 +1709,15 @@ class VASPParser:
             if not (type(self.parser) is parser_type and parsed_file):
                 continue
             # check minimum requirements to define hubbard_model
-            if (file_type == "incar" and parsed_file.get("LDAU")) or (
-                parsed_file.get("LDAUL")
+            if (file_type == 'incar' and parsed_file.get('LDAU')) or (
+                parsed_file.get('LDAUL')
             ):
                 hubbard_present = True
                 break
 
         # Atom Parameters
-        atomtypes = self.parser.atom_info.get("atomtypes", {})
-        element = atomtypes.get("element", [])
+        atomtypes = self.parser.atom_info.get('atomtypes', {})
+        element = atomtypes.get('element', [])
         atom_counts = {e: 0 for e in element}
         pseudopotentials = self.parser.get_pseudopotential()
         for i in range(len(element)):
@@ -1726,7 +1726,7 @@ class VASPParser:
             atom_number = ase.data.atomic_numbers.get(element[i], 0)
             sec_method_atom_kind.atom_number = atom_number
             atom_label = (
-                "%s%d" % (element[i], atom_counts[element[i]])
+                '%s%d' % (element[i], atom_counts[element[i]])
                 if atom_counts[element[i]] > 0
                 else element[i]
             )
@@ -1736,104 +1736,104 @@ class VASPParser:
                     pseudopotential = pseudopotentials[i]
                 except IndexError:
                     self.logger.error(
-                        f"Pseudopotential not found for atom {element[i]}"
+                        f'Pseudopotential not found for atom {element[i]}'
                     )
                 sec_method_atom_kind.mass = (
-                    pseudopotential["number"]["POMASS"] * ureg.amu
+                    pseudopotential['number']['POMASS'] * ureg.amu
                 )
-                sec_method_atom_kind.n_valence_electrons = pseudopotential["number"][
-                    "ZVAL"
+                sec_method_atom_kind.n_valence_electrons = pseudopotential['number'][
+                    'ZVAL'
                 ]
                 pp = Pseudopotential()
-                pp.type = "PAW"
-                if pseudopotential["flag"]["LULTRA"]:
-                    pp.type = "US V"  # TODO check if this is correct
-                pp.cutoff = pseudopotential["number"]["ENMAX"] * ureg.eV
+                pp.type = 'PAW'
+                if pseudopotential['flag']['LULTRA']:
+                    pp.type = 'US V'  # TODO check if this is correct
+                pp.cutoff = pseudopotential['number']['ENMAX'] * ureg.eV
                 try:
                     pp.xc_functional_name = self.parser.xc_functional_mapping.get(
-                        pseudopotential["title"][0].split("_")[1],
-                        ["GGA_X_PBE", "GGA_C_PBE"],
+                        pseudopotential['title'][0].split('_')[1],
+                        ['GGA_X_PBE', 'GGA_C_PBE'],
                     )
                 except IndexError:
                     self.logger.warning(
-                        f"Could not extract xc functional from pseudopotential for {element[i]}"
+                        f'Could not extract xc functional from pseudopotential for {element[i]}'
                     )
-                pp.name = " ".join(pseudopotential["title"])
+                pp.name = ' '.join(pseudopotential['title'])
                 sec_method_atom_kind.pseudopotential = pp
 
             if hubbard_present:
-                orbital = self.hubbard_orbital_types[int(parsed_file.get("LDAUL")[i])]
+                orbital = self.hubbard_orbital_types[int(parsed_file.get('LDAUL')[i])]
                 if orbital:
                     sec_hubb = HubbardKanamoriModel()
                     sec_method_atom_kind.hubbard_kanamori_model = sec_hubb
                     sec_hubb.orbital = orbital
-                    sec_hubb.u = float(parsed_file.get("LDAUU")[i]) * ureg.eV
-                    sec_hubb.j = float(parsed_file.get("LDAUJ")[i]) * ureg.eV
+                    sec_hubb.u = float(parsed_file.get('LDAUU')[i]) * ureg.eV
+                    sec_hubb.j = float(parsed_file.get('LDAUJ')[i]) * ureg.eV
                     sec_hubb.double_counting_correction = (
-                        self.hubbard_dc_corrections.get(parsed_file.get("LDAUTYPE"))
+                        self.hubbard_dc_corrections.get(parsed_file.get('LDAUTYPE'))
                     )
-                    sec_hubb.x_vasp_projection_type = "on-site"
+                    sec_hubb.x_vasp_projection_type = 'on-site'
             atom_counts[element[i]] += 1
 
         sec_method.electrons_representation = [
             BasisSetContainer(
-                type="plane waves",
-                scope=["wavefunction"],
-                native_tier=self.parser.get_tier(type="native"),
+                type='plane waves',
+                scope=['wavefunction'],
+                native_tier=self.parser.get_tier(type='native'),
                 basis_set=self.parser.get_basis_set(),
             )
         ]
 
         sec_xc_functional = XCFunctional()
         sec_dft.xc_functional = sec_xc_functional
-        if self.parser.incar.get("LHFCALC", False):
-            gga = self.parser.incar.get("GGA", "PE")
-            aexx = self.parser.incar.get("AEXX", 0.0)
-            aggax = self.parser.incar.get("AGGAX", 1.0)
-            aggac = self.parser.incar.get("AGGAC", 1.0)
-            aldac = self.parser.incar.get("ALDAC", 1.0)
-            hfscreen = self.parser.incar.get("HFSCREEN", 0.0)
+        if self.parser.incar.get('LHFCALC', False):
+            gga = self.parser.incar.get('GGA', 'PE')
+            aexx = self.parser.incar.get('AEXX', 0.0)
+            aggax = self.parser.incar.get('AGGAX', 1.0)
+            aggac = self.parser.incar.get('AGGAC', 1.0)
+            aldac = self.parser.incar.get('ALDAC', 1.0)
+            hfscreen = self.parser.incar.get('HFSCREEN', 0.0)
 
             if hfscreen == 0.2:
-                sec_xc_functional.hybrid.append(Functional(name="HYB_GGA_XC_HSE06"))
+                sec_xc_functional.hybrid.append(Functional(name='HYB_GGA_XC_HSE06'))
             elif hfscreen == 0.3:
-                sec_xc_functional.hybrid.append(Functional(name="HYB_GGA_XC_HSE03"))
+                sec_xc_functional.hybrid.append(Functional(name='HYB_GGA_XC_HSE03'))
             elif (
-                gga == "B3"
+                gga == 'B3'
                 and aexx == 0.2
                 and aggax == 0.72
                 and aggac == 0.81
                 and aldac == 0.19
             ):
-                sec_xc_functional.hybrid.append(Functional(name="HYB_GGA_XC_B3LYP3"))
+                sec_xc_functional.hybrid.append(Functional(name='HYB_GGA_XC_B3LYP3'))
             elif aexx == 1.0 and aldac == 0.0 and aggac == 0.0:
-                sec_xc_functional.contributions.append(Functional(name="HF_X"))
-            elif gga == "PE":
-                sec_xc_functional.hybrid.append(Functional(name="HYB_GGA_XC_PBEH"))
+                sec_xc_functional.contributions.append(Functional(name='HF_X'))
+            elif gga == 'PE':
+                sec_xc_functional.hybrid.append(Functional(name='HYB_GGA_XC_PBEH'))
             else:
                 sec_xc_functional.hybrid.append(
                     Functional(
-                        name="HYB_GGA_XC_%s" % gga,
+                        name='HYB_GGA_XC_%s' % gga,
                         parameters=dict(aggax=aggax, aggac=aggac, aldac=aldac),
                     )
                 )
 
         else:
-            metagga = self.parser.incar.get("METAGGA")
+            metagga = self.parser.incar.get('METAGGA')
             if metagga:
                 xc_functionals = self.parser.xc_functional_mapping.get(
                     metagga, [metagga]
                 )
             else:
                 xc_functionals = self.parser.xc_functional_mapping.get(
-                    self.parser.incar.get("GGA"), []
+                    self.parser.incar.get('GGA'), []
                 )
             for xc_functional in xc_functionals:
-                if "_X_" in xc_functional or xc_functional.endswith("_X"):
+                if '_X_' in xc_functional or xc_functional.endswith('_X'):
                     sec_xc_functional.exchange.append(Functional(name=xc_functional))
-                elif "_C_" in xc_functional or xc_functional.endswith("_C"):
+                elif '_C_' in xc_functional or xc_functional.endswith('_C'):
                     sec_xc_functional.correlation.append(Functional(name=xc_functional))
-                elif "HYB" in xc_functional:
+                elif 'HYB' in xc_functional:
                     sec_xc_functional.hybrid.append(Functional(name=xc_functional))
                 else:
                     sec_xc_functional.contributions.append(
@@ -1845,12 +1845,12 @@ class VASPParser:
             if not sec_xc_functional.hybrid[-1].parameters:
                 sec_xc_functional.hybrid[-1].parameters = dict()
             sec_xc_functional.hybrid[-1].parameters[
-                "exact_exchange_mixing_factor"
+                'exact_exchange_mixing_factor'
             ] = aexx
             sec_xc_functional.normalize_hybrid()
 
         # convergence thresholds
-        tolerance = self.parser.incar.get("EDIFF")
+        tolerance = self.parser.incar.get('EDIFF')
         if tolerance is not None:
             sec_method.scf = Scf(threshold_energy_change=tolerance * ureg.eV)
 
@@ -1860,7 +1860,7 @@ class VASPParser:
         for param, n_atoms in dict(
             zip(
                 sec_method.atom_parameters,
-                self.parser.atom_info["atomtypes"]["atomspertype"],
+                self.parser.atom_info['atomtypes']['atomspertype'],
             )
         ).items():
             # correct based on core-holes
@@ -1876,7 +1876,7 @@ class VASPParser:
             neutral_count += species_electrons * n_atoms
         # extract the number of valence electrons
         sec_method.electronic.n_electrons = self.parser.incar.get(
-            "NELECT", neutral_count
+            'NELECT', neutral_count
         )
         if neutral_count:
             sec_method.electronic.charge = (
@@ -1898,20 +1898,20 @@ class VASPParser:
         sec_gw.x_vasp_response_functions_incar = response_functions
 
         # Type
-        nelmgw = response_functions.get("NELMGW", 1)
-        sec_gw.type = "G0W0" if nelmgw == 1 else self._gw_algo_map.get(self.gw_algo)
+        nelmgw = response_functions.get('NELMGW', 1)
+        sec_gw.type = 'G0W0' if nelmgw == 1 else self._gw_algo_map.get(self.gw_algo)
         if sec_gw.type is None:
-            self.logger.warning("Error setting the GW type.")
-        sec_gw.n_states = self.parser.get_incar().get("NBANDS")
+            self.logger.warning('Error setting the GW type.')
+        sec_gw.n_states = self.parser.get_incar().get('NBANDS')
         # KMesh
         self.parse_kpoints(sec_method)
         # QMesh
         sec_gw.m_add_sub_section(GW.q_mesh, sec_method.k_mesh)
         # Analytical continuation
-        sec_gw.analytical_continuation = "pade"
+        sec_gw.analytical_continuation = 'pade'
         # FrequencyMesh
         sec_freq_mesh = FrequencyMesh(
-            dimensionality=1, n_points=response_functions.get("NOMEGA", 100)
+            dimensionality=1, n_points=response_functions.get('NOMEGA', 100)
         )
         sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
@@ -1919,8 +1919,8 @@ class VASPParser:
         ibrion = -1
         incar = self.archive.run[-1].method[-1].x_vasp_incar_out
         if incar is not None:
-            nsw = incar.get("NSW")
-            ibrion = -1 if nsw == 0 else incar.get("IBRION", 0)
+            nsw = incar.get('NSW')
+            ibrion = -1 if nsw == 0 else incar.get('IBRION', 0)
 
         workflow = None
         if ibrion == -1:
@@ -1929,7 +1929,7 @@ class VASPParser:
             workflow = MolecularDynamics()
         else:
             workflow = GeometryOptimization(method=GeometryOptimizationMethod())
-            tolerance = self.parser.incar.get("EDIFFG")
+            tolerance = self.parser.incar.get('EDIFFG')
             if tolerance is not None:
                 if tolerance > 0:
                     workflow.method.convergence_tolerance_energy_difference = (
@@ -1951,29 +1951,29 @@ class VASPParser:
             sec_system.atoms = sec_atoms
 
             structure = self.parser.get_structure(n_calc)
-            cell = structure.get("cell", None)
+            cell = structure.get('cell', None)
             if cell is not None:
                 sec_atoms.lattice_vectors = cell
 
             sec_atoms.periodic = [True] * 3
-            sec_atoms.labels = self.parser.atom_info.get("atoms", {}).get("element", [])
+            sec_atoms.labels = self.parser.atom_info.get('atoms', {}).get('element', [])
 
-            positions = structure.get("positions", None)
+            positions = structure.get('positions', None)
             if positions is not None:
                 sec_atoms.positions = positions
 
-            selective = structure.get("selective", None)
+            selective = structure.get('selective', None)
             if selective is not None:
-                selective = [[s[i] == "T" for i in range(len(s))] for s in selective]
+                selective = [[s[i] == 'T' for i in range(len(s))] for s in selective]
                 sec_system.x_vasp_selective_dynamics = selective
 
-            nose = structure.get("nose")
+            nose = structure.get('nose')
             if nose is not None:
                 sec_system.x_vasp_nose_thermostat = nose
 
             # Check for core-holes
             ## note that this check should be added to `parse_core_hole` if other kinds of atom_parameters are set
-            if self.parser.incar.get("ICORELEVEL", 0) == 2:
+            if self.parser.incar.get('ICORELEVEL', 0) == 2:
                 core_hole, core_hole_group, corehole_id = self.parse_core_hole()
                 if sec_method := sec_run.method:
                     try:
@@ -1982,7 +1982,7 @@ class VASPParser:
                         ].core_hole = core_hole
                     except (IndexError, AttributeError, TypeError):
                         self.logger.error(
-                            f"Error setting core-hole: no atom_parameters with index {corehole_id}"
+                            f'Error setting core-hole: no atom_parameters with index {corehole_id}'
                         )
 
                 if sec_system.atoms_group is None:
@@ -2015,17 +2015,17 @@ class VASPParser:
 
                 try:
                     val = val * ureg.eV
-                    if metainfo_key.startswith("energy_"):
+                    if metainfo_key.startswith('energy_'):
                         sec_energy.m_add_sub_section(
                             getattr(
-                                Energy, metainfo_key.replace("energy_", "").lower()
+                                Energy, metainfo_key.replace('energy_', '').lower()
                             ),
                             EnergyEntry(value=val),
                         )
                     else:
                         setattr(section, metainfo_key, val)
                 except Exception:
-                    self.logger.warning("Error setting metainfo", data=dict(key=key))
+                    self.logger.warning('Error setting metainfo', data=dict(key=key))
 
             return section
 
@@ -2038,7 +2038,7 @@ class VASPParser:
             eigenvalues = np.transpose(eigenvalues)
             eigs = eigenvalues[0].T
             occs = eigenvalues[1].T
-            kpoints = self.parser.kpoints_info.get("points", [])
+            kpoints = self.parser.kpoints_info.get('points', [])
 
             # get valence(conduction) and maximum(minimum)
             # we have a case where no band is occupied, i.e. valence_max should be below
@@ -2056,7 +2056,7 @@ class VASPParser:
             sec_scc.energy.highest_occupied = max(valence_max) * ureg.eV
             sec_scc.energy.lowest_unoccupied = min(conduction_min) * ureg.eV
 
-            if self.parser.kpoints_info.get("sampling_method", None) == "Line-path":
+            if self.parser.kpoints_info.get('sampling_method', None) == 'Line-path':
                 sec_k_band = BandStructure()
                 sec_scc.band_structure_electronic.append(sec_k_band)
                 for n in range(len(eigs)):
@@ -2064,7 +2064,7 @@ class VASPParser:
                     sec_k_band.band_gap.append(sec_band_gap)
                     sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
                     sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
-                divisions = self.parser.kpoints_info.get("grid", None)
+                divisions = self.parser.kpoints_info.get('grid', None)
                 if divisions is None:
                     return
                 n_segments = len(kpoints) // divisions
@@ -2091,10 +2091,10 @@ class VASPParser:
                 sec_scc.eigenvalues.append(sec_eigenvalues)
                 sec_eigenvalues.kpoints = kpoints
                 sec_eigenvalues.kpoints_weights = self.parser.kpoints_info.get(
-                    "weights", []
+                    'weights', []
                 )
                 sec_eigenvalues.kpoints_multiplicities = self.parser.kpoints_info.get(
-                    "multiplicities", []
+                    'multiplicities', []
                 )
                 sec_eigenvalues.energies = eigs
                 sec_eigenvalues.occupations = occs
@@ -2104,26 +2104,26 @@ class VASPParser:
 
             # TODO: I do not know how the f-orbitals are arranged
             lm_converter = {
-                "s": [0, 0],
-                "p": [1, -1],
-                "px": [1, 0],
-                "py": [1, 1],
-                "pz": [1, 2],
-                "d": [2, -1],
-                "dx2": [2, 0],
-                "dxy": [2, 1],
-                "dxz": [2, 2],
-                "dy2": [2, 3],
-                "dyz": [2, 4],
-                "dz2": [2, 5],
-                "f": [3, -1],
-                "f-3": [3, 0],
-                "f-2": [3, 1],
-                "f-1": [3, 2],
-                "f0": [3, 3],
-                "f1": [3, 4],
-                "f2": [3, 5],
-                "f3": [3, 6],
+                's': [0, 0],
+                'p': [1, -1],
+                'px': [1, 0],
+                'py': [1, 1],
+                'pz': [1, 2],
+                'd': [2, -1],
+                'dx2': [2, 0],
+                'dxy': [2, 1],
+                'dxz': [2, 2],
+                'dy2': [2, 3],
+                'dyz': [2, 4],
+                'dz2': [2, 5],
+                'f': [3, -1],
+                'f-3': [3, 0],
+                'f-2': [3, 1],
+                'f-1': [3, 2],
+                'f0': [3, 3],
+                'f1': [3, 4],
+                'f2': [3, 5],
+                'f3': [3, 6],
             }
 
             # total dos
@@ -2163,7 +2163,7 @@ class VASPParser:
                             for lm in range(n_lm):
                                 sec_dos_orbital = DosValues()
                                 sec_dos.orbital_projected.append(sec_dos_orbital)
-                                sec_dos_orbital.m_kind = "polynomial"
+                                sec_dos_orbital.m_kind = 'polynomial'
                                 sec_dos_orbital.lm = lm_converter.get(
                                     fields[lm], [-1, -1]
                                 )
@@ -2212,13 +2212,13 @@ class VASPParser:
                         total=ForcesEntry(value=forces * ureg.eV / ureg.angstrom)
                     )
                 except Exception:
-                    self.logger.error("Error parsing forces.")
+                    self.logger.error('Error parsing forces.')
             if stress is not None:
                 try:
                     # TODO verify if stress unit in xml is also kbar
                     sec_scc.stress = Stress(total=StressEntry(value=stress * ureg.kbar))
                 except Exception:
-                    self.logger.error("Error parsing stress.")
+                    self.logger.error('Error parsing stress.')
 
             # structure
             sec_system = parse_system(n)
@@ -2238,12 +2238,12 @@ class VASPParser:
 
         # parse charge density
         # TODO add test data
-        chgcar_file = os.path.join(self.maindir, "CHGCAR")
+        chgcar_file = os.path.join(self.maindir, 'CHGCAR')
         if sec_scc and os.path.isfile(chgcar_file):
             grid = None
             n_points = 0
             charge_density = []
-            re_grid = re.compile(r" *\d+ +\d+ +\d+\s+")
+            re_grid = re.compile(r' *\d+ +\d+ +\d+\s+')
             for line in open(chgcar_file):
                 if not line.strip():
                     grid = []
@@ -2258,19 +2258,19 @@ class VASPParser:
                     charge_density.extend([float(v) for v in line.strip().split()])
                 if charge_density and len(charge_density) == n_points:
                     # TODO remove temporary fix
-                    if hasattr(Density, "value_hdf5"):
+                    if hasattr(Density, 'value_hdf5'):
                         from nomad.parsing.parser import to_hdf5
 
                         filename = os.path.join(
-                            os.path.dirname(self.filepath.split("/raw/")[-1]),
-                            f"{os.path.basename(self.filepath)}.archive.hdf5",
+                            os.path.dirname(self.filepath.split('/raw/')[-1]),
+                            f'{os.path.basename(self.filepath)}.archive.hdf5',
                         )
                         farg = (
-                            "r+b"
+                            'r+b'
                             if os.path.isfile(
                                 os.path.join(os.path.dirname(self.filepath), filename)
                             )
-                            else "wb"
+                            else 'wb'
                         )
                         sec_density = Density()
                         sec_scc.density_charge.append(sec_density)
@@ -2281,7 +2281,7 @@ class VASPParser:
                                         np.array(charge_density, np.float64), grid
                                     ),
                                     f,
-                                    f"{sec_density.m_path()}/value_hdf5",
+                                    f'{sec_density.m_path()}/value_hdf5',
                                 )
                     else:
                         sec_scc.density_charge.append(
@@ -2296,7 +2296,7 @@ class VASPParser:
                     charge_density = []
 
         if self.parser.n_calculations == 0:
-            self.logger.warning("No calculation was parsed.")
+            self.logger.warning('No calculation was parsed.')
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
@@ -2306,44 +2306,44 @@ class VASPParser:
 
         sec_run = Run()
         self.archive.run.append(sec_run)
-        program_name = self.parser.header.get("program", "")
-        if program_name.strip().upper() != "VASP":
+        program_name = self.parser.header.get('program', '')
+        if program_name.strip().upper() != 'VASP':
             sec_run.program = Program()
             self.logger.error(
-                "invalid program name", data=dict(program_name=program_name)
+                'invalid program name', data=dict(program_name=program_name)
             )
             return
-        sec_run.program = Program(name="VASP")
+        sec_run.program = Program(name='VASP')
 
-        version = " ".join(
+        version = ' '.join(
             [
-                self.parser.header.get(key, "")
-                for key in ["version", "subversion", "platform"]
+                self.parser.header.get(key, '')
+                for key in ['version', 'subversion', 'platform']
             ]
         ).strip()
         if version:
             sec_run.program.version = version
 
-        date = self.parser.header.get("date")
+        date = self.parser.header.get('date')
         if date is not None:
-            date = datetime.strptime(date.strip(), "%Y %m %d").date()
-            time = self.parser.header.get("time", "0:0:0")
-            time = datetime.strptime(time.strip(), "%H:%M:%S").timetz()
+            date = datetime.strptime(date.strip(), '%Y %m %d').date()
+            time = self.parser.header.get('time', '0:0:0')
+            time = datetime.strptime(time.strip(), '%H:%M:%S').timetz()
             dtime = datetime.combine(date, time) - datetime.utcfromtimestamp(0)
             sec_run.program.compilation_datetime = dtime.total_seconds()
 
         # TODO VASP>=6.3.0 can do DFT+GW calculations in one single step: with data we can extend
         # the parser to inherit from BeyondDFTWorkflowsParser to address automatic GW workflow.
-        if self.parser.get_incar().get("ALGO", ""):
+        if self.parser.get_incar().get('ALGO', ''):
             # TODO check why ALGO is a list
-            if isinstance(self.parser.get_incar().get("ALGO", ""), list):
-                self.gw_algo = self.parser.get_incar().get("ALGO", "")[0]
+            if isinstance(self.parser.get_incar().get('ALGO', ''), list):
+                self.gw_algo = self.parser.get_incar().get('ALGO', '')[0]
             else:
-                self.gw_algo = self.parser.get_incar().get("ALGO", "")
+                self.gw_algo = self.parser.get_incar().get('ALGO', '')
             if self.gw_algo in self._gw_algo_map.keys():
-                self._calculation_type = "gw"
+                self._calculation_type = 'gw'
 
-        if self._calculation_type == "gw":
+        if self._calculation_type == 'gw':
             self.parse_gw()
         else:
             self.parse_method()

@@ -215,7 +215,7 @@ class x_cp2k_section_input_ATOM_AE_BASIS(MSection):
     )
 
     x_cp2k_section_input_ATOM_AE_BASIS_BASIS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_AE_BASIS_BASIS"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_AE_BASIS_BASIS'),
         repeats=True,
     )
 
@@ -660,39 +660,39 @@ class x_cp2k_section_input_ATOM_METHOD_XC_HF(MSection):
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_HF_HF_INFO = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC_HF_HF_INFO"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC_HF_HF_INFO'),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_HF_HFX_RI = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC_HF_HFX_RI"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC_HF_HFX_RI'),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_HF_INTERACTION_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_HF_INTERACTION_POTENTIAL"
+            'x_cp2k_section_input_ATOM_METHOD_XC_HF_INTERACTION_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_HF_LOAD_BALANCE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC_HF_LOAD_BALANCE"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC_HF_LOAD_BALANCE'),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_HF_MEMORY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC_HF_MEMORY"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC_HF_MEMORY'),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_HF_PERIODIC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC_HF_PERIODIC"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC_HF_PERIODIC'),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_HF_SCREENING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC_HF_SCREENING"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC_HF_SCREENING'),
         repeats=True,
     )
 
@@ -968,7 +968,7 @@ class x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL_PAIR_POTENTIAL(MSection)
 
     x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL_PAIR_POTENTIAL_PRINT_DFTD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL_PAIR_POTENTIAL_PRINT_DFTD"
+            'x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL_PAIR_POTENTIAL_PRINT_DFTD'
         ),
         repeats=True,
     )
@@ -992,14 +992,14 @@ class x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL(MSection):
 
     x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL_NON_LOCAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL_NON_LOCAL"
+            'x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL_NON_LOCAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL_PAIR_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL_PAIR_POTENTIAL"
+            'x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL_PAIR_POTENTIAL'
         ),
         repeats=True,
     )
@@ -1689,49 +1689,49 @@ class x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF(MSection):
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_HF_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_HF_INFO"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_HF_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_HFX_RI = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_HFX_RI"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_HFX_RI'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_INTERACTION_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_INTERACTION_POTENTIAL"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_INTERACTION_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_LOAD_BALANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_LOAD_BALANCE"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_LOAD_BALANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_MEMORY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_MEMORY"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_MEMORY'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_PERIODIC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_PERIODIC"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_PERIODIC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_SCREENING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_SCREENING"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF_SCREENING'
         ),
         repeats=True,
     )
@@ -1782,7 +1782,7 @@ class x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA(MSection):
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA_HF'
         ),
         repeats=True,
     )
@@ -1917,63 +1917,63 @@ class x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION(MSection):
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_CPHF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_CPHF"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_CPHF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_DIRECT_CANONICAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_DIRECT_CANONICAL"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_DIRECT_CANONICAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_INTERACTION_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_INTERACTION_POTENTIAL"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_INTERACTION_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_MP2_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_MP2_INFO"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_MP2_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_OPT_RI_BASIS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_OPT_RI_BASIS"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_OPT_RI_BASIS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_LAPLACE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_LAPLACE"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_LAPLACE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_MP2 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_MP2"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_MP2'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_RI_RPA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_WFC_GPW = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_WFC_GPW"
+            'x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION_WFC_GPW'
         ),
         repeats=True,
     )
@@ -2874,203 +2874,203 @@ class x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL(MSection):
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE88_LR_ADIABATIC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE88_LR_ADIABATIC"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE88_LR_ADIABATIC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE88_LR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE88_LR"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE88_LR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE88 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE88"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE88'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE97 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE97"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE97'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE_ROUSSEL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE_ROUSSEL"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BECKE_ROUSSEL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BEEF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BEEF"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_BEEF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_CS1 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_CS1"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_CS1'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_GV09 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_GV09"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_GV09'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_HCTH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_HCTH"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_HCTH'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_KE_GGA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_KE_GGA"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_KE_GGA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_KE_LIBXC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_KE_LIBXC"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_KE_LIBXC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_LDA_HOLE_T_C_LR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_LDA_HOLE_T_C_LR"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_LDA_HOLE_T_C_LR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_LIBXC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_LIBXC"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_LIBXC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_LYP_ADIABATIC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_LYP_ADIABATIC"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_LYP_ADIABATIC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_LYP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_LYP"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_LYP'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_OPTX = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_OPTX"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_OPTX'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_P86C = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_P86C"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_P86C'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PADE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PADE"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PADE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PBE_HOLE_T_C_LR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PBE_HOLE_T_C_LR"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PBE_HOLE_T_C_LR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PBE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PBE"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PBE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PW92 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PW92"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PW92'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PZ81 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PZ81"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_PZ81'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_TFW = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_TFW"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_TFW'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_TF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_TF"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_TF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_TPSS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_TPSS"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_TPSS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_VWN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_VWN"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_VWN'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_XALPHA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_XALPHA"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_XALPHA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_XGGA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_XGGA"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_XGGA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_XWPBE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_XWPBE"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL_XWPBE'
         ),
         repeats=True,
     )
@@ -3159,7 +3159,7 @@ class x_cp2k_section_input_ATOM_METHOD_XC_XC_POTENTIAL(MSection):
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_POTENTIAL_SAOP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_XC_POTENTIAL_SAOP"
+            'x_cp2k_section_input_ATOM_METHOD_XC_XC_POTENTIAL_SAOP'
         ),
         repeats=True,
     )
@@ -3214,37 +3214,37 @@ class x_cp2k_section_input_ATOM_METHOD_XC(MSection):
 
     x_cp2k_section_input_ATOM_METHOD_XC_ADIABATIC_RESCALING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_ATOM_METHOD_XC_ADIABATIC_RESCALING"
+            'x_cp2k_section_input_ATOM_METHOD_XC_ADIABATIC_RESCALING'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_HF = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC_HF"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC_HF'), repeats=True
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC_VDW_POTENTIAL'),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC_WF_CORRELATION'),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC_XC_FUNCTIONAL'),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_GRID = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC_XC_GRID"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC_XC_GRID'),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC_XC_POTENTIAL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC_XC_POTENTIAL"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC_XC_POTENTIAL'),
         repeats=True,
     )
 
@@ -3306,7 +3306,7 @@ class x_cp2k_section_input_ATOM_METHOD_ZMP(MSection):
     )
 
     x_cp2k_section_input_ATOM_METHOD_ZMP_RESTART = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_ZMP_RESTART"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_ZMP_RESTART'),
         repeats=True,
     )
 
@@ -3335,16 +3335,16 @@ class x_cp2k_section_input_ATOM_METHOD(MSection):
     )
 
     x_cp2k_section_input_ATOM_METHOD_EXTERNAL_VXC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_EXTERNAL_VXC"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_EXTERNAL_VXC'),
         repeats=True,
     )
 
     x_cp2k_section_input_ATOM_METHOD_XC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_XC"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_XC'), repeats=True
     )
 
     x_cp2k_section_input_ATOM_METHOD_ZMP = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD_ZMP"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD_ZMP'), repeats=True
     )
 
 
@@ -3452,7 +3452,7 @@ class x_cp2k_section_input_ATOM_POTENTIAL(MSection):
     )
 
     x_cp2k_section_input_ATOM_POTENTIAL_GTH_POTENTIAL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_POTENTIAL_GTH_POTENTIAL"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_POTENTIAL_GTH_POTENTIAL'),
         repeats=True,
     )
 
@@ -3753,7 +3753,7 @@ class x_cp2k_section_input_ATOM_PP_BASIS(MSection):
     )
 
     x_cp2k_section_input_ATOM_PP_BASIS_BASIS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_PP_BASIS_BASIS"),
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_PP_BASIS_BASIS'),
         repeats=True,
     )
 
@@ -3840,27 +3840,27 @@ class x_cp2k_section_input_ATOM(MSection):
     )
 
     x_cp2k_section_input_ATOM_AE_BASIS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_AE_BASIS"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_AE_BASIS'), repeats=True
     )
 
     x_cp2k_section_input_ATOM_METHOD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_METHOD"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_METHOD'), repeats=True
     )
 
     x_cp2k_section_input_ATOM_OPTIMIZATION = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_OPTIMIZATION"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_OPTIMIZATION'), repeats=True
     )
 
     x_cp2k_section_input_ATOM_POTENTIAL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_POTENTIAL"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_POTENTIAL'), repeats=True
     )
 
     x_cp2k_section_input_ATOM_POWELL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_POWELL"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_POWELL'), repeats=True
     )
 
     x_cp2k_section_input_ATOM_PP_BASIS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM_PP_BASIS"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM_PP_BASIS'), repeats=True
     )
 
 
@@ -3973,7 +3973,7 @@ class x_cp2k_section_input_DEBUG(MSection):
     )
 
     x_cp2k_section_input_DEBUG_PROGRAM_RUN_INFO = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_DEBUG_PROGRAM_RUN_INFO"),
+        sub_section=SectionProxy('x_cp2k_section_input_DEBUG_PROGRAM_RUN_INFO'),
         repeats=True,
     )
 
@@ -4553,16 +4553,16 @@ class x_cp2k_section_input_FARMING(MSection):
     )
 
     x_cp2k_section_input_FARMING_JOB = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FARMING_JOB"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FARMING_JOB'), repeats=True
     )
 
     x_cp2k_section_input_FARMING_PROGRAM_RUN_INFO = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FARMING_PROGRAM_RUN_INFO"),
+        sub_section=SectionProxy('x_cp2k_section_input_FARMING_PROGRAM_RUN_INFO'),
         repeats=True,
     )
 
     x_cp2k_section_input_FARMING_RESTART = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FARMING_RESTART"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FARMING_RESTART'), repeats=True
     )
 
 
@@ -4651,19 +4651,19 @@ class x_cp2k_section_input_FORCE_EVAL_BSSE(MSection):
     m_def = Section(validate=False)
 
     x_cp2k_section_input_FORCE_EVAL_BSSE_CONFIGURATION = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_BSSE_CONFIGURATION"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_BSSE_CONFIGURATION'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_BSSE_FRAGMENT_ENERGIES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_BSSE_FRAGMENT_ENERGIES"
+            'x_cp2k_section_input_FORCE_EVAL_BSSE_FRAGMENT_ENERGIES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_BSSE_FRAGMENT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_BSSE_FRAGMENT"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_BSSE_FRAGMENT'),
         repeats=True,
     )
 
@@ -4896,21 +4896,21 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF_ALMO_OPTIMIZER_DIIS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF_ALMO_OPTIMIZER_DIIS"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF_ALMO_OPTIMIZER_DIIS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF_ALMO_OPTIMIZER_PCG = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF_ALMO_OPTIMIZER_PCG"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF_ALMO_OPTIMIZER_PCG'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF_XALMO_OPTIMIZER_PCG = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF_XALMO_OPTIMIZER_PCG"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF_XALMO_OPTIMIZER_PCG'
         ),
         repeats=True,
     )
@@ -5102,7 +5102,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_DENSITY_FITTING(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_DENSITY_FITTING_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_DENSITY_FITTING_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_DENSITY_FITTING_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
@@ -5246,20 +5246,20 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD_CONSTANT_ENV = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD_CONSTANT_ENV"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD_CONSTANT_ENV'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD_GAUSSIAN_ENV = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD_GAUSSIAN_ENV"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD_GAUSSIAN_ENV'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD_RAMP_ENV = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD_RAMP_ENV"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD_RAMP_ENV'),
         repeats=True,
     )
 
@@ -5903,14 +5903,14 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CHEBYSHEV(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CHEBYSHEV_DOS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CHEBYSHEV_DOS"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CHEBYSHEV_DOS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CHEBYSHEV_PRINT_SPECIFIC_E_DENSITY_CUBE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CHEBYSHEV_PRINT_SPECIFIC_E_DENSITY_CUBE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CHEBYSHEV_PRINT_SPECIFIC_E_DENSITY_CUBE'
         ),
         repeats=True,
     )
@@ -6203,14 +6203,14 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CHEBYSHEV = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CHEBYSHEV"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CHEBYSHEV'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CURVY_STEPS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CURVY_STEPS"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF_CURVY_STEPS'
         ),
         repeats=True,
     )
@@ -6346,7 +6346,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_MGRID_INTERPOLATOR(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_MGRID_INTERPOLATOR_CONV_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_MGRID_INTERPOLATOR_CONV_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_MGRID_INTERPOLATOR_CONV_INFO'
         ),
         repeats=True,
     )
@@ -6504,13 +6504,13 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_MGRID(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_MGRID_INTERPOLATOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_MGRID_INTERPOLATOR"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_MGRID_INTERPOLATOR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_MGRID_RS_GRID = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_MGRID_RS_GRID"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_MGRID_RS_GRID'),
         repeats=True,
     )
 
@@ -6744,14 +6744,14 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_EWALD(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_EWALD_MULTIPOLES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_EWALD_MULTIPOLES"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_EWALD_MULTIPOLES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_EWALD_RS_GRID = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_EWALD_RS_GRID"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_EWALD_RS_GRID'
         ),
         repeats=True,
     )
@@ -6962,7 +6962,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_INTERPOLATOR(MSectio
 
     x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_INTERPOLATOR_CONV_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_INTERPOLATOR_CONV_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_INTERPOLATOR_CONV_INFO'
         ),
         repeats=True,
     )
@@ -7071,21 +7071,21 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_CHECK_SPLINE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_CHECK_SPLINE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_CHECK_SPLINE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_INTERPOLATOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_INTERPOLATOR"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_INTERPOLATOR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
@@ -7138,24 +7138,24 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_POISSON(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_EWALD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_EWALD"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_EWALD'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MT"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MT'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_MULTIPOLE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_WAVELET = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_WAVELET"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_POISSON_WAVELET'),
         repeats=True,
     )
 
@@ -7278,7 +7278,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_QS_BECKE_RESTRAINT(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_BECKE_RESTRAINT_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_QS_BECKE_RESTRAINT_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_QS_BECKE_RESTRAINT_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
@@ -7402,7 +7402,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_QS_DDAPC_RESTRAINT(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_DDAPC_RESTRAINT_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_QS_DDAPC_RESTRAINT_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_QS_DDAPC_RESTRAINT_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
@@ -7568,7 +7568,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_QS_DFTB(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_DFTB_PARAMETER = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_QS_DFTB_PARAMETER"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_QS_DFTB_PARAMETER'
         ),
         repeats=True,
     )
@@ -7791,7 +7791,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_QS_OPTIMIZE_LRI_BASIS(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_OPTIMIZE_LRI_BASIS_CONSTRAIN_EXPONENTS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_QS_OPTIMIZE_LRI_BASIS_CONSTRAIN_EXPONENTS"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_QS_OPTIMIZE_LRI_BASIS_CONSTRAIN_EXPONENTS'
         ),
         repeats=True,
     )
@@ -8266,41 +8266,41 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_COULOMB = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_COULOMB"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_COULOMB'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_EXCHANGE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_EXCHANGE"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_EXCHANGE'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_GA = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_GA"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_GA'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_LR_CORRECTION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_LR_CORRECTION"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_LR_CORRECTION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_MEMORY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_MEMORY"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_MEMORY'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_NEIGHBOR_LISTS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_NEIGHBOR_LISTS"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_NEIGHBOR_LISTS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_SCREENING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_SCREENING"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE_SCREENING'),
         repeats=True,
     )
 
@@ -8648,59 +8648,59 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_QS(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_BECKE_RESTRAINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_QS_BECKE_RESTRAINT"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_QS_BECKE_RESTRAINT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_DDAPC_RESTRAINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_QS_DDAPC_RESTRAINT"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_QS_DDAPC_RESTRAINT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_DFTB = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_QS_DFTB"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_QS_DFTB'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_DISTRIBUTION = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_QS_DISTRIBUTION"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_QS_DISTRIBUTION'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_HARRIS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_QS_HARRIS"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_QS_HARRIS'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_MULLIKEN_RESTRAINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_QS_MULLIKEN_RESTRAINT"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_QS_MULLIKEN_RESTRAINT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_OPTIMIZE_LRI_BASIS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_QS_OPTIMIZE_LRI_BASIS"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_QS_OPTIMIZE_LRI_BASIS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_S2_RESTRAINT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_QS_S2_RESTRAINT"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_QS_S2_RESTRAINT'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_SCPTB = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_QS_SCPTB"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_QS_SCPTB'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_QS_SE'),
         repeats=True,
     )
 
@@ -9111,13 +9111,13 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_SCCS(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCCS_ANDREUSSI = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_SCCS_ANDREUSSI"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_SCCS_ANDREUSSI'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCCS_FATTEBERT_GYGI = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_SCCS_FATTEBERT_GYGI"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_SCCS_FATTEBERT_GYGI'
         ),
         repeats=True,
     )
@@ -9436,7 +9436,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_DIAG_SUB_SCF(MSect
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_DIAG_SUB_SCF_MIXING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_DIAG_SUB_SCF_MIXING"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_DIAG_SUB_SCF_MIXING'
         ),
         repeats=True,
     )
@@ -9919,28 +9919,28 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_DAVIDSON = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_DAVIDSON"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_DAVIDSON'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_DIAG_SUB_SCF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_DIAG_SUB_SCF"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_DIAG_SUB_SCF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_KRYLOV = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_KRYLOV"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_KRYLOV'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_OT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_OT"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION_OT'
         ),
         repeats=True,
     )
@@ -10749,28 +10749,28 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_SCF(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_SCF_DIAGONALIZATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCF_MIXING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_SCF_MIXING"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_SCF_MIXING'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCF_OT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_SCF_OT"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_SCF_OT'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCF_OUTER_SCF = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_SCF_OUTER_SCF"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_SCF_OUTER_SCF'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCF_SMEAR = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_SCF_SMEAR"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_SCF_SMEAR'),
         repeats=True,
     )
 
@@ -10894,7 +10894,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_SCRF_SPHERE(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCRF_SPHERE_CENTER = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_SCRF_SPHERE_CENTER"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_SCRF_SPHERE_CENTER'
         ),
         repeats=True,
     )
@@ -10926,13 +10926,13 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_SCRF(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCRF_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_SCRF_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_SCRF_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCRF_SPHERE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_SCRF_SPHERE"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_SCRF_SPHERE'),
         repeats=True,
     )
 
@@ -11452,49 +11452,49 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_HF_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_HF_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_HF_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_HFX_RI = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_HFX_RI"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_HFX_RI'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_INTERACTION_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_INTERACTION_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_INTERACTION_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_LOAD_BALANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_LOAD_BALANCE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_LOAD_BALANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_MEMORY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_MEMORY"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_MEMORY'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_PERIODIC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_PERIODIC"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_PERIODIC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_SCREENING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_SCREENING"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF_SCREENING'
         ),
         repeats=True,
     )
@@ -11777,7 +11777,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL_PAIR_POTENTIAL
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL_PAIR_POTENTIAL_PRINT_DFTD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL_PAIR_POTENTIAL_PRINT_DFTD"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL_PAIR_POTENTIAL_PRINT_DFTD'
         ),
         repeats=True,
     )
@@ -11801,14 +11801,14 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL_NON_LOCAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL_NON_LOCAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL_NON_LOCAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL_PAIR_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL_PAIR_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL_PAIR_POTENTIAL'
         ),
         repeats=True,
     )
@@ -12514,49 +12514,49 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF(MSe
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_HF_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_HF_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_HF_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_HFX_RI = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_HFX_RI"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_HFX_RI'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_INTERACTION_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_INTERACTION_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_INTERACTION_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_LOAD_BALANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_LOAD_BALANCE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_LOAD_BALANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_MEMORY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_MEMORY"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_MEMORY'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_PERIODIC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_PERIODIC"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_PERIODIC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_SCREENING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_SCREENING"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF_SCREENING'
         ),
         repeats=True,
     )
@@ -12611,7 +12611,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA(MSecti
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA_HF'
         ),
         repeats=True,
     )
@@ -12746,63 +12746,63 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_CPHF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_CPHF"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_CPHF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_DIRECT_CANONICAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_DIRECT_CANONICAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_DIRECT_CANONICAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_INTERACTION_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_INTERACTION_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_INTERACTION_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_MP2_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_MP2_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_MP2_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_OPT_RI_BASIS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_OPT_RI_BASIS"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_OPT_RI_BASIS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_LAPLACE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_LAPLACE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_LAPLACE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_MP2 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_MP2"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_MP2'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_RI_RPA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_WFC_GPW = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_WFC_GPW"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION_WFC_GPW'
         ),
         repeats=True,
     )
@@ -13767,203 +13767,203 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE88_LR_ADIABATIC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE88_LR_ADIABATIC"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE88_LR_ADIABATIC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE88_LR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE88_LR"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE88_LR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE88 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE88"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE88'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE97 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE97"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE97'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE_ROUSSEL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE_ROUSSEL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BECKE_ROUSSEL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BEEF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BEEF"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_BEEF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_CS1 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_CS1"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_CS1'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_GV09 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_GV09"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_GV09'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_HCTH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_HCTH"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_HCTH'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_KE_GGA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_KE_GGA"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_KE_GGA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_KE_LIBXC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_KE_LIBXC"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_KE_LIBXC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_LDA_HOLE_T_C_LR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_LDA_HOLE_T_C_LR"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_LDA_HOLE_T_C_LR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_LIBXC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_LIBXC"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_LIBXC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_LYP_ADIABATIC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_LYP_ADIABATIC"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_LYP_ADIABATIC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_LYP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_LYP"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_LYP'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_OPTX = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_OPTX"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_OPTX'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_P86C = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_P86C"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_P86C'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PADE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PADE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PADE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PBE_HOLE_T_C_LR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PBE_HOLE_T_C_LR"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PBE_HOLE_T_C_LR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PBE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PBE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PBE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PW92 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PW92"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PW92'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PZ81 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PZ81"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_PZ81'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_TFW = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_TFW"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_TFW'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_TF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_TF"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_TF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_TPSS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_TPSS"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_TPSS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_VWN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_VWN"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_VWN'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_XALPHA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_XALPHA"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_XALPHA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_XGGA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_XGGA"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_XGGA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_XWPBE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_XWPBE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL_XWPBE'
         ),
         repeats=True,
     )
@@ -14052,7 +14052,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_POTENTIAL(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_POTENTIAL_SAOP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_POTENTIAL_SAOP"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_POTENTIAL_SAOP'
         ),
         repeats=True,
     )
@@ -14107,47 +14107,47 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_ADIABATIC_RESCALING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_ADIABATIC_RESCALING"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_ADIABATIC_RESCALING'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_HF'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_VDW_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_WF_CORRELATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_FUNCTIONAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_GRID = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_GRID"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_GRID'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC_XC_POTENTIAL'
         ),
         repeats=True,
     )
@@ -14266,12 +14266,12 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_SIC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_SIC"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_SIC'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT_XC'),
         repeats=True,
     )
 
@@ -14930,7 +14930,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_DIAG_SUB_SCF(
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_DIAG_SUB_SCF_MIXING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_DIAG_SUB_SCF_MIXING"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_DIAG_SUB_SCF_MIXING'
         ),
         repeats=True,
     )
@@ -15421,28 +15421,28 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_DAVIDSON = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_DAVIDSON"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_DAVIDSON'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_DIAG_SUB_SCF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_DIAG_SUB_SCF"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_DIAG_SUB_SCF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_KRYLOV = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_KRYLOV"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_KRYLOV'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_OT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_OT"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION_OT'
         ),
         repeats=True,
     )
@@ -16251,30 +16251,30 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_DIAGONALIZATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_MIXING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_MIXING"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_MIXING'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_OT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_OT"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_OT'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_OUTER_SCF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_OUTER_SCF"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_OUTER_SCF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_SMEAR = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_SMEAR"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF_SMEAR'),
         repeats=True,
     )
 
@@ -16423,12 +16423,12 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XAS(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS_LOCALIZE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XAS_LOCALIZE"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XAS_LOCALIZE'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XAS_SCF'),
         repeats=True,
     )
 
@@ -16849,41 +16849,41 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_HF_INFO = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_HF_INFO"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_HF_INFO'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_HFX_RI = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_HFX_RI"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_HFX_RI'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_INTERACTION_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_INTERACTION_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_INTERACTION_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_LOAD_BALANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_LOAD_BALANCE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_LOAD_BALANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_MEMORY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_MEMORY"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_MEMORY'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_PERIODIC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_PERIODIC"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_PERIODIC'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_SCREENING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_SCREENING"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF_SCREENING'),
         repeats=True,
     )
 
@@ -17159,7 +17159,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL_PAIR_POTENTIAL(MSecti
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL_PAIR_POTENTIAL_PRINT_DFTD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL_PAIR_POTENTIAL_PRINT_DFTD"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL_PAIR_POTENTIAL_PRINT_DFTD'
         ),
         repeats=True,
     )
@@ -17183,14 +17183,14 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL_NON_LOCAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL_NON_LOCAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL_NON_LOCAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL_PAIR_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL_PAIR_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL_PAIR_POTENTIAL'
         ),
         repeats=True,
     )
@@ -17882,49 +17882,49 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_HF_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_HF_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_HF_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_HFX_RI = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_HFX_RI"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_HFX_RI'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_INTERACTION_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_INTERACTION_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_INTERACTION_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_LOAD_BALANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_LOAD_BALANCE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_LOAD_BALANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_MEMORY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_MEMORY"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_MEMORY'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_PERIODIC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_PERIODIC"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_PERIODIC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_SCREENING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_SCREENING"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF_SCREENING'
         ),
         repeats=True,
     )
@@ -17977,7 +17977,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA_HF'
         ),
         repeats=True,
     )
@@ -18112,63 +18112,63 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_CPHF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_CPHF"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_CPHF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_DIRECT_CANONICAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_DIRECT_CANONICAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_DIRECT_CANONICAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_INTERACTION_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_INTERACTION_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_INTERACTION_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_MP2_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_MP2_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_MP2_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_OPT_RI_BASIS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_OPT_RI_BASIS"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_OPT_RI_BASIS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_LAPLACE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_LAPLACE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_LAPLACE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_MP2 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_MP2"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_MP2'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_RI_RPA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_WFC_GPW = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_WFC_GPW"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION_WFC_GPW'
         ),
         repeats=True,
     )
@@ -19079,203 +19079,203 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE88_LR_ADIABATIC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE88_LR_ADIABATIC"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE88_LR_ADIABATIC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE88_LR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE88_LR"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE88_LR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE88 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE88"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE88'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE97 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE97"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE97'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE_ROUSSEL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE_ROUSSEL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BECKE_ROUSSEL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BEEF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BEEF"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_BEEF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_CS1 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_CS1"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_CS1'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_GV09 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_GV09"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_GV09'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_HCTH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_HCTH"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_HCTH'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_KE_GGA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_KE_GGA"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_KE_GGA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_KE_LIBXC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_KE_LIBXC"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_KE_LIBXC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_LDA_HOLE_T_C_LR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_LDA_HOLE_T_C_LR"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_LDA_HOLE_T_C_LR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_LIBXC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_LIBXC"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_LIBXC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_LYP_ADIABATIC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_LYP_ADIABATIC"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_LYP_ADIABATIC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_LYP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_LYP"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_LYP'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_OPTX = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_OPTX"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_OPTX'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_P86C = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_P86C"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_P86C'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PADE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PADE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PADE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PBE_HOLE_T_C_LR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PBE_HOLE_T_C_LR"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PBE_HOLE_T_C_LR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PBE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PBE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PBE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PW92 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PW92"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PW92'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PZ81 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PZ81"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_PZ81'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_TFW = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_TFW"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_TFW'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_TF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_TF"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_TF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_TPSS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_TPSS"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_TPSS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_VWN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_VWN"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_VWN'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_XALPHA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_XALPHA"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_XALPHA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_XGGA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_XGGA"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_XGGA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_XWPBE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_XWPBE"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_XWPBE'
         ),
         repeats=True,
     )
@@ -19364,7 +19364,7 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_POTENTIAL(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_POTENTIAL_SAOP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_POTENTIAL_SAOP"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_POTENTIAL_SAOP'
         ),
         repeats=True,
     )
@@ -19419,44 +19419,44 @@ class x_cp2k_section_input_FORCE_EVAL_DFT_XC(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_ADIABATIC_RESCALING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_ADIABATIC_RESCALING"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_ADIABATIC_RESCALING'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XC_HF'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_VDW_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_WF_CORRELATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_GRID = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_GRID"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_GRID'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_POTENTIAL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_POTENTIAL"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_POTENTIAL'),
         repeats=True,
     )
 
@@ -19593,139 +19593,139 @@ class x_cp2k_section_input_FORCE_EVAL_DFT(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_ALMO_SCF'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_AUXILIARY_DENSITY_MATRIX_METHOD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_AUXILIARY_DENSITY_MATRIX_METHOD"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_AUXILIARY_DENSITY_MATRIX_METHOD'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_DENSITY_FITTING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_DENSITY_FITTING"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_DENSITY_FITTING'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_EFIELD'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_EXTERNAL_DENSITY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_EXTERNAL_DENSITY"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_EXTERNAL_DENSITY'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_EXTERNAL_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_EXTERNAL_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_EXTERNAL_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_EXTERNAL_VXC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_EXTERNAL_VXC"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_EXTERNAL_VXC'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_KG_METHOD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_KG_METHOD"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_KG_METHOD'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_KPOINTS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_KPOINTS"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_KPOINTS'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_LOCALIZE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_LOCALIZE"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_LOCALIZE'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_LOW_SPIN_ROKS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_LOW_SPIN_ROKS"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_LOW_SPIN_ROKS'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_LS_SCF'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_MGRID = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_MGRID"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_MGRID'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_PERIODIC_EFIELD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_PERIODIC_EFIELD"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_PERIODIC_EFIELD'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_POISSON = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_POISSON"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_POISSON'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_QS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_QS"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_QS'), repeats=True
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_REAL_TIME_PROPAGATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_DFT_REAL_TIME_PROPAGATION"
+            'x_cp2k_section_input_FORCE_EVAL_DFT_REAL_TIME_PROPAGATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_RELATIVISTIC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_RELATIVISTIC"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_RELATIVISTIC'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCCS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_SCCS"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_SCCS'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCF = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_SCF"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_SCF'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SCRF = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_SCRF"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_SCRF'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_SIC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_SIC"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_SIC'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_TDDFPT'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_TRANSPORT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_TRANSPORT"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_TRANSPORT'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XAS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XAS"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XAS'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT_XC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT_XC"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT_XC'), repeats=True
     )
 
 
@@ -20044,7 +20044,7 @@ class x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL_MIXED(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL_MIXED_FRAGMENT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL_MIXED_FRAGMENT"
+            'x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL_MIXED_FRAGMENT'
         ),
         repeats=True,
     )
@@ -20080,7 +20080,7 @@ class x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL_FRAGMENT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL_FRAGMENT"
+            'x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL_FRAGMENT'
         ),
         repeats=True,
     )
@@ -20098,14 +20098,14 @@ class x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL_MIXED = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL_MIXED"
+            'x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL_MIXED'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL"
+            'x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING_FORCE_EVAL'
         ),
         repeats=True,
     )
@@ -20171,27 +20171,27 @@ class x_cp2k_section_input_FORCE_EVAL_MIXED(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_MIXED_COUPLING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MIXED_COUPLING"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MIXED_COUPLING'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MIXED_GENERIC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MIXED_GENERIC"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MIXED_GENERIC'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MIXED_LINEAR = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MIXED_LINEAR"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MIXED_LINEAR'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MIXED_MAPPING'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MIXED_RESTRAINT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MIXED_RESTRAINT"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MIXED_RESTRAINT'),
         repeats=True,
     )
 
@@ -20326,7 +20326,7 @@ class x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_BEND(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_BEND_UB = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_BEND_UB"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_BEND_UB'
         ),
         repeats=True,
     )
@@ -20497,7 +20497,7 @@ class x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_DIPOLE(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_DIPOLE_DAMPING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_DIPOLE_DAMPING"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_DIPOLE_DAMPING'
         ),
         repeats=True,
     )
@@ -21882,28 +21882,28 @@ class x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14_GENPOT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14_GENPOT"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14_GENPOT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14_GOODWIN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14_GOODWIN"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14_GOODWIN'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14_LENNARD_JONES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14_LENNARD_JONES"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14_LENNARD_JONES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14_WILLIAMS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14_WILLIAMS"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14_WILLIAMS'
         ),
         repeats=True,
     )
@@ -21918,91 +21918,91 @@ class x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_BMHFTD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_BMHFTD"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_BMHFTD'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_BMHFT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_BMHFT"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_BMHFT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_BUCK4RANGES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_BUCK4RANGES"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_BUCK4RANGES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_BUCKMORSE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_BUCKMORSE"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_BUCKMORSE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_EAM = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_EAM"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_EAM'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_GENPOT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_GENPOT"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_GENPOT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_GOODWIN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_GOODWIN"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_GOODWIN'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_IPBV = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_IPBV"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_IPBV'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_LENNARD_JONES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_LENNARD_JONES"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_LENNARD_JONES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_QUIP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_QUIP"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_QUIP'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_SIEPMANN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_SIEPMANN"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_SIEPMANN'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_TERSOFF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_TERSOFF"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_TERSOFF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_WILLIAMS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_WILLIAMS"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED_WILLIAMS'
         ),
         repeats=True,
     )
@@ -22358,86 +22358,86 @@ class x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_BEND = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_BEND"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_BEND'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_BOND = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_BOND"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_BOND'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_CHARGES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_CHARGES"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_CHARGES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_CHARGE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_CHARGE"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_CHARGE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_DIPOLE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_DIPOLE"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_DIPOLE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_IMPROPER = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_IMPROPER"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_IMPROPER'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED14'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_NONBONDED'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_OPBEND = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_OPBEND"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_OPBEND'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_QUADRUPOLE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_QUADRUPOLE"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_QUADRUPOLE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_SHELL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_SHELL"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_SHELL'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_SPLINE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_SPLINE"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_SPLINE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_TORSION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_TORSION"
+            'x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD_TORSION'
         ),
         repeats=True,
     )
@@ -22681,14 +22681,14 @@ class x_cp2k_section_input_FORCE_EVAL_MM_POISSON_EWALD(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_MM_POISSON_EWALD_MULTIPOLES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_POISSON_EWALD_MULTIPOLES"
+            'x_cp2k_section_input_FORCE_EVAL_MM_POISSON_EWALD_MULTIPOLES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_POISSON_EWALD_RS_GRID = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_POISSON_EWALD_RS_GRID"
+            'x_cp2k_section_input_FORCE_EVAL_MM_POISSON_EWALD_RS_GRID'
         ),
         repeats=True,
     )
@@ -22899,7 +22899,7 @@ class x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_INTERPOLATOR(MSection
 
     x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_INTERPOLATOR_CONV_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_INTERPOLATOR_CONV_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_INTERPOLATOR_CONV_INFO'
         ),
         repeats=True,
     )
@@ -23010,21 +23010,21 @@ class x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_CHECK_SPLINE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_CHECK_SPLINE"
+            'x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_CHECK_SPLINE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_INTERPOLATOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_INTERPOLATOR"
+            'x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_INTERPOLATOR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
@@ -23077,24 +23077,24 @@ class x_cp2k_section_input_FORCE_EVAL_MM_POISSON(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_POISSON_EWALD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MM_POISSON_EWALD"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MM_POISSON_EWALD'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MT"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MT'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE"
+            'x_cp2k_section_input_FORCE_EVAL_MM_POISSON_MULTIPOLE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_POISSON_WAVELET = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MM_POISSON_WAVELET"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MM_POISSON_WAVELET'),
         repeats=True,
     )
 
@@ -23107,17 +23107,17 @@ class x_cp2k_section_input_FORCE_EVAL_MM(MSection):
     m_def = Section(validate=False)
 
     x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MM_FORCEFIELD'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_NEIGHBOR_LISTS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MM_NEIGHBOR_LISTS"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MM_NEIGHBOR_LISTS'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM_POISSON = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MM_POISSON"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MM_POISSON'),
         repeats=True,
     )
 
@@ -23450,7 +23450,7 @@ class x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION1D(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION1D_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION1D_EACH"
+            'x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION1D_EACH'
         ),
         repeats=True,
     )
@@ -23650,7 +23650,7 @@ class x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION2D(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION2D_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION2D_EACH"
+            'x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION2D_EACH'
         ),
         repeats=True,
     )
@@ -23716,7 +23716,7 @@ class x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION_EACH"
+            'x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION_EACH'
         ),
         repeats=True,
     )
@@ -23923,7 +23923,7 @@ class x_cp2k_section_input_FORCE_EVAL_PRINT_FORCES(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_FORCES_EACH = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_PRINT_FORCES_EACH"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_PRINT_FORCES_EACH'),
         repeats=True,
     )
 
@@ -24122,7 +24122,7 @@ class x_cp2k_section_input_FORCE_EVAL_PRINT_GRID_INFORMATION(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_GRID_INFORMATION_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PRINT_GRID_INFORMATION_EACH"
+            'x_cp2k_section_input_FORCE_EVAL_PRINT_GRID_INFORMATION_EACH'
         ),
         repeats=True,
     )
@@ -24322,7 +24322,7 @@ class x_cp2k_section_input_FORCE_EVAL_PRINT_PROGRAM_RUN_INFO(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_PROGRAM_RUN_INFO_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PRINT_PROGRAM_RUN_INFO_EACH"
+            'x_cp2k_section_input_FORCE_EVAL_PRINT_PROGRAM_RUN_INFO_EACH'
         ),
         repeats=True,
     )
@@ -24530,7 +24530,7 @@ class x_cp2k_section_input_FORCE_EVAL_PRINT_STRESS_TENSOR(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_STRESS_TENSOR_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PRINT_STRESS_TENSOR_EACH"
+            'x_cp2k_section_input_FORCE_EVAL_PRINT_STRESS_TENSOR_EACH'
         ),
         repeats=True,
     )
@@ -24730,7 +24730,7 @@ class x_cp2k_section_input_FORCE_EVAL_PRINT_TOTAL_NUMBERS(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_TOTAL_NUMBERS_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PRINT_TOTAL_NUMBERS_EACH"
+            'x_cp2k_section_input_FORCE_EVAL_PRINT_TOTAL_NUMBERS_EACH'
         ),
         repeats=True,
     )
@@ -24745,49 +24745,49 @@ class x_cp2k_section_input_FORCE_EVAL_PRINT(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION1D = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION1D"
+            'x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION1D'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION2D = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION2D"
+            'x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION2D'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_PRINT_DISTRIBUTION'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_FORCES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_PRINT_FORCES"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_PRINT_FORCES'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_GRID_INFORMATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PRINT_GRID_INFORMATION"
+            'x_cp2k_section_input_FORCE_EVAL_PRINT_GRID_INFORMATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PRINT_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_PRINT_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_STRESS_TENSOR = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_PRINT_STRESS_TENSOR"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_PRINT_STRESS_TENSOR'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PRINT_TOTAL_NUMBERS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_PRINT_TOTAL_NUMBERS"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_PRINT_TOTAL_NUMBERS'),
         repeats=True,
     )
 
@@ -24945,7 +24945,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_A(
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_A_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_A_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_A_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
@@ -25079,7 +25079,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_B(
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_B_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_B_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_B_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
@@ -25213,7 +25213,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_A(
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_A_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_A_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_A_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
@@ -25347,7 +25347,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_B(
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_B_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_B_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_B_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
@@ -25431,35 +25431,35 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_A = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_A"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_A'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_B = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_B"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_BECKE_RESTRAINT_B'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_A = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_A"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_A'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_B = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_B"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_DDAPC_RESTRAINT_B'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
@@ -25665,7 +25665,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_CURRENT_INTERPOLATOR(MSe
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_CURRENT_INTERPOLATOR_CONV_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_CURRENT_INTERPOLATOR_CONV_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_CURRENT_INTERPOLATOR_CONV_INFO'
         ),
         repeats=True,
     )
@@ -25775,7 +25775,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_CURRENT(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_CURRENT_INTERPOLATOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_CURRENT_INTERPOLATOR"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_CURRENT_INTERPOLATOR'
         ),
         repeats=True,
     )
@@ -25915,7 +25915,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_EPR_INTERPOLATOR(MSectio
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_EPR_INTERPOLATOR_CONV_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_EPR_INTERPOLATOR_CONV_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_EPR_INTERPOLATOR_CONV_INFO'
         ),
         repeats=True,
     )
@@ -25946,7 +25946,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_EPR(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_EPR_INTERPOLATOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_EPR_INTERPOLATOR"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_EPR_INTERPOLATOR'
         ),
         repeats=True,
     )
@@ -26273,7 +26273,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_NMR_INTERPOLATOR(MSectio
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_NMR_INTERPOLATOR_CONV_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_NMR_INTERPOLATOR_CONV_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_NMR_INTERPOLATOR_CONV_INFO'
         ),
         repeats=True,
     )
@@ -26337,7 +26337,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_NMR(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_NMR_INTERPOLATOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_NMR_INTERPOLATOR"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_NMR_INTERPOLATOR'
         ),
         repeats=True,
     )
@@ -26479,7 +26479,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_POLAR_INTERPOLATOR(MSect
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_POLAR_INTERPOLATOR_CONV_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_POLAR_INTERPOLATOR_CONV_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_POLAR_INTERPOLATOR_CONV_INFO'
         ),
         repeats=True,
     )
@@ -26510,7 +26510,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_POLAR(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_POLAR_INTERPOLATOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_POLAR_INTERPOLATOR"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_POLAR_INTERPOLATOR'
         ),
         repeats=True,
     )
@@ -26648,7 +26648,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_SPINSPIN_INTERPOLATOR(MS
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_SPINSPIN_INTERPOLATOR_CONV_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_SPINSPIN_INTERPOLATOR_CONV_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_SPINSPIN_INTERPOLATOR_CONV_INFO'
         ),
         repeats=True,
     )
@@ -26719,7 +26719,7 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_SPINSPIN(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_SPINSPIN_INTERPOLATOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_SPINSPIN_INTERPOLATOR"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_SPINSPIN_INTERPOLATOR'
         ),
         repeats=True,
     )
@@ -26795,42 +26795,42 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_CURRENT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_CURRENT"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_CURRENT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_EPR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_EPR"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_EPR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_LOCALIZE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_LOCALIZE"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_LOCALIZE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_NMR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_NMR"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_NMR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_POLAR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_POLAR"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_POLAR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_SPINSPIN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_SPINSPIN"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES_SPINSPIN'
         ),
         repeats=True,
     )
@@ -27122,28 +27122,28 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP_CONSTRAINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP_CONSTRAINT"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP_CONSTRAINT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP_NONPERIODIC_SYS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP_NONPERIODIC_SYS"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP_NONPERIODIC_SYS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP_PERIODIC_SYS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP_PERIODIC_SYS"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP_PERIODIC_SYS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP_RESTRAINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP_RESTRAINT"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP_RESTRAINT'
         ),
         repeats=True,
     )
@@ -27157,31 +27157,31 @@ class x_cp2k_section_input_FORCE_EVAL_PROPERTIES(MSection):
     m_def = Section(validate=False)
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ATOMIC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ATOMIC"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ATOMIC'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_ET_COUPLING'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_FIT_CHARGE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_PROPERTIES_FIT_CHARGE"
+            'x_cp2k_section_input_FORCE_EVAL_PROPERTIES_FIT_CHARGE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_PROPERTIES_LINRES'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_PROPERTIES_RESP'),
         repeats=True,
     )
 
@@ -27396,7 +27396,7 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_CELL(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_CELL_CELL_REF = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_QMMM_CELL_CELL_REF"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_QMMM_CELL_CELL_REF'),
         repeats=True,
     )
 
@@ -27622,14 +27622,14 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS_LINK(MSecti
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS_LINK_ADD_MM_CHARGE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS_LINK_ADD_MM_CHARGE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS_LINK_ADD_MM_CHARGE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS_LINK_MOVE_MM_CHARGE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS_LINK_MOVE_MM_CHARGE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS_LINK_MOVE_MM_CHARGE'
         ),
         repeats=True,
     )
@@ -27646,7 +27646,7 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS_LINK = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS_LINK"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS_LINK'
         ),
         repeats=True,
     )
@@ -27877,14 +27877,14 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_LINK
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_LINK_ADD_MM_CHARGE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_LINK_ADD_MM_CHARGE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_LINK_ADD_MM_CHARGE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_LINK_MOVE_MM_CHARGE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_LINK_MOVE_MM_CHARGE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_LINK_MOVE_MM_CHARGE'
         ),
         repeats=True,
     )
@@ -27928,14 +27928,14 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE(MSec
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_LINK = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_LINK"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_LINK'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_QM_KIND = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_QM_KIND"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE_QM_KIND'
         ),
         repeats=True,
     )
@@ -27979,7 +27979,7 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_QM_NON_ADAPTIVE(MSection
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_QM_NON_ADAPTIVE_QM_KIND = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_QM_NON_ADAPTIVE_QM_KIND"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_QM_NON_ADAPTIVE_QM_KIND'
         ),
         repeats=True,
     )
@@ -28131,28 +28131,28 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_LINKS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_BUFFER_NON_ADAPTIVE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_QM_NON_ADAPTIVE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_QM_NON_ADAPTIVE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_QM_NON_ADAPTIVE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_RESTART_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_RESTART_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING_RESTART_INFO'
         ),
         repeats=True,
     )
@@ -28765,28 +28765,28 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14_GENPOT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14_GENPOT"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14_GENPOT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14_GOODWIN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14_GOODWIN"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14_GOODWIN'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14_LENNARD_JONES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14_LENNARD_JONES"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14_LENNARD_JONES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14_WILLIAMS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14_WILLIAMS"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14_WILLIAMS'
         ),
         repeats=True,
     )
@@ -28801,28 +28801,28 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED_GENPOT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED_GENPOT"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED_GENPOT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED_GOODWIN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED_GOODWIN"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED_GOODWIN'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED_LENNARD_JONES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED_LENNARD_JONES"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED_LENNARD_JONES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED_WILLIAMS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED_WILLIAMS"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED_WILLIAMS'
         ),
         repeats=True,
     )
@@ -28846,14 +28846,14 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED14'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD_NONBONDED'
         ),
         repeats=True,
     )
@@ -29110,14 +29110,14 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_INTERPOLATOR(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_INTERPOLATOR_CONV_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_INTERPOLATOR_CONV_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_INTERPOLATOR_CONV_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_INTERPOLATOR_SPL_COEFFS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_INTERPOLATOR_SPL_COEFFS"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_INTERPOLATOR_SPL_COEFFS'
         ),
         repeats=True,
     )
@@ -29328,14 +29328,14 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_LINK(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_LINK_ADD_MM_CHARGE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_LINK_ADD_MM_CHARGE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_LINK_ADD_MM_CHARGE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_LINK_MOVE_MM_CHARGE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_LINK_MOVE_MM_CHARGE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_LINK_MOVE_MM_CHARGE'
         ),
         repeats=True,
     )
@@ -29549,7 +29549,7 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_INTERPOLATOR(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_INTERPOLATOR_CONV_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_INTERPOLATOR_CONV_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_INTERPOLATOR_CONV_INFO'
         ),
         repeats=True,
     )
@@ -29736,7 +29736,7 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_INTERPOLATOR(MSect
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_INTERPOLATOR_CONV_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_INTERPOLATOR_CONV_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_INTERPOLATOR_CONV_INFO'
         ),
         repeats=True,
     )
@@ -29860,21 +29860,21 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_CHECK_SPLINE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_CHECK_SPLINE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_CHECK_SPLINE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_INTERPOLATOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_INTERPOLATOR"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_INTERPOLATOR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
@@ -30091,14 +30091,14 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_EWALD(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_EWALD_MULTIPOLES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_EWALD_MULTIPOLES"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_EWALD_MULTIPOLES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_EWALD_RS_GRID = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_EWALD_RS_GRID"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_EWALD_RS_GRID'
         ),
         repeats=True,
     )
@@ -30319,7 +30319,7 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_INTERPOLAT
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_INTERPOLATOR_CONV_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_INTERPOLATOR_CONV_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_INTERPOLATOR_CONV_INFO'
         ),
         repeats=True,
     )
@@ -30428,21 +30428,21 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_CHECK_SPLINE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_CHECK_SPLINE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_CHECK_SPLINE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_INTERPOLATOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_INTERPOLATOR"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_INTERPOLATOR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_PROGRAM_RUN_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_PROGRAM_RUN_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE_PROGRAM_RUN_INFO'
         ),
         repeats=True,
     )
@@ -30496,28 +30496,28 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_EWALD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_EWALD"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_EWALD'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MT"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_MULTIPOLE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_WAVELET = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_WAVELET"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON_WAVELET'
         ),
         repeats=True,
     )
@@ -30559,28 +30559,28 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_CHECK_SPLINE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_CHECK_SPLINE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_CHECK_SPLINE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_INTERPOLATOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_INTERPOLATOR"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_INTERPOLATOR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_MULTIPOLE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON"
+            'x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC_POISSON'
         ),
         repeats=True,
     )
@@ -30765,52 +30765,52 @@ class x_cp2k_section_input_FORCE_EVAL_QMMM(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_CELL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_QMMM_CELL"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_QMMM_CELL'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_QMMM_FORCE_MIXING'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_QMMM_FORCEFIELD'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_IMAGE_CHARGE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_QMMM_IMAGE_CHARGE"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_QMMM_IMAGE_CHARGE'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_INTERPOLATOR = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_QMMM_INTERPOLATOR"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_QMMM_INTERPOLATOR'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_LINK = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_QMMM_LINK"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_QMMM_LINK'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_MM_KIND = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_QMMM_MM_KIND"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_QMMM_MM_KIND'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_QMMM_PERIODIC'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_QM_KIND = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_QMMM_QM_KIND"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_QMMM_QM_KIND'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM_WALLS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_QMMM_WALLS"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_QMMM_WALLS'),
         repeats=True,
     )
 
@@ -31044,7 +31044,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL_CELL_REF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL_CELL_REF"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL_CELL_REF'
         ),
         repeats=True,
     )
@@ -31180,14 +31180,14 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_PLANE_PLANE(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_PLANE_PLANE_PLANE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_PLANE_PLANE_PLANE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_PLANE_PLANE_PLANE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_PLANE_PLANE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_PLANE_PLANE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_PLANE_PLANE_POINT'
         ),
         repeats=True,
     )
@@ -31210,7 +31210,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_POINT'
         ),
         repeats=True,
     )
@@ -31300,7 +31300,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_BOND_ROTATION(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_BOND_ROTATION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_BOND_ROTATION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_BOND_ROTATION_POINT'
         ),
         repeats=True,
     )
@@ -31469,14 +31469,14 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_PLANE_PLANE_PLANE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_PLANE_PLANE_PLANE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_PLANE_PLANE_PLANE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_PLANE_PLANE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_PLANE_PLANE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_PLANE_PLANE_POINT'
         ),
         repeats=True,
     )
@@ -31501,7 +31501,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE(
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_POINT'
         ),
         repeats=True,
     )
@@ -31595,7 +31595,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_BOND_R
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_BOND_ROTATION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_BOND_ROTATION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_BOND_ROTATION_POINT'
         ),
         repeats=True,
     )
@@ -31751,7 +31751,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_CONDIT
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_CONDITIONED_DISTANCE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_CONDITIONED_DISTANCE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_CONDITIONED_DISTANCE_POINT'
         ),
         repeats=True,
     )
@@ -31927,7 +31927,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_COORDI
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_COORDINATION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_COORDINATION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_COORDINATION_POINT'
         ),
         repeats=True,
     )
@@ -32065,7 +32065,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTAN
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_FUNCTION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_FUNCTION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_FUNCTION_POINT'
         ),
         repeats=True,
     )
@@ -32151,7 +32151,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTAN
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_POINT_PLANE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_POINT_PLANE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_POINT_PLANE_POINT'
         ),
         repeats=True,
     )
@@ -32188,7 +32188,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTAN
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_POINT'
         ),
         repeats=True,
     )
@@ -32265,7 +32265,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_GYRATI
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_GYRATION_RADIUS_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_GYRATION_RADIUS_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_GYRATION_RADIUS_POINT'
         ),
         repeats=True,
     )
@@ -32365,7 +32365,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HBP(MS
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HBP_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HBP_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HBP_POINT'
         ),
         repeats=True,
     )
@@ -32550,7 +32550,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HYDRON
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HYDRONIUM_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HYDRONIUM_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HYDRONIUM_POINT'
         ),
         repeats=True,
     )
@@ -32701,7 +32701,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_POPULA
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_POPULATION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_POPULATION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_POPULATION_POINT'
         ),
         repeats=True,
     )
@@ -32815,7 +32815,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_QPARM(
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_QPARM_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_QPARM_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_QPARM_POINT'
         ),
         repeats=True,
     )
@@ -32897,7 +32897,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RING_P
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RING_PUCKERING_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RING_PUCKERING_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RING_PUCKERING_POINT'
         ),
         repeats=True,
     )
@@ -32940,7 +32940,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RMSD_F
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RMSD_FRAME_COORD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RMSD_FRAME_COORD"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RMSD_FRAME_COORD'
         ),
         repeats=True,
     )
@@ -32996,7 +32996,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RMSD(
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RMSD_FRAME = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RMSD_FRAME"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RMSD_FRAME'
         ),
         repeats=True,
     )
@@ -33073,7 +33073,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_TORSIO
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_TORSION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_TORSION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_TORSION_POINT'
         ),
         repeats=True,
     )
@@ -33169,7 +33169,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_U(MSec
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_U_MIXED = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_U_MIXED"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_U_MIXED'
         ),
         repeats=True,
     )
@@ -33251,7 +33251,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_WC(MSe
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_WC_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_WC_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_WC_POINT'
         ),
         repeats=True,
     )
@@ -33358,7 +33358,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_DI
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_DIAG_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_DIAG_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_DIAG_POINT'
         ),
         repeats=True,
     )
@@ -33460,7 +33460,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_OU
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_OUTERDIAG_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_OUTERDIAG_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_OUTERDIAG_POINT'
         ),
         repeats=True,
     )
@@ -33475,147 +33475,147 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR(MSecti
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_PLANE_PLANE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_PLANE_PLANE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE_PLANE_PLANE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_ANGLE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_BOND_ROTATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_BOND_ROTATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_BOND_ROTATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_COLVAR_FUNC_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_COLVAR_FUNC_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_COLVAR_FUNC_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_CONDITIONED_DISTANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_CONDITIONED_DISTANCE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_CONDITIONED_DISTANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_COORDINATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_COORDINATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_COORDINATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_FUNCTION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_FUNCTION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_FUNCTION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_POINT_PLANE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_POINT_PLANE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE_POINT_PLANE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_DISTANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_GYRATION_RADIUS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_GYRATION_RADIUS"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_GYRATION_RADIUS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HBP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HBP"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HBP'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HYDRONIUM = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HYDRONIUM"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_HYDRONIUM'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_POPULATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_POPULATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_POPULATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_QPARM = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_QPARM"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_QPARM'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RING_PUCKERING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RING_PUCKERING"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RING_PUCKERING'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RMSD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RMSD"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_RMSD'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_TORSION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_TORSION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_TORSION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_U = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_U"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_U'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_WC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_WC"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_WC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_DIAG = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_DIAG"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_DIAG'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_OUTERDIAG = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_OUTERDIAG"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR_XYZ_OUTERDIAG'
         ),
         repeats=True,
     )
@@ -33683,7 +33683,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR_COLVAR'
         ),
         repeats=True,
     )
@@ -33818,7 +33818,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_CONDITIONED_DISTANCE(MSectio
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_CONDITIONED_DISTANCE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_CONDITIONED_DISTANCE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_CONDITIONED_DISTANCE_POINT'
         ),
         repeats=True,
     )
@@ -33978,7 +33978,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COORDINATION(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COORDINATION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COORDINATION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COORDINATION_POINT'
         ),
         repeats=True,
     )
@@ -34166,14 +34166,14 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_AN
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE_PLANE_PLANE_PLANE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE_PLANE_PLANE_PLANE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE_PLANE_PLANE_PLANE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE_PLANE_PLANE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE_PLANE_PLANE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE_PLANE_PLANE_POINT'
         ),
         repeats=True,
     )
@@ -34200,7 +34200,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_AN
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE_POINT'
         ),
         repeats=True,
     )
@@ -34294,7 +34294,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_BO
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_BOND_ROTATION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_BOND_ROTATION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_BOND_ROTATION_POINT'
         ),
         repeats=True,
     )
@@ -34450,7 +34450,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_CO
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_CONDITIONED_DISTANCE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_CONDITIONED_DISTANCE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_CONDITIONED_DISTANCE_POINT'
         ),
         repeats=True,
     )
@@ -34620,7 +34620,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_CO
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_COORDINATION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_COORDINATION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_COORDINATION_POINT'
         ),
         repeats=True,
     )
@@ -34752,7 +34752,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DI
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_FUNCTION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_FUNCTION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_FUNCTION_POINT'
         ),
         repeats=True,
     )
@@ -34838,7 +34838,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DI
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_POINT_PLANE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_POINT_PLANE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_POINT_PLANE_POINT'
         ),
         repeats=True,
     )
@@ -34875,7 +34875,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DI
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_POINT'
         ),
         repeats=True,
     )
@@ -34952,7 +34952,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_GY
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_GYRATION_RADIUS_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_GYRATION_RADIUS_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_GYRATION_RADIUS_POINT'
         ),
         repeats=True,
     )
@@ -35058,7 +35058,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HB
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HBP_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HBP_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HBP_POINT'
         ),
         repeats=True,
     )
@@ -35241,7 +35241,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HY
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HYDRONIUM_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HYDRONIUM_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HYDRONIUM_POINT'
         ),
         repeats=True,
     )
@@ -35386,7 +35386,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_PO
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_POPULATION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_POPULATION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_POPULATION_POINT'
         ),
         repeats=True,
     )
@@ -35500,7 +35500,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_QP
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_QPARM_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_QPARM_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_QPARM_POINT'
         ),
         repeats=True,
     )
@@ -35580,7 +35580,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RI
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RING_PUCKERING_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RING_PUCKERING_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RING_PUCKERING_POINT'
         ),
         repeats=True,
     )
@@ -35623,7 +35623,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RM
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RMSD_FRAME_COORD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RMSD_FRAME_COORD"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RMSD_FRAME_COORD'
         ),
         repeats=True,
     )
@@ -35681,7 +35681,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RM
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RMSD_FRAME = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RMSD_FRAME"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RMSD_FRAME'
         ),
         repeats=True,
     )
@@ -35752,7 +35752,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_TO
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_TORSION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_TORSION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_TORSION_POINT'
         ),
         repeats=True,
     )
@@ -35846,7 +35846,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_U(
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_U_MIXED = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_U_MIXED"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_U_MIXED'
         ),
         repeats=True,
     )
@@ -35932,7 +35932,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_WC
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_WC_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_WC_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_WC_POINT'
         ),
         repeats=True,
     )
@@ -36033,7 +36033,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XY
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XYZ_DIAG_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XYZ_DIAG_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XYZ_DIAG_POINT'
         ),
         repeats=True,
     )
@@ -36131,7 +36131,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XY
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XYZ_OUTERDIAG_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XYZ_OUTERDIAG_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XYZ_OUTERDIAG_POINT'
         ),
         repeats=True,
     )
@@ -36146,147 +36146,147 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR(MS
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE_PLANE_PLANE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE_PLANE_PLANE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE_PLANE_PLANE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_ANGLE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_BOND_ROTATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_BOND_ROTATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_BOND_ROTATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_COLVAR_FUNC_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_COLVAR_FUNC_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_COLVAR_FUNC_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_CONDITIONED_DISTANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_CONDITIONED_DISTANCE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_CONDITIONED_DISTANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_COORDINATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_COORDINATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_COORDINATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_FUNCTION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_FUNCTION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_FUNCTION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_POINT_PLANE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_POINT_PLANE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE_POINT_PLANE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_DISTANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_GYRATION_RADIUS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_GYRATION_RADIUS"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_GYRATION_RADIUS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HBP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HBP"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HBP'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HYDRONIUM = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HYDRONIUM"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_HYDRONIUM'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_POPULATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_POPULATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_POPULATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_QPARM = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_QPARM"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_QPARM'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RING_PUCKERING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RING_PUCKERING"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RING_PUCKERING'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RMSD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RMSD"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_RMSD'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_TORSION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_TORSION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_TORSION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_U = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_U"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_U'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_WC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_WC"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_WC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XYZ_DIAG = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XYZ_DIAG"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XYZ_DIAG'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XYZ_OUTERDIAG = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XYZ_OUTERDIAG"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR_XYZ_OUTERDIAG'
         ),
         repeats=True,
     )
@@ -36329,7 +36329,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_FRAME(MSe
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_FRAME_COORD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_FRAME_COORD"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_FRAME_COORD'
         ),
         repeats=True,
     )
@@ -36518,21 +36518,21 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH(MSection)
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_COLVAR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_FRAME = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_FRAME"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_FRAME'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_MAP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_MAP"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH_MAP'
         ),
         repeats=True,
     )
@@ -36616,7 +36616,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FUNCTION(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FUNCTION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FUNCTION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FUNCTION_POINT'
         ),
         repeats=True,
     )
@@ -36700,7 +36700,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_POINT_PLANE(MSectio
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_POINT_PLANE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_POINT_PLANE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_POINT_PLANE_POINT'
         ),
         repeats=True,
     )
@@ -36731,7 +36731,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_POINT'
         ),
         repeats=True,
     )
@@ -36804,7 +36804,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_GYRATION_RADIUS(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_GYRATION_RADIUS_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_GYRATION_RADIUS_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_GYRATION_RADIUS_POINT'
         ),
         repeats=True,
     )
@@ -36894,7 +36894,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HBP(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HBP_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HBP_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HBP_POINT'
         ),
         repeats=True,
     )
@@ -37053,7 +37053,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HYDRONIUM(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HYDRONIUM_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HYDRONIUM_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HYDRONIUM_POINT'
         ),
         repeats=True,
     )
@@ -37184,7 +37184,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_POPULATION(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_POPULATION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_POPULATION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_POPULATION_POINT'
         ),
         repeats=True,
     )
@@ -37282,7 +37282,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_QPARM(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_QPARM_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_QPARM_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_QPARM_POINT'
         ),
         repeats=True,
     )
@@ -37432,14 +37432,14 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_P
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_PLANE_PLANE_PLANE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_PLANE_PLANE_PLANE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_PLANE_PLANE_PLANE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_PLANE_PLANE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_PLANE_PLANE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_PLANE_PLANE_POINT'
         ),
         repeats=True,
     )
@@ -37464,7 +37464,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE(
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_POINT'
         ),
         repeats=True,
     )
@@ -37558,7 +37558,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_BOND_RO
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_BOND_ROTATION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_BOND_ROTATION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_BOND_ROTATION_POINT'
         ),
         repeats=True,
     )
@@ -37714,7 +37714,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_CONDITI
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_CONDITIONED_DISTANCE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_CONDITIONED_DISTANCE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_CONDITIONED_DISTANCE_POINT'
         ),
         repeats=True,
     )
@@ -37894,7 +37894,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_COORDIN
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_COORDINATION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_COORDINATION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_COORDINATION_POINT'
         ),
         repeats=True,
     )
@@ -38034,7 +38034,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANC
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_FUNCTION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_FUNCTION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_FUNCTION_POINT'
         ),
         repeats=True,
     )
@@ -38120,7 +38120,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANC
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_POINT_PLANE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_POINT_PLANE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_POINT_PLANE_POINT'
         ),
         repeats=True,
     )
@@ -38155,7 +38155,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANC
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_POINT'
         ),
         repeats=True,
     )
@@ -38236,7 +38236,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_GYRATIO
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_GYRATION_RADIUS_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_GYRATION_RADIUS_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_GYRATION_RADIUS_POINT'
         ),
         repeats=True,
     )
@@ -38334,7 +38334,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HBP(MSe
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HBP_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HBP_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HBP_POINT'
         ),
         repeats=True,
     )
@@ -38509,7 +38509,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HYDRONI
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HYDRONIUM_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HYDRONIUM_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HYDRONIUM_POINT'
         ),
         repeats=True,
     )
@@ -38658,7 +38658,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_POPULAT
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_POPULATION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_POPULATION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_POPULATION_POINT'
         ),
         repeats=True,
     )
@@ -38772,7 +38772,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_QPARM(
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_QPARM_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_QPARM_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_QPARM_POINT'
         ),
         repeats=True,
     )
@@ -38854,7 +38854,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RING_PU
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RING_PUCKERING_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RING_PUCKERING_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RING_PUCKERING_POINT'
         ),
         repeats=True,
     )
@@ -38897,7 +38897,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RMSD_FR
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RMSD_FRAME_COORD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RMSD_FRAME_COORD"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RMSD_FRAME_COORD'
         ),
         repeats=True,
     )
@@ -38951,7 +38951,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RMSD(MS
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RMSD_FRAME = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RMSD_FRAME"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RMSD_FRAME'
         ),
         repeats=True,
     )
@@ -39028,7 +39028,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_TORSION
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_TORSION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_TORSION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_TORSION_POINT'
         ),
         repeats=True,
     )
@@ -39122,7 +39122,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_U(MSect
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_U_MIXED = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_U_MIXED"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_U_MIXED'
         ),
         repeats=True,
     )
@@ -39202,7 +39202,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_WC(MSec
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_WC_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_WC_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_WC_POINT'
         ),
         repeats=True,
     )
@@ -39307,7 +39307,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_DIA
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_DIAG_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_DIAG_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_DIAG_POINT'
         ),
         repeats=True,
     )
@@ -39409,7 +39409,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_OUT
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_OUTERDIAG_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_OUTERDIAG_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_OUTERDIAG_POINT'
         ),
         repeats=True,
     )
@@ -39424,147 +39424,147 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR(MSectio
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_PLANE_PLANE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_PLANE_PLANE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE_PLANE_PLANE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_ANGLE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_BOND_ROTATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_BOND_ROTATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_BOND_ROTATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_COLVAR_FUNC_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_COLVAR_FUNC_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_COLVAR_FUNC_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_CONDITIONED_DISTANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_CONDITIONED_DISTANCE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_CONDITIONED_DISTANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_COORDINATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_COORDINATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_COORDINATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_FUNCTION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_FUNCTION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_FUNCTION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_POINT_PLANE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_POINT_PLANE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE_POINT_PLANE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_DISTANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_GYRATION_RADIUS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_GYRATION_RADIUS"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_GYRATION_RADIUS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HBP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HBP"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HBP'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HYDRONIUM = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HYDRONIUM"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_HYDRONIUM'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_POPULATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_POPULATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_POPULATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_QPARM = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_QPARM"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_QPARM'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RING_PUCKERING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RING_PUCKERING"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RING_PUCKERING'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RMSD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RMSD"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_RMSD'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_TORSION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_TORSION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_TORSION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_U = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_U"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_U'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_WC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_WC"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_WC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_DIAG = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_DIAG"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_DIAG'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_OUTERDIAG = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_OUTERDIAG"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR_XYZ_OUTERDIAG'
         ),
         repeats=True,
     )
@@ -39607,7 +39607,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_FRAME(MSection
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_FRAME_COORD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_FRAME_COORD"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_FRAME_COORD'
         ),
         repeats=True,
     )
@@ -39794,21 +39794,21 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_COLVAR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_FRAME = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_FRAME"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_FRAME'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_MAP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_MAP"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH_MAP'
         ),
         repeats=True,
     )
@@ -39884,7 +39884,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RING_PUCKERING(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RING_PUCKERING_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RING_PUCKERING_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RING_PUCKERING_POINT'
         ),
         repeats=True,
     )
@@ -39923,7 +39923,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RMSD_FRAME(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RMSD_FRAME_COORD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RMSD_FRAME_COORD"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RMSD_FRAME_COORD'
         ),
         repeats=True,
     )
@@ -39973,7 +39973,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RMSD(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RMSD_FRAME = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RMSD_FRAME"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RMSD_FRAME'
         ),
         repeats=True,
     )
@@ -40038,7 +40038,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_TORSION(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_TORSION_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_TORSION_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_TORSION_POINT'
         ),
         repeats=True,
     )
@@ -40122,7 +40122,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_U(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_U_MIXED = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_U_MIXED"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_U_MIXED'
         ),
         repeats=True,
     )
@@ -40196,7 +40196,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_WC(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_WC_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_WC_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_WC_POINT'
         ),
         repeats=True,
     )
@@ -40289,7 +40289,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_DIAG(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_DIAG_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_DIAG_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_DIAG_POINT'
         ),
         repeats=True,
     )
@@ -40383,7 +40383,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_OUTERDIAG(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_OUTERDIAG_POINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_OUTERDIAG_POINT"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_OUTERDIAG_POINT'
         ),
         repeats=True,
     )
@@ -40398,156 +40398,156 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_PLANE_PLANE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_PLANE_PLANE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE_PLANE_PLANE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_ANGLE'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_BOND_ROTATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_BOND_ROTATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_BOND_ROTATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COLVAR_FUNC_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COLVAR_FUNC_INFO"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COLVAR_FUNC_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COMBINE_COLVAR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_CONDITIONED_DISTANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_CONDITIONED_DISTANCE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_CONDITIONED_DISTANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COORDINATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COORDINATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_COORDINATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FROM_PATH'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FUNCTION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FUNCTION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_FUNCTION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_POINT_PLANE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_POINT_PLANE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE_POINT_PLANE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_DISTANCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_GYRATION_RADIUS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_GYRATION_RADIUS"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_GYRATION_RADIUS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HBP = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HBP"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HBP'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HYDRONIUM = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HYDRONIUM"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_HYDRONIUM'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_POPULATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_POPULATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_POPULATION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_QPARM = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_QPARM"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_QPARM'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_REACTION_PATH'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RING_PUCKERING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RING_PUCKERING"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RING_PUCKERING'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RMSD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RMSD"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_RMSD'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_TORSION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_TORSION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_TORSION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_U = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_U"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_U'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_WC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_WC"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_WC'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_DIAG = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_DIAG"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_DIAG'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_OUTERDIAG = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_OUTERDIAG"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR_XYZ_OUTERDIAG'
         ),
         repeats=True,
     )
@@ -40793,13 +40793,13 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BS(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BS_ALPHA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BS_ALPHA"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BS_ALPHA'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BS_BETA = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BS_BETA"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BS_BETA'),
         repeats=True,
     )
 
@@ -40924,7 +40924,7 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_DFT_PLUS_U(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_DFT_PLUS_U_ENFORCE_OCCUPATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_DFT_PLUS_U_ENFORCE_OCCUPATION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_DFT_PLUS_U_ENFORCE_OCCUPATION'
         ),
         repeats=True,
     )
@@ -41239,37 +41239,37 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BASIS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BASIS"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BASIS'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BS"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_BS'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_DFT_PLUS_U = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_DFT_PLUS_U"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_DFT_PLUS_U'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_GEMINAL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_GEMINAL"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_GEMINAL'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_KG_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_KG_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_KG_POTENTIAL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_POTENTIAL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_POTENTIAL"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND_POTENTIAL'
         ),
         repeats=True,
     )
@@ -41319,14 +41319,14 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_MULTIPOLES(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_MULTIPOLES_DIPOLES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_MULTIPOLES_DIPOLES"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_MULTIPOLES_DIPOLES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_MULTIPOLES_QUADRUPOLES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_MULTIPOLES_QUADRUPOLES"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_MULTIPOLES_QUADRUPOLES'
         ),
         repeats=True,
     )
@@ -41835,42 +41835,42 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_ANGLE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_ANGLE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_ANGLE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_BOND = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_BOND"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_BOND'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_IMPROPER = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_IMPROPER"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_IMPROPER'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_ISOLATED_ATOMS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_ISOLATED_ATOMS"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_ISOLATED_ATOMS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_NEIGHBOR_LISTS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_NEIGHBOR_LISTS"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_NEIGHBOR_LISTS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_TORSION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_TORSION"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE_TORSION'
         ),
         repeats=True,
     )
@@ -41962,28 +41962,28 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES(MS
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES_ANGLES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES_ANGLES"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES_ANGLES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES_BONDS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES_BONDS"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES_BONDS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES_IMPROPERS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES_IMPROPERS"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES_IMPROPERS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES_TORSIONS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES_TORSIONS"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES_TORSIONS'
         ),
         repeats=True,
     )
@@ -42033,14 +42033,14 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MERGE_MOLECULES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MOLECULE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MOLECULE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET_MOLECULE'
         ),
         repeats=True,
     )
@@ -42206,49 +42206,49 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY(MSection):
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_CENTER_COORDINATES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_CENTER_COORDINATES"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_CENTER_COORDINATES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_DUMP_PDB = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_DUMP_PDB"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_DUMP_PDB'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_DUMP_PSF = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_DUMP_PSF"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_DUMP_PSF'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_EXCLUDE_EI_LIST = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_EXCLUDE_EI_LIST"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_EXCLUDE_EI_LIST'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_EXCLUDE_VDW_LIST = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_EXCLUDE_VDW_LIST"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_EXCLUDE_VDW_LIST'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_GENERATE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY_MOL_SET'
         ),
         repeats=True,
     )
@@ -42290,66 +42290,66 @@ class x_cp2k_section_input_FORCE_EVAL_SUBSYS(MSection):
     m_def = Section(validate=False)
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_COLVAR'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_COORD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_COORD"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_COORD'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_CORE_COORD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_CORE_COORD"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_CORE_COORD'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_CORE_VELOCITY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_CORE_VELOCITY"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_CORE_VELOCITY'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_MULTIPOLES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_MULTIPOLES"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_MULTIPOLES'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_RNG_INIT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_RNG_INIT"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_RNG_INIT'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_SHELL_COORD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_SHELL_COORD"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_SHELL_COORD'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_SHELL_VELOCITY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_FORCE_EVAL_SUBSYS_SHELL_VELOCITY"
+            'x_cp2k_section_input_FORCE_EVAL_SUBSYS_SHELL_VELOCITY'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_TOPOLOGY'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS_VELOCITY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS_VELOCITY"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS_VELOCITY'),
         repeats=True,
     )
 
@@ -42380,54 +42380,54 @@ class x_cp2k_section_input_FORCE_EVAL(MSection):
     )
 
     x_cp2k_section_input_FORCE_EVAL_BSSE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_BSSE"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_BSSE'), repeats=True
     )
 
     x_cp2k_section_input_FORCE_EVAL_DFT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_DFT"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_DFT'), repeats=True
     )
 
     x_cp2k_section_input_FORCE_EVAL_EIP = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_EIP"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_EIP'), repeats=True
     )
 
     x_cp2k_section_input_FORCE_EVAL_EP = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_EP"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_EP'), repeats=True
     )
 
     x_cp2k_section_input_FORCE_EVAL_EXTERNAL_POTENTIAL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_EXTERNAL_POTENTIAL"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_EXTERNAL_POTENTIAL'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_MIXED = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MIXED"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MIXED'), repeats=True
     )
 
     x_cp2k_section_input_FORCE_EVAL_MM = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_MM"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_MM'), repeats=True
     )
 
     x_cp2k_section_input_FORCE_EVAL_PRINT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_PRINT"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_PRINT'), repeats=True
     )
 
     x_cp2k_section_input_FORCE_EVAL_PROPERTIES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_PROPERTIES"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_PROPERTIES'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_QMMM = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_QMMM"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_QMMM'), repeats=True
     )
 
     x_cp2k_section_input_FORCE_EVAL_RESCALE_FORCES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_RESCALE_FORCES"),
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_RESCALE_FORCES'),
         repeats=True,
     )
 
     x_cp2k_section_input_FORCE_EVAL_SUBSYS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL_SUBSYS"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL_SUBSYS'), repeats=True
     )
 
 
@@ -42620,7 +42620,7 @@ class x_cp2k_section_input_GLOBAL_DBCSR(MSection):
     )
 
     x_cp2k_section_input_GLOBAL_DBCSR_ACC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_GLOBAL_DBCSR_ACC"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_GLOBAL_DBCSR_ACC'), repeats=True
     )
 
 
@@ -43245,29 +43245,29 @@ class x_cp2k_section_input_GLOBAL(MSection):
     )
 
     x_cp2k_section_input_GLOBAL_DBCSR = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_GLOBAL_DBCSR"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_GLOBAL_DBCSR'), repeats=True
     )
 
     x_cp2k_section_input_GLOBAL_FM = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_GLOBAL_FM"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_GLOBAL_FM'), repeats=True
     )
 
     x_cp2k_section_input_GLOBAL_MACHINE_ARCH = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_GLOBAL_MACHINE_ARCH"),
+        sub_section=SectionProxy('x_cp2k_section_input_GLOBAL_MACHINE_ARCH'),
         repeats=True,
     )
 
     x_cp2k_section_input_GLOBAL_PROGRAM_RUN_INFO = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_GLOBAL_PROGRAM_RUN_INFO"),
+        sub_section=SectionProxy('x_cp2k_section_input_GLOBAL_PROGRAM_RUN_INFO'),
         repeats=True,
     )
 
     x_cp2k_section_input_GLOBAL_REFERENCES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_GLOBAL_REFERENCES"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_GLOBAL_REFERENCES'), repeats=True
     )
 
     x_cp2k_section_input_GLOBAL_TIMINGS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_GLOBAL_TIMINGS"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_GLOBAL_TIMINGS'), repeats=True
     )
 
 
@@ -43646,7 +43646,7 @@ class x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_DIIS(MSection):
 
     x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_DIIS_DIIS_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_DIIS_DIIS_INFO"
+            'x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_DIIS_DIIS_INFO'
         ),
         repeats=True,
     )
@@ -43752,14 +43752,14 @@ class x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_MD(MSection):
 
     x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_MD_TEMP_CONTROL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_MD_TEMP_CONTROL"
+            'x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_MD_TEMP_CONTROL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_MD_VEL_CONTROL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_MD_VEL_CONTROL"
+            'x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_MD_VEL_CONTROL'
         ),
         repeats=True,
     )
@@ -43789,12 +43789,12 @@ class x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND(MSection):
     )
 
     x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_DIIS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_DIIS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_DIIS'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_MD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_MD"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND_MD'),
         repeats=True,
     )
 
@@ -43983,12 +43983,12 @@ class x_cp2k_section_input_MOTION_BAND_REPLICA(MSection):
     )
 
     x_cp2k_section_input_MOTION_BAND_REPLICA_COORD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_REPLICA_COORD"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_REPLICA_COORD'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_BAND_REPLICA_VELOCITY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_REPLICA_VELOCITY"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_REPLICA_VELOCITY'),
         repeats=True,
     )
 
@@ -44099,54 +44099,54 @@ class x_cp2k_section_input_MOTION_BAND(MSection):
     )
 
     x_cp2k_section_input_MOTION_BAND_BANNER = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_BANNER"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_BANNER'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_BAND_CI_NEB = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_CI_NEB"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_CI_NEB'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_BAND_CONVERGENCE_CONTROL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_BAND_CONVERGENCE_CONTROL"
+            'x_cp2k_section_input_MOTION_BAND_CONVERGENCE_CONTROL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_BAND_CONVERGENCE_INFO = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_CONVERGENCE_INFO"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_CONVERGENCE_INFO'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_BAND_ENERGY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_ENERGY"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_ENERGY'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_OPTIMIZE_BAND'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_BAND_PROGRAM_RUN_INFO = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_PROGRAM_RUN_INFO"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_PROGRAM_RUN_INFO'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_BAND_REPLICA_INFO = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_REPLICA_INFO"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_REPLICA_INFO'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_BAND_REPLICA = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_REPLICA"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_REPLICA'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_BAND_STRING_METHOD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND_STRING_METHOD"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND_STRING_METHOD'),
         repeats=True,
     )
 
@@ -44261,7 +44261,7 @@ class x_cp2k_section_input_MOTION_CELL_OPT_BFGS(MSection):
     )
 
     x_cp2k_section_input_MOTION_CELL_OPT_BFGS_RESTART = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CELL_OPT_BFGS_RESTART"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CELL_OPT_BFGS_RESTART'),
         repeats=True,
     )
 
@@ -44351,14 +44351,14 @@ class x_cp2k_section_input_MOTION_CELL_OPT_CG_LINE_SEARCH(MSection):
 
     x_cp2k_section_input_MOTION_CELL_OPT_CG_LINE_SEARCH_2PNT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_CELL_OPT_CG_LINE_SEARCH_2PNT"
+            'x_cp2k_section_input_MOTION_CELL_OPT_CG_LINE_SEARCH_2PNT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_CELL_OPT_CG_LINE_SEARCH_GOLD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_CELL_OPT_CG_LINE_SEARCH_GOLD"
+            'x_cp2k_section_input_MOTION_CELL_OPT_CG_LINE_SEARCH_GOLD'
         ),
         repeats=True,
     )
@@ -44399,7 +44399,7 @@ class x_cp2k_section_input_MOTION_CELL_OPT_CG(MSection):
     )
 
     x_cp2k_section_input_MOTION_CELL_OPT_CG_LINE_SEARCH = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CELL_OPT_CG_LINE_SEARCH"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CELL_OPT_CG_LINE_SEARCH'),
         repeats=True,
     )
 
@@ -44564,17 +44564,17 @@ class x_cp2k_section_input_MOTION_CELL_OPT(MSection):
     )
 
     x_cp2k_section_input_MOTION_CELL_OPT_BFGS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CELL_OPT_BFGS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CELL_OPT_BFGS'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_CELL_OPT_CG = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CELL_OPT_CG"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CELL_OPT_CG'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_CELL_OPT_LBFGS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CELL_OPT_LBFGS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CELL_OPT_LBFGS'),
         repeats=True,
     )
 
@@ -44683,7 +44683,7 @@ class x_cp2k_section_input_MOTION_CONSTRAINT_COLLECTIVE(MSection):
 
     x_cp2k_section_input_MOTION_CONSTRAINT_COLLECTIVE_RESTRAINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_CONSTRAINT_COLLECTIVE_RESTRAINT"
+            'x_cp2k_section_input_MOTION_CONSTRAINT_COLLECTIVE_RESTRAINT'
         ),
         repeats=True,
     )
@@ -44871,7 +44871,7 @@ class x_cp2k_section_input_MOTION_CONSTRAINT_FIXED_ATOMS(MSection):
 
     x_cp2k_section_input_MOTION_CONSTRAINT_FIXED_ATOMS_RESTRAINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_CONSTRAINT_FIXED_ATOMS_RESTRAINT"
+            'x_cp2k_section_input_MOTION_CONSTRAINT_FIXED_ATOMS_RESTRAINT'
         ),
         repeats=True,
     )
@@ -44960,7 +44960,7 @@ class x_cp2k_section_input_MOTION_CONSTRAINT_G3X3(MSection):
 
     x_cp2k_section_input_MOTION_CONSTRAINT_G3X3_RESTRAINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_CONSTRAINT_G3X3_RESTRAINT"
+            'x_cp2k_section_input_MOTION_CONSTRAINT_G3X3_RESTRAINT'
         ),
         repeats=True,
     )
@@ -45049,7 +45049,7 @@ class x_cp2k_section_input_MOTION_CONSTRAINT_G4X6(MSection):
 
     x_cp2k_section_input_MOTION_CONSTRAINT_G4X6_RESTRAINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_CONSTRAINT_G4X6_RESTRAINT"
+            'x_cp2k_section_input_MOTION_CONSTRAINT_G4X6_RESTRAINT'
         ),
         repeats=True,
     )
@@ -45132,7 +45132,7 @@ class x_cp2k_section_input_MOTION_CONSTRAINT_HBONDS(MSection):
 
     x_cp2k_section_input_MOTION_CONSTRAINT_HBONDS_RESTRAINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_CONSTRAINT_HBONDS_RESTRAINT"
+            'x_cp2k_section_input_MOTION_CONSTRAINT_HBONDS_RESTRAINT'
         ),
         repeats=True,
     )
@@ -45282,7 +45282,7 @@ class x_cp2k_section_input_MOTION_CONSTRAINT_VIRTUAL_SITE(MSection):
 
     x_cp2k_section_input_MOTION_CONSTRAINT_VIRTUAL_SITE_RESTRAINT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_CONSTRAINT_VIRTUAL_SITE_RESTRAINT"
+            'x_cp2k_section_input_MOTION_CONSTRAINT_VIRTUAL_SITE_RESTRAINT'
         ),
         repeats=True,
     )
@@ -45321,60 +45321,60 @@ class x_cp2k_section_input_MOTION_CONSTRAINT(MSection):
     )
 
     x_cp2k_section_input_MOTION_CONSTRAINT_COLLECTIVE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CONSTRAINT_COLLECTIVE"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CONSTRAINT_COLLECTIVE'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_CONSTRAINT_COLVAR_RESTART = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_CONSTRAINT_COLVAR_RESTART"
+            'x_cp2k_section_input_MOTION_CONSTRAINT_COLVAR_RESTART'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_CONSTRAINT_CONSTRAINT_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_CONSTRAINT_CONSTRAINT_INFO"
+            'x_cp2k_section_input_MOTION_CONSTRAINT_CONSTRAINT_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_CONSTRAINT_FIX_ATOM_RESTART = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_CONSTRAINT_FIX_ATOM_RESTART"
+            'x_cp2k_section_input_MOTION_CONSTRAINT_FIX_ATOM_RESTART'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_CONSTRAINT_FIXED_ATOMS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CONSTRAINT_FIXED_ATOMS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CONSTRAINT_FIXED_ATOMS'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_CONSTRAINT_G3X3 = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CONSTRAINT_G3X3"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CONSTRAINT_G3X3'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_CONSTRAINT_G4X6 = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CONSTRAINT_G4X6"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CONSTRAINT_G4X6'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_CONSTRAINT_HBONDS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CONSTRAINT_HBONDS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CONSTRAINT_HBONDS'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_CONSTRAINT_LAGRANGE_MULTIPLIERS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_CONSTRAINT_LAGRANGE_MULTIPLIERS"
+            'x_cp2k_section_input_MOTION_CONSTRAINT_LAGRANGE_MULTIPLIERS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_CONSTRAINT_VIRTUAL_SITE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CONSTRAINT_VIRTUAL_SITE"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CONSTRAINT_VIRTUAL_SITE'),
         repeats=True,
     )
 
@@ -45616,14 +45616,14 @@ class x_cp2k_section_input_MOTION_FLEXIBLE_PARTITIONING(MSection):
 
     x_cp2k_section_input_MOTION_FLEXIBLE_PARTITIONING_CONTROL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FLEXIBLE_PARTITIONING_CONTROL"
+            'x_cp2k_section_input_MOTION_FLEXIBLE_PARTITIONING_CONTROL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FLEXIBLE_PARTITIONING_WEIGHTS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FLEXIBLE_PARTITIONING_WEIGHTS"
+            'x_cp2k_section_input_MOTION_FLEXIBLE_PARTITIONING_WEIGHTS'
         ),
         repeats=True,
     )
@@ -45908,28 +45908,28 @@ class x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL(MSection):
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL_GAUSSIAN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL_GAUSSIAN"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL_GAUSSIAN'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL_QUADRATIC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL_QUADRATIC"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL_QUADRATIC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL_QUARTIC = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL_QUARTIC"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL_QUARTIC'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL_REFLECTIVE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL_REFLECTIVE"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL_REFLECTIVE'
         ),
         repeats=True,
     )
@@ -45990,7 +45990,7 @@ class x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR(MSection):
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR_WALL'
         ),
         repeats=True,
     )
@@ -46073,7 +46073,7 @@ class x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_MULTIPLE_WALKERS(MSection)
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_MULTIPLE_WALKERS_WALKERS_FILE_NAME = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_MULTIPLE_WALKERS_WALKERS_FILE_NAME"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_MULTIPLE_WALKERS_WALKERS_FILE_NAME'
         ),
         repeats=True,
     )
@@ -46380,70 +46380,70 @@ class x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN(MSection):
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_EXT_LAGRANGE_FS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_EXT_LAGRANGE_FS"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_EXT_LAGRANGE_FS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_EXT_LAGRANGE_SS0 = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_EXT_LAGRANGE_SS0"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_EXT_LAGRANGE_SS0'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_EXT_LAGRANGE_SS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_EXT_LAGRANGE_SS"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_EXT_LAGRANGE_SS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_EXT_LAGRANGE_VVP = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_EXT_LAGRANGE_VVP"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_EXT_LAGRANGE_VVP'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_METAVAR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_MULTIPLE_WALKERS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_MULTIPLE_WALKERS"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_MULTIPLE_WALKERS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_SPAWNED_HILLS_HEIGHT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_SPAWNED_HILLS_HEIGHT"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_SPAWNED_HILLS_HEIGHT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_SPAWNED_HILLS_INVDT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_SPAWNED_HILLS_INVDT"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_SPAWNED_HILLS_INVDT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_SPAWNED_HILLS_POS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_SPAWNED_HILLS_POS"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_SPAWNED_HILLS_POS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_SPAWNED_HILLS_SCALE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_SPAWNED_HILLS_SCALE"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN_SPAWNED_HILLS_SCALE'
         ),
         repeats=True,
     )
@@ -46545,14 +46545,14 @@ class x_cp2k_section_input_MOTION_FREE_ENERGY_UMBRELLA_INTEGRATION(MSection):
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_UMBRELLA_INTEGRATION_CONVERGENCE_CONTROL = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_UMBRELLA_INTEGRATION_CONVERGENCE_CONTROL"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_UMBRELLA_INTEGRATION_CONVERGENCE_CONTROL'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_UMBRELLA_INTEGRATION_UVAR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_UMBRELLA_INTEGRATION_UVAR"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_UMBRELLA_INTEGRATION_UVAR'
         ),
         repeats=True,
     )
@@ -46576,26 +46576,26 @@ class x_cp2k_section_input_MOTION_FREE_ENERGY(MSection):
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_ALCHEMICAL_CHANGE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_ALCHEMICAL_CHANGE"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_ALCHEMICAL_CHANGE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_FREE_ENERGY_INFO = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_FREE_ENERGY_INFO"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_FREE_ENERGY_INFO'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_FREE_ENERGY_METADYN'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY_UMBRELLA_INTEGRATION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_FREE_ENERGY_UMBRELLA_INTEGRATION"
+            'x_cp2k_section_input_MOTION_FREE_ENERGY_UMBRELLA_INTEGRATION'
         ),
         repeats=True,
     )
@@ -46711,7 +46711,7 @@ class x_cp2k_section_input_MOTION_GEO_OPT_BFGS(MSection):
     )
 
     x_cp2k_section_input_MOTION_GEO_OPT_BFGS_RESTART = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_GEO_OPT_BFGS_RESTART"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_GEO_OPT_BFGS_RESTART'),
         repeats=True,
     )
 
@@ -46801,14 +46801,14 @@ class x_cp2k_section_input_MOTION_GEO_OPT_CG_LINE_SEARCH(MSection):
 
     x_cp2k_section_input_MOTION_GEO_OPT_CG_LINE_SEARCH_2PNT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_CG_LINE_SEARCH_2PNT"
+            'x_cp2k_section_input_MOTION_GEO_OPT_CG_LINE_SEARCH_2PNT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_GEO_OPT_CG_LINE_SEARCH_GOLD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_CG_LINE_SEARCH_GOLD"
+            'x_cp2k_section_input_MOTION_GEO_OPT_CG_LINE_SEARCH_GOLD'
         ),
         repeats=True,
     )
@@ -46849,7 +46849,7 @@ class x_cp2k_section_input_MOTION_GEO_OPT_CG(MSection):
     )
 
     x_cp2k_section_input_MOTION_GEO_OPT_CG_LINE_SEARCH = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_GEO_OPT_CG_LINE_SEARCH"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_GEO_OPT_CG_LINE_SEARCH'),
         repeats=True,
     )
 
@@ -47040,7 +47040,7 @@ class x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_BFGS(MS
 
     x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_BFGS_RESTART = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_BFGS_RESTART"
+            'x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_BFGS_RESTART'
         ),
         repeats=True,
     )
@@ -47139,14 +47139,14 @@ class x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG_LINE
 
     x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG_LINE_SEARCH_2PNT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG_LINE_SEARCH_2PNT"
+            'x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG_LINE_SEARCH_2PNT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG_LINE_SEARCH_GOLD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG_LINE_SEARCH_GOLD"
+            'x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG_LINE_SEARCH_GOLD'
         ),
         repeats=True,
     )
@@ -47194,7 +47194,7 @@ class x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG(MSec
 
     x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG_LINE_SEARCH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG_LINE_SEARCH"
+            'x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG_LINE_SEARCH'
         ),
         repeats=True,
     )
@@ -47322,21 +47322,21 @@ class x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT(MSectio
 
     x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_BFGS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_BFGS"
+            'x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_BFGS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG"
+            'x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_CG'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_LBFGS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_LBFGS"
+            'x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT_LBFGS'
         ),
         repeats=True,
     )
@@ -47378,14 +47378,14 @@ class x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER(MSection):
 
     x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_DIMER_VECTOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_DIMER_VECTOR"
+            'x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_DIMER_VECTOR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT"
+            'x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER_ROT_OPT'
         ),
         repeats=True,
     )
@@ -47408,7 +47408,7 @@ class x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE(MSection):
 
     x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER"
+            'x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE_DIMER'
         ),
         repeats=True,
     )
@@ -47491,22 +47491,22 @@ class x_cp2k_section_input_MOTION_GEO_OPT(MSection):
     )
 
     x_cp2k_section_input_MOTION_GEO_OPT_BFGS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_GEO_OPT_BFGS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_GEO_OPT_BFGS'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_GEO_OPT_CG = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_GEO_OPT_CG"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_GEO_OPT_CG'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_GEO_OPT_LBFGS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_GEO_OPT_LBFGS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_GEO_OPT_LBFGS'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE"
+            'x_cp2k_section_input_MOTION_GEO_OPT_TRANSITION_STATE'
         ),
         repeats=True,
     )
@@ -47629,14 +47629,14 @@ class x_cp2k_section_input_MOTION_MC_MAX_DISPLACEMENTS(MSection):
 
     x_cp2k_section_input_MOTION_MC_MAX_DISPLACEMENTS_BOX_DISPLACEMENTS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MC_MAX_DISPLACEMENTS_BOX_DISPLACEMENTS"
+            'x_cp2k_section_input_MOTION_MC_MAX_DISPLACEMENTS_BOX_DISPLACEMENTS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MC_MAX_DISPLACEMENTS_MOL_DISPLACEMENTS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MC_MAX_DISPLACEMENTS_MOL_DISPLACEMENTS"
+            'x_cp2k_section_input_MOTION_MC_MAX_DISPLACEMENTS_MOL_DISPLACEMENTS'
         ),
         repeats=True,
     )
@@ -47772,14 +47772,14 @@ class x_cp2k_section_input_MOTION_MC_MOVE_PROBABILITIES(MSection):
 
     x_cp2k_section_input_MOTION_MC_MOVE_PROBABILITIES_BOX_PROBABILITIES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MC_MOVE_PROBABILITIES_BOX_PROBABILITIES"
+            'x_cp2k_section_input_MOTION_MC_MOVE_PROBABILITIES_BOX_PROBABILITIES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MC_MOVE_PROBABILITIES_MOL_PROBABILITIES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MC_MOVE_PROBABILITIES_MOL_PROBABILITIES"
+            'x_cp2k_section_input_MOTION_MC_MOVE_PROBABILITIES_MOL_PROBABILITIES'
         ),
         repeats=True,
     )
@@ -48020,21 +48020,21 @@ class x_cp2k_section_input_MOTION_MC(MSection):
     )
 
     x_cp2k_section_input_MOTION_MC_AVBMC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MC_AVBMC"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MC_AVBMC'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_MC_MAX_DISPLACEMENTS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MC_MAX_DISPLACEMENTS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MC_MAX_DISPLACEMENTS'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MC_MOVE_PROBABILITIES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MC_MOVE_PROBABILITIES"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MC_MOVE_PROBABILITIES'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MC_MOVE_UPDATES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MC_MOVE_UPDATES"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MC_MOVE_UPDATES'),
         repeats=True,
     )
 
@@ -48199,28 +48199,28 @@ class x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE(MSe
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE_COORD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE_COORD"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE_COORD'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE_FORCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE_FORCE"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE_FORCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE_MASS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE_MASS"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE_MASS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE_VELOCITY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE_VELOCITY"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE_VELOCITY'
         ),
         repeats=True,
     )
@@ -48251,14 +48251,14 @@ class x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST(MSection
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_DEFINE_REGION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_DEFINE_REGION"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_DEFINE_REGION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST_NOSE'
         ),
         repeats=True,
     )
@@ -48424,28 +48424,28 @@ class x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE(MSe
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE_COORD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE_COORD"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE_COORD'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE_FORCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE_FORCE"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE_FORCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE_MASS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE_MASS"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE_MASS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE_VELOCITY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE_VELOCITY"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE_VELOCITY'
         ),
         repeats=True,
     )
@@ -48476,14 +48476,14 @@ class x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW(MSection
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_DEFINE_REGION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_DEFINE_REGION"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_DEFINE_REGION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW_NOSE'
         ),
         repeats=True,
     )
@@ -48540,14 +48540,14 @@ class x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS(MSection):
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_FAST'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW"
+            'x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS_THERMOSTAT_SLOW'
         ),
         repeats=True,
     )
@@ -48870,14 +48870,14 @@ class x_cp2k_section_input_MOTION_MD_AVERAGES(MSection):
 
     x_cp2k_section_input_MOTION_MD_AVERAGES_PRINT_AVERAGES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_AVERAGES_PRINT_AVERAGES"
+            'x_cp2k_section_input_MOTION_MD_AVERAGES_PRINT_AVERAGES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_AVERAGES_RESTART_AVERAGES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_AVERAGES_RESTART_AVERAGES"
+            'x_cp2k_section_input_MOTION_MD_AVERAGES_RESTART_AVERAGES'
         ),
         repeats=True,
     )
@@ -48966,14 +48966,14 @@ class x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_AD_LANGEVIN(MSection):
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_AD_LANGEVIN_CHI = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_AD_LANGEVIN_CHI"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_AD_LANGEVIN_CHI'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_AD_LANGEVIN_MASS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_AD_LANGEVIN_MASS"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_AD_LANGEVIN_MASS'
         ),
         repeats=True,
     )
@@ -49032,14 +49032,14 @@ class x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_CSVR(MSection):
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_CSVR_RNG_INIT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_CSVR_RNG_INIT"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_CSVR_RNG_INIT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_CSVR_THERMOSTAT_ENERGY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_CSVR_THERMOSTAT_ENERGY"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_CSVR_THERMOSTAT_ENERGY'
         ),
         repeats=True,
     )
@@ -49141,21 +49141,21 @@ class x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE(MSection):
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE_RNG_INIT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE_RNG_INIT"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE_RNG_INIT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE_S = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE_S"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE_S'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE_THERMOSTAT_ENERGY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE_THERMOSTAT_ENERGY"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE_THERMOSTAT_ENERGY'
         ),
         repeats=True,
     )
@@ -49266,28 +49266,28 @@ class x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE(MSection):
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE_COORD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE_COORD"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE_COORD'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE_FORCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE_FORCE"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE_FORCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE_MASS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE_MASS"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE_MASS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE_VELOCITY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE_VELOCITY"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE_VELOCITY'
         ),
         repeats=True,
     )
@@ -49310,28 +49310,28 @@ class x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT(MSection):
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_AD_LANGEVIN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_AD_LANGEVIN"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_AD_LANGEVIN'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_CSVR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_CSVR"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_CSVR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_GLE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE"
+            'x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT_NOSE'
         ),
         repeats=True,
     )
@@ -49403,17 +49403,17 @@ class x_cp2k_section_input_MOTION_MD_BAROSTAT(MSection):
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_MASS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_BAROSTAT_MASS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_BAROSTAT_MASS'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_BAROSTAT_THERMOSTAT'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT_VELOCITY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_BAROSTAT_VELOCITY"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_BAROSTAT_VELOCITY'),
         repeats=True,
     )
 
@@ -49462,7 +49462,7 @@ class x_cp2k_section_input_MOTION_MD_CASCADE(MSection):
     )
 
     x_cp2k_section_input_MOTION_MD_CASCADE_ATOM_LIST = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_CASCADE_ATOM_LIST"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_CASCADE_ATOM_LIST'),
         repeats=True,
     )
 
@@ -49671,7 +49671,7 @@ class x_cp2k_section_input_MOTION_MD_REFTRAJ_MSD(MSection):
 
     x_cp2k_section_input_MOTION_MD_REFTRAJ_MSD_DEFINE_REGION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_REFTRAJ_MSD_DEFINE_REGION"
+            'x_cp2k_section_input_MOTION_MD_REFTRAJ_MSD_DEFINE_REGION'
         ),
         repeats=True,
     )
@@ -49745,7 +49745,7 @@ class x_cp2k_section_input_MOTION_MD_REFTRAJ(MSection):
     )
 
     x_cp2k_section_input_MOTION_MD_REFTRAJ_MSD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_REFTRAJ_MSD"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_REFTRAJ_MSD'),
         repeats=True,
     )
 
@@ -49834,14 +49834,14 @@ class x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_AD_LANGEVIN(MSection):
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_AD_LANGEVIN_CHI = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_AD_LANGEVIN_CHI"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_AD_LANGEVIN_CHI'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_AD_LANGEVIN_MASS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_AD_LANGEVIN_MASS"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_AD_LANGEVIN_MASS'
         ),
         repeats=True,
     )
@@ -49900,14 +49900,14 @@ class x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_CSVR(MSection):
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_CSVR_RNG_INIT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_CSVR_RNG_INIT"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_CSVR_RNG_INIT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_CSVR_THERMOSTAT_ENERGY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_CSVR_THERMOSTAT_ENERGY"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_CSVR_THERMOSTAT_ENERGY'
         ),
         repeats=True,
     )
@@ -50047,21 +50047,21 @@ class x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE(MSection):
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE_RNG_INIT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE_RNG_INIT"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE_RNG_INIT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE_S = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE_S"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE_S'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE_THERMOSTAT_ENERGY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE_THERMOSTAT_ENERGY"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE_THERMOSTAT_ENERGY'
         ),
         repeats=True,
     )
@@ -50172,28 +50172,28 @@ class x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE(MSection):
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE_COORD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE_COORD"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE_COORD'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE_FORCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE_FORCE"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE_FORCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE_MASS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE_MASS"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE_MASS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE_VELOCITY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE_VELOCITY"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE_VELOCITY'
         ),
         repeats=True,
     )
@@ -50224,33 +50224,33 @@ class x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT(MSection):
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_AD_LANGEVIN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_AD_LANGEVIN"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_AD_LANGEVIN'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_CSVR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_CSVR"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_CSVR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_DEFINE_REGION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_DEFINE_REGION"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_DEFINE_REGION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_GLE'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE"
+            'x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT_NOSE'
         ),
         repeats=True,
     )
@@ -50302,7 +50302,7 @@ class x_cp2k_section_input_MOTION_MD_SHELL(MSection):
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_SHELL_THERMOSTAT'),
         repeats=True,
     )
 
@@ -50383,7 +50383,7 @@ class x_cp2k_section_input_MOTION_MD_THERMAL_REGION(MSection):
 
     x_cp2k_section_input_MOTION_MD_THERMAL_REGION_DEFINE_REGION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_THERMAL_REGION_DEFINE_REGION"
+            'x_cp2k_section_input_MOTION_MD_THERMAL_REGION_DEFINE_REGION'
         ),
         repeats=True,
     )
@@ -50452,14 +50452,14 @@ class x_cp2k_section_input_MOTION_MD_THERMOSTAT_AD_LANGEVIN(MSection):
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_AD_LANGEVIN_CHI = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_THERMOSTAT_AD_LANGEVIN_CHI"
+            'x_cp2k_section_input_MOTION_MD_THERMOSTAT_AD_LANGEVIN_CHI'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_AD_LANGEVIN_MASS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_THERMOSTAT_AD_LANGEVIN_MASS"
+            'x_cp2k_section_input_MOTION_MD_THERMOSTAT_AD_LANGEVIN_MASS'
         ),
         repeats=True,
     )
@@ -50516,14 +50516,14 @@ class x_cp2k_section_input_MOTION_MD_THERMOSTAT_CSVR(MSection):
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_CSVR_RNG_INIT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_THERMOSTAT_CSVR_RNG_INIT"
+            'x_cp2k_section_input_MOTION_MD_THERMOSTAT_CSVR_RNG_INIT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_CSVR_THERMOSTAT_ENERGY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_THERMOSTAT_CSVR_THERMOSTAT_ENERGY"
+            'x_cp2k_section_input_MOTION_MD_THERMOSTAT_CSVR_THERMOSTAT_ENERGY'
         ),
         repeats=True,
     )
@@ -50661,19 +50661,19 @@ class x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE(MSection):
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE_RNG_INIT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE_RNG_INIT"
+            'x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE_RNG_INIT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE_S = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE_S"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE_S'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE_THERMOSTAT_ENERGY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE_THERMOSTAT_ENERGY"
+            'x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE_THERMOSTAT_ENERGY'
         ),
         repeats=True,
     )
@@ -50784,26 +50784,26 @@ class x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE(MSection):
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE_COORD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE_COORD"
+            'x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE_COORD'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE_FORCE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE_FORCE"
+            'x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE_FORCE'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE_MASS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE_MASS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE_MASS'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE_VELOCITY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE_VELOCITY"
+            'x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE_VELOCITY'
         ),
         repeats=True,
     )
@@ -50834,30 +50834,30 @@ class x_cp2k_section_input_MOTION_MD_THERMOSTAT(MSection):
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_AD_LANGEVIN = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_THERMOSTAT_AD_LANGEVIN"
+            'x_cp2k_section_input_MOTION_MD_THERMOSTAT_AD_LANGEVIN'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_CSVR = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_THERMOSTAT_CSVR"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_THERMOSTAT_CSVR'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_DEFINE_REGION = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_MD_THERMOSTAT_DEFINE_REGION"
+            'x_cp2k_section_input_MOTION_MD_THERMOSTAT_DEFINE_REGION'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_THERMOSTAT_GLE'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_THERMOSTAT_NOSE'),
         repeats=True,
     )
 
@@ -51053,57 +51053,57 @@ class x_cp2k_section_input_MOTION_MD(MSection):
     )
 
     x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_ADIABATIC_DYNAMICS'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_AVERAGES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_AVERAGES"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_AVERAGES'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_BAROSTAT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_BAROSTAT"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_BAROSTAT'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_CASCADE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_CASCADE"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_CASCADE'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_MD_LANGEVIN = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_LANGEVIN"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_LANGEVIN'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_MSST = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_MSST"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_MSST'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_MD_REFTRAJ = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_REFTRAJ"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_REFTRAJ'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_MD_RESPA = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_RESPA"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_RESPA'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_MD_SHELL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_SHELL"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_SHELL'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_MD_THERMAL_REGION = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_THERMAL_REGION"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_THERMAL_REGION'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_THERMOSTAT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_THERMOSTAT"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_THERMOSTAT'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_MD_VELOCITY_SOFTENING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD_VELOCITY_SOFTENING"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD_VELOCITY_SOFTENING'),
         repeats=True,
     )
 
@@ -51148,12 +51148,12 @@ class x_cp2k_section_input_MOTION_PINT_BEADS(MSection):
     m_def = Section(validate=False)
 
     x_cp2k_section_input_MOTION_PINT_BEADS_COORD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_BEADS_COORD"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_BEADS_COORD'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PINT_BEADS_VELOCITY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_BEADS_VELOCITY"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_BEADS_VELOCITY'),
         repeats=True,
     )
 
@@ -51249,17 +51249,17 @@ class x_cp2k_section_input_MOTION_PINT_GLE(MSection):
     )
 
     x_cp2k_section_input_MOTION_PINT_GLE_RNG_INIT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_GLE_RNG_INIT"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_GLE_RNG_INIT'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PINT_GLE_S = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_GLE_S"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_GLE_S'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_PINT_GLE_THERMOSTAT_ENERGY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PINT_GLE_THERMOSTAT_ENERGY"
+            'x_cp2k_section_input_MOTION_PINT_GLE_THERMOSTAT_ENERGY'
         ),
         repeats=True,
     )
@@ -51413,7 +51413,7 @@ class x_cp2k_section_input_MOTION_PINT_HELIUM_RHO(MSection):
 
     x_cp2k_section_input_MOTION_PINT_HELIUM_RHO_CUBE_DATA = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PINT_HELIUM_RHO_CUBE_DATA"
+            'x_cp2k_section_input_MOTION_PINT_HELIUM_RHO_CUBE_DATA'
         ),
         repeats=True,
     )
@@ -51576,37 +51576,37 @@ class x_cp2k_section_input_MOTION_PINT_HELIUM(MSection):
     )
 
     x_cp2k_section_input_MOTION_PINT_HELIUM_COORD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_HELIUM_COORD"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_HELIUM_COORD'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PINT_HELIUM_FORCE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_HELIUM_FORCE"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_HELIUM_FORCE'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PINT_HELIUM_M_SAMPLING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_HELIUM_M_SAMPLING"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_HELIUM_M_SAMPLING'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PINT_HELIUM_PERM = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_HELIUM_PERM"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_HELIUM_PERM'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PINT_HELIUM_RDF = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_HELIUM_RDF"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_HELIUM_RDF'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PINT_HELIUM_RHO = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_HELIUM_RHO"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_HELIUM_RHO'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PINT_HELIUM_RNG_STATE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_HELIUM_RNG_STATE"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_HELIUM_RNG_STATE'),
         repeats=True,
     )
 
@@ -51770,12 +51770,12 @@ class x_cp2k_section_input_MOTION_PINT_NOSE(MSection):
     )
 
     x_cp2k_section_input_MOTION_PINT_NOSE_COORD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_NOSE_COORD"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_NOSE_COORD'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PINT_NOSE_VELOCITY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_NOSE_VELOCITY"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_NOSE_VELOCITY'),
         repeats=True,
     )
 
@@ -51904,33 +51904,33 @@ class x_cp2k_section_input_MOTION_PINT(MSection):
     )
 
     x_cp2k_section_input_MOTION_PINT_BEADS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_BEADS"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_BEADS'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_PINT_GLE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_GLE"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_GLE'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_PINT_HELIUM = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_HELIUM"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_HELIUM'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PINT_INIT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_INIT"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_INIT'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_PINT_NORMALMODE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_NORMALMODE"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_NORMALMODE'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PINT_NOSE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_NOSE"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_NOSE'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_PINT_STAGING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT_STAGING"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT_STAGING'),
         repeats=True,
     )
 
@@ -52130,7 +52130,7 @@ class x_cp2k_section_input_MOTION_PRINT_CELL(MSection):
     )
 
     x_cp2k_section_input_MOTION_PRINT_CELL_EACH = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_CELL_EACH"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_CELL_EACH'),
         repeats=True,
     )
 
@@ -52345,7 +52345,7 @@ class x_cp2k_section_input_MOTION_PRINT_CORE_FORCES(MSection):
     )
 
     x_cp2k_section_input_MOTION_PRINT_CORE_FORCES_EACH = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_CORE_FORCES_EACH"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_CORE_FORCES_EACH'),
         repeats=True,
     )
 
@@ -52586,7 +52586,7 @@ class x_cp2k_section_input_MOTION_PRINT_CORE_TRAJECTORY(MSection):
 
     x_cp2k_section_input_MOTION_PRINT_CORE_TRAJECTORY_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PRINT_CORE_TRAJECTORY_EACH"
+            'x_cp2k_section_input_MOTION_PRINT_CORE_TRAJECTORY_EACH'
         ),
         repeats=True,
     )
@@ -52803,7 +52803,7 @@ class x_cp2k_section_input_MOTION_PRINT_CORE_VELOCITIES(MSection):
 
     x_cp2k_section_input_MOTION_PRINT_CORE_VELOCITIES_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PRINT_CORE_VELOCITIES_EACH"
+            'x_cp2k_section_input_MOTION_PRINT_CORE_VELOCITIES_EACH'
         ),
         repeats=True,
     )
@@ -53011,7 +53011,7 @@ class x_cp2k_section_input_MOTION_PRINT_FORCE_MIXING_LABELS(MSection):
 
     x_cp2k_section_input_MOTION_PRINT_FORCE_MIXING_LABELS_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PRINT_FORCE_MIXING_LABELS_EACH"
+            'x_cp2k_section_input_MOTION_PRINT_FORCE_MIXING_LABELS_EACH'
         ),
         repeats=True,
     )
@@ -53227,7 +53227,7 @@ class x_cp2k_section_input_MOTION_PRINT_FORCES(MSection):
     )
 
     x_cp2k_section_input_MOTION_PRINT_FORCES_EACH = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_FORCES_EACH"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_FORCES_EACH'),
         repeats=True,
     )
 
@@ -53427,7 +53427,7 @@ class x_cp2k_section_input_MOTION_PRINT_MIXED_ENERGIES(MSection):
 
     x_cp2k_section_input_MOTION_PRINT_MIXED_ENERGIES_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PRINT_MIXED_ENERGIES_EACH"
+            'x_cp2k_section_input_MOTION_PRINT_MIXED_ENERGIES_EACH'
         ),
         repeats=True,
     )
@@ -53762,7 +53762,7 @@ class x_cp2k_section_input_MOTION_PRINT_RESTART_HISTORY(MSection):
 
     x_cp2k_section_input_MOTION_PRINT_RESTART_HISTORY_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PRINT_RESTART_HISTORY_EACH"
+            'x_cp2k_section_input_MOTION_PRINT_RESTART_HISTORY_EACH'
         ),
         repeats=True,
     )
@@ -53848,7 +53848,7 @@ class x_cp2k_section_input_MOTION_PRINT_RESTART(MSection):
     )
 
     x_cp2k_section_input_MOTION_PRINT_RESTART_EACH = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_RESTART_EACH"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_RESTART_EACH'),
         repeats=True,
     )
 
@@ -54063,7 +54063,7 @@ class x_cp2k_section_input_MOTION_PRINT_SHELL_FORCES(MSection):
     )
 
     x_cp2k_section_input_MOTION_PRINT_SHELL_FORCES_EACH = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_SHELL_FORCES_EACH"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_SHELL_FORCES_EACH'),
         repeats=True,
     )
 
@@ -54304,7 +54304,7 @@ class x_cp2k_section_input_MOTION_PRINT_SHELL_TRAJECTORY(MSection):
 
     x_cp2k_section_input_MOTION_PRINT_SHELL_TRAJECTORY_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PRINT_SHELL_TRAJECTORY_EACH"
+            'x_cp2k_section_input_MOTION_PRINT_SHELL_TRAJECTORY_EACH'
         ),
         repeats=True,
     )
@@ -54521,7 +54521,7 @@ class x_cp2k_section_input_MOTION_PRINT_SHELL_VELOCITIES(MSection):
 
     x_cp2k_section_input_MOTION_PRINT_SHELL_VELOCITIES_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PRINT_SHELL_VELOCITIES_EACH"
+            'x_cp2k_section_input_MOTION_PRINT_SHELL_VELOCITIES_EACH'
         ),
         repeats=True,
     )
@@ -54720,7 +54720,7 @@ class x_cp2k_section_input_MOTION_PRINT_STRESS(MSection):
     )
 
     x_cp2k_section_input_MOTION_PRINT_STRESS_EACH = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_STRESS_EACH"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_STRESS_EACH'),
         repeats=True,
     )
 
@@ -54972,7 +54972,7 @@ class x_cp2k_section_input_MOTION_PRINT_STRUCTURE_DATA(MSection):
 
     x_cp2k_section_input_MOTION_PRINT_STRUCTURE_DATA_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PRINT_STRUCTURE_DATA_EACH"
+            'x_cp2k_section_input_MOTION_PRINT_STRUCTURE_DATA_EACH'
         ),
         repeats=True,
     )
@@ -55213,7 +55213,7 @@ class x_cp2k_section_input_MOTION_PRINT_TRAJECTORY(MSection):
     )
 
     x_cp2k_section_input_MOTION_PRINT_TRAJECTORY_EACH = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_TRAJECTORY_EACH"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_TRAJECTORY_EACH'),
         repeats=True,
     )
 
@@ -55413,7 +55413,7 @@ class x_cp2k_section_input_MOTION_PRINT_TRANSLATION_VECTOR(MSection):
 
     x_cp2k_section_input_MOTION_PRINT_TRANSLATION_VECTOR_EACH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PRINT_TRANSLATION_VECTOR_EACH"
+            'x_cp2k_section_input_MOTION_PRINT_TRANSLATION_VECTOR_EACH'
         ),
         repeats=True,
     )
@@ -55629,7 +55629,7 @@ class x_cp2k_section_input_MOTION_PRINT_VELOCITIES(MSection):
     )
 
     x_cp2k_section_input_MOTION_PRINT_VELOCITIES_EACH = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_VELOCITIES_EACH"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_VELOCITIES_EACH'),
         repeats=True,
     )
 
@@ -55642,90 +55642,90 @@ class x_cp2k_section_input_MOTION_PRINT(MSection):
     m_def = Section(validate=False)
 
     x_cp2k_section_input_MOTION_PRINT_CELL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_CELL"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_CELL'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_PRINT_CORE_FORCES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_CORE_FORCES"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_CORE_FORCES'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_CORE_TRAJECTORY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_CORE_TRAJECTORY"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_CORE_TRAJECTORY'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_CORE_VELOCITIES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_CORE_VELOCITIES"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_CORE_VELOCITIES'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_FORCE_MIXING_LABELS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PRINT_FORCE_MIXING_LABELS"
+            'x_cp2k_section_input_MOTION_PRINT_FORCE_MIXING_LABELS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_FORCES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_FORCES"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_FORCES'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_MIXED_ENERGIES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_MIXED_ENERGIES"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_MIXED_ENERGIES'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_RESTART_HISTORY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_RESTART_HISTORY"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_RESTART_HISTORY'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_RESTART = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_RESTART"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_RESTART'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_SHELL_FORCES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_SHELL_FORCES"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_SHELL_FORCES'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_SHELL_TRAJECTORY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_SHELL_TRAJECTORY"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_SHELL_TRAJECTORY'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_SHELL_VELOCITIES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_SHELL_VELOCITIES"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_SHELL_VELOCITIES'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_STRESS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_STRESS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_STRESS'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_STRUCTURE_DATA = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_STRUCTURE_DATA"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_STRUCTURE_DATA'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_TRAJECTORY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_TRAJECTORY"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_TRAJECTORY'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_TRANSLATION_VECTOR = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_PRINT_TRANSLATION_VECTOR"
+            'x_cp2k_section_input_MOTION_PRINT_TRANSLATION_VECTOR'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_PRINT_VELOCITIES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT_VELOCITIES"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT_VELOCITIES'),
         repeats=True,
     )
 
@@ -55840,7 +55840,7 @@ class x_cp2k_section_input_MOTION_SHELL_OPT_BFGS(MSection):
     )
 
     x_cp2k_section_input_MOTION_SHELL_OPT_BFGS_RESTART = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_SHELL_OPT_BFGS_RESTART"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_SHELL_OPT_BFGS_RESTART'),
         repeats=True,
     )
 
@@ -55930,14 +55930,14 @@ class x_cp2k_section_input_MOTION_SHELL_OPT_CG_LINE_SEARCH(MSection):
 
     x_cp2k_section_input_MOTION_SHELL_OPT_CG_LINE_SEARCH_2PNT = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_SHELL_OPT_CG_LINE_SEARCH_2PNT"
+            'x_cp2k_section_input_MOTION_SHELL_OPT_CG_LINE_SEARCH_2PNT'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_SHELL_OPT_CG_LINE_SEARCH_GOLD = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_SHELL_OPT_CG_LINE_SEARCH_GOLD"
+            'x_cp2k_section_input_MOTION_SHELL_OPT_CG_LINE_SEARCH_GOLD'
         ),
         repeats=True,
     )
@@ -55979,7 +55979,7 @@ class x_cp2k_section_input_MOTION_SHELL_OPT_CG(MSection):
 
     x_cp2k_section_input_MOTION_SHELL_OPT_CG_LINE_SEARCH = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_SHELL_OPT_CG_LINE_SEARCH"
+            'x_cp2k_section_input_MOTION_SHELL_OPT_CG_LINE_SEARCH'
         ),
         repeats=True,
     )
@@ -56101,17 +56101,17 @@ class x_cp2k_section_input_MOTION_SHELL_OPT(MSection):
     )
 
     x_cp2k_section_input_MOTION_SHELL_OPT_BFGS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_SHELL_OPT_BFGS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_SHELL_OPT_BFGS'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_SHELL_OPT_CG = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_SHELL_OPT_CG"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_SHELL_OPT_CG'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_SHELL_OPT_LBFGS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_SHELL_OPT_LBFGS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_SHELL_OPT_LBFGS'),
         repeats=True,
     )
 
@@ -56268,7 +56268,7 @@ class x_cp2k_section_input_MOTION_TMC_NMC_MOVES(MSection):
     )
 
     x_cp2k_section_input_MOTION_TMC_NMC_MOVES_MOVE_TYPE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_TMC_NMC_MOVES_MOVE_TYPE"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_TMC_NMC_MOVES_MOVE_TYPE'),
         repeats=True,
     )
 
@@ -56467,7 +56467,7 @@ class x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS_FILES(MSection):
 
     x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS_FILES_CHARGE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS_FILES_CHARGE"
+            'x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS_FILES_CHARGE'
         ),
         repeats=True,
     )
@@ -56542,7 +56542,7 @@ class x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS(MSection):
     )
 
     x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS_CHARGE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS_CHARGE"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS_CHARGE'),
         repeats=True,
     )
 
@@ -56814,22 +56814,22 @@ class x_cp2k_section_input_MOTION_TMC(MSection):
     )
 
     x_cp2k_section_input_MOTION_TMC_MOVE_TYPE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_TMC_MOVE_TYPE"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_TMC_MOVE_TYPE'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_TMC_NMC_MOVES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_TMC_NMC_MOVES"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_TMC_NMC_MOVES'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS_FILES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS_FILES"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS_FILES'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_TMC_TMC_ANALYSIS'),
         repeats=True,
     )
 
@@ -56842,57 +56842,57 @@ class x_cp2k_section_input_MOTION(MSection):
     m_def = Section(validate=False)
 
     x_cp2k_section_input_MOTION_BAND = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_BAND"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_BAND'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_CELL_OPT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CELL_OPT"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CELL_OPT'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_CONSTRAINT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_CONSTRAINT"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_CONSTRAINT'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_DRIVER = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_DRIVER"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_DRIVER'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_FLEXIBLE_PARTITIONING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_FLEXIBLE_PARTITIONING"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_FLEXIBLE_PARTITIONING'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_FREE_ENERGY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_FREE_ENERGY"),
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_FREE_ENERGY'),
         repeats=True,
     )
 
     x_cp2k_section_input_MOTION_GEO_OPT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_GEO_OPT"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_GEO_OPT'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_MC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MC"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MC'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_MD = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_MD"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_MD'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_PINT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PINT"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PINT'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_PRINT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_PRINT"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_PRINT'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_SHELL_OPT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_SHELL_OPT"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_SHELL_OPT'), repeats=True
     )
 
     x_cp2k_section_input_MOTION_TMC = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION_TMC"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION_TMC'), repeats=True
     )
 
 
@@ -57078,14 +57078,14 @@ class x_cp2k_section_input_OPTIMIZE_BASIS_FIT_KIND(MSection):
 
     x_cp2k_section_input_OPTIMIZE_BASIS_FIT_KIND_CONSTRAIN_EXPONENTS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_OPTIMIZE_BASIS_FIT_KIND_CONSTRAIN_EXPONENTS"
+            'x_cp2k_section_input_OPTIMIZE_BASIS_FIT_KIND_CONSTRAIN_EXPONENTS'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_OPTIMIZE_BASIS_FIT_KIND_DERIVED_BASIS_SETS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_OPTIMIZE_BASIS_FIT_KIND_DERIVED_BASIS_SETS"
+            'x_cp2k_section_input_OPTIMIZE_BASIS_FIT_KIND_DERIVED_BASIS_SETS'
         ),
         repeats=True,
     )
@@ -57241,17 +57241,17 @@ class x_cp2k_section_input_OPTIMIZE_BASIS(MSection):
     )
 
     x_cp2k_section_input_OPTIMIZE_BASIS_FIT_KIND = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_OPTIMIZE_BASIS_FIT_KIND"),
+        sub_section=SectionProxy('x_cp2k_section_input_OPTIMIZE_BASIS_FIT_KIND'),
         repeats=True,
     )
 
     x_cp2k_section_input_OPTIMIZE_BASIS_OPTIMIZATION = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_OPTIMIZE_BASIS_OPTIMIZATION"),
+        sub_section=SectionProxy('x_cp2k_section_input_OPTIMIZE_BASIS_OPTIMIZATION'),
         repeats=True,
     )
 
     x_cp2k_section_input_OPTIMIZE_BASIS_TRAINING_FILES = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_OPTIMIZE_BASIS_TRAINING_FILES"),
+        sub_section=SectionProxy('x_cp2k_section_input_OPTIMIZE_BASIS_TRAINING_FILES'),
         repeats=True,
     )
 
@@ -57496,14 +57496,14 @@ class x_cp2k_section_input_OPTIMIZE_INPUT_FORCE_MATCHING(MSection):
 
     x_cp2k_section_input_OPTIMIZE_INPUT_FORCE_MATCHING_COMPARE_ENERGIES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_OPTIMIZE_INPUT_FORCE_MATCHING_COMPARE_ENERGIES"
+            'x_cp2k_section_input_OPTIMIZE_INPUT_FORCE_MATCHING_COMPARE_ENERGIES'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_OPTIMIZE_INPUT_FORCE_MATCHING_COMPARE_FORCES = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_OPTIMIZE_INPUT_FORCE_MATCHING_COMPARE_FORCES"
+            'x_cp2k_section_input_OPTIMIZE_INPUT_FORCE_MATCHING_COMPARE_FORCES'
         ),
         repeats=True,
     )
@@ -57724,22 +57724,22 @@ class x_cp2k_section_input_OPTIMIZE_INPUT(MSection):
     )
 
     x_cp2k_section_input_OPTIMIZE_INPUT_FORCE_MATCHING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_OPTIMIZE_INPUT_FORCE_MATCHING"),
+        sub_section=SectionProxy('x_cp2k_section_input_OPTIMIZE_INPUT_FORCE_MATCHING'),
         repeats=True,
     )
 
     x_cp2k_section_input_OPTIMIZE_INPUT_HISTORY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_OPTIMIZE_INPUT_HISTORY"),
+        sub_section=SectionProxy('x_cp2k_section_input_OPTIMIZE_INPUT_HISTORY'),
         repeats=True,
     )
 
     x_cp2k_section_input_OPTIMIZE_INPUT_RESTART = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_OPTIMIZE_INPUT_RESTART"),
+        sub_section=SectionProxy('x_cp2k_section_input_OPTIMIZE_INPUT_RESTART'),
         repeats=True,
     )
 
     x_cp2k_section_input_OPTIMIZE_INPUT_VARIABLE = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_OPTIMIZE_INPUT_VARIABLE"),
+        sub_section=SectionProxy('x_cp2k_section_input_OPTIMIZE_INPUT_VARIABLE'),
         repeats=True,
     )
 
@@ -57915,7 +57915,7 @@ class x_cp2k_section_input_SWARM_GLOBAL_OPT_MINIMA_CRAWLING(MSection):
 
     x_cp2k_section_input_SWARM_GLOBAL_OPT_MINIMA_CRAWLING_MINIMA_TRAJECTORY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_SWARM_GLOBAL_OPT_MINIMA_CRAWLING_MINIMA_TRAJECTORY"
+            'x_cp2k_section_input_SWARM_GLOBAL_OPT_MINIMA_CRAWLING_MINIMA_TRAJECTORY'
         ),
         repeats=True,
     )
@@ -58125,27 +58125,27 @@ class x_cp2k_section_input_SWARM_GLOBAL_OPT(MSection):
     )
 
     x_cp2k_section_input_SWARM_GLOBAL_OPT_HISTORY = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_SWARM_GLOBAL_OPT_HISTORY"),
+        sub_section=SectionProxy('x_cp2k_section_input_SWARM_GLOBAL_OPT_HISTORY'),
         repeats=True,
     )
 
     x_cp2k_section_input_SWARM_GLOBAL_OPT_MINIMA_CRAWLING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_SWARM_GLOBAL_OPT_MINIMA_CRAWLING"
+            'x_cp2k_section_input_SWARM_GLOBAL_OPT_MINIMA_CRAWLING'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_SWARM_GLOBAL_OPT_MINIMA_HOPPING = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_SWARM_GLOBAL_OPT_MINIMA_HOPPING"
+            'x_cp2k_section_input_SWARM_GLOBAL_OPT_MINIMA_HOPPING'
         ),
         repeats=True,
     )
 
     x_cp2k_section_input_SWARM_GLOBAL_OPT_PROGRESS_TRAJECTORY = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_SWARM_GLOBAL_OPT_PROGRESS_TRAJECTORY"
+            'x_cp2k_section_input_SWARM_GLOBAL_OPT_PROGRESS_TRAJECTORY'
         ),
         repeats=True,
     )
@@ -58192,7 +58192,7 @@ class x_cp2k_section_input_SWARM(MSection):
     )
 
     x_cp2k_section_input_SWARM_GLOBAL_OPT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_SWARM_GLOBAL_OPT"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_SWARM_GLOBAL_OPT'), repeats=True
     )
 
 
@@ -58822,7 +58822,7 @@ class x_cp2k_section_input_TEST_RS_PW_TRANSFER(MSection):
     )
 
     x_cp2k_section_input_TEST_RS_PW_TRANSFER_RS_GRID = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_TEST_RS_PW_TRANSFER_RS_GRID"),
+        sub_section=SectionProxy('x_cp2k_section_input_TEST_RS_PW_TRANSFER_RS_GRID'),
         repeats=True,
     )
 
@@ -58916,33 +58916,33 @@ class x_cp2k_section_input_TEST(MSection):
     )
 
     x_cp2k_section_input_TEST_CP_DBCSR = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_TEST_CP_DBCSR"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_TEST_CP_DBCSR'), repeats=True
     )
 
     x_cp2k_section_input_TEST_CP_FM_GEMM = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_TEST_CP_FM_GEMM"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_TEST_CP_FM_GEMM'), repeats=True
     )
 
     x_cp2k_section_input_TEST_EIGENSOLVER = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_TEST_EIGENSOLVER"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_TEST_EIGENSOLVER'), repeats=True
     )
 
     x_cp2k_section_input_TEST_GRID_INFORMATION = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_TEST_GRID_INFORMATION"),
+        sub_section=SectionProxy('x_cp2k_section_input_TEST_GRID_INFORMATION'),
         repeats=True,
     )
 
     x_cp2k_section_input_TEST_PROGRAM_RUN_INFO = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_TEST_PROGRAM_RUN_INFO"),
+        sub_section=SectionProxy('x_cp2k_section_input_TEST_PROGRAM_RUN_INFO'),
         repeats=True,
     )
 
     x_cp2k_section_input_TEST_PW_TRANSFER = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_TEST_PW_TRANSFER"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_TEST_PW_TRANSFER'), repeats=True
     )
 
     x_cp2k_section_input_TEST_RS_PW_TRANSFER = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_TEST_RS_PW_TRANSFER"),
+        sub_section=SectionProxy('x_cp2k_section_input_TEST_RS_PW_TRANSFER'),
         repeats=True,
     )
 
@@ -59046,7 +59046,7 @@ class x_cp2k_section_input_VIBRATIONAL_ANALYSIS_MODE_SELECTIVE(MSection):
 
     x_cp2k_section_input_VIBRATIONAL_ANALYSIS_MODE_SELECTIVE_INVOLVED_ATOMS = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_VIBRATIONAL_ANALYSIS_MODE_SELECTIVE_INVOLVED_ATOMS"
+            'x_cp2k_section_input_VIBRATIONAL_ANALYSIS_MODE_SELECTIVE_INVOLVED_ATOMS'
         ),
         repeats=True,
     )
@@ -59105,7 +59105,7 @@ class x_cp2k_section_input_VIBRATIONAL_ANALYSIS(MSection):
 
     x_cp2k_section_input_VIBRATIONAL_ANALYSIS_MODE_SELECTIVE = SubSection(
         sub_section=SectionProxy(
-            "x_cp2k_section_input_VIBRATIONAL_ANALYSIS_MODE_SELECTIVE"
+            'x_cp2k_section_input_VIBRATIONAL_ANALYSIS_MODE_SELECTIVE'
         ),
         repeats=True,
     )
@@ -59123,56 +59123,56 @@ class x_cp2k_section_input(MSection):
     m_def = Section(validate=False)
 
     x_cp2k_section_input_ATOM = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_ATOM"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_ATOM'), repeats=True
     )
 
     x_cp2k_section_input_DEBUG = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_DEBUG"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_DEBUG'), repeats=True
     )
 
     x_cp2k_section_input_EXT_RESTART = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_EXT_RESTART"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_EXT_RESTART'), repeats=True
     )
 
     x_cp2k_section_input_FARMING = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FARMING"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FARMING'), repeats=True
     )
 
     x_cp2k_section_input_FORCE_EVAL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_FORCE_EVAL"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_FORCE_EVAL'), repeats=True
     )
 
     x_cp2k_section_input_GLOBAL = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_GLOBAL"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_GLOBAL'), repeats=True
     )
 
     x_cp2k_section_input_MOTION = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MOTION"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_MOTION'), repeats=True
     )
 
     x_cp2k_section_input_MULTIPLE_FORCE_EVALS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_MULTIPLE_FORCE_EVALS"),
+        sub_section=SectionProxy('x_cp2k_section_input_MULTIPLE_FORCE_EVALS'),
         repeats=True,
     )
 
     x_cp2k_section_input_OPTIMIZE_BASIS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_OPTIMIZE_BASIS"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_OPTIMIZE_BASIS'), repeats=True
     )
 
     x_cp2k_section_input_OPTIMIZE_INPUT = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_OPTIMIZE_INPUT"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_OPTIMIZE_INPUT'), repeats=True
     )
 
     x_cp2k_section_input_SWARM = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_SWARM"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_SWARM'), repeats=True
     )
 
     x_cp2k_section_input_TEST = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_TEST"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input_TEST'), repeats=True
     )
 
     x_cp2k_section_input_VIBRATIONAL_ANALYSIS = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input_VIBRATIONAL_ANALYSIS"),
+        sub_section=SectionProxy('x_cp2k_section_input_VIBRATIONAL_ANALYSIS'),
         repeats=True,
     )
 
@@ -59181,5 +59181,5 @@ class Run(runschema.run.Run):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cp2k_section_input = SubSection(
-        sub_section=SectionProxy("x_cp2k_section_input"), repeats=True
+        sub_section=SectionProxy('x_cp2k_section_input'), repeats=True
     )

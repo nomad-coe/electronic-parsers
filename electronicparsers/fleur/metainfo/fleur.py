@@ -178,7 +178,7 @@ class Run(runschema.run.Run):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fleur_header = SubSection(
-        sub_section=SectionProxy("x_fleur_header"), repeats=True
+        sub_section=SectionProxy('x_fleur_header'), repeats=True
     )
 
 
@@ -188,7 +188,7 @@ class System(runschema.system.System):
     x_fleur_lattice_vector_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         x component of vector of unit cell
         """,
@@ -197,7 +197,7 @@ class System(runschema.system.System):
     x_fleur_lattice_vector_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         y component of vector of unit cell
         """,
@@ -206,7 +206,7 @@ class System(runschema.system.System):
     x_fleur_lattice_vector_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         z component of vector of unit cell
         """,
@@ -215,7 +215,7 @@ class System(runschema.system.System):
     x_fleur_rec_lattice_vector_x = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         x component of reciprocal lattice vector
         """,
@@ -224,7 +224,7 @@ class System(runschema.system.System):
     x_fleur_rec_lattice_vector_y = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         y component of reciprocal lattice vector
         """,
@@ -233,7 +233,7 @@ class System(runschema.system.System):
     x_fleur_rec_lattice_vector_z = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="meter",
+        unit='meter',
         description="""
         z component of reciprocal lattice vector
         """,
@@ -338,7 +338,7 @@ class System(runschema.system.System):
     x_fleur_unit_cell_volume = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="bohr ** 3",
+        unit='bohr ** 3',
         description="""
         unit cell volume
         """,
@@ -368,7 +368,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_section_equiv_atoms = SubSection(
-        sub_section=SectionProxy("x_fleur_section_equiv_atoms"), repeats=True
+        sub_section=SectionProxy('x_fleur_section_equiv_atoms'), repeats=True
     )
 
 
@@ -434,7 +434,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_fleur_energy_total = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         energy total
         """,
@@ -443,7 +443,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_fleur_free_energy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         free energy
         """,
@@ -452,7 +452,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_fleur_entropy = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         (tkb*entropy) TS
         """,
@@ -515,7 +515,7 @@ class Method(runschema.method.Method):
     x_fleur_smearing_width = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         specifies the width of the broadening, smearing for calculation of fermi-energy &
         weights. The Fermi smearing can be parametrized by this energy
@@ -533,7 +533,7 @@ class Method(runschema.method.Method):
     x_fleur_smearing_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="kelvin",
+        unit='kelvin',
         description="""
         Fermi smearing temperature set in Kelvin
         """,
@@ -561,13 +561,13 @@ class Method(runschema.method.Method):
     )
 
     x_fleur_section_XC = SubSection(
-        sub_section=SectionProxy("x_fleur_section_XC"), repeats=True
+        sub_section=SectionProxy('x_fleur_section_XC'), repeats=True
     )
 
 
 class OrbitalAPW(runschema.method.OrbitalAPW):
     x_fleur_lo_type = Quantity(
-        type=MEnum("SCLO", "HELO"),
+        type=MEnum('SCLO', 'HELO'),
         shape=[],
         description="""
         Fleur demarcation of the LO type used.

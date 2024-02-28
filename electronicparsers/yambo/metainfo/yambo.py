@@ -118,7 +118,7 @@ class x_yambo_parameters(MSection):
     x_yambo_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         """,
     )
@@ -307,16 +307,16 @@ class x_yambo_local_xc_nonlocal_fock_bandenergies(runschema.calculation.BandEner
 
     x_yambo_sx = Quantity(
         type=np.dtype(np.float64),
-        shape=["n_spin_channels", "n_kpoints", "n_bands"],
-        unit="joule",
+        shape=['n_spin_channels', 'n_kpoints', 'n_bands'],
+        unit='joule',
         description="""
         """,
     )
 
     x_yambo_vxc = Quantity(
         type=np.dtype(np.float64),
-        shape=["n_spin_channels", "n_kpoints", "n_bands"],
-        unit="joule",
+        shape=['n_spin_channels', 'n_kpoints', 'n_bands'],
+        unit='joule',
         description="""
         """,
     )
@@ -327,16 +327,16 @@ class x_yambo_bare_xc_bandenergies(runschema.calculation.BandEnergies):
 
     x_yambo_dft = Quantity(
         type=np.dtype(np.float64),
-        shape=["n_spin_channels", "n_kpoints", "n_bands"],
-        unit="joule",
+        shape=['n_spin_channels', 'n_kpoints', 'n_bands'],
+        unit='joule',
         description="""
         """,
     )
 
     x_yambo_hf = Quantity(
         type=np.dtype(np.float64),
-        shape=["n_spin_channels", "n_kpoints", "n_bands"],
-        unit="joule",
+        shape=['n_spin_channels', 'n_kpoints', 'n_bands'],
+        unit='joule',
         description="""
         """,
     )
@@ -348,7 +348,7 @@ class Calculation(runschema.calculation.Calculation):
     x_yambo_electronic_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="kelvin",
+        unit='kelvin',
         description="""
         """,
     )
@@ -356,7 +356,7 @@ class Calculation(runschema.calculation.Calculation):
     x_yambo_bosonic_temperature = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="kelvin",
+        unit='kelvin',
         description="""
         """,
     )
@@ -393,7 +393,7 @@ class Calculation(runschema.calculation.Calculation):
     x_yambo_indirect_gaps = Quantity(
         type=np.dtype(np.float64),
         shape=[2],
-        unit="joule",
+        unit='joule',
         description="""
         """,
     )
@@ -401,7 +401,7 @@ class Calculation(runschema.calculation.Calculation):
     x_yambo_direct_gaps = Quantity(
         type=np.dtype(np.float64),
         shape=[2],
-        unit="joule",
+        unit='joule',
         description="""
         """,
     )
@@ -409,7 +409,7 @@ class Calculation(runschema.calculation.Calculation):
     x_yambo_indirect_gap = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         """,
     )
@@ -417,7 +417,7 @@ class Calculation(runschema.calculation.Calculation):
     x_yambo_direct_gap = Quantity(
         type=np.dtype(np.float64),
         shape=[],
-        unit="joule",
+        unit='joule',
         description="""
         """,
     )
@@ -471,7 +471,7 @@ class x_yambo_dynamic_dielectric_matrix_fragment(MSection):
 
     x_yambo_X_Q = Quantity(
         type=np.dtype(np.float64),
-        shape=[2, "x_yambo_matrix_size", "x_yambo_matrix_size", 2],
+        shape=[2, 'x_yambo_matrix_size', 'x_yambo_matrix_size', 2],
         description="""
         """,
     )

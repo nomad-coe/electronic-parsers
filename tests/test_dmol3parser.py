@@ -26,7 +26,7 @@ def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def parser():
     return Dmol3Parser()
 
@@ -34,24 +34,24 @@ def parser():
 def test_optimization(parser):
     archive = EntryArchive()
 
-    parser.parse("tests/data/dmol3/h2o.outmol", archive, None)
+    parser.parse('tests/data/dmol3/h2o.outmol', archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == "3.0"
+    assert sec_run.program.version == '3.0'
     assert sec_run.time_run.date_start > 0.0
 
     sec_method = archive.run[0].method[0]
-    assert sec_method.x_dmol3_calculation_type == "optimize_frequency"
+    assert sec_method.x_dmol3_calculation_type == 'optimize_frequency'
     assert sec_method.x_dmol3_rcut == approx(6.0)
     assert sec_method.x_dmol3_scf_iterations == 150
-    assert sec_method.x_dmol3_occupation_name == "Fermi"
+    assert sec_method.x_dmol3_occupation_name == 'Fermi'
     assert sec_method.x_dmol3_diis_number == 10
-    assert sec_method.x_dmol3_diis_name == "pulay"
+    assert sec_method.x_dmol3_diis_name == 'pulay'
     assert sec_method.x_dmol3_opt_energy_convergence == approx(1.0e-05)
 
     sec_system = archive.run[0].system
     assert len(sec_system) == 11
-    assert sec_system[0].atoms.labels[2] == "H"
+    assert sec_system[0].atoms.labels[2] == 'H'
     assert sec_system[2].atoms.positions[1][2].magnitude == approx(
         -8.84266338e-10,
     )
