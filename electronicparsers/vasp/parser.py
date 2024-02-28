@@ -1716,6 +1716,7 @@ class VASPParser:
                 break
 
         # Atom Parameters
+
         atomtypes = self.parser.atom_info.get('atomtypes', {})
         element = atomtypes.get('element', [])
         atom_counts = {e: 0 for e in element}
@@ -1866,7 +1867,7 @@ class VASPParser:
             # correct based on core-holes
             # since ZVAL information is centrally reported, it's all or nothing
             try:
-                species_electrons = param.n_electrons
+                species_electrons = param.n_valence_electrons
             except AttributeError:
                 break
             try:
