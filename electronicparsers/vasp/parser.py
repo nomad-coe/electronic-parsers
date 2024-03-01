@@ -66,6 +66,7 @@ from runschema.method import (
 )
 from runschema.calculation import (
     Calculation,
+    Charges,
     Energy,
     EnergyEntry,
     Forces,
@@ -399,6 +400,8 @@ class OutcarTextParser(TextParser):
                 val.extend(['nan' if '*' in v else v for v in line.split()])
             return np.array(val, np.float64)
 
+        atomic_quantities = r'# of ion\s+s\s+p\s+d\s+tot\s*-+((?:\s*-?[\d\.]+)+)+'
+
         scf_iteration = [
             Quantity(
                 'energy_total',
@@ -508,6 +511,18 @@ class OutcarTextParser(TextParser):
                 'time',
                 r'LOOP\+\: +cpu time +([\d\.]+)\: +real time +([\d\.]+)',
                 dtype=np.dtype(np.float64),
+            ),
+            Quantity(
+                'atomic_charges',
+                r'total charge[?\s\S]+' + atomic_quantities,
+                str_operation=lambda x: x.strip().split(),
+                convert=True,
+            ),
+            Quantity(
+                'atomic_magnetisms',
+                r'magnetization \(x\)[?\s\S]+' + atomic_quantities,
+                str_operation=lambda x: x.strip().split(),
+                convert=True,
             ),
         ]
 
@@ -2231,6 +2246,19 @@ class VASPParser:
 
             # dos
             parse_dos(n)
+
+            # atomic charges and magentizations
+            charge_groups = np.array(
+                self.parser.calculations[n].results['atomic_charges']
+            ).reshape(-1, 5)
+            total_charges = charge_groups[:, -1]
+            sec_scc.charges.append(
+                Charges(
+                    # analysis_method =
+                    n_atoms=len(total_charges),
+                    value=total_charges,
+                )
+            )
 
             # convergence
             converged = self.parser.is_converged(n)
