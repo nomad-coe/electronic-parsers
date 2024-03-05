@@ -276,43 +276,41 @@ class Wannier90ParserData:
 
         # Angular momentum [l, mr] following Wannier90 tables 3.1 and 3.2
         # TODO move to normalization or utils in nomad?
-        self._angular_momentum_orbital_map = {
-            (0, 1): "s",
-            (1, 1): "px",
-            (1, 2): "py",
-            (1, 3): "pz",
-            (2, 1): "dz2",
-            (2, 2): "dxz",
-            (2, 3): "dyz",
-            (2, 4): "dx2-y2",
-            (2, 5): "dxy",
-            (3, 1): "fz3",
-            (3, 2): "fxz2",
-            (3, 3): "fyz2",
-            (3, 4): "fz(x2-y2)",
-            (3, 5): "fxyz",
-            (3, 6): "fx(x2-3y2)",
-            (3, 7): "fy(3x2-y2)",
-            (-1, 1): "sp-1",
-            (-1, 2): "sp-2",
-            (-2, 1): "sp2-1",
-            (-2, 2): "sp2-2",
-            (-2, 3): "sp2-3",
-            (-3, 1): "sp3-1",
-            (-3, 2): "sp3-2",
-            (-3, 3): "sp3-3",
-            (-3, 4): "sp3-4",
-            (-4, 1): "sp3d-1",
-            (-4, 2): "sp3d-2",
-            (-4, 3): "sp3d-3",
-            (-4, 4): "sp3d-4",
-            (-4, 5): "sp3d-5",
-            (-5, 1): "sp3d2-1",
-            (-5, 2): "sp3d2-2",
-            (-5, 3): "sp3d2-3",
-            (-5, 4): "sp3d2-4",
-            (-5, 5): "sp3d2-5",
-            (-5, 6): "sp3d2-6",
+        self._wannier_orbital_symbols_map = {
+            "s": ("s", ""),
+            "px": ("p", "x"),
+            "py": ("p", "y"),
+            "pz": ("p", "z"),
+            "dz2": ("d", "z^2"),
+            "dxz": ("d", "xz"),
+            "dyz": ("d", "yz"),
+            "dx2-y2": ("d", "x^2-y^2"),
+            "dxy": ("d", "xy"),
+            "fz3": ("f", "z^3"),
+            "fxz2": ("f", "xz^2"),
+            "fyz2": ("f", "yz^2"),
+            "fz(x2-y2)": ("f", "z(x^2-y^2)"),
+            "fxyz": ("f", "xyz"),
+            "fx(x2-3y2)": ("f", "x(x^2-3y^2)"),
+            "fy(3x2-y2)": ("f", "y(3x^2-y^2)"),
+        }
+        self._wannier_orbital_numbers_map = {
+            (0, 1): ("s", ""),
+            (1, 1): ("p", "x"),
+            (1, 2): ("p", "y"),
+            (1, 3): ("p", "z"),
+            (2, 1): ("d", "z^2"),
+            (2, 2): ("d", "xz"),
+            (2, 3): ("d", "yz"),
+            (2, 4): ("d", "x^2-y^2"),
+            (2, 5): ("d", "xy"),
+            (3, 1): ("f", "z^3"),
+            (3, 2): ("f", "xz^2"),
+            (3, 3): ("f", "yz^2"),
+            (3, 4): ("f", "z(x^2-y^2)"),
+            (3, 5): ("f", "xyz"),
+            (3, 6): ("f", "x(x^2-3y^2)"),
+            (3, 7): ("f", "y(3x^2-y^2)"),
         }
 
     def parse_system(self, simulation):
@@ -471,26 +469,17 @@ class Wannier90ParserData:
                             mrmom = int(
                                 orb.split(",mr")[-1].replace("=", "").split(",")[0]
                             )
-                            if (
-                                orb_ang_mom := self._angular_momentum_orbital_map.get(
-                                    (lmom, mrmom)
-                                )
-                            ):  # shouldn't a missing numerical code rather generate a warning?
-                                angular_momentum = orb_ang_mom
+                            angular_momentum = self._wannier_orbital_numbers_map.get(
+                                (lmom, mrmom)
+                            )
                         else:  # ang mom label directly specified
-                            angular_momentum = orb
-                        matched_angular_momentum = next(
-                            (
-                                key
-                                for key, val in self._angular_momentum_orbital_map.items()
-                                if val == angular_momentum
-                            ),
-                            None,
-                        )
+                            angular_momentum = self._wannier_orbital_symbols_map.get(
+                                orb
+                            )
                         (
-                            sec_orbital_state.l_quantum_number,
-                            sec_orbital_state.ml_quantum_number,
-                        ) = matched_angular_momentum
+                            sec_orbital_state.l_quantum_symbol,
+                            sec_orbital_state.ml_quantum_symbol,
+                        ) = angular_momentum
                         atom_state.orbitals_state.append(sec_orbital_state)
                 except Exception:
                     self.logger.warning("Projected orbital labels not found from win.")
