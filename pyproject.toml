@@ -10,7 +10,7 @@ readme = "README.md"
 authors = [{ name = "The NOMAD Authors" }]
 license = { file = "LICENSE" }
 dependencies = [
-    "nomad-lab[infrastructure]@git+https://github.com/nomad-coe/nomad.git@develop",
+    "nomad-lab>=1.2.0",
     "nomad-schema-plugin-simulation-workflow@git+https://github.com/nomad-coe/nomad-schema-plugin-simulation-workflow.git@develop",
     "nomad-schema-plugin-run@git+https://github.com/nomad-coe/nomad-schema-plugin-run.git@develop",
     "simulationparsers@git+https://github.com/nomad-coe/simulation-parsers.git@develop",
