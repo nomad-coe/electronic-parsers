@@ -1,8 +1,7 @@
-name: test
+name: install-and-test-workflow
 on: [push]
 jobs:
-
-  install-test:
+  install-and-test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -13,7 +12,10 @@ jobs:
     - name: Install dependencies
       run: |
         pip install --upgrade pip
-        pip install .[dev]
+        # we need the latest nomad version for testing
+        pip install nomad-lab[infrastructure]@git+https://github.com/nomad-coe/nomad.git@develop
+        pip install '.[dev]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
+        pip install coverage coveralls
         pip install types-PyYAML
     - name: mypy
       run: |
@@ -21,8 +23,29 @@ jobs:
     - name: Test with pytest
       if: success() || failure()
       run: |
-        python -m pytest -sv tests
-
+        python -m coverage run -m pytest -sv tests
+    - name: Submit to coveralls
+      continue-on-error: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        coveralls --service=github
+  build-and-install:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Build the package
+      run: |
+        pip install --upgrade pip
+        pip install build
+        python -m build --sdist
+    - name: Install the package
+      run: |
+        pip install dist/*.tar.gz --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
   ruff-linting:
     runs-on: ubuntu-latest
     steps:
