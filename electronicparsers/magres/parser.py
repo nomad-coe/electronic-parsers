@@ -35,10 +35,12 @@ from runschema.method import (
 from runschema.system import System, Atoms
 from runschema.calculation import (
     Calculation,
-    SpinSpinCoupling,
-    ElectricFieldGradient,
-    MagneticShielding,
     MagneticSusceptibility,
+)
+from .metainfo.magres import (  # we patch magres metainfo outputs to add atom_labels
+    MagneticShielding,
+    ElectricFieldGradient,
+    SpinSpinCoupling,
 )
 
 # For the automatic workflow NMR
@@ -361,18 +363,20 @@ class MagresParser(BeyondDFTWorkflowsParser):
         sec_scc = Calculation()
         sec_scc.system_ref = sec_run.system[-1]
         sec_scc.method_ref = sec_run.method[-1]
-        atoms = sec_scc.system_ref.atoms.labels
-        if not atoms:
+        atom_labels = sec_scc.system_ref.atoms.labels
+        if not atom_labels:
             self.logger.warning('Could not find the parsed atomic cell information.')
             return
-        n_atoms = len(atoms)
+        n_atoms = len(atom_labels)
 
         # Magnetic Shielding Tensor (ms) parsing
         data = magres_data.get('ms', [])
         if np.size(data) == n_atoms * (9 + 2):  # 2 extra columns with atom labels
             values = np.reshape([d[2:] for d in data], (n_atoms, 3, 3))
+            values = np.transpose(values, axes=(0, 2, 1))
             isotropic_value = np.trace(values, axis1=1, axis2=2) / 3.0
-            sec_ms = MagneticShielding()
+            atoms = np.array([d[:2] for d in data])
+            sec_ms = MagneticShielding(atoms=atoms)
             sec_ms.value = values * 1e-6 * ureg('dimensionless')
             sec_ms.isotropic_value = isotropic_value * 1e-6 * ureg('dimensionless')
             sec_scc.magnetic_shielding.append(sec_ms)
@@ -388,7 +392,9 @@ class MagresParser(BeyondDFTWorkflowsParser):
             if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
                 continue
             values = np.reshape([d[2:] for d in data], (n_atoms, 3, 3))
-            sec_efg = ElectricFieldGradient()
+            values = np.transpose(values, axes=(0, 2, 1))
+            atoms = np.array([d[:2] for d in data])
+            sec_efg = ElectricFieldGradient(atoms=atoms)
             sec_efg.contribution = contribution
             sec_efg.value = values * 9.717362e21 * ureg('V/m^2')
             sec_scc.electric_field_gradient.append(sec_efg)
@@ -409,7 +415,11 @@ class MagresParser(BeyondDFTWorkflowsParser):
             ):  # 4 extra columns with atom labels
                 continue
             values = np.reshape([d[4:] for d in data], (n_atoms, n_atoms, 3, 3))
-            sec_isc = SpinSpinCoupling()
+            values = np.transpose(values, axes=(0, 1, 3, 2))
+            atoms = np.array([d[:4] for d in data])
+            atoms_1 = atoms[:, 0:2]
+            atoms_2 = atoms[:, 2:4]
+            sec_isc = SpinSpinCoupling(atoms_1=atoms_1, atoms_2=atoms_2)
             sec_isc.contribution = contribution
             sec_isc.reduced_value = values * 1e19 * ureg('K^2/J')
             sec_scc.spin_spin_coupling.append(sec_isc)
@@ -417,7 +427,7 @@ class MagresParser(BeyondDFTWorkflowsParser):
         # Magnetic Susceptibility (sus) parsing
         data = magres_data.get('sus', [])
         if np.size(data) == 9:
-            values = np.reshape(data, (3, 3))
+            values = np.transpose(np.reshape(data, (3, 3)))
             sec_sus = MagneticSusceptibility()
             sec_sus.scale_dimension = 'macroscopic'
             sec_sus.value = values * 1e-6 * ureg('dimensionless')

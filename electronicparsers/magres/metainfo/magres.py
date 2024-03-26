@@ -30,5 +30,75 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Reference,
 )
 
+from runschema.calculation import (
+    MagneticShielding as BaseMagneticShielding,
+    ElectricFieldGradient as BaseElectricFieldGradient,
+    SpinSpinCoupling as BaseSpinSpinCoupling,
+)
+
 
 m_package = Package()
+
+
+class MagneticShielding(BaseMagneticShielding):
+    """
+    Section extensions for the Run.Calculation.MagneticShielding base section.
+    """
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    atoms = Quantity(
+        type=np.str_,
+        shape=['n_atoms', 2],
+        description="""
+        Identifier for the atoms involved in the magnetic shielding tensor. This a list of
+        `n_atoms` pairs of strings [atom_label, atom_index]. The atom index corresponds to the position
+        on the list `System.atoms.labels`.
+        """,
+    )
+
+
+class ElectricFieldGradient(BaseElectricFieldGradient):
+    """
+    Section extensions for the Run.Calculation.ElectricFieldGradient base section.
+    """
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    atoms = Quantity(
+        type=np.str_,
+        shape=['n_atoms', 2],
+        description="""
+        Identifier for the atoms involved in the electric field gradient tensor. This a list of
+        `n_atoms` pairs of strings [atom_label, atom_index]. The atom index corresponds to the position
+        on the list `System.atoms.labels`.
+        """,
+    )
+
+
+class SpinSpinCoupling(BaseSpinSpinCoupling):
+    """
+    Section extensions for the Run.Calculation.SpinspinCoupling base section.
+    """
+
+    m_def = Section(validate=False, extends_base_section=True)
+
+    atoms_1 = Quantity(
+        type=np.str_,
+        shape=['n_atoms', 2],
+        description="""
+        Identifier for the atoms involved in the spin-spin coupling J12 for the 1 atoms. This a list of
+        `n_atoms` pairs of strings [atom_label, atom_index]. The atom index corresponds to the position
+        on the list `System.atoms.labels`.
+        """,
+    )
+
+    atoms_2 = Quantity(
+        type=np.str_,
+        shape=['n_atoms', 2],
+        description="""
+        Identifier for the atoms involved in the spin-spin coupling J12 for the 2 atoms. This a list of
+        `n_atoms` pairs of strings [atom_label, atom_index]. The atom index corresponds to the position
+        on the list `System.atoms.labels`.
+        """,
+    )
