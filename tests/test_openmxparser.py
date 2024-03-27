@@ -19,6 +19,7 @@
 import pytest
 import logging
 import numpy as np
+from datetime import datetime
 
 from nomad.datamodel import EntryArchive
 from nomad.units import ureg as units
@@ -99,6 +100,13 @@ def test_AlN(parser):
     run = archive.run[0]
     assert run.program.version == '3.9.2'
     assert run.clean_end
+
+    date_start_timestamp = datetime(2021, 4, 17, 18, 14, 52).timestamp()
+    assert run.time_run.date_start.magnitude == date_start_timestamp
+
+    date_end_timestamp = datetime(2021, 4, 17, 18, 19, 12, 811000).timestamp()
+    assert run.time_run.date_end.magnitude == date_end_timestamp
+
     scc = run.calculation
     assert len(scc) == 5
     assert scc[0].energy.total.value.magnitude == approx(Ha_to_J(-25.194346653540))
@@ -184,6 +192,13 @@ def test_C2N2(parser):
     run = archive.run[0]
     assert run.program.version == '3.9.2'
     assert run.clean_end
+
+    date_start_timestamp = datetime(2021, 5, 27, 9, 7, 27).timestamp()
+    assert run.time_run.date_start.magnitude == date_start_timestamp
+
+    date_end_timestamp = datetime(2021, 5, 27, 9, 13, 7, 525000).timestamp()
+    assert run.time_run.date_end.magnitude == date_end_timestamp
+
     scc = run.calculation
     assert len(scc) == 100
     assert scc[0].temperature.magnitude == approx(300.0)
@@ -252,6 +267,12 @@ def test_CrO2(parser):
     parser.parse('tests/data/openmx/CrO2_single_point/CrO2.out', archive, logging)
 
     run = archive.run[0]
+
+    date_start_timestamp = datetime(2021, 7, 16, 11, 49, 7).timestamp()
+    assert run.time_run.date_start.magnitude == date_start_timestamp
+
+    date_end_timestamp = datetime(2021, 7, 16, 11, 50, 11, 133000).timestamp()
+    assert run.time_run.date_end.magnitude == date_end_timestamp
 
     method = run.method[0]
     assert method.electronic.n_spin_channels == 2

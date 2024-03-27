@@ -21,13 +21,14 @@ from functools import cached_property
 import logging
 from typing import Optional
 import numpy as np
+from datetime import datetime
 import re
 import io
 from os import path
 
 from nomad.datamodel import EntryArchive
 from nomad.units import ureg as units
-from runschema.run import Run, Program
+from runschema.run import Run, Program, TimeRun
 from runschema.calculation import (
     Calculation,
     ScfIteration,
@@ -164,6 +165,19 @@ eigenvalues_parser = TextParser(
 
 mainfile_parser = TextParser(
     quantities=[
+        Quantity(
+            'date_start',
+            r'\s+([A-Z]{1}[a-z]{2}\s[A-Z]{1}[a-z]{2}\s\d{1,2}\s\d{2}:\d{2}:\d{2}\s\d{4})',
+            repeats=False,
+            flatten=False,
+            dtype=str,
+        ),
+
+        Quantity(
+            'elapsed_time',
+            r'\s+Elapsed.Time.\s+([\d.]+)',
+            repeats=False,
+        ),
         Quantity(
             'program_version',
             r'This calculation was performed by OpenMX Ver. ([\d\.]+)\s*',
@@ -716,6 +730,16 @@ class OpenmxParser:
         sec_run.program = Program(
             name='OpenMX', version=str(mainfile_parser.get('program_version'))
         )
+        date_start = mainfile_parser.get('date_start')
+        date_start_timestamp = datetime.strptime(
+                    date_start, '%a %b %d %H:%M:%S %Y').timestamp()
+        sec_run.time_run = TimeRun()
+        sec_run.time_run.date_start = date_start_timestamp
+
+        elapsed_time = mainfile_parser.get('elapsed_time')
+        if elapsed_time is not None:
+            date_end = date_start_timestamp + elapsed_time
+            sec_run.time_run.date_end = date_end
 
         sec_run.clean_end = mainfile_parser.get('have_timing') is not None
 
