@@ -66,6 +66,8 @@ def test_single_point_ethanol(parser):
     # Magnetic shielding testing
     assert len(sec_calc.magnetic_shielding) == 1
     sec_ms = sec_calc.magnetic_shielding[-1]
+    assert sec_ms.atoms.shape == (9, 2)
+    assert (sec_ms.atoms[3] == ['H', '4']).all()
     assert sec_ms.value.shape == (9, 3, 3)
     assert sec_ms.value[4][2][1] == approx(-7.045255458410382e-06)
     assert sec_ms.isotropic_value.shape == (9,)
