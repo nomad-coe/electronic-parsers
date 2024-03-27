@@ -47,7 +47,7 @@ class MagneticShielding(BaseMagneticShielding):
 
     # ! These quantities should be implemented in `BaseMagneticShielding` as refs to the specific `AtomsState`
 
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(extends_base_section=True)
 
     atoms = Quantity(
         type=np.str_,
@@ -67,7 +67,7 @@ class ElectricFieldGradient(BaseElectricFieldGradient):
 
     # ! These quantities should be implemented in `BaseElectricFieldGradient` as refs to the specific `AtomsState`
 
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(extends_base_section=True)
 
     atoms = Quantity(
         type=np.str_,
@@ -87,7 +87,7 @@ class SpinSpinCoupling(BaseSpinSpinCoupling):
 
     # ! These quantities should be implemented in `BaseSpinSpinCoupling` as refs to the specific `AtomsState`g`
 
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(extends_base_section=True)
 
     atoms_1 = Quantity(
         type=np.str_,

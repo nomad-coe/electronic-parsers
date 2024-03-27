@@ -36,12 +36,11 @@ from runschema.system import System, Atoms
 from runschema.calculation import (
     Calculation,
     MagneticSusceptibility,
-)
-from .metainfo.magres import (  # we patch magres metainfo outputs to add atom_labels
     MagneticShielding,
     ElectricFieldGradient,
     SpinSpinCoupling,
 )
+from .metainfo.magres import m_package
 
 # For the automatic workflow NMR
 from nomad.search import search
