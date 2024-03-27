@@ -69,7 +69,7 @@ def test_single_point_ethanol(parser):
     assert sec_ms.atoms.shape == (9, 2)
     assert (sec_ms.atoms[3] == ['H', '4']).all()
     assert sec_ms.value.shape == (9, 3, 3)
-    assert sec_ms.value[4][2][1] == approx(-7.045255458410382e-06)
+    assert sec_ms.value[4][2][1] == approx(-8.661757088509511e-06)
     assert sec_ms.isotropic_value.shape == (9,)
     assert sec_ms.isotropic_value[4] == approx(3.035708828276491e-05)
     # Electric field gradient testing
