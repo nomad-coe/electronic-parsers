@@ -54,6 +54,14 @@ from nomad_simulations.model_method import (
     KMesh as ModelKMesh,
 )
 
+from nomad_simulations.outputs import Outputs
+from nomad_simulations.variables import Temperature, Energy2
+from nomad_simulations.properties import (
+    ElectronicBandGap,
+    ElectronicDensityOfStates,
+    FermiLevel,
+)
+
 
 re_n = r"[\n\r]"
 
@@ -506,6 +514,61 @@ class Wannier90ParserData:
             # suggestion: shift to wout for projection?
             parse_orbitals_state(atom, model_system_child, atomic_cell)
 
+    def parse_fermi_level(self, output):
+        fermi_level = FermiLevel(variables=[])
+        fermi_level.value = 0.5 * ureg.eV
+        output.fermi_level.append(fermi_level)
+        # try:
+        # Setting Fermi level to the first orbital onsite energy
+        # n_wigner_seitz_points_half = int(
+        #     0.5 * sec_hopping_matrix.n_wigner_seitz_points
+        # )
+        # energy_fermi = (
+        #     sec_hopping_matrix.value[n_wigner_seitz_points_half][0][5] * ureg.eV
+        # )
+        #     fermi_level.value = energy_fermi
+        #     output.fermi_level.append(fermi_level)
+        # except Exception:
+        #     return
+
+    def parse_dos(self, output):
+        dos_files = get_files("*dos.dat", self.filepath, self.mainfile)
+        if not dos_files:
+            return
+        if len(dos_files) > 1:
+            self.logger.warning("Multiple dos data files found.")
+        # Parsing only first *dos.dat file
+        self.dos_dat_parser.mainfile = dos_files[0]
+
+        # TODO add spin polarized case
+        data = np.transpose(self.dos_dat_parser.data)
+        sec_dos = ElectronicDensityOfStates()
+        energies = Energy2(grid_points=data[0] * ureg.eV)
+        sec_dos.variables = [energies]
+        sec_dos.value = data[1] / ureg.eV
+        output.electronic_dos.append(sec_dos)
+
+    def parse_output(self, simulation):
+        output = Outputs(model_system_ref=simulation.model_system[-1])
+        simulation.outputs.append(output)
+
+        # Scalar band gap
+        bg = ElectronicBandGap(type="direct")
+        bg.variables = []
+        bg.value = 1.0 * ureg.eV
+        output.electronic_band_gap.append(bg)
+
+        # T-dependent band gap
+        bg = ElectronicBandGap(type="direct")
+        bg.variables = [Temperature(grid_points=[1, 2, 3] * ureg.kelvin)]
+        value = [1.0, 1.1, 1.2] * ureg.eV
+        bg.value = value
+        output.electronic_band_gap.append(bg)
+
+        # Fermi level and DOS
+        self.parse_fermi_level(output)
+        self.parse_dos(output)
+
     def init_parser(self):
         self.wout_parser.mainfile = self.filepath
         self.wout_parser.logger = self.logger
@@ -531,6 +594,7 @@ class Wannier90ParserData:
         simulation.model_system.append(model_system)
         self.parse_method(simulation)
         self.parse_winput(simulation)
+        self.parse_output(simulation)
         archive.m_add_sub_section(EntryArchive.data, simulation)
 
         # TEST
