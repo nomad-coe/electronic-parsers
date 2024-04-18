@@ -46,7 +46,6 @@ from runschema.method import (
 )
 from runschema.system import System, Atoms
 from .metainfo.soliddmft import x_soliddmft_observables_parameters
-from nomad.parsing.parser import to_hdf5
 from ..utils import numpy_type_to_json_serializable
 
 
@@ -423,9 +422,9 @@ class SolidDMFTParser:
                             val = self.extract_groups_datasets(
                                 value.get(n_imp)[f'{i_scf}']
                             )
-                            conv_obs[
-                                f'{key}_imp{n_imp}'
-                            ] = numpy_type_to_json_serializable(val)
+                            conv_obs[f'{key}_imp{n_imp}'] = (
+                                numpy_type_to_json_serializable(val)
+                            )
             sec_scf.x_soliddmft_convergence_obs = conv_obs
 
             # Energy per scf iteration step
@@ -454,58 +453,47 @@ class SolidDMFTParser:
 
             # Observables per scf iteration step
             scf_iteration = self.dmft_results.get(f'it_{i_scf + 1}')
-            if self.archive.m_context:
-                with self.archive.m_context.raw_file(filename, farg) as file:
-                    for n in range(n_impurities):
-                        n_imp = str(n_imp)
-                        sec_obs_scf = x_soliddmft_observables_parameters()
-                        sec_scf.x_soliddmft_observables.append(sec_obs_scf)
-                        for gf_iteration in self.iteration_gfs:
-                            if f'{gf_iteration}_{n_imp}' not in scf_iteration.keys():
-                                continue
-                            value_per_spin_orbital = scf_iteration.get(
-                                f'{gf_iteration}_{n_imp}'
-                            )
-                            value_tot = []
-                            for spin_orb in value_per_spin_orbital.keys():
-                                if spin_orb == 'block_names':
-                                    continue
-                                value = value_per_spin_orbital.get(spin_orb).get('data')
-                                value = to_hdf5(
-                                    value,
-                                    file,
-                                    f'DMFT_results/it_{i_scf + 1}/{gf_iteration}_{n_imp}/{spin_orb}/data',
-                                )
-                                value_tot.append(value)
-                            sec_obs_scf.m_set(
-                                sec_obs_scf.m_get_quantity_definition(
-                                    f'x_soliddmft_{gf_iteration}'
-                                ),
-                                value_tot,
-                            )
-                        for gf_observable in self.observable_gfs:
-                            if gf_observable not in observables.keys():
-                                continue
-                            value_per_spin_orbital = observables.get(gf_observable).get(
-                                f'{n_imp}'
-                            )
-                            value_tot = []
-                            for spin_orb in value_per_spin_orbital.keys():
-                                value = value_per_spin_orbital.get(spin_orb).get(
-                                    f'{i_scf + 1}'
-                                )
-                                value = to_hdf5(
-                                    value,
-                                    file,
-                                    f'DMFT_results/observables/{gf_observable}/{n_imp}/{spin_orb}/{i_scf + 1}',
-                                )
-                                value_tot.append(value)
-                            sec_obs_scf.m_set(
-                                sec_obs_scf.m_get_quantity_definition(
-                                    f'x_soliddmft_{gf_observable}'
-                                ),
-                                value_tot,
-                            )
+            for n in range(n_impurities):
+                n_imp = str(n_imp)
+                sec_obs_scf = x_soliddmft_observables_parameters()
+                sec_scf.x_soliddmft_observables.append(sec_obs_scf)
+                h5_base = f'{os.path.basename(self.mainfile)}#/DMFT_results'
+                for gf_iteration in self.iteration_gfs:
+                    if f'{gf_iteration}_{n_imp}' not in scf_iteration.keys():
+                        continue
+                    value_per_spin_orbital = scf_iteration.get(
+                        f'{gf_iteration}_{n_imp}'
+                    )
+                    value_tot = []
+                    for spin_orb in value_per_spin_orbital.keys():
+                        if spin_orb == 'block_names':
+                            continue
+                        value_tot.append(
+                            f'{h5_base}/it_{i_scf + 1}/{gf_iteration}_{n_imp}/{spin_orb}/data'
+                        )
+                    sec_obs_scf.m_set(
+                        sec_obs_scf.m_get_quantity_definition(
+                            f'x_soliddmft_{gf_iteration}'
+                        ),
+                        value_tot,
+                    )
+                for gf_observable in self.observable_gfs:
+                    if gf_observable not in observables.keys():
+                        continue
+                    value_per_spin_orbital = observables.get(gf_observable).get(
+                        f'{n_imp}'
+                    )
+                    value_tot = []
+                    for spin_orb in value_per_spin_orbital.keys():
+                        value_tot.append(
+                            f'{h5_base}/observables/{gf_observable}/{n_imp}/{spin_orb}/{i_scf + 1}'
+                        )
+                    sec_obs_scf.m_set(
+                        sec_obs_scf.m_get_quantity_definition(
+                            f'x_soliddmft_{gf_observable}'
+                        ),
+                        value_tot,
+                    )
 
         def parse_gfs(sec_scc: Calculation, n_impurities: int):
             """Parses Green's functions quantities.

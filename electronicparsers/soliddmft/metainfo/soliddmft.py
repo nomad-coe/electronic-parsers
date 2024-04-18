@@ -25,8 +25,8 @@ from nomad.metainfo import (  # pylint: disable=unused-import
     Section,
     SubSection,
     JSON,
-    HDF5Reference,
 )
+from nomad.datamodel.hdf5 import HDF5Reference
 import runschema.run  # pylint: disable=unused-import
 import runschema.calculation  # pylint: disable=unused-import
 import runschema.method  # pylint: disable=unused-import
