@@ -48,7 +48,7 @@ class x_abinit_section_stress_tensor(MSection):
     m_def = Section(validate=False)
 
     x_abinit_stress_tensor_xx = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         xx component of the stress tensor
@@ -56,7 +56,7 @@ class x_abinit_section_stress_tensor(MSection):
     )
 
     x_abinit_stress_tensor_yy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         yy component of the stress tensor
@@ -64,7 +64,7 @@ class x_abinit_section_stress_tensor(MSection):
     )
 
     x_abinit_stress_tensor_zz = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         zz component of the stress tensor
@@ -72,7 +72,7 @@ class x_abinit_section_stress_tensor(MSection):
     )
 
     x_abinit_stress_tensor_zy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         zy component of the stress tensor
@@ -80,7 +80,7 @@ class x_abinit_section_stress_tensor(MSection):
     )
 
     x_abinit_stress_tensor_zx = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         zx component of the stress tensor
@@ -88,7 +88,7 @@ class x_abinit_section_stress_tensor(MSection):
     )
 
     x_abinit_stress_tensor_yx = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         yx component of the stress tensor
@@ -104,7 +104,7 @@ class x_abinit_section_dataset_header(MSection):
     m_def = Section(validate=False)
 
     x_abinit_dataset_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Dataset number
@@ -144,7 +144,7 @@ class x_abinit_section_var(MSection):
     m_def = Section(validate=False)
 
     x_abinit_vardtset = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Variable dataset number
@@ -236,7 +236,7 @@ class Run(runschema.run.Run):
     )
 
     x_abinit_total_cpu_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Total CPU time
@@ -244,7 +244,7 @@ class Run(runschema.run.Run):
     )
 
     x_abinit_total_wallclock_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Total wallclock time
@@ -268,7 +268,7 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_abinit_tolvrs = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         `TOLerance on the potential V(r) ReSidual`:
@@ -280,7 +280,7 @@ class Method(runschema.method.Method):
     )
 
     x_abinit_tolwfr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TOLerance on WaveFunction squared Residual:
@@ -291,7 +291,7 @@ class Method(runschema.method.Method):
     )
 
     x_abinit_istwfk = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
          Integer for choice of STorage of WaveFunction at each k point;
@@ -301,7 +301,7 @@ class Method(runschema.method.Method):
     )
 
     x_abinit_iscf = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         ABINIT variable Integer for Self-Consistent-Field cycles
@@ -731,7 +731,7 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_abinit_magnetisation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Total magnetisation.
@@ -739,7 +739,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abinit_fermi_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Fermi energy.
@@ -763,7 +763,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abinit_atom_force_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='newton',
         shape=[],
         description="""
@@ -772,7 +772,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abinit_energy_ewald = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Ewald energy
@@ -780,7 +780,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abinit_energy_psp_core = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Pseudopotential core energy
@@ -788,7 +788,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abinit_energy_psp_local = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Local pseudopotential energy
@@ -796,7 +796,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abinit_energy_psp_nonlocal = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Non-local pseudopotential energy
@@ -804,7 +804,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abinit_energy_internal = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Internal energy
@@ -812,7 +812,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abinit_energy_ktentropy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -kT*entropy
@@ -820,7 +820,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abinit_energy_band = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Band energy
@@ -832,7 +832,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abinit_unit_cell_volume = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='meter**3',
         shape=[],
         description="""

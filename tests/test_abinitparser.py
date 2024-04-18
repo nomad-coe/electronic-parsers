@@ -43,7 +43,7 @@ def test_scf(parser):
     assert sec_run.time_run.date_start.magnitude == 1467132480.0
     sec_dataset = sec_run.x_abinit_section_dataset
     assert len(sec_dataset) == 1
-    assert len(sec_dataset[0].x_abinit_section_input.x_abinit_var_symrel) == 432
+    assert np.size(sec_dataset[0].x_abinit_section_input.x_abinit_var_symrel) == 432
     assert sec_dataset[0].x_abinit_section_input.x_abinit_var_znucl[0] == 14.0
 
     sec_method = sec_run.method[0]
