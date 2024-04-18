@@ -149,7 +149,7 @@ def test_dos(parser):
     nonzero = np.unique(values.nonzero())
     energies = energies[nonzero]
     energies.sort()
-    lowest_unoccupied_index = np.searchsorted(energies, energy_reference, 'right')[0]
+    lowest_unoccupied_index = np.searchsorted(energies, [energy_reference], 'right')[0]
     highest_occupied_index = lowest_unoccupied_index - 1
     gap = energies[lowest_unoccupied_index] - energies[highest_occupied_index]
     assert gap == approx(0.01)

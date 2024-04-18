@@ -61,7 +61,7 @@ class x_abacus_section_parallel(MSection):
     m_def = Section(validate=False)
 
     x_abacus_nproc = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of processors
@@ -69,7 +69,7 @@ class x_abacus_section_parallel(MSection):
     )
 
     x_abacus_kpar = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Devide all processors into kpar groups, and k points will be distributed among each group.
@@ -77,7 +77,7 @@ class x_abacus_section_parallel(MSection):
     )
 
     x_abacus_bndpar = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Devide all processors into bndpar groups, and bands (only stochastic orbitals now) will be distributed among each group
@@ -85,7 +85,7 @@ class x_abacus_section_parallel(MSection):
     )
 
     x_abacus_diago_proc = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         If set to a positive number, then it specifies the number of threads used for carrying out diagonalization.
@@ -101,7 +101,7 @@ class x_abacus_section_parallel(MSection):
     )
 
     x_abacus_allocation_nb2d = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -109,7 +109,7 @@ class x_abacus_section_parallel(MSection):
     )
 
     x_abacus_allocation_trace_loc_row = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -117,7 +117,7 @@ class x_abacus_section_parallel(MSection):
     )
 
     x_abacus_allocation_trace_loc_col = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -125,7 +125,7 @@ class x_abacus_section_parallel(MSection):
     )
 
     x_abacus_allocation_nloc = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -149,7 +149,7 @@ class x_abacus_section_specie_basis_set(MSection):
     )
 
     x_abacus_specie_basis_set_ln = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['x_abacus_specie_basis_set_number_of_orbitals', 2],
         description="""
         -
@@ -157,7 +157,7 @@ class x_abacus_section_specie_basis_set(MSection):
     )
 
     x_abacus_specie_basis_set_rmesh = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -165,7 +165,7 @@ class x_abacus_section_specie_basis_set(MSection):
     )
 
     x_abacus_specie_basis_set_rcutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr',
         shape=[],
         description="""
@@ -174,7 +174,7 @@ class x_abacus_section_specie_basis_set(MSection):
     )
 
     x_abacus_specie_basis_set_number_of_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -190,7 +190,7 @@ class BasisSet(runschema.method.BasisSet):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_abacus_basis_sets_delta_k = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='1/bohr',
         shape=[],
         description="""
@@ -199,7 +199,7 @@ class BasisSet(runschema.method.BasisSet):
     )
 
     x_abacus_basis_sets_delta_r = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr',
         shape=[],
         description="""
@@ -208,7 +208,7 @@ class BasisSet(runschema.method.BasisSet):
     )
 
     x_abacus_basis_sets_dr_uniform = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr',
         shape=[],
         description="""
@@ -217,7 +217,7 @@ class BasisSet(runschema.method.BasisSet):
     )
 
     x_abacus_basis_sets_rmax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr',
         shape=[],
         description="""
@@ -244,7 +244,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abacus_longest_orb_rcut = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr',
         shape=[],
         description="""
@@ -253,7 +253,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abacus_longest_nonlocal_projector_rcut = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr',
         shape=[],
         description="""
@@ -262,7 +262,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abacus_searching_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr',
         shape=[],
         description="""
@@ -271,7 +271,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abacus_searching_radius_unit = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr',
         shape=[],
         description="""
@@ -280,7 +280,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abacus_read_space_grid = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         -
@@ -288,7 +288,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abacus_big_cell_numbers_in_grid = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         -
@@ -296,7 +296,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abacus_meshcell_numbers_in_big_cell = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         -
@@ -304,7 +304,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abacus_extended_fft_grid = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         -
@@ -312,7 +312,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_abacus_extended_fft_grid_dim = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         -
@@ -332,7 +332,7 @@ class Run(runschema.run.Run):
     )
 
     x_abacus_program_execution_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='seconds',
         shape=[],
         description="""
@@ -378,7 +378,7 @@ class Run(runschema.run.Run):
     )
 
     x_abacus_md_nstep_in = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The target total number of md steps.
@@ -387,7 +387,7 @@ class Run(runschema.run.Run):
     )
 
     x_abacus_md_nstep_out = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The actual total number of md steps.
@@ -399,7 +399,7 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_abacus_initial_magnetization_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr_magneton',
         shape=[],
         description="""
@@ -456,7 +456,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_mixing_beta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Mixing method: parameter beta
@@ -472,7 +472,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_scf_threshold_density = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The density threshold for electronic iteration
@@ -489,7 +489,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_pao_radial_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr',
         shape=[],
         description="""
@@ -498,7 +498,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_hse_omega = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='1 / meter',
         shape=[],
         description="""
@@ -508,7 +508,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_hybrid_xc_coeff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Mixing parameter of hybrid functionals
@@ -517,7 +517,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_number_of_pw_for_wavefunction = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -525,7 +525,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_number_of_sticks_for_wavefunction = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -533,7 +533,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_number_of_pw_for_density = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -541,7 +541,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_number_of_sticks_for_density = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -549,7 +549,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_exx_ccp_rmesh_times = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This parameter determines how many times larger the radial mesh required for calculating Columb potential is to that of atomic orbitals
@@ -558,7 +558,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_exx_dm_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Smaller values of the density matrix can be truncated to accelerate calculation.
@@ -567,7 +567,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_exx_cauchy_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Using Cauchy-Schwartz inequality to find an upper bound of each Fock exchange matrix element before carrying out explicit evaluations
@@ -576,7 +576,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_exx_schwarz_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Using Cauchy-Schwartz inequality to find an upper bound of each four-center integral element before carrying out explicit evaluations
@@ -585,7 +585,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_exx_c_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Smaller components of the C matrix is neglected to accelerate calculation
@@ -594,7 +594,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_exx_v_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Smaller components of the V matrix is neglected to accelerate calculation
@@ -603,7 +603,7 @@ class Method(runschema.method.Method):
     )
 
     x_abacus_exx_pca_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The size of basis of auxiliary basis functions is reduced using principal component analysis.
@@ -616,7 +616,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_abacus_alat = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr',
         shape=[],
         description="""
@@ -625,7 +625,7 @@ class System(runschema.system.System):
     )
 
     x_abacus_reciprocal_vectors = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         unit='1 / meter',
         description="""
@@ -634,7 +634,7 @@ class System(runschema.system.System):
     )
 
     x_abacus_celldm = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[6],
         description="""
         Cell [a, b, c, alpha, beta, gamma], length a, b and c are in unit Angstrom
@@ -642,7 +642,7 @@ class System(runschema.system.System):
     )
 
     x_abacus_ibrav = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Bravais lattice index, constant during a run
@@ -650,7 +650,7 @@ class System(runschema.system.System):
     )
 
     x_abacus_number_of_electrons_out = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['x_abacus_number_of_species'],
         description="""
         This denotes number of electrons of each element in the system calculated by ABACUS
@@ -658,7 +658,7 @@ class System(runschema.system.System):
     )
 
     x_abacus_total_number_of_electrons_in = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This denotes total number of electrons set in INPUT
@@ -666,7 +666,7 @@ class System(runschema.system.System):
     )
 
     x_abacus_number_of_species = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This denotes total number of species in the system
@@ -674,7 +674,7 @@ class System(runschema.system.System):
     )
 
     x_abacus_cell_volume = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr**3',
         shape=[],
         description="""
@@ -683,9 +683,9 @@ class System(runschema.system.System):
     )
 
     x_abacus_atom_magnetic_moments = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr_magneton',
-        shape=['number_of_atoms', 3],
+        shape=['n_atoms'],
         description="""
         The start magnetization for each atom
         """,
@@ -696,7 +696,7 @@ class Symmetry(runschema.system.Symmetry):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_abacus_ibrav = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Bravais lattice index, constant during a run
@@ -712,7 +712,7 @@ class Symmetry(runschema.system.Symmetry):
     )
 
     x_abacus_number_of_rotation_matrices = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -720,7 +720,7 @@ class Symmetry(runschema.system.Symmetry):
     )
 
     x_abacus_number_of_point_group_operations = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -728,7 +728,7 @@ class Symmetry(runschema.system.Symmetry):
     )
 
     x_abacus_number_of_space_group_operations = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -756,7 +756,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_abacus_pp_lmax = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maximum angular momentum component in pseudopotential
@@ -764,7 +764,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_abacus_pp_nzeta = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of wavefunctions in pseudopotential
@@ -772,7 +772,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_abacus_pp_nprojectors = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of projectors in pseudopotential
@@ -784,7 +784,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_abacus_density_change_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Stores the change of charge density with respect to the previous self-consistent
@@ -793,7 +793,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_abacus_energy_total_harris_foulkes_estimate = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='joule',
         shape=[],
         description="""
@@ -803,7 +803,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_abacus_magnetization_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr_magneton',
         shape=[3],
         description="""
@@ -812,7 +812,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_abacus_magnetization_absolute = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='bohr_magneton',
         shape=[],
         description="""
@@ -825,7 +825,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_abacus_eigenvalues_number_of_planewaves = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['number_of_eigenvalues_kpoints'],
         description="""
         Number of plane waves for each k-point

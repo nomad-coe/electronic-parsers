@@ -161,11 +161,13 @@ class ABACUSInputParser(TextParser):
                 xsection_method.x_abacus_scf_threshold_density,
                 rf'\n *scf_thr\s*({re_float})',
                 repeats=False,
+                dtype=float,
             ),
             Quantity(
                 xsection_method.x_abacus_initial_magnetization_total,
                 rf'\n *tot_magnetization\s*({re_float})',
                 repeats=False,
+                dtype=float,
             ),
             Quantity(
                 xsection_method.x_abacus_hse_omega,
@@ -1365,10 +1367,10 @@ class ABACUSParser:
             # get efermi
             efermi = header.get('fermi_energy_in')
             if efermi is None:
-                efermi = sec_nscf.get('fermi_energy_dos')
+                efermi = [sec_nscf.get('fermi_energy_dos')]
             if efermi is not None:
                 # fermi energy is not spin-dependent
-                sec_k_band.energy_fermi = efermi * ureg.rydberg
+                sec_k_band.energy_fermi = efermi[0] * ureg.rydberg
 
             band_k_points = []
             band_energies = []
@@ -1717,7 +1719,7 @@ class ABACUSParser:
             val = self.input_parser.get(f'x_abacus_{key}')
             if val is None:
                 continue
-            setattr(sec_method, f'x_abacus_{key}', val)
+            sec_method.m_set(sec_method.m_def.all_quantities[f'x_abacus_{key}'], val)
 
         # kmesh
         sec_kmesh = KMesh()
