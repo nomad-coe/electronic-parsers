@@ -44,7 +44,6 @@ from .metainfo.w2dynamics import (
     x_w2dynamics_config_atoms_parameters,
 )
 from ..wannier90.parser import WOutParser, HrParser
-from nomad.parsing.parser import to_hdf5
 
 # For automatic workflows
 from ..utils import get_files, BeyondDFTWorkflowsParser
@@ -435,7 +434,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
                             sec_energy.fermi = np.float64(value) * ureg.eV
                         elif subkey not in ineq_keys:
                             value = parameter.get('value')[:]
-                            value = to_hdf5(value, f, f'{key}/{subkey}/value')
+                            value = f'{os.path.basename(self.mainfile)}#/{key}/{subkey}/value'
                             name = self._re_namesafe.sub('_', subkey)
                             setattr(sec_scf_iteration, f'x_w2dynamics_{name}', value)
                         else:
@@ -451,9 +450,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
                                     value = value.get('value')
                                 if not isinstance(value, h5py.Dataset):
                                     continue
-                                value = to_hdf5(
-                                    value, f, f'{key}/{subkey}/{name}/value'
-                                )
+                                value = f'{os.path.basename(self.mainfile)}#/{key}/{subkey}/{name}/value'
                                 name = self._re_namesafe.sub('_', name)
                                 setattr(sec_ineq, f'x_w2dynamics_{name}', value)
 
