@@ -1293,9 +1293,9 @@ class RunContentParser(ContentParser):
             # initialize parsing of k_points
             method = self._get_key_values('/modeling[0]/kpoints[0]/generation[0]/param')
             if method:
-                self._kpoints_info[
-                    'sampling_method'
-                ] = RunContentParser.sampling_method_mapping[method['param']]
+                self._kpoints_info['sampling_method'] = (
+                    RunContentParser.sampling_method_mapping[method['param']]
+                )
             divisions = self._get_key_values(
                 '/modeling[0]/kpoints[0]/generation[0]/v[@name="divisions"]'
             )
@@ -1844,9 +1844,9 @@ class VASPParser:
         if len(sec_xc_functional.hybrid):
             if not sec_xc_functional.hybrid[-1].parameters:
                 sec_xc_functional.hybrid[-1].parameters = dict()
-            sec_xc_functional.hybrid[-1].parameters[
-                'exact_exchange_mixing_factor'
-            ] = aexx
+            sec_xc_functional.hybrid[-1].parameters['exact_exchange_mixing_factor'] = (
+                aexx
+            )
             sec_xc_functional.normalize_hybrid()
 
         # convergence thresholds
@@ -2257,40 +2257,11 @@ class VASPParser:
                 elif len(charge_density) < n_points:
                     charge_density.extend([float(v) for v in line.strip().split()])
                 if charge_density and len(charge_density) == n_points:
-                    # TODO remove temporary fix
-                    if hasattr(Density, 'value_hdf5'):
-                        from nomad.parsing.parser import to_hdf5
-
-                        filename = os.path.join(
-                            os.path.dirname(self.filepath.split('/raw/')[-1]),
-                            f'{os.path.basename(self.filepath)}.archive.hdf5',
-                        )
-                        farg = (
-                            'r+b'
-                            if os.path.isfile(
-                                os.path.join(os.path.dirname(self.filepath), filename)
-                            )
-                            else 'wb'
-                        )
-                        sec_density = Density()
-                        sec_scc.density_charge.append(sec_density)
-                        if self.archive.m_context:
-                            with self.archive.m_context.raw_file(filename, farg) as f:
-                                sec_density.value_hdf5 = to_hdf5(
-                                    np.reshape(
-                                        np.array(charge_density, np.float64), grid
-                                    ),
-                                    f,
-                                    f'{sec_density.m_path()}/value_hdf5',
-                                )
-                    else:
-                        sec_scc.density_charge.append(
-                            Density(
-                                value=np.reshape(
-                                    np.array(charge_density, np.float64), grid
-                                )
-                            )
-                        )
+                    sec_density = Density()
+                    sec_density.value_hdf5 = np.reshape(
+                        np.array(charge_density, np.float64), grid
+                    )
+                    sec_scc.density_charge.append(sec_density)
                     grid = []
                     n_points = 0
                     charge_density = []
