@@ -39,7 +39,7 @@ class Method(method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_atk_density_convergence_criterion = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Density convergence criteria to break the SCF cycle
@@ -47,7 +47,7 @@ class Method(method.Method):
     )
 
     x_atk_mix_old = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of old densities in the density mixer
@@ -55,7 +55,7 @@ class Method(method.Method):
     )
 
     x_atk_mix_weight = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Mixing weight in density mixer
@@ -63,7 +63,7 @@ class Method(method.Method):
     )
 
     x_atk_monkhorstpack_sampling = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         Monkhorstpack grid sampling
