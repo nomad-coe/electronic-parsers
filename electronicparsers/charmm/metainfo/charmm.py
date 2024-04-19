@@ -1359,7 +1359,7 @@ class x_charmm_section_control_parameters(MSection):
     )
 
     x_charmm_inout_control_number_of_parameters = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         charmm running environment and control parameters.
@@ -1387,7 +1387,7 @@ class x_charmm_section_atom_to_atom_type_ref(MSection):
     m_def = Section(validate=False)
 
     x_charmm_atom_to_atom_type_ref = Quantity(
-        type=np.dtype(np.int64),
+        type=np.int64,
         shape=['number_of_atoms_per_type'],
         description="""
         Reference to the atoms of each atom type.
@@ -1407,7 +1407,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_charmm_atom_positions_image_index = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['number_of_atoms', 3],
         unit='dimensionless',
         description="""
@@ -1416,7 +1416,7 @@ class System(runschema.system.System):
     )
 
     x_charmm_atom_positions_scaled = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         unit='dimensionless',
         description="""
@@ -1425,7 +1425,7 @@ class System(runschema.system.System):
     )
 
     x_charmm_atom_positions_wrapped = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         unit='meter',
         description="""
@@ -1434,7 +1434,7 @@ class System(runschema.system.System):
     )
 
     x_charmm_lattice_lengths = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         Lattice dimensions in a vector. Vector includes [a, b, c] lengths.
@@ -1442,7 +1442,7 @@ class System(runschema.system.System):
     )
 
     x_charmm_lattice_angles = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         Angles of lattice vectors. Vector includes [alpha, beta, gamma] in degrees.
@@ -1518,7 +1518,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_charmm_barostat_target_pressure = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='pascal',
         description="""
@@ -1527,7 +1527,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_charmm_barostat_tau = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='second',
         description="""
@@ -1544,7 +1544,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_charmm_integrator_dt = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='second',
         description="""
@@ -1569,7 +1569,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_charmm_langevin_gamma = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='second',
         description="""
@@ -1578,7 +1578,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_charmm_number_of_steps_requested = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Number of requested MD integration time steps.
@@ -1594,7 +1594,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_charmm_thermostat_target_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='kelvin',
         description="""
@@ -1603,7 +1603,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_charmm_thermostat_tau = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='second',
         description="""
@@ -1656,7 +1656,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_charmm_atom_type_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         van der Waals radius of an atom type.
@@ -1684,7 +1684,7 @@ class Interaction(runschema.method.Interaction):
     )
 
     x_charmm_number_of_defined_pair_interactions = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of defined pair interactions (L-J pairs).
@@ -1703,7 +1703,7 @@ class Interaction(runschema.method.Interaction):
     )
 
     x_charmm_pair_interaction_parameters = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_charmm_number_of_defined_pair_interactions', 2],
         description="""
         Pair interactions parameters.
@@ -1719,7 +1719,7 @@ class Interaction(runschema.method.Interaction):
     )
 
     x_charmm_number_of_defined_molecule_pair_interactions = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of defined pair interactions within a molecule (L-J pairs).
@@ -1727,7 +1727,7 @@ class Interaction(runschema.method.Interaction):
     )
 
     x_charmm_pair_molecule_interaction_parameters = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_defined_molecule_pair_interactions', 2],
         description="""
         Molecule pair interactions parameters.
@@ -1758,7 +1758,7 @@ class Run(runschema.run.Run):
     )
 
     x_charmm_parallel_task_nr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Program task no.
@@ -1814,7 +1814,7 @@ class Run(runschema.run.Run):
     )
 
     x_charmm_number_of_tasks = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Number of tasks in parallel program (MPI).
