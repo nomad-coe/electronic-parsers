@@ -666,7 +666,11 @@ class Dmol3Parser:
             if source.dipole_moment is not None:
                 sec_multipole = Multipoles()
                 target.multipoles.append(sec_multipole)
-                sec_multipole.dipole = MultipolesEntry(total=source.dipole_moment)
+                sec_multipole.dipole = MultipolesEntry(
+                    total=[source.dipole_moment]
+                    if isinstance(source.dipole_moment, float)
+                    else source.dipole_moment
+                )
 
             # vibrational frequencies
             if source.vibrational_frequencies is not None:

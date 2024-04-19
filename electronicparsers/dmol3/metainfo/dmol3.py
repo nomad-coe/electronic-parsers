@@ -46,7 +46,7 @@ class x_dmol3_section_hirshfeld_population(MSection):
     m_def = Section(validate=False)
 
     x_dmol3_hirshfeld_population = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Hirshfeld Population Analysis
@@ -62,7 +62,7 @@ class x_dmol3_section_mulliken_population(MSection):
     m_def = Section(validate=False)
 
     x_dmol3_mulliken_population = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Mulliken Population Analysis
@@ -82,7 +82,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_aux_partition = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         dmol3 aux parition
@@ -106,7 +106,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 system charge
@@ -178,7 +178,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_occupation_width = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 Occupation width
@@ -194,7 +194,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_opt_displacement_convergence = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 OPT_Displacement_Convergence
@@ -202,7 +202,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_opt_energy_convergence = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 OPT_Energy_Convergence
@@ -218,7 +218,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_opt_gradient_convergence = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 OPT_Gradient_Convergence
@@ -234,7 +234,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_opt_iterations = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         dmol3 OPT_Iterations
@@ -242,7 +242,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_opt_max_displacement = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 OPT_Max_Displacement
@@ -250,7 +250,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_opt_steep_tol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 OPT_Steep_Tol
@@ -282,7 +282,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_rcut = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 atom R_cut
@@ -290,7 +290,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_scf_charge_mixing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 SCF_Charge_Mixing
@@ -298,7 +298,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_scf_density_convergence = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 SCF_Density_Convergence
@@ -314,7 +314,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_scf_diis_number = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 SCF_DIIS number
@@ -330,7 +330,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_scf_iterations = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         dmol3 SCF_Iterations
@@ -338,7 +338,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_scf_number_bad_steps = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         dmol3 SCF_Number_Bad_Steps
@@ -354,7 +354,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_scf_spin_mixing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 SCF_Spin_Mixing
@@ -370,7 +370,7 @@ class Method(runschema.method.Method):
     )
 
     x_dmol3_spin = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         dmol3 number of unpaired electrons
@@ -390,7 +390,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_dmol3_binding_energy_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -399,7 +399,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_dmol3_convergence_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 convergence at every SCF
@@ -407,7 +407,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_dmol3_number_scf_iteration = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         dmol3 iteration number at every SCF
@@ -415,7 +415,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_dmol3_time_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dmol3 time at every SCF
@@ -427,7 +427,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_dmol3_eigenvalue_eigenvalue = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -436,7 +436,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     )
 
     x_dmol3_eigenvalue_occupation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Occupation of single eigenfunction
@@ -456,7 +456,7 @@ class System(runschema.system.System):
     )
 
     x_dmol3_geometry_atom_positions_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -465,7 +465,7 @@ class System(runschema.system.System):
     )
 
     x_dmol3_geometry_atom_positions_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -474,7 +474,7 @@ class System(runschema.system.System):
     )
 
     x_dmol3_geometry_atom_positions_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -510,7 +510,7 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_dmol3_h_trans = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='kcal/mol',
         description="""
@@ -518,7 +518,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_h_rot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='kcal/mol',
         description="""
@@ -526,7 +526,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_h_pv = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='kcal/mol',
         description="""
@@ -534,7 +534,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_h_pv = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='kcal/mol',
         description="""
@@ -542,7 +542,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_h_vib_minus_zpve = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='kcal/mol',
         description="""
@@ -550,7 +550,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_s_trans = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='cal/mol/K',
         description="""
@@ -558,7 +558,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_s_rot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='cal/mol/K',
         description="""
@@ -566,7 +566,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_s_vib = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='cal/mol/K',
         description="""
@@ -574,7 +574,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_c_trans = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='cal/mol/K',
         description="""
@@ -582,7 +582,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_c_rot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='cal/mol/K',
         description="""
@@ -590,7 +590,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_c_vib = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='cal/mol/K',
         description="""
@@ -598,7 +598,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_c_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='cal/mol/K',
         description="""
@@ -606,7 +606,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_h_total_minus_zpve = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='kcal/mol',
         description="""
@@ -614,7 +614,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_s_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='cal/mol/K',
         description="""
@@ -622,7 +622,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_c_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='cal/mol/K',
         description="""
@@ -630,7 +630,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_dmol3_gibbs_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='kcal/mol',
         description="""
@@ -650,14 +650,14 @@ class VibrationalFrequencies(runschema.calculation.VibrationalFrequencies):
     m_def = Section(validate=False, extends_base_section=True)
 
     n_atoms = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_dmol3_normal_modes = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['n_frequencies', 'n_atoms', 3],
         description="""
         """,
