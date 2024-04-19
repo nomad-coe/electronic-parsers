@@ -46,7 +46,7 @@ class x_elk_section_lattice_vectors(MSection):
     m_def = Section(validate=False)
 
     x_elk_geometry_lattice_vector_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -55,7 +55,7 @@ class x_elk_section_lattice_vectors(MSection):
     )
 
     x_elk_geometry_lattice_vector_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -64,7 +64,7 @@ class x_elk_section_lattice_vectors(MSection):
     )
 
     x_elk_geometry_lattice_vector_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -81,7 +81,7 @@ class x_elk_section_reciprocal_lattice_vectors(MSection):
     m_def = Section(validate=False)
 
     x_elk_geometry_reciprocal_lattice_vector_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='1 / meter',
         description="""
@@ -90,7 +90,7 @@ class x_elk_section_reciprocal_lattice_vectors(MSection):
     )
 
     x_elk_geometry_reciprocal_lattice_vector_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='1 / meter',
         description="""
@@ -99,7 +99,7 @@ class x_elk_section_reciprocal_lattice_vectors(MSection):
     )
 
     x_elk_geometry_reciprocal_lattice_vector_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='1 / meter',
         description="""
@@ -132,7 +132,7 @@ class x_elk_section_atoms_group(MSection):
     )
 
     x_elk_geometry_atom_positions_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -141,7 +141,7 @@ class x_elk_section_atoms_group(MSection):
     )
 
     x_elk_geometry_atom_positions_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -150,7 +150,7 @@ class x_elk_section_atoms_group(MSection):
     )
 
     x_elk_geometry_atom_positions_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -183,7 +183,7 @@ class x_elk_section_xc(MSection):
     m_def = Section(validate=False)
 
     x_elk_xc_functional = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         index for elk functional
@@ -195,7 +195,7 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_elk_brillouin_zone_volume = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='1 / meter ** 3',
         description="""
@@ -204,7 +204,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_simulation_reciprocal_cell = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         unit='meter',
         description="""
@@ -213,7 +213,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_unit_cell_volume = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter ** 3',
         description="""
@@ -222,7 +222,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_muffin_tin_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -231,7 +231,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_muffin_tin_points = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         muffin-tin points
@@ -239,7 +239,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_number_kpoint_x = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number k-points x
@@ -247,7 +247,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_number_kpoint_y = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number k-points y
@@ -255,7 +255,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_number_kpoint_z = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number k-points z
@@ -263,14 +263,14 @@ class Method(runschema.method.Method):
     )
 
     x_elk_kpoints_grid = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
+        type=np.int32,
+        shape=[3],
         description="""
         """,
     )
 
     x_elk_number_kpoints = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number k-points
@@ -278,7 +278,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_kpoint_offset_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         K-points offset x component
@@ -286,7 +286,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_kpoint_offset_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         K-points offset y component
@@ -294,7 +294,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_kpoint_offset_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         K-points offset z component
@@ -302,7 +302,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_rgkmax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -310,32 +310,16 @@ class Method(runschema.method.Method):
         """,
     )
 
-    x_elk_gvector_size_x = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
+    x_elk_gvector_size = Quantity(
+        type=np.int32,
+        shape=[3],
         description="""
-        G-vector grid size x
-        """,
-    )
-
-    x_elk_gvector_size_y = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description="""
-        G-vector grid size y
-        """,
-    )
-
-    x_elk_gvector_size_z = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
-        description="""
-        G-vector grid size z
+        G-vector grid size
         """,
     )
 
     x_elk_gvector_total = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         G-vector total
@@ -343,7 +327,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_lmaxapw = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Angular momentum cut-off for the APW functions
@@ -351,7 +335,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_gkmax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='1 / meter',
         description="""
@@ -360,7 +344,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_smearing_width = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Smearing width for KS occupancies
@@ -368,7 +352,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_lo = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Total number of local-orbitals
@@ -376,7 +360,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_gmaxvr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='1 / meter',
         description="""
@@ -385,7 +369,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_valence_states = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Total number of valence states
@@ -393,7 +377,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_core_states = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Total number of core states
@@ -401,7 +385,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_empty_states = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of empty states
@@ -409,7 +393,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_wigner_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -418,7 +402,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_electronic_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Electronic charge
@@ -426,7 +410,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_valence_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Valence charge
@@ -434,7 +418,7 @@ class Method(runschema.method.Method):
     )
 
     x_elk_nuclear_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Nuclear charge
@@ -442,10 +426,18 @@ class Method(runschema.method.Method):
     )
 
     x_elk_core_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Core charge
+        """,
+    )
+
+    x_elk_excess_charge = Quantity(
+        type=np.float64,
+        shape=[],
+        description="""
+        Excess charge
         """,
     )
 
@@ -475,7 +467,7 @@ class Energy(runschema.calculation.Energy):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_elk_fermi_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -484,7 +476,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_core_electron_kinetic_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -493,7 +485,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_coulomb_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -502,7 +494,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_coulomb_potential_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -511,7 +503,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_nuclear_nuclear_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -520,7 +512,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_electron_nuclear_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -529,7 +521,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_hartree_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -538,7 +530,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_madelung_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -547,7 +539,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_exchange_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -556,7 +548,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_correlation_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -565,7 +557,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_electron_entropic_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -574,7 +566,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_dos_fermi_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='1 / joule',
         description="""
@@ -583,7 +575,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_direct_gap_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -592,7 +584,7 @@ class Energy(runschema.calculation.Energy):
     )
 
     x_elk_indirect_gap_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -605,7 +597,7 @@ class Charges(runschema.calculation.Charges):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_elk_core_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Core charge scf iteration
@@ -613,7 +605,7 @@ class Charges(runschema.calculation.Charges):
     )
 
     x_elk_valence_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Valence charge scf iteration
@@ -621,7 +613,7 @@ class Charges(runschema.calculation.Charges):
     )
 
     x_elk_interstitial_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Interstitial charge scf iteration
@@ -633,7 +625,7 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_elk_core_charge_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Core charge final
@@ -641,7 +633,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_valence_charge_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Valence charge final
@@ -649,7 +641,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_interstitial_charge_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Interstitial charge final
@@ -657,7 +649,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_fermi_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -666,7 +658,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_core_electron_kinetic_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -675,7 +667,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_coulomb_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -684,7 +676,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_coulomb_potential_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -693,7 +685,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_nuclear_nuclear_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -702,7 +694,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_electron_nuclear_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -711,7 +703,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_hartree_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -720,7 +712,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_madelung_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -729,7 +721,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_exchange_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -738,7 +730,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_correlation_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -747,7 +739,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_electron_entropic_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -756,7 +748,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_dos_fermi = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='1 / joule',
         description="""
@@ -765,7 +757,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_direct_gap = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -774,7 +766,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_elk_indirect_gap = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""

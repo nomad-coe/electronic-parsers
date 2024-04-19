@@ -378,10 +378,7 @@ class ElkParser:
         # simulation parameters
         for key, val in self.mainfile_parser.items():
             if key.startswith('x_elk_') and val is not None:
-                try:
-                    setattr(sec_method, key, val)
-                except Exception:
-                    pass
+                sec_method.m_set(sec_method.m_def.all_quantities[key], val)
 
         sec_system = System()
         sec_run.system.append(sec_system)
