@@ -1546,7 +1546,8 @@ class CP2KParser:
                 quantity_def = resolve_definition(name)
                 if quantity_def is not None:
                     section.m_set(
-                        section.m_get_quantity_definition(name), quantity_def.type(data)
+                        section.m_get_quantity_definition(name),
+                        data,
                     )
 
         input_files = get_files(
