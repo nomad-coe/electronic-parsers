@@ -62,7 +62,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_ams_energy_min = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['n_spin_channels', 'n_bands'],
         unit='joule',
         description="""
@@ -70,7 +70,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     )
 
     x_ams_energy_max = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['n_spin_channels', 'n_bands'],
         unit='joule',
         description="""
@@ -78,7 +78,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     )
 
     x_ams_occupations = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['n_spin_channels', 'n_bands'],
         unit='joule',
         description="""
@@ -198,21 +198,21 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     )
 
     x_ams_maximum_rms_gradient = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_maximum_rms_step_allowed = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_maximum_stress_energy_allowed = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -233,21 +233,21 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     )
 
     x_ams_first_gdiis_cycle = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_ams_maximum_gdiis_vectors = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_ams_trust_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='bohr',
         description="""
@@ -301,35 +301,35 @@ class Method(runschema.method.Method):
     )
 
     x_ams_max_scc_cycles = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_ams_scc_charge_convergence = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_scc_charge_mixing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_diis_max_dimension = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_ams_diis_max_coeff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -343,7 +343,7 @@ class Method(runschema.method.Method):
     )
 
     x_ams_adaptive_scc_mixing_strategy = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -371,7 +371,7 @@ class Method(runschema.method.Method):
     )
 
     x_ams_fermi_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='kelvin',
         shape=[],
         description="""
@@ -414,14 +414,14 @@ class Method(runschema.method.Method):
     )
 
     x_ams_ewald_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_ewald_range_factor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -453,14 +453,14 @@ class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_ams_basis_functions_confinement_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_basis_functions_confinement_width = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -471,28 +471,28 @@ class AtomParameters(runschema.method.AtomParameters):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_ams_radial_points = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_ams_nuclear_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_n_radial_core_functions = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_ams_orbital_energies = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['n_orbitals'],
         unit='joule',
         description="""
@@ -500,14 +500,14 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_ams_orbital_radii = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['n_orbitals'],
         description="""
         """,
     )
 
     x_ams_energy_sum_eigenvalues = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -515,7 +515,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_ams_energy_total_lda = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -523,7 +523,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_ams_energy_kinetic = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -531,7 +531,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_ams_energy_classical_electron_electron_repulsion = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -539,7 +539,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_ams_energy_electron_nucleus_repulsion = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -547,49 +547,49 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_ams_n_radial_valence_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_ams_n_radial_core_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_ams_n_radial_fit_functions = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_ams_cutoff_valence = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_cutoff_core = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_cutoff_valence_kinetic = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_cutoff_core_kinetic = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -653,21 +653,21 @@ class Scf(runschema.method.Scf):
     )
 
     x_ams_growth_factor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_shrink_factor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_mix = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -681,35 +681,35 @@ class Scf(runschema.method.Scf):
     )
 
     x_ams_edegen = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_scfrtx = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_convrg = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_ams_ncyclx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_ams_vsplit = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,

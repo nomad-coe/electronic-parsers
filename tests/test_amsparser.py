@@ -102,7 +102,7 @@ def test_scf(parser):
     assert sec_scc.eigenvalues[0].x_ams_energy_max[1][16].magnitude == approx(
         -2.32112809e-19
     )
-    assert sec_scc.eigenvalues[0].occupations[1][14] == 0.0
+    assert sec_scc.eigenvalues[0].occupations[1][0][14] == 0.0
     assert sec_scc.eigenvalues[0].band_gap[0].value.magnitude == approx(4.22895238e-19)
     assert sec_scc.eigenvalues[0].band_gap[
         0
@@ -225,7 +225,7 @@ def test_geometry_optimization_new(parser):
     assert sec_scc[-1].eigenvalues[0].x_ams_energy_min[0][11].magnitude == approx(
         -3.34244189e-18
     )
-    assert sec_scc[-1].eigenvalues[0].occupations[0][775] == approx(2.0)
+    assert sec_scc[-1].eigenvalues[0].occupations[0][0][775] == approx(2.0)
 
     sec_system = archive.run[0].system
     assert len(sec_system) == 14
@@ -324,7 +324,8 @@ def test_band_go(parser):
     assert sec_calc.eigenvalues[0].energies.to('hartree').magnitude[0][2][18] == approx(
         0.7009522244059739
     )
-    assert sec_calc.eigenvalues[0].occupations[0][3] == approx(1.9999999999999984)
+    print('-------------', sec_calc.eigenvalues[0])
+    assert sec_calc.eigenvalues[0].occupations[0][0][3] == approx(1.9999999999999984)
     assert sec_calc.dos_electronic[0].energies.to('hartree').magnitude[78] == approx(
         0.04238290440428649
     )

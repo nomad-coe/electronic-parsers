@@ -120,7 +120,7 @@ class OutParser(TextParser):
             nspin = len(columns) // 3
             emin = [columns[n * 3 + 0] for n in range(nspin)]
             emax = [columns[n * 3 + 1] for n in range(nspin)]
-            occs = [columns[n * 3 + 2] for n in range(nspin)]
+            occs = [[columns[n * 3 + 2]] for n in range(nspin)]
             return emin, emax, occs
 
         system_quantities = [
@@ -227,7 +227,7 @@ class OutParser(TextParser):
                         Quantity(
                             'n_valence_electrons',
                             rf'VALENCE CHARGE\s+({re_float})',
-                            dtype=np.int32,
+                            dtype=np.float64,
                         ),
                         Quantity(
                             'charge', rf'NET CHARGE\s+({re_float})', dtype=np.float64
@@ -989,7 +989,7 @@ class OutParser(TextParser):
                         Quantity(
                             'x_ams_maximum_stress_energy_allowed',
                             rf'Maximum stress energy allowe\s*({re_float})',
-                            dtype=str,
+                            dtype=np.float64,
                         ),
                         Quantity(
                             'x_ams_initial_model_hessian',
@@ -1020,7 +1020,7 @@ class OutParser(TextParser):
                         Quantity(
                             'x_ams_trust_radius',
                             rf'Trust radius \(bohr\)\s*({re_float})',
-                            dtype=np.int32,
+                            dtype=np.float64,
                             unit=ureg.bohr,
                         ),
                         Quantity(
@@ -1134,9 +1134,9 @@ class RKFParser(FileParser):
             self._results['k_space_sampling'] = k_space_sampling
 
         if (kpoints_config := self.data.get('KPointsConfig')) is not None:
-            k_space_sampling[
-                'x_ams_general_integration_parameter'
-            ] = kpoints_config.get('interpolation')
+            k_space_sampling['x_ams_general_integration_parameter'] = (
+                kpoints_config.get('interpolation')
+            )
             k_space_sampling['grid'] = kpoints_config.get('parameters')
 
         engine_results = self.data.get('EngineResults', {})
@@ -1371,8 +1371,9 @@ class RKFParser(FileParser):
                 occupations = eigensystem.get('occupationPerBandAndSpin')
                 if occupations is not None:
                     # TODO check if occ shape is correct
-                    eigenvalues['occupations'] = np.transpose(
-                        np.reshape(occupations, (nband, nspin))
+                    eigenvalues['occupations'] = np.reshape(
+                        occupations,
+                        (nspin, np.size(occupations) // (nband * nspin), nband),
                     )
                 self._results['eigenvalues'] = eigenvalues
 
@@ -1566,7 +1567,7 @@ class AMSParser:
                                     orbital=orbital,
                                     spin=nspin,
                                     atom_label=atom[0],
-                                    atom_index=natom,
+                                    atom_index=int(natom[0]),
                                     value=charge * ureg.elementary_charge,
                                 )
                             )
