@@ -944,7 +944,7 @@ class ExcitingInfoParser(TextParser):
 
                 else:
                     vi = [float(vii) for vii in v[1].split()]
-                    vi = vi[0] if len(vi) == 1 else vi
+                    # vi = vi[0] if len(vi) == 1 else vi
                     properties[v[0].strip()] = vi * unit
 
             properties['atom_resolved'] = atom_resolved
@@ -1991,8 +1991,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 l_quantum_number=l_quantum_number,
                 type=type,
                 order=order,
-                energy_parameter=source['trialEnergy'] * ureg.hartree,
-                update=source['searchE'],
+                energy_parameter=[source['trialEnergy']] * ureg.hartree,
+                update=bool(source['searchE']),
             )
 
         type_order_mapping = {'   ': 0, 'apw': 1, 'lap': 2}
@@ -2687,7 +2687,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 sec_gw.x_exciting_freqgrid.x_exciting_fgrid
             ),
             n_points=n_freqs,
-            points=freq_points,
+            points=[freq_points],
             smearing=smearing,
         )
         sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
@@ -2947,11 +2947,13 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                         sec_charges.value = [
                             val[n][1].magnitude for n in range(len(val))
                         ] * val[0][1].units
-                        sec_charges.total = charge_contributions.get('total charge')
+                        sec_charges.total = charge_contributions.get('total charge')[-1]
                 elif key == 'charge_total':
                     pass
                 else:
-                    setattr(msection, key, val)
+                    quantity_def = msection.m_def.all_quantities.get(key)
+                    if quantity_def:
+                        msection.m_set(quantity_def, val[-1])
 
             # moment contributions
             moment_contributions = iteration.get('moment_contributions', {})
@@ -2972,9 +2974,18 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                         msection.m_add_sub_section(section_def, sec_mt_moment_atom)
                         sec_mt_moment_atom.x_exciting_MT_moment_atom_index = n + 1
                         sec_mt_moment_atom.x_exciting_MT_moment_atom_symbol = val[n][0]
-                        sec_mt_moment_atom.x_exciting_MT_moment_atom_value = val[n][1]
+                        moment = val[n][1].magnitude
+                        if isinstance(moment, float):
+                            moment = [moment]
+                        sec_mt_moment_atom.x_exciting_MT_moment_atom_value = (
+                            moment * val[n][1].units
+                        )
                 else:
-                    setattr(msection, key, val)
+                    quantity_def = msection.m_def.all_quantities.get(key)
+                    if quantity_def:
+                        msection.m_set(
+                            quantity_def, [val] if isinstance(val, float) else val
+                        )
 
             # convergence values
             for name in self.info_parser._convergence_keys_mapping.keys():
@@ -2982,14 +2993,18 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 if val is None:
                     continue
 
-                setattr(msection, name, val)
+                quantity_def = msection.m_def.all_quantities.get(name)
+                if quantity_def:
+                    msection.m_set(quantity_def, val)
 
             # other metainfo
             for name in self.info_parser._miscellaneous_keys_mapping.keys():
                 val = iteration.get(name)
                 if val is None:
                     continue
-                setattr(msection, name, val)
+                quantity_def = msection.m_def.all_quantities.get(name)
+                if quantity_def:
+                    msection.m_set(quantity_def, val)
 
         # energy, moment, charge contributions
         parse_scf(final, sec_scc)

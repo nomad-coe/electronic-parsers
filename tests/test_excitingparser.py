@@ -273,7 +273,7 @@ def test_gw(silicon_gw):
     sec_freq_mesh = sec_methods[-1].frequency_mesh[0]
     assert sec_freq_mesh.sampling_method == 'Gauss-Legendre'
     assert sec_freq_mesh.n_points == 32
-    assert sec_freq_mesh.points[4].to('hartree').magnitude == approx(0.125 + 0j)
+    assert sec_freq_mesh.points[0][4].to('hartree').magnitude == approx(0.125 + 0j)
 
     sec_sccs = silicon_gw.run[0].calculation
     assert len(sec_sccs) == 1
