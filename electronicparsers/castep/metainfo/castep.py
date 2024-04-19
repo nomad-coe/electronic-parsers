@@ -47,7 +47,7 @@ class x_castep_section_vibrational_frequencies(MSection):
     m_def = Section(validate=False)
 
     x_castep_number_vibrational_frequencies = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of vibration frequenices
@@ -55,7 +55,7 @@ class x_castep_section_vibrational_frequencies(MSection):
     )
 
     x_castep_vibrational_frequencies = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_castep_number_vibrational_frequencies'],
         description="""
         Vibration Frequenices (cm-1)
@@ -87,7 +87,7 @@ class x_castep_section_vibrational_frequencies(MSection):
     )
 
     x_castep_raman_activity = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_castep_number_vibrational_frequencies'],
         description="""
         Raman activity (A**4/amu)
@@ -103,7 +103,7 @@ class x_castep_section_vibrational_frequencies(MSection):
     )
 
     x_castep_n_iterations_phonons = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of iterations in phonons
@@ -119,7 +119,7 @@ class x_castep_section_vibrational_frequencies(MSection):
     )
 
     x_castep_ir_intensity = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_castep_number_vibrational_frequencies'],
         description="""
         IR intensities (D/A)**2/amu
@@ -143,7 +143,7 @@ class x_castep_section_band_parameters(MSection):
     m_def = Section(validate=False)
 
     x_castep_band_n_bands = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         x_castep_band_n_bands
@@ -151,7 +151,7 @@ class x_castep_section_band_parameters(MSection):
     )
 
     x_castep_band_conv_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x_castep_band_conv_tolerance
@@ -159,7 +159,7 @@ class x_castep_section_band_parameters(MSection):
     )
 
     x_castep_band_n_iterations = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         x_castep_band_n_iterations
@@ -167,7 +167,7 @@ class x_castep_section_band_parameters(MSection):
     )
 
     x_castep_band_max_cg = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x_castep_band_max_cg
@@ -183,7 +183,7 @@ class x_castep_section_core_parameters(MSection):
     m_def = Section(validate=False)
 
     x_castep_core_spectra_n_bands = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         x_castep_core_spectra_n_bands
@@ -191,7 +191,7 @@ class x_castep_section_core_parameters(MSection):
     )
 
     x_castep_core_spectra_conv_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x_castep_core_spectra_conv_tolerance
@@ -207,7 +207,7 @@ class x_castep_section_ts_scf_iteration(MSection):
     m_def = Section(validate=False)
 
     x_castep_scf_ts_iteration_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         SCF_ts_energy
@@ -215,7 +215,7 @@ class x_castep_section_ts_scf_iteration(MSection):
     )
 
     x_castep_scf_ts_iteration_energy_change = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         SCF_ts_energy change
@@ -223,7 +223,7 @@ class x_castep_section_ts_scf_iteration(MSection):
     )
 
     x_castep_scf_ts_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         SCF_ts_energy time
@@ -239,7 +239,7 @@ class x_castep_section_tddft(MSection):
     m_def = Section(validate=False)
 
     x_castep_tddft_iteration = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Iteration number
@@ -247,7 +247,7 @@ class x_castep_section_tddft(MSection):
     )
 
     x_castep_wall_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Iteration wall time (s)
@@ -255,7 +255,7 @@ class x_castep_section_tddft(MSection):
     )
 
     x_castep_state_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         state number
@@ -263,7 +263,7 @@ class x_castep_section_tddft(MSection):
     )
 
     x_castep_state_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         state energy
@@ -271,7 +271,7 @@ class x_castep_section_tddft(MSection):
     )
 
     x_castep_state_energy_error = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         state energy error
@@ -279,7 +279,7 @@ class x_castep_section_tddft(MSection):
     )
 
     x_castep_tddft_calculation_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         calculation time
@@ -303,7 +303,7 @@ class x_castep_section_atom_positions_optim(MSection):
     m_def = Section(validate=False)
 
     x_castep_cell_angle_alpha_optim = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Simulation cell angle alpha
@@ -311,7 +311,7 @@ class x_castep_section_atom_positions_optim(MSection):
     )
 
     x_castep_cell_angle_beta_optim = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Simulation cell angle beta
@@ -319,7 +319,7 @@ class x_castep_section_atom_positions_optim(MSection):
     )
 
     x_castep_cell_angle_gamma_optim = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Simulation cell angle gamma
@@ -327,7 +327,7 @@ class x_castep_section_atom_positions_optim(MSection):
     )
 
     x_castep_cell_length_a_optim = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         a unit cell edge length
@@ -335,7 +335,7 @@ class x_castep_section_atom_positions_optim(MSection):
     )
 
     x_castep_cell_length_b_optim = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         b unit cell edge length
@@ -343,7 +343,7 @@ class x_castep_section_atom_positions_optim(MSection):
     )
 
     x_castep_cell_length_c_optim = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         c unit cell edge length
@@ -359,7 +359,7 @@ class x_castep_section_atom_positions(MSection):
     m_def = Section(validate=False)
 
     x_castep_cell_angle_alpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Simulation cell angle alpha
@@ -367,7 +367,7 @@ class x_castep_section_atom_positions(MSection):
     )
 
     x_castep_cell_angle_beta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Simulation cell angle beta
@@ -375,7 +375,7 @@ class x_castep_section_atom_positions(MSection):
     )
 
     x_castep_cell_angle_gamma = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Simulation cell angle gamma
@@ -383,7 +383,7 @@ class x_castep_section_atom_positions(MSection):
     )
 
     x_castep_cell_length_a = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         a unit cell edge length
@@ -391,7 +391,7 @@ class x_castep_section_atom_positions(MSection):
     )
 
     x_castep_cell_length_b = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         b unit cell edge length
@@ -399,7 +399,7 @@ class x_castep_section_atom_positions(MSection):
     )
 
     x_castep_cell_length_c = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         c unit cell edge length
@@ -455,7 +455,7 @@ class x_castep_section_eigenvalues_1(MSection):
     m_def = Section(validate=False)
 
     x_castep_store_eigenvalues_1 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storing eigenvalues
@@ -471,7 +471,7 @@ class x_castep_section_eigenvalues(MSection):
     m_def = Section(validate=False)
 
     x_castep_store_eigenvalues = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storing eigenvalues
@@ -551,7 +551,7 @@ class x_castep_section_population_analysis(MSection):
     )
 
     x_castep_orbital_s = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Mulliken_contribution_orbital s
@@ -559,7 +559,7 @@ class x_castep_section_population_analysis(MSection):
     )
 
     x_castep_orbital_p = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Mulliken_contribution_orbital p
@@ -567,7 +567,7 @@ class x_castep_section_population_analysis(MSection):
     )
 
     x_castep_orbital_d = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Mulliken_contribution_orbital d
@@ -575,7 +575,7 @@ class x_castep_section_population_analysis(MSection):
     )
 
     x_castep_orbital_f = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Mulliken_contribution_orbital f
@@ -583,7 +583,7 @@ class x_castep_section_population_analysis(MSection):
     )
 
     x_castep_total_orbital = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Mulliken_total_contribution
@@ -599,7 +599,7 @@ class x_castep_section_population_analysis(MSection):
     )
 
     x_castep_mulliken_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Mulliken_charges
@@ -631,7 +631,7 @@ class x_castep_section_optics_parameters(MSection):
     m_def = Section(validate=False)
 
     x_castep_optics_n_bands = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         optics_number_of_bands
@@ -639,7 +639,7 @@ class x_castep_section_optics_parameters(MSection):
     )
 
     x_castep_optics_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         optics_band_convergence_tolerance
@@ -655,7 +655,7 @@ class x_castep_section_tddft_parameters(MSection):
     m_def = Section(validate=False)
 
     x_castep_tddft_n_excited_states = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number of excited states
@@ -663,7 +663,7 @@ class x_castep_section_tddft_parameters(MSection):
     )
 
     x_castep_tddft_n_states_forces = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number of states for forces
@@ -671,7 +671,7 @@ class x_castep_section_tddft_parameters(MSection):
     )
 
     x_castep_tddft_state_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         tolerance (eV)
@@ -679,7 +679,7 @@ class x_castep_section_tddft_parameters(MSection):
     )
 
     x_castep_tddft_state_tolerance_window = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         tolerance window iterations
@@ -687,7 +687,7 @@ class x_castep_section_tddft_parameters(MSection):
     )
 
     x_castep_tddft_max_iter = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         max number iterations
@@ -695,7 +695,7 @@ class x_castep_section_tddft_parameters(MSection):
     )
 
     x_castep_tddft_extra_states = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number of extra states
@@ -767,7 +767,7 @@ class x_castep_section_phonons(MSection):
     )
 
     x_castep_phonon_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Phonon calculation tolerance (eV/A**2)
@@ -775,7 +775,7 @@ class x_castep_section_phonons(MSection):
     )
 
     x_castep_phonon_cycles = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Phonon calculation cycles
@@ -783,7 +783,7 @@ class x_castep_section_phonons(MSection):
     )
 
     x_castep_band_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Phonon band convergence tolerance window
@@ -807,7 +807,7 @@ class x_castep_section_density_mixing_parameters(MSection):
     )
 
     x_castep_density_mixing_length = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         density_mixing_scheme_length
@@ -815,7 +815,7 @@ class x_castep_section_density_mixing_parameters(MSection):
     )
 
     x_castep_charge_density_mixing_amplitude = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         charge_density_mixing_amplitude
@@ -823,7 +823,7 @@ class x_castep_section_density_mixing_parameters(MSection):
     )
 
     x_castep_cut_off_energy_for_mixing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         charge_density_mixing_cut_off_energy_for_mixing (A)
@@ -839,7 +839,7 @@ class x_castep_section_population_analysis_parameters(MSection):
     m_def = Section(validate=False)
 
     x_castep_population_analysis_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Population_analysis_cutoff_(A)
@@ -855,7 +855,7 @@ class x_castep_section_ts_scf(MSection):
     m_def = Section(validate=False)
 
     x_castep_scf_ts_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         SCF_ts_energy Total
@@ -863,7 +863,7 @@ class x_castep_section_ts_scf(MSection):
     )
 
     x_castep_scf_ts_total_energy_free = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         SCF_ts_energy Total free
@@ -871,7 +871,7 @@ class x_castep_section_ts_scf(MSection):
     )
 
     x_castep_scf_ts_T0 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         SCF_ts_energy T0 free
@@ -947,7 +947,7 @@ class x_castep_section_scf_eigenvalues(MSection):
     m_def = Section(validate=False)
 
     x_castep_store_scf_eigenvalues = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -963,7 +963,7 @@ class x_castep_section_SCF_iteration_frame(MSection):
     m_def = Section(validate=False)
 
     x_castep_frame_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         CASTEP_store_t_md_frame
@@ -995,7 +995,7 @@ class x_castep_section_SCF_iteration_frame(MSection):
     )
 
     x_castep_frame_energy_free = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         energy_free
@@ -1003,7 +1003,7 @@ class x_castep_section_SCF_iteration_frame(MSection):
     )
 
     x_castep_frame_energy_total_T0 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         energy_free_corrected_for_finite_basis
@@ -1039,7 +1039,7 @@ class x_castep_section_spin_number(MSection):
     m_def = Section(validate=False)
 
     x_castep_spin_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1071,7 +1071,7 @@ class x_castep_section_time(MSection):
     m_def = Section(validate=False)
 
     x_castep_calculation_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         castep_calculation_time
@@ -1079,7 +1079,7 @@ class x_castep_section_time(MSection):
     )
 
     x_castep_finalisation_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         castep_finalisation_time
@@ -1087,7 +1087,7 @@ class x_castep_section_time(MSection):
     )
 
     x_castep_initialisation_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x_castep_Initialisation_time
@@ -1111,7 +1111,7 @@ class x_castep_section_raman_tensor(MSection):
     )
 
     x_castep_raman_tensor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         # TODO verify unit, original parser was ampere / amu
         unit='angstrom / unified_atomic_mass_unit',
@@ -1129,7 +1129,7 @@ class x_castep_section_scf_parameters(MSection):
     m_def = Section(validate=False)
 
     x_castep_energy_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Energy Threshold
@@ -1137,7 +1137,7 @@ class x_castep_section_scf_parameters(MSection):
     )
 
     x_castep_max_iter = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Number of maximum iterations steps
@@ -1153,7 +1153,7 @@ class x_castep_section_scf_parameters(MSection):
     )
 
     x_castep_smearing_width = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Smearing width
@@ -1185,7 +1185,7 @@ class x_castep_section_electronic_spectroscpy_parameters(MSection):
     )
 
     x_castep_spec_max_iter = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Max number of iterations
@@ -1193,7 +1193,7 @@ class x_castep_section_electronic_spectroscpy_parameters(MSection):
     )
 
     x_castep_spec_max_steps = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Max number of steps
@@ -1201,7 +1201,7 @@ class x_castep_section_electronic_spectroscpy_parameters(MSection):
     )
 
     x_castep_spec_max_bands = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Max number of bands
@@ -1209,7 +1209,7 @@ class x_castep_section_electronic_spectroscpy_parameters(MSection):
     )
 
     x_castep_spec_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Tolerance (eV)
@@ -1233,7 +1233,7 @@ class x_castep_section_md(MSection):
     )
 
     x_castep_md_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         md_temp(K)
@@ -1241,7 +1241,7 @@ class x_castep_section_md(MSection):
     )
 
     x_castep_md_pressure = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         md_pressure
@@ -1313,7 +1313,7 @@ class x_castep_section_ts(MSection):
     m_def = Section(validate=False)
 
     x_castep_ts_energy_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_energy_components_total
@@ -1321,7 +1321,7 @@ class x_castep_section_ts(MSection):
     )
 
     x_castep_ts_cell_vectors = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         description="""
         ts_cell_vectors
@@ -1329,7 +1329,7 @@ class x_castep_section_ts(MSection):
     )
 
     x_castep_ts_positions = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         ts_positions
@@ -1337,7 +1337,7 @@ class x_castep_section_ts(MSection):
     )
 
     x_castep_ts_forces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         ts_forces
@@ -1361,7 +1361,7 @@ class x_castep_section_ts_store(MSection):
     m_def = Section(validate=False)
 
     x_castep_ts_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_energy_components_ts_store
@@ -1401,7 +1401,7 @@ class x_castep_section_ts_final_store(MSection):
     m_def = Section(validate=False)
 
     x_castep_ts_energy_final_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_energy_components_ts
@@ -1441,7 +1441,7 @@ class x_castep_section_ts_final(MSection):
     m_def = Section(validate=False)
 
     x_castep_ts_energy_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_energy_final
@@ -1449,7 +1449,7 @@ class x_castep_section_ts_final(MSection):
     )
 
     x_castep_ts_cell_vectors_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         description="""
         ts_cell_vectors
@@ -1457,7 +1457,7 @@ class x_castep_section_ts_final(MSection):
     )
 
     x_castep_ts_positions_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         ts_positions_final
@@ -1465,7 +1465,7 @@ class x_castep_section_ts_final(MSection):
     )
 
     x_castep_ts_forces_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         ts_force_finals
@@ -1481,7 +1481,7 @@ class x_castep_section_ts_product(MSection):
     m_def = Section(validate=False)
 
     x_castep_ts_energy_product = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_energy_prod
@@ -1489,7 +1489,7 @@ class x_castep_section_ts_product(MSection):
     )
 
     x_castep_ts_forces_product = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         ts_energy_forces_pro
@@ -1497,7 +1497,7 @@ class x_castep_section_ts_product(MSection):
     )
 
     x_castep_ts_positions_product = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         ts_energy_positions_pro
@@ -1505,7 +1505,7 @@ class x_castep_section_ts_product(MSection):
     )
 
     x_castep_ts_cell_vectors_product = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         description="""
         ts_product_cell_vectors
@@ -1521,7 +1521,7 @@ class x_castep_section_ts_product_store(MSection):
     m_def = Section(validate=False)
 
     x_castep_ts_energy_product_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_energy_components_pro
@@ -1577,7 +1577,7 @@ class x_castep_section_ts_parameters(MSection):
     )
 
     x_castep_ts_number_qst = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_qst_iterations
@@ -1585,7 +1585,7 @@ class x_castep_section_ts_parameters(MSection):
     )
 
     x_castep_ts_number_cg = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_number_of_cg_iterations
@@ -1593,7 +1593,7 @@ class x_castep_section_ts_parameters(MSection):
     )
 
     x_castep_ts_force_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_force_tolerance (eV/A)
@@ -1601,7 +1601,7 @@ class x_castep_section_ts_parameters(MSection):
     )
 
     x_castep_ts_displacement_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_displacement_tolerance (A)
@@ -1617,7 +1617,7 @@ class x_castep_section_DFT_SEDC(MSection):
     m_def = Section(validate=False)
 
     x_castep_correction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         correlation energy
@@ -1625,7 +1625,7 @@ class x_castep_section_DFT_SEDC(MSection):
     )
 
     x_castep_de_atom = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dE/atom
@@ -1633,7 +1633,7 @@ class x_castep_section_DFT_SEDC(MSection):
     )
 
     x_castep_dfmax_atom = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dfmax/atom
@@ -1641,7 +1641,7 @@ class x_castep_section_DFT_SEDC(MSection):
     )
 
     x_castep_structure_energy_corr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         structure energy correction
@@ -1649,7 +1649,7 @@ class x_castep_section_DFT_SEDC(MSection):
     )
 
     x_castep_PBC_image_inter_corr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         PBC image interaction corr.
@@ -1657,7 +1657,7 @@ class x_castep_section_DFT_SEDC(MSection):
     )
 
     x_castep_total_energy_correction = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         total energy correction
@@ -1665,7 +1665,7 @@ class x_castep_section_DFT_SEDC(MSection):
     )
 
     x_castep_total_fmax_correction = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         correction F max ev/A
@@ -1673,7 +1673,7 @@ class x_castep_section_DFT_SEDC(MSection):
     )
 
     x_castep_shell = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         shell
@@ -1681,7 +1681,7 @@ class x_castep_section_DFT_SEDC(MSection):
     )
 
     x_castep_total_dispersion_corrected_free_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         total_dispersion_corrected_free_energy
@@ -1689,7 +1689,7 @@ class x_castep_section_DFT_SEDC(MSection):
     )
 
     x_castep_disp_corrected_energy_total_T0 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dispersion corrected zero point
@@ -1713,7 +1713,7 @@ class x_castep_section_van_der_Waals_parameters(MSection):
     )
 
     x_castep_Parameter_d = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Parameter for dispersion method G06
@@ -1721,7 +1721,7 @@ class x_castep_section_van_der_Waals_parameters(MSection):
     )
 
     x_castep_Parameter_LAMBDA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Parameter for dispersion method OBS
@@ -1729,7 +1729,7 @@ class x_castep_section_van_der_Waals_parameters(MSection):
     )
 
     x_castep_Parameter_n = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Parameter for dispersion method OBS
@@ -1737,7 +1737,7 @@ class x_castep_section_van_der_Waals_parameters(MSection):
     )
 
     x_castep_Parameter_s6 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Parameter for dispersion method G06
@@ -1745,7 +1745,7 @@ class x_castep_section_van_der_Waals_parameters(MSection):
     )
 
     x_castep_Parameter_sR = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Parameter for dispersion method TS
@@ -1757,7 +1757,7 @@ class Run(runschema.run.Run):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_castep_atom_forces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         Forces on the atoms as minus gradient of energy_total, including forces' unitary-
@@ -1869,7 +1869,7 @@ class Run(runschema.run.Run):
     )
 
     x_castep_ts_path = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_path_number
@@ -1877,7 +1877,7 @@ class Run(runschema.run.Run):
     )
 
     x_castep_ts_path_ts_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_path_final
@@ -1885,7 +1885,7 @@ class Run(runschema.run.Run):
     )
 
     x_castep_ts_path_product = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_path_pro
@@ -2020,7 +2020,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_castep_net_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Net charge of system
@@ -2028,7 +2028,7 @@ class System(runschema.system.System):
     )
 
     x_castep_number_of_bands = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of bands
@@ -2036,7 +2036,7 @@ class System(runschema.system.System):
     )
 
     x_castep_number_of_electrons = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Number of electrons
@@ -2044,7 +2044,7 @@ class System(runschema.system.System):
     )
 
     x_castep_atom_positions = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         Storing atomic positions in fractional coordinates
@@ -2052,7 +2052,7 @@ class System(runschema.system.System):
     )
 
     x_castep_cell_volume = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         CASTEP_cell_volume
@@ -2068,7 +2068,7 @@ class System(runschema.system.System):
     )
 
     x_castep_optimised_atom_positions = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         Storing atomic optimised positions in fractional coordinates
@@ -2076,7 +2076,7 @@ class System(runschema.system.System):
     )
 
     x_castep_velocities_cell_vector = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         description="""
         cell vector velocities
@@ -2116,7 +2116,7 @@ class System(runschema.system.System):
     )
 
     x_castep_atom_ionic_velocities = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         Temporary storing atomic positions
@@ -2168,7 +2168,7 @@ class BasisSet(runschema.method.BasisSet):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_castep_size_std_grid = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         size of standard grid (eV)
@@ -2176,7 +2176,7 @@ class BasisSet(runschema.method.BasisSet):
     )
 
     x_castep_size_fine_grid = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         sise of fine grid (1/A)
@@ -2188,7 +2188,7 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_castep_enthalpy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         CASTEP_Enthalpy
@@ -2196,7 +2196,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_castep_frequency = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         CASTEP_frequency (cm-1)
@@ -2204,7 +2204,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_castep_improved_energy_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         md_forces
@@ -2212,7 +2212,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_castep_frame_time_0 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         CASTEP_store_t_md_frame
@@ -2220,7 +2220,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_castep_geom_iteration_index = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Index for number of iterations in geometry optimisation
@@ -2236,7 +2236,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_castep_initial_scf_iteration_wall_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Initial SCF iteration wall time
@@ -2244,7 +2244,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_castep_total_dispersion_corrected_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Total electronic energy that includes dispersion energy computed with
@@ -2253,7 +2253,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_castep_total_energy_corrected_for_finite_basis = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         CASTEP_total_energy_corrected_for_finite_basis
@@ -2269,7 +2269,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     energy_total_scf_iteration_list = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[-1],
         description="""
         Total electronic energy calculated with XC_method_scf during the scf iterations is
@@ -2326,7 +2326,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_castep_thermostat_target_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='kelvin',
         description="""
@@ -2351,7 +2351,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     )
 
     x_castep_thermostat_tau = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='second',
         description="""
@@ -2360,7 +2360,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     )
 
     x_castep_barostat_tau = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='second',
         description="""
@@ -2369,7 +2369,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     )
 
     x_castep_integrator_dt = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='second',
         description="""
@@ -2378,7 +2378,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     )
 
     x_castep_number_of_steps_requested = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         MD_time_step_number
@@ -2394,7 +2394,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     )
 
     x_castep_frame_energy_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -2403,7 +2403,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
     )
 
     x_castep_frame_eigen_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -2416,7 +2416,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     m_def = Section(validate=False, extends_base_section=True)
 
     x_castep_geometry_stress_com_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='pascal',
         description="""
@@ -2425,7 +2425,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     )
 
     x_castep_max_number_of_steps = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Number_of iterations geom_optim
@@ -2437,7 +2437,7 @@ class BandStructure(runschema.calculation.BandStructure):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_castep_k_path = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
