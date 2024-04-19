@@ -72,7 +72,7 @@ class x_cpmd_section_start_information(MSection):
     )
 
     x_cpmd_process_id = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The process id for this calculation.
@@ -104,7 +104,7 @@ class x_cpmd_section_run_type_information(MSection):
     m_def = Section(validate=False)
 
     x_cpmd_time_step_ions = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The time step for ions.
@@ -112,7 +112,7 @@ class x_cpmd_section_run_type_information(MSection):
     )
 
     x_cpmd_time_step_electrons = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The time step for electrons.
@@ -128,7 +128,7 @@ class x_cpmd_section_run_type_information(MSection):
     )
 
     x_cpmd_max_steps = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The maximum number of steps requested. In MD, this is the number of MD steps, in
@@ -198,7 +198,7 @@ class x_cpmd_section_atom_kind(MSection):
     )
 
     x_cpmd_atom_kind_mass = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The mass of the atomic kind.
@@ -206,7 +206,7 @@ class x_cpmd_section_atom_kind(MSection):
     )
 
     x_cpmd_atom_kind_raggio = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The width of the ionic charge distribution (RAGGIO) of the atomic kind.
@@ -254,7 +254,7 @@ class x_cpmd_section_supercell(MSection):
     )
 
     x_cpmd_cell_lattice_constant = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The cell lattice constant.
@@ -262,7 +262,7 @@ class x_cpmd_section_supercell(MSection):
     )
 
     x_cpmd_cell_volume = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The cell volume.
@@ -270,8 +270,8 @@ class x_cpmd_section_supercell(MSection):
     )
 
     x_cpmd_cell_dimension = Quantity(
-        type=np.dtype(np.int32),
-        shape=[3],
+        type=np.float64,
+        shape=['*'],
         description="""
         The cell dimension.
         """,
@@ -325,16 +325,16 @@ class x_cpmd_section_supercell(MSection):
         """,
     )
 
-    x_cpmd_real_space_mesh = Quantity(
-        type=str,
-        shape=[],
+    x_cpmd_cell_real_space_mesh = Quantity(
+        type=np.int32,
+        shape=[3],
         description="""
         Number of points in the real space mesh.
         """,
     )
 
     x_cpmd_wave_function_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Place wave cutoff energy for wave function.
@@ -342,7 +342,7 @@ class x_cpmd_section_supercell(MSection):
     )
 
     x_cpmd_density_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Place wave cutoff energy for density.
@@ -350,7 +350,7 @@ class x_cpmd_section_supercell(MSection):
     )
 
     x_cpmd_number_of_planewaves_density = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of plane waves for density cutoff.
@@ -358,7 +358,7 @@ class x_cpmd_section_supercell(MSection):
     )
 
     x_cpmd_number_of_planewaves_wave_function = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of plane waves for wave_function cutoff.
@@ -395,7 +395,7 @@ class x_cpmd_section_scf_iteration(MSection):
     m_def = Section(validate=False)
 
     x_cpmd_scf_nfi = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The scf step number (NFI).
@@ -403,7 +403,7 @@ class x_cpmd_section_scf_iteration(MSection):
     )
 
     x_cpmd_scf_gemax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Largest off-diagonal component (GEMAX) during SCF step.
@@ -411,7 +411,7 @@ class x_cpmd_section_scf_iteration(MSection):
     )
 
     x_cpmd_scf_cnorm = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Average of the off-diagonal components (CNORM) during SCF step.
@@ -419,7 +419,7 @@ class x_cpmd_section_scf_iteration(MSection):
     )
 
     x_cpmd_scf_etot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The total energy (ETOT) during SCF step.
@@ -427,7 +427,7 @@ class x_cpmd_section_scf_iteration(MSection):
     )
 
     x_cpmd_scf_detot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The difference in total energy to the previous SCF energy (DETOT).
@@ -435,7 +435,7 @@ class x_cpmd_section_scf_iteration(MSection):
     )
 
     x_cpmd_scf_tcpu = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The CPU time used during SCF step (TCPU).
@@ -459,7 +459,7 @@ class x_cpmd_section_geo_opt_initialization(MSection):
     m_def = Section(validate=False)
 
     x_cpmd_total_number_of_molecular_structures = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Total number of molecular structures.
@@ -467,7 +467,7 @@ class x_cpmd_section_geo_opt_initialization(MSection):
     )
 
     x_cpmd_initialized_positions = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         The initialized positions for geometry optimization. The ith row corresponds to
@@ -476,7 +476,7 @@ class x_cpmd_section_geo_opt_initialization(MSection):
     )
 
     x_cpmd_initialized_forces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         The initialized forces for geometry optimization. The ith row corresponds to the
@@ -485,7 +485,7 @@ class x_cpmd_section_geo_opt_initialization(MSection):
     )
 
     x_cpmd_geo_opt_initialization_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Time for initialization.
@@ -501,7 +501,7 @@ class x_cpmd_section_geo_opt_step(MSection):
     m_def = Section(validate=False)
 
     x_cpmd_geo_opt_step_positions = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         The positions from a geometry optimization step. The ith row corresponds to the
@@ -510,7 +510,7 @@ class x_cpmd_section_geo_opt_step(MSection):
     )
 
     x_cpmd_geo_opt_step_forces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         The forces from a geometry optimization step. The ith row corresponds to the force
@@ -519,7 +519,7 @@ class x_cpmd_section_geo_opt_step(MSection):
     )
 
     x_cpmd_geo_opt_step_total_number_of_scf_steps = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Total number of SCF steps at the end of this geometry optimization step.
@@ -527,7 +527,7 @@ class x_cpmd_section_geo_opt_step(MSection):
     )
 
     x_cpmd_geo_opt_step_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Geometry optimization step number.
@@ -535,7 +535,7 @@ class x_cpmd_section_geo_opt_step(MSection):
     )
 
     x_cpmd_geo_opt_step_gnmax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The largest absolute component of the force on any atom (GNMAX).
@@ -543,7 +543,7 @@ class x_cpmd_section_geo_opt_step(MSection):
     )
 
     x_cpmd_geo_opt_step_gnorm = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Average force on the atoms (GNORM).
@@ -551,7 +551,7 @@ class x_cpmd_section_geo_opt_step(MSection):
     )
 
     x_cpmd_geo_opt_step_cnstr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The largest absolute component of a constraint force on the atoms (CNSTR).
@@ -559,7 +559,7 @@ class x_cpmd_section_geo_opt_step(MSection):
     )
 
     x_cpmd_geo_opt_step_etot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The total energy at the end of a geometry optimization step (ETOT).
@@ -567,7 +567,7 @@ class x_cpmd_section_geo_opt_step(MSection):
     )
 
     x_cpmd_geo_opt_step_detot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The difference in total energy to the previous geometry optimization step (DETOT).
@@ -575,7 +575,7 @@ class x_cpmd_section_geo_opt_step(MSection):
     )
 
     x_cpmd_geo_opt_step_tcpu = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The CPU time used during geometry optimization step (TCPU).
@@ -596,7 +596,7 @@ class x_cpmd_section_geo_opt_scf_iteration(MSection):
     m_def = Section(validate=False)
 
     x_cpmd_geo_opt_scf_nfi = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The scf step number (NFI) within geometry optimization step.
@@ -604,7 +604,7 @@ class x_cpmd_section_geo_opt_scf_iteration(MSection):
     )
 
     x_cpmd_geo_opt_scf_gemax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Largest off-diagonal component (GEMAX) during SCF step within geometry
@@ -613,7 +613,7 @@ class x_cpmd_section_geo_opt_scf_iteration(MSection):
     )
 
     x_cpmd_geo_opt_scf_cnorm = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Average of the off-diagonal components (CNORM) during SCF step within geometry
@@ -622,7 +622,7 @@ class x_cpmd_section_geo_opt_scf_iteration(MSection):
     )
 
     x_cpmd_geo_opt_scf_etot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The total energy (ETOT) during SCF step within geometry optimization step.
@@ -630,7 +630,7 @@ class x_cpmd_section_geo_opt_scf_iteration(MSection):
     )
 
     x_cpmd_geo_opt_scf_detot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The difference in total energy to the previous SCF energy (DETOT) within geometry
@@ -639,7 +639,7 @@ class x_cpmd_section_geo_opt_scf_iteration(MSection):
     )
 
     x_cpmd_geo_opt_scf_tcpu = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The CPU time used during SCF step (TCPU) within geometry optimization step.
@@ -663,7 +663,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     m_def = Section(validate=False)
 
     x_cpmd_electron_kinetic_energy_mean = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The mean electron kinetic energy.
@@ -671,7 +671,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_electron_kinetic_energy_std = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The standard deviation of electron kinetic energy.
@@ -679,7 +679,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_ionic_temperature_mean = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The mean ionic temperature.
@@ -687,7 +687,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_ionic_temperature_std = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The standard deviation of ionic temperature.
@@ -695,7 +695,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_density_functional_energy_mean = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The mean density functional energy.
@@ -703,7 +703,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_density_functional_energy_std = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The standard deviation of density functional energy.
@@ -711,7 +711,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_classical_energy_mean = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The mean classical energy.
@@ -719,7 +719,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_classical_energy_std = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The standard deviation of classical energy.
@@ -727,7 +727,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_conserved_energy_mean = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The mean conserved energy.
@@ -735,7 +735,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_conserved_energy_std = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The standard deviation of conserved energy.
@@ -743,7 +743,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_nose_energy_electrons_mean = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The mean Nosé energy for electrons.
@@ -751,7 +751,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_nose_energy_electrons_std = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The standard deviation of Nosé energy for elctrons.
@@ -759,7 +759,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_nose_energy_ions_mean = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The mean Nosé energy for ions.
@@ -767,7 +767,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_nose_energy_ions_std = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The standard deviation of Nosé energy for ions.
@@ -775,7 +775,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_constraints_energy_mean = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The mean constrains energy.
@@ -783,7 +783,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_constraints_energy_std = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The standard deviation of constraints energy.
@@ -791,7 +791,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_restraints_energy_mean = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The mean restraints energy.
@@ -799,7 +799,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_restraints_energy_std = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The standard deviation of restraints energy.
@@ -807,7 +807,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_ion_displacement_mean = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The mean ion displacement.
@@ -815,7 +815,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_ion_displacement_std = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The standard deviation of ion displacement.
@@ -823,7 +823,7 @@ class x_cpmd_section_md_averaged_quantities(MSection):
     )
 
     x_cpmd_cpu_time_mean = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The mean cpu time.
@@ -920,7 +920,7 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_cpmd_total_number_of_scf_steps = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Total number of SCF steps at the end of this geometry optimization step.
@@ -928,7 +928,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_cpmd_gnmax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The largest absolute component of the force on any atom (GNMAX).
@@ -936,7 +936,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_cpmd_gnorm = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Average force on the atoms (GNORM).
@@ -944,7 +944,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_cpmd_cnstr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The largest absolute component of a constraint force on the atoms (CNSTR).

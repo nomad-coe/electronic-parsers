@@ -421,7 +421,7 @@ class CPMDParser:
                 if key == 'lattice_vectors':
                     sec_system.atoms.lattice_vectors = val * ureg.bohr
                 elif key.startswith('x_cpmd'):
-                    setattr(sec_supercell, key, val)
+                    sec_supercell.m_set(sec_supercell.m_def.all_quantities[key], val)
 
             return sec_system
 
