@@ -1453,7 +1453,7 @@ class CrystalParser:
 
                     frames.append(i_scc)
                 if frames:
-                    i_scc.time_physical = out['time_end']
+                    i_scc.time_physical = out['time_end'][-1]
                     i_scc.time_calculation = (
                         i_scc.time_physical - run.calculation[-2].time_physical
                     )

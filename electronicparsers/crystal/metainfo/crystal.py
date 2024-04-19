@@ -66,7 +66,7 @@ class System(runschema.system.System):
     )
 
     x_crystal_dimensionality = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         System dimensionality.
@@ -74,7 +74,7 @@ class System(runschema.system.System):
     )
 
     x_crystal_n_symmops = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of symmetry operators.
@@ -86,7 +86,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_crystal_scf_ee = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         +++ ENERGIES IN A.U. +++. ::: TOTAL E-E
@@ -95,7 +95,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_crystal_scf_en_ne = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         +++ ENERGIES IN A.U. +++. ::: TOTAL E-N + N-E
@@ -104,7 +104,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_crystal_scf_nn = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         +++ ENERGIES IN A.U. +++. ::: TOTAL N-N
@@ -113,7 +113,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_crystal_scf_virial_coefficient = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         +++ ENERGIES IN A.U. +++. ::: VIRIAL COEFFICIENT
@@ -218,7 +218,7 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_crystal_convergence_deltap = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Convergence seettings, on power of 10 (e.g. CONVERGENCE ON DELTAP        10**-16)
@@ -226,7 +226,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_weight_f = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         WEIGHT OF F(I) IN F(I+1)
@@ -234,7 +234,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_coulomb_bipolar_buffer = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         COULOMB BIPOLAR BUFFER SET TO x Mb
@@ -242,7 +242,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_eigenvectors_disk_space_ftn = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         DISK SPACE FOR EIGENVECTORS (FTN 10)      351575 REALS
@@ -250,7 +250,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_eigenvectors_disk_space_reals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         DISK SPACE FOR EIGENVECTORS (FTN 10)      351575 REALS
@@ -258,7 +258,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_exchange_bipolar_buffer = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         EXCHANGE BIPOLAR BUFFER SET TO x Mb
@@ -266,7 +266,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_fock_ks_matrix_mixing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         FOCK/KS MATRIX MIXING SET TO x %
@@ -274,7 +274,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_input_tcpu = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT INPUT       TELAPSE        0.01 TCPU        0.01
@@ -282,7 +282,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_input_telapse = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT INPUT       TELAPSE        0.01 TCPU        0.01
@@ -290,7 +290,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_irr_f = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         MATRIX SIZE: P(G)   31533, F(G)    5204, P(G) IRR    1802, F(G) IRR     964
@@ -298,7 +298,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_irr_p = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         MATRIX SIZE: P(G)   31533, F(G)    5204, P(G) IRR    1802, F(G) IRR     964
@@ -306,7 +306,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_is1 = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         CAPPA:IS1 16;IS2 16;IS3 16; K PTS MONK NET 145; SYMMOPS:K SPACE  48;G SPACE  48.
@@ -315,7 +315,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_is2 = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         CAPPA:IS1 16;IS2 16;IS3 16; K PTS MONK NET 145; SYMMOPS:K SPACE  48;G SPACE  48.
@@ -324,7 +324,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_is3 = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         CAPPA:IS1 16;IS2 16;IS3 16; K PTS MONK NET 145; SYMMOPS:K SPACE  48;G SPACE  48.
@@ -333,7 +333,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_n_k_points_gilat = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NUMBER OF K POINTS(GILAT NET)    145
@@ -341,7 +341,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_n_k_points_ibz = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NUMBER OF K POINTS IN THE IBZ    145
@@ -349,7 +349,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_k_pts_monk_net = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         CAPPA:IS1 16;IS2 16;IS3 16; K PTS MONK NET 145; SYMMOPS:K SPACE  48;G SPACE  48.
@@ -358,7 +358,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_matrix_size_f = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         MATRIX SIZE: P(G)   31533, F(G)    5204, P(G) IRR    1802, F(G) IRR     964
@@ -366,7 +366,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_matrix_size_p = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         MATRIX SIZE: P(G)   31533, F(G)    5204, P(G) IRR    1802, F(G) IRR     964
@@ -374,7 +374,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_max_g_vector_index = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         MAX G-VECTOR INDEX FOR 1- AND 2-ELECTRON INTEGRALS 247
@@ -382,7 +382,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_max_scf_cycles = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         MAX NUMBER OF SCF CYCLES
@@ -390,7 +390,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_n_atoms = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         N. OF ATOMS PER CELL
@@ -398,7 +398,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_n_core_electrons = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         CORE ELECTRONS PER CELL
@@ -406,7 +406,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_n_electrons = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         N. OF ELECTRONS PER CELL
@@ -414,7 +414,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_n_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NUMBER OF AO (Atomic orbitals)
@@ -422,7 +422,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_n_shells = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NUMBER OF SHELLS
@@ -430,7 +430,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_n_symmops = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         N. OF SYMMETRY OPERATORS
@@ -438,7 +438,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_pole_order = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         POLE ORDER IN MONO ZONE
@@ -446,7 +446,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_shrink_gilat = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         SHRINKING FACTOR(GILAT NET)   16
@@ -454,7 +454,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_shrink_value1 = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary storage.
@@ -462,7 +462,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_shrink_value2 = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary storage.
@@ -470,7 +470,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_shrink_value3 = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary storage.
@@ -478,7 +478,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_shrink = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         SHRINK. FACT.(MONKH.)   16 16 16
@@ -494,7 +494,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_symmops_g = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         CAPPA:IS1 16;IS2 16;IS3 16; K PTS MONK NET 145; SYMMOPS:K SPACE  48;G SPACE  48.
@@ -503,7 +503,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_symmops_k = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         CAPPA:IS1 16;IS2 16;IS3 16; K PTS MONK NET 145; SYMMOPS:K SPACE  48;G SPACE  48.
@@ -512,7 +512,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_tol_coulomb_overlap = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         COULOMB OVERLAP TOL         (T1) 10**   -6. (Tolerance T1, power of 10)
@@ -520,7 +520,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_tol_coulomb_penetration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         COULOMB PENETRATION TOL     (T2) 10**   -6. (Tolerance T2, power of 10)
@@ -528,7 +528,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_tol_exchange_overlap = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         EXCHANGE OVERLAP TOL        (T3) 10**   -6. (Tolerance T3, power of 10)
@@ -536,7 +536,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_tol_pseudo_overlap_f = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         EXCHANGE PSEUDO OVP (F(G))  (T4) 10**   -6. (Tolerance T4, power of 10)
@@ -544,7 +544,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_tol_pseudo_overlap_p = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         EXCHANGE PSEUDO OVP (P(G))  (T5) 10**  -12. (Tolerance T5, power of 10)
@@ -560,7 +560,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_weight_previous = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         WEIGHT OF F(I) IN F(I+1)      30%
@@ -568,7 +568,7 @@ class Method(runschema.method.Method):
     )
 
     x_crystal_toldee = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TOLDEE info
@@ -608,7 +608,7 @@ class x_crystal_section_shell(MSection):
     )
 
     x_crystal_shell_coefficients = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['n_orbitals', 4],
         description="""
         Contraction coefficients in this order: exponent, S, P, D/F/G.
