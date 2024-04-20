@@ -271,7 +271,7 @@ class MopacParser:
         if dipole is not None:
             sec_multipoles = Multipoles()
             sec_calc.multipoles.append(sec_multipoles)
-            sec_multipoles.dipole = MultipolesEntry(total=dipole[-1][-1])
+            sec_multipoles.dipole = MultipolesEntry(total=[dipole[-1][-1]])
 
         atomic_population = self.mainfile_parser.atomic_population
         if atomic_population is not None:

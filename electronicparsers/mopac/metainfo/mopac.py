@@ -43,7 +43,7 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_mopac_fhof = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
