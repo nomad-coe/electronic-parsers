@@ -66,7 +66,7 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_gpaw_atomic_density_matrices = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_spin_channels', 'x_gpaw_number_of_packed_ap_elements'],
         description="""
         atomic density matrices in the PAW formalism
@@ -74,7 +74,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_gpaw_fixed_spin_Sz = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Target value (fixed) of the z projection of the spin moment operator $S^z$ for the
@@ -83,7 +83,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_gpaw_magnetic_moments = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Magnetic moments projected onto atoms. The sum gives the total magnetic moment
@@ -91,7 +91,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_gpaw_projections_imag = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[
             'number_of_spin_channels',
             'number_of_eigenvalues_kpoints',
@@ -104,7 +104,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_gpaw_projections_real = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[
             'number_of_spin_channels',
             'number_of_eigenvalues_kpoints',
@@ -117,7 +117,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_gpaw_spin_Sz = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Value of the z projection of the spin moment operator $S^z$ for the converged
@@ -130,7 +130,7 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_gpaw_density_convergence_criterion = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Density convergence criteria for break the SCF cycle
@@ -154,7 +154,7 @@ class Method(runschema.method.Method):
     )
 
     x_gpaw_maximum_angular_momentum = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maxium angular momentum (L) for projectors
@@ -162,7 +162,7 @@ class Method(runschema.method.Method):
     )
 
     x_gpaw_mix_beta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Damping parameter in the density mixer
@@ -178,7 +178,7 @@ class Method(runschema.method.Method):
     )
 
     x_gpaw_mix_old = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of old densities in the density mixer
@@ -186,7 +186,7 @@ class Method(runschema.method.Method):
     )
 
     x_gpaw_mix_weight = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Mixing weight in density mixer
