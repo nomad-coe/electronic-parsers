@@ -176,7 +176,7 @@ class x_nwchem_section_xc_part(MSection):
     )
 
     x_nwchem_xc_functional_weight = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The weight of the XC functional.
@@ -221,7 +221,7 @@ class x_nwchem_section_geo_opt_step(MSection):
     m_def = Section(validate=False)
 
     x_nwchem_geo_opt_step_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The energy for a geometry optimization step.
@@ -245,7 +245,7 @@ class x_nwchem_section_qmd_step(MSection):
     m_def = Section(validate=False)
 
     x_nwchem_qmd_step_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='second',
         description="""
@@ -254,7 +254,7 @@ class x_nwchem_section_qmd_step(MSection):
     )
 
     x_nwchem_qmd_step_kinetic_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -263,7 +263,7 @@ class x_nwchem_section_qmd_step(MSection):
     )
 
     x_nwchem_qmd_step_potential_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -272,7 +272,7 @@ class x_nwchem_section_qmd_step(MSection):
     )
 
     x_nwchem_qmd_step_total_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -281,7 +281,7 @@ class x_nwchem_section_qmd_step(MSection):
     )
 
     x_nwchem_qmd_step_target_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='kelvin',
         description="""
@@ -290,7 +290,7 @@ class x_nwchem_section_qmd_step(MSection):
     )
 
     x_nwchem_qmd_step_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='kelvin',
         description="""
@@ -299,7 +299,7 @@ class x_nwchem_section_qmd_step(MSection):
     )
 
     x_nwchem_qmd_step_dipole = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         Electric dipole moment.
@@ -355,7 +355,7 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_nwchem_energy_one_electron = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The one-electron energy in a DFT calculation.
@@ -363,7 +363,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_nwchem_energy_coulomb = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The Coulomb energy energy in a DFT calculation.
@@ -371,7 +371,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_nwchem_energy_nuclear_repulsion = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The nuclear repulsion energy in a DFT calculation.
@@ -387,7 +387,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_nwchem_qmd_number_of_nuclear_steps = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of nuclear steps.
@@ -395,7 +395,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_nwchem_qmd_nuclear_time_step = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Nuclear time step.
@@ -403,7 +403,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_nwchem_qmd_target_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Target temperature.
@@ -419,7 +419,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_nwchem_qmd_tau = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Tau for QMD thermostat.
@@ -427,7 +427,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_nwchem_qmd_random_seed = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Random seed.
@@ -443,7 +443,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_nwchem_qmd_initial_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Initial temperature
@@ -455,7 +455,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_nwchem_reciprocal_simulation_cell = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         description="""
         The simulation cell in reciprocal space.
@@ -463,7 +463,7 @@ class System(runschema.system.System):
     )
 
     x_nwchem_lattice_basis_vector_lengths = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         The lengths of the basis vectors.
@@ -471,7 +471,7 @@ class System(runschema.system.System):
     )
 
     x_nwchem_lattice_basis_vector_angles = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         The angles between the basis vectors.
@@ -479,7 +479,7 @@ class System(runschema.system.System):
     )
 
     x_nwchem_lattice_omega = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The lattice omega value.
