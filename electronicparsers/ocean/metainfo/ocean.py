@@ -311,7 +311,7 @@ class Method(runschema.run.Method):
 
     x_ocean_edges = Quantity(
         type=np.int32,
-        shape=['*'],
+        shape=['*', 3],
         description="""
         Each edge entry consists of 3 integers. When the first is greater than 0 it denotes the index
         of the atom (in the order set by XRED), and when it is less than zero it sets the (negative) Z,
