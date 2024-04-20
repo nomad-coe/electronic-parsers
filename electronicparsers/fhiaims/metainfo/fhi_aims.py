@@ -89,7 +89,7 @@ class x_fhi_aims_section_controlIn_basis_func(MSection):
     )
 
     x_fhi_aims_controlIn_basis_func_n = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -97,7 +97,7 @@ class x_fhi_aims_section_controlIn_basis_func(MSection):
     )
 
     x_fhi_aims_controlIn_basis_func_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -129,7 +129,7 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
     )
 
     x_fhi_aims_controlIn_basis_dep_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         cutoff for the dependent basis
@@ -137,7 +137,7 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
     )
 
     x_fhi_aims_controlIn_cut_pot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         cut\\_pot parameters
@@ -145,7 +145,7 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
     )
 
     x_fhi_aims_controlIn_division = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_fhi_aims_controlIn_number_of_basis_func', 2],
         description="""
         division parameters: position and number of points, respectively
@@ -153,7 +153,7 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
     )
 
     x_fhi_aims_controlIn_number_of_basis_func = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number of basis functions
@@ -161,7 +161,7 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
     )
 
     x_fhi_aims_controlIn_l_hartree = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         angular leven for the hartreee part
@@ -169,7 +169,7 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
     )
 
     x_fhi_aims_controlIn_mass = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         mass of the nucleus in atomic mass units
@@ -177,7 +177,7 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
     )
 
     x_fhi_aims_controlIn_nucleus = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         charge of the nucleus
@@ -185,7 +185,7 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
     )
 
     x_fhi_aims_controlIn_outer_grid = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         outer grid
@@ -193,7 +193,7 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
     )
 
     x_fhi_aims_controlIn_radial_base = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[2],
         description="""
         radial\\_base parameters
@@ -201,7 +201,7 @@ class x_fhi_aims_section_controlIn_basis_set(MSection):
     )
 
     x_fhi_aims_controlIn_radial_multiplier = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         radial multiplier
@@ -238,7 +238,7 @@ class x_fhi_aims_section_controlInOut_atom_species(MSection):
     )
 
     x_fhi_aims_controlInOut_species_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='coulomb',
         description="""
@@ -247,7 +247,7 @@ class x_fhi_aims_section_controlInOut_atom_species(MSection):
     )
 
     x_fhi_aims_controlInOut_species_cut_pot_scale = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -255,7 +255,7 @@ class x_fhi_aims_section_controlInOut_atom_species(MSection):
     )
 
     x_fhi_aims_controlInOut_species_cut_pot_width = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -264,7 +264,7 @@ class x_fhi_aims_section_controlInOut_atom_species(MSection):
     )
 
     x_fhi_aims_controlInOut_species_cut_pot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -273,7 +273,7 @@ class x_fhi_aims_section_controlInOut_atom_species(MSection):
     )
 
     x_fhi_aims_controlInOut_species_mass = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='kilogram',
         description="""
@@ -307,7 +307,7 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
     m_def = Section(validate=False)
 
     x_fhi_aims_controlInOut_basis_func_eff_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -315,8 +315,8 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
     )
 
     x_fhi_aims_controlInOut_basis_func_gauss_alpha = Quantity(
-        type=np.dtype(np.float64),
-        shape=[],
+        type=np.float64,
+        shape=['*'],
         unit='1 / meter ** 2',
         description="""
         -
@@ -324,7 +324,7 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
     )
 
     x_fhi_aims_controlInOut_basis_func_gauss_l = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -332,7 +332,7 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
     )
 
     x_fhi_aims_controlInOut_basis_func_gauss_N = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -340,7 +340,7 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
     )
 
     x_fhi_aims_controlInOut_basis_func_gauss_weight = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -356,7 +356,7 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
     )
 
     x_fhi_aims_controlInOut_basis_func_n = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -364,7 +364,7 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
     )
 
     x_fhi_aims_controlInOut_basis_func_occ = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -372,7 +372,7 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
     )
 
     x_fhi_aims_controlInOut_basis_func_primitive_gauss_alpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='1 / meter ** 2',
         description="""
@@ -381,7 +381,7 @@ class x_fhi_aims_section_controlInOut_basis_func(MSection):
     )
 
     x_fhi_aims_controlInOut_basis_func_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -430,7 +430,7 @@ class x_fhi_aims_section_eigenvalues_list_ZORA(MSection):
     m_def = Section(validate=False)
 
     x_fhi_aims_eigenvalue_eigenvalue_ZORA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -439,7 +439,7 @@ class x_fhi_aims_section_eigenvalues_list_ZORA(MSection):
     )
 
     x_fhi_aims_eigenvalue_occupation_ZORA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Occupation of single eigenfunction of scaled ZORA
@@ -455,7 +455,7 @@ class x_fhi_aims_section_eigenvalues_list(MSection):
     m_def = Section(validate=False)
 
     x_fhi_aims_eigenvalue_eigenvalue = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -464,7 +464,7 @@ class x_fhi_aims_section_eigenvalues_list(MSection):
     )
 
     x_fhi_aims_eigenvalue_occupation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Occupation of single eigenfunction
@@ -480,7 +480,7 @@ class x_fhi_aims_section_eigenvalues_spin_ZORA(MSection):
     m_def = Section(validate=False)
 
     x_fhi_aims_eigenvalue_kpoint1_ZORA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Component 1 of kpoints on which the eigenvalues were evaluated of scaled ZORA
@@ -488,7 +488,7 @@ class x_fhi_aims_section_eigenvalues_spin_ZORA(MSection):
     )
 
     x_fhi_aims_eigenvalue_kpoint2_ZORA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Component 2 of kpoints on which the eigenvalues were evaluated of scaled ZORA
@@ -496,7 +496,7 @@ class x_fhi_aims_section_eigenvalues_spin_ZORA(MSection):
     )
 
     x_fhi_aims_eigenvalue_kpoint3_ZORA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Component 3 of kpoints on which the eigenvalues were evaluated of scaled ZORA
@@ -517,7 +517,7 @@ class x_fhi_aims_section_eigenvalues_spin(MSection):
     m_def = Section(validate=False)
 
     x_fhi_aims_eigenvalue_kpoint1 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Component 1 of kpoints on which the eigenvalues were evaluated
@@ -525,7 +525,7 @@ class x_fhi_aims_section_eigenvalues_spin(MSection):
     )
 
     x_fhi_aims_eigenvalue_kpoint2 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Component 2 of kpoints on which the eigenvalues were evaluated
@@ -533,7 +533,7 @@ class x_fhi_aims_section_eigenvalues_spin(MSection):
     )
 
     x_fhi_aims_eigenvalue_kpoint3 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Component 3 of kpoints on which the eigenvalues were evaluated
@@ -587,7 +587,7 @@ class x_fhi_aims_section_parallel_task_assignement(MSection):
     )
 
     x_fhi_aims_parallel_task_nr = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -624,7 +624,7 @@ class x_fhi_aims_section_vdW_TS(MSection):
     )
 
     x_fhi_aims_free_atom_volume = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -632,7 +632,7 @@ class x_fhi_aims_section_vdW_TS(MSection):
     )
 
     x_fhi_aims_hirschfeld_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -640,7 +640,7 @@ class x_fhi_aims_section_vdW_TS(MSection):
     )
 
     x_fhi_aims_hirschfeld_volume = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -648,7 +648,7 @@ class x_fhi_aims_section_vdW_TS(MSection):
     )
 
     x_fhi_aims_vdW_energy_corr_TS = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -679,7 +679,7 @@ class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
     m_def = Section(validate=False)
 
     x_fhi_aims_eigenvalue_correlation_perturbativeGW = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -688,7 +688,7 @@ class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
     )
 
     x_fhi_aims_eigenvalue_ExactExchange_perturbativeGW = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -697,7 +697,7 @@ class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
     )
 
     x_fhi_aims_eigenvalue_ks_ExchangeCorrelation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -707,7 +707,7 @@ class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
     )
 
     x_fhi_aims_eigenvalue_ks_GroundState = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -716,7 +716,7 @@ class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
     )
 
     x_fhi_aims_eigenvalue_occupation_perturbativeGW = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Occupation of single eigenfunction of perturbative GW
@@ -724,7 +724,7 @@ class x_fhi_aims_section_eigenvalues_list_perturbativeGW(MSection):
     )
 
     x_fhi_aims_eigenvalue_quasiParticle_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -745,7 +745,7 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fhi_aims_atom_forces_free_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -754,7 +754,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_fhi_aims_atom_forces_free_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -763,7 +763,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_fhi_aims_atom_forces_free_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -772,7 +772,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_fhi_aims_energy_C_LDA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -782,7 +782,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_fhi_aims_energy_X_LDA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -812,7 +812,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fhi_aims_atom_forces_raw_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -821,7 +821,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     )
 
     x_fhi_aims_atom_forces_raw_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -830,7 +830,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     )
 
     x_fhi_aims_atom_forces_raw_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -839,7 +839,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     )
 
     x_fhi_aims_energy_electrostatic_free_atom_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -849,7 +849,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     )
 
     x_fhi_aims_energy_scgw_correlation_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -858,7 +858,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     )
 
     x_fhi_aims_poles_fit_accuracy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Fit acccuracy for the Fast-Fourier Transforms necessary in the scGW formalism
@@ -866,7 +866,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     )
 
     x_fhi_aims_scf_time_start = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         unit='s',
         shape=[],
         description="""
@@ -875,7 +875,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     )
 
     x_fhi_aims_scgw_galitskii_migdal_total_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -884,7 +884,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     )
 
     x_fhi_aims_scgw_hartree_energy_sum_eigenvalues_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -894,7 +894,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     )
 
     x_fhi_aims_scgw_kinetic_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -903,7 +903,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     )
 
     x_fhi_aims_scgw_rpa_correlation_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -921,7 +921,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
     )
 
     x_fhi_aims_single_particle_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -940,7 +940,7 @@ class DosValues(runschema.calculation.DosValues):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fhi_aims_normalization_factor_raw_data = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         default=1,
         shape=[],
         description="""
@@ -953,7 +953,7 @@ class BandStructure(runschema.calculation.BandStructure):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fhi_aims_band_k1 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -961,7 +961,7 @@ class BandStructure(runschema.calculation.BandStructure):
     )
 
     x_fhi_aims_band_k2 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -969,7 +969,7 @@ class BandStructure(runschema.calculation.BandStructure):
     )
 
     x_fhi_aims_band_k3 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -985,7 +985,7 @@ class BandStructure(runschema.calculation.BandStructure):
     )
 
     x_fhi_aims_band_segment = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -997,7 +997,7 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fhi_aims_controlIn_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1006,7 +1006,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_hse_omega = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='1 / meter',
         description="""
@@ -1023,7 +1023,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_hybrid_xc_coeff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1032,7 +1032,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_k1 = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1041,7 +1041,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_k2 = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1050,7 +1050,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_k3 = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1059,7 +1059,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_k_grid = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         -
@@ -1068,7 +1068,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_occupation_order = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1086,7 +1086,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_occupation_width = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1103,7 +1103,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_relativistic_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1119,7 +1119,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_sc_accuracy_eev = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1128,7 +1128,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_sc_accuracy_etot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1137,7 +1137,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_sc_accuracy_forces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1146,7 +1146,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_sc_accuracy_rho = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1155,7 +1155,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_sc_accuracy_stress = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1164,7 +1164,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlIn_sc_iter_limit = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1199,7 +1199,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_band_segment_end1 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1208,7 +1208,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_band_segment_end2 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1217,7 +1217,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_band_segment_end3 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1226,7 +1226,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_band_segment_start1 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1235,7 +1235,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_band_segment_start2 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1244,7 +1244,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_band_segment_start3 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1253,7 +1253,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_hse_omega = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='1 / meter',
         description="""
@@ -1270,7 +1270,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_hybrid_xc_coeff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1279,7 +1279,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_k1 = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1288,7 +1288,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_k2 = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1297,7 +1297,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_k3 = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1306,7 +1306,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_k_grid = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         -
@@ -1315,7 +1315,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_number_of_spin_channels = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1332,7 +1332,7 @@ class Method(runschema.method.Method):
     )
 
     x_fhi_aims_controlInOut_relativistic_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1368,7 +1368,7 @@ class Run(runschema.run.Run):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fhi_aims_controlIn_MD_time_step = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='second',
         description="""
@@ -1377,7 +1377,7 @@ class Run(runschema.run.Run):
     )
 
     x_fhi_aims_controlInOut_MD_time_step = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='second',
         description="""
@@ -1443,7 +1443,7 @@ class System(runschema.system.System):
     )
 
     x_fhi_aims_geometry_atom_positions_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -1452,7 +1452,7 @@ class System(runschema.system.System):
     )
 
     x_fhi_aims_geometry_atom_positions_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -1461,7 +1461,7 @@ class System(runschema.system.System):
     )
 
     x_fhi_aims_geometry_atom_positions_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -1470,7 +1470,7 @@ class System(runschema.system.System):
     )
 
     x_fhi_aims_geometry_atom_velocity_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter / second',
         description="""
@@ -1479,7 +1479,7 @@ class System(runschema.system.System):
     )
 
     x_fhi_aims_geometry_atom_velocity_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter / second',
         description="""
@@ -1488,7 +1488,7 @@ class System(runschema.system.System):
     )
 
     x_fhi_aims_geometry_atom_velocity_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter / second',
         description="""
@@ -1497,7 +1497,7 @@ class System(runschema.system.System):
     )
 
     x_fhi_aims_geometry_lattice_vector_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -1506,7 +1506,7 @@ class System(runschema.system.System):
     )
 
     x_fhi_aims_geometry_lattice_vector_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -1515,7 +1515,7 @@ class System(runschema.system.System):
     )
 
     x_fhi_aims_geometry_lattice_vector_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -1545,7 +1545,7 @@ class HubbardKanamoriModel(runschema.method.HubbardKanamoriModel):
     )
 
     x_fhi_aims_petukhov_mixing_factor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Mixing term to correct for double counting in DFT+U

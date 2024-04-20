@@ -354,7 +354,7 @@ def test_gw(parser):
     assert sec_method[-1].frequency_mesh[0].n_points == len(
         sec_method[-1].frequency_mesh[0].points
     )
-    assert sec_method[-1].frequency_mesh[0].points[-1].to(
+    assert sec_method[-1].frequency_mesh[0].points[-1][0].to(
         'hartree'
     ).magnitude == approx(3571.4288641158605 + 0j)
 

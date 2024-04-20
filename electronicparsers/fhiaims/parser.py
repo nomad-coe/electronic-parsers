@@ -18,7 +18,6 @@
 #
 import os
 import numpy as np
-import logging
 import json
 import hashlib
 from typing import Any
@@ -26,10 +25,9 @@ import re
 from datetime import datetime
 
 from nomad.units import ureg
-
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
-
 from nomad.metainfo import MSection
+from nomad.utils import get_logger
 
 from runschema.run import Run, Program, TimeRun
 from runschema.method import (
@@ -794,11 +792,13 @@ class FHIAimsOutParser(TextParser):
                 TimeRun.cpu1_start,
                 r'Time zero on CPU 1\s*:\s*([0-9\-E\.]+)\s*(?P<__unit>\w+)\.',
                 repeats=False,
+                dtype=float,
             ),
             Quantity(
                 TimeRun.wall_start,
                 r'Internal wall clock time zero\s*:\s*([0-9\-E\.]+)\s*(?P<__unit>\w+)\.',
                 repeats=False,
+                dtype=float,
             ),
             Quantity(Run.raw_id, r'aims_uuid\s*:\s*([\w\-]+)', repeats=False),
             Quantity(
@@ -839,6 +839,7 @@ class FHIAimsOutParser(TextParser):
                 xsection_method.x_fhi_aims_controlInOut_hybrid_xc_coeff,
                 r'hybrid_xc_coeff: Mixing coefficient for hybrid-functional exact exchange modified to\s*([\d\.]+)',
                 repeats=False,
+                dtype=float,
             ),
             Quantity(
                 'k_grid', rf'{re_n} *Found k-point grid:\s*([\d ]+)', repeats=False
@@ -1434,7 +1435,9 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             dimensionality=1,
             sampling_method=freq_grid_type,
             n_points=self.out_parser.get('n_freq', 100),
-            points=freq_points,
+            points=np.reshape(freq_points, (len(freq_points), 1))
+            if freq_points is not None
+            else freq_points,
         )
         sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 
@@ -1742,7 +1745,14 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             if stress_tensor is not None:
                 sec_stress = Stress()
                 sec_scf.stress = sec_stress
-                sec_stress.total = StressEntry(value=stress_tensor)
+                value = np.zeros((3, 3))
+                value[0][0] = stress_tensor[0]
+                value[1][1] = stress_tensor[1]
+                value[2][2] = stress_tensor[2]
+                value[0][1] = value[1][0] = stress_tensor[3]
+                value[0][2] = value[2][0] = stress_tensor[4]
+                value[1][2] = value[2][1] = stress_tensor[5]
+                sec_stress.total = StressEntry(value=value)
 
             # pressure
             pressure = iteration.get('pressure')
@@ -2357,8 +2367,8 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                     sec_hubbard.u_effective = val[0][-2] * ureg.eV
                     sec_hubbard.double_counting_correction = 'Dudarev'
                     sec_hubbard.x_fhi_aims_projection_type = 'Mulliken (dual)'
-                    sec_hubbard.x_fhi_aims_petukhov_mixing_factor = self.out_parser.get(
-                        'petukhov'
+                    sec_hubbard.x_fhi_aims_petukhov_mixing_factor = float(
+                        self.out_parser.get('petukhov')
                     )
                 elif 'free-atom' in key or 'free-ion' in key:
                     for i in range(len(val)):
@@ -2493,7 +2503,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.filepath = filepath
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
-        self.logger = logger if logger is not None else logging
+        self.logger = logger if logger is not None else get_logger(__name__)
 
         self.init_parser()
 
