@@ -453,9 +453,11 @@ class OnetepParser:
                 )
 
             if source.get('forces') is not None:
+                value = source.forces.value
                 sec_scc.forces = Forces(
                     total=ForcesEntry(
-                        value=source.forces.value * (ureg.hartree / ureg.bohr)
+                        value=np.reshape(value, (np.size(value) // 3, 3))
+                        * (ureg.hartree / ureg.bohr)
                     )
                 )
 

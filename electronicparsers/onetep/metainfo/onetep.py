@@ -48,7 +48,7 @@ class x_onetep_section_vibrational_frequencies(MSection):
     m_def = Section(validate=False)
 
     x_onetep_vibrationl_frequencies = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['len(self.nr_iter)'],
         description="""
         Vibration Frequenices (cm-1)
@@ -80,7 +80,7 @@ class x_onetep_section_vibrational_frequencies(MSection):
     )
 
     x_onetep_raman_activity = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['len(self.nr_iter)'],
         description="""
         Raman activity (A**4/amu)
@@ -96,7 +96,7 @@ class x_onetep_section_vibrational_frequencies(MSection):
     )
 
     x_onetep_n_iterations_phonons = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of iterations in phonons
@@ -112,7 +112,7 @@ class x_onetep_section_vibrational_frequencies(MSection):
     )
 
     x_onetep_ir_intensity = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['len(self.nr_iter)'],
         description="""
         IR intensities (D/A)**2/amu
@@ -136,7 +136,7 @@ class x_onetep_section_tddft(MSection):
     m_def = Section(validate=False)
 
     x_onetep_tddft_energies = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[-1],
         description="""
         lrtddft energy
@@ -144,7 +144,7 @@ class x_onetep_section_tddft(MSection):
     )
 
     x_onetep_tddft_penalties = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[-1],
         description="""
         lrtddft energy
@@ -152,7 +152,7 @@ class x_onetep_section_tddft(MSection):
     )
 
     x_onetep_tddft_steps = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[-1],
         description="""
         lrtddft energy
@@ -160,7 +160,7 @@ class x_onetep_section_tddft(MSection):
     )
 
     x_onetep_tddft_omega_change = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         change in omega
@@ -168,7 +168,7 @@ class x_onetep_section_tddft(MSection):
     )
 
     x_onetep_tddft_rms_gradient = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         rms gradient tddft
@@ -176,7 +176,7 @@ class x_onetep_section_tddft(MSection):
     )
 
     x_onetep_tddft_number_conv_states = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number converged states
@@ -184,7 +184,7 @@ class x_onetep_section_tddft(MSection):
     )
 
     x_onetep_tddft_excit_energies = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[-1],
         description="""
         excitations
@@ -192,7 +192,7 @@ class x_onetep_section_tddft(MSection):
     )
 
     x_onetep_tddft_excit_oscill_str = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[-1],
         description="""
         oscillator strenght
@@ -200,7 +200,7 @@ class x_onetep_section_tddft(MSection):
     )
 
     x_onetep_tddft_excit_lifetime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[-1],
         description="""
         excit_lifetime
@@ -224,7 +224,7 @@ class x_onetep_section_tddft_excitations(MSection):
     m_def = Section(validate=False)
 
     x_onetep_tddft_excit_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -233,7 +233,7 @@ class x_onetep_section_tddft_excitations(MSection):
     )
 
     x_onetep_tddft_excit_oscill_str = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         oscillator strenght
@@ -241,7 +241,7 @@ class x_onetep_section_tddft_excitations(MSection):
     )
 
     x_onetep_tddft_excit_lifetime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='s',
         description="""
@@ -258,7 +258,7 @@ class x_onetep_section_tddft_iterations(MSection):
     m_def = Section(validate=False)
 
     x_onetep_tddft_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         lrtddft energy
@@ -266,7 +266,7 @@ class x_onetep_section_tddft_iterations(MSection):
     )
 
     x_onetep_tddft_penalties = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         lrtddft energy
@@ -274,7 +274,7 @@ class x_onetep_section_tddft_iterations(MSection):
     )
 
     x_onetep_tddft_step = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         lrtddft energy
@@ -298,7 +298,7 @@ class x_onetep_section_atom_positions_optim(MSection):
     m_def = Section(validate=False)
 
     x_onetep_cell_angle_alpha_optim = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Simulation cell angle alpha
@@ -306,7 +306,7 @@ class x_onetep_section_atom_positions_optim(MSection):
     )
 
     x_onetep_cell_angle_beta_optim = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Simulation cell angle beta
@@ -314,7 +314,7 @@ class x_onetep_section_atom_positions_optim(MSection):
     )
 
     x_onetep_cell_angle_gamma_optim = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Simulation cell angle gamma
@@ -322,7 +322,7 @@ class x_onetep_section_atom_positions_optim(MSection):
     )
 
     x_onetep_cell_length_a_optim = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         a unit cell edge length
@@ -330,7 +330,7 @@ class x_onetep_section_atom_positions_optim(MSection):
     )
 
     x_onetep_cell_length_b_optim = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         b unit cell edge length
@@ -338,7 +338,7 @@ class x_onetep_section_atom_positions_optim(MSection):
     )
 
     x_onetep_cell_length_c_optim = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         c unit cell edge length
@@ -354,7 +354,7 @@ class x_onetep_section_atom_positions(MSection):
     m_def = Section(validate=False)
 
     x_onetep_cell_angle_alpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Simulation cell angle alpha
@@ -362,7 +362,7 @@ class x_onetep_section_atom_positions(MSection):
     )
 
     x_onetep_cell_angle_beta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Simulation cell angle beta
@@ -370,7 +370,7 @@ class x_onetep_section_atom_positions(MSection):
     )
 
     x_onetep_cell_angle_gamma = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Simulation cell angle gamma
@@ -378,7 +378,7 @@ class x_onetep_section_atom_positions(MSection):
     )
 
     x_onetep_cell_length_a = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         a unit cell edge length
@@ -386,7 +386,7 @@ class x_onetep_section_atom_positions(MSection):
     )
 
     x_onetep_cell_length_b = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         b unit cell edge length
@@ -394,7 +394,7 @@ class x_onetep_section_atom_positions(MSection):
     )
 
     x_onetep_cell_length_c = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         c unit cell edge length
@@ -410,7 +410,7 @@ class x_onetep_section_dipole(MSection):
     m_def = Section(validate=False)
 
     x_onetep_electronic_dipole_moment_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         store dipole
@@ -418,7 +418,7 @@ class x_onetep_section_dipole(MSection):
     )
 
     x_onetep_electronic_dipole_moment = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         -
@@ -426,7 +426,7 @@ class x_onetep_section_dipole(MSection):
     )
 
     x_onetep_electronic_dipole_moment_magnitude = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -434,7 +434,7 @@ class x_onetep_section_dipole(MSection):
     )
 
     x_onetep_ionic_dipole_moment_magnitude = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -442,7 +442,7 @@ class x_onetep_section_dipole(MSection):
     )
 
     x_onetep_total_dipole_moment_magnitude = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -450,7 +450,7 @@ class x_onetep_section_dipole(MSection):
     )
 
     x_onetep_ionic_dipole_moment_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         -
@@ -458,7 +458,7 @@ class x_onetep_section_dipole(MSection):
     )
 
     x_onetep_ionic_dipole_moment = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         -
@@ -466,7 +466,7 @@ class x_onetep_section_dipole(MSection):
     )
 
     x_onetep_total_dipole_moment_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         -
@@ -474,7 +474,7 @@ class x_onetep_section_dipole(MSection):
     )
 
     x_onetep_total_dipole_moment = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         -
@@ -538,7 +538,7 @@ class x_onetep_section_eigenvalues_1(MSection):
     m_def = Section(validate=False)
 
     x_onetep_store_eigenvalues_1 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storing eigenvalues
@@ -554,7 +554,7 @@ class x_onetep_section_eigenvalues(MSection):
     m_def = Section(validate=False)
 
     x_onetep_store_eigenvalues = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storing eigenvalues
@@ -626,7 +626,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
     )
 
     x_onetep_total_orbital = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Mulliken_total_contribution
@@ -634,7 +634,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
     )
 
     x_onetep_total_orbital_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Mulliken_total_contribution
@@ -642,7 +642,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
     )
 
     x_onetep_spin = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Mulliken_spin
@@ -650,7 +650,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
     )
 
     x_onetep_spin_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Mulliken_spin
@@ -658,7 +658,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
     )
 
     x_onetep_mulliken_charge_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Mulliken_charges
@@ -666,7 +666,7 @@ class x_onetep_section_mulliken_population_analysis(MSection):
     )
 
     x_onetep_mulliken_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Mulliken_charges
@@ -698,7 +698,7 @@ class x_onetep_section_nbo_population_analysis(MSection):
     )
 
     x_onetep_total_nbo_population_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         nbo_population
@@ -706,7 +706,7 @@ class x_onetep_section_nbo_population_analysis(MSection):
     )
 
     x_onetep_total_nbo_population = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         nbo_population
@@ -714,7 +714,7 @@ class x_onetep_section_nbo_population_analysis(MSection):
     )
 
     x_onetep_nbo_partial_charge_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         nbo_charges
@@ -722,7 +722,7 @@ class x_onetep_section_nbo_population_analysis(MSection):
     )
 
     x_onetep_nbo_partial_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         nbo_charges
@@ -730,7 +730,7 @@ class x_onetep_section_nbo_population_analysis(MSection):
     )
 
     x_onetep_nbo_total_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         nbo_charges
@@ -762,7 +762,7 @@ class x_onetep_section_optics_parameters(MSection):
     m_def = Section(validate=False)
 
     x_onetep_optics_n_bands = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         optics_number_of_bands
@@ -770,7 +770,7 @@ class x_onetep_section_optics_parameters(MSection):
     )
 
     x_onetep_optics_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         optics_band_convergence_tolerance
@@ -786,7 +786,7 @@ class x_onetep_section_ngwf_parameters(MSection):
     m_def = Section(validate=False)
 
     x_onetep_ngwf_cg_max_step = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         ngwf_cg_max_step
@@ -802,7 +802,7 @@ class x_onetep_section_ngwf_parameters(MSection):
     )
 
     x_onetep_ngwf_halo = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ngwf_halo
@@ -810,7 +810,7 @@ class x_onetep_section_ngwf_parameters(MSection):
     )
 
     x_onetep_ngwf_max_grad = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x_onetep_ngwf_max_grad
@@ -818,7 +818,7 @@ class x_onetep_section_ngwf_parameters(MSection):
     )
 
     x_onetep_ngwf_threshold_orig = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ngwf_threshold_orig
@@ -834,7 +834,7 @@ class x_onetep_section_kernel_parameters(MSection):
     m_def = Section(validate=False)
 
     x_onetep_kernel_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -842,7 +842,7 @@ class x_onetep_section_kernel_parameters(MSection):
     )
 
     x_onetep_kernel_diis_maxit = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -850,7 +850,7 @@ class x_onetep_section_kernel_parameters(MSection):
     )
 
     x_onetep_kernel_diis_coeff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -858,7 +858,7 @@ class x_onetep_section_kernel_parameters(MSection):
     )
 
     x_onetep_kernel_diis_thershold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -866,7 +866,7 @@ class x_onetep_section_kernel_parameters(MSection):
     )
 
     x_onetep_kernel_diis_size = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -890,7 +890,7 @@ class x_onetep_section_kernel_parameters(MSection):
     )
 
     x_onetep_kernel_diis_lshift = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Value of the shift in energy of the conduction bands with the level-shifting
@@ -899,7 +899,7 @@ class x_onetep_section_kernel_parameters(MSection):
     )
 
     x_onetep_kernel_diis_linear_iter = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -931,7 +931,7 @@ class x_onetep_section_phonons(MSection):
     )
 
     x_onetep_phonon_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Phonon calculation tolerance (eV/A**2)
@@ -939,7 +939,7 @@ class x_onetep_section_phonons(MSection):
     )
 
     x_onetep_phonon_cycles = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Phonon calculation cycles
@@ -947,7 +947,7 @@ class x_onetep_section_phonons(MSection):
     )
 
     x_onetep_band_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Phonon band convergence tolerance window
@@ -971,7 +971,7 @@ class x_onetep_section_density_mixing_parameters(MSection):
     )
 
     x_onetep_density_mixing_length = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         density_mixing_scheme_length
@@ -979,7 +979,7 @@ class x_onetep_section_density_mixing_parameters(MSection):
     )
 
     x_onetep_charge_density_mixing_amplitude = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         charge_density_mixing_amplitude
@@ -987,7 +987,7 @@ class x_onetep_section_density_mixing_parameters(MSection):
     )
 
     x_onetep_cut_off_energy_for_mixing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         charge_density_mixing_cut_off_energy_for_mixing (A)
@@ -1003,7 +1003,7 @@ class x_onetep_section_population_analysis_parameters(MSection):
     m_def = Section(validate=False)
 
     x_onetep_population_analysis_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Population_analysis_cutoff_(A)
@@ -1019,7 +1019,7 @@ class x_onetep_section_kernel_optimisation(MSection):
     m_def = Section(validate=False)
 
     x_onetep_total_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Total_energy(Eh)
@@ -1027,7 +1027,7 @@ class x_onetep_section_kernel_optimisation(MSection):
     )
 
     x_onetep_total_free_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Total_energy(Eh)
@@ -1035,7 +1035,7 @@ class x_onetep_section_kernel_optimisation(MSection):
     )
 
     x_onetep_band_gap = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         band_gap
@@ -1043,7 +1043,7 @@ class x_onetep_section_kernel_optimisation(MSection):
     )
 
     x_onetep_rms_occupancy_error = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         rms_occupancy
@@ -1051,7 +1051,7 @@ class x_onetep_section_kernel_optimisation(MSection):
     )
 
     x_onetep_commutator = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Commutator between Hamiltonian and Kernel
@@ -1123,7 +1123,7 @@ class x_onetep_section_scf_eigenvalues(MSection):
     m_def = Section(validate=False)
 
     x_onetep_store_scf_eigenvalues = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -1139,7 +1139,7 @@ class x_onetep_section_SCF_iteration_frame(MSection):
     m_def = Section(validate=False)
 
     x_onetep_frame_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         onetep_store_t_md_frame
@@ -1171,7 +1171,7 @@ class x_onetep_section_SCF_iteration_frame(MSection):
     )
 
     x_onetep_frame_energy_free = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         energy_free
@@ -1179,7 +1179,7 @@ class x_onetep_section_SCF_iteration_frame(MSection):
     )
 
     x_onetep_frame_energy_total_T0 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         energy_free_corrected_for_finite_basis
@@ -1215,7 +1215,7 @@ class x_onetep_section_spin_number(MSection):
     m_def = Section(validate=False)
 
     x_onetep_spin_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1263,7 +1263,7 @@ class x_onetep_section_raman_tensor(MSection):
     )
 
     x_onetep_ramen_tensor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         unit='ampere / unified_atomic_mass_unit',
         description="""
@@ -1280,7 +1280,7 @@ class x_onetep_section_tddft_parameters(MSection):
     m_def = Section(validate=False)
 
     x_onetep_lr_tddft_cg_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x_onetep_lr_tddft_cg_threshold
@@ -1288,7 +1288,7 @@ class x_onetep_section_tddft_parameters(MSection):
     )
 
     x_onetep_lr_tddft_kernel_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x_onetep_lr_tddft_kernel_cutoff
@@ -1296,7 +1296,7 @@ class x_onetep_section_tddft_parameters(MSection):
     )
 
     x_onetep_lr_tddft_maxit_cg = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         x_onetep_lr_tddft_maxit_cg
@@ -1304,7 +1304,7 @@ class x_onetep_section_tddft_parameters(MSection):
     )
 
     x_onetep_lr_tddft_maxit_pen = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         x_onetep_lr_tddft_maxit_pen
@@ -1312,7 +1312,7 @@ class x_onetep_section_tddft_parameters(MSection):
     )
 
     x_onetep_lr_tddft_num_states = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         x_onetep_lr_tddft_num_states
@@ -1320,7 +1320,7 @@ class x_onetep_section_tddft_parameters(MSection):
     )
 
     x_onetep_lr_tddft_penalty_tol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x_onetep_lr_tddft_penalty_tol
@@ -1336,7 +1336,7 @@ class x_onetep_section_scf_parameters(MSection):
     m_def = Section(validate=False)
 
     x_onetep_energy_threshold_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Energy Threshold store
@@ -1344,7 +1344,7 @@ class x_onetep_section_scf_parameters(MSection):
     )
 
     x_onetep_max_iter_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Number of maximum iterations steps store
@@ -1360,7 +1360,7 @@ class x_onetep_section_scf_parameters(MSection):
     )
 
     x_onetep_smearing_width = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Smearing width
@@ -1368,7 +1368,7 @@ class x_onetep_section_scf_parameters(MSection):
     )
 
     x_onetep_elec_cg_max = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x_onetep_elec_cg_max
@@ -1376,7 +1376,7 @@ class x_onetep_section_scf_parameters(MSection):
     )
 
     x_onetep_elec_force_tol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x_onetep_elec_force_tol
@@ -1408,7 +1408,7 @@ class x_onetep_section_electronic_spectroscpy_parameters(MSection):
     )
 
     x_onetep_spec_max_iter = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Max number of iterations
@@ -1416,7 +1416,7 @@ class x_onetep_section_electronic_spectroscpy_parameters(MSection):
     )
 
     x_onetep_spec_max_steps = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Max number of steps
@@ -1424,7 +1424,7 @@ class x_onetep_section_electronic_spectroscpy_parameters(MSection):
     )
 
     x_onetep_spec_max_bands = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Max number of bands
@@ -1432,7 +1432,7 @@ class x_onetep_section_electronic_spectroscpy_parameters(MSection):
     )
 
     x_onetep_spec_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Tolerance (eV)
@@ -1456,7 +1456,7 @@ class x_onetep_section_md(MSection):
     )
 
     x_onetep_md_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         md_temp(K)
@@ -1464,7 +1464,7 @@ class x_onetep_section_md(MSection):
     )
 
     x_onetep_md_pressure = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         md_pressure
@@ -1536,7 +1536,7 @@ class x_onetep_section_edft_parameters(MSection):
     m_def = Section(validate=False)
 
     x_onetep_edft_commutator_thres = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         edft_commutator_thres
@@ -1544,7 +1544,7 @@ class x_onetep_section_edft_parameters(MSection):
     )
 
     x_onetep_edft_energy_thres = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         edft_energy_thres
@@ -1552,7 +1552,7 @@ class x_onetep_section_edft_parameters(MSection):
     )
 
     x_onetep_edft_entropy_thres = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         edft_entropy_thres
@@ -1560,7 +1560,7 @@ class x_onetep_section_edft_parameters(MSection):
     )
 
     x_onetep_edft_extra_bands = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         edft_extra_bands
@@ -1568,7 +1568,7 @@ class x_onetep_section_edft_parameters(MSection):
     )
 
     x_onetep_edft_fermi_thres = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         edft_fermi_thres
@@ -1576,7 +1576,7 @@ class x_onetep_section_edft_parameters(MSection):
     )
 
     x_onetep_edft_free_energy_thres = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         edft_free_energy_thres
@@ -1584,7 +1584,7 @@ class x_onetep_section_edft_parameters(MSection):
     )
 
     x_onetep_edft_maxit = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         edft_maxit
@@ -1592,7 +1592,7 @@ class x_onetep_section_edft_parameters(MSection):
     )
 
     x_onetep_edft_rms_gradient_thres = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         edft_rms_gradient_thres
@@ -1600,7 +1600,7 @@ class x_onetep_section_edft_parameters(MSection):
     )
 
     x_onetep_edft_smearing_width = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         edft_smearing_width
@@ -1616,7 +1616,7 @@ class x_onetep_section_ts(MSection):
     m_def = Section(validate=False)
 
     x_onetep_ts_energy_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_energy_components_total
@@ -1624,7 +1624,7 @@ class x_onetep_section_ts(MSection):
     )
 
     x_onetep_ts_cell_vectors = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         description="""
         ts_cell_vectors
@@ -1632,7 +1632,7 @@ class x_onetep_section_ts(MSection):
     )
 
     x_onetep_ts_positions = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         ts_positions
@@ -1640,7 +1640,7 @@ class x_onetep_section_ts(MSection):
     )
 
     x_onetep_ts_forces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         ts_forces
@@ -1664,7 +1664,7 @@ class x_onetep_section_ts_store(MSection):
     m_def = Section(validate=False)
 
     x_onetep_ts_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_energy_components_ts_store
@@ -1704,7 +1704,7 @@ class x_onetep_section_ts_final_store(MSection):
     m_def = Section(validate=False)
 
     x_onetep_ts_energy_final_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_energy_components_ts
@@ -1744,7 +1744,7 @@ class x_onetep_section_ts_final(MSection):
     m_def = Section(validate=False)
 
     x_onetep_ts_energy_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_energy_final
@@ -1752,7 +1752,7 @@ class x_onetep_section_ts_final(MSection):
     )
 
     x_onetep_ts_cell_vectors_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         description="""
         ts_cell_vectors
@@ -1760,7 +1760,7 @@ class x_onetep_section_ts_final(MSection):
     )
 
     x_onetep_ts_positions_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         ts_positions_final
@@ -1768,7 +1768,7 @@ class x_onetep_section_ts_final(MSection):
     )
 
     x_onetep_ts_forces_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         ts_force_finals
@@ -1784,7 +1784,7 @@ class x_onetep_section_ts_product(MSection):
     m_def = Section(validate=False)
 
     x_onetep_ts_energy_product = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_energy_prod
@@ -1792,7 +1792,7 @@ class x_onetep_section_ts_product(MSection):
     )
 
     x_onetep_ts_forces_product = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         ts_energy_forces_pro
@@ -1800,7 +1800,7 @@ class x_onetep_section_ts_product(MSection):
     )
 
     x_onetep_ts_positions_product = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         ts_energy_positions_pro
@@ -1808,7 +1808,7 @@ class x_onetep_section_ts_product(MSection):
     )
 
     x_onetep_ts_cell_vectors_product = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         description="""
         ts_product_cell_vectors
@@ -1824,7 +1824,7 @@ class x_onetep_section_ts_product_store(MSection):
     m_def = Section(validate=False)
 
     x_onetep_ts_energy_product_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_energy_components_pro
@@ -1880,7 +1880,7 @@ class x_onetep_section_ts_parameters(MSection):
     )
 
     x_onetep_ts_qst_iter = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         ts_qst_iterations
@@ -1888,7 +1888,7 @@ class x_onetep_section_ts_parameters(MSection):
     )
 
     x_onetep_ts_number_cg = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         ts_number_of_cg_iterations
@@ -1896,7 +1896,7 @@ class x_onetep_section_ts_parameters(MSection):
     )
 
     x_onetep_ts_force_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_force_tolerance (eV/A)
@@ -1904,7 +1904,7 @@ class x_onetep_section_ts_parameters(MSection):
     )
 
     x_onetep_ts_displacement_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_displacement_tolerance (A)
@@ -1936,7 +1936,7 @@ class x_onetep_section_van_der_Waals_parameters(MSection):
     )
 
     x_onetep_Parameter_d = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Parameter for dispersion method G06
@@ -1944,7 +1944,7 @@ class x_onetep_section_van_der_Waals_parameters(MSection):
     )
 
     x_onetep_Parameter_LAMBDA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Parameter for dispersion method OBS
@@ -1952,7 +1952,7 @@ class x_onetep_section_van_der_Waals_parameters(MSection):
     )
 
     x_onetep_Parameter_n = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Parameter for dispersion method OBS
@@ -1960,7 +1960,7 @@ class x_onetep_section_van_der_Waals_parameters(MSection):
     )
 
     x_onetep_Parameter_s6 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Parameter for dispersion method G06
@@ -1968,7 +1968,7 @@ class x_onetep_section_van_der_Waals_parameters(MSection):
     )
 
     x_onetep_Parameter_sR = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Parameter for dispersion method TS
@@ -1984,7 +1984,7 @@ class x_onetep_section_energy_components(MSection):
     m_def = Section(validate=False)
 
     x_onetep_pseudo_local_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Pseudopotential
@@ -1992,7 +1992,7 @@ class x_onetep_section_energy_components(MSection):
     )
 
     x_onetep_electronic_kinetic_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Kinetic component store
@@ -2000,7 +2000,7 @@ class x_onetep_section_energy_components(MSection):
     )
 
     x_onetep_energy_correction_hartree_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Hartree correction store
@@ -2008,7 +2008,7 @@ class x_onetep_section_energy_components(MSection):
     )
 
     x_onetep_energy_XC_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         exchange energy store
@@ -2016,7 +2016,7 @@ class x_onetep_section_energy_components(MSection):
     )
 
     x_onetep_ewald_correction_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ewald correction store
@@ -2024,7 +2024,7 @@ class x_onetep_section_energy_components(MSection):
     )
 
     x_onetep_dispersion_correction_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         dispersion correction store
@@ -2032,7 +2032,7 @@ class x_onetep_section_energy_components(MSection):
     )
 
     x_onetep_integrated_density_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         store_integrated density
@@ -2040,7 +2040,7 @@ class x_onetep_section_energy_components(MSection):
     )
 
     x_onetep_pseudo_non_local_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Pseudopotential
@@ -2068,7 +2068,7 @@ class x_onetep_section_edft_spin(MSection):
     m_def = Section(validate=False)
 
     x_onetep_edft_spin_type = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         spin type
@@ -2076,7 +2076,7 @@ class x_onetep_section_edft_spin(MSection):
     )
 
     x_onetep_edft_n_electrons = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         integrated number of electrons
@@ -2084,7 +2084,7 @@ class x_onetep_section_edft_spin(MSection):
     )
 
     x_onetep_edft_fermi_level = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         fermi level
@@ -2092,7 +2092,7 @@ class x_onetep_section_edft_spin(MSection):
     )
 
     x_onetep_edft_fermi_level_delta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         fermi level
@@ -2112,7 +2112,7 @@ class x_onetep_section_edft_spin_iterations(MSection):
     m_def = Section(validate=False)
 
     x_onetep_edft_orbital_iteration_spin = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         orbital
@@ -2120,7 +2120,7 @@ class x_onetep_section_edft_spin_iterations(MSection):
     )
 
     x_onetep_edft_eigenvalue = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         eigenvalues
@@ -2128,7 +2128,7 @@ class x_onetep_section_edft_spin_iterations(MSection):
     )
 
     x_onetep_edft_occupancy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         occupancy
@@ -2144,7 +2144,7 @@ class x_onetep_section_edft_iterations(MSection):
     m_def = Section(validate=False)
 
     x_onetep_edft_step = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         step
@@ -2152,7 +2152,7 @@ class x_onetep_section_edft_iterations(MSection):
     )
 
     x_onetep_edft_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         step
@@ -2160,7 +2160,7 @@ class x_onetep_section_edft_iterations(MSection):
     )
 
     x_onetep_edft_0K = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         step
@@ -2168,7 +2168,7 @@ class x_onetep_section_edft_iterations(MSection):
     )
 
     x_onetep_residual_nonorthog = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         step
@@ -2176,7 +2176,7 @@ class x_onetep_section_edft_iterations(MSection):
     )
 
     x_onetep_residual_n_elec = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         step
@@ -2184,7 +2184,7 @@ class x_onetep_section_edft_iterations(MSection):
     )
 
     x_onetep_edft_commutator = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Commutator
@@ -2192,7 +2192,7 @@ class x_onetep_section_edft_iterations(MSection):
     )
 
     x_onetep_edft_free_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         free energy A=E-TS
@@ -2200,7 +2200,7 @@ class x_onetep_section_edft_iterations(MSection):
     )
 
     x_onetep_edft_rms_gradient = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         rms gradient in edft
@@ -2208,7 +2208,7 @@ class x_onetep_section_edft_iterations(MSection):
     )
 
     x_onetep_edft_entropy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         rms gradient in edft
@@ -2216,7 +2216,7 @@ class x_onetep_section_edft_iterations(MSection):
     )
 
     x_onetep_edft_iteration = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         iteration number
@@ -2236,7 +2236,7 @@ class x_onetep_section_orbital_information(MSection):
     m_def = Section(validate=False)
 
     x_onetep_total_number_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -2244,7 +2244,7 @@ class x_onetep_section_orbital_information(MSection):
     )
 
     x_onetep_total_number_occ_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -2252,7 +2252,7 @@ class x_onetep_section_orbital_information(MSection):
     )
 
     x_onetep_occupancy_sum = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -2260,7 +2260,7 @@ class x_onetep_section_orbital_information(MSection):
     )
 
     x_onetep_homo_lumo_gap = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -2268,7 +2268,7 @@ class x_onetep_section_orbital_information(MSection):
     )
 
     x_onetep_mid_gap = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -2276,7 +2276,7 @@ class x_onetep_section_orbital_information(MSection):
     )
 
     x_onetep_orbital_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['x_onetep_total_number_occ_orbitals'],
         description="""
         -
@@ -2284,7 +2284,7 @@ class x_onetep_section_orbital_information(MSection):
     )
 
     x_onetep_orbital_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_onetep_total_number_occ_orbitals'],
         description="""
         -
@@ -2292,7 +2292,7 @@ class x_onetep_section_orbital_information(MSection):
     )
 
     x_onetep_orbital_occupancy_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -2300,7 +2300,7 @@ class x_onetep_section_orbital_information(MSection):
     )
 
     x_onetep_orbital_number_store = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -2308,7 +2308,7 @@ class x_onetep_section_orbital_information(MSection):
     )
 
     x_onetep_orbital_energy_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -2316,7 +2316,7 @@ class x_onetep_section_orbital_information(MSection):
     )
 
     x_onetep_orbital_occupancy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_onetep_total_number_occ_orbitals'],
         description="""
         -
@@ -2328,7 +2328,7 @@ class Run(runschema.run.Run):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_onetep_atom_forces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         Forces on the atoms as minus gradient of energy_total, including forces' unitary-
@@ -2344,7 +2344,7 @@ class Run(runschema.run.Run):
     )
 
     x_onetep_atom_ionforces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         forces
@@ -2352,7 +2352,7 @@ class Run(runschema.run.Run):
     )
 
     x_onetep_atom_local_potentialforces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         forces
@@ -2360,7 +2360,7 @@ class Run(runschema.run.Run):
     )
 
     x_onetep_atom_nonlocal_potentialforces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         forces
@@ -2368,7 +2368,7 @@ class Run(runschema.run.Run):
     )
 
     x_onetep_atom_nonself_forces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         forces
@@ -2376,7 +2376,7 @@ class Run(runschema.run.Run):
     )
 
     x_onetep_atom_correction_forces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         forces
@@ -2432,7 +2432,7 @@ class Run(runschema.run.Run):
     )
 
     x_onetep_avarage_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         onetep_finalisation_time
@@ -2464,7 +2464,7 @@ class Run(runschema.run.Run):
     )
 
     x_onetep_total_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x_onetep_Initialisation_time
@@ -2528,7 +2528,7 @@ class Run(runschema.run.Run):
     )
 
     x_onetep_ts_path = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_path_number
@@ -2536,7 +2536,7 @@ class Run(runschema.run.Run):
     )
 
     x_onetep_ts_path_ts_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_path_final
@@ -2544,7 +2544,7 @@ class Run(runschema.run.Run):
     )
 
     x_onetep_ts_path_product = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ts_path_pro
@@ -2560,7 +2560,7 @@ class Run(runschema.run.Run):
     )
 
     x_onetep_number_of_processors = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of processors
@@ -2713,7 +2713,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_onetep_net_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Net charge of system
@@ -2721,7 +2721,7 @@ class System(runschema.system.System):
     )
 
     x_onetep_number_of_bands = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of bands
@@ -2737,7 +2737,7 @@ class System(runschema.system.System):
     )
 
     x_onetep_number_of_electrons = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Number of electrons
@@ -2745,7 +2745,7 @@ class System(runschema.system.System):
     )
 
     x_onetep_atom_positions = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         Storing atomic positions in fractional coordinates
@@ -2753,7 +2753,7 @@ class System(runschema.system.System):
     )
 
     x_onetep_cell_volume = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         onetep_cell_volume
@@ -2769,7 +2769,7 @@ class System(runschema.system.System):
     )
 
     x_onetep_optimised_atom_positions = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         Storing atomic optimised positions in fractional coordinates
@@ -2777,7 +2777,7 @@ class System(runschema.system.System):
     )
 
     x_onetep_velocities_cell_vector = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         description="""
         cell vector velocities
@@ -2785,7 +2785,7 @@ class System(runschema.system.System):
     )
 
     x_onetep_number_of_atoms = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number_of_atoms
@@ -2793,7 +2793,7 @@ class System(runschema.system.System):
     )
 
     x_onetep_number_of_ngwf = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number_of_ngwf
@@ -2801,7 +2801,7 @@ class System(runschema.system.System):
     )
 
     x_onetep_number_of_projectors = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number_of_proj
@@ -2833,7 +2833,7 @@ class System(runschema.system.System):
     )
 
     x_onetep_atom_ionic_velocities = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         Temporary storing atomic positions
@@ -2881,7 +2881,7 @@ class BasisSet(runschema.method.BasisSet):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_onetep_size_std_grid = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         size of standard grid (eV)
@@ -2889,7 +2889,7 @@ class BasisSet(runschema.method.BasisSet):
     )
 
     x_onetep_size_fine_grid = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         sise of fine grid (1/A)
@@ -2901,7 +2901,7 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_onetep_enthalpy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         onetep_Enthalpy
@@ -2909,7 +2909,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_frequency = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         onetep_frequency (cm-1)
@@ -2917,7 +2917,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_improved_energy_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         md_forces
@@ -2925,7 +2925,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_frame_time_0 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         onetep_store_t_md_frame
@@ -2933,7 +2933,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_geom_iteration_index = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Index for number of iterations in geometry optimisation
@@ -2941,7 +2941,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_pseudo_local = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Pseudopotential
@@ -2949,7 +2949,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_pseudo_non_local = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Pseudopotential
@@ -2957,7 +2957,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_rms_gradient = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         RMS Gradient
@@ -2965,7 +2965,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_n_ngwf_iterations = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NGWF iterations
@@ -2973,7 +2973,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_integrated_density = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         integrated density
@@ -2981,7 +2981,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_dispersion_correction = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Dispersion correction to the final SCF energy
@@ -2989,7 +2989,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_ewald_correction = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Ewald correction
@@ -3045,7 +3045,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_initial_scf_iteration_wall_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Initial SCF iteration wall time
@@ -3053,7 +3053,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_total_dispersion_corrected_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Total electronic energy that includes dispersion energy computed with
@@ -3062,7 +3062,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_total_energy_corrected_for_finite_basis = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         onetep_total_energy_corrected_for_finite_basis
@@ -3078,7 +3078,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_number_of_scf_iterations_store = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number of scf iterations in single point calculation
@@ -3086,7 +3086,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_energy_total_scf_iteration_list = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[-1],
         description="""
         Total electronic energy calculated with XC_method_scf during the scf iterations is
@@ -3095,7 +3095,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_ts_coordinate_path = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TS coordinate path
@@ -3103,7 +3103,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_energy_reac = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Energy of reactant
@@ -3111,7 +3111,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_energy_prod = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Energy of product
@@ -3119,7 +3119,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_geom_optim_energy_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Energy of product
@@ -3127,7 +3127,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_energy_lst_max = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Energy of LST max
@@ -3135,7 +3135,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_location_lst_max = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         location of LST max
@@ -3143,7 +3143,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_barrier_reac = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         barrier from reac
@@ -3151,7 +3151,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_barrier_prod = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         barrier from prod
@@ -3159,7 +3159,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_onetep_reaction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         reaction energy
@@ -3230,7 +3230,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     m_def = Section(validate=False, extends_base_section=True)
 
     geometry_optimization_frequency_tol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Specifies the estimated average phonon frequency (as an energy) used to initialize
@@ -3239,7 +3239,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     )
 
     x_onetep_max_number_of_steps = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Number_of iterations geom_optim
@@ -3247,7 +3247,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     )
 
     geometry_optimization_geometry_conv_win = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         geom optim number of consecutive iterations during which convergence must be met
@@ -3259,7 +3259,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_onetep_thermostat_target_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         thermostat_target_temperature(K)
@@ -3283,7 +3283,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_onetep_thermostat_tau = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         thermostat_type
@@ -3291,7 +3291,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_onetep_barostat_tau = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         barostat_tau
@@ -3299,7 +3299,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_onetep_integrator_dt = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         MD_time_step (ps)
@@ -3307,7 +3307,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_onetep_number_of_steps_requested = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         MD_time_step_number
@@ -3323,7 +3323,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_onetep_frame_energy_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         MD_scf_energy tolerance (eV)
@@ -3331,7 +3331,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
     )
 
     x_onetep_frame_eigen_tolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         MD_scf_eigen tolerance (eV)
@@ -3343,7 +3343,7 @@ class BandStructure(runschema.calculation.BandStructure):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_onetep_k_path = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -3383,7 +3383,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_onetep_scf_rms_gradient = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         RMS Gradient
@@ -3403,7 +3403,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_onetep_n_ngwf_atom_store = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number ngwf per atom
@@ -3411,7 +3411,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_onetep_ngwf_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         radius ngwf
@@ -3419,7 +3419,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_onetep_n_ngwf_atom = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number ngwf per atom
@@ -3427,7 +3427,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_onetep_ngwf_radius_store = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         radius ngwf
