@@ -46,7 +46,7 @@ class x_molcas_section_frequency(MSection):
     m_def = Section(validate=False)
 
     x_molcas_frequency_value = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Molcas frequency value
@@ -54,7 +54,7 @@ class x_molcas_section_frequency(MSection):
     )
 
     x_molcas_imaginary_frequency_value = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Molcas imaginary frequency value
@@ -62,7 +62,7 @@ class x_molcas_section_frequency(MSection):
     )
 
     x_molcas_frequency_intensity = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Molcas intensity value
@@ -131,7 +131,7 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_molcas_slapaf_grad_norm = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Molcas slapaf (geometry optimization) grad (force) norm
@@ -139,7 +139,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_molcas_slapaf_grad_max = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Molcas slapaf (geometry optimization) grad (force) max
