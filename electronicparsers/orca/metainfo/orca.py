@@ -54,7 +54,7 @@ class x_orca_atom_positions(MSection):
     )
 
     x_orca_atom_positions_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -62,7 +62,7 @@ class x_orca_atom_positions(MSection):
     )
 
     x_orca_atom_positions_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -70,7 +70,7 @@ class x_orca_atom_positions(MSection):
     )
 
     x_orca_atom_positions_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -93,7 +93,7 @@ class x_orca_final_geometry(MSection):
     )
 
     x_orca_atom_positions_x_geo_opt = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -101,7 +101,7 @@ class x_orca_final_geometry(MSection):
     )
 
     x_orca_atom_positions_y_geo_opt = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -109,7 +109,7 @@ class x_orca_final_geometry(MSection):
     )
 
     x_orca_atom_positions_z_geo_opt = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -129,7 +129,7 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_orca_1_elect_energy_change = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -150,28 +150,28 @@ class Method(runschema.method.Method):
     )
 
     x_orca_avg_nb_grid_pts_per_atom = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_avg_nb_points_per_batch = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_basis_fn_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_beckes_beta_param = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -185,28 +185,28 @@ class Method(runschema.method.Method):
     )
 
     x_orca_ccsdt_aaa_triples_contribution = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ccsdt_aab_triples_contribution = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ci_half_s_and_s_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ci_iteration_nb = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -220,7 +220,7 @@ class Method(runschema.method.Method):
     )
 
     x_orca_convergence_tol_max_residuum = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -234,7 +234,7 @@ class Method(runschema.method.Method):
     )
 
     x_orca_coulomb_transformation_dimension_basis = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -269,7 +269,7 @@ class Method(runschema.method.Method):
     )
 
     x_orca_gral_integ_accuracy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -297,7 +297,7 @@ class Method(runschema.method.Method):
     )
 
     x_orca_integr_weight_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -332,112 +332,112 @@ class Method(runschema.method.Method):
     )
 
     x_orca_level_shift_amplitude_update = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_mp2_aux_basis_dimension = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_mp2_basis_dimension = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_mp2_initial_guess = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_multiplicity = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_alpha_pairs_included = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_beta_pairs_included = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_grid_pts_after_initial_pruning = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_grid_pts_after_weights_screening = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_internal_alpha_mol_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_internal_beta_mol_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_of_atomic_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_of_correlated_electrons = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_of_electrons = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nelectrons = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nuclear_repulsion = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -451,7 +451,7 @@ class Method(runschema.method.Method):
     )
 
     x_orca_pair_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -486,7 +486,7 @@ class Method(runschema.method.Method):
     )
 
     x_orca_scaling_mp2_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -500,42 +500,42 @@ class Method(runschema.method.Method):
     )
 
     x_orca_single_norm_half_ss = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_speed_of_light_used = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_total_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_total_nb_batches = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_total_nb_grid_pts = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_total_nb_pairs_included = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -556,7 +556,7 @@ class Method(runschema.method.Method):
     )
 
     x_orca_xalpha_param = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -585,7 +585,7 @@ class Scf(runschema.method.Scf):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_orca_last_max_density_change = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -603,28 +603,28 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_orca_avg_nb_grid_pts_per_atom_final = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_avg_nb_points_per_batch_final = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_basis_fn_cutoff_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_gral_integ_accuracy_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -638,42 +638,42 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_orca_integr_weight_cutoff_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_iteration_nb = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_last_energy_change = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_last_rms_density_change = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_grid_pts_after_initial_pruning_final = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_grid_pts_after_weights_screening_final = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -687,14 +687,14 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_orca_total_nb_batches_final = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_total_nb_grid_pts_final = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -755,98 +755,98 @@ class BasisSet(runschema.method.BasisSet):
     )
 
     x_orca_highest_angular_moment_aux = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_highest_angular_moment = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_maximum_contraction_depth_aux = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_maximum_contraction_depth = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_of_contracted_basis_functions_aux = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_of_contracted_basis_functions = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_of_contracted_shells_aux = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_of_contracted_shells = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_of_primitive_gaussian_functions_aux = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_of_primitive_gaussian_functions = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_of_primitive_gaussian_shells_aux = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_of_primitive_gaussian_shells = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_primitive_gaussian_shells_aux = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_primitive_gaussian_shells = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -857,399 +857,399 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_orca_basis_fn_evaluation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ccsd_correlation_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ccsd_final_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ccsd_t_final_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ccsd_total_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ccsdt_aba_triples_contribution = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ccsdt_bbb_triples_contribution = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ccsdt_final_corr_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ccsdt_total_triples_correction = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ci_correl_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ci_deltaE_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ci_iteration_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ci_residual_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_ci_total_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_correlation_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_coulomb_formation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_density_evaluation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_density_matrix_formation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_diagonalization = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_diis_solution = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_elec_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_exchange_correlation_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_exchange_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_final_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_fock_matrix_formation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_geo_opt_cycle = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_grid_generation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_initial_guess = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_kinetc_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_mp2_corr_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_mp2_energy_spin_aa = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_mp2_energy_spin_ab = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_mp2_energy_spin_bb = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_mp2_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_mp2_total_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_elect_alpha_channel = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_elect_beta_channel = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nb_elect_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_nuc_repulsion = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_one_elec_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_orbital_orthonormalization = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_orbital_transformation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_population_analysis = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_potential_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_potential_evaluation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_split_rj = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_sum_individual_times = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_t1_diagnostic = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_T_and_T_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_total_days_time = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_total_hours_time = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_total_mins_time = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_total_secs_time = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_orca_two_elec_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_virial_ratio = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_xc_functional_evaluation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_xc_integration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -1274,7 +1274,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     )
 
     x_orca_energy_change_tol_value = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -1302,7 +1302,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     )
 
     x_orca_max_displacement_tol_value = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -1316,7 +1316,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     )
 
     x_orca_max_gradient_tol_value = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -1330,7 +1330,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     )
 
     x_orca_rms_displacement_tol_value = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -1344,7 +1344,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
     )
 
     x_orca_rms_gradient_tol_value = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -1380,35 +1380,35 @@ class Spectra(runschema.calculation.Spectra):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_orca_excitation_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_oscillator_strength = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_transition_dipole_moment_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_transition_dipole_moment_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_orca_transition_dipole_moment_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
