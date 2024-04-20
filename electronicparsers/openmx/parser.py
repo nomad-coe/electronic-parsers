@@ -172,7 +172,6 @@ mainfile_parser = TextParser(
             flatten=False,
             dtype=str,
         ),
-
         Quantity(
             'elapsed_time',
             r'\s+Elapsed.Time.\s+([\d.]+)',
@@ -732,7 +731,8 @@ class OpenmxParser:
         )
         date_start = mainfile_parser.get('date_start')
         date_start_timestamp = datetime.strptime(
-                    date_start, '%a %b %d %H:%M:%S %Y').timestamp()
+            date_start, '%a %b %d %H:%M:%S %Y'
+        ).timestamp()
         sec_run.time_run = TimeRun()
         sec_run.time_run.date_start = date_start_timestamp
 
@@ -804,7 +804,7 @@ class OpenmxParser:
                         )
                     temperature = mdfile_md_steps[i].get('temperature')
                     if temperature is not None:
-                        sec_calc.temperature = temperature * units.kelvin
+                        sec_calc.temperature = float(temperature) * units.kelvin
                     # Time is also printed for geometry optimizations, but it is meaningless there.
                     if isinstance(self.archive.workflow2, MolecularDynamics):
                         time = mdfile_md_steps[i].get('time')
