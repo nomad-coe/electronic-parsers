@@ -7,6 +7,7 @@ from ase import units as ase_units
 
 from .metainfo import m_env
 from nomad.units import ureg
+from nomad.utils import get_logger
 from nomad.parsing.file_parser import TextParser, Quantity
 from runschema.run import Run, Program
 from runschema.method import (
@@ -1162,35 +1163,31 @@ class OctopusParser:
                     'Error setting metainfo', data=dict(key=metainfo_key)
                 )
 
-        # convert parsed values to proper metainfo type
-        definitions = dict(m_env.all_definitions_by_name)
-
-        def convert_to_metainfo(prefix, key, val):
-            metainfo_name = 'x_octopus_%s_%s' % (prefix, key)
-            metainfo_type = definitions.get(metainfo_name, None)
-            if metainfo_type is not None:
-                metainfo_type = metainfo_type[0].type
-                if isinstance(metainfo_type, np.dtype):
-                    val = np.array(val, metainfo_type)
-                else:
-                    val = metainfo_type(val)
-            return metainfo_name, val
-
         # parse keywords from inp and parser.log
         sources = {'input': self.inp_parser, 'parserlog': self.log_parser}
         for prefix, source in sources.items():
             for key, val in source.info.items():
                 try:
                     val = source.info.get(key)
-                    metainfo_name, val = convert_to_metainfo(prefix, key, val)
-                    setattr(sec_run, metainfo_name, val)
+                    quantity_def = sec_run.m_def.all_quantities.get(
+                        f'x_octopus_{prefix}_{key}'
+                    )
+                    if quantity_def is not None:
+                        val = (
+                            np.array(val, quantity_def.type.standard_type())
+                            if quantity_def.shape
+                            else val
+                        )
+                        sec_run.m_set(quantity_def, val)
                 except Exception:
+                    print(key, val)
+                    raise
                     self.logger.warning('Error setting metainfo', data=dict(key=key))
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
-        self.logger = logging.getLogger(__name__) if logger is None else logger
+        self.logger = get_logger(__name__) if logger is None else logger
 
         self.maindir = os.path.dirname(os.path.abspath(filepath))
         self.init_parser(filepath, logger)

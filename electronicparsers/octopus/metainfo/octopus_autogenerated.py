@@ -58,7 +58,7 @@ class Run(runschema.run.Run):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_octopus_input_ABCapHeight = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ABCapHeight" of type "float" in section "Time-
@@ -88,7 +88,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ABWidth = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ABWidth" of type "float" in section "Time-
@@ -98,7 +98,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_AlphaFMM = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "AlphaFMM" of type "float" in section
@@ -128,7 +128,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ArpackInitialTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ArpackInitialTolerance" of type "float" in section
@@ -417,7 +417,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_CasidaKSEnergyWindow = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "CasidaKSEnergyWindow" of type "float" in section "Linear
@@ -447,7 +447,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_CasidaSpectrumBroadening = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "CasidaSpectrumBroadening" of type "float" in section
@@ -457,7 +457,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_CasidaSpectrumEnergyStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "CasidaSpectrumEnergyStep" of type "float" in section
@@ -467,7 +467,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_CasidaSpectrumMaxEnergy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "CasidaSpectrumMaxEnergy" of type "float" in section
@@ -477,7 +477,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_CasidaSpectrumMinEnergy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "CasidaSpectrumMinEnergy" of type "float" in section
@@ -527,7 +527,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ComplexScalingAlphaLeft = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ComplexScalingAlphaLeft" of type "float" in section
@@ -537,7 +537,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ComplexScalingAlpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ComplexScalingAlpha" of type "float" in section
@@ -547,7 +547,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ComplexScalingLocalizationRadius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ComplexScalingLocalizationRadius" of type "float" in
@@ -557,7 +557,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ComplexScalingLocalizationThreshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ComplexScalingLocalizationThreshold" of type "float" in
@@ -577,7 +577,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ComplexScalingPenalizationFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ComplexScalingPenalizationFactor" of type "float" in
@@ -587,7 +587,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ComplexScalingRotateSpectrum = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ComplexScalingRotateSpectrum" of type "float" in section
@@ -597,7 +597,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ComplexScalingTheta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ComplexScalingTheta" of type "float" in section
@@ -637,7 +637,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ConvAbsDens = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ConvAbsDens" of type "float" in section
@@ -647,7 +647,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ConvAbsEv = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ConvAbsEv" of type "float" in section "SCF::Convergence"
@@ -666,7 +666,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ConvEnergy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ConvEnergy" of type "float" in section "SCF::Convergence"
@@ -685,7 +685,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ConvertEnergyMax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ConvertEnergyMax" of type "float" in section
@@ -695,7 +695,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ConvertEnergyMin = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ConvertEnergyMin" of type "float" in section
@@ -705,7 +705,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ConvertEnergyStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ConvertEnergyStep" of type "float" in section
@@ -855,7 +855,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ConvForce = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ConvForce" of type "float" in section "SCF::Convergence"
@@ -864,7 +864,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ConvRelDens = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ConvRelDens" of type "float" in section
@@ -874,7 +874,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ConvRelEv = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ConvRelEv" of type "float" in section "SCF::Convergence"
@@ -883,8 +883,8 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_Coordinates = Quantity(
-        type=str,
-        shape=[],
+        type=np.str_,
+        shape=['*', 4],
         description="""
         Octopus input parameter "Coordinates" of type "block" in section
         "System::Coordinates"
@@ -912,7 +912,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_CurvGygiAlpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "CurvGygiAlpha" of type "float" in section
@@ -922,7 +922,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_CurvGygiA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "CurvGygiA" of type "float" in section
@@ -932,7 +932,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_CurvGygiBeta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "CurvGygiBeta" of type "float" in section
@@ -952,7 +952,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_CurvModineJBar = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "CurvModineJBar" of type "float" in section
@@ -962,7 +962,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_CurvModineJlocal = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "CurvModineJlocal" of type "float" in section
@@ -972,7 +972,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_CurvModineJrange = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "CurvModineJrange" of type "float" in section
@@ -982,7 +982,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_CurvModineXBar = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "CurvModineXBar" of type "float" in section
@@ -1001,7 +1001,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_DegeneracyThreshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "DegeneracyThreshold" of type "float" in section "States"
@@ -1010,7 +1010,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_DeltaEFMM = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "DeltaEFMM" of type "float" in section
@@ -1079,7 +1079,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_Displacement = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "Displacement" of type "float" in section "Linear
@@ -1089,7 +1089,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_DOSEnergyMax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "DOSEnergyMax" of type "float" in section "Output"
@@ -1098,7 +1098,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_DOSEnergyMin = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "DOSEnergyMin" of type "float" in section "Output"
@@ -1116,7 +1116,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_DOSGamma = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "DOSGamma" of type "float" in section "Output"
@@ -1125,7 +1125,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_DoubleFFTParameter = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "DoubleFFTParameter" of type "float" in section
@@ -1183,7 +1183,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_EigensolverImaginaryTime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "EigensolverImaginaryTime" of type "float" in section
@@ -1233,7 +1233,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_EigensolverTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "EigensolverTolerance" of type "float" in section
@@ -1302,7 +1302,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_EMEta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "EMEta" of type "float" in section "Linear
@@ -1392,7 +1392,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_EMStaticElectricField = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "EMStaticElectricField" of type "float" in section "Linear
@@ -1432,7 +1432,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_EwaldAlpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "EwaldAlpha" of type "float" in section "Hamiltonian"
@@ -1441,7 +1441,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ExcessCharge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ExcessCharge" of type "float" in section "States"
@@ -1615,7 +1615,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_GOFireMass = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "GOFireMass" of type "float" in section "Calculation
@@ -1625,7 +1625,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_GOLineTol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "GOLineTol" of type "float" in section "Calculation
@@ -1655,7 +1655,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_GOMinimumMove = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "GOMinimumMove" of type "float" in section "Calculation
@@ -1675,7 +1675,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_GOStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "GOStep" of type "float" in section "Calculation
@@ -1685,7 +1685,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_GOTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "GOTolerance" of type "float" in section "Calculation
@@ -1705,7 +1705,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_GyromagneticRatio = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "GyromagneticRatio" of type "float" in section
@@ -1744,7 +1744,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_Interaction1DScreening = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "Interaction1DScreening" of type "float" in section
@@ -1764,7 +1764,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_InvertKSConvAbsDens = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "InvertKSConvAbsDens" of type "float" in section
@@ -1864,7 +1864,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_KdotPEta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "KdotPEta" of type "float" in section "Linear
@@ -1904,8 +1904,8 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_KPointsGrid = Quantity(
-        type=str,
-        shape=[],
+        type=np.int32,
+        shape=['*', 3],
         description="""
         Octopus input parameter "KPointsGrid" of type "block" in section "Mesh::KPoints"
         """,
@@ -2002,7 +2002,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_LB94_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "LB94_threshold" of type "float" in section
@@ -2030,7 +2030,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_LCAODiagTol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "LCAODiagTol" of type "float" in section "SCF::LCAO"
@@ -2068,7 +2068,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_LCAOMaximumOrbitalRadius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "LCAOMaximumOrbitalRadius" of type "float" in section
@@ -2078,7 +2078,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_LCAOScaleFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "LCAOScaleFactor" of type "float" in section "SCF::LCAO"
@@ -2096,7 +2096,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_LDBaderThreshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "LDBaderThreshold" of type "float" in section
@@ -2296,7 +2296,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_libvdwxcVDWFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "libvdwxcVDWFactor" of type "float" in section
@@ -2336,7 +2336,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_LocalMagneticMomentsSphereRadius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "LocalMagneticMomentsSphereRadius" of type "float" in
@@ -2346,7 +2346,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_LRConvAbsDens = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "LRConvAbsDens" of type "float" in section "Linear
@@ -2356,7 +2356,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_LRConvRelDens = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "LRConvRelDens" of type "float" in section "Linear
@@ -2376,7 +2376,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_LRTolAdaptiveFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "LRTolAdaptiveFactor" of type "float" in section "Linear
@@ -2386,7 +2386,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_LRTolFinalTol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "LRTolFinalTol" of type "float" in section "Linear
@@ -2396,7 +2396,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_LRTolInitTol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "LRTolInitTol" of type "float" in section "Linear
@@ -2406,7 +2406,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_LRTolIterWindow = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "LRTolIterWindow" of type "float" in section "Linear
@@ -2426,8 +2426,8 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_Lsize = Quantity(
-        type=str,
-        shape=[],
+        type=np.float64,
+        shape=['*', 3],
         description="""
         Octopus input parameter "Lsize" of type "block" in section "Mesh::Simulation Box"
         """,
@@ -2622,7 +2622,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_Mixing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "Mixing" of type "float" in section "SCF::Mixing"
@@ -2736,7 +2736,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_NFFTOversampling = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "NFFTOversampling" of type "float" in section "Mesh::FFTs"
@@ -2793,7 +2793,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_OCTCheckGradient = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "OCTCheckGradient" of type "float" in section "Calculation
@@ -2813,7 +2813,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_OCTControlFunctionOmegaMax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "OCTControlFunctionOmegaMax" of type "float" in section
@@ -2853,7 +2853,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_OCTCurrentWeight = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "OCTCurrentWeight" of type "float" in section "Calculation
@@ -2863,7 +2863,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_OCTDelta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "OCTDelta" of type "float" in section "Calculation
@@ -2873,7 +2873,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_OCTDirectStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "OCTDirectStep" of type "float" in section "Calculation
@@ -2903,7 +2903,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_OCTEps = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "OCTEps" of type "float" in section "Calculation
@@ -2913,7 +2913,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_OCTEta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "OCTEta" of type "float" in section "Calculation
@@ -2943,7 +2943,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_OCTFixFluenceTo = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "OCTFixFluenceTo" of type "float" in section "Calculation
@@ -3063,7 +3063,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_OCTPenalty = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "OCTPenalty" of type "float" in section "Calculation
@@ -3222,7 +3222,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_OEPMixing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "OEPMixing" of type "float" in section "Hamiltonian::XC"
@@ -3271,7 +3271,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_OpenSCADIsovalue = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "OpenSCADIsovalue" of type "float" in section "Output"
@@ -3492,7 +3492,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ParticleMass = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ParticleMass" of type "float" in section "Hamiltonian"
@@ -3550,7 +3550,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PCMDynamicEpsilon = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PCMDynamicEpsilon" of type "float" in section
@@ -3570,7 +3570,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PCMQtotTol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PCMQtotTol" of type "float" in section "Hamiltonian::PCM"
@@ -3579,7 +3579,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PCMRadiusScaling = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PCMRadiusScaling" of type "float" in section
@@ -3599,7 +3599,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PCMSmearingFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PCMSmearingFactor" of type "float" in section
@@ -3619,7 +3619,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PCMStaticEpsilon = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PCMStaticEpsilon" of type "float" in section
@@ -3728,7 +3728,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PES_Flux_DeltaK = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PES_Flux_DeltaK" of type "float" in section "Time-
@@ -3758,7 +3758,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PES_Flux_Kmax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PES_Flux_Kmax" of type "float" in section "Time-
@@ -3798,7 +3798,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PES_Flux_Radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PES_Flux_Radius" of type "float" in section "Time-
@@ -3868,7 +3868,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PES_spm_DeltaOmega = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PES_spm_DeltaOmega" of type "float" in section "Time-
@@ -3878,7 +3878,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PES_spm_OmegaMax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PES_spm_OmegaMax" of type "float" in section "Time-
@@ -3898,7 +3898,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PES_spm_Radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PES_spm_Radius" of type "float" in section "Time-
@@ -3938,7 +3938,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PESMask2PEnlargeFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PESMask2PEnlargeFactor" of type "float" in section "Time-
@@ -3948,7 +3948,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PESMaskEnlargeFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PESMaskEnlargeFactor" of type "float" in section "Time-
@@ -3958,7 +3958,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PESMaskFilterCutOff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PESMaskFilterCutOff" of type "float" in section "Time-
@@ -4018,7 +4018,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PESMaskSpectEnergyMax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PESMaskSpectEnergyMax" of type "float" in section "Time-
@@ -4028,7 +4028,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PESMaskSpectEnergyStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PESMaskSpectEnergyStep" of type "float" in section "Time-
@@ -4038,7 +4038,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PESMaskStartTime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PESMaskStartTime" of type "float" in section "Time-
@@ -4087,7 +4087,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PNFFTOversampling = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PNFFTOversampling" of type "float" in section
@@ -4097,7 +4097,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_Poisson1DSoftCoulombParam = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "Poisson1DSoftCoulombParam" of type "float" in section
@@ -4107,7 +4107,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PoissonCutoffRadius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PoissonCutoffRadius" of type "float" in section
@@ -4197,7 +4197,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PoissonSolverMGRelaxationFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PoissonSolverMGRelaxationFactor" of type "float" in
@@ -4237,7 +4237,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PoissonSolverThreshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PoissonSolverThreshold" of type "float" in section
@@ -4257,7 +4257,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PreconditionerFilterFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PreconditionerFilterFactor" of type "float" in section
@@ -4307,7 +4307,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PropagationSpectrumDampFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PropagationSpectrumDampFactor" of type "float" in section
@@ -4327,7 +4327,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PropagationSpectrumEndTime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PropagationSpectrumEndTime" of type "float" in section
@@ -4337,7 +4337,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PropagationSpectrumEnergyStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PropagationSpectrumEnergyStep" of type "float" in section
@@ -4347,7 +4347,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PropagationSpectrumMaxEnergy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PropagationSpectrumMaxEnergy" of type "float" in section
@@ -4367,7 +4367,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_PropagationSpectrumStartTime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "PropagationSpectrumStartTime" of type "float" in section
@@ -4407,7 +4407,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_Radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "Radius" of type "float" in section "Mesh::Simulation Box"
@@ -4416,7 +4416,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_RandomVelocityTemp = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "RandomVelocityTemp" of type "float" in section
@@ -4426,7 +4426,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_RashbaSpinOrbitCoupling = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "RashbaSpinOrbitCoupling" of type "float" in section
@@ -4436,7 +4436,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_RDMConvEner = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "RDMConvEner" of type "float" in section "SCF::RDMFT"
@@ -4445,7 +4445,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_RDMTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "RDMTolerance" of type "float" in section "SCF::RDMFT"
@@ -4553,7 +4553,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_RootSolverAbsTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "RootSolverAbsTolerance" of type "float" in section
@@ -4583,7 +4583,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_RootSolverRelTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "RootSolverRelTolerance" of type "float" in section
@@ -4593,7 +4593,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_RootSolverWSRadius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "RootSolverWSRadius" of type "float" in section
@@ -4641,7 +4641,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_SCDMCutoffRadius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "SCDMCutoffRadius" of type "float" in section
@@ -4716,7 +4716,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_Smearing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "Smearing" of type "float" in section "States"
@@ -4725,7 +4725,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_SOStrength = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "SOStrength" of type "float" in section "Hamiltonian"
@@ -4734,7 +4734,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_Spacing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "Spacing" of type "float" in section "Mesh"
@@ -4743,7 +4743,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_SPARSKITAbsTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "SPARSKITAbsTolerance" of type "float" in section
@@ -4783,7 +4783,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_SPARSKITRelTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "SPARSKITRelTolerance" of type "float" in section
@@ -4813,7 +4813,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_SpeciesProjectorSphereThreshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "SpeciesProjectorSphereThreshold" of type "float" in
@@ -4852,7 +4852,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_SpectrumSignalNoise = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "SpectrumSignalNoise" of type "float" in section
@@ -4890,7 +4890,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_StatesCLDeviceMemory = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "StatesCLDeviceMemory" of type "float" in section
@@ -5037,7 +5037,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_TDDeltaKickTime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "TDDeltaKickTime" of type "float" in section "Time-
@@ -5057,7 +5057,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_TDDeltaStrength = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "TDDeltaStrength" of type "float" in section "Time-
@@ -5147,7 +5147,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_TDFloquetFrequency = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "TDFloquetFrequency" of type "float" in section "Time-
@@ -5206,7 +5206,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_TDIonicTimeScale = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "TDIonicTimeScale" of type "float" in section "Time-
@@ -5226,7 +5226,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_TDLanczosTol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "TDLanczosTol" of type "float" in section "Time-
@@ -5326,7 +5326,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_TDPropagationTime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "TDPropagationTime" of type "float" in section "Time-
@@ -5346,7 +5346,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_TDSCFThreshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "TDSCFThreshold" of type "float" in section "Time-
@@ -5366,7 +5366,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_TDTimeStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "TDTimeStep" of type "float" in section "Time-
@@ -5445,7 +5445,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_ThermostatMass = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "ThermostatMass" of type "float" in section "Time-
@@ -5474,7 +5474,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_TnaddFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "TnaddFactor" of type "float" in section
@@ -5678,7 +5678,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_Xalpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "Xalpha" of type "float" in section "Hamiltonian::XC"
@@ -5687,7 +5687,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_XCDensityCorrectionCutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "XCDensityCorrectionCutoff" of type "float" in section
@@ -5747,7 +5747,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_XCKernelLRCAlpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "XCKernelLRCAlpha" of type "float" in section
@@ -5786,7 +5786,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_input_Xlength = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus input parameter "Xlength" of type "float" in section "Mesh::Simulation
@@ -5846,7 +5846,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ABCapHeight = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ABCapHeight" of type "float" in section "Time-
@@ -5876,7 +5876,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ABWidth = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ABWidth" of type "float" in section "Time-
@@ -5886,7 +5886,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_AlphaFMM = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "AlphaFMM" of type "float" in section
@@ -5916,7 +5916,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ArpackInitialTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ArpackInitialTolerance" of type "float" in section
@@ -6205,7 +6205,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_CasidaKSEnergyWindow = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "CasidaKSEnergyWindow" of type "float" in section "Linear
@@ -6235,7 +6235,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_CasidaSpectrumBroadening = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "CasidaSpectrumBroadening" of type "float" in section
@@ -6245,7 +6245,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_CasidaSpectrumEnergyStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "CasidaSpectrumEnergyStep" of type "float" in section
@@ -6255,7 +6255,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_CasidaSpectrumMaxEnergy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "CasidaSpectrumMaxEnergy" of type "float" in section
@@ -6265,7 +6265,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_CasidaSpectrumMinEnergy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "CasidaSpectrumMinEnergy" of type "float" in section
@@ -6315,7 +6315,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ComplexScalingAlphaLeft = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ComplexScalingAlphaLeft" of type "float" in section
@@ -6325,7 +6325,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ComplexScalingAlpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ComplexScalingAlpha" of type "float" in section
@@ -6335,7 +6335,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ComplexScalingLocalizationRadius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ComplexScalingLocalizationRadius" of type "float" in
@@ -6345,7 +6345,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ComplexScalingLocalizationThreshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ComplexScalingLocalizationThreshold" of type "float" in
@@ -6365,7 +6365,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ComplexScalingPenalizationFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ComplexScalingPenalizationFactor" of type "float" in
@@ -6375,7 +6375,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ComplexScalingRotateSpectrum = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ComplexScalingRotateSpectrum" of type "float" in section
@@ -6385,7 +6385,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ComplexScalingTheta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ComplexScalingTheta" of type "float" in section
@@ -6425,7 +6425,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ConvAbsDens = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ConvAbsDens" of type "float" in section
@@ -6435,7 +6435,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ConvAbsEv = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ConvAbsEv" of type "float" in section "SCF::Convergence"
@@ -6454,7 +6454,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ConvEnergy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ConvEnergy" of type "float" in section
@@ -6474,7 +6474,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ConvertEnergyMax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ConvertEnergyMax" of type "float" in section
@@ -6484,7 +6484,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ConvertEnergyMin = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ConvertEnergyMin" of type "float" in section
@@ -6494,7 +6494,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ConvertEnergyStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ConvertEnergyStep" of type "float" in section
@@ -6644,7 +6644,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ConvForce = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ConvForce" of type "float" in section "SCF::Convergence"
@@ -6653,7 +6653,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ConvRelDens = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ConvRelDens" of type "float" in section
@@ -6663,7 +6663,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ConvRelEv = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ConvRelEv" of type "float" in section "SCF::Convergence"
@@ -6672,8 +6672,8 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_Coordinates = Quantity(
-        type=str,
-        shape=[],
+        type=np.str_,
+        shape=['*', 4],
         description="""
         Octopus parser log entry "Coordinates" of type "block" in section
         "System::Coordinates"
@@ -6701,7 +6701,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_CurvGygiAlpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "CurvGygiAlpha" of type "float" in section
@@ -6711,7 +6711,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_CurvGygiA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "CurvGygiA" of type "float" in section
@@ -6721,7 +6721,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_CurvGygiBeta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "CurvGygiBeta" of type "float" in section
@@ -6741,7 +6741,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_CurvModineJBar = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "CurvModineJBar" of type "float" in section
@@ -6751,7 +6751,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_CurvModineJlocal = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "CurvModineJlocal" of type "float" in section
@@ -6761,7 +6761,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_CurvModineJrange = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "CurvModineJrange" of type "float" in section
@@ -6771,7 +6771,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_CurvModineXBar = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "CurvModineXBar" of type "float" in section
@@ -6790,7 +6790,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_DegeneracyThreshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "DegeneracyThreshold" of type "float" in section "States"
@@ -6799,7 +6799,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_DeltaEFMM = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "DeltaEFMM" of type "float" in section
@@ -6868,7 +6868,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_Displacement = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "Displacement" of type "float" in section "Linear
@@ -6878,7 +6878,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_DOSEnergyMax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "DOSEnergyMax" of type "float" in section "Output"
@@ -6887,7 +6887,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_DOSEnergyMin = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "DOSEnergyMin" of type "float" in section "Output"
@@ -6905,7 +6905,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_DOSGamma = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "DOSGamma" of type "float" in section "Output"
@@ -6914,7 +6914,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_DoubleFFTParameter = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "DoubleFFTParameter" of type "float" in section
@@ -6972,7 +6972,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_EigensolverImaginaryTime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "EigensolverImaginaryTime" of type "float" in section
@@ -7022,7 +7022,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_EigensolverTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "EigensolverTolerance" of type "float" in section
@@ -7092,7 +7092,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_EMEta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "EMEta" of type "float" in section "Linear
@@ -7182,7 +7182,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_EMStaticElectricField = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "EMStaticElectricField" of type "float" in section
@@ -7222,7 +7222,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_EwaldAlpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "EwaldAlpha" of type "float" in section "Hamiltonian"
@@ -7231,7 +7231,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ExcessCharge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ExcessCharge" of type "float" in section "States"
@@ -7406,7 +7406,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_GOFireMass = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "GOFireMass" of type "float" in section "Calculation
@@ -7416,7 +7416,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_GOLineTol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "GOLineTol" of type "float" in section "Calculation
@@ -7446,7 +7446,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_GOMinimumMove = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "GOMinimumMove" of type "float" in section "Calculation
@@ -7466,7 +7466,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_GOStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "GOStep" of type "float" in section "Calculation
@@ -7476,7 +7476,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_GOTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "GOTolerance" of type "float" in section "Calculation
@@ -7496,7 +7496,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_GyromagneticRatio = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "GyromagneticRatio" of type "float" in section
@@ -7535,7 +7535,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_Interaction1DScreening = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "Interaction1DScreening" of type "float" in section
@@ -7555,7 +7555,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_InvertKSConvAbsDens = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "InvertKSConvAbsDens" of type "float" in section
@@ -7655,7 +7655,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_KdotPEta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "KdotPEta" of type "float" in section "Linear
@@ -7695,8 +7695,8 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_KPointsGrid = Quantity(
-        type=str,
-        shape=[],
+        type=np.int32,
+        shape=['*', 3],
         description="""
         Octopus parser log entry "KPointsGrid" of type "block" in section "Mesh::KPoints"
         """,
@@ -7793,7 +7793,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_LB94_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "LB94_threshold" of type "float" in section
@@ -7823,7 +7823,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_LCAODiagTol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "LCAODiagTol" of type "float" in section "SCF::LCAO"
@@ -7861,7 +7861,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_LCAOMaximumOrbitalRadius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "LCAOMaximumOrbitalRadius" of type "float" in section
@@ -7871,7 +7871,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_LCAOScaleFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "LCAOScaleFactor" of type "float" in section "SCF::LCAO"
@@ -7889,7 +7889,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_LDBaderThreshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "LDBaderThreshold" of type "float" in section
@@ -8089,7 +8089,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_libvdwxcVDWFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "libvdwxcVDWFactor" of type "float" in section
@@ -8129,7 +8129,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_LocalMagneticMomentsSphereRadius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "LocalMagneticMomentsSphereRadius" of type "float" in
@@ -8139,7 +8139,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_LRConvAbsDens = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "LRConvAbsDens" of type "float" in section "Linear
@@ -8149,7 +8149,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_LRConvRelDens = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "LRConvRelDens" of type "float" in section "Linear
@@ -8169,7 +8169,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_LRTolAdaptiveFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "LRTolAdaptiveFactor" of type "float" in section "Linear
@@ -8179,7 +8179,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_LRTolFinalTol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "LRTolFinalTol" of type "float" in section "Linear
@@ -8189,7 +8189,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_LRTolInitTol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "LRTolInitTol" of type "float" in section "Linear
@@ -8199,7 +8199,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_LRTolIterWindow = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "LRTolIterWindow" of type "float" in section "Linear
@@ -8219,8 +8219,8 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_Lsize = Quantity(
-        type=str,
-        shape=[],
+        type=np.float64,
+        shape=['*', 3],
         description="""
         Octopus parser log entry "Lsize" of type "block" in section "Mesh::Simulation Box"
         """,
@@ -8415,7 +8415,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_Mixing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "Mixing" of type "float" in section "SCF::Mixing"
@@ -8529,7 +8529,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_NFFTOversampling = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "NFFTOversampling" of type "float" in section
@@ -8588,7 +8588,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_OCTCheckGradient = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "OCTCheckGradient" of type "float" in section
@@ -8608,7 +8608,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_OCTControlFunctionOmegaMax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "OCTControlFunctionOmegaMax" of type "float" in section
@@ -8648,7 +8648,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_OCTCurrentWeight = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "OCTCurrentWeight" of type "float" in section
@@ -8658,7 +8658,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_OCTDelta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "OCTDelta" of type "float" in section "Calculation
@@ -8668,7 +8668,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_OCTDirectStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "OCTDirectStep" of type "float" in section "Calculation
@@ -8698,7 +8698,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_OCTEps = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "OCTEps" of type "float" in section "Calculation
@@ -8708,7 +8708,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_OCTEta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "OCTEta" of type "float" in section "Calculation
@@ -8738,7 +8738,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_OCTFixFluenceTo = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "OCTFixFluenceTo" of type "float" in section "Calculation
@@ -8858,7 +8858,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_OCTPenalty = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "OCTPenalty" of type "float" in section "Calculation
@@ -9017,7 +9017,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_OEPMixing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "OEPMixing" of type "float" in section "Hamiltonian::XC"
@@ -9066,7 +9066,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_OpenSCADIsovalue = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "OpenSCADIsovalue" of type "float" in section "Output"
@@ -9288,7 +9288,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ParticleMass = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ParticleMass" of type "float" in section "Hamiltonian"
@@ -9347,7 +9347,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PCMDynamicEpsilon = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PCMDynamicEpsilon" of type "float" in section
@@ -9367,7 +9367,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PCMQtotTol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PCMQtotTol" of type "float" in section
@@ -9377,7 +9377,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PCMRadiusScaling = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PCMRadiusScaling" of type "float" in section
@@ -9397,7 +9397,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PCMSmearingFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PCMSmearingFactor" of type "float" in section
@@ -9417,7 +9417,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PCMStaticEpsilon = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PCMStaticEpsilon" of type "float" in section
@@ -9527,7 +9527,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PES_Flux_DeltaK = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PES_Flux_DeltaK" of type "float" in section "Time-
@@ -9557,7 +9557,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PES_Flux_Kmax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PES_Flux_Kmax" of type "float" in section "Time-
@@ -9597,7 +9597,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PES_Flux_Radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PES_Flux_Radius" of type "float" in section "Time-
@@ -9667,7 +9667,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PES_spm_DeltaOmega = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PES_spm_DeltaOmega" of type "float" in section "Time-
@@ -9677,7 +9677,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PES_spm_OmegaMax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PES_spm_OmegaMax" of type "float" in section "Time-
@@ -9697,7 +9697,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PES_spm_Radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PES_spm_Radius" of type "float" in section "Time-
@@ -9737,7 +9737,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PESMask2PEnlargeFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PESMask2PEnlargeFactor" of type "float" in section
@@ -9747,7 +9747,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PESMaskEnlargeFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PESMaskEnlargeFactor" of type "float" in section "Time-
@@ -9757,7 +9757,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PESMaskFilterCutOff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PESMaskFilterCutOff" of type "float" in section "Time-
@@ -9817,7 +9817,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PESMaskSpectEnergyMax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PESMaskSpectEnergyMax" of type "float" in section "Time-
@@ -9827,7 +9827,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PESMaskSpectEnergyStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PESMaskSpectEnergyStep" of type "float" in section
@@ -9837,7 +9837,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PESMaskStartTime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PESMaskStartTime" of type "float" in section "Time-
@@ -9886,7 +9886,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PNFFTOversampling = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PNFFTOversampling" of type "float" in section
@@ -9896,7 +9896,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_Poisson1DSoftCoulombParam = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "Poisson1DSoftCoulombParam" of type "float" in section
@@ -9906,7 +9906,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PoissonCutoffRadius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PoissonCutoffRadius" of type "float" in section
@@ -9996,7 +9996,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PoissonSolverMGRelaxationFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PoissonSolverMGRelaxationFactor" of type "float" in
@@ -10036,7 +10036,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PoissonSolverThreshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PoissonSolverThreshold" of type "float" in section
@@ -10056,7 +10056,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PreconditionerFilterFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PreconditionerFilterFactor" of type "float" in section
@@ -10106,7 +10106,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PropagationSpectrumDampFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PropagationSpectrumDampFactor" of type "float" in
@@ -10126,7 +10126,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PropagationSpectrumEndTime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PropagationSpectrumEndTime" of type "float" in section
@@ -10136,7 +10136,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PropagationSpectrumEnergyStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PropagationSpectrumEnergyStep" of type "float" in
@@ -10146,7 +10146,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PropagationSpectrumMaxEnergy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PropagationSpectrumMaxEnergy" of type "float" in section
@@ -10166,7 +10166,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_PropagationSpectrumStartTime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "PropagationSpectrumStartTime" of type "float" in section
@@ -10206,7 +10206,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_Radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "Radius" of type "float" in section "Mesh::Simulation
@@ -10216,7 +10216,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_RandomVelocityTemp = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "RandomVelocityTemp" of type "float" in section
@@ -10226,7 +10226,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_RashbaSpinOrbitCoupling = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "RashbaSpinOrbitCoupling" of type "float" in section
@@ -10236,7 +10236,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_RDMConvEner = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "RDMConvEner" of type "float" in section "SCF::RDMFT"
@@ -10245,7 +10245,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_RDMTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "RDMTolerance" of type "float" in section "SCF::RDMFT"
@@ -10354,7 +10354,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_RootSolverAbsTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "RootSolverAbsTolerance" of type "float" in section
@@ -10384,7 +10384,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_RootSolverRelTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "RootSolverRelTolerance" of type "float" in section
@@ -10394,7 +10394,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_RootSolverWSRadius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "RootSolverWSRadius" of type "float" in section
@@ -10442,7 +10442,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_SCDMCutoffRadius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "SCDMCutoffRadius" of type "float" in section
@@ -10517,7 +10517,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_Smearing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "Smearing" of type "float" in section "States"
@@ -10526,7 +10526,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_SOStrength = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "SOStrength" of type "float" in section "Hamiltonian"
@@ -10535,7 +10535,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_Spacing = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "Spacing" of type "float" in section "Mesh"
@@ -10544,7 +10544,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_SPARSKITAbsTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "SPARSKITAbsTolerance" of type "float" in section
@@ -10584,7 +10584,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_SPARSKITRelTolerance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "SPARSKITRelTolerance" of type "float" in section
@@ -10614,7 +10614,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_SpeciesProjectorSphereThreshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "SpeciesProjectorSphereThreshold" of type "float" in
@@ -10653,7 +10653,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_SpectrumSignalNoise = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "SpectrumSignalNoise" of type "float" in section
@@ -10691,7 +10691,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_StatesCLDeviceMemory = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "StatesCLDeviceMemory" of type "float" in section
@@ -10838,7 +10838,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_TDDeltaKickTime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "TDDeltaKickTime" of type "float" in section "Time-
@@ -10858,7 +10858,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_TDDeltaStrength = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "TDDeltaStrength" of type "float" in section "Time-
@@ -10948,7 +10948,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_TDFloquetFrequency = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "TDFloquetFrequency" of type "float" in section "Time-
@@ -11007,7 +11007,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_TDIonicTimeScale = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "TDIonicTimeScale" of type "float" in section "Time-
@@ -11027,7 +11027,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_TDLanczosTol = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "TDLanczosTol" of type "float" in section "Time-
@@ -11127,7 +11127,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_TDPropagationTime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "TDPropagationTime" of type "float" in section "Time-
@@ -11147,7 +11147,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_TDSCFThreshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "TDSCFThreshold" of type "float" in section "Time-
@@ -11167,7 +11167,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_TDTimeStep = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "TDTimeStep" of type "float" in section "Time-
@@ -11246,7 +11246,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_ThermostatMass = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "ThermostatMass" of type "float" in section "Time-
@@ -11275,7 +11275,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_TnaddFactor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "TnaddFactor" of type "float" in section
@@ -11479,7 +11479,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_Xalpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "Xalpha" of type "float" in section "Hamiltonian::XC"
@@ -11488,7 +11488,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_XCDensityCorrectionCutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "XCDensityCorrectionCutoff" of type "float" in section
@@ -11548,7 +11548,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_XCKernelLRCAlpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "XCKernelLRCAlpha" of type "float" in section
@@ -11587,7 +11587,7 @@ class Run(runschema.run.Run):
     )
 
     x_octopus_parserlog_Xlength = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Octopus parser log entry "Xlength" of type "float" in section "Mesh::Simulation
