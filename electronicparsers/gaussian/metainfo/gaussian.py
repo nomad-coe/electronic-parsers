@@ -81,7 +81,7 @@ class x_gaussian_section_geometry(MSection):
     )
 
     x_gaussian_atom_x_coord = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -90,7 +90,7 @@ class x_gaussian_section_geometry(MSection):
     )
 
     x_gaussian_atom_y_coord = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -99,7 +99,7 @@ class x_gaussian_section_geometry(MSection):
     )
 
     x_gaussian_atom_z_coord = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -118,7 +118,7 @@ class x_gaussian_section_hybrid_coeffs(MSection):
     )
 
     hybrid_xc_coeff1 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Coefficient for Hartree-Fock exchange in hybrid DFT functionals
@@ -135,7 +135,7 @@ class x_gaussian_section_hybrid_coeffs(MSection):
     )
 
     x_gaussian_hybrid_xc_hfx = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Hartree-Fock exchange
@@ -143,7 +143,7 @@ class x_gaussian_section_hybrid_coeffs(MSection):
     )
 
     x_gaussian_hybrid_xc_slater = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Slater exchange
@@ -151,7 +151,7 @@ class x_gaussian_section_hybrid_coeffs(MSection):
     )
 
     x_gaussian_hybrid_xc_nonlocalex = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Slater exchange
@@ -159,7 +159,7 @@ class x_gaussian_section_hybrid_coeffs(MSection):
     )
 
     x_gaussian_hybrid_xc_localcorr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Slater exchange
@@ -167,7 +167,7 @@ class x_gaussian_section_hybrid_coeffs(MSection):
     )
 
     x_gaussian_hybrid_xc_nonlocalcorr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Slater exchange
@@ -221,7 +221,7 @@ class x_gaussian_section_atom_forces(MSection):
     )
 
     x_gaussian_atom_x_force = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -230,7 +230,7 @@ class x_gaussian_section_atom_forces(MSection):
     )
 
     x_gaussian_atom_y_force = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -239,7 +239,7 @@ class x_gaussian_section_atom_forces(MSection):
     )
 
     x_gaussian_atom_z_force = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -538,7 +538,7 @@ class x_gaussian_section_molecular_multipoles(MSection):
     )
 
     x_gaussian_molecular_multipole_lm = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['x_gaussian_number_of_lm_molecular_multipoles', 2],
         description="""
         Tuples of $l$ and $m$ values for which the molecular multipoles (including the
@@ -559,7 +559,7 @@ class x_gaussian_section_molecular_multipoles(MSection):
     )
 
     x_gaussian_molecular_multipole_values = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_gaussian_number_of_lm_molecular_multipoles'],
         description="""
         Value of the multipoles (including the monopole/charge for $l$ = 0, the dipole for
@@ -612,7 +612,7 @@ class x_gaussian_section_frequencies(MSection):
     )
 
     x_gaussian_frequencies = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_frequencies'],
         description="""
         values of frequencies, in cm-1
@@ -620,7 +620,7 @@ class x_gaussian_section_frequencies(MSection):
     )
 
     x_gaussian_reduced_masses = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_reduced_masses_rows'],
         description="""
         values of normal mode reduced masses
@@ -628,7 +628,7 @@ class x_gaussian_section_frequencies(MSection):
     )
 
     x_gaussian_red_masses = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_frequencies'],
         description="""
         values of normal mode reduced masses
@@ -644,7 +644,7 @@ class x_gaussian_section_frequencies(MSection):
     )
 
     x_gaussian_normal_mode_values = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_frequencies', 'number_of_atoms', 3],
         description="""
         normal mode vectors
@@ -662,7 +662,7 @@ class x_gaussian_section_thermochem(MSection):
     )
 
     x_gaussian_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Value of temperature for thermochemical values
@@ -670,7 +670,7 @@ class x_gaussian_section_thermochem(MSection):
     )
 
     x_gaussian_pressure = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Value of pressure for thermochemical values
@@ -678,7 +678,7 @@ class x_gaussian_section_thermochem(MSection):
     )
 
     x_gaussian_moment_of_inertia_X = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         X component of moment of inertia
@@ -686,7 +686,7 @@ class x_gaussian_section_thermochem(MSection):
     )
 
     x_gaussian_moment_of_inertia_Y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Y component of moment of inertia
@@ -694,7 +694,7 @@ class x_gaussian_section_thermochem(MSection):
     )
 
     x_gaussian_moment_of_inertia_Z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Z component of moment of inertia
@@ -702,7 +702,7 @@ class x_gaussian_section_thermochem(MSection):
     )
 
     x_gaussian_moments = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         Values of moments of inertia
@@ -710,7 +710,7 @@ class x_gaussian_section_thermochem(MSection):
     )
 
     x_gaussian_zero_point_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Value of zero-point energy
@@ -718,7 +718,7 @@ class x_gaussian_section_thermochem(MSection):
     )
 
     x_gaussian_thermal_correction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Value of thermal correction to total energy
@@ -726,7 +726,7 @@ class x_gaussian_section_thermochem(MSection):
     )
 
     x_gaussian_thermal_correction_enthalpy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Value of thermal correction to enthalpy
@@ -734,7 +734,7 @@ class x_gaussian_section_thermochem(MSection):
     )
 
     x_gaussian_thermal_correction_free_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Value of thermal correction to Gibbs free energy
@@ -760,7 +760,7 @@ class x_gaussian_section_force_constant_matrix(MSection):
     )
 
     x_gaussian_force_constant_values = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_degrees_of_freedom', 'number_of_degrees_of_freedom'],
         description="""
         Force constant matrix element values
@@ -882,7 +882,7 @@ class x_gaussian_section_moller_plesset(MSection):
     )
 
     x_gaussian_mp2_correction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -891,7 +891,7 @@ class x_gaussian_section_moller_plesset(MSection):
     )
 
     x_gaussian_mp3_correction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -900,7 +900,7 @@ class x_gaussian_section_moller_plesset(MSection):
     )
 
     x_gaussian_mp4dq_correction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -909,7 +909,7 @@ class x_gaussian_section_moller_plesset(MSection):
     )
 
     x_gaussian_mp4sdq_correction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -918,7 +918,7 @@ class x_gaussian_section_moller_plesset(MSection):
     )
 
     x_gaussian_mp4sdtq_correction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -927,7 +927,7 @@ class x_gaussian_section_moller_plesset(MSection):
     )
 
     x_gaussian_mp5_correction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -946,7 +946,7 @@ class x_gaussian_section_coupled_cluster(MSection):
     )
 
     x_gaussian_ccsd_correction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -965,7 +965,7 @@ class x_gaussian_section_quadratic_ci(MSection):
     )
 
     x_gaussian_qcisd_correction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -974,7 +974,7 @@ class x_gaussian_section_quadratic_ci(MSection):
     )
 
     x_gaussian_qcisdtq_correction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -993,7 +993,7 @@ class x_gaussian_section_ci(MSection):
     )
 
     x_gaussian_ci_correction_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -1012,7 +1012,7 @@ class x_gaussian_section_semiempirical(MSection):
     )
 
     x_gaussian_semiempirical_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -1077,7 +1077,7 @@ class x_gaussian_section_excited(MSection):
     )
 
     x_gaussian_excited_state_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         CIS, TDDFT/TDHF, ZINDO or EOMCCSD excited state number
@@ -1085,7 +1085,7 @@ class x_gaussian_section_excited(MSection):
     )
 
     x_gaussian_excited_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -1094,7 +1094,7 @@ class x_gaussian_section_excited(MSection):
     )
 
     x_gaussian_excited_oscstrength = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         CIS, TDDFT/TDHF, ZINDO or EOMCCSD excited state oscillator strength
@@ -1102,7 +1102,7 @@ class x_gaussian_section_excited(MSection):
     )
 
     x_gaussian_excited_spin_squared = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         CIS, TDDFT/TDHF, ZINDO or EOMCCSD excited state spin squared value
@@ -1129,7 +1129,7 @@ class x_gaussian_section_casscf(MSection):
     )
 
     x_gaussian_casscf_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -1138,7 +1138,7 @@ class x_gaussian_section_casscf(MSection):
     )
 
     x_gaussian_casscf_determinant = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         CASSCF determinant number
@@ -1146,7 +1146,7 @@ class x_gaussian_section_casscf(MSection):
     )
 
     x_gaussian_casscf_coefficient = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         CASSCF determinant coefficient
@@ -1161,7 +1161,7 @@ class System(runschema.system.System):
     )
 
     x_gaussian_number_of_atoms = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         number of atoms of the system
@@ -1177,7 +1177,7 @@ class System(runschema.system.System):
     )
 
     x_gaussian_total_charge = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Total charge of the system.
@@ -1185,7 +1185,7 @@ class System(runschema.system.System):
     )
 
     x_gaussian_spin_target_multiplicity = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Target (user-imposed) value of the spin multiplicity $M=2S+1$, where $S$ is the
@@ -1220,7 +1220,7 @@ class System(runschema.system.System):
     )
 
     x_gaussian_masses = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         values of atomic masses
@@ -1235,7 +1235,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_gaussian_atom_forces = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         unit='newton',
         description="""
@@ -1245,7 +1245,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_gaussian_energy_total_scf_converged = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -1393,7 +1393,7 @@ class Run(runschema.run.Run):
     )
 
     x_gaussian_atom_positions = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         unit='meter',
         description="""
@@ -1468,7 +1468,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_gaussian_energy_total_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -1478,7 +1478,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_gaussian_delta_energy_total_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -1496,7 +1496,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_gaussian_spin_S2 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Real value of spin squared.
@@ -1504,7 +1504,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_gaussian_after_annihilation_spin_S2 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Real value of spin squared resulting from the annihilation of the first spin
@@ -1513,7 +1513,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_gaussian_energy_scf = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -1522,7 +1522,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_gaussian_perturbation_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -1539,7 +1539,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_gaussian_energy_electrostatic = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -1549,7 +1549,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_gaussian_energy_error = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -1558,7 +1558,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_gaussian_electronic_kinetic_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -1606,7 +1606,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     )
 
     x_gaussian_alpha_eigenvalues = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_alpha_mos'],
         description="""
         values of eigenenergies, alpha occ
@@ -1614,7 +1614,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     )
 
     x_gaussian_beta_eigenvalues = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_beta_mos'],
         description="""
         values of eigenenergies, beta occ
@@ -1622,7 +1622,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     )
 
     x_gaussian_alpha_occupations = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_alpha_mos'],
         description="""
         values of eigenenergies, alpha occ
@@ -1630,7 +1630,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     )
 
     x_gaussian_beta_occupations = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_beta_mos'],
         description="""
         values of eigenenergies, beta occ
@@ -1638,7 +1638,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     )
 
     x_gaussian_eigenvalues_occupation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[
             'number_of_spin_channels',
             'number_of_eigenvalues_kpoints',
@@ -1651,7 +1651,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     )
 
     x_gaussian_eigenvalues_values = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[
             'number_of_spin_channels',
             'number_of_eigenvalues_kpoints',
