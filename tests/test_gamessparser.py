@@ -65,7 +65,7 @@ def test_dft(parser):
     assert len(sec_calc[5].energy.contributions) == 5
     assert sec_calc[5].energy.contributions[1].kind == 'nucleus-electron_potential'
     # assert sec_calc[5].multipoles[0].dipole.origin[1].magnitude == 0
-    assert sec_calc[5].multipoles[0].dipole.value[2] == 0
+    assert sec_calc[5].multipoles[0].dipole.value[2][0] == 0
 
 
 def test_gamess_geometry_opt(parser):

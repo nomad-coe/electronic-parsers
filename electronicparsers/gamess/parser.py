@@ -878,12 +878,15 @@ class GamessParser:
             moments = properties.get('electrostatic_moments')
             if moments is not None:
                 for dipole in moments.get('dipole', []):
+                    value = dipole.get('value')
+                    if value is not None:
+                        value = np.reshape(value, (len(value), 1))
                     sec_multipoles = Multipoles()
                     sec_scc.multipoles.append(sec_multipoles)
                     sec_multipoles.kind = 'electrostatic'
                     sec_multipoles.dipole = MultipolesEntry(
                         # origin=dipole.get('origin'),
-                        value=dipole.get('value')
+                        value=value
                     )
 
         if source.get('gradient') is not None:

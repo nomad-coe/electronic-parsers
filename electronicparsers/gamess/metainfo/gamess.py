@@ -47,7 +47,7 @@ class x_gamess_section_atom_forces(MSection):
     m_def = Section(validate=False)
 
     x_gamess_atom_x_force = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -56,7 +56,7 @@ class x_gamess_section_atom_forces(MSection):
     )
 
     x_gamess_atom_y_force = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -65,7 +65,7 @@ class x_gamess_section_atom_forces(MSection):
     )
 
     x_gamess_atom_z_force = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -82,7 +82,7 @@ class x_gamess_section_cis(MSection):
     m_def = Section(validate=False)
 
     x_gamess_cis_excitation_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -92,7 +92,7 @@ class x_gamess_section_cis(MSection):
     )
 
     x_gamess_cis_oscillator_strength = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Value of the oscillator strengths for configuration interaction singles excited
@@ -157,7 +157,7 @@ class x_gamess_section_frequencies(MSection):
     m_def = Section(validate=False)
 
     x_gamess_frequencies = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_frequencies'],
         description="""
         values of frequencies, in cm-1
@@ -173,7 +173,7 @@ class x_gamess_section_frequencies(MSection):
     )
 
     x_gamess_red_masses = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_frequencies'],
         description="""
         values of normal mode reduced masses
@@ -213,7 +213,7 @@ class x_gamess_section_geometry(MSection):
     m_def = Section(validate=False)
 
     x_gamess_atom_positions = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         unit='meter',
         description="""
@@ -222,7 +222,7 @@ class x_gamess_section_geometry(MSection):
     )
 
     x_gamess_atom_x_coord = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -231,7 +231,7 @@ class x_gamess_section_geometry(MSection):
     )
 
     x_gamess_atom_y_coord = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -240,7 +240,7 @@ class x_gamess_section_geometry(MSection):
     )
 
     x_gamess_atom_z_coord = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -257,7 +257,7 @@ class x_gamess_section_mcscf(MSection):
     m_def = Section(validate=False)
 
     x_gamess_energy_mcscf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -266,7 +266,7 @@ class x_gamess_section_mcscf(MSection):
     )
 
     x_gamess_mcscf_active_electrons = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of MCSCF active electrons in the calculation.
@@ -274,7 +274,7 @@ class x_gamess_section_mcscf(MSection):
     )
 
     x_gamess_mcscf_active_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of MCSCF active orbitals in the calculation.
@@ -282,7 +282,7 @@ class x_gamess_section_mcscf(MSection):
     )
 
     x_gamess_mcscf_inactive_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of MCSCF inactive orbitals in the calculation.
@@ -306,7 +306,7 @@ class x_gamess_section_mrpt2(MSection):
     m_def = Section(validate=False)
 
     x_gamess_mrpt2_active_electrons = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of active electrons in MRPT2 calculation.
@@ -314,7 +314,7 @@ class x_gamess_section_mrpt2(MSection):
     )
 
     x_gamess_mrpt2_active_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of active orbitals in MRPT2 calculation.
@@ -322,7 +322,7 @@ class x_gamess_section_mrpt2(MSection):
     )
 
     x_gamess_mrpt2_doubly_occupied_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of doubly occupied orbitals in MRPT2 calculation.
@@ -330,7 +330,7 @@ class x_gamess_section_mrpt2(MSection):
     )
 
     x_gamess_mrpt2_external_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of external orbitals in MRPT2 calculation.
@@ -338,7 +338,7 @@ class x_gamess_section_mrpt2(MSection):
     )
 
     x_gamess_mrpt2_frozen_core_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of frozen core orbitals in MRPT2 calculation.
@@ -346,7 +346,7 @@ class x_gamess_section_mrpt2(MSection):
     )
 
     x_gamess_mrpt2_frozen_virtual_orbitals = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of frozen virtual orbitals in MRPT2 calculation.
@@ -387,7 +387,7 @@ class x_gamess_section_tddft(MSection):
     m_def = Section(validate=False)
 
     x_gamess_tddft_excitation_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -396,7 +396,7 @@ class x_gamess_section_tddft(MSection):
     )
 
     x_gamess_tddft_oscillator_strength = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Value of the oscillator strengths for time-dependent DFT excited states.
@@ -428,7 +428,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_gamess_atom_positions_initial = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         unit='meter',
         description="""
@@ -437,7 +437,7 @@ class System(runschema.system.System):
     )
 
     x_gamess_atom_x_coord_initial = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -446,7 +446,7 @@ class System(runschema.system.System):
     )
 
     x_gamess_atom_y_coord_initial = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -455,7 +455,7 @@ class System(runschema.system.System):
     )
 
     x_gamess_atom_z_coord_initial = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -464,7 +464,7 @@ class System(runschema.system.System):
     )
 
     x_gamess_number_of_electrons = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         number of electrons for system
@@ -472,7 +472,7 @@ class System(runschema.system.System):
     )
 
     x_gamess_atomic_number = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         atomic number for atoms
@@ -480,7 +480,7 @@ class System(runschema.system.System):
     )
 
     x_gamess_memory = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Total memory for GAMESS job
@@ -488,7 +488,7 @@ class System(runschema.system.System):
     )
 
     x_gamess_spin_target_multiplicity = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Target (user-imposed) value of the spin multiplicity $M=2S+1$, where $S$ is the
@@ -499,7 +499,7 @@ class System(runschema.system.System):
     )
 
     x_gamess_total_charge = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Total charge of the system.
@@ -535,7 +535,7 @@ class Method(runschema.method.Method):
     )
 
     x_gamess_basis_set_igauss = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of main Gaussians
@@ -543,7 +543,7 @@ class Method(runschema.method.Method):
     )
 
     x_gamess_basis_set_ndfunc = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of polarization d function sets on heavy atoms
@@ -551,7 +551,7 @@ class Method(runschema.method.Method):
     )
 
     x_gamess_basis_set_nffunc = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of polarization f function sets on heavy atoms
@@ -748,7 +748,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_gamess_energy_scf = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -758,7 +758,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_gamess_energy_total_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -812,13 +812,13 @@ class Energy(runschema.calculation.Energy):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_gamess_virial_ratio = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
     x_gamess_wavefunction_normalization = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
