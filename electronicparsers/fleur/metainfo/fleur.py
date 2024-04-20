@@ -100,7 +100,7 @@ class x_fleur_section_equiv_atoms(MSection):
     )
 
     x_fleur_atom_pos_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         position of atom x
@@ -108,7 +108,7 @@ class x_fleur_section_equiv_atoms(MSection):
     )
 
     x_fleur_atom_pos_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         position of atom y
@@ -116,7 +116,7 @@ class x_fleur_section_equiv_atoms(MSection):
     )
 
     x_fleur_atom_pos_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         position of atom z
@@ -124,7 +124,7 @@ class x_fleur_section_equiv_atoms(MSection):
     )
 
     x_fleur_atom_coord_scale = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         scales coordinates by 1/scale. If film=T, scales only x&y coordinates, if film=F
@@ -133,7 +133,7 @@ class x_fleur_section_equiv_atoms(MSection):
     )
 
     x_fleur_atomic_number_Z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         atomic number Z
@@ -141,7 +141,7 @@ class x_fleur_section_equiv_atoms(MSection):
     )
 
     x_fleur_nr_equiv_atoms_in_this_atom_type = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         number_equiv_atoms_in_this_atom_type
@@ -186,7 +186,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fleur_lattice_vector_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -195,7 +195,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_lattice_vector_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -204,7 +204,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_lattice_vector_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -213,7 +213,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_rec_lattice_vector_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -222,7 +222,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_rec_lattice_vector_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -231,7 +231,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_rec_lattice_vector_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -272,7 +272,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_total_atoms = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         total number of atoms
@@ -280,7 +280,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_nr_of_atom_types = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number of atom types
@@ -288,7 +288,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_nuclear_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         nuclear number
@@ -296,7 +296,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_number_of_core_levels = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         x_fleur_number_of_core_levels
@@ -304,7 +304,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_k_max = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Kmax is the plane wave cut-off
@@ -312,7 +312,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_G_max = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Gmax
@@ -320,7 +320,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_tot_nucl_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         total nuclear charge
@@ -328,7 +328,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_tot_elec_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         total electronic charge
@@ -336,7 +336,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_unit_cell_volume = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='bohr ** 3',
         description="""
@@ -345,7 +345,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_unit_cell_volume_omega = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         unit cell volume omega tilda
@@ -353,7 +353,7 @@ class System(runschema.system.System):
     )
 
     x_fleur_vol_interstitial = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         volume of interstitial region
@@ -376,7 +376,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fleur_tot_for_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TOTAL FORCE FOR ATOM TYPE, X
@@ -384,7 +384,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_fleur_tot_for_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TOTAL FORCE FOR ATOM TYPE, Y
@@ -392,7 +392,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_fleur_tot_for_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TOTAL FORCE FOR ATOM TYPE, Z
@@ -400,7 +400,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_fleur_tot_for_fx = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TOTAL FORCE FOR ATOM TYPE, FX_TOT
@@ -408,7 +408,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_fleur_tot_for_fy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TOTAL FORCE FOR ATOM TYPE, FY_TOT
@@ -416,7 +416,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_fleur_tot_for_fz = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TOTAL FORCE FOR ATOM TYPE, FZ_TOT
@@ -424,7 +424,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_fleur_iteration_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         scf iteration number
@@ -432,7 +432,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_fleur_energy_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -441,7 +441,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_fleur_free_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -450,7 +450,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_fleur_entropy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -463,7 +463,7 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fleur_nkptd = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number of all the k-points
@@ -471,7 +471,7 @@ class Method(runschema.method.Method):
     )
 
     x_fleur_k_point_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x component of vector of k point
@@ -479,7 +479,7 @@ class Method(runschema.method.Method):
     )
 
     x_fleur_k_point_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         y component of vector of k point
@@ -487,7 +487,7 @@ class Method(runschema.method.Method):
     )
 
     x_fleur_k_point_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         z component of vector of k point
@@ -495,7 +495,7 @@ class Method(runschema.method.Method):
     )
 
     x_fleur_k_point_weight = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         weights of k point
@@ -513,7 +513,7 @@ class Method(runschema.method.Method):
     )
 
     x_fleur_smearing_width = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -523,7 +523,7 @@ class Method(runschema.method.Method):
     )
 
     x_fleur_nr_of_valence_electrons = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The number of electrons to be represented within the valence electron framework
@@ -531,7 +531,7 @@ class Method(runschema.method.Method):
     )
 
     x_fleur_smearing_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='kelvin',
         description="""
@@ -587,7 +587,7 @@ class BasisSet(runschema.method.BasisSet):
     )
 
     x_fleur_coretail_cutoff = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -616,7 +616,7 @@ class BaseCalculation(runschema.calculation.BaseCalculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fleur_n_occupied_states = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
