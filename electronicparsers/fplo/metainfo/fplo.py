@@ -62,7 +62,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fplo_reciprocal_cell = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         unit='1 / meter',
         description="""
@@ -73,7 +73,7 @@ class System(runschema.system.System):
     )
 
     x_fplo_atom_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['number_of_atoms'],
         description="""
         FPLO-internal index for each atom
@@ -81,7 +81,7 @@ class System(runschema.system.System):
     )
 
     x_fplo_atom_wyckoff_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['number_of_atoms'],
         description="""
         Wyckoff position index of each atom
@@ -89,7 +89,7 @@ class System(runschema.system.System):
     )
 
     x_fplo_atom_cpa_block = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['number_of_atoms'],
         description="""
         CPA block of each atom
@@ -109,7 +109,7 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_fplo_xc_functional_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         FPLO number xc functional
@@ -153,35 +153,35 @@ class Method(runschema.method.Method):
 #         ''')
 
 #     x_fplo_dft_plus_u_orbital_species = Quantity(
-#         type=np.dtype(np.int32),
+#         type=np.int32,
 #         shape=[],
 #         description='''
 #         FPLO: Atom/Orbital dependent DFT+U property: species index
 #         ''')
 
 #     x_fplo_dft_plus_u_orbital_F0 = Quantity(
-#         type=np.dtype(np.float64),
+#         type=np.float64,
 #         shape=[],
 #         description='''
 #         FPLO: Atom/Orbital dependent DFT+U property: value F0
 #         ''')
 
 #     x_fplo_dft_plus_u_orbital_F2 = Quantity(
-#         type=np.dtype(np.float64),
+#         type=np.float64,
 #         shape=[],
 #         description='''
 #         FPLO: Atom/Orbital dependent DFT+U property: value F2
 #         ''')
 
 #     x_fplo_dft_plus_u_orbital_F4 = Quantity(
-#         type=np.dtype(np.float64),
+#         type=np.float64,
 #         shape=[],
 #         description='''
 #         FPLO: Atom/Orbital dependent DFT+U property: value F4
 #         ''')
 
 #     x_fplo_dft_plus_u_orbital_F6 = Quantity(
-#         type=np.dtype(np.float64),
+#         type=np.float64,
 #         shape=[],
 #         description='''
 #         FPLO: Atom/Orbital dependent DFT+U property: value F6
