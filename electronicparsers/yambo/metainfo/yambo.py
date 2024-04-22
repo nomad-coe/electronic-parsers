@@ -67,56 +67,56 @@ class x_yambo_parameters(MSection):
     m_def = Section(validate=False)
 
     x_yambo_bands = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_k_points = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_g_vectors = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_components = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_symmetries = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_spinor_components = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_spin_polarization = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -124,42 +124,42 @@ class x_yambo_parameters(MSection):
     )
 
     x_yambo_electrons = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_wf_g_vectors = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_max_atoms_species = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_n_atom_species = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_exact_exchange_fraction_in_xc = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_exact_exchange_screening_in_xc = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -202,28 +202,28 @@ class Run(runschema.run.Run):
     )
 
     x_yambo_cpu = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_threads = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_threads_tot = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_io_nodes = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -306,7 +306,7 @@ class x_yambo_local_xc_nonlocal_fock_bandenergies(runschema.calculation.BandEner
     m_def = Section(validate=False)
 
     x_yambo_sx = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['n_spin_channels', 'n_kpoints', 'n_bands'],
         unit='joule',
         description="""
@@ -314,7 +314,7 @@ class x_yambo_local_xc_nonlocal_fock_bandenergies(runschema.calculation.BandEner
     )
 
     x_yambo_vxc = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['n_spin_channels', 'n_kpoints', 'n_bands'],
         unit='joule',
         description="""
@@ -326,7 +326,7 @@ class x_yambo_bare_xc_bandenergies(runschema.calculation.BandEnergies):
     m_def = Section(validate=False)
 
     x_yambo_dft = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['n_spin_channels', 'n_kpoints', 'n_bands'],
         unit='joule',
         description="""
@@ -334,7 +334,7 @@ class x_yambo_bare_xc_bandenergies(runschema.calculation.BandEnergies):
     )
 
     x_yambo_hf = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['n_spin_channels', 'n_kpoints', 'n_bands'],
         unit='joule',
         description="""
@@ -346,7 +346,7 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_yambo_electronic_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='kelvin',
         description="""
@@ -354,7 +354,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_yambo_bosonic_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='kelvin',
         description="""
@@ -369,7 +369,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_yambo_electronic_density = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='1/cm**3',
         description="""
@@ -377,21 +377,21 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_yambo_filled_bands = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[2],
         description="""
         """,
     )
 
     x_yambo_empty_bands = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[2],
         description="""
         """,
     )
 
     x_yambo_indirect_gaps = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[2],
         unit='joule',
         description="""
@@ -399,7 +399,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_yambo_direct_gaps = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[2],
         unit='joule',
         description="""
@@ -407,7 +407,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_yambo_indirect_gap = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -415,7 +415,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_yambo_direct_gap = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -423,14 +423,14 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_yambo_direct_gap_k_point = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_indirect_gap_k_points = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[2],
         description="""
         """,
@@ -449,28 +449,28 @@ class x_yambo_dynamic_dielectric_matrix_fragment(MSection):
     m_def = Section(validate=False)
 
     x_yambo_FREQ_PARS_sec_iq = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[1],
         description="""
         """,
     )
 
     x_yambo_FREQ_sec_iq = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[2, 2],
         description="""
         """,
     )
 
     x_yambo_matrix_size = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_X_Q = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[2, 'x_yambo_matrix_size', 'x_yambo_matrix_size', 2],
         description="""
         """,
@@ -481,7 +481,7 @@ class x_yambo_module(MSection):
     m_def = Section(validate=False)
 
     x_yambo_mesh_size = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         """,
@@ -504,14 +504,14 @@ class x_yambo_local_xc_nonlocal_fock(x_yambo_module):
     m_def = Section(validate=False)
 
     x_yambo_plane_waves_vxc = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_yambo_plane_waves_exs = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -522,7 +522,7 @@ class x_yambo_bare_xc(x_yambo_module):
     m_def = Section(validate=False)
 
     x_yambo_plane_waves_exs = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -537,14 +537,14 @@ class x_yambo_dyson(x_yambo_module):
     m_def = Section(validate=False)
 
     x_yambo_bands_range = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[2],
         description="""
         """,
     )
 
     x_yambo_g_damping = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
