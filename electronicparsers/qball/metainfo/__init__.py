@@ -1,7 +1,8 @@
 #
 # Copyright The NOMAD Authors.
 #
-# This file is part of NOMAD. See https://nomad-lab.eu for further info.
+# This file is part of NOMAD.
+# See https://nomad-lab.eu for further info.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,24 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from nomad.metainfo import Environment
 
-import pytest
-# import numpy as np
-
-from nomad.datamodel import EntryArchive
-from electronicparsers.qball import QBallParser
+from . import qball
 
 
-def approx(value, abs=0, rel=1e-6):
-    return pytest.approx(value, abs=abs, rel=rel)
-
-
-@pytest.fixture(scope='module')
-def parser():
-    return QBallParser()
-
-
-def test(parser):
-    archive = EntryArchive()
-    # TODO add test
-    pass
+m_env = Environment()
+m_env.m_add_sub_section(Environment.packages, qball.m_package)

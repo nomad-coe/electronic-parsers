@@ -30,6 +30,7 @@ from runschema.system import System, Atoms
 from runschema.method import Method, BasisSet, BasisSetContainer
 from runschema.calculation import Calculation, Forces, ForcesEntry
 from nomad.parsing.file_parser import Quantity, TextParser
+from .metainfo import m_env  # pylint: disable=unused-import
 
 from xml.etree import ElementTree
 

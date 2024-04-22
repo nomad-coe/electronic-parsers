@@ -1,7 +1,8 @@
 #
 # Copyright The NOMAD Authors.
 #
-# This file is part of NOMAD. See https://nomad-lab.eu for further info.
+# This file is part of NOMAD.
+# See https://nomad-lab.eu for further info.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,24 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import runschema.run  # pylint: disable=unused-import
+import runschema.calculation  # pylint: disable=unused-import
+import runschema.method  # pylint: disable=unused-import
+import runschema.system  # pylint: disable=unused-import
 
-import pytest
-# import numpy as np
-
-from nomad.datamodel import EntryArchive
-from electronicparsers.qball import QBallParser
-
-
-def approx(value, abs=0, rel=1e-6):
-    return pytest.approx(value, abs=abs, rel=rel)
+from nomad.metainfo import Package
 
 
-@pytest.fixture(scope='module')
-def parser():
-    return QBallParser()
-
-
-def test(parser):
-    archive = EntryArchive()
-    # TODO add test
-    pass
+m_package = Package()
