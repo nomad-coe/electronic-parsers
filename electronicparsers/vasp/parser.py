@@ -1304,7 +1304,10 @@ class RunContentParser(ContentParser):
                     '/modeling[0]/kpoints[0]/generation[0]/i[@name="divisions"]'
                 )
             if divisions:
-                self._kpoints_info['grid'] = divisions['divisions']
+                grid = divisions['divisions']
+                self._kpoints_info['grid'] = (
+                    grid if isinstance(grid, list) else [int(grid)]
+                )
             volumeweight = self._get_key_values(
                 '/modeling[0]/kpoints[0]/generation[0]/i[@name="volumeweight"]'
             )
@@ -1410,7 +1413,12 @@ class RunContentParser(ContentParser):
             if cutoff_value is not None:
                 sec_basis = BasisSet(
                     type='plane waves',
-                    cutoff=cutoff_value * ureg.eV,  # based on examples
+                    cutoff=(
+                        cutoff_value[-1]
+                        if isinstance(cutoff_value, (np.ndarray, list))
+                        else cutoff_value
+                    )
+                    * ureg.eV,  # based on examples
                     frozen_core=False
                     if self.get_incar_out().get('ICORELEVEL', 0) == 1
                     else True,
@@ -1641,11 +1649,9 @@ class VASPParser:
         sec_k_mesh = KMesh()
         section.k_mesh = sec_k_mesh
         for key, val in self.parser.kpoints_info.items():
-            if val is not None:
-                try:
-                    setattr(sec_k_mesh, key, val)
-                except Exception:
-                    self.logger.warning('Error setting metainfo', data=dict(key=key))
+            quantity_def = sec_k_mesh.m_def.all_quantities.get(key)
+            if val is not None and quantity_def is not None:
+                sec_k_mesh.m_set(quantity_def, val)
         if sec_k_mesh.points is None:
             sec_k_mesh.points = [[0.0] * 3]
 
@@ -2067,6 +2073,7 @@ class VASPParser:
                 divisions = self.parser.kpoints_info.get('grid', None)
                 if divisions is None:
                     return
+                divisions = max(divisions)
                 n_segments = len(kpoints) // divisions
                 kpoints = np.reshape(kpoints, (n_segments, divisions, 3))
                 eigs = np.reshape(
@@ -2182,8 +2189,9 @@ class VASPParser:
                 else 0 * ureg.s
             )
             sec_scc = parse_energy(n, None)
-            sec_scc.time_calculation = self.parser.get_time_calc(n)[-1]
-            if sec_scc.time_calculation:
+            time = self.parser.get_time_calc(n)[-1]
+            if time:
+                sec_scc.time_calculation = float(time)
                 sec_scc.time_physical = time_initial + sec_scc.time_calculation
 
             time_scf = self.parser.get_time_scf(n)

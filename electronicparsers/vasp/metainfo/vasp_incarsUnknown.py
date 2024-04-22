@@ -54,7 +54,7 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_vasp_incarOut_ENMAX = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Maximum cutoff (normally specified only in POTCAR). Value prinded out after
@@ -64,7 +64,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ENMAX = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Maximum cutoff (normally specified only in POTCAR). Value prinded out after

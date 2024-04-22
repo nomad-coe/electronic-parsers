@@ -60,7 +60,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_AEXX = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         AEXX specifies the fraction of exact exchange in a Hartree-Fock/DFT hybrid
@@ -70,7 +70,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_AGGAC = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         AGGAC specifies the fraction of gradient corrections to the correlation in a
@@ -80,7 +80,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_AGGAX = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         AGGAX specifies the fraction of gradient corrections to the exchange in a Hartree-
@@ -90,7 +90,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ALDAC = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ALDAC specifies the fraction of LDA correlation in a Hartree-Fock/DFT hybrid
@@ -110,7 +110,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_AMIN = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         AMIN specifies the minimal mixing parameter in Kerker's initial approximation to
@@ -121,7 +121,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_AMIX = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         AMIX specifies the linear mixing parameter.
@@ -130,7 +130,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_AMIX_MAG = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         AMIX_MAG linear mixing parameter for the magnetization density.
@@ -139,7 +139,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ANDERSEN_PROB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ANDERSEN_PROB sets the collision probability for the Anderson thermostat (in case
@@ -149,7 +149,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ANTIRES = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The flag ANTIRES determines whether the Tamm-Dancoff approximation is used or not.
@@ -158,7 +158,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_APACO = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         APACO sets the maximum distance in the evaluation of the pair-correlation function
@@ -168,7 +168,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_BMIX = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         BMIX sets the cutoff wave vector for Kerker mixing scheme (IMIX = 1 and / or
@@ -178,7 +178,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_BMIX_MAG = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         BMIX_MAG sets the cutoff wave vector for Kerker mixing scheme (IMIX=1 and/or
@@ -198,7 +198,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_CH_NEDOS = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag specifies the number of frequency (energy) grid points on the x-axis in
@@ -208,7 +208,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_CH_SIGMA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This tag specifies the broadening in eV of the imaginary dielectric function for a
@@ -218,7 +218,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_CLL = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         CLL selects the angular (l) quantum number of the excited electron when using
@@ -228,7 +228,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_CLN = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         CLN selects the main quantum number of the excited electron when using
@@ -238,7 +238,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_CLNT = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         CLNT selects for which species the core levels are calculated using the tag
@@ -248,7 +248,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_CLZ = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         CLZ selects the electron count of the excited electron when using ICORELEVEL=2.
@@ -257,7 +257,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_CMBJ = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         defines the _c_ parameter in the modified Becke-Johnson meta-GGA potential. NOTE:
@@ -267,7 +267,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_CMBJA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         sets the $\\alpha$ parameter in the modified Becke-Johnson meta-GGA potential.
@@ -276,7 +276,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_CMBJB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         sets the $\\eta$ parameter in the modified Becke-Johnson meta-GGA potential.
@@ -285,7 +285,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_CSHIFT = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         CSHIFT sets the (small) complex shift $\\eta$ in the Kramers-Kronig transformation.
@@ -294,7 +294,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_DEPER = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         DEPER specifies a relative stopping criterion for the optimization of an
@@ -304,7 +304,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_DIMER_DIST = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The flag DIMER_DIST defines the step size for the numerical differentiation (in
@@ -314,7 +314,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_DIPOL = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         Specifies the center of the cell in direct lattice coordinates with respect to
@@ -324,7 +324,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_DQ = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Step size for the finite difference _k_-space derivative in the linear response
@@ -335,7 +335,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_EBREAK = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         EBREAK specifies an absolute stopping criterion for the optimization of an
@@ -345,7 +345,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_EDIFF = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         EDIFF specifies the global break condition for the electronic SC-loop.
@@ -354,7 +354,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_EDIFFG = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         EDIFFG defines the break condition for the ionic relaxation loop.
@@ -363,7 +363,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_EFIELD = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         EFIELD controls the magnitude of the applied electric force field.
@@ -372,7 +372,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_EFIELD_PEAD = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         EFIELD_PEAD specifies the homogeneous electric field in the electric enthalpy
@@ -383,7 +383,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_EINT = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[2],
         description="""
         Specifies the energy range of the bands that are used for the evaluation of the
@@ -394,7 +394,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_EMAX = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         EMAX specifies the  upper boundary of the energy range for the evaluation of the
@@ -404,7 +404,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_EMIN = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         specifies the lower boundary of the energy range for the evaluation of the DOS.
@@ -413,7 +413,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ENAUG = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ENAUG specifies the cut-off energy of the plane wave representation of the
@@ -423,7 +423,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ENCUT = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ENCUT specifies the cutoff energy for the planewave basis set in eV.
@@ -432,7 +432,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ENCUTFOCK = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The ENCUTFOCK tag sets the energy cutoff that determines the FFT grids used by the
@@ -443,7 +443,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ENCUTGW = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The tag ENCUTGW sets the energy cutoff for response function. It controls the
@@ -454,7 +454,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ENCUTGWSOFT = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The flag ENCUTGWSOFT sets the energy cutoff for response function, such that it
@@ -465,7 +465,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ENINI = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ENINI controls the cutoff during the initial (steepest descent) phase for
@@ -475,7 +475,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_EPSILON = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         EPSILON sets the dielectric constant of the medium.
@@ -504,7 +504,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_FERDO = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_vasp_incar_NBANDS * x_vasp_number_of_k_points'],
         description="""
         FERDO sets the occupancies of the states in the down-spin channel for ISMEAR=-2
@@ -514,7 +514,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_FERWE = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_vasp_incar_NBANDS  *  x_vasp_number_of_k_points'],
         description="""
         FERWE sets the occupancies of the states for  ISMEAR=-2.
@@ -523,7 +523,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_FINDIFF = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The flag DIMER_DIST defines whether a forward (FINDIFF=1) or a central (FINDIFF=2)
@@ -552,7 +552,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_HFLMAX = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         To be compatible w.r.t. old releases, VASP also reads the flag HFLMAX to the same
@@ -562,7 +562,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_HFRCUT = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         HFRCUT specifies the spherical cutoff radius for the potential kernel in hybrid
@@ -572,7 +572,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_HFSCREEN = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         HFSCREEN specifies the range-separation parameter in range separated hybrid
@@ -582,7 +582,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_HILLS_BIN = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         HILLS_BIN sets the number of steps after which the bias potential is updated in a
@@ -592,7 +592,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_HILLS_H = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         HILLS_H specifies the height of the Gaussian hill (in eV) used in metadynamics (in
@@ -602,7 +602,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_HILLS_W = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         HILLS_W specifies the width of the Gaussian hill (in units of the corresponding
@@ -613,7 +613,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_HITOLER = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         HITOLER specifies the convergence parameter for iterative Hirschfeld partitioning
@@ -623,7 +623,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_I_CONSTRAINED_M = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         I_CONSTRAINED_M switches on the constrained local moments approach.
@@ -632,7 +632,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_IALGO = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         IALGO selects the algorithm used to optimize the orbitals. WARNING
@@ -641,7 +641,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_IBAND = Quantity(
-        type=np.dtype(np.uint32),
+        type=np.uint32,
         shape=['1..x_vasp_incar_NBANDS'],
         description="""
         Controls which bands are used in the calculation of Band decomposed charge
@@ -651,7 +651,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_IBRION = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         IBRION determines how the ions are updated and moved.
@@ -660,7 +660,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ICHARG = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         ICHARG determines how VASP constructs the <i>initial</i> charge density.
@@ -669,7 +669,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ICHIBARE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         determines the order of the finite difference stencil used to calculate the
@@ -679,7 +679,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ICORELEVEL = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         ICORELEVEL controls whether the core energies are explicitely calculated or not
@@ -689,7 +689,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_IDIPOL = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         IDIPOL switches on monopole/dipole and quadrupole corrections to the total energy.
@@ -698,7 +698,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_IEPSILON = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The flag IEPSILON determines along which Cartesien the E field is applied.
@@ -707,7 +707,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_IGPAR = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag specifies the socalled parallel or  $G_{||}$ direction in the integration
@@ -717,7 +717,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_IMAGES = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         IMAGES defines the number of interpolated geometries between the initial and final
@@ -727,7 +727,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_IMIX = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         IMIX specifies the type of mixing.
@@ -736,7 +736,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_INCREM = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x'],
         description="""
         INCREM controls the transformation velocity in the slow-growth approach (in case
@@ -746,7 +746,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_INIMIX = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         INIMIX determines the functional form of the initial mixing matrix in the Broyden
@@ -756,7 +756,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_INIWAV = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         INIWAV specifies how to set up the initial orbitals in case ISTART=0.
@@ -765,7 +765,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_IPEAD = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         IPEAD specifies the order of the finite difference stencil used to compute the
@@ -777,7 +777,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ISIF = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         ISIF determines whether the stress tensor is calculated and which principal
@@ -788,7 +788,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ISMEAR = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         ISMEAR determines how the partial occupancies $f_{n\\mathbf{k}}$  are set for each
@@ -798,7 +798,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ISPIN = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         ISPIN specifies spin polarization.
@@ -807,7 +807,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ISTART = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         ISTART determines whether or not to read the WAVECAR file.
@@ -816,7 +816,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ISYM = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         ISYM determines the way VASP treats symmetry.
@@ -825,7 +825,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_IVDW = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag controls whether vdW corrections are calculated or not. If they are
@@ -835,7 +835,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_IWAVPR = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         IWAVPR determines how orbitals and/or charge densities are extrapolated from one
@@ -845,7 +845,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_KBLOCK = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         After KBLOCK*NBLOCK ionic steps the averaged pair correlation function and DOS are
@@ -867,7 +867,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_KPAR = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         KPAR determines the number of **k**-points that are to be treated in parallel
@@ -877,7 +877,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_KPOINT_BSE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The flag KPOINT_BSE allows to calculate the dielectric matrix at one of the
@@ -888,7 +888,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_KPUSE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['1..x_vasp_number_of_k_points'],
         description="""
         Specifies which k-points are used in the evaluation of the partial dos (Band
@@ -898,7 +898,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_KSPACING = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The tag KSPACING determines the number of k-points if the KPOINTS file is not
@@ -927,7 +927,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LAMBDA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         LAMBDA sets the weight with which the penalty terms of the constrained local
@@ -937,7 +937,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LANGEVIN_GAMMA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atomic_species'],
         description="""
         LANGEVIN_GAMMA specifies the friction coefficients (in ps$^{-1}$) for atomic
@@ -948,7 +948,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LANGEVIN_GAMMA_L = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         LANGEVIN_GAMMA_L specifies the friction coefficient (in ps$^{-1}$) for lattice
@@ -1075,7 +1075,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LDAUJ = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atomic_species'],
         description="""
         LDAUJ specifies the strength of the effective on-site exchange interactions.
@@ -1084,7 +1084,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LDAUL = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['number_of_atomic_species'],
         description="""
         LDAUL specifies the _l_-quantum number for which the on-site interaction is added.
@@ -1093,7 +1093,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LDAUPRINT = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         LDAUPRINT controls the verbosity of the L(S)DA+U routines.
@@ -1102,7 +1102,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LDAUTYPE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         LDAUTYPE specifies which type of L(S)DA+U approach will be used.
@@ -1111,7 +1111,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LDAUU = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atomic_species'],
         description="""
         LDAUU specifies the strength of the effective on-site Coulomb interactions.
@@ -1226,7 +1226,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LMAXFOCK = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         LMAXFOCK sets the maximum angular momentum quantum number _L_ for the augmentation
@@ -1236,7 +1236,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LMAXFOCKAE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NMAXFOCKAE and LMAXFOCKAE determine whether the overlap densities in the Fock
@@ -1248,7 +1248,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LMAXMIX = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         LMAXMIX controls up to which l-quantum number the one-center PAW charge densities
@@ -1258,7 +1258,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LMAXPAW = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         LMAXPAW sets the maximum _l_-quantum number for the evaluation of the one-center
@@ -1268,7 +1268,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_LMAXTAU = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         LMAXTAU is the maximum _l_-quantum number included in the PAW one-center expansion
@@ -1674,7 +1674,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_M_CONSTR = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['3*number_of_atoms'],
         description="""
         M_CONSTR specifies the desired local magnetic moment (size and/or direction) for
@@ -1684,7 +1684,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_MAGMOM = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         MAGMOM Specifies the initial magnetic moment for each atom, if and only if
@@ -1694,7 +1694,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_MAXMEM = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         MAXMEM specifies the maximum memory one MPI rank will attempt to allocate (in
@@ -1704,7 +1704,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_MAXMIX = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         MAXMIX specifies the maximum number steps stored in Broyden mixer IMIX=4).
@@ -1713,7 +1713,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_MDALGO = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         MDALGO specifies the molecular dynamics simulation protocol (in case IBRION=0 and
@@ -1732,7 +1732,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_MINROT = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The flag MINROT defines the value for which the dimer is rotated only if the
@@ -1743,7 +1743,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_MIXPRE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         MIXPRE specifies the metric in the Broyden mixing scheme(IMIX=4).
@@ -1752,7 +1752,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_AFILT2_MB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This tag sets the filtering parameter for the angular filtering for
@@ -1762,7 +1762,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_CDOUB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This flag controls the necessity of DFT calculations in the machine learning force
@@ -1772,7 +1772,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_CSF = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This flag sets the threshold for the spilling factor in the machine learning force
@@ -1782,7 +1782,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_CSIG = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Parameter used in the automatic determination of threshold for Bayesian error
@@ -1792,7 +1792,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_CSLOPE = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Parameter used in the automatic determination of threshold for Bayesian error
@@ -1802,7 +1802,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_CTIFOR = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This flag sets the threshold for the Bayesian error estimation on the force in the
@@ -1812,7 +1812,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_EATOM = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Reference total energies of isolated atoms used in the machine learning force
@@ -1822,7 +1822,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_IAFILT2_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag specifies the type of angular filtering used in the machine learning
@@ -1832,7 +1832,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_IBROAD1_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag determines how the atomic distribution is broadened for the radial
@@ -1842,7 +1842,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_IBROAD2_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag determines how the atomic distribution is broadened for the angular
@@ -1852,7 +1852,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_ICOUPLE_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['number_of_atoms'],
         description="""
         This tag specifies the atoms where the coupling parameter is introduced to
@@ -1862,7 +1862,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_ICUT1_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag specifies the type of cutoff function used for the radial descriptor in
@@ -1872,7 +1872,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_ICUT2_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag specifies the type of cutoff function used for the angular descriptor in
@@ -1882,7 +1882,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_IERR = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag selects the error estimation method used in the machine learning force
@@ -1892,7 +1892,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_IREG_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag specifies whether the regularization parameters are kept constant or not
@@ -1902,7 +1902,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_ISAMPLE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag controls the sampling in the machine learning force field method.
@@ -1911,7 +1911,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_ISCALE_TOTEN_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag specifies how to scale the energy data for the many-body term in the
@@ -1921,7 +1921,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_ISOAP1_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag defines the type of the SOAP kernel for the radial descriptor in the
@@ -1931,7 +1931,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_ISOAP2_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag defines the type of the SOAP kernel for the angular descriptor in the
@@ -1941,7 +1941,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_ISTART = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag decides if and how calculations are continued from existing data in
@@ -1951,7 +1951,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_IWEIGHT = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Flag to control the weighting of training data in the machine learning force field
@@ -2030,7 +2030,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_LMAX2_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag specifies the maximum angular momentum quantum number of spherical
@@ -2080,7 +2080,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_MB_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This flag sets the maximum number of basis sets describing the many-body
@@ -2090,7 +2090,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_MCONF = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This flag sets the maximum number of configurations used for training in the
@@ -2100,7 +2100,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_MCONF_NEW = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This flag sets the number of configurations that are stored temporally as
@@ -2110,7 +2110,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_MHIS = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This flag sets the number of estimated errors stored in memory to determine the
@@ -2120,7 +2120,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_MRB1_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag sets the number of radial basis sets used to expand the atomic
@@ -2131,7 +2131,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_MRB2_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag sets the number of radial basis sets used to expand the atomic
@@ -2142,7 +2142,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_MSPL1_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag sets the number of points for the radial grid used in the spline
@@ -2153,7 +2153,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_MSPL2_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag sets the number of points for the radial grid used in the spline
@@ -2164,7 +2164,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_NATOM_COUPLED_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag specifies the number of atoms for which a coupling parameter is
@@ -2175,7 +2175,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_NDIM_SCALAPACK = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This flag sets the dimension of the ScaLAPACK grids used in the machine learning
@@ -2185,7 +2185,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_NHYP1_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Polynomial power of the radial kernel.
@@ -2194,7 +2194,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_NHYP2_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Polynomial parameter (power) of the SOAP kernel.
@@ -2203,7 +2203,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_NMDINT = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Tag to control the minimum interval to get training samples in the machine
@@ -2213,7 +2213,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_NR1_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag determines the number of grid points used to execute radial integrations
@@ -2223,7 +2223,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_NR2_MB = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag determines the number of grid points used to execute radial integrations
@@ -2233,7 +2233,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_NWRITE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This tag controls part of the output within the machine learning force field
@@ -2243,7 +2243,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_RCOUPLE_MB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This tag specifies the value of the coupling parameter for the calculation of the
@@ -2253,7 +2253,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_RCUT1_MB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This flag sets the cutoff radius for the radial descriptor in the machine learning
@@ -2263,7 +2263,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_RCUT2_MB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This flag sets the cutoff radius for the angular descriptor in the machine
@@ -2273,7 +2273,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_SIGV0_MB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This flag sets the initial noise parameter in the machine learning force field
@@ -2283,7 +2283,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_SIGW0_MB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This flag sets the initial precision parameter in the machine learning force field
@@ -2293,7 +2293,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_SION1_MB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This tag specifies the width of the Gaussian functions used for broadening the
@@ -2304,7 +2304,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_SION2_MB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This tag specifies the width of the Gaussian functions used for broadening the
@@ -2315,7 +2315,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_W1_MB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This tag defines the weight for the radial descriptor within the machine learning
@@ -2325,7 +2325,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_W2_MB = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This tag defines the weight for the angular descriptor within the machine learning
@@ -2335,7 +2335,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_WTIFOR = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This tag sets the weight for the scaling of the forces in the training data within
@@ -2345,7 +2345,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_WTOTEN = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This tag sets the weight for the scaling of the total energy in the training data
@@ -2355,7 +2355,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ML_FF_WTSIF = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This tag sets the weight for the scaling of the total energy in the training data
@@ -2365,7 +2365,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NBANDS = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NBANDS determines the actual number of bands in the calculation.
@@ -2374,7 +2374,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NBANDSGW = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The flag determines how many QP energies are calculated and updated in GW type
@@ -2384,7 +2384,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NBANDSO = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NBANDSO determines how many occupied orbitals are included in the Casida/BSE
@@ -2394,7 +2394,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NBANDSV = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NBANDSV determines how many unoccupied orbitals are included in the Casida/BSE
@@ -2404,7 +2404,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NBLK = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NBLK determines the blocking factor in many BLAS level 3 routines.
@@ -2413,7 +2413,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NBLOCK = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         After NBLOCK ionic steps the pair correlation function and the DOS are calculated
@@ -2423,7 +2423,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NBMOD = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Controls which bands are used in the calculation of Band decomposed charge
@@ -2433,7 +2433,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NBSEEIG = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NBSEEIG sets the number number of BSE eigenvectors written to the BSEFATBAND
@@ -2443,7 +2443,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NCORE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NCORE determines the number of compute cores that work on an individual orbital
@@ -2453,7 +2453,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NCRPA_BANDS = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['1..x_vasp_incar_NBANDS'],
         description="""
         Controls which bands are excluded in CRPA. Check also NTARGET_STATES.
@@ -2462,7 +2462,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NDAV = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NDAV sets the maximum number of iterative steps per bands per RMM-DIIS step
@@ -2472,7 +2472,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NEDOS = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NEDOS specifies number of gridpoints on which the DOS is evaluated
@@ -2481,7 +2481,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NELECT = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         NELECT sets the number of electrons.
@@ -2490,7 +2490,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NELM = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NELM sets the maximum number of electronic SC (selfconsistency) steps which may be
@@ -2500,7 +2500,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NELMDL = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NELMDL specifies the number of non-selfconsistent steps at the beginning.
@@ -2509,7 +2509,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NELMIN = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NELMIN specifies the minimum number of electronic SCF steps.
@@ -2518,7 +2518,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NFREE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         depending on IBRION, NFREE specifies the number of remembered steps in the history
@@ -2529,7 +2529,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NGX = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NGX sets the number of grid points in the FFT-grid along the first lattice vector.
@@ -2538,7 +2538,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NGXF = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NGXF sets the number of grid points in the fine FFT-grid along the first lattice
@@ -2548,7 +2548,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NGY = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NGY sets the number of grid points in the FFT-grid along the second lattice
@@ -2558,7 +2558,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NGYF = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NGYF sets the number of grid points in the fine FFT-grid along the second lattice
@@ -2568,7 +2568,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NGYROMAG = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atomic_species'],
         description="""
         NGYROMAG specifies the nuclear gyromagnetic ratios (in MHz, for H<sub>0</sub> = 1
@@ -2578,7 +2578,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NGZ = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NGZ sets the number of grid points in the FFT-grid along the third lattice vector.
@@ -2587,7 +2587,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NGZF = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NGZF sets the number of grid points in the fine  FFT-grid along the first lattice
@@ -2597,7 +2597,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NKRED = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NKRED specifies an uniform reduction factor for the **q**-point grid
@@ -2608,7 +2608,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NKREDX = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NKREDX specifies a reduction factor for the **q**-point grid representation of the
@@ -2618,7 +2618,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NKREDY = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NKREDY specifies a reduction factor for the **q**-point grid representation of the
@@ -2628,7 +2628,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NKREDZ = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NKREDZ specifies a reduction factor for the **q**-point grid representation of the
@@ -2648,7 +2648,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NMAXFOCKAE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NMAXFOCKAE and LMAXFOCKAE determine whether the overlap densities in the Fock
@@ -2660,7 +2660,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NOMEGA = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NOMEGA specifies the number of (imaginary) frequency and imaginary time grid
@@ -2670,7 +2670,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NOMEGAPAR = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NOMEGAPAR available as of VASP.6, specifies the number of processor groups sharing
@@ -2680,7 +2680,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NOMEGAR = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NOMEGAR specifies the number of frequency grid points along the real axis.
@@ -2689,7 +2689,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NPACO = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NPACO sets the number of slots in the pair-correlation function written to PCDAT.
@@ -2698,7 +2698,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NPAR = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NPAR determines the number of bands that are treated in parallel.
@@ -2707,7 +2707,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NPPSTR = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NPPSTR specifies the number of k-points on the strings in the IGPAR direction.
@@ -2716,7 +2716,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NSIM = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NSIM sets the number of bands that are optimized simultaneously by the RMM-DIIS
@@ -2726,7 +2726,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NSUBSYS = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NSUBSYS defines the atomic subsystems in calculations with multiple Anderson
@@ -2736,7 +2736,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NSW = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NSW sets the maximum number of ionic steps.
@@ -2745,7 +2745,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NTARGET_STATES = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['x_vasp_incar_NBANDS'],
         description="""
         Controls which Wannier states are excluded in CRPA. Check also NCRPA_BANDS.
@@ -2754,7 +2754,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NTAUPAR = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         NTAUPAR available as of VASP.6, specifies the number of MPI groups sharing same
@@ -2765,7 +2765,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NUPDOWN = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Sets the difference between the number of electrons in the up and down spin
@@ -2775,7 +2775,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_NWRITE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This flag determines how much will be written to the file OUTCAR ('verbosity
@@ -2806,7 +2806,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_OFIELD_A = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The flag OFIELD_A sets the desired order parameter *Q*<sub>6</sub> in the
@@ -2816,7 +2816,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_OFIELD_KAPPA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The flag OFIELD_KAPPA sets the strength of bias potential in units of 'eV/(unit of
@@ -2826,7 +2826,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_OFIELD_Q6_FAR = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The flag OFIELD_Q6_FAR sets the far fading distance (in Angstroms) for the
@@ -2837,7 +2837,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_OFIELD_Q6_NEAR = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The flag OFIELD_Q6_NEAR sets the near fading distance (in Angstroms) for the
@@ -2848,7 +2848,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_OMEGAMAX = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         OMEGAMAX specifies the maximum frequency for dense part of the frequency grid. For
@@ -2858,7 +2858,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_OMEGAMIN = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         minimum frequency in the frequency grid.
@@ -2867,7 +2867,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_OMEGATL = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         OMEGATL specifies the maximum frequency for coarse part of the frequency grid.
@@ -2876,7 +2876,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_PARAM1 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The flag PARAM1 determines the first parameter used in the enhancement factor of
@@ -2886,7 +2886,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_PARAM2 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The flag PARAM2 determines the second parameter used in the enhancement factor of
@@ -2925,7 +2925,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_PHON_NSTRUCT = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This flag sets the number of structures for electron-phonon interactions from
@@ -2935,7 +2935,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_PHON_NTLIST = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         This flag sets the number temperatures for that the electron-phonon interactions
@@ -2945,7 +2945,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_PHON_TLIST = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['x_vasp_incar_PHON_NTLIST'],
         description="""
         This flag provides the list of temperatures for that the electron-phonon
@@ -2955,7 +2955,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_PLEVEL = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Control flag for the output of the profiling routines.
@@ -2964,7 +2964,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_PMASS = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         PMASS assigns a fictitious mass (in amu) to the lattice degrees-of-freedom in case
@@ -2974,7 +2974,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_POMASS = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         POMASS describes the mass of each atomic sphere in atomic units.
@@ -2983,7 +2983,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_POTIM = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         POTIM sets the time step (MD) or step width scaling (ionic relaxations).
@@ -3011,7 +3011,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_PROUTINE = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Control flag for the output of the profiling routines.
@@ -3020,7 +3020,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_PSTRESS = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         This flag controls whether Pulay corrections are added to the stress tensor or
@@ -3031,7 +3031,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_PSUBSYS = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['1..3'],
         description="""
         PSUBSYS sets the collision probabilities for the atoms in each atomic subsystem in
@@ -3042,7 +3042,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_PTHRESHOLD = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Control flag for the output of the profiling routines.
@@ -3051,7 +3051,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_QMAXFOCKAE = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['1..x_vasp_number_of_k_points'],
         description="""
         The parameter QMAXFOCKAE controls at which wave vectors the local augmentation
@@ -3062,7 +3062,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_QSPIRAL = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         the QSPIRAL-tag specifies the spin spiral propagation vector.
@@ -3071,7 +3071,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_QUAD_EFG = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atomic_species'],
         description="""
         nuclear quadrupole moment (in millbarn) for the atomic types on the POTCAR file.
@@ -3080,7 +3080,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_RANDOM_SEED = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['x'],
         description="""
         RANDOM_SEED specifies the seed of the random-number-generator (in case VASP was
@@ -3090,7 +3090,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ROPT = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atomic_species'],
         description="""
         ROPT determines how precise the projectors are represented in real space.
@@ -3099,7 +3099,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_RWIGS = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atomic_species'],
         description="""
         RWIGS specifies the Wigner-Seitz radius for each atom type.
@@ -3108,7 +3108,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_SAXIS = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         SAXIS specifies the quantisation axis for noncollinear spins.
@@ -3117,7 +3117,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_SCSRAD = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         SCSRAD defines the cutoff radius (in Angs ) used in the calculation of
@@ -3128,7 +3128,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_SHAKEMAXITER = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         SHAKEMAXITER specifies the maximum number of iterations in the SHAKE algorithm (in
@@ -3138,7 +3138,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_SHAKETOL = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         SHAKETOL specifies the tolerance for the SHAKE algorithm (in case VASP was
@@ -3148,7 +3148,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_SIGMA = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         SIGMA specifies the width of the smearing in eV.
@@ -3157,7 +3157,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_SMASS = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         SMASS controls the velocities during an ab-initio molecular dynamics run.
@@ -3166,7 +3166,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_SMEARINGS = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['x_vasp_incar_NSW'],
         description="""
         SMEARINGS defines the smearing parameters for ISMEAR=-3 in the calculation of the
@@ -3176,7 +3176,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_SPRING = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         SPRING gives the <i>spring constant</i> between the images as used in the elastic
@@ -3186,7 +3186,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_STEP_MAX = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The flag STEP_MAX defines the trust radius (upper limit) for the optimization step
@@ -3196,7 +3196,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_STEP_SIZE = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The flag STEP_SIZE defines the trial step size for the optimization step (in Angs
@@ -3206,7 +3206,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_SYMPREC = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         SYMPREC determines to which accuracy the positions in the POSCAR file must be
@@ -3226,7 +3226,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_TEBEG = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TEBEG sets the start temperature for an ab-initio molecular dynamics run
@@ -3237,7 +3237,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_TEEND = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TEEND sets the final temperature for an ab-initio molecular dynamics run
@@ -3247,7 +3247,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_TIME = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TIME controls the time step for IALGO=5X and for the initial (steepest descent)
@@ -3257,7 +3257,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_TSUBSYS = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         description="""
         TSUBSYS sets the temperatures for the atomic subsystems in calculations with
@@ -3267,7 +3267,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VALUE_MAX = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x'],
         description="""
         VALUE_MAX sets the upper limits for the monitoring of geometric parameters (in
@@ -3277,7 +3277,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VALUE_MIN = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x'],
         description="""
         VALUE_MIN sets the lower limits for the monitoring of geometric parameters (in
@@ -3287,7 +3287,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VCUTOFF = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The parameter VCUTOFF sets the energy cutoff for bare Coulomb matrix elements and
@@ -3297,7 +3297,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VDW_A1 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         VDW_A1 defines the damping function parameter  in the DFT-D3 method.
@@ -3306,7 +3306,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VDW_A2 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         VDW_A2 defines the damping function parameter  in the DFT-D3 method.
@@ -3315,7 +3315,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VDW_C6 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x'],
         description="""
         VDW_C6 defines the  $C_6$ parameters (units: J.nm$^6$mol$^{-1}$ ) for each species
@@ -3325,7 +3325,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VDW_CNRADIUS = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         VDW_CNRADIUS defines the cutoff radius (in Angs ) for the calculation of the
@@ -3335,7 +3335,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VDW_D = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         VDW_D defines the damping parameter _d_ in the DFT-D2method.
@@ -3344,7 +3344,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VDW_R0 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atomic_species'],
         description="""
         VDW_R0 defines the $R_0$ parameters (units: Angs ) for each species defined in the
@@ -3354,7 +3354,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VDW_RADIUS = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         VDW_RADIUS defines the cutoff radius (in Angs) for the pair interactions used in
@@ -3364,7 +3364,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VDW_S6 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         VDW_S6 defines the global scaling factor _S_6_ in the DFT-D2 method.
@@ -3373,7 +3373,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VDW_S8 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         VDW_S8 defines the damping function parameter $s_8$ in the DFT-D3 method.
@@ -3382,7 +3382,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VDW_SR = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         VDW_SR defines the damping function parameter $S_R$ (or scaling factor) in the
@@ -3392,7 +3392,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_VOSKOWN = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Determines whether Vosko-Wilk-Nusair interpolation is used or not.
@@ -3401,7 +3401,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_WC = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         WC specifies the weight factor for each step in Broyden mixing scheme (IMIX=4).
@@ -3410,7 +3410,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_WEIMIN = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         WEIMIN specifies the maximum weight for a band to be considered empty.
@@ -3419,7 +3419,7 @@ class Method(runschema.method.Method):
     )
 
     x_vasp_incar_ZVAL = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         ZVAL describes the valency of each atomic sphere.
