@@ -84,7 +84,7 @@ class Run(runschema.run.Run):
     )
 
     x_siesta_n_nodes = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
