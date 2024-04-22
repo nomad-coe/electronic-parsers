@@ -580,6 +580,7 @@ class OutParser(TextParser):
                             r'Cell vectors \(au\):\s*(.+)\s*(.+)\s*(.+)',
                             dtype=float,
                             unit=ureg.bohr,
+                            shape=[3, 3],
                         ),
                         Quantity(
                             'redefined',

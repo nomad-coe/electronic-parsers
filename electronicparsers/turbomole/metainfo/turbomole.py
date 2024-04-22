@@ -47,7 +47,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     m_def = Section(validate=False)
 
     x_turbomole_eigenvalue_correlation_perturbativeGW = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -56,7 +56,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     )
 
     x_turbomole_eigenvalue_ExactExchange_perturbativeGW = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -65,7 +65,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     )
 
     x_turbomole_eigenvalue_ExchangeCorrelation_perturbativeGW = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -74,7 +74,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     )
 
     x_turbomole_eigenvalue_ks_ExchangeCorrelation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -84,7 +84,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     )
 
     x_turbomole_eigenvalue_ks_GroundState = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -93,7 +93,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     )
 
     x_turbomole_eigenvalue_quasiParticle_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -102,7 +102,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     )
 
     x_turbomole_ExchangeCorrelation_perturbativeGW_derivation = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TODO:
@@ -110,7 +110,7 @@ class x_turbomole_section_eigenvalues_GW(MSection):
     )
 
     x_turbomole_Z_factor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         TODO:
@@ -126,7 +126,7 @@ class x_turbomole_section_functionals(MSection):
     m_def = Section(validate=False)
 
     x_turbomole_controlInOut_grid_integration_cells = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The integration cells
@@ -150,7 +150,7 @@ class x_turbomole_section_functionals(MSection):
     )
 
     x_turbomole_controlInOut_grid_partition_sharpness = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Sharpness of the partition function
@@ -158,7 +158,7 @@ class x_turbomole_section_functionals(MSection):
     )
 
     x_turbomole_controlInOut_grid_points_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Grid points number
@@ -166,7 +166,7 @@ class x_turbomole_section_functionals(MSection):
     )
 
     x_turbomole_controlInOut_grid_radial_grid_size = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The size of the radial grid
@@ -182,7 +182,7 @@ class x_turbomole_section_functionals(MSection):
     )
 
     x_turbomole_controlInOut_grid_size = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         The size of the used grid
@@ -210,7 +210,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_controlIn_atom_number = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         The number of atoms in the system
@@ -234,7 +234,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_controlIn_damping_parameter_min = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -242,7 +242,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_controlIn_damping_parameter_start = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -250,7 +250,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_controlIn_damping_parameter_step = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -290,7 +290,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_controlIn_number_of_integral_stored = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -314,7 +314,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_controlIn_scf_conv = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -322,7 +322,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_controlIn_scf_iter_limit = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -338,7 +338,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_controlIn_scfintunit_size = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -346,7 +346,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_controlIn_scfintunit_unit = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -362,7 +362,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_controlIn_time_for_integral_calc = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -394,7 +394,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_geometry_optimization_cycle_index = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         By default Turbomole only keeps the output of the final iteration once the
@@ -413,7 +413,7 @@ class Method(runschema.method.Method):
     )
 
     x_turbomole_gw_eta_factor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -448,7 +448,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_turbomole_damping_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Damping of the two-electron contributions to Fock matrix in the present SCF
@@ -457,7 +457,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_turbomole_delta_eigenvalues = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -466,7 +466,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_turbomole_energy_1electron_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -475,7 +475,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_turbomole_energy_2electron_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -484,7 +484,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_turbomole_norm_diis_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Norm of the DIIS error in an SCF-iteration
@@ -500,7 +500,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_turbomole_norm_fia_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Maximal resid. norm for Fia-block in an SCF-iteration
@@ -516,7 +516,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_turbomole_norm_fock_scf_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Maximal resid. fock norm in an SCF-iteration
@@ -528,7 +528,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_turbomole_eigenvalues_irreducible_representation = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[
             'number_of_spin_channels',
             'number_of_eigenvalues_kpoints',
@@ -548,7 +548,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     m_def = Section(validate=False, extends_base_section=True)
 
     x_turbomole_geometry_optimization_geometry_change_rms = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -557,7 +557,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     )
 
     x_turbomole_geometry_optimization_threshold_force_rms = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -566,7 +566,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     )
 
     x_turbomole_geometry_optimization_trustregion_initial = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -575,7 +575,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     )
 
     x_turbomole_geometry_optimization_trustregion_max = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -584,7 +584,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
     )
 
     x_turbomole_geometry_optimization_trustregion_min = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -605,7 +605,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_turbomole_potential_energy_final = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -630,7 +630,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_turbomole_vibrations_intensities = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_turbomole_vibrations_num_modes'],
         description="""
         IR Intensity for each vibrational normal mode
@@ -638,7 +638,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_turbomole_vibrations_mode_energies = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_turbomole_vibrations_num_modes'],
         description="""
         Excitation energy associated with the vibrational normal modes.
@@ -646,7 +646,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_turbomole_vibrations_normal_modes = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_turbomole_vibrations_num_modes', 'number_of_atoms', 3],
         description="""
         Nuclear displacements for each vibrational normal mode
@@ -654,7 +654,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_turbomole_vibrations_num_modes = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of vibrational normal modes
@@ -662,7 +662,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_turbomole_virial_theorem = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Final value from the virial theorem
@@ -670,7 +670,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_turbomole_wave_func_norm = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Final Wave Function Norm
@@ -694,7 +694,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_turbomole_pceem_charges = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Charges of the point charges in the unit cell used by the PCEEM embedding model
@@ -702,7 +702,7 @@ class System(runschema.system.System):
     )
 
     x_turbomole_pceem_max_multipole = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maximum multipole moment used in the PCEEM embedding
@@ -710,7 +710,7 @@ class System(runschema.system.System):
     )
 
     x_turbomole_pceem_min_separation_cells = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Minimum separation between cells in PCEEM embedding for periodic fast multipole
@@ -719,7 +719,7 @@ class System(runschema.system.System):
     )
 
     x_turbomole_pceem_multipole_precision = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Multipole precision parameter for PCEEM embedding
