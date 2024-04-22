@@ -601,7 +601,7 @@ class AbinitOutParser(TextParser):
 
         self._quantities.append(
             Quantity(
-                'input_vars',
+                'input_variables',
                 r'\-outvars: echo values of preprocessed input variables \-+([\s\S]+?)\={10}',
                 repeats=False,
                 sub_parser=TextParser(
@@ -1135,7 +1135,7 @@ class AbinitOutParser(TextParser):
                 ]
             }
 
-            for key_val in self.get('input_vars', {}).get('key_value', []):
+            for key_val in self.get('input_variables', {}).get('key_value', []):
                 key, n_dataset = re.search(r'(\D+)?(\d*)', key_val[0]).groups()
                 self._input_vars.setdefault(key, [None] * self.n_datasets)
 
@@ -1148,7 +1148,12 @@ class AbinitOutParser(TextParser):
                 if '-' in key_val:  # exception when the next line starts with -
                     key_val = key_val[:-1]
 
-                val = np.array(key_val[1:], dtype=m_quantity.type.standard_type())
+                val = np.array(
+                    key_val[1:],
+                    dtype=m_quantity.type.standard_type()
+                    if hasattr(m_quantity.type, 'standard_tpye')
+                    else m_quantity.type,
+                )
                 if not m_quantity.shape:
                     val = val[0]
                 if n_dataset:
