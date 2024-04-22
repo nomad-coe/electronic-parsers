@@ -49,7 +49,7 @@ class Run(runschema.run.Run):
     )
 
     x_psi4_process_id = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -63,7 +63,7 @@ class Run(runschema.run.Run):
     )
 
     x_psi4_memory = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         # unit='MiB',
         description="""
@@ -71,7 +71,7 @@ class Run(runschema.run.Run):
     )
 
     x_psi4_threads = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -110,7 +110,7 @@ class System(runschema.system.System):
     )
 
     x_psi4_rotational_constants = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         # unit='1/cm',
         description="""
@@ -118,42 +118,42 @@ class System(runschema.system.System):
     )
 
     x_psi4_nuclear_repulsion = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_psi4_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_psi4_multiplicity = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_psi4_electrons = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_psi4_nalpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_psi4_nbeta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -192,7 +192,7 @@ class Scf(runschema.method.Scf):
     )
 
     x_psi4_integral_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -210,7 +210,7 @@ class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
     )
 
     x_psi4_n_shells = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Gives the number of shell types used.
@@ -218,7 +218,7 @@ class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
     )
 
     x_psi4_max_angular_momentum = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maximum angular momentum quantum number corresponding to the shells used.
@@ -226,7 +226,7 @@ class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
     )
 
     x_psi4_n_cartesian_functions = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -240,14 +240,14 @@ class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
     )
 
     x_psi4_n_ecp_primitives = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
     )
 
     x_psi4_n_ecp_core_electrons = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         """,
@@ -329,7 +329,7 @@ class x_psi4_root_information(MSection):
     m_def = Section(validate=False)
 
     x_psi4_root_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
@@ -340,28 +340,28 @@ class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_psi4_s2_expected = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_psi4_s2_observed = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_psi4_s_expected = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
     )
 
     x_psi4_s_observed = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         """,
