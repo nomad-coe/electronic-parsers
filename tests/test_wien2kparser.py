@@ -53,7 +53,7 @@ def test_single_point(parser, caplog):
     assert sec_scc.energy.total.value.magnitude == approx(-8.09654094e-15)
     assert np.shape(sec_scc.forces.total.value) == (49, 3)
     assert sec_scc.forces.total.value[19][1].magnitude == approx(-2.76650574e-10)
-    assert sec_scc.energy.fermi[0].magnitude == approx(-4.46784636e-19)
+    assert sec_scc.energy.fermi.magnitude == approx(-4.46784636e-19)
     sec_scfs = sec_scc.scf_iteration
     assert len(sec_scfs) == 40
     assert sec_scfs[21].energy.total.value.magnitude == approx(-8.09654095e-15)

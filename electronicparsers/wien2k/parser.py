@@ -842,20 +842,25 @@ class Wien2kParser:
                 elif key == 'FGLi':
                     sec_scf.x_wien2k_for_gl = iteration.get(key)
                 elif key == 'MMIi':
-                    sec_scf.x_wien2k_mmi = [mm.mmi for mm in iteration.get(key)]
+                    mmi = [mm.mmi for mm in iteration.get(key)]
+                    if None not in mmi:
+                        sec_scf.x_wien2k_mmi = [mm.mmi for mm in iteration.get(key)]
                 elif key == 'NECi':
                     charge = np.transpose(iteration.get(key))
                     sec_scf.x_wien2k_nuclear_charge = charge[0]
                     sec_scf.x_wien2k_electronic_charge = charge[1]
                 elif key == 'CTOi':
                     charge = [c.tot_charge_in_sphere for c in iteration.get(key)]
-                    sec_scf.x_wien2k_tot_charge_in_sphere = charge
+                    if None not in charge:
+                        sec_scf.x_wien2k_tot_charge_in_sphere = charge
                 elif key == 'DTOi':
                     charge = [c.tot_diff_charge for c in iteration.get(key)]
-                    sec_scf.x_wien2k_tot_diff_charge = charge
+                    if None not in charge:
+                        sec_scf.x_wien2k_tot_diff_charge = charge
                 elif key == 'NTOi':
                     charge = [c.tot_charge_in_sphere_nm for c in iteration.get(key)]
-                    sec_scf.x_wien2k_tot_charge_in_sphere_nm = charge
+                    if None not in charge:
+                        sec_scf.x_wien2k_tot_charge_in_sphere_nm = charge
                 elif key == 'RTOi':
                     density = np.transpose(iteration.get(key))
                     sec_scf.x_wien2k_density_at_nucleus_valence = density[0]
@@ -871,7 +876,7 @@ class Wien2kParser:
                 else:
                     for sub_key, val in iteration.get(key, {}).items():
                         if sub_key.startswith('energy_reference_fermi'):
-                            sec_scf_energy.fermi = val
+                            sec_scf_energy.fermi = val[0]
                         elif sub_key.startswith('energy_'):
                             sec_scf_energy.m_add_sub_section(
                                 getattr(Energy, sub_key.replace('energy_', '').lower()),
@@ -1084,12 +1089,12 @@ class Wien2kParser:
                                 update = orb.get('e_diff', 0) is not None
                                 apw_type = orb.get('type', apw_type)
                                 if last_orbital_type == apw_type:
-                                    orbital.energy_parameter = e_param
+                                    orbital.energy_parameter = [e_param]
                                     orbital.update = update
                                     orbital.type = type_mapping[3]
                                     continue
                                 last_orbital_type = apw_type
-                        orbital.energy_parameter = e_param
+                        orbital.energy_parameter = [e_param]
                         orbital.update = update
                         orbital.type = type_mapping[apw_type]
                         bs.orbital.append(orbital)

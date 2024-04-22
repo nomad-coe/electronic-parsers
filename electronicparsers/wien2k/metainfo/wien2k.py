@@ -86,7 +86,7 @@ class x_wien2k_section_equiv_atoms(MSection):
     m_def = Section(validate=False)
 
     x_wien2k_atom_pos_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -95,7 +95,7 @@ class x_wien2k_section_equiv_atoms(MSection):
     )
 
     x_wien2k_atom_pos_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -104,7 +104,7 @@ class x_wien2k_section_equiv_atoms(MSection):
     )
 
     x_wien2k_atom_pos_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -121,7 +121,7 @@ class x_wien2k_section_equiv_atoms(MSection):
     )
 
     x_wien2k_NPT = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number of radial mesh points
@@ -129,7 +129,7 @@ class x_wien2k_section_equiv_atoms(MSection):
     )
 
     x_wien2k_RMT = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         atomic sphere radius (muffin-tin radius)
@@ -137,7 +137,7 @@ class x_wien2k_section_equiv_atoms(MSection):
     )
 
     x_wien2k_R0 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         first radial mesh point
@@ -145,7 +145,7 @@ class x_wien2k_section_equiv_atoms(MSection):
     )
 
     x_wien2k_atomic_number_Z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         atomic number Z
@@ -165,7 +165,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_wien2k_iteration_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         scf iteration number
@@ -196,7 +196,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_total_atoms = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         total number of atoms in the cell
@@ -204,7 +204,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_lattice_const_a = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         lattice parameter a in this calculation
@@ -212,7 +212,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_lattice_const_b = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         lattice parameter b in this calculation
@@ -220,7 +220,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_lattice_const_c = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         lattice parameter c in this calculation
@@ -228,7 +228,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_unit_cell_volume_bohr3 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='bohr ** 3',
         description="""
@@ -244,7 +244,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_noe = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         number of electrons
@@ -252,7 +252,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_nr_kpts = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         number of k-points
@@ -260,7 +260,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Potential and charge cut-off, Ry**.5
@@ -268,7 +268,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_ene_gap = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -277,7 +277,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_ene_gap_eV = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='electron_volt',
         description="""
@@ -286,7 +286,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_matrix_size = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         matrix size
@@ -294,7 +294,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_rkm = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         rkm
@@ -302,7 +302,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_LOs = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         LOs
@@ -310,7 +310,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_mmtot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         total magnetic moment in cell
@@ -318,7 +318,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_mmint = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         magnetic moment in the interstital region
@@ -326,7 +326,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_mmi = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         magnetic moment inside the sphere
@@ -334,7 +334,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_mmi001 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         magnetic moment inside the sphere
@@ -342,7 +342,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_charge_distance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         charge distance between last 2 iterations
@@ -350,7 +350,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_for_abs = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         force on atom xx in mRy/bohr (in the local (for each atom) cartesian coordinate
@@ -359,7 +359,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_for = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms', 3],
         description="""
         forces on inequivalent atoms in mRy/bohr (in the local (for each atom) cartesian coordinate
@@ -368,7 +368,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_for_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         force on atom xx in mRy/bohr (in the local (for each atom) cartesian coordinate
@@ -377,7 +377,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_for_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         force on atom xx in mRy/bohr (in the local (for each atom) cartesian coordinate
@@ -386,7 +386,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_for_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         force on atom xx in mRy/bohr (in the local (for each atom) cartesian coordinate
@@ -395,7 +395,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_for_gl = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms', 3],
         description="""
         force on inequivalent atoms (in the global coordinate system of the unit cell (in
@@ -404,7 +404,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_for_x_gl = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         force on inequivalent atom xx (in the global coordinate system of the unit cell (in
@@ -413,7 +413,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_for_y_gl = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         force on inequivalent atom xx in (in the global coordinate system of the unit cell (in
@@ -422,7 +422,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_for_z_gl = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         force on inequivalent atom xx in (in the global coordinate system of the unit cell (in
@@ -439,7 +439,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_atom_mult = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         atom multiplicity
@@ -455,7 +455,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_tot_diff_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         total difference charge density for atom xx between last 2 iterations
@@ -463,7 +463,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_tot_int_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         total interstitial charge (mixed after MIXER)
@@ -471,7 +471,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_tot_charge_in_sphere = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         total charge in sphere xx (mixed after MIXER)
@@ -479,7 +479,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_tot_int_charge_nm = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         total interstitial charge (new (not mixed) from LAPW2+LCORE
@@ -487,7 +487,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_tot_charge_in_sphere_nm = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         total charge in sphere xx (new (not mixed) from LAPW2+LCORE
@@ -495,7 +495,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_tot_val_charge_cell = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         total valence charge inside unit cell
@@ -503,7 +503,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_tot_val_charge_sphere = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         total valence charge in sphere xx
@@ -511,7 +511,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_density_at_nucleus_valence = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         density for atom xx at the nucleus (first radial mesh point); valence
@@ -519,7 +519,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_density_at_nucleus_semicore = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         density for atom xx at the nucleus (first radial mesh point); semi-core
@@ -527,7 +527,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_density_at_nucleus_core = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         density for atom xx at the nucleus (first radial mesh point); core
@@ -535,7 +535,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_density_at_nucleus_tot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         density for atom xx at the nucleus (first radial mesh point); total
@@ -543,7 +543,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_nuclear_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         nuclear and electronic charge; normalization check of electronic charge densities.
@@ -554,7 +554,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_electronic_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_wien2k_nr_of_independent_atoms'],
         description="""
         nuclear and electronic charge; normalization check of electronic charge densities.
@@ -565,7 +565,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_wien2k_necnr = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number of the nec test, labelling nec
@@ -577,7 +577,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_wien2k_nonequiv_atoms = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         number of inequivalent atoms in the unit cell
@@ -601,7 +601,7 @@ class System(runschema.system.System):
     )
 
     x_wien2k_unit_cell_param_a = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -610,7 +610,7 @@ class System(runschema.system.System):
     )
 
     x_wien2k_unit_cell_param_b = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -619,7 +619,7 @@ class System(runschema.system.System):
     )
 
     x_wien2k_unit_cell_param_c = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -628,7 +628,7 @@ class System(runschema.system.System):
     )
 
     x_wien2k_angle_between_unit_axis_alfa = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         unit cell parameters - alfa
@@ -636,7 +636,7 @@ class System(runschema.system.System):
     )
 
     x_wien2k_angle_between_unit_axis_beta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         unit cell parameters - beta
@@ -644,7 +644,7 @@ class System(runschema.system.System):
     )
 
     x_wien2k_angle_between_unit_axis_gamma = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         unit cell parameters - gamma
@@ -668,7 +668,7 @@ class Method(runschema.method.Method):
     )
 
     x_wien2k_ifft = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         FFT-mesh parameters in x direction for the calculation of the XC-potential in the
@@ -677,7 +677,7 @@ class Method(runschema.method.Method):
     )
 
     x_wien2k_ifft_x = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         FFT-mesh parameters in x direction for the calculation of the XC-potential in the
@@ -686,7 +686,7 @@ class Method(runschema.method.Method):
     )
 
     x_wien2k_ifft_y = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         FFT-mesh parameters in y direction for the calculation of the XC-potential in the
@@ -695,7 +695,7 @@ class Method(runschema.method.Method):
     )
 
     x_wien2k_ifft_z = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         FFT-mesh parameters in z direction for the calculation of the XC-potential in the
@@ -704,7 +704,7 @@ class Method(runschema.method.Method):
     )
 
     x_wien2k_ifft_factor = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Multiplicative factor to the IFFT grid, in in0
@@ -712,7 +712,7 @@ class Method(runschema.method.Method):
     )
 
     x_wien2k_iprint = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         optional print switch, in in0
@@ -728,7 +728,7 @@ class Method(runschema.method.Method):
     )
 
     x_wien2k_in2_emin = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         lower energy cut-off for defining the range of occupied states; in in2
@@ -736,7 +736,7 @@ class Method(runschema.method.Method):
     )
 
     x_wien2k_in2_ne = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         number of electrons (per unit cell) in given energy range in in2
@@ -744,7 +744,7 @@ class Method(runschema.method.Method):
     )
 
     x_wien2k_in2_espermin = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         LAPW2 tries to find the .mean. energies for each l channel, for both the valence
@@ -755,7 +755,7 @@ class Method(runschema.method.Method):
     )
 
     x_wien2k_in2_esper0 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         minimum gap width; in in2
@@ -771,7 +771,7 @@ class Method(runschema.method.Method):
     )
 
     x_wien2k_in2_gmax = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         max. G (magnitude of largest vector) in charge density Fourier expansion; in in2
