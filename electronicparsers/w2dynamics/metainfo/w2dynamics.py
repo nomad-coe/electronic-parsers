@@ -53,7 +53,7 @@ class x_w2dynamics_axes(MSection):
 
     x_w2dynamics_iwb_p2 = Quantity(
         type=np.float64,
-        shape=[],
+        shape=['*'],
         description="""
         """,
     )

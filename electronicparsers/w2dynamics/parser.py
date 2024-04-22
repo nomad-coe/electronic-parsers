@@ -127,8 +127,9 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             if not isinstance(value, h5py.Dataset):
                 continue
             name = self._re_namesafe.sub('_', key)
-            if value.shape:
-                setattr(target, f'x_w2dynamics_{name}', value[:])
+            quantity_def = target.m_def.all_quantities.get(f'x_w2dynamics_{name}')
+            if quantity_def and value.shape:
+                target.m_set(quantity_def, value[:])
 
     def parse_system(self, wannier90_name: str):
         """Parses System from the Wannier90 output file (*.wout) if present in the upload.
@@ -459,14 +460,16 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
                 sec_gf = GreensFunctions()
                 sec_scc.greens_functions.append(sec_gf)
                 if sec_run.method[-1].m_xpath('frequency_mesh'):
-                    sec_gf.matsubara_freq = (
+                    sec_gf.matsubara_freq = np.transpose(
                         sec_run.method[-1]
                         .frequency_mesh[0]
                         .points.to('eV')
                         .magnitude.imag
-                    )
+                    )[0]
                 if sec_run.method[-1].m_xpath('time_mesh'):
-                    sec_gf.tau = sec_run.method[-1].time_mesh[0].points.imag
+                    sec_gf.tau = np.transpose(
+                        sec_run.method[-1].time_mesh[0].points.imag
+                    )[0]
                 if self.data.get(key).get('mu') is not None:
                     sec_gf.chemical_potential = (
                         np.float64(self.data.get(key).get('mu').get('value')) * ureg.eV
