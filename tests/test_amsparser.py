@@ -324,7 +324,6 @@ def test_band_go(parser):
     assert sec_calc.eigenvalues[0].energies.to('hartree').magnitude[0][2][18] == approx(
         0.7009522244059739
     )
-    print('-------------', sec_calc.eigenvalues[0])
     assert sec_calc.eigenvalues[0].occupations[0][0][3] == approx(1.9999999999999984)
     assert sec_calc.dos_electronic[0].energies.to('hartree').magnitude[78] == approx(
         0.04238290440428649

@@ -1174,7 +1174,12 @@ class OctopusParser:
                     )
                     if quantity_def is not None:
                         val = (
-                            np.array(val, quantity_def.type.standard_type())
+                            np.array(
+                                val,
+                                quantity_def.type.standard_type()
+                                if hasattr(quantity_def.type, 'standard_type')
+                                else quantity_def.type,
+                            )
                             if quantity_def.shape
                             else val
                         )

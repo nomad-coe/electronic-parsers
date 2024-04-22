@@ -1197,9 +1197,9 @@ class AbinitParser(BeyondDFTWorkflowsParser):
             sec_input = x_abinit_section_input()
             sec_dataset.x_abinit_section_input = sec_input
             for key, val in self.out_parser.input_vars.items():
-                if val[i] is None:
+                quantity_def = sec_input.m_def.all_quantities.get(f'x_abinit_var_{key}')
+                if val[i] is None or quantity_def is None:
                     continue
-                quantity_def = sec_input.m_def.all_quantities[f'x_abinit_var_{key}']
                 try:
                     shape = [
                         self.out_parser.input_vars[s.split('_')[-1]][i]
@@ -1208,7 +1208,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                         for s in quantity_def.shape
                     ]
                     sec_input.m_set(
-                        sec_input.m_def.all_quantities[f'x_abinit_var_{key}'],
+                        quantity_def,
                         np.reshape(val[i], shape) if shape else val[i],
                     )
                 except Exception:
