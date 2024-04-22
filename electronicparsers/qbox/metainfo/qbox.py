@@ -47,7 +47,7 @@ class x_qbox_section_dipole(MSection):
     m_def = Section(validate=False)
 
     x_qbox_dipole_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='bohr * elementary_charge',
         description="""
@@ -56,7 +56,7 @@ class x_qbox_section_dipole(MSection):
     )
 
     x_qbox_dipole_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='bohr * elementary_charge',
         description="""
@@ -65,7 +65,7 @@ class x_qbox_section_dipole(MSection):
     )
 
     x_qbox_dipole_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='bohr * elementary_charge',
         description="""
@@ -90,7 +90,7 @@ class x_qbox_section_MLWF(MSection):
     m_def = Section(validate=False)
 
     x_qbox_geometry_MLWF_atom_positions_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -99,7 +99,7 @@ class x_qbox_section_MLWF(MSection):
     )
 
     x_qbox_geometry_MLWF_atom_positions_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -108,7 +108,7 @@ class x_qbox_section_MLWF(MSection):
     )
 
     x_qbox_geometry_MLWF_atom_positions_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -117,7 +117,7 @@ class x_qbox_section_MLWF(MSection):
     )
 
     x_qbox_geometry_MLWF_atom_positions = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3],
         unit='meter',
         description="""
@@ -126,7 +126,7 @@ class x_qbox_section_MLWF(MSection):
     )
 
     x_qbox_geometry_MLWF_atom_spread = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -143,7 +143,7 @@ class x_qbox_section_stress_tensor(MSection):
     m_def = Section(validate=False)
 
     x_qbox_stress_tensor_xx = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='pascal',
         description="""
@@ -152,7 +152,7 @@ class x_qbox_section_stress_tensor(MSection):
     )
 
     x_qbox_stress_tensor_xy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='pascal',
         description="""
@@ -161,7 +161,7 @@ class x_qbox_section_stress_tensor(MSection):
     )
 
     x_qbox_stress_tensor_xz = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='pascal',
         description="""
@@ -170,7 +170,7 @@ class x_qbox_section_stress_tensor(MSection):
     )
 
     x_qbox_stress_tensor_yy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='pascal',
         description="""
@@ -179,7 +179,7 @@ class x_qbox_section_stress_tensor(MSection):
     )
 
     x_qbox_stress_tensor_yz = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='pascal',
         description="""
@@ -188,7 +188,7 @@ class x_qbox_section_stress_tensor(MSection):
     )
 
     x_qbox_stress_tensor_zz = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='pascal',
         description="""
@@ -233,7 +233,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_qbox_atom_force_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -242,7 +242,7 @@ class System(runschema.system.System):
     )
 
     x_qbox_atom_force_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -251,7 +251,7 @@ class System(runschema.system.System):
     )
 
     x_qbox_atom_force_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='newton',
         description="""
@@ -268,7 +268,7 @@ class System(runschema.system.System):
     )
 
     x_qbox_geometry_atom_positions_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -277,7 +277,7 @@ class System(runschema.system.System):
     )
 
     x_qbox_geometry_atom_positions_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -286,7 +286,7 @@ class System(runschema.system.System):
     )
 
     x_qbox_geometry_atom_positions_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -295,7 +295,7 @@ class System(runschema.system.System):
     )
 
     x_qbox_geometry_lattice_vector_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -304,7 +304,7 @@ class System(runschema.system.System):
     )
 
     x_qbox_geometry_lattice_vector_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -313,7 +313,7 @@ class System(runschema.system.System):
     )
 
     x_qbox_geometry_lattice_vector_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='meter',
         description="""
@@ -342,7 +342,7 @@ class Method(runschema.method.Method):
     )
 
     x_qbox_ecut = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='joule',
         description="""
@@ -352,7 +352,7 @@ class Method(runschema.method.Method):
     )
 
     x_qbox_efield_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='hartree / bohr / elementary_charge',
         description="""
@@ -361,7 +361,7 @@ class Method(runschema.method.Method):
     )
 
     x_qbox_efield_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='hartree / bohr / elementary_charge',
         description="""
@@ -370,7 +370,7 @@ class Method(runschema.method.Method):
     )
 
     x_qbox_efield_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         unit='hartree / bohr / elementary_charge',
         description="""
@@ -379,7 +379,7 @@ class Method(runschema.method.Method):
     )
 
     x_qbox_k_point_weight = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         weight k point
@@ -387,7 +387,7 @@ class Method(runschema.method.Method):
     )
 
     x_qbox_k_point_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         x component of vector of k point
@@ -395,7 +395,7 @@ class Method(runschema.method.Method):
     )
 
     x_qbox_k_point_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         y component of vector of k point
@@ -403,7 +403,7 @@ class Method(runschema.method.Method):
     )
 
     x_qbox_k_point_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         z component of vector of k point
