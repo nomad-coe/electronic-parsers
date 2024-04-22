@@ -529,7 +529,7 @@ class SolidDMFTParser:
             # Read axes label
             axes_label = ''
             for freq_mesh in sec_scc.method_ref.frequency_mesh:
-                points = freq_mesh.points.to('eV').magnitude
+                points = np.transpose(freq_mesh.points.to('eV').magnitude)[-1]
                 if np.isreal(points).all():
                     sec_gfs.frequencies = np.real(points)
                     axes_label = 'real'
@@ -538,7 +538,9 @@ class SolidDMFTParser:
                     axes_label = 'matsubara'
             axes = self._gf_freq_map[axes_label]
             if sec_scc.method_ref.time_mesh:
-                sec_gfs.tau = sec_scc.method_ref.time_mesh[0].points.imag
+                sec_gfs.tau = np.transpose(sec_scc.method_ref.time_mesh[0].points.imag)[
+                    -1
+                ]
 
             # Finally, store GF quantities
             n_orbitals = sec_scc.method_ref.dmft.n_correlated_orbitals
@@ -564,6 +566,8 @@ class SolidDMFTParser:
                                 value_per_atom_per_spin_per_orbital
                             )
                         value_per_atom.append(value_per_atom_per_spin)
+                    if not value_per_atom:
+                        continue
                     gf = np.array(value_per_atom)
                     if (
                         gf_quantity == 'Gimp_time'
@@ -585,7 +589,7 @@ class SolidDMFTParser:
                     )
                     sec_dos.kind = 'spectral'
                     sec_dos.energy_fermi = chemical_potential * ureg.eV
-                    energies = sec_gfs.frequencies[:, 0]
+                    energies = sec_gfs.frequencies
                     sec_dos.n_energies = len(energies)
                     sec_dos.energies = energies * ureg.eV
                     # Total values
