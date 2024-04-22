@@ -2896,15 +2896,15 @@ class QuantumEspressoParser:
             lumo = None
             if isinstance(homo, (list, np.ndarray)):
                 homo, lumo = homo
-            sec_energy.highest_occupied = [float(homo)] * ureg.eV
+            sec_energy.highest_occupied = float(homo) * ureg.eV
             if lumo is not None:
-                sec_energy.lowest_unoccupied = [float(lumo)] * ureg.eV
+                sec_energy.lowest_unoccupied = float(lumo) * ureg.eV
 
         # fermi energy
         fermi_energy = calculation.get('fermi_energy')
         if fermi_energy is not None:
             fermi_energy = (
-                [fermi_energy] if isinstance(fermi_energy, float) else fermi_energy
+                fermi_energy if isinstance(fermi_energy, float) else fermi_energy[-1]
             )
             if np.array(fermi_energy).dtype == float:
                 sec_energy.fermi = fermi_energy * ureg.eV

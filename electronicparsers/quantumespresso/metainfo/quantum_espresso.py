@@ -46,7 +46,7 @@ class x_qe_section_parallel(MSection):
     m_def = Section(validate=False)
 
     x_qe_nthreads = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of OpenMP threads
@@ -54,7 +54,7 @@ class x_qe_section_parallel(MSection):
     )
 
     x_qe_nproc = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of MPI ranks
@@ -62,7 +62,7 @@ class x_qe_section_parallel(MSection):
     )
 
     x_qe_npool = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of K-Point pools
@@ -78,7 +78,7 @@ class x_qe_section_compile_options(MSection):
     m_def = Section(validate=False)
 
     x_qe_ntypx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maximum number of different atom species
@@ -86,7 +86,7 @@ class x_qe_section_compile_options(MSection):
     )
 
     x_qe_ndmx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maximum dimension of radial grid (Pseudopotential)
@@ -94,7 +94,7 @@ class x_qe_section_compile_options(MSection):
     )
 
     x_qe_npk = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maximum number of k-points
@@ -102,7 +102,7 @@ class x_qe_section_compile_options(MSection):
     )
 
     x_qe_lmaxx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maximum non local angular momentum (Pseudopotential)
@@ -110,7 +110,7 @@ class x_qe_section_compile_options(MSection):
     )
 
     x_qe_nbrx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maximum number of beta functions (Pseudopotential)
@@ -118,7 +118,7 @@ class x_qe_section_compile_options(MSection):
     )
 
     x_qe_nqfx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maximum number of coefficients in Q smoothing (Pseudopotential)
@@ -126,7 +126,7 @@ class x_qe_section_compile_options(MSection):
     )
 
     x_qe_nchix = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maximum number of atomic wavefunctions per Pseudopotential
@@ -151,7 +151,7 @@ class x_qe_t_section_pp_report(MSection):
     m_def = Section(validate=False)
 
     x_qe_t_pp_report_species = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: PP report: species number
@@ -183,7 +183,7 @@ class x_qe_t_section_pp_warning(MSection):
     m_def = Section(validate=False)
 
     x_qe_t_pp_warning_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: renormalized WFCs in pseudopotential: pp index
@@ -199,7 +199,7 @@ class x_qe_t_section_pp_warning(MSection):
     )
 
     x_qe_t_pp_warning_wfcidx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: renormalized WFCs in pseudopotential: pseudo-wavefunction index
@@ -215,7 +215,7 @@ class x_qe_t_section_pp_warning(MSection):
     )
 
     x_qe_t_pp_warning_wfcnorm = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: renormalized WFCs in pseudopotential: pseudo-wavefunction original norm
@@ -232,7 +232,7 @@ class x_qe_t_section_pseudopotential(MSection):
     m_def = Section(validate=False)
 
     x_qe_t_pp_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: Index of Pseudopotential on Espresso side
@@ -240,7 +240,7 @@ class x_qe_t_section_pseudopotential(MSection):
     )
 
     x_qe_t_pp_ndmx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: Radial grid of Pseudopotential on Espresso side
@@ -288,7 +288,7 @@ class x_qe_t_section_pseudopotential(MSection):
     )
 
     x_qe_t_pp_integral_ndirections = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: number of integration directions (PAW)
@@ -296,7 +296,7 @@ class x_qe_t_section_pseudopotential(MSection):
     )
 
     x_qe_t_pp_integral_lmax_exact = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: maximum l for which integration is exact (PAW)
@@ -312,7 +312,7 @@ class x_qe_t_section_pseudopotential(MSection):
     )
 
     x_qe_t_pp_valence = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: Number of Valence electrons in pseudopotential
@@ -320,7 +320,7 @@ class x_qe_t_section_pseudopotential(MSection):
     )
 
     x_qe_t_pp_nbeta = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: Number of beta functions in pseudopotential on Espresso side
@@ -328,7 +328,7 @@ class x_qe_t_section_pseudopotential(MSection):
     )
 
     x_qe_t_pp_l_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: beta function l index in pseudopotential on Espresso side
@@ -336,7 +336,7 @@ class x_qe_t_section_pseudopotential(MSection):
     )
 
     x_qe_t_pp_l = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: beta function l in pseudopotential on Espresso side
@@ -344,7 +344,7 @@ class x_qe_t_section_pseudopotential(MSection):
     )
 
     x_qe_t_pp_ncoefficients = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: Number of coefficients in pseudopotential
@@ -384,7 +384,7 @@ class x_qe_section_scf_diagonalization(MSection):
     )
 
     x_qe_scf_diagonalization_warn_n_unconverged_eigenvalues = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of uncoverged eigenvalues (Warning)
@@ -392,7 +392,7 @@ class x_qe_section_scf_diagonalization(MSection):
     )
 
     x_qe_scf_diagonalization_c_bands_n_unconverged_eigenvalues = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of uncoverged eigenvalues (Warning from function c_bands)
@@ -400,7 +400,7 @@ class x_qe_section_scf_diagonalization(MSection):
     )
 
     x_qe_scf_diagonalization_ethr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Convergence Threshold in scf diagonalization
@@ -408,7 +408,7 @@ class x_qe_section_scf_diagonalization(MSection):
     )
 
     x_qe_scf_diagonalization_iteration_avg = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Average of iterations in scf diagonalization
@@ -440,7 +440,7 @@ class x_qe_section_bands_diagonalization(MSection):
     )
 
     x_qe_bands_diagonalization_warn_n_unconverged_eigenvalues = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of uncoverged eigenvalues (Warning)
@@ -448,7 +448,7 @@ class x_qe_section_bands_diagonalization(MSection):
     )
 
     x_qe_bands_diagonalization_c_bands_n_unconverged_eigenvalues = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of uncoverged eigenvalues (Warning from function c_bands)
@@ -456,7 +456,7 @@ class x_qe_section_bands_diagonalization(MSection):
     )
 
     x_qe_bands_diagonalization_ethr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Convergence Threshold in bands diagonalization
@@ -464,7 +464,7 @@ class x_qe_section_bands_diagonalization(MSection):
     )
 
     x_qe_bands_diagonalization_iteration_avg = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Average of iterations in bands diagonalization
@@ -517,7 +517,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_k_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for k-point, x-component
@@ -525,7 +525,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_k_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for k-point, y-component
@@ -533,7 +533,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_k_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for k-point, z-component
@@ -541,7 +541,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_k_pw = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: number of plane waves for this k-point
@@ -557,7 +557,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_energy_total_harris_foulkes_estimate = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Harris-Foulkes estimate of total energy
@@ -565,7 +565,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_energy_total_accuracy_estimate = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Accuracy estimate of total energy
@@ -573,7 +573,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_energy_exchange_error_estimate = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Estimated error on exchange
@@ -581,7 +581,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_energy_exchange_average_fock_potential = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Averaged Fock potential
@@ -589,7 +589,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_energy_fock = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Fock energy
@@ -597,7 +597,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_energy_total_paw_all_electron = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         All-electron total energy from PAW
@@ -605,7 +605,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_energy_reference_highest_occupied = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: Energy of highest occupied state
@@ -613,7 +613,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_energy_reference_lowest_unoccupied = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Energy of lowest unoccupied state
@@ -621,7 +621,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_energy_reference_fermi = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: Fermi Energy
@@ -629,7 +629,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_energy_reference_fermi_up = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: Fermi Energy (spin up)
@@ -637,7 +637,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_energy_reference_fermi_down = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: Fermi Energy (spin down)
@@ -653,7 +653,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_energy_decomposition_value = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: Total energy decomposition: contribution value
@@ -669,7 +669,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_energy_decomposition_value = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_qe_number_of_energy_components'],
         description="""
         Total energy decomposition: contribution value
@@ -677,7 +677,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_magnetization_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Total per-cell magnetization
@@ -685,7 +685,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_magnetization_absolute = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Absolute per-cell magnetization
@@ -693,7 +693,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_convergence_iterations = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of iterations after which self-consistency has been achieved
@@ -725,7 +725,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_force_atom_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -733,7 +733,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_force_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -741,7 +741,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_force_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -749,7 +749,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_force_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -757,7 +757,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_dispersion_force_atom_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -765,7 +765,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_atom_dispersion_force = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms', 3],
         description="""
         -
@@ -773,7 +773,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_dispersion_force_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -781,7 +781,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_dispersion_force_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -789,7 +789,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_dispersion_force_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -797,7 +797,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_dispersion_force_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -805,7 +805,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_force_total = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -813,7 +813,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_force_total_scf_correction = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -821,7 +821,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_pressure = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -829,7 +829,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_stress_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -837,7 +837,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_stress_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -845,7 +845,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_stress_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -861,7 +861,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_iteration = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: MD step: iteration number
@@ -869,7 +869,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_projected_velocity = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: MD step: projected velocity
@@ -877,7 +877,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_time = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         MD step: time
@@ -893,7 +893,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_vec_a_alat = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new direct lattice vectors (vc-relax), lattice parameter a
@@ -901,7 +901,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_vec_a_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new direct lattice vectors (vc-relax), x-component
@@ -909,7 +909,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_vec_a_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new direct lattice vectors (vc-relax), y-component
@@ -917,7 +917,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_vec_a_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new direct lattice vectors (vc-relax), z-component
@@ -949,7 +949,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_atom_positions_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new atom positions (MD, (vc-)relax), x-component
@@ -957,7 +957,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_atom_positions_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new atom positions (MD, (vc-)relax), y-component
@@ -965,7 +965,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_atom_positions_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new atom positions (MD, (vc-)relax), z-component
@@ -997,7 +997,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_new_nat2_distance = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new 2-atom distance (MD, (vc-)relax)
@@ -1013,7 +1013,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_atom_mass_value = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for MD setup, atom mass, value
@@ -1021,7 +1021,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_timestep_size = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for MD setup, timestep size
@@ -1029,7 +1029,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_kinetic_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for MD, kinetic energy
@@ -1037,7 +1037,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_temperature = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for MD, temperature
@@ -1045,7 +1045,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_total_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for MD, total energy
@@ -1053,7 +1053,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_ekin_etot = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for MD, sum of energies
@@ -1061,7 +1061,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_linear_momentum_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for linear momentum (MD, (vc-)relax), x-component
@@ -1069,7 +1069,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_linear_momentum_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for linear momentum (MD, (vc-)relax), y-component
@@ -1077,7 +1077,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_linear_momentum_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for linear momentum (MD, (vc-)relax), z-component
@@ -1085,7 +1085,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_write_datafile_cputime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for cpu time after write-datafile (MD, (vc-)relax)
@@ -1093,7 +1093,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_write_datafile_mem_dynamical = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for dynamical memory after write-datafile (MD, (vc-)relax)
@@ -1117,7 +1117,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_starting_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for extrapolated starting charge (MD, (vc-)relax)
@@ -1125,7 +1125,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_starting_charge_renormalized = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for extrapolated starting charge, renormalized (MD, (vc-)relax)
@@ -1149,7 +1149,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_diffusion_atomidx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary storage for diffusion coeffients (MD), atom index
@@ -1157,7 +1157,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_diffusion_coefficient = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for diffusion coeffients (MD), atom coeffient
@@ -1165,7 +1165,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_diffusion_coefficient_mean = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for diffusion coeffients (MD), mean coeffient
@@ -1173,7 +1173,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_bfgs_scf_cycles = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary storage for number of scf cycles (relax)
@@ -1181,7 +1181,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_bfgs_steps = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary storage for number of steps (relax)
@@ -1189,7 +1189,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_bfgs_energy_old = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for 'old' energy (relax)
@@ -1197,7 +1197,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_bfgs_energy_new = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for 'new' energy (relax)
@@ -1205,7 +1205,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_bfgs_enthalpy_old = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for 'old' enthalpy (relax)
@@ -1213,7 +1213,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_bfgs_enthalpy_new = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for 'new' enthalpy (relax)
@@ -1237,7 +1237,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_bfgs_trust_new = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new trust radius (relax)
@@ -1245,7 +1245,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_bfgs_conv_thr_new = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new electronic convergence threshold (relax)
@@ -1253,7 +1253,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_starting_charge_negative_old = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for old negative starting charge (MD, (vc-)relax)
@@ -1261,7 +1261,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_starting_charge_negative_new = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new negative starting charge (MD, (vc-)relax)
@@ -1269,7 +1269,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_starting_charge_negative_new_up = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new negative starting charge (MD, (vc-)relax), spin up
@@ -1277,7 +1277,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_starting_charge_negative_new_down = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new negative starting charge (MD, (vc-)relax), spin down
@@ -1301,7 +1301,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_bfgs_final_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for final energy ((vc-)relax)
@@ -1309,7 +1309,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_bfgs_final_enthalpy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for final enthalpy ((vc-)relax)
@@ -1317,7 +1317,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_new_volume = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for new cell volume ((vc-)relax)
@@ -1325,7 +1325,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_isolated_system_method_martyna_tuckerman_alpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary MD: Isolated system with Martyna-Tuckerman method, parameter alpha
@@ -1333,7 +1333,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_isolated_system_method_martyna_tuckerman_beta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary MD: Isolated system with Martyna-Tuckerman method, parameter beta
@@ -1341,7 +1341,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_core_charge_negative = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary MD: QE check: negative core charge
@@ -1349,7 +1349,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_core_charge_imaginary = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary MD: QE check: imaginary core charge
@@ -1357,7 +1357,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_relax_converged_steps = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary Relax: number of steps after which structure relaxation converged
@@ -1365,7 +1365,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_relax_final_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary Relax: final energy in relaxation
@@ -1373,7 +1373,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_relax_threshold_energy = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary Relax: convergence threshold on energy in relaxation
@@ -1381,7 +1381,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_relax_threshold_force = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary Relax: convergence threshold on force components in relaxation
@@ -1389,7 +1389,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_relax_threshold_pressure = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary Relax: convergence threshold on pressure in relaxation
@@ -1397,7 +1397,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_k_info_ik = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary MD storage for k-point info, k-index
@@ -1405,7 +1405,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_k_info_vec_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary MD storage for k-point info, x-component
@@ -1413,7 +1413,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_k_info_vec_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary MD storage for k-point info, y-component
@@ -1421,7 +1421,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_k_info_vec_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary MD storage for k-point info, z-component
@@ -1429,7 +1429,7 @@ class Calculation(runschema.calculation.Calculation):
     )
 
     x_qe_t_md_k_info_wk = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary MD storage for k-point info, weight
@@ -1501,7 +1501,7 @@ class Run(runschema.run.Run):
     )
 
     x_qe_profile_cputime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_qe_number_of_profiling_entries'],
         description="""
         QE profiling: cputime spent in function
@@ -1509,7 +1509,7 @@ class Run(runschema.run.Run):
     )
 
     x_qe_profile_walltime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_qe_number_of_profiling_entries'],
         description="""
         QE profiling: wallclock time spent in function
@@ -1517,7 +1517,7 @@ class Run(runschema.run.Run):
     )
 
     x_qe_profile_ncalls = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['x_qe_number_of_profiling_entries'],
         description="""
         QE profiling: how often was function called
@@ -1533,7 +1533,7 @@ class Run(runschema.run.Run):
     )
 
     x_qe_t_profile_cputime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: QE profiling: cputime spent in function
@@ -1541,7 +1541,7 @@ class Run(runschema.run.Run):
     )
 
     x_qe_t_profile_walltime = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: QE profiling: wallclock time spent in function
@@ -1549,7 +1549,7 @@ class Run(runschema.run.Run):
     )
 
     x_qe_t_profile_ncalls = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: QE profiling: how often was function called
@@ -1625,7 +1625,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_t_species_dispersion_correction_vdw_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: DFT-D species vdW radius
@@ -1633,7 +1633,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_t_species_dispersion_correction_C6 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: DFT-D species C6 coefficient
@@ -1673,7 +1673,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_sticks_sum_dense = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1681,7 +1681,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_sticks_sum_smooth = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1689,7 +1689,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_sticks_sum_PW = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1697,7 +1697,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_sticks_sum_G_dense = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1705,7 +1705,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_sticks_sum_G_smooth = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1713,7 +1713,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_sticks_sum_G_PW = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1721,7 +1721,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_sticks_tot_dense = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1729,7 +1729,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_sticks_tot_smooth = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1737,7 +1737,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_sticks_tot_PW = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         -
@@ -1753,7 +1753,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_t_species_integration_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: radius used to integrate charge/magnetization over (per species)
@@ -1761,7 +1761,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_t_species_integration_radius_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: radius used to integrate charge/magnetization over (per species),
@@ -1770,7 +1770,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_fock_operator_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Cutoff for defining the direct-space grid used to compute Fock exchange in EXX
@@ -1787,7 +1787,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_potential_convergence_threshold = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Convergence threshold for potentials
@@ -1795,7 +1795,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_potential_mixing_beta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Mixing scheme: parameter beta
@@ -1803,7 +1803,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_potential_mixing_iterations = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Mixing scheme: number of previous iterations
@@ -1941,7 +1941,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_xc_iexch = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Quantum Espresso internal code-specific index of XC functional (density exchange
@@ -1950,7 +1950,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_xc_icorr = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Quantum Espresso internal code-specific index of XC functional (density
@@ -1959,7 +1959,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_xc_igcx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Quantum Espresso internal code-specific index of XC functional (gradient exchange
@@ -1968,7 +1968,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_xc_igcc = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Quantum Espresso internal code-specific index of XC functional (gradient
@@ -1977,7 +1977,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_xc_imeta = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Quantum Espresso internal code-specific index of XC functional (meta-gga
@@ -1986,7 +1986,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_xc_inlc = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Quantum Espresso internal code-specific index of XC functional (Van-der-Waals non-
@@ -1995,7 +1995,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_t_exact_exchange_fraction = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: store fraction of exact-exchange before defining section_xc_functionals
@@ -2003,7 +2003,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_exact_exchange_fraction = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Fraction of exact-exchange in EXX-refinement
@@ -2011,7 +2011,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_md_max_steps = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maximum number of ionic+electronic steps in dynamics (MD/relax) calculation
@@ -2019,7 +2019,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_berry_efield_direction = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Finite E-field: direction
@@ -2027,7 +2027,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_berry_efield_intensity = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Berry phase with E-field: intensity
@@ -2035,7 +2035,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_berry_efield_strings_nk = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Berry phase with E-field: number of k-points in string
@@ -2043,7 +2043,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_berry_efield_niter = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Berry phase with E-field: number of iterative cycles
@@ -2115,7 +2115,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_t_allocated_array_size = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: allocated arrays, size
@@ -2139,7 +2139,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_allocated_array_size = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_qe_allocated_arrays'],
         description="""
         Allocated arrays, size
@@ -2163,7 +2163,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_t_temporary_array_size = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: temporary arrays, size
@@ -2187,7 +2187,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_temporary_array_size = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_qe_temporary_arrays'],
         description="""
         Temporary arrays, size
@@ -2203,7 +2203,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_core_charge_negative = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         QE check: negative core charge
@@ -2211,7 +2211,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_core_charge_imaginary = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         QE check: imaginary core charge
@@ -2243,7 +2243,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_starting_charge_negative = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Starting charge (warning about negative starting charge)
@@ -2251,7 +2251,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_starting_charge_negative_up = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Starting charge up (warning about negative starting charge)
@@ -2259,7 +2259,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_starting_charge_negative_down = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Starting charge down (warning about negative starting charge)
@@ -2267,7 +2267,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_starting_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Starting charge
@@ -2275,7 +2275,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_starting_charge_renormalized = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Starting charge, renormalized
@@ -2291,7 +2291,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_time_setup_cpu1_end = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         CPU time, setup up until first iteration
@@ -2299,7 +2299,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_per_process_mem = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Per-process dynamical memory
@@ -2315,7 +2315,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_isolated_system_method_martyna_tuckerman_alpha = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Isolated system with Martyna-Tuckerman method, parameter alpha
@@ -2323,7 +2323,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_isolated_system_method_martyna_tuckerman_beta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Isolated system with Martyna-Tuckerman method, parameter beta
@@ -2331,7 +2331,7 @@ class Method(runschema.method.Method):
     )
 
     x_qe_input_occupations = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[
             'number_of_spin_channels',
             'number_of_k_points',
@@ -2371,7 +2371,7 @@ class AtomParameters(runschema.method.AtomParameters):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_qe_dispersion_correction_vdw_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         DFT-D species vdW radius
@@ -2379,7 +2379,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_qe_dispersion_correction_C6 = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         DFT-D species C6 coefficient
@@ -2387,7 +2387,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_qe_species_integration_radius = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Radius used to integrate charge/magnetization over (per species)
@@ -2403,7 +2403,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_qe_pp_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Index of Pseudopotential on Espresso side
@@ -2451,7 +2451,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_qe_pp_integral_ndirections = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of integration directions (PAW)
@@ -2459,7 +2459,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_qe_pp_integral_lmax_exact = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Maximum l for which integration is exact (PAW)
@@ -2491,7 +2491,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_qe_pp_valence = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Number of Valence electrons in pseudopotential
@@ -2499,7 +2499,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_qe_pp_weight = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         -
@@ -2507,7 +2507,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_qe_pp_ncoefficients = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of coefficients in pseudopotential
@@ -2523,7 +2523,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_qe_kind_mass = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Atomic mass of species
@@ -2531,7 +2531,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_qe_pp_ndmx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Radial grid of Pseudopotential on Espresso side
@@ -2539,7 +2539,7 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_qe_pp_nbeta = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of beta functions in pseudopotential on Espresso side
@@ -2547,16 +2547,16 @@ class AtomParameters(runschema.method.AtomParameters):
     )
 
     x_qe_pp_l_idx = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
+        type=np.int32,
+        shape=['*'],
         description="""
         Beta function l index in pseudopotential on Espresso side
         """,
     )
 
     x_qe_pp_l = Quantity(
-        type=np.dtype(np.int32),
-        shape=[],
+        type=np.int32,
+        shape=['*'],
         description="""
         Beta function l in pseudopotential on Espresso side
         """,
@@ -2567,7 +2567,7 @@ class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_qe_ibrav = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Bravais lattice index, constant during a run
@@ -2575,7 +2575,7 @@ class System(runschema.system.System):
     )
 
     x_qe_alat = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Lattice Parameter 'a', constant during a run and used as unit in other quantities
@@ -2583,7 +2583,7 @@ class System(runschema.system.System):
     )
 
     x_qe_cell_volume = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Volume of unit cell
@@ -2591,7 +2591,7 @@ class System(runschema.system.System):
     )
 
     x_qe_number_of_species = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of Atom species, a.k.a. unique Atom labels; a label may include symmetry-
@@ -2601,7 +2601,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_number_of_electrons = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: Number of electrons in system
@@ -2609,7 +2609,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_number_of_electrons_up = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: Number of electrons in system (spin up)
@@ -2617,7 +2617,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_number_of_electrons_down = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: Number of electrons in system (spin down)
@@ -2625,7 +2625,7 @@ class System(runschema.system.System):
     )
 
     x_qe_number_of_states = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of Kohn-Sham states/bands
@@ -2633,7 +2633,7 @@ class System(runschema.system.System):
     )
 
     x_qe_md_cell_mass = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Mass of cell in MD/relax calculation
@@ -2649,7 +2649,7 @@ class System(runschema.system.System):
     )
 
     x_qe_celldm = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[6],
         description="""
         QE cell dimensions
@@ -2657,7 +2657,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_vec_supercell_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for supercell translation vector in fractional coordinates,
@@ -2666,7 +2666,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_vec_supercell_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for supercell translation vector in fractional coordinates,
@@ -2675,7 +2675,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_vec_supercell_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for supercell translation vector in fractional coordinates,
@@ -2684,7 +2684,7 @@ class System(runschema.system.System):
     )
 
     x_qe_vec_supercell = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_qe_number_of_supercell_translations', 3],
         description="""
         Supercell translation vector(s) in fractional coordinates
@@ -2708,7 +2708,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_vec_a_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for direct lattice vectors, x-component
@@ -2716,7 +2716,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_vec_a_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for direct lattice vectors, y-component
@@ -2724,7 +2724,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_vec_a_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for direct lattice vectors, z-component
@@ -2732,7 +2732,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_vec_b_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for reciprocal lattice vectors, x-component
@@ -2740,7 +2740,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_vec_b_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for reciprocal lattice vectors, y-component
@@ -2748,7 +2748,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_vec_b_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for reciprocal lattice vectors, z-component
@@ -2756,7 +2756,7 @@ class System(runschema.system.System):
     )
 
     x_qe_reciprocal_cell = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[3, 3],
         unit='1 / meter',
         description="""
@@ -2775,7 +2775,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_starting_magnetization_value = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: Starting magnetic configuration: Species magnetization
@@ -2783,7 +2783,7 @@ class System(runschema.system.System):
     )
 
     x_qe_atom_starting_magnetization = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         Starting magnetic configuration: Atom magnetization
@@ -2791,7 +2791,7 @@ class System(runschema.system.System):
     )
 
     x_qe_nsymm = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of detected symmetry operations
@@ -2799,7 +2799,7 @@ class System(runschema.system.System):
     )
 
     x_qe_nsymm_with_fractional_translation = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of detected symmetry operations including fractional translations
@@ -2807,7 +2807,7 @@ class System(runschema.system.System):
     )
 
     x_qe_nsymm_ignored = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Number of ignored symmetry operations, due to uncommensurable fractional
@@ -2832,7 +2832,7 @@ class System(runschema.system.System):
     )
 
     x_qe_atom_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['number_of_atoms'],
         description="""
         Index of atom on Espresso side
@@ -2848,7 +2848,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_atom_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: Index of atom on Espresso side
@@ -2864,7 +2864,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_atpos_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for atom position, x-component
@@ -2872,7 +2872,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_atpos_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for atom position, y-component
@@ -2880,7 +2880,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_atpos_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for atom position, z-component
@@ -2888,7 +2888,7 @@ class System(runschema.system.System):
     )
 
     x_qe_nk = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         K-point info, number of k-points
@@ -2896,7 +2896,7 @@ class System(runschema.system.System):
     )
 
     x_qe_smearing_ngauss = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         K-point info, QE number represenation of smearing technique
@@ -2912,7 +2912,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_k_info_ik = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary storage for k-point info, k-index
@@ -2920,7 +2920,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_k_info_vec_x = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for k-point info, x-component
@@ -2928,7 +2928,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_k_info_vec_y = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for k-point info, y-component
@@ -2936,7 +2936,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_k_info_vec_z = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for k-point info, z-component
@@ -2944,7 +2944,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_k_info_wk = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary storage for k-point info, weight
@@ -2952,7 +2952,7 @@ class System(runschema.system.System):
     )
 
     x_qe_k_info_ik = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['x_qe_nk'],
         description="""
         K-point info, k-index
@@ -2960,7 +2960,7 @@ class System(runschema.system.System):
     )
 
     x_qe_k_info_vec = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_qe_nk', 3],
         description="""
         K-point info, cartesian coordinate
@@ -2968,7 +2968,7 @@ class System(runschema.system.System):
     )
 
     x_qe_k_info_wk = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['x_qe_nk'],
         description="""
         K-point info, weight
@@ -2976,7 +2976,7 @@ class System(runschema.system.System):
     )
 
     x_qe_dense_g_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Dense-grid info, G cutoff
@@ -2984,7 +2984,7 @@ class System(runschema.system.System):
     )
 
     x_qe_dense_g_vectors = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Dense-grid info, number of G vectors
@@ -2992,7 +2992,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_dense_FFT_grid_x = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: Dense-grid info, FFT grid x
@@ -3000,7 +3000,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_dense_FFT_grid_y = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: Dense-grid info, FFT grid y
@@ -3008,7 +3008,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_dense_FFT_grid_z = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: Dense-grid info, FFT grid z
@@ -3016,7 +3016,7 @@ class System(runschema.system.System):
     )
 
     x_qe_dense_FFT_grid = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         Dense-grid info, FFT grid
@@ -3024,7 +3024,7 @@ class System(runschema.system.System):
     )
 
     x_qe_smooth_g_cutoff = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Smooth-grid info, G cutoff
@@ -3032,7 +3032,7 @@ class System(runschema.system.System):
     )
 
     x_qe_smooth_g_vectors = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Smooth-grid info, number of G vectors
@@ -3040,7 +3040,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_smooth_FFT_grid_x = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: Smooth-grid info, FFT grid x
@@ -3048,7 +3048,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_smooth_FFT_grid_y = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: Smooth-grid info, FFT grid y
@@ -3056,7 +3056,7 @@ class System(runschema.system.System):
     )
 
     x_qe_t_smooth_FFT_grid_z = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: Smooth-grid info, FFT grid z
@@ -3064,7 +3064,7 @@ class System(runschema.system.System):
     )
 
     x_qe_smooth_FFT_grid = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[3],
         description="""
         Smooth-grid info, FFT grid
@@ -3100,7 +3100,7 @@ class Functional(runschema.method.Functional):
     )
 
     x_qe_xc_index = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Index value within Quantum Espresso where XC functional component was set from
@@ -3112,7 +3112,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_qe_t_iter_mpersite_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Temporary: iteration per-site magnetization data, atom index
@@ -3120,7 +3120,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_t_iter_mpersite_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: iteration per-site magnetization data, atom charge
@@ -3128,7 +3128,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_t_iter_mpersite_magn = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: iteration per-site magnetization data, atom magnetization
@@ -3136,7 +3136,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_t_iter_mpersite_constr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Temporary: iteration per-site magnetization data, constraints
@@ -3144,7 +3144,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iter_mpersite_idx = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['number_of_atoms'],
         description="""
         iteration per-site magnetization data, atom index
@@ -3152,7 +3152,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iter_mpersite_charge = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         iteration per-site magnetization data, atom charge
@@ -3160,7 +3160,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iter_mpersite_magn = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         iteration per-site magnetization data, atom magnetization
@@ -3168,7 +3168,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iter_mpersite_constr = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=['number_of_atoms'],
         description="""
         iteration per-site magnetization data, constraints
@@ -3176,7 +3176,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iteration_efield_eeigx_re = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         E-field: expectation value of exp(iGx), real part, in iteration
@@ -3184,7 +3184,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iteration_efield_eeigx_im = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         E-field: expectation value of exp(iGx), imaginary part, in iteration
@@ -3192,7 +3192,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iteration_efield_dipole_electronic = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         E-field: Electronic dipole, in iteration
@@ -3200,7 +3200,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iteration_efield_dipole_ionic = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         E-field: Ionic dipole, in iteration
@@ -3208,7 +3208,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iteration_number = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=[],
         description="""
         Iteration number
@@ -3216,7 +3216,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iteration_ecutwfc = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         PW cutoff used during iteration
@@ -3224,7 +3224,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iteration_beta = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Mixing parameter Beta during iteration
@@ -3232,7 +3232,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iteration_charge_negative_up = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Charge in iteration (up)
@@ -3240,7 +3240,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_iteration_charge_negative_down = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Charge in iteration (down)
@@ -3248,7 +3248,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_energy_total_harris_foulkes_estimate_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Harris-Foulkes estimate of total energy
@@ -3256,7 +3256,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_energy_total_accuracy_estimate_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Accuracy estimate of total energy
@@ -3264,7 +3264,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_magnetization_total_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Total per-cell magnetization in iteration
@@ -3272,7 +3272,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     )
 
     x_qe_magnetization_absolute_iteration = Quantity(
-        type=np.dtype(np.float64),
+        type=np.float64,
         shape=[],
         description="""
         Absolute per-cell magnetization in iteration
@@ -3288,7 +3288,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
     m_def = Section(validate=False, extends_base_section=True)
 
     x_qe_eigenvalues_number_of_planewaves = Quantity(
-        type=np.dtype(np.int32),
+        type=np.int32,
         shape=['number_of_eigenvalues_kpoints'],
         description="""
         Number of plane waves for each k-point
