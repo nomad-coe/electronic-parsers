@@ -1445,9 +1445,12 @@ class RunContentParser(ContentParser):
         ).get('totalsc', [None, None])
 
     def get_time_scf(self, n_calc):
-        return self._get_key_values(
+        time = self._get_key_values(
             f'/modeling[0]/calculation[{n_calc}]/scstep/time[@name="total"]'
         ).get('total', [])
+        if time and len(np.shape(time)) != 2:
+            time = np.reshape(time, (np.size(time) // 2, 2))
+        return time
 
     def get_n_scf(self, n_calc):
         if self._n_scf is None:
