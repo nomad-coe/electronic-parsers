@@ -15,7 +15,7 @@ dependencies = [
     "nomad-schema-plugin-run@git+https://github.com/nomad-coe/nomad-schema-plugin-run.git@develop",
     "simulationparsers@git+https://github.com/nomad-coe/simulation-parsers.git@develop",
     "lxml~=4.7.1",
-    "netCDF4==1.5.4",
+    "netCDF4==1.6.5",
     "h5py>=3.6.0",
     "pyyaml>=6.0",
 ]
