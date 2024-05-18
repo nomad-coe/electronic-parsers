@@ -1151,7 +1151,7 @@ class AbinitOutParser(TextParser):
                 val = np.array(
                     key_val[1:],
                     dtype=m_quantity.type.standard_type()
-                    if hasattr(m_quantity.type, 'standard_tpye')
+                    if hasattr(m_quantity.type, 'standard_type')
                     else m_quantity.type,
                 )
                 if not m_quantity.shape:
