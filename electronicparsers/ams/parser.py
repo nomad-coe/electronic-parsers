@@ -809,7 +809,7 @@ class OutParser(TextParser):
                             Quantity(
                                 'total',
                                 rf'Total\s+({re_float})',
-                                dtype=np.float,
+                                dtype=np.float64,
                                 unit=ureg.elementary_charge,
                             ),
                         ]
