@@ -326,12 +326,8 @@ class ATKParser:
             sec_atoms.lattice_vectors = atoms.get_cell().array * ureg.angstrom
             sec_atoms.periodic = atoms.get_pbc()
             velocities = atoms.get_velocities()
-            if isinstance(velocities, np.ndarray):
-                if velocities.any():
-                    sec_atoms.velocities = velocities * (ureg.angstrom / ureg.fs)
-            else:
-                if velocities:
-                    sec_atoms.velocities = velocities * (ureg.angstrom / ureg.fs)
+            if velocities is not None:
+                sec_atoms.velocities = velocities * (ureg.angstrom / ureg.fs)
 
             return sec_system
 
