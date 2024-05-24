@@ -815,7 +815,7 @@ class CP2KOutParser(TextParser):
             ),
             Quantity(
                 'atomic_coordinates',
-                r'(?i) atomic coordinates(?: in) (angstrom[\s\S]+?)\n\n\n',
+                r'(?i: atomic coordinates(?: in) (angstrom))([\s\S]+?)\n\n\n',
                 convert=False,
                 str_operation=str_to_atomic_coordinates,
             ),  # TODO: if we always capture angstrom, then no need to extract the units...
