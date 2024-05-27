@@ -1401,6 +1401,7 @@ class GaussianParser:
             self.logger.error(
                 'Found multiple or no basis set', data=dict(n_parsed=len(basis_sets))
             )
+        bs = None
         for basis_set in basis_sets:
             bs = BasisSet(
                 type='gaussians',
@@ -1414,7 +1415,7 @@ class GaussianParser:
             BasisSetContainer(
                 type='atom-centered orbitals',
                 scope=['wavefunction'],
-                basis_set=[bs],
+                basis_set=[bs] if bs is not None else [],
             )
         ]
 
