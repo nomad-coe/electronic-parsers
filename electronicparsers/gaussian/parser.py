@@ -1306,7 +1306,8 @@ class GaussianParser:
                     name = res[2]
             return prefix, name
 
-        def resolve_basis_set(parameter):
+        def resolve_basis_set(parameter: str) -> tuple[str, str]:
+            """Standardize basis set names (`parameter`) to the format used in the metainfo."""
             basis_set = self._basis_set_map.get(parameter, None)
             if basis_set is not None:
                 return (parameter, parameter)
@@ -1319,6 +1320,9 @@ class GaussianParser:
                         'Cannot resolve basis set', data=dict(key=parameter)
                     )
                 return (basis_keys[0], parameter)
+
+            # fall back onto default basis set
+            return ('STO-3G', 'STO-3G')
 
         def resolve_xc_functional(parameter):
             xc_functional = self._xc_functional_map.get(parameter, None)
@@ -1373,9 +1377,9 @@ class GaussianParser:
                 xc_functionals.add(xc_functional)
 
             basis_set_parameter = parameter[0] if not parameter[1:] else parameter[1]
+            # ! invert logic
             basis_set = resolve_basis_set(basis_set_parameter.strip())
-            if basis_set is not None:
-                basis_sets.add(basis_set)
+            basis_sets.add(basis_set)
 
         sec_dft = DFT()
         sec_method.dft = sec_dft
@@ -1401,7 +1405,7 @@ class GaussianParser:
             self.logger.error(
                 'Found multiple or no basis set', data=dict(n_parsed=len(basis_sets))
             )
-        bs = None
+
         for basis_set in basis_sets:
             bs = BasisSet(
                 type='gaussians',
@@ -1415,7 +1419,7 @@ class GaussianParser:
             BasisSetContainer(
                 type='atom-centered orbitals',
                 scope=['wavefunction'],
-                basis_set=[bs] if bs is not None else [],
+                basis_set=[bs],
             )
         ]
 
