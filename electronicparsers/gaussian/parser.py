@@ -1401,11 +1401,6 @@ class GaussianParser:
                 )
 
         # Basis set
-        if len(basis_sets) != 1:
-            self.logger.error(
-                'Found multiple or no basis set', data=dict(n_parsed=len(basis_sets))
-            )
-
         for basis_set in basis_sets:
             bs = BasisSet(
                 type='gaussians',
